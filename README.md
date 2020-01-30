@@ -1,2 +1,2 @@
 # bpmn-js
-Javascript libs to render and model BPMN diagrams
+Process Analytics: An embeddable solution that delivers interactive data visualization of process execution for monitoring and reporting.
