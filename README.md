@@ -1,2 +1,2 @@
 # bpmn-js
-Process Analytics: An embeddable solution that delivers interactive data visualization of process execution for monitoring and reporting.
+A project to visualize process execution data. Diagrams are displayed from bpmn files. With additional display options for execution data (hightlight some transitions, counters, and more). With interactive capacities (mouse hover, click).
