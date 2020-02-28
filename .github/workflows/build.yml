@@ -26,4 +26,6 @@ jobs:
         uses: actions/setup-node@v1.1.0
         with:
           node-version: 12.16.1
-      - run: npm --version
+      - run: |
+          node --version
+          npm --version
