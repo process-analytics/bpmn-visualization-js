@@ -17,9 +17,9 @@ jobs:
       matrix:
         # syntax inspired from https://github.community/t5/GitHub-Actions/Using-a-matrix-defined-input-for-a-custom-action/m-p/32032/highlight/true#M988
         os:
-          - {name: ubuntu-latest, short: "ubuntu" }
-          - {name: macos-latest, short: "macos" }
-          - {name: windows-latest, short: "windows" }
+          - { name: ubuntu-latest}
+          - { name: macos-latest }
+          - { name: windows-latest }
     steps:
       - uses: actions/checkout@v2
       - name: Setup node
