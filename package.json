@@ -1,0 +1,22 @@
+{
+  "name": "rollup",
+  "version": "1.0.0",
+  "module": "dist/index.es.js",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -cw"
+  },
+  "license": "Apache 2.0",
+  "devDependencies": {
+    "rollup": "^1.32.0",
+    "rollup-plugin-copy": "^3.3.0",
+    "rollup-plugin-livereload": "^1.0.4",
+    "rollup-plugin-serve": "^1.0.1",
+    "rollup-plugin-typescript2": "^0.26.0",
+    "typescript": "^3.8.2"
+  }
+}
