@@ -1,3 +1,3 @@
-import {greet} from './greet'
+import { greet } from './greet';
 
-greet(window.document, "container");
+greet(window.document, 'container');

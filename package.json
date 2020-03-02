@@ -9,10 +9,31 @@
   "scripts": {
     "build": "rollup -c",
     "start": "rollup -c --environment devMode:true",
-    "watch": "rollup -cw"
+    "watch": "rollup -cw",
+    "lint": "tsc --noEmit && eslint */**/*.{js,ts,tsx} --quiet --fix",
+    "lint-check": "tsc --noEmit && eslint */**/*.{js,ts,tsx}"
   },
   "license": "Apache 2.0",
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsc --noEmit && lint-staged"
+    }
+  },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.21.0",
+    "@typescript-eslint/parser": "^2.21.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.8",
+    "prettier": "^1.19.1",
     "rollup": "^1.32.0",
     "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-livereload": "^1.0.4",
