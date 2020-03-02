@@ -10,7 +10,8 @@
     "build": "rollup -c",
     "start": "rollup -c --environment devMode:true",
     "watch": "rollup -cw",
-    "lint": "tsc --noEmit && eslint */**/*.{js,ts,tsx} --quiet --fix"
+    "lint": "tsc --noEmit && eslint */**/*.{js,ts,tsx} --quiet --fix",
+    "lint-check": "tsc --noEmit && eslint */**/*.{js,ts,tsx}"
   },
   "license": "Apache 2.0",
   "devDependencies": {

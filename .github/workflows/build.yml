@@ -32,5 +32,7 @@ jobs:
           npm --version
       - name: Install dependencies
         run: npm install
+      - name: Lint check
+        run: npm run lint-check
       - name: Build Application
         run: npm run build
