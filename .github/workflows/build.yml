@@ -30,7 +30,7 @@ jobs:
         run: |
           node --version
           npm --version
+      - name: Install dependencies
+        run: npm install
       - name: Build Application
-        run: |
-          npm install
-          npm run build
+        run: npm run build
