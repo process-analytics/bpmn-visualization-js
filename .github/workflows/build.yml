@@ -32,9 +32,5 @@ jobs:
           npm --version
       - name: Install dependencies
         run: npm install
-      - name: Lint check
-        # on mac, we got error: 'ESLint: 6.8.0. ESLint couldn't find the plugin "eslint-plugin-node".'
-        if: matrix.os.name != 'macos-latest'
-        run: npm run lint-check
       - name: Build Application
         run: npm run build
