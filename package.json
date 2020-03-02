@@ -1,6 +1,9 @@
 {
-  "name": "rollup",
-  "version": "1.0.0",
+  "name": "bpmn-visu-js",
+  "version": "0.0.1",
+  "description": "Javascript lib to visualize BPMN diagrams",
+  "repository": "https://github.com/bonitasoft-labs/bpmn-visu-js",
+  "license": "Apache 2.0",
   "module": "dist/index.es.js",
   "files": [
     "dist"
@@ -13,7 +16,6 @@
     "lint": "tsc --noEmit && eslint */**/*.{js,ts,tsx} --quiet --fix",
     "lint-check": "tsc --noEmit && eslint */**/*.{js,ts,tsx}"
   },
-  "license": "Apache 2.0",
   "lint-staged": {
     "*.{js,ts,tsx}": [
       "eslint --fix",

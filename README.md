@@ -9,6 +9,13 @@ A JavaScript library to visualize process execution data. Diagrams are displayed
 
 Supported Browsers: Chrome, Firefox, Safari, Edge
 
+# Build and run
+
+## Requirements
+
+> node >= 12.x
+
+
 ## Starting the project
 `npm install`
 
