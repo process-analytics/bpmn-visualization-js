@@ -26,6 +26,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - run: |
+      - name: Verify node, npm version
+        run: |
           node --version
           npm --version
+      - name: Build Application
+        run: |
+          npm install
+          npm run build
