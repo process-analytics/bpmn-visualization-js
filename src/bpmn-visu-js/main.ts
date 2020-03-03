@@ -1,6 +1,6 @@
 import { greet } from './greet';
-import { mxGraphInit } from './mx-graph-visu';
+import Graph from './mx-graph/Graph';
 
 greet(window.document, 'container');
 
-mxGraphInit();
+new Graph(window.document.getElementById('graph'));
