@@ -5,7 +5,10 @@
     "outDir": "./dist",
     "module": "es6",
     "target": "es6",
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "sourceMap": true
   },
   "include": [
     "src/**/*"

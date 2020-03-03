@@ -14,7 +14,9 @@
     "start": "rollup -c --environment devMode:true",
     "watch": "rollup -cw --environment devMode:true",
     "lint": "tsc --noEmit && eslint */**/*.{js,ts,tsx} --quiet --fix",
-    "lint-check": "tsc --noEmit && eslint */**/*.{js,ts,tsx}"
+    "lint-check": "tsc --noEmit && eslint */**/*.{js,ts,tsx}",
+    "test": "cross-env TS_NODE_COMPILER_OPTIONS={\\\"module\\\":\\\"commonjs\\\"} mocha --exit --require ts-node/register --colors test/**/*.ts",
+    "coverage": "nyc npm run test"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
@@ -28,14 +30,22 @@
     }
   },
   "devDependencies": {
+    "@types/chai": "^4.2.10",
+    "@types/mocha": "^7.0.1",
     "@rollup/plugin-node-resolve": "^7.1.1",
     "@typescript-eslint/eslint-plugin": "^2.21.0",
     "@typescript-eslint/parser": "^2.21.0",
+    "chai": "^4.2.0",
+    "cross-env": "^7.0.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
+    "fast-xml-parser": "^3.16.0",
     "husky": "^4.2.3",
+    "json2typescript": "^1.2.5",
     "lint-staged": "^10.0.8",
+    "mocha": "^7.1.0",
+    "nyc": "^15.0.0",
     "prettier": "^1.19.1",
     "rollup": "^1.32.0",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -43,6 +53,7 @@
     "rollup-plugin-livereload": "^1.0.4",
     "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-typescript2": "^0.26.0",
+    "ts-node": "^8.6.2",
     "typescript": "^3.8.2"
   },
   "dependencies": {
