@@ -53,8 +53,8 @@ git checkout -b 25_annotations-to-tasks
 
 - `npm install`             *Install the dependencies in the local node_modules folder*
 
-- `npm run watch`         *Watch files in bundle and rebuild on changes*
-You can now access the project on http://localhost:10001
+- `npm run watch`         *Watch files in bundle and rebuild on changes* <br>
+    You can now access the project on http://localhost:10001
 
 ### Running tests 
 
