@@ -46,12 +46,21 @@ For all contributions, please respect the following guidelines:
 A good branch name would be (where issue #25 is the ticket you're working on): **25_add-annotations-to-tasks**
 
 ```sh
-git checkout -b 25-annotations-to-tasks
+git checkout -b 25_annotations-to-tasks
 ```
 
-### Running tests
+### Development
 
+- `npm install`             *Install the dependencies in the local node_modules folder*
 
+- `npm run watch`         *Watch files in bundle and rebuild on changes*
+You can now access the project on http://localhost:10001
+
+### Running tests 
+
+- `npm run test`            *Run all tests on Windows/Linux/MacOs*
+
+- `npm run coverage`    *Run all tests and the coverage on Windows/Linux/MacOs*
 
 ### Code style
 
@@ -92,9 +101,9 @@ git pull upstream master
 Then update your feature branch from your local copy of master, and push it!
 
 ```sh
-git checkout 25-annotations-to-tasks
+git checkout 25_annotations-to-tasks
 git rebase master
-git push --set-upstream origin 25-annotations-to-tasks
+git push --set-upstream origin 25_annotations-to-tasks
 ```
 
 Finally, go to GitHub and [make a Pull Request](https://help.github.com/articles/creating-a-pull-request) ​with labels :smile:
@@ -108,9 +117,9 @@ If a maintainer asks you to [rebase](http://git-scm.com/book/en/Git-Branching-Re
 Here's the suggested workflow:
 
 ```sh
-git checkout 25-annotations-to-tasks
+git checkout 25_annotations-to-tasks
 git pull --rebase upstream master
-git push --force-with-lease 25-annotations-to-tasks
+git push --force-with-lease 25_annotations-to-tasks
 ```
 
 
