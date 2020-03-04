@@ -1,1 +1,1 @@
-import './bpmn-visu-js/main';
+import './config/main';
