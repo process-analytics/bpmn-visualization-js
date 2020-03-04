@@ -57,6 +57,8 @@ git checkout -b 25-annotations-to-tasks
 
 Your patch should follow the same conventions & pass the same code quality checks as the rest of the project.
 
+Project, in major line, follows the code style suggested by [airbnb](https://github.com/airbnb/javascript) which is explicit and well documented.
+
 ### Add a changelog entry
 
 If your PR includes user-observable changes, you'll be asked to add a changelog entry following the existing changelog format.
