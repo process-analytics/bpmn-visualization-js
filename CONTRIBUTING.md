@@ -92,6 +92,16 @@ To fully benefit the ESLint and Mocha testing framework you must properly set up
 ##### IntelliJ
 *ESLint*
 
+Go to `File` -> `Settings` and type ESLint in search box
+
+Enable ESLint by choosing `Automatic ESLint configuration`
+
+If automatic configuration is not working for any reason try with `Manual ESLint configuration`, specify:
+- ESLint package to point to `project\node_modules\eslint`
+- Configuration file must point to `project\.eslintrc.js`
+
+You also need to set up Coding Style rules
+
 It is as simple as doing `right-click` on the file `.eslintrc.js` and choosing option `Apply ESLint Code Style Rules`
 
 *Mocha tests*
