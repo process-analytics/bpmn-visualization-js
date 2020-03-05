@@ -50,8 +50,10 @@ git checkout -b 25-annotations-to-tasks
 ```
 
 ### Running tests
-
-
+Run the following command in the root of the project:
+```sh
+npm run test
+```
 
 ### Code style
 
