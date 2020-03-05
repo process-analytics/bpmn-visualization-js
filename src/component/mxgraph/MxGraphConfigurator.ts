@@ -1,7 +1,7 @@
 import { mxgraph, mxgraphFactory } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 
-const { mxUtils, mxConstants, mxEdgeStyle, mxPerimeter } = mxgraphFactory({
+const { mxUtils, mxConstants, mxPerimeter } = mxgraphFactory({
   mxLoadResources: false,
   mxLoadStylesheets: false,
 });
