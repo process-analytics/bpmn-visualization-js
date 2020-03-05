@@ -82,8 +82,8 @@ describe('parse bpmn as xml', () => {
       verifyProperties(plane, ['BPMNShape'], []);
       const shapes = plane.BPMNShape;
       isArray(shapes, 'BPMNShape');
-      verifyProperties(shapes[0], ['id', 'bpmnElement'], []);
-      verifyProperties(shapes[1], ['id', 'bpmnElement'], []);
+      verifyProperties(shapes[0], ['id', 'bpmnElement', 'Bounds'], []);
+      verifyProperties(shapes[1], ['id', 'bpmnElement', 'Bounds'], []);
     });
 
     it('bpmn with multiple processes, ensure start event are present', () => {
