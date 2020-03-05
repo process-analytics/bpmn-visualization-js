@@ -1,7 +1,6 @@
 import MxGraphConfigurator from '../mxgraph/MxGraphConfigurator';
 import BpmnJsonParser from '../parser/json/BpmnJsonParser';
 import BpmnXmlParser from '../parser/xml/BpmnXmlParser';
-import { xmlContent } from './BPMN.camunda';
 import { mxgraph, mxgraphFactory } from 'ts-mxgraph';
 import MxGraphConverter from '../mxgraph/MxGraphConverter';
 
@@ -22,22 +21,28 @@ export default class Graph {
       this.graph = new mxGraph(this.container, new mxGraphModel());
 
       new MxGraphConfigurator(this.graph).configureStyles();
-
-      const json = new BpmnXmlParser().parse(xmlContent);
-      console.log(json);
-
-      const { shapes } = BpmnJsonParser.parse(json);
-
-      const model = this.graph.getModel();
-      model.beginUpdate();
-      try {
-        new MxGraphConverter(this.graph).insertShapes(shapes);
-      } finally {
-        model.endUpdate();
-      }
     } catch (e) {
       mxUtils.alert('Cannot start application: ' + e.message);
       throw e;
+    }
+  }
+
+  public load(xml: string): void {
+    const json = new BpmnXmlParser().parse(xml);
+    console.log(json);
+
+    const { shapes } = BpmnJsonParser.parse(json);
+
+    const model = this.graph.getModel();
+    model.clear(); // ensure to remove manual changes or already loaded graphs
+    model.beginUpdate();
+    try {
+      new MxGraphConverter(this.graph).insertShapes(shapes);
+    } catch (e) {
+      mxUtils.alert('Cannot load bpmn diagram: ' + e.message);
+      throw e;
+    } finally {
+      model.endUpdate();
     }
   }
 }
