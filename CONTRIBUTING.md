@@ -74,9 +74,40 @@ Your patch should follow the same conventions & pass the same code quality check
 
 Project, in major line, follows the code style suggested by [airbnb](https://github.com/airbnb/javascript) which is explicit and well documented.
 
+Typescript have been chosen as it's strongly typed and we believe it adds some syntactical benefits to the JavaScript language
+More information here:  [Typescript](CONTRIBUTING.md#typescript) 
+
 To enforce best practices we use ESLint and husky.
 The later performs ```eslint --fix``` on pre-commit event to make sure that committed code meets standards.
 
+ESLint configuration extends:
+- plugin:@typescript-eslint/recommended
+- prettier/@typescript-eslint
+- plugin:prettier/recommended
+
+### IDE - configuration
+
+To fully benefit the ESLint and Mocha testing framework you must properly set up your IDE.
+
+##### IntelliJ
+*ESLint*
+
+It is as simple as doing `right-click` on the file `.eslintrc.js` and choosing option `Apply ESLint Code Style Rules`
+
+*Mocha tests*
+
+To be able to run tests from IntelliJ, you must set up the default Mocha template in `Run/Debug Configurations`
+
+Adjust following parameters:
+
+Environment variables:  `TS_NODE_FILES=true;TS_NODE_COMPILER_OPTIONS={ "module": "commonjs" }`
+Extra Mocha options: ` --exit --require ts-node/register --colors`
+
+*SonarLint*
+
+Additionally it is advised to install SonarLint Plugin
+
+It helps to avoid coding mistakes -> reduced technical debt
 
 ### Add a changelog entry
 
@@ -136,6 +167,12 @@ git push --force-with-lease 25_annotations-to-tasks
 
 At this point, you're ready to make your changes! Feel free to ask for help. Everyone is a beginner at first :smile_cat:
 
+
+### Typescript
+Although Linting, Sonar and Tests keeps the code in a good shape
+We strongly recommend you to read following resources to be able to write code that is conform to the best practices:
+- [basics](https://www.typescriptlang.org/docs/handbook/basic-types.html)
+- [do's and don'ts](https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html)
 
 
 ## Maintainers
