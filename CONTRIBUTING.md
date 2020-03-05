@@ -54,6 +54,10 @@ Run the following command in the root of the project:
 ```sh
 npm run test
 ```
+For coverage report run:
+```sh
+npm run coverage
+```
 
 ### Code style
 
