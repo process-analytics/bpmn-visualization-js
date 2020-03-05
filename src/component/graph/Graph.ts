@@ -29,8 +29,6 @@ export default class Graph {
 
   public load(xml: string): void {
     const json = new BpmnXmlParser().parse(xml);
-    console.log(json);
-
     const { shapes } = BpmnJsonParser.parse(json);
 
     const model = this.graph.getModel();
