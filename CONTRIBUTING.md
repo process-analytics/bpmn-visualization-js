@@ -90,7 +90,7 @@ ESLint configuration extends:
 To fully benefit the ESLint and Mocha testing framework you must properly set up your IDE.
 
 ##### IntelliJ
-*ESLint*
+*ESLint* (https://www.jetbrains.com/help/idea/eslint.html#)
 
 Go to `File` -> `Settings` and type ESLint in search box
 
@@ -104,7 +104,7 @@ You also need to set up Coding Style rules
 
 It is as simple as doing `right-click` on the file `.eslintrc.js` and choosing option `Apply ESLint Code Style Rules`
 
-*Mocha tests*
+*Mocha tests* (https://www.jetbrains.com/help/idea/running-unit-tests-on-mocha.html#)
 
 To be able to run tests from IntelliJ, you must set up the default Mocha template in `Run/Debug Configurations`
 
