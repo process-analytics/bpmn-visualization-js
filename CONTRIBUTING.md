@@ -50,6 +50,12 @@ git checkout -b 25_annotations-to-tasks
 ```
 
 ### Development
+#### Requirements
+
+- > node >= 12.x
+- typescript
+
+#### Build
 
 - `npm install`             *Install the dependencies in the local node_modules folder*
 

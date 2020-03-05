@@ -9,7 +9,4 @@ A JavaScript library to visualize process execution data. Diagrams are displayed
 
 Supported Browsers: Chrome, Firefox, Safari, Edge
 
-# Requirements
-
-- > node >= 12.x
-- typescript
+To build the project, see the [Contributing guide](CONTRIBUTING.md#Build) :slightly_smiling_face:
