@@ -4,7 +4,6 @@ import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmn
 
 describe('parse bpmn as json', () => {
   describe('start event', () => {
-    // TODO json part BPMNDiagram is currently untested in the json parser
     it('json containing one process with a single start event', () => {
       const json = `{
                 "definitions" : {
