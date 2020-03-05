@@ -13,7 +13,7 @@
     "build": "rollup -c",
     "start": "rollup -c --environment devMode:true",
     "watch": "rollup -cw --environment devMode:true",
-    "lint": "tsc --noEmit && eslint */**/*.{js,ts,tsx} --quiet --fix",
+    "lint": "tsc --noEmit && eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "lint-check": "tsc --noEmit && eslint */**/*.{js,ts,tsx}",
     "test": "cross-env TS_NODE_COMPILER_OPTIONS={\\\"module\\\":\\\"commonjs\\\"} mocha --exit --require ts-node/register --colors test/**/*.ts",
     "coverage": "nyc npm run test"
@@ -30,9 +30,10 @@
     }
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
+    "@rollup/plugin-node-resolve": "^7.1.1",
     "@types/chai": "^4.2.10",
     "@types/mocha": "^7.0.1",
-    "@rollup/plugin-node-resolve": "^7.1.1",
     "@typescript-eslint/eslint-plugin": "^2.21.0",
     "@typescript-eslint/parser": "^2.21.0",
     "chai": "^4.2.0",
