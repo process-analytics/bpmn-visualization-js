@@ -30,9 +30,10 @@
     }
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
+    "@rollup/plugin-node-resolve": "^7.1.1",
     "@types/chai": "^4.2.10",
     "@types/mocha": "^7.0.1",
-    "@rollup/plugin-node-resolve": "^7.1.1",
     "@typescript-eslint/eslint-plugin": "^2.21.0",
     "@typescript-eslint/parser": "^2.21.0",
     "chai": "^4.2.0",
