@@ -74,6 +74,10 @@ Your patch should follow the same conventions & pass the same code quality check
 
 Project, in major line, follows the code style suggested by [airbnb](https://github.com/airbnb/javascript) which is explicit and well documented.
 
+To enforce best practices we use ESLint and husky.
+The later performs ```eslint --fix``` on pre-commit event to make sure that committed code meets standards.
+
+
 ### Add a changelog entry
 
 If your PR includes user-observable changes, you'll be asked to add a changelog entry following the existing changelog format.
