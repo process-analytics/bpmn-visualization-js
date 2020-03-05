@@ -39,7 +39,7 @@ export default class MxGraphConfigurator {
     style[mxConstants.STYLE_FONTCOLOR] = 'black';
     style[mxConstants.STYLE_STROKECOLOR] = 'black';
     style[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
-    style[mxConstants.STYLE_GRADIENT_DIRECTION] = 'east';
+    style[mxConstants.STYLE_ROUNDED] = true;
   }
 
   private configureStartEventStyle(): void {
