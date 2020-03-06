@@ -8,6 +8,8 @@ export default class BpmnXmlParser {
     attributeNamePrefix: '', // default to '@_'
     ignoreNameSpace: true,
     ignoreAttributes: false,
+    allowBooleanAttributes: true,
+    parseAttributeValue: true,
   };
 
   // disable eslint as it comes from 3rd party
