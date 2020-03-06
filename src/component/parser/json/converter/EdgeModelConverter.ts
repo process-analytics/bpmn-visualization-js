@@ -1,12 +1,12 @@
-/*
-import { JsonConvert, JsonConverter, JsonCustomConvert, OperationMode, ValueCheckingMode } from 'json2typescript';
+import { JsonConvert, JsonConverter, OperationMode, ValueCheckingMode } from 'json2typescript';
 import Edge from '../../../../model/bpmn/edge/Edge';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
+import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 
-const convertedEdgeBpmnElements: SequenceFlow[] = [];
+const convertedSequenceFlows: SequenceFlow[] = [];
 
-function findEdgeBpmnElement(id: string): SequenceFlow {
-  return convertedEdgeBpmnElements.find(i => i.id === id);
+function findSequenceFlow(id: string): SequenceFlow {
+  return convertedSequenceFlows.find(i => i.id === id);
 }
 
 // TODO : To move in a singleton object to use here and in the BpmnJsonParser
@@ -17,77 +17,48 @@ jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL; // never allow 
 //////////////////////////////////////////////////////////////
 
 @JsonConverter
-export class EdgeModelConverter implements JsonCustomConvert<Edge[]> {
-  // BPMNDiagram: Object { name: "LoanManagement",
-  // BPMNPlane: { BPMNEdge: [ {…} ], BPMNShape: [ {…} ], bpmnElement: "_RLk98HH_Eei9Z4IY4QeFuA", id: "plane__RLk98HH_Eei9Z4IY4QeFuA" },
-  // BPMNLabelStyle: […] }
-
-  deserialize(data: any): Edge[] {
-    const edges = data.BPMNPlane.BPMNEdge;
-    if (edges === undefined || edges === null || edges === '') {
-      return undefined;
+export class EdgeConverter extends AbstractConverter<Edge[]> {
+  deserialize(data: Array<any> | any): Edge[] {
+    try {
+      const edges = data.BPMNPlane.BPMNEdge;
+      return jsonConvert.deserializeArray(ensureIsArray(edges), Edge);
+    } catch (e) {
+      console.log(e);
     }
-    return jsonConvert.deserializeArray(edges, Edge);
-  }
-
-  serialize(data: Edge[]): any {
-    console.log('Not implemented !!');
   }
 }
-
 
 @JsonConverter
-export class EdgeBpmnElementConverter implements JsonCustomConvert<SequenceFlow[]> {
+export class EdgeModelConverter extends AbstractConverter<SequenceFlow[]> {
+  buildSequenceFlow(bpmnElements: Array<any> | any) {
+    const t = jsonConvert.deserializeArray(ensureIsArray(bpmnElements), SequenceFlow);
+    convertedSequenceFlows.concat(t);
+  }
 
-    deserialize(data: any): SequenceFlow[] {
-        try {
-            function parseProcess(process) {
-                function buildEdgeBpmnElement(sequenceFlow) {
-        /!*            const sourceRef = sequenceFlow.sourceRef;
-                    let source;
-                    if (sourceRef !== undefined && sourceRef !== null && sourceRef !== '') {
-                        source = findShapeBpmnElement(sourceRef);
-                    }
+  parseProcess(process: { sequenceFlow: any }) {
+    this.buildSequenceFlow(process.sequenceFlow);
+  }
 
-                    const targetRef = sequenceFlow.targetRef;
-                    let target;
-                    if (targetRef !== undefined && targetRef !== null && targetRef !== '') {
-                        target = findShapeBpmnElement(targetRef);
-                    }*!/
+  deserialize(processes: Array<any> | any): SequenceFlow[] {
+    try {
+      // Deletes everything in the array, which does hit other references. More performant.
+      convertedSequenceFlows.length = 0;
 
-                    const bpmnName = sequenceFlow.name;
-                    let name;
-                    if (bpmnName !== undefined && bpmnName !== null && bpmnName !== '') {
-                        name = bpmnName;
-                    }
-                    convertedEdgeBpmnElements.push(new SequenceFlow(sequenceFlow.id, name, source, target));
-                }
-
-                const sequenceFlows = process.sequenceFlow;
-                if (sequenceFlows !== undefined && sequenceFlows !== null) {
-                    if (Array.isArray(sequenceFlows)) {
-                        sequenceFlows.map(sequenceFlow => {
-                            buildEdgeBpmnElement(sequenceFlow);
-                        });
-                    } else {
-                        buildEdgeBpmnElement(sequenceFlows);
-                    }
-                }
-            }
-
-            if (Array.isArray(data)) {
-                data.map(process => parseProcess(process));
-            } else {
-                parseProcess(data);
-            }
-            return convertedEdgeBpmnElements;
-        } catch (e) {
-            console.log(<Error>e);
-        }
+      ensureIsArray(processes).map(process => this.parseProcess(process));
+      return convertedSequenceFlows;
+    } catch (e) {
+      console.log(e);
     }
-
-    serialize(data: EdgeBpmnElement[]): any {
-        console.log('Not implemented !!');
-    }
+  }
 }
-*/
+
+@JsonConverter
+export class SequenceFlowConverter extends AbstractConverter<SequenceFlow> {
+  deserialize(data: string): SequenceFlow {
+    try {
+      return findSequenceFlow(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}

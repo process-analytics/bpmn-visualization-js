@@ -1,28 +1,13 @@
-/*
-import { JsonConverter, JsonCustomConvert, JsonObject, JsonProperty } from 'json2typescript';
-import SequenceFlow from "./SequenceFlow";
-import {EdgeBpmnElementConverter} from "../../../component/parser/json/converter/EdgeModelConverter";
-
-/!*@JsonConverter
-export class EdgeBpmnElementConverter implements JsonCustomConvert<SequenceFlow> {
-  deserialize(data: any): SequenceFlow {
-    if (data !== undefined && data !== null && data !== '') {
-      return findEdgeBpmnElement(data);
-    }
-  }
-
-  serialize(data: SequenceFlow): any {
-    console.log('Not implemented !!');
-  }
-}*!/
+import { JsonObject, JsonProperty } from 'json2typescript';
+import SequenceFlow from './SequenceFlow';
+import { SequenceFlowConverter } from '../../../component/parser/json/converter/EdgeModelConverter';
 
 @JsonObject('BPMNEdge')
 export default class Edge {
-
   @JsonProperty('id', String)
-  private _id: string;
+  private readonly _id: string;
 
-  @JsonProperty('bpmnElement', EdgeBpmnElementConverter)
+  @JsonProperty('bpmnElement', SequenceFlowConverter)
   private readonly _bpmnElement: SequenceFlow;
 
   constructor(id?: string, bpmnElement?: SequenceFlow) {
@@ -30,7 +15,7 @@ export default class Edge {
     this._bpmnElement = bpmnElement;
   }
 
-  getId(): string {
+  get id(): string {
     return this._id;
   }
 
@@ -38,4 +23,3 @@ export default class Edge {
     return this._bpmnElement;
   }
 }
-*/
