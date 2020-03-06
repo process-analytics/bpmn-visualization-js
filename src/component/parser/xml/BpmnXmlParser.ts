@@ -8,8 +8,7 @@ export default class BpmnXmlParser {
     attributeNamePrefix: '', // default to '@_'
     ignoreNameSpace: true,
     ignoreAttributes: false,
-    allowBooleanAttributes: true,
-    parseAttributeValue: true,
+    parseAttributeValue: true, // ensure numbers are parsed as number, not as string
   };
 
   // disable eslint as it comes from 3rd party
