@@ -1,9 +1,8 @@
 import { JsonConvert, JsonConverter, OperationMode, ValueCheckingMode } from 'json2typescript';
-import Edge from '../../../../model/bpmn/edge/Edge';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 
-const convertedSequenceFlows: SequenceFlow[] = [];
+let convertedSequenceFlows: SequenceFlow[] = [];
 
 function findSequenceFlow(id: string): SequenceFlow {
   return convertedSequenceFlows.find(i => i.id === id);
@@ -17,22 +16,10 @@ jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL; // never allow 
 //////////////////////////////////////////////////////////////
 
 @JsonConverter
-export class EdgeConverter extends AbstractConverter<Edge[]> {
-  deserialize(data: Array<any> | any): Edge[] {
-    try {
-      const edges = data.BPMNPlane.BPMNEdge;
-      return jsonConvert.deserializeArray(ensureIsArray(edges), Edge);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}
-
-@JsonConverter
-export class EdgeModelConverter extends AbstractConverter<SequenceFlow[]> {
+export default class EdgeModelConverter extends AbstractConverter<SequenceFlow[]> {
   buildSequenceFlow(bpmnElements: Array<any> | any) {
     const t = jsonConvert.deserializeArray(ensureIsArray(bpmnElements), SequenceFlow);
-    convertedSequenceFlows.concat(t);
+    convertedSequenceFlows = convertedSequenceFlows.concat(t);
   }
 
   parseProcess(process: { sequenceFlow: any }) {
@@ -56,7 +43,13 @@ export class EdgeModelConverter extends AbstractConverter<SequenceFlow[]> {
 export class SequenceFlowConverter extends AbstractConverter<SequenceFlow> {
   deserialize(data: string): SequenceFlow {
     try {
-      return findSequenceFlow(data);
+      console.log(convertedSequenceFlows);
+      if (data !== undefined && data !== null && data !== '') {
+        const sequenceFlow = findSequenceFlow(data);
+        console.log(sequenceFlow);
+        return sequenceFlow;
+      }
+      return new SequenceFlow();
     } catch (e) {
       console.log(e);
     }

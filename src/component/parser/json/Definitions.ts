@@ -4,8 +4,9 @@ import { JsonObject, JsonProperty } from 'json2typescript';
 import ShapeModelConverter from './converter/ShapeModelConverter';
 import { ShapeConverter } from './converter/ShapeConverter';
 import Edge from '../../../model/bpmn/edge/Edge';
-import { EdgeConverter, EdgeModelConverter } from './converter/EdgeModelConverter';
 import SequenceFlow from '../../../model/bpmn/edge/SequenceFlow';
+import EdgeModelConverter from './converter/EdgeModelConverter';
+import EdgeConverter from './converter/EdgeConverter';
 
 @JsonObject('definitions')
 export class Definitions {

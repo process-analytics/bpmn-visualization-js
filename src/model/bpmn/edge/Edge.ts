@@ -15,11 +15,11 @@ export default class Edge {
     this._bpmnElement = bpmnElement;
   }
 
-  get id(): string {
+  public get id(): string {
     return this._id;
   }
 
-  get bpmnElement(): SequenceFlow {
+  public get bpmnElement(): SequenceFlow {
     return this._bpmnElement;
   }
 }
