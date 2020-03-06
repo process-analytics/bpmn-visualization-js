@@ -13,8 +13,8 @@
     "build": "rollup -c",
     "start": "rollup -c --environment devMode:true",
     "watch": "rollup -cw --environment devMode:true",
-    "lint": "tsc --noEmit && eslint */**/*.{js,ts,tsx} --quiet --fix",
-    "lint-check": "tsc --noEmit && eslint */**/*.{js,ts,tsx}",
+    "lint": "tsc --noEmit && eslint \"*/**/*.{js,ts,tsx}\" --quiet --fix",
+    "lint-check": "tsc --noEmit && eslint \"*/**/*.{js,ts,tsx}\"",
     "test": "cross-env TS_NODE_COMPILER_OPTIONS={\\\"module\\\":\\\"commonjs\\\"} mocha --exit --require ts-node/register --colors test/**/*.ts",
     "coverage": "nyc npm run test"
   },
