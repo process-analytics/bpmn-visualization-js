@@ -12,6 +12,12 @@ export class Definitions {
   @JsonProperty('BPMNDiagram', ShapeConverter)
   private readonly _shapes: Shape[];
 
+  /*  @JsonProperty('process', EdgeBpmnElementConverter)
+  private edgeBpmnElements: EdgeBpmnElement[];
+
+  @JsonProperty('BPMNDiagram', EdgeConverter)
+  private edges: Edge[];*/
+
   constructor(shapeBpmnElements?: ShapeBpmnElement[], shapes?: Shape[]) {
     this._shapeBpmnElements = shapeBpmnElements;
     this._shapes = shapes;
