@@ -4,10 +4,13 @@ import { JsonObject, JsonProperty } from 'json2typescript';
 export default class SequenceFlow {
   @JsonProperty('id', String)
   private readonly _id: string;
-  @JsonProperty('name', String)
+
+  @JsonProperty('name', String, true)
   private readonly _name?: string;
+
   @JsonProperty('sourceRef', String)
   private readonly _sourceRefId?: string;
+
   @JsonProperty('targetRef', String)
   private readonly _targetRefId?: string;
 
