@@ -2,7 +2,7 @@ import { JsonConvert, JsonConverter, OperationMode, ValueCheckingMode } from 'js
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 
-let convertedSequenceFlows: SequenceFlow[] = [];
+const convertedSequenceFlows: SequenceFlow[] = [];
 
 function findSequenceFlow(id: string): SequenceFlow {
   return convertedSequenceFlows.find(i => i.id === id);
@@ -19,7 +19,7 @@ jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL; // never allow 
 export default class EdgeModelConverter extends AbstractConverter<SequenceFlow[]> {
   buildSequenceFlow(bpmnElements: Array<any> | any) {
     const t = jsonConvert.deserializeArray(ensureIsArray(bpmnElements), SequenceFlow);
-    convertedSequenceFlows = convertedSequenceFlows.concat(t);
+    convertedSequenceFlows.push(...t);
   }
 
   parseProcess(process: { sequenceFlow: any }) {
@@ -27,31 +27,17 @@ export default class EdgeModelConverter extends AbstractConverter<SequenceFlow[]
   }
 
   deserialize(processes: Array<any> | any): SequenceFlow[] {
-    try {
-      // Deletes everything in the array, which does hit other references. More performant.
-      convertedSequenceFlows.length = 0;
+    // Deletes everything in the array, which does hit other references. More performant.
+    convertedSequenceFlows.length = 0;
 
-      ensureIsArray(processes).map(process => this.parseProcess(process));
-      return convertedSequenceFlows;
-    } catch (e) {
-      console.log(e);
-    }
+    ensureIsArray(processes).map(process => this.parseProcess(process));
+    return convertedSequenceFlows;
   }
 }
 
 @JsonConverter
 export class SequenceFlowConverter extends AbstractConverter<SequenceFlow> {
   deserialize(data: string): SequenceFlow {
-    try {
-      console.log(convertedSequenceFlows);
-      if (data !== undefined && data !== null && data !== '') {
-        const sequenceFlow = findSequenceFlow(data);
-        console.log(sequenceFlow);
-        return sequenceFlow;
-      }
-      return new SequenceFlow();
-    } catch (e) {
-      console.log(e);
-    }
+    return findSequenceFlow(data);
   }
 }

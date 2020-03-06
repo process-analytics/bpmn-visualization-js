@@ -12,12 +12,7 @@ jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL; // never allow 
 @JsonConverter
 export default class EdgeConverter extends AbstractConverter<Edge[]> {
   deserialize(data: Array<any> | any): Edge[] {
-    try {
-      const edges = data.BPMNPlane.BPMNEdge;
-      console.log(edges);
-      return jsonConvert.deserializeArray(ensureIsArray(edges), Edge);
-    } catch (e) {
-      console.log(e);
-    }
+    const edges = data.BPMNPlane.BPMNEdge;
+    return jsonConvert.deserializeArray(ensureIsArray(edges), Edge);
   }
 }
