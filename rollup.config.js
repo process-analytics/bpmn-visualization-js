@@ -26,7 +26,14 @@ if (devMode) {
   // Allow to livereload on any update
   plugins.push(livereload({ watch: 'dist', verbose: true }));
   // Copy index.html to dist
-  plugins.push(copy({ targets: [{ src: 'src/index.html', dest: 'dist/' }] }));
+  plugins.push(
+    copy({
+      targets: [
+        { src: 'src/index.html', dest: 'dist/' },
+        { src: 'src/static/css/main.css', dest: 'dist/static/css/' },
+      ],
+    }),
+  );
 }
 
 export default {
