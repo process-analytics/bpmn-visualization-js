@@ -12,6 +12,14 @@ function isArray(object: any, message: string) {
   expect(object).to.have.length.greaterThan(1, message);
 }
 
+function verifyBounds(shape: any, x: number, y: number, width: number, height: number) {
+  const bounds = shape.Bounds;
+  expect(bounds.x).eq(x);
+  expect(bounds.y).eq(y);
+  expect(bounds.width).eq(width);
+  expect(bounds.height).eq(height);
+}
+
 describe('parse bpmn as xml', () => {
   describe('process', () => {
     it('bpmn with empty process, ensure process is present', () => {
@@ -54,10 +62,10 @@ describe('parse bpmn as xml', () => {
   <BPMNDiagram id="BpmnDiagram_1">
     <BPMNPlane id="BpmnPlane_1" bpmnElement="">
       <BPMNShape id="Event_1ocodej_di" bpmnElement="Event_1ocodej">
-        <Bounds x="362" y="232" width="36" height="36" />
+        <Bounds x="362" y="232" width="36" height="35" />
       </BPMNShape>
       <BPMNShape id="Event_0hs6bgx_di" bpmnElement="Event_0hs6bgx">
-        <Bounds x="852" y="282" width="36" height="36" />
+        <Bounds x="852" y="282" width="46" height="45" />
       </BPMNShape>
     </BPMNPlane>
   </BPMNDiagram>
@@ -82,8 +90,11 @@ describe('parse bpmn as xml', () => {
       verifyProperties(plane, ['BPMNShape'], []);
       const shapes = plane.BPMNShape;
       isArray(shapes, 'BPMNShape');
-      verifyProperties(shapes[0], ['id', 'bpmnElement'], []);
-      verifyProperties(shapes[1], ['id', 'bpmnElement'], []);
+      verifyProperties(shapes[0], ['id', 'bpmnElement', 'Bounds'], []);
+      verifyBounds(shapes[0], 362, 232, 36, 35);
+
+      verifyProperties(shapes[1], ['id', 'bpmnElement', 'Bounds'], []);
+      verifyBounds(shapes[1], 852, 282, 46, 45);
     });
 
     it('bpmn with multiple processes, ensure start event are present', () => {
