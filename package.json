@@ -24,6 +24,11 @@
       "git add"
     ]
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsc --noEmit && lint-staged"
+    }
+  },
   "devDependencies": {
     "@types/chai": "^4.2.10",
     "@types/mocha": "^7.0.1",
