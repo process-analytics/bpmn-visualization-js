@@ -29,13 +29,13 @@ export default class Graph {
 
   public load(xml: string): void {
     const json = new BpmnXmlParser().parse(xml);
-    const { shapes } = BpmnJsonParser.parse(json);
+    const { shapes, edges } = BpmnJsonParser.parse(json);
 
     const model = this.graph.getModel();
     model.clear(); // ensure to remove manual changes or already loaded graphs
     model.beginUpdate();
     try {
-      new MxGraphConverter(this.graph).insertShapes(shapes);
+      new MxGraphConverter(this.graph).insertShapes(shapes).insertEdges(edges);
     } catch (e) {
       mxUtils.alert('Cannot load bpmn diagram: ' + e.message);
       throw e;
