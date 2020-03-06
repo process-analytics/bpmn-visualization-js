@@ -12,10 +12,7 @@ function findShapeBpmnElement(id: string): ShapeBpmnElement {
 @JsonConverter
 export default class ShapeModelConverter extends AbstractConverter<ShapeBpmnElement[]> {
   buildShapeBpmnElement(bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind) {
-    if (bpmnElements !== undefined && bpmnElements !== null && bpmnElements !== '') {
-      // TODO : Move check in AbstractConverter.ensureIsArray
-      AbstractConverter.ensureIsArray(bpmnElements).map(bpmnElement => convertedShapeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
-    }
+    AbstractConverter.ensureIsArray(bpmnElements).map(bpmnElement => convertedShapeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
   }
 
   parseProcess(process: { startEvent: any; userTask: any }) {
