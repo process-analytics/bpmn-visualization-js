@@ -1,5 +1,5 @@
 import { JsonConverter } from 'json2typescript';
-import { AbstractConverter } from './AbstractConverter';
+import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 
@@ -12,18 +12,19 @@ function findShapeBpmnElement(id: string): ShapeBpmnElement {
 @JsonConverter
 export default class ShapeModelConverter extends AbstractConverter<ShapeBpmnElement[]> {
   buildShapeBpmnElement(bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind) {
-    AbstractConverter.ensureIsArray(bpmnElements).map(bpmnElement => convertedShapeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
+    ensureIsArray(bpmnElements).map(bpmnElement => convertedShapeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
   }
 
-  parseProcess(process: { startEvent: any }) {
+  parseProcess(process: { startEvent: any; userTask: any }) {
     this.buildShapeBpmnElement(process.startEvent, ShapeBpmnElementKind.EVENT_START);
+    this.buildShapeBpmnElement(process.userTask, ShapeBpmnElementKind.TASK_USER);
   }
 
   deserialize(processes: Array<any> | any): ShapeBpmnElement[] {
     // Deletes everything in the array, which does hit other references. More performant.
     convertedShapeBpmnElements.length = 0;
 
-    AbstractConverter.ensureIsArray(processes).map(process => this.parseProcess(process));
+    ensureIsArray(processes).map(process => this.parseProcess(process));
     return convertedShapeBpmnElements;
   }
 }

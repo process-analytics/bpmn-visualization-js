@@ -1,5 +1,5 @@
 import { JsonConvert, JsonConverter, OperationMode, ValueCheckingMode } from 'json2typescript';
-import { AbstractConverter } from './AbstractConverter';
+import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import Shape from '../../../../model/bpmn/shape/Shape';
 
 //////////////////////////////////////////////////////////////
@@ -15,7 +15,7 @@ export class ShapeConverter extends AbstractConverter<Shape[]> {
   deserialize(bpmnDiagram: Array<any> | any): Shape[] {
     try {
       const shapes = bpmnDiagram.BPMNPlane.BPMNShape;
-      return jsonConvert.deserializeArray(AbstractConverter.ensureIsArray(shapes), Shape);
+      return jsonConvert.deserializeArray(ensureIsArray(shapes), Shape);
     } catch (e) {
       // TODO error management
       console.log(e as Error);

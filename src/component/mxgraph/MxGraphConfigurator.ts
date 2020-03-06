@@ -12,6 +12,7 @@ export default class MxGraphConfigurator {
   public configureStyles(): void {
     this.configureDefaultVertexStyle();
     this.configureStartEventStyle();
+    this.configureUserTaskStyle();
   }
 
   private getStylesheet() {
@@ -39,7 +40,6 @@ export default class MxGraphConfigurator {
     style[mxConstants.STYLE_FONTCOLOR] = 'black';
     style[mxConstants.STYLE_STROKECOLOR] = 'black';
     style[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
-    style[mxConstants.STYLE_GRADIENT_DIRECTION] = 'east';
   }
 
   private configureStartEventStyle(): void {
@@ -49,8 +49,17 @@ export default class MxGraphConfigurator {
     style[mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
     style[mxConstants.STYLE_STROKECOLOR] = '#62A928';
     style[mxConstants.STYLE_STROKEWIDTH] = 1.7;
-
     style[mxConstants.STYLE_GRADIENTCOLOR] = '#E9ECB1';
     this.putCellStyle(ShapeBpmnElementKind.EVENT_START, style);
+  }
+
+  private configureUserTaskStyle() {
+    const style = this.cloneDefaultVertexStyle();
+    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RECTANGLE;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
+    style[mxConstants.STYLE_STROKECOLOR] = '#2C6DA3';
+    style[mxConstants.STYLE_STROKEWIDTH] = 2;
+    style[mxConstants.STYLE_ROUNDED] = true;
+    this.putCellStyle(ShapeBpmnElementKind.TASK_USER, style);
   }
 }
