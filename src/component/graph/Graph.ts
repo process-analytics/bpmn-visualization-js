@@ -9,6 +9,9 @@ const { mxClient, mxUtils, mxGraph, mxGraphModel } = mxgraphFactory({
   mxLoadStylesheets: false,
 });
 
+mxGraph.prototype.edgeLabelsMovable = false;
+mxGraph.prototype.cellsLocked = true;
+
 export default class Graph {
   protected readonly graph: mxgraph.mxGraph;
 
