@@ -17,15 +17,18 @@ jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL; // never allow 
 
 @JsonConverter
 export default class EdgeModelConverter extends AbstractConverter<SequenceFlow[]> {
-  buildSequenceFlow(bpmnElements: Array<any> | any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  buildSequenceFlow(bpmnElements: Array<any> | any): void {
     const t = jsonConvert.deserializeArray(ensureIsArray(bpmnElements), SequenceFlow);
     convertedSequenceFlows.push(...t);
   }
 
-  parseProcess(process: { sequenceFlow: any }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  parseProcess(process: { sequenceFlow: any }): void {
     this.buildSequenceFlow(process.sequenceFlow);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(processes: Array<any> | any): SequenceFlow[] {
     // Deletes everything in the array, which does hit other references. More performant.
     convertedSequenceFlows.length = 0;

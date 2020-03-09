@@ -11,6 +11,7 @@ jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL; // never allow 
 
 @JsonConverter
 export default class EdgeConverter extends AbstractConverter<Edge[]> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(data: Array<any> | any): Edge[] {
     const edges = data.BPMNPlane.BPMNEdge;
     return jsonConvert.deserializeArray(ensureIsArray(edges), Edge);

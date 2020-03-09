@@ -6,6 +6,13 @@ const { mxUtils, mxConstants, mxPerimeter } = mxgraphFactory({
   mxLoadStylesheets: false,
 });
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/**
+ * Configure mxgraph
+ * <ul>
+ *     <li>styles
+ *     <li>shapes
+ */
 export default class MxGraphConfigurator {
   constructor(readonly graph: mxgraph.mxGraph) {}
 
