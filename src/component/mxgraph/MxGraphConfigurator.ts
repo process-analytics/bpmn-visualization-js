@@ -28,7 +28,7 @@ export default class MxGraphConfigurator {
     return mxUtils.clone(defaultStyle);
   }
 
-  private putCellStyle(name: ShapeBpmnElementKind, style: any) {
+  private putCellStyle(name: ShapeBpmnElementKind, style: any): void {
     this.getStylesheet().putCellStyle(name, style);
   }
 
