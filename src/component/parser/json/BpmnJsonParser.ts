@@ -4,6 +4,7 @@ import { Definitions } from './Definitions';
 import Edge from '../../../model/bpmn/edge/Edge';
 
 export default class BpmnJsonParser {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static parse(json: any): { shapes: Shape[]; edges: Edge[] } {
     const jsonConvert: JsonConvert = new JsonConvert();
     jsonConvert.operationMode = OperationMode.ENABLE;
