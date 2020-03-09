@@ -294,13 +294,9 @@ describe('parse bpmn as xml', () => {
       verifyIsNotEmptyArray(edges, 'BPMNEdge');
       verifyProperties(edges[0], ['id', 'bpmnElement'], []);
       verifyProperties(edges[1], ['id', 'bpmnElement'], []);
-
-      console.log(sequenceFlows);
-      console.log(plane);
-      console.log(edges);
     });
 
-    it('bpmn with multiple processes, ensure user tasks are present', () => {
+    it('bpmn with multiple processes, ensure sequence flows are present', () => {
       const processes = `<?xml version="1.0" encoding="UTF-8"?>
 <model:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di_1="http://www.omg.org/spec/DD/20100524/DI" xmlns:model="http://www.omg.org/spec/BPMN/20100524/MODEL" xsi:schemaLocation="schemaLocation http://www.omg.org/spec/BPMN/20100524/MODEL schemas/BPMN20.xsd" targetNamespace="http://bonitasoft.com/_RLk98HH_Eei9Z4IY4QeFuA">
   <model:process id="Process_1" isExecutable="false">  
