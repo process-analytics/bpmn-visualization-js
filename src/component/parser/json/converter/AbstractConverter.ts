@@ -1,5 +1,6 @@
 import { JsonConverter, JsonCustomConvert } from 'json2typescript';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ensureIsArray(elements: Array<any> | any): Array<any> {
   if (elements === undefined || elements === null || elements === '') {
     elements = [];
