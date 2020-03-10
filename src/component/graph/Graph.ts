@@ -21,6 +21,7 @@ export default class Graph {
       this.graph = new mxGraph(this.container, new mxGraphModel());
       this.graph.setCellsLocked(true);
       this.graph.setEdgeLabelsMovable(false);
+      this.graph.setCellsSelectable(false);
 
       new MxGraphConfigurator(this.graph).configureStyles();
     } catch (e) {
