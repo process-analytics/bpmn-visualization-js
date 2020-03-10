@@ -6,6 +6,13 @@ const { mxUtils, mxConstants, mxPerimeter } = mxgraphFactory({
   mxLoadStylesheets: false,
 });
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/**
+ * Configure mxgraph
+ * <ul>
+ *     <li>styles
+ *     <li>shapes
+ */
 export default class MxGraphConfigurator {
   constructor(readonly graph: mxgraph.mxGraph) {}
 
@@ -15,11 +22,11 @@ export default class MxGraphConfigurator {
     this.configureUserTaskStyle();
   }
 
-  private getStylesheet() {
+  private getStylesheet(): any {
     return this.graph.getStylesheet();
   }
 
-  private getDefaultVertexStyle() {
+  private getDefaultVertexStyle(): any {
     return this.getStylesheet().getDefaultVertexStyle();
   }
 
@@ -28,7 +35,7 @@ export default class MxGraphConfigurator {
     return mxUtils.clone(defaultStyle);
   }
 
-  private putCellStyle(name: ShapeBpmnElementKind, style: any) {
+  private putCellStyle(name: ShapeBpmnElementKind, style: any): void {
     this.getStylesheet().putCellStyle(name, style);
   }
 
@@ -53,7 +60,7 @@ export default class MxGraphConfigurator {
     this.putCellStyle(ShapeBpmnElementKind.EVENT_START, style);
   }
 
-  private configureUserTaskStyle() {
+  private configureUserTaskStyle(): void {
     const style = this.cloneDefaultVertexStyle();
     style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RECTANGLE;
     style[mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
