@@ -9,6 +9,10 @@ const { mxClient, mxUtils, mxGraph, mxGraphModel } = mxgraphFactory({
   mxLoadStylesheets: false,
 });
 
+mxGraph.prototype.edgeLabelsMovable = false;
+mxGraph.prototype.cellsLocked = true;
+mxGraph.prototype.cellsSelectable = false;
+
 export default class Graph {
   protected readonly graph: mxgraph.mxGraph;
 
@@ -19,9 +23,6 @@ export default class Graph {
       }
       // Instantiate Graph
       this.graph = new mxGraph(this.container, new mxGraphModel());
-      this.graph.setCellsLocked(true);
-      this.graph.setEdgeLabelsMovable(false);
-      this.graph.setCellsSelectable(false);
 
       new MxGraphConfigurator(this.graph).configureStyles();
     } catch (e) {
