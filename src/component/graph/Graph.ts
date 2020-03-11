@@ -25,24 +25,20 @@ export default class Graph {
 
       new MxGraphConfigurator(this.graph).configureStyles();
     } catch (e) {
+      // TODO error handling
       mxUtils.alert('Cannot start application: ' + e.message);
       throw e;
     }
   }
 
   public load(xml: string): void {
-    const bpmnModel = new BpmnParser().parse(xml);
-
-    const model = this.graph.getModel();
-    model.clear(); // ensure to remove manual changes or already loaded graphs
-    model.beginUpdate();
     try {
+      const bpmnModel = new BpmnParser().parse(xml);
       new MxGraphRenderer(this.graph).render(bpmnModel);
     } catch (e) {
+      // TODO error handling
       mxUtils.alert('Cannot load bpmn diagram: ' + e.message);
       throw e;
-    } finally {
-      model.endUpdate();
     }
   }
 }

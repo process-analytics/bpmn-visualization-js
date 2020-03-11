@@ -6,9 +6,18 @@ import BpmnModel from '../../model/bpmn/BpmnModel';
 export default class MxGraphRenderer {
   constructor(readonly graph: mxgraph.mxGraph) {}
 
-  public render(model: BpmnModel) {
-    this.insertShapes(model.shapes);
-    this.insertEdges(model.edges);
+  public render(bpmnModel: BpmnModel) {
+    const model = this.graph.getModel();
+    model.clear(); // ensure to remove manual changes or already loaded graphs
+    model.beginUpdate();
+    try {
+      this.insertShapes(bpmnModel.shapes);
+      this.insertEdges(bpmnModel.edges);
+    } catch (e) {
+      throw e;
+    } finally {
+      model.endUpdate();
+    }
   }
 
   private insertShapes(shapes: Shape[]): this {
