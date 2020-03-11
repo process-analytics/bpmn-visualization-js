@@ -473,8 +473,8 @@ describe('parse bpmn as json', () => {
 
       expect(model.shapes).to.have.lengthOf(0, 'shapes');
     });
-    /*
-    it('json containing one process declared as array with a single lane', () => {
+
+    it('json containing one process declared as array with a laneset', () => {
       const json = `{
                       "definitions":{
                         "process":[{
@@ -498,6 +498,7 @@ describe('parse bpmn as json', () => {
                     }`;
 
       const model = BpmnJsonParser.parse(JSON.parse(json));
+      expect(model.shapes).to.have.lengthOf(0, 'shapes');
 
       expect(model.lanes).to.have.lengthOf(1, 'lanes');
       verifyShape(model.lanes[0], {
@@ -512,6 +513,7 @@ describe('parse bpmn as json', () => {
       });
     });
 
+    /*
     it('json containing one process with an array of lanes with name & without name & flowNodeRef', () => {
       const json = `{
                       "definitions":{
