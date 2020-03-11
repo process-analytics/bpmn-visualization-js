@@ -13,7 +13,7 @@ jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL; // never allow 
 //////////////////////////////////////////////////////////////
 
 @JsonConverter
-export class ShapeConverter extends AbstractConverter<Shape[]> {
+export class NonLaneShapeConverter extends AbstractConverter<Shape[]> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(bpmnDiagram: Array<any> | any): Shape[] {
     try {
