@@ -1,8 +1,7 @@
 import MxGraphConfigurator from '../mxgraph/MxGraphConfigurator';
-import BpmnJsonParser from '../parser/json/BpmnJsonParser';
-import BpmnXmlParser from '../parser/xml/BpmnXmlParser';
 import { mxgraph, mxgraphFactory } from 'ts-mxgraph';
 import MxGraphConverter from '../mxgraph/MxGraphConverter';
+import BpmnParser from '../parser/BpmnParser';
 
 const { mxClient, mxUtils, mxGraph, mxGraphModel } = mxgraphFactory({
   mxLoadResources: false,
@@ -32,14 +31,13 @@ export default class Graph {
   }
 
   public load(xml: string): void {
-    const json = new BpmnXmlParser().parse(xml);
-    const { shapes, edges } = BpmnJsonParser.parse(json);
+    const bpmnModel = new BpmnParser().parse(xml);
 
     const model = this.graph.getModel();
     model.clear(); // ensure to remove manual changes or already loaded graphs
     model.beginUpdate();
     try {
-      new MxGraphConverter(this.graph).insertShapes(shapes).insertEdges(edges);
+      new MxGraphConverter(this.graph).render(bpmnModel);
     } catch (e) {
       mxUtils.alert('Cannot load bpmn diagram: ' + e.message);
       throw e;

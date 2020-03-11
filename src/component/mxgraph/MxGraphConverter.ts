@@ -1,11 +1,17 @@
 import { mxgraph } from 'ts-mxgraph';
 import Shape from '../../model/bpmn/shape/Shape';
 import Edge from '../../model/bpmn/edge/Edge';
+import BpmnModel from '../../model/bpmn/BpmnModel';
 
 export default class MxGraphConverter {
   constructor(readonly graph: mxgraph.mxGraph) {}
 
-  public insertShapes(shapes: Shape[]): this {
+  public render(model: BpmnModel) {
+    this.insertShapes(model.shapes);
+    this.insertEdges(model.edges);
+  }
+
+  private insertShapes(shapes: Shape[]): this {
     shapes.forEach(shape => {
       const bounds = shape.bounds;
       const bpmnElement = shape.bpmnElement;
@@ -17,7 +23,7 @@ export default class MxGraphConverter {
     return this;
   }
 
-  public insertEdges(edges: Edge[]): void {
+  private insertEdges(edges: Edge[]): void {
     edges.forEach(edge => {
       const bpmnElement = edge.bpmnElement;
       if (bpmnElement) {
