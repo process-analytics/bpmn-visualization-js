@@ -21,12 +21,21 @@ export default class ShapeModelConverter extends AbstractConverter<ShapeBpmnElem
     ensureIsArray(bpmnElements).map(bpmnElement => convertedShapeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
   }
 
-  buildLaneBpmnElement(bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
-    ensureIsArray(bpmnElements).map(bpmnElement => convertedLaneBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
+  buildLaneBpmnElement(lanes: Array<any> | any, kind: ShapeBpmnElementKind): void {
+    ensureIsArray(lanes).map(lane => {
+      const laneShape = new ShapeBpmnElement(lane.id, lane.name, kind);
+      convertedLaneBpmnElements.push(laneShape);
+
+      ensureIsArray(lane.flowNodeRef).map(flowNodeRef => {
+        const shapeBpmnElement = findShapeBpmnElement(flowNodeRef);
+        shapeBpmnElement.parentId = lane.id;
+      });
+    });
   }
 
   buildLaneSetBpmnElement(laneSet: any, kind: ShapeBpmnElementKind): void {
     if (laneSet) {
+      // this.buildLaneBpmnElement(laneSet.lane);
       ensureIsArray(laneSet.lane).map(bpmnElement => convertedLaneBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
     }
   }
