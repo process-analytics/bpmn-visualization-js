@@ -10,6 +10,8 @@ export default class Graph {
   private mxUtils: any = MxGraphFactoryService.getMxGraphProperty('mxUtils');
   private mxGraph: any = MxGraphFactoryService.getMxGraphProperty('mxGraph');
   private mxGraphModel: any = MxGraphFactoryService.getMxGraphProperty('mxGraphModel');
+  private mxSvgCanvas2D: any = MxGraphFactoryService.getMxGraphProperty('mxSvgCanvas2D');
+  private mxShape: any = MxGraphFactoryService.getMxGraphProperty('mxShape');
 
   protected readonly graph: mxgraph.mxGraph;
 
@@ -35,6 +37,49 @@ export default class Graph {
     this.mxGraph.prototype.edgeLabelsMovable = false;
     this.mxGraph.prototype.cellsLocked = true;
     this.mxGraph.prototype.cellsSelectable = false;
+    class MySvgCanvas2D extends this.mxSvgCanvas2D {
+      public minStrokeWidth: number;
+      constructor(root: any, styleEnabled?: any) {
+        super(root, styleEnabled);
+      }
+      addNode(filled: any, stroked: any): void {
+        console.log(this);
+        super.addNode(filled, stroked);
+        console.log('ADDING NODE FROM EXT');
+      }
+    }
+
+    this.mxShape.prototype.createSvgCanvas = function() {
+      console.log(this);
+      console.log(this.state.cell.id);
+      console.log(this.state.cell.style);
+      const canvas = new MySvgCanvas2D(this.node, false);
+      canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
+      canvas.pointerEventsValue = this.svgPointerEvents;
+      canvas.blockImagePointerEvents = this.mxClient.IS_FF;
+      const off = this.getSvgScreenOffset();
+
+      if (off != 0) {
+        this.node.setAttribute('transform', 'translate(' + off + ',' + off + ')');
+      } else {
+        this.node.removeAttribute('transform');
+      }
+
+      //
+      this.node.setAttribute('class', 'class-state-cell-style-' + this.state.cell.style);
+      this.node.setAttribute('data-cell-id', this.state.cell.id);
+      //
+      canvas.minStrokeWidth = this.minSvgStrokeWidth;
+
+      if (!this.antiAlias) {
+        // Rounds all numbers in the SVG output to integers
+        canvas.format = function(value: string) {
+          return Math.round(parseFloat(value));
+        };
+      }
+
+      return canvas;
+    };
   }
 
   public load(xml: string): void {

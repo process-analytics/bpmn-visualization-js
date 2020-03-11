@@ -1,6 +1,6 @@
 import { mxgraphFactory } from 'ts-mxgraph';
 
-type MxGraphProperty = 'mxClient' | 'mxGraph' | 'mxGraphModel' | 'mxUtils' | 'mxConstants' | 'mxPerimeter' | 'mxPoint';
+type MxGraphProperty = 'mxClient' | 'mxGraph' | 'mxGraphModel' | 'mxUtils' | 'mxConstants' | 'mxPerimeter' | 'mxPoint' | 'mxSvgCanvas2D' | 'mxShape';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export class MxGraphFactoryService {
