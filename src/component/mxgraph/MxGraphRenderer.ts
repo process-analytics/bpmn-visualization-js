@@ -6,7 +6,7 @@ import BpmnModel from '../../model/bpmn/BpmnModel';
 export default class MxGraphRenderer {
   constructor(readonly graph: mxgraph.mxGraph) {}
 
-  public render(bpmnModel: BpmnModel) {
+  public render(bpmnModel: BpmnModel): void {
     const model = this.graph.getModel();
     model.clear(); // ensure to remove manual changes or already loaded graphs
     model.beginUpdate();
