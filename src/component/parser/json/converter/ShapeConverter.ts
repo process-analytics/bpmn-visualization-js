@@ -2,7 +2,7 @@ import { JsonConvert, JsonConverter, OperationMode, ValueCheckingMode } from 'js
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import Shape from '../../../../model/bpmn/shape/Shape';
 import Bounds from '../../../../model/bpmn/Bounds';
-import { findLaneBpmnElement, findShapeBpmnElement } from './ShapeModelConverter';
+import { findLaneBpmnElement, findFlowNodeBpmnElement } from './ShapeModelConverter';
 import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 
 //////////////////////////////////////////////////////////////
@@ -38,7 +38,7 @@ abstract class ShapeConverter extends AbstractConverter<Shape[]> {
 @JsonConverter
 export class FlowNodeConverter extends ShapeConverter {
   protected findShapeElement(bpmnElement: string): ShapeBpmnElement {
-    return findShapeBpmnElement(bpmnElement);
+    return findFlowNodeBpmnElement(bpmnElement);
   }
 }
 

@@ -9,7 +9,7 @@ export default class BpmnJsonParser {
     json: any,
   ): {
     lanes: Shape[];
-    shapes: Shape[];
+    flowNodes: Shape[];
     edges: Edge[];
   } {
     const jsonConvert: JsonConvert = new JsonConvert();
@@ -17,8 +17,8 @@ export default class BpmnJsonParser {
     const definitions = jsonConvert.deserializeObject(json.definitions, Definitions);
 
     const lanes: Shape[] = definitions.lanes;
-    const shapes: Shape[] = definitions.shapes;
+    const flowNodes: Shape[] = definitions.flowNodes;
     const edges: Edge[] = definitions.edges;
-    return { lanes, shapes, edges };
+    return { lanes, flowNodes, edges };
   }
 }
