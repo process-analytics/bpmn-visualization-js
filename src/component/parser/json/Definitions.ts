@@ -2,7 +2,7 @@ import Shape from '../../../model/bpmn/shape/Shape';
 import ShapeBpmnElement from '../../../model/bpmn/shape/ShapeBpmnElement';
 import { JsonObject, JsonProperty } from 'json2typescript';
 import ShapeModelConverter from './converter/ShapeModelConverter';
-import { LaneConverter, NonLaneShapeConverter } from './converter/NonLaneShapeConverter';
+import { LaneConverter, NonLaneShapeConverter } from './converter/ShapeConverter';
 import Edge from '../../../model/bpmn/edge/Edge';
 import SequenceFlow from '../../../model/bpmn/edge/SequenceFlow';
 import EdgeModelConverter from './converter/EdgeModelConverter';
