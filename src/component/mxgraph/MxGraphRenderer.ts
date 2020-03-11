@@ -3,7 +3,7 @@ import Shape from '../../model/bpmn/shape/Shape';
 import Edge from '../../model/bpmn/edge/Edge';
 import BpmnModel from '../../model/bpmn/BpmnModel';
 
-export default class MxGraphConverter {
+export default class MxGraphRenderer {
   constructor(readonly graph: mxgraph.mxGraph) {}
 
   public render(model: BpmnModel) {

@@ -1,6 +1,6 @@
 import MxGraphConfigurator from '../mxgraph/MxGraphConfigurator';
 import { mxgraph, mxgraphFactory } from 'ts-mxgraph';
-import MxGraphConverter from '../mxgraph/MxGraphConverter';
+import MxGraphRenderer from '../mxgraph/MxGraphRenderer';
 import BpmnParser from '../parser/BpmnParser';
 
 const { mxClient, mxUtils, mxGraph, mxGraphModel } = mxgraphFactory({
@@ -37,7 +37,7 @@ export default class Graph {
     model.clear(); // ensure to remove manual changes or already loaded graphs
     model.beginUpdate();
     try {
-      new MxGraphConverter(this.graph).render(bpmnModel);
+      new MxGraphRenderer(this.graph).render(bpmnModel);
     } catch (e) {
       mxUtils.alert('Cannot load bpmn diagram: ' + e.message);
       throw e;
