@@ -14,7 +14,7 @@ export class Definitions {
   private readonly _shapeBpmnElements: ShapeBpmnElement[];
 
   @JsonProperty('BPMNDiagram', FlowNodeConverter)
-  private readonly _shapes: Shape[];
+  private readonly _flowNodes: Shape[];
 
   @JsonProperty('process', EdgeModelConverter)
   private readonly _sequenceFlows: SequenceFlow[];
@@ -25,16 +25,17 @@ export class Definitions {
   @JsonProperty('BPMNDiagram', LaneConverter)
   private readonly _lanes: Shape[];
 
-  constructor(shapeBpmnElements?: ShapeBpmnElement[], shapes?: Shape[], lanes?: Shape[], sequenceFlows?: SequenceFlow[], edges?: Edge[]) {
+  // Need to have shapeBpmnElements before flowNodes & lanes, because we reference shapeBpmnElements in them. Idem for edges
+  constructor(shapeBpmnElements?: ShapeBpmnElement[], flowNodes?: Shape[], lanes?: Shape[], sequenceFlows?: SequenceFlow[], edges?: Edge[]) {
     this._shapeBpmnElements = shapeBpmnElements;
-    this._shapes = shapes;
+    this._flowNodes = flowNodes;
     this._lanes = lanes;
     this._sequenceFlows = sequenceFlows;
     this._edges = edges;
   }
 
-  public get shapes(): Shape[] {
-    return this._shapes;
+  public get flowNodes(): Shape[] {
+    return this._flowNodes;
   }
 
   public get edges(): Edge[] {
