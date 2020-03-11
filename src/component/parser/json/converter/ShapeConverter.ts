@@ -46,7 +46,7 @@ abstract class ShapeConverter extends AbstractConverter<Shape[]> {
 }
 
 @JsonConverter
-export class NonLaneShapeConverter extends ShapeConverter {
+export class FlowNodeConverter extends ShapeConverter {
   protected findShapeElement(bpmnElement: string): ShapeBpmnElement {
     return findShapeBpmnElement(bpmnElement);
   }
