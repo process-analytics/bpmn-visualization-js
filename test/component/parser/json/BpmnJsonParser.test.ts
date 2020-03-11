@@ -513,7 +513,6 @@ describe('parse bpmn as json', () => {
       });
     });
 
-    /*
     it('json containing one process with an array of lanes with name & without name & flowNodeRef', () => {
       const json = `{
                       "definitions":{
@@ -582,7 +581,7 @@ describe('parse bpmn as json', () => {
       });
 
       expect(model.shapes).to.have.lengthOf(1, 'shapes');
-      expect(model.shapes[0].bpmnElement.parent).to.be.equal(model.lanes[0], 'bpmn element parent');
-    });*/
+      //expect(model.shapes[0].bpmnElement.parent).to.be.equal(model.lanes[0], 'bpmn element parent');
+    });
   });
 });

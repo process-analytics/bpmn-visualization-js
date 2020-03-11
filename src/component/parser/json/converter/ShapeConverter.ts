@@ -47,19 +47,27 @@ export class ShapeConverter extends AbstractConverter<Shape[]> {
 export class LaneConverter extends AbstractConverter<Shape[]> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(bpmnDiagram: Array<any> | any): Shape[] {
+    // TODO fully duplicated with ShapeConverter
     try {
       const shapes = bpmnDiagram.BPMNPlane.BPMNShape;
-      const bpmnElement = shapes.bpmnElement;
-      const laneBpmnElement = findLaneBpmnElement(bpmnElement);
+      return (
+        ensureIsArray(shapes)
+          //.filter(shape => )
+          .map(shape => {
+            const bpmnElement = shape.bpmnElement;
+            const shapeBpmnElement = findLaneBpmnElement(bpmnElement);
 
-      if (laneBpmnElement) {
-        const id = shapes.id;
-        const bounds3 = shapes.Bounds;
-        const bounds2 = jsonConvert.deserializeObject(bounds3, Bounds);
+            if (shapeBpmnElement) {
+              const id = shape.id;
+              const bounds3 = shape.Bounds;
+              const bounds2 = jsonConvert.deserializeObject(bounds3, Bounds);
 
-        return [new Shape(id, laneBpmnElement, bounds2)];
-      }
-      return [];
+              return new Shape(id, shapeBpmnElement, bounds2);
+            }
+          })
+          // TODO manage this in another way
+          .filter(shape => shape)
+      );
     } catch (e) {
       // TODO error management
       console.log(e as Error);
