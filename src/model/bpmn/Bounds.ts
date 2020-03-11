@@ -14,7 +14,7 @@ export default class Bounds {
   @JsonProperty('height', Number)
   private _height: number;
 
-  public constructor(x: number, y: number, width: number, height: number) {
+  public constructor(x?: number, y?: number, width?: number, height?: number) {
     this._x = x;
     this._y = y;
     this._width = width;
