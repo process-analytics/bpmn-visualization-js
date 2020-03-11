@@ -25,12 +25,19 @@ export default class ShapeModelConverter extends AbstractConverter<ShapeBpmnElem
     ensureIsArray(bpmnElements).map(bpmnElement => convertedLaneBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
   }
 
+  buildLaneSetBpmnElement(laneSet: any, kind: ShapeBpmnElementKind): void {
+    if (laneSet) {
+      ensureIsArray(laneSet.lane).map(bpmnElement => convertedLaneBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
+    }
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  parseProcess(process: { startEvent: any; userTask: any; lane: any }): void {
+  parseProcess(process: { startEvent: any; userTask: any; lane: any; laneSet: any }): void {
     this.buildShapeBpmnElement(process.startEvent, ShapeBpmnElementKind.EVENT_START);
     this.buildShapeBpmnElement(process.userTask, ShapeBpmnElementKind.TASK_USER);
 
     this.buildLaneBpmnElement(process.lane, ShapeBpmnElementKind.LANE);
+    this.buildLaneSetBpmnElement(process.laneSet, ShapeBpmnElementKind.LANE);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
