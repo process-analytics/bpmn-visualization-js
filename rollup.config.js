@@ -22,7 +22,7 @@ const plugins = [
 
 if (devMode) {
   // Create a server for dev mode
-  plugins.push(serve('dist'));
+  plugins.push(serve({ contentBase: 'dist', port: 10001 }));
   // Allow to livereload on any update
   plugins.push(livereload({ watch: 'dist', verbose: true }));
   // Copy index.html to dist
