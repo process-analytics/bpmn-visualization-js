@@ -43,10 +43,3 @@ export default class ShapeModelConverter extends AbstractConverter<ShapeBpmnElem
     return convertedShapeBpmnElements;
   }
 }
-
-@JsonConverter
-export class ShapeBpmnElementConverter extends AbstractConverter<ShapeBpmnElement> {
-  deserialize(data: string): ShapeBpmnElement {
-    return findShapeBpmnElement(data);
-  }
-}
