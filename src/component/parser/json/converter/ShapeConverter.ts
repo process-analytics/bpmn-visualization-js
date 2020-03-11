@@ -18,24 +18,14 @@ abstract class ShapeConverter extends AbstractConverter<Shape[]> {
   deserialize(bpmnDiagram: Array<any> | any): Shape[] {
     try {
       const shapes = bpmnDiagram.BPMNPlane.BPMNShape;
-      return (
-        ensureIsArray(shapes)
-          //.filter(shape => )
-          .map(shape => {
-            const bpmnElement = shape.bpmnElement;
-            const shapeBpmnElement = this.findShapeElement(bpmnElement);
-
-            if (shapeBpmnElement) {
-              const id = shape.id;
-              const bounds3 = shape.Bounds;
-              const bounds2 = jsonConvert.deserializeObject(bounds3, Bounds);
-
-              return new Shape(id, shapeBpmnElement, bounds2);
-            }
-          })
-          // TODO manage this in another way
-          .filter(shape => shape)
-      );
+      return ensureIsArray(shapes)
+        .filter(shape => this.findShapeElement(shape.bpmnElement))
+        .map(shape => {
+          const id = shape.id;
+          const bpmnElement = this.findShapeElement(shape.bpmnElement);
+          const bounds = jsonConvert.deserializeObject(shape.Bounds, Bounds);
+          return new Shape(id, bpmnElement, bounds);
+        });
     } catch (e) {
       // TODO error management
       console.log(e as Error);
