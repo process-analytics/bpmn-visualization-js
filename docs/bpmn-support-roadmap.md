@@ -1,52 +1,83 @@
-Description of the supported Bpmn elements progression in bpmn-visu-js
+Description of the supported BPMN elements progression in BPMN-visu-js.
+
+You can track related issues and pull requests with the following labels
+- [BPMN support](https://github.com/bonitasoft-labs/bpmn-visu-js/issues?q=label%3A%22BPMN+support%22+is%3Aclosed): BPMN
+elements recognized by the lib
+- [BPMN rendering](https://github.com/bonitasoft-labs/bpmn-visu-js/issues?q=label%3A%22BPMN+rendering%22+is%3Aclosed):
+BPMN elements rendered with their final design
 
 
-# Opened milestones
+# Opened implementation steps
 
-The milestone content is subject to change and is provided for information
+The step content is subject to change and is provided for information
 
-## Milestone 1 - minimal Bpmn support
+## Step 1 - minimal Bpmn support
 
 lib version: `0.1.x`
 
-Bpmn elements
+Note that the bpmn elements listed here may not be rendered with their final design at part of the initial support. 
+
+BPMN elements
 - pool
 - lane
-- sequence flow
 - activities
   - task
   - service task
-  - user task
+  - :heavy_check_mark: (0.1.0) user task
 - events
-  - start event
+  - :heavy_check_mark: (0.1.0) start event
   - end event
+  - terminate end event
+- flows
+  - :heavy_check_mark: (0.1.0) sequence flow
 - gateways
   - exclusive gateway
   - parallel gateway
-- annotations
+- BPMN artifacts
+  - text annotation
 
 
-## Milestone 2
+## Step 2
 
 - activities
-  - call activities
+  - call activity
   - manual task
 - activity boundaries (to be refined)
 - activity markers
   - loop
   - multi instantiation parallel
   - multi instantiation sequential
-- group
+- events
+  - timer start event
+  - signal start event
+- flows
+  - message flow
+- gateways
+  - inclusive gateway
+- BPMN artifacts
+    - group
 
 
-## Milestone 3
+## Step 3
+
+- activities
+  - Send task
+  - Receive task
+
+
+## Step 4
 
 - subprocess
 - activities
   - business rules task
   - script task
-- bpmn extensions support
+- BPMN extensions support
 
-# Already completed milestones
+
+## To be continued
+
+...
+
+# Already completed steps
 
 none
