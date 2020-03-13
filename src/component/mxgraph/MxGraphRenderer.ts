@@ -22,16 +22,16 @@ export default class MxGraphRenderer {
     }
   }
 
-  private insertLanes(lanes: Shape[]): this {
+  private insertLanes(lanes: Shape[]): void {
     const parent = this.graph.getDefaultParent();
     const getParent = (): mxgraph.mxCell => {
       return parent;
     };
 
-    return this.insertShapes(lanes, getParent);
+    this.insertShapes(lanes, getParent);
   }
 
-  private insertFlowNodes(flowNodes: Shape[]): this {
+  private insertFlowNodes(flowNodes: Shape[]): void {
     const getParent = (bpmnElement: ShapeBpmnElement): mxgraph.mxCell => {
       const bpmnElementParent = this.getCell(bpmnElement.parentId);
       if (bpmnElementParent) {
@@ -40,14 +40,13 @@ export default class MxGraphRenderer {
       return this.graph.getDefaultParent();
     };
 
-    return this.insertShapes(flowNodes, getParent);
+    this.insertShapes(flowNodes, getParent);
   }
 
-  private insertShapes(shapes: Shape[], getParent: (bpmnElement: ShapeBpmnElement) => mxgraph.mxCell): this {
+  private insertShapes(shapes: Shape[], getParent: (bpmnElement: ShapeBpmnElement) => mxgraph.mxCell): void {
     shapes.forEach(shape => {
       this.insertShape(shape, getParent);
     });
-    return this;
   }
 
   private insertShape(shape: Shape, getParent: (bpmnElement: ShapeBpmnElement) => mxgraph.mxCell): void {
