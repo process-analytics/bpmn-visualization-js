@@ -21,6 +21,7 @@ export default class ShapeModelConverter extends AbstractConverter<ShapeBpmnElem
     ensureIsArray(bpmnElements).forEach(bpmnElement => convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   buildLaneBpmnElement(lanes: Array<any> | any): void {
     ensureIsArray(lanes).forEach(lane => {
       const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE);
@@ -33,6 +34,7 @@ export default class ShapeModelConverter extends AbstractConverter<ShapeBpmnElem
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   buildLaneSetBpmnElement(laneSet: any): void {
     if (laneSet) {
       this.buildLaneBpmnElement(laneSet.lane);

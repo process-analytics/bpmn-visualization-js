@@ -22,7 +22,8 @@ export function verifyBounds(shape: any, x: number, y: number, width: number, he
   expect(bounds.height).eq(height);
 }
 
-export function verifyDefinitions(json: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function verifyDefinitions(json: any): void {
   verifyProperties(json, ['definitions'], []);
   verifyProperties(json.definitions, ['process', 'BPMNDiagram'], []);
 }

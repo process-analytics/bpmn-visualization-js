@@ -14,10 +14,12 @@ export interface ExpectedShape {
   boundsHeight: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function parseJson(json: string): any {
   return BpmnJsonParser.parse(JSON.parse(json));
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function parseJsonAndExpectOnlyLanes(json: string): any {
   const model = BpmnJsonParser.parse(JSON.parse(json));
   expect(model.edges).to.have.lengthOf(0, 'edges');
@@ -25,6 +27,7 @@ export function parseJsonAndExpectOnlyLanes(json: string): any {
   return model;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function parseJsonAndExpectOnlyFlowNodes(json: string): any {
   const model = BpmnJsonParser.parse(JSON.parse(json));
   expect(model.edges).to.have.lengthOf(0, 'edges');
@@ -32,6 +35,7 @@ export function parseJsonAndExpectOnlyFlowNodes(json: string): any {
   return model;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: string): any {
   const model = BpmnJsonParser.parse(JSON.parse(json));
   expect(model.lanes).to.have.lengthOf(0, 'lanes');
