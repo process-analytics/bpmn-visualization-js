@@ -1,7 +1,6 @@
 import { expect } from 'chai';
-import BpmnJsonParser from '../../../../src/component/parser/json/BpmnJsonParser';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { verifyShape } from './JsonTestUtils';
+import { parseJson, parseJsonAndExpectOnlyLanes, verifyShape } from './JsonTestUtils';
 
 describe('parse bpmn as json for lane', () => {
   it('json containing one process with a single lane without flowNodeRef', () => {
@@ -24,7 +23,7 @@ describe('parse bpmn as json for lane', () => {
                       }
                     }`;
 
-    const model = BpmnJsonParser.parse(JSON.parse(json));
+    const model = parseJsonAndExpectOnlyLanes(json);
 
     expect(model.lanes).to.have.lengthOf(1, 'lanes');
     verifyShape(model.lanes[0], {
@@ -37,8 +36,6 @@ describe('parse bpmn as json for lane', () => {
       boundsWidth: 36,
       boundsHeight: 45,
     });
-
-    expect(model.flowNodes).to.have.lengthOf(0, 'shapes');
   });
 
   it('json containing one process with a single lane with flowNodeRef as object', () => {
@@ -68,7 +65,7 @@ describe('parse bpmn as json for lane', () => {
                       }
                     }`;
 
-    const model = BpmnJsonParser.parse(JSON.parse(json));
+    const model = parseJson(json);
 
     expect(model.lanes).to.have.lengthOf(1, 'lanes');
     verifyShape(model.lanes[0], {
@@ -113,7 +110,7 @@ describe('parse bpmn as json for lane', () => {
                       }
                     }`;
 
-    const model = BpmnJsonParser.parse(JSON.parse(json));
+    const model = parseJson(json);
 
     expect(model.lanes).to.have.lengthOf(1, 'lanes');
     verifyShape(model.lanes[0], {
@@ -154,8 +151,7 @@ describe('parse bpmn as json for lane', () => {
                       }
                     }`;
 
-    const model = BpmnJsonParser.parse(JSON.parse(json));
-    expect(model.flowNodes).to.have.lengthOf(0, 'shapes');
+    const model = parseJsonAndExpectOnlyLanes(json);
 
     expect(model.lanes).to.have.lengthOf(1, 'lanes');
     verifyShape(model.lanes[0], {
@@ -208,9 +204,7 @@ describe('parse bpmn as json for lane', () => {
                       }
                     }`;
 
-    const model = BpmnJsonParser.parse(JSON.parse(json));
-
-    expect(model.flowNodes).to.have.lengthOf(0, 'shapes');
+    const model = parseJsonAndExpectOnlyLanes(json);
 
     expect(model.lanes).to.have.lengthOf(2, 'lanes');
     verifyShape(model.lanes[0], {

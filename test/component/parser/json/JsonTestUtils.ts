@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import Shape from '../../../../src/model/bpmn/shape/Shape';
+import BpmnJsonParser from '../../../../src/component/parser/json/BpmnJsonParser';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -11,6 +12,30 @@ export interface ExpectedShape {
   boundsY: number;
   boundsWidth: number;
   boundsHeight: number;
+}
+
+export function parseJson(json: string): any {
+  return BpmnJsonParser.parse(JSON.parse(json));
+}
+
+export function parseJsonAndExpectOnlyLanes(json: string): any {
+  const model = BpmnJsonParser.parse(JSON.parse(json));
+  expect(model.edges).to.have.lengthOf(0, 'edges');
+  expect(model.flowNodes).to.have.lengthOf(0, 'flowNodes');
+  return model;
+}
+
+export function parseJsonAndExpectOnlyFlowNodes(json: string): any {
+  const model = BpmnJsonParser.parse(JSON.parse(json));
+  expect(model.edges).to.have.lengthOf(0, 'edges');
+  expect(model.lanes).to.have.lengthOf(0, 'lanes');
+  return model;
+}
+
+export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: string): any {
+  const model = BpmnJsonParser.parse(JSON.parse(json));
+  expect(model.lanes).to.have.lengthOf(0, 'lanes');
+  return model;
 }
 
 export function verifyShape(shape: Shape, expectedValue: ExpectedShape): void {

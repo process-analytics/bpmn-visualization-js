@@ -1,7 +1,6 @@
 import { expect } from 'chai';
-import BpmnJsonParser from '../../../../src/component/parser/json/BpmnJsonParser';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { verifyShape } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 
 describe('parse bpmn as json', () => {
   describe('start event', () => {
@@ -27,7 +26,7 @@ describe('parse bpmn as json', () => {
                 }
             }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyFlowNodes(json);
 
       expect(model.flowNodes).to.have.lengthOf(1, 'shapes');
       expect(model.flowNodes[0].id).to.be.equal('shape_startEvent_id_0', 'shape id');
@@ -42,8 +41,6 @@ describe('parse bpmn as json', () => {
       expect(bounds.y).to.be.equal(232, 'bounds y');
       expect(bounds.width).to.be.equal(36, 'bounds width');
       expect(bounds.height).to.be.equal(45, 'bounds height');
-
-      expect(model.lanes).to.have.lengthOf(0, 'lanes');
     });
 
     it('json containing one process declared as array with a single start event', () => {
@@ -70,7 +67,7 @@ describe('parse bpmn as json', () => {
                 }
             }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyFlowNodes(json);
 
       expect(model.flowNodes).to.have.lengthOf(1, 'shapes');
       expect(model.flowNodes[0].id).to.be.equal('shape_startEvent_id_1', 'shape id');
@@ -119,7 +116,7 @@ describe('parse bpmn as json', () => {
                 }
             }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyFlowNodes(json);
 
       expect(model.flowNodes).to.have.lengthOf(2, 'shapes');
       verifyShape(model.flowNodes[0], {
@@ -168,7 +165,7 @@ describe('parse bpmn as json', () => {
                 }
             }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyFlowNodes(json);
 
       expect(model.flowNodes).to.have.lengthOf(1, 'shapes');
       expect(model.flowNodes[0].id).to.be.equal('shape_userTask_id_0', 'shape id');
@@ -209,7 +206,7 @@ describe('parse bpmn as json', () => {
                 }
             }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyFlowNodes(json);
 
       expect(model.flowNodes).to.have.lengthOf(1, 'shapes');
       expect(model.flowNodes[0].id).to.be.equal('shape_userTask_id_1', 'shape id');
@@ -259,7 +256,7 @@ describe('parse bpmn as json', () => {
                 }
             }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyFlowNodes(json);
 
       expect(model.flowNodes).to.have.lengthOf(2, 'shapes');
       verifyShape(model.flowNodes[0], {
@@ -311,7 +308,7 @@ describe('parse bpmn as json', () => {
           }
       }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json);
 
       expect(model.edges).to.have.lengthOf(1, 'edges');
       expect(model.edges[0].id).to.be.equal('edge_sequenceFlow_id_0', 'edges id');
@@ -348,7 +345,7 @@ describe('parse bpmn as json', () => {
           }
       }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json);
 
       expect(model.edges).to.have.lengthOf(1, 'edges');
       expect(model.edges[0].id).to.be.equal('edge_sequenceFlow_id_0', 'edges id');
@@ -392,7 +389,7 @@ describe('parse bpmn as json', () => {
           }
       }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json);
 
       expect(model.edges).to.have.lengthOf(2, 'edges');
       expect(model.edges[0].id).to.be.equal('edge_sequenceFlow_id_0', 'edges id');
