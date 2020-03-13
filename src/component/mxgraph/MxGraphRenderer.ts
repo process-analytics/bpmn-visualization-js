@@ -23,9 +23,8 @@ export default class MxGraphRenderer {
   }
 
   private insertLanes(lanes: Shape[]): void {
-    const parent = this.graph.getDefaultParent();
     const getParent = (): mxgraph.mxCell => {
-      return parent;
+      return this.graph.getDefaultParent();
     };
 
     this.insertShapes(lanes, getParent);
