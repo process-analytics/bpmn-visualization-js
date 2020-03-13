@@ -18,15 +18,15 @@ export function findLaneBpmnElement(id: string): ShapeBpmnElement {
 export default class ShapeModelConverter extends AbstractConverter<ShapeBpmnElement[]> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   buildFlowNodeBpmnElement(bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
-    ensureIsArray(bpmnElements).map(bpmnElement => convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
+    ensureIsArray(bpmnElements).forEach(bpmnElement => convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
   }
 
   buildLaneBpmnElement(lanes: Array<any> | any): void {
-    ensureIsArray(lanes).map(lane => {
+    ensureIsArray(lanes).forEach(lane => {
       const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE);
       convertedLaneBpmnElements.push(laneShape);
 
-      ensureIsArray(lane.flowNodeRef).map(flowNodeRef => {
+      ensureIsArray(lane.flowNodeRef).forEach(flowNodeRef => {
         const shapeBpmnElement = findFlowNodeBpmnElement(flowNodeRef);
         shapeBpmnElement.parentId = lane.id;
       });
@@ -54,7 +54,7 @@ export default class ShapeModelConverter extends AbstractConverter<ShapeBpmnElem
     convertedFlowNodeBpmnElements.length = 0;
     convertedLaneBpmnElements.length = 0;
 
-    ensureIsArray(processes).map(process => this.parseProcess(process));
+    ensureIsArray(processes).forEach(process => this.parseProcess(process));
     return convertedFlowNodeBpmnElements;
   }
 }

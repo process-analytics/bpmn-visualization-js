@@ -33,7 +33,7 @@ export default class EdgeModelConverter extends AbstractConverter<SequenceFlow[]
     // Deletes everything in the array, which does hit other references. More performant.
     convertedSequenceFlows.length = 0;
 
-    ensureIsArray(processes).map(process => this.parseProcess(process));
+    ensureIsArray(processes).forEach(process => this.parseProcess(process));
     return convertedSequenceFlows;
   }
 }
