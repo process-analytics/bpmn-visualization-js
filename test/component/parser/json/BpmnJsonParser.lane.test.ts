@@ -79,7 +79,7 @@ describe('parse bpmn as json for lane', () => {
       boundsHeight: 45,
     });
 
-    expect(model.flowNodes).to.have.lengthOf(1, 'shapes');
+    expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
     expect(model.flowNodes[0].bpmnElement.parentId).to.be.equal('Lane_12u5n6x', 'bpmn element parent');
   });
 
@@ -124,7 +124,7 @@ describe('parse bpmn as json for lane', () => {
       boundsHeight: 45,
     });
 
-    expect(model.flowNodes).to.have.lengthOf(1, 'shapes');
+    expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
     expect(model.flowNodes[0].bpmnElement.parentId).to.be.equal('Lane_12u5n6x', 'bpmn element parent');
   });
 

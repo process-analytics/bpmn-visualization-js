@@ -28,7 +28,7 @@ describe('parse bpmn as json', () => {
 
       const model = parseJsonAndExpectOnlyFlowNodes(json);
 
-      expect(model.flowNodes).to.have.lengthOf(1, 'shapes');
+      expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
       expect(model.flowNodes[0].id).to.be.equal('shape_startEvent_id_0', 'shape id');
 
       const bpmnElement = model.flowNodes[0].bpmnElement;
@@ -69,7 +69,7 @@ describe('parse bpmn as json', () => {
 
       const model = parseJsonAndExpectOnlyFlowNodes(json);
 
-      expect(model.flowNodes).to.have.lengthOf(1, 'shapes');
+      expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
       expect(model.flowNodes[0].id).to.be.equal('shape_startEvent_id_1', 'shape id');
 
       const bpmnElement = model.flowNodes[0].bpmnElement;
@@ -118,7 +118,7 @@ describe('parse bpmn as json', () => {
 
       const model = parseJsonAndExpectOnlyFlowNodes(json);
 
-      expect(model.flowNodes).to.have.lengthOf(2, 'shapes');
+      expect(model.flowNodes).to.have.lengthOf(2, 'flow nodes');
       verifyShape(model.flowNodes[0], {
         shapeId: 'shape_startEvent_id_0',
         bpmnElementId: 'event_id_0',
@@ -167,7 +167,7 @@ describe('parse bpmn as json', () => {
 
       const model = parseJsonAndExpectOnlyFlowNodes(json);
 
-      expect(model.flowNodes).to.have.lengthOf(1, 'shapes');
+      expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
       expect(model.flowNodes[0].id).to.be.equal('shape_userTask_id_0', 'shape id');
 
       const bpmnElement = model.flowNodes[0].bpmnElement;
@@ -208,7 +208,7 @@ describe('parse bpmn as json', () => {
 
       const model = parseJsonAndExpectOnlyFlowNodes(json);
 
-      expect(model.flowNodes).to.have.lengthOf(1, 'shapes');
+      expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
       expect(model.flowNodes[0].id).to.be.equal('shape_userTask_id_1', 'shape id');
 
       const bpmnElement = model.flowNodes[0].bpmnElement;
@@ -258,7 +258,7 @@ describe('parse bpmn as json', () => {
 
       const model = parseJsonAndExpectOnlyFlowNodes(json);
 
-      expect(model.flowNodes).to.have.lengthOf(2, 'shapes');
+      expect(model.flowNodes).to.have.lengthOf(2, 'flow nodes');
       verifyShape(model.flowNodes[0], {
         shapeId: 'shape_userTask_id_0',
         bpmnElementId: 'userTask_id_0',
