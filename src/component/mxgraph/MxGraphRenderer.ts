@@ -1,8 +1,13 @@
-import { mxgraph } from 'ts-mxgraph';
+import { mxgraph, mxgraphFactory } from 'ts-mxgraph';
 import Shape from '../../model/bpmn/shape/Shape';
 import Edge from '../../model/bpmn/edge/Edge';
 import BpmnModel from '../../model/bpmn/BpmnModel';
 import ShapeBpmnElement from '../../model/bpmn/shape/ShapeBpmnElement';
+
+const { mxPoint } = mxgraphFactory({
+  mxLoadResources: false,
+  mxLoadStylesheets: false,
+});
 
 export default class MxGraphRenderer {
   constructor(readonly graph: mxgraph.mxGraph) {}
@@ -51,7 +56,7 @@ export default class MxGraphRenderer {
     if (bpmnElement) {
       const bounds = shape.bounds;
       const parent = getParent(bpmnElement);
-      this.graph.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds.x, bounds.y, bounds.width, bounds.height, bpmnElement.kind);
+      this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds.x, bounds.y, bounds.width, bounds.height, bpmnElement.kind);
     }
   }
 
@@ -67,5 +72,28 @@ export default class MxGraphRenderer {
 
   private getCell(id: string): mxgraph.mxCell {
     return this.graph.getModel().getCell(id);
+  }
+
+  private insertVertex(parent: mxgraph.mxCell, id: string | null, value: string, x: number, y: number, width: number, height: number, style?: string): mxgraph.mxCell {
+    const vertex = this.graph.insertVertex(parent, id, value, x, y, width, height, style);
+    const translateForRoot = this.getTranslateForRoot(parent);
+    this.graph.translateCell(vertex, translateForRoot.x, translateForRoot.y);
+    return vertex;
+  }
+
+  private getTranslateForRoot(cell: mxgraph.mxCell): mxgraph.mxPoint {
+    const model = this.graph.getModel();
+    const offset = new mxPoint(0, 0);
+
+    while (cell != null) {
+      const geo = model.getGeometry(cell);
+      if (geo != null) {
+        offset.x -= geo.x;
+        offset.y -= geo.y;
+      }
+      cell = model.getParent(cell);
+    }
+
+    return offset;
   }
 }
