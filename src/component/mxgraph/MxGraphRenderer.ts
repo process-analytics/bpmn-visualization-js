@@ -75,10 +75,26 @@ export default class MxGraphRenderer {
   }
 
   private insertVertex(parent: mxgraph.mxCell, id: string | null, value: string, x: number, y: number, width: number, height: number, style?: string): mxgraph.mxCell {
-    const vertex = this.graph.insertVertex(parent, id, value, x, y, width, height, style);
+    // TODO try to directly manage the computation of relative coordinates to directly add the cell to its parent
+    // const translateForRoot = this.getTranslateForRoot(parent);
+    //
+    // const relativeX = x - translateForRoot.x;
+    // const relativeY = y - translateForRoot.y;
+    //
+    // return this.graph.insertVertex(parent, id, value, relativeX, relativeY, width, height, style);
+
+    // 1st insert the cell to the default parent to ensure the absolute position are respected
+    // Inserting the cell directly to the targeted parent via insertVertex doesn't work
+
+    // When added the cell to the parent, by default the parent bounds are extended because we pass absolute coordinates
+    // which place the cell out of it parents. So we must set 'extendParentsOnAdd' to false
+    // but in that case, the cells cannot be out of the parent bounds (probably we can bypass this with other graph options)
+    // so they are not at the desired position prior the translation
+
+    const vertex = this.graph.insertVertex(this.graph.getDefaultParent(), id, value, x, y, width, height, style);
     const translateForRoot = this.getTranslateForRoot(parent);
     this.graph.translateCell(vertex, translateForRoot.x, translateForRoot.y);
-    return vertex;
+    return this.graph.getModel().add(parent, vertex);
   }
 
   private getTranslateForRoot(cell: mxgraph.mxCell): mxgraph.mxPoint {
