@@ -123,6 +123,9 @@ describe('BPMN Visu JS', () => {
   it('should display visualization', async () => {
     graph.load(xmlContent);
     await expect(page.title()).resolves.toMatch('BPMN Visu JS');
+    // model is OK
+    expect(graph.graph.model.cells.hasOwnProperty('StartEvent_1y45yut')).toBeTruthy();
+    // rendering - not OK - when graph is being initialized the window.document.getElementById('graph') is null
     await expect(page.waitForSelector('[data-cell-id="StartEvent_1y45yut"]')).resolves.toBeDefined();
   });
 });
