@@ -1,8 +1,7 @@
 import MxGraphConfigurator from '../mxgraph/MxGraphConfigurator';
-import BpmnJsonParser from '../parser/json/BpmnJsonParser';
-import BpmnXmlParser from '../parser/xml/BpmnXmlParser';
 import { mxgraph, mxgraphFactory } from 'ts-mxgraph';
-import MxGraphConverter from '../mxgraph/MxGraphConverter';
+import MxGraphRenderer from '../mxgraph/MxGraphRenderer';
+import BpmnParser from '../parser/BpmnParser';
 
 const { mxClient, mxUtils, mxGraph, mxGraphModel } = mxgraphFactory({
   mxLoadResources: false,
@@ -26,25 +25,20 @@ export default class Graph {
 
       new MxGraphConfigurator(this.graph).configureStyles();
     } catch (e) {
+      // TODO error handling
       mxUtils.alert('Cannot start application: ' + e.message);
       throw e;
     }
   }
 
   public load(xml: string): void {
-    const json = new BpmnXmlParser().parse(xml);
-    const { shapes, edges } = BpmnJsonParser.parse(json);
-
-    const model = this.graph.getModel();
-    model.clear(); // ensure to remove manual changes or already loaded graphs
-    model.beginUpdate();
     try {
-      new MxGraphConverter(this.graph).insertShapes(shapes).insertEdges(edges);
+      const bpmnModel = new BpmnParser().parse(xml);
+      new MxGraphRenderer(this.graph).render(bpmnModel);
     } catch (e) {
+      // TODO error handling
       mxUtils.alert('Cannot load bpmn diagram: ' + e.message);
       throw e;
-    } finally {
-      model.endUpdate();
     }
   }
 }

@@ -14,7 +14,7 @@ interface ExpectedShape {
   boundsHeight: number;
 }
 
-function verifyShape(shape: Shape, expectedValue: ExpectedShape) {
+function verifyShape(shape: Shape, expectedValue: ExpectedShape): void {
   expect(shape.id).to.be.equal(expectedValue.shapeId, 'shape id');
 
   const bpmnElement = shape.bpmnElement;
