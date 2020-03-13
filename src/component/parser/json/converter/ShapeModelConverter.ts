@@ -3,38 +3,70 @@ import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 
-const convertedShapeBpmnElements: ShapeBpmnElement[] = [];
+const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
+const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
 
-function findShapeBpmnElement(id: string): ShapeBpmnElement {
-  return convertedShapeBpmnElements.find(i => i.id === id);
+export function findFlowNodeBpmnElement(id: string): ShapeBpmnElement {
+  return convertedFlowNodeBpmnElements.find(i => i.id === id);
+}
+
+export function findLaneBpmnElement(id: string): ShapeBpmnElement {
+  return convertedLaneBpmnElements.find(i => i.id === id);
 }
 
 @JsonConverter
 export default class ShapeModelConverter extends AbstractConverter<ShapeBpmnElement[]> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  buildShapeBpmnElement(bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
-    ensureIsArray(bpmnElements).map(bpmnElement => convertedShapeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
+  buildFlowNodeBpmnElement(bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
+    ensureIsArray(bpmnElements).forEach(bpmnElement => convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  parseProcess(process: { startEvent: any; userTask: any }): void {
-    this.buildShapeBpmnElement(process.startEvent, ShapeBpmnElementKind.EVENT_START);
-    this.buildShapeBpmnElement(process.userTask, ShapeBpmnElementKind.TASK_USER);
+  buildLaneBpmnElement(lanes: Array<any> | any): void {
+    ensureIsArray(lanes).forEach(lane => {
+      const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE);
+      convertedLaneBpmnElements.push(laneShape);
+
+      ensureIsArray(lane.flowNodeRef).forEach(flowNodeRef => {
+        const shapeBpmnElement = findFlowNodeBpmnElement(flowNodeRef);
+        if (shapeBpmnElement) {
+          shapeBpmnElement.parentId = lane.id;
+        } else {
+          // TODO error management
+          console.log('Lane element with id ' + flowNodeRef + ' is not found');
+        }
+      });
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  buildLaneSetBpmnElement(laneSet: any): void {
+    if (laneSet) {
+      this.buildLaneBpmnElement(laneSet.lane);
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  parseProcess(process: { startEvent: any; userTask: any; lane: any; laneSet: any }): void {
+    this.buildFlowNodeBpmnElement(process.startEvent, ShapeBpmnElementKind.EVENT_START);
+    this.buildFlowNodeBpmnElement(process.userTask, ShapeBpmnElementKind.TASK_USER);
+
+    this.buildLaneBpmnElement(process.lane);
+    this.buildLaneSetBpmnElement(process.laneSet);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(processes: Array<any> | any): ShapeBpmnElement[] {
-    // Deletes everything in the array, which does hit other references. More performant.
-    convertedShapeBpmnElements.length = 0;
+    try {
+      // Deletes everything in the array, which does hit other references. More performant.
+      convertedFlowNodeBpmnElements.length = 0;
+      convertedLaneBpmnElements.length = 0;
 
-    ensureIsArray(processes).map(process => this.parseProcess(process));
-    return convertedShapeBpmnElements;
-  }
-}
-
-@JsonConverter
-export class ShapeBpmnElementConverter extends AbstractConverter<ShapeBpmnElement> {
-  deserialize(data: string): ShapeBpmnElement {
-    return findShapeBpmnElement(data);
+      ensureIsArray(processes).forEach(process => this.parseProcess(process));
+      return convertedFlowNodeBpmnElements;
+    } catch (e) {
+      // TODO error management
+      console.log(e as Error);
+    }
   }
 }

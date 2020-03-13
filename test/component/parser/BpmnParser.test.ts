@@ -28,7 +28,8 @@ describe('parse xml to model', () => {
     const parser = new BpmnParser();
     const model = parser.parse(bpmnAsXml);
 
-    expect(model.shapes).to.have.lengthOf(2, 'shapes');
+    expect(model.flowNodes).to.have.lengthOf(2, 'flowNodes');
     expect(model.edges).to.have.lengthOf(0, 'edges');
+    expect(model.edges).to.have.lengthOf(0, 'lanes');
   });
 });

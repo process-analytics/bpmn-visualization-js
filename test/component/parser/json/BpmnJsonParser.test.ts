@@ -1,33 +1,6 @@
 import { expect } from 'chai';
-import BpmnJsonParser from '../../../../src/component/parser/json/BpmnJsonParser';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import Shape from '../../../../src/model/bpmn/shape/Shape';
-
-interface ExpectedShape {
-  shapeId: string;
-  bpmnElementId: string;
-  bpmnElementName: string;
-  bpmnElementKind: ShapeBpmnElementKind;
-  boundsX: number;
-  boundsY: number;
-  boundsWidth: number;
-  boundsHeight: number;
-}
-
-function verifyShape(shape: Shape, expectedValue: ExpectedShape): void {
-  expect(shape.id).to.be.equal(expectedValue.shapeId, 'shape id');
-
-  const bpmnElement = shape.bpmnElement;
-  expect(bpmnElement.id).to.be.equal(expectedValue.bpmnElementId, 'bpmn element id');
-  expect(bpmnElement.name).to.be.equal(expectedValue.bpmnElementName, 'bpmn element name');
-  expect(bpmnElement.kind).to.be.equal(expectedValue.bpmnElementKind, 'bpmn element kind');
-
-  const bounds = shape.bounds;
-  expect(bounds.x).to.be.equal(expectedValue.boundsX, 'bounds x');
-  expect(bounds.y).to.be.equal(expectedValue.boundsY, 'bounds y');
-  expect(bounds.width).to.be.equal(expectedValue.boundsWidth, 'bounds width');
-  expect(bounds.height).to.be.equal(expectedValue.boundsHeight, 'bounds height');
-}
+import { parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 
 describe('parse bpmn as json', () => {
   describe('start event', () => {
@@ -53,17 +26,17 @@ describe('parse bpmn as json', () => {
                 }
             }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyFlowNodes(json);
 
-      expect(model.shapes).to.have.lengthOf(1, 'shapes');
-      expect(model.shapes[0].id).to.be.equal('shape_startEvent_id_0', 'shape id');
+      expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
+      expect(model.flowNodes[0].id).to.be.equal('shape_startEvent_id_0', 'shape id');
 
-      const bpmnElement = model.shapes[0].bpmnElement;
+      const bpmnElement = model.flowNodes[0].bpmnElement;
       expect(bpmnElement.id).to.be.equal('event_id_0', 'bpmn element id');
       expect(bpmnElement.name).to.be.equal('event name', 'bpmn element name');
       expect(bpmnElement.kind).to.be.equal(ShapeBpmnElementKind.EVENT_START, 'bpmn element kind');
 
-      const bounds = model.shapes[0].bounds;
+      const bounds = model.flowNodes[0].bounds;
       expect(bounds.x).to.be.equal(362, 'bounds x');
       expect(bounds.y).to.be.equal(232, 'bounds y');
       expect(bounds.width).to.be.equal(36, 'bounds width');
@@ -94,17 +67,17 @@ describe('parse bpmn as json', () => {
                 }
             }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyFlowNodes(json);
 
-      expect(model.shapes).to.have.lengthOf(1, 'shapes');
-      expect(model.shapes[0].id).to.be.equal('shape_startEvent_id_1', 'shape id');
+      expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
+      expect(model.flowNodes[0].id).to.be.equal('shape_startEvent_id_1', 'shape id');
 
-      const bpmnElement = model.shapes[0].bpmnElement;
+      const bpmnElement = model.flowNodes[0].bpmnElement;
       expect(bpmnElement.id).to.be.equal('event_id_1', 'bpmn element id');
       expect(bpmnElement.name).to.be.equal('event name', 'bpmn element name');
       expect(bpmnElement.kind).to.be.equal(ShapeBpmnElementKind.EVENT_START, 'bpmn element kind');
 
-      const bounds = model.shapes[0].bounds;
+      const bounds = model.flowNodes[0].bounds;
       expect(bounds.x).to.be.equal(362, 'bounds x');
       expect(bounds.y).to.be.equal(232, 'bounds y');
       expect(bounds.width).to.be.equal(36, 'bounds width');
@@ -143,10 +116,10 @@ describe('parse bpmn as json', () => {
                 }
             }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyFlowNodes(json);
 
-      expect(model.shapes).to.have.lengthOf(2, 'shapes');
-      verifyShape(model.shapes[0], {
+      expect(model.flowNodes).to.have.lengthOf(2, 'flow nodes');
+      verifyShape(model.flowNodes[0], {
         shapeId: 'shape_startEvent_id_0',
         bpmnElementId: 'event_id_0',
         bpmnElementName: 'event name',
@@ -156,7 +129,7 @@ describe('parse bpmn as json', () => {
         boundsWidth: 36,
         boundsHeight: 45,
       });
-      verifyShape(model.shapes[1], {
+      verifyShape(model.flowNodes[1], {
         shapeId: 'shape_startEvent_id_1',
         bpmnElementId: 'event_id_1',
         bpmnElementName: undefined,
@@ -192,17 +165,17 @@ describe('parse bpmn as json', () => {
                 }
             }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyFlowNodes(json);
 
-      expect(model.shapes).to.have.lengthOf(1, 'shapes');
-      expect(model.shapes[0].id).to.be.equal('shape_userTask_id_0', 'shape id');
+      expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
+      expect(model.flowNodes[0].id).to.be.equal('shape_userTask_id_0', 'shape id');
 
-      const bpmnElement = model.shapes[0].bpmnElement;
+      const bpmnElement = model.flowNodes[0].bpmnElement;
       expect(bpmnElement.id).to.be.equal('userTask_id_0', 'bpmn element id');
       expect(bpmnElement.name).to.be.equal('userTask name', 'bpmn element name');
       expect(bpmnElement.kind).to.be.equal(ShapeBpmnElementKind.TASK_USER, 'bpmn element kind');
 
-      const bounds = model.shapes[0].bounds;
+      const bounds = model.flowNodes[0].bounds;
       expect(bounds.x).to.be.equal(362, 'bounds x');
       expect(bounds.y).to.be.equal(232, 'bounds y');
       expect(bounds.width).to.be.equal(36, 'bounds width');
@@ -233,17 +206,17 @@ describe('parse bpmn as json', () => {
                 }
             }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyFlowNodes(json);
 
-      expect(model.shapes).to.have.lengthOf(1, 'shapes');
-      expect(model.shapes[0].id).to.be.equal('shape_userTask_id_1', 'shape id');
+      expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
+      expect(model.flowNodes[0].id).to.be.equal('shape_userTask_id_1', 'shape id');
 
-      const bpmnElement = model.shapes[0].bpmnElement;
+      const bpmnElement = model.flowNodes[0].bpmnElement;
       expect(bpmnElement.id).to.be.equal('userTask_id_1', 'bpmn element id');
       expect(bpmnElement.name).to.be.equal('userTask name', 'bpmn element name');
       expect(bpmnElement.kind).to.be.equal(ShapeBpmnElementKind.TASK_USER, 'bpmn element kind');
 
-      const bounds = model.shapes[0].bounds;
+      const bounds = model.flowNodes[0].bounds;
       expect(bounds.x).to.be.equal(362, 'bounds x');
       expect(bounds.y).to.be.equal(232, 'bounds y');
       expect(bounds.width).to.be.equal(36, 'bounds width');
@@ -283,10 +256,10 @@ describe('parse bpmn as json', () => {
                 }
             }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyFlowNodes(json);
 
-      expect(model.shapes).to.have.lengthOf(2, 'shapes');
-      verifyShape(model.shapes[0], {
+      expect(model.flowNodes).to.have.lengthOf(2, 'flow nodes');
+      verifyShape(model.flowNodes[0], {
         shapeId: 'shape_userTask_id_0',
         bpmnElementId: 'userTask_id_0',
         bpmnElementName: 'userTask name',
@@ -296,7 +269,7 @@ describe('parse bpmn as json', () => {
         boundsWidth: 36,
         boundsHeight: 45,
       });
-      verifyShape(model.shapes[1], {
+      verifyShape(model.flowNodes[1], {
         shapeId: 'shape_userTask_id_1',
         bpmnElementId: 'userTask_id_1',
         bpmnElementName: undefined,
@@ -335,7 +308,7 @@ describe('parse bpmn as json', () => {
           }
       }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json);
 
       expect(model.edges).to.have.lengthOf(1, 'edges');
       expect(model.edges[0].id).to.be.equal('edge_sequenceFlow_id_0', 'edges id');
@@ -372,7 +345,7 @@ describe('parse bpmn as json', () => {
           }
       }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json);
 
       expect(model.edges).to.have.lengthOf(1, 'edges');
       expect(model.edges[0].id).to.be.equal('edge_sequenceFlow_id_0', 'edges id');
@@ -416,7 +389,7 @@ describe('parse bpmn as json', () => {
           }
       }`;
 
-      const model = BpmnJsonParser.parse(JSON.parse(json));
+      const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json);
 
       expect(model.edges).to.have.lengthOf(2, 'edges');
       expect(model.edges[0].id).to.be.equal('edge_sequenceFlow_id_0', 'edges id');
