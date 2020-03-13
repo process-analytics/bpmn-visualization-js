@@ -11,7 +11,7 @@ export default class MxGraphRenderer {
     model.clear(); // ensure to remove manual changes or already loaded graphs
     model.beginUpdate();
     try {
-      this.insertShapes(bpmnModel.shapes);
+      this.insertFlowNodes(bpmnModel.flowNodes);
       this.insertEdges(bpmnModel.edges);
     } catch (e) {
       throw e;
@@ -20,7 +20,7 @@ export default class MxGraphRenderer {
     }
   }
 
-  private insertShapes(shapes: Shape[]): this {
+  private insertFlowNodes(shapes: Shape[]): this {
     shapes.forEach(shape => {
       const bounds = shape.bounds;
       const bpmnElement = shape.bpmnElement;
