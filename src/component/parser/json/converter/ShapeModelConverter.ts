@@ -29,7 +29,12 @@ export default class ShapeModelConverter extends AbstractConverter<ShapeBpmnElem
 
       ensureIsArray(lane.flowNodeRef).forEach(flowNodeRef => {
         const shapeBpmnElement = findFlowNodeBpmnElement(flowNodeRef);
-        shapeBpmnElement.parentId = lane.id;
+        if (shapeBpmnElement) {
+          shapeBpmnElement.parentId = lane.id;
+        } else {
+          // TODO error management
+          console.log('Lane element with id ' + flowNodeRef + ' is not found');
+        }
       });
     });
   }
@@ -52,11 +57,16 @@ export default class ShapeModelConverter extends AbstractConverter<ShapeBpmnElem
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(processes: Array<any> | any): ShapeBpmnElement[] {
-    // Deletes everything in the array, which does hit other references. More performant.
-    convertedFlowNodeBpmnElements.length = 0;
-    convertedLaneBpmnElements.length = 0;
+    try {
+      // Deletes everything in the array, which does hit other references. More performant.
+      convertedFlowNodeBpmnElements.length = 0;
+      convertedLaneBpmnElements.length = 0;
 
-    ensureIsArray(processes).forEach(process => this.parseProcess(process));
-    return convertedFlowNodeBpmnElements;
+      ensureIsArray(processes).forEach(process => this.parseProcess(process));
+      return convertedFlowNodeBpmnElements;
+    } catch (e) {
+      // TODO error management
+      console.log(e as Error);
+    }
   }
 }
