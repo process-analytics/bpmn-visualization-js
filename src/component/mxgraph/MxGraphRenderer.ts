@@ -15,8 +15,6 @@ export default class MxGraphRenderer {
       this.insertLanes(bpmnModel.lanes);
       this.insertFlowNodes(bpmnModel.flowNodes);
       this.insertEdges(bpmnModel.edges);
-    } catch (e) {
-      throw e;
     } finally {
       model.endUpdate();
     }
