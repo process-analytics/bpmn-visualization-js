@@ -6,6 +6,10 @@ import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElem
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
 
+const flowNodeKinds = Object.values(ShapeBpmnElementKind).filter(kind => {
+  return kind != ShapeBpmnElementKind.LANE;
+});
+
 export function findFlowNodeBpmnElement(id: string): ShapeBpmnElement {
   return convertedFlowNodeBpmnElements.find(i => i.id === id);
 }
@@ -47,12 +51,11 @@ export default class ShapeModelConverter extends AbstractConverter<ShapeBpmnElem
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  parseProcess(process: { [index: string]: any; startEvent: any; userTask: any; lane: any; laneSet: any }): void {
-    this.buildFlowNodeBpmnElement(process[ShapeBpmnElementKind.EVENT_START], ShapeBpmnElementKind.EVENT_START);
-    this.buildFlowNodeBpmnElement(process[ShapeBpmnElementKind.TASK_USER], ShapeBpmnElementKind.TASK_USER);
-
-    this.buildLaneBpmnElement(process.lane);
-    this.buildLaneSetBpmnElement(process.laneSet);
+  parseProcess(process: { [index: string]: any }): void {
+    flowNodeKinds.forEach(kind => this.buildFlowNodeBpmnElement(process[kind], kind));
+    // containers
+    this.buildLaneBpmnElement(process[ShapeBpmnElementKind.LANE]);
+    this.buildLaneSetBpmnElement(process['laneSet']);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
