@@ -1,0 +1,19 @@
+= BPMN Support - How To
+
+== Elements detection
+
+Except for special container elements like `Pool`, `Lane` and `Subprocess`, detecting a BPMN elements only requires to
+add a new value in the `ShapeBpmnElementKind` enum.
+
+The `ShapeModelConverter` uses the `ShapeBpmnElementKind` values to detect elements in the BPMN source.
+
+
+== Elements rendering
+
+When inserting an element on the graph, a style is passed to identify the way it will be rendered.
+
+The https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html[style] is registered in `MxGraphConfigurator`
+In particular, it refers to the name of a https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html[mxShape]
+used for the rendering.
+
+Custom BPMN shapes are also register by the `MxGraphConfigurator`
