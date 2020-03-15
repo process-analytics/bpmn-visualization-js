@@ -23,13 +23,13 @@ BPMN elements
 - activities
   - task
   - service task
-  - :heavy_check_mark: (0.1.0) user task
+  - :heavy_check_mark: user task (0.1.0)
 - events
-  - :heavy_check_mark: (0.1.0) start event
+  - :heavy_check_mark: start event (0.1.0)
   - end event
   - terminate end event
 - flows
-  - :heavy_check_mark: (0.1.0) sequence flow
+  - :heavy_check_mark: sequence flow (0.1.0)
 - gateways
   - exclusive gateway
   - parallel gateway
