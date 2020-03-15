@@ -6,6 +6,6 @@
  */
 export enum ShapeBpmnElementKind {
   LANE = 'lane',
-  TASK_USER = 'user',
-  EVENT_START = 'start',
+  TASK_USER = 'userTask',
+  EVENT_START = 'startEvent',
 }

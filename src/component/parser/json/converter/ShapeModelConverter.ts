@@ -47,9 +47,9 @@ export default class ShapeModelConverter extends AbstractConverter<ShapeBpmnElem
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  parseProcess(process: { startEvent: any; userTask: any; lane: any; laneSet: any }): void {
-    this.buildFlowNodeBpmnElement(process.startEvent, ShapeBpmnElementKind.EVENT_START);
-    this.buildFlowNodeBpmnElement(process.userTask, ShapeBpmnElementKind.TASK_USER);
+  parseProcess(process: { [index: string]: any; startEvent: any; userTask: any; lane: any; laneSet: any }): void {
+    this.buildFlowNodeBpmnElement(process[ShapeBpmnElementKind.EVENT_START], ShapeBpmnElementKind.EVENT_START);
+    this.buildFlowNodeBpmnElement(process[ShapeBpmnElementKind.TASK_USER], ShapeBpmnElementKind.TASK_USER);
 
     this.buildLaneBpmnElement(process.lane);
     this.buildLaneSetBpmnElement(process.laneSet);
