@@ -83,7 +83,7 @@ export default class MxGraphConfigurator {
   }
 
   private configureParallelGatewayStyle(): void {
-    const style = mxUtils.clone(this.graph.getStylesheet().getDefaultVertexStyle());
+    const style = this.cloneDefaultVertexStyle();
     style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RHOMBUS;
     style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
     style[mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
@@ -93,6 +93,6 @@ export default class MxGraphConfigurator {
     style[mxConstants.STYLE_SPACING_TOP] = 55;
     style[mxConstants.STYLE_SPACING_RIGHT] = 110;
     style[mxConstants.STYLE_GRADIENTCOLOR] = '#E9ECB1';
-    this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.GATEWAY_PARALLEL, style);
+    this.putCellStyle(ShapeBpmnElementKind.GATEWAY_PARALLEL, style);
   }
 }

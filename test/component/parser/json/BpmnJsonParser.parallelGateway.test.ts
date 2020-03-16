@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 
@@ -25,9 +24,7 @@ describe('parse bpmn as json for parallel gateway', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json);
-
-    expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
     verifyShape(model.flowNodes[0], {
       shapeId: 'shape_parallelGateway_id_0',
@@ -65,9 +62,7 @@ describe('parse bpmn as json for parallel gateway', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json);
-
-    expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
     verifyShape(model.flowNodes[0], {
       shapeId: 'shape_parallelGateway_id_1',
@@ -113,9 +108,8 @@ describe('parse bpmn as json for parallel gateway', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
-    expect(model.flowNodes).to.have.lengthOf(2, 'flow nodes');
     verifyShape(model.flowNodes[0], {
       shapeId: 'shape_parallelGateway_id_0',
       bpmnElementId: 'parallelGateway_id_0',
