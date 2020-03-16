@@ -2,10 +2,10 @@ import { JsonConvert, JsonConverter, OperationMode, ValueCheckingMode } from 'js
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import Shape from '../../../../model/bpmn/shape/Shape';
 import Bounds from '../../../../model/bpmn/Bounds';
-import { findLaneBpmnElement, findFlowNodeBpmnElement } from './ShapeModelConverter';
 import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
+import { findFlowNodeBpmnElement, findLaneBpmnElement } from './SemanticConverter';
 
 //////////////////////////////////////////////////////////////
 // TODO : To move in a singleton object to use here and in the BpmnJsonParser
