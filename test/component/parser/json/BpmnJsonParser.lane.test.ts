@@ -23,9 +23,8 @@ describe('parse bpmn as json for lane', () => {
                       }
                     }`;
 
-    const model = parseJsonAndExpectOnlyLanes(json);
+    const model = parseJsonAndExpectOnlyLanes(json, 1);
 
-    expect(model.lanes).to.have.lengthOf(1, 'lanes');
     verifyShape(model.lanes[0], {
       shapeId: 'Lane_1h5yeu4_di',
       bpmnElementId: 'Lane_12u5n6x',
@@ -103,9 +102,8 @@ describe('parse bpmn as json for lane', () => {
                       }
                     }`;
 
-    const model = parseJson(json);
+    const model = parseJsonAndExpectOnlyLanes(json, 1);
 
-    expect(model.lanes).to.have.lengthOf(1, 'lanes');
     verifyShape(model.lanes[0], {
       shapeId: 'Lane_1h5yeu4_di',
       bpmnElementId: 'Lane_12u5n6x',
@@ -186,9 +184,8 @@ describe('parse bpmn as json for lane', () => {
                       }
                     }`;
 
-    const model = parseJsonAndExpectOnlyLanes(json);
+    const model = parseJsonAndExpectOnlyLanes(json, 1);
 
-    expect(model.lanes).to.have.lengthOf(1, 'lanes');
     verifyShape(model.lanes[0], {
       shapeId: 'Lane_1h5yeu4_di',
       bpmnElementId: 'Lane_12u5n6x',
@@ -239,9 +236,8 @@ describe('parse bpmn as json for lane', () => {
                       }
                     }`;
 
-    const model = parseJsonAndExpectOnlyLanes(json);
+    const model = parseJsonAndExpectOnlyLanes(json, 2);
 
-    expect(model.lanes).to.have.lengthOf(2, 'lanes');
     verifyShape(model.lanes[0], {
       shapeId: 'Lane_164yevk_di',
       bpmnElementId: 'Lane_164yevk',

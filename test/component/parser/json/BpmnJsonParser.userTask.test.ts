@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 
@@ -25,21 +24,18 @@ describe('parse bpmn as json for user task', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
-    expect(model.flowNodes[0].id).to.be.equal('shape_userTask_id_0', 'shape id');
-
-    const bpmnElement = model.flowNodes[0].bpmnElement;
-    expect(bpmnElement.id).to.be.equal('userTask_id_0', 'bpmn element id');
-    expect(bpmnElement.name).to.be.equal('userTask name', 'bpmn element name');
-    expect(bpmnElement.kind).to.be.equal(ShapeBpmnElementKind.TASK_USER, 'bpmn element kind');
-
-    const bounds = model.flowNodes[0].bounds;
-    expect(bounds.x).to.be.equal(362, 'bounds x');
-    expect(bounds.y).to.be.equal(232, 'bounds y');
-    expect(bounds.width).to.be.equal(36, 'bounds width');
-    expect(bounds.height).to.be.equal(45, 'bounds height');
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_userTask_id_0',
+      bpmnElementId: 'userTask_id_0',
+      bpmnElementName: 'userTask name',
+      bpmnElementKind: ShapeBpmnElementKind.TASK_USER,
+      boundsX: 362,
+      boundsY: 232,
+      boundsWidth: 36,
+      boundsHeight: 45,
+    });
   });
 
   it('json containing one process declared as array with a single user task', () => {
@@ -66,21 +62,18 @@ describe('parse bpmn as json for user task', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
-    expect(model.flowNodes[0].id).to.be.equal('shape_userTask_id_1', 'shape id');
-
-    const bpmnElement = model.flowNodes[0].bpmnElement;
-    expect(bpmnElement.id).to.be.equal('userTask_id_1', 'bpmn element id');
-    expect(bpmnElement.name).to.be.equal('userTask name', 'bpmn element name');
-    expect(bpmnElement.kind).to.be.equal(ShapeBpmnElementKind.TASK_USER, 'bpmn element kind');
-
-    const bounds = model.flowNodes[0].bounds;
-    expect(bounds.x).to.be.equal(362, 'bounds x');
-    expect(bounds.y).to.be.equal(232, 'bounds y');
-    expect(bounds.width).to.be.equal(36, 'bounds width');
-    expect(bounds.height).to.be.equal(45, 'bounds height');
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_userTask_id_1',
+      bpmnElementId: 'userTask_id_1',
+      bpmnElementName: 'userTask name',
+      bpmnElementKind: ShapeBpmnElementKind.TASK_USER,
+      boundsX: 362,
+      boundsY: 232,
+      boundsWidth: 36,
+      boundsHeight: 45,
+    });
   });
 
   it('json containing one process with an array of user tasks  with name & without name', () => {
@@ -116,9 +109,8 @@ describe('parse bpmn as json for user task', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
-    expect(model.flowNodes).to.have.lengthOf(2, 'flow nodes');
     verifyShape(model.flowNodes[0], {
       shapeId: 'shape_userTask_id_0',
       bpmnElementId: 'userTask_id_0',

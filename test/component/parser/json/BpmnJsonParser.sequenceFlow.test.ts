@@ -1,5 +1,4 @@
-import { expect } from 'chai';
-import { parseJsonAndExpectOnlyEdgesAndFlowNodes } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
 
 describe('parse bpmn as json for sequence flow', () => {
   it('json containing one process with a single sequence flow', () => {
@@ -27,16 +26,15 @@ describe('parse bpmn as json for sequence flow', () => {
           }
       }`;
 
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json);
+    const model = parseJsonAndExpectOnlyEdges(json, 1);
 
-    expect(model.edges).to.have.lengthOf(1, 'edges');
-    expect(model.edges[0].id).to.be.equal('edge_sequenceFlow_id_0', 'edges id');
-
-    const bpmnElement = model.edges[0].bpmnElement;
-    expect(bpmnElement.id).to.be.equal('sequenceFlow_id_0', 'bpmn element id');
-    expect(bpmnElement.name).to.be.equal('label 1', 'bpmn element name');
-    expect(bpmnElement.sourceRefId).to.be.equal('sourceRef_id_xsdas', 'bpmn element sourceRef');
-    expect(bpmnElement.targetRefId).to.be.equal('targetRef_RLk', 'bpmn element targetRef');
+    verifyEdge(model.edges[0], {
+      edgeId: 'edge_sequenceFlow_id_0',
+      bpmnElementId: 'sequenceFlow_id_0',
+      bpmnElementName: 'label 1',
+      bpmnElementSourceRefId: 'sourceRef_id_xsdas',
+      bpmnElementTargetRefId: 'targetRef_RLk',
+    });
   });
 
   it('json containing one process declared as array with a single sequence flow', () => {
@@ -64,16 +62,15 @@ describe('parse bpmn as json for sequence flow', () => {
           }
       }`;
 
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json);
+    const model = parseJsonAndExpectOnlyEdges(json, 1);
 
-    expect(model.edges).to.have.lengthOf(1, 'edges');
-    expect(model.edges[0].id).to.be.equal('edge_sequenceFlow_id_0', 'edges id');
-
-    const bpmnElement = model.edges[0].bpmnElement;
-    expect(bpmnElement.id).to.be.equal('sequenceFlow_id_0', 'bpmn element id');
-    expect(bpmnElement.name).to.be.equal('label 1', 'bpmn element name');
-    expect(bpmnElement.sourceRefId).to.be.equal('sourceRef_id_xsdas', 'bpmn element sourceRef');
-    expect(bpmnElement.targetRefId).to.be.equal('targetRef_RLk', 'bpmn element targetRef');
+    verifyEdge(model.edges[0], {
+      edgeId: 'edge_sequenceFlow_id_0',
+      bpmnElementId: 'sequenceFlow_id_0',
+      bpmnElementName: 'label 1',
+      bpmnElementSourceRefId: 'sourceRef_id_xsdas',
+      bpmnElementTargetRefId: 'targetRef_RLk',
+    });
   });
 
   it('json containing one process with an array of sequence flows with name & without name', () => {
@@ -108,20 +105,21 @@ describe('parse bpmn as json for sequence flow', () => {
           }
       }`;
 
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json);
+    const model = parseJsonAndExpectOnlyEdges(json, 2);
 
-    expect(model.edges).to.have.lengthOf(2, 'edges');
-    expect(model.edges[0].id).to.be.equal('edge_sequenceFlow_id_0', 'edges id');
-
-    const bpmnElementWithName = model.edges[0].bpmnElement;
-    expect(bpmnElementWithName.id).to.be.equal('sequenceFlow_id_0', 'bpmn element id');
-    expect(bpmnElementWithName.name).to.be.equal('label 1', 'bpmn element name');
-    expect(bpmnElementWithName.sourceRefId).to.be.equal('sourceRef_id_xsdas', 'bpmn element sourceRef');
-    expect(bpmnElementWithName.targetRefId).to.be.equal('targetRef_RLk', 'bpmn element targetRef');
-
-    const bpmnElementWithoutName = model.edges[1].bpmnElement;
-    expect(bpmnElementWithoutName.id).to.be.equal('sequenceFlow_id_1', 'bpmn element id');
-    expect(bpmnElementWithoutName.sourceRefId).to.be.equal('sequenceFlow_id_1', 'bpmn element sourceRef');
-    expect(bpmnElementWithoutName.targetRefId).to.be.equal('targetRef_1', 'bpmn element targetRef');
+    verifyEdge(model.edges[0], {
+      edgeId: 'edge_sequenceFlow_id_0',
+      bpmnElementId: 'sequenceFlow_id_0',
+      bpmnElementName: 'label 1',
+      bpmnElementSourceRefId: 'sourceRef_id_xsdas',
+      bpmnElementTargetRefId: 'targetRef_RLk',
+    });
+    verifyEdge(model.edges[1], {
+      edgeId: 'edge_sequenceFlow_id_1',
+      bpmnElementId: 'sequenceFlow_id_1',
+      bpmnElementName: undefined,
+      bpmnElementSourceRefId: 'sequenceFlow_id_1',
+      bpmnElementTargetRefId: 'targetRef_1',
+    });
   });
 });
