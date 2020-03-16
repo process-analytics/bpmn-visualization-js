@@ -82,7 +82,7 @@ export default class MxGraphConfigurator {
     this.putCellStyle(ShapeBpmnElementKind.TASK_USER, style);
   }
 
-  private configureParallelGatewayStyle() {
+  private configureParallelGatewayStyle(): void {
     const style = mxUtils.clone(this.graph.getStylesheet().getDefaultVertexStyle());
     style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RHOMBUS;
     style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
