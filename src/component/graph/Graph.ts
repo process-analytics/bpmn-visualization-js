@@ -9,8 +9,8 @@ const { mxClient, mxUtils, mxGraph, mxGraphModel } = mxgraphFactory({
 });
 
 mxGraph.prototype.edgeLabelsMovable = false;
-// mxGraph.prototype.cellsLocked = true;
-// mxGraph.prototype.cellsSelectable = false;
+mxGraph.prototype.cellsLocked = true;
+mxGraph.prototype.cellsSelectable = false;
 
 //mxGraph.prototype.constrainChildren = false;
 //mxGraph.prototype.extendParents = false;
