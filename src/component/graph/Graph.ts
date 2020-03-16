@@ -12,10 +12,6 @@ mxGraph.prototype.edgeLabelsMovable = false;
 mxGraph.prototype.cellsLocked = true;
 mxGraph.prototype.cellsSelectable = false;
 
-//mxGraph.prototype.constrainChildren = false;
-//mxGraph.prototype.extendParents = false;
-mxGraph.prototype.extendParentsOnAdd = false;
-
 export default class Graph {
   protected readonly graph: mxgraph.mxGraph;
 
