@@ -17,6 +17,7 @@ jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL; // never allow 
 
 @JsonConverter
 export default class DiagramConverter extends AbstractConverter<BpmnModel> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(bpmnDiagram: Array<any> | any): BpmnModel {
     try {
       const plane = bpmnDiagram.BPMNPlane;
@@ -30,6 +31,8 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
       console.log(e as Error);
     }
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeShapes(shapes: any): Shapes {
     const convertedShapes: Shapes = { flowNodes: [], lanes: [] };
 
@@ -56,6 +59,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
     return convertedShapes;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeShape(shape: any, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
     const bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
@@ -65,6 +69,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeEdges(edges: any): Edge[] {
     return jsonConvert.deserializeArray(ensureIsArray(edges), Edge);
   }

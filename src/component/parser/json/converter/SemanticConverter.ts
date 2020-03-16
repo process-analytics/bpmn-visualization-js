@@ -87,7 +87,8 @@ export default class SemanticConverter extends AbstractConverter<Semantic> {
     });
   }
 
-  private assignParent(lane: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private assignParent(lane: any): void {
     ensureIsArray(lane.flowNodeRef).forEach(flowNodeRef => {
       const shapeBpmnElement = findFlowNodeBpmnElement(flowNodeRef);
       if (shapeBpmnElement) {
