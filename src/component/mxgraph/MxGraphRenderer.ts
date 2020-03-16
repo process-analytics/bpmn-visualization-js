@@ -89,7 +89,8 @@ export default class MxGraphRenderer {
     }
   }
 
-  private getCell(id: string): mxgraph.mxCell {
+  // TODO visible for testing
+  public getCell(id: string): mxgraph.mxCell {
     return this.graph.getModel().getCell(id);
   }
 
