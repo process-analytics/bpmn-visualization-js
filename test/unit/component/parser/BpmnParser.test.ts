@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import BpmnParser from '../../../src/component/parser/BpmnParser';
+import BpmnParser from '../../../../src/component/parser/BpmnParser';
 
 describe('parse xml to model', () => {
   it('model is filled', () => {

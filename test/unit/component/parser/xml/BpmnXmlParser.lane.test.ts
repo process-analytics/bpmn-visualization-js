@@ -1,4 +1,4 @@
-import BpmnXmlParser from '../../../../src/component/parser/xml/BpmnXmlParser';
+import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 import { verifyDefinitions, verifyIsNotEmptyArray, verifyProperties } from './XMLTestUtils';
 
 describe('parse bpmn as xml for lane', () => {

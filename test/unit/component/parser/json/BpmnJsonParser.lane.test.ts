@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJson, parseJsonAndExpectOnlyLanes, verifyShape } from './JsonTestUtils';
 
 describe('parse bpmn as json for lane', () => {

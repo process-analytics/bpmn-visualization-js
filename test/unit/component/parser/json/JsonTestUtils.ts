@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import Shape from '../../../../src/model/bpmn/shape/Shape';
-import BpmnJsonParser from '../../../../src/component/parser/json/BpmnJsonParser';
-import Edge from '../../../../src/model/bpmn/edge/Edge';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
+import Shape from '../../../../../src/model/bpmn/shape/Shape';
+import BpmnJsonParser from '../../../../../src/component/parser/json/BpmnJsonParser';
+import Edge from '../../../../../src/model/bpmn/edge/Edge';
 
 export interface ExpectedShape {
   shapeId: string;

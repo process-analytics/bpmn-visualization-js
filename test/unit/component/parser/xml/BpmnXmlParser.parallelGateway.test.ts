@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import BpmnXmlParser from '../../../../src/component/parser/xml/BpmnXmlParser';
+import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 import { verifyBounds, verifyDefinitions, verifyIsNotEmptyArray, verifyProperties } from './XMLTestUtils';
 
 describe('parse bpmn as xml for start event', () => {
