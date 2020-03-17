@@ -19,7 +19,7 @@ Note that the bpmn elements listed here may not be rendered with their final des
 
 BPMN elements
 - pool
-- lane
+- :heavy_check_mark: lane (0.1.1)
 - activities
   - task
   - service task
