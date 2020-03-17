@@ -15,7 +15,7 @@ The step content is subject to change and is provided for information
 
 lib version: `0.1.x`
 
-Note that the bpmn elements listed here may not be rendered with their final design at part of the initial support. 
+Note that the BPMN elements listed here may not be rendered with their final design at part of the initial support.
 
 BPMN elements
 
