@@ -2,16 +2,16 @@
 
 You can track related issues and pull requests with the following labels
 
-- https://github.com/bonitasoft-labs/bpmn-visu-js/issues?q=label%3A%22BPMN+support%22+is%3Aclosed[BPMN support]: BPMN
+* https://github.com/bonitasoft-labs/bpmn-visu-js/issues?q=label%3A%22BPMN+support%22+is%3Aclosed[BPMN support]: BPMN
 elements recognized by the lib
-- https://github.com/bonitasoft-labs/bpmn-visu-js/issues?q=label%3A%22BPMN+rendering%22+is%3Aclosed[BPMN rendering]:
+* https://github.com/bonitasoft-labs/bpmn-visu-js/issues?q=label%3A%22BPMN+rendering%22+is%3Aclosed[BPMN rendering]:
 BPMN elements rendered with their final design
 
 == Opened implementation steps
 
 The step content is subject to change and is provided for information
 
-=== Step 1 - minimal Bpmn support
+=== Step 1 - minimal BPMN support
 
 lib version: `0.1.x`
 
@@ -39,37 +39,37 @@ BPMN elements
 
 === Step 2
 
-- activities
-* call activity
-* manual task
-- activity boundaries (to be refined)
-- activity markers
-* loop
-* multi instantiation parallel
-* multi instantiation sequential
-- events
-* timer start event
-- signal start event
-- flows
-* message flow
-- gateways
-* inclusive gateway
-- BPMN artifacts
-* group
+* activities
+** call activity
+** manual task
+* activity boundaries (to be refined)
+* activity markers
+** loop
+** multi instantiation parallel
+** multi instantiation sequential
+* events
+** timer start event
+* signal start event
+* flows
+** message flow
+* gateways
+** inclusive gateway
+* BPMN artifacts
+** group
 
 === Step 3
 
-- activities
-* Send task
-* Receive task
+* activities
+** Send task
+** Receive task
 
 === Step 4
 
-- subprocess
-- activities
-* business rules task
-* script task
-- BPMN extensions support
+* subprocess
+* activities
+** business rules task
+** script task
+* BPMN extensions support
 
 === To be continued
 
