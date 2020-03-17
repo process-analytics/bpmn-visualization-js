@@ -1,4 +1,5 @@
 = Description of the supported BPMN elements progression in BPMN-visu-js.
+:icons: font
 
 You can track related issues and pull requests with the following labels
 
@@ -15,27 +16,27 @@ The step content is subject to change and is provided for information
 
 lib version: `0.1.x`
 
-Note that the BPMN elements listed here may not be rendered with their final design at part of the initial support.
+NOTE: The BPMN elements listed here may not be rendered with their final design at part of the initial support.
 
 BPMN elements
 
 * pool
-* :heavy_check_mark: lane (0.1.1)
+* [x] lane (0.1.1)
 * activities
-** task
-** service task
-** :heavy_check_mark: user task (0.1.0)
+** [ ] task
+** [ ] service task
+** [x] user task (0.1.0)
 * events
-** :heavy_check_mark: start event (0.1.0)
-** end event
-** terminate end event
+** [x] start event (0.1.0)
+** [ ] end event
+** [ ] terminate end event
 * flows
-** :heavy_check_mark: sequence flow (0.1.0)
+** [x] sequence flow (0.1.0)
 * gateways
-** exclusive gateway
+** [ ] exclusive gateway
 ** :heavy_check_mark: parallel gateway (0.1.1)
 * BPMN artifacts
-** text annotation
+** [ ] text annotation
 
 === Step 2
 
