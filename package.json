@@ -15,8 +15,8 @@
     "watch": "rollup -cw --environment devMode:true",
     "lint": "tsc --noEmit && eslint \"*/**/*.{js,ts,tsx}\" --quiet --fix",
     "lint-check": "tsc --noEmit && eslint \"*/**/*.{js,ts,tsx}\" --max-warnings 0",
-    "test": "cross-env TS_NODE_COMPILER_OPTIONS={\\\"module\\\":\\\"commonjs\\\"} mocha --exit --require ts-node/register --colors test/unit/**/*.ts",
-    "e2e": "jest --runInBand",
+    "test": "jest --runInBand",
+    "e2e": "jest --runInBand --config=jest.config.e2e.js",
     "coverage": "nyc npm run test"
   },
   "lint-staged": {
@@ -25,18 +25,13 @@
       "git add"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsc --noEmit && lint-staged"
-    }
-  },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@rollup/plugin-node-resolve": "^7.1.1",
     "@types/chai": "^4.2.10",
     "@types/jest": "^25.1.4",
     "@types/jest-environment-puppeteer": "^4.3.1",
-    "@types/mocha": "^7.0.1",
+    "@types/puppeteer": "^2.0.1",
     "@typescript-eslint/eslint-plugin": "^2.21.0",
     "@typescript-eslint/parser": "^2.21.0",
     "chai": "^4.2.0",
@@ -45,16 +40,20 @@
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
     "husky": "^4.2.3",
+    "jest": "^25.1.0",
+    "jest-environment-puppeteer-jsdom": "^4.3.1",
+    "jest-puppeteer": "^4.4.0",
     "lint-staged": "^10.0.8",
-    "mocha": "^7.1.0",
     "nyc": "^15.0.0",
     "prettier": "^1.19.1",
+    "puppeteer": "^2.1.1",
     "rollup": "^1.32.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-livereload": "^1.0.4",
     "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-typescript2": "^0.26.0",
+    "ts-jest": "^25.2.1",
     "ts-node": "^8.6.2",
     "typescript": "^3.8.2"
   },
