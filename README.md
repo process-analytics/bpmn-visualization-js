@@ -13,8 +13,7 @@ A JavaScript library to visualize process execution data. Diagrams are displayed
 
 You currently must build the project prior to use it (see bellow).
 
-If you need BPMN examples, you can use resources from the from [BPMN Model Interchange Working Group (BPMN MIWG
-)](http://www.omgwiki.org/bpmn-miwg)
+If you need BPMN examples, you can use resources from the from [BPMN Model Interchange Working Group (BPMN MIWG)](http://www.omgwiki.org/bpmn-miwg)
 - https://github.com/bpmn-miwg/bpmn-miwg-test-suite
 - https://github.com/bpmn-miwg/bpmn-miwg-demos
 
