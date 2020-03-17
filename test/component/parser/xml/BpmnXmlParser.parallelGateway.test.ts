@@ -7,7 +7,7 @@ describe('parse bpmn as xml for start event', () => {
     const singleProcess = `<?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="sid-38422fae-e03e-43a3-bef4-bd33b32041b2" targetNamespace="http://bonitasoft.com/_RLk98HH_Eei9Z4IY4QeFuA">
   <process id="Process_1" isExecutable="false">  
-    <parallelGateway id="Gateway_1" name="gateway 2">
+    <parallelGateway id="Gateway_1" name="gateway 1">
       <incoming>Flow_08z7uoy</incoming>
       <incoming>Flow_0sqwsrw</incoming>
       <outgoing>Flow_09zytr1</outgoing>
