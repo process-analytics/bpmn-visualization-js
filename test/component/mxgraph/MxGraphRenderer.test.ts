@@ -6,6 +6,7 @@ import Bounds from '../../../src/model/bpmn/Bounds';
 import ShapeBpmnElement from '../../../src/model/bpmn/shape/ShapeBpmnElement';
 import Shape from '../../../src/model/bpmn/shape/Shape';
 import { expect } from 'chai';
+import { JSDOM } from 'jsdom';
 
 // const { mxGraph, mxGraphModel } = mxgraphFactory({
 //   mxLoadResources: false,
@@ -49,8 +50,9 @@ describe('mxgraph renderer', function() {
     // runs before each test in this block
     // global.window
     console.info('before');
-    Object.defineProperty(global, 'document', {});
-    Object.defineProperty(global, 'window', {});
+
+    // Object.defineProperty(global, 'document', {});
+    // Object.defineProperty(global, 'window', {});
   });
   afterEach('restore global window', function() {
     // global.window = windowRef;
@@ -58,17 +60,26 @@ describe('mxgraph renderer', function() {
   });
 
   it('elements in lane using absolute coordinates are placed at the right relative coordinates in the lane', function() {
-    // const container = document.createElement('<div>');
+    const dom = new JSDOM(`<!DOCTYPE html><div id="graph">here comes the graph</div>`);
+    console.log(dom.window.document.querySelector('div').textContent);
+
+    const container = dom.window.document.querySelector('div');
+    // const container = dom.window.document.createElement('<div>');
     // container.id = 'graph';
-    // console.log(JSON.stringify(container));
+    // console.log(container);
+
+    // Object.defineProperty(global, 'window', {});
+    //window = dom.window;
+    window = null; //dom.window;
+
     // const mxGraphRenderer: MxGraphRenderer = null;
 
     const { mxGraph, mxGraphModel } = mxgraphFactory({
       mxLoadResources: false,
       mxLoadStylesheets: false,
     });
-
-    const container: any = null;
+    //
+    // const container: any = null;
     const graph = new mxGraph(container, new mxGraphModel());
     const mxGraphRenderer = new MxGraphRenderer(graph);
 
