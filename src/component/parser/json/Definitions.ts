@@ -13,7 +13,7 @@ export class Definitions {
   @JsonProperty('BPMNDiagram', DiagramConverter)
   private readonly _bpmnModel: BpmnModel;
 
-  // Need to have _semantic before _bpmnModel, because we reference _semantic in them.
+  // Need to have _semantic before _bpmnModel, because we reference _semantic in _bpmnModel.
   constructor(semantic?: Semantic, bpmnModel?: BpmnModel) {
     this._semantic = semantic;
     this._bpmnModel = bpmnModel;
