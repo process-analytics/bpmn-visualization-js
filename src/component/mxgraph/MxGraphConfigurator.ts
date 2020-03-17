@@ -21,6 +21,7 @@ export default class MxGraphConfigurator {
     this.configureLaneStyle();
     this.configureStartEventStyle();
     this.configureUserTaskStyle();
+    this.configureParallelGatewayStyle();
   }
 
   private getStylesheet(): any {
@@ -79,5 +80,19 @@ export default class MxGraphConfigurator {
     style[mxConstants.STYLE_STROKEWIDTH] = 2;
     style[mxConstants.STYLE_ROUNDED] = true;
     this.putCellStyle(ShapeBpmnElementKind.TASK_USER, style);
+  }
+
+  private configureParallelGatewayStyle(): void {
+    const style = this.cloneDefaultVertexStyle();
+    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RHOMBUS;
+    style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
+    style[mxConstants.STYLE_STROKECOLOR] = '#96A826';
+    style[mxConstants.STYLE_STROKEWIDTH] = 1.7;
+
+    style[mxConstants.STYLE_SPACING_TOP] = 55;
+    style[mxConstants.STYLE_SPACING_RIGHT] = 110;
+    style[mxConstants.STYLE_GRADIENTCOLOR] = '#E9ECB1';
+    this.putCellStyle(ShapeBpmnElementKind.GATEWAY_PARALLEL, style);
   }
 }
