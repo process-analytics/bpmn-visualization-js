@@ -1,5 +1,6 @@
 = Description of the supported BPMN elements progression in BPMN-visu-js.
 :icons: font
+:toc: preamble
 
 You can track related issues and pull requests with the following labels
 
