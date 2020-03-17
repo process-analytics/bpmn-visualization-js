@@ -1,4 +1,4 @@
-import { mxgraphFactory } from 'ts-mxgraph';
+import { mxgraph, mxgraphFactory } from 'ts-mxgraph';
 import BpmnModel from '../../../src/model/bpmn/BpmnModel';
 import MxGraphRenderer from '../../../src/component/mxgraph/MxGraphRenderer';
 import { ShapeBpmnElementKind } from '../../../src/model/bpmn/shape/ShapeBpmnElementKind';
@@ -7,10 +7,10 @@ import ShapeBpmnElement from '../../../src/model/bpmn/shape/ShapeBpmnElement';
 import Shape from '../../../src/model/bpmn/shape/Shape';
 import { expect } from 'chai';
 
-const { mxGraph, mxGraphModel } = mxgraphFactory({
-  mxLoadResources: false,
-  mxLoadStylesheets: false,
-});
+// const { mxGraph, mxGraphModel } = mxgraphFactory({
+//   mxLoadResources: false,
+//   mxLoadStylesheets: false,
+// });
 
 interface ElementConfig {
   bpmnElementId: string;
@@ -43,9 +43,33 @@ function startEvent(config: ChildElementConfig): Shape {
   return new Shape(null, bpmnElement(config, ShapeBpmnElementKind.EVENT_START, config.parentId), bounds(config));
 }
 
-describe('mxgraph renderer', () => {
-  it('elements in lane using absolute coordinates are placed at the right relative coordinates in the lane', () => {
-    const graph = new mxGraph(null, new mxGraphModel());
+describe('mxgraph renderer', function() {
+  // const windowRef = global.window;
+  beforeEach('stub global window', function() {
+    // runs before each test in this block
+    // global.window
+    console.info('before');
+    Object.defineProperty(global, 'document', {});
+    Object.defineProperty(global, 'window', {});
+  });
+  afterEach('restore global window', function() {
+    // global.window = windowRef;
+    console.info('after');
+  });
+
+  it('elements in lane using absolute coordinates are placed at the right relative coordinates in the lane', function() {
+    // const container = document.createElement('<div>');
+    // container.id = 'graph';
+    // console.log(JSON.stringify(container));
+    // const mxGraphRenderer: MxGraphRenderer = null;
+
+    const { mxGraph, mxGraphModel } = mxgraphFactory({
+      mxLoadResources: false,
+      mxLoadStylesheets: false,
+    });
+
+    const container: any = null;
+    const graph = new mxGraph(container, new mxGraphModel());
     const mxGraphRenderer = new MxGraphRenderer(graph);
 
     let model: BpmnModel;
