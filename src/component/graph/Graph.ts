@@ -14,20 +14,17 @@ mxGraph.prototype.cellsSelectable = false;
 
 class MySvgCanvas2D extends mxSvgCanvas2D {
   public minStrokeWidth: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(root: any, styleEnabled?: any) {
     super(root, styleEnabled);
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   addNode(filled: any, stroked: any): void {
-    console.log(this);
     super.addNode(filled, stroked);
-    console.log('ADDING NODE FROM EXT');
   }
 }
 
 mxShape.prototype.createSvgCanvas = function() {
-  console.log(this);
-  console.log(this.state.cell.id);
-  console.log(this.state.cell.style);
   const canvas = new MySvgCanvas2D(this.node, false);
   canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
   canvas.pointerEventsValue = this.svgPointerEvents;
