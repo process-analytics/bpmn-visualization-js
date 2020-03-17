@@ -9,6 +9,15 @@ A JavaScript library to visualize process execution data. Diagrams are displayed
 
 **Supported Browsers**: Chrome, Firefox, Safari, Edge
 
+# Demos
+
+You currently must build the project prior to use it (see bellow).
+
+If you need BPMN examples, you can use resources from the from [BPMN Model Interchange Working Group (BPMN MIWG)](http://www.omgwiki.org/bpmn-miwg)
+- https://github.com/bpmn-miwg/bpmn-miwg-test-suite
+- https://github.com/bpmn-miwg/bpmn-miwg-demos
+
+
 # Development
 
 To build the project, see the [Contributing guide](CONTRIBUTING.md#Build) :slightly_smiling_face:
