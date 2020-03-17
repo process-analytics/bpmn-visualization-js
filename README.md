@@ -26,7 +26,7 @@ If you need BPMN examples, you can use resources from the from [BPMN Model Inter
 
 `BPMN Visu JS` is in early development stages and is subject to changes until the `1.0.0` version is released.
 
-We are currently focusing on the [BPMN support](docs/bpmn-support-roadmap.md) to be able to render most of the BPMN
+We are currently focusing on the [BPMN support](docs/bpmn-support-roadmap.adoc) to be able to render most of the BPMN
 elements.
 
 Then, we will work on BPMN extensions, library extension points.
