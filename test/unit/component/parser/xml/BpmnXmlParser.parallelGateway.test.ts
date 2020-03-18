@@ -1,5 +1,4 @@
-import { expect } from 'chai';
-import BpmnXmlParser from '../../../../src/component/parser/xml/BpmnXmlParser';
+import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 import { verifyBounds, verifyDefinitions, verifyIsNotEmptyArray, verifyProperties } from './XMLTestUtils';
 
 describe('parse bpmn as xml for start event', () => {
@@ -34,7 +33,7 @@ describe('parse bpmn as xml for start event', () => {
     const process = json.definitions.process;
     verifyProperties(process, ['parallelGateway'], []);
     const parallelGateway = process.parallelGateway;
-    verifyIsNotEmptyArray(parallelGateway, 'parallelGateway');
+    verifyIsNotEmptyArray(parallelGateway);
     verifyProperties(parallelGateway[0], ['id', 'name', 'outgoing', 'incoming'], []);
     verifyProperties(parallelGateway[1], ['id'], ['name', 'outgoing', 'incoming']);
 
@@ -44,7 +43,7 @@ describe('parse bpmn as xml for start event', () => {
     const plane = diagram.BPMNPlane;
     verifyProperties(plane, ['BPMNShape'], []);
     const shapes = plane.BPMNShape;
-    verifyIsNotEmptyArray(shapes, 'BPMNShape');
+    verifyIsNotEmptyArray(shapes);
     verifyProperties(shapes[0], ['id', 'bpmnElement', 'Bounds'], []);
     verifyBounds(shapes[0], 362, 232, 36, 35);
 
@@ -87,16 +86,16 @@ describe('parse bpmn as xml for start event', () => {
 
     // Model
     const process = json.definitions.process;
-    verifyIsNotEmptyArray(process, 'process');
+    verifyIsNotEmptyArray(process);
     const process0 = process[0];
-    expect(process0).to.have.property('parallelGateway');
+    verifyProperties(process0, ['parallelGateway'], []);
     const parallelGateway = process0.parallelGateway;
-    verifyIsNotEmptyArray(parallelGateway, 'parallelGateway');
+    verifyIsNotEmptyArray(parallelGateway);
     verifyProperties(parallelGateway[0], ['id', 'name', 'outgoing', 'incoming'], []);
     verifyProperties(parallelGateway[1], ['id'], ['name', 'outgoing', 'incoming']);
 
     const process1 = process[1];
-    expect(process1).to.have.property('parallelGateway');
+    verifyProperties(process1, ['parallelGateway'], []);
     verifyProperties(process1.parallelGateway, ['id'], ['name', 'outgoing', 'incoming']);
   });
 });

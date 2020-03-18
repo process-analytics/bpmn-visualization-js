@@ -1,5 +1,4 @@
-import { expect } from 'chai';
-import BpmnXmlParser from '../../../../src/component/parser/xml/BpmnXmlParser';
+import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 import { verifyBounds, verifyDefinitions, verifyIsNotEmptyArray, verifyProperties } from './XMLTestUtils';
 
 describe('parse bpmn as xml for user task', () => {
@@ -30,7 +29,7 @@ describe('parse bpmn as xml for user task', () => {
     const process = json.definitions.process;
     verifyProperties(process, ['userTask'], []);
     const userTasks = process.userTask;
-    verifyIsNotEmptyArray(userTasks, 'userTask');
+    verifyIsNotEmptyArray(userTasks);
     verifyProperties(userTasks[0], ['id', 'name'], []);
     verifyProperties(userTasks[1], ['id', 'name'], []);
 
@@ -40,7 +39,7 @@ describe('parse bpmn as xml for user task', () => {
     const plane = diagram.BPMNPlane;
     verifyProperties(plane, ['BPMNShape'], []);
     const shapes = plane.BPMNShape;
-    verifyIsNotEmptyArray(shapes, 'BPMNShape');
+    verifyIsNotEmptyArray(shapes);
     verifyProperties(shapes[0], ['id', 'bpmnElement', 'Bounds'], []);
     verifyBounds(shapes[0], 303, 244, 120, 60);
 
@@ -79,16 +78,16 @@ describe('parse bpmn as xml for user task', () => {
 
     // Model
     const process = json.definitions.process;
-    verifyIsNotEmptyArray(process, 'process');
+    verifyIsNotEmptyArray(process);
     const process0 = process[0];
-    expect(process0).to.have.property('userTask');
+    verifyProperties(process0, ['userTask'], []);
     const userTasks = process0.userTask;
-    verifyIsNotEmptyArray(userTasks, 'userTask');
+    verifyIsNotEmptyArray(userTasks);
     verifyProperties(userTasks[0], ['id', 'name'], []);
     verifyProperties(userTasks[1], ['id', 'name'], []);
 
     const process1 = process[1];
-    expect(process1).to.have.property('userTask');
+    verifyProperties(process1, ['userTask'], []);
     verifyProperties(process1.userTask, ['id', 'name'], []);
   });
 });
