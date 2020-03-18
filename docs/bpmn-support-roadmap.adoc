@@ -34,7 +34,7 @@ BPMN elements
 * flows
 ** [x] sequence flow (0.1.0)
 * gateways
-** [ ] exclusive gateway
+** [x] exclusive gateway (0.1.1)
 ** [x] parallel gateway (0.1.1)
 * BPMN artifacts
 ** [ ] text annotation
