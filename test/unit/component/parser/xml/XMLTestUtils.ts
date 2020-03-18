@@ -25,3 +25,8 @@ export function verifyDefinitions(json: any): void {
   verifyProperties(json, ['definitions'], []);
   verifyProperties(json.definitions, ['process', 'BPMNDiagram'], []);
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function verifyDefinitionsWithCollaboration(json: any): void {
+  verifyProperties(json, ['definitions'], []);
+  verifyProperties(json.definitions, ['collaboration', 'process', 'BPMNDiagram'], []);
+}
