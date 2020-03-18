@@ -9,6 +9,10 @@ export function findProcessRefParticipant(id: string): Participant {
   return convertedProcessRefParticipants.find(i => i.id === id);
 }
 
+export function findProcessRefParticipantByProcessRef(processRef: string): Participant {
+  return convertedProcessRefParticipants.find(i => i.processRef === processRef);
+}
+
 // TODO : To move in a singleton object to use here and in the BpmnJsonParser
 const jsonConvert: JsonConvert = new JsonConvert();
 jsonConvert.operationMode = OperationMode.ENABLE;

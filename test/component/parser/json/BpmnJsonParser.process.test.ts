@@ -94,7 +94,6 @@ describe('parse bpmn as json for process/pool', () => {
     });
 
     const lane = model.lanes[0];
-    // TODO expect lane parent id is set/defined
     verifyShape(lane, {
       shapeId: 'Lane_1h5yeu4_di',
       bpmnElementId: 'Lane_12u5n6x',
@@ -104,7 +103,7 @@ describe('parse bpmn as json for process/pool', () => {
       boundsY: 232,
       boundsWidth: 36,
       boundsHeight: 45,
-      // parentId: 'Participant_0nuvj8r',
+      parentId: 'Participant_0nuvj8r',
     });
   });
 
@@ -191,7 +190,6 @@ describe('parse bpmn as json for process/pool', () => {
       parentId: undefined,
     });
 
-    // TODO expect lane parent id is set/defined
     verifyShape(model.lanes[0], {
       shapeId: 'Lane_1_1_di',
       bpmnElementId: 'Lane_1_1',
@@ -201,7 +199,7 @@ describe('parse bpmn as json for process/pool', () => {
       boundsY: 232,
       boundsWidth: 36,
       boundsHeight: 45,
-      // parentId: 'Participant_1',
+      parentId: 'Participant_1',
     });
     verifyShape(model.lanes[1], {
       shapeId: 'Lane_2_1_di',
@@ -212,7 +210,7 @@ describe('parse bpmn as json for process/pool', () => {
       boundsY: 1232,
       boundsWidth: 36,
       boundsHeight: 45,
-      // parentId: 'Participant_1',
+      parentId: 'Participant_2',
     });
   });
 
@@ -313,7 +311,6 @@ describe('parse bpmn as json for process/pool', () => {
     });
 
     const lane = model.flowNodes[0];
-    // TODO expect startEvent parent id is set/defined
     verifyShape(lane, {
       shapeId: 'shape_startEvent_id_0',
       bpmnElementId: 'event_id_0',
@@ -323,7 +320,7 @@ describe('parse bpmn as json for process/pool', () => {
       boundsY: 232,
       boundsWidth: 36,
       boundsHeight: 45,
-      // parentId: 'Participant_0nuvj8r',
+      parentId: 'Participant_1',
     });
   });
 });

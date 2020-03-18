@@ -7,7 +7,7 @@ import Edge from '../../../../model/bpmn/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
 import { findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement } from './ProcessConverter';
 import JsonParser from '../JsonParser';
-import { findProcessRefParticipant } from './CollaborationConverter';
+import { findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
 
 function findProcessElement(participantId: string): ShapeBpmnElement {
   // TODO manage storage with a map to avoid looping with find by id
@@ -75,14 +75,20 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeShape(shape: any, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
-    const bpmnElement = findShapeElement(shape.bpmnElement);
+    let bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
-      const id = shape.id;
-
       const jsonConvert: JsonConvert = JsonParser.getInstance().jsonConvert;
       const bounds = jsonConvert.deserializeObject(shape.Bounds, Bounds);
 
-      return new Shape(id, bpmnElement, bounds);
+      if (bpmnElement.parentId) {
+        const participant = findProcessRefParticipantByProcessRef(bpmnElement.parentId);
+        if (participant) {
+          // clone to avoid modifying the reference
+          bpmnElement = new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, bpmnElement.kind, participant.id);
+        }
+      }
+
+      return new Shape(shape.id, bpmnElement, bounds);
     }
   }
 

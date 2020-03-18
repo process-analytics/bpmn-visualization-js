@@ -59,37 +59,37 @@ export default class ProcessConverter extends AbstractConverter<Process> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parseProcess(process: { [index: string]: any }): void {
+    const processId = process.id;
     // TODO check if the kind is ok
-    convertedProcessBpmnElements.push(new ShapeBpmnElement(process.id, process.name, ShapeBpmnElementKind.POOL));
+    convertedProcessBpmnElements.push(new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
 
     // flow nodes
-    flowNodeKinds.forEach(kind => this.buildFlowNodeBpmnElement(process[kind], kind));
+    flowNodeKinds.forEach(kind => this.buildFlowNodeBpmnElement(processId, process[kind], kind));
 
     // containers
-    this.buildLaneBpmnElement(process[ShapeBpmnElementKind.LANE]);
-    this.buildLaneSetBpmnElement(process['laneSet']);
+    this.buildLaneBpmnElement(processId, process[ShapeBpmnElementKind.LANE]);
+    this.buildLaneSetBpmnElement(processId, process['laneSet']);
 
     // flows
     this.buildSequenceFlow(process['sequenceFlow']);
   }
 
-  // TODO here we can set the process id by default (if no lane it won't be change, if lane it will be managed during lane/laneset processing)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildFlowNodeBpmnElement(bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
-    ensureIsArray(bpmnElements).forEach(bpmnElement => convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
+  private buildFlowNodeBpmnElement(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
+    ensureIsArray(bpmnElements).forEach(bpmnElement => convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId)));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildLaneSetBpmnElement(laneSet: any): void {
+  private buildLaneSetBpmnElement(processId: string, laneSet: any): void {
     if (laneSet) {
-      this.buildLaneBpmnElement(laneSet.lane);
+      this.buildLaneBpmnElement(processId, laneSet.lane);
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildLaneBpmnElement(lanes: Array<any> | any): void {
+  private buildLaneBpmnElement(processId: string, lanes: Array<any> | any): void {
     ensureIsArray(lanes).forEach(lane => {
-      const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE);
+      const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, processId);
       convertedLaneBpmnElements.push(laneShape);
       this.assignLaneAsParentOfExistingFlowNodes(lane);
     });
