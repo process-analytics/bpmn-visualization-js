@@ -9,9 +9,9 @@ import { findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement } 
 import JsonParser from '../JsonParser';
 import { findProcessRefParticipant } from './CollaborationConverter';
 
-function findProcessElement(bpmnElement: string): ShapeBpmnElement {
+function findProcessElement(participantId: string): ShapeBpmnElement {
   // TODO manage storage with a map to avoid looping with find by id
-  const participant = findProcessRefParticipant(bpmnElement);
+  const participant = findProcessRefParticipant(participantId);
   if (participant) {
     const originalProcessBpmnElement = findProcessBpmnElement(participant.processRef);
     const name = participant.name || originalProcessBpmnElement.name;
