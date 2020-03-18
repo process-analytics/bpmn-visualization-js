@@ -65,7 +65,7 @@ export default class Graph {
         this.node.removeAttribute('transform');
       }
 
-      //
+      // add attributes to be able to identify elements in DOM
       this.node.setAttribute('class', 'class-state-cell-style-' + this.state.cell.style);
       this.node.setAttribute('data-cell-id', this.state.cell.id);
       //
