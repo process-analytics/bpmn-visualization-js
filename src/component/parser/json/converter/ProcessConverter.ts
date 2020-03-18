@@ -8,6 +8,7 @@ import JsonParser from '../JsonParser';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
+const convertedProcessBpmnElements: ShapeBpmnElement[] = [];
 const convertedSequenceFlows: SequenceFlow[] = [];
 
 const flowNodeKinds = Object.values(ShapeBpmnElementKind).filter(kind => {
@@ -34,6 +35,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       // Deletes everything in the array, which does hit other references. For better performance.
       convertedFlowNodeBpmnElements.length = 0;
       convertedLaneBpmnElements.length = 0;
+      convertedProcessBpmnElements.length = 0;
       convertedSequenceFlows.length = 0;
 
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
@@ -52,6 +54,10 @@ export default class ProcessConverter extends AbstractConverter<Process> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parseProcess(process: { [index: string]: any }): void {
+    // TODO check if the kind is ok
+    convertedProcessBpmnElements.push(new ShapeBpmnElement(process.id, process.name, ShapeBpmnElementKind.POOL));
+
+    // flow nodes
     flowNodeKinds.forEach(kind => this.buildFlowNodeBpmnElement(process[kind], kind));
 
     // containers
