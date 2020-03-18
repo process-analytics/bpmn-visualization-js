@@ -25,10 +25,10 @@ export default class CollaborationConverter extends AbstractConverter<Collaborat
       // Deletes everything in the array, which does hit other references. For better performance.
       convertedPoolBpmnElements.length = 0;
 
-      const participant = collaboration['participant'];
-
-      const poolShape = new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
-      convertedPoolBpmnElements.push(poolShape);
+      ensureIsArray(collaboration['participant']).forEach(participant => {
+        const poolShape = new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
+        convertedPoolBpmnElements.push(poolShape);
+      });
 
       return {};
     } catch (e) {
