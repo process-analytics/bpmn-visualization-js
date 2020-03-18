@@ -8,7 +8,6 @@ import JsonParser from '../JsonParser';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
-const convertedPoolBpmnElements: ShapeBpmnElement[] = [];
 const convertedSequenceFlows: SequenceFlow[] = [];
 
 const flowNodeKinds = Object.values(ShapeBpmnElementKind).filter(kind => {
