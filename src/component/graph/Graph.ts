@@ -50,9 +50,6 @@ export default class Graph {
     }
 
     this.mxShape.prototype.createSvgCanvas = function() {
-      console.log(this);
-      console.log(this.state.cell.id);
-      console.log(this.state.cell.style);
       const canvas = new MySvgCanvas2D(this.node, false);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
       canvas.pointerEventsValue = this.svgPointerEvents;
