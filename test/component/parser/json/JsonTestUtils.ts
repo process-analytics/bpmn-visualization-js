@@ -40,8 +40,6 @@ export function parseJsonAndExpectOnlyLanes(json: string, numberOfExpectedLanes:
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function parseJsonAndExpectOnlyPoolsAndLanes(json: string, numberOfExpectedPools: number, numberOfExpectedLanes: number): any {
   const model = parseJsonAndExpectOnlyLanes(json, numberOfExpectedLanes);
-  console.log(JSON.stringify(model, undefined, 2));
-
   expect(model.pools).to.have.lengthOf(numberOfExpectedPools, 'pools');
   return model;
 }

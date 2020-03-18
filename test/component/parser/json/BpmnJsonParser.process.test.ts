@@ -1,12 +1,54 @@
 import { expect } from 'chai';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJson, parseJsonAndExpectOnlyLanes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
 
-// TODO here name set in both participant and process / add test when name only available in process
 describe('parse bpmn as json for process/pool', () => {
+  // TODO disable as 1st implementation is not able to manage it
+  xit('json containing one participant without name and the related process has a name', () => {
+    const json = `{
+  "definitions": {
+    "collaboration": {
+      "participant": { "id": "Participant_1", "processRef": "Process_1" }
+    },
+    "process": {
+      "id": "Process_1",
+      "name": "Process 1",
+      "isExecutable": false
+    },
+    "BPMNDiagram": {
+      "BPMNPlane": {
+        "BPMNShape": [
+          {
+            "id": "Participant_1_di",
+            "bpmnElement": "Participant_1",
+            "isHorizontal": true,
+            "Bounds": { "x": 158, "y": 50, "width": 1620, "height": 430 }
+          }
+        ]
+      }
+    }
+  }
+}`;
+
+    const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 0);
+    const pool = model.pools[0];
+    verifyShape(pool, {
+      shapeId: 'Participant_1_di',
+      bpmnElementId: 'Participant_1',
+      bpmnElementName: 'Process 1 1',
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+      boundsX: 158,
+      boundsY: 50,
+      boundsWidth: 1620,
+      boundsHeight: 430,
+    });
+    // TODO expect parent id is not set/defined
+    //expect(pool.bpmnElement.parentId).to.be.undefined('string', 'pool bpmn element parent');
+  });
+
   it('json containing one process with a single lane without flowNodeRef', () => {
     const json = `{
-  "definitions":{
+  "definitions": {
     "collaboration": {
       "participant": { "id": "Participant_0nuvj8r", "name": "Pool 1", "processRef": "Process_0vbjbkf" }
     },
@@ -16,8 +58,8 @@ describe('parse bpmn as json for process/pool', () => {
       "isExecutable": false,
       "lane": { "id":"Lane_12u5n6x" }
     },
-    "BPMNDiagram":{
-      "BPMNPlane":{
+    "BPMNDiagram": {
+      "BPMNPlane": {
         "BPMNShape": [
           {
             "id": "Participant_0nuvj8r_di",
@@ -69,7 +111,7 @@ describe('parse bpmn as json for process/pool', () => {
 
   it('json containing several processes and participants (with lane or laneset)', () => {
     const json = `{
-  "definitions":{
+  "definitions": {
     "collaboration": {
       "participant": [
         { "id": "Participant_1", "name": "Pool 1", "processRef": "Process_1" },
@@ -93,8 +135,8 @@ describe('parse bpmn as json for process/pool', () => {
         }
       }
     ],
-    "BPMNDiagram":{
-      "BPMNPlane":{
+    "BPMNDiagram": {
+      "BPMNPlane": {
         "BPMNShape": [
           {
             "id": "Participant_1_di",
