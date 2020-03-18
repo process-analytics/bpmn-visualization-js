@@ -1,0 +1,14 @@
+= BPMN Parsing
+
+== XML Parser
+
+To parse a XML data, we use the library https://github.com/NaturalIntelligence/fast-xml-parser[fast-xml-parser].
+
+You can see the implementation in https://github.com/bonitasoft-labs/bpmn-visu-js/tree/master/src/component/parser/xml/BpmnXmlParser.ts[BpmnXmlParser.ts]
+
+== Json Parser
+
+To parse a JSON data, we use the library https://github.com/AppVision-GmbH/json2typescript[json2typescript].
+
+You can see the implementation in https://github.com/bonitasoft-labs/bpmn-visu-js/tree/master/src/component/parser/json/BpmnJsonParser.ts[BpmnJsonParser.ts]
+We create our custom https://github.com/bonitasoft-labs/bpmn-visu-js/tree/master/src/component/parser/json/converter[converters] in order to match the BPMN model to our internal model.

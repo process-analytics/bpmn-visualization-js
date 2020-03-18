@@ -5,10 +5,10 @@
 Except for special container elements like `Pool`, `Lane` and `Subprocess`, detecting a new BPMN element only requires to
 add a new value in the `ShapeBpmnElementKind` enum.
 
-The `ShapeModelConverter` uses the `ShapeBpmnElementKind` values to detect elements in the BPMN source.
+The `ProcessConverter` uses the `ShapeBpmnElementKind` values to detect elements in the BPMN source.
 
 *Important*: do not forget to add parsing (xml and json) tests related to the new BPMN element to ensure that the parser
-is able to make it available to the `ShapeModelConverter`
+is able to make it available to the `ProcessConverter`
 
 
 == Elements rendering
