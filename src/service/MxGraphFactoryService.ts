@@ -1,27 +1,24 @@
 import { mxgraphFactory } from 'ts-mxgraph';
 
-const { mxClient, mxUtils, mxGraph, mxGraphModel, mxConstants, mxPerimeter, mxPoint } = mxgraphFactory({
+const mxGraphLib = mxgraphFactory({
   mxLoadResources: false,
   mxLoadStylesheets: false,
 });
 
+type MxGraphProperty = 'mxClient' | 'mxGraph' | 'mxGraphModel' | 'mxUtils' | 'mxConstants' | 'mxPerimeter' | 'mxPoint';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export class MxGraphFactoryService {
   private static instance: MxGraphFactoryService = null;
-  private constructor(
-    public mxClient: any,
-    public mxGraph: any,
-    public mxGraphModel: any,
-    public mxUtils: any,
-    public mxConstants: any,
-    public mxPerimeter: any,
-    public mxPoint: any,
-  ) {}
+  private constructor(private readonly mxGraphLib: any) {}
 
-  public static getInstance(): MxGraphFactoryService {
+  private static getInstance(): MxGraphFactoryService {
     if (MxGraphFactoryService.instance === null) {
-      MxGraphFactoryService.instance = new MxGraphFactoryService(mxClient, mxGraph, mxGraphModel, mxUtils, mxConstants, mxPerimeter, mxPoint);
+      MxGraphFactoryService.instance = new MxGraphFactoryService(mxGraphLib);
     }
     return MxGraphFactoryService.instance;
+  }
+  public static getMxGraphProperty(propertyName: MxGraphProperty): any {
+    return MxGraphFactoryService.getInstance().mxGraphLib[propertyName];
   }
 }
