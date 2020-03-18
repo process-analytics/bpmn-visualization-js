@@ -14,10 +14,10 @@ export function verifyIsNotEmptyArray(object: any): void {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function verifyBounds(shape: any, x: number, y: number, width: number, height: number): void {
   const bounds = shape.Bounds;
-  expect(bounds.x).toEqual(x);
-  expect(bounds.y).toEqual(y);
-  expect(bounds.width).toEqual(width);
-  expect(bounds.height).toEqual(height);
+  expect(bounds.x).toEqual(x, 'bounds x');
+  expect(bounds.y).toEqual(y, 'bounds y');
+  expect(bounds.width).toEqual(width, 'bounds width');
+  expect(bounds.height).toEqual(height, 'bounds height');
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

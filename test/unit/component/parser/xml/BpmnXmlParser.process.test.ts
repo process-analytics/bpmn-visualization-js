@@ -1,10 +1,22 @@
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import { verifyDefinitions, verifyDefinitionsWithCollaboration, verifyIsNotEmptyArray, verifyProperties } from './XMLTestUtils';
+import { verifyBounds, verifyDefinitions, verifyDefinitionsWithCollaboration, verifyIsNotEmptyArray, verifyProperties } from './XMLTestUtils';
 import { expect } from 'chai';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function expectNotToBeAnArray(obj: any, message?: string): void {
   expect(obj).to.be.a('object', message);
   expect(obj).not.to.be.a('array', message);
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function verifyAndGetBPMNShape(json: any): any {
+  const diagram = json.definitions.BPMNDiagram;
+  verifyProperties(diagram, ['BPMNPlane'], []);
+  const plane = diagram.BPMNPlane;
+  verifyProperties(plane, ['BPMNShape'], []);
+  const shapes = plane.BPMNShape;
+  verifyIsNotEmptyArray(shapes, 'BPMNShape');
+  return shapes;
 }
 
 describe('parse bpmn as xml for process', () => {
@@ -36,7 +48,7 @@ describe('parse bpmn as xml for process', () => {
   // add test when name only available in process
   // TODO add test with several participants
   // TODO case when no lane
-  it('bpmn with single process with several lanes with & without elements, ensure lanes are present', () => {
+  it('bpmn with single process and participant', () => {
     const singleProcess = `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" targetNamespace="http://bonitasoft.com/_RLk98HH_Eei9Z4IY4QeFuA">
   <bpmn:collaboration id="Collaboration_03068dc">
@@ -51,10 +63,10 @@ describe('parse bpmn as xml for process', () => {
     </bpmn:laneSet>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" bpmnElement="Collaboration_03068dc">
-    <bpmndi:BPMNShape id="Participant_0nuvj8r_di" bpmnElement="Participant_0nuvj8r" isHorizontal="true">
-      <dc:Bounds x="158" y="50" width="1620" height="430" />
-    </bpmndi:BPMNShape>
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_186ohra">
+      <bpmndi:BPMNShape id="Participant_0nuvj8r_di" bpmnElement="Participant_0nuvj8r" isHorizontal="true">
+        <dc:Bounds x="158" y="50" width="1620" height="430" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_164yevk_di" bpmnElement="Lane_164yevk" isHorizontal="true">
         <dc:Bounds x="190" y="110" width="1230" height="83" />
       </bpmndi:BPMNShape>
@@ -85,6 +97,14 @@ describe('parse bpmn as xml for process', () => {
     expect(process.id).eq('Process_0vbjbkf', 'process id');
     expect(process.name).eq('RequestLoan', 'process name');
     expect(process.isExecutable).eq(false, 'process isExecutable');
+
+    // BPMNDiagram
+    const shapes = verifyAndGetBPMNShape(json);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const processShape = (shapes as Array<any>).find(shape => shape.id == 'Participant_0nuvj8r_di');
+    verifyProperties(processShape, ['id', 'bpmnElement', 'Bounds'], []);
+    expect(processShape.bpmnElement).eq('Participant_0nuvj8r', 'process shape bpmnElement');
+    verifyBounds(processShape, 158, 50, 1620, 430);
   });
 
   //   it('bpmn with multiple processes, ensure lanes are present', () => {
