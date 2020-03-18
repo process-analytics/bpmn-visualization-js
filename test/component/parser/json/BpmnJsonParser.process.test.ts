@@ -1,5 +1,7 @@
+import { expect } from 'chai';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
+import { findPoolBpmnElement } from '../../../../src/component/parser/json/converter/CollaborationConverter';
 
 describe('parse bpmn as json for process/pool', () => {
   // TODO disable as 1st implementation is not able to manage it
@@ -256,6 +258,9 @@ describe('parse bpmn as json for process/pool', () => {
       boundsHeight: 430,
       parentId: undefined,
     });
+
+    // Check detected pools during json parsing
+    expect(findPoolBpmnElement('Participant_2')).to.be.undefined;
   });
 
   it('json containing one process and flownode without lane', () => {

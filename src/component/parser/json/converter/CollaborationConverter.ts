@@ -26,8 +26,10 @@ export default class CollaborationConverter extends AbstractConverter<Collaborat
       convertedPoolBpmnElements.length = 0;
 
       ensureIsArray(collaboration['participant']).forEach(participant => {
-        const poolShape = new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
-        convertedPoolBpmnElements.push(poolShape);
+        if (participant.processRef) {
+          const poolShape = new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
+          convertedPoolBpmnElements.push(poolShape);
+        }
       });
 
       return {};
