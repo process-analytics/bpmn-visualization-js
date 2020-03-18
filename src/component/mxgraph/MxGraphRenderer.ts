@@ -6,6 +6,11 @@ import ShapeBpmnElement from '../../model/bpmn/shape/ShapeBpmnElement';
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
 
+interface Coordinate {
+  x: number;
+  y: number;
+}
+
 export default class MxGraphRenderer {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private mxPoint: any = MxGraphFactoryService.getMxGraphProperty('mxPoint');
@@ -44,7 +49,8 @@ export default class MxGraphRenderer {
     if (bpmnElement) {
       const bounds = shape.bounds;
       const parent = this.getParent(bpmnElement);
-      this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, bounds.x, bounds.y, bounds.width, bounds.height, bpmnElement.kind);
+      const absoluteCoordinate = { x: bounds.x, y: bounds.y };
+      this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, bpmnElement.kind);
     }
   }
 
@@ -62,8 +68,8 @@ export default class MxGraphRenderer {
   private insertWaypoints(waypoints: Waypoint[], mxEdge: mxgraph.mxCell): void {
     if (waypoints) {
       mxEdge.geometry.points = waypoints.map(waypoint => {
-        const { relativeX, relativeY } = this.getRelativeCoordinates(mxEdge.parent, waypoint.x, waypoint.y);
-        return new mxPoint(relativeX, relativeY);
+        const relativeCoordinate = this.getRelativeCoordinates(mxEdge.parent, { x: waypoint.x, y: waypoint.y });
+        return new mxPoint(relativeCoordinate.x, relativeCoordinate.y);
       });
     }
   }
@@ -76,21 +82,20 @@ export default class MxGraphRenderer {
     parent: mxgraph.mxCell,
     id: string | null,
     value: string,
-    x: number,
-    y: number,
+    absoluteCoordinate: Coordinate,
     width: number,
     height: number,
     style?: string,
   ): mxgraph.mxCell {
-    const { relativeX, relativeY } = this.getRelativeCoordinates(parent, x, y);
-    return this.graph.insertVertex(parent, id, value, relativeX, relativeY, width, height, style);
+    const relativeCoordinate = this.getRelativeCoordinates(parent, absoluteCoordinate);
+    return this.graph.insertVertex(parent, id, value, relativeCoordinate.x, relativeCoordinate.y, width, height, style);
   }
 
-  private getRelativeCoordinates(parent: mxgraph.mxCell, x: number, y: number) {
+  private getRelativeCoordinates(parent: mxgraph.mxCell, absoluteCoordinate: Coordinate): Coordinate {
     const translateForRoot = this.getTranslateForRoot(parent);
-    const relativeX = x + translateForRoot.x;
-    const relativeY = y + translateForRoot.y;
-    return { relativeX, relativeY };
+    const relativeX = absoluteCoordinate.x + translateForRoot.x;
+    const relativeY = absoluteCoordinate.y + translateForRoot.y;
+    return { x: relativeX, y: relativeY };
   }
 
   // Returns the translation to be applied to a cell whose mxGeometry x and y values are expressed with absolute coordinates

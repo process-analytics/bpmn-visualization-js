@@ -123,6 +123,7 @@ export class SequenceFlowConverter extends AbstractConverter<SequenceFlow> {
 
 @JsonConverter
 export class WaypointConverter extends AbstractConverter<Waypoint[]> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(waypoints: any): Waypoint[] {
     const jsonConvert: JsonConvert = JsonParser.getInstance().jsonConvert;
     return jsonConvert.deserializeArray(ensureIsArray(waypoints), Waypoint);
