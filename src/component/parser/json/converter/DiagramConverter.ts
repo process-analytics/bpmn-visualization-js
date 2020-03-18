@@ -65,6 +65,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
         continue;
       }
 
+      // TODO clarify message (state what we try to do with the unknown element)
       // TODO error management
       console.log('Not possible to find model element with id ' + shape.bpmnElement);
     }
