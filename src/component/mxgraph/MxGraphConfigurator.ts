@@ -97,8 +97,8 @@ export default class MxGraphConfigurator {
   }
 
   private configureExclusiveGatewayStyle(): void {
-    const style = mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.GATEWAY_PARALLEL), this.getDefaultVertexStyle());
-    style[mxConstants.STYLE_GRADIENTCOLOR] = '#DDA0DD';
+    const style = this.mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.GATEWAY_PARALLEL), this.getDefaultVertexStyle());
+    style[this.mxConstants.STYLE_GRADIENTCOLOR] = '#DDA0DD';
     this.putCellStyle(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, style);
   }
 }
