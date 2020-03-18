@@ -1,4 +1,4 @@
-import { JsonConvert, JsonConverter } from 'json2typescript';
+import { JsonConvert, JsonConverter, JsonCustomConvert } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import Shape from '../../../../model/bpmn/shape/Shape';
 import Bounds from '../../../../model/bpmn/Bounds';
@@ -8,6 +8,7 @@ import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
 import { findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement } from './ProcessConverter';
 import JsonParser from '../JsonParser';
 import { findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
+import Waypoint from '../../../../model/bpmn/edge/Waypoint';
 
 function findProcessElement(participantId: string): ShapeBpmnElement {
   const participant = findProcessRefParticipant(participantId);

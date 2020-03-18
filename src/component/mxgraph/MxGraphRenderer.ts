@@ -4,6 +4,7 @@ import Edge from '../../model/bpmn/edge/Edge';
 import BpmnModel from '../../model/bpmn/BpmnModel';
 import ShapeBpmnElement from '../../model/bpmn/shape/ShapeBpmnElement';
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
+import Waypoint from '../../model/bpmn/edge/Waypoint';
 
 export default class MxGraphRenderer {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,9 +53,19 @@ export default class MxGraphRenderer {
       const bpmnElement = edge.bpmnElement;
       if (bpmnElement) {
         const parent = this.graph.getDefaultParent();
-        this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, this.getCell(bpmnElement.sourceRefId), this.getCell(bpmnElement.targetRefId));
+        const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, this.getCell(bpmnElement.sourceRefId), this.getCell(bpmnElement.targetRefId));
+        this.insertWaypoints(edge.waypoints, mxEdge);
       }
     });
+  }
+
+  private insertWaypoints(waypoints: Waypoint[], mxEdge: mxgraph.mxCell): void {
+    if (waypoints) {
+      mxEdge.geometry.points = waypoints.map(waypoint => {
+        const { relativeX, relativeY } = this.getRelativeCoordinates(mxEdge.parent, waypoint.x, waypoint.y);
+        return new mxPoint(relativeX, relativeY);
+      });
+    }
   }
 
   private getCell(id: string): mxgraph.mxCell {
@@ -71,11 +82,15 @@ export default class MxGraphRenderer {
     height: number,
     style?: string,
   ): mxgraph.mxCell {
+    const { relativeX, relativeY } = this.getRelativeCoordinates(parent, x, y);
+    return this.graph.insertVertex(parent, id, value, relativeX, relativeY, width, height, style);
+  }
+
+  private getRelativeCoordinates(parent: mxgraph.mxCell, x: number, y: number) {
     const translateForRoot = this.getTranslateForRoot(parent);
     const relativeX = x + translateForRoot.x;
     const relativeY = y + translateForRoot.y;
-
-    return this.graph.insertVertex(parent, id, value, relativeX, relativeY, width, height, style);
+    return { relativeX, relativeY };
   }
 
   // Returns the translation to be applied to a cell whose mxGeometry x and y values are expressed with absolute coordinates

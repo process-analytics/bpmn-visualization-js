@@ -5,6 +5,7 @@ import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElem
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
 import JsonParser from '../JsonParser';
+import Waypoint from '../../../../model/bpmn/edge/Waypoint';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
@@ -117,5 +118,13 @@ export default class ProcessConverter extends AbstractConverter<Process> {
 export class SequenceFlowConverter extends AbstractConverter<SequenceFlow> {
   deserialize(data: string): SequenceFlow {
     return findSequenceFlow(data);
+  }
+}
+
+@JsonConverter
+export class WaypointConverter extends AbstractConverter<Waypoint[]> {
+  deserialize(waypoints: any): Waypoint[] {
+    const jsonConvert: JsonConvert = JsonParser.getInstance().jsonConvert;
+    return jsonConvert.deserializeArray(ensureIsArray(waypoints), Waypoint);
   }
 }

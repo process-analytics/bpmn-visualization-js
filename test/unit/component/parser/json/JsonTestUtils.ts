@@ -3,6 +3,7 @@ import Shape from '../../../../../src/model/bpmn/shape/Shape';
 import BpmnJsonParser from '../../../../../src/component/parser/json/BpmnJsonParser';
 import Edge from '../../../../../src/model/bpmn/edge/Edge';
 import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
+import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -22,6 +23,7 @@ export interface ExpectedEdge {
   bpmnElementName: string;
   bpmnElementSourceRefId: string;
   bpmnElementTargetRefId: string;
+  waypoints?: Waypoint[];
 }
 
 export function parseJson(json: string): BpmnModel {
@@ -85,6 +87,7 @@ export function verifyShape(shape: Shape, expectedValue: ExpectedShape): void {
 
 export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge): void {
   expect(edge.id).toEqual(expectedValue.edgeId);
+  expect(edge.waypoints).toEqual(expectedValue.waypoints);
 
   const bpmnElement = edge.bpmnElement;
   expect(bpmnElement.id).toEqual(expectedValue.bpmnElementId);

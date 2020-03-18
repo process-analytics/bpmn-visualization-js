@@ -1,7 +1,8 @@
 import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
+import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
 
 describe('parse bpmn as json for sequence flow', () => {
-  it('json containing one process with a single sequence flow', () => {
+  it('json containing one process with a single sequence flow without waypoint', () => {
     const json = `{
           "definitions": {
               "process": {
@@ -120,6 +121,68 @@ describe('parse bpmn as json for sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'sequenceFlow_id_1',
       bpmnElementTargetRefId: 'targetRef_1',
+    });
+  });
+
+  it('json containing one process with an array of sequence flows with one & several waypoints', () => {
+    const json = `{
+          "definitions": {
+              "process": {
+                  "id": "Process_1",
+                  "sequenceFlow": [{
+                      "id": "sequenceFlow_id_0",
+                      "sourceRef": "sourceRef_id_xsdas",
+                      "targetRef": "targetRef_RLk"
+                  },{
+                      "id": "sequenceFlow_id_1",
+                      "sourceRef": "sequenceFlow_id_1",
+                      "targetRef": "targetRef_1"
+                  }]
+              },
+              "BPMNDiagram": {
+                  "id": "BpmnDiagram_1",
+                  "BPMNPlane": {
+                      "id": "BpmnPlane_1",
+                      "BPMNEdge": [{
+                          "id": "edge_sequenceFlow_id_0",
+                          "bpmnElement": "sequenceFlow_id_0",
+                          "waypoint": {
+                            "x":1,
+                            "y":1 
+                          }
+                      },{
+                          "id": "edge_sequenceFlow_id_1",
+                          "bpmnElement": "sequenceFlow_id_1",
+                          "waypoint": [{
+                            "x":2,
+                            "y":2 
+                          }, {
+                            "x":3,
+                            "y":3 
+                          }]
+                      }]
+                  }
+              }
+          }
+      }`;
+
+    const model = parseJsonAndExpectOnlyEdges(json, 2);
+
+    verifyEdge(model.edges[0], {
+      edgeId: 'edge_sequenceFlow_id_0',
+      bpmnElementId: 'sequenceFlow_id_0',
+      bpmnElementName: undefined,
+      bpmnElementSourceRefId: 'sourceRef_id_xsdas',
+      bpmnElementTargetRefId: 'targetRef_RLk',
+      waypoints: [new Waypoint(1, 1)],
+    });
+    verifyEdge(model.edges[1], {
+      edgeId: 'edge_sequenceFlow_id_1',
+      bpmnElementId: 'sequenceFlow_id_1',
+      bpmnElementName: undefined,
+      bpmnElementSourceRefId: 'sequenceFlow_id_1',
+      bpmnElementTargetRefId: 'targetRef_1',
+      waypoints: [new Waypoint(2, 2), new Waypoint(3, 3)],
     });
   });
 });
