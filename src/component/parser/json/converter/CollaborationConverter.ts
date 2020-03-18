@@ -1,4 +1,4 @@
-import { JsonConvert, JsonConverter, OperationMode, ValueCheckingMode } from 'json2typescript';
+import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import { Participant } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { Collaboration } from '../Definitions';
@@ -13,13 +13,6 @@ export function findProcessRefParticipant(id: string): Participant {
 export function findProcessRefParticipantByProcessRef(processRef: string): Participant {
   return convertedProcessRefParticipants.find(i => i.processRef === processRef);
 }
-
-// TODO : To move in a singleton object to use here and in the BpmnJsonParser
-const jsonConvert: JsonConvert = new JsonConvert();
-jsonConvert.operationMode = OperationMode.ENABLE;
-jsonConvert.ignorePrimitiveChecks = false; // don't allow assigning number to string etc.
-jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL; // never allow null
-//////////////////////////////////////////////////////////////
 
 @JsonConverter
 export default class CollaborationConverter extends AbstractConverter<Collaboration> {
