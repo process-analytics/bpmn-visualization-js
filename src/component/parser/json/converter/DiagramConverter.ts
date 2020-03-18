@@ -5,9 +5,22 @@ import Bounds from '../../../../model/bpmn/Bounds';
 import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
-import { findFlowNodeBpmnElement, findLaneBpmnElement } from './ProcessConverter';
+import { findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement } from './ProcessConverter';
 import JsonParser from '../JsonParser';
-import { findPoolBpmnElement } from './CollaborationConverter';
+import { findProcessRefParticipant } from './CollaborationConverter';
+
+function findProcessElement(bpmnElement: string): ShapeBpmnElement {
+  // TODO manage storage with a map to avoid looping with find by id
+  const participant = findProcessRefParticipant(bpmnElement);
+  if (participant) {
+    const originalProcessBpmnElement = findProcessBpmnElement(participant.processRef);
+    // TODO manage name if participant.name is null
+    const name = participant.name;
+    // TODO try to find a less hacky way to manage id (we could put process id to manage direct parent relation)
+    // return new ShapeBpmnElement(originalProcessBpmnElement.id, name, originalProcessBpmnElement.kind, originalProcessBpmnElement.parentId);
+    return new ShapeBpmnElement(participant.id, name, originalProcessBpmnElement.kind, originalProcessBpmnElement.parentId);
+  }
+}
 
 @JsonConverter
 export default class DiagramConverter extends AbstractConverter<BpmnModel> {
@@ -47,7 +60,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
       }
 
       // TODO logic duplication with flownode and lane management
-      const pool = this.deserializeShape(shape, (bpmnElement: string) => findPoolBpmnElement(bpmnElement));
+      const pool = this.deserializeShape(shape, (bpmnElement: string) => findProcessElement(bpmnElement));
       if (pool) {
         convertedShapes.pools.push(pool);
         continue;

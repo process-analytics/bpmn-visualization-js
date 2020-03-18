@@ -1,13 +1,12 @@
 import { JsonConvert, JsonConverter, OperationMode, ValueCheckingMode } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
-import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
-import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
-import { Collaboration, Semantic } from '../Definitions';
+import { Participant } from '../../../../model/bpmn/shape/ShapeBpmnElement';
+import { Collaboration } from '../Definitions';
 
-const convertedPoolBpmnElements: ShapeBpmnElement[] = [];
+const convertedProcessRefParticipants: Participant[] = [];
 
-export function findPoolBpmnElement(id: string): ShapeBpmnElement {
-  return convertedPoolBpmnElements.find(i => i.id === id);
+export function findProcessRefParticipant(id: string): Participant {
+  return convertedProcessRefParticipants.find(i => i.id === id);
 }
 
 // TODO : To move in a singleton object to use here and in the BpmnJsonParser
@@ -23,12 +22,11 @@ export default class CollaborationConverter extends AbstractConverter<Collaborat
   deserialize(collaboration: any): Collaboration {
     try {
       // Deletes everything in the array, which does hit other references. For better performance.
-      convertedPoolBpmnElements.length = 0;
+      convertedProcessRefParticipants.length = 0;
 
       ensureIsArray(collaboration['participant']).forEach(participant => {
         if (participant.processRef) {
-          const poolShape = new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
-          convertedPoolBpmnElements.push(poolShape);
+          convertedProcessRefParticipants.push(new Participant(participant.id, participant.name, participant.processRef));
         }
       });
 

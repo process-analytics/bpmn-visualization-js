@@ -1,8 +1,9 @@
 import { expect } from 'chai';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
-import { findPoolBpmnElement } from '../../../../src/component/parser/json/converter/CollaborationConverter';
+import { findProcessRefParticipant } from '../../../../src/component/parser/json/converter/CollaborationConverter';
 
+// TODO rename shape ids (start by shape_ like in other tests)
 describe('parse bpmn as json for process/pool', () => {
   // TODO disable as 1st implementation is not able to manage it
   xit('json containing one participant without name and the related process has a name', () => {
@@ -259,8 +260,8 @@ describe('parse bpmn as json for process/pool', () => {
       parentId: undefined,
     });
 
-    // Check detected pools during json parsing
-    expect(findPoolBpmnElement('Participant_2')).to.be.undefined;
+    // Check detected participants during json parsing
+    expect(findProcessRefParticipant('Participant_2')).to.be.undefined;
   });
 
   it('json containing one process and flownode without lane', () => {

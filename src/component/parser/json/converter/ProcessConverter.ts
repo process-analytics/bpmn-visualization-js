@@ -23,6 +23,10 @@ export function findLaneBpmnElement(id: string): ShapeBpmnElement {
   return convertedLaneBpmnElements.find(i => i.id === id);
 }
 
+export function findProcessBpmnElement(id: string): ShapeBpmnElement {
+  return convertedProcessBpmnElements.find(i => i.id === id);
+}
+
 export function findSequenceFlow(id: string): SequenceFlow {
   return convertedSequenceFlows.find(i => i.id === id);
 }
@@ -68,6 +72,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     this.buildSequenceFlow(process['sequenceFlow']);
   }
 
+  // TODO here we can set the process id by default (if no lane it won't be change, if lane it will be managed during lane/laneset processing)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildFlowNodeBpmnElement(bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
