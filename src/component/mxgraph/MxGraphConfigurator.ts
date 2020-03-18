@@ -22,6 +22,7 @@ export default class MxGraphConfigurator {
     this.configureStartEventStyle();
     this.configureUserTaskStyle();
     this.configureParallelGatewayStyle();
+    this.configureExclusiveGatewayStyle();
   }
 
   private getStylesheet(): any {
@@ -94,5 +95,11 @@ export default class MxGraphConfigurator {
     style[mxConstants.STYLE_SPACING_RIGHT] = 110;
     style[mxConstants.STYLE_GRADIENTCOLOR] = '#E9ECB1';
     this.putCellStyle(ShapeBpmnElementKind.GATEWAY_PARALLEL, style);
+  }
+
+  private configureExclusiveGatewayStyle(): void {
+    const style = mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.GATEWAY_PARALLEL), this.getDefaultVertexStyle());
+    style[mxConstants.STYLE_GRADIENTCOLOR] = '#DDA0DD';
+    this.putCellStyle(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, style);
   }
 }
