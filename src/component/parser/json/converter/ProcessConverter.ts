@@ -8,6 +8,7 @@ import JsonParser from '../JsonParser';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
+const convertedPoolBpmnElements: ShapeBpmnElement[] = [];
 const convertedSequenceFlows: SequenceFlow[] = [];
 
 const flowNodeKinds = Object.values(ShapeBpmnElementKind).filter(kind => {
@@ -31,7 +32,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(processes: Array<any> | any): Process {
     try {
-      // Deletes everything in the array, which does hit other references. More performant.
+      // Deletes everything in the array, which does hit other references. For better performance.
       convertedFlowNodeBpmnElements.length = 0;
       convertedLaneBpmnElements.length = 0;
       convertedSequenceFlows.length = 0;
@@ -39,6 +40,8 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
 
       const sequenceFlows = convertedSequenceFlows;
+      // TODO why concat, if needed explain with a short comment
+      // TODO probaly not tested as we concatenate an array with itself (all tests pass with  const shapeBpmnElements: any[] = [])
       const shapeBpmnElements = convertedLaneBpmnElements.concat(convertedLaneBpmnElements);
 
       return { shapeBpmnElements, sequenceFlows };
