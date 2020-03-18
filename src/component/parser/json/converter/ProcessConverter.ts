@@ -80,12 +80,12 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     ensureIsArray(lanes).forEach(lane => {
       const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE);
       convertedLaneBpmnElements.push(laneShape);
-      this.assignParent(lane);
+      this.assignLaneAsParentOfExistingFlowNodes(lane);
     });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private assignParent(lane: any): void {
+  private assignLaneAsParentOfExistingFlowNodes(lane: any): void {
     ensureIsArray(lane.flowNodeRef).forEach(flowNodeRef => {
       const shapeBpmnElement = findFlowNodeBpmnElement(flowNodeRef);
       if (shapeBpmnElement) {
