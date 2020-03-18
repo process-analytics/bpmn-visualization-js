@@ -31,6 +31,7 @@ export function findSequenceFlow(id: string): SequenceFlow {
   return convertedSequenceFlows.find(i => i.id === id);
 }
 
+// TODO build method names should be plural (we build multiple elements)
 @JsonConverter
 export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -94,6 +95,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     });
   }
 
+  // TODO rename into assignParentOfLaneFlowNodes
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private assignLaneAsParentOfExistingFlowNodes(lane: any): void {
     ensureIsArray(lane.flowNodeRef).forEach(flowNodeRef => {
@@ -101,6 +103,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       if (shapeBpmnElement) {
         shapeBpmnElement.parentId = lane.id;
       } else {
+        // TODO clarify message (add lane id + state that we try to set the element parent)
         // TODO error management
         console.log('Lane element with id ' + flowNodeRef + ' is not found');
       }
