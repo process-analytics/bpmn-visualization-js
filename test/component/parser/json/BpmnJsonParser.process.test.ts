@@ -1,6 +1,5 @@
-import { expect } from 'chai';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
 
 // TODO add a test to ensure we ignore participant without processRef attribute
 describe('parse bpmn as json for process/pool', () => {
@@ -245,7 +244,7 @@ describe('parse bpmn as json for process/pool', () => {
   }
 }`;
 
-    const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 0);
+    const model = parseJsonAndExpectOnlyPools(json, 1);
     const pool = model.pools[0];
     verifyShape(pool, {
       shapeId: 'Participant_1_di',
