@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
 
+// TODO add a test to ensure we ignore participant without processRef attribute
 describe('parse bpmn as json for process/pool', () => {
   // TODO disable as 1st implementation is not able to manage it
   xit('json containing one participant without name and the related process has a name', () => {
@@ -35,7 +36,7 @@ describe('parse bpmn as json for process/pool', () => {
     verifyShape(pool, {
       shapeId: 'Participant_1_di',
       bpmnElementId: 'Participant_1',
-      bpmnElementName: 'Process 1 1',
+      bpmnElementName: 'Process 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
       boundsX: 158,
       boundsY: 50,
@@ -212,6 +213,50 @@ describe('parse bpmn as json for process/pool', () => {
       boundsWidth: 36,
       boundsHeight: 45,
       // parentId: 'Participant_1',
+    });
+  });
+
+  it('participant without processRef are not considered as pool', () => {
+    const json = `{
+  "definitions": {
+    "collaboration": {
+      "participant": [
+        { "id": "Participant_1", "name": "Pool 1", "processRef": "Process_1" },
+        { "id": "Participant_2", "name": "Not a process" }
+      ]
+    },
+    "process": {
+      "id": "Process_1",
+      "name": "Process 1",
+      "isExecutable": false
+    },
+    "BPMNDiagram": {
+      "BPMNPlane": {
+        "BPMNShape": [
+          {
+            "id": "Participant_1_di",
+            "bpmnElement": "Participant_1",
+            "isHorizontal": true,
+            "Bounds": { "x": 158, "y": 50, "width": 1620, "height": 430 }
+          }
+        ]
+      }
+    }
+  }
+}`;
+
+    const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 0);
+    const pool = model.pools[0];
+    verifyShape(pool, {
+      shapeId: 'Participant_1_di',
+      bpmnElementId: 'Participant_1',
+      bpmnElementName: 'Pool 1',
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+      boundsX: 158,
+      boundsY: 50,
+      boundsWidth: 1620,
+      boundsHeight: 430,
+      parentId: undefined,
     });
   });
 });
