@@ -258,4 +258,68 @@ describe('parse bpmn as json for process/pool', () => {
       parentId: undefined,
     });
   });
+
+  it('json containing one process and flownode without lane', () => {
+    const json = `{
+  "definitions": {
+    "collaboration": {
+      "participant": [
+        { "id": "Participant_1", "name": "Pool 1", "processRef": "Process_1" },
+        { "id": "Participant_2", "name": "Not a process" }
+      ]
+    },
+    "process": {
+      "id": "Process_1",
+      "name": "Process 1",
+      "isExecutable": false,
+      "startEvent": { "id":"event_id_0" }
+    },
+    "BPMNDiagram": {
+      "BPMNPlane": {
+        "BPMNShape": [
+          {
+            "id": "Participant_1_di",
+            "bpmnElement": "Participant_1",
+            "isHorizontal": true,
+            "Bounds": { "x": 158, "y": 50, "width": 1620, "height": 630 }
+          },
+          {
+            "id":"shape_startEvent_id_0",
+            "bpmnElement":"event_id_0",
+            "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
+          }
+        ]
+      }
+    }
+  }
+}`;
+
+    const model = parseJsonAndExpectOnlyPoolsAndFlowNodes(json, 1, 1);
+    const pool = model.pools[0];
+    verifyShape(pool, {
+      shapeId: 'Participant_1_di',
+      bpmnElementId: 'Participant_1',
+      bpmnElementName: 'Pool 1',
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+      boundsX: 158,
+      boundsY: 50,
+      boundsWidth: 1620,
+      boundsHeight: 630,
+      parentId: undefined,
+    });
+
+    const lane = model.flowNodes[0];
+    // TODO expect startEvent parent id is set/defined
+    verifyShape(lane, {
+      shapeId: 'shape_startEvent_id_0',
+      bpmnElementId: 'event_id_0',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+      boundsX: 362,
+      boundsY: 232,
+      boundsWidth: 36,
+      boundsHeight: 45,
+      // parentId: 'Participant_0nuvj8r',
+    });
+  });
 });

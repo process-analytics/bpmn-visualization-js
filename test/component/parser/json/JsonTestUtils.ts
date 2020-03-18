@@ -89,7 +89,6 @@ export function parseJsonAndExpectOnlyPoolsAndFlowNodes(json: string, numberOfEx
   expectFlowNodes(model, numberOfExpectedFlowNodes);
   expectPools(model, numberOfExpectedPools);
   expectNoEdges(model);
-  expectNoFlowNodes(model);
   expectNoLanes(model);
   return model;
 }
