@@ -1,7 +1,6 @@
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
 
-// TODO add a test to ensure we ignore participant without processRef attribute
 describe('parse bpmn as json for process/pool', () => {
   // TODO disable as 1st implementation is not able to manage it
   xit('json containing one participant without name and the related process has a name', () => {
