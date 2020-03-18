@@ -5,7 +5,7 @@ import Bounds from '../../../../model/bpmn/Bounds';
 import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
-import { findFlowNodeBpmnElement, findLaneBpmnElement } from './SemanticConverter';
+import { findFlowNodeBpmnElement, findLaneBpmnElement } from './ProcessConverter';
 import JsonParser from '../JsonParser';
 
 @JsonConverter

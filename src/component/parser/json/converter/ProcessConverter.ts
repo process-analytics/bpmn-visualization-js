@@ -2,7 +2,7 @@ import { JsonConvert, JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
-import { Semantic } from '../Definitions';
+import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
 import JsonParser from '../JsonParser';
 
@@ -27,9 +27,9 @@ export function findSequenceFlow(id: string): SequenceFlow {
 }
 
 @JsonConverter
-export default class SemanticConverter extends AbstractConverter<Semantic> {
+export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  deserialize(processes: Array<any> | any): Semantic {
+  deserialize(processes: Array<any> | any): Process {
     try {
       // Deletes everything in the array, which does hit other references. More performant.
       convertedFlowNodeBpmnElements.length = 0;
