@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Javascript lib to visualize BPMN diagrams",
   "repository": "https://github.com/bonitasoft-labs/bpmn-visu-js",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "module": "dist/index.es.js",
   "files": [
     "dist"
