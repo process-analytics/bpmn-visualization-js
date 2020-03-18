@@ -20,6 +20,7 @@ export default class MxGraphConfigurator {
     this.configureLaneStyle();
     this.configureStartEventStyle();
     this.configureUserTaskStyle();
+    this.configureTaskStyle();
     this.configureParallelGatewayStyle();
     this.configureExclusiveGatewayStyle();
   }
@@ -80,6 +81,12 @@ export default class MxGraphConfigurator {
     style[this.mxConstants.STYLE_STROKEWIDTH] = 2;
     style[this.mxConstants.STYLE_ROUNDED] = true;
     this.putCellStyle(ShapeBpmnElementKind.TASK_USER, style);
+  }
+
+  private configureTaskStyle(): void {
+    const style = this.mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.TASK_USER), this.getDefaultVertexStyle());
+    style[this.mxConstants.STYLE_STROKECOLOR] = '#663399';
+    this.putCellStyle(ShapeBpmnElementKind.TASK, style);
   }
 
   private configureParallelGatewayStyle(): void {
