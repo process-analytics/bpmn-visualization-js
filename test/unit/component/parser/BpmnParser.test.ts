@@ -1,5 +1,4 @@
-import { expect } from 'chai';
-import BpmnParser from '../../../src/component/parser/BpmnParser';
+import BpmnParser from '../../../../src/component/parser/BpmnParser';
 
 describe('parse xml to model', () => {
   it('model is filled', () => {
@@ -28,8 +27,8 @@ describe('parse xml to model', () => {
     const parser = new BpmnParser();
     const model = parser.parse(bpmnAsXml);
 
-    expect(model.flowNodes).to.have.lengthOf(2, 'flowNodes');
-    expect(model.edges).to.have.lengthOf(0, 'edges');
-    expect(model.edges).to.have.lengthOf(0, 'lanes');
+    expect(model.flowNodes).toHaveLength(2);
+    expect(model.edges).toHaveLength(0);
+    expect(model.edges).toHaveLength(0);
   });
 });

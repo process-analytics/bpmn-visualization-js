@@ -1,5 +1,4 @@
-import { expect } from 'chai';
-import BpmnXmlParser from '../../../../src/component/parser/xml/BpmnXmlParser';
+import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 import { verifyDefinitions, verifyIsNotEmptyArray, verifyProperties } from './XMLTestUtils';
 
 describe('parse bpmn as xml for sequence flow', () => {
@@ -41,7 +40,7 @@ describe('parse bpmn as xml for sequence flow', () => {
     const process = json.definitions.process;
     verifyProperties(process, ['sequenceFlow'], []);
     const sequenceFlows = process.sequenceFlow;
-    verifyIsNotEmptyArray(sequenceFlows, 'sequenceFlow');
+    verifyIsNotEmptyArray(sequenceFlows);
     verifyProperties(sequenceFlows[0], ['id', 'name'], []);
     verifyProperties(sequenceFlows[1], ['id', 'name'], []);
 
@@ -51,7 +50,7 @@ describe('parse bpmn as xml for sequence flow', () => {
     const plane = diagram.BPMNPlane;
     verifyProperties(plane, ['BPMNEdge'], []);
     const edges = plane.BPMNEdge;
-    verifyIsNotEmptyArray(edges, 'BPMNEdge');
+    verifyIsNotEmptyArray(edges);
     verifyProperties(edges[0], ['id', 'bpmnElement'], []);
     verifyProperties(edges[1], ['id', 'bpmnElement'], []);
   });
@@ -94,16 +93,16 @@ describe('parse bpmn as xml for sequence flow', () => {
 
     // Model
     const process = json.definitions.process;
-    verifyIsNotEmptyArray(process, 'process');
+    verifyIsNotEmptyArray(process);
     const process0 = process[0];
     verifyProperties(process0, ['sequenceFlow'], []);
     const sequenceFlows = process0.sequenceFlow;
-    verifyIsNotEmptyArray(sequenceFlows, 'sequenceFlow');
+    verifyIsNotEmptyArray(sequenceFlows);
     verifyProperties(sequenceFlows[0], ['id', 'name'], []);
     verifyProperties(sequenceFlows[1], ['id', 'name'], []);
 
     const process1 = process[1];
-    expect(process1).to.have.property('sequenceFlow');
+    verifyProperties(process1, ['sequenceFlow'], []);
     verifyProperties(process1.sequenceFlow, ['id', 'name'], []);
   });
 });

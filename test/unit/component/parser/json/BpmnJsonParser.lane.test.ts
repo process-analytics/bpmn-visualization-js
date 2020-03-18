@@ -1,5 +1,4 @@
-import { expect } from 'chai';
-import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJson, parseJsonAndExpectOnlyLanes, verifyShape } from './JsonTestUtils';
 
 describe('parse bpmn as json for lane', () => {
@@ -66,7 +65,7 @@ describe('parse bpmn as json for lane', () => {
 
     const model = parseJson(json);
 
-    expect(model.lanes).to.have.lengthOf(1, 'lanes');
+    expect(model.lanes).toHaveLength(1);
     verifyShape(model.lanes[0], {
       shapeId: 'Lane_1h5yeu4_di',
       bpmnElementId: 'Lane_12u5n6x',
@@ -78,8 +77,8 @@ describe('parse bpmn as json for lane', () => {
       boundsHeight: 45,
     });
 
-    expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
-    expect(model.flowNodes[0].bpmnElement.parentId).to.be.equal('Lane_12u5n6x', 'bpmn element parent');
+    expect(model.flowNodes).toHaveLength(1);
+    expect(model.flowNodes[0].bpmnElement.parentId).toEqual('Lane_12u5n6x');
   });
 
   it('json containing one process with a single lane with flowNodeRef as object & flowNode not parsed', () => {
@@ -145,7 +144,7 @@ describe('parse bpmn as json for lane', () => {
 
     const model = parseJson(json);
 
-    expect(model.lanes).to.have.lengthOf(1, 'lanes');
+    expect(model.lanes).toHaveLength(1);
     verifyShape(model.lanes[0], {
       shapeId: 'Lane_1h5yeu4_di',
       bpmnElementId: 'Lane_12u5n6x',
@@ -157,8 +156,8 @@ describe('parse bpmn as json for lane', () => {
       boundsHeight: 45,
     });
 
-    expect(model.flowNodes).to.have.lengthOf(1, 'flow nodes');
-    expect(model.flowNodes[0].bpmnElement.parentId).to.be.equal('Lane_12u5n6x', 'bpmn element parent');
+    expect(model.flowNodes).toHaveLength(1);
+    expect(model.flowNodes[0].bpmnElement.parentId).toEqual('Lane_12u5n6x');
   });
 
   it('json containing one process declared as array with a laneset', () => {

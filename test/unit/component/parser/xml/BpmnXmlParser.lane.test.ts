@@ -1,4 +1,4 @@
-import BpmnXmlParser from '../../../../src/component/parser/xml/BpmnXmlParser';
+import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 import { verifyDefinitions, verifyIsNotEmptyArray, verifyProperties } from './XMLTestUtils';
 
 describe('parse bpmn as xml for lane', () => {
@@ -34,7 +34,7 @@ describe('parse bpmn as xml for lane', () => {
     verifyProperties(process, ['laneSet'], []);
     verifyProperties(process.laneSet, ['lane'], []);
     const lanes = process.laneSet.lane;
-    verifyIsNotEmptyArray(lanes, 'lane');
+    verifyIsNotEmptyArray(lanes);
     verifyProperties(lanes[0], ['id', 'name', 'flowNodeRef'], []);
     verifyProperties(lanes[1], ['id'], ['name', 'flowNodeRef']);
 
@@ -44,7 +44,7 @@ describe('parse bpmn as xml for lane', () => {
     const plane = diagram.BPMNPlane;
     verifyProperties(plane, ['BPMNShape'], []);
     const shapes = plane.BPMNShape;
-    verifyIsNotEmptyArray(shapes, 'BPMNShape');
+    verifyIsNotEmptyArray(shapes);
     verifyProperties(shapes[0], ['id', 'bpmnElement'], []);
     verifyProperties(shapes[1], ['id', 'bpmnElement'], []);
   });
@@ -84,14 +84,14 @@ describe('parse bpmn as xml for lane', () => {
 
     verifyDefinitions(json);
 
-    // Model
+    // ModelÒ
     const process = json.definitions.process;
-    verifyIsNotEmptyArray(process, 'process');
+    verifyIsNotEmptyArray(process);
     const process0 = process[0];
     verifyProperties(process0, ['laneSet'], []);
     verifyProperties(process0.laneSet, ['lane'], []);
     const lanes = process0.laneSet.lane;
-    verifyIsNotEmptyArray(lanes, 'lane');
+    verifyIsNotEmptyArray(lanes);
     verifyProperties(lanes[0], ['id', 'name', 'flowNodeRef'], []);
     verifyProperties(lanes[1], ['id'], ['name', 'flowNodeRef']);
 

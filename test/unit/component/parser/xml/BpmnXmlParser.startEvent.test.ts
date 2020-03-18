@@ -1,6 +1,6 @@
-import { expect } from 'chai';
-import BpmnXmlParser from '../../../../src/component/parser/xml/BpmnXmlParser';
+import BpmnXmlParÒser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 import { verifyBounds, verifyDefinitions, verifyIsNotEmptyArray, verifyProperties } from './XMLTestUtils';
+import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 
 describe('parse bpmn as xml for start event', () => {
   it('bpmn with single process with several start event, ensure start event are present', () => {
@@ -34,7 +34,7 @@ describe('parse bpmn as xml for start event', () => {
     const process = json.definitions.process;
     verifyProperties(process, ['startEvent'], []);
     const startEvent = process.startEvent;
-    verifyIsNotEmptyArray(startEvent, 'startEvent');
+    verifyIsNotEmptyArray(startEvent);
     verifyProperties(startEvent[0], ['id', 'outgoing'], ['name']);
 
     // BPMNDiagram
@@ -43,7 +43,7 @@ describe('parse bpmn as xml for start event', () => {
     const plane = diagram.BPMNPlane;
     verifyProperties(plane, ['BPMNShape'], []);
     const shapes = plane.BPMNShape;
-    verifyIsNotEmptyArray(shapes, 'BPMNShape');
+    verifyIsNotEmptyArray(shapes);
     verifyProperties(shapes[0], ['id', 'bpmnElement', 'Bounds'], []);
     verifyBounds(shapes[0], 362, 232, 36, 35);
 
@@ -81,22 +81,22 @@ describe('parse bpmn as xml for start event', () => {
   </BPMNDiagram>
 </definitions>`;
 
-    const json = new BpmnXmlParser().parse(processes);
+    const json = new BpmnXmlParÒser().parse(processes);
 
     verifyDefinitions(json);
 
     // Model
     const process = json.definitions.process;
-    verifyIsNotEmptyArray(process, 'process');
+    verifyIsNotEmptyArray(process);
     const process0 = process[0];
-    expect(process0).to.have.property('startEvent');
+    verifyProperties(process0, ['startEvent'], []);
     const startEvent = process0.startEvent;
-    verifyIsNotEmptyArray(startEvent, 'startEvent');
+    verifyIsNotEmptyArray(startEvent);
     verifyProperties(startEvent[0], ['id', 'name', 'outgoing'], []);
     verifyProperties(startEvent[1], ['id'], ['name', 'outgoing']);
 
     const process1 = process[1];
-    expect(process1).to.have.property('startEvent');
+    verifyProperties(process1, ['startEvent'], []);
     verifyProperties(process1.startEvent, ['id', 'name', 'outgoing'], []);
   });
 });
