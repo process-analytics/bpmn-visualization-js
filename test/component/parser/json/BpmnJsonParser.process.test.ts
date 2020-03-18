@@ -3,7 +3,6 @@ import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmn
 import { parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
 import { findProcessRefParticipant } from '../../../../src/component/parser/json/converter/CollaborationConverter';
 
-// TODO rename shape ids (start by shape_ like in other tests)
 describe('parse bpmn as json for process/pool', () => {
   it('json containing one participant without name and the related process has a name', () => {
     const json = `{
@@ -20,7 +19,7 @@ describe('parse bpmn as json for process/pool', () => {
       "BPMNPlane": {
         "BPMNShape": [
           {
-            "id": "Participant_1_di",
+            "id": "shape_Participant_1",
             "bpmnElement": "Participant_1",
             "isHorizontal": true,
             "Bounds": { "x": 158, "y": 50, "width": 1620, "height": 430 }
@@ -34,7 +33,7 @@ describe('parse bpmn as json for process/pool', () => {
     const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 0);
     const pool = model.pools[0];
     verifyShape(pool, {
-      shapeId: 'Participant_1_di',
+      shapeId: 'shape_Participant_1',
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Process 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
@@ -62,13 +61,13 @@ describe('parse bpmn as json for process/pool', () => {
       "BPMNPlane": {
         "BPMNShape": [
           {
-            "id": "Participant_0nuvj8r_di",
+            "id": "shape_Participant_0nuvj8r",
             "bpmnElement": "Participant_0nuvj8r",
             "isHorizontal": true,
             "Bounds": { "x": 158, "y": 50, "width": 1620, "height": 430 }
           },
           {
-            "id":"Lane_1h5yeu4_di",
+            "id":"shape_Lane_1h5yeu4",
             "bpmnElement":"Lane_12u5n6x",
             "isHorizontal":true,
             "Bounds": { "x":362, "y":232, "width":36, "height":45 }
@@ -82,7 +81,7 @@ describe('parse bpmn as json for process/pool', () => {
     const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 1);
     const pool = model.pools[0];
     verifyShape(pool, {
-      shapeId: 'Participant_0nuvj8r_di',
+      shapeId: 'shape_Participant_0nuvj8r',
       bpmnElementId: 'Participant_0nuvj8r',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
@@ -95,7 +94,7 @@ describe('parse bpmn as json for process/pool', () => {
 
     const lane = model.lanes[0];
     verifyShape(lane, {
-      shapeId: 'Lane_1h5yeu4_di',
+      shapeId: 'shape_Lane_1h5yeu4',
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
@@ -137,13 +136,13 @@ describe('parse bpmn as json for process/pool', () => {
       "BPMNPlane": {
         "BPMNShape": [
           {
-            "id": "Participant_1_di",
+            "id": "shape_Participant_1",
             "bpmnElement": "Participant_1",
             "isHorizontal": true,
             "Bounds": { "x": 158, "y": 50, "width": 1620, "height": 430 }
           },
           {
-            "id":"Lane_1_1_di",
+            "id":"shape_Lane_1_1",
             "bpmnElement":"Lane_1_1",
             "isHorizontal":true,
             "Bounds": { "x":362, "y":232, "width":36, "height":45 }
@@ -155,7 +154,7 @@ describe('parse bpmn as json for process/pool', () => {
             "Bounds": { "x": 158, "y": 1050, "width": 1620, "height": 430 }
           },
           {
-            "id":"Lane_2_1_di",
+            "id":"shape_Lane_2_1",
             "bpmnElement":"Lane_2_1",
             "isHorizontal":true,
             "Bounds": { "x":362, "y":1232, "width":36, "height":45 }
@@ -168,7 +167,7 @@ describe('parse bpmn as json for process/pool', () => {
 
     const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 2, 2);
     verifyShape(model.pools[0], {
-      shapeId: 'Participant_1_di',
+      shapeId: 'shape_Participant_1',
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
@@ -191,7 +190,7 @@ describe('parse bpmn as json for process/pool', () => {
     });
 
     verifyShape(model.lanes[0], {
-      shapeId: 'Lane_1_1_di',
+      shapeId: 'shape_Lane_1_1',
       bpmnElementId: 'Lane_1_1',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
@@ -202,7 +201,7 @@ describe('parse bpmn as json for process/pool', () => {
       parentId: 'Participant_1',
     });
     verifyShape(model.lanes[1], {
-      shapeId: 'Lane_2_1_di',
+      shapeId: 'shape_Lane_2_1',
       bpmnElementId: 'Lane_2_1',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
@@ -232,7 +231,7 @@ describe('parse bpmn as json for process/pool', () => {
       "BPMNPlane": {
         "BPMNShape": [
           {
-            "id": "Participant_1_di",
+            "id": "shape_Participant_1",
             "bpmnElement": "Participant_1",
             "isHorizontal": true,
             "Bounds": { "x": 158, "y": 50, "width": 1620, "height": 430 }
@@ -246,7 +245,7 @@ describe('parse bpmn as json for process/pool', () => {
     const model = parseJsonAndExpectOnlyPools(json, 1);
     const pool = model.pools[0];
     verifyShape(pool, {
-      shapeId: 'Participant_1_di',
+      shapeId: 'shape_Participant_1',
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
@@ -280,7 +279,7 @@ describe('parse bpmn as json for process/pool', () => {
       "BPMNPlane": {
         "BPMNShape": [
           {
-            "id": "Participant_1_di",
+            "id": "shape_Participant_1",
             "bpmnElement": "Participant_1",
             "isHorizontal": true,
             "Bounds": { "x": 158, "y": 50, "width": 1620, "height": 630 }
@@ -299,7 +298,7 @@ describe('parse bpmn as json for process/pool', () => {
     const model = parseJsonAndExpectOnlyPoolsAndFlowNodes(json, 1, 1);
     const pool = model.pools[0];
     verifyShape(pool, {
-      shapeId: 'Participant_1_di',
+      shapeId: 'shape_Participant_1',
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
