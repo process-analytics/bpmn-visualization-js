@@ -1,4 +1,4 @@
-import { JsonConvert, JsonConverter, OperationMode, ValueCheckingMode } from 'json2typescript';
+import { JsonConvert, JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import Shape from '../../../../model/bpmn/shape/Shape';
 import Bounds from '../../../../model/bpmn/Bounds';
@@ -6,14 +6,7 @@ import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
 import { findFlowNodeBpmnElement, findLaneBpmnElement } from './SemanticConverter';
-
-//////////////////////////////////////////////////////////////
-// TODO : To move in a singleton object to use here and in the BpmnJsonParser
-const jsonConvert: JsonConvert = new JsonConvert();
-jsonConvert.operationMode = OperationMode.ENABLE;
-jsonConvert.ignorePrimitiveChecks = false; // don't allow assigning number to string etc.
-jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL; // never allow null
-//////////////////////////////////////////////////////////////
+import JsonParser from '../JsonParser';
 
 @JsonConverter
 export default class DiagramConverter extends AbstractConverter<BpmnModel> {
@@ -64,13 +57,17 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
     const bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
       const id = shape.id;
+
+      const jsonConvert: JsonConvert = JsonParser.getInstance().jsonConvert;
       const bounds = jsonConvert.deserializeObject(shape.Bounds, Bounds);
+
       return new Shape(id, bpmnElement, bounds);
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeEdges(edges: any): Edge[] {
+    const jsonConvert: JsonConvert = JsonParser.getInstance().jsonConvert;
     return jsonConvert.deserializeArray(ensureIsArray(edges), Edge);
   }
 }

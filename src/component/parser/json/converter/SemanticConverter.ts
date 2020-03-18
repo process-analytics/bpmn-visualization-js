@@ -1,9 +1,10 @@
-import { JsonConvert, JsonConverter, OperationMode, ValueCheckingMode } from 'json2typescript';
+import { JsonConvert, JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { Semantic } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
+import JsonParser from '../JsonParser';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
@@ -24,13 +25,6 @@ export function findLaneBpmnElement(id: string): ShapeBpmnElement {
 export function findSequenceFlow(id: string): SequenceFlow {
   return convertedSequenceFlows.find(i => i.id === id);
 }
-
-// TODO : To move in a singleton object to use here and in the BpmnJsonParser
-const jsonConvert: JsonConvert = new JsonConvert();
-jsonConvert.operationMode = OperationMode.ENABLE;
-jsonConvert.ignorePrimitiveChecks = false; // don't allow assigning number to string etc.
-jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL; // never allow null
-//////////////////////////////////////////////////////////////
 
 @JsonConverter
 export default class SemanticConverter extends AbstractConverter<Semantic> {
@@ -102,6 +96,7 @@ export default class SemanticConverter extends AbstractConverter<Semantic> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildSequenceFlow(bpmnElements: Array<any> | any): void {
+    const jsonConvert: JsonConvert = JsonParser.getInstance().jsonConvert;
     const t = jsonConvert.deserializeArray(ensureIsArray(bpmnElements), SequenceFlow);
     convertedSequenceFlows.push(...t);
   }
