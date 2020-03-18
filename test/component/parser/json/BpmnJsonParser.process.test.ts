@@ -5,8 +5,7 @@ import { findProcessRefParticipant } from '../../../../src/component/parser/json
 
 // TODO rename shape ids (start by shape_ like in other tests)
 describe('parse bpmn as json for process/pool', () => {
-  // TODO disable as 1st implementation is not able to manage it
-  xit('json containing one participant without name and the related process has a name', () => {
+  it('json containing one participant without name and the related process has a name', () => {
     const json = `{
   "definitions": {
     "collaboration": {

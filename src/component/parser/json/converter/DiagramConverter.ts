@@ -14,8 +14,7 @@ function findProcessElement(bpmnElement: string): ShapeBpmnElement {
   const participant = findProcessRefParticipant(bpmnElement);
   if (participant) {
     const originalProcessBpmnElement = findProcessBpmnElement(participant.processRef);
-    // TODO manage name if participant.name is null
-    const name = participant.name;
+    const name = participant.name || originalProcessBpmnElement.name;
     // TODO try to find a less hacky way to manage id (we could put process id to manage direct parent relation)
     // return new ShapeBpmnElement(originalProcessBpmnElement.id, name, originalProcessBpmnElement.kind, originalProcessBpmnElement.parentId);
     return new ShapeBpmnElement(participant.id, name, originalProcessBpmnElement.kind, originalProcessBpmnElement.parentId);
