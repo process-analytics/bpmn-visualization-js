@@ -17,6 +17,7 @@ export default class MxGraphConfigurator {
 
   public configureStyles(): void {
     this.configureDefaultVertexStyle();
+    this.configurePoolStyle();
     this.configureLaneStyle();
     this.configureStartEventStyle();
     this.configureEndEventStyle();
@@ -61,6 +62,16 @@ export default class MxGraphConfigurator {
     style[this.mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.LANE, style);
+  }
+
+  private configurePoolStyle(): void {
+    const style = this.cloneDefaultVertexStyle();
+    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_SWIMLANE;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
+    style[mxConstants.STYLE_HORIZONTAL] = false;
+    style[mxConstants.STYLE_FILLCOLOR] = '#d3d2d1';
+
+    this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.POOL, style);
   }
 
   private configureStartEventStyle(): void {
