@@ -1,10 +1,8 @@
-import { mxgraph, mxgraphFactory } from 'ts-mxgraph';
+import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
+import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 
-const { mxUtils, mxConstants, mxPerimeter } = mxgraphFactory({
-  mxLoadResources: false,
-  mxLoadStylesheets: false,
-});
+const { mxUtils, mxConstants, mxPerimeter } = MxGraphFactoryService.getInstance();
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**

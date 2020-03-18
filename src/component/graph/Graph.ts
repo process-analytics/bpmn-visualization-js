@@ -1,12 +1,10 @@
 import MxGraphConfigurator from '../mxgraph/MxGraphConfigurator';
-import { mxgraph, mxgraphFactory } from 'ts-mxgraph';
+import { mxgraph } from 'ts-mxgraph';
 import MxGraphRenderer from '../mxgraph/MxGraphRenderer';
 import BpmnParser from '../parser/BpmnParser';
+import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 
-const { mxClient, mxUtils, mxGraph, mxGraphModel } = mxgraphFactory({
-  mxLoadResources: false,
-  mxLoadStylesheets: false,
-});
+const { mxClient, mxUtils, mxGraph, mxGraphModel } = MxGraphFactoryService.getInstance();
 
 mxGraph.prototype.edgeLabelsMovable = false;
 mxGraph.prototype.cellsLocked = true;

@@ -1,13 +1,11 @@
-import { mxgraph, mxgraphFactory } from 'ts-mxgraph';
+import { mxgraph } from 'ts-mxgraph';
 import Shape from '../../model/bpmn/shape/Shape';
 import Edge from '../../model/bpmn/edge/Edge';
 import BpmnModel from '../../model/bpmn/BpmnModel';
 import ShapeBpmnElement from '../../model/bpmn/shape/ShapeBpmnElement';
+import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 
-const { mxPoint } = mxgraphFactory({
-  mxLoadResources: false,
-  mxLoadStylesheets: false,
-});
+const { mxPoint } = MxGraphFactoryService.getInstance();
 
 export default class MxGraphRenderer {
   constructor(readonly graph: mxgraph.mxGraph) {}
