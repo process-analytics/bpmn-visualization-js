@@ -5,6 +5,5 @@ export default class ShapeBpmnElement {
 }
 
 export class Participant {
-  // TODO check which arg must be public
-  constructor(readonly id: string, public readonly name?: string, public processRef?: string) {}
+  constructor(readonly id: string, readonly name?: string, public processRef?: string) {}
 }
