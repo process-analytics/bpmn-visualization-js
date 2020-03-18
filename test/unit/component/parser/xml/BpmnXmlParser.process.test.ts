@@ -1,24 +1,14 @@
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import { verifyBounds, verifyDefinitions, verifyDefinitionsWithCollaboration, verifyIsNotEmptyArray, verifyProperties } from './XMLTestUtils';
+import {
+  verifyAndGetBPMNShape,
+  verifyBounds,
+  verifyDefinitions,
+  verifyDefinitionsWithCollaboration,
+  verifyIsNotArray,
+  verifyIsNotEmptyArray,
+  verifyProperties,
+} from './XMLTestUtils';
 import { expect } from 'chai';
-
-// TODO rename into verifyIsNotArray and move to utils
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function expectNotToBeAnArray(obj: any, message?: string): void {
-  expect(obj).to.be.a('object', message);
-  expect(obj).not.to.be.a('array', message);
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function verifyAndGetBPMNShape(json: any): any {
-  const diagram = json.definitions.BPMNDiagram;
-  verifyProperties(diagram, ['BPMNPlane'], []);
-  const plane = diagram.BPMNPlane;
-  verifyProperties(plane, ['BPMNShape'], []);
-  const shapes = plane.BPMNShape;
-  verifyIsNotEmptyArray(shapes, 'BPMNShape');
-  return shapes;
-}
 
 describe('parse bpmn as xml for process', () => {
   it('bpmn with empty process, ensure process is present', () => {
@@ -84,14 +74,14 @@ describe('parse bpmn as xml for process', () => {
     expect(collaboration.id).eq('Collaboration_03068dc', 'collaboration id');
 
     const participant = collaboration.participant;
-    expectNotToBeAnArray(participant, 'participant');
+    verifyIsNotArray(participant, 'participant');
     expect(participant.id).eq('Participant_0nuvj8r', 'participant id');
     expect(participant.name).eq('Pool 1', 'participant name');
     expect(participant.processRef).eq('Process_0vbjbkf', 'participant process ref');
 
     // Process
     const process = json.definitions.process;
-    expectNotToBeAnArray(process, 'process');
+    verifyIsNotArray(process, 'process');
     expect(process.id).eq('Process_0vbjbkf', 'process id');
     expect(process.name).eq('RequestLoan', 'process name');
     expect(process.isExecutable).eq(false, 'process isExecutable');
