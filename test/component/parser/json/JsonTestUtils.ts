@@ -13,6 +13,7 @@ export interface ExpectedShape {
   boundsY: number;
   boundsWidth: number;
   boundsHeight: number;
+  parentId?: string;
 }
 
 export interface ExpectedEdge {
@@ -69,6 +70,7 @@ export function verifyShape(shape: Shape, expectedValue: ExpectedShape): void {
   expect(bpmnElement.id).to.be.equal(expectedValue.bpmnElementId, 'bpmn element id');
   expect(bpmnElement.name).to.be.equal(expectedValue.bpmnElementName, 'bpmn element name');
   expect(bpmnElement.kind).to.be.equal(expectedValue.bpmnElementKind, 'bpmn element kind');
+  expect(bpmnElement.parentId).to.be.equal(expectedValue.parentId, 'bpmn element parentId');
 
   const bounds = shape.bounds;
   expect(bounds.x).to.be.equal(expectedValue.boundsX, 'bounds x');
