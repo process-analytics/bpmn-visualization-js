@@ -10,13 +10,10 @@ import JsonParser from '../JsonParser';
 import { findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
 
 function findProcessElement(participantId: string): ShapeBpmnElement {
-  // TODO manage storage with a map to avoid looping with find by id
   const participant = findProcessRefParticipant(participantId);
   if (participant) {
     const originalProcessBpmnElement = findProcessBpmnElement(participant.processRef);
     const name = participant.name || originalProcessBpmnElement.name;
-    // TODO try to find a less hacky way to manage id (we could put process id to manage direct parent relation)
-    // return new ShapeBpmnElement(originalProcessBpmnElement.id, name, originalProcessBpmnElement.kind, originalProcessBpmnElement.parentId);
     return new ShapeBpmnElement(participant.id, name, originalProcessBpmnElement.kind, originalProcessBpmnElement.parentId);
   }
 }

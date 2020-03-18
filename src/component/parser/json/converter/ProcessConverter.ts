@@ -60,7 +60,6 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parseProcess(process: { [index: string]: any }): void {
     const processId = process.id;
-    // TODO check if the kind is ok
     convertedProcessBpmnElements.push(new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
 
     // flow nodes
