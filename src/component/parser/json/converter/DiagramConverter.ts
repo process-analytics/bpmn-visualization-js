@@ -7,6 +7,7 @@ import Edge from '../../../../model/bpmn/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
 import { findFlowNodeBpmnElement, findLaneBpmnElement } from './ProcessConverter';
 import JsonParser from '../JsonParser';
+import { findPoolBpmnElement } from './CollaborationConverter';
 
 @JsonConverter
 export default class DiagramConverter extends AbstractConverter<BpmnModel> {
@@ -27,7 +28,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeShapes(shapes: any): Shapes {
-    const convertedShapes: Shapes = { flowNodes: [], lanes: [] };
+    const convertedShapes: Shapes = { flowNodes: [], lanes: [], pools: [] };
 
     shapes = ensureIsArray(shapes);
 
@@ -42,6 +43,13 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
       const lane = this.deserializeShape(shape, (bpmnElement: string) => findLaneBpmnElement(bpmnElement));
       if (lane) {
         convertedShapes.lanes.push(lane);
+        continue;
+      }
+
+      // TODO logic duplication with flownode and lane management
+      const pool = this.deserializeShape(shape, (bpmnElement: string) => findPoolBpmnElement(bpmnElement));
+      if (pool) {
+        convertedShapes.pools.push(pool);
         continue;
       }
 

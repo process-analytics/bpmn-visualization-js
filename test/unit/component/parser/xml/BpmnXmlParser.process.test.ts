@@ -35,7 +35,6 @@ describe('parse bpmn as xml for process', () => {
     verifyProperties(plane, ['id', 'bpmnElement'], []);
   });
 
-  // TODO here name set in both participant and process / add test when name only available in process
   it('bpmn with single process and participant', () => {
     const singleProcess = `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" targetNamespace="http://bonitasoft.com/_RLk98HH_Eei9Z4IY4QeFuA">
@@ -66,6 +65,7 @@ describe('parse bpmn as xml for process', () => {
 </bpmn:definitions>`;
 
     const json = new BpmnXmlParser().parse(singleProcess);
+    console.log(JSON.stringify(json, undefined, 2));
 
     verifyDefinitionsWithCollaboration(json);
 
