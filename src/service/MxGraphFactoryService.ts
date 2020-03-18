@@ -19,9 +19,9 @@ export class MxGraphFactoryService {
   ) {}
 
   public static getInstance(): MxGraphFactoryService {
-    if (this.instance === null) {
-      this.instance = new MxGraphFactoryService(mxClient, mxGraph, mxGraphModel, mxUtils, mxConstants, mxPerimeter, mxPoint);
+    if (MxGraphFactoryService.instance === null) {
+      MxGraphFactoryService.instance = new MxGraphFactoryService(mxClient, mxGraph, mxGraphModel, mxUtils, mxConstants, mxPerimeter, mxPoint);
     }
-    return this.instance;
+    return MxGraphFactoryService.instance;
   }
 }
