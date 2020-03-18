@@ -8,7 +8,8 @@
     "noImplicitAny": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
-    "sourceMap": true
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src/**/*"
