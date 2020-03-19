@@ -10,12 +10,27 @@ import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
  *     <li>shapes
  */
 export default class MxGraphConfigurator {
+  private mxClient: any = MxGraphFactoryService.getMxGraphProperty('mxClient');
+  private mxGraph: any = MxGraphFactoryService.getMxGraphProperty('mxGraph');
+  private mxGraphModel: any = MxGraphFactoryService.getMxGraphProperty('mxGraphModel');
   private mxUtils: any = MxGraphFactoryService.getMxGraphProperty('mxUtils');
   private mxConstants: any = MxGraphFactoryService.getMxGraphProperty('mxConstants');
   private mxPerimeter: any = MxGraphFactoryService.getMxGraphProperty('mxPerimeter');
-  constructor(readonly graph: mxgraph.mxGraph) {}
+  private mxShape: any = MxGraphFactoryService.getMxGraphProperty('mxShape');
 
-  public configureStyles(): void {
+  private readonly graph: mxgraph.mxGraph;
+
+  constructor(container: Element) {
+    this.initMxGraphPrototype();
+    this.graph = new this.mxGraph(container, new this.mxGraphModel());
+    this.configureStyles();
+  }
+
+  public getGraph(): mxgraph.mxGraph {
+    return this.graph;
+  }
+
+  private configureStyles(): void {
     this.configureDefaultVertexStyle();
     this.configurePoolStyle();
     this.configureLaneStyle();
@@ -25,6 +40,46 @@ export default class MxGraphConfigurator {
     this.configureTaskStyle();
     this.configureParallelGatewayStyle();
     this.configureExclusiveGatewayStyle();
+  }
+
+  private initMxGraphPrototype(): void {
+    this.mxGraph.prototype.edgeLabelsMovable = false;
+    this.mxGraph.prototype.cellsLocked = true;
+    this.mxGraph.prototype.cellsSelectable = false;
+    const isFF = this.mxClient.IS_FF;
+
+    // this change is needed for adding the custom attributes that permits identification of the BPMN elements
+    this.mxShape.prototype.createSvgCanvas = function() {
+      const mxSvgCanvas2D: any = MxGraphFactoryService.getMxGraphProperty('mxSvgCanvas2D');
+      const canvas = new mxSvgCanvas2D(this.node, false);
+      canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
+      canvas.pointerEventsValue = this.svgPointerEvents;
+      canvas.blockImagePointerEvents = isFF;
+      const off = this.getSvgScreenOffset();
+
+      if (off != 0) {
+        this.node.setAttribute('transform', 'translate(' + off + ',' + off + ')');
+      } else {
+        this.node.removeAttribute('transform');
+      }
+
+      // add attributes to be able to identify elements in DOM
+      if (this.state && this.state.cell) {
+        this.node.setAttribute('class', 'class-state-cell-style-' + this.state.cell.style);
+        this.node.setAttribute('data-cell-id', this.state.cell.id);
+      }
+      //
+      canvas.minStrokeWidth = this.minSvgStrokeWidth;
+
+      if (!this.antiAlias) {
+        // Rounds all numbers in the SVG output to integers
+        canvas.format = function(value: string) {
+          return Math.round(parseFloat(value));
+        };
+      }
+
+      return canvas;
+    };
   }
 
   private getStylesheet(): any {
