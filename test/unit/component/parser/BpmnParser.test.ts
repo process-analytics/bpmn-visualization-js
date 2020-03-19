@@ -94,7 +94,7 @@ describe('parse xml to model', () => {
     const parser = new BpmnParser();
     const model = parser.parse(bpmnAsXml);
 
-    expect(model.flowNodes).toHaveLength(4);
+    expect(model.flowNodes).toHaveLength(5);
     expect(model.edges).toHaveLength(4);
     expect(model.lanes).toHaveLength(0);
     expect(model.pools).toHaveLength(0);
