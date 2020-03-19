@@ -137,7 +137,7 @@ describe('parse bpmn as json for lane', () => {
 
     const model = parseJson(json);
 
-    expect(model.lanes).to.have.lengthOf(1, 'lanes');
+    expect(model.lanes).toHaveLength(1);
     verifyShape(model.lanes[0], {
       shapeId: 'Lane_1h5yeu4_di',
       bpmnElementId: 'Lane_12u5n6x',

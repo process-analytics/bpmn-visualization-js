@@ -1,6 +1,5 @@
-import BpmnXmlParser from '../../../../src/component/parser/xml/BpmnXmlParser';
+import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 import { verifyBounds, verifyDefinitions, verifyIsNotEmptyArray, verifyProperties } from './XMLTestUtils';
-import { expect } from 'chai';
 
 describe('end event', () => {
   it('bpmn with single process with several end events, ensure end events are present', () => {
@@ -30,15 +29,13 @@ describe('end event', () => {
 </definitions>`;
 
     const json = new BpmnXmlParser().parse(singleProcess);
-    console.log(JSON.stringify(json, undefined, 2));
-
     verifyDefinitions(json);
 
     // Model
     const process = json.definitions.process;
     verifyProperties(process, ['endEvent'], []);
     const endEvent = process.endEvent;
-    verifyIsNotEmptyArray(endEvent, 'endEvent');
+    verifyIsNotEmptyArray(endEvent);
     verifyProperties(endEvent[0], ['id', 'incoming', 'name'], []);
 
     // BPMNDiagram
@@ -47,7 +44,7 @@ describe('end event', () => {
     const plane = diagram.BPMNPlane;
     verifyProperties(plane, ['BPMNShape'], []);
     const shapes = plane.BPMNShape;
-    verifyIsNotEmptyArray(shapes, 'BPMNShape');
+    verifyIsNotEmptyArray(shapes);
     verifyProperties(shapes[0], ['id', 'bpmnElement', 'Bounds', 'BPMNLabel'], []);
     verifyBounds(shapes[0], 632, 142, 36, 36);
 
@@ -95,15 +92,15 @@ describe('end event', () => {
 
     // Model
     const process = json.definitions.process;
-    verifyIsNotEmptyArray(process, 'process');
+    verifyIsNotEmptyArray(process);
     const process0 = process[0];
-    expect(process0).to.have.property('endEvent');
+    verifyProperties(process0, ['endEvent'], []);
     const endEvent = process0.endEvent;
-    verifyIsNotEmptyArray(endEvent, 'endEvent');
+    verifyIsNotEmptyArray(endEvent);
     verifyProperties(endEvent[0], ['id', 'name', 'incoming'], []);
 
     const process1 = process[1];
-    expect(process1).to.have.property('endEvent');
+    verifyProperties(process1, ['endEvent'], []);
     verifyProperties(process1.endEvent, ['id', 'incoming'], []);
   });
 });
