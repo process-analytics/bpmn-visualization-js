@@ -13,7 +13,7 @@ export default class Graph {
   private mxSvgCanvas2D: any = MxGraphFactoryService.getMxGraphProperty('mxSvgCanvas2D');
   private mxShape: any = MxGraphFactoryService.getMxGraphProperty('mxShape');
 
-  protected readonly graph: mxgraph.mxGraph;
+  public readonly graph: mxgraph.mxGraph;
 
   constructor(protected container: Element) {
     try {
