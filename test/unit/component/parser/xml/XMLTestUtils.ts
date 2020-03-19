@@ -11,9 +11,8 @@ export function verifyIsNotEmptyArray(object: any): void {
   expect(object.length).toBeGreaterThan(1);
 }
 
-// TODO remove the message argt (useless after jest introduction)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyIsNotArray(object: any, message?: string): void {
+export function verifyIsNotArray(object: any): void {
   expect(Array.isArray(object)).toBeFalsy();
 }
 

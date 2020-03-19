@@ -72,14 +72,14 @@ describe('parse bpmn as xml for process', () => {
     expect(collaboration.id).toEqual('Collaboration_03068dc');
 
     const participant = collaboration.participant;
-    verifyIsNotArray(participant, 'participant');
+    verifyIsNotArray(participant);
     expect(participant.id).toEqual('Participant_0nuvj8r');
     expect(participant.name).toEqual('Pool 1');
     expect(participant.processRef).toEqual('Process_0vbjbkf');
 
     // Process
     const process = json.definitions.process;
-    verifyIsNotArray(process, 'process');
+    verifyIsNotArray(process);
     expect(process.id).toEqual('Process_0vbjbkf');
     expect(process.name).toEqual('RequestLoan');
     expect(process.isExecutable).toBeFalsy();
