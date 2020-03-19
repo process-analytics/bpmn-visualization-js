@@ -8,7 +8,6 @@ import {
   verifyIsNotEmptyArray,
   verifyProperties,
 } from './XMLTestUtils';
-import { expect } from 'chai';
 
 describe('parse bpmn as xml for process', () => {
   it('bpmn with empty process, ensure process is present', () => {
@@ -71,27 +70,27 @@ describe('parse bpmn as xml for process', () => {
 
     // Collaboration
     const collaboration = json.definitions.collaboration;
-    expect(collaboration.id).eq('Collaboration_03068dc', 'collaboration id');
+    expect(collaboration.id).toEqual('Collaboration_03068dc');
 
     const participant = collaboration.participant;
     verifyIsNotArray(participant, 'participant');
-    expect(participant.id).eq('Participant_0nuvj8r', 'participant id');
-    expect(participant.name).eq('Pool 1', 'participant name');
-    expect(participant.processRef).eq('Process_0vbjbkf', 'participant process ref');
+    expect(participant.id).toEqual('Participant_0nuvj8r');
+    expect(participant.name).toEqual('Pool 1');
+    expect(participant.processRef).toEqual('Process_0vbjbkf');
 
     // Process
     const process = json.definitions.process;
     verifyIsNotArray(process, 'process');
-    expect(process.id).eq('Process_0vbjbkf', 'process id');
-    expect(process.name).eq('RequestLoan', 'process name');
-    expect(process.isExecutable).eq(false, 'process isExecutable');
+    expect(process.id).toEqual('Process_0vbjbkf');
+    expect(process.name).toEqual('RequestLoan');
+    expect(process.isExecutable).toBeFalsy();
 
     // BPMNDiagram
     const shapes = verifyAndGetBPMNShape(json);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const processShape = (shapes as Array<any>).find(shape => shape.id == 'Participant_0nuvj8r_di');
     verifyProperties(processShape, ['id', 'bpmnElement', 'Bounds'], []);
-    expect(processShape.bpmnElement).eq('Participant_0nuvj8r', 'process shape bpmnElement');
+    expect(processShape.bpmnElement).toEqual('Participant_0nuvj8r');
     verifyBounds(processShape, 158, 50, 1620, 430);
   });
 
@@ -142,16 +141,16 @@ describe('parse bpmn as xml for process', () => {
 
     // Collaboration
     const participant = json.definitions.collaboration.participant;
-    verifyIsNotEmptyArray(participant, 'participant');
+    verifyIsNotEmptyArray(participant);
 
-    expect(participant[0].id).eq('Participant_1', 'participant[0] id');
-    expect(participant[1].id).eq('Participant_2', 'participant[1] id');
+    expect(participant[0].id).toEqual('Participant_1');
+    expect(participant[1].id).toEqual('Participant_2');
 
     // BPMNDiagram
     const shapes = verifyAndGetBPMNShape(json);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const processShapes = (shapes as Array<any>).filter(shape => (shape.id as string).startsWith('Participant_'));
-    verifyIsNotEmptyArray(processShapes, 'process shapes');
+    verifyIsNotEmptyArray(processShapes);
     processShapes.forEach(shape => verifyProperties(shape, ['id', 'bpmnElement', 'Bounds'], []));
   });
 });
