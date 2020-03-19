@@ -29,6 +29,7 @@ describe('parse xml to model', () => {
 
     expect(model.flowNodes).toHaveLength(2);
     expect(model.edges).toHaveLength(0);
-    expect(model.edges).toHaveLength(0);
+    expect(model.lanes).toHaveLength(0);
+    // expect(model.pools).toHaveLength(1);
   });
 });
