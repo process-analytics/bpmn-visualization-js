@@ -21,7 +21,7 @@ NOTE: The BPMN elements listed here may not be rendered with their final design 
 
 BPMN elements
 
-* pool
+* [x] pool (0.1.1)
 * [x] lane (0.1.1)
 * activities
 ** [x] task (0.1.1)
