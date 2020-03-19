@@ -39,7 +39,7 @@ export function verifyDefinitionsWithCollaboration(json: any): void {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyAndGetBPMNShape(json: any): any {
+export function verifyAndGetBPMNShape(json: any): any | Array<any> {
   const diagram = json.definitions.BPMNDiagram;
   verifyProperties(diagram, ['BPMNPlane'], []);
   const plane = diagram.BPMNPlane;
