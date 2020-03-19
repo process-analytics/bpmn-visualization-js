@@ -1,0 +1,82 @@
+= Description of the supported BPMN elements progression in BPMN-visu-js.
+:icons: font
+:toc: preamble
+
+You can track related issues and pull requests with the following labels
+
+* https://github.com/bonitasoft-labs/bpmn-visu-js/issues?q=label%3A%22BPMN+support%22+is%3Aclosed[BPMN support]: BPMN
+elements recognized by the lib
+* https://github.com/bonitasoft-labs/bpmn-visu-js/issues?q=label%3A%22BPMN+rendering%22+is%3Aclosed[BPMN rendering]:
+BPMN elements rendered with their final design
+
+== Opened implementation steps
+
+The step content is subject to change and is provided for information
+
+=== Step 1 - minimal BPMN support
+
+lib version: `0.1.x`
+
+NOTE: The BPMN elements listed here may not be rendered with their final design at part of the initial support.
+
+BPMN elements
+
+* pool
+* [x] lane (0.1.1)
+* activities
+** [x] task (0.1.1)
+** [ ] service task
+** [x] user task (0.1.0)
+* events
+** [x] start event (0.1.0)
+** [ ] end event
+** [ ] terminate end event
+* flows
+** [x] sequence flow (0.1.0)
+* gateways
+** [x] exclusive gateway (0.1.1)
+** [x] parallel gateway (0.1.1)
+* BPMN artifacts
+** [ ] text annotation
+
+=== Step 2
+
+* activities
+** call activity
+** manual task
+* activity boundaries (to be refined)
+* activity markers
+** loop
+** multi instantiation parallel
+** multi instantiation sequential
+* events
+** timer start event
+* signal start event
+* flows
+** message flow
+* gateways
+** inclusive gateway
+* BPMN artifacts
+** group
+
+=== Step 3
+
+* activities
+** Send task
+** Receive task
+
+=== Step 4
+
+* subprocess
+* activities
+** business rules task
+** script task
+* BPMN extensions support
+
+=== To be continued
+
+…
+
+== Already completed steps
+
+none
