@@ -33,8 +33,8 @@ export default class Graph {
   // TODO move to MxGraphConfigurator
   private initMxGraphPrototype(): void {
     this.mxGraph.prototype.edgeLabelsMovable = false;
-    this.mxGraph.prototype.cellsLocked = true;
-    this.mxGraph.prototype.cellsSelectable = false;
+    // this.mxGraph.prototype.cellsLocked = true;
+    // this.mxGraph.prototype.cellsSelectable = false;
   }
 
   public load(xml: string): void {
