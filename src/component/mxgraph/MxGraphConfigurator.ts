@@ -67,11 +67,12 @@ export default class MxGraphConfigurator {
   private configurePoolStyle(): void {
     const style = this.cloneDefaultVertexStyle();
     style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_SWIMLANE;
-    // style[mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
     style[mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
     style[mxConstants.STYLE_HORIZONTAL] = false;
     style[mxConstants.STYLE_FILLCOLOR] = '#d3d2d1';
 
+    // TODO fix rendering issue with pool text area
+    // most of BPMN pool are ok when setting it to 30
     style[mxConstants.STYLE_STARTSIZE] = 60;
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.POOL, style);
