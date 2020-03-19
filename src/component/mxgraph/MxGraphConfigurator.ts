@@ -1,10 +1,6 @@
-import { mxgraph, mxgraphFactory } from 'ts-mxgraph';
+import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
-
-const { mxUtils, mxConstants, mxPerimeter } = mxgraphFactory({
-  mxLoadResources: false,
-  mxLoadStylesheets: false,
-});
+import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
@@ -14,6 +10,9 @@ const { mxUtils, mxConstants, mxPerimeter } = mxgraphFactory({
  *     <li>shapes
  */
 export default class MxGraphConfigurator {
+  private mxUtils: any = MxGraphFactoryService.getMxGraphProperty('mxUtils');
+  private mxConstants: any = MxGraphFactoryService.getMxGraphProperty('mxConstants');
+  private mxPerimeter: any = MxGraphFactoryService.getMxGraphProperty('mxPerimeter');
   constructor(readonly graph: mxgraph.mxGraph) {}
 
   public configureStyles(): void {
@@ -35,7 +34,7 @@ export default class MxGraphConfigurator {
 
   private cloneDefaultVertexStyle(): any {
     const defaultStyle = this.getDefaultVertexStyle();
-    return mxUtils.clone(defaultStyle);
+    return this.mxUtils.clone(defaultStyle);
   }
 
   private putCellStyle(name: ShapeBpmnElementKind, style: any): void {
@@ -44,62 +43,62 @@ export default class MxGraphConfigurator {
 
   private configureDefaultVertexStyle(): void {
     const style = this.getDefaultVertexStyle();
-    style[mxConstants.STYLE_HORIZONTAL] = true;
-    style[mxConstants.STYLE_FONTSIZE] = 15;
-    style[mxConstants.STYLE_FILLCOLOR] = 'white';
-    style[mxConstants.STYLE_FONTCOLOR] = 'black';
-    style[mxConstants.STYLE_STROKECOLOR] = 'black';
-    style[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
+    style[this.mxConstants.STYLE_HORIZONTAL] = true;
+    style[this.mxConstants.STYLE_FONTSIZE] = 15;
+    style[this.mxConstants.STYLE_FILLCOLOR] = 'white';
+    style[this.mxConstants.STYLE_FONTCOLOR] = 'black';
+    style[this.mxConstants.STYLE_STROKECOLOR] = 'black';
+    style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
   }
 
   private configureLaneStyle(): void {
     const style = this.cloneDefaultVertexStyle();
-    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_SWIMLANE;
-    style[mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
-    style[mxConstants.STYLE_HORIZONTAL] = false;
-    style[mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
+    style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_SWIMLANE;
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
+    style[this.mxConstants.STYLE_HORIZONTAL] = false;
+    style[this.mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.LANE, style);
   }
 
   private configureStartEventStyle(): void {
     const style = this.cloneDefaultVertexStyle();
-    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_ELLIPSE;
-    style[mxConstants.STYLE_PERIMETER] = mxPerimeter.EllipsePerimeter;
-    style[mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
-    style[mxConstants.STYLE_STROKECOLOR] = '#62A928';
-    style[mxConstants.STYLE_STROKEWIDTH] = 1.7;
-    style[mxConstants.STYLE_GRADIENTCOLOR] = '#E9ECB1';
+    style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_ELLIPSE;
+    style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.EllipsePerimeter;
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
+    style[this.mxConstants.STYLE_STROKECOLOR] = '#62A928';
+    style[this.mxConstants.STYLE_STROKEWIDTH] = 1.7;
+    style[this.mxConstants.STYLE_GRADIENTCOLOR] = '#E9ECB1';
     this.putCellStyle(ShapeBpmnElementKind.EVENT_START, style);
   }
 
   private configureUserTaskStyle(): void {
     const style = this.cloneDefaultVertexStyle();
-    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RECTANGLE;
-    style[mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
-    style[mxConstants.STYLE_STROKECOLOR] = '#2C6DA3';
-    style[mxConstants.STYLE_STROKEWIDTH] = 2;
-    style[mxConstants.STYLE_ROUNDED] = true;
+    style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RECTANGLE;
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
+    style[this.mxConstants.STYLE_STROKECOLOR] = '#2C6DA3';
+    style[this.mxConstants.STYLE_STROKEWIDTH] = 2;
+    style[this.mxConstants.STYLE_ROUNDED] = true;
     this.putCellStyle(ShapeBpmnElementKind.TASK_USER, style);
   }
 
   private configureParallelGatewayStyle(): void {
     const style = this.cloneDefaultVertexStyle();
-    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RHOMBUS;
-    style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
-    style[mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
-    style[mxConstants.STYLE_STROKECOLOR] = '#96A826';
-    style[mxConstants.STYLE_STROKEWIDTH] = 1.7;
+    style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RHOMBUS;
+    style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RhombusPerimeter;
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
+    style[this.mxConstants.STYLE_STROKECOLOR] = '#96A826';
+    style[this.mxConstants.STYLE_STROKEWIDTH] = 1.7;
 
-    style[mxConstants.STYLE_SPACING_TOP] = 55;
-    style[mxConstants.STYLE_SPACING_RIGHT] = 110;
-    style[mxConstants.STYLE_GRADIENTCOLOR] = '#E9ECB1';
+    style[this.mxConstants.STYLE_SPACING_TOP] = 55;
+    style[this.mxConstants.STYLE_SPACING_RIGHT] = 110;
+    style[this.mxConstants.STYLE_GRADIENTCOLOR] = '#E9ECB1';
     this.putCellStyle(ShapeBpmnElementKind.GATEWAY_PARALLEL, style);
   }
 
   private configureExclusiveGatewayStyle(): void {
-    const style = mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.GATEWAY_PARALLEL), this.getDefaultVertexStyle());
-    style[mxConstants.STYLE_GRADIENTCOLOR] = '#DDA0DD';
+    const style = this.mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.GATEWAY_PARALLEL), this.getDefaultVertexStyle());
+    style[this.mxConstants.STYLE_GRADIENTCOLOR] = '#DDA0DD';
     this.putCellStyle(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, style);
   }
 }

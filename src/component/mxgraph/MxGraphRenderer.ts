@@ -1,15 +1,13 @@
-import { mxgraph, mxgraphFactory } from 'ts-mxgraph';
+import { mxgraph } from 'ts-mxgraph';
 import Shape from '../../model/bpmn/shape/Shape';
 import Edge from '../../model/bpmn/edge/Edge';
 import BpmnModel from '../../model/bpmn/BpmnModel';
 import ShapeBpmnElement from '../../model/bpmn/shape/ShapeBpmnElement';
-
-const { mxPoint } = mxgraphFactory({
-  mxLoadResources: false,
-  mxLoadStylesheets: false,
-});
+import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 
 export default class MxGraphRenderer {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private mxPoint: any = MxGraphFactoryService.getMxGraphProperty('mxPoint');
   constructor(readonly graph: mxgraph.mxGraph) {}
 
   public render(bpmnModel: BpmnModel): void {
@@ -99,7 +97,7 @@ export default class MxGraphRenderer {
   // The translation is generally negative
   private getTranslateForRoot(cell: mxgraph.mxCell): mxgraph.mxPoint {
     const model = this.graph.getModel();
-    const offset = new mxPoint(0, 0);
+    const offset = new this.mxPoint(0, 0);
 
     while (cell != null) {
       const geo = model.getGeometry(cell);
