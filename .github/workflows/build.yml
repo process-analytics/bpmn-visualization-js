@@ -42,3 +42,5 @@ jobs:
         run: npm run build
       - name: Test Application
         run: npm run test
+      - name: Test Application End to End
+        run: npm run e2e
