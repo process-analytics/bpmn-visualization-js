@@ -23,7 +23,11 @@ describe('parse bpmn as xml for process', () => {
 
     verifyDefinitions(json);
 
-    // Model
+    // Collaboration
+    const collaboration = json.definitions.collaboration;
+    expect(collaboration).toBeUndefined();
+
+    // Process
     const process = json.definitions.process;
     verifyProperties(process, ['id', 'isExecutable'], []);
 
@@ -34,7 +38,7 @@ describe('parse bpmn as xml for process', () => {
     verifyProperties(plane, ['id', 'bpmnElement'], []);
   });
 
-  it('bpmn with single process and participant', () => {
+  it('bpmn with single process with elements and participant', () => {
     const singleProcess = `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" targetNamespace="http://bonitasoft.com/_RLk98HH_Eei9Z4IY4QeFuA">
   <bpmn:collaboration id="Collaboration_03068dc">
@@ -93,7 +97,7 @@ describe('parse bpmn as xml for process', () => {
     verifyBounds(processShape, 158, 50, 1620, 430);
   });
 
-  it('bpmn with multiple processes and participants', () => {
+  it('bpmn with multiple processes with elements and participants', () => {
     const processes = `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" targetNamespace="http://bonitasoft.com/_RLk98HH_Eei9Z4IY4QeFuA">
   <bpmn:collaboration id="Collaboration_1">
@@ -144,6 +148,16 @@ describe('parse bpmn as xml for process', () => {
 
     expect(participant[0].id).toEqual('Participant_1');
     expect(participant[1].id).toEqual('Participant_2');
+
+    // Process
+    const process = json.definitions.process;
+    verifyIsNotEmptyArray(process);
+    expect(process[0].id).toEqual('Process_1');
+    expect(process[0].name).toEqual('RequestLoan');
+    expect(process[0].isExecutable).toBeFalsy();
+    expect(process[1].id).toEqual('Process_2');
+    expect(process[1].name).toEqual('Notify');
+    expect(process[1].isExecutable).toBeFalsy();
 
     // BPMNDiagram
     const shapes = verifyAndGetBPMNShape(json);
