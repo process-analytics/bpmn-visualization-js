@@ -56,6 +56,21 @@ export function parseJson(json: string): BpmnModel {
   return BpmnJsonParser.parse(JSON.parse(json));
 }
 
+export function parseJsonAndExpect(
+  json: string,
+  numberOfExpectedPools: number,
+  numberOfExpectedLanes: number,
+  numberOfExpectedFlowNodes: number,
+  numberOfExpectedEdges: number,
+): BpmnModel {
+  const model = parseJson(json);
+  expectLanes(model, numberOfExpectedLanes);
+  expectPools(model, numberOfExpectedPools);
+  expectFlowNodes(model, numberOfExpectedFlowNodes);
+  expectEdges(model, numberOfExpectedEdges);
+  return model;
+}
+
 export function parseJsonAndExpectOnlyLanes(json: string, numberOfExpectedLanes: number): BpmnModel {
   const model = parseJson(json);
   expectLanes(model, numberOfExpectedLanes);
