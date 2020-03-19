@@ -29,7 +29,7 @@ BPMN elements
 ** [x] user task (0.1.0)
 * events
 ** [x] start event (0.1.0)
-** [ ] end event
+** [x] end event (0.1.1)
 ** [ ] terminate end event
 * flows
 ** [x] sequence flow (0.1.0)
