@@ -1,7 +1,7 @@
 import { JsonObject, JsonProperty } from 'json2typescript';
 import SequenceFlow from './SequenceFlow';
-import { SequenceFlowConverter, WaypointConverter } from '../../../component/parser/json/converter/SemanticConverter';
 import Waypoint from './Waypoint';
+import { SequenceFlowConverter, WaypointConverter } from '../../../component/parser/json/converter/ProcessConverter';
 
 @JsonObject('BPMNEdge')
 export default class Edge {

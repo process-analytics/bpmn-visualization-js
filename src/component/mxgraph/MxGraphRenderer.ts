@@ -69,7 +69,7 @@ export default class MxGraphRenderer {
     if (waypoints) {
       mxEdge.geometry.points = waypoints.map(waypoint => {
         const relativeCoordinate = this.getRelativeCoordinates(mxEdge.parent, { x: waypoint.x, y: waypoint.y });
-        return new mxPoint(relativeCoordinate.x, relativeCoordinate.y);
+        return new this.mxPoint(relativeCoordinate.x, relativeCoordinate.y);
       });
     }
   }
