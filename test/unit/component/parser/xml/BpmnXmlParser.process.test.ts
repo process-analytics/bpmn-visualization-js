@@ -64,7 +64,6 @@ describe('parse bpmn as xml for process', () => {
 </bpmn:definitions>`;
 
     const json = new BpmnXmlParser().parse(singleProcess);
-    console.log(JSON.stringify(json, undefined, 2));
 
     verifyDefinitionsWithCollaboration(json);
 
