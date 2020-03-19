@@ -8,7 +8,7 @@ import CollaborationConverter from './converter/CollaborationConverter';
 
 @JsonObject('definitions')
 export class Definitions {
-  @JsonProperty('collaboration', CollaborationConverter)
+  @JsonProperty('collaboration', CollaborationConverter, true)
   private readonly _collaboration: Collaboration;
 
   @JsonProperty('process', ProcessConverter)
