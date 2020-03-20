@@ -43,5 +43,5 @@ jobs:
       - name: Test Application
         run: npm run test
       - name: Test Application End to End
-        if: ${{ os.name != 'windows-latest' }}
+        if: ${{ matrix.os.name }} != 'windows-latest'
         run: npm run e2e
