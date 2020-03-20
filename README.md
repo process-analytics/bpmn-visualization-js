@@ -4,7 +4,7 @@ options for execution data (highlight some transitions, counters, and more). Wit
 click).
 
 [![Build](https://github.com/bonitasoft-labs/bpmn-visu-js/workflows/Build/badge.svg)](https://github.com/bonitasoft-labs/bpmn-visu-js/actions)
-![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/bonitasoft-labs/bpmn-visu-js?color=orange&include_prereleases)
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/bonitasoft-labs/bpmn-visu-js?color=orange&include_prereleases)](https://github.com/bonitasoft-labs/bpmn-visu-js/releases)
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
