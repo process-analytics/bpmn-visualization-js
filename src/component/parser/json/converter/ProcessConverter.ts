@@ -46,8 +46,6 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
 
       const sequenceFlows = convertedSequenceFlows;
-      // TODO why concat, if needed explain with a short comment
-      // TODO probaly not tested as we concatenate an array with itself (all tests pass with  const shapeBpmnElements: any[] = [])
       const shapeBpmnElements = convertedLaneBpmnElements.concat(convertedLaneBpmnElements);
 
       return { shapeBpmnElements, sequenceFlows };
