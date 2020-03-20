@@ -90,8 +90,7 @@ describe('parse bpmn as xml for process', () => {
 
     // BPMNDiagram
     const shapes = verifyAndGetBPMNShape(json);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const processShape = (shapes as Array<any>).find(shape => shape.id == 'Participant_0nuvj8r_di');
+    const processShape = shapes.find(shape => shape.id == 'Participant_0nuvj8r_di');
     verifyProperties(processShape, ['id', 'bpmnElement', 'Bounds'], []);
     expect(processShape.bpmnElement).toEqual('Participant_0nuvj8r');
     verifyBounds(processShape, 158, 50, 1620, 430);
@@ -161,8 +160,7 @@ describe('parse bpmn as xml for process', () => {
 
     // BPMNDiagram
     const shapes = verifyAndGetBPMNShape(json);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const processShapes = (shapes as Array<any>).filter(shape => (shape.id as string).startsWith('Participant_'));
+    const processShapes = shapes.filter(shape => (shape.id as string).startsWith('Participant_'));
     verifyIsNotEmptyArray(processShapes);
     processShapes.forEach(shape => verifyProperties(shape, ['id', 'bpmnElement', 'Bounds'], []));
   });
