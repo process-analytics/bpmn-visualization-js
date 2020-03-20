@@ -52,21 +52,21 @@ git checkout -b 25_annotations-to-tasks
 ### Development
 #### Requirements
 
-- > node >= 12.x
-- typescript
+- `Node.js` >= 12.x (may work with older versions but without any guarantee)
+- `Typescript` 3.x
+- `Supported OS` (see the Github Build workflow for more details): Windows/Linux/MacOs
 
 #### Build
 
-- `npm install`             *Install the dependencies in the local node_modules folder*
-
+- `npm install`           *Install the dependencies in the local node_modules folder*
 - `npm run watch`         *Watch files in bundle and rebuild on changes* <br>
-    You can now access the project on http://localhost:10001
+                          You can now access the project on http://localhost:10001
 
 ### Running tests 
 
-- `npm run test`            *Run all tests on Windows/Linux/MacOs*
-
-- `npm run coverage`    *Run all tests and the coverage on Windows/Linux/MacOs*
+- `npm run test`        *Run all tests*
+- `npm run coverage`    *Run all tests and the coverage*
+- `npm run e2e`         *Run all end-to-end tests*
 
 ### Code style
 

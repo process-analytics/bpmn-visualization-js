@@ -8,33 +8,22 @@ import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 export default class Graph {
   private mxClient: any = MxGraphFactoryService.getMxGraphProperty('mxClient');
   private mxUtils: any = MxGraphFactoryService.getMxGraphProperty('mxUtils');
-  private mxGraph: any = MxGraphFactoryService.getMxGraphProperty('mxGraph');
-  private mxGraphModel: any = MxGraphFactoryService.getMxGraphProperty('mxGraphModel');
 
-  protected readonly graph: mxgraph.mxGraph;
+  public readonly graph: mxgraph.mxGraph;
 
   constructor(protected container: Element) {
     try {
-      this.initMxGraphPrototype();
       if (!this.mxClient.isBrowserSupported()) {
         this.mxUtils.error('Browser is not supported!', 200, false);
       }
-      // Instantiate Graph
-      this.graph = new this.mxGraph(this.container, new this.mxGraphModel());
-
-      new MxGraphConfigurator(this.graph).configureStyles();
+      // Instantiate and configure Graph
+      const configurator = new MxGraphConfigurator(this.container);
+      this.graph = configurator.getGraph();
     } catch (e) {
       // TODO error handling
       this.mxUtils.alert('Cannot start application: ' + e.message);
       throw e;
     }
-  }
-
-  // TODO move to MxGraphConfigurator
-  private initMxGraphPrototype(): void {
-    this.mxGraph.prototype.edgeLabelsMovable = false;
-    this.mxGraph.prototype.cellsLocked = true;
-    this.mxGraph.prototype.cellsSelectable = false;
   }
 
   public load(xml: string): void {

@@ -11,13 +11,14 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rollup -c",
-    "start": "rollup -c --environment devMode:true",
+    "start": "rollup -c --silent --environment devMode:true",
     "watch": "rollup -cw --environment devMode:true",
     "lint": "tsc --noEmit && eslint \"*/**/*.{js,ts,tsx}\" --quiet --fix",
     "lint-check": "tsc --noEmit && eslint \"*/**/*.{js,ts,tsx}\" --max-warnings 0",
     "test": "jest --runInBand --config=jest.config.unit.js",
     "coverage": "jest --runInBand --config=jest.config.unit.js --coverage",
-    "test:watch": "jest --runInBand --config=jest.config.unit.js --coverage --watchAll"
+    "test:watch": "jest --runInBand --config=jest.config.unit.js --coverage --watchAll",
+    "e2e": "jest --runInBand --detectOpenHandles --config=jest.config.e2e.js"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
@@ -33,6 +34,8 @@
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^7.1.1",
     "@types/jest": "^25.1.4",
+    "@types/jest-environment-puppeteer": "^4.3.1",
+    "@types/puppeteer": "^2.0.1",
     "@typescript-eslint/eslint-plugin": "^2.21.0",
     "@typescript-eslint/parser": "^2.21.0",
     "cross-env": "^7.0.0",
@@ -41,9 +44,11 @@
     "eslint-plugin-prettier": "^3.1.2",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
+    "jest-environment-puppeteer-jsdom": "^4.3.1",
+    "jest-puppeteer": "^4.4.0",
     "lint-staged": "^10.0.8",
-    "nyc": "^15.0.0",
     "prettier": "^1.19.1",
+    "puppeteer": "^2.1.1",
     "rollup": "^1.32.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-copy": "^3.3.0",
