@@ -71,9 +71,9 @@ export default class MxGraphConfigurator {
     style[this.mxConstants.STYLE_HORIZONTAL] = false;
     style[this.mxConstants.STYLE_FILLCOLOR] = '#d3d2d1';
 
-    // TODO fix rendering issue with pool text area
+    // TODO manage pool text area rendering
     // most of BPMN pool are ok when setting it to 30
-    style[this.mxConstants.STYLE_STARTSIZE] = 60;
+    style[this.mxConstants.STYLE_STARTSIZE] = 30;
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.POOL, style);
   }
