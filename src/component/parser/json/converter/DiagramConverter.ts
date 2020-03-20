@@ -37,6 +37,10 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeShapes(shapes: any): Shapes {
+    // TODO find a way to avoid shape management duplication
+    // common pattern:
+    //    deserialize  shape base on custom function to find a bpmn element
+    //    if found push in an array and process next element
     const convertedShapes: Shapes = { flowNodes: [], lanes: [], pools: [] };
 
     shapes = ensureIsArray(shapes);
@@ -55,16 +59,14 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
         continue;
       }
 
-      // TODO logic duplication with flownode and lane management
       const pool = this.deserializeShape(shape, (bpmnElement: string) => findProcessElement(bpmnElement));
       if (pool) {
         convertedShapes.pools.push(pool);
         continue;
       }
 
-      // TODO clarify message (state what we try to do with the unknown element)
       // TODO error management
-      console.log('Not possible to find model element with id ' + shape.bpmnElement);
+      console.log('Shape json deserialization: unable to find bpmn element with id %s', shape.bpmnElement);
     }
 
     return convertedShapes;
