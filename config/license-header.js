@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Bonitasoft S.A.
+ * Copyright <%= YEAR %> Bonitasoft S.A.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
-
-export default class ShapeBpmnElement {
-  constructor(readonly id: string, readonly name: string, readonly kind: ShapeBpmnElementKind, public parentId?: string) {}
-}
-
-export class Participant {
-  constructor(readonly id: string, readonly name?: string, public processRef?: string) {}
-}
