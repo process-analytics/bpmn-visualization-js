@@ -12,6 +12,11 @@ export function verifyIsNotEmptyArray(object: any): void {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function verifyIsNotArray(object: any): void {
+  expect(Array.isArray(object)).toBeFalsy();
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function verifyBounds(shape: any, x: number, y: number, width: number, height: number): void {
   const bounds = shape.Bounds;
   expect(bounds.x).toEqual(x);
@@ -24,4 +29,21 @@ export function verifyBounds(shape: any, x: number, y: number, width: number, he
 export function verifyDefinitions(json: any): void {
   verifyProperties(json, ['definitions'], []);
   verifyProperties(json.definitions, ['process', 'BPMNDiagram'], []);
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function verifyDefinitionsWithCollaboration(json: any): void {
+  verifyProperties(json, ['definitions'], []);
+  verifyProperties(json.definitions, ['collaboration', 'process', 'BPMNDiagram'], []);
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function verifyAndGetBPMNShape(json: any): Array<any> {
+  const diagram = json.definitions.BPMNDiagram;
+  verifyProperties(diagram, ['BPMNPlane'], []);
+  const plane = diagram.BPMNPlane;
+  verifyProperties(plane, ['BPMNShape'], []);
+  const shapes = plane.BPMNShape;
+  verifyIsNotEmptyArray(shapes);
+  return shapes;
 }

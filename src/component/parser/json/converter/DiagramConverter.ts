@@ -5,8 +5,18 @@ import Bounds from '../../../../model/bpmn/Bounds';
 import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
-import { findFlowNodeBpmnElement, findLaneBpmnElement } from './ProcessConverter';
+import { findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement } from './ProcessConverter';
 import JsonParser from '../JsonParser';
+import { findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
+
+function findProcessElement(participantId: string): ShapeBpmnElement {
+  const participant = findProcessRefParticipant(participantId);
+  if (participant) {
+    const originalProcessBpmnElement = findProcessBpmnElement(participant.processRef);
+    const name = participant.name || originalProcessBpmnElement.name;
+    return new ShapeBpmnElement(participant.id, name, originalProcessBpmnElement.kind, originalProcessBpmnElement.parentId);
+  }
+}
 
 @JsonConverter
 export default class DiagramConverter extends AbstractConverter<BpmnModel> {
@@ -27,7 +37,11 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeShapes(shapes: any): Shapes {
-    const convertedShapes: Shapes = { flowNodes: [], lanes: [] };
+    // TODO find a way to avoid shape management duplication
+    // common pattern:
+    //    deserialize  shape base on custom function to find a bpmn element
+    //    if found push in an array and process next element
+    const convertedShapes: Shapes = { flowNodes: [], lanes: [], pools: [] };
 
     shapes = ensureIsArray(shapes);
 
@@ -45,8 +59,14 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
         continue;
       }
 
+      const pool = this.deserializeShape(shape, (bpmnElement: string) => findProcessElement(bpmnElement));
+      if (pool) {
+        convertedShapes.pools.push(pool);
+        continue;
+      }
+
       // TODO error management
-      console.log('Not possible to find model element with id ' + shape.bpmnElement);
+      console.log('Shape json deserialization: unable to find bpmn element with id %s', shape.bpmnElement);
     }
 
     return convertedShapes;
@@ -56,12 +76,17 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   private deserializeShape(shape: any, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
     const bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
-      const id = shape.id;
-
       const jsonConvert: JsonConvert = JsonParser.getInstance().jsonConvert;
       const bounds = jsonConvert.deserializeObject(shape.Bounds, Bounds);
 
-      return new Shape(id, bpmnElement, bounds);
+      if (bpmnElement.parentId) {
+        const participant = findProcessRefParticipantByProcessRef(bpmnElement.parentId);
+        if (participant) {
+          bpmnElement.parentId = participant.id;
+        }
+      }
+
+      return new Shape(shape.id, bpmnElement, bounds);
     }
   }
 

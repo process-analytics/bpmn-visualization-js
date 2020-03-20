@@ -2,6 +2,7 @@ import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeB
 import Shape from '../../../../../src/model/bpmn/shape/Shape';
 import BpmnJsonParser from '../../../../../src/component/parser/json/BpmnJsonParser';
 import Edge from '../../../../../src/model/bpmn/edge/Edge';
+import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -12,6 +13,7 @@ export interface ExpectedShape {
   boundsY: number;
   boundsWidth: number;
   boundsHeight: number;
+  parentId?: string;
 }
 
 export interface ExpectedEdge {
@@ -22,36 +24,47 @@ export interface ExpectedEdge {
   bpmnElementTargetRefId: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function parseJson(json: string): any {
+export function parseJson(json: string): BpmnModel {
   return BpmnJsonParser.parse(JSON.parse(json));
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function parseJsonAndExpectOnlyLanes(json: string, numberOfExpectedLanes: number): any {
-  const model = BpmnJsonParser.parse(JSON.parse(json));
+export function parseJsonAndExpect(
+  json: string,
+  numberOfExpectedPools: number,
+  numberOfExpectedLanes: number,
+  numberOfExpectedFlowNodes: number,
+  numberOfExpectedEdges: number,
+): BpmnModel {
+  const model = parseJson(json);
   expect(model.lanes).toHaveLength(numberOfExpectedLanes);
-  expect(model.edges).toHaveLength(0);
-  expect(model.flowNodes).toHaveLength(0);
-  return model;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function parseJsonAndExpectOnlyFlowNodes(json: string, numberOfExpectedFlowNodes: number): any {
-  const model = BpmnJsonParser.parse(JSON.parse(json));
-  expect(model.lanes).toHaveLength(0);
+  expect(model.pools).toHaveLength(numberOfExpectedPools);
   expect(model.flowNodes).toHaveLength(numberOfExpectedFlowNodes);
-  expect(model.edges).toHaveLength(0);
-  return model;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function parseJsonAndExpectOnlyEdges(json: string, numberOfExpectedEdges: number): any {
-  const model = BpmnJsonParser.parse(JSON.parse(json));
-  expect(model.lanes).toHaveLength(0);
-  expect(model.flowNodes).toHaveLength(0);
   expect(model.edges).toHaveLength(numberOfExpectedEdges);
   return model;
+}
+
+export function parseJsonAndExpectOnlyLanes(json: string, numberOfExpectedLanes: number): BpmnModel {
+  return parseJsonAndExpect(json, 0, numberOfExpectedLanes, 0, 0);
+}
+
+export function parseJsonAndExpectOnlyPoolsAndLanes(json: string, numberOfExpectedPools: number, numberOfExpectedLanes: number): BpmnModel {
+  return parseJsonAndExpect(json, numberOfExpectedPools, numberOfExpectedLanes, 0, 0);
+}
+
+export function parseJsonAndExpectOnlyPools(json: string, numberOfExpectedPools: number): BpmnModel {
+  return parseJsonAndExpect(json, numberOfExpectedPools, 0, 0, 0);
+}
+
+export function parseJsonAndExpectOnlyPoolsAndFlowNodes(json: string, numberOfExpectedPools: number, numberOfExpectedFlowNodes: number): BpmnModel {
+  return parseJsonAndExpect(json, numberOfExpectedPools, 0, numberOfExpectedFlowNodes, 0);
+}
+
+export function parseJsonAndExpectOnlyFlowNodes(json: string, numberOfExpectedFlowNodes: number): BpmnModel {
+  return parseJsonAndExpect(json, 0, 0, numberOfExpectedFlowNodes, 0);
+}
+
+export function parseJsonAndExpectOnlyEdges(json: string, numberOfExpectedEdges: number): BpmnModel {
+  return parseJsonAndExpect(json, 0, 0, 0, numberOfExpectedEdges);
 }
 
 export function verifyShape(shape: Shape, expectedValue: ExpectedShape): void {
@@ -61,6 +74,7 @@ export function verifyShape(shape: Shape, expectedValue: ExpectedShape): void {
   expect(bpmnElement.id).toEqual(expectedValue.bpmnElementId);
   expect(bpmnElement.name).toEqual(expectedValue.bpmnElementName);
   expect(bpmnElement.kind).toEqual(expectedValue.bpmnElementKind);
+  expect(bpmnElement.parentId).toEqual(expectedValue.parentId);
 
   const bounds = shape.bounds;
   expect(bounds.x).toEqual(expectedValue.boundsX);

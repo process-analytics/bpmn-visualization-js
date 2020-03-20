@@ -8,6 +8,7 @@ import JsonParser from '../JsonParser';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
+const convertedProcessBpmnElements: ShapeBpmnElement[] = [];
 const convertedSequenceFlows: SequenceFlow[] = [];
 
 const flowNodeKinds = Object.values(ShapeBpmnElementKind).filter(kind => {
@@ -22,6 +23,10 @@ export function findLaneBpmnElement(id: string): ShapeBpmnElement {
   return convertedLaneBpmnElements.find(i => i.id === id);
 }
 
+export function findProcessBpmnElement(id: string): ShapeBpmnElement {
+  return convertedProcessBpmnElements.find(i => i.id === id);
+}
+
 export function findSequenceFlow(id: string): SequenceFlow {
   return convertedSequenceFlows.find(i => i.id === id);
 }
@@ -31,9 +36,10 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(processes: Array<any> | any): Process {
     try {
-      // Deletes everything in the array, which does hit other references. More performant.
+      // Deletes everything in the array, which does hit other references. For better performance.
       convertedFlowNodeBpmnElements.length = 0;
       convertedLaneBpmnElements.length = 0;
+      convertedProcessBpmnElements.length = 0;
       convertedSequenceFlows.length = 0;
 
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
@@ -50,52 +56,57 @@ export default class ProcessConverter extends AbstractConverter<Process> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parseProcess(process: { [index: string]: any }): void {
-    flowNodeKinds.forEach(kind => this.buildFlowNodeBpmnElement(process[kind], kind));
+    const processId = process.id;
+    convertedProcessBpmnElements.push(new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
+
+    // flow nodes
+    flowNodeKinds.forEach(kind => this.buildFlowNodeBpmnElements(processId, process[kind], kind));
 
     // containers
-    this.buildLaneBpmnElement(process[ShapeBpmnElementKind.LANE]);
-    this.buildLaneSetBpmnElement(process['laneSet']);
+    this.buildLaneBpmnElements(processId, process[ShapeBpmnElementKind.LANE]);
+    this.buildLaneSetBpmnElements(processId, process['laneSet']);
 
     // flows
-    this.buildSequenceFlow(process['sequenceFlow']);
+    this.buildSequenceFlows(process['sequenceFlow']);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildFlowNodeBpmnElement(bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
-    ensureIsArray(bpmnElements).forEach(bpmnElement => convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind)));
+  private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
+    ensureIsArray(bpmnElements).forEach(bpmnElement => convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId)));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildLaneSetBpmnElement(laneSet: any): void {
+  private buildLaneSetBpmnElements(processId: string, laneSet: any): void {
     if (laneSet) {
-      this.buildLaneBpmnElement(laneSet.lane);
+      this.buildLaneBpmnElements(processId, laneSet.lane);
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildLaneBpmnElement(lanes: Array<any> | any): void {
+  private buildLaneBpmnElements(processId: string, lanes: Array<any> | any): void {
     ensureIsArray(lanes).forEach(lane => {
-      const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE);
+      const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, processId);
       convertedLaneBpmnElements.push(laneShape);
-      this.assignParent(lane);
+      this.assignParentOfLaneFlowNodes(lane);
     });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private assignParent(lane: any): void {
+  private assignParentOfLaneFlowNodes(lane: any): void {
     ensureIsArray(lane.flowNodeRef).forEach(flowNodeRef => {
       const shapeBpmnElement = findFlowNodeBpmnElement(flowNodeRef);
+      const laneId = lane.id;
       if (shapeBpmnElement) {
-        shapeBpmnElement.parentId = lane.id;
+        shapeBpmnElement.parentId = laneId;
       } else {
         // TODO error management
-        console.log('Lane element with id ' + flowNodeRef + ' is not found');
+        console.log('Unable to assign lane %s as parent: flow node %s is not found', laneId, flowNodeRef);
       }
     });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildSequenceFlow(bpmnElements: Array<any> | any): void {
+  private buildSequenceFlows(bpmnElements: Array<any> | any): void {
     const jsonConvert: JsonConvert = JsonParser.getInstance().jsonConvert;
     const t = jsonConvert.deserializeArray(ensureIsArray(bpmnElements), SequenceFlow);
     convertedSequenceFlows.push(...t);

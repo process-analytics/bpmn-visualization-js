@@ -15,45 +15,34 @@ export default class MxGraphRenderer {
     model.clear(); // ensure to remove manual changes or already loaded graphs
     model.beginUpdate();
     try {
-      this.insertLanes(bpmnModel.lanes);
-      this.insertFlowNodes(bpmnModel.flowNodes);
+      this.insertShapes(bpmnModel.pools);
+      this.insertShapes(bpmnModel.lanes);
+      this.insertShapes(bpmnModel.flowNodes);
       this.insertEdges(bpmnModel.edges);
     } finally {
       model.endUpdate();
     }
   }
 
-  private insertLanes(lanes: Shape[]): void {
-    const getParent = (): mxgraph.mxCell => {
-      return this.graph.getDefaultParent();
-    };
-
-    this.insertShapes(lanes, getParent);
-  }
-
-  private insertFlowNodes(flowNodes: Shape[]): void {
-    const getParent = (bpmnElement: ShapeBpmnElement): mxgraph.mxCell => {
-      const bpmnElementParent = this.getCell(bpmnElement.parentId);
-      if (bpmnElementParent) {
-        return bpmnElementParent;
-      }
-      return this.graph.getDefaultParent();
-    };
-
-    this.insertShapes(flowNodes, getParent);
-  }
-
-  private insertShapes(shapes: Shape[], getParent: (bpmnElement: ShapeBpmnElement) => mxgraph.mxCell): void {
+  private insertShapes(shapes: Shape[]): void {
     shapes.forEach(shape => {
-      this.insertShape(shape, getParent);
+      this.insertShape(shape);
     });
   }
 
-  private insertShape(shape: Shape, getParent: (bpmnElement: ShapeBpmnElement) => mxgraph.mxCell): void {
+  private getParent(bpmnElement: ShapeBpmnElement): mxgraph.mxCell {
+    const bpmnElementParent = this.getCell(bpmnElement.parentId);
+    if (bpmnElementParent) {
+      return bpmnElementParent;
+    }
+    return this.graph.getDefaultParent();
+  }
+
+  private insertShape(shape: Shape): void {
     const bpmnElement = shape.bpmnElement;
     if (bpmnElement) {
       const bounds = shape.bounds;
-      const parent = getParent(bpmnElement);
+      const parent = this.getParent(bpmnElement);
       this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, bounds.x, bounds.y, bounds.width, bounds.height, bpmnElement.kind);
     }
   }

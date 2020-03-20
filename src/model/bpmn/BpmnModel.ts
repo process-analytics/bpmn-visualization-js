@@ -8,4 +8,5 @@ export default interface BpmnModel extends Shapes {
 export interface Shapes {
   flowNodes: Shape[];
   lanes: Shape[];
+  pools: Shape[];
 }

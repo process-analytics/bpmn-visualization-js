@@ -6,6 +6,7 @@
  */
 export enum ShapeBpmnElementKind {
   LANE = 'lane',
+  POOL = 'pool',
   TASK_USER = 'userTask',
   TASK = 'task',
   GATEWAY_PARALLEL = 'parallelGateway',

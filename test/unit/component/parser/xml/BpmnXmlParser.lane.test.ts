@@ -84,7 +84,7 @@ describe('parse bpmn as xml for lane', () => {
 
     verifyDefinitions(json);
 
-    // ModelÒ
+    // Model
     const process = json.definitions.process;
     verifyIsNotEmptyArray(process);
     const process0 = process[0];
