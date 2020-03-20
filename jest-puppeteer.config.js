@@ -7,7 +7,7 @@ module.exports = {
   },
   launch: {
     dumpio: true,
-    headless: false,
+    headless: true,
     args: ['--disable-infobars'],
   },
 };
