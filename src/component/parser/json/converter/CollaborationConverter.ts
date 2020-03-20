@@ -5,7 +5,6 @@ import { Collaboration } from '../Definitions';
 
 const convertedProcessRefParticipants: Participant[] = [];
 
-// TODO manage storage with a map to avoid looping with find by id
 export function findProcessRefParticipant(id: string): Participant {
   return convertedProcessRefParticipants.find(i => i.id === id);
 }
