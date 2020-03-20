@@ -14,6 +14,7 @@ export default class StyleConfigurator {
     this.configureDefaultVertexStyle();
     this.configureLaneStyle();
     this.configureStartEventStyle();
+    this.configureEndEventStyle();
     this.configureUserTaskStyle();
     this.configureTaskStyle();
     this.configureParallelGatewayStyle();
@@ -66,6 +67,13 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_STROKEWIDTH] = 1.7;
     style[this.mxConstants.STYLE_GRADIENTCOLOR] = '#E9ECB1';
     this.putCellStyle(ShapeBpmnElementKind.EVENT_START, style);
+  }
+
+  private configureEndEventStyle(): void {
+    const style = this.mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.EVENT_START), this.getDefaultVertexStyle());
+    style[this.mxConstants.STYLE_STROKECOLOR] = '#8A151A';
+    style[this.mxConstants.STYLE_GRADIENTCOLOR] = 'Crimson';
+    this.putCellStyle(ShapeBpmnElementKind.EVENT_END, style);
   }
 
   private configureUserTaskStyle(): void {
