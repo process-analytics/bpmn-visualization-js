@@ -17,16 +17,48 @@ import Graph from './../component/graph/Graph';
 
 export const graph = new Graph(window.document.getElementById('graph'));
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function handleFileSelect(evt: any): void {
-  const f = evt.target.files[0];
-
+function readAndLoadFile(f: File): void {
   const reader = new FileReader();
   reader.onload = () => {
     graph.load(reader.result as string);
   };
-
   reader.readAsText(f);
+}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function handleFileSelect(evt: any): void {
+  const f = evt.target.files[0];
+  readAndLoadFile(f);
 }
 
 document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
+
+const upload = document.getElementById('file-selector');
+upload.addEventListener(
+  'dragover',
+  function(event) {
+    if (!this.classList.contains('dragging')) {
+      this.classList.add('dragging');
+    }
+    console.log('DRAGOVER');
+  },
+  false,
+);
+upload.addEventListener(
+  'drop',
+  function handleDrop(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const dt = event.dataTransfer;
+    const files = dt.files;
+    readAndLoadFile(files[0]);
+  },
+  false,
+);
+upload.addEventListener(
+  'dragleave',
+  function(event) {
+    this.classList.remove('dragging');
+    console.log('DRAGLEAVE');
+  },
+  false,
+);
