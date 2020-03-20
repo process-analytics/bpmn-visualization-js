@@ -24,34 +24,6 @@ export interface ExpectedEdge {
   bpmnElementTargetRefId: string;
 }
 
-function expectEdges(model: BpmnModel, numberOfExpectedEdges: number): void {
-  expect(model.edges).toHaveLength(numberOfExpectedEdges);
-}
-
-function expectNoEdges(model: BpmnModel): void {
-  expectEdges(model, 0);
-}
-
-function expectFlowNodes(model: BpmnModel, numberOfExpectedFlowNodes: number): void {
-  expect(model.flowNodes).toHaveLength(numberOfExpectedFlowNodes);
-}
-
-function expectNoFlowNodes(model: BpmnModel): void {
-  expectFlowNodes(model, 0);
-}
-
-function expectLanes(model: BpmnModel, numberOfExpectedLanes: number): void {
-  expect(model.lanes).toHaveLength(numberOfExpectedLanes);
-}
-
-function expectNoLanes(model: BpmnModel): void {
-  expectLanes(model, 0);
-}
-
-function expectPools(model: BpmnModel, numberOfExpectedPools: number): void {
-  expect(model.pools).toHaveLength(numberOfExpectedPools);
-}
-
 export function parseJson(json: string): BpmnModel {
   return BpmnJsonParser.parse(JSON.parse(json));
 }
@@ -64,65 +36,35 @@ export function parseJsonAndExpect(
   numberOfExpectedEdges: number,
 ): BpmnModel {
   const model = parseJson(json);
-  expectLanes(model, numberOfExpectedLanes);
-  expectPools(model, numberOfExpectedPools);
-  expectFlowNodes(model, numberOfExpectedFlowNodes);
-  expectEdges(model, numberOfExpectedEdges);
+  expect(model.lanes).toHaveLength(numberOfExpectedLanes);
+  expect(model.pools).toHaveLength(numberOfExpectedPools);
+  expect(model.flowNodes).toHaveLength(numberOfExpectedFlowNodes);
+  expect(model.edges).toHaveLength(numberOfExpectedEdges);
   return model;
 }
 
 export function parseJsonAndExpectOnlyLanes(json: string, numberOfExpectedLanes: number): BpmnModel {
-  const model = parseJson(json);
-  expectLanes(model, numberOfExpectedLanes);
-  // TODO we should expect no pool here
-  expectNoEdges(model);
-  expectNoFlowNodes(model);
-  return model;
+  return parseJsonAndExpect(json, 0, numberOfExpectedLanes, 0, 0);
 }
 
 export function parseJsonAndExpectOnlyPoolsAndLanes(json: string, numberOfExpectedPools: number, numberOfExpectedLanes: number): BpmnModel {
-  const model = parseJson(json);
-  expectLanes(model, numberOfExpectedLanes);
-  expectPools(model, numberOfExpectedPools);
-  expectNoEdges(model);
-  expectNoFlowNodes(model);
-  return model;
+  return parseJsonAndExpect(json, numberOfExpectedPools, numberOfExpectedLanes, 0, 0);
 }
 
 export function parseJsonAndExpectOnlyPools(json: string, numberOfExpectedPools: number): BpmnModel {
-  const model = parseJson(json);
-  expectPools(model, numberOfExpectedPools);
-  expectNoEdges(model);
-  expectNoFlowNodes(model);
-  expectNoLanes(model);
-  return model;
+  return parseJsonAndExpect(json, numberOfExpectedPools, 0, 0, 0);
 }
 
 export function parseJsonAndExpectOnlyPoolsAndFlowNodes(json: string, numberOfExpectedPools: number, numberOfExpectedFlowNodes: number): BpmnModel {
-  const model = parseJson(json);
-  expectFlowNodes(model, numberOfExpectedFlowNodes);
-  expectPools(model, numberOfExpectedPools);
-  expectNoEdges(model);
-  expectNoLanes(model);
-  return model;
+  return parseJsonAndExpect(json, numberOfExpectedPools, 0, numberOfExpectedFlowNodes, 0);
 }
 
 export function parseJsonAndExpectOnlyFlowNodes(json: string, numberOfExpectedFlowNodes: number): BpmnModel {
-  const model = parseJson(json);
-  expectFlowNodes(model, numberOfExpectedFlowNodes);
-  // TODO we should expect no pool here
-  expectNoEdges(model);
-  expectNoLanes(model);
-  return model;
+  return parseJsonAndExpect(json, 0, 0, numberOfExpectedFlowNodes, 0);
 }
 
 export function parseJsonAndExpectOnlyEdges(json: string, numberOfExpectedEdges: number): BpmnModel {
-  const model = parseJson(json);
-  expectEdges(model, numberOfExpectedEdges);
-  // TODO we should expect no pool here
-  expectNoFlowNodes(model);
-  expectNoLanes(model);
-  return model;
+  return parseJsonAndExpect(json, 0, 0, 0, numberOfExpectedEdges);
 }
 
 export function verifyShape(shape: Shape, expectedValue: ExpectedShape): void {
