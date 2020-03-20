@@ -20,12 +20,9 @@ describe('parse bpmn as xml for sequence flow', () => {
       </di:BPMNEdge>
       <di:BPMNEdge id="_RLln-XH_Eei9Z4IY4QeFuA" bpmnElement="_RLk_r3H_Eei9Z4IY4QeFuA">
         <di_1:waypoint x="288.0" y="82.0"/>
-        <di_1:waypoint x="341.0" y="82.0"/>
         <di:BPMNLabel/>
       </di:BPMNEdge>
       <di:BPMNEdge id="_RLln_nH_Eei9Z4IY4QeFuA" bpmnElement="_RLk_snH_Eei9Z4IY4QeFuA">
-        <di_1:waypoint x="120.0" y="79.0"/>
-        <di_1:waypoint x="188.0" y="79.0"/>
         <di:BPMNLabel/>
       </di:BPMNEdge>
     </di:BPMNPlane>
@@ -51,8 +48,9 @@ describe('parse bpmn as xml for sequence flow', () => {
     verifyProperties(plane, ['BPMNEdge'], []);
     const edges = plane.BPMNEdge;
     verifyIsNotEmptyArray(edges);
-    verifyProperties(edges[0], ['id', 'bpmnElement'], []);
-    verifyProperties(edges[1], ['id', 'bpmnElement'], []);
+    verifyProperties(edges[0], ['id', 'bpmnElement', 'waypoint'], []);
+    verifyProperties(edges[1], ['id', 'bpmnElement', 'waypoint'], []);
+    verifyProperties(edges[2], ['id', 'bpmnElement'], ['waypoint']);
   });
 
   it('bpmn with multiple processes, ensure sequence flows are present', () => {
