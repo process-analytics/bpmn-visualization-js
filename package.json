@@ -18,7 +18,7 @@
     "test": "jest --runInBand --config=jest.config.unit.js",
     "coverage": "jest --runInBand --config=jest.config.unit.js --coverage",
     "test:watch": "jest --runInBand --config=jest.config.unit.js --coverage --watchAll",
-    "e2e": "jest --runInBand --config=jest.config.e2e.js"
+    "e2e": "jest --runInBand --detectOpenHandles --config=jest.config.e2e.js"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [

@@ -43,4 +43,5 @@ jobs:
       - name: Test Application
         run: npm run test
       - name: Test Application End to End
+        timeout-minutes: 1
         run: npm run e2e
