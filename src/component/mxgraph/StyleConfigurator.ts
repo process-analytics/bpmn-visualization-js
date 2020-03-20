@@ -12,6 +12,7 @@ export default class StyleConfigurator {
 
   public configureStyles(): void {
     this.configureDefaultVertexStyle();
+    this.configurePoolStyle();
     this.configureLaneStyle();
     this.configureStartEventStyle();
     this.configureEndEventStyle();
@@ -46,6 +47,20 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_FONTCOLOR] = 'black';
     style[this.mxConstants.STYLE_STROKECOLOR] = 'black';
     style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
+  }
+
+  private configurePoolStyle(): void {
+    const style = this.cloneDefaultVertexStyle();
+    style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_SWIMLANE;
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
+    style[this.mxConstants.STYLE_HORIZONTAL] = false;
+    style[this.mxConstants.STYLE_FILLCOLOR] = '#d3d2d1';
+
+    // TODO manage pool text area rendering
+    // most of BPMN pool are ok when setting it to 30
+    style[this.mxConstants.STYLE_STARTSIZE] = 30;
+
+    this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.POOL, style);
   }
 
   private configureLaneStyle(): void {
