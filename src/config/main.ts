@@ -32,7 +32,7 @@ function handleFileSelect(evt: any): void {
 
 document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
 
-const upload = document.getElementById('file-selector');
+const upload = document.getElementById('drop-container');
 
 function preventDefaults(e: Event): void {
   e.preventDefault();
@@ -44,18 +44,7 @@ function preventDefaults(e: Event): void {
 upload.addEventListener(
   'dragover',
   function(event) {
-    if (!this.classList.contains('dragging')) {
-      this.classList.add('dragging');
-    }
-  },
-  false,
-);
-upload.addEventListener(
-  'drop',
-  function(event) {
-    const dt = event.dataTransfer;
-    const files = dt.files;
-    readAndLoadFile(files[0]);
+    this.classList.add('dragging');
   },
   false,
 );
@@ -63,6 +52,22 @@ upload.addEventListener(
   'dragleave',
   function(event) {
     this.classList.remove('dragging');
+  },
+  false,
+);
+upload.addEventListener(
+  'drop',
+  function(event) {
+    try {
+      const dt = event.dataTransfer;
+      const files = dt.files;
+      readAndLoadFile(files[0]);
+    } catch (e) {
+      // TODO error management
+      console.log(e as Error);
+    } finally {
+      this.classList.remove('dragging');
+    }
   },
   false,
 );
