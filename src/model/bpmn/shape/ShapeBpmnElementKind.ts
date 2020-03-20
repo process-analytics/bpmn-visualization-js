@@ -6,7 +6,7 @@
  */
 export enum ShapeBpmnElementKind {
   LANE = 'lane',
-  POOL = 'pool', // TODO check if the pool kind name is ok
+  POOL = 'pool',
   TASK_USER = 'userTask',
   TASK = 'task',
   GATEWAY_PARALLEL = 'parallelGateway',
