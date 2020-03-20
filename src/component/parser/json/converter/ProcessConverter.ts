@@ -95,12 +95,12 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   private assignParentOfLaneFlowNodes(lane: any): void {
     ensureIsArray(lane.flowNodeRef).forEach(flowNodeRef => {
       const shapeBpmnElement = findFlowNodeBpmnElement(flowNodeRef);
+      const laneId = lane.id;
       if (shapeBpmnElement) {
-        shapeBpmnElement.parentId = lane.id;
+        shapeBpmnElement.parentId = laneId;
       } else {
-        // TODO clarify message (add lane id + state that we try to set the element parent)
         // TODO error management
-        console.log('Lane element with id ' + flowNodeRef + ' is not found');
+        console.log('Unable to assign lane %s as parent: flow node %s is not found', laneId, flowNodeRef);
       }
     });
   }
