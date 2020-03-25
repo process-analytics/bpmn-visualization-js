@@ -20,7 +20,7 @@ const mxEllipse: typeof mxgraph.mxEllipse = MxGraphFactoryService.getMxGraphProp
 
 export default class EndEventShape extends mxEllipse {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public constructor(bounds: mxgraph.mxRectangle, fill: any, stroke: any, strokewidth?: number) {
+  public constructor(bounds: mxgraph.mxRectangle, fill: any, stroke: any) {
     super(bounds, fill, stroke, 5);
   }
 
