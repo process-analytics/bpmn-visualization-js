@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
+import { mxgraph } from 'ts-mxgraph';
+import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
+import EndEventShape from './shape/EndEventShape';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class ShapeConfigurator {
   private mxShape: any = MxGraphFactoryService.getMxGraphProperty('mxShape');
+  //private mxCellRenderer: mxgraph.mxCellRenderer = MxGraphFactoryService.getMxGraphProperty('mxCellRenderer');
+
+  public configure(): void {
+    mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_START, EndEventShape);
+  }
 
   public initMxShapePrototype(isFF: boolean): void {
     // this change is needed for adding the custom attributes that permits identification of the BPMN elements

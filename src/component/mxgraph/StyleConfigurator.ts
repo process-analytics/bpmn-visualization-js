@@ -100,9 +100,12 @@ export default class StyleConfigurator {
   }
 
   private configureEndEventStyle(): void {
-    const style = this.mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.EVENT_START), this.getDefaultVertexStyle());
-    style[this.mxConstants.STYLE_STROKECOLOR] = '#8A151A';
-    style[this.mxConstants.STYLE_GRADIENTCOLOR] = 'Crimson';
+    const style = this.cloneDefaultVertexStyle();
+    style[this.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.EVENT_END;
+    style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.EllipsePerimeter;
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
+    style[this.mxConstants.STYLE_STROKECOLOR] = 'black';
+    // style[this.mxConstants.STYLE_STROKEWIDTH] = 3.4;
     this.putCellStyle(ShapeBpmnElementKind.EVENT_END, style);
   }
 

@@ -1,0 +1,32 @@
+/**
+ * Copyright 2020 Bonitasoft S.A.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
+import { mxgraph } from 'ts-mxgraph';
+import {mxShape} from "ts-mxgraph/dist/mxgraph-typings";
+
+const mxEllipse: mxgraph.mxEllipse = MxGraphFactoryService.getMxGraphProperty('mxEllipse');
+const mxShape = MxGraphFactoryService.getMxGraphProperty('mxShape');
+
+export default class EndEventShape extends mxShape {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  protected constructor(bounds: mxgraph.mxRectangle, fill: any, stroke: any, strokewidth?: number) {
+    super(bounds, fill, stroke, 3.4);
+  }
+
+  public paintVertexShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    super.paintVertexShape(c, x, y, w, h);
+  }
+}
