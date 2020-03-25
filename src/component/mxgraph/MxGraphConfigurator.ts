@@ -35,11 +35,8 @@ export default class MxGraphConfigurator {
   constructor(container: Element) {
     this.initMxGraphPrototype();
     this.graph = new this.mxGraph(container, new this.mxGraphModel());
-    const styleConfigurator = new StyleConfigurator(this.graph);
-    styleConfigurator.configureStyles();
-    const shapeConfigurator = new ShapeConfigurator();
-    shapeConfigurator.initMxShapePrototype(this.mxClient.IS_FF);
-    shapeConfigurator.configure();
+    new StyleConfigurator(this.graph).configureStyles();
+    new ShapeConfigurator().configureShapes();
   }
 
   public getGraph(): mxgraph.mxGraph {
