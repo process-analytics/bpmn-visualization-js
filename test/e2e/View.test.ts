@@ -131,7 +131,7 @@ describe('BPMN Visu JS', () => {
     expect(cell.style).toContain(shapeKind);
     const state = graph.graph.getView().getState(cell);
     const mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
-    expect(state.style[mxConstants.STYLE_SHAPE]).toContain(shapeKind);
+    expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(shapeKind);
   }
 
   it('should display visualization', async () => {
