@@ -24,7 +24,7 @@ export default class ShapeConfigurator {
   private mxCellRenderer: typeof mxgraph.mxCellRenderer = MxGraphFactoryService.getMxGraphProperty('mxCellRenderer');
 
   public configure(): void {
-    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_START, EndEventShape);
+    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_END, EndEventShape);
   }
 
   public initMxShapePrototype(isFF: boolean): void {
