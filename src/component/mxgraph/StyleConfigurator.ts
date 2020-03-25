@@ -104,8 +104,6 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.EVENT_END;
     style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.EllipsePerimeter;
     style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
-    style[this.mxConstants.STYLE_STROKECOLOR] = 'black';
-    // style[this.mxConstants.STYLE_STROKEWIDTH] = 3.4;
     this.putCellStyle(ShapeBpmnElementKind.EVENT_END, style);
   }
 
