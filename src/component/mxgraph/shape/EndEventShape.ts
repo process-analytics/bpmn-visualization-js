@@ -15,14 +15,12 @@
  */
 import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
-import {mxShape} from "ts-mxgraph/dist/mxgraph-typings";
 
-const mxEllipse: mxgraph.mxEllipse = MxGraphFactoryService.getMxGraphProperty('mxEllipse');
-const mxShape = MxGraphFactoryService.getMxGraphProperty('mxShape');
+const mxEllipse: typeof mxgraph.mxEllipse = MxGraphFactoryService.getMxGraphProperty('mxEllipse');
 
-export default class EndEventShape extends mxShape {
+export default class EndEventShape extends mxEllipse {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected constructor(bounds: mxgraph.mxRectangle, fill: any, stroke: any, strokewidth?: number) {
+  public constructor(bounds: mxgraph.mxRectangle, fill: any, stroke: any, strokewidth?: number) {
     super(bounds, fill, stroke, 3.4);
   }
 
