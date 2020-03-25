@@ -16,8 +16,8 @@
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 import { verifyBounds, verifyDefinitions, verifyIsNotEmptyArray, verifyProperties } from './XMLTestUtils';
 
-describe('parse bpmn as xml for exclusive gateawy', () => {
-  it('bpmn with single process with several exclusive gateawy, ensure exclusive gateawy are present', () => {
+describe('parse bpmn as xml for exclusive gateway', () => {
+  it('bpmn with single process with several exclusive gateway, ensure exclusive gateway are present', () => {
     const singleProcess = `<?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="sid-38422fae-e03e-43a3-bef4-bd33b32041b2" targetNamespace="http://bonitasoft.com/_RLk98HH_Eei9Z4IY4QeFuA">
   <process id="Process_1" isExecutable="false">  
@@ -66,7 +66,7 @@ describe('parse bpmn as xml for exclusive gateawy', () => {
     verifyBounds(shapes[1], 852, 282, 46, 45);
   });
 
-  it('bpmn with multiple processes, ensure exclusive gateawy are present', () => {
+  it('bpmn with multiple processes, ensure exclusive gateway are present', () => {
     const processes = `<?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="sid-38422fae-e03e-43a3-bef4-bd33b32041b2" targetNamespace="http://bonitasoft.com/_RLk98HH_Eei9Z4IY4QeFuA">
   <process id="Process_1" isExecutable="false">  
