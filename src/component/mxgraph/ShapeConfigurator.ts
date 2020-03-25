@@ -21,10 +21,10 @@ import EndEventShape from './shape/EndEventShape';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class ShapeConfigurator {
   private mxShape: any = MxGraphFactoryService.getMxGraphProperty('mxShape');
-  //private mxCellRenderer: mxgraph.mxCellRenderer = MxGraphFactoryService.getMxGraphProperty('mxCellRenderer');
+  private mxCellRenderer: typeof mxgraph.mxCellRenderer = MxGraphFactoryService.getMxGraphProperty('mxCellRenderer');
 
   public configure(): void {
-    mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_START, EndEventShape);
+    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_START, EndEventShape);
   }
 
   public initMxShapePrototype(isFF: boolean): void {
