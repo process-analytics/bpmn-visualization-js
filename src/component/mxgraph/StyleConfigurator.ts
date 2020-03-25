@@ -19,9 +19,9 @@ import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
-  private mxUtils: any = MxGraphFactoryService.getMxGraphProperty('mxUtils');
-  private mxConstants: any = MxGraphFactoryService.getMxGraphProperty('mxConstants');
-  private mxPerimeter: any = MxGraphFactoryService.getMxGraphProperty('mxPerimeter');
+  private mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
+  private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
+  private mxPerimeter: typeof mxgraph.mxPerimeter = MxGraphFactoryService.getMxGraphProperty('mxPerimeter');
 
   constructor(private graph: mxgraph.mxGraph) {}
 
