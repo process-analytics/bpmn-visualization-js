@@ -125,7 +125,7 @@ describe('BPMN Visu JS', () => {
     await expect(page.title()).resolves.toMatch('BPMN Visu JS');
   });
 
-  function expectElementOfType(cellId: string, shapeKind: ShapeBpmnElementKind): void {
+  function expectModelContainsCell(cellId: string, shapeKind: ShapeBpmnElementKind): void {
     const cell = graph.graph.model.getCell(cellId);
     expect(cell).not.toBeNull();
     expect(cell.style).toContain(shapeKind);
@@ -140,7 +140,7 @@ describe('BPMN Visu JS', () => {
     // model is OK
     expect(graph.graph.model.cells.hasOwnProperty('startEvent_1')).toBeTruthy();
 
-    expectElementOfType('endEvent_1', ShapeBpmnElementKind.EVENT_END);
+    expectModelContainsCell('endEvent_1', ShapeBpmnElementKind.EVENT_END);
     // rendering - not OK - when graph is being initialized the window.document.getElementById('graph') is null
     // await expect(page.waitForSelector('[data-cell-id="startEvent_1"]')).resolves.toBeDefined();
   });
