@@ -90,12 +90,9 @@ export default class StyleConfigurator {
 
   private configureStartEventStyle(): void {
     const style = this.cloneDefaultVertexStyle();
-    style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_ELLIPSE;
+    style[this.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.EVENT_START;
     style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.EllipsePerimeter;
     style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
-    style[this.mxConstants.STYLE_STROKECOLOR] = '#62A928';
-    style[this.mxConstants.STYLE_STROKEWIDTH] = 1.7;
-    style[this.mxConstants.STYLE_GRADIENTCOLOR] = '#E9ECB1';
     this.putCellStyle(ShapeBpmnElementKind.EVENT_START, style);
   }
 
