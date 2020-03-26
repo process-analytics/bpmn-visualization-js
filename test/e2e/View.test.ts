@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 import Graph from '../../src/component/graph/Graph';
+import { ShapeBpmnElementKind } from '../../src/model/bpmn/shape/ShapeBpmnElementKind';
+import { mxgraph } from 'ts-mxgraph';
+import { MxGraphFactoryService } from '../../src/service/MxGraphFactoryService';
 
 describe('BPMN Visu JS', () => {
   // region html string literal
@@ -21,7 +24,7 @@ describe('BPMN Visu JS', () => {
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
 <semantic:definitions id="_1373649849716" name="A.1.0" targetNamespace="http://www.trisotech.com/definitions/_1373649849716" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <semantic:process isExecutable="false" id="WFP-6-">
-        <semantic:startEvent name="Start Event" id="_93c466ab-b271-4376-a427-f4c353d55ce8">
+        <semantic:startEvent name="Start Event" id="startEvent_1">
             <semantic:outgoing>_e16564d7-0c4c-413e-95f6-f668a3f851fb</semantic:outgoing>
         </semantic:startEvent>
         <semantic:task completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task 1" id="_ec59e164-68b4-4f94-98de-ffb1c58a84af">
@@ -36,17 +39,17 @@ describe('BPMN Visu JS', () => {
             <semantic:incoming>_2aa47410-1b0e-4f8b-ad54-d6f798080cb4</semantic:incoming>
             <semantic:outgoing>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:outgoing>
         </semantic:task>
-        <semantic:endEvent name="End Event" id="_a47df184-085b-49f7-bb82-031c84625821">
+        <semantic:endEvent name="End Event" id="endEvent_1">
             <semantic:incoming>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:incoming>
         </semantic:endEvent>
-        <semantic:sequenceFlow sourceRef="_93c466ab-b271-4376-a427-f4c353d55ce8" targetRef="_ec59e164-68b4-4f94-98de-ffb1c58a84af" name="" id="_e16564d7-0c4c-413e-95f6-f668a3f851fb"/>
+        <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="_ec59e164-68b4-4f94-98de-ffb1c58a84af" name="" id="_e16564d7-0c4c-413e-95f6-f668a3f851fb"/>
         <semantic:sequenceFlow sourceRef="_ec59e164-68b4-4f94-98de-ffb1c58a84af" targetRef="_820c21c0-45f3-473b-813f-06381cc637cd" name="" id="_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599"/>
         <semantic:sequenceFlow sourceRef="_820c21c0-45f3-473b-813f-06381cc637cd" targetRef="_e70a6fcb-913c-4a7b-a65d-e83adc73d69c" name="" id="_2aa47410-1b0e-4f8b-ad54-d6f798080cb4"/>
-        <semantic:sequenceFlow sourceRef="_e70a6fcb-913c-4a7b-a65d-e83adc73d69c" targetRef="_a47df184-085b-49f7-bb82-031c84625821" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff80"/>
+        <semantic:sequenceFlow sourceRef="_e70a6fcb-913c-4a7b-a65d-e83adc73d69c" targetRef="endEvent_1" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff80"/>
     </semantic:process>
     <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
         <bpmndi:BPMNPlane bpmnElement="WFP-6-">
-            <bpmndi:BPMNShape bpmnElement="_93c466ab-b271-4376-a427-f4c353d55ce8" id="S1373649849857__93c466ab-b271-4376-a427-f4c353d55ce8">
+            <bpmndi:BPMNShape bpmnElement="startEvent_1" id="S1373649849857_startEvent_1">
                 <dc:Bounds height="30.0" width="30.0" x="186.0" y="336.0"/>
                 <bpmndi:BPMNLabel labelStyle="LS1373649849858">
                     <dc:Bounds height="12.804751171875008" width="94.93333333333335" x="153.67766754457273" y="371.3333333333333"/>
@@ -70,7 +73,7 @@ describe('BPMN Visu JS', () => {
                     <dc:Bounds height="12.804751171875008" width="72.48293963254594" x="527.3333333333334" y="344.5818763825664"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="_a47df184-085b-49f7-bb82-031c84625821" id="S1373649849862__a47df184-085b-49f7-bb82-031c84625821">
+            <bpmndi:BPMNShape bpmnElement="endEvent_1" id="S1373649849862_endEvent_1">
                 <dc:Bounds height="32.0" width="32.0" x="648.0" y="335.0"/>
                 <bpmndi:BPMNLabel labelStyle="LS1373649849858">
                     <dc:Bounds height="12.804751171875008" width="94.93333333333335" x="616.5963254593177" y="372.3333333333333"/>
@@ -122,12 +125,23 @@ describe('BPMN Visu JS', () => {
     await expect(page.title()).resolves.toMatch('BPMN Visu JS');
   });
 
+  function expectModelContainsCell(cellId: string, shapeKind: ShapeBpmnElementKind): void {
+    const cell = graph.graph.model.getCell(cellId);
+    expect(cell).not.toBeNull();
+    expect(cell.style).toContain(shapeKind);
+    const state = graph.graph.getView().getState(cell);
+    const mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
+    expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(shapeKind);
+  }
+
   it('should display visualization', async () => {
     // load BPMN
     graph.load(xmlContent);
     // model is OK
-    expect(graph.graph.model.cells.hasOwnProperty('_93c466ab-b271-4376-a427-f4c353d55ce8')).toBeTruthy();
+    expect(graph.graph.model.cells.hasOwnProperty('startEvent_1')).toBeTruthy();
+
+    expectModelContainsCell('endEvent_1', ShapeBpmnElementKind.EVENT_END);
     // rendering - not OK - when graph is being initialized the window.document.getElementById('graph') is null
-    // await expect(page.waitForSelector('[data-cell-id="_93c466ab-b271-4376-a427-f4c353d55ce8"]')).resolves.toBeDefined();
+    // await expect(page.waitForSelector('[data-cell-id="startEvent_1"]')).resolves.toBeDefined();
   });
 });

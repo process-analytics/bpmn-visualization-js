@@ -14,14 +14,29 @@
  * limitations under the License.
  */
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
+import { mxgraph } from 'ts-mxgraph';
+import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
+import EndEventShape from './shape/EndEventShape';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export default class ShapeConfigurator {
-  private mxShape: any = MxGraphFactoryService.getMxGraphProperty('mxShape');
+  private mxClient: typeof mxgraph.mxClient = MxGraphFactoryService.getMxGraphProperty('mxClient');
+  private mxShape: typeof mxgraph.mxShape = MxGraphFactoryService.getMxGraphProperty('mxShape');
+  private mxCellRenderer: typeof mxgraph.mxCellRenderer = MxGraphFactoryService.getMxGraphProperty('mxCellRenderer');
 
-  public initMxShapePrototype(isFF: boolean): void {
+  public configureShapes(): void {
+    this.initMxShapePrototype(this.mxClient.IS_FF);
+    this.registerShapes();
+  }
+
+  private registerShapes(): void {
+    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_END, EndEventShape);
+  }
+
+  private initMxShapePrototype(isFF: boolean): void {
     // this change is needed for adding the custom attributes that permits identification of the BPMN elements
     this.mxShape.prototype.createSvgCanvas = function() {
+      // TODO should be 'typeof mxgraph.mxSvgCanvas2D'
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mxSvgCanvas2D: any = MxGraphFactoryService.getMxGraphProperty('mxSvgCanvas2D');
       const canvas = new mxSvgCanvas2D(this.node, false);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;

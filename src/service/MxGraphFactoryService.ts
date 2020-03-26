@@ -15,7 +15,18 @@
  */
 import { mxgraphFactory } from 'ts-mxgraph';
 
-type MxGraphProperty = 'mxClient' | 'mxGraph' | 'mxGraphModel' | 'mxUtils' | 'mxConstants' | 'mxPerimeter' | 'mxPoint' | 'mxSvgCanvas2D' | 'mxShape';
+type MxGraphProperty =
+  | 'mxClient'
+  | 'mxGraph'
+  | 'mxGraphModel'
+  | 'mxUtils'
+  | 'mxConstants'
+  | 'mxPerimeter'
+  | 'mxPoint'
+  | 'mxSvgCanvas2D'
+  | 'mxShape'
+  | 'mxEllipse'
+  | 'mxCellRenderer';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export class MxGraphFactoryService {

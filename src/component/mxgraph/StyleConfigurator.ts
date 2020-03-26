@@ -19,9 +19,9 @@ import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
-  private mxUtils: any = MxGraphFactoryService.getMxGraphProperty('mxUtils');
-  private mxConstants: any = MxGraphFactoryService.getMxGraphProperty('mxConstants');
-  private mxPerimeter: any = MxGraphFactoryService.getMxGraphProperty('mxPerimeter');
+  private mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
+  private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
+  private mxPerimeter: typeof mxgraph.mxPerimeter = MxGraphFactoryService.getMxGraphProperty('mxPerimeter');
 
   constructor(private graph: mxgraph.mxGraph) {}
 
@@ -100,9 +100,10 @@ export default class StyleConfigurator {
   }
 
   private configureEndEventStyle(): void {
-    const style = this.mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.EVENT_START), this.getDefaultVertexStyle());
-    style[this.mxConstants.STYLE_STROKECOLOR] = '#8A151A';
-    style[this.mxConstants.STYLE_GRADIENTCOLOR] = 'Crimson';
+    const style = this.cloneDefaultVertexStyle();
+    style[this.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.EVENT_END;
+    style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.EllipsePerimeter;
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
     this.putCellStyle(ShapeBpmnElementKind.EVENT_END, style);
   }
 

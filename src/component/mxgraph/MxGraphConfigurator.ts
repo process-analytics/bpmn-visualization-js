@@ -18,7 +18,6 @@ import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import StyleConfigurator from './StyleConfigurator';
 import ShapeConfigurator from './ShapeConfigurator';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Configure mxgraph
  * <ul>
@@ -26,19 +25,16 @@ import ShapeConfigurator from './ShapeConfigurator';
  *     <li>shapes
  */
 export default class MxGraphConfigurator {
-  private mxClient: any = MxGraphFactoryService.getMxGraphProperty('mxClient');
-  private mxGraph: any = MxGraphFactoryService.getMxGraphProperty('mxGraph');
-  private mxGraphModel: any = MxGraphFactoryService.getMxGraphProperty('mxGraphModel');
+  private mxGraph: typeof mxgraph.mxGraph = MxGraphFactoryService.getMxGraphProperty('mxGraph');
+  private mxGraphModel: typeof mxgraph.mxGraphModel = MxGraphFactoryService.getMxGraphProperty('mxGraphModel');
 
   private readonly graph: mxgraph.mxGraph;
 
   constructor(container: Element) {
     this.initMxGraphPrototype();
     this.graph = new this.mxGraph(container, new this.mxGraphModel());
-    const styleConfigurator = new StyleConfigurator(this.graph);
-    styleConfigurator.configureStyles();
-    const shapeConfigurator = new ShapeConfigurator();
-    shapeConfigurator.initMxShapePrototype(this.mxClient.IS_FF);
+    new StyleConfigurator(this.graph).configureStyles();
+    new ShapeConfigurator().configureShapes();
   }
 
   public getGraph(): mxgraph.mxGraph {
