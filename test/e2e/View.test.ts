@@ -138,7 +138,6 @@ describe('BPMN Visu JS', () => {
     // load BPMN
     graph.load(xmlContent);
     // model is OK
-    expect(graph.graph.model.cells.hasOwnProperty('startEvent_1')).toBeTruthy();
 
     expectModelContainsCell('endEvent_1', ShapeBpmnElementKind.EVENT_END);
     expectModelContainsCell('startEvent_1', ShapeBpmnElementKind.EVENT_START);
