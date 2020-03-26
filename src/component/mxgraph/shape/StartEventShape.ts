@@ -15,12 +15,13 @@
  */
 import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
+import { StyleConstant } from '../StyleConfigurator';
 
 const mxEllipse: typeof mxgraph.mxEllipse = MxGraphFactoryService.getMxGraphProperty('mxEllipse');
 
 export default class StartEventShape extends mxEllipse {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public constructor(bounds: mxgraph.mxRectangle, fill: any, stroke: any, strokewidth = 2) {
+  public constructor(bounds: mxgraph.mxRectangle, fill: any, stroke: any, strokewidth = StyleConstant.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 

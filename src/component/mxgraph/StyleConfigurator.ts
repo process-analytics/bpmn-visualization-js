@@ -17,6 +17,11 @@ import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 
+export enum StyleConstant {
+  STROKE_WIDTH_THIN = 2,
+  STROKE_WIDTH_THICK = 5,
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
   private mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');

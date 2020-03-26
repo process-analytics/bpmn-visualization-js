@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
+import { StyleConstant } from '../StyleConfigurator';
 
 const mxEllipse: typeof mxgraph.mxEllipse = MxGraphFactoryService.getMxGraphProperty('mxEllipse');
 
 export default class EndEventShape extends mxEllipse {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public constructor(bounds: mxgraph.mxRectangle, fill: any, stroke: any, strokewidth = 5) {
+  public constructor(bounds: mxgraph.mxRectangle, fill: any, stroke: any, strokewidth = StyleConstant.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
   }
 
