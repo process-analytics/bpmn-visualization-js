@@ -141,6 +141,8 @@ describe('BPMN Visu JS', () => {
     expect(graph.graph.model.cells.hasOwnProperty('startEvent_1')).toBeTruthy();
 
     expectModelContainsCell('endEvent_1', ShapeBpmnElementKind.EVENT_END);
+    expectModelContainsCell('startEvent_1', ShapeBpmnElementKind.EVENT_START);
+
     // rendering - not OK - when graph is being initialized the window.document.getElementById('graph') is null
     // await expect(page.waitForSelector('[data-cell-id="startEvent_1"]')).resolves.toBeDefined();
   });
