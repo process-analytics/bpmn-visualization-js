@@ -176,6 +176,7 @@ describe('BPMN Visu JS', () => {
     const cellId = 'StartEvent_1';
     const cell = graph.graph.model.getCell(cellId);
     expect(cell).not.toBeNull();
+    expect(cell.parent.id).toEqual('Participant_1');
 
     const geometry = cell.getGeometry();
     // absolute coordinates: parent 100, cell 250
