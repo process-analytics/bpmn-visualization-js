@@ -90,7 +90,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   private deserializeShape(shape: any, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
     const bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
-      const bounds = this.jsonConvert().deserializeObject(shape.Bounds, Bounds);
+      const bounds = this.jsonConvert.deserializeObject(shape.Bounds, Bounds);
 
       if (bpmnElement.parentId) {
         const participant = findProcessRefParticipantByProcessRef(bpmnElement.parentId);
@@ -105,6 +105,6 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeEdges(edges: any): Edge[] {
-    return this.jsonConvert().deserializeArray(ensureIsArray(edges), Edge);
+    return this.jsonConvert.deserializeArray(ensureIsArray(edges), Edge);
   }
 }

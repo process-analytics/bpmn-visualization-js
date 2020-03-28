@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { JsonConvert, JsonConverter, JsonCustomConvert } from 'json2typescript';
+import { JsonConverter, JsonCustomConvert } from 'json2typescript';
 import JsonConvertConfig from './JsonConvertConfig';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -28,14 +28,13 @@ export function ensureIsArray(elements: Array<any> | any): Array<any> {
 
 @JsonConverter
 export abstract class AbstractConverter<T> implements JsonCustomConvert<T> {
+  // TODO find a way to inject JsonConvert, see #110
+  protected readonly jsonConvert = JsonConvertConfig.jsonConvert();
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-explicit-any
   serialize(data: T): any {
     // TODO throw exception
     console.log('Not implemented !!');
-  }
-
-  protected jsonConvert(): JsonConvert {
-    return JsonConvertConfig.jsonConvert();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

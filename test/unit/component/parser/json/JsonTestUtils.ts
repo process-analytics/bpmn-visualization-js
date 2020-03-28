@@ -42,7 +42,7 @@ export interface ExpectedEdge {
 }
 
 export function parseJson(json: string): BpmnModel {
-  return BpmnJsonParser.parse(JSON.parse(json));
+  return new BpmnJsonParser().parse(JSON.parse(json));
 }
 
 export function parseJsonAndExpect(

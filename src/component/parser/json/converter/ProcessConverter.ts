@@ -122,7 +122,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildSequenceFlows(bpmnElements: Array<any> | any): void {
-    const t = this.jsonConvert().deserializeArray(ensureIsArray(bpmnElements), SequenceFlow);
+    const t = this.jsonConvert.deserializeArray(ensureIsArray(bpmnElements), SequenceFlow);
     convertedSequenceFlows.push(...t);
   }
 }
@@ -138,6 +138,6 @@ export class SequenceFlowConverter extends AbstractConverter<SequenceFlow> {
 export class WaypointConverter extends AbstractConverter<Waypoint[]> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(waypoints: any): Waypoint[] {
-    return this.jsonConvert().deserializeArray(ensureIsArray(waypoints), Waypoint);
+    return this.jsonConvert.deserializeArray(ensureIsArray(waypoints), Waypoint);
   }
 }
