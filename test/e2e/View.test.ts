@@ -166,7 +166,7 @@ describe('BPMN Visu JS', () => {
     return graph.graph.getDefaultParent().id;
   }
 
-  it('Start Event shape should have coordinates relative to the pool when no lane', async () => {
+  it('bpmn element shape should have coordinates relative to the pool when no lane', async () => {
     const bpmn = `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://example.com/schema/bpmn">
   <bpmn:collaboration id="Collaboration_1">
@@ -212,7 +212,7 @@ describe('BPMN Visu JS', () => {
     );
   });
 
-  it('Lanes and Start Event shapes should have coordinates relative to the pool or the lane', async () => {
+  it('lanes and bpmn element shapes should have coordinates relative to the pool or the lane', async () => {
     const bpmn = `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://example.com/schema/bpmn">
 <bpmn:collaboration id="Collaboration_1">
