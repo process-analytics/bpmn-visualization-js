@@ -26,6 +26,8 @@ function expectGeometry(cell: mxgraph.mxCell, geometry: mxgraph.mxGeometry): voi
   expect(cellGeometry.height).toEqual(geometry.height);
 }
 
+const mxGeometry: typeof mxgraph.mxGeometry = MxGraphFactoryService.getMxGraphProperty('mxGeometry');
+
 describe('BPMN Visu JS', () => {
   // region html string literal
   const xmlContent = `
@@ -193,15 +195,6 @@ describe('BPMN Visu JS', () => {
 `;
     graph.load(bpmn);
 
-    const mxGeometry: typeof mxgraph.mxGeometry = MxGraphFactoryService.getMxGraphProperty('mxGeometry');
-
-    // const cell1 = graph.graph.model.getCell('Participant_1');
-    // expect(cell1).not.toBeNull();
-    //
-    // expect(cell1.parent.id).toEqual(getDefaultParentId());
-    // // unchanged as this is a pool, coordinates are the ones from the bpmn source
-    // expectGeometry(cell1, new mxGeometry(100, 20, 900, 180));
-
     expectModelContainsCellWithGeometry(
       'Participant_1',
       getDefaultParentId(),
@@ -219,18 +212,5 @@ describe('BPMN Visu JS', () => {
         40, // unchanged as no transformation on size
       ),
     );
-    // TODO use expectModelContainsCell when 'start event' will use a custom shape + make this function returns the cell for adding extra expect
-    // const cell = graph.graph.model.getCell('StartEvent_1');
-    // expect(cell).not.toBeNull();
-    // expect(cell.parent.id).toEqual('Participant_1');
-    // expectGeometry(
-    //   cell,
-    //   new mxGeometry(
-    //     150, // absolute coordinates: parent 100, cell 250
-    //     80, // absolute coordinates: parent 20, cell 100
-    //     40, // unchanged as no transformation on size
-    //     40, // unchanged as no transformation on size
-    //   ),
-    // );
   });
 });
