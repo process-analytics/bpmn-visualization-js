@@ -18,6 +18,14 @@ import { ShapeBpmnElementKind } from '../../src/model/bpmn/shape/ShapeBpmnElemen
 import { mxgraph } from 'ts-mxgraph';
 import { MxGraphFactoryService } from '../../src/service/MxGraphFactoryService';
 
+function expectGeometry(cell: mxgraph.mxCell, geometry: mxgraph.mxGeometry): void {
+  const cellGeometry = cell.getGeometry();
+  expect(cellGeometry.x).toEqual(geometry.x);
+  expect(cellGeometry.y).toEqual(geometry.y);
+  expect(cellGeometry.width).toEqual(geometry.width);
+  expect(cellGeometry.height).toEqual(geometry.height);
+}
+
 describe('BPMN Visu JS', () => {
   // region html string literal
   const xmlContent = `
@@ -145,8 +153,21 @@ describe('BPMN Visu JS', () => {
     // await expect(page.waitForSelector('[data-cell-id="startEvent_1"]')).resolves.toBeDefined();
   });
 
+  function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {
+    const cell = graph.graph.model.getCell(cellId);
+    expect(cell).not.toBeNull();
+    expect(cell.parent.id).toEqual(parentId);
+    expectGeometry(cell, geometry);
+  }
+
+  function getDefaultParentId(): string {
+    return graph.graph.getDefaultParent().id;
+  }
+
+  // TODO add test with pool and lane
+  // TODO rename pool with no lane
   it('Bpmn shape should have coordinates relative to its parent', async () => {
-    const simpleBpmn = `<?xml version="1.0" encoding="UTF-8"?>
+    const bpmn = `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://example.com/schema/bpmn">
   <bpmn:collaboration id="Collaboration_1">
     <bpmn:participant id="Participant_1" name="Process" processRef="Process_1" />
@@ -170,21 +191,46 @@ describe('BPMN Visu JS', () => {
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
 `;
-    graph.load(simpleBpmn);
+    graph.load(bpmn);
 
+    const mxGeometry: typeof mxgraph.mxGeometry = MxGraphFactoryService.getMxGraphProperty('mxGeometry');
+
+    // const cell1 = graph.graph.model.getCell('Participant_1');
+    // expect(cell1).not.toBeNull();
+    //
+    // expect(cell1.parent.id).toEqual(getDefaultParentId());
+    // // unchanged as this is a pool, coordinates are the ones from the bpmn source
+    // expectGeometry(cell1, new mxGeometry(100, 20, 900, 180));
+
+    expectModelContainsCellWithGeometry(
+      'Participant_1',
+      getDefaultParentId(),
+      // unchanged as this is a pool, coordinates are the ones from the bpmn source
+      new mxGeometry(100, 20, 900, 180),
+    );
+
+    expectModelContainsCellWithGeometry(
+      'StartEvent_1',
+      'Participant_1',
+      new mxGeometry(
+        150, // absolute coordinates: parent 100, cell 250
+        80, // absolute coordinates: parent 20, cell 100
+        40, // unchanged as no transformation on size
+        40, // unchanged as no transformation on size
+      ),
+    );
     // TODO use expectModelContainsCell when 'start event' will use a custom shape + make this function returns the cell for adding extra expect
-    const cellId = 'StartEvent_1';
-    const cell = graph.graph.model.getCell(cellId);
-    expect(cell).not.toBeNull();
-    expect(cell.parent.id).toEqual('Participant_1');
-
-    const geometry = cell.getGeometry();
-    // absolute coordinates: parent 100, cell 250
-    expect(geometry.x).toEqual(150);
-    // absolute coordinates: parent 20, cell 100
-    expect(geometry.y).toEqual(80);
-    // unchanged as no transformation on size
-    expect(geometry.width).toEqual(40);
-    expect(geometry.height).toEqual(40);
+    // const cell = graph.graph.model.getCell('StartEvent_1');
+    // expect(cell).not.toBeNull();
+    // expect(cell.parent.id).toEqual('Participant_1');
+    // expectGeometry(
+    //   cell,
+    //   new mxGeometry(
+    //     150, // absolute coordinates: parent 100, cell 250
+    //     80, // absolute coordinates: parent 20, cell 100
+    //     40, // unchanged as no transformation on size
+    //     40, // unchanged as no transformation on size
+    //   ),
+    // );
   });
 });
