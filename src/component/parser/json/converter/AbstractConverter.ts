@@ -35,7 +35,7 @@ export abstract class AbstractConverter<T> implements JsonCustomConvert<T> {
   }
 
   protected jsonConvert(): JsonConvert {
-    return JsonParser.getInstance().jsonConvert;
+    return JsonParser.jsonConvert();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

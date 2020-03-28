@@ -15,19 +15,13 @@
  */
 import { Definitions } from './Definitions';
 import BpmnModel from '../../../model/bpmn/BpmnModel';
-import { JsonConvert } from 'json2typescript';
 import JsonParser from './JsonParser';
 
 // TODO the methods should not be static to prepare dependency injection
 export default class BpmnJsonParser {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static parse(json: any): BpmnModel {
-    const definitions = BpmnJsonParser.jsonConvert().deserializeObject(json.definitions, Definitions);
-
+    const definitions = JsonParser.jsonConvert().deserializeObject(json.definitions, Definitions);
     return definitions.bpmnModel;
-  }
-
-  private static jsonConvert(): JsonConvert {
-    return JsonParser.getInstance().jsonConvert;
   }
 }
