@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { JsonConvert, JsonConverter } from 'json2typescript';
+import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import Shape from '../../../../model/bpmn/shape/Shape';
 import Bounds from '../../../../model/bpmn/Bounds';
@@ -21,7 +21,6 @@ import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
 import { findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement } from './ProcessConverter';
-import JsonParser from '../JsonParser';
 import { findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
 
 function findProcessElement(participantId: string): ShapeBpmnElement {
@@ -91,8 +90,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   private deserializeShape(shape: any, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
     const bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
-      const jsonConvert: JsonConvert = JsonParser.getInstance().jsonConvert;
-      const bounds = jsonConvert.deserializeObject(shape.Bounds, Bounds);
+      const bounds = this.jsonConvert().deserializeObject(shape.Bounds, Bounds);
 
       if (bpmnElement.parentId) {
         const participant = findProcessRefParticipantByProcessRef(bpmnElement.parentId);
@@ -107,7 +105,6 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeEdges(edges: any): Edge[] {
-    const jsonConvert: JsonConvert = JsonParser.getInstance().jsonConvert;
-    return jsonConvert.deserializeArray(ensureIsArray(edges), Edge);
+    return this.jsonConvert().deserializeArray(ensureIsArray(edges), Edge);
   }
 }

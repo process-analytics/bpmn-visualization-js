@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { JsonConverter, JsonCustomConvert } from 'json2typescript';
+import { JsonConvert, JsonConverter, JsonCustomConvert } from 'json2typescript';
+import JsonParser from '../JsonParser';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ensureIsArray(elements: Array<any> | any): Array<any> {
@@ -31,6 +32,10 @@ export abstract class AbstractConverter<T> implements JsonCustomConvert<T> {
   serialize(data: T): any {
     // TODO throw exception
     console.log('Not implemented !!');
+  }
+
+  protected jsonConvert(): JsonConvert {
+    return JsonParser.getInstance().jsonConvert;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

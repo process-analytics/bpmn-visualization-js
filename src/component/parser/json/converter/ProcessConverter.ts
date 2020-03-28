@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { JsonConvert, JsonConverter } from 'json2typescript';
+import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
-import JsonParser from '../JsonParser';
 import Waypoint from '../../../../model/bpmn/edge/Waypoint';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
@@ -123,8 +122,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildSequenceFlows(bpmnElements: Array<any> | any): void {
-    const jsonConvert: JsonConvert = JsonParser.getInstance().jsonConvert;
-    const t = jsonConvert.deserializeArray(ensureIsArray(bpmnElements), SequenceFlow);
+    const t = this.jsonConvert().deserializeArray(ensureIsArray(bpmnElements), SequenceFlow);
     convertedSequenceFlows.push(...t);
   }
 }
@@ -140,7 +138,6 @@ export class SequenceFlowConverter extends AbstractConverter<SequenceFlow> {
 export class WaypointConverter extends AbstractConverter<Waypoint[]> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(waypoints: any): Waypoint[] {
-    const jsonConvert: JsonConvert = JsonParser.getInstance().jsonConvert;
-    return jsonConvert.deserializeArray(ensureIsArray(waypoints), Waypoint);
+    return this.jsonConvert().deserializeArray(ensureIsArray(waypoints), Waypoint);
   }
 }
