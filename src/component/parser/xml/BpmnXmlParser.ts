@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { parse } from 'fast-xml-parser/src/parser';
+import * as entities from 'entities';
 
 /**
  * Parse bpmn xml source
@@ -24,6 +25,9 @@ export default class BpmnXmlParser {
     ignoreNameSpace: true,
     ignoreAttributes: false,
     parseAttributeValue: true, // ensure numbers are parsed as number, not as string
+    attrValueProcessor: (val: string) => {
+      return entities.decodeXML(val);
+    },
   };
 
   // disable eslint as it comes from 3rd party
