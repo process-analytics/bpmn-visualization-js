@@ -15,7 +15,7 @@
  */
 import { Definitions } from './Definitions';
 import BpmnModel from '../../../model/bpmn/BpmnModel';
-import JsonParser from './JsonParser';
+import JsonParser from './converter/JsonParser';
 
 // TODO the methods should not be static to prepare dependency injection
 export default class BpmnJsonParser {
