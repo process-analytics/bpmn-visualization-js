@@ -166,9 +166,7 @@ describe('BPMN Visu JS', () => {
     return graph.graph.getDefaultParent().id;
   }
 
-  // TODO add test with pool and lane
-  // TODO rename pool with no lane
-  it('Bpmn shape should have coordinates relative to its parent', async () => {
+  it('Start Event shape should have coordinates relative to the pool when no lane', async () => {
     const bpmn = `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://example.com/schema/bpmn">
   <bpmn:collaboration id="Collaboration_1">
@@ -210,6 +208,85 @@ describe('BPMN Visu JS', () => {
         80, // absolute coordinates: parent 20, cell 100
         40, // unchanged as no transformation on size
         40, // unchanged as no transformation on size
+      ),
+    );
+  });
+
+  it('Lanes and Start Event shapes should have coordinates relative to the pool or the lane', async () => {
+    const bpmn = `<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://example.com/schema/bpmn">
+<bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_1" name="Process" processRef="Process_1" />
+</bpmn:collaboration>
+<bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_1">
+        <bpmn:lane id="Lane_1" name="Lane 1">
+            <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        </bpmn:lane>
+        <bpmn:lane id="Lane_2" />
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_1" name="start"/>
+</bpmn:process>
+<bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+        <bpmndi:BPMNShape id="BPMNShape_Participant_1" bpmnElement="Participant_1" isHorizontal="true">
+            <dc:Bounds x="100" y="20" width="900" height="400" />
+        </bpmndi:BPMNShape>
+        <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="StartEvent_1">
+            <dc:Bounds x="250" y="100" width="40" height="40" />
+            <bpmndi:BPMNLabel>
+                <dc:Bounds x="260" y="60" width="30" height="20" />
+            </bpmndi:BPMNLabel>
+        </bpmndi:BPMNShape>
+        <bpmndi:BPMNShape id="BPMNShape_Lane_1" bpmnElement="Lane_1" isHorizontal="true">
+            <dc:Bounds x="130" y="20" width="870" height="200" />
+        </bpmndi:BPMNShape>
+        <bpmndi:BPMNShape id="BPMNShape_Lane_2" bpmnElement="Lane_2" isHorizontal="true">
+            <dc:Bounds x="130" y="220" width="870" height="200" />
+        </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+</bpmndi:BPMNDiagram>
+</bpmn:definitions>
+`;
+    graph.load(bpmn);
+
+    expectModelContainsCellWithGeometry(
+      'Participant_1',
+      getDefaultParentId(),
+      // unchanged as this is a pool, coordinates are the ones from the bpmn source
+      new mxGeometry(100, 20, 900, 400),
+    );
+
+    expectModelContainsCellWithGeometry(
+      'Lane_1',
+      'Participant_1',
+      new mxGeometry(
+        30, // absolute coordinates: parent 100, cell 130
+        0, // absolute coordinates: parent 20, cell 20
+        870, // unchanged as no transformation on size
+        200, // unchanged as no transformation on size
+      ),
+    );
+
+    expectModelContainsCellWithGeometry(
+      'StartEvent_1',
+      'Lane_1',
+      new mxGeometry(
+        120, // absolute coordinates: parent 130, cell 250
+        80, // absolute coordinates: parent 20, cell 100
+        40, // unchanged as no transformation on size
+        40, // unchanged as no transformation on size
+      ),
+    );
+
+    expectModelContainsCellWithGeometry(
+      'Lane_2',
+      'Participant_1',
+      new mxGeometry(
+        30, // absolute coordinates: parent 100, cell 130
+        200, // absolute coordinates: parent 20, cell 220
+        870, // unchanged as no transformation on size
+        200, // unchanged as no transformation on size
       ),
     );
   });
