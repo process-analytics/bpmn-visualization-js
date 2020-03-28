@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { JsonConvert, JsonConverter, JsonCustomConvert } from 'json2typescript';
-import JsonParser from './JsonParser';
+import JsonConvertConfig from './JsonConvertConfig';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ensureIsArray(elements: Array<any> | any): Array<any> {
@@ -35,7 +35,7 @@ export abstract class AbstractConverter<T> implements JsonCustomConvert<T> {
   }
 
   protected jsonConvert(): JsonConvert {
-    return JsonParser.jsonConvert();
+    return JsonConvertConfig.jsonConvert();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

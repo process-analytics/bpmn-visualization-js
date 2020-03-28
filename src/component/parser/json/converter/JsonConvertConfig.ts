@@ -18,8 +18,8 @@ import { JsonConvert, OperationMode, ValueCheckingMode } from 'json2typescript';
 /**
  * Singleton to let you access to the JsonConvert unique instance.
  */
-export default class JsonParser {
-  private static instance: JsonParser;
+export default class JsonConvertConfig {
+  private static instance: JsonConvertConfig;
   private readonly _jsonConvert: JsonConvert;
 
   private constructor() {
@@ -29,14 +29,14 @@ export default class JsonParser {
     this._jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL; // never allow null
   }
 
-  private static getInstance(): JsonParser {
-    if (!JsonParser.instance) {
-      JsonParser.instance = new JsonParser();
+  private static getInstance(): JsonConvertConfig {
+    if (!JsonConvertConfig.instance) {
+      JsonConvertConfig.instance = new JsonConvertConfig();
     }
-    return JsonParser.instance;
+    return JsonConvertConfig.instance;
   }
 
   public static jsonConvert(): JsonConvert {
-    return JsonParser.getInstance()._jsonConvert;
+    return JsonConvertConfig.getInstance()._jsonConvert;
   }
 }
