@@ -121,11 +121,11 @@ describe('BPMN Visualization JS', () => {
   // endregion
   let bpmnVisu: BpmnVisu;
 
-  beforeAll(async () => {
-    await page.goto('http://localhost:10001');
-    await page.waitForSelector('#graph');
-    bpmnVisu = new BpmnVisu(window.document.getElementById('graph'));
-  });
+  // beforeAll(async () => {
+  //   await page.goto('http://localhost:10001');
+  //   await page.waitForSelector('#graph');
+  //   bpmnVisu = new BpmnVisu(window.document.getElementById('graph'));
+  // });
 
   beforeEach(() => {
     jest.setTimeout(100000);
@@ -145,6 +145,25 @@ describe('BPMN Visualization JS', () => {
   }
 
   it('should display visualization', async () => {
+    page.setDefaultTimeout(5000);
+    await page.goto('http://localhost:10001');
+    await page.waitForSelector('#graph').then(() => console.log('found graph!'));
+
+    const graphHtmlElement = await page.evaluate(() => document.querySelector('#graph'));
+    // TODO alternative syntax to be adapted for single element
+    //    const tweets = await page.$$eval('.tweet', element => element.innerText);
+    //const graphHtmlElement = await page.evaluate(() => document.getElementById('graph'));
+    console.info('graphHtmlElement.innerText');
+    console.info(graphHtmlElement.innerText);
+    console.info('graphHtmlElement.innerHTML');
+    console.info(graphHtmlElement.innerHTML);
+
+    const graphInWindowDocumentBeforeLoad = window.document.getElementById('graph');
+    console.info('graphInWindowDocumentBeforeLoad');
+    console.info(graphInWindowDocumentBeforeLoad);
+    graph = new Graph(graphInWindowDocumentBeforeLoad);
+    // TODO the following must be used
+    // graph = new Graph(graphHtmlElement);
     // load BPMN
     bpmnVisu.load(xmlContent);
     // model is OK
@@ -153,7 +172,23 @@ describe('BPMN Visualization JS', () => {
     expectModelContainsCell('startEvent_1', ShapeBpmnElementKind.EVENT_START);
 
     // rendering - not OK - when graph is being initialized the window.document.getElementById('graph') is null
+    const graphHtmlElementAfterBpmnVisuLoad = window.document.getElementById('graph');
+    console.info('graphHtmlElementAfterBpmnVisuLoad');
+    console.info(graphHtmlElementAfterBpmnVisuLoad);
+
     // await expect(page.waitForSelector('[data-cell-id="startEvent_1"]')).resolves.toBeDefined();
+    //page.waitForSelector('#graph').then(() => console.log('Found graph: '));
+    //.catch(reason => console.log('error: ' + reason));
+    //const graphElement = await page.$('#graph');
+    // console.log('graphElement: ');
+    // console.log(graphElement);
+    const startEventElement = await page.$('.class-state-cell-style-startEvent');
+    //const startEventElement = await page.$('[data-cell-id="startEvent_1"]');
+    console.log(startEventElement);
+    expect(startEventElement).not.toBeNull();
+
+    // TODO see also wait for file chooser
+    // https://github.com/puppeteer/puppeteer/blob/v2.1.1/docs/api.md#pagewaitforfilechooseroptions
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {
