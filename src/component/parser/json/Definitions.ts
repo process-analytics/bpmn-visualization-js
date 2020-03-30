@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import ShapeBpmnElement from '../../../model/bpmn/shape/ShapeBpmnElement';
 import { JsonObject, JsonProperty } from 'json2typescript';
-import SequenceFlow from '../../../model/bpmn/edge/SequenceFlow';
 import BpmnModel from '../../../model/bpmn/BpmnModel';
 import DiagramConverter from './converter/DiagramConverter';
 import ProcessConverter from './converter/ProcessConverter';
@@ -44,10 +42,9 @@ export class Definitions {
   }
 }
 
-export interface Process {
-  shapeBpmnElements: ShapeBpmnElement[];
-  sequenceFlows: SequenceFlow[];
-}
+// only define a type to fill data used to build the BpmnModel
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Process {}
 
 // only define a type to fill data used to build the BpmnModel
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
