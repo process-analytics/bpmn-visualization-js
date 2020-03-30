@@ -16,14 +16,18 @@
 import { Definitions } from './Definitions';
 import BpmnModel from '../../../model/bpmn/BpmnModel';
 import JsonConvertConfig from './converter/JsonConvertConfig';
+import { JsonConvert } from 'json2typescript';
 
 export default class BpmnJsonParser {
-  // TODO JsonConvert should be injected, see #110
-  private readonly jsonConvert = JsonConvertConfig.jsonConvert();
+  constructor(readonly jsonConvert: JsonConvert) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public parse(json: any): BpmnModel {
+  public parse(json: { definitions: Definitions }): BpmnModel {
     const definitions = this.jsonConvert.deserializeObject(json.definitions, Definitions);
     return definitions.bpmnModel;
   }
+}
+
+export function defaultBpmnJsonParser(): BpmnJsonParser {
+  // TODO replace the function by dependency injection, see #110
+  return new BpmnJsonParser(JsonConvertConfig.jsonConvert());
 }

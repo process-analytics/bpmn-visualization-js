@@ -15,7 +15,7 @@
  */
 import BpmnModel from '../../model/bpmn/BpmnModel';
 import BpmnXmlParser from './xml/BpmnXmlParser';
-import BpmnJsonParser from './json/BpmnJsonParser';
+import BpmnJsonParser, { defaultBpmnJsonParser } from './json/BpmnJsonParser';
 
 export default class BpmnParser {
   constructor(readonly jsonParser: BpmnJsonParser, readonly xmlParser: BpmnXmlParser) {}
@@ -28,5 +28,5 @@ export default class BpmnParser {
 
 export function defaultBpmnParser(): BpmnParser {
   // TODO replace the function by dependency injection, see #110
-  return new BpmnParser(new BpmnJsonParser(), new BpmnXmlParser());
+  return new BpmnParser(defaultBpmnJsonParser(), new BpmnXmlParser());
 }

@@ -15,7 +15,7 @@
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import Shape from '../../../../../src/model/bpmn/shape/Shape';
-import BpmnJsonParser from '../../../../../src/component/parser/json/BpmnJsonParser';
+import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import Edge from '../../../../../src/model/bpmn/edge/Edge';
 import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
@@ -42,7 +42,7 @@ export interface ExpectedEdge {
 }
 
 export function parseJson(json: string): BpmnModel {
-  return new BpmnJsonParser().parse(JSON.parse(json));
+  return defaultBpmnJsonParser().parse(JSON.parse(json));
 }
 
 export function parseJsonAndExpect(
