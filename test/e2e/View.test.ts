@@ -158,12 +158,14 @@ describe('BPMN Visualization JS', () => {
     console.info('graphHtmlElement.innerHTML');
     console.info(graphHtmlElement.innerHTML);
 
+    // does not work, see https://stackoverflow.com/a/55259942 use page.evaluate as done above
     const graphInWindowDocumentBeforeLoad = window.document.getElementById('graph');
     console.info('graphInWindowDocumentBeforeLoad');
     console.info(graphInWindowDocumentBeforeLoad);
-    graph = new Graph(graphInWindowDocumentBeforeLoad);
+    //graph = new Graph(graphInWindowDocumentBeforeLoad);
+    graph = new Graph(null);
     // TODO the following must be used
-    // graph = new Graph(graphHtmlElement);
+    graph = new Graph(graphHtmlElement);
     // load BPMN
     bpmnVisu.load(xmlContent);
     // model is OK
@@ -186,6 +188,7 @@ describe('BPMN Visualization JS', () => {
     //const startEventElement = await page.$('[data-cell-id="startEvent_1"]');
     console.log(startEventElement);
     expect(startEventElement).not.toBeNull();
+    console.log('Done');
 
     // TODO see also wait for file chooser
     // https://github.com/puppeteer/puppeteer/blob/v2.1.1/docs/api.md#pagewaitforfilechooseroptions
