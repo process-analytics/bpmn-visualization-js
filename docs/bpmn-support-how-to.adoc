@@ -16,8 +16,9 @@ is able to make it available to the `ProcessConverter`
 
 When inserting an element on the graph, a style is passed to identify the way it will be rendered.
 
-The https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html[style] is registered in `MxGraphConfigurator`
-In particular, it refers to the name of a https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html[mxShape]
+The https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html[style] is defined and registered in
+`StyleConfigurator`. In particular, it refers to the name of a https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html[mxShape]
 used for the rendering.
 
-Custom BPMN shapes are also register by the `MxGraphConfigurator`
+The `mxShape` can be a standard `mxGraph` class or a custom BPMN `mxShape` defined by the lib. The custom `mxShapes` are registered by `ShapeConfigurator`
+which associates the `mxShape` name (used in style definition) with the `mxShape` class to be used.
