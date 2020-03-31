@@ -17,7 +17,7 @@ import BpmnModel from '../../model/bpmn/BpmnModel';
 import BpmnXmlParser from './xml/BpmnXmlParser';
 import BpmnJsonParser, { defaultBpmnJsonParser } from './json/BpmnJsonParser';
 
-export default class BpmnParser {
+class BpmnParser {
   constructor(readonly jsonParser: BpmnJsonParser, readonly xmlParser: BpmnXmlParser) {}
 
   parse(bpmnAsXml: string): BpmnModel {
