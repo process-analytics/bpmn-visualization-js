@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnParser from '../../../../src/component/parser/BpmnParser';
+import { defaultBpmnParser } from '../../../../src/component/parser/BpmnParser';
 
 describe('parse xml to model', () => {
   it('Single process with no participant', () => {
@@ -106,7 +106,7 @@ describe('parse xml to model', () => {
 </semantic:definitions>
 `;
 
-    const parser = new BpmnParser();
+    const parser = defaultBpmnParser();
     const model = parser.parse(bpmnAsXml);
 
     expect(model.flowNodes).toHaveLength(5);

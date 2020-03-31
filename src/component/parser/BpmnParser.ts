@@ -15,12 +15,18 @@
  */
 import BpmnModel from '../../model/bpmn/BpmnModel';
 import BpmnXmlParser from './xml/BpmnXmlParser';
-import BpmnJsonParser from './json/BpmnJsonParser';
+import BpmnJsonParser, { defaultBpmnJsonParser } from './json/BpmnJsonParser';
 
-export default class BpmnParser {
-  // TODO inner parsers should be injected
+class BpmnParser {
+  constructor(readonly jsonParser: BpmnJsonParser, readonly xmlParser: BpmnXmlParser) {}
+
   parse(bpmnAsXml: string): BpmnModel {
-    const json = new BpmnXmlParser().parse(bpmnAsXml);
-    return BpmnJsonParser.parse(json);
+    const json = this.xmlParser.parse(bpmnAsXml);
+    return this.jsonParser.parse(json);
   }
+}
+
+export function defaultBpmnParser(): BpmnParser {
+  // TODO replace the function by dependency injection, see #110
+  return new BpmnParser(defaultBpmnJsonParser(), new BpmnXmlParser());
 }

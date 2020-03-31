@@ -16,7 +16,7 @@
 import MxGraphConfigurator from '../mxgraph/MxGraphConfigurator';
 import { mxgraph } from 'ts-mxgraph';
 import MxGraphRenderer from '../mxgraph/MxGraphRenderer';
-import BpmnParser from '../parser/BpmnParser';
+import { defaultBpmnParser } from '../parser/BpmnParser';
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -43,7 +43,7 @@ export default class Graph {
 
   public load(xml: string): void {
     try {
-      const bpmnModel = new BpmnParser().parse(xml);
+      const bpmnModel = defaultBpmnParser().parse(xml);
       new MxGraphRenderer(this.graph).render(bpmnModel);
     } catch (e) {
       // TODO error handling
