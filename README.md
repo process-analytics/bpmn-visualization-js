@@ -1,5 +1,5 @@
 # BPMN Visu JS
-A JavaScript library to visualize process execution data. Diagrams are displayed from BPMN files. With additional display
+A JavaScript library to visualize process execution data. Diagrams are displayed from [BPMN](https://www.omg.org/spec/BPMN/2.0.2/PDF) files. With additional display
 options for execution data (highlight some transitions, counters, and more). With interactive capacities (mouse hover,
 click).
 
@@ -61,4 +61,3 @@ Milestone names are based on version
   - Open [github releases](https://github.com/bonitasoft-labs/bpmn-visu-js/releases)
   - Create a new release based on the newly created tags. Check `This is a pre-release`
   - In the description, at least add a link to the related milestone
-
