@@ -59,10 +59,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
 
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
 
-      const sequenceFlows = convertedSequenceFlows;
-      const shapeBpmnElements = convertedLaneBpmnElements.concat(convertedLaneBpmnElements);
-
-      return { shapeBpmnElements, sequenceFlows };
+      return {};
     } catch (e) {
       // TODO error management
       console.log(e as Error);
