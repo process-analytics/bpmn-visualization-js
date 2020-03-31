@@ -29,12 +29,12 @@ export class DropFileUserInterface {
     this.addDomElements();
     this.addStyle();
 
-    const upload = document.getElementById(this.outerContainerId);
+    const dropContainer = document.getElementById(this.outerContainerId);
     // prevent loading file by the browser
     this.preventDefaultsOnEvents(['dragover', 'drop'], this.window);
-    this.preventDefaultsOnEvents(['dragover', 'dragleave', 'drop'], upload);
+    this.preventDefaultsOnEvents(['dragover', 'dragleave', 'drop'], dropContainer);
 
-    this.addEventsOnUpload(upload);
+    this.addEventsOnDropContainer(dropContainer);
     this.addEventsOnDocument(this.outerContainerId);
   }
 
@@ -102,7 +102,7 @@ export class DropFileUserInterface {
     this.head.appendChild(style);
   }
 
-  private addEventsOnUpload(container: HTMLElement): void {
+  private addEventsOnDropContainer(container: HTMLElement): void {
     container.addEventListener('dragover', this.getAddClassCallback(false), false);
     container.addEventListener('mousedown', this.getRemoveClassCallback(false), false);
     container.addEventListener('drop', this.getDropCallbackForElement(false, this.dropCallback), false);
