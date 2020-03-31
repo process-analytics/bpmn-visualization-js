@@ -115,7 +115,7 @@ describe('parse bpmn as xml for process', () => {
     const processes = `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" targetNamespace="http://bonitasoft.com/_RLk98HH_Eei9Z4IY4QeFuA">
   <bpmn:collaboration id="Collaboration_1">
-    <bpmn:participant id="Participant_1" name="Pool 1" processRef="Process_1" />
+    <bpmn:participant id="Participant_1" name="Pool 1&#10;(Main) with &unknown; entity" processRef="Process_1" />
     <bpmn:participant id="Participant_2" name="Pool 2" processRef="Process_2" />
   </bpmn:collaboration>
   <bpmn:process id="Process_1" name="RequestLoan" isExecutable="false">
@@ -161,7 +161,9 @@ describe('parse bpmn as xml for process', () => {
     verifyIsNotEmptyArray(participant);
 
     expect(participant[0].id).toEqual('Participant_1');
+    expect(participant[0].name).toEqual('Pool 1\n(Main) with &unknown; entity');
     expect(participant[1].id).toEqual('Participant_2');
+    expect(participant[1].name).toEqual('Pool 2');
 
     // Process
     const process = json.definitions.process;

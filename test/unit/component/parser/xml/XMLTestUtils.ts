@@ -22,6 +22,12 @@ export function verifyProperties(object: any, propertiesToHave: string[], proper
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function verifyPropertiesValues(object: any, properties: Map<string, string>): void {
+  expect(typeof object === 'object').toBeTruthy();
+  properties.forEach((value: string, key: string) => expect(object).toHaveProperty(key, value)); // TODO msg on failure
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function verifyIsNotEmptyArray(object: any): void {
   expect(Array.isArray(object)).toBeTruthy();
   expect(object.length).toBeGreaterThan(1);
