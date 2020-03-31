@@ -1,22 +1,24 @@
 = BPMN Support - How To
+:icons: font
 
 == Elements detection
 
 Except for special container elements like `Pool`, `Lane` and `Subprocess`, detecting a new BPMN element only requires to
 add a new value in the `ShapeBpmnElementKind` enum.
 
-The `ShapeModelConverter` uses the `ShapeBpmnElementKind` values to detect elements in the BPMN source.
+The `ProcessConverter` uses the `ShapeBpmnElementKind` values to detect elements in the BPMN source.
 
-*Important*: do not forget to add parsing (xml and json) tests related to the new BPMN element to ensure that the parser
-is able to make it available to the `ShapeModelConverter`
+IMPORTANT: Do not forget to add parsing (xml and json) tests related to the new BPMN element to ensure that the parser
+is able to make it available to the `ProcessConverter`
 
 
 == Elements rendering
 
 When inserting an element on the graph, a style is passed to identify the way it will be rendered.
 
-The https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html[style] is registered in `MxGraphConfigurator`
-In particular, it refers to the name of a https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html[mxShape]
+The https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html[style] is defined and registered in
+`StyleConfigurator`. In particular, it refers to the name of a https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html[mxShape]
 used for the rendering.
 
-Custom BPMN shapes are also register by the `MxGraphConfigurator`
+The `mxShape` can be a standard `mxGraph` class or a custom BPMN `mxShape` defined by the lib. The custom `mxShapes` are registered by `ShapeConfigurator`
+which associates the `mxShape` name (used in style definition) with the `mxShape` class to be used.
