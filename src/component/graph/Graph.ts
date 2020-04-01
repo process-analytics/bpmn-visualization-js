@@ -43,6 +43,7 @@ export default class Graph {
 
   public load(xml: string): void {
     try {
+      // TODO the BpmnParser should be a field and injected (see #110)
       const bpmnModel = defaultBpmnParser().parse(xml);
       new MxGraphRenderer(this.graph).render(bpmnModel);
     } catch (e) {
