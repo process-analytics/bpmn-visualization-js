@@ -122,13 +122,10 @@ describe('BPMN Visu JS', () => {
   let graph: Graph;
 
   beforeAll(async () => {
+    jest.setTimeout(20_000); // give a try to fix #154 (must be greater than the server timeout)
     await page.goto('http://localhost:10001');
     await page.waitForSelector('#graph');
     graph = new Graph(window.document.getElementById('graph'));
-  });
-
-  beforeEach(() => {
-    jest.setTimeout(100000);
   });
 
   it('should display page title', async () => {
