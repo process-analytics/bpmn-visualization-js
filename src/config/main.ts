@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnVisu from '../component/graph/BpmnVisu';
+import BpmnVisu from '../component/BpmnVisu';
 import { DropFileUserInterface } from '../component/ui_ux/DropFileUserInterface';
 
 export const bpmnVisu = new BpmnVisu(window.document.getElementById('graph'));

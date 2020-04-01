@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import MxGraphConfigurator from '../mxgraph/MxGraphConfigurator';
+import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
 import { mxgraph } from 'ts-mxgraph';
-import MxGraphRenderer from '../mxgraph/MxGraphRenderer';
-import { defaultBpmnParser } from '../parser/BpmnParser';
-import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
+import MxGraphRenderer from './mxgraph/MxGraphRenderer';
+import { defaultBpmnParser } from './parser/BpmnParser';
+import { MxGraphFactoryService } from '../service/MxGraphFactoryService';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class BpmnVisu {

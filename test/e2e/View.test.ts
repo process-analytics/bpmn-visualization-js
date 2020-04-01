@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnVisu from '../../src/component/graph/BpmnVisu';
+import BpmnVisu from '../../src/component/BpmnVisu';
 import { ShapeBpmnElementKind } from '../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { mxgraph } from 'ts-mxgraph';
 import { MxGraphFactoryService } from '../../src/service/MxGraphFactoryService';
