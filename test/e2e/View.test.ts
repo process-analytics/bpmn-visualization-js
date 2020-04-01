@@ -144,6 +144,32 @@ describe('BPMN Visualization JS', () => {
     expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(shapeKind);
   }
 
+  it('should check model and DOM: End Event', async () => {
+    // insert graph container
+    const containerDiv = document.createElement('div');
+    containerDiv.id = 'graph-test';
+    document.body.insertBefore(containerDiv, document.body.firstChild);
+    // initialize graph
+    const graphTest = document.getElementById('graph-test');
+    graph = new Graph(graphTest);
+    // load BPMN
+    graph.load(xmlContent);
+
+    // check model
+    expectModelContainsCell('endEvent_1', ShapeBpmnElementKind.EVENT_END);
+
+    // check DOM
+    const endEventGroups = document.querySelectorAll('#graph-test svg g g[data-cell-id="endEvent_1"]');
+    const endEvent = endEventGroups[0] as SVGGElement;
+    const ellipse = endEvent.firstChild as SVGEllipseElement;
+    expect(ellipse.nodeName).toBe('ellipse');
+    expect(ellipse.getAttribute('rx')).toBe('16');
+    const endEventLabel = endEventGroups[1] as SVGGElement;
+    const text = endEventLabel.firstChild.firstChild as SVGTextElement;
+    expect(text.nodeName).toBe('text');
+    expect(text.innerHTML).toBe('End Event');
+  });
+
   it('should display visualization', async () => {
     page.setDefaultTimeout(5000);
     await page.goto('http://localhost:10001');
