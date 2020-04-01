@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// TODO values must start with lower case to match the attribute name in the json model
 export declare enum EventDefinition {
   CANCEL = 'CancelEventDefinition',
   COMPENSATION = 'CompensationEventDefinition',
