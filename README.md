@@ -32,6 +32,7 @@ elements.
 Then, we will work on BPMN extensions, library extension points.
 
 # Architecture
+- [Internal model](docs/architecture/internal-model.adoc)
 - [BPMN Parsing](docs/architecture/bpmn-parsing.adoc)
 
 # Development
