@@ -27,8 +27,7 @@ interface Coordinate {
 }
 
 export default class MxGraphRenderer {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private mxPoint: any = MxGraphFactoryService.getMxGraphProperty('mxPoint');
+  private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
   constructor(readonly graph: mxgraph.mxGraph) {}
 
   public render(bpmnModel: BpmnModel): void {
