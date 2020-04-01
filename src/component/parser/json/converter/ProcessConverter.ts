@@ -86,7 +86,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
-      if (kind == ShapeBpmnElementKind.EVENT_START) {
+      if (kind == ShapeBpmnElementKind.EVENT_START || kind == ShapeBpmnElementKind.EVENT_END) {
         // get the list of eventDefinition hold by the Start Event bpmElement
         const eventDefinitions = Object.values(EventDefinition).filter(eventDefinition => {
           return bpmnElement.hasOwnProperty(eventDefinition);
