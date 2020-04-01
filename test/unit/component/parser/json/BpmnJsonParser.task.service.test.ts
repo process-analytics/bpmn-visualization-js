@@ -91,7 +91,7 @@ describe('parse bpmn as json for service task', () => {
     });
   });
 
-  it('json containing one process with an array of service tasks  with name & without name', () => {
+  it('json containing one process with an array of service tasks with name & without name', () => {
     const json = `{
                 "definitions" : {
                     "process": {
