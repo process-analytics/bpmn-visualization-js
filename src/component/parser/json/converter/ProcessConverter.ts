@@ -20,6 +20,7 @@ import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElem
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
 import Waypoint from '../../../../model/bpmn/edge/Waypoint';
+import { EventDefinition } from '../EventDefinition';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
@@ -85,8 +86,18 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
-      // TODO processing to detect start event type
-      convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
+      if (kind == ShapeBpmnElementKind.EVENT_START) {
+        // get the list of eventDefinition hold by the Start Event bpmElement
+        const eventDefinitions = Object.values(EventDefinition).filter(eventDefinition => {
+          return bpmnElement.hasOwnProperty(eventDefinition);
+        });
+        // do we have a None Start Event?
+        if (eventDefinitions.length == 0) {
+          convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
+        }
+      } else {
+        convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
+      }
     });
   }
 

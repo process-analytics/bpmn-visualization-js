@@ -197,7 +197,7 @@ describe('parse bpmn as json for start event', () => {
     verifyShape(noneStartEvents[0], {
       shapeId: 'shape_startEvent_id_0',
       bpmnElementId: 'event_id_0',
-      bpmnElementName: 'event name',
+      bpmnElementName: 'none start event',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
       boundsX: 362,
       boundsY: 232,
