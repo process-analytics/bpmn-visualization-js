@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
+import { parseJson, parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 
 describe('parse bpmn as json for start event', () => {
   it('json containing one process with a single start event', () => {
@@ -144,6 +144,64 @@ describe('parse bpmn as json for start event', () => {
       boundsY: 235,
       boundsWidth: 35,
       boundsHeight: 46,
+    });
+  });
+
+  it('json containing one process with an array of start events, some are not NONE event', () => {
+    const json = `{
+  "definitions": {
+    "process": {
+      "startEvent": [
+        { "id": "event_id_0", "name": "none start event" },
+        { "id": "event_id_1", "conditionalEventDefinition": {} },
+        { "id": "event_id_2", "messageEventDefinition": {} },
+        { "id": "event_id_3", "signalEventDefinition": {} },
+        { "id": "event_id_4", "timerEventDefinition": {} }
+      ]
+    },
+    "BPMNDiagram": {
+      "name": "process 0",
+      "BPMNPlane": {
+        "BPMNShape": [
+          {
+            "id": "shape_startEvent_id_0", "bpmnElement": "event_id_0",
+            "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
+          },
+          {
+            "id": "shape_startEvent_id_1", "bpmnElement": "event_id_1",
+            "Bounds": { "x": 362, "y": 332, "width": 36, "height": 45 }
+          },
+          {
+            "id": "shape_startEvent_id_2", "bpmnElement": "event_id_2",
+            "Bounds": { "x": 362, "y": 432, "width": 36, "height": 45 }
+          },
+          {
+            "id": "shape_startEvent_id_3", "bpmnElement": "event_id_3",
+            "Bounds": { "x": 362, "y": 532, "width": 36, "height": 45 }
+          },
+          {
+            "id": "shape_startEvent_id_4", "bpmnElement": "event_id_4",
+            "Bounds": { "x": 362, "y": 632, "width": 36, "height": 45 }
+          }
+        ]
+      }
+    }
+  }
+}`;
+
+    const model = parseJson(json);
+
+    expect(model.flowNodes).toHaveLength(1);
+
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_startEvent_id_0',
+      bpmnElementId: 'event_id_0',
+      bpmnElementName: 'none start event',
+      bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+      boundsX: 362,
+      boundsY: 232,
+      boundsWidth: 36,
+      boundsHeight: 45,
     });
   });
 });
