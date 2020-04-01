@@ -191,10 +191,9 @@ describe('parse bpmn as json for start event', () => {
 
     const model = parseJson(json);
 
-    const noneStartEvents = model.flowNodes.filter(shape => shape.bpmnElement.kind == ShapeBpmnElementKind.EVENT_START);
-    expect(noneStartEvents).toHaveLength(1);
+    expect(model.flowNodes).toHaveLength(1);
 
-    verifyShape(noneStartEvents[0], {
+    verifyShape(model.flowNodes[0], {
       shapeId: 'shape_startEvent_id_0',
       bpmnElementId: 'event_id_0',
       bpmnElementName: 'none start event',
