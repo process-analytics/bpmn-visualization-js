@@ -18,7 +18,7 @@ export class DropFileUserInterface {
   private head: Element;
   private body: Element;
 
-  constructor(private window: Window, private outerContainerId: string, private dropCallback: (file: File) => void) {
+  constructor(private window: Window, private outerContainerId: string, private containerToFadeId: string, private dropCallback: (file: File) => void) {
     this.document = window.document;
     this.head = document.head;
     this.body = document.body;
@@ -30,12 +30,13 @@ export class DropFileUserInterface {
     this.addStyle();
 
     const dropContainer = document.getElementById(this.outerContainerId);
+    const containerToBeFaded = document.getElementById(this.containerToFadeId);
     // prevent loading file by the browser
     this.preventDefaultsOnEvents(['dragover', 'drop'], this.window);
     this.preventDefaultsOnEvents(['dragover', 'dragleave', 'drop'], dropContainer);
 
-    this.addEventsOnDropContainer(dropContainer);
-    this.addEventsOnDocument(this.outerContainerId);
+    this.addEventsOnDropContainer(dropContainer, containerToBeFaded);
+    this.addEventsOnDocument(this.outerContainerId, containerToBeFaded);
   }
 
   private preventDefaults(e: Event): void {
@@ -64,6 +65,12 @@ export class DropFileUserInterface {
   private addStyle(): void {
     // region CSS
     const css = `
+#${this.containerToFadeId} {
+    opacity: 1;
+}
+#${this.containerToFadeId}.faded {
+    opacity: 0.1;
+}
 #${this.outerContainerId} {
     overflow: hidden;
     position: absolute;
@@ -102,31 +109,33 @@ export class DropFileUserInterface {
     this.head.appendChild(style);
   }
 
-  private addEventsOnDropContainer(container: HTMLElement): void {
-    container.addEventListener('dragover', this.getAddClassCallback(false), false);
-    container.addEventListener('mousedown', this.getRemoveClassCallback(false), false);
-    container.addEventListener('drop', this.getDropCallbackForElement(false, this.dropCallback), false);
+  private addEventsOnDropContainer(container: HTMLElement, containerToBeFaded: HTMLElement): void {
+    container.addEventListener('dragover', this.getAddClassCallback(containerToBeFaded, false), false);
+    container.addEventListener('mousedown', this.getRemoveClassCallback(containerToBeFaded, false), false);
+    container.addEventListener('drop', this.getDropCallbackForElement(containerToBeFaded, false, this.dropCallback), false);
   }
 
-  private addEventsOnDocument(outerContainerId: string): void {
-    this.document.addEventListener('dragover', this.getAddClassCallback(true, outerContainerId), false);
-    this.document.addEventListener('dragleave', this.getRemoveClassCallback(true, outerContainerId), false);
-    this.document.addEventListener('drop', this.getDropCallbackForElement(true, this.dropCallback, outerContainerId), false);
+  private addEventsOnDocument(outerContainerId: string, containerToBeFaded: HTMLElement): void {
+    this.document.addEventListener('dragover', this.getAddClassCallback(containerToBeFaded, true, outerContainerId), false);
+    this.document.addEventListener('dragleave', this.getRemoveClassCallback(containerToBeFaded, true, outerContainerId), false);
+    this.document.addEventListener('drop', this.getDropCallbackForElement(containerToBeFaded, true, this.dropCallback, outerContainerId), false);
   }
 
-  private getAddClassCallback(isDocument: boolean, outerContainerId?: string) {
+  private getAddClassCallback(containerToBeFaded: HTMLElement, isDocument: boolean, outerContainerId?: string) {
     return function(): void {
       isDocument ? this.querySelector('#' + outerContainerId).classList.add('dragging') : this.classList.add('dragging');
+      containerToBeFaded.classList.add('faded');
     };
   }
 
-  private getRemoveClassCallback(isDocument: boolean, outerContainerId?: string) {
+  private getRemoveClassCallback(containerToBeFaded: HTMLElement, isDocument: boolean, outerContainerId?: string) {
     return function(): void {
       isDocument ? this.querySelector('#' + outerContainerId).classList.remove('dragging') : this.classList.remove('dragging');
+      containerToBeFaded.classList.remove('faded');
     };
   }
 
-  private getDropCallbackForElement(isDocument: boolean, dropCallback: (file: File) => void, outerContainerId?: string) {
+  private getDropCallbackForElement(containerToBeFaded: HTMLElement, isDocument: boolean, dropCallback: (file: File) => void, outerContainerId?: string) {
     return function(event: DragEvent): void {
       try {
         const dt = event.dataTransfer;
@@ -137,6 +146,7 @@ export class DropFileUserInterface {
         console.log(e as Error);
       } finally {
         isDocument ? this.querySelector('#' + outerContainerId).classList.remove('dragging') : this.classList.remove('dragging');
+        containerToBeFaded.classList.remove('faded');
       }
     };
   }

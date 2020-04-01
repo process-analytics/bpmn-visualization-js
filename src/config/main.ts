@@ -17,7 +17,6 @@ import Graph from './../component/graph/Graph';
 import { DropFileUserInterface } from '../component/ui_ux/DropFileUserInterface';
 
 export const graph = new Graph(window.document.getElementById('graph'));
-const INITIALIZE_DRAG_AND_DROP = true;
 
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {
@@ -29,15 +28,14 @@ function readAndLoadFile(f: File): void {
 }
 
 // TODO: move to UI initializer
-if (INITIALIZE_DRAG_AND_DROP) {
-  new DropFileUserInterface(window, 'drop-container', readAndLoadFile);
-} else {
-  // TODO: make File Open Button a self contained component
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function handleFileSelect(evt: any): void {
-    const f = evt.target.files[0];
-    readAndLoadFile(f);
-  }
-  document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
-  document.getElementById('file-selector').classList.remove('hidden');
+new DropFileUserInterface(window, 'drop-container', 'graph', readAndLoadFile);
+
+// TODO: make File Open Button a self contained component
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function handleFileSelect(evt: any): void {
+  const f = evt.target.files[0];
+  readAndLoadFile(f);
 }
+
+document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
+document.getElementById('file-selector').classList.remove('hidden');

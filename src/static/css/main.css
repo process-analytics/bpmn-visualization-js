@@ -1,6 +1,11 @@
 .hidden {
     display: none;
 }
+.info-centered p {
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+}
 #file-selector {
     text-align: center;
 }
