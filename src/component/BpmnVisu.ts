@@ -19,10 +19,9 @@ import MxGraphRenderer from './mxgraph/MxGraphRenderer';
 import { defaultBpmnParser } from './parser/BpmnParser';
 import { MxGraphFactoryService } from '../service/MxGraphFactoryService';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export default class BpmnVisu {
-  private mxClient: any = MxGraphFactoryService.getMxGraphProperty('mxClient');
-  private mxUtils: any = MxGraphFactoryService.getMxGraphProperty('mxUtils');
+  private mxClient: typeof mxgraph.mxClient = MxGraphFactoryService.getMxGraphProperty('mxClient');
+  private mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
 
   public readonly graph: mxgraph.mxGraph;
 
