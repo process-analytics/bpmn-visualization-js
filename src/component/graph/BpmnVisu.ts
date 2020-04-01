@@ -20,7 +20,7 @@ import { defaultBpmnParser } from '../parser/BpmnParser';
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export default class Graph {
+export default class BpmnVisu {
   private mxClient: any = MxGraphFactoryService.getMxGraphProperty('mxClient');
   private mxUtils: any = MxGraphFactoryService.getMxGraphProperty('mxUtils');
 
