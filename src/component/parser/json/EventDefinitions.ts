@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// TODO values must start with lower case to match the attribute name in the json model
 export declare enum EventDefinition {
-  CANCEL = 'CancelEventDefinition',
-  COMPENSATION = 'CompensationEventDefinition',
-  CONDITIONAL = 'ConditionalEventDefinition',
-  ERROR = 'ErrorEventDefinition',
-  ESCALATION = 'EscalationEventDefinition',
-  LINK = 'LinkEventDefinition',
-  MESSAGE = 'MessageEventDefinition',
-  SIGNAL = 'SignalEventDefinition',
-  TERMINATE = 'TerminateEventDefinition',
-  TIMER = 'TimerEventDefinition',
+  CANCEL = 'cancelEventDefinition',
+  COMPENSATION = 'compensationEventDefinition',
+  CONDITIONAL = 'conditionalEventDefinition',
+  ERROR = 'errorEventDefinition',
+  ESCALATION = 'escalationEventDefinition',
+  LINK = 'linkEventDefinition',
+  MESSAGE = 'messageEventDefinition',
+  SIGNAL = 'signalEventDefinition',
+  TERMINATE = 'terminateEventDefinition',
+  TIMER = 'timerEventDefinition',
 }
