@@ -1,7 +1,10 @@
 # BPMN Visu JS
-A JavaScript library to visualize process execution data. Diagrams are displayed from [BPMN](https://www.omg.org/spec/BPMN/2.0.2/PDF) files. With additional display
-options for execution data (highlight some transitions, counters, and more). With interactive capacities (mouse hover,
-click).
+A JavaScript library to visualize [BPMN](https://www.omg.org/spec/BPMN/2.0.2/PDF) diagrams as well as meta-information about process execution, which the user can interact with.
+  - BPMN diagrams are read from .bpmn files that may not only come from Bonita but rather be created from any BPM tool or even created manually. This means that it will be able to display more BPMN 2.0 elements than those supported by Bonita.
+  - Process execution information can be real-time or over a period of time in the past. It encompasses information on cardinality (counters), relative frequencies (color density, transition thickness) or durations. 
+  - Interactivity is brought by the means of mouse hover, clicks, and runtime configuration options to define.
+
+This library will be created and offered as an Open Source project.
 
 [![Build](https://github.com/bonitasoft-labs/bpmn-visu-js/workflows/Build/badge.svg)](https://github.com/bonitasoft-labs/bpmn-visu-js/actions)
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/bonitasoft-labs/bpmn-visu-js?color=orange&include_prereleases)](https://github.com/bonitasoft-labs/bpmn-visu-js/releases)
@@ -9,13 +12,34 @@ click).
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
+# Acceptance criteria
 
-**Supported Browsers**: Chrome, Firefox, Safari, Edge
+## Reads BPMN files from major BPM vendors complying with BPMN (list TBD)
 
+## Internationalized and multi-language support
+Users from any country can insert their translations and use several languages in one application if the application allows.
+
+## Extension points
+  * Visual properties of the BPMN elements
+  * Visual properties of the meta-information
+  * Vendor-specific extensions (e.g. Bonita connectors)
+  
+## Supported Browsers
+Chrome, Firefox, Safari, Edge. This means: no Internet Explorer 11.
+
+## USable in multiple development frameworks
+Embeddable as a web component
+
+## Suitable for mobile use
+Offer alternatives to mouse hover.
+Adapt display to mobile-specific screen sizes.
+
+## Easy to contribute to
+Project and code readable.
 
 # Demos
 
-You currently must build the project prior to use it (see bellow).
+You currently must build the project prior to use it (see below).
 
 If you need BPMN examples, you can use resources from the from [BPMN Model Interchange Working Group (BPMN MIWG)](http://www.omgwiki.org/bpmn-miwg)
 - https://github.com/bpmn-miwg/bpmn-miwg-test-suite
