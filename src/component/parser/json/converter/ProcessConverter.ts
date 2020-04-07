@@ -47,6 +47,8 @@ export function findSequenceFlow(id: string): SequenceFlow {
   return convertedSequenceFlows.find(i => i.id === id);
 }
 
+type BpmnEventKind = ShapeBpmnElementKind.EVENT_START | ShapeBpmnElementKind.EVENT_END;
+
 @JsonConverter
 export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -86,12 +88,12 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
-      if (kind == ShapeBpmnElementKind.EVENT_START) {
-        // get the list of eventDefinition hold by the Start Event bpmElement
+      if (kind as BpmnEventKind) {
+        // get the list of eventDefinition hold by the Event bpmElement
         const eventDefinitions = Object.values(EventDefinition).filter(eventDefinition => {
           return bpmnElement.hasOwnProperty(eventDefinition);
         });
-        // do we have a None Start Event?
+        // do we have a None Event?
         if (eventDefinitions.length == 0) {
           convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
         }
