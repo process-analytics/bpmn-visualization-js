@@ -25,7 +25,7 @@ BPMN elements
 * [x] lane (0.1.1)
 * activities
 ** [x] task (0.1.1)
-** [ ] service task
+** [x] service task (0.1.2)
 ** [x] user task (0.1.0)
 * events
 ** [x] start event (0.1.0)

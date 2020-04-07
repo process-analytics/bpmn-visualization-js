@@ -34,10 +34,14 @@ export default class StyleConfigurator {
     this.configureDefaultVertexStyle();
     this.configurePoolStyle();
     this.configureLaneStyle();
+    // events
     this.configureStartEventStyle();
     this.configureEndEventStyle();
+    // tasks
     this.configureUserTaskStyle();
+    this.configureServiceTaskStyle();
     this.configureTaskStyle();
+    // gateways
     this.configureParallelGatewayStyle();
     this.configureExclusiveGatewayStyle();
   }
@@ -107,6 +111,12 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.EllipsePerimeter;
     style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
     this.putCellStyle(ShapeBpmnElementKind.EVENT_END, style);
+  }
+
+  private configureServiceTaskStyle(): void {
+    const style = this.mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.TASK_USER), this.getDefaultVertexStyle());
+    style[this.mxConstants.STYLE_STROKECOLOR] = 'red';
+    this.putCellStyle(ShapeBpmnElementKind.TASK_SERVICE, style);
   }
 
   private configureUserTaskStyle(): void {
