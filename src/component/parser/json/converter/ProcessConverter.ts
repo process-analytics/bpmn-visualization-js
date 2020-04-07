@@ -47,6 +47,8 @@ export function findSequenceFlow(id: string): SequenceFlow {
   return convertedSequenceFlows.find(i => i.id === id);
 }
 
+type BpmnEventKind = ShapeBpmnElementKind.EVENT_START | ShapeBpmnElementKind.EVENT_END;
+
 @JsonConverter
 export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -86,7 +88,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
-      if (kind as Event) {
+      if (kind as BpmnEventKind) {
         // get the list of eventDefinition hold by the Event bpmElement
         const eventDefinitions = Object.values(EventDefinition).filter(eventDefinition => {
           return bpmnElement.hasOwnProperty(eventDefinition);
@@ -137,8 +139,6 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     convertedSequenceFlows.push(...t);
   }
 }
-
-type Event = ShapeBpmnElementKind.EVENT_START | ShapeBpmnElementKind.EVENT_END;
 
 @JsonConverter
 export class SequenceFlowConverter extends AbstractConverter<SequenceFlow> {
