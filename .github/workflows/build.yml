@@ -42,6 +42,7 @@ jobs:
         run: npm run build
       - name: Test Application
         run: npm run test
-      - name: Test Application End to End
-        if: matrix.os.name != 'windows-latest'
-        run: npm run e2e
+      # TODO reactivate as part of #154
+      # - name: Test Application End to End
+        # if: matrix.os.name != 'windows-latest'
+        # run: npm run e2e
