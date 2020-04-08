@@ -55,7 +55,7 @@ type BpmnEventKind = ShapeBpmnElementKind.EVENT_START | ShapeBpmnElementKind.EVE
 
 interface EventDefinition {
   kind: ShapeBpmnEventKind;
-  value: number;
+  counter: number;
 }
 
 @JsonConverter
@@ -111,7 +111,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildEvent(bpmnElement: any, elementKind: ShapeBpmnElementKind, processId: string): ShapeBpmnEvent {
     const eventDefinitions = this.getEventDefinitions(bpmnElement);
-    const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.value).reduce((counter, it) => counter + it, 0);
+    const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
 
     // do we have a None Event?
     if (numberOfEventDefinitions == 0) {
@@ -119,7 +119,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     }
 
     if (numberOfEventDefinitions == 1) {
-      const eventDefinition = eventDefinitions.filter(eventDefinition => eventDefinition.value == 1)[0];
+      const eventDefinition = eventDefinitions.filter(eventDefinition => eventDefinition.counter == 1)[0];
 
       // TODO : For later, when we support all the event definition kind
       // return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinition.kind, processId);
@@ -139,7 +139,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private getEventDefinitions(bpmnElement: any): EventDefinition[] {
     const eventDefinitions = bpmnEventKinds.map(eventKind => {
-      return { kind: eventKind, value: ensureIsArray(bpmnElement[eventKind + 'EventDefinition']).length };
+      return { kind: eventKind, counter: ensureIsArray(bpmnElement[eventKind + 'EventDefinition']).length };
     });
     return eventDefinitions;
   }
