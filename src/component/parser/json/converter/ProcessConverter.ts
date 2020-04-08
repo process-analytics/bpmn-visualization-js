@@ -104,12 +104,8 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   }
 
   private buildEvent(bpmnElement: any, elementKind: ShapeBpmnElementKind, processId: string): ShapeBpmnEvent {
-    // get the list of eventDefinition hold by the Event bpmElement
-    const eventDefinitions = bpmnEventKinds.map(eventKind => {
-      return { kind: eventKind, value: ensureIsArray(bpmnElement[eventKind + 'EventDefinition']).length };
-    });
-
-    const numberOfEventDefinitions = eventDefinitions.map(a => a.value).reduce((counter, it) => counter + it, 0);
+    const eventDefinitions = this.getEventDefinitions(bpmnElement);
+    const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.value).reduce((counter, it) => counter + it, 0);
 
     // do we have a None Event?
     if (numberOfEventDefinitions == 0) {
@@ -127,6 +123,18 @@ export default class ProcessConverter extends AbstractConverter<Process> {
         return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinition.kind, processId);
       }
     }
+  }
+
+  /**
+   * Get the list of eventDefinition hold by the Event bpmElement
+   *
+   * @param bpmnElement The BPMN element from the XML data who represent an BPMN Event
+   */
+  private getEventDefinitions(bpmnElement: any) {
+    const eventDefinitions = bpmnEventKinds.map(eventKind => {
+      return { kind: eventKind, value: ensureIsArray(bpmnElement[eventKind + 'EventDefinition']).length };
+    });
+    return eventDefinitions;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
