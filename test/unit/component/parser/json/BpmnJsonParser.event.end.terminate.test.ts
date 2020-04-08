@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJsonAndExpectOnlyFlowNodes, verifyEvent } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyEvent, parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 
 describe('parse bpmn as json for terminate end event', () => {
@@ -40,14 +40,13 @@ describe('parse bpmn as json for terminate end event', () => {
   }
 }`;
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+    const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.TERMINATE, 1);
 
-    verifyEvent(model.flowNodes[0], {
+    verifyShape(model.flowNodes[0], {
       shapeId: 'shape_endEvent_id_7',
       bpmnElementId: 'event_id_7',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
-      bpmnEventKind: ShapeBpmnEventKind.TERMINATE,
       boundsX: 362,
       boundsY: 932,
       boundsWidth: 36,

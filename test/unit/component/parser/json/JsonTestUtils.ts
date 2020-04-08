@@ -34,8 +34,9 @@ export interface ExpectedShape {
   parentId?: string;
 }
 
-export interface ExpectedEvent extends ExpectedShape {
-  bpmnEventKind: ShapeBpmnEventKind;
+export interface ExpectedEvent {
+  kind: ShapeBpmnEventKind;
+  expectedNumber: number;
 }
 
 export interface ExpectedEdge {
@@ -106,14 +107,6 @@ export function verifyShape(shape: Shape, expectedValue: ExpectedShape): void {
   expect(bounds.height).toEqual(expectedValue.boundsHeight);
 }
 
-export function verifyEvent(shape: Shape, expectedValue: ExpectedEvent): void {
-  verifyShape(shape, expectedValue);
-
-  const bpmnElement = shape.bpmnElement;
-  expect(bpmnElement).toBeInstanceOf(ShapeBpmnEvent);
-  expect((bpmnElement as ShapeBpmnEvent).eventKind).toEqual((expectedValue as ExpectedEvent).bpmnEventKind);
-}
-
 export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge): void {
   expect(edge.id).toEqual(expectedValue.edgeId);
   expect(edge.waypoints).toEqual(expectedValue.waypoints);
@@ -123,4 +116,30 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge): void {
   expect(bpmnElement.name).toEqual(expectedValue.bpmnElementName);
   expect(bpmnElement.sourceRefId).toEqual(expectedValue.bpmnElementSourceRefId);
   expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
+}
+
+export function verifyEvent(model: BpmnModel, kind: ShapeBpmnEventKind, expectedNumber: number): void {
+  const events = model.flowNodes.filter(shape => {
+    const bpmnElement = shape.bpmnElement;
+    return bpmnElement instanceof ShapeBpmnEvent && (bpmnElement as ShapeBpmnEvent).eventKind === kind;
+  });
+  expect(events).toHaveLength(expectedNumber);
+}
+
+export function verifyEvents(model: BpmnModel, expectedEvents: ExpectedEvent[]): void {
+  expectedEvents.forEach(expectedEvent => {
+    verifyEvent(model, expectedEvent.kind, expectedEvent.expectedNumber);
+  });
+}
+
+export function parseJsonAndExpectOnlyEvent(json: string, kind: ShapeBpmnEventKind, expectedNumber: number): BpmnModel {
+  const model = parseJson(json);
+
+  expect(model.lanes).toHaveLength(0);
+  expect(model.pools).toHaveLength(0);
+  expect(model.edges).toHaveLength(0);
+
+  verifyEvent(model, kind, expectedNumber);
+
+  return model;
 }
