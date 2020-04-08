@@ -14,19 +14,28 @@
  * limitations under the License.
  */
 import Graph from './../component/graph/Graph';
+import { DropFileUserInterface } from '../component/ui_ux/DropFileUserInterface';
 
 export const graph = new Graph(window.document.getElementById('graph'));
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function handleFileSelect(evt: any): void {
-  const f = evt.target.files[0];
-
+// callback function for opening | dropping the file to be loaded
+function readAndLoadFile(f: File): void {
   const reader = new FileReader();
   reader.onload = () => {
     graph.load(reader.result as string);
   };
-
   reader.readAsText(f);
 }
 
+// TODO: move to UI initializer
+new DropFileUserInterface(window, 'drop-container', 'graph', readAndLoadFile);
+
+// TODO: make File Open Button a self contained component
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function handleFileSelect(evt: any): void {
+  const f = evt.target.files[0];
+  readAndLoadFile(f);
+}
+
 document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
+document.getElementById('file-selector').classList.remove('hidden');
