@@ -17,8 +17,8 @@ import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeB
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 
-describe('parse bpmn as json for end event', () => {
-  it('json containing one process with an array of end events, some are not NONE event', () => {
+describe('parse bpmn as json for terminate end event', () => {
+  it('json containing one process with an terminate end event, terminate end event is present', () => {
     const json = `{
   "definitions": {
     "process": {
