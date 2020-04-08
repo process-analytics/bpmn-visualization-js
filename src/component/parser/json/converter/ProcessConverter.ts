@@ -53,6 +53,11 @@ export function findSequenceFlow(id: string): SequenceFlow {
 
 type BpmnEventKind = ShapeBpmnElementKind.EVENT_START | ShapeBpmnElementKind.EVENT_END;
 
+interface EventDefinition {
+  kind: ShapeBpmnEventKind;
+  value: number;
+}
+
 @JsonConverter
 export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -103,6 +108,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildEvent(bpmnElement: any, elementKind: ShapeBpmnElementKind, processId: string): ShapeBpmnEvent {
     const eventDefinitions = this.getEventDefinitions(bpmnElement);
     const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.value).reduce((counter, it) => counter + it, 0);
@@ -130,7 +136,8 @@ export default class ProcessConverter extends AbstractConverter<Process> {
    *
    * @param bpmnElement The BPMN element from the XML data who represent an BPMN Event
    */
-  private getEventDefinitions(bpmnElement: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private getEventDefinitions(bpmnElement: any): EventDefinition[] {
     const eventDefinitions = bpmnEventKinds.map(eventKind => {
       return { kind: eventKind, value: ensureIsArray(bpmnElement[eventKind + 'EventDefinition']).length };
     });
