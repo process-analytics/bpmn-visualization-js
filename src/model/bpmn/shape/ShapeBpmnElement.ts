@@ -21,8 +21,8 @@ export default class ShapeBpmnElement {
 }
 
 export class ShapeBpmnEvent extends ShapeBpmnElement {
-  constructor(id: string, name: string, shapeKind: ShapeBpmnElementKind, readonly eventKind: ShapeBpmnEventKind, parentId?: string) {
-    super(id, name, shapeKind, parentId);
+  constructor(id: string, name: string, elementKind: ShapeBpmnElementKind, readonly eventKind: ShapeBpmnEventKind, parentId?: string) {
+    super(id, name, elementKind, parentId);
   }
 }
 

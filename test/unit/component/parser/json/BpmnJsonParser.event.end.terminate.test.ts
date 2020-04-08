@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyFlowNodes, verifyEvent } from './JsonTestUtils';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 
 describe('parse bpmn as json for terminate end event', () => {
@@ -42,7 +42,7 @@ describe('parse bpmn as json for terminate end event', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyShape(model.flowNodes[0], {
+    verifyEvent(model.flowNodes[0], {
       shapeId: 'shape_endEvent_id_7',
       bpmnElementId: 'event_id_7',
       bpmnElementName: undefined,
@@ -53,5 +53,55 @@ describe('parse bpmn as json for terminate end event', () => {
       boundsWidth: 36,
       boundsHeight: 45,
     });
+  });
+
+  it('json containing one process with an end event with terminate definition and another definition, terminate end event is present', () => {
+    const json = `{
+  "definitions": {
+    "process": {
+      "endEvent": [
+        { "id": "event_id_7", "terminateEventDefinition": {}, "messageEventDefinition": {} }
+      ]
+    },
+    "BPMNDiagram": {
+      "name": "process 0",
+      "BPMNPlane": {
+        "BPMNShape": [
+          {
+            "id": "shape_endEvent_id_7", "bpmnElement": "event_id_7",
+            "Bounds": { "x": 362, "y": 932, "width": 36, "height": 45 }
+          }
+        ]
+      }
+    }
+  }
+}`;
+
+    parseJsonAndExpectOnlyFlowNodes(json, 0);
+  });
+
+  it('json containing one process with an end event with several terminate definition, terminate end event is NOT present', () => {
+    const json = `{
+  "definitions": {
+    "process": {
+      "endEvent": [
+        { "id": "event_id_7", "terminateEventDefinition": [{}, {}] }
+      ]
+    },
+    "BPMNDiagram": {
+      "name": "process 0",
+      "BPMNPlane": {
+        "BPMNShape": [
+          {
+            "id": "shape_endEvent_id_7", "bpmnElement": "event_id_7",
+            "Bounds": { "x": 362, "y": 932, "width": 36, "height": 45 }
+          }
+        ]
+      }
+    }
+  }
+}`;
+
+    parseJsonAndExpectOnlyFlowNodes(json, 0);
   });
 });

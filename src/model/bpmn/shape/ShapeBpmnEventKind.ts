@@ -19,4 +19,13 @@
 export enum ShapeBpmnEventKind {
   NONE = 'none',
   TERMINATE = 'terminate',
+  CANCEL = 'cancel',
+  COMPENSATION = 'compensation',
+  CONDITIONAL = 'conditional',
+  ERROR = 'error',
+  ESCALATION = 'escalation',
+  LINK = 'link',
+  MESSAGE = 'message',
+  SIGNAL = 'signal',
+  TIMER = 'timer',
 }

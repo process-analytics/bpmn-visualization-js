@@ -20,7 +20,6 @@ import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElem
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
 import Waypoint from '../../../../model/bpmn/edge/Waypoint';
-import { EventDefinition } from '../EventDefinition';
 import { ShapeBpmnEventKind } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
@@ -30,6 +29,10 @@ const convertedSequenceFlows: SequenceFlow[] = [];
 
 const flowNodeKinds = Object.values(ShapeBpmnElementKind).filter(kind => {
   return kind != ShapeBpmnElementKind.LANE;
+});
+
+const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
+  return kind != ShapeBpmnEventKind.NONE;
 });
 
 export function findFlowNodeBpmnElement(id: string): ShapeBpmnElement {
@@ -90,24 +93,39 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
       if (kind as BpmnEventKind) {
-        this.buildEvent(bpmnElement, kind, processId);
+        const event = this.buildEvent(bpmnElement, kind, processId);
+        if (event) {
+          convertedFlowNodeBpmnElements.push(event);
+        }
       } else {
         convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
       }
     });
   }
 
-  private buildEvent(bpmnElement: any, kind: ShapeBpmnElementKind, processId: string) {
+  private buildEvent(bpmnElement: any, elementKind: ShapeBpmnElementKind, processId: string): ShapeBpmnEvent {
     // get the list of eventDefinition hold by the Event bpmElement
-    const eventDefinitions = Object.values(EventDefinition).filter(eventDefinition => {
-      return bpmnElement.hasOwnProperty(eventDefinition);
+    const eventDefinitions = bpmnEventKinds.map(eventKind => {
+      return { kind: eventKind, value: ensureIsArray(bpmnElement[eventKind + 'EventDefinition']).length };
     });
 
+    const numberOfEventDefinitions = eventDefinitions.map(a => a.value).reduce((counter, it) => counter + it, 0);
+
     // do we have a None Event?
-    if (eventDefinitions.length == 0) {
-      convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
-    } else if (eventDefinitions.includes(EventDefinition.TERMINATE)) {
-      convertedFlowNodeBpmnElements.push(new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, kind, ShapeBpmnEventKind.TERMINATE, processId));
+    if (numberOfEventDefinitions == 0) {
+      return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, ShapeBpmnEventKind.NONE, processId);
+    }
+
+    if (numberOfEventDefinitions == 1) {
+      const eventDefinition = eventDefinitions.filter(eventDefinition => eventDefinition.value == 1)[0];
+
+      // TODO : For later, when we support all the event definition kind
+      // return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinition.kind, processId);
+
+      // TODO : to be replace by the previous line
+      if (eventDefinition.kind == ShapeBpmnEventKind.TERMINATE) {
+        return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinition.kind, processId);
+      }
     }
   }
 

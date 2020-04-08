@@ -90,7 +90,7 @@ export function parseJsonAndExpectOnlyEdges(json: string, numberOfExpectedEdges:
   return parseJsonAndExpect(json, 0, 0, 0, numberOfExpectedEdges);
 }
 
-export function verifyShape(shape: Shape, expectedValue: ExpectedShape | ExpectedEvent): void {
+export function verifyShape(shape: Shape, expectedValue: ExpectedShape): void {
   expect(shape.id).toEqual(expectedValue.shapeId);
 
   const bpmnElement = shape.bpmnElement;
@@ -99,18 +99,19 @@ export function verifyShape(shape: Shape, expectedValue: ExpectedShape | Expecte
   expect(bpmnElement.kind).toEqual(expectedValue.bpmnElementKind);
   expect(bpmnElement.parentId).toEqual(expectedValue.parentId);
 
-  // if (typeof expectedValue === 'ExpectedEvent') {
-  if (expectedValue as ExpectedEvent) {
-    //expect(typeof bpmnElement === 'ShapeBpmnEvent').toBeTruthy();
-    expect(bpmnElement).toBeInstanceOf(ShapeBpmnEvent);
-    expect((bpmnElement as ShapeBpmnEvent).eventKind).toEqual((expectedValue as ExpectedEvent).bpmnEventKind);
-  }
-
   const bounds = shape.bounds;
   expect(bounds.x).toEqual(expectedValue.boundsX);
   expect(bounds.y).toEqual(expectedValue.boundsY);
   expect(bounds.width).toEqual(expectedValue.boundsWidth);
   expect(bounds.height).toEqual(expectedValue.boundsHeight);
+}
+
+export function verifyEvent(shape: Shape, expectedValue: ExpectedEvent): void {
+  verifyShape(shape, expectedValue);
+
+  const bpmnElement = shape.bpmnElement;
+  expect(bpmnElement).toBeInstanceOf(ShapeBpmnEvent);
+  expect((bpmnElement as ShapeBpmnEvent).eventKind).toEqual((expectedValue as ExpectedEvent).bpmnEventKind);
 }
 
 export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge): void {

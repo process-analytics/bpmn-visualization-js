@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJson, parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
+import { parseJson, parseJsonAndExpectOnlyFlowNodes, verifyEvent, verifyShape } from './JsonTestUtils';
+import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 
 describe('parse bpmn as json for start event', () => {
   it('json containing one process with a single start event', () => {
@@ -41,11 +42,12 @@ describe('parse bpmn as json for start event', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyShape(model.flowNodes[0], {
+    verifyEvent(model.flowNodes[0], {
       shapeId: 'shape_startEvent_id_0',
       bpmnElementId: 'event_id_0',
       bpmnElementName: 'event name',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+      bpmnEventKind: ShapeBpmnEventKind.NONE,
       boundsX: 362,
       boundsY: 232,
       boundsWidth: 36,
@@ -79,11 +81,12 @@ describe('parse bpmn as json for start event', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyShape(model.flowNodes[0], {
+    verifyEvent(model.flowNodes[0], {
       shapeId: 'shape_startEvent_id_1',
       bpmnElementId: 'event_id_1',
       bpmnElementName: 'event name',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+      bpmnEventKind: ShapeBpmnEventKind.NONE,
       boundsX: 362,
       boundsY: 232,
       boundsWidth: 36,
@@ -125,21 +128,24 @@ describe('parse bpmn as json for start event', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
-    verifyShape(model.flowNodes[0], {
+    verifyEvent(model.flowNodes[0], {
       shapeId: 'shape_startEvent_id_0',
       bpmnElementId: 'event_id_0',
       bpmnElementName: 'event name',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+      bpmnEventKind: ShapeBpmnEventKind.NONE,
       boundsX: 362,
       boundsY: 232,
       boundsWidth: 36,
       boundsHeight: 45,
     });
-    verifyShape(model.flowNodes[1], {
+
+    verifyEvent(model.flowNodes[1], {
       shapeId: 'shape_startEvent_id_1',
       bpmnElementId: 'event_id_1',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+      bpmnEventKind: ShapeBpmnEventKind.NONE,
       boundsX: 365,
       boundsY: 235,
       boundsWidth: 35,
@@ -193,11 +199,12 @@ describe('parse bpmn as json for start event', () => {
 
     expect(model.flowNodes).toHaveLength(1);
 
-    verifyShape(model.flowNodes[0], {
+    verifyEvent(model.flowNodes[0], {
       shapeId: 'shape_startEvent_id_0',
       bpmnElementId: 'event_id_0',
       bpmnElementName: 'none start event',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+      bpmnEventKind: ShapeBpmnEventKind.NONE,
       boundsX: 362,
       boundsY: 232,
       boundsWidth: 36,
