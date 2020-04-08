@@ -19,6 +19,8 @@ import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/
 import Edge from '../../../../../src/model/bpmn/edge/Edge';
 import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
+import { ShapeBpmnEvent } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
+import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -30,6 +32,10 @@ export interface ExpectedShape {
   boundsWidth: number;
   boundsHeight: number;
   parentId?: string;
+}
+
+export interface ExpectedEvent extends ExpectedShape {
+  bpmnEventKind: ShapeBpmnEventKind;
 }
 
 export interface ExpectedEdge {
@@ -84,7 +90,7 @@ export function parseJsonAndExpectOnlyEdges(json: string, numberOfExpectedEdges:
   return parseJsonAndExpect(json, 0, 0, 0, numberOfExpectedEdges);
 }
 
-export function verifyShape(shape: Shape, expectedValue: ExpectedShape): void {
+export function verifyShape(shape: Shape, expectedValue: ExpectedShape | ExpectedEvent): void {
   expect(shape.id).toEqual(expectedValue.shapeId);
 
   const bpmnElement = shape.bpmnElement;
@@ -92,6 +98,13 @@ export function verifyShape(shape: Shape, expectedValue: ExpectedShape): void {
   expect(bpmnElement.name).toEqual(expectedValue.bpmnElementName);
   expect(bpmnElement.kind).toEqual(expectedValue.bpmnElementKind);
   expect(bpmnElement.parentId).toEqual(expectedValue.parentId);
+
+  // if (typeof expectedValue === 'ExpectedEvent') {
+  if (expectedValue as ExpectedEvent) {
+    //expect(typeof bpmnElement === 'ShapeBpmnEvent').toBeTruthy();
+    expect(bpmnElement).toBeInstanceOf(ShapeBpmnEvent);
+    expect((bpmnElement as ShapeBpmnEvent).eventKind).toEqual((expectedValue as ExpectedEvent).bpmnEventKind);
+  }
 
   const bounds = shape.bounds;
   expect(bounds.x).toEqual(expectedValue.boundsX);

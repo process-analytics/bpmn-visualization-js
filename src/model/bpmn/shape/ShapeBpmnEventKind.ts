@@ -16,14 +16,7 @@
 /**
   The real name of the field in the BPMN XSD
  */
-export enum ShapeBpmnElementKind {
-  LANE = 'lane',
-  POOL = 'pool',
-  TASK_USER = 'userTask',
-  TASK_SERVICE = 'serviceTask',
-  TASK = 'task',
-  GATEWAY_PARALLEL = 'parallelGateway',
-  GATEWAY_EXCLUSIVE = 'exclusiveGateway',
-  EVENT_START = 'startEvent',
-  EVENT_END = 'endEvent',
+export enum ShapeBpmnEventKind {
+  NONE = 'none',
+  TERMINATE = 'terminate',
 }

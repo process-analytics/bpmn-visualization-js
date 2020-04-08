@@ -15,12 +15,13 @@
  */
 import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
-import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnEvent } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
 import Waypoint from '../../../../model/bpmn/edge/Waypoint';
 import { EventDefinition } from '../EventDefinition';
+import { ShapeBpmnEventKind } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
@@ -89,18 +90,25 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
       if (kind as BpmnEventKind) {
-        // get the list of eventDefinition hold by the Event bpmElement
-        const eventDefinitions = Object.values(EventDefinition).filter(eventDefinition => {
-          return bpmnElement.hasOwnProperty(eventDefinition);
-        });
-        // do we have a None Event?
-        if (eventDefinitions.length == 0) {
-          convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
-        }
+        this.buildEvent(bpmnElement, kind, processId);
       } else {
         convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
       }
     });
+  }
+
+  private buildEvent(bpmnElement: any, kind: ShapeBpmnElementKind, processId: string) {
+    // get the list of eventDefinition hold by the Event bpmElement
+    const eventDefinitions = Object.values(EventDefinition).filter(eventDefinition => {
+      return bpmnElement.hasOwnProperty(eventDefinition);
+    });
+
+    // do we have a None Event?
+    if (eventDefinitions.length == 0) {
+      convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
+    } else if (eventDefinitions.includes(EventDefinition.TERMINATE)) {
+      convertedFlowNodeBpmnElements.push(new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, kind, ShapeBpmnEventKind.TERMINATE, processId));
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

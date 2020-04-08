@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
+import { ShapeBpmnEventKind } from './ShapeBpmnEventKind';
 
 export default class ShapeBpmnElement {
   constructor(readonly id: string, readonly name: string, readonly kind: ShapeBpmnElementKind, public parentId?: string) {}
+}
+
+export class ShapeBpmnEvent extends ShapeBpmnElement {
+  constructor(id: string, name: string, shapeKind: ShapeBpmnElementKind, readonly eventKind: ShapeBpmnEventKind, parentId?: string) {
+    super(id, name, shapeKind, parentId);
+  }
 }
 
 export class Participant {
