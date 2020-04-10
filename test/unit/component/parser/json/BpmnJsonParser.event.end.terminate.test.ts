@@ -54,7 +54,7 @@ describe('parse bpmn as json for terminate end event', () => {
     });
   });
 
-  it('json containing one process with an end event with terminate definition and another definition, terminate end event is present', () => {
+  it('json containing one process with an end event with terminate definition and another definition, terminate end event is NOT present', () => {
     const json = `{
   "definitions": {
     "process": {

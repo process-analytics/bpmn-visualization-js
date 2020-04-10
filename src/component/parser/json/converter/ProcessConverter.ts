@@ -20,7 +20,7 @@ import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElem
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
 import Waypoint from '../../../../model/bpmn/edge/Waypoint';
-import { ShapeBpmnEventKind } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
+import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
@@ -98,9 +98,9 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
       if (kind as BpmnEventKind) {
-        const event = this.buildEvent(bpmnElement, kind, processId);
-        if (event) {
-          convertedFlowNodeBpmnElements.push(event);
+        const shapeBpmnEvent = this.buildShapeBpmnEvent(bpmnElement, kind, processId);
+        if (shapeBpmnEvent) {
+          convertedFlowNodeBpmnElements.push(shapeBpmnEvent);
         }
       } else {
         convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
@@ -109,7 +109,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildEvent(bpmnElement: any, elementKind: ShapeBpmnElementKind, processId: string): ShapeBpmnEvent {
+  private buildShapeBpmnEvent(bpmnElement: any, elementKind: ShapeBpmnElementKind, processId: string): ShapeBpmnEvent | void {
     const eventDefinitions = this.getEventDefinitions(bpmnElement);
     const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
 
@@ -119,13 +119,8 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     }
 
     if (numberOfEventDefinitions == 1) {
-      const eventDefinition = eventDefinitions.filter(eventDefinition => eventDefinition.counter == 1)[0];
-
-      // TODO : For later, when we support all the event definition kind
-      // return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinition.kind, processId);
-
-      // TODO : to be replace by the previous line
-      if (eventDefinition.kind == ShapeBpmnEventKind.TERMINATE) {
+      const eventDefinition = eventDefinitions[0];
+      if (supportedBpmnEventKinds.includes(eventDefinition.kind)) {
         return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinition.kind, processId);
       }
     }
@@ -134,14 +129,13 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   /**
    * Get the list of eventDefinition hold by the Event bpmElement
    *
-   * @param bpmnElement The BPMN element from the XML data who represent an BPMN Event
+   * @param bpmnElement The BPMN element from the XML data which represents a BPMN Event
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private getEventDefinitions(bpmnElement: any): EventDefinition[] {
-    const eventDefinitions = bpmnEventKinds.map(eventKind => {
+    return bpmnEventKinds.map(eventKind => {
       return { kind: eventKind, counter: ensureIsArray(bpmnElement[eventKind + 'EventDefinition']).length };
     });
-    return eventDefinitions;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

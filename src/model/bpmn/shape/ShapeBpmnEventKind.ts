@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
-  The real name of the field in the BPMN XSD
+ * Base name of the EventDefinition fields in the BPMN XSD. In the xsd, the value is <enum_value>EventDefinition
+ *
+ * For instance, TERMINATE --> terminateEventDefinition
  */
 export enum ShapeBpmnEventKind {
   NONE = 'none',
@@ -29,3 +32,10 @@ export enum ShapeBpmnEventKind {
   SIGNAL = 'signal',
   TIMER = 'timer',
 }
+
+/**
+ * List supported events in addition to the NONE event.
+ *
+ * Temporarily used until we support all events
+ */
+export const supportedBpmnEventKinds = [ShapeBpmnEventKind.TERMINATE];
