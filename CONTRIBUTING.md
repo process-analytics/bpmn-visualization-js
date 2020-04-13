@@ -8,8 +8,8 @@ All members of our community are expected to follow our [Code of Conduct](CODE_O
 
 There are many ways to contribute:
 
-- help people with the questions they ask on the [Github Issues](https://github.com/bonitasoft-labs/bpmn-visu-js/issues )
-- submitting bug reports and feature requests in the [Github Issues](https://github.com/bonitasoft-labs/bpmn-visu-js/issues/new )
+- help people with the questions they ask on the [Github Issues](https://github.com/process-analytics/bpmn-visualization-js/issues )
+- submitting bug reports and feature requests in the [Github Issues](https://github.com/process-analytics/bpmn-visualization-js/issues/new )
 - [writing code](CONTRIBUTING.md#code-and-documentation-changes) which can be incorporated into BPMN Visu JS itself
 - [improving](CONTRIBUTING.md#code-and-documentation-changes) the documentation
 - improve the existing example applications to demonstrate features in BPMN Visu JS
@@ -18,7 +18,7 @@ There are many ways to contribute:
 
 For all contributions, please respect the following guidelines:
 
-1. If you've noticed a bug or have a feature request, let us know in the [GitHub Issue tracker](https://github.com/bonitasoft-labs/bpmn-visu-js/issues/new )! So we can confirm the bug or approve your feature, and provide feedback, before starting to code :slightly_smiling_face:
+1. If you've noticed a bug or have a feature request, let us know in the [GitHub Issue tracker](https://github.com/process-analytics/bpmn-visualization-js/issues/new )! So we can confirm the bug or approve your feature, and provide feedback, before starting to code :slightly_smiling_face:
 
 2. Do the changes in your own [fork](CONTRIBUTING.md#fork--create-a-branch) of the code
 
@@ -202,7 +202,7 @@ Maintainers need to do the following to push out a release:
 
 * Make sure all pull requests are in, and changelog is up to date
 * Update changelog with new version number
-* Create a [new release](https://github.com/bonitasoft-labs/bpmn-visu-js/releases/new) on Github from the changelog
+* Create a [new release](https://github.com/process-analytics/bpmn-visualization-js/releases/new) on Github from the changelog
 
 
 

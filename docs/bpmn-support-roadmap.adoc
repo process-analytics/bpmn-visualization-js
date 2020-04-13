@@ -4,9 +4,9 @@
 
 You can track related issues and pull requests with the following labels
 
-* https://github.com/bonitasoft-labs/bpmn-visu-js/issues?q=label%3A%22BPMN+support%22+is%3Aclosed[BPMN support]: BPMN
+* https://github.com/process-analytics/bpmn-visualization-js/issues?q=label%3A%22BPMN+support%22+is%3Aclosed[BPMN support]: BPMN
 elements recognized by the lib
-* https://github.com/bonitasoft-labs/bpmn-visu-js/issues?q=label%3A%22BPMN+rendering%22+is%3Aclosed[BPMN rendering]:
+* https://github.com/process-analytics/bpmn-visualization-js/issues?q=label%3A%22BPMN+rendering%22+is%3Aclosed[BPMN rendering]:
 BPMN elements rendered with their final design
 
 == Opened implementation steps
