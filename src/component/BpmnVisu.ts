@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import MxGraphConfigurator from '../mxgraph/MxGraphConfigurator';
+import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
 import { mxgraph } from 'ts-mxgraph';
-import MxGraphRenderer from '../mxgraph/MxGraphRenderer';
-import { defaultBpmnParser } from '../parser/BpmnParser';
-import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
+import MxGraphRenderer from './mxgraph/MxGraphRenderer';
+import { defaultBpmnParser } from './parser/BpmnParser';
+import { MxGraphFactoryService } from '../service/MxGraphFactoryService';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export default class Graph {
+export default class BpmnVisu {
   private mxClient: any = MxGraphFactoryService.getMxGraphProperty('mxClient');
   private mxUtils: any = MxGraphFactoryService.getMxGraphProperty('mxUtils');
 
@@ -43,6 +43,7 @@ export default class Graph {
 
   public load(xml: string): void {
     try {
+      // TODO the BpmnParser should be a field and injected (see #110)
       const bpmnModel = defaultBpmnParser().parse(xml);
       new MxGraphRenderer(this.graph).render(bpmnModel);
     } catch (e) {

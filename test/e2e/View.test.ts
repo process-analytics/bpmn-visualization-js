@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Graph from '../../src/component/graph/Graph';
+import BpmnVisu from '../../src/component/BpmnVisu';
 import { ShapeBpmnElementKind } from '../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { mxgraph } from 'ts-mxgraph';
 import { MxGraphFactoryService } from '../../src/service/MxGraphFactoryService';
@@ -119,12 +119,12 @@ describe('BPMN Visualization JS', () => {
 </semantic:definitions>
 `;
   // endregion
-  let graph: Graph;
+  let bpmnVisu: BpmnVisu;
 
   beforeAll(async () => {
     await page.goto('http://localhost:10001');
     await page.waitForSelector('#graph');
-    graph = new Graph(window.document.getElementById('graph'));
+    bpmnVisu = new BpmnVisu(window.document.getElementById('graph'));
   });
 
   beforeEach(() => {
@@ -136,17 +136,17 @@ describe('BPMN Visualization JS', () => {
   });
 
   function expectModelContainsCell(cellId: string, shapeKind: ShapeBpmnElementKind): void {
-    const cell = graph.graph.model.getCell(cellId);
+    const cell = bpmnVisu.graph.model.getCell(cellId);
     expect(cell).not.toBeNull();
     expect(cell.style).toContain(shapeKind);
-    const state = graph.graph.getView().getState(cell);
+    const state = bpmnVisu.graph.getView().getState(cell);
     const mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
     expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(shapeKind);
   }
 
   it('should display visualization', async () => {
     // load BPMN
-    graph.load(xmlContent);
+    bpmnVisu.load(xmlContent);
     // model is OK
 
     expectModelContainsCell('endEvent_1', ShapeBpmnElementKind.EVENT_END);
@@ -157,14 +157,14 @@ describe('BPMN Visualization JS', () => {
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {
-    const cell = graph.graph.model.getCell(cellId);
+    const cell = bpmnVisu.graph.model.getCell(cellId);
     expect(cell).not.toBeNull();
     expect(cell.parent.id).toEqual(parentId);
     expectGeometry(cell, geometry);
   }
 
   function getDefaultParentId(): string {
-    return graph.graph.getDefaultParent().id;
+    return bpmnVisu.graph.getDefaultParent().id;
   }
 
   it('bpmn element shape should have coordinates relative to the pool when no lane', async () => {
@@ -192,7 +192,7 @@ describe('BPMN Visualization JS', () => {
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
 `;
-    graph.load(bpmn);
+    bpmnVisu.load(bpmn);
 
     expectModelContainsCellWithGeometry(
       'Participant_1',
@@ -249,7 +249,7 @@ describe('BPMN Visualization JS', () => {
 </bpmndi:BPMNDiagram>
 </bpmn:definitions>
 `;
-    graph.load(bpmn);
+    bpmnVisu.load(bpmn);
 
     expectModelContainsCellWithGeometry(
       'Participant_1',

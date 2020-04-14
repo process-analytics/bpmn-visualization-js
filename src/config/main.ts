@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Graph from './../component/graph/Graph';
+import BpmnVisu from '../component/BpmnVisu';
 import { DropFileUserInterface } from '../component/ui_ux/DropFileUserInterface';
 
-export const graph = new Graph(window.document.getElementById('graph'));
+export const bpmnVisu = new BpmnVisu(window.document.getElementById('graph'));
 
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {
   const reader = new FileReader();
   reader.onload = () => {
-    graph.load(reader.result as string);
+    bpmnVisu.load(reader.result as string);
   };
   reader.readAsText(f);
 }
