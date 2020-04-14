@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import any = jasmine.any;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function verifyProperties(object: any, propertiesToHave: string[], propertiesNotToHave: string[] = []): void {
@@ -71,15 +72,20 @@ export function verifyAndGetBPMNShape(json: any): Array<any> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyShapes(json: any, expected: number) {
+export function verifyShapes(json: any, expected: number, withLabel = true) {
   const diagram = json.definitions.BPMNDiagram;
   verifyIsNotEmptyArray(diagram.BPMNPlane.BPMNShape, expected);
 
   const shape = diagram.BPMNPlane.BPMNShape[0];
-  verifyProperties(shape, ['id', 'bpmnElement', 'Bounds', 'BPMNLabel']);
+  if (withLabel) {
+    verifyProperties(shape, ['id', 'bpmnElement', 'Bounds', 'BPMNLabel']);
+
+    verifyProperties(shape.BPMNLabel, ['id', 'labelStyle', 'Bounds']);
+    verifyProperties(shape.BPMNLabel.Bounds, ['height', 'width', 'x', 'y']);
+  } else {
+    verifyProperties(shape, ['id', 'bpmnElement', 'Bounds']);
+  }
   verifyProperties(shape.Bounds, ['height', 'width', 'x', 'y']);
-  verifyProperties(shape.BPMNLabel, ['id', 'labelStyle', 'Bounds']);
-  verifyProperties(shape.BPMNLabel.Bounds, ['height', 'width', 'x', 'y']);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -89,21 +95,29 @@ export function verifyPlane(json: any) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyDiagram(json: any): any {
+export function verifyDiagram(json: any, withStyle = true): any {
   const diagram = json.definitions.BPMNDiagram;
-  verifyProperties(diagram, ['id', 'name', 'BPMNPlane', 'BPMNLabelStyle']);
+  if (withStyle) {
+    verifyProperties(diagram, ['id', 'name', 'BPMNPlane', 'BPMNLabelStyle']);
+  } else {
+    verifyProperties(diagram, ['id', 'name', 'BPMNPlane']);
+  }
   return diagram;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyEdges(json: any, expected: number, edgeIndexToVerify: number): void {
+export function verifyEdges(json: any, expected: number, edgeIndexToVerify: number, withStyle = true): void {
   const diagram = json.definitions.BPMNDiagram;
   verifyIsNotEmptyArray(diagram.BPMNPlane.BPMNEdge, expected);
 
   const edge = diagram.BPMNPlane.BPMNEdge[edgeIndexToVerify];
   verifyProperties(edge, ['id', 'bpmnElement', 'waypoint', 'BPMNLabel']);
   verifyIsNotEmptyArray(edge.waypoint, 3);
-  verifyProperties(edge.BPMNLabel, ['id', 'labelStyle', 'Bounds']);
+  if (withStyle) {
+    verifyProperties(edge.BPMNLabel, ['labelStyle', 'Bounds']);
+  } else {
+    verifyProperties(edge.BPMNLabel, ['Bounds']);
+  }
   verifyProperties(edge.BPMNLabel.Bounds, ['height', 'width', 'x', 'y']);
 }
 
@@ -125,16 +139,6 @@ export function verifyIoSpecification(json: any, expectedInputSetId: string, exp
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyStartEvent(json: any, expectedOutgoing: string) {
-  const startEvent = json.definitions.process.startEvent;
-  verifyProperties(startEvent, ['id', 'name', 'isInterrupting', 'extensionElements', 'outgoing'], ['incoming']);
-  expect(startEvent.outgoing).toEqual(expectedOutgoing);
-  verifyProperties(startEvent.extensionElements, ['graphStyle']);
-  verifyProperties(startEvent.extensionElements.graphStyle, ['basic']);
-  verifyProperties(startEvent.extensionElements.graphStyle.basic, ['background', 'foreground', 'autoResize', 'borderColor', 'collapsed']);
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function verifySequenceFlow(json: any, expected: number) {
   const process = json.definitions.process;
   verifyIsNotEmptyArray(process.sequenceFlow, expected);
@@ -147,38 +151,25 @@ export function verifyExclusiveGateway(json: any, expected: number) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyEndEvent(json: any, expectedIncomings: string[]) {
+export function verifyStartEvent(json: any, expectedOutgoing: string, verifyEventExtensions: (extensionElements: any) => void): void {
+  const startEvent = json.definitions.process.startEvent;
+  verifyProperties(startEvent, ['id', 'name', 'extensionElements', 'outgoing'], ['incoming']);
+  expect(startEvent.outgoing).toEqual(expectedOutgoing);
+  verifyEventExtensions(startEvent.extensionElements);
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function verifyEndEvent(json: any, expectedIncomings: string[], verifyEventExtensions: (extensionElements: any) => void): void {
   const endEvent = json.definitions.process.endEvent;
   verifyProperties(endEvent, ['id', 'name', 'extensionElements', 'incoming'], ['outgoing']);
 
   expectedIncomings.forEach((expectedIncoming, index) => expect(endEvent.incoming[index]).toEqual(expectedIncoming));
 
-  verifyProperties(endEvent.extensionElements, ['graphStyle']);
-  verifyProperties(endEvent.extensionElements.graphStyle, ['basic']);
-  verifyProperties(endEvent.extensionElements.graphStyle.basic, ['background', 'foreground', 'autoResize', 'borderColor', 'collapsed']);
+  verifyEventExtensions(endEvent.extensionElements);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function verifyTask(json: any, expected: number) {
   const process = json.definitions.process;
   verifyIsNotEmptyArray(process.task, expected);
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyExtensionElements(json: any) {
-  const process = json.definitions.process;
-
-  verifyProperties(process.extensionElements, ['graphStyle']);
-  verifyProperties(process.extensionElements.graphStyle, ['basic', 'root']);
-  verifyProperties(process.extensionElements.graphStyle.root, [
-    'gridVisible',
-    'snapToGrid',
-    'rulerVisible',
-    'snapToGuide',
-    'rulerUnit',
-    'Grid',
-    'VerticalRuler',
-    'HorizontalRuler',
-  ]);
-  verifyProperties(process.extensionElements.graphStyle.root.Grid, ['spacing', 'color']);
 }

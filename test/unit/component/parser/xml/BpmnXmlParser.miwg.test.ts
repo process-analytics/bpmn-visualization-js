@@ -21,7 +21,6 @@ import {
   verifyEdges,
   verifyEndEvent,
   verifyExclusiveGateway,
-  verifyExtensionElements,
   verifyIoSpecification,
   verifyPlane,
   verifyProperties,
@@ -31,6 +30,23 @@ import {
   verifyStyle,
   verifyTask,
 } from './XMLTestUtils';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function verifyExtensionElements(json: any) {
+  const process = json.definitions.process;
+
+  verifyProperties(process.extensionElements, ['graphStyle']);
+  verifyProperties(process.extensionElements.graphStyle, ['basic', 'root']);
+  verifyProperties(process.extensionElements.graphStyle.root, ['gridVisible', 'snapToGrid', 'rulerVisible', 'rulerUnit', 'Grid', 'VerticalRuler', 'HorizontalRuler']);
+  verifyProperties(process.extensionElements.graphStyle.root.Grid, ['spacing', 'color']);
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function verifyEventExtensions(extensionElements: any): void {
+  verifyProperties(extensionElements, ['graphStyle']);
+  verifyProperties(extensionElements.graphStyle, ['basic']);
+  verifyProperties(extensionElements.graphStyle.basic, ['background', 'foreground', 'autoResize', 'borderColor', 'collapsed']);
+}
 
 describe('parse bpmn as xml for MIWG', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
@@ -383,9 +399,9 @@ describe('parse bpmn as xml for MIWG', () => {
 
     verifyExtensionElements(json);
     verifyIoSpecification(json, '_cVHRcDOCEeSknpIVFCxNIQ', '_cVH4gDOCEeSknpIVFCxNIQ');
-    verifyStartEvent(json, '_To9Z5DOCEeSknpIVFCxNIQ');
+    verifyStartEvent(json, '_To9Z5DOCEeSknpIVFCxNIQ', verifyEventExtensions);
     verifyTask(json, 4);
-    verifyEndEvent(json, ['_To9Z7TOCEeSknpIVFCxNIQ', '_To9Z9jOCEeSknpIVFCxNIQ']);
+    verifyEndEvent(json, ['_To9Z7TOCEeSknpIVFCxNIQ', '_To9Z9jOCEeSknpIVFCxNIQ'], verifyEventExtensions);
     verifyExclusiveGateway(json, 2);
     verifySequenceFlow(json, 11);
 
