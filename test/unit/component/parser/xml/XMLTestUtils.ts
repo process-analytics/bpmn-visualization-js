@@ -95,30 +95,37 @@ export function verifyPlane(json: any) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyDiagram(json: any, withStyle = true): any {
+export function verifyDiagram(json: any, withStyle = true, withName = true): any {
   const diagram = json.definitions.BPMNDiagram;
+
+  verifyProperties(diagram, ['id', 'BPMNPlane']);
+
   if (withStyle) {
-    verifyProperties(diagram, ['id', 'name', 'BPMNPlane', 'BPMNLabelStyle']);
-  } else {
-    verifyProperties(diagram, ['id', 'name', 'BPMNPlane']);
+    verifyProperties(diagram, ['BPMNLabelStyle']);
+  }
+  if (withName) {
+    verifyProperties(diagram, ['name']);
   }
   return diagram;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyEdges(json: any, expected: number, edgeIndexToVerify: number, withStyle = true): void {
+export function verifyEdges(json: any, expected: number, edgeIndexToVerify: number, withStyle = true, withLabel = true): void {
   const diagram = json.definitions.BPMNDiagram;
   verifyIsNotEmptyArray(diagram.BPMNPlane.BPMNEdge, expected);
 
   const edge = diagram.BPMNPlane.BPMNEdge[edgeIndexToVerify];
-  verifyProperties(edge, ['id', 'bpmnElement', 'waypoint', 'BPMNLabel']);
+  verifyProperties(edge, ['id', 'bpmnElement', 'waypoint']);
   verifyIsNotEmptyArray(edge.waypoint, 3);
-  if (withStyle) {
-    verifyProperties(edge.BPMNLabel, ['labelStyle', 'Bounds']);
-  } else {
+
+  if (withLabel) {
+    verifyProperties(edge, ['BPMNLabel']);
     verifyProperties(edge.BPMNLabel, ['Bounds']);
+    verifyProperties(edge.BPMNLabel.Bounds, ['height', 'width', 'x', 'y']);
+    if (withStyle) {
+      verifyProperties(edge.BPMNLabel, ['labelStyle']);
+    }
   }
-  verifyProperties(edge.BPMNLabel.Bounds, ['height', 'width', 'x', 'y']);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -151,25 +158,45 @@ export function verifyExclusiveGateway(json: any, expected: number) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyStartEvent(json: any, expectedOutgoing: string, verifyEventExtensions: (extensionElements: any) => void): void {
+export function verifyStartEvent(json: any, expectedOutgoing?: string, verifyEventExtensions?: (extensionElements: any) => void): void {
   const startEvent = json.definitions.process.startEvent;
-  verifyProperties(startEvent, ['id', 'name', 'extensionElements', 'outgoing'], ['incoming']);
-  expect(startEvent.outgoing).toEqual(expectedOutgoing);
-  verifyEventExtensions(startEvent.extensionElements);
+  verifyProperties(startEvent, ['id', 'name'], ['incoming']);
+
+  if (expectedOutgoing) {
+    verifyProperties(startEvent, ['outgoing']);
+    expect(startEvent.outgoing).toEqual(expectedOutgoing);
+  }
+
+  if (verifyEventExtensions) {
+    verifyProperties(startEvent, ['extensionElements']);
+    verifyEventExtensions(startEvent.extensionElements);
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyEndEvent(json: any, expectedIncomings: string[], verifyEventExtensions: (extensionElements: any) => void): void {
+export function verifyEndEvent(json: any, expectedIncomings?: string[], verifyEventExtensions?: (extensionElements: any) => void): void {
   const endEvent = json.definitions.process.endEvent;
-  verifyProperties(endEvent, ['id', 'name', 'extensionElements', 'incoming'], ['outgoing']);
+  verifyProperties(endEvent, ['id', 'name'], ['outgoing']);
 
-  expectedIncomings.forEach((expectedIncoming, index) => expect(endEvent.incoming[index]).toEqual(expectedIncoming));
+  if (expectedIncomings) {
+    verifyProperties(endEvent, ['incoming']);
+    expectedIncomings.forEach((expectedIncoming, index) => expect(endEvent.incoming[index]).toEqual(expectedIncoming));
+  }
 
-  verifyEventExtensions(endEvent.extensionElements);
+  if (verifyEventExtensions) {
+    verifyProperties(endEvent, ['extensionElements']);
+    verifyEventExtensions(endEvent.extensionElements);
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function verifyTask(json: any, expected: number) {
   const process = json.definitions.process;
   verifyIsNotEmptyArray(process.task, expected);
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function verifyUserTask(json: any, expected: number) {
+  const process = json.definitions.process;
+  verifyIsNotEmptyArray(process.userTask, expected);
 }
