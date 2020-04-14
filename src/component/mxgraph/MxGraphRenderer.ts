@@ -17,9 +17,10 @@ import { mxgraph } from 'ts-mxgraph';
 import Shape from '../../model/bpmn/shape/Shape';
 import Edge from '../../model/bpmn/edge/Edge';
 import BpmnModel from '../../model/bpmn/BpmnModel';
-import ShapeBpmnElement from '../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnEvent } from '../../model/bpmn/shape/ShapeBpmnElement';
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
+import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 
 interface Coordinate {
   x: number;
@@ -64,7 +65,19 @@ export default class MxGraphRenderer {
       const bounds = shape.bounds;
       const parent = this.getParent(bpmnElement);
       const absoluteCoordinate = { x: bounds.x, y: bounds.y };
-      this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, bpmnElement.kind);
+      let style: string;
+      if (bpmnElement instanceof ShapeBpmnEvent) {
+        console.log('_________', 'ShapeBpmnEvent', bpmnElement);
+        // TODO: following if is just temporary as long as Start Event (subtypes) support is not added
+        if (bpmnElement.kind === ShapeBpmnElementKind.EVENT_END) {
+          style = bpmnElement.eventKind && bpmnElement.eventKind !== 'none' ? bpmnElement.kind + '_' + bpmnElement.eventKind : bpmnElement.kind;
+        } else {
+          style = bpmnElement.kind;
+        }
+      } else {
+        style = bpmnElement.kind;
+      }
+      this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
     }
   }
 

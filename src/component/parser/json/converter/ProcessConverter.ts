@@ -51,8 +51,6 @@ export function findSequenceFlow(id: string): SequenceFlow {
   return convertedSequenceFlows.find(i => i.id === id);
 }
 
-type BpmnEventKind = ShapeBpmnElementKind.EVENT_START | ShapeBpmnElementKind.EVENT_END;
-
 interface EventDefinition {
   kind: ShapeBpmnEventKind;
   counter: number;
@@ -97,7 +95,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
-      if (kind as BpmnEventKind) {
+      if (this.isEvent(kind)) {
         const shapeBpmnEvent = this.buildShapeBpmnEvent(bpmnElement, kind, processId);
         if (shapeBpmnEvent) {
           convertedFlowNodeBpmnElements.push(shapeBpmnEvent);
@@ -106,6 +104,10 @@ export default class ProcessConverter extends AbstractConverter<Process> {
         convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
       }
     });
+  }
+
+  private isEvent(kind: ShapeBpmnElementKind): boolean {
+    return [ShapeBpmnElementKind.EVENT_START, ShapeBpmnElementKind.EVENT_END].includes(kind);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -119,7 +121,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     }
 
     if (numberOfEventDefinitions == 1) {
-      const eventDefinition = eventDefinitions[0];
+      const eventDefinition = eventDefinitions.filter(eventDefinition => eventDefinition.counter == 1)[0];
       if (supportedBpmnEventKinds.includes(eventDefinition.kind)) {
         return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinition.kind, processId);
       }
@@ -134,7 +136,10 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private getEventDefinitions(bpmnElement: any): EventDefinition[] {
     return bpmnEventKinds.map(eventKind => {
-      return { kind: eventKind, counter: ensureIsArray(bpmnElement[eventKind + 'EventDefinition']).length };
+      // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
+      const eventDefinition =
+        bpmnElement[eventKind + 'EventDefinition'] !== undefined ? (bpmnElement[eventKind + 'EventDefinition'] === '' ? {} : bpmnElement[eventKind + 'EventDefinition']) : null;
+      return { kind: eventKind, counter: ensureIsArray(eventDefinition).length };
     });
   }
 
