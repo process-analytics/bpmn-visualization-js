@@ -1,0 +1,8 @@
+# IDE
+/.idea/
+*.iml
+# Build
+/node_modules/
+/dist/
+/.nyc_output/
+/coverage/
