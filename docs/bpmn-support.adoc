@@ -1,0 +1,122 @@
+= Description of the supported BPMN elements
+:icons: font
+:toc: preamble
+
+NOTE: The support roadmap is available in the link:bpmn-support-roadmap.adoc[BPMN Support Roadmap] page
+
+
+This page presents BPMN elements that can be displayed by the lib and states which is their rendering status i.e. if the
+BMPN elements are rendered with their final shapes.
+
+The default rendering uses `white` as fill color and `black` as stroke color.
+
+[TIP]
+.Legend for rendering status
+====
+* icon:check-circle[] considered as stable (only minor changes may occurred)
+* icon:check-circle-o[] early access (1st attempt)
+* icon:flask[] experimental (subject to change)
+* no status means that are arbitrary rendering is used (not following BPMNN), generally using a dedicated color to identify the shape among other
+====
+
+
+== Containers
+
+[cols="1,1,4a", options="header"]
+.Containers
+|===
+|Name
+|Rendering
+|Comments
+
+|Lane
+|icon:flask[]
+|
+
+|Pool
+|icon:flask[]
+|Currently, the title area is filled in `gray` and may be too large
+|===
+
+
+
+== Activities
+
+[cols="1,1,4", options="header"]
+.Activities
+|===
+|Name
+|Rendering
+|Comments
+
+|Abstract Task
+|icon:flask[]
+|Rounded corner and stroke color are subject to change
+
+|Service Task
+|
+|
+
+|User Task
+|
+|
+|===
+
+
+== Events
+
+
+[cols="1,1,4", options="header"]
+.Events
+|===
+|Name
+|Rendering
+|Comments
+
+|None Start Event
+|icon:check-circle[]
+|
+
+|None End Event
+|icon:check-circle-o[]
+|The stroke width may be adjusted
+|===
+
+
+== Flows
+
+[cols="1,1,4a", options="header"]
+.Flows
+|===
+|Name
+|Rendering
+|Comments
+
+|sequence flow
+|icon:flask[]
+|Subject to change: arrow shape and position endpoint
+
+|way points
+|icon:flask[]
+|Subject to change: paths may be rounded
+|===
+
+
+== Gateways
+
+
+[cols="1,1,4", options="header"]
+.Gateways
+|===
+|Name
+|Rendering
+|Comments
+
+|Exclusive
+|
+|
+
+|Parallel
+|
+|
+|===
