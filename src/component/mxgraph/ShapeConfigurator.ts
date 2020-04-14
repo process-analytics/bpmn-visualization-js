@@ -37,7 +37,7 @@ export default class ShapeConfigurator {
   private initMxShapePrototype(isFF: boolean): void {
     // this change is needed for adding the custom attributes that permits identification of the BPMN elements
     this.mxShape.prototype.createSvgCanvas = function() {
-      // TODO should be 'typeof mxgraph.mxSvgCanvas2D'
+      // TODO should be 'typeof mxgraph.mxSvgCanvas2D', current type definition does not declare 'minStrokeWidth'
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mxSvgCanvas2D: any = MxGraphFactoryService.getMxGraphProperty('mxSvgCanvas2D');
       const canvas = new mxSvgCanvas2D(this.node, false);
