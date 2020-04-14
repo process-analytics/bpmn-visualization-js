@@ -28,7 +28,7 @@ function expectGeometry(cell: mxgraph.mxCell, geometry: mxgraph.mxGeometry): voi
 
 const mxGeometry: typeof mxgraph.mxGeometry = MxGraphFactoryService.getMxGraphProperty('mxGeometry');
 
-describe('BPMN Visu JS', () => {
+describe('BPMN Visualization JS', () => {
   // region html string literal
   const xmlContent = `
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
@@ -132,7 +132,7 @@ describe('BPMN Visu JS', () => {
   });
 
   it('should display page title', async () => {
-    await expect(page.title()).resolves.toMatch('BPMN Visu JS');
+    await expect(page.title()).resolves.toMatch('BPMN Visualization JS');
   });
 
   function expectModelContainsCell(cellId: string, shapeKind: ShapeBpmnElementKind): void {

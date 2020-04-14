@@ -1,10 +1,10 @@
-# BPMN Visu JS
+# BPMN Visualization JS
 A JavaScript library to visualize process execution data. Diagrams are displayed from [BPMN](https://www.omg.org/spec/BPMN/2.0.2/PDF) files. With additional display
 options for execution data (highlight some transitions, counters, and more). With interactive capacities (mouse hover,
 click).
 
-[![Build](https://github.com/bonitasoft-labs/bpmn-visu-js/workflows/Build/badge.svg)](https://github.com/bonitasoft-labs/bpmn-visu-js/actions)
-[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/bonitasoft-labs/bpmn-visu-js?color=orange&include_prereleases)](https://github.com/bonitasoft-labs/bpmn-visu-js/releases)
+[![Build](https://github.com/process-analytics/bpmn-visualization-js/workflows/Build/badge.svg)](https://github.com/process-analytics/bpmn-visualization-js/actions)
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/bonitasoft-labs/bpmn-visu-js?color=orange&include_prereleases)](https://github.com/process-analytics/bpmn-visualization-js/releases)
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
@@ -24,7 +24,7 @@ If you need BPMN examples, you can use resources from the from [BPMN Model Inter
 
 # Roadmap
 
-`BPMN Visu JS` is in early development stages and is subject to changes until the `1.0.0` version is released.
+`BPMN Visualization JS` is in early development stages and is subject to changes until the `1.0.0` version is released.
 
 We are currently focusing on the [BPMN support](docs/bpmn-support-roadmap.adoc) to be able to render most of the BPMN
 elements.
@@ -46,7 +46,7 @@ To build the project, see the [Contributing guide](CONTRIBUTING.md#Build) :sligh
 Milestone names are based on version
 - Clean the opened milestone if some issues are still opened (move them to a new one or discard milestone from them)
 - Close the milestone
-- Clean the [Day to Day Board](https://github.com/bonitasoft-labs/bpmn-visu-js/projects/1): archive all cards of the
+- Clean the [Day to Day Board](https://github.com/process-analytics/bpmn-visualization-js/projects/1): archive all cards of the
 `Done` column related to the milestone
 
 
@@ -61,6 +61,6 @@ Milestone names are based on version
 
 - Ensure the latest closed milestone matches the name of the tag/version that has just been pushed
 - Create a new GitHub release
-  - Open [github releases](https://github.com/bonitasoft-labs/bpmn-visu-js/releases)
+  - Open [github releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
   - Create a new release based on the newly created tags. Check `This is a pre-release`
   - In the description, at least add a link to the related milestone
