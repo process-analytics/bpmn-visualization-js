@@ -31,13 +31,26 @@ elements.
 
 Then, we will work on BPMN extensions, library extension points.
 
-# Architecture
-- [Internal model](docs/architecture/internal-model.adoc)
-- [BPMN Parsing](docs/architecture/bpmn-parsing.adoc)
-
 # Development
 
 To build the project, see the [Contributing guide](CONTRIBUTING.md#Build) :slightly_smiling_face:
+
+You may also have a look at the [Architecture home page](docs/architecture/00-index.adoc)
+
+## Building the html documentation
+
+**DISCLAIMER**:
+- the documentation sources are in the AsciiDoctor format and are hosted in the [docs](./docs) folder. The display
+may not fully work (font-awesome icons and some links) depending on the rendering engine. This is the case when
+displayed directly on GitHub Web.
+- the generation currently relies on `Docker`. This will change in the future.
+
+From the root folder of the repository, run 
+```bash
+./docs/build-doc.bash
+```
+
+The documentation is generated in the `docs-generated` folder.
 
 ## Release
 

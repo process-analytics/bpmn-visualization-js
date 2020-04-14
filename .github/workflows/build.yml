@@ -4,10 +4,16 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - '.gitignore'
+      - 'docs/**'
+      - '*.md'
+      - LICENSE
   pull_request:
     branches:
       - master
     paths-ignore:
+      - '.gitignore'
       - 'docs/**'
       - '*.md'
       - LICENSE

@@ -1,0 +1,7 @@
+== Architecture and Development
+
+include::bpmn-internal-model.adoc[]
+
+include::bpmn-parsing.adoc[]
+
+include::bpmn-support-how-to.adoc[]

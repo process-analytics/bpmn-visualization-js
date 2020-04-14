@@ -1,7 +1,10 @@
 # IDE
 /.idea/
 *.iml
+
+# Build directories
 /node_modules/
 /dist/
 /.nyc_output/
 /coverage/
+/docs-generated/

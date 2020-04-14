@@ -1,7 +1,7 @@
-= BPMN Support - How To
+=== BPMN Support - How To
 :icons: font
 
-== Elements detection
+==== Elements detection
 
 Except for special container elements like `Pool`, `Lane` and `Subprocess`, detecting a new BPMN element only requires to
 add a new value in the `ShapeBpmnElementKind` enum.
@@ -13,7 +13,7 @@ make it available to the `ProcessConverter`. The convention is to have a test fi
 existing file name scheme.
 
 
-== Elements rendering
+==== Elements rendering
 
 When inserting an element on the graph, a style is passed to identify the way it will be rendered.
 

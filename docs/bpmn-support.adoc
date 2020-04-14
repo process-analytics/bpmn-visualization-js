@@ -1,12 +1,13 @@
-= Description of the supported BPMN elements
-:icons: font
-:toc: preamble
+[[supported-bpmn-elements]]
 
-NOTE: The support roadmap is available in the link:bpmn-support-roadmap.adoc[BPMN Support Roadmap] page
+== Description of the supported BPMN elements
+:icons: font
+
+NOTE: The support roadmap is available in <<bpmn-support-roadmap,BPMN Support Roadmap>>
 
 
 This page presents BPMN elements that can be displayed by the lib and states which is their rendering status i.e. if the
-BMPN elements are rendered with their final shapes.
+BPMN elements are rendered with their final shapes.
 
 The default rendering uses `white` as fill color and `black` as stroke color.
 
@@ -20,7 +21,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 ====
 
 
-== Containers
+=== Containers
 
 [cols="1,1,4a", options="header"]
 .Containers
@@ -40,7 +41,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 
 
-== Activities
+=== Activities
 
 [cols="1,1,4", options="header"]
 .Activities
@@ -63,7 +64,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |===
 
 
-== Events
+=== Events
 
 
 [cols="1,1,4", options="header"]
@@ -83,7 +84,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |===
 
 
-== Flows
+=== Flows
 
 [cols="1,1,4a", options="header"]
 .Flows
@@ -102,7 +103,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |===
 
 
-== Gateways
+=== Gateways
 
 
 [cols="1,1,4", options="header"]

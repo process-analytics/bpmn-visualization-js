@@ -1,7 +1,0 @@
-= Internal model
-
-Our internal model is based on the https://www.omg.org/spec/BPMN/2.0.2/PDF[BPMN specification].
-
-image::Internal model.svg[]
-
-*Note*: If you want to update the model, you need to update the file _docs/architecture/Internal model.drawio_ with https://app.diagrams.net, and export as SVG in the _docs/architecture/Internal model.svg_ file.
