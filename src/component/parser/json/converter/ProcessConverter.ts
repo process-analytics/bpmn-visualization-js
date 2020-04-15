@@ -21,6 +21,7 @@ import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
 import Waypoint from '../../../../model/bpmn/edge/Waypoint';
 import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
+import ShapeUtil from '../../../../model/bpmn/shape/ShapeUtil';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
@@ -95,7 +96,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
-      if (this.isEvent(kind)) {
+      if (ShapeUtil.isEvent(kind)) {
         const shapeBpmnEvent = this.buildShapeBpmnEvent(bpmnElement, kind, processId);
         if (shapeBpmnEvent) {
           convertedFlowNodeBpmnElements.push(shapeBpmnEvent);
@@ -104,10 +105,6 @@ export default class ProcessConverter extends AbstractConverter<Process> {
         convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
       }
     });
-  }
-
-  private isEvent(kind: ShapeBpmnElementKind): boolean {
-    return [ShapeBpmnElementKind.EVENT_START, ShapeBpmnElementKind.EVENT_END].includes(kind);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -137,9 +134,8 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   private getEventDefinitions(bpmnElement: any): EventDefinition[] {
     return bpmnEventKinds.map(eventKind => {
       // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
-      const eventDefinition =
-        bpmnElement[eventKind + 'EventDefinition'] !== undefined ? (bpmnElement[eventKind + 'EventDefinition'] === '' ? {} : bpmnElement[eventKind + 'EventDefinition']) : null;
-      return { kind: eventKind, counter: ensureIsArray(eventDefinition).length };
+      const eventDefinition = bpmnElement[eventKind + 'EventDefinition'];
+      return { kind: eventKind, counter: ensureIsArray(eventDefinition, true).length };
     });
   }
 

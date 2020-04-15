@@ -21,6 +21,7 @@ import ShapeBpmnElement, { ShapeBpmnEvent } from '../../model/bpmn/shape/ShapeBp
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
+import { ShapeBpmnEventKind } from '../../model/bpmn/shape/ShapeBpmnEventKind';
 
 interface Coordinate {
   x: number;
@@ -65,20 +66,24 @@ export default class MxGraphRenderer {
       const bounds = shape.bounds;
       const parent = this.getParent(bpmnElement);
       const absoluteCoordinate = { x: bounds.x, y: bounds.y };
-      let style: string;
-      if (bpmnElement instanceof ShapeBpmnEvent) {
-        console.log('_________', 'ShapeBpmnEvent', bpmnElement);
-        // TODO: following if is just temporary as long as Start Event (subtypes) support is not added
-        if (bpmnElement.kind === ShapeBpmnElementKind.EVENT_END) {
-          style = bpmnElement.eventKind && bpmnElement.eventKind !== 'none' ? bpmnElement.kind + '_' + bpmnElement.eventKind : bpmnElement.kind;
-        } else {
-          style = bpmnElement.kind;
-        }
+      const style: string = this.getStyleName(bpmnElement);
+      this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
+    }
+  }
+
+  private getStyleName(bpmnElement: ShapeBpmnEvent | ShapeBpmnElement) {
+    let style: string;
+    if (bpmnElement instanceof ShapeBpmnEvent) {
+      // TODO: following if is just temporary as long as Start Event (subtypes) support is not added
+      if (bpmnElement.kind === ShapeBpmnElementKind.EVENT_END) {
+        style = bpmnElement.eventKind && bpmnElement.eventKind !== ShapeBpmnEventKind.NONE ? bpmnElement.kind + '_' + bpmnElement.eventKind : bpmnElement.kind;
       } else {
         style = bpmnElement.kind;
       }
-      this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
+    } else {
+      style = bpmnElement.kind;
     }
+    return style;
   }
 
   private insertEdges(edges: Edge[]): void {
