@@ -142,11 +142,11 @@ describe('parse bpmn as xml for Activiti Designer 5.14.1', () => {
     const process = json.definitions.process;
     verifyProperties(process, ['id', 'name', 'isExecutable', 'startEvent', 'userTask', 'endEvent', 'exclusiveGateway', 'sequenceFlow', 'textAnnotation'], ['parallelGateway']);
 
-    verifyStartEvent(json);
-    verifyUserTask(json, 4);
-    verifyEndEvent(json);
-    verifyExclusiveGateway(json, 2);
-    verifySequenceFlow(json, 9);
+    verifyStartEvent(process);
+    verifyUserTask(process, 4);
+    verifyEndEvent(process);
+    verifyExclusiveGateway(process, 2);
+    verifySequenceFlow(process, 9);
 
     // Diagram
     verifyDiagram(json, false, false);

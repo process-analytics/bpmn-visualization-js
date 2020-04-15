@@ -32,9 +32,7 @@ import {
 } from './XMLTestUtils';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function verifyExtensionElements(json: any) {
-  const process = json.definitions.process;
-
+function verifyExtensionElements(process: any) {
   verifyProperties(process.extensionElements, ['graphStyle']);
   verifyProperties(process.extensionElements.graphStyle, ['basic', 'root']);
   verifyProperties(process.extensionElements.graphStyle.root, ['gridVisible', 'snapToGrid', 'rulerVisible', 'rulerUnit', 'Grid', 'VerticalRuler', 'HorizontalRuler']);
@@ -397,20 +395,20 @@ describe('parse bpmn as xml for MIWG', () => {
       ['parallelGateway'],
     );
 
-    verifyExtensionElements(json);
-    verifyIoSpecification(json, '_cVHRcDOCEeSknpIVFCxNIQ', '_cVH4gDOCEeSknpIVFCxNIQ');
-    verifyStartEvent(json, '_To9Z5DOCEeSknpIVFCxNIQ', verifyEventExtensions);
-    verifyTask(json, 4);
-    verifyEndEvent(json, ['_To9Z7TOCEeSknpIVFCxNIQ', '_To9Z9jOCEeSknpIVFCxNIQ'], verifyEventExtensions);
-    verifyExclusiveGateway(json, 2);
-    verifySequenceFlow(json, 11);
+    verifyExtensionElements(process);
+    verifyIoSpecification(process, '_cVHRcDOCEeSknpIVFCxNIQ', '_cVH4gDOCEeSknpIVFCxNIQ');
+    verifyStartEvent(process, '_To9Z5DOCEeSknpIVFCxNIQ', verifyEventExtensions);
+    verifyTask(process, 4);
+    verifyEndEvent(process, ['_To9Z7TOCEeSknpIVFCxNIQ', '_To9Z9jOCEeSknpIVFCxNIQ'], verifyEventExtensions);
+    verifyExclusiveGateway(process, 2);
+    verifySequenceFlow(process, 11);
 
     // Diagram
     verifyDiagram(json);
     verifyPlane(json);
     verifyShapes(json, 8);
     verifyEdges(json, 11, 5);
-    verifyStyle(json, 10);
+    verifyStyle(json, 10, 'Segoe UI');
   });
 
   it('bpmn with number attribute, ensure xml number are json number', () => {

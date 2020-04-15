@@ -129,37 +129,34 @@ export function verifyEdges(json: any, expected: number, edgeIndexToVerify: numb
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyStyle(json: any, expected: number) {
+export function verifyStyle(json: any, expected: number, firstName: string) {
   const diagram = json.definitions.BPMNDiagram;
   verifyIsNotEmptyArray(diagram.BPMNLabelStyle, expected);
   const style = diagram.BPMNLabelStyle[0];
   verifyProperties(style, ['Font']);
-  expect(style.Font.name).toEqual('Segoe UI');
+  expect(style.Font.name).toEqual(firstName);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyIoSpecification(json: any, expectedInputSetId: string, expectedOutputSetId: string) {
-  const process = json.definitions.process;
+export function verifyIoSpecification(process: any, expectedInputSetId: string, expectedOutputSetId: string) {
   verifyProperties(process.ioSpecification, ['id', 'inputSet', 'outputSet']);
   expect(process.ioSpecification.inputSet.id).toEqual(expectedInputSetId);
   expect(process.ioSpecification.outputSet.id).toEqual(expectedOutputSetId);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifySequenceFlow(json: any, expected: number) {
-  const process = json.definitions.process;
+export function verifySequenceFlow(process: any, expected: number) {
   verifyIsNotEmptyArray(process.sequenceFlow, expected);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyExclusiveGateway(json: any, expected: number) {
-  const process = json.definitions.process;
+export function verifyExclusiveGateway(process: any, expected: number) {
   verifyIsNotEmptyArray(process.exclusiveGateway, expected);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyStartEvent(json: any, expectedOutgoing?: string, verifyEventExtensions?: (extensionElements: any) => void): void {
-  const startEvent = json.definitions.process.startEvent;
+export function verifyStartEvent(process: any, expectedOutgoing?: string, verifyEventExtensions?: (extensionElements: any) => void): void {
+  const startEvent = process.startEvent;
   verifyProperties(startEvent, ['id', 'name'], ['incoming']);
 
   if (expectedOutgoing) {
@@ -174,8 +171,8 @@ export function verifyStartEvent(json: any, expectedOutgoing?: string, verifyEve
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyEndEvent(json: any, expectedIncomings?: string[], verifyEventExtensions?: (extensionElements: any) => void): void {
-  const endEvent = json.definitions.process.endEvent;
+export function verifyEndEvent(process: any, expectedIncomings?: string[], verifyEventExtensions?: (extensionElements: any) => void): void {
+  const endEvent = process.endEvent;
   verifyProperties(endEvent, ['id', 'name'], ['outgoing']);
 
   if (expectedIncomings) {
@@ -190,13 +187,11 @@ export function verifyEndEvent(json: any, expectedIncomings?: string[], verifyEv
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyTask(json: any, expected: number) {
-  const process = json.definitions.process;
+export function verifyTask(process: any, expected: number) {
   verifyIsNotEmptyArray(process.task, expected);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyUserTask(json: any, expected: number) {
-  const process = json.definitions.process;
+export function verifyUserTask(process: any, expected: number) {
   verifyIsNotEmptyArray(process.userTask, expected);
 }

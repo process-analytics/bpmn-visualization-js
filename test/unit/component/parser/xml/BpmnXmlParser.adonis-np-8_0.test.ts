@@ -31,9 +31,7 @@ import {
 } from './XMLTestUtils';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function verifyExtensionElements(json: any) {
-  const process = json.definitions.process;
-
+function verifyExtensionElements(process: any) {
   verifyProperties(process.extensionElements, ['modelattributes']);
   verifyProperties(process.extensionElements.modelattributes, ['attribute', 'record']);
   verifyIsNotEmptyArray(process.extensionElements.modelattributes.attribute);
@@ -2156,12 +2154,12 @@ describe('parse bpmn as xml for ADONIS NP 8.0', () => {
       ['parallelGateway'],
     );
 
-    verifyExtensionElements(json);
-    verifyStartEvent(json, '_ab1dbc48-3851-440e-bee0-ef1af884a1a5', verifyEventExtensions);
-    verifyTask(json, 4);
-    verifyEndEvent(json, ['_91a75c3f-7a0d-44a4-a1ba-ba6064187a9f', '_eeddf2a4-a7f0-415b-b154-a98f64d411c2'], verifyEventExtensions);
-    verifyExclusiveGateway(json, 2);
-    verifySequenceFlow(json, 11);
+    verifyExtensionElements(process);
+    verifyStartEvent(process, '_ab1dbc48-3851-440e-bee0-ef1af884a1a5', verifyEventExtensions);
+    verifyTask(process, 4);
+    verifyEndEvent(process, ['_91a75c3f-7a0d-44a4-a1ba-ba6064187a9f', '_eeddf2a4-a7f0-415b-b154-a98f64d411c2'], verifyEventExtensions);
+    verifyExclusiveGateway(process, 2);
+    verifySequenceFlow(process, 11);
 
     // Diagram
     verifyDiagram(json, false);
