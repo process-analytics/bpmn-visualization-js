@@ -16,6 +16,7 @@
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
+import { ShapeBpmnEventKind } from '../../model/bpmn/shape/ShapeBpmnEventKind';
 
 export enum StyleConstant {
   STROKE_WIDTH_THIN = 2,
@@ -37,6 +38,7 @@ export default class StyleConfigurator {
     // events
     this.configureStartEventStyle();
     this.configureEndEventStyle();
+    this.configureEndEventTerminateStyle();
     // tasks
     this.configureUserTaskStyle();
     this.configureServiceTaskStyle();
@@ -59,7 +61,8 @@ export default class StyleConfigurator {
     return this.mxUtils.clone(defaultStyle);
   }
 
-  private putCellStyle(name: ShapeBpmnElementKind, style: any): void {
+  // TODO: name - shoud be reworked to accept subtypes
+  private putCellStyle(name: ShapeBpmnElementKind | string, style: any): void {
     this.getStylesheet().putCellStyle(name, style);
   }
 
@@ -110,7 +113,17 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.EVENT_END;
     style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.EllipsePerimeter;
     style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
+    style[this.mxConstants.STYLE_STROKECOLOR] = '#000';
     this.putCellStyle(ShapeBpmnElementKind.EVENT_END, style);
+  }
+
+  private configureEndEventTerminateStyle(): void {
+    const style = this.cloneDefaultVertexStyle();
+    style[this.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.EVENT_END;
+    style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.EllipsePerimeter;
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
+    style[this.mxConstants.STYLE_STROKECOLOR] = '#F00';
+    this.putCellStyle(ShapeBpmnElementKind.EVENT_END + '_' + ShapeBpmnEventKind.TERMINATE, style);
   }
 
   private configureServiceTaskStyle(): void {

@@ -19,6 +19,8 @@ import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/
 import Edge from '../../../../../src/model/bpmn/edge/Edge';
 import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
+import { ShapeBpmnEvent } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
+import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -30,6 +32,11 @@ export interface ExpectedShape {
   boundsWidth: number;
   boundsHeight: number;
   parentId?: string;
+}
+
+export interface ExpectedEvent {
+  kind: ShapeBpmnEventKind;
+  expectedNumber: number;
 }
 
 export interface ExpectedEdge {
@@ -109,4 +116,30 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge): void {
   expect(bpmnElement.name).toEqual(expectedValue.bpmnElementName);
   expect(bpmnElement.sourceRefId).toEqual(expectedValue.bpmnElementSourceRefId);
   expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
+}
+
+export function verifyEvent(model: BpmnModel, kind: ShapeBpmnEventKind, expectedNumber: number): void {
+  const events = model.flowNodes.filter(shape => {
+    const bpmnElement = shape.bpmnElement;
+    return bpmnElement instanceof ShapeBpmnEvent && (bpmnElement as ShapeBpmnEvent).eventKind === kind;
+  });
+  expect(events).toHaveLength(expectedNumber);
+}
+
+export function verifyEvents(model: BpmnModel, expectedEvents: ExpectedEvent[]): void {
+  expectedEvents.forEach(expectedEvent => {
+    verifyEvent(model, expectedEvent.kind, expectedEvent.expectedNumber);
+  });
+}
+
+export function parseJsonAndExpectOnlyEvent(json: string, kind: ShapeBpmnEventKind, expectedNumber: number): BpmnModel {
+  const model = parseJson(json);
+
+  expect(model.lanes).toHaveLength(0);
+  expect(model.pools).toHaveLength(0);
+  expect(model.edges).toHaveLength(0);
+
+  verifyEvent(model, kind, expectedNumber);
+
+  return model;
 }

@@ -13,15 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export enum EventDefinition {
-  CANCEL = 'cancelEventDefinition',
-  COMPENSATION = 'compensationEventDefinition',
-  CONDITIONAL = 'conditionalEventDefinition',
-  ERROR = 'errorEventDefinition',
-  ESCALATION = 'escalationEventDefinition',
-  LINK = 'linkEventDefinition',
-  MESSAGE = 'messageEventDefinition',
-  SIGNAL = 'signalEventDefinition',
-  TERMINATE = 'terminateEventDefinition',
-  TIMER = 'timerEventDefinition',
+import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
+
+export default class ShapeUtil {
+  private static EVENTS_KIND = [ShapeBpmnElementKind.EVENT_START, ShapeBpmnElementKind.EVENT_END];
+
+  public static isEvent(kind: ShapeBpmnElementKind): boolean {
+    return this.EVENTS_KIND.includes(kind);
+  }
 }

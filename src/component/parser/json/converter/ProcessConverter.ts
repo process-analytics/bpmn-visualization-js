@@ -15,12 +15,13 @@
  */
 import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
-import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnEvent } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
 import Waypoint from '../../../../model/bpmn/edge/Waypoint';
-import { EventDefinition } from '../EventDefinition';
+import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
+import ShapeUtil from '../../../../model/bpmn/shape/ShapeUtil';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
@@ -29,6 +30,10 @@ const convertedSequenceFlows: SequenceFlow[] = [];
 
 const flowNodeKinds = Object.values(ShapeBpmnElementKind).filter(kind => {
   return kind != ShapeBpmnElementKind.LANE;
+});
+
+const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
+  return kind != ShapeBpmnEventKind.NONE;
 });
 
 export function findFlowNodeBpmnElement(id: string): ShapeBpmnElement {
@@ -47,7 +52,10 @@ export function findSequenceFlow(id: string): SequenceFlow {
   return convertedSequenceFlows.find(i => i.id === id);
 }
 
-type BpmnEventKind = ShapeBpmnElementKind.EVENT_START | ShapeBpmnElementKind.EVENT_END;
+interface EventDefinition {
+  kind: ShapeBpmnEventKind;
+  counter: number;
+}
 
 @JsonConverter
 export default class ProcessConverter extends AbstractConverter<Process> {
@@ -88,18 +96,46 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
-      if (kind as BpmnEventKind) {
-        // get the list of eventDefinition hold by the Event bpmElement
-        const eventDefinitions = Object.values(EventDefinition).filter(eventDefinition => {
-          return bpmnElement.hasOwnProperty(eventDefinition);
-        });
-        // do we have a None Event?
-        if (eventDefinitions.length == 0) {
-          convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
+      if (ShapeUtil.isEvent(kind)) {
+        const shapeBpmnEvent = this.buildShapeBpmnEvent(bpmnElement, kind, processId);
+        if (shapeBpmnEvent) {
+          convertedFlowNodeBpmnElements.push(shapeBpmnEvent);
         }
       } else {
         convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
       }
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private buildShapeBpmnEvent(bpmnElement: any, elementKind: ShapeBpmnElementKind, processId: string): ShapeBpmnEvent | void {
+    const eventDefinitions = this.getEventDefinitions(bpmnElement);
+    const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
+
+    // do we have a None Event?
+    if (numberOfEventDefinitions == 0) {
+      return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, ShapeBpmnEventKind.NONE, processId);
+    }
+
+    if (numberOfEventDefinitions == 1) {
+      const eventDefinition = eventDefinitions.filter(eventDefinition => eventDefinition.counter == 1)[0];
+      if (supportedBpmnEventKinds.includes(eventDefinition.kind)) {
+        return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinition.kind, processId);
+      }
+    }
+  }
+
+  /**
+   * Get the list of eventDefinition hold by the Event bpmElement
+   *
+   * @param bpmnElement The BPMN element from the XML data which represents a BPMN Event
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private getEventDefinitions(bpmnElement: any): EventDefinition[] {
+    return bpmnEventKinds.map(eventKind => {
+      // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
+      const eventDefinition = bpmnElement[eventKind + 'EventDefinition'];
+      return { kind: eventKind, counter: ensureIsArray(eventDefinition, true).length };
     });
   }
 

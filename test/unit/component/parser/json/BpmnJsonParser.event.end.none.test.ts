@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJson, parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyEvent, verifyShape } from './JsonTestUtils';
+import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 
 describe('parse bpmn as json for end event', () => {
   it('json containing one process with a single end event', () => {
@@ -39,7 +40,7 @@ describe('parse bpmn as json for end event', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+    const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.NONE, 1);
 
     verifyShape(model.flowNodes[0], {
       shapeId: 'shape_endEvent_id_0',
@@ -77,7 +78,7 @@ describe('parse bpmn as json for end event', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+    const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.NONE, 1);
 
     verifyShape(model.flowNodes[0], {
       shapeId: 'shape_endEvent_id_1',
@@ -123,7 +124,7 @@ describe('parse bpmn as json for end event', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
+    const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.NONE, 2);
 
     verifyShape(model.flowNodes[0], {
       shapeId: 'shape_endEvent_id_0',
@@ -204,9 +205,7 @@ describe('parse bpmn as json for end event', () => {
   }
 }`;
 
-    const model = parseJson(json);
-
-    expect(model.flowNodes).toHaveLength(1);
+    const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.NONE, 1);
 
     verifyShape(model.flowNodes[0], {
       shapeId: 'shape_endEvent_id_0',
