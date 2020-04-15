@@ -23,7 +23,7 @@ describe('parse bpmn as json for terminate end event', () => {
   "definitions": {
     "process": {
       "endEvent": [
-        { "id": "event_id_7", "terminateEventDefinition": {} }
+        { "id": "event_id_7", "terminateEventDefinition": "" }
       ]
     },
     "BPMNDiagram": {
@@ -59,7 +59,7 @@ describe('parse bpmn as json for terminate end event', () => {
   "definitions": {
     "process": {
       "endEvent": [
-        { "id": "event_id_7", "terminateEventDefinition": {}, "messageEventDefinition": {} }
+        { "id": "event_id_7", "terminateEventDefinition": "", "messageEventDefinition": "" }
       ]
     },
     "BPMNDiagram": {
@@ -84,7 +84,7 @@ describe('parse bpmn as json for terminate end event', () => {
   "definitions": {
     "process": {
       "endEvent": [
-        { "id": "event_id_7", "terminateEventDefinition": [{}, {}] }
+        { "id": "event_id_7", "terminateEventDefinition": ["", ""] }
       ]
     },
     "BPMNDiagram": {
@@ -102,5 +102,30 @@ describe('parse bpmn as json for terminate end event', () => {
 }`;
 
     parseJsonAndExpectOnlyFlowNodes(json, 0);
+  });
+
+  it('json containing one process with an end event with terminate definition as simple <semantic:escalationEventDefinition/>', () => {
+    const json = `{
+  "definitions": {
+    "process": {
+      "endEvent": [
+        { "id": "event_id_7", "terminateEventDefinition": "" }
+      ]
+    },
+    "BPMNDiagram": {
+      "name": "process 0",
+      "BPMNPlane": {
+        "BPMNShape": [
+          {
+            "id": "shape_endEvent_id_7", "bpmnElement": "event_id_7",
+            "Bounds": { "x": 362, "y": 932, "width": 36, "height": 45 }
+          }
+        ]
+      }
+    }
+  }
+}`;
+
+    parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.TERMINATE, 1);
   });
 });

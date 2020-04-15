@@ -17,10 +17,10 @@ import { JsonConverter, JsonCustomConvert } from 'json2typescript';
 import JsonConvertConfig from './JsonConvertConfig';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function ensureIsArray(elements: Array<any> | any, acceptEmptyObject = false): Array<any> {
-  if (elements === undefined || elements === null || (!acceptEmptyObject && elements === '')) {
+export function ensureIsArray(elements: Array<any> | any, acceptEmptyString = false): Array<any> {
+  if (elements === undefined || elements === null || (!acceptEmptyString && elements === '')) {
     elements = [];
-  } else if (acceptEmptyObject) {
+  } else if (elements === '' && acceptEmptyString) {
     return [{}];
   } else if (!Array.isArray(elements)) {
     elements = [elements];
