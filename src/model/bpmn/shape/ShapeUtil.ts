@@ -15,10 +15,20 @@
  */
 import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
 
+// TODO move to ShapeBpmnElementKind? and rename into ShapeBpmnElementKindUtil?
+// TODO bpmnEventKinds and flowNodeKinds currently hosted in ProcessConverter may be hosted here
 export default class ShapeUtil {
-  private static EVENTS_KIND = [ShapeBpmnElementKind.EVENT_START, ShapeBpmnElementKind.EVENT_END];
+  private static EVENTS_KIND = Object.values(ShapeBpmnElementKind).filter(kind => {
+    return kind.endsWith('Event');
+  });
 
   public static isEvent(kind: ShapeBpmnElementKind): boolean {
     return this.EVENTS_KIND.includes(kind);
+  }
+
+  // TODO should we clone the array to avoid modifications of this ref array by client code?
+  // topLevelBpmnEventKinds to not mixed with the bpmnEventKinds that currently are the list of non None event subtypes
+  public static topLevelBpmnEventKinds(): ShapeBpmnElementKind[] {
+    return this.EVENTS_KIND;
   }
 }

@@ -16,6 +16,7 @@
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
+import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 
 export enum StyleConstant {
   STROKE_WIDTH_THIN = 2,
@@ -36,8 +37,7 @@ export default class StyleConfigurator {
     this.configurePoolStyle();
     this.configureLaneStyle();
     // events
-    this.configureStartEventStyle();
-    this.configureEndEventStyle();
+    this.configureEventsStyle();
     // tasks
     this.configureUserTaskStyle();
     this.configureServiceTaskStyle();
@@ -98,21 +98,14 @@ export default class StyleConfigurator {
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.LANE, style);
   }
 
-  private configureStartEventStyle(): void {
-    const style = this.cloneDefaultVertexStyle();
-    style[this.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.EVENT_START;
-    style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.EllipsePerimeter;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
-    this.putCellStyle(ShapeBpmnElementKind.EVENT_START, style);
-  }
-
-  private configureEndEventStyle(): void {
-    const style = this.cloneDefaultVertexStyle();
-    style[this.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.EVENT_END;
-    style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.EllipsePerimeter;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
-    style[this.mxConstants.STYLE_STROKECOLOR] = '#000';
-    this.putCellStyle(ShapeBpmnElementKind.EVENT_END, style);
+  private configureEventsStyle(): void {
+    ShapeUtil.topLevelBpmnEventKinds().forEach(kind => {
+      const style = this.cloneDefaultVertexStyle();
+      style[this.mxConstants.STYLE_SHAPE] = kind;
+      style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.EllipsePerimeter;
+      style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
+      this.putCellStyle(kind, style);
+    });
   }
 
   private configureServiceTaskStyle(): void {
