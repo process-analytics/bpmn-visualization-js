@@ -30,17 +30,13 @@ import {
   verifyStyle,
   verifyTask,
 } from './XMLTestUtils';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function verifyExtensionElements(process: any) {
-  verifyProperties(process.extensionElements, ['graphStyle']);
-  verifyProperties(process.extensionElements.graphStyle, ['basic', 'root']);
-  verifyProperties(process.extensionElements.graphStyle.root, ['gridVisible', 'snapToGrid', 'rulerVisible', 'rulerUnit', 'Grid', 'VerticalRuler', 'HorizontalRuler']);
-  verifyProperties(process.extensionElements.graphStyle.root.Grid, ['spacing', 'color']);
-}
+import arrayContaining = jasmine.arrayContaining;
+import objectContaining = jasmine.objectContaining;
+import anything = jasmine.anything;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function verifyEventExtensions(extensionElements: any): void {
+  console.log(extensionElements);
   verifyProperties(extensionElements, ['graphStyle']);
   verifyProperties(extensionElements.graphStyle, ['basic']);
   verifyProperties(extensionElements.graphStyle.basic, ['background', 'foreground', 'autoResize', 'borderColor', 'collapsed']);
@@ -395,20 +391,48 @@ describe('parse bpmn as xml for MIWG', () => {
       ['parallelGateway'],
     );
 
-    verifyExtensionElements(process);
     verifyIoSpecification(process, '_cVHRcDOCEeSknpIVFCxNIQ', '_cVH4gDOCEeSknpIVFCxNIQ');
     verifyStartEvent(process, '_To9Z5DOCEeSknpIVFCxNIQ', verifyEventExtensions);
-    verifyTask(process, 4);
     verifyEndEvent(process, ['_To9Z7TOCEeSknpIVFCxNIQ', '_To9Z9jOCEeSknpIVFCxNIQ'], verifyEventExtensions);
-    verifyExclusiveGateway(process, 2);
-    verifySequenceFlow(process, 11);
 
-    // Diagram
-    verifyDiagram(json);
-    verifyPlane(json);
-    verifyShapes(json, 8);
-    verifyEdges(json, 11, 5);
-    verifyStyle(json, 10, 'Segoe UI');
+    expect(json).toMatchObject({
+      definitions: {
+        process: {
+          extensionElements: {
+            graphStyle: {
+              basic: anything(),
+              root: {
+                gridVisible: true,
+                snapToGrid: true,
+                rulerVisible: true,
+                snapToGuide: true,
+                rulerUnit: 'Pixels',
+                Grid: { spacing: anything(), color: anything() },
+                VerticalRuler: '',
+                HorizontalRuler: '',
+              },
+            },
+          },
+          task: arrayContaining([anything()]),
+          exclusiveGateway: arrayContaining([anything()]),
+          sequenceFlow: arrayContaining([anything()]),
+        },
+        BPMNDiagram: {
+          BPMNPlane: {
+            BPMNShape: arrayContaining([anything()]),
+            BPMNEdge: arrayContaining([{ id: '_To-AzjOCEeSknpIVFCxNIQ', bpmnElement: '_To9Z8DOCEeSknpIVFCxNIQ', waypoint: [anything(), anything(), anything()] }]),
+          },
+          BPMNLabelStyle: arrayContaining([{ id: '_cVFcQTOCEeSknpIVFCxNIQ', Font: { name: 'Segoe UI', size: 12 } }]),
+        },
+      },
+    });
+
+    expect(json.definitions.process.task).toHaveLength(4);
+    expect(json.definitions.process.exclusiveGateway).toHaveLength(2);
+    expect(json.definitions.process.sequenceFlow).toHaveLength(11);
+    expect(json.definitions.BPMNDiagram.BPMNPlane.BPMNShape).toHaveLength(8);
+    expect(json.definitions.BPMNDiagram.BPMNPlane.BPMNEdge).toHaveLength(11);
+    expect(json.definitions.BPMNDiagram.BPMNLabelStyle).toHaveLength(10);
   });
 
   it('bpmn with number attribute, ensure xml number are json number', () => {
@@ -502,24 +526,17 @@ describe('parse bpmn as xml for MIWG', () => {
 
     const json = new BpmnXmlParser().parse(a10Process);
 
-    verifyDefinitions(json);
-
-    // Process
-    const process = json.definitions.process;
-    verifyProperties(process, ['id', 'isExecutable', 'startEvent', 'task', 'endEvent', 'sequenceFlow']);
-    expect(process.task[0].startQuantity).toEqual(1);
-
-    // BPMNDiagram
-    const diagram = verifyDiagram(json);
-    verifyPlane(json);
-
-    const shape = diagram.BPMNPlane.BPMNShape[0];
-    verifyProperties(shape, ['id', 'bpmnElement', 'Bounds', 'BPMNLabel']);
-    verifyBounds(shape, 186.0, 336.0, 30.0, 30.0);
-
-    const style = diagram.BPMNLabelStyle;
-    verifyProperties(style, ['Font']);
-    expect(style.Font.size).toEqual(11.0);
+    expect(json).toMatchObject({
+      definitions: {
+        process: {
+          task: [{ startQuantity: 1 }, expect.anything(), expect.anything()],
+        },
+        BPMNDiagram: {
+          BPMNPlane: { BPMNShape: arrayContaining([objectContaining({ Bounds: { x: 186.0, y: 336.0, width: 30.0, height: 30.0 } })]) },
+          BPMNLabelStyle: { Font: { size: 11.0 } },
+        },
+      },
+    });
   });
 
   it('bpmn with boolean attribute, ensure xml boolean are json boolean', () => {
@@ -613,18 +630,14 @@ describe('parse bpmn as xml for MIWG', () => {
 
     const json = new BpmnXmlParser().parse(a10Process);
 
-    verifyDefinitions(json);
-
-    // Process
-    const process = json.definitions.process;
-    verifyProperties(process, ['id', 'isExecutable', 'startEvent', 'task', 'endEvent', 'sequenceFlow']);
-    expect(process.isExecutable).toBeFalsy();
-
-    // BPMNDiagram
-    const diagram = verifyDiagram(json);
-    const style = diagram.BPMNLabelStyle;
-    verifyProperties(style, ['Font']);
-    expect(style.Font.isBold).toBeFalsy();
+    expect(json).toMatchObject({
+      definitions: {
+        process: {
+          isExecutable: false,
+        },
+        BPMNDiagram: { BPMNLabelStyle: { Font: { isBold: false } } },
+      },
+    });
   });
 
   it('bpmn with attribute with french special characters, ensure special characters are present', () => {
@@ -718,13 +731,15 @@ describe('parse bpmn as xml for MIWG', () => {
 
     const json = new BpmnXmlParser().parse(a10Process);
 
-    verifyDefinitions(json);
-
-    // Process
-    const process = json.definitions.process;
-    verifyProperties(process, ['id', 'isExecutable', 'startEvent', 'task', 'endEvent', 'sequenceFlow']);
-    expect(process.startEvent.name).toEqual('événement de début');
-    expect(process.task[0].id).toEqual('à_ec59e164-68b4-4f94-98de-ffb1c58a84af');
+    expect(json).toMatchObject({
+      definitions: {
+        process: {
+          startEvent: { name: 'événement de début' },
+          task: [{ id: 'à_ec59e164-68b4-4f94-98de-ffb1c58a84af' }, expect.anything(), expect.anything()],
+        },
+        BPMNDiagram: expect.anything(),
+      },
+    });
   });
 
   it('bpmn with attribute with japan special characters, ensure special characters are present', () => {
@@ -818,13 +833,15 @@ describe('parse bpmn as xml for MIWG', () => {
 
     const json = new BpmnXmlParser().parse(a10Process);
 
-    verifyDefinitions(json);
-
-    // Process
-    const process = json.definitions.process;
-    verifyProperties(process, ['id', 'isExecutable', 'startEvent', 'task', 'endEvent', 'sequenceFlow']);
-    expect(process.startEvent.name).toEqual('開始イベント');
-    expect(process.task[0].id).toEqual('識別子_ec59e164-68b4-4f94-98de-ffb1c58a84af');
+    expect(json).toMatchObject({
+      definitions: {
+        process: {
+          startEvent: { name: '開始イベント' },
+          task: [{ id: '識別子_ec59e164-68b4-4f94-98de-ffb1c58a84af' }, expect.anything(), expect.anything()],
+        },
+        BPMNDiagram: expect.anything(),
+      },
+    });
   });
 
   it('bpmn with attribute with html special characters, ensure special characters are present', () => {
@@ -918,12 +935,14 @@ describe('parse bpmn as xml for MIWG', () => {
 
     const json = new BpmnXmlParser().parse(a10Process);
 
-    verifyDefinitions(json);
-
-    // Process
-    const process = json.definitions.process;
-    verifyProperties(process, ['id', 'isExecutable', 'startEvent', 'task', 'endEvent', 'sequenceFlow']);
-    expect(process.startEvent.name).toEqual('Start Event \n(Main) with &unknown; entity');
-    expect(process.task[0].id).toEqual('_ec59e164-68b4-4f94-98de-ffb1c58a84af ♠');
+    expect(json).toMatchObject({
+      definitions: {
+        process: {
+          startEvent: { name: 'Start Event \n(Main) with &unknown; entity' },
+          task: [{ id: '_ec59e164-68b4-4f94-98de-ffb1c58a84af ♠' }, expect.anything(), expect.anything()],
+        },
+        BPMNDiagram: expect.anything(),
+      },
+    });
   });
 });
