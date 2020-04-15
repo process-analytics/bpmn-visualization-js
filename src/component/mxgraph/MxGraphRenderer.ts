@@ -66,12 +66,12 @@ export default class MxGraphRenderer {
       const bounds = shape.bounds;
       const parent = this.getParent(bpmnElement);
       const absoluteCoordinate = { x: bounds.x, y: bounds.y };
-      const style: string = this.getStyleName(bpmnElement);
+      const style = this.getStyleName(bpmnElement);
       this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
     }
   }
 
-  private getStyleName(bpmnElement: ShapeBpmnEvent | ShapeBpmnElement) {
+  private getStyleName(bpmnElement: ShapeBpmnEvent | ShapeBpmnElement): string {
     let style: string;
     if (bpmnElement instanceof ShapeBpmnEvent) {
       // TODO: following if is just temporary as long as Start Event (subtypes) support is not added
