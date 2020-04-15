@@ -87,7 +87,7 @@ ESLint configuration extends:
 
 ### IDE - configuration
 
-To fully benefit the ESLint and Mocha testing framework you must properly set up your IDE.
+To fully benefit the ESLint and Jest testing frameworks, you must properly set up your IDE.
 
 ##### IntelliJ
 *ESLint* (https://www.jetbrains.com/help/idea/eslint.html#)
@@ -104,18 +104,19 @@ You also need to set up Coding Style rules
 
 It is as simple as doing `right-click` on the file `.eslintrc.js` and choosing option `Apply ESLint Code Style Rules`
 
-*Mocha tests* (https://www.jetbrains.com/help/idea/running-unit-tests-on-mocha.html#)
+*Jest tests* (https://www.jetbrains.com/help/idea/running-unit-tests-on-jest.html)
 
-To be able to run tests from IntelliJ, you must set up the default Mocha template in `Run/Debug Configurations`
+To be able to run tests from IntelliJ, you must set up the default Jest template in `Run/Debug Configurations`
 
 Adjust following parameters:
+- Configuration files: it depends on the type of tests you want to run 
+  - unit tests: `<project_dir>/jest.config.unit.js`
+  - end to end tests: `<project_dir>/jest.config.e2e.js`
 
-Environment variables:  `TS_NODE_FILES=true;TS_NODE_COMPILER_OPTIONS={ "module": "commonjs" }`
-Extra Mocha options: ` --exit --require ts-node/register --colors`
 
 *SonarLint*
 
-Additionally it is advised to install SonarLint Plugin
+Additionally, it is advised to install SonarLint Plugin
 
 It helps to avoid coding mistakes -> reduced technical debt
 
