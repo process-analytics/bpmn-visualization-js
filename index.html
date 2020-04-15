@@ -649,6 +649,11 @@ BPMN elements are rendered with their final shapes.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The stroke width may be adjusted</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Terminate End Event</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -768,6 +773,19 @@ add a new value in the <code>ShapeBpmnElementKind</code> enum.</p>
 </div>
 <div class="paragraph">
 <p>The <code>ProcessConverter</code> uses the <code>ShapeBpmnElementKind</code> values to detect elements in the BPMN source.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For BPMN Events, the actual type in controlled by <code>EventDefinition</code> fields in the BPMN specification. Detecting new event
+types requires changes in <code>ShapeBpmnEventKind</code> to add the newly supported BPMN Event Definition.
+</td>
+</tr>
+</table>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -892,7 +910,7 @@ The BPMN elements listed here may not be rendered with their final design at par
 <p><i class="fa fa-check-square-o"></i> end event (0.1.1)</p>
 </li>
 <li>
-<p><i class="fa fa-square-o"></i> terminate end event</p>
+<p><i class="fa fa-check-square-o"></i> terminate end event (0.1.2)</p>
 </li>
 </ul>
 </div>
@@ -1082,7 +1100,7 @@ The BPMN elements listed here may not be rendered with their final design at par
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-04-15 16:53:02 UTC
+Last updated 2020-04-15 17:45:11 UTC
 </div>
 </div>
 </body>
