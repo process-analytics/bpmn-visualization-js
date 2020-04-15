@@ -20,8 +20,7 @@ import BpmnModel from '../../model/bpmn/BpmnModel';
 import ShapeBpmnElement, { ShapeBpmnEvent } from '../../model/bpmn/shape/ShapeBpmnElement';
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
-import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
-import { ShapeBpmnEventKind } from '../../model/bpmn/shape/ShapeBpmnEventKind';
+import { StyleConstant } from './StyleConfigurator';
 
 interface Coordinate {
   x: number;
@@ -66,22 +65,15 @@ export default class MxGraphRenderer {
       const bounds = shape.bounds;
       const parent = this.getParent(bpmnElement);
       const absoluteCoordinate = { x: bounds.x, y: bounds.y };
-      const style = this.getStyleName(bpmnElement);
+      const style = this.computeStyleName(bpmnElement);
       this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
     }
   }
 
-  private getStyleName(bpmnElement: ShapeBpmnEvent | ShapeBpmnElement): string {
-    let style: string;
+  private computeStyleName(bpmnElement: ShapeBpmnEvent | ShapeBpmnElement): string {
+    let style = bpmnElement.kind as string;
     if (bpmnElement instanceof ShapeBpmnEvent) {
-      // TODO: following if is just temporary as long as Start Event (subtypes) support is not added
-      if (bpmnElement.kind === ShapeBpmnElementKind.EVENT_END) {
-        style = bpmnElement.eventKind && bpmnElement.eventKind !== ShapeBpmnEventKind.NONE ? bpmnElement.kind + '_' + bpmnElement.eventKind : bpmnElement.kind;
-      } else {
-        style = bpmnElement.kind;
-      }
-    } else {
-      style = bpmnElement.kind;
+      style += ';' + StyleConstant.BPMN_STYLE_EVENT_KIND + '=' + bpmnElement.eventKind;
     }
     return style;
   }
