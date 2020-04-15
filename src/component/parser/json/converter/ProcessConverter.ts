@@ -118,7 +118,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     }
 
     if (numberOfEventDefinitions == 1) {
-      const eventDefinition = eventDefinitions.filter(eventDefinition => eventDefinition.counter == 1)[0];
+      const eventDefinition = eventDefinitions[0];
       if (supportedBpmnEventKinds.includes(eventDefinition.kind)) {
         return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinition.kind, processId);
       }
@@ -126,17 +126,21 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   }
 
   /**
-   * Get the list of eventDefinition hold by the Event bpmElement
+   * Get the list of eventDefinitions hold by the Event bpmElement
    *
    * @param bpmnElement The BPMN element from the XML data which represents a BPMN Event
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private getEventDefinitions(bpmnElement: any): EventDefinition[] {
-    return bpmnEventKinds.map(eventKind => {
-      // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
-      const eventDefinition = bpmnElement[eventKind + 'EventDefinition'];
-      return { kind: eventKind, counter: ensureIsArray(eventDefinition, true).length };
-    });
+    return bpmnEventKinds
+      .map(eventKind => {
+        // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
+        const eventDefinition = bpmnElement[eventKind + 'EventDefinition'];
+        return { kind: eventKind, counter: ensureIsArray(eventDefinition, true).length };
+      })
+      .filter(eventDefinition => {
+        return eventDefinition.counter > 0;
+      });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
