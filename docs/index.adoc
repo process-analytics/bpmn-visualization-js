@@ -1,0 +1,27 @@
+= BPMN Visualization JS
+:toc: left
+// see: https://asciidoctor.org/docs/user-manual/#table-of-contents-summary
+:toc-title: Table of Contents
+// how many headline levels to display in table of contents?
+:toclevels: 5
+// https://asciidoctor.org/docs/user-manual/#sections-summary
+// turn numbering on or off (:sectnums!:)
+:sectnums:
+// enumerate how many section levels?
+:sectnumlevels: 2
+// show anchors when hovering over section headers
+:sectanchors:
+// render section headings as self referencing links
+:sectlinks:
+// number parts of a book
+:partnums:
+// enable font-awesome icons
+:icons: font
+
+include::intro.adoc[]
+
+include::bpmn-support.adoc[]
+
+include::architecture/00-index.adoc[]
+
+include::bpmn-support-roadmap.adoc[]
