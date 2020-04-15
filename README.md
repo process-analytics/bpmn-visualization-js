@@ -50,7 +50,7 @@ From the root folder of the repository, run
 ./docs/build-doc.bash
 ```
 
-The documentation is generated in the `docs-generated` folder.
+The documentation is generated in the `build/docs` folder.
 
 ## Release
 
