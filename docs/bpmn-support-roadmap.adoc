@@ -34,7 +34,7 @@ BPMN elements:
 * events
 ** [x] start event (0.1.0)
 ** [x] end event (0.1.1)
-** [ ] terminate end event
+** [x] terminate end event
 * flows
 ** [x] sequence flow (0.1.0)
 ** [x] way points (0.1.1)
