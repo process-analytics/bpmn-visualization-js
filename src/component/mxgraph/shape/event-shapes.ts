@@ -23,8 +23,8 @@ const mxEllipse: typeof mxgraph.mxEllipse = MxGraphFactoryService.getMxGraphProp
 const mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
 const mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
 
-class EventShape extends mxEllipse {
-  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
+abstract class EventShape extends mxEllipse {
+  protected constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -43,7 +43,13 @@ class EventShape extends mxEllipse {
   }
 }
 
-export default class EndEventShape extends EventShape {
+export class StartEventShape extends EventShape {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+}
+
+export class EndEventShape extends EventShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
   }
