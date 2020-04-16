@@ -41,11 +41,26 @@ abstract class EventShape extends mxEllipse {
   protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     // do nothing by default
   }
+
+  protected getBpmnEventKind(): ShapeBpmnEventKind {
+    return mxUtils.getValue(this.style, StyleConstant.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
+  }
 }
 
 export class StartEventShape extends EventShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
+  }
+
+  protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    const eventKind = this.getBpmnEventKind();
+    // will be removed when managing the timer rendering
+    if (eventKind == ShapeBpmnEventKind.TIMER) {
+      c.setFillColor('green');
+      c.setFillAlpha(0.3);
+    }
+
+    super.paintOuterShape(c, x, y, w, h);
   }
 }
 
@@ -55,7 +70,7 @@ export class EndEventShape extends EventShape {
   }
 
   protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const eventKind = mxUtils.getValue(this.style, StyleConstant.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
+    const eventKind = this.getBpmnEventKind();
     if (eventKind == ShapeBpmnEventKind.TERMINATE) {
       this.paintTerminateEventIcon(c, x, y, w, h);
     }

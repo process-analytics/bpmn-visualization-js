@@ -32,8 +32,9 @@ BPMN elements:
 ** [x] service task (0.1.2)
 ** [x] user task (0.1.0)
 * events
-** [x] start event (0.1.0)
-** [x] end event (0.1.1)
+** [x] none start event (0.1.0)
+** [x] timer start event (0.1.3)
+** [x] none end event (0.1.1)
 ** [x] terminate end event (0.1.2)
 * flows
 ** [x] sequence flow (0.1.0)
@@ -55,8 +56,7 @@ BPMN elements:
 ** multi instantiation parallel
 ** multi instantiation sequential
 * events
-** timer start event
-* signal start event
+** signal start event
 * flows
 ** message flow
 * gateways
