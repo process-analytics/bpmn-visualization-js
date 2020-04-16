@@ -41,6 +41,9 @@ describe('BPMN Visualization JS', () => {
         <semantic:startEvent name="Start Event" id="startEvent_1">
             <semantic:outgoing>_e16564d7-0c4c-413e-95f6-f668a3f851fb</semantic:outgoing>
         </semantic:startEvent>
+        <semantic:startEvent name="Timer Start Event" id="startEvent_2_timer">
+            <semantic:timerEventDefinition/>
+        </semantic:startEvent>
         <semantic:task completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task 1" id="_ec59e164-68b4-4f94-98de-ffb1c58a84af">
             <semantic:incoming>_e16564d7-0c4c-413e-95f6-f668a3f851fb</semantic:incoming>
             <semantic:outgoing>_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599</semantic:outgoing>
@@ -64,11 +67,14 @@ describe('BPMN Visualization JS', () => {
     </semantic:process>
     <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
         <bpmndi:BPMNPlane bpmnElement="WFP-6-">
-            <bpmndi:BPMNShape bpmnElement="startEvent_1" id="S1373649849857_startEvent_1">
+            <bpmndi:BPMNShape bpmnElement="startEvent_1" id="shape_startEvent_1">
                 <dc:Bounds height="30.0" width="30.0" x="186.0" y="336.0"/>
                 <bpmndi:BPMNLabel labelStyle="LS1373649849858">
                     <dc:Bounds height="12.804751171875008" width="94.93333333333335" x="153.67766754457273" y="371.3333333333333"/>
                 </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="startEvent_2_timer" id="shape_startEvent_2_timer">
+                <dc:Bounds height="30.0" width="30.0" x="186.0" y="536.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="_ec59e164-68b4-4f94-98de-ffb1c58a84af" id="S1373649849859__ec59e164-68b4-4f94-98de-ffb1c58a84af">
                 <dc:Bounds height="68.0" width="83.0" x="258.0" y="317.0"/>
@@ -161,6 +167,7 @@ describe('BPMN Visualization JS', () => {
 
     // model is OK
     expectModelContainsBpmnEvent('startEvent_1', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.NONE);
+    expectModelContainsBpmnEvent('startEvent_2_timer', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.TIMER);
     expectModelContainsBpmnEvent('endEvent_1', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.TERMINATE);
   });
 
