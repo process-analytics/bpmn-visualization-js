@@ -16,8 +16,7 @@
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
-import EndEventShape from './shape/EndEventShape';
-import StartEventShape from './shape/StartEventShape';
+import { EndEventShape, StartEventShape } from './shape/event-shapes';
 
 export default class ShapeConfigurator {
   private mxClient: typeof mxgraph.mxClient = MxGraphFactoryService.getMxGraphProperty('mxClient');
