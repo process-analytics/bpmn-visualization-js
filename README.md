@@ -26,54 +26,11 @@ If you need BPMN examples, you can use resources from the from [BPMN Model Inter
 
 `BPMN Visualization JS` is in early development stages and is subject to changes until the `1.0.0` version is released.
 
-We are currently focusing on the [BPMN support](docs/bpmn-support-roadmap.adoc) to be able to render most of the BPMN
-elements.
+We are currently focusing on the [BPMN support](https://process-analytics.github.io/bpmn-visualization-js/#bpmn-support-roadmap)
+to be able to render most of the BPMN elements.
 
 Then, we will work on BPMN extensions, library extension points.
 
 # Development
 
 To build the project, see the [Contributing guide](CONTRIBUTING.md#Build) :slightly_smiling_face:
-
-You may also have a look at the [Architecture home page](docs/architecture/00-index.adoc)
-
-## Building the html documentation
-
-**DISCLAIMER**:
-- the documentation sources are in the AsciiDoctor format and are hosted in the [docs](./docs) folder. The display
-may not fully work (font-awesome icons and some links) depending on the rendering engine. This is the case when
-displayed directly on GitHub Web.
-- the generation currently relies on `Docker`. This will change in the future.
-
-From the root folder of the repository, run 
-```bash
-./docs/build-doc.bash
-```
-
-The documentation is generated in the `build/docs` folder.
-
-## Release
-
-## Issues and milestones update
-
-Milestone names are based on version
-- Clean the opened milestone if some issues are still opened (move them to a new one or discard milestone from them)
-- Close the milestone
-- Clean the [Day to Day Board](https://github.com/process-analytics/bpmn-visualization-js/projects/1): archive all cards of the
-`Done` column related to the milestone
-
-
-## Git Tag
-
-- Ensures you’re on master and don’t have local, un-commited changes: `git checkout master && git pull --tags`
-- Bumps the version number in package.json based on major, minor or patch (see https://docs.npmjs.com/cli/version, type:
- [new-version | major | minor | patch]): `npm version [type] --message "[RELEASE] %s"`
-- Push to GitHub: `git push && git push --tags`
-
-## GitHub update
-
-- Ensure the latest closed milestone matches the name of the tag/version that has just been pushed
-- Create a new GitHub release
-  - Open [github releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
-  - Create a new release based on the newly created tags. Check `This is a pre-release`
-  - In the description, at least add a link to the related milestone

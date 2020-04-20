@@ -50,6 +50,9 @@ git checkout -b 25_annotations-to-tasks
 ```
 
 ### Development
+
+Note: information about the library internals are available in the [documentation site](https://process-analytics.github.io/bpmn-visualization-js/#_architecture_and_development)
+
 #### Requirements
 
 - `Node.js` >= 12.x (may work with older versions but without any guarantee)
@@ -84,6 +87,21 @@ ESLint configuration extends:
 - plugin:@typescript-eslint/recommended
 - prettier/@typescript-eslint
 - plugin:prettier/recommended
+
+### Building the html documentation
+
+**DISCLAIMER**:
+- the documentation sources are in the AsciiDoctor format and are hosted in the [docs](./docs) folder. The display
+may not fully work (font-awesome icons and some links) depending on the rendering engine. This is the case when
+displayed directly on GitHub Web.
+- the generation currently relies on `Docker`. This will change in the future.
+
+From the root folder of the repository, run 
+```bash
+./docs/build-doc.bash
+```
+
+The documentation is generated in the `build/docs` folder.
 
 ### IDE - configuration
 
@@ -145,7 +163,7 @@ Please make sure you have signed our [Contributor License Agreement](). We are n
 At this point, you should switch back to your master branch and make sure it's up to date with BPMN Visualization JS's master branch:
 
 ```sh
-git remote add upstream git@github.com:bonitasoft-labs/bpmn-visu-js.git
+git remote add upstream git@github.com:process-analytics/bpmn-visualization-js.git
 git checkout master
 git pull upstream master
 ```
@@ -199,12 +217,28 @@ A PR can only be merged into master by a maintainer, if all of these conditions 
 
 ### Release (maintainers only)
 
-Maintainers need to do the following to push out a release:
+Maintainers need to do the following to push out a release.
 
-* Make sure all pull requests are in, and changelog is up to date
-* Update changelog with new version number
-* Create a [new release](https://github.com/process-analytics/bpmn-visualization-js/releases/new) on Github from the changelog
+#### Issues and milestones update
+
+Milestone names are based on version
+- Clean the opened milestone if some issues are still opened (move them to a new one or discard milestone from them)
+- Close the milestone
+- Clean the [Day to Day Board](https://github.com/process-analytics/bpmn-visualization-js/projects/1): archive all cards
+of the `Done` column related to the milestone
 
 
+#### Git Tag
 
+- Ensures you’re on master and don’t have local, un-commited changes: `git checkout master && git pull --tags`
+- Bumps the version number in package.json based on major, minor or patch (see https://docs.npmjs.com/cli/version, type:
+ [new-version | major | minor | patch]): `npm version [type] --message "[RELEASE] %s"`
+- Push to GitHub: `git push && git push --tags`
 
+#### GitHub update
+
+- Ensure the latest closed milestone matches the name of the tag/version that has just been pushed
+- Create a new GitHub release
+  - Open [github releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
+  - Create a new release based on the newly created tags. Check `This is a pre-release`
+  - In the description, at least add a link to the related milestone
