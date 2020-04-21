@@ -151,9 +151,9 @@ describe('BPMN Visualization JS', () => {
     document.body.insertBefore(containerDiv, document.body.firstChild);
     // initialize graph
     const graphTest = document.getElementById('graph-test');
-    graph = new Graph(graphTest);
+    bpmnVisu = new BpmnVisu(graphTest);
     // load BPMN
-    graph.load(xmlContent);
+    bpmnVisu.load(xmlContent);
 
     // check model
     expectModelContainsCell('endEvent_1', ShapeBpmnElementKind.EVENT_END);
@@ -188,10 +188,10 @@ describe('BPMN Visualization JS', () => {
     const graphInWindowDocumentBeforeLoad = window.document.getElementById('graph');
     console.info('graphInWindowDocumentBeforeLoad');
     console.info(graphInWindowDocumentBeforeLoad);
-    //graph = new Graph(graphInWindowDocumentBeforeLoad);
-    graph = new Graph(null);
+    //bpmnVisu = new BpmnVisu(graphInWindowDocumentBeforeLoad);
+    bpmnVisu = new BpmnVisu(null);
     // TODO the following must be used
-    graph = new Graph(graphHtmlElement);
+    bpmnVisu = new BpmnVisu(graphHtmlElement);
     // load BPMN
     bpmnVisu.load(xmlContent);
     // model is OK
