@@ -14,37 +14,8 @@
  * limitations under the License.
  */
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import {
-  verifyBounds,
-  verifyDefinitions,
-  verifyDiagram,
-  verifyEdges,
-  verifyEndEvent,
-  verifyExclusiveGateway,
-  verifyIsNotEmptyArray,
-  verifyPlane,
-  verifyProperties,
-  verifySequenceFlow,
-  verifyShapes,
-  verifyStartEvent,
-  verifyTask,
-} from './XMLTestUtils';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function verifyExtensionElements(process: any) {
-  verifyProperties(process.extensionElements, ['modelattributes']);
-  verifyProperties(process.extensionElements.modelattributes, ['attribute', 'record']);
-  verifyIsNotEmptyArray(process.extensionElements.modelattributes.attribute);
-  verifyIsNotEmptyArray(process.extensionElements.modelattributes.record);
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function verifyEventExtensions(extensionElements: any): void {
-  verifyProperties(extensionElements, ['instance']);
-  verifyProperties(extensionElements.instance, ['attribute', 'record']);
-  verifyIsNotEmptyArray(extensionElements.instance.attribute);
-  verifyIsNotEmptyArray(extensionElements.instance.record);
-}
+import arrayContaining = jasmine.arrayContaining;
+import anything = jasmine.anything;
 
 describe('parse bpmn as xml for ADONIS NP 8.0', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
@@ -2144,27 +2115,66 @@ describe('parse bpmn as xml for ADONIS NP 8.0', () => {
 
     const json = new BpmnXmlParser().parse(a21Processe);
 
-    verifyDefinitions(json);
+    expect(json).toMatchObject({
+      definitions: {
+        process: {
+          id: 'process_49bb2d82-cd27-4d9f-a3b7-58edc4d60bce',
+          name: 'A.2.1',
+          processType: 'None',
+          extensionElements: {
+            modelattributes: {
+              attribute: anything(),
+              record: anything(),
+            },
+          },
+          startEvent: {
+            id: '_56a03e72-acf0-4522-adeb-ad954c847612',
+            name: 'Start Event',
+            extensionElements: {
+              instance: {
+                attribute: anything(),
+                record: anything(),
+              },
+            },
+            outgoing: '_ab1dbc48-3851-440e-bee0-ef1af884a1a5',
+          },
+          endEvent: {
+            id: '_e8302d6f-0ef9-4b95-9b23-96de2c175589',
+            name: 'End Event',
+            extensionElements: anything(),
+            incoming: ['_91a75c3f-7a0d-44a4-a1ba-ba6064187a9f', '_eeddf2a4-a7f0-415b-b154-a98f64d411c2'],
+          },
+          task: arrayContaining([anything()]),
+          exclusiveGateway: arrayContaining([anything()]),
+          sequenceFlow: arrayContaining([anything()]),
+        },
+        BPMNDiagram: {
+          BPMNPlane: {
+            BPMNShape: arrayContaining([anything()]),
+            BPMNEdge: arrayContaining([
+              {
+                id: 'BPMN_Edge_107fb1c6-cf96-45a1-934e-e9a74f0ccb0c',
+                bpmnElement: '_107fb1c6-cf96-45a1-934e-e9a74f0ccb0c',
+                waypoint: [anything(), anything(), anything()],
+                BPMNLabel: {
+                  Bounds: {
+                    height: 0,
+                    width: 0,
+                    x: 398,
+                    y: 340,
+                  },
+                },
+              },
+            ]),
+          },
+        },
+      },
+    });
 
-    // Model
-    const process = json.definitions.process;
-    verifyProperties(
-      process,
-      ['id', 'name', 'isExecutable', 'processType', 'extensionElements', 'startEvent', 'task', 'endEvent', 'exclusiveGateway', 'sequenceFlow'],
-      ['parallelGateway'],
-    );
-
-    verifyExtensionElements(process);
-    verifyStartEvent(process, '_ab1dbc48-3851-440e-bee0-ef1af884a1a5', verifyEventExtensions);
-    verifyTask(process, 4);
-    verifyEndEvent(process, ['_91a75c3f-7a0d-44a4-a1ba-ba6064187a9f', '_eeddf2a4-a7f0-415b-b154-a98f64d411c2'], verifyEventExtensions);
-    verifyExclusiveGateway(process, 2);
-    verifySequenceFlow(process, 11);
-
-    // Diagram
-    verifyDiagram(json, false);
-    verifyPlane(json);
-    verifyShapes(json, 8, false);
-    verifyEdges(json, 11, 0, false);
+    expect(json.definitions.process.task).toHaveLength(4);
+    expect(json.definitions.process.exclusiveGateway).toHaveLength(2);
+    expect(json.definitions.process.sequenceFlow).toHaveLength(11);
+    expect(json.definitions.BPMNDiagram.BPMNPlane.BPMNShape).toHaveLength(8);
+    expect(json.definitions.BPMNDiagram.BPMNPlane.BPMNEdge).toHaveLength(11);
   });
 });

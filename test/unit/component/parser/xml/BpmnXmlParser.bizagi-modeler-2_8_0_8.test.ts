@@ -14,32 +14,8 @@
  * limitations under the License.
  */
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import {
-  verifyBounds,
-  verifyDefinitions,
-  verifyDiagram,
-  verifyEdges,
-  verifyEndEvent,
-  verifyExclusiveGateway,
-  verifyIoSpecification,
-  verifyIsNotEmptyArray,
-  verifyPlane,
-  verifyProperties,
-  verifySequenceFlow,
-  verifyShapes,
-  verifyStartEvent,
-  verifyStyle,
-  verifyTask,
-} from './XMLTestUtils';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function verifyEventExtensions(extensionElements: any): void {
-  verifyProperties(extensionElements, ['BizagiExtensions']);
-  verifyProperties(extensionElements.BizagiExtensions, ['BizagiProperties']);
-  verifyProperties(extensionElements.BizagiExtensions.BizagiProperties, ['BizagiProperty']);
-  verifyIsNotEmptyArray(extensionElements.BizagiExtensions.BizagiProperties.BizagiProperty);
-  verifyProperties(extensionElements.BizagiExtensions.BizagiProperties.BizagiProperty[0], ['name', 'value']);
-}
+import arrayContaining = jasmine.arrayContaining;
+import anything = jasmine.anything;
 
 describe('parse bpmn as xml for Bizagi Modeler 2.8.0.8', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
@@ -483,24 +459,74 @@ describe('parse bpmn as xml for Bizagi Modeler 2.8.0.8', () => {
 
     const json = new BpmnXmlParser().parse(a20Processe);
 
-    verifyDefinitions(json);
+    expect(json).toMatchObject({
+      definitions: {
+        process: [
+          {
+            id: 'WFP-6-',
+            isExecutable: false,
+            startEvent: {
+              id: '_6b5db6a9-037a-49ad-9201-09201e2aaa97',
+              name: 'Start Event',
+              extensionElements: {
+                BizagiExtensions: {
+                  BizagiProperties: {
+                    BizagiProperty: [
+                      { name: 'bgColor', value: 'White' },
+                      { name: 'borderColor', value: 'Black' },
+                    ],
+                  },
+                },
+              },
+              outgoing: '_b50f530c-3450-4e1a-b81f-ea346dc6e1cb',
+            },
+            endEvent: {
+              id: '_258f51eb-b764-4a71-b681-3a01cca14143',
+              name: 'End Event',
+              extensionElements: anything(),
+              incoming: ['_a3d40a56-9b7f-417e-911e-d39e7f18b90c', '_d4ce87c6-1373-45d6-a3b4-fbb2a04ee2e5'],
+            },
+            task: arrayContaining([anything()]),
+            exclusiveGateway: arrayContaining([anything()]),
+            sequenceFlow: arrayContaining([anything()]),
+          },
+          anything(),
+        ],
+        BPMNDiagram: {
+          BPMNPlane: {
+            BPMNShape: arrayContaining([anything()]),
+            BPMNEdge: arrayContaining([
+              {
+                id: 'DiagramElement_59ed7a00-ed2f-4885-bba7-ccc9367a9459',
+                bpmnElement: '_b50f530c-3450-4e1a-b81f-ea346dc6e1cb',
+                waypoint: [anything(), anything(), anything()],
+                BPMNLabel: {
+                  Bounds: {
+                    height: 0,
+                    width: 0,
+                    x: 0,
+                    y: 0,
+                  },
+                  extension: '',
+                  id: 'DiagramElement_57656087-6f6b-4463-883b-790befbab240',
+                  labelStyle: 'Style_ddf6fbe3-d40d-4a94-a95a-71741047bfc6',
+                },
+                extension: '',
+              },
+            ]),
+          },
+          BPMNLabelStyle: arrayContaining([
+            { id: 'Style_6b41969d-9f3b-4d41-be89-6b5b6a905a1d', Font: { name: 'Arial', size: 8, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false } },
+          ]),
+        },
+      },
+    });
 
-    // Model
-    const process = json.definitions.process;
-    verifyIsNotEmptyArray(json.definitions.process);
-    verifyProperties(process[0], ['id', 'isExecutable', 'startEvent', 'task', 'endEvent', 'exclusiveGateway', 'sequenceFlow'], ['parallelGateway']);
-
-    verifyStartEvent(process[0], '_b50f530c-3450-4e1a-b81f-ea346dc6e1cb', verifyEventExtensions);
-    verifyTask(process[0], 4);
-    verifyEndEvent(process[0], ['_a3d40a56-9b7f-417e-911e-d39e7f18b90c', '_d4ce87c6-1373-45d6-a3b4-fbb2a04ee2e5'], verifyEventExtensions);
-    verifyExclusiveGateway(process[0], 2);
-    verifySequenceFlow(process[0], 9);
-
-    // Diagram
-    verifyDiagram(json, true, false);
-    verifyPlane(json);
-    verifyShapes(json, 8, false);
-    verifyEdges(json, 9, 5);
-    verifyStyle(json, 10, 'Arial');
+    expect(json.definitions.process[0].task).toHaveLength(4);
+    expect(json.definitions.process[0].exclusiveGateway).toHaveLength(2);
+    expect(json.definitions.process[0].sequenceFlow).toHaveLength(9);
+    expect(json.definitions.BPMNDiagram.BPMNPlane.BPMNShape).toHaveLength(10);
+    expect(json.definitions.BPMNDiagram.BPMNPlane.BPMNEdge).toHaveLength(9);
+    expect(json.definitions.BPMNDiagram.BPMNLabelStyle).toHaveLength(17);
   });
 });

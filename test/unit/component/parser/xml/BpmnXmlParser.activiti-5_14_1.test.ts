@@ -14,23 +14,8 @@
  * limitations under the License.
  */
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import {
-  verifyBounds,
-  verifyDefinitions,
-  verifyDiagram,
-  verifyEdges,
-  verifyEndEvent,
-  verifyExclusiveGateway,
-  verifyIoSpecification,
-  verifyPlane,
-  verifyProperties,
-  verifySequenceFlow,
-  verifyShapes,
-  verifyStartEvent,
-  verifyStyle,
-  verifyTask,
-  verifyUserTask,
-} from './XMLTestUtils';
+import arrayContaining = jasmine.arrayContaining;
+import anything = jasmine.anything;
 
 describe('parse bpmn as xml for Activiti Designer 5.14.1', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
@@ -136,22 +121,37 @@ describe('parse bpmn as xml for Activiti Designer 5.14.1', () => {
 
     const json = new BpmnXmlParser().parse(a20Processe);
 
-    verifyDefinitions(json);
+    expect(json).toMatchObject({
+      definitions: {
+        process: {
+          id: 'myProcess',
+          name: 'My process',
+          startEvent: {
+            id: 'startevent1',
+            name: 'Start',
+          },
+          endEvent: {
+            id: 'endevent1',
+            name: 'End',
+          },
+          userTask: arrayContaining([anything()]),
+          exclusiveGateway: arrayContaining([anything()]),
+          sequenceFlow: arrayContaining([anything()]),
+          textAnnotation: anything(),
+        },
+        BPMNDiagram: {
+          BPMNPlane: {
+            BPMNShape: arrayContaining([anything()]),
+            BPMNEdge: arrayContaining([{ id: 'BPMNEdge_flow9', bpmnElement: 'flow9', waypoint: [anything(), anything(), anything()] }]),
+          },
+        },
+      },
+    });
 
-    // Model
-    const process = json.definitions.process;
-    verifyProperties(process, ['id', 'name', 'isExecutable', 'startEvent', 'userTask', 'endEvent', 'exclusiveGateway', 'sequenceFlow', 'textAnnotation'], ['parallelGateway']);
-
-    verifyStartEvent(process);
-    verifyUserTask(process, 4);
-    verifyEndEvent(process);
-    verifyExclusiveGateway(process, 2);
-    verifySequenceFlow(process, 9);
-
-    // Diagram
-    verifyDiagram(json, false, false);
-    verifyPlane(json);
-    verifyShapes(json, 8, false);
-    verifyEdges(json, 9, 5, false, false);
+    expect(json.definitions.process.userTask).toHaveLength(4);
+    expect(json.definitions.process.exclusiveGateway).toHaveLength(2);
+    expect(json.definitions.process.sequenceFlow).toHaveLength(9);
+    expect(json.definitions.BPMNDiagram.BPMNPlane.BPMNShape).toHaveLength(9);
+    expect(json.definitions.BPMNDiagram.BPMNPlane.BPMNEdge).toHaveLength(9);
   });
 });

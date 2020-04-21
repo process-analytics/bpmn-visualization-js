@@ -14,33 +14,9 @@
  * limitations under the License.
  */
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import {
-  verifyBounds,
-  verifyDefinitions,
-  verifyDiagram,
-  verifyEdges,
-  verifyEndEvent,
-  verifyExclusiveGateway,
-  verifyIoSpecification,
-  verifyPlane,
-  verifyProperties,
-  verifySequenceFlow,
-  verifyShapes,
-  verifyStartEvent,
-  verifyStyle,
-  verifyTask,
-} from './XMLTestUtils';
 import arrayContaining = jasmine.arrayContaining;
 import objectContaining = jasmine.objectContaining;
 import anything = jasmine.anything;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function verifyEventExtensions(extensionElements: any): void {
-  console.log(extensionElements);
-  verifyProperties(extensionElements, ['graphStyle']);
-  verifyProperties(extensionElements.graphStyle, ['basic']);
-  verifyProperties(extensionElements.graphStyle.basic, ['background', 'foreground', 'autoResize', 'borderColor', 'collapsed']);
-}
 
 describe('parse bpmn as xml for MIWG', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
@@ -381,23 +357,12 @@ describe('parse bpmn as xml for MIWG', () => {
 
     const json = new BpmnXmlParser().parse(a21Processe);
 
-    verifyDefinitions(json);
-
-    // Model
-    const process = json.definitions.process;
-    verifyProperties(
-      process,
-      ['id', 'name', 'isExecutable', 'processType', 'extensionElements', 'ioSpecification', 'startEvent', 'task', 'endEvent', 'exclusiveGateway', 'sequenceFlow'],
-      ['parallelGateway'],
-    );
-
-    verifyIoSpecification(process, '_cVHRcDOCEeSknpIVFCxNIQ', '_cVH4gDOCEeSknpIVFCxNIQ');
-    verifyStartEvent(process, '_To9Z5DOCEeSknpIVFCxNIQ', verifyEventExtensions);
-    verifyEndEvent(process, ['_To9Z7TOCEeSknpIVFCxNIQ', '_To9Z9jOCEeSknpIVFCxNIQ'], verifyEventExtensions);
-
     expect(json).toMatchObject({
       definitions: {
         process: {
+          id: '_To9ZoTOCEeSknpIVFCxNIQ',
+          name: 'A.2.1',
+          processType: 'None',
           extensionElements: {
             graphStyle: {
               basic: anything(),
@@ -412,6 +377,34 @@ describe('parse bpmn as xml for MIWG', () => {
                 HorizontalRuler: '',
               },
             },
+          },
+          ioSpecification: {
+            id: '_cVGqYDOCEeSknpIVFCxNIQ',
+            inputSet: { id: '_cVHRcDOCEeSknpIVFCxNIQ' },
+            outputSet: { id: '_cVH4gDOCEeSknpIVFCxNIQ' },
+          },
+          startEvent: {
+            id: '_To9ZojOCEeSknpIVFCxNIQ',
+            name: 'Start Event',
+            isInterrupting: true,
+            extensionElements: {
+              graphStyle: {
+                basic: {
+                  background: '109,183,0',
+                  foreground: '0,0,0',
+                  autoResize: false,
+                  borderColor: '100,100,100',
+                  collapsed: false,
+                },
+              },
+            },
+            outgoing: '_To9Z5DOCEeSknpIVFCxNIQ',
+          },
+          endEvent: {
+            id: '_To9ZsTOCEeSknpIVFCxNIQ',
+            name: 'End Event',
+            extensionElements: anything(),
+            incoming: ['_To9Z7TOCEeSknpIVFCxNIQ', '_To9Z9jOCEeSknpIVFCxNIQ'],
           },
           task: arrayContaining([anything()]),
           exclusiveGateway: arrayContaining([anything()]),
