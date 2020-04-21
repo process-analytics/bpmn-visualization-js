@@ -17,6 +17,7 @@ import BpmnVisu from '../../src/component/BpmnVisu';
 import { ShapeBpmnElementKind } from '../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { mxgraph } from 'ts-mxgraph';
 import { MxGraphFactoryService } from '../../src/service/MxGraphFactoryService';
+import { ShapeBpmnEventKind } from '../../src/model/bpmn/shape/ShapeBpmnEventKind';
 
 function expectGeometry(cell: mxgraph.mxCell, geometry: mxgraph.mxGeometry): void {
   const cellGeometry = cell.getGeometry();
@@ -26,8 +27,11 @@ function expectGeometry(cell: mxgraph.mxCell, geometry: mxgraph.mxGeometry): voi
   expect(cellGeometry.height).toEqual(geometry.height);
 }
 
+const mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
 const mxGeometry: typeof mxgraph.mxGeometry = MxGraphFactoryService.getMxGraphProperty('mxGeometry');
 
+// TODO the file should be renamed as we only check mxGraph model conformance here
+// to be reviewed as part of #48
 describe('BPMN Visualization JS', () => {
   // region html string literal
   const xmlContent = `
@@ -51,6 +55,7 @@ describe('BPMN Visualization JS', () => {
         </semantic:task>
         <semantic:endEvent name="End Event" id="endEvent_1">
             <semantic:incoming>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:incoming>
+            <semantic:terminateEventDefinition/>
         </semantic:endEvent>
         <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="_ec59e164-68b4-4f94-98de-ffb1c58a84af" name="" id="_e16564d7-0c4c-413e-95f6-f668a3f851fb"/>
         <semantic:sequenceFlow sourceRef="_ec59e164-68b4-4f94-98de-ffb1c58a84af" targetRef="_820c21c0-45f3-473b-813f-06381cc637cd" name="" id="_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599"/>
@@ -135,25 +140,28 @@ describe('BPMN Visualization JS', () => {
     await expect(page.title()).resolves.toMatch('BPMN Visualization JS');
   });
 
-  function expectModelContainsCell(cellId: string, shapeKind: ShapeBpmnElementKind): void {
+  function expectModelContainsCell(cellId: string, shapeKind: ShapeBpmnElementKind): mxgraph.mxCell {
     const cell = bpmnVisu.graph.model.getCell(cellId);
+    expect(cell).not.toBeUndefined();
     expect(cell).not.toBeNull();
     expect(cell.style).toContain(shapeKind);
     const state = bpmnVisu.graph.getView().getState(cell);
-    const mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
     expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(shapeKind);
+    return cell;
   }
 
-  it('should display visualization', async () => {
+  function expectModelContainsBpmnEvent(cellId: string, shapeKind: ShapeBpmnElementKind, bpmnEventKind: ShapeBpmnEventKind): void {
+    const cell = expectModelContainsCell(cellId, shapeKind);
+    expect(cell.style).toContain(`bpmn.eventKind=${bpmnEventKind}`);
+  }
+
+  it('bpmn elements should be available in the mxGraph model', async () => {
     // load BPMN
     bpmnVisu.load(xmlContent);
+
     // model is OK
-
-    expectModelContainsCell('endEvent_1', ShapeBpmnElementKind.EVENT_END);
-    expectModelContainsCell('startEvent_1', ShapeBpmnElementKind.EVENT_START);
-
-    // rendering - not OK - when graph is being initialized the window.document.getElementById('graph') is null
-    // await expect(page.waitForSelector('[data-cell-id="startEvent_1"]')).resolves.toBeDefined();
+    expectModelContainsBpmnEvent('startEvent_1', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.NONE);
+    expectModelContainsBpmnEvent('endEvent_1', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.TERMINATE);
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {

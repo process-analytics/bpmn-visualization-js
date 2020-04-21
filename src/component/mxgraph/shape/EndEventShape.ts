@@ -17,16 +17,58 @@
 import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
 import { StyleConstant } from '../StyleConfigurator';
+import { ShapeBpmnEventKind } from '../../../model/bpmn/shape/ShapeBpmnEventKind';
 
 const mxEllipse: typeof mxgraph.mxEllipse = MxGraphFactoryService.getMxGraphProperty('mxEllipse');
+const mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
+const mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
 
-export default class EndEventShape extends mxEllipse {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public constructor(bounds: mxgraph.mxRectangle, fill: any, stroke: any, strokewidth = StyleConstant.STROKE_WIDTH_THICK) {
+class EventShape extends mxEllipse {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
   public paintVertexShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    this.paintOuterShape(c, x, y, w, h);
+    this.paintInnerShape(c, x, y, w, h);
+  }
+
+  protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintVertexShape(c, x, y, w, h);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    // do nothing by default
+  }
+}
+
+export default class EndEventShape extends EventShape {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THICK) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+
+  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    const eventKind = mxUtils.getValue(this.style, StyleConstant.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
+    if (eventKind == ShapeBpmnEventKind.TERMINATE) {
+      this.paintTerminateEventIcon(c, x, y, w, h);
+    }
+  }
+
+  // highly inspired from mxDoubleEllipse
+  private paintTerminateEventIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    c.setFillColor(this.stroke);
+    c.setStrokeWidth(0);
+    const inset = mxUtils.getValue(this.style, mxConstants.STYLE_MARGIN, Math.min(3 + this.strokewidth, Math.min(w / 5, h / 5)));
+    x += inset;
+    y += inset;
+    w -= 2 * inset;
+    h -= 2 * inset;
+
+    if (w > 0 && h > 0) {
+      c.ellipse(x, y, w, h);
+    }
+
+    c.fillAndStroke();
   }
 }
