@@ -19,8 +19,6 @@ import { mxgraph } from 'ts-mxgraph';
 import { StyleConstant } from '../StyleConfigurator';
 
 const mxRectangleShape: typeof mxgraph.mxRectangleShape = MxGraphFactoryService.getMxGraphProperty('mxRectangleShape');
-const mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
-const mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
 
 export class TaskShape extends mxRectangleShape {
   isRounded: boolean;
