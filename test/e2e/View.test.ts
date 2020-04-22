@@ -76,7 +76,7 @@ describe('BPMN Visualization JS', () => {
             <bpmndi:BPMNShape bpmnElement="startEvent_2_timer" id="shape_startEvent_2_timer">
                 <dc:Bounds height="30.0" width="30.0" x="186.0" y="536.0"/>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="task_1" id="S1373649849859_task_1">
+            <bpmndi:BPMNShape bpmnElement="task_1" id="shape_task_1">
                 <dc:Bounds height="68.0" width="83.0" x="258.0" y="317.0"/>
                 <bpmndi:BPMNLabel labelStyle="LS1373649849858">
                     <dc:Bounds height="12.804751171875008" width="72.48293963254594" x="263.3333333333333" y="344.5818763825664"/>
