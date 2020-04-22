@@ -45,7 +45,7 @@ export default class CollaborationConverter extends AbstractConverter<Collaborat
       return {};
     } catch (e) {
       // TODO error management
-      console.log(e as Error);
+      console.error(e as Error);
     }
   }
 }

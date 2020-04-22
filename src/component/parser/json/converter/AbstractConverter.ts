@@ -36,7 +36,7 @@ export abstract class AbstractConverter<T> implements JsonCustomConvert<T> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-explicit-any
   serialize(data: T): any {
     // TODO throw exception
-    console.log('Not implemented !!');
+    console.error('Not implemented !!');
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -143,7 +143,7 @@ export class DropFileUserInterface {
         dropCallback(files[0]);
       } catch (e) {
         // TODO error management
-        console.log(e as Error);
+        console.error(e as Error);
       } finally {
         isDocument ? this.querySelector('#' + outerContainerId).classList.remove('dragging') : this.classList.remove('dragging');
         containerToBeFaded.classList.remove('faded');

@@ -45,7 +45,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
       return { ...shapes, ...edges };
     } catch (e) {
       // TODO error management
-      console.log(e as Error);
+      console.error(e as Error);
     }
   }
 
@@ -80,7 +80,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
       }
 
       // TODO error management
-      console.log('Shape json deserialization: unable to find bpmn element with id %s', shape.bpmnElement);
+      console.error('Shape json deserialization: unable to find bpmn element with id %s', shape.bpmnElement);
     }
 
     return convertedShapes;
