@@ -20,6 +20,7 @@ type MxGraphProperty =
   | 'mxClient'
   | 'mxConstants'
   | 'mxEllipse'
+  | 'mxRectangleShape'
   | 'mxGeometry'
   | 'mxGraph'
   | 'mxGraphModel'

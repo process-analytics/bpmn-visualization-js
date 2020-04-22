@@ -125,8 +125,9 @@ export default class StyleConfigurator {
   }
 
   private configureTaskStyle(): void {
-    const style = this.mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.TASK_USER), this.getDefaultVertexStyle());
-    style[this.mxConstants.STYLE_STROKECOLOR] = '#663399';
+    const style = this.cloneDefaultVertexStyle();
+    style[this.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TASK;
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
     this.putCellStyle(ShapeBpmnElementKind.TASK, style);
   }
 
