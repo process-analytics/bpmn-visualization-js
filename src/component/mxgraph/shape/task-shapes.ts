@@ -20,12 +20,13 @@ import { StyleConstant } from '../StyleConfigurator';
 
 const mxRectangleShape: typeof mxgraph.mxRectangleShape = MxGraphFactoryService.getMxGraphProperty('mxRectangleShape');
 
-abstract class AbstractTaskShape extends mxRectangleShape {
+abstract class BaseTaskShape extends mxRectangleShape {
+  // TODO we need to declare this field here because it is missing in the current mxShape type definition
   isRounded: boolean;
 
   protected constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
-
+    // enforced by BPMN
     this.isRounded = true;
   }
 
@@ -37,7 +38,7 @@ abstract class AbstractTaskShape extends mxRectangleShape {
   protected abstract paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void;
 }
 
-export class TaskShape extends AbstractTaskShape {
+export class TaskShape extends BaseTaskShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
@@ -48,7 +49,7 @@ export class TaskShape extends AbstractTaskShape {
   }
 }
 
-export class ServiceTaskShape extends AbstractTaskShape {
+export class ServiceTaskShape extends BaseTaskShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
