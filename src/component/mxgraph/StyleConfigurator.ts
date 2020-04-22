@@ -134,7 +134,7 @@ export default class StyleConfigurator {
   }
 
   // TODO: to be removed as it will be configured in configureGatewaysStyle
-  // left just to not brake current rendering
+  // left just to not break current rendering
   private configureParallelGatewayStyle(): void {
     const style = this.cloneDefaultVertexStyle();
     style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RHOMBUS;
