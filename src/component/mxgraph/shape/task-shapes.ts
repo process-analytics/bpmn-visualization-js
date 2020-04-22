@@ -20,7 +20,7 @@ import { StyleConstant } from '../StyleConfigurator';
 
 const mxRectangleShape: typeof mxgraph.mxRectangleShape = MxGraphFactoryService.getMxGraphProperty('mxRectangleShape');
 
-export class TaskShape extends mxRectangleShape {
+abstract class AbstractTaskShape extends mxRectangleShape {
   isRounded: boolean;
 
   protected constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
@@ -28,14 +28,31 @@ export class TaskShape extends mxRectangleShape {
 
     this.isRounded = true;
   }
-}
-
-export class ServiceTaskShape extends TaskShape {
-  protected constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
-    super(bounds, fill, stroke, strokewidth);
-  }
 
   public paintForeground(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
+    this.paintTaskIcon(c, x, y, w, h);
+  }
+
+  protected abstract paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void;
+}
+
+export class TaskShape extends AbstractTaskShape {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+
+  protected paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    // No symbol for the BPMN Task
+  }
+}
+
+export class ServiceTaskShape extends AbstractTaskShape {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+
+  protected paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    // TODO : To implement
   }
 }
