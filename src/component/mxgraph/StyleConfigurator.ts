@@ -156,6 +156,11 @@ export default class StyleConfigurator {
       style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RhombusPerimeter;
       style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
 
+      // TODO to be removed when supporting label position
+      // left just to not break current rendering
+      style[this.mxConstants.STYLE_SPACING_TOP] = 55;
+      style[this.mxConstants.STYLE_SPACING_RIGHT] = 110;
+
       this.putCellStyle(kind, style);
     });
   }
