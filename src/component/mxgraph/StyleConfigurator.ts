@@ -33,6 +33,8 @@ export default class StyleConfigurator {
   constructor(private graph: mxgraph.mxGraph) {}
 
   public configureStyles(): void {
+    this.mxConstants.RECTANGLE_ROUNDING_FACTOR = 0.1;
+
     this.configureDefaultVertexStyle();
     this.configurePoolStyle();
     this.configureLaneStyle();
