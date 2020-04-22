@@ -48,7 +48,7 @@ describe('BPMN Visualization JS', () => {
             <semantic:incoming>_e16564d7-0c4c-413e-95f6-f668a3f851fb</semantic:incoming>
             <semantic:outgoing>_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599</semantic:outgoing>
         </semantic:task>
-        <semantic:task completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task 2" id="_820c21c0-45f3-473b-813f-06381cc637cd">
+        <semantic:serviceTask implementation="##WebService" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Service Task 2" id="service_task_2">
             <semantic:incoming>_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599</semantic:incoming>
             <semantic:outgoing>_2aa47410-1b0e-4f8b-ad54-d6f798080cb4</semantic:outgoing>
         </semantic:task>
@@ -61,8 +61,8 @@ describe('BPMN Visualization JS', () => {
             <semantic:terminateEventDefinition/>
         </semantic:endEvent>
         <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="" id="_e16564d7-0c4c-413e-95f6-f668a3f851fb"/>
-        <semantic:sequenceFlow sourceRef="task_1" targetRef="_820c21c0-45f3-473b-813f-06381cc637cd" name="" id="_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599"/>
-        <semantic:sequenceFlow sourceRef="_820c21c0-45f3-473b-813f-06381cc637cd" targetRef="_e70a6fcb-913c-4a7b-a65d-e83adc73d69c" name="" id="_2aa47410-1b0e-4f8b-ad54-d6f798080cb4"/>
+        <semantic:sequenceFlow sourceRef="task_1" targetRef="service_task_2" name="" id="_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599"/>
+        <semantic:sequenceFlow sourceRef="service_task_2" targetRef="_e70a6fcb-913c-4a7b-a65d-e83adc73d69c" name="" id="_2aa47410-1b0e-4f8b-ad54-d6f798080cb4"/>
         <semantic:sequenceFlow sourceRef="_e70a6fcb-913c-4a7b-a65d-e83adc73d69c" targetRef="endEvent_1" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff80"/>
     </semantic:process>
     <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
@@ -82,7 +82,7 @@ describe('BPMN Visualization JS', () => {
                     <dc:Bounds height="12.804751171875008" width="72.48293963254594" x="263.3333333333333" y="344.5818763825664"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="_820c21c0-45f3-473b-813f-06381cc637cd" id="S1373649849860__820c21c0-45f3-473b-813f-06381cc637cd">
+            <bpmndi:BPMNShape bpmnElement="service_task_2" id="S1373649849860_service_task_2">
                 <dc:Bounds height="68.0" width="83.0" x="390.0" y="317.0"/>
                 <bpmndi:BPMNLabel labelStyle="LS1373649849858">
                     <dc:Bounds height="12.804751171875008" width="72.48293963254594" x="395.3333333333333" y="344.5818763825664"/>
@@ -170,6 +170,7 @@ describe('BPMN Visualization JS', () => {
     expectModelContainsBpmnEvent('startEvent_2_timer', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.TIMER);
     expectModelContainsBpmnEvent('endEvent_1', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.TERMINATE);
     expectModelContainsCell('task_1', ShapeBpmnElementKind.TASK);
+    expectModelContainsCell('service_task_2', ShapeBpmnElementKind.TASK_SERVICE);
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {
