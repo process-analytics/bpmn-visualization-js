@@ -38,7 +38,21 @@ abstract class GatewayShape extends mxRhombus {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    // do nothing by default
+    c.setFillColor(this.stroke);
+    c.setStrokeWidth(0);
+  }
+  protected getScaledGeometry(x: number, y: number, w: number, h: number): { xS: number; yS: number; wS: number; hS: number } {
+    const symbolScale = this.getInnerSymbolScale(w, h);
+    return {
+      xS: x + symbolScale,
+      yS: y + symbolScale,
+      wS: w - 2 * symbolScale,
+      hS: h - 2 * symbolScale,
+    };
+  }
+
+  private getInnerSymbolScale(w: number, h: number): number {
+    return 3 * mxUtils.getValue(this.style, mxConstants.STYLE_MARGIN, Math.min(3 + this.strokewidth, Math.min(w / 5, h / 5)));
   }
 }
 
@@ -48,31 +62,58 @@ export class ExclusiveGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    super.paintInnerShape(c, x, y, w, h);
     this.addExclusiveGatewaySymbol(c, x, y, w, h);
   }
 
   private addExclusiveGatewaySymbol(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const symbolScale = 3 * mxUtils.getValue(this.style, mxConstants.STYLE_MARGIN, Math.min(3 + this.strokewidth, Math.min(w / 5, h / 5)));
-    x += symbolScale;
-    y += symbolScale;
-    w -= 2 * symbolScale;
-    h -= 2 * symbolScale;
-    c.setFillColor(this.stroke);
-    c.setStrokeWidth(0);
+    const { xS, yS, wS, hS } = this.getScaledGeometry(x, y, w, h);
 
     c.begin();
-    c.moveTo(x + w * 0.105, y);
-    c.lineTo(x + w * 0.5, y + h * 0.38);
-    c.lineTo(x + w * 0.895, y);
-    c.lineTo(x + w, y + h * 0.11);
-    c.lineTo(x + w * 0.6172, y + h * 0.5);
-    c.lineTo(x + w, y + h * 0.89);
-    c.lineTo(x + w * 0.895, y + h);
-    c.lineTo(x + w * 0.5, y + h * 0.62);
-    c.lineTo(x + w * 0.105, y + h);
-    c.lineTo(x, y + h * 0.89);
-    c.lineTo(x + w * 0.3808, y + h * 0.5);
-    c.lineTo(x, y + h * 0.11);
+    c.moveTo(xS + wS * 0.105, yS);
+    c.lineTo(xS + wS * 0.5, yS + hS * 0.38);
+    c.lineTo(xS + wS * 0.895, yS);
+    c.lineTo(xS + wS, yS + hS * 0.11);
+    c.lineTo(xS + wS * 0.6172, yS + hS * 0.5);
+    c.lineTo(xS + wS, yS + hS * 0.89);
+    c.lineTo(xS + wS * 0.895, yS + hS);
+    c.lineTo(xS + wS * 0.5, yS + hS * 0.62);
+    c.lineTo(xS + wS * 0.105, yS + hS);
+    c.lineTo(xS, yS + hS * 0.89);
+    c.lineTo(xS + wS * 0.3808, yS + hS * 0.5);
+    c.lineTo(xS, yS + hS * 0.11);
+    c.close();
+
+    c.fillAndStroke();
+  }
+}
+
+export class ParallelGatewayShape extends GatewayShape {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+
+  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    super.paintInnerShape(c, x, y, w, h);
+    this.addParallelGatewaySymbol(c, x, y, w, h);
+  }
+
+  private addParallelGatewaySymbol(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    const { xS, yS, wS, hS } = this.getScaledGeometry(x, y, w, h);
+
+    c.begin();
+    c.moveTo(xS + wS * 0.38, yS);
+    c.lineTo(xS + wS * 0.62, yS);
+    c.lineTo(xS + wS * 0.62, yS + hS * 0.38);
+    c.lineTo(xS + wS, yS + hS * 0.38);
+    c.lineTo(xS + wS, yS + hS * 0.62);
+    c.lineTo(xS + wS * 0.62, yS + hS * 0.62);
+    c.lineTo(xS + wS * 0.62, yS + hS);
+    c.lineTo(xS + wS * 0.38, yS + hS);
+    c.lineTo(xS + wS * 0.38, yS + hS * 0.62);
+    c.lineTo(xS, yS + hS * 0.62);
+    c.lineTo(xS, yS + hS * 0.38);
+    c.lineTo(xS + wS * 0.38, yS + hS * 0.38);
     c.close();
 
     c.fillAndStroke();
