@@ -24,8 +24,6 @@ export enum StyleConstant {
   BPMN_STYLE_EVENT_KIND = 'bpmn.eventKind',
 }
 
-const supportedBpmnTaskKinds = [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.TASK_SERVICE];
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
   private mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
@@ -43,8 +41,8 @@ export default class StyleConfigurator {
     // events
     this.configureEventsStyle();
     // tasks
-    this.configureUserTaskStyle();
     this.configureTasksStyle();
+    this.configureUserTaskStyle();
     // gateways
     this.configureParallelGatewayStyle();
     this.configureExclusiveGatewayStyle();
@@ -112,7 +110,7 @@ export default class StyleConfigurator {
   }
 
   private configureTasksStyle(): void {
-    supportedBpmnTaskKinds.forEach(kind => {
+    ShapeUtil.taskKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
       style[this.mxConstants.STYLE_SHAPE] = kind;
       style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
@@ -120,6 +118,8 @@ export default class StyleConfigurator {
     });
   }
 
+  // TODO: to be removed as it will be configured in configureTasksStyle
+  // left just to not break current rendering
   private configureUserTaskStyle(): void {
     const style = this.cloneDefaultVertexStyle();
     style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RECTANGLE;
