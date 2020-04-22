@@ -56,7 +56,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 |Service Task
 |icon:check-circle-o[]
-|Icon are subject to change
+|Icon is subject to change
 
 |User Task
 |icon:flask[]
