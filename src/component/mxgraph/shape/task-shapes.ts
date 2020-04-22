@@ -42,6 +42,7 @@ export class TaskShape extends AbstractTaskShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     // No symbol for the BPMN Task
   }
@@ -52,6 +53,7 @@ export class ServiceTaskShape extends AbstractTaskShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     // TODO : To implement
   }
