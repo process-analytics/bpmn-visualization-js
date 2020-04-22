@@ -80,7 +80,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
       }
 
       // TODO error management
-      console.error('Shape json deserialization: unable to find bpmn element with id %s', shape.bpmnElement);
+      console.warn('Shape json deserialization: unable to find bpmn element with id %s', shape.bpmnElement);
     }
 
     return convertedShapes;

@@ -164,7 +164,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
         shapeBpmnElement.parentId = laneId;
       } else {
         // TODO error management
-        console.error('Unable to assign lane %s as parent: flow node %s is not found', laneId, flowNodeRef);
+        console.warn('Unable to assign lane %s as parent: flow node %s is not found', laneId, flowNodeRef);
       }
     });
   }
