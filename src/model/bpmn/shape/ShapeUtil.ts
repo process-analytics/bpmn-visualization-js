@@ -18,10 +18,13 @@ import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
 // TODO move to ShapeBpmnElementKind? and rename into ShapeBpmnElementKindUtil?
 // TODO bpmnEventKinds and flowNodeKinds currently hosted in ProcessConverter may be hosted here
 export default class ShapeUtil {
-  private static EVENTS_KIND = Object.values(ShapeBpmnElementKind).filter(kind => {
-    return kind.endsWith('Event');
-  });
+  private static EVENTS_KIND = ShapeUtil.filterKind('Event');
 
+  private static filterKind(suffix: string): ShapeBpmnElementKind[] {
+    return Object.values(ShapeBpmnElementKind).filter(kind => {
+      return kind.endsWith(suffix);
+    });
+  }
   public static isEvent(kind: ShapeBpmnElementKind): boolean {
     return this.EVENTS_KIND.includes(kind);
   }
