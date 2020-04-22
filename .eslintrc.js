@@ -20,6 +20,7 @@ module.exports = {
       },
     ],
     'notice/notice': ['error', { templateFile: 'config/license-header.js', onNonMatchingHeader: 'replace' }],
+    'no-console': ['error', { allow: ["warn", "error"] }],
   },
   overrides: [
     {

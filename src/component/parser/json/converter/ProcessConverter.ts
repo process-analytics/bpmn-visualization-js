@@ -73,7 +73,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       return {};
     } catch (e) {
       // TODO error management
-      console.log(e as Error);
+      console.error(e as Error);
     }
   }
 
@@ -164,7 +164,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
         shapeBpmnElement.parentId = laneId;
       } else {
         // TODO error management
-        console.log('Unable to assign lane %s as parent: flow node %s is not found', laneId, flowNodeRef);
+        console.warn('Unable to assign lane %s as parent: flow node %s is not found', laneId, flowNodeRef);
       }
     });
   }
