@@ -24,6 +24,8 @@ export enum StyleConstant {
   BPMN_STYLE_EVENT_KIND = 'bpmn.eventKind',
 }
 
+const supportedBpmnTaskKinds = [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.TASK_SERVICE];
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
   private mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
@@ -42,8 +44,7 @@ export default class StyleConfigurator {
     this.configureEventsStyle();
     // tasks
     this.configureUserTaskStyle();
-    this.configureServiceTaskStyle();
-    this.configureTaskStyle();
+    this.configureTasksStyle();
     // gateways
     this.configureGatewaysStyle();
     this.configureParallelGatewayStyle();
@@ -110,11 +111,13 @@ export default class StyleConfigurator {
     });
   }
 
-  private configureServiceTaskStyle(): void {
-    const style = this.cloneDefaultVertexStyle();
-    style[this.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TASK_SERVICE;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
-    this.putCellStyle(ShapeBpmnElementKind.TASK_SERVICE, style);
+  private configureTasksStyle(): void {
+    supportedBpmnTaskKinds.forEach(kind => {
+      const style = this.cloneDefaultVertexStyle();
+      style[this.mxConstants.STYLE_SHAPE] = kind;
+      style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
+      this.putCellStyle(kind, style);
+    });
   }
 
   private configureUserTaskStyle(): void {
@@ -125,13 +128,6 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_STROKEWIDTH] = 2;
     style[this.mxConstants.STYLE_ROUNDED] = true;
     this.putCellStyle(ShapeBpmnElementKind.TASK_USER, style);
-  }
-
-  private configureTaskStyle(): void {
-    const style = this.cloneDefaultVertexStyle();
-    style[this.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TASK;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
-    this.putCellStyle(ShapeBpmnElementKind.TASK, style);
   }
 
   // TODO: to be removed as it will be configured in configureGatewaysStyle
