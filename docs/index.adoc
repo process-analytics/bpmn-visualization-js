@@ -2,13 +2,13 @@
 :toc: left
 // see: https://asciidoctor.org/docs/user-manual/#table-of-contents-summary
 :toc-title: Table of Contents
-// how many headline levels to display in table of contents?
-:toclevels: 5
+// how many headline levels to display in the table of contents?
+:toclevels: 2
 // https://asciidoctor.org/docs/user-manual/#sections-summary
 // turn numbering on or off (:sectnums!:)
 :sectnums:
 // enumerate how many section levels?
-:sectnumlevels: 2
+:sectnumlevels: 5
 // show anchors when hovering over section headers
 :sectanchors:
 // render section headings as self referencing links

@@ -1,6 +1,6 @@
 [[bpmn-support-roadmap]]
 
-== Description of the BPMN support Roadmap
+== BPMN Support Roadmap
 :icons: font
 
 NOTE: The list of supported BPMN elements is available in <<supported-bpmn-elements,supported BPMN elements>>
