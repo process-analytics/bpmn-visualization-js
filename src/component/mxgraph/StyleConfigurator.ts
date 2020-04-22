@@ -33,6 +33,8 @@ export default class StyleConfigurator {
   constructor(private graph: mxgraph.mxGraph) {}
 
   public configureStyles(): void {
+    this.mxConstants.RECTANGLE_ROUNDING_FACTOR = 0.1;
+
     this.configureDefaultVertexStyle();
     this.configurePoolStyle();
     this.configureLaneStyle();
@@ -125,8 +127,9 @@ export default class StyleConfigurator {
   }
 
   private configureTaskStyle(): void {
-    const style = this.mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.TASK_USER), this.getDefaultVertexStyle());
-    style[this.mxConstants.STYLE_STROKECOLOR] = '#663399';
+    const style = this.cloneDefaultVertexStyle();
+    style[this.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TASK;
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
     this.putCellStyle(ShapeBpmnElementKind.TASK, style);
   }
 

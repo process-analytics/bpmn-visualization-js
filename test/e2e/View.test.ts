@@ -44,7 +44,7 @@ describe('BPMN Visualization JS', () => {
         <semantic:startEvent name="Timer Start Event" id="startEvent_2_timer">
             <semantic:timerEventDefinition/>
         </semantic:startEvent>
-        <semantic:task completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task 1" id="_ec59e164-68b4-4f94-98de-ffb1c58a84af">
+        <semantic:task completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task 1" id="task_1">
             <semantic:incoming>_e16564d7-0c4c-413e-95f6-f668a3f851fb</semantic:incoming>
             <semantic:outgoing>_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599</semantic:outgoing>
         </semantic:task>
@@ -60,8 +60,8 @@ describe('BPMN Visualization JS', () => {
             <semantic:incoming>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:incoming>
             <semantic:terminateEventDefinition/>
         </semantic:endEvent>
-        <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="_ec59e164-68b4-4f94-98de-ffb1c58a84af" name="" id="_e16564d7-0c4c-413e-95f6-f668a3f851fb"/>
-        <semantic:sequenceFlow sourceRef="_ec59e164-68b4-4f94-98de-ffb1c58a84af" targetRef="_820c21c0-45f3-473b-813f-06381cc637cd" name="" id="_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599"/>
+        <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="" id="_e16564d7-0c4c-413e-95f6-f668a3f851fb"/>
+        <semantic:sequenceFlow sourceRef="task_1" targetRef="_820c21c0-45f3-473b-813f-06381cc637cd" name="" id="_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599"/>
         <semantic:sequenceFlow sourceRef="_820c21c0-45f3-473b-813f-06381cc637cd" targetRef="_e70a6fcb-913c-4a7b-a65d-e83adc73d69c" name="" id="_2aa47410-1b0e-4f8b-ad54-d6f798080cb4"/>
         <semantic:sequenceFlow sourceRef="_e70a6fcb-913c-4a7b-a65d-e83adc73d69c" targetRef="endEvent_1" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff80"/>
     </semantic:process>
@@ -76,7 +76,7 @@ describe('BPMN Visualization JS', () => {
             <bpmndi:BPMNShape bpmnElement="startEvent_2_timer" id="shape_startEvent_2_timer">
                 <dc:Bounds height="30.0" width="30.0" x="186.0" y="536.0"/>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="_ec59e164-68b4-4f94-98de-ffb1c58a84af" id="S1373649849859__ec59e164-68b4-4f94-98de-ffb1c58a84af">
+            <bpmndi:BPMNShape bpmnElement="task_1" id="shape_task_1">
                 <dc:Bounds height="68.0" width="83.0" x="258.0" y="317.0"/>
                 <bpmndi:BPMNLabel labelStyle="LS1373649849858">
                     <dc:Bounds height="12.804751171875008" width="72.48293963254594" x="263.3333333333333" y="344.5818763825664"/>
@@ -169,6 +169,7 @@ describe('BPMN Visualization JS', () => {
     expectModelContainsBpmnEvent('startEvent_1', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.NONE);
     expectModelContainsBpmnEvent('startEvent_2_timer', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.TIMER);
     expectModelContainsBpmnEvent('endEvent_1', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.TERMINATE);
+    expectModelContainsCell('task_1', ShapeBpmnElementKind.TASK);
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {

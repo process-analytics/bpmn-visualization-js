@@ -51,16 +51,16 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Comments
 
 |Abstract Task
-|icon:flask[]
-|Rounded corner and stroke color are subject to change
+|icon:check-circle[]
+|
 
 |Service Task
-|
-|
+|icon:flask[]
+|Stroke color and icon are subject to change
 
 |User Task
-|
-|
+|icon:flask[]
+|Stroke color and icon are subject to change
 |===
 
 
