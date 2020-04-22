@@ -45,8 +45,8 @@ export default class StyleConfigurator {
     this.configureServiceTaskStyle();
     this.configureTaskStyle();
     // gateways
+    this.configureGatewaysStyle();
     this.configureParallelGatewayStyle();
-    this.configureExclusiveGatewayStyle();
   }
 
   private getStylesheet(): any {
@@ -133,6 +133,8 @@ export default class StyleConfigurator {
     this.putCellStyle(ShapeBpmnElementKind.TASK, style);
   }
 
+  // TODO: to be removed as it will be configured in configureGatewaysStyle
+  // left just to not brake current rendering
   private configureParallelGatewayStyle(): void {
     const style = this.cloneDefaultVertexStyle();
     style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RHOMBUS;
@@ -147,9 +149,14 @@ export default class StyleConfigurator {
     this.putCellStyle(ShapeBpmnElementKind.GATEWAY_PARALLEL, style);
   }
 
-  private configureExclusiveGatewayStyle(): void {
-    const style = this.mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.GATEWAY_PARALLEL), this.getDefaultVertexStyle());
-    style[this.mxConstants.STYLE_GRADIENTCOLOR] = '#DDA0DD';
-    this.putCellStyle(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, style);
+  private configureGatewaysStyle(): void {
+    ShapeUtil.topLevelBpmnGatewayKinds().forEach(kind => {
+      const style = this.cloneDefaultVertexStyle();
+      style[this.mxConstants.STYLE_SHAPE] = kind;
+      style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RhombusPerimeter;
+      style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
+
+      this.putCellStyle(kind, style);
+    });
   }
 }
