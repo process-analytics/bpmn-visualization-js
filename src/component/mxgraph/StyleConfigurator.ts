@@ -111,8 +111,9 @@ export default class StyleConfigurator {
   }
 
   private configureServiceTaskStyle(): void {
-    const style = this.mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.TASK_USER), this.getDefaultVertexStyle());
-    style[this.mxConstants.STYLE_STROKECOLOR] = 'red';
+    const style = this.cloneDefaultVertexStyle();
+    style[this.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TASK_SERVICE;
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
     this.putCellStyle(ShapeBpmnElementKind.TASK_SERVICE, style);
   }
 
@@ -120,7 +121,7 @@ export default class StyleConfigurator {
     const style = this.cloneDefaultVertexStyle();
     style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RECTANGLE;
     style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
-    style[this.mxConstants.STYLE_STROKECOLOR] = '#2C6DA3';
+    style[this.mxConstants.STYLE_STROKECOLOR] = 'red';
     style[this.mxConstants.STYLE_STROKEWIDTH] = 2;
     style[this.mxConstants.STYLE_ROUNDED] = true;
     this.putCellStyle(ShapeBpmnElementKind.TASK_USER, style);
