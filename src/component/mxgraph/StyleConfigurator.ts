@@ -121,7 +121,7 @@ export default class StyleConfigurator {
     const style = this.cloneDefaultVertexStyle();
     style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RECTANGLE;
     style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
-    style[this.mxConstants.STYLE_STROKECOLOR] = 'red';
+    style[this.mxConstants.STYLE_STROKECOLOR] = '#2C6DA3';
     style[this.mxConstants.STYLE_STROKEWIDTH] = 2;
     style[this.mxConstants.STYLE_ROUNDED] = true;
     this.putCellStyle(ShapeBpmnElementKind.TASK_USER, style);
