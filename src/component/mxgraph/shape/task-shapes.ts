@@ -29,3 +29,13 @@ export class TaskShape extends mxRectangleShape {
     this.isRounded = true;
   }
 }
+
+export class ServiceTaskShape extends TaskShape {
+  protected constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+
+  public paintForeground(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    super.paintForeground(c, x, y, w, h);
+  }
+}
