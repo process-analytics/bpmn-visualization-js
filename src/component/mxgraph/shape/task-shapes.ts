@@ -104,9 +104,9 @@ export class ServiceTaskShape extends BaseTaskShape {
     this.drawIconBackground(canvas);
 
     // foreground
-    const foregroundTranslation = 13;
-    c.translate(foregroundTranslation * scaleFactor, foregroundTranslation * scaleFactor);
-    this.drawIconForeground(c, scaleFactor);
+    const foregroundTranslation = 14 * scaleFactor;
+    c.translate(foregroundTranslation, foregroundTranslation);
+    this.drawIconForeground(canvas);
 
     // hack for translation that will  be needed when managing task markers
     // c.translate(-xTranslation, -yTranslation);
