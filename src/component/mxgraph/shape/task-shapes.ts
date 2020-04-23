@@ -20,7 +20,8 @@ import { StyleConstant } from '../StyleConfigurator';
 
 // TODO rename + move out of this file for reuse in other shapes
 class MxCanvas2DScaler {
-  constructor(readonly c: mxgraph.mxXmlCanvas2D, readonly scaleFactor: number) {}
+  // TODO rename the c parameter is kept public
+  constructor(public readonly c: mxgraph.mxXmlCanvas2D, readonly scaleFactor: number) {}
 
   arcTo(rx: number, ry: number, angle: number, largeArcFlag: number, sweepFlag: number, x: number, y: number): void {
     this.c.arcTo(rx * this.scaleFactor, ry * this.scaleFactor, angle, largeArcFlag, sweepFlag, x * this.scaleFactor, y * this.scaleFactor);
@@ -83,6 +84,8 @@ export class ServiceTaskShape extends BaseTaskShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
+  // this implementation is adapted from the draw.io BPMN 'Service Task' stencil
+  // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L898
   protected paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     const xTranslation = x + w / 20;
     const yTranslation = y + h / 20;
@@ -148,13 +151,15 @@ export class ServiceTaskShape extends BaseTaskShape {
     canvas.lineTo(8.7, 13.56);
     canvas.close();
 
-    const arc1Ray = 13.5;
-    const arc1StartX = 24.8;
-    const arc1StartY = 39;
-    canvas.moveTo(arc1StartX, arc1StartY);
-    canvas.arcTo(arc1Ray, arc1Ray, 0, 1, 1, arc1StartX + 2 * arc1Ray, arc1StartY);
-    canvas.arcTo(arc1Ray, arc1Ray, 0, 0, 1, arc1StartX, arc1StartY);
+    const arcRay = 13.5;
+    const arcStartX = 24.8;
+    const arcStartY = 39;
+    // TODO the following code is duplicated with code in 'drawIconForeground'
+    canvas.moveTo(arcStartX, arcStartY);
+    canvas.arcTo(arcRay, arcRay, 0, 1, 1, arcStartX + 2 * arcRay, arcStartY);
+    canvas.arcTo(arcRay, arcRay, 0, 0, 1, arcStartX, arcStartY);
     canvas.close();
+    canvas.c.setFillColor('blue'); // TODO remove
     canvas.fillAndStroke();
   }
 
@@ -194,15 +199,42 @@ export class ServiceTaskShape extends BaseTaskShape {
     canvas.lineTo(23.1, 30.36);
     canvas.close();
 
-    const arc2Ray = 13.5;
-    const arc2StartX = 39.2;
-    const arc2StartY = 55.8;
-    canvas.moveTo(arc2StartX, arc2StartY);
-    canvas.arcTo(arc2Ray, arc2Ray, 0, 1, 1, arc2StartX + 2 * arc2Ray, arc2StartY);
-    canvas.arcTo(arc2Ray, arc2Ray, 0, 0, 1, arc2StartX, arc2StartY);
+    const arcRay = 13.5; // TODO duplicated
+    const arcStartX = 39.2;
+    const arcStartY = 55.8;
+    canvas.moveTo(arcStartX, arcStartY);
+    canvas.arcTo(arcRay, arcRay, 0, 1, 1, arcStartX + 2 * arcRay, arcStartY);
+    canvas.arcTo(arcRay, arcRay, 0, 0, 1, arcStartX, arcStartY);
     canvas.close();
+    canvas.c.setFillColor('orange'); // TODO remove
     canvas.fillAndStroke();
 
-    // TODO fill the inner circle to mask the background
+    // const arcRay = 13.5; // TODO duplicated
+    // const arcStartX = 39.2;
+    // const arcStartY = 55.8;
+    // // TODO fill the inner circle to mask the background
+    // // canvas.moveTo(arcStartX, arcStartY);
+    // const circleDimension = 0.5 * arcRay;
+    // canvas.c.ellipse(circleDimension, circleDimension, circleDimension, circleDimension);
+    // // canvas.c.ellipse(arcStartX, arcStartY, circleDimension, circleDimension);
+    // // canvas.close();
+    // //canvas.c.setFillColor('red'); // TODO remove
+    // canvas.c.setFillColor('white'); // TODO remove
+    // canvas.c.setStrokeColor('red'); // TODO set to this.fillColor
+    // //canvas.c.setStrokeWidth(0); // no stroke
+    // // canvas.fillAndStroke();
+    // canvas.c.fill();
+
+    // const circleDimension = 0.42 * arcRay;
+    // const position = 0.55 * arcRay;
+    //canvas.c.ellipse(position, position, circleDimension, circleDimension);
+    canvas.begin();
+    canvas.moveTo(arcStartX, arcStartY);
+    canvas.arcTo(arcRay, arcRay, 0, 1, 1, arcStartX + 2 * arcRay, arcStartY);
+    canvas.arcTo(arcRay, arcRay, 0, 0, 1, arcStartX, arcStartY);
+    canvas.close();
+    canvas.c.setFillColor(this.fill); // TODO remove
+    // canvas.c.fill();
+    canvas.c.fillAndStroke();
   }
 }
