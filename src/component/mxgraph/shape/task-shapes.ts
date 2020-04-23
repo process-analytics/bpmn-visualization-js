@@ -99,8 +99,9 @@ export class ServiceTaskShape extends BaseTaskShape {
     const scaleFactor = (parentSize / 100) * ratioFromParent;
     // const scaleFactor = (parentSize / 90) * ratioFromParent;
 
+    const canvas = new MxCanvas2DScaler(c, scaleFactor);
     // background
-    this.drawIconBackground(c, scaleFactor);
+    this.drawIconBackground(canvas);
 
     // foreground
     const foregroundTranslation = 13;
@@ -111,9 +112,7 @@ export class ServiceTaskShape extends BaseTaskShape {
     // c.translate(-xTranslation, -yTranslation);
   }
 
-  private drawIconBackground(c: mxgraph.mxXmlCanvas2D, scaleFactor: number): void {
-    const canvas = new MxCanvas2DScaler(c, scaleFactor);
-
+  private drawIconBackground(canvas: MxCanvas2DScaler): void {
     canvas.begin();
     canvas.moveTo(2.06, 24.62);
     canvas.lineTo(10.17, 30.95);
@@ -159,9 +158,7 @@ export class ServiceTaskShape extends BaseTaskShape {
     canvas.fillAndStroke();
   }
 
-  private drawIconForeground(c: mxgraph.mxXmlCanvas2D, scaleFactor: number): void {
-    const canvas = new MxCanvas2DScaler(c, scaleFactor);
-
+  private drawIconForeground(canvas: MxCanvas2DScaler): void {
     canvas.begin();
     canvas.moveTo(16.46, 41.42);
     canvas.lineTo(24.57, 47.75);
