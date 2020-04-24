@@ -17,35 +17,7 @@
 import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
 import { StyleConstant } from '../StyleConfigurator';
-
-// TODO rename + move out of this file for reuse in other shapes
-class MxCanvas2DScaler {
-  constructor(readonly c: mxgraph.mxXmlCanvas2D, readonly scaleFactor: number) {}
-
-  arcTo(rx: number, ry: number, angle: number, largeArcFlag: number, sweepFlag: number, x: number, y: number): void {
-    this.c.arcTo(rx * this.scaleFactor, ry * this.scaleFactor, angle, largeArcFlag, sweepFlag, x * this.scaleFactor, y * this.scaleFactor);
-  }
-
-  begin(): void {
-    this.c.begin();
-  }
-
-  close(): void {
-    this.c.close();
-  }
-
-  fillAndStroke(): void {
-    this.c.fillAndStroke();
-  }
-
-  lineTo(x: number, y: number): void {
-    this.c.lineTo(x * this.scaleFactor, y * this.scaleFactor);
-  }
-
-  moveTo(x: number, y: number): void {
-    this.c.moveTo(x * this.scaleFactor, y * this.scaleFactor);
-  }
-}
+import MxScaleFactorCanvas from '../extension/MxScaleFactorCanvas';
 
 const mxRectangleShape: typeof mxgraph.mxRectangleShape = MxGraphFactoryService.getMxGraphProperty('mxRectangleShape');
 
@@ -98,7 +70,7 @@ export class ServiceTaskShape extends BaseTaskShape {
     // coordinates below fill a box of 100x100 (approximately: 90x90 + foreground translation)
     const scaleFactor = (parentSize / 100) * ratioFromParent;
 
-    const canvas = new MxCanvas2DScaler(c, scaleFactor);
+    const canvas = new MxScaleFactorCanvas(c, scaleFactor);
     // background
     this.drawIconBackground(canvas);
 
@@ -111,7 +83,7 @@ export class ServiceTaskShape extends BaseTaskShape {
     // c.translate(-xTranslation, -yTranslation);
   }
 
-  private drawIconBackground(canvas: MxCanvas2DScaler): void {
+  private drawIconBackground(canvas: MxScaleFactorCanvas): void {
     canvas.begin();
     canvas.moveTo(2.06, 24.62);
     canvas.lineTo(10.17, 30.95);
@@ -152,7 +124,7 @@ export class ServiceTaskShape extends BaseTaskShape {
     this.drawInnerCircle(canvas, arcStartX, arcStartY);
   }
 
-  private drawIconForeground(canvas: MxCanvas2DScaler): void {
+  private drawIconForeground(canvas: MxScaleFactorCanvas): void {
     canvas.begin();
     canvas.moveTo(16.46, 41.42);
     canvas.lineTo(24.57, 47.75);
@@ -197,7 +169,7 @@ export class ServiceTaskShape extends BaseTaskShape {
     this.drawInnerCircle(canvas, arcStartX, arcStartY);
   }
 
-  private drawInnerCircle(canvas: MxCanvas2DScaler, arcStartX: number, arcStartY: number): void {
+  private drawInnerCircle(canvas: MxScaleFactorCanvas, arcStartX: number, arcStartY: number): void {
     const arcRay = 13.5;
     canvas.moveTo(arcStartX, arcStartY);
     canvas.arcTo(arcRay, arcRay, 0, 1, 1, arcStartX + 2 * arcRay, arcStartY);
