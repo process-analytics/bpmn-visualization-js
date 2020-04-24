@@ -218,7 +218,6 @@ export class UserTaskShape extends BaseTaskShape {
     canvas.curveTo(8, 8, 12, 9.37, 12, 12);
     canvas.lineTo(12, 13);
     canvas.close();
-    // TODO check if fill only is ok
-    canvas.fillAndStroke();
+    canvas.fill();
   }
 }
