@@ -147,15 +147,9 @@ export class ServiceTaskShape extends BaseTaskShape {
     canvas.lineTo(8.7, 13.56);
     canvas.close();
 
-    const arcRay = 13.5;
     const arcStartX = 24.8;
     const arcStartY = 39;
-    // TODO the following code is duplicated with code in 'drawIconForeground'
-    canvas.moveTo(arcStartX, arcStartY);
-    canvas.arcTo(arcRay, arcRay, 0, 1, 1, arcStartX + 2 * arcRay, arcStartY);
-    canvas.arcTo(arcRay, arcRay, 0, 0, 1, arcStartX, arcStartY);
-    canvas.close();
-    canvas.fillAndStroke();
+    this.drawInnerCircle(canvas, arcStartX, arcStartY);
   }
 
   private drawIconForeground(canvas: MxCanvas2DScaler): void {
@@ -194,17 +188,17 @@ export class ServiceTaskShape extends BaseTaskShape {
     canvas.lineTo(23.1, 30.36);
     canvas.close();
 
-    const arcRay = 13.5; // TODO duplicated
     const arcStartX = 39.2;
     const arcStartY = 55.8;
-    canvas.moveTo(arcStartX, arcStartY);
-    canvas.arcTo(arcRay, arcRay, 0, 1, 1, arcStartX + 2 * arcRay, arcStartY);
-    canvas.arcTo(arcRay, arcRay, 0, 0, 1, arcStartX, arcStartY);
-    canvas.close();
-    canvas.fillAndStroke();
+    this.drawInnerCircle(canvas, arcStartX, arcStartY);
 
     // fill the inner circle to mask the background
     canvas.begin();
+    this.drawInnerCircle(canvas, arcStartX, arcStartY);
+  }
+
+  private drawInnerCircle(canvas: MxCanvas2DScaler, arcStartX: number, arcStartY: number): void {
+    const arcRay = 13.5;
     canvas.moveTo(arcStartX, arcStartY);
     canvas.arcTo(arcRay, arcRay, 0, 1, 1, arcStartX + 2 * arcRay, arcStartY);
     canvas.arcTo(arcRay, arcRay, 0, 0, 1, arcStartX, arcStartY);
