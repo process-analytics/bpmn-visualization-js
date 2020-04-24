@@ -20,8 +20,7 @@ import { StyleConstant } from '../StyleConfigurator';
 
 // TODO rename + move out of this file for reuse in other shapes
 class MxCanvas2DScaler {
-  // TODO rename the c parameter is kept public
-  constructor(public readonly c: mxgraph.mxXmlCanvas2D, readonly scaleFactor: number) {}
+  constructor(readonly c: mxgraph.mxXmlCanvas2D, readonly scaleFactor: number) {}
 
   arcTo(rx: number, ry: number, angle: number, largeArcFlag: number, sweepFlag: number, x: number, y: number): void {
     this.c.arcTo(rx * this.scaleFactor, ry * this.scaleFactor, angle, largeArcFlag, sweepFlag, x * this.scaleFactor, y * this.scaleFactor);
@@ -89,18 +88,15 @@ export class ServiceTaskShape extends BaseTaskShape {
   protected paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     const xTranslation = x + w / 20;
     const yTranslation = y + h / 20;
-
     c.translate(xTranslation, yTranslation);
 
     // ensure we are not impacted by the configured shape stroke width
     c.setStrokeWidth(1);
-    //this.drawServiceTaskIcon(c, Math.min(w, h), 0.25);
 
     const parentSize = Math.min(w, h);
     const ratioFromParent = 0.25;
     // coordinates below fill a box of 100x100 (approximately: 90x90 + foreground translation)
     const scaleFactor = (parentSize / 100) * ratioFromParent;
-    // const scaleFactor = (parentSize / 90) * ratioFromParent;
 
     const canvas = new MxCanvas2DScaler(c, scaleFactor);
     // background
@@ -111,7 +107,7 @@ export class ServiceTaskShape extends BaseTaskShape {
     c.translate(foregroundTranslation, foregroundTranslation);
     this.drawIconForeground(canvas);
 
-    // hack for translation that will  be needed when managing task markers
+    // hack for translation that will be needed when managing task markers
     // c.translate(-xTranslation, -yTranslation);
   }
 
@@ -159,7 +155,6 @@ export class ServiceTaskShape extends BaseTaskShape {
     canvas.arcTo(arcRay, arcRay, 0, 1, 1, arcStartX + 2 * arcRay, arcStartY);
     canvas.arcTo(arcRay, arcRay, 0, 0, 1, arcStartX, arcStartY);
     canvas.close();
-    canvas.c.setFillColor('blue'); // TODO remove
     canvas.fillAndStroke();
   }
 
@@ -206,35 +201,14 @@ export class ServiceTaskShape extends BaseTaskShape {
     canvas.arcTo(arcRay, arcRay, 0, 1, 1, arcStartX + 2 * arcRay, arcStartY);
     canvas.arcTo(arcRay, arcRay, 0, 0, 1, arcStartX, arcStartY);
     canvas.close();
-    canvas.c.setFillColor('orange'); // TODO remove
     canvas.fillAndStroke();
 
-    // const arcRay = 13.5; // TODO duplicated
-    // const arcStartX = 39.2;
-    // const arcStartY = 55.8;
-    // // TODO fill the inner circle to mask the background
-    // // canvas.moveTo(arcStartX, arcStartY);
-    // const circleDimension = 0.5 * arcRay;
-    // canvas.c.ellipse(circleDimension, circleDimension, circleDimension, circleDimension);
-    // // canvas.c.ellipse(arcStartX, arcStartY, circleDimension, circleDimension);
-    // // canvas.close();
-    // //canvas.c.setFillColor('red'); // TODO remove
-    // canvas.c.setFillColor('white'); // TODO remove
-    // canvas.c.setStrokeColor('red'); // TODO set to this.fillColor
-    // //canvas.c.setStrokeWidth(0); // no stroke
-    // // canvas.fillAndStroke();
-    // canvas.c.fill();
-
-    // const circleDimension = 0.42 * arcRay;
-    // const position = 0.55 * arcRay;
-    //canvas.c.ellipse(position, position, circleDimension, circleDimension);
+    // fill the inner circle to mask the background
     canvas.begin();
     canvas.moveTo(arcStartX, arcStartY);
     canvas.arcTo(arcRay, arcRay, 0, 1, 1, arcStartX + 2 * arcRay, arcStartY);
     canvas.arcTo(arcRay, arcRay, 0, 0, 1, arcStartX, arcStartY);
     canvas.close();
-    canvas.c.setFillColor(this.fill); // TODO remove
-    // canvas.c.fill();
-    canvas.c.fillAndStroke();
+    canvas.fillAndStroke();
   }
 }
