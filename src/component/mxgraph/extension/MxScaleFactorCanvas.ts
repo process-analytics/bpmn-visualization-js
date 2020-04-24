@@ -43,6 +43,10 @@ export default class MxScaleFactorCanvas {
     this.c.close();
   }
 
+  curveTo(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): void {
+    this.c.curveTo(x1 * this.scaleFactor, y1 * this.scaleFactor, x2 * this.scaleFactor, y2 * this.scaleFactor, x3 * this.scaleFactor, y3 * this.scaleFactor);
+  }
+
   fillAndStroke(): void {
     this.c.fillAndStroke();
   }

@@ -184,8 +184,62 @@ export class UserTaskShape extends BaseTaskShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // adapted from https://github.com/primer/octicons/blob/638c6683c96ec4b357576c7897be8f19c933c052/icons/person.svg
+  // use mxgraph svg2xml to generate the xml stencil and port it to code
   protected paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    // TODO duplication with serviceTaskIcon
+    const xTranslation = x + w / 20;
+    const yTranslation = y + h / 20;
+    c.translate(xTranslation, yTranslation);
+
+    // ensure we are not impacted by the configured shape stroke width
+    c.setStrokeWidth(1);
+
+    const parentSize = Math.min(w, h);
+    const ratioFromParent = 0.25;
+    // coordinates below fill a box of 12x13
+    const scaleFactor = (parentSize / 13) * ratioFromParent;
+
+    const canvas = new MxScaleFactorCanvas(c, scaleFactor);
+
+    c.setFillColor(this.stroke);
     // TODO implement icon
+    canvas.begin();
+    // <move x="12" y="13"/>
+    canvas.moveTo(12, 13);
+    // <arc large-arc-flag="0" rx="1" ry="1" sweep-flag="1" x="11" x-axis-rotation="0" y="14"/>
+    canvas.arcTo(1, 1, 0, 0, 1, 11, 14);
+    // <line x="1" y="14"/>
+    canvas.lineTo(1, 14);
+    // <arc large-arc-flag="0" rx="1" ry="1" sweep-flag="1" x="0" x-axis-rotation="0" y="13"/>
+    canvas.arcTo(1, 1, 0, 0, 1, 0, 13);
+    // <line x="0" y="12"/>
+    canvas.lineTo(0, 12);
+    // <curve x1="0" x2="4" x3="4" y1="9.37" y2="8" y3="8"/>
+    canvas.curveTo(0, 9.37, 4, 8, 4, 8);
+    // <curve x1="4" x2="4.23" x3="4" y1="8" y2="7.59" y3="7"/>
+    canvas.curveTo(4, 8, 4.23, 8, 4, 8);
+    // <curve x1="3.16" x2="3.06" x3="3" y1="6.38" y2="5.41" y3="3"/>
+    canvas.curveTo(3.16, 6.38, 3.06, 5.41, 3, 3);
+    // <curve x1="3.17" x2="4.87" x3="6" y1="0.59" y2="0" y3="0"/>
+    canvas.curveTo(3.17, 0.59, 4.87, 0, 6, 0);
+    // <curve x1="7.13" x2="8.83" x3="9" y1="0" y2="0.59" y3="3"/>
+    canvas.curveTo(7.13, 0, 8.83, 0.59, 9, 3);
+    // // <curve x1="8.94" x2="8.84" x3="8" y1="5.41" y2="6.38" y3="7"/>
+    // canvas.curveTo(8.94, 5.41, 8.84, 6.38, 8, 7);
+    // // <curve x1="7.77" x2="8" x3="8" y1="7.59" y2="8" y3="8"/>
+    // canvas.curveTo(7.77, 7.59, 8, 8, 8, 8);
+    // replace the 2 curves above by this single one for symmetry with the other side of the shae
+    canvas.curveTo(8.94, 5.41, 8.84, 6.38, 8, 8);
+    // <curve x1="8" x2="12" x3="12" y1="8" y2="9.37" y3="12"/>
+    canvas.curveTo(8, 8, 12, 9.37, 12, 12);
+    // <line x="12" y="13"/>
+    canvas.lineTo(12, 13);
+    //     <close/>
+    canvas.close();
+    //     </path>
+    //     <fillstroke/>
+    // TODO check if fill only is ok
+    canvas.fillAndStroke();
   }
 }
