@@ -42,7 +42,6 @@ export default class StyleConfigurator {
     this.configureEventsStyle();
     // tasks
     this.configureTasksStyle();
-    this.configureUserTaskStyle();
     // gateways
     this.configureGatewaysStyle();
     this.configureParallelGatewayStyle();
@@ -116,18 +115,6 @@ export default class StyleConfigurator {
       style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
       this.putCellStyle(kind, style);
     });
-  }
-
-  // TODO: to be removed as it will be configured in configureTasksStyle
-  // left just to not break current rendering
-  private configureUserTaskStyle(): void {
-    const style = this.cloneDefaultVertexStyle();
-    style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RECTANGLE;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
-    style[this.mxConstants.STYLE_STROKECOLOR] = '#2C6DA3';
-    style[this.mxConstants.STYLE_STROKEWIDTH] = 2;
-    style[this.mxConstants.STYLE_ROUNDED] = true;
-    this.putCellStyle(ShapeBpmnElementKind.TASK_USER, style);
   }
 
   // TODO: to be removed as it will be configured in configureGatewaysStyle
