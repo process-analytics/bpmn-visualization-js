@@ -37,6 +37,29 @@ abstract class BaseTaskShape extends mxRectangleShape {
   }
 
   protected abstract paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void;
+
+  protected translateToStartingIconPosition(c: mxgraph.mxXmlCanvas2D, parentX: number, parentY: number, parentWidth: number, parentHeight: number): void {
+    const xTranslation = parentX + parentWidth / 20;
+    const yTranslation = parentY + parentHeight / 20;
+    c.translate(xTranslation, yTranslation);
+  }
+
+  protected configureCanvasForIcon(
+    c: mxgraph.mxXmlCanvas2D,
+    parentWidth: number,
+    parentHeight: number,
+    iconOriginalSize: number,
+  ): { canvas: MxScaleFactorCanvas; scaleFactor: number } {
+    // ensure we are not impacted by the configured shape stroke width
+    c.setStrokeWidth(1);
+
+    const parentSize = Math.min(parentWidth, parentHeight);
+    const ratioFromParent = 0.25;
+    const scaleFactor = (parentSize / iconOriginalSize) * ratioFromParent;
+
+    const canvas = new MxScaleFactorCanvas(c, scaleFactor);
+    return { canvas: canvas, scaleFactor: scaleFactor };
+  }
 }
 
 export class TaskShape extends BaseTaskShape {
@@ -58,19 +81,10 @@ export class ServiceTaskShape extends BaseTaskShape {
   // this implementation is adapted from the draw.io BPMN 'Service Task' stencil
   // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L898
   protected paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const xTranslation = x + w / 20;
-    const yTranslation = y + h / 20;
-    c.translate(xTranslation, yTranslation);
+    // icon coordinates fill a 100x100 rectangle (approximately: 90x90 + foreground translation)
+    const { canvas, scaleFactor } = this.configureCanvasForIcon(c, w, h, 100);
+    this.translateToStartingIconPosition(c, x, y, w, h);
 
-    // ensure we are not impacted by the configured shape stroke width
-    c.setStrokeWidth(1);
-
-    const parentSize = Math.min(w, h);
-    const ratioFromParent = 0.25;
-    // coordinates below fill a box of 100x100 (approximately: 90x90 + foreground translation)
-    const scaleFactor = (parentSize / 100) * ratioFromParent;
-
-    const canvas = new MxScaleFactorCanvas(c, scaleFactor);
     // background
     this.drawIconBackground(canvas);
 
@@ -78,9 +92,6 @@ export class ServiceTaskShape extends BaseTaskShape {
     const foregroundTranslation = 14 * scaleFactor;
     c.translate(foregroundTranslation, foregroundTranslation);
     this.drawIconForeground(canvas);
-
-    // hack for translation that will be needed when managing task markers
-    // c.translate(-xTranslation, -yTranslation);
   }
 
   private drawIconBackground(canvas: MxScaleFactorCanvas): void {
@@ -187,20 +198,9 @@ export class UserTaskShape extends BaseTaskShape {
   // adapted from https://github.com/primer/octicons/blob/638c6683c96ec4b357576c7897be8f19c933c052/icons/person.svg
   // use mxgraph svg2xml to generate the xml stencil and port it to code
   protected paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    // TODO duplication with serviceTaskIcon
-    const xTranslation = x + w / 20;
-    const yTranslation = y + h / 20;
-    c.translate(xTranslation, yTranslation);
-
-    // ensure we are not impacted by the configured shape stroke width
-    c.setStrokeWidth(1);
-
-    const parentSize = Math.min(w, h);
-    const ratioFromParent = 0.25;
-    // coordinates below fill a box of 12x13
-    const scaleFactor = (parentSize / 13) * ratioFromParent;
-
-    const canvas = new MxScaleFactorCanvas(c, scaleFactor);
+    // icon coordinates fill a 12x13 rectangle
+    const { canvas } = this.configureCanvasForIcon(c, w, h, 13);
+    this.translateToStartingIconPosition(c, x, y, w, h);
 
     c.setFillColor(this.stroke);
     canvas.begin();
