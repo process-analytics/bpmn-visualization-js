@@ -56,7 +56,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 |Service Task
 |icon:check-circle-o[]
-|Icon is subject to change
+|Icon is subject to change +
+*icon*: the task icon is derived from the https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L898[draw.io bpmn mxgraph stencil]
 
 |User Task
 |icon:flask[]
