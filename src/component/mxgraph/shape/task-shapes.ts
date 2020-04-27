@@ -363,20 +363,21 @@ export class UserTaskShape extends BaseTaskShape {
     // canvas.curveTo(54.66, 54.14, 93.8, 15, 141.91, 15);
     // canvas.close();
 
-    // // jou gauche + cheveux gauche
-    // canvas.moveTo(53.18, 166.3);
-    // canvas.curveTo(54.29, 166.78, 55.44, 167.17, 56.64, 167.46);
-    // canvas.curveTo(58.73, 167.95, 60.86, 168.14, 62.96, 168.02);
-    // canvas.curveTo(67.04, 190.01, 79.86, 208.5, 97.43, 220.2);
-    // canvas.lineTo(97.43, 238.38);
+    // jou gauche
+    canvas.moveTo(53.18, 166.3);
+    canvas.curveTo(54.29, 166.78, 55.44, 167.17, 56.64, 167.46);
+    canvas.curveTo(58.73, 167.95, 60.86, 168.14, 62.96, 168.02);
+    canvas.curveTo(67.04, 190.01, 79.86, 208.5, 97.43, 220.2);
+    canvas.lineTo(97.43, 238.38);
+    // debut doublement cheveux gauche via interieur du bas droite vers la gauche puis remontee
     // canvas.curveTo(79.38, 232.3, 54.95, 224.95, 42.57, 221.28);
     // canvas.curveTo(45.86, 211.74, 50.76, 193.76, 53.18, 166.3);
     // canvas.close();
-    //
-    // // cou
-    // canvas.moveTo(112.43, 228.04);
-    // canvas.curveTo(121.6, 231.66, 131.55, 233.65, 141.91, 233.65);
-    // canvas.curveTo(152.09, 233.65, 161.97, 231.71, 171.12, 228.13);
+
+    // cou
+    canvas.moveTo(112.43, 228.04);
+    canvas.curveTo(121.6, 231.66, 131.55, 233.65, 141.91, 233.65);
+    canvas.curveTo(152.09, 233.65, 161.97, 231.71, 171.12, 228.13);
     // //canvas.lineTo(171.12, 240.2);
 
     //
