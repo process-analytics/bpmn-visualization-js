@@ -268,11 +268,13 @@ export class UserTaskShape extends BaseTaskShape {
     // doublement epaule gauche
     // canvas.curveTo(35.03, 290.96, 36.77, 289.99, 38.59, 289.16);
     // canvas.lineTo(74.53, 272.68);
-    canvas.moveTo(74.53, 272.68); // remplacement pour eviter doublement
+    // canvas.moveTo(74.53, 272.68); // remplacement pour eviter doublement
+    canvas.moveTo(70.53, 268.68); // remplacement pour eviter doublement
 
     // cou
     canvas.curveTo(84.77, 300.61, 111.54, 319.62, 141.78, 319.62);
-    canvas.curveTo(172.11, 319.62, 198.79, 300.64, 209.02, 272.68);
+    // canvas.curveTo(172.11, 319.62, 198.79, 300.64, 209.02, 272.68);
+    canvas.curveTo(172.11, 319.62, 198.79, 300.64, 213.02, 268.68);
     //    canvas.lineTo(244.96, 289.16); // début epaule droite
     canvas.moveTo(244.96, 289.16); // remplacement pour eviter doublement
 
