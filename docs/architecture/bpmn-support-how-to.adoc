@@ -29,3 +29,7 @@ used for the rendering.
 
 The `mxShape` can be a standard `mxGraph` class or a custom BPMN `mxShape` defined by the lib. The custom `mxShapes` are registered by `ShapeConfigurator`
 which associates the `mxShape` name (used in style definition) with the `mxShape` class to be used.
+
+
+===== BPMN icon tips
+
