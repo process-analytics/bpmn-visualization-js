@@ -241,28 +241,32 @@ export class UserTaskShape extends BaseTaskShape {
     canvas.curveTo(0.84, 323.27, 1.67, 323.28, 2.51, 323.27);
     canvas.curveTo(3.67, 323.13, 4.92, 323.47, 6.08, 323.27);
 
-    canvas.curveTo(6.24, 323.24, 5.76, 323.19, 5.61, 323.16);
-    canvas.curveTo(6.47, 323.07, 7.34, 322.98, 8.21, 322.88);
-    canvas.curveTo(8.79, 322.97, 9.38, 323.04, 9.96, 323.13);
-    canvas.curveTo(11.59, 323.41, 11.85, 323.34, 13.59, 323.27);
+    // zigwi gwi
+    // canvas.curveTo(6.24, 323.24, 5.76, 323.19, 5.61, 323.16);
+    // canvas.curveTo(6.47, 323.07, 7.34, 322.98, 8.21, 322.88);
+    // canvas.curveTo(8.79, 322.97, 9.38, 323.04, 9.96, 323.13);
+    // canvas.curveTo(11.59, 323.41, 11.85, 323.34, 13.59, 323.27);
 
-    canvas.curveTo(14.07, 323.25, 14.54, 323.24, 15.02, 323.24);
-    canvas.curveTo(15.57, 315.7, 18.23, 308.51, 22.54, 302.47);
+    // canvas.curveTo(14.07, 323.25, 14.54, 323.24, 15.02, 323.24);
+    // canvas.curveTo(15.57, 315.7, 18.23, 308.51, 22.54, 302.47);
+    canvas.moveTo(22.54, 302.47); // remplacement pour eviter doublement
     canvas.lineTo(39.25, 322.51);
 
-    canvas.curveTo(39.25, 322.51, 39.26, 322.51, 39.26, 322.51);
-    canvas.curveTo(41.11, 322.57, 42.96, 322.49, 44.81, 322.49);
-    canvas.curveTo(47.19, 322.5, 49.58, 322.5, 51.96, 322.5);
-    canvas.curveTo(53.75, 322.64, 55.6, 322.29, 57.38, 322.5);
+    // zigwi gwi
+    // canvas.curveTo(39.25, 322.51, 39.26, 322.51, 39.26, 322.51);
+    // canvas.curveTo(41.11, 322.57, 42.96, 322.49, 44.81, 322.49);
+    // canvas.curveTo(47.19, 322.5, 49.58, 322.5, 51.96, 322.5);
+    // canvas.curveTo(53.75, 322.64, 55.6, 322.29, 57.38, 322.5);
 
     // doublement bretelle gauche
-    canvas.curveTo(57.69, 322.54, 58.04, 322.59, 58.41, 322.66);
-    canvas.curveTo(57.21, 320.85, 55.92, 319.08, 54.51, 317.4);
-    canvas.lineTo(33.38, 292.04);
+    // canvas.curveTo(57.69, 322.54, 58.04, 322.59, 58.41, 322.66);
+    // canvas.curveTo(57.21, 320.85, 55.92, 319.08, 54.51, 317.4);
+    // canvas.lineTo(33.38, 292.04);
 
     // doublement epaule gauche
-    canvas.curveTo(35.03, 290.96, 36.77, 289.99, 38.59, 289.16);
-    canvas.lineTo(74.53, 272.68);
+    // canvas.curveTo(35.03, 290.96, 36.77, 289.99, 38.59, 289.16);
+    // canvas.lineTo(74.53, 272.68);
+    canvas.moveTo(74.53, 272.68); // remplacement pour eviter doublement
 
     // cou
     canvas.curveTo(84.77, 300.61, 111.54, 319.62, 141.78, 319.62);
