@@ -385,10 +385,14 @@ export class UserTaskShape extends BaseTaskShape {
     // canvas.close();
 
     // jou gauche
-    canvas.moveTo(53.18, 166.3);
-    canvas.curveTo(54.29, 166.78, 55.44, 167.17, 56.64, 167.46);
-    canvas.curveTo(58.73, 167.95, 60.86, 168.14, 62.96, 168.02);
+    // canvas.moveTo(53.18, 166.3);
+    // canvas.curveTo(54.29, 166.78, 55.44, 167.17, 56.64, 167.46);
+    // canvas.curveTo(58.73, 167.95, 60.86, 168.14, 62.96, 168.02);
+    canvas.moveTo(71.88, 146.68);
+    canvas.curveTo(68.73, 167.95, 60.86, 168.14, 62.96, 168.02);
+    // canvas.moveTo(62.96, 168.02);
     canvas.curveTo(67.04, 190.01, 79.86, 208.5, 97.43, 220.2);
+    // canvas.moveTo(97.43, 220.2);
     // canvas.lineTo(97.43, 238.38);
     // canvas.lineTo(86.67, 250.61); // cou vertical - ajustement pour lier a la ligne de dedoublement v1
     canvas.lineTo(97.43, 250.61); // cou vertical - ajustement pour lier a la ligne de dedoublement
