@@ -61,7 +61,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 |User Task
 |icon:flask[]
-|Stroke color and icon are subject to change
+|Icon will be subject to a large change +
+*icon*: the task icon is currently derived from the https://github.com/primer/octicons/blob/638c6683c96ec4b357576c7897be8f19c933c052/icons/person.svg[primer octicons person svg]
 |===
 
 
