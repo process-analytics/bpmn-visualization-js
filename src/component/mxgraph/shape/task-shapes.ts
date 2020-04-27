@@ -189,32 +189,35 @@ export class UserTaskShape extends BaseTaskShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
+  protected paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    // this.paintBasic(c, x, y, w, h);
+    this.paintWoman(c, x, y, w, h);
+  }
+
   // adapted from https://github.com/primer/octicons/blob/638c6683c96ec4b357576c7897be8f19c933c052/icons/person.svg
   // use mxgraph svg2xml to generate the xml stencil and port it to code
-  protected paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    // // icon coordinates fill a 12x13 rectangle
-    // const canvas = this.configureCanvasForIcon(c, w, h, 13);
-    // this.translateToStartingIconPosition(c, x, y, w, h);
-    //
-    // c.setFillColor(this.stroke);
-    // canvas.begin();
-    // canvas.moveTo(12, 13);
-    // canvas.arcTo(1, 1, 0, 0, 1, 11, 14);
-    // canvas.lineTo(1, 14);
-    // canvas.arcTo(1, 1, 0, 0, 1, 0, 13);
-    // canvas.lineTo(0, 12);
-    // canvas.curveTo(0, 9.37, 4, 8, 4, 8);
-    // canvas.curveTo(4, 8, 4.23, 8, 4, 8);
-    // canvas.curveTo(3.16, 6.38, 3.06, 5.41, 3, 3);
-    // canvas.curveTo(3.17, 0.59, 4.87, 0, 6, 0);
-    // canvas.curveTo(7.13, 0, 8.83, 0.59, 9, 3);
-    // canvas.curveTo(8.94, 5.41, 8.84, 6.38, 8, 8);
-    // canvas.curveTo(8, 8, 12, 9.37, 12, 12);
-    // canvas.lineTo(12, 13);
-    // canvas.close();
-    // canvas.fill();
+  private paintBasic(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    // icon coordinates fill a 12x13 rectangle
+    const canvas = this.configureCanvasForIcon(c, w, h, 13);
+    this.translateToStartingIconPosition(c, x, y, w, h);
 
-    this.paintWoman(c, x, y, w, h);
+    c.setFillColor(this.stroke);
+    canvas.begin();
+    canvas.moveTo(12, 13);
+    canvas.arcTo(1, 1, 0, 0, 1, 11, 14);
+    canvas.lineTo(1, 14);
+    canvas.arcTo(1, 1, 0, 0, 1, 0, 13);
+    canvas.lineTo(0, 12);
+    canvas.curveTo(0, 9.37, 4, 8, 4, 8);
+    canvas.curveTo(4, 8, 4.23, 8, 4, 8);
+    canvas.curveTo(3.16, 6.38, 3.06, 5.41, 3, 3);
+    canvas.curveTo(3.17, 0.59, 4.87, 0, 6, 0);
+    canvas.curveTo(7.13, 0, 8.83, 0.59, 9, 3);
+    canvas.curveTo(8.94, 5.41, 8.84, 6.38, 8, 8);
+    canvas.curveTo(8, 8, 12, 9.37, 12, 12);
+    canvas.lineTo(12, 13);
+    canvas.close();
+    canvas.fill();
   }
 
   private paintWoman(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
