@@ -353,21 +353,28 @@ export class UserTaskShape extends BaseTaskShape {
     // canvas.curveTo(76.34, 157.83, 69.55, 152.49, 62.21, 153.04);
 
     // debut oreille
-    canvas.moveTo(62.21, 153.04); // added as a starting point
-    canvas.curveTo(61.52, 153.09, 60.81, 153.03, 60.09, 152.86);
-    canvas.curveTo(56.99, 152.12, 54.66, 148.76, 54.66, 145.02);
-    // canvas.moveTo(54.66, 145.02); // added (remove line on the left)
-    canvas.lineTo(54.66, 139.43);
+    // canvas.moveTo(62.21, 153.04); // added as a starting point
+    // canvas.curveTo(61.52, 153.09, 60.81, 153.03, 60.09, 152.86);
+    // canvas.curveTo(56.99, 152.12, 54.66, 148.76, 54.66, 145.02);
+    // // canvas.moveTo(54.66, 145.02); // added (remove line on the left)
+    // canvas.lineTo(54.66, 139.43);
 
     //suite oreille et frange gauche
-    canvas.curveTo(54.66, 135.68, 57.18, 132.3, 60.4, 131.73);
-    canvas.curveTo(63.1, 131.25, 65.7, 132.25, 67.34, 134.4);
-    canvas.curveTo(68.74, 136.21, 70.59, 137.51, 72.71, 138.15);
-    canvas.curveTo(75.82, 139.09, 79.24, 138.54, 81.88, 136.68);
+    // canvas.curveTo(54.66, 135.68, 57.18, 132.3, 60.4, 131.73);
+    // canvas.moveTo(60.4, 131.73);
+    // canvas.curveTo(63.1, 131.25, 65.7, 132.25, 67.34, 134.4);
+    // canvas.moveTo(67.34, 134.4);
+    // canvas.curveTo(68.74, 136.21, 70.59, 137.51, 72.71, 138.15);
+    // canvas.moveTo(72.71, 138.15);
+    // canvas.curveTo(75.82, 139.09, 79.24, 138.54, 81.88, 136.68);
+    canvas.moveTo(71.88, 146.68);
+    // canvas.moveTo(81.88, 136.68);
     canvas.curveTo(87.91, 132.42, 93.03, 127.01, 97.08, 120.62);
-    canvas.curveTo(99.3, 117.12, 98.26, 112.48, 94.77, 110.26);
+    canvas.curveTo(99.3, 117.12, 98.26, 112.48, 104.77, 90.26);
+    // canvas.curveTo(99.3, 117.12, 98.26, 112.48, 94.77, 110.26);
 
     // canvas.curveTo(91.27, 108.05, 86.63, 109.09, 84.41, 112.58); // debut doublement
+    // canvas.moveTo(84.41, 112.58);
     // canvas.curveTo(82.12, 116.2, 79.39, 119.38, 76.25, 122.07);
     // canvas.curveTo(71.27, 117.71, 64.53, 115.78, 57.8, 116.96);
     // canvas.curveTo(56.72, 117.15, 55.68, 117.44, 54.66, 117.78);
