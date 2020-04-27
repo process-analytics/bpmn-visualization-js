@@ -226,6 +226,7 @@ export class UserTaskShape extends BaseTaskShape {
     this.translateToStartingIconPosition(c, x, y, w, h);
 
     canvas.begin();
+    // haut epaule gauche + cheveux gauche
     canvas.moveTo(141.9, 0);
     canvas.curveTo(85.52, 0, 39.66, 45.87, 39.66, 102.25);
     canvas.lineTo(39.66, 131.4);
@@ -233,106 +234,137 @@ export class UserTaskShape extends BaseTaskShape {
     canvas.curveTo(24.88, 224.78, 24.82, 227.11, 25.71, 229.15);
     canvas.curveTo(26.6, 231.19, 28.35, 232.73, 30.48, 233.35);
     canvas.curveTo(30.85, 233.46, 62.4, 242.66, 86.67, 250.61);
-    canvas.lineTo(32.34, 275.52);
+    canvas.lineTo(32.34, 275.52); // debut epaule gauche
+
+    // epaule gauche
     canvas.curveTo(13.51, 284.16, 1.07, 302.84, 0, 323.26);
     canvas.curveTo(0.84, 323.27, 1.67, 323.28, 2.51, 323.27);
     canvas.curveTo(3.67, 323.13, 4.92, 323.47, 6.08, 323.27);
+
     canvas.curveTo(6.24, 323.24, 5.76, 323.19, 5.61, 323.16);
     canvas.curveTo(6.47, 323.07, 7.34, 322.98, 8.21, 322.88);
     canvas.curveTo(8.79, 322.97, 9.38, 323.04, 9.96, 323.13);
     canvas.curveTo(11.59, 323.41, 11.85, 323.34, 13.59, 323.27);
+
     canvas.curveTo(14.07, 323.25, 14.54, 323.24, 15.02, 323.24);
     canvas.curveTo(15.57, 315.7, 18.23, 308.51, 22.54, 302.47);
     canvas.lineTo(39.25, 322.51);
+
     canvas.curveTo(39.25, 322.51, 39.26, 322.51, 39.26, 322.51);
     canvas.curveTo(41.11, 322.57, 42.96, 322.49, 44.81, 322.49);
     canvas.curveTo(47.19, 322.5, 49.58, 322.5, 51.96, 322.5);
     canvas.curveTo(53.75, 322.64, 55.6, 322.29, 57.38, 322.5);
+
+    // doublement bretelle gauche
     canvas.curveTo(57.69, 322.54, 58.04, 322.59, 58.41, 322.66);
     canvas.curveTo(57.21, 320.85, 55.92, 319.08, 54.51, 317.4);
     canvas.lineTo(33.38, 292.04);
+
+    // doublement epaule gauche
     canvas.curveTo(35.03, 290.96, 36.77, 289.99, 38.59, 289.16);
     canvas.lineTo(74.53, 272.68);
-    canvas.curveTo(84.77, 300.61, 111.54, 319.62, 141.78, 319.62);
-    canvas.curveTo(172.11, 319.62, 198.79, 300.64, 209.02, 272.68);
-    canvas.lineTo(244.96, 289.16);
-    canvas.curveTo(246.78, 289.99, 248.52, 290.96, 250.17, 292.04);
-    canvas.lineTo(229.04, 317.4);
-    canvas.curveTo(226.72, 320.19, 224.68, 323.17, 222.92, 326.3);
-    canvas.curveTo(224.27, 326.27, 225.63, 326.25, 226.97, 326.34);
-    canvas.curveTo(228.16, 326.41, 229.34, 326.61, 230.52, 326.75);
-    canvas.curveTo(232.69, 327.05, 235.72, 327.7, 237.93, 327.21);
-    canvas.curveTo(238.06, 327.18, 238.09, 326.99, 238.21, 326.95);
-    canvas.curveTo(238.68, 326.75, 239.18, 326.63, 239.66, 326.47);
-    canvas.curveTo(240.2, 326.3, 240.73, 326.22, 241.26, 326.17);
-    canvas.lineTo(261.01, 302.47);
-    canvas.curveTo(265.81, 309.2, 268.56, 317.35, 268.62, 325.82);
-    canvas.curveTo(270.26, 326.03, 272.18, 326.29, 272.79, 326.37);
-    canvas.curveTo(276.29, 326.65, 279.72, 327.57, 283.25, 327.17);
-    canvas.curveTo(283.37, 327.15, 283.5, 327.15, 283.62, 327.14);
-    canvas.curveTo(284.03, 305.24, 271.23, 284.7, 251.21, 275.52);
-    canvas.lineTo(197.03, 250.68);
-    canvas.curveTo(221.48, 242.7, 252.97, 233.45, 253.34, 233.35);
-    canvas.curveTo(255.46, 232.72, 257.19, 231.18, 258.09, 229.16);
-    canvas.curveTo(258.98, 227.14, 258.92, 224.81, 257.95, 222.82);
-    canvas.curveTo(257.81, 222.54, 244.15, 193.96, 244.15, 131.4);
-    canvas.lineTo(244.15, 102.25);
-    canvas.curveTo(244.15, 45.87, 198.28, 0, 141.9, 0);
-    canvas.close();
-    // haut cheveux droite jusqu'au coup
-    // canvas.moveTo(141.91, 15);
-    // canvas.curveTo(190.01, 15, 229.15, 54.14, 229.15, 102.25);
-    // canvas.lineTo(229.15, 131.4);
-    // canvas.curveTo(229.15, 179.13, 236.72, 208.19, 241.25, 221.29);
-    // canvas.curveTo(228.85, 224.99, 204.34, 232.39, 186.13, 238.49);
-    canvas.moveTo(186.13, 238.49); // added bas visage a droite
-    canvas.lineTo(186.13, 220.35);
-    canvas.curveTo(198.74, 212.02, 209.02, 200.15, 215.38, 185.74);
-    canvas.curveTo(219.16, 177.17, 221.29, 167.65, 221.53, 158.2);
-    canvas.curveTo(222.34, 126.93, 195.71, 119.07, 167.51, 110.74);
-    canvas.curveTo(144.19, 103.86, 117.75, 96.05, 96.12, 75.01);
-    canvas.curveTo(93.15, 72.12, 88.4, 72.19, 85.51, 75.15);
-    canvas.curveTo(82.63, 78.12, 82.69, 82.87, 85.66, 85.76);
-    // limite cheveux haut du visage
-    // canvas.curveTo(109.95, 109.38, 139.51, 118.11, 163.27, 125.13);
-    // canvas.curveTo(192.83, 133.86, 207.02, 138.89, 206.54, 157.82);
-    // canvas.curveTo(206.35, 165.32, 204.66, 172.88, 201.66, 179.68);
-    // canvas.curveTo(191.21, 203.35, 167.75, 218.65, 141.91, 218.65);
-    // canvas.curveTo(110.39, 218.65, 83.38, 196.16, 77.68, 165.16);
-    // canvas.curveTo(76.34, 157.83, 69.55, 152.49, 62.21, 153.04);
-
-    // canvas.curveTo(61.52, 153.09, 60.81, 153.03, 60.09, 152.86);
-    // canvas.curveTo(56.99, 152.12, 54.66, 148.76, 54.66, 145.02);
-    canvas.moveTo(54.66, 145.02); // added (remove line othe left)
-    canvas.lineTo(54.66, 139.43);
-
-    canvas.curveTo(54.66, 135.68, 57.18, 132.3, 60.4, 131.73);
-    canvas.curveTo(63.1, 131.25, 65.7, 132.25, 67.34, 134.4);
-    canvas.curveTo(68.74, 136.21, 70.59, 137.51, 72.71, 138.15);
-    canvas.curveTo(75.82, 139.09, 79.24, 138.54, 81.88, 136.68);
-    canvas.curveTo(87.91, 132.42, 93.03, 127.01, 97.08, 120.62);
-    canvas.curveTo(99.3, 117.12, 98.26, 112.48, 94.77, 110.26);
-    canvas.curveTo(91.27, 108.05, 86.63, 109.09, 84.41, 112.58);
-    // canvas.curveTo(82.12, 116.2, 79.39, 119.38, 76.25, 122.07);
-    // canvas.curveTo(71.27, 117.71, 64.53, 115.78, 57.8, 116.96);
-    // canvas.curveTo(56.72, 117.15, 55.68, 117.44, 54.66, 117.78);
-    // canvas.lineTo(54.66, 102.25);
-    // canvas.curveTo(54.66, 54.14, 93.8, 15, 141.91, 15);
-    canvas.close();
-    canvas.moveTo(53.18, 166.3);
-    canvas.curveTo(54.29, 166.78, 55.44, 167.17, 56.64, 167.46);
-    canvas.curveTo(58.73, 167.95, 60.86, 168.14, 62.96, 168.02);
-    canvas.curveTo(67.04, 190.01, 79.86, 208.5, 97.43, 220.2);
-    canvas.lineTo(97.43, 238.38);
-    canvas.curveTo(79.38, 232.3, 54.95, 224.95, 42.57, 221.28);
-    canvas.curveTo(45.86, 211.74, 50.76, 193.76, 53.18, 166.3);
-    canvas.close();
 
     // cou
-    canvas.moveTo(112.43, 228.04);
-    canvas.curveTo(121.6, 231.66, 131.55, 233.65, 141.91, 233.65);
-    canvas.curveTo(152.09, 233.65, 161.97, 231.71, 171.12, 228.13);
-    //canvas.lineTo(171.12, 240.2);
+    canvas.curveTo(84.77, 300.61, 111.54, 319.62, 141.78, 319.62);
+    canvas.curveTo(172.11, 319.62, 198.79, 300.64, 209.02, 272.68);
+    //    canvas.lineTo(244.96, 289.16); // début epaule droite
+    canvas.moveTo(244.96, 289.16); // remplacement pour eviter doublement
+
+    // suite epaule droite + bretelle (on garde la partie exterieure)
+    // canvas.curveTo(246.78, 289.99, 248.52, 290.96, 250.17, 292.04);
+    //canvas.lineTo(229.04, 317.4);
+
+    // // zigwi gwi cut pas droit
+    // canvas.curveTo(226.72, 320.19, 224.68, 323.17, 222.92, 326.3);
+    // canvas.curveTo(224.27, 326.27, 225.63, 326.25, 226.97, 326.34);
+    // canvas.curveTo(228.16, 326.41, 229.34, 326.61, 230.52, 326.75);
+    // // debut doublement
+    // canvas.curveTo(232.69, 327.05, 235.72, 327.7, 237.93, 327.21);
+    // canvas.curveTo(238.06, 327.18, 238.09, 326.99, 238.21, 326.95);
+    // // doublement
+    // canvas.curveTo(238.68, 326.75, 239.18, 326.63, 239.66, 326.47);
+    // canvas.curveTo(240.2, 326.3, 240.73, 326.22, 241.26, 326.17);
+    canvas.moveTo(241.26, 326.17); // tmp remplacement
+    canvas.lineTo(261.01, 302.47);
+
+    // debut fin epaule droite
+    //     canvas.curveTo(265.81, 309.2, 268.56, 317.35, 268.62, 325.82);
+    //     canvas.curveTo(270.26, 326.03, 272.18, 326.29, 272.79, 326.37);
+    //     canvas.curveTo(276.29, 326.65, 279.72, 327.57, 283.25, 327.17);
+    //
+    //     canvas.curveTo(283.37, 327.15, 283.5, 327.15, 283.62, 327.14);
+
+    canvas.moveTo(283.62, 327.14); // tmp remplacement
+    canvas.curveTo(284.03, 305.24, 271.23, 284.7, 251.21, 275.52);
+    canvas.lineTo(197.03, 250.68); // remontee milieu du cou
+
+    // canvas.curveTo(221.48, 242.7, 252.97, 233.45, 253.34, 233.35);
+    // canvas.curveTo(255.46, 232.72, 257.19, 231.18, 258.09, 229.16);
+    // canvas.curveTo(258.98, 227.14, 258.92, 224.81, 257.95, 222.82);
+    // canvas.curveTo(257.81, 222.54, 244.15, 193.96, 244.15, 131.4);
+    // canvas.lineTo(244.15, 102.25);
+    // canvas.curveTo(244.15, 45.87, 198.28, 0, 141.9, 0);
+    // canvas.close();
+
+    // // haut cheveux droite jusqu'au coup
+    // // canvas.moveTo(141.91, 15);
+    // // canvas.curveTo(190.01, 15, 229.15, 54.14, 229.15, 102.25);
+    // // canvas.lineTo(229.15, 131.4);
+    // // canvas.curveTo(229.15, 179.13, 236.72, 208.19, 241.25, 221.29);
+    // // canvas.curveTo(228.85, 224.99, 204.34, 232.39, 186.13, 238.49);
+    // canvas.moveTo(186.13, 238.49); // added bas visage a droite
+    // canvas.lineTo(186.13, 220.35);
+    // canvas.curveTo(198.74, 212.02, 209.02, 200.15, 215.38, 185.74);
+    // canvas.curveTo(219.16, 177.17, 221.29, 167.65, 221.53, 158.2);
+    // canvas.curveTo(222.34, 126.93, 195.71, 119.07, 167.51, 110.74);
+    // canvas.curveTo(144.19, 103.86, 117.75, 96.05, 96.12, 75.01);
+    // canvas.curveTo(93.15, 72.12, 88.4, 72.19, 85.51, 75.15);
+    // canvas.curveTo(82.63, 78.12, 82.69, 82.87, 85.66, 85.76);
+    // // limite cheveux haut du visage
+    // // canvas.curveTo(109.95, 109.38, 139.51, 118.11, 163.27, 125.13);
+    // // canvas.curveTo(192.83, 133.86, 207.02, 138.89, 206.54, 157.82);
+    // // canvas.curveTo(206.35, 165.32, 204.66, 172.88, 201.66, 179.68);
+    // // canvas.curveTo(191.21, 203.35, 167.75, 218.65, 141.91, 218.65);
+    // // canvas.curveTo(110.39, 218.65, 83.38, 196.16, 77.68, 165.16);
+    // // canvas.curveTo(76.34, 157.83, 69.55, 152.49, 62.21, 153.04);
+    //
+    // // canvas.curveTo(61.52, 153.09, 60.81, 153.03, 60.09, 152.86);
+    // // canvas.curveTo(56.99, 152.12, 54.66, 148.76, 54.66, 145.02);
+    // canvas.moveTo(54.66, 145.02); // added (remove line on the left)
+    // canvas.lineTo(54.66, 139.43);
+    //
+    // // ????
+    // canvas.curveTo(54.66, 135.68, 57.18, 132.3, 60.4, 131.73);
+    // canvas.curveTo(63.1, 131.25, 65.7, 132.25, 67.34, 134.4);
+    // canvas.curveTo(68.74, 136.21, 70.59, 137.51, 72.71, 138.15);
+    // canvas.curveTo(75.82, 139.09, 79.24, 138.54, 81.88, 136.68);
+    // canvas.curveTo(87.91, 132.42, 93.03, 127.01, 97.08, 120.62);
+    // canvas.curveTo(99.3, 117.12, 98.26, 112.48, 94.77, 110.26);
+    // canvas.curveTo(91.27, 108.05, 86.63, 109.09, 84.41, 112.58);
+    //
+    //
+    // // canvas.curveTo(82.12, 116.2, 79.39, 119.38, 76.25, 122.07);
+    // // canvas.curveTo(71.27, 117.71, 64.53, 115.78, 57.8, 116.96);
+    // // canvas.curveTo(56.72, 117.15, 55.68, 117.44, 54.66, 117.78);
+    // // canvas.lineTo(54.66, 102.25);
+    // // canvas.curveTo(54.66, 54.14, 93.8, 15, 141.91, 15);
+    // canvas.close();
+    //
+    // // jou gauche + cheveux gauche
+    // canvas.moveTo(53.18, 166.3);
+    // canvas.curveTo(54.29, 166.78, 55.44, 167.17, 56.64, 167.46);
+    // canvas.curveTo(58.73, 167.95, 60.86, 168.14, 62.96, 168.02);
+    // canvas.curveTo(67.04, 190.01, 79.86, 208.5, 97.43, 220.2);
+    // canvas.lineTo(97.43, 238.38);
+    // canvas.curveTo(79.38, 232.3, 54.95, 224.95, 42.57, 221.28);
+    // canvas.curveTo(45.86, 211.74, 50.76, 193.76, 53.18, 166.3);
+    // canvas.close();
+    //
+    // // cou
+    // canvas.moveTo(112.43, 228.04);
+    // canvas.curveTo(121.6, 231.66, 131.55, 233.65, 141.91, 233.65);
+    // canvas.curveTo(152.09, 233.65, 161.97, 231.71, 171.12, 228.13);
+    // //canvas.lineTo(171.12, 240.2);
 
     //
     //canvas.moveTo(171.12, 240.2); // added
@@ -342,7 +374,9 @@ export class UserTaskShape extends BaseTaskShape {
     // canvas.curveTo(117.47, 304.62, 96, 289.09, 88.22, 266.4);
     // canvas.lineTo(98.7, 261.59);
     // canvas.curveTo(107.04, 257.77, 112.43, 249.38, 112.43, 240.2);
+
     // canvas.close();
+
     // canvas.fillAndStroke();
     c.stroke();
   }
