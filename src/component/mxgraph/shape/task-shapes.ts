@@ -313,15 +313,19 @@ export class UserTaskShape extends BaseTaskShape {
     canvas.curveTo(244.15, 45.87, 198.28, 0, 141.9, 0); // remonte en haut et rejoins la partie gauche
     // canvas.close(); // TODO voir si on restaure
 
-    // // haut cheveux droite jusqu'au coup (partie interieure --> doublement, on ne garde pas)
+    // // haut cheveux droite jusqu'au cou (partie interieure --> doublement, on ne garde pas)
     // // canvas.moveTo(141.91, 15);
     // // canvas.curveTo(190.01, 15, 229.15, 54.14, 229.15, 102.25);
     // // canvas.lineTo(229.15, 131.4);
     // // canvas.curveTo(229.15, 179.13, 236.72, 208.19, 241.25, 221.29);
     // // canvas.curveTo(228.85, 224.99, 204.34, 232.39, 186.13, 238.49);
     // bas visage a droite jusq'a frange haut gauche
-    canvas.moveTo(186.13, 238.49); // added bas visage a droite
-    canvas.lineTo(186.13, 220.35);
+    // canvas.moveTo(186.13, 238.49); // added bas visage a droite
+    // canvas.moveTo(197.03, 250.68); // added bas visage a droite + ajustement pour lier avec le bas V1
+    // canvas.moveTo(221.48, 242.7); // added bas visage a droite + ajustement pour lier avec le bas v2
+    canvas.moveTo(186.13, 250.68); // added bas visage a droite + ajustement pour lier avec le bas V3
+    canvas.lineTo(186.13, 220.35); // remontee cou droit v1
+    // canvas.moveTo(186.13, 220.35); // temp si pas remontee cou droit car gere par doublement
     canvas.curveTo(198.74, 212.02, 209.02, 200.15, 215.38, 185.74);
     canvas.curveTo(219.16, 177.17, 221.29, 167.65, 221.53, 158.2);
     canvas.curveTo(222.34, 126.93, 195.71, 119.07, 167.51, 110.74);
@@ -380,7 +384,7 @@ export class UserTaskShape extends BaseTaskShape {
     canvas.curveTo(121.6, 231.66, 131.55, 233.65, 141.91, 233.65);
     // canvas.curveTo(152.09, 233.65, 161.97, 231.71, 171.12, 228.13);
     canvas.curveTo(152.09, 233.65, 161.97, 231.71, 186.13, 220.35); // fermeture cou droite
-    //canvas.lineTo(171.12, 240.2); // doublement vertical cou droit
+    // canvas.lineTo(171.12, 240.2); // doublement vertical cou droit
 
     // doublement cou
     // canvas.moveTo(171.12, 240.2); // added
