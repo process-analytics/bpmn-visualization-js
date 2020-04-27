@@ -238,8 +238,8 @@ export class UserTaskShape extends BaseTaskShape {
 
     // epaule gauche
     canvas.curveTo(13.51, 284.16, 1.07, 302.84, 0, 323.26);
-    canvas.curveTo(0.84, 323.27, 1.67, 323.28, 2.51, 323.27);
-    canvas.curveTo(3.67, 323.13, 4.92, 323.47, 6.08, 323.27);
+    // canvas.curveTo(0.84, 323.27, 1.67, 323.28, 2.51, 323.27);
+    // canvas.curveTo(3.67, 323.13, 4.92, 323.47, 6.08, 323.27);
 
     // zigwi gwi
     // canvas.curveTo(6.24, 323.24, 5.76, 323.19, 5.61, 323.16);
@@ -249,8 +249,9 @@ export class UserTaskShape extends BaseTaskShape {
 
     // canvas.curveTo(14.07, 323.25, 14.54, 323.24, 15.02, 323.24);
     // canvas.curveTo(15.57, 315.7, 18.23, 308.51, 22.54, 302.47);
+    // bretelle
     canvas.moveTo(22.54, 302.47); // remplacement pour eviter doublement
-    canvas.lineTo(39.25, 322.51);
+    canvas.lineTo(39.25, 322.51); // TODO ne descend pas assez bas y devrait etre dans les 326-328 (x a ajuster en fonction)
 
     // zigwi gwi
     // canvas.curveTo(39.25, 322.51, 39.26, 322.51, 39.26, 322.51);
@@ -288,6 +289,7 @@ export class UserTaskShape extends BaseTaskShape {
     // // doublement
     // canvas.curveTo(238.68, 326.75, 239.18, 326.63, 239.66, 326.47);
     // canvas.curveTo(240.2, 326.3, 240.73, 326.22, 241.26, 326.17);
+    // bretelle (de bas en haut - on remonte car c'est le doublement qui suit la 1ere descente)
     canvas.moveTo(241.26, 326.17); // tmp remplacement
     canvas.lineTo(261.01, 302.47);
 
