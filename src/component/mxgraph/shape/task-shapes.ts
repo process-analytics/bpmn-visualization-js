@@ -226,10 +226,11 @@ export class UserTaskShape extends BaseTaskShape {
     this.translateToStartingIconPosition(c, x, y, w, h);
 
     canvas.begin();
-    // haut epaule gauche + cheveux gauche
+    // cheveux gauche vers haut epaule gauche (du haut vers le bas)
     canvas.moveTo(141.9, 0);
     canvas.curveTo(85.52, 0, 39.66, 45.87, 39.66, 102.25);
     canvas.lineTo(39.66, 131.4);
+    // TODO a partir d'ici on dépasse l'oreille gauche qui a un glitch
     canvas.curveTo(39.66, 193.96, 26, 222.54, 25.87, 222.79);
     canvas.curveTo(24.88, 224.78, 24.82, 227.11, 25.71, 229.15);
     canvas.curveTo(26.6, 231.19, 28.35, 232.73, 30.48, 233.35);
@@ -372,7 +373,9 @@ export class UserTaskShape extends BaseTaskShape {
     canvas.curveTo(54.29, 166.78, 55.44, 167.17, 56.64, 167.46);
     canvas.curveTo(58.73, 167.95, 60.86, 168.14, 62.96, 168.02);
     canvas.curveTo(67.04, 190.01, 79.86, 208.5, 97.43, 220.2);
-    canvas.lineTo(97.43, 238.38);
+    // canvas.lineTo(97.43, 238.38);
+    // canvas.lineTo(86.67, 250.61); // cou vertical - ajustement pour lier a la ligne de dedoublement v1
+    canvas.lineTo(97.43, 250.61); // cou vertical - ajustement pour lier a la ligne de dedoublement
     // debut doublement cheveux gauche via interieur du bas droite vers la gauche puis remontee
     // canvas.curveTo(79.38, 232.3, 54.95, 224.95, 42.57, 221.28);
     // canvas.curveTo(45.86, 211.74, 50.76, 193.76, 53.18, 166.3);
