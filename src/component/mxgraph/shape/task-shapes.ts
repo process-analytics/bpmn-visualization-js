@@ -304,36 +304,40 @@ export class UserTaskShape extends BaseTaskShape {
     canvas.curveTo(284.03, 305.24, 271.23, 284.7, 251.21, 275.52);
     canvas.lineTo(197.03, 250.68); // remontee milieu du cou
 
-    // canvas.curveTo(221.48, 242.7, 252.97, 233.45, 253.34, 233.35);
-    // canvas.curveTo(255.46, 232.72, 257.19, 231.18, 258.09, 229.16);
-    // canvas.curveTo(258.98, 227.14, 258.92, 224.81, 257.95, 222.82);
-    // canvas.curveTo(257.81, 222.54, 244.15, 193.96, 244.15, 131.4);
-    // canvas.lineTo(244.15, 102.25);
-    // canvas.curveTo(244.15, 45.87, 198.28, 0, 141.9, 0);
-    // canvas.close();
+    // remontee cheveux droit
+    canvas.curveTo(221.48, 242.7, 252.97, 233.45, 253.34, 233.35);
+    canvas.curveTo(255.46, 232.72, 257.19, 231.18, 258.09, 229.16);
+    canvas.curveTo(258.98, 227.14, 258.92, 224.81, 257.95, 222.82);
+    canvas.curveTo(257.81, 222.54, 244.15, 193.96, 244.15, 131.4);
+    canvas.lineTo(244.15, 102.25);
+    canvas.curveTo(244.15, 45.87, 198.28, 0, 141.9, 0); // remonte en haut et rejoins la partie gauche
+    // canvas.close(); // TODO voir si on restaure
 
-    // // haut cheveux droite jusqu'au coup
+    // // haut cheveux droite jusqu'au coup (partie interieure --> doublement, on ne garde pas)
     // // canvas.moveTo(141.91, 15);
     // // canvas.curveTo(190.01, 15, 229.15, 54.14, 229.15, 102.25);
     // // canvas.lineTo(229.15, 131.4);
     // // canvas.curveTo(229.15, 179.13, 236.72, 208.19, 241.25, 221.29);
     // // canvas.curveTo(228.85, 224.99, 204.34, 232.39, 186.13, 238.49);
-    // canvas.moveTo(186.13, 238.49); // added bas visage a droite
-    // canvas.lineTo(186.13, 220.35);
-    // canvas.curveTo(198.74, 212.02, 209.02, 200.15, 215.38, 185.74);
-    // canvas.curveTo(219.16, 177.17, 221.29, 167.65, 221.53, 158.2);
-    // canvas.curveTo(222.34, 126.93, 195.71, 119.07, 167.51, 110.74);
-    // canvas.curveTo(144.19, 103.86, 117.75, 96.05, 96.12, 75.01);
-    // canvas.curveTo(93.15, 72.12, 88.4, 72.19, 85.51, 75.15);
-    // canvas.curveTo(82.63, 78.12, 82.69, 82.87, 85.66, 85.76);
-    // // limite cheveux haut du visage
-    // // canvas.curveTo(109.95, 109.38, 139.51, 118.11, 163.27, 125.13);
-    // // canvas.curveTo(192.83, 133.86, 207.02, 138.89, 206.54, 157.82);
-    // // canvas.curveTo(206.35, 165.32, 204.66, 172.88, 201.66, 179.68);
-    // // canvas.curveTo(191.21, 203.35, 167.75, 218.65, 141.91, 218.65);
-    // // canvas.curveTo(110.39, 218.65, 83.38, 196.16, 77.68, 165.16);
-    // // canvas.curveTo(76.34, 157.83, 69.55, 152.49, 62.21, 153.04);
-    //
+    // bas visage a droite jusq'a frange haut gauche
+    canvas.moveTo(186.13, 238.49); // added bas visage a droite
+    canvas.lineTo(186.13, 220.35);
+    canvas.curveTo(198.74, 212.02, 209.02, 200.15, 215.38, 185.74);
+    canvas.curveTo(219.16, 177.17, 221.29, 167.65, 221.53, 158.2);
+    canvas.curveTo(222.34, 126.93, 195.71, 119.07, 167.51, 110.74);
+    canvas.curveTo(144.19, 103.86, 117.75, 96.05, 96.12, 75.01);
+    canvas.curveTo(93.15, 72.12, 88.4, 72.19, 85.51, 75.15);
+
+    // limite cheveux haut du visage (doublement, partie inferieure, de gauche a droite)
+    // // canvas.curveTo(82.63, 78.12, 82.69, 82.87, 85.66, 85.76); // debut retour doublement
+    // canvas.moveTo(85.66, 85.76); // tmp, remplacement 'debut retour doublement', necessaire si on garde la partie inferieure
+    // canvas.curveTo(109.95, 109.38, 139.51, 118.11, 163.27, 125.13);
+    // canvas.curveTo(192.83, 133.86, 207.02, 138.89, 206.54, 157.82);
+    // canvas.curveTo(206.35, 165.32, 204.66, 172.88, 201.66, 179.68);
+    // canvas.curveTo(191.21, 203.35, 167.75, 218.65, 141.91, 218.65);
+    // canvas.curveTo(110.39, 218.65, 83.38, 196.16, 77.68, 165.16);
+    // canvas.curveTo(76.34, 157.83, 69.55, 152.49, 62.21, 153.04);
+
     // // canvas.curveTo(61.52, 153.09, 60.81, 153.03, 60.09, 152.86);
     // // canvas.curveTo(56.99, 152.12, 54.66, 148.76, 54.66, 145.02);
     // canvas.moveTo(54.66, 145.02); // added (remove line on the left)
