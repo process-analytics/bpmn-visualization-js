@@ -375,13 +375,15 @@ export class UserTaskShape extends BaseTaskShape {
     // canvas.close();
 
     // cou
-    canvas.moveTo(112.43, 228.04);
+    // canvas.moveTo(112.43, 228.04);
+    canvas.moveTo(97.43, 220.2); // fermeture cou gauche
     canvas.curveTo(121.6, 231.66, 131.55, 233.65, 141.91, 233.65);
-    canvas.curveTo(152.09, 233.65, 161.97, 231.71, 171.12, 228.13);
-    // //canvas.lineTo(171.12, 240.2);
+    // canvas.curveTo(152.09, 233.65, 161.97, 231.71, 171.12, 228.13);
+    canvas.curveTo(152.09, 233.65, 161.97, 231.71, 186.13, 220.35); // fermeture cou droite
+    //canvas.lineTo(171.12, 240.2); // doublement vertical cou droit
 
-    //
-    //canvas.moveTo(171.12, 240.2); // added
+    // doublement cou
+    // canvas.moveTo(171.12, 240.2); // added
     // canvas.curveTo(171.12, 249.38, 176.51, 257.77, 184.85, 261.59);
     // canvas.lineTo(195.34, 266.41);
     // canvas.curveTo(187.56, 289.12, 166.16, 304.62, 141.78, 304.62);
