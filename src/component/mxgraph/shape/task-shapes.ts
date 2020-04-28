@@ -220,6 +220,9 @@ export class UserTaskShape extends BaseTaskShape {
     canvas.fill();
   }
 
+  // adapted from https://www.flaticon.com/free-icon/woman_554738
+  // remove the shield, then use 'mxgraph-svg2shape' to translate the SVG file into TS code
+  // then the icon double curves to have a thin stroke
   private paintWoman(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     // icon coordinates fill a 284x328 rectangle
     const canvas = this.configureCanvasForIcon(c, w, h, 328);
