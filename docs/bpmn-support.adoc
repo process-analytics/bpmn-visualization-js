@@ -122,7 +122,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Comments
 
 |Exclusive
-|
+|icon:check-circle-o[]
 |
 
 |Parallel
