@@ -36,7 +36,7 @@ export default class ShapeUtil {
   public static topLevelBpmnEventKinds(): ShapeBpmnElementKind[] {
     return this.EVENTS_KIND;
   }
-  public static topLevelBpmnGatewayKinds(): ShapeBpmnElementKind[] {
+  public static gatewayKinds(): ShapeBpmnElementKind[] {
     return this.GATEWAY_KINDS;
   }
 }

@@ -150,7 +150,7 @@ export default class StyleConfigurator {
   }
 
   private configureGatewaysStyle(): void {
-    ShapeUtil.topLevelBpmnGatewayKinds().forEach(kind => {
+    ShapeUtil.gatewayKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
       style[this.mxConstants.STYLE_SHAPE] = kind;
       style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RhombusPerimeter;
