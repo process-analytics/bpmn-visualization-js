@@ -61,6 +61,46 @@ abstract class EventShape extends mxEllipse {
     c.setFillColor('yellow');
     c.setFillAlpha(0.3);
   }
+
+  // this implementation is adapted from the draw.io BPMN 'message' symbol
+  // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465
+  protected paintMessageEventIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number, isInverse = false): void {
+    // Change the coordinate referential
+    c.translate(x + w * 0.24, y + h * 0.34);
+    w = w * 0.52;
+    h = h * 0.32;
+
+    // Paint
+    const fc = mxUtils.getValue(this.style, 'fillColor', '#ffffff');
+    const sc = mxUtils.getValue(this.style, 'strokeColor', '#000000');
+
+    // Choose dark color for the envelope outline
+    c.setStrokeColor(sc);
+
+    if (isInverse) {
+      // Choose dark color for the envelope background
+      c.setFillColor(sc);
+    } else {
+      // Choose light color for the envelope background
+      c.setFillColor(fc);
+    }
+
+    // Paint the envelope outline
+    c.rect(0, 0, w, h);
+    c.fillAndStroke();
+
+    if (isInverse) {
+      // Choose light color for envelope closure
+      c.setStrokeColor(fc);
+    }
+
+    // Paint the envelope closure
+    c.begin();
+    c.moveTo(0, 0);
+    c.lineTo(w * 0.5, h * 0.5);
+    c.lineTo(w, 0);
+    c.stroke();
+  }
 }
 
 export class StartEventShape extends EventShape {
@@ -110,9 +150,16 @@ abstract class IntermediateEventShape extends EventShape {
     c.ellipse(x, y, w, h);
     c.fillAndStroke();
 
-    const inset = this.strokewidth * 2;
+    const inset = this.strokewidth * 1.5;
     c.ellipse(w * 0.02 + inset + x, h * 0.02 + inset + y, w * 0.96 - 2 * inset, h * 0.96 - 2 * inset);
     c.stroke();
+  }
+
+  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    const eventKind = this.getBpmnEventKind();
+    if (eventKind == ShapeBpmnEventKind.MESSAGE) {
+      this.paintMessageEventIcon(c, x, y, w, h, true);
+    }
   }
 }
 
