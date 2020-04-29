@@ -118,8 +118,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |The stroke width may be adjusted
 
 |Message Intermediate Throw Event
-|
-|Stroke fits the BPMN specification but no icon
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
