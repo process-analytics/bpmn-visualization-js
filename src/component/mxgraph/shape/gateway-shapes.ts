@@ -17,6 +17,7 @@
 import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
 import { StyleConstant } from '../StyleConfigurator';
+import MxScaleFactorCanvas from '../extension/MxScaleFactorCanvas';
 
 const mxRhombus: typeof mxgraph.mxRhombus = MxGraphFactoryService.getMxGraphProperty('mxRhombus');
 const mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
@@ -27,8 +28,12 @@ abstract class GatewayShape extends mxRhombus {
     super(bounds, fill, stroke, strokewidth);
   }
 
+  protected abstract paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void;
+
   public paintVertexShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     this.paintOuterShape(c, x, y, w, h);
+    c.setFillColor(this.stroke);
+    c.setStrokeWidth(0);
     this.paintInnerShape(c, x, y, w, h);
   }
 
@@ -36,11 +41,7 @@ abstract class GatewayShape extends mxRhombus {
     super.paintVertexShape(c, x, y, w, h);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    c.setFillColor(this.stroke);
-    c.setStrokeWidth(0);
-  }
+  // TODO: will be removed when exclusive gateway will use MXScaleFactorCanvas
   protected getScaledGeometry(x: number, y: number, w: number, h: number): { xS: number; yS: number; wS: number; hS: number } {
     const symbolScale = this.getInnerSymbolScale(w, h);
     return {
@@ -51,8 +52,26 @@ abstract class GatewayShape extends mxRhombus {
     };
   }
 
+  // TODO: will be removed when exclusive gateway will use MXScaleFactorCanvas
   private getInnerSymbolScale(w: number, h: number): number {
-    return 2.5 * mxUtils.getValue(this.style, mxConstants.STYLE_MARGIN, Math.min(3 + this.strokewidth, Math.min(w / 5, h / 5)));
+    return 3 * mxUtils.getValue(this.style, mxConstants.STYLE_MARGIN, Math.min(3 + this.strokewidth, Math.min(w / 5, h / 5)));
+  }
+
+  protected configureCanvasForIcon(c: mxgraph.mxXmlCanvas2D, parentWidth: number, parentHeight: number, iconOriginalSize: number): MxScaleFactorCanvas {
+    // ensure we are not impacted by the configured shape stroke width
+    c.setStrokeWidth(1);
+
+    const parentSize = Math.min(parentWidth, parentHeight);
+    const ratioFromParent = 0.25;
+    const scaleFactor = iconOriginalSize !== 0 ? (parentSize / iconOriginalSize) * ratioFromParent : 0.5;
+
+    return new MxScaleFactorCanvas(c, scaleFactor);
+  }
+
+  protected translateToStartingIconPosition(c: mxgraph.mxXmlCanvas2D, parentX: number, parentY: number, parentWidth: number, parentHeight: number): void {
+    const xTranslation = parentX + parentWidth / 4;
+    const yTranslation = parentY + parentHeight / 4;
+    c.translate(xTranslation, yTranslation);
   }
 }
 
@@ -62,7 +81,6 @@ export class ExclusiveGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    super.paintInnerShape(c, x, y, w, h);
     this.addExclusiveGatewaySymbol(c, x, y, w, h);
   }
 
@@ -94,28 +112,28 @@ export class ParallelGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    super.paintInnerShape(c, x, y, w, h);
     this.addParallelGatewaySymbol(c, x, y, w, h);
   }
 
   private addParallelGatewaySymbol(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const { xS, yS, wS, hS } = this.getScaledGeometry(x, y, w, h);
+    const canvas = this.configureCanvasForIcon(c, w, h, 0);
+    this.translateToStartingIconPosition(c, x, y, w, h);
 
-    c.begin();
-    c.moveTo(xS + wS * 0.38, yS);
-    c.lineTo(xS + wS * 0.62, yS);
-    c.lineTo(xS + wS * 0.62, yS + hS * 0.38);
-    c.lineTo(xS + wS, yS + hS * 0.38);
-    c.lineTo(xS + wS, yS + hS * 0.62);
-    c.lineTo(xS + wS * 0.62, yS + hS * 0.62);
-    c.lineTo(xS + wS * 0.62, yS + hS);
-    c.lineTo(xS + wS * 0.38, yS + hS);
-    c.lineTo(xS + wS * 0.38, yS + hS * 0.62);
-    c.lineTo(xS, yS + hS * 0.62);
-    c.lineTo(xS, yS + hS * 0.38);
-    c.lineTo(xS + wS * 0.38, yS + hS * 0.38);
-    c.close();
+    canvas.begin();
+    canvas.moveTo(w * 0.38, 0);
+    canvas.lineTo(w * 0.62, 0);
+    canvas.lineTo(w * 0.62, h * 0.38);
+    canvas.lineTo(w, h * 0.38);
+    canvas.lineTo(w, h * 0.62);
+    canvas.lineTo(w * 0.62, h * 0.62);
+    canvas.lineTo(w * 0.62, h);
+    canvas.lineTo(w * 0.38, h);
+    canvas.lineTo(w * 0.38, h * 0.62);
+    canvas.lineTo(0, h * 0.62);
+    canvas.lineTo(0, h * 0.38);
+    canvas.lineTo(w * 0.38, h * 0.38);
+    canvas.close();
 
-    c.fillAndStroke();
+    canvas.fillAndStroke();
   }
 }
