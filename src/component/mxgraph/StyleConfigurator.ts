@@ -38,11 +38,8 @@ export default class StyleConfigurator {
     this.configureDefaultVertexStyle();
     this.configurePoolStyle();
     this.configureLaneStyle();
-    // events
     this.configureEventsStyle();
-    // tasks
     this.configureTasksStyle();
-    // gateways
     this.configureGatewaysStyle();
   }
 

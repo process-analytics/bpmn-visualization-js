@@ -62,4 +62,8 @@ export default class MxScaleFactorCanvas {
   moveTo(x: number, y: number): void {
     this.c.moveTo(x * this.scaleFactor, y * this.scaleFactor);
   }
+
+  rotate(theta: number, flipH: boolean, flipV: boolean, cx: number, cy: number): void {
+    this.c.rotate(theta, flipH, flipV, cx, cy);
+  }
 }
