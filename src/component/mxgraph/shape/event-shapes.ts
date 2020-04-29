@@ -59,9 +59,16 @@ abstract class EventShape extends mxEllipse {
     c.setFillAlpha(0.3);
   }
 
+  protected paintEventIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number, isInverse = false): void {
+    const eventKind = this.getBpmnEventKind();
+    if (eventKind == ShapeBpmnEventKind.MESSAGE) {
+      this.paintMessageEventIcon(c, x, y, w, h, isInverse);
+    }
+  }
+
   // this implementation is adapted from the draw.io BPMN 'message' symbol
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465
-  private paintMessageIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number, isInverse = false): void {
+  private paintMessageEventIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number, isInverse = false): void {
     // Change the coordinate referential
     c.translate(x + w * 0.24, y + h * 0.34);
     w = w * 0.52;
@@ -109,10 +116,6 @@ abstract class EventShape extends mxEllipse {
     c.lineTo((w * 2) / 3, h * 0.5);
 
     c.stroke();
-  }
-
-  protected paintThrowMessageIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    this.paintMessageIcon(c, x, y, w, h, true);
   }
 }
 
@@ -194,14 +197,8 @@ export class CatchIntermediateEventShape extends IntermediateEventShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  // TODO: will be removed when managing the message rendering
-  protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const eventKind = this.getBpmnEventKind();
-    if (eventKind == ShapeBpmnEventKind.MESSAGE) {
-      this.paintOuterMessageShape(c);
-    }
-
-    super.paintOuterShape(c, x, y, w, h);
+  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    this.paintEventIcon(c, x, y, w, h);
   }
 }
 export class ThrowIntermediateEventShape extends IntermediateEventShape {
@@ -210,9 +207,6 @@ export class ThrowIntermediateEventShape extends IntermediateEventShape {
   }
 
   protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const eventKind = this.getBpmnEventKind();
-    if (eventKind == ShapeBpmnEventKind.MESSAGE) {
-      this.paintThrowMessageIcon(c, x, y, w, h);
-    }
+    this.paintEventIcon(c, x, y, w, h, true);
   }
 }
