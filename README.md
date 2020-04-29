@@ -34,3 +34,12 @@ Then, we will work on BPMN extensions, library extension points.
 # Development
 
 To build the project, see the [Contributing guide](CONTRIBUTING.md#Build) :slightly_smiling_face:
+
+
+# License
+
+`bpmn-visualization-js` is released under the Apache 2.0 license.
+
+Some BPMN icons used by `bpmn-visualization-js` are derived from existing projects. See the [BPMN Support page](docs/bpmn-support.adoc)
+for more details:
+- [draw.io](https://github.com/jgraph/drawio) (Apache-2.0)

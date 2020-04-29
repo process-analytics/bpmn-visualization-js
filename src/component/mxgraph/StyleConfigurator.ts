@@ -41,9 +41,8 @@ export default class StyleConfigurator {
     // events
     this.configureEventsStyle();
     // tasks
+    this.configureTasksStyle();
     this.configureUserTaskStyle();
-    this.configureServiceTaskStyle();
-    this.configureTaskStyle();
     // gateways
     this.configureGatewaysStyle();
     this.configureParallelGatewayStyle();
@@ -110,12 +109,17 @@ export default class StyleConfigurator {
     });
   }
 
-  private configureServiceTaskStyle(): void {
-    const style = this.mxUtils.clone(this.getStylesheet().getCellStyle(ShapeBpmnElementKind.TASK_USER), this.getDefaultVertexStyle());
-    style[this.mxConstants.STYLE_STROKECOLOR] = 'red';
-    this.putCellStyle(ShapeBpmnElementKind.TASK_SERVICE, style);
+  private configureTasksStyle(): void {
+    ShapeUtil.taskKinds().forEach(kind => {
+      const style = this.cloneDefaultVertexStyle();
+      style[this.mxConstants.STYLE_SHAPE] = kind;
+      style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
+      this.putCellStyle(kind, style);
+    });
   }
 
+  // TODO: to be removed as it will be configured in configureTasksStyle
+  // left just to not break current rendering
   private configureUserTaskStyle(): void {
     const style = this.cloneDefaultVertexStyle();
     style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RECTANGLE;
@@ -124,13 +128,6 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_STROKEWIDTH] = 2;
     style[this.mxConstants.STYLE_ROUNDED] = true;
     this.putCellStyle(ShapeBpmnElementKind.TASK_USER, style);
-  }
-
-  private configureTaskStyle(): void {
-    const style = this.cloneDefaultVertexStyle();
-    style[this.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TASK;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
-    this.putCellStyle(ShapeBpmnElementKind.TASK, style);
   }
 
   // TODO: to be removed as it will be configured in configureGatewaysStyle

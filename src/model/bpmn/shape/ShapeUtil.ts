@@ -18,24 +18,33 @@ import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
 // TODO move to ShapeBpmnElementKind? and rename into ShapeBpmnElementKindUtil?
 // TODO bpmnEventKinds and flowNodeKinds currently hosted in ProcessConverter may be hosted here
 export default class ShapeUtil {
-  private static readonly EVENTS_KIND = ShapeUtil.filterKind('Event');
+  private static readonly EVENT_KINDS = ShapeUtil.filterKind('Event');
+  private static TASK_KINDS = ShapeUtil.filterKind('Task', true);
   private static readonly GATEWAY_KINDS = ShapeUtil.filterKind('Gateway');
 
-  private static filterKind(suffix: string): ShapeBpmnElementKind[] {
+  private static filterKind(suffix: string, ignoreCase = false): ShapeBpmnElementKind[] {
     return Object.values(ShapeBpmnElementKind).filter(kind => {
+      if (ignoreCase) {
+        return kind.endsWith(suffix) || kind.toLowerCase().endsWith(suffix.toLowerCase());
+      }
       return kind.endsWith(suffix);
     });
   }
 
   public static isEvent(kind: ShapeBpmnElementKind): boolean {
-    return this.EVENTS_KIND.includes(kind);
+    return this.EVENT_KINDS.includes(kind);
   }
 
   // TODO should we clone the array to avoid modifications of this ref array by client code?
   // topLevelBpmnEventKinds to not mixed with the bpmnEventKinds that currently are the list of non None event subtypes
   public static topLevelBpmnEventKinds(): ShapeBpmnElementKind[] {
-    return this.EVENTS_KIND;
+    return this.EVENT_KINDS;
   }
+
+  public static taskKinds(): ShapeBpmnElementKind[] {
+    return this.TASK_KINDS;
+  }
+
   public static gatewayKinds(): ShapeBpmnElementKind[] {
     return this.GATEWAY_KINDS;
   }
