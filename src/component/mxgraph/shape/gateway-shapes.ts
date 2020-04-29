@@ -54,7 +54,7 @@ abstract class GatewayShape extends mxRhombus {
 
   // TODO: will be removed when exclusive gateway will use MXScaleFactorCanvas
   private getInnerSymbolScale(w: number, h: number): number {
-    return 3 * mxUtils.getValue(this.style, mxConstants.STYLE_MARGIN, Math.min(3 + this.strokewidth, Math.min(w / 5, h / 5)));
+    return 2.5 * mxUtils.getValue(this.style, mxConstants.STYLE_MARGIN, Math.min(3 + this.strokewidth, Math.min(w / 5, h / 5)));
   }
 
   protected configureCanvasForIcon(c: mxgraph.mxXmlCanvas2D, parentWidth: number, parentHeight: number, iconOriginalSize: number): MxScaleFactorCanvas {
