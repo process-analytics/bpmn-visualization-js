@@ -29,7 +29,7 @@ import { mxgraph } from 'ts-mxgraph';
  * canvas.lineTo(12, 25);
  */
 export default class MxScaleFactorCanvas {
-  constructor(readonly c: mxgraph.mxXmlCanvas2D, readonly scaleFactor: number) {}
+  constructor(private readonly c: mxgraph.mxXmlCanvas2D, readonly scaleFactor: number) {}
 
   arcTo(rx: number, ry: number, angle: number, largeArcFlag: number, sweepFlag: number, x: number, y: number): void {
     this.c.arcTo(rx * this.scaleFactor, ry * this.scaleFactor, angle, largeArcFlag, sweepFlag, x * this.scaleFactor, y * this.scaleFactor);
@@ -41,6 +41,14 @@ export default class MxScaleFactorCanvas {
 
   close(): void {
     this.c.close();
+  }
+
+  curveTo(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): void {
+    this.c.curveTo(x1 * this.scaleFactor, y1 * this.scaleFactor, x2 * this.scaleFactor, y2 * this.scaleFactor, x3 * this.scaleFactor, y3 * this.scaleFactor);
+  }
+
+  fill(): void {
+    this.c.fill();
   }
 
   fillAndStroke(): void {
