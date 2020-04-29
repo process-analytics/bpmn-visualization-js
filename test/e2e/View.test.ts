@@ -172,6 +172,7 @@ describe('BPMN Visualization JS', () => {
     expectModelContainsCell('task_1', ShapeBpmnElementKind.TASK);
     expectModelContainsCell('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE);
     expectModelContainsCell('userTask_3', ShapeBpmnElementKind.TASK_USER);
+    expectModelContainsCell('noneIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW);
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {
