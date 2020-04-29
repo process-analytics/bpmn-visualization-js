@@ -600,7 +600,8 @@ the BPMN elements are rendered with their final shapes.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">User Task</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-flask"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Stroke color and icon are subject to change</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Icon will be subject to a large change<br>
+<strong>icon</strong>: the task icon is currently derived from the <a href="https://github.com/primer/octicons/blob/638c6683c96ec4b357576c7897be8f19c933c052/icons/person.svg">primer octicons person svg</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -816,6 +817,21 @@ used for the rendering.</p>
 <div class="paragraph">
 <p>The <code>mxShape</code> can be a standard <code>mxGraph</code> class or a custom BPMN <code>mxShape</code> defined by the lib. The custom <code>mxShapes</code> are registered by <code>ShapeConfigurator</code>
 which associates the <code>mxShape</code> name (used in style definition) with the <code>mxShape</code> class to be used.</p>
+</div>
+<div class="sect4">
+<h5 id="_bpmn_icon_tips"><a class="anchor" href="#_bpmn_icon_tips"></a><a class="link" href="#_bpmn_icon_tips">3.3.2.1. BPMN icon tips</a></h5>
+<div class="paragraph">
+<p>The icon of the BPMN elements must be defined in the mxGraph custom shapes and this currently must be done using <code>TypeScript</code>
+code.</p>
+</div>
+<div class="paragraph">
+<p>It is possible to adapt an SVG icon thanks to <a href="https://github.com/process-analytics/mxgraph-svg2shape">mxgraph-svg2shape</a>,
+a Java tool that will let you transform your SVG file into a set of <code>TypeScript</code> commands.</p>
+</div>
+<div class="paragraph">
+<p>Please be aware that the tool is not able to support all SVG files, and you may need to adapt the SVG definition prior the
+tool can transform it. See <a href="https://github.com/process-analytics/bpmn-visualization-js/pull/210">PR #210</a> for instance.</p>
+</div>
 </div>
 </div>
 </div>
@@ -1101,7 +1117,7 @@ The BPMN elements listed here may not be rendered with their final design at par
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-04-29 07:41:30 UTC
+Last updated 2020-04-29 09:30:46 UTC
 </div>
 </div>
 </body>
