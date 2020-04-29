@@ -125,9 +125,11 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 |Exclusive
 |icon:check-circle-o[]
-|
+|Icon may be subject to change +
+*icon*: the gateway icon is derived from the draw.io bpmn mxgraph stencil
 
 |Parallel
-|
-|
+|icon:check-circle-o[]
+|Icon may be subject to change +
+*icon*: the gateway icon is derived from the draw.io bpmn mxgraph stencil
 |===
