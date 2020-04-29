@@ -100,7 +100,7 @@ export class ThrowIntermediateEventShape extends EventShape {
   }
 
   // this implementation is adapted from the draw.io BPMN 'throwing' outlines
-  // https://github.com/jgraph/drawio/blob/master/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L431
+  // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L431
   protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     c.ellipse(x, y, w, h);
     c.fillAndStroke();
