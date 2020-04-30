@@ -155,7 +155,7 @@ describe('parse bpmn as json for end event', () => {
       "endEvent": [
         { "id": "event_id_0", "name": "none end event" },
         { "id": "event_id_1", "cancelEventDefinition": {} },
-        { "id": "event_id_2", "compensationEventDefinition": {} },
+        { "id": "event_id_2", "compensateEventDefinition": {} },
         { "id": "event_id_3", "errorEventDefinition": {} },
         { "id": "event_id_4", "escalationEventDefinition": {} },
         { "id": "event_id_5", "messageEventDefinition": {} },

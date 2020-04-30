@@ -157,7 +157,7 @@ describe('parse bpmn as json for throw None intermediate event', () => {
         { "id": "event_id_0", "name": "throw none intermediate event" },
         { "id": "event_id_1", "messageEventDefinition": {} },
         { "id": "event_id_2", "escalationEventDefinition": {} },
-        { "id": "event_id_3", "compensationEventDefinition": {} },
+        { "id": "event_id_3", "compensateEventDefinition": {} },
         { "id": "event_id_4", "linkEventDefinition": {} },
         { "id": "event_id_5", "signalEventDefinition": {} }
       ]
