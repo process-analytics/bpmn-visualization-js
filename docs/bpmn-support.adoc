@@ -87,13 +87,26 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 
 [cols="1,1,4", options="header"]
-.Intermediate Throwing Events
+.Intermediate Catch Events
 |===
 |Name
 |Rendering
 |Comments
 
-|None Intermediate Throwing Event
+|Timer Intermediate Catch Event
+|
+|Stroke fits the BPMN specification but no icon
+|===
+
+
+[cols="1,1,4", options="header"]
+.Intermediate Throw Events
+|===
+|Name
+|Rendering
+|Comments
+
+|None Intermediate Throw Event
 |icon:check-circle-o[]
 |The stroke width may be adjusted
 |===

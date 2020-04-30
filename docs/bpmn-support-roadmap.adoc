@@ -36,7 +36,8 @@ BPMN elements:
 ** [x] timer start event (0.1.3)
 ** [x] none end event (0.1.1)
 ** [x] terminate end event (0.1.2)
-** [x] none throw intermediate event (0.1.3)
+** [x] timer intermediate catch event (0.1.3)
+** [x] none intermediate throw event (0.1.3)
 * flows
 ** [x] sequence flow (0.1.0)
 ** [x] way points (0.1.1)
