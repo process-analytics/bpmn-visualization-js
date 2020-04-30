@@ -23,7 +23,7 @@ export enum ShapeBpmnEventKind {
   NONE = 'none',
   TERMINATE = 'terminate',
   CANCEL = 'cancel',
-  COMPENSATION = 'compensation',
+  COMPENSATION = 'compensate',
   CONDITIONAL = 'conditional',
   ERROR = 'error',
   ESCALATION = 'escalation',
