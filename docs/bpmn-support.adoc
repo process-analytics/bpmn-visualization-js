@@ -94,8 +94,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Comments
 
 |None Intermediate Throwing Event
-|
-|
+|icon:check-circle-o[]
+|The stroke width may be adjusted
 |===
 
 
@@ -113,6 +113,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Terminate End Event
 |icon:check-circle-o[]
 |The stroke width may be adjusted
+
 |===
 
 

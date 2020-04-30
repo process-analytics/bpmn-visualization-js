@@ -93,3 +93,20 @@ export class EndEventShape extends EventShape {
     c.fillAndStroke();
   }
 }
+
+export class ThrowIntermediateEventShape extends EventShape {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+
+  // this implementation is adapted from the draw.io BPMN 'throwing' outlines
+  // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L431
+  protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    c.ellipse(x, y, w, h);
+    c.fillAndStroke();
+
+    const inset = this.strokewidth * 2;
+    c.ellipse(w * 0.02 + inset + x, h * 0.02 + inset + y, w * 0.96 - 2 * inset, h * 0.96 - 2 * inset);
+    c.stroke();
+  }
+}

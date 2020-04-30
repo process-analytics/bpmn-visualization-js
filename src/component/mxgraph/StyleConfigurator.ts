@@ -103,7 +103,7 @@ export default class StyleConfigurator {
       const style = this.cloneDefaultVertexStyle();
       style[this.mxConstants.STYLE_SHAPE] = kind;
       style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.EllipsePerimeter;
-      style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
+      style[this.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = 'bottom';
       this.putCellStyle(kind, style);
     });
   }
