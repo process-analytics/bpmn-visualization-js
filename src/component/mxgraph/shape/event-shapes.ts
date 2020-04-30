@@ -94,8 +94,8 @@ export class EndEventShape extends EventShape {
   }
 }
 
-export class ThrowIntermediateEventShape extends EventShape {
-  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+abstract class IntermediateEventShape extends EventShape {
+  protected constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -108,5 +108,11 @@ export class ThrowIntermediateEventShape extends EventShape {
     const inset = this.strokewidth * 2;
     c.ellipse(w * 0.02 + inset + x, h * 0.02 + inset + y, w * 0.96 - 2 * inset, h * 0.96 - 2 * inset);
     c.stroke();
+  }
+}
+
+export class ThrowIntermediateEventShape extends IntermediateEventShape {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth?: number) {
+    super(bounds, fill, stroke, strokewidth);
   }
 }
