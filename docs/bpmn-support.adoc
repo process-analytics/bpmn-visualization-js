@@ -70,7 +70,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 
 [cols="1,1,4", options="header"]
-.Events
+.Start Events
 |===
 |Name
 |Rendering
@@ -83,6 +83,28 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Timer Start Event
 |
 |
+|===
+
+
+[cols="1,1,4", options="header"]
+.Intermediate Throwing Events
+|===
+|Name
+|Rendering
+|Comments
+
+|None Intermediate Throwing Event
+|icon:check-circle-o[]
+|The stroke width may be adjusted
+|===
+
+
+[cols="1,1,4", options="header"]
+.End Events
+|===
+|Name
+|Rendering
+|Comments
 
 |None End Event
 |icon:check-circle-o[]
@@ -91,6 +113,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Terminate End Event
 |icon:check-circle-o[]
 |The stroke width may be adjusted
+
 |===
 
 
