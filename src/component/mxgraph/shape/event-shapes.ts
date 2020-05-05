@@ -58,6 +58,10 @@ export class StartEventShape extends EventShape {
     if (eventKind == ShapeBpmnEventKind.TIMER) {
       c.setFillColor('green');
       c.setFillAlpha(0.3);
+    } else if (eventKind == ShapeBpmnEventKind.MESSAGE) {
+      // will be removed when managing the message rendering
+      c.setFillColor('yellow');
+      c.setFillAlpha(0.3);
     }
 
     super.paintOuterShape(c, x, y, w, h);
