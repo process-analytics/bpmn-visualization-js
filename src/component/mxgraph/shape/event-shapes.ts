@@ -54,7 +54,7 @@ abstract class EventShape extends mxEllipse {
   }
 
   // TODO: will be removed when managing the message rendering
-  protected paintOuterMessageShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number, isInverse = false): void {
+  protected paintOuterMessageShape(c: mxgraph.mxXmlCanvas2D): void {
     c.setFillColor('yellow');
     c.setFillAlpha(0.3);
   }
@@ -107,7 +107,7 @@ abstract class IntermediateEventShape extends EventShape {
     // TODO: will be removed when managing the message rendering
     const eventKind = this.getBpmnEventKind();
     if (eventKind == ShapeBpmnEventKind.MESSAGE) {
-      this.paintOuterMessageShape(c, x, y, w, h);
+      this.paintOuterMessageShape(c);
     }
 
     // Paint outer shape
