@@ -34,6 +34,9 @@ abstract class EventShape extends mxEllipse {
     if (eventKind == ShapeBpmnEventKind.TIMER) {
       c.setFillColor('green');
       c.setFillAlpha(0.3);
+    } else if (eventKind == ShapeBpmnEventKind.MESSAGE) {
+      // TODO: will be removed when managing the message rendering
+      this.paintOuterMessageShape(c);
     }
 
     this.paintOuterShape(c, x, y, w, h);
