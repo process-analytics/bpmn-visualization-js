@@ -96,8 +96,11 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Timer Intermediate Catch Event
 |
 |Stroke fits the BPMN specification but no icon
-|===
 
+|Message Intermediate Catch Event
+|
+|Stroke fits the BPMN specification but no icon
+|===
 
 [cols="1,1,4", options="header"]
 .Intermediate Throw Events
