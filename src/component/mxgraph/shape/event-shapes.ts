@@ -52,6 +52,12 @@ abstract class EventShape extends mxEllipse {
   protected getBpmnEventKind(): ShapeBpmnEventKind {
     return mxUtils.getValue(this.style, StyleConstant.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
   }
+
+  // TODO: will be removed when managing the message rendering
+  protected paintOuterMessageShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number, isInverse = false): void {
+    c.setFillColor('yellow');
+    c.setFillAlpha(0.3);
+  }
 }
 
 export class StartEventShape extends EventShape {
@@ -98,6 +104,13 @@ abstract class IntermediateEventShape extends EventShape {
   // this implementation is adapted from the draw.io BPMN 'throwing' outlines
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L431
   protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    // TODO: will be removed when managing the message rendering
+    const eventKind = this.getBpmnEventKind();
+    if (eventKind == ShapeBpmnEventKind.MESSAGE) {
+      this.paintOuterMessageShape(c, x, y, w, h);
+    }
+
+    // Paint outer shape
     c.ellipse(x, y, w, h);
     c.fillAndStroke();
 
