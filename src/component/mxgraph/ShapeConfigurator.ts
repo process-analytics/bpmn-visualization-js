@@ -16,7 +16,7 @@
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
-import { EndEventShape, StartEventShape, ThrowIntermediateEventShape } from './shape/event-shapes';
+import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape } from './shape/event-shapes';
 import { ExclusiveGatewayShape, ParallelGatewayShape } from './shape/gateway-shapes';
 import { ServiceTaskShape, TaskShape, UserTaskShape } from './shape/task-shapes';
 
@@ -31,11 +31,15 @@ export default class ShapeConfigurator {
   }
 
   private registerShapes(): void {
+    // events
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_END, EndEventShape);
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_START, StartEventShape);
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape);
+    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, CatchIntermediateEventShape);
+    // gateways
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape);
+    // tasks
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK, TaskShape);
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_USER, UserTaskShape);

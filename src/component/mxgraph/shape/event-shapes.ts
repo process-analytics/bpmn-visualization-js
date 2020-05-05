@@ -29,6 +29,13 @@ abstract class EventShape extends mxEllipse {
   }
 
   public paintVertexShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    const eventKind = this.getBpmnEventKind();
+    // will be removed when managing the timer rendering
+    if (eventKind == ShapeBpmnEventKind.TIMER) {
+      c.setFillColor('green');
+      c.setFillAlpha(0.3);
+    }
+
     this.paintOuterShape(c, x, y, w, h);
     this.paintInnerShape(c, x, y, w, h);
   }
@@ -50,17 +57,6 @@ abstract class EventShape extends mxEllipse {
 export class StartEventShape extends EventShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
-  }
-
-  protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const eventKind = this.getBpmnEventKind();
-    // will be removed when managing the timer rendering
-    if (eventKind == ShapeBpmnEventKind.TIMER) {
-      c.setFillColor('green');
-      c.setFillAlpha(0.3);
-    }
-
-    super.paintOuterShape(c, x, y, w, h);
   }
 }
 
@@ -94,8 +90,8 @@ export class EndEventShape extends EventShape {
   }
 }
 
-export class ThrowIntermediateEventShape extends EventShape {
-  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+abstract class IntermediateEventShape extends EventShape {
+  protected constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -108,5 +104,16 @@ export class ThrowIntermediateEventShape extends EventShape {
     const inset = this.strokewidth * 2;
     c.ellipse(w * 0.02 + inset + x, h * 0.02 + inset + y, w * 0.96 - 2 * inset, h * 0.96 - 2 * inset);
     c.stroke();
+  }
+}
+
+export class CatchIntermediateEventShape extends IntermediateEventShape {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth?: number) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+}
+export class ThrowIntermediateEventShape extends IntermediateEventShape {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth?: number) {
+    super(bounds, fill, stroke, strokewidth);
   }
 }
