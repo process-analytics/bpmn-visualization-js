@@ -83,6 +83,10 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Timer Start Event
 |
 |
+
+|Message Start Event
+|
+|
 |===
 
 
