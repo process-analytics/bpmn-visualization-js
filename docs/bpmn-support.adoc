@@ -138,6 +138,10 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |icon:check-circle-o[]
 |The stroke width may be adjusted
 
+|Message End Event
+|
+|
+
 |===
 
 
