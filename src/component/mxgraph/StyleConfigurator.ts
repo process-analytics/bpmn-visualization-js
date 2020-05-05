@@ -44,7 +44,6 @@ export default class StyleConfigurator {
     this.configureTasksStyle();
     // gateways
     this.configureGatewaysStyle();
-    this.configureParallelGatewayStyle();
   }
 
   private getStylesheet(): any {
@@ -115,22 +114,6 @@ export default class StyleConfigurator {
       style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
       this.putCellStyle(kind, style);
     });
-  }
-
-  // TODO: to be removed as it will be configured in configureGatewaysStyle
-  // left just to not break current rendering
-  private configureParallelGatewayStyle(): void {
-    const style = this.cloneDefaultVertexStyle();
-    style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RHOMBUS;
-    style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RhombusPerimeter;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
-    style[this.mxConstants.STYLE_STROKECOLOR] = '#96A826';
-    style[this.mxConstants.STYLE_STROKEWIDTH] = 1.7;
-
-    style[this.mxConstants.STYLE_SPACING_TOP] = 55;
-    style[this.mxConstants.STYLE_SPACING_RIGHT] = 110;
-    style[this.mxConstants.STYLE_GRADIENTCOLOR] = '#E9ECB1';
-    this.putCellStyle(ShapeBpmnElementKind.GATEWAY_PARALLEL, style);
   }
 
   private configureGatewaysStyle(): void {
