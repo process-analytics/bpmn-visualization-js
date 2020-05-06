@@ -55,23 +55,6 @@ abstract class GatewayShape extends mxRhombus {
     c.translate(xTranslation, yTranslation);
   }
 
-  protected configureCanvasForIcon(c: mxgraph.mxXmlCanvas2D, parentWidth: number, parentHeight: number, iconOriginalSize: number): MxScaleFactorCanvas {
-    // ensure we are not impacted by the configured shape stroke width
-    c.setStrokeWidth(1);
-
-    const parentSize = Math.min(parentWidth, parentHeight);
-    const ratioFromParent = 0.25;
-    const scaleFactor = iconOriginalSize !== 0 ? (parentSize / iconOriginalSize) * ratioFromParent : 0.5;
-
-    return new MxScaleFactorCanvas(c, scaleFactor);
-  }
-
-  protected translateToStartingIconPosition(c: mxgraph.mxXmlCanvas2D, parentX: number, parentY: number, parentWidth: number, parentHeight: number): void {
-    const xTranslation = parentX + parentWidth / 4;
-    const yTranslation = parentY + parentHeight / 4;
-    c.translate(xTranslation, yTranslation);
-  }
-
   protected drawCrossSymbol(canvas: MxScaleFactorCanvas, parentWidth: number, parentHeight: number): void {
     canvas.begin();
     canvas.moveTo(parentWidth * 0.38, 0);
