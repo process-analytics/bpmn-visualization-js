@@ -21,6 +21,7 @@ import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
 import { ShapeBpmnEvent } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
+import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -45,6 +46,7 @@ export interface ExpectedEdge {
   bpmnElementName: string;
   bpmnElementSourceRefId: string;
   bpmnElementTargetRefId: string;
+  bpmnElementKind: SequenceFlowKind;
   waypoints?: Waypoint[];
 }
 
@@ -91,6 +93,10 @@ export function parseJsonAndExpectOnlyEdges(json: string, numberOfExpectedEdges:
   return parseJsonAndExpect(json, 0, 0, 0, numberOfExpectedEdges);
 }
 
+export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: string, numberOfExpectedEdges: number, numberOfExpectedFlowNodes: number): BpmnModel {
+  return parseJsonAndExpect(json, 0, 0, numberOfExpectedFlowNodes, numberOfExpectedEdges);
+}
+
 export function verifyShape(shape: Shape, expectedValue: ExpectedShape): void {
   expect(shape.id).toEqual(expectedValue.shapeId);
 
@@ -116,6 +122,7 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge): void {
   expect(bpmnElement.name).toEqual(expectedValue.bpmnElementName);
   expect(bpmnElement.sourceRefId).toEqual(expectedValue.bpmnElementSourceRefId);
   expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
+  expect(bpmnElement.kind).toEqual(expectedValue.bpmnElementKind);
 }
 
 export function verifyEvent(model: BpmnModel, kind: ShapeBpmnEventKind, expectedNumber: number): void {

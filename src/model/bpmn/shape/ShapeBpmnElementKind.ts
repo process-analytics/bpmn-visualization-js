@@ -25,8 +25,20 @@ export enum ShapeBpmnElementKind {
   GATEWAY_PARALLEL = 'parallelGateway',
   GATEWAY_EXCLUSIVE = 'exclusiveGateway',
   GATEWAY_INCLUSIVE = 'inclusiveGateway',
+  GATEWAY_COMPLEX = 'complexGateway',
   EVENT_START = 'startEvent',
   EVENT_END = 'endEvent',
   EVENT_INTERMEDIATE_CATCH = 'intermediateCatchEvent',
   EVENT_INTERMEDIATE_THROW = 'intermediateThrowEvent',
+  CALL_ACTIVITY = 'callActivity',
+  SUB_PROCESS = 'subProcess',
 }
+
+/**
+ * List supported ShapeBpmnElement
+ *
+ * Temporarily used until we support all ShapeBpmnElements
+ */
+export const supportedBpmnElementsKinds = Object.values(ShapeBpmnElementKind).filter(kind => {
+  return kind != ShapeBpmnElementKind.CALL_ACTIVITY && kind != ShapeBpmnElementKind.SUB_PROCESS && kind != ShapeBpmnElementKind.GATEWAY_COMPLEX;
+});

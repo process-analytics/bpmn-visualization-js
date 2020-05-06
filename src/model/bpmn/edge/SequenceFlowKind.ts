@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { SequenceFlowKind } from './SequenceFlowKind';
-
-export default class SequenceFlow {
-  constructor(readonly id: string, readonly name: string, readonly sourceRefId?: string, readonly targetRefId?: string, readonly kind = SequenceFlowKind.NORMAL) {}
+export enum SequenceFlowKind {
+  NORMAL = 'normal',
+  DEFAULT = 'default',
 }

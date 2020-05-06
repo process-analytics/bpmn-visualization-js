@@ -16,19 +16,21 @@
 import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import ShapeBpmnElement, { ShapeBpmnEvent } from '../../../../model/bpmn/shape/ShapeBpmnElement';
-import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementKind, supportedBpmnElementsKinds } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
 import Waypoint from '../../../../model/bpmn/edge/Waypoint';
 import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
 import ShapeUtil from '../../../../model/bpmn/shape/ShapeUtil';
+import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
 const convertedProcessBpmnElements: ShapeBpmnElement[] = [];
 const convertedSequenceFlows: SequenceFlow[] = [];
+const defaultSequenceFlowIds: string[] = [];
 
-const flowNodeKinds = Object.values(ShapeBpmnElementKind).filter(kind => {
+const flowNodeKinds = supportedBpmnElementsKinds.filter(kind => {
   return kind != ShapeBpmnElementKind.LANE;
 });
 
@@ -67,6 +69,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       convertedLaneBpmnElements.length = 0;
       convertedProcessBpmnElements.length = 0;
       convertedSequenceFlows.length = 0;
+      defaultSequenceFlowIds.length = 0;
 
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
 
@@ -103,6 +106,10 @@ export default class ProcessConverter extends AbstractConverter<Process> {
         }
       } else {
         convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
+
+        if (ShapeUtil.isWithDefaultSequenceFlow(kind) && bpmnElement.default) {
+          defaultSequenceFlowIds.push(bpmnElement.default);
+        }
       }
     });
   }
@@ -175,8 +182,11 @@ export default class ProcessConverter extends AbstractConverter<Process> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildSequenceFlows(bpmnElements: Array<any> | any): void {
-    const t = this.jsonConvert.deserializeArray(ensureIsArray(bpmnElements), SequenceFlow);
-    convertedSequenceFlows.push(...t);
+    ensureIsArray(bpmnElements).forEach(sequenceFlow => {
+      const kind = defaultSequenceFlowIds.includes(sequenceFlow.id) ? SequenceFlowKind.DEFAULT : SequenceFlowKind.NORMAL;
+      const convertedSequenceFlow = new SequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.sourceRef, sequenceFlow.targetRef, kind);
+      convertedSequenceFlows.push(convertedSequenceFlow);
+    });
   }
 }
 
