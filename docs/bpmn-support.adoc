@@ -68,6 +68,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 === Events
 
+*Note*: the message icons are derived from the https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465[draw.io bpmn mxgraph stencil]
 
 [cols="1,1,4", options="header"]
 .Start Events
@@ -118,8 +119,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |The stroke width may be adjusted
 
 |Message Intermediate Throw Event
-|
-|Stroke fits the BPMN specification but no icon
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 

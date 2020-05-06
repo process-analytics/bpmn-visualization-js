@@ -57,6 +57,13 @@ describe('BPMN Visualization JS', () => {
             <semantic:outgoing>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:outgoing>
         </semantic:userTask>
         <semantic:intermediateThrowEvent name="Throw None Intermediate Event" id="noneIntermediateThrowEvent" />
+        <semantic:intermediateThrowEvent name="Throw Message Intermediate Event" id="messageIntermediateThrowEvent">
+            <semantic:messageEventDefinition />
+        </semantic:intermediateThrowEvent>
+        <semantic:intermediateCatchEvent id="IntermediateCatchEvent_Timer_01" name="Timer Intermediate Catch Event">
+            <semantic:incoming>Flow_028jkgv</semantic:incoming>
+            <semantic:timerEventDefinition id="TimerEventDefinition_0t6k83a" />
+        </semantic:intermediateCatchEvent>
         <semantic:endEvent name="End Event" id="endEvent_1">
             <semantic:incoming>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:incoming>
             <semantic:terminateEventDefinition/>
@@ -65,12 +72,9 @@ describe('BPMN Visualization JS', () => {
         <semantic:sequenceFlow sourceRef="task_1" targetRef="serviceTask_2" name="" id="_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599"/>
         <semantic:sequenceFlow sourceRef="serviceTask_2" targetRef="userTask_3" name="" id="_2aa47410-1b0e-4f8b-ad54-d6f798080cb4"/>
         <semantic:sequenceFlow sourceRef="userTask_3" targetRef="noneIntermediateThrowEvent" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff80" />
-        <semantic:sequenceFlow sourceRef="noneIntermediateThrowEvent" targetRef="endEvent_1" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff22" />
+        <semantic:sequenceFlow sourceRef="noneIntermediateThrowEvent" targetRef="messageIntermediateThrowEvent" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff22" />
+        <semantic:sequenceFlow sourceRef="messageIntermediateThrowEvent" targetRef="endEvent_1" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff33" />
         <semantic:sequenceFlow id="Flow_028jkgv" sourceRef="startEvent_2_timer" targetRef="IntermediateCatchEvent_Timer_01" />
-        <semantic:intermediateCatchEvent id="IntermediateCatchEvent_Timer_01" name="Timer Intermediate Catch Event">
-            <semantic:incoming>Flow_028jkgv</semantic:incoming>
-            <semantic:timerEventDefinition id="TimerEventDefinition_0t6k83a" />
-        </semantic:intermediateCatchEvent>
     </semantic:process>
     <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
         <bpmndi:BPMNPlane bpmnElement="WFP-6-">
@@ -107,6 +111,9 @@ describe('BPMN Visualization JS', () => {
 	              <dc:Bounds height="12.804751171875008" width="94.93333333333335" x="686.5963254593177" y="372.3333333333333" />
 	           </bpmndi:BPMNLabel>
 	        </bpmndi:BPMNShape>
+	        <bpmndi:BPMNShape bpmnElement="messageIntermediateThrowEvent" id="S1373649849862_messageIntermediateThrowEvent">
+	           <dc:Bounds height="32.0" width="32.0" x="698.0" y="335.0" />
+	        </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="endEvent_1" id="S1373649849862_endEvent_1">
                 <dc:Bounds height="32.0" width="32.0" x="648.0" y="335.0"/>
                 <bpmndi:BPMNLabel labelStyle="LS1373649849858">
@@ -141,9 +148,11 @@ describe('BPMN Visualization JS', () => {
                 <di:waypoint x="648.0" y="351.0"/>
                 <bpmndi:BPMNLabel/>
             </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge bpmnElement="_8e8fe679-eb3b-4c43-a4d6-891e7087ff22" id="E1373649849867__8e8fe679-eb3b-4c43-a4d6-891e7087ff22">
-               <bpmndi:BPMNLabel />
-            </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="_8e8fe679-eb3b-4c43-a4d6-891e7087ff22" id="E1373649849867__8e8fe679-eb3b-4c43-a4d6-891e7087ff22">
+            <bpmndi:BPMNLabel />
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="_8e8fe679-eb3b-4c43-a4d6-891e7087ff33" id="E1373649849867__8e8fe679-eb3b-4c43-a4d6-891e7087ff33" />
+         <bpmndi:BPMNEdge bpmnElement="Flow_028jkgv" id="E1373649849867__Flow_028jkgv" />
         </bpmndi:BPMNPlane>
         <bpmndi:BPMNLabelStyle id="LS1373649849858">
             <dc:Font isBold="false" isItalic="false" isStrikeThrough="false" isUnderline="false" name="Arial" size="11.0"/>
@@ -192,6 +201,7 @@ describe('BPMN Visualization JS', () => {
     expectModelContainsBpmnEvent('startEvent_2_timer', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.TIMER);
     expectModelContainsBpmnEvent('endEvent_1', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.TERMINATE);
     expectModelContainsBpmnEvent('noneIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.NONE);
+    expectModelContainsBpmnEvent('messageIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.MESSAGE);
     expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.TIMER);
     expectModelContainsCell('task_1', ShapeBpmnElementKind.TASK);
     expectModelContainsCell('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE);
