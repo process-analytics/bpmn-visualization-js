@@ -110,3 +110,31 @@ export class ParallelGatewayShape extends GatewayShape {
     canvas.fillAndStroke();
   }
 }
+
+export class InclusiveGatewayShape extends GatewayShape {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+
+  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    this.addInclusiveGatewaySymbol(c, x, y, w, h);
+  }
+
+  private addInclusiveGatewaySymbol(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    const canvas = this.configureCanvasForIcon(c, w, h, 0);
+    this.translateToStartingIconPosition(c, x, y, w, h);
+    c.setFillColor('#fff');
+    c.setStrokeWidth(StyleConstant.STROKE_WIDTH_THICK);
+
+    const arcRay = w / 6;
+    const arcX = w / 6;
+    const arcY = h / 6;
+    canvas.begin();
+    canvas.moveTo(arcX, arcY);
+    canvas.arcTo(arcRay, arcRay, 0, 0, 0, 5 * arcX, 5 * arcY);
+    canvas.arcTo(arcRay, arcRay, 0, 0, 0, arcX, arcY);
+    canvas.close();
+
+    canvas.fillAndStroke();
+  }
+}
