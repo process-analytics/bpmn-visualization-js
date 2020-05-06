@@ -55,7 +55,7 @@ abstract class GatewayShape extends mxRhombus {
     c.translate(xTranslation, yTranslation);
   }
 
-  protected drawCrossSymbol(canvas: MxScaleFactorCanvas, parentWidth: number, parentHeight: number): void {
+  protected paintCrossIcon(canvas: MxScaleFactorCanvas, parentWidth: number, parentHeight: number): void {
     canvas.begin();
     canvas.moveTo(parentWidth * 0.38, 0);
     canvas.lineTo(parentWidth * 0.62, 0);
@@ -86,7 +86,7 @@ export class ExclusiveGatewayShape extends GatewayShape {
     const canvas = this.configureCanvasForIcon(c, w, h, 0);
     this.translateToStartingIconPosition(c, x, y, w, h);
 
-    this.drawCrossSymbol(canvas, w, h);
+    this.paintCrossIcon(canvas, w, h);
     const xRotation = w / 4;
     const yRotation = h / 4;
     canvas.rotate(45, false, false, xRotation, yRotation);
@@ -107,7 +107,7 @@ export class ParallelGatewayShape extends GatewayShape {
     const canvas = this.configureCanvasForIcon(c, w, h, 0);
     this.translateToStartingIconPosition(c, x, y, w, h);
 
-    this.drawCrossSymbol(canvas, w, h);
+    this.paintCrossIcon(canvas, w, h);
     canvas.fillAndStroke();
   }
 }
