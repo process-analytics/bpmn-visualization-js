@@ -100,7 +100,7 @@ abstract class EventShape extends mxEllipse {
 
     // V line
     c.moveTo(0, 0);
-    c.lineTo(w * 0.5, h * 0.5);
+    c.lineTo(w * 0.5, h * 0.6);
     c.lineTo(w, 0);
 
     // First bottom line
