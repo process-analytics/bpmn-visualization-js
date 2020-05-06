@@ -34,9 +34,6 @@ abstract class EventShape extends mxEllipse {
     if (eventKind == ShapeBpmnEventKind.TIMER) {
       c.setFillColor('green');
       c.setFillAlpha(0.3);
-    } else if (eventKind == ShapeBpmnEventKind.MESSAGE) {
-      // TODO: will be removed when managing the message rendering
-      this.paintOuterMessageShape(c);
     }
 
     this.paintOuterShape(c, x, y, w, h);
@@ -123,6 +120,16 @@ export class StartEventShape extends EventShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
+
+  // TODO: will be removed when managing the message rendering
+  protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    const eventKind = this.getBpmnEventKind();
+    if (eventKind == ShapeBpmnEventKind.MESSAGE) {
+      this.paintOuterMessageShape(c);
+    }
+
+    super.paintOuterShape(c, x, y, w, h);
+  }
 }
 
 export class EndEventShape extends EventShape {
@@ -153,6 +160,16 @@ export class EndEventShape extends EventShape {
 
     c.fillAndStroke();
   }
+
+  // TODO: will be removed when managing the message rendering
+  protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    const eventKind = this.getBpmnEventKind();
+    if (eventKind == ShapeBpmnEventKind.MESSAGE) {
+      this.paintOuterMessageShape(c);
+    }
+
+    super.paintOuterShape(c, x, y, w, h);
+  }
 }
 
 abstract class IntermediateEventShape extends EventShape {
@@ -169,13 +186,6 @@ abstract class IntermediateEventShape extends EventShape {
     const inset = this.strokewidth * 1.5;
     c.ellipse(w * 0.02 + inset + x, h * 0.02 + inset + y, w * 0.96 - 2 * inset, h * 0.96 - 2 * inset);
     c.stroke();
-  }
-
-  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const eventKind = this.getBpmnEventKind();
-    if (eventKind == ShapeBpmnEventKind.MESSAGE) {
-      this.paintThrowMessageIcon(c, x, y, w, h);
-    }
   }
 }
 
@@ -197,5 +207,12 @@ export class CatchIntermediateEventShape extends IntermediateEventShape {
 export class ThrowIntermediateEventShape extends IntermediateEventShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
+  }
+
+  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    const eventKind = this.getBpmnEventKind();
+    if (eventKind == ShapeBpmnEventKind.MESSAGE) {
+      this.paintThrowMessageIcon(c, x, y, w, h);
+    }
   }
 }
