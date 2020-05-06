@@ -17,6 +17,7 @@ import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
+import { SequenceFlowKind } from '../../model/bpmn/edge/SequenceFlowKind';
 
 export enum StyleConstant {
   STROKE_WIDTH_THIN = 2,
@@ -41,6 +42,9 @@ export default class StyleConfigurator {
     this.configureEventsStyle();
     this.configureTasksStyle();
     this.configureGatewaysStyle();
+    // edge
+    this.configureNormalSequenceFlowStyle();
+    this.configureDefaultSequenceFlowStyle();
   }
 
   private getStylesheet(): any {
@@ -51,8 +55,17 @@ export default class StyleConfigurator {
     return this.getStylesheet().getDefaultVertexStyle();
   }
 
+  private getDefaultEdgeStyle(): any {
+    return this.getStylesheet().getDefaultEdgeStyle();
+  }
+
   private cloneDefaultVertexStyle(): any {
     const defaultStyle = this.getDefaultVertexStyle();
+    return this.mxUtils.clone(defaultStyle);
+  }
+
+  private cloneDefaultEdgeStyle(): any {
+    const defaultStyle = this.getDefaultEdgeStyle();
     return this.mxUtils.clone(defaultStyle);
   }
 
@@ -140,5 +153,19 @@ export default class StyleConfigurator {
     temporaryStyle[this.mxConstants.STYLE_SPACING_TOP] = 55;
     temporaryStyle[this.mxConstants.STYLE_SPACING_RIGHT] = 110;
     this.putCellStyle(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, temporaryStyle);
+  }
+
+  private configureNormalSequenceFlowStyle() {
+    const style = this.cloneDefaultEdgeStyle();
+    style[this.mxConstants.STYLE_STROKECOLOR] = 'DodgerBlue';
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
+    this.graph.getStylesheet().putCellStyle(SequenceFlowKind.NORMAL, style);
+  }
+
+  private configureDefaultSequenceFlowStyle() {
+    const style = this.cloneDefaultEdgeStyle();
+    style[this.mxConstants.STYLE_STROKECOLOR] = 'HotPink';
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
+    this.graph.getStylesheet().putCellStyle(SequenceFlowKind.DEFAULT, style);
   }
 }
