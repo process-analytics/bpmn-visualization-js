@@ -71,6 +71,9 @@ describe('BPMN Visualization JS', () => {
             <semantic:incoming>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:incoming>
             <semantic:terminateEventDefinition/>
         </semantic:endEvent>
+         <semantic:endEvent name="Message End Event" id="messageEndEvent">
+            <semantic:messageEventDefinition/>
+        </semantic:endEvent>
         <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="" id="_e16564d7-0c4c-413e-95f6-f668a3f851fb"/>
         <semantic:sequenceFlow sourceRef="task_1" targetRef="serviceTask_2" name="" id="_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599"/>
         <semantic:sequenceFlow sourceRef="serviceTask_2" targetRef="userTask_3" name="" id="_2aa47410-1b0e-4f8b-ad54-d6f798080cb4"/>
@@ -126,6 +129,9 @@ describe('BPMN Visualization JS', () => {
                     <dc:Bounds height="12.804751171875008" width="94.93333333333335" x="616.5963254593177" y="372.3333333333333"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="messageEndEvent" id="S1373649849862_messageEndEvent">
+	           <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+	        </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="shape_IntermediateCatchEvent_Timer_01" bpmnElement="IntermediateCatchEvent_Timer_01">
                 <dc:Bounds x="272" y="293" width="36" height="36" />
                 <bpmndi:BPMNLabel>
@@ -206,6 +212,7 @@ describe('BPMN Visualization JS', () => {
     expectModelContainsBpmnEvent('startEvent_1', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.NONE);
     expectModelContainsBpmnEvent('startEvent_2_timer', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.TIMER);
     expectModelContainsBpmnEvent('endEvent_1', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.TERMINATE);
+    expectModelContainsBpmnEvent('messageEndEvent', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.MESSAGE);
     expectModelContainsBpmnEvent('noneIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.NONE);
     expectModelContainsBpmnEvent('messageIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.MESSAGE);
     expectModelContainsBpmnEvent('messageIntermediateCatchEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.MESSAGE);
