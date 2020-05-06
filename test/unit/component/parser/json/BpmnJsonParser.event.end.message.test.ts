@@ -90,7 +90,7 @@ describe('parse bpmn as json for Message end event', () => {
     });
   });
 
-  it('json containing one process with an end event with terminate definition and another definition, Message end event is NOT present', () => {
+  it('json containing one process with an end event with message definition and another definition, Message end event is NOT present', () => {
     const json = `{
   "definitions": {
     "process": {
@@ -115,7 +115,7 @@ describe('parse bpmn as json for Message end event', () => {
     parseJsonAndExpectOnlyFlowNodes(json, 0);
   });
 
-  it('json containing one process with an end event with several terminate definition, Message end event is NOT present', () => {
+  it('json containing one process with an end event with several message definitions, Message end event is NOT present', () => {
     const json = `{
   "definitions": {
     "process": {
@@ -138,30 +138,5 @@ describe('parse bpmn as json for Message end event', () => {
 }`;
 
     parseJsonAndExpectOnlyFlowNodes(json, 0);
-  });
-
-  it('json containing one process with an end event with terminate definition as simple <semantic:escalationEventDefinition/>', () => {
-    const json = `{
-  "definitions": {
-    "process": {
-      "endEvent": [
-        { "id": "event_id_7", "messageEventDefinition": "" }
-      ]
-    },
-    "BPMNDiagram": {
-      "name": "process 0",
-      "BPMNPlane": {
-        "BPMNShape": [
-          {
-            "id": "shape_endEvent_id_7", "bpmnElement": "event_id_7",
-            "Bounds": { "x": 362, "y": 932, "width": 36, "height": 45 }
-          }
-        ]
-      }
-    }
-  }
-}`;
-
-    parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.MESSAGE, 1);
   });
 });
