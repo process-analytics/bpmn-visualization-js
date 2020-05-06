@@ -26,7 +26,7 @@ If you need BPMN examples, you can use resources from the from [BPMN Model Inter
 
 `BPMN Visualization JS` is in early development stages and is subject to changes until the `1.0.0` version is released.
 
-We are currently focusing on the [BPMN support](https://process-analytics.github.io/bpmn-visualization-js/#bpmn-support-roadmap)
+We are currently focusing on the [BPMN support](https://github.com/process-analytics/bpmn-visualization-js/milestone/6)
 to be able to render most of the BPMN elements.
 
 Then, we will work on BPMN extensions, library extension points.
