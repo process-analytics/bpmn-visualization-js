@@ -24,6 +24,7 @@ export enum ShapeBpmnElementKind {
   TASK = 'task',
   GATEWAY_PARALLEL = 'parallelGateway',
   GATEWAY_EXCLUSIVE = 'exclusiveGateway',
+  GATEWAY_INCLUSIVE = 'inclusiveGateway',
   EVENT_START = 'startEvent',
   EVENT_END = 'endEvent',
   EVENT_INTERMEDIATE_CATCH = 'intermediateCatchEvent',
