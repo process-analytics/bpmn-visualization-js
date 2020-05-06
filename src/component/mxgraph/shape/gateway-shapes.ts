@@ -44,7 +44,7 @@ abstract class GatewayShape extends mxRhombus {
 
     const parentSize = Math.min(parentWidth, parentHeight);
     const ratioFromParent = 0.25;
-    const scaleFactor = iconOriginalSize !== 0 ? (parentSize / iconOriginalSize) * ratioFromParent : 0.5;
+    const scaleFactor = (parentSize / iconOriginalSize) * ratioFromParent;
 
     return new MxScaleFactorCanvas(c, scaleFactor);
   }
@@ -55,20 +55,20 @@ abstract class GatewayShape extends mxRhombus {
     c.translate(xTranslation, yTranslation);
   }
 
-  protected paintCrossIcon(canvas: MxScaleFactorCanvas, parentWidth: number, parentHeight: number): void {
+  protected paintCrossIcon(canvas: MxScaleFactorCanvas): void {
     canvas.begin();
-    canvas.moveTo(parentWidth * 0.38, 0);
-    canvas.lineTo(parentWidth * 0.62, 0);
-    canvas.lineTo(parentWidth * 0.62, parentHeight * 0.38);
-    canvas.lineTo(parentWidth, parentHeight * 0.38);
-    canvas.lineTo(parentWidth, parentHeight * 0.62);
-    canvas.lineTo(parentWidth * 0.62, parentHeight * 0.62);
-    canvas.lineTo(parentWidth * 0.62, parentHeight);
-    canvas.lineTo(parentWidth * 0.38, parentHeight);
-    canvas.lineTo(parentWidth * 0.38, parentHeight * 0.62);
-    canvas.lineTo(0, parentHeight * 0.62);
-    canvas.lineTo(0, parentHeight * 0.38);
-    canvas.lineTo(parentWidth * 0.38, parentHeight * 0.38);
+    canvas.moveTo(0.38, 0);
+    canvas.lineTo(0.62, 0);
+    canvas.lineTo(0.62, 0.38);
+    canvas.lineTo(1, 0.38);
+    canvas.lineTo(1, 0.62);
+    canvas.lineTo(0.62, 0.62);
+    canvas.lineTo(0.62, 1);
+    canvas.lineTo(0.38, 1);
+    canvas.lineTo(0.38, 0.62);
+    canvas.lineTo(0, 0.62);
+    canvas.lineTo(0, 0.38);
+    canvas.lineTo(0.38, 0.38);
     canvas.close();
   }
 }
@@ -83,10 +83,9 @@ export class ExclusiveGatewayShape extends GatewayShape {
   }
 
   private addExclusiveGatewaySymbol(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const canvas = this.configureCanvasForIcon(c, w, h, 0);
+    const canvas = this.configureCanvasForIcon(c, w, h, 0.5);
     this.translateToStartingIconPosition(c, x, y, w, h);
-
-    this.paintCrossIcon(canvas, w, h);
+    this.paintCrossIcon(canvas);
     const xRotation = w / 4;
     const yRotation = h / 4;
     canvas.rotate(45, false, false, xRotation, yRotation);
@@ -104,10 +103,10 @@ export class ParallelGatewayShape extends GatewayShape {
   }
 
   private addParallelGatewaySymbol(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const canvas = this.configureCanvasForIcon(c, w, h, 0);
+    const canvas = this.configureCanvasForIcon(c, w, h, 0.5);
     this.translateToStartingIconPosition(c, x, y, w, h);
 
-    this.paintCrossIcon(canvas, w, h);
+    this.paintCrossIcon(canvas);
     canvas.fillAndStroke();
   }
 }
