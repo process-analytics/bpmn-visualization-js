@@ -179,6 +179,16 @@ export class CatchIntermediateEventShape extends IntermediateEventShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
   }
+
+  // TODO: will be removed when managing the message rendering
+  protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    const eventKind = this.getBpmnEventKind();
+    if (eventKind == ShapeBpmnEventKind.MESSAGE) {
+      this.paintOuterMessageShape(c);
+    }
+
+    super.paintOuterShape(c, x, y, w, h);
+  }
 }
 export class ThrowIntermediateEventShape extends IntermediateEventShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth?: number) {
