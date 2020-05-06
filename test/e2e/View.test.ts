@@ -184,10 +184,15 @@ describe('BPMN Visualization JS', () => {
     await expect(page.title()).resolves.toMatch('BPMN Visualization JS');
   });
 
-  function expectModelContainsCell(cellId: string, shapeKind: ShapeBpmnElementKind): mxgraph.mxCell {
+  function expectModelContainsCell(cellId: string): mxgraph.mxCell {
     const cell = bpmnVisu.graph.model.getCell(cellId);
     expect(cell).not.toBeUndefined();
     expect(cell).not.toBeNull();
+    return cell;
+  }
+
+  function expectModelContainsShape(cellId: string, shapeKind: ShapeBpmnElementKind): mxgraph.mxCell {
+    const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(shapeKind);
     const state = bpmnVisu.graph.getView().getState(cell);
     expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(shapeKind);
@@ -195,15 +200,13 @@ describe('BPMN Visualization JS', () => {
   }
 
   function expectModelContainsEdge(cellId: string, kind: SequenceFlowKind): mxgraph.mxCell {
-    const cell = bpmnVisu.graph.model.getCell(cellId);
-    expect(cell).not.toBeUndefined();
-    expect(cell).not.toBeNull();
+    const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(kind);
     return cell;
   }
 
   function expectModelContainsBpmnEvent(cellId: string, shapeKind: ShapeBpmnElementKind, bpmnEventKind: ShapeBpmnEventKind): void {
-    const cell = expectModelContainsCell(cellId, shapeKind);
+    const cell = expectModelContainsShape(cellId, shapeKind);
     expect(cell.style).toContain(`bpmn.eventKind=${bpmnEventKind}`);
   }
 
@@ -219,9 +222,9 @@ describe('BPMN Visualization JS', () => {
     expectModelContainsBpmnEvent('messageIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.MESSAGE);
     expectModelContainsBpmnEvent('messageIntermediateCatchEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.MESSAGE);
     expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.TIMER);
-    expectModelContainsCell('task_1', ShapeBpmnElementKind.TASK);
-    expectModelContainsCell('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE);
-    expectModelContainsCell('userTask_3', ShapeBpmnElementKind.TASK_USER);
+    expectModelContainsShape('task_1', ShapeBpmnElementKind.TASK);
+    expectModelContainsShape('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE);
+    expectModelContainsShape('userTask_3', ShapeBpmnElementKind.TASK_USER);
     expectModelContainsEdge('default_sequence_flow_id', SequenceFlowKind.DEFAULT);
     expectModelContainsEdge('normal_sequence_flow_id', SequenceFlowKind.NORMAL);
   });
