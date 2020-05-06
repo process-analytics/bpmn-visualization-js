@@ -74,16 +74,6 @@ export class EndEventShape extends EventShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const eventKind = this.getBpmnEventKind();
-    // TODO: will be removed when managing the message rendering
-    if (eventKind == ShapeBpmnEventKind.MESSAGE) {
-      this.paintOuterMessageShape(c);
-    }
-
-    super.paintOuterShape(c, x, y, w, h);
-  }
-
   protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     const eventKind = this.getBpmnEventKind();
     if (eventKind == ShapeBpmnEventKind.TERMINATE) {
