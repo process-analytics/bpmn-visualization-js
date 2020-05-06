@@ -24,51 +24,63 @@ const mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty
 const mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
 
 abstract class EventShape extends mxEllipse {
+  // when all/more event types will be supported, we could move to a Record/MappedType
+  private iconPainters: Map<ShapeBpmnEventKind, (c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number) => void> = new Map([
+    [ShapeBpmnEventKind.MESSAGE, (c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number) => this.paintMessageIcon(c, x, y, w, h)],
+    [ShapeBpmnEventKind.TERMINATE, (c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number) => this.paintTerminateIcon(c, x, y, w, h)],
+  ]);
+  protected isUsingThrowIcons = false;
+
   protected constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
   public paintVertexShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    this.markNonFullyRenderedEvents(c);
+    this.paintOuterShape(c, x, y, w, h);
+    this.paintInnerShape(c, x, y, w, h);
+  }
+
+  // This will be removed when managing the render of all events
+  private markNonFullyRenderedEvents(c: mxgraph.mxXmlCanvas2D): void {
     const eventKind = this.getBpmnEventKind();
-    // will be removed when managing the timer rendering
     if (eventKind == ShapeBpmnEventKind.TIMER) {
       c.setFillColor('green');
       c.setFillAlpha(0.3);
+    } // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    else if (eventKind == ShapeBpmnEventKind.MESSAGE && (this instanceof StartEventShape || this instanceof EndEventShape)) {
+      c.setFillColor('yellow');
+      c.setFillAlpha(0.3);
     }
-
-    this.paintOuterShape(c, x, y, w, h);
-    this.paintInnerShape(c, x, y, w, h);
   }
 
   protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintVertexShape(c, x, y, w, h);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    // do nothing by default
+    const iconPainter =
+      this.iconPainters.get(this.getBpmnEventKind()) || ((c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number) => this.paintEmptyIcon(c, x, y, w, h));
+    iconPainter(c, x, y, w, h);
   }
 
-  protected getBpmnEventKind(): ShapeBpmnEventKind {
+  private getBpmnEventKind(): ShapeBpmnEventKind {
     return mxUtils.getValue(this.style, StyleConstant.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
   }
 
-  // TODO: will be removed when managing the message rendering
-  protected paintOuterMessageShape(c: mxgraph.mxXmlCanvas2D): void {
-    c.setFillColor('yellow');
-    c.setFillAlpha(0.3);
-  }
-
-  protected paintIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number, isInverse = false): void {
-    const eventKind = this.getBpmnEventKind();
-    if (eventKind == ShapeBpmnEventKind.MESSAGE) {
-      this.paintMessageIcon(c, x, y, w, h, isInverse);
-    }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private paintEmptyIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    // empty by nature
   }
 
   // this implementation is adapted from the draw.io BPMN 'message' symbol
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465
-  private paintMessageIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number, isInverse = false): void {
+  private paintMessageIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    if (!(this instanceof IntermediateEventShape)) {
+      return;
+    }
+    const isInverse = this.isUsingThrowIcons;
     // Change the coordinate referential
     c.translate(x + w * 0.24, y + h * 0.34);
     w = w * 0.52;
@@ -117,38 +129,9 @@ abstract class EventShape extends mxEllipse {
 
     c.stroke();
   }
-}
-
-export class StartEventShape extends EventShape {
-  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
-  // TODO: will be removed when managing the message rendering
-  protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const eventKind = this.getBpmnEventKind();
-    if (eventKind == ShapeBpmnEventKind.MESSAGE) {
-      this.paintOuterMessageShape(c);
-    }
-
-    super.paintOuterShape(c, x, y, w, h);
-  }
-}
-
-export class EndEventShape extends EventShape {
-  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THICK) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
-  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const eventKind = this.getBpmnEventKind();
-    if (eventKind == ShapeBpmnEventKind.TERMINATE) {
-      this.paintTerminateEventIcon(c, x, y, w, h);
-    }
-  }
 
   // highly inspired from mxDoubleEllipse
-  private paintTerminateEventIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+  private paintTerminateIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     c.setFillColor(this.stroke);
     c.setStrokeWidth(0);
     const inset = mxUtils.getValue(this.style, mxConstants.STYLE_MARGIN, Math.min(3 + this.strokewidth, Math.min(w / 5, h / 5)));
@@ -163,15 +146,17 @@ export class EndEventShape extends EventShape {
 
     c.fillAndStroke();
   }
+}
 
-  // TODO: will be removed when managing the message rendering
-  protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const eventKind = this.getBpmnEventKind();
-    if (eventKind == ShapeBpmnEventKind.MESSAGE) {
-      this.paintOuterMessageShape(c);
-    }
+export class StartEventShape extends EventShape {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+}
 
-    super.paintOuterShape(c, x, y, w, h);
+export class EndEventShape extends EventShape {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THICK) {
+    super(bounds, fill, stroke, strokewidth);
   }
 }
 
@@ -196,17 +181,11 @@ export class CatchIntermediateEventShape extends IntermediateEventShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
   }
-
-  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    this.paintIcon(c, x, y, w, h);
-  }
 }
+
 export class ThrowIntermediateEventShape extends IntermediateEventShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
-  }
-
-  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    this.paintIcon(c, x, y, w, h, true);
+    this.isUsingThrowIcons = true;
   }
 }
