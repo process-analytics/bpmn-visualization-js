@@ -64,7 +64,7 @@ abstract class EventShape extends mxEllipse {
 
   // this implementation is adapted from the draw.io BPMN 'message' symbol
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465
-  protected paintMessageEventIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number, isInverse = false): void {
+  private paintMessageIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number, isInverse = false): void {
     // Change the coordinate referential
     c.translate(x + w * 0.24, y + h * 0.34);
     w = w * 0.52;
@@ -112,6 +112,10 @@ abstract class EventShape extends mxEllipse {
     c.lineTo((w * 2) / 3, h * 0.5);
 
     c.stroke();
+  }
+
+  protected paintThrowMessageIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    this.paintMessageIcon(c, x, y, w, h, true);
   }
 }
 
@@ -170,7 +174,7 @@ abstract class IntermediateEventShape extends EventShape {
   protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     const eventKind = this.getBpmnEventKind();
     if (eventKind == ShapeBpmnEventKind.MESSAGE) {
-      this.paintMessageEventIcon(c, x, y, w, h, true);
+      this.paintThrowMessageIcon(c, x, y, w, h);
     }
   }
 }
