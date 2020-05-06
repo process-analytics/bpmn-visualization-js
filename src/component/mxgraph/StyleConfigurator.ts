@@ -155,14 +155,14 @@ export default class StyleConfigurator {
     this.putCellStyle(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, temporaryStyle);
   }
 
-  private configureNormalSequenceFlowStyle() {
+  private configureNormalSequenceFlowStyle(): void {
     const style = this.cloneDefaultEdgeStyle();
     style[this.mxConstants.STYLE_STROKECOLOR] = 'DodgerBlue';
     style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
     this.graph.getStylesheet().putCellStyle(SequenceFlowKind.NORMAL, style);
   }
 
-  private configureDefaultSequenceFlowStyle() {
+  private configureDefaultSequenceFlowStyle(): void {
     const style = this.cloneDefaultEdgeStyle();
     style[this.mxConstants.STYLE_STROKECOLOR] = 'HotPink';
     style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
