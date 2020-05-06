@@ -115,7 +115,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 |Message Intermediate Throw Event
 |
-|
+|Stroke fits the BPMN specification but no icon
 |===
 
 
