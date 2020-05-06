@@ -75,6 +75,7 @@ abstract class EventShape extends mxEllipse {
     const sc = mxUtils.getValue(this.style, 'strokeColor', '#000000');
 
     // Choose dark color for the envelope outline
+    c.setStrokeWidth('inherit');
     c.setStrokeColor(sc);
 
     if (isInverse) {
@@ -96,9 +97,20 @@ abstract class EventShape extends mxEllipse {
 
     // Paint the envelope closure
     c.begin();
+
+    // V line
     c.moveTo(0, 0);
     c.lineTo(w * 0.5, h * 0.5);
     c.lineTo(w, 0);
+
+    // First bottom line
+    c.moveTo(0, h);
+    c.lineTo(w / 3, h * 0.5);
+
+    // Second bottom line
+    c.moveTo(w, h);
+    c.lineTo((w * 2) / 3, h * 0.5);
+
     c.stroke();
   }
 }
