@@ -59,16 +59,16 @@ abstract class EventShape extends mxEllipse {
     c.setFillAlpha(0.3);
   }
 
-  protected paintEventIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number, isInverse = false): void {
+  protected paintIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number, isInverse = false): void {
     const eventKind = this.getBpmnEventKind();
     if (eventKind == ShapeBpmnEventKind.MESSAGE) {
-      this.paintMessageEventIcon(c, x, y, w, h, isInverse);
+      this.paintMessageIcon(c, x, y, w, h, isInverse);
     }
   }
 
   // this implementation is adapted from the draw.io BPMN 'message' symbol
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465
-  private paintMessageEventIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number, isInverse = false): void {
+  private paintMessageIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number, isInverse = false): void {
     // Change the coordinate referential
     c.translate(x + w * 0.24, y + h * 0.34);
     w = w * 0.52;
@@ -198,7 +198,7 @@ export class CatchIntermediateEventShape extends IntermediateEventShape {
   }
 
   protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    this.paintEventIcon(c, x, y, w, h);
+    this.paintIcon(c, x, y, w, h);
   }
 }
 export class ThrowIntermediateEventShape extends IntermediateEventShape {
@@ -207,6 +207,6 @@ export class ThrowIntermediateEventShape extends IntermediateEventShape {
   }
 
   protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    this.paintEventIcon(c, x, y, w, h, true);
+    this.paintIcon(c, x, y, w, h, true);
   }
 }
