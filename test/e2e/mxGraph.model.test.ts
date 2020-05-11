@@ -31,9 +31,7 @@ function expectGeometry(cell: mxgraph.mxCell, geometry: mxgraph.mxGeometry): voi
 const mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
 const mxGeometry: typeof mxgraph.mxGeometry = MxGraphFactoryService.getMxGraphProperty('mxGeometry');
 
-// TODO the file should be renamed as we only check mxGraph model conformance here
-// to be reviewed as part of #48
-describe('BPMN Visualization JS', () => {
+describe('mxGraph model', () => {
   // region html string literal
   const xmlContent = `
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
@@ -188,20 +186,10 @@ describe('BPMN Visualization JS', () => {
 </semantic:definitions>
 `;
   // endregion
-  let bpmnVisu: BpmnVisu;
-
-  beforeAll(async () => {
-    await page.goto('http://localhost:10001');
-    await page.waitForSelector('#graph');
-    bpmnVisu = new BpmnVisu(window.document.getElementById('graph'));
-  });
+  const bpmnVisu = new BpmnVisu(null);
 
   beforeEach(() => {
     jest.setTimeout(100000);
-  });
-
-  it('should display page title', async () => {
-    await expect(page.title()).resolves.toMatch('BPMN Visualization JS');
   });
 
   function expectModelContainsCell(cellId: string): mxgraph.mxCell {
