@@ -48,7 +48,7 @@ abstract class EventShape extends mxEllipse {
       c.setFillColor('green');
       c.setFillAlpha(0.3);
     } // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    else if (eventKind == ShapeBpmnEventKind.MESSAGE && (this instanceof StartEventShape || this instanceof EndEventShape)) {
+    else if (eventKind == ShapeBpmnEventKind.MESSAGE && this instanceof StartEventShape) {
       c.setFillColor('yellow');
       c.setFillAlpha(0.3);
     }
@@ -77,7 +77,7 @@ abstract class EventShape extends mxEllipse {
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465
   private paintMessageIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    if (!(this instanceof IntermediateEventShape)) {
+    if (!(this instanceof IntermediateEventShape || this instanceof EndEventShape)) {
       return;
     }
     const isInverse = this.isUsingThrowIcons;
@@ -157,6 +157,7 @@ export class StartEventShape extends EventShape {
 export class EndEventShape extends EventShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
+    this.isUsingThrowIcons = true;
   }
 }
 
