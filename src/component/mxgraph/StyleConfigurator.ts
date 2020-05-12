@@ -127,5 +127,18 @@ export default class StyleConfigurator {
 
       this.putCellStyle(kind, style);
     });
+    // TODO: this is temporary rendering - to be removed with proper rendering implementation
+    const temporaryStyle = this.cloneDefaultVertexStyle();
+    temporaryStyle[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RHOMBUS;
+    temporaryStyle[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RhombusPerimeter;
+    temporaryStyle[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
+    temporaryStyle[this.mxConstants.STYLE_STROKECOLOR] = '#f00';
+    temporaryStyle[this.mxConstants.STYLE_STROKEWIDTH] = 2;
+    temporaryStyle[this.mxConstants.STYLE_FILLCOLOR] = '#f00';
+    temporaryStyle[this.mxConstants.STYLE_FILL_OPACITY] = 25;
+
+    temporaryStyle[this.mxConstants.STYLE_SPACING_TOP] = 55;
+    temporaryStyle[this.mxConstants.STYLE_SPACING_RIGHT] = 110;
+    this.putCellStyle(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, temporaryStyle);
   }
 }
