@@ -197,8 +197,12 @@ describe('mxGraph model', () => {
     await page.waitForSelector('#graph', { timeout: 120000 });
     console.warn(await page.content());
 
-    // Set timeout at 60000ms (1m)
-    await page.waitForSelector('#graph', { timeout: 60000 });
+  afterEach(async () => {
+    await new Promise(resolve => setTimeout(resolve, 550));
+  });
+
+  it('should display page title', async () => {
+    await expect(page.title()).resolves.toMatch('BPMN Visualization JS');
   });
 
   function expectModelContainsCell(cellId: string): mxgraph.mxCell {
