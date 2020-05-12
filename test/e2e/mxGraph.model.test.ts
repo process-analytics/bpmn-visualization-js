@@ -190,9 +190,10 @@ describe('mxGraph model', () => {
 
   beforeAll(async () => {
     // Consider navigation to be finished when the load event is fired
-    // Disable timeout
-    await page.goto('http://localhost:10001', { waitUntil: 'load', timeout: 0 });
-    await page.waitForSelector('#graph');
+    // Set timeout at 60000ms (1m)
+    await page.goto('http://localhost:10001', { waitUntil: 'load', timeout: 60000 });
+    // Set timeout at 60000ms (1m)
+    await page.waitForSelector('#graph', { timeout: 60000 });
   });
 
   function expectModelContainsCell(cellId: string): mxgraph.mxCell {
