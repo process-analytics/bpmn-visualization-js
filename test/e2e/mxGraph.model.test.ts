@@ -188,8 +188,11 @@ describe('mxGraph model', () => {
   // endregion
   const bpmnVisu = new BpmnVisu(null);
 
-  beforeEach(() => {
-    jest.setTimeout(100000);
+  beforeAll(async () => {
+    // Consider navigation to be finished when the DOMContentLoaded event is fired
+    // Disable timeout
+    await page.goto('http://localhost:10001', { waitUntil: 'domcontentloaded', timeout: 0 });
+    await page.waitForSelector('#graph');
   });
 
   function expectModelContainsCell(cellId: string): mxgraph.mxCell {
