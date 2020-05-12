@@ -189,9 +189,8 @@ describe('mxGraph model', () => {
   const bpmnVisu = new BpmnVisu(null);
 
   beforeAll(async () => {
-    // Consider navigation to be finished when the load event is fired
-    // Set timeout at 60000ms (1m)
-    await page.goto('http://localhost:10001', { waitUntil: 'load', timeout: 60000 });
+    await page.goto('http://localhost:10001');
+    await page.waitForSelector('#graph');
 
     console.warn(await page.content());
 
