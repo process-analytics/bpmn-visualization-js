@@ -59,9 +59,9 @@ abstract class EventShape extends mxEllipse {
   }
 
   protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const iconPainter =
+    const paintIcon =
       this.iconPainters.get(this.getBpmnEventKind()) || ((c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number) => this.paintEmptyIcon(c, x, y, w, h));
-    iconPainter(c, x, y, w, h);
+    paintIcon(c, x, y, w, h);
   }
 
   private getBpmnEventKind(): ShapeBpmnEventKind {
