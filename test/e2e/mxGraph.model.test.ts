@@ -192,9 +192,8 @@ describe('mxGraph model', () => {
     // Set timeout at 60000ms (1m)
     await page.goto('http://localhost:10001', { timeout: 60000 });
 
-    // Set timeout at 60000ms (1m)
-    await page.waitForSelector('#graph', { timeout: 60000 });
-
+    // Set timeout at 120000ms (2m)
+    await page.waitForSelector('#graph', { timeout: 120000 });
     console.warn(await page.content());
 
     // Set timeout at 60000ms (1m)
