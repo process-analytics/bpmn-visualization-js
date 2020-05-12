@@ -28,16 +28,14 @@ For all contributions, please respect the following guidelines:
 
 5. Be sure you have followed the [code style](CONTRIBUTING.md#code-style) for the project.
 
-6. Add a [changelog](CONTRIBUTING.md#add-a-changelog-entry) entry
+6. Sign the [Contributor License Agreement](CONTRIBUTING.md#contributor-license-agreement)
 
-7. Sign the [Contributor License Agreement](CONTRIBUTING.md#contributor-license-agreement)
-
-8. Open a [GitHub Pull Request](CONTRIBUTING.md#open-a-pull-request) with your patches. (**1** pull request = **1** feature or bug)
+7. Open a [GitHub Pull Request](CONTRIBUTING.md#open-a-pull-request) with your patches. (**1** pull request = **1** feature or bug)
    We will review your contribution and respond as quickly as possible. Keep in mind that this is an open source project, and it may take us some time to get back to you. Your patience is very much appreciated.
 
-9. Be willing to accept criticism and work on improving your code. 
+8. Be willing to accept criticism and work on improving your code. 
 
-**Working on your first Pull Request?** You can learn how from  this *free* series [How to Contribute to an Open Source Project on  GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)    
+**Working on your first Pull Request?** You can learn how from this *free* series [How to Contribute to an Open Source Project on  GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)    
 
 ### Fork & create a branch
 
@@ -138,21 +136,6 @@ Additionally, it is advised to install SonarLint Plugin
 
 It helps to avoid coding mistakes -> reduced technical debt
 
-### Add a changelog entry
-
-If your PR includes user-observable changes, you'll be asked to add a changelog entry following the existing changelog format.
-
-The changelog format is the following:
-
-* One line per PR describing your fix or enhancement.
-
-* Entries end with a dot, followed by "[#pr-number] by [@github-username]".
-
-* Entries are added under the "Unreleased" section at the top of the file, under the "Bug Fixes" or "Enhancements" subsection.
-
-* References to github usernames and pull requests use [shortcut reference links].
-
-* Your github username reference definition is included in the correct alphabetical position at the bottom of the file.
 
 ### Sign the Contributor License Agreement
 
