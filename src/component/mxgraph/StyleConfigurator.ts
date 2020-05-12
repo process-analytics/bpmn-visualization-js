@@ -42,9 +42,8 @@ export default class StyleConfigurator {
     this.configureEventsStyle();
     this.configureTasksStyle();
     this.configureGatewaysStyle();
-    // edge
-    this.configureNormalSequenceFlowStyle();
-    this.configureDefaultSequenceFlowStyle();
+
+    this.configureSequenceFlowsStyle();
   }
 
   private getStylesheet(): any {
@@ -153,6 +152,11 @@ export default class StyleConfigurator {
     temporaryStyle[this.mxConstants.STYLE_SPACING_TOP] = 55;
     temporaryStyle[this.mxConstants.STYLE_SPACING_RIGHT] = 110;
     this.putCellStyle(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, temporaryStyle);
+  }
+
+  private configureSequenceFlowsStyle(): void {
+    this.configureNormalSequenceFlowStyle();
+    this.configureDefaultSequenceFlowStyle();
   }
 
   private configureNormalSequenceFlowStyle(): void {
