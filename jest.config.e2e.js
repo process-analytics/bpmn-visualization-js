@@ -18,7 +18,7 @@ module.exports = {
   roots: ['<rootDir>/test/e2e/'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testPathIgnorePatterns: ['/node_modules/', 'dist'],
-  testTimeout: 100000,
+  testTimeout: 200000,
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
