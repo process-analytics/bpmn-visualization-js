@@ -192,6 +192,9 @@ describe('mxGraph model', () => {
     // Consider navigation to be finished when the load event is fired
     // Set timeout at 60000ms (1m)
     await page.goto('http://localhost:10001', { waitUntil: 'load', timeout: 60000 });
+
+    console.warn(await page.content());
+
     // Set timeout at 60000ms (1m)
     await page.waitForSelector('#graph', { timeout: 60000 });
   });
