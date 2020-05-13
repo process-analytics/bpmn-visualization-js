@@ -52,10 +52,10 @@ describe('mxGraph model', () => {
         </semantic:task>
         <semantic:serviceTask implementation="##WebService" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Service Task 2" id="serviceTask_2">
             <semantic:incoming>default_sequence_flow_id</semantic:incoming>
-            <semantic:outgoing>_2aa47410-1b0e-4f8b-ad54-d6f798080cb4</semantic:outgoing>
+            <semantic:outgoing>conditional_sequence_flow_id</semantic:outgoing>
         </semantic:serviceTask>
         <semantic:userTask completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task 3" id="userTask_3">
-            <semantic:incoming>_2aa47410-1b0e-4f8b-ad54-d6f798080cb4</semantic:incoming>
+            <semantic:incoming>conditional_sequence_flow_id</semantic:incoming>
             <semantic:outgoing>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:outgoing>
         </semantic:userTask>
         <semantic:intermediateThrowEvent name="Throw None Intermediate Event" id="noneIntermediateThrowEvent" />
@@ -78,13 +78,14 @@ describe('mxGraph model', () => {
         </semantic:endEvent>
         <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="" id="normal_sequence_flow_id"/>
         <semantic:sequenceFlow sourceRef="task_1" targetRef="serviceTask_2" name="" id="default_sequence_flow_id"/>
-        <semantic:sequenceFlow sourceRef="serviceTask_2" targetRef="userTask_3" name="" id="_2aa47410-1b0e-4f8b-ad54-d6f798080cb4"/>
+        <semantic:sequenceFlow sourceRef="serviceTask_2" targetRef="userTask_3" name="" id="conditional_sequence_flow_id">
+          <semantic:conditionExpression xsi:type="semantic:tFormalExpression" id="_WsCFcRszEeqkhYLXtt1BFw" evaluatesToTypeRef="java:java.lang.Boolean">&quot;Contract to be written&quot;.equals(loanRequested.status)</semantic:conditionExpression>
+        </semantic:sequenceFlow>
         <semantic:sequenceFlow sourceRef="userTask_3" targetRef="noneIntermediateThrowEvent" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff80" />
         <semantic:sequenceFlow sourceRef="noneIntermediateThrowEvent" targetRef="messageIntermediateThrowEvent" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff22" />
         <semantic:sequenceFlow sourceRef="messageIntermediateThrowEvent" targetRef="endEvent_1" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff33" />
         <semantic:sequenceFlow id="Flow_028jkgv" sourceRef="startEvent_2_timer" targetRef="IntermediateCatchEvent_Timer_01" />
-        <semantic:inclusiveGateway id="inclusiveGateway_1" name="Inclusive Gateway 1">
-        </semantic:inclusiveGateway>
+        <semantic:inclusiveGateway id="inclusiveGateway_1" name="Inclusive Gateway 1"/>
     </semantic:process>
     <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
         <bpmndi:BPMNPlane bpmnElement="WFP-6-">
@@ -162,7 +163,7 @@ describe('mxGraph model', () => {
                 <di:waypoint x="258.0" y="351.0"/>
                 <bpmndi:BPMNLabel/>
             </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge bpmnElement="_2aa47410-1b0e-4f8b-ad54-d6f798080cb4" id="E1373649849866__2aa47410-1b0e-4f8b-ad54-d6f798080cb4">
+            <bpmndi:BPMNEdge bpmnElement="conditional_sequence_flow_id" id="E1373649849866_conditional_sequence_flow_id">
                 <di:waypoint x="474.0" y="351.0"/>
                 <di:waypoint x="522.0" y="351.0"/>
                 <bpmndi:BPMNLabel/>
@@ -240,13 +241,18 @@ describe('mxGraph model', () => {
     expectModelContainsBpmnEvent('messageIntermediateCatchEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.MESSAGE);
     expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.TIMER);
 
-    // other
+    // task
     expectModelContainsShape('task_1', ShapeBpmnElementKind.TASK);
     expectModelContainsShape('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE);
     expectModelContainsShape('userTask_3', ShapeBpmnElementKind.TASK_USER);
+
+    // gateways
+    expectModelContainsShape('inclusiveGateway_1', ShapeBpmnElementKind.GATEWAY_INCLUSIVE);
+
+    // sequence flow
     expectModelContainsEdge('default_sequence_flow_id', SequenceFlowKind.DEFAULT);
     expectModelContainsEdge('normal_sequence_flow_id', SequenceFlowKind.NORMAL);
-    expectModelContainsShape('inclusiveGateway_1', ShapeBpmnElementKind.GATEWAY_INCLUSIVE);
+    expectModelContainsEdge('conditional_sequence_flow_id', SequenceFlowKind.CONDITIONAL);
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {

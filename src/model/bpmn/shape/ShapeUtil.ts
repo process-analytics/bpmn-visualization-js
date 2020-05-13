@@ -16,7 +16,7 @@
 import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
 
 // TODO move to ShapeBpmnElementKind? and rename into ShapeBpmnElementKindUtil?
-// TODO bpmnEventKinds and flowNodeKinds currently hosted in ProcessConverter may be hosted here
+// TODO bpmnEventKinds currently hosted in ProcessConverter may be hosted here
 export default class ShapeUtil {
   private static readonly EVENT_KINDS = ShapeUtil.filterKind('Event');
   private static readonly GATEWAY_KINDS = ShapeUtil.filterKind('Gateway');

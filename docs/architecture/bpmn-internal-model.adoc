@@ -4,6 +4,6 @@ Our internal model is based on the https://www.omg.org/spec/BPMN/2.0.2/PDF[BPMN 
 
 image::images/architecture/internal-model.svg[]
 
-*Note*: If you want to update the model, you need to update the link:images/architecture/internal-model.drawio[Model as draw.io]
-file with https://app.diagrams.net, and export it as SVG in the link:images/architecture/internal-model.svg[svg file].
+*Note*: If you want to update the model, you need to update the link:images/internal-model.drawio[Model as draw.io]
+file with https://app.diagrams.net, and export it as SVG in the link:images/internal-model.svg[svg file].
 
