@@ -258,7 +258,7 @@ describe('BPMN Visualization JS', () => {
     expectModelContainsShape('userTask_3', ShapeBpmnElementKind.TASK_USER);
     expectModelContainsEdge('default_sequence_flow_id', SequenceFlowKind.DEFAULT);
     expectModelContainsEdge('normal_sequence_flow_id', SequenceFlowKind.NORMAL);
-    expectModelContainsCell('inclusiveGateway_1', ShapeBpmnElementKind.GATEWAY_INCLUSIVE);
+    expectModelContainsShape('inclusiveGateway_1', ShapeBpmnElementKind.GATEWAY_INCLUSIVE);
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {
