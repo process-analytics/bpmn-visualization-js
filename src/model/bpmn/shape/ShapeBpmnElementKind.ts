@@ -21,24 +21,41 @@ export enum ShapeBpmnElementKind {
   POOL = 'pool',
   TASK_USER = 'userTask',
   TASK_SERVICE = 'serviceTask',
+
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TASK_MANUAL = 'manualTask',
+
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TASK_RECEIVE = 'receiveTask',
+
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TASK_SCRIPT = 'scriptTask',
+
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TASK_SEND = 'sendTask',
+
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TASK_BUSINESS_RULE = 'businessRuleTask',
+
   TASK = 'task',
   GATEWAY_PARALLEL = 'parallelGateway',
   GATEWAY_EXCLUSIVE = 'exclusiveGateway',
   GATEWAY_INCLUSIVE = 'inclusiveGateway',
-  GATEWAY_COMPLEX = 'complexGateway',
+
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO : Uncomment corresponding line in src/model/bpmn/shape/ShapeUtil.ts
+  // GATEWAY_COMPLEX = 'complexGateway',
+
   EVENT_START = 'startEvent',
   EVENT_END = 'endEvent',
   EVENT_INTERMEDIATE_CATCH = 'intermediateCatchEvent',
   EVENT_INTERMEDIATE_THROW = 'intermediateThrowEvent',
-  CALL_ACTIVITY = 'callActivity',
-  SUB_PROCESS = 'subProcess',
-}
 
-/**
- * List supported ShapeBpmnElement
- *
- * Temporarily used until we support all ShapeBpmnElements
- */
-export const supportedBpmnElementsKinds = Object.values(ShapeBpmnElementKind).filter(kind => {
-  return kind != ShapeBpmnElementKind.CALL_ACTIVITY && kind != ShapeBpmnElementKind.SUB_PROCESS && kind != ShapeBpmnElementKind.GATEWAY_COMPLEX;
-});
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO : Uncomment corresponding line in src/model/bpmn/shape/ShapeUtil.ts
+  // CALL_ACTIVITY = 'callActivity',
+
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO : Uncomment corresponding line in src/model/bpmn/shape/ShapeUtil.ts
+  // SUB_PROCESS = 'subProcess',
+}

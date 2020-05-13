@@ -16,7 +16,7 @@
 import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import ShapeBpmnElement, { ShapeBpmnEvent } from '../../../../model/bpmn/shape/ShapeBpmnElement';
-import { ShapeBpmnElementKind, supportedBpmnElementsKinds } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
 import Waypoint from '../../../../model/bpmn/edge/Waypoint';
@@ -29,10 +29,6 @@ const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
 const convertedProcessBpmnElements: ShapeBpmnElement[] = [];
 const convertedSequenceFlows: SequenceFlow[] = [];
 const defaultSequenceFlowIds: string[] = [];
-
-const flowNodeKinds = supportedBpmnElementsKinds.filter(kind => {
-  return kind != ShapeBpmnElementKind.LANE;
-});
 
 const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
   return kind != ShapeBpmnEventKind.NONE;
@@ -86,7 +82,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     convertedProcessBpmnElements.push(new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
 
     // flow nodes
-    flowNodeKinds.forEach(kind => this.buildFlowNodeBpmnElements(processId, process[kind], kind));
+    ShapeUtil.flowNodeKinds().forEach(kind => this.buildFlowNodeBpmnElements(processId, process[kind], kind));
 
     // containers
     this.buildLaneBpmnElements(processId, process[ShapeBpmnElementKind.LANE]);

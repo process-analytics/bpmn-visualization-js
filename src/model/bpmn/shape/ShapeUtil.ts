@@ -24,12 +24,22 @@ export default class ShapeUtil {
   // TODO : To modify when we will support globalTask (They are not considered as Task in the BPMN Semantic)
   private static TASK_KINDS = ShapeUtil.filterKind('Task', true);
 
-  private static ACTIVITY_KINDS = [...ShapeUtil.TASK_KINDS, ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.SUB_PROCESS];
+  private static ACTIVITY_KINDS = [
+    ...ShapeUtil.TASK_KINDS,
+
+    // TODO: Uncomment when call activity are supported
+    // ShapeBpmnElementKind.CALL_ACTIVITY,
+
+    // TODO: Uncomment when sub process are supported
+    // ShapeBpmnElementKind.SUB_PROCESS
+  ];
   private static FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = [
     ...ShapeUtil.ACTIVITY_KINDS,
     ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
     ShapeBpmnElementKind.GATEWAY_INCLUSIVE,
-    ShapeBpmnElementKind.GATEWAY_COMPLEX,
+
+    // TODO: Uncomment when complex gateway are supported
+    // ShapeBpmnElementKind.GATEWAY_COMPLEX,
   ];
 
   private static filterKind(suffix: string, ignoreCase = false): ShapeBpmnElementKind[] {
@@ -59,15 +69,13 @@ export default class ShapeUtil {
     return this.TASK_KINDS;
   }
 
-  public static activityKinds(): ShapeBpmnElementKind[] {
-    return this.ACTIVITY_KINDS;
-  }
-
   public static gatewayKinds(): ShapeBpmnElementKind[] {
     return this.GATEWAY_KINDS;
   }
 
-  public static flownodeWithDefaultSequenceFlowKinds(): ShapeBpmnElementKind[] {
-    return this.FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS;
+  public static flowNodeKinds(): ShapeBpmnElementKind[] {
+    return Object.values(ShapeBpmnElementKind).filter(kind => {
+      return kind != ShapeBpmnElementKind.LANE;
+    });
   }
 }
