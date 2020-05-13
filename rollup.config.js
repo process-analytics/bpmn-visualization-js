@@ -23,7 +23,9 @@ import resolve from '@rollup/plugin-node-resolve';
 import pkg from './package.json';
 import json from '@rollup/plugin-json';
 
-const devMode = process.env.devMode;
+const devLiveReloadMode = process.env.devLiveReloadMode;
+const devMode = devLiveReloadMode ? true : process.env.devMode;
+
 const plugins = [
   typescript({
     typescript: require('typescript'),
@@ -41,7 +43,9 @@ if (devMode) {
   // Create a server for dev mode
   plugins.push(serve({ contentBase: 'dist', port: 10001 }));
   // Allow to livereload on any update
-  plugins.push(livereload({ watch: 'dist', verbose: true }));
+  if (devLiveReloadMode) {
+    plugins.push(livereload({ watch: 'dist', verbose: true }));
+  }
   // Copy index.html to dist
   plugins.push(
     copy({
