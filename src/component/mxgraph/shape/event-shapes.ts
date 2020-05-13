@@ -157,7 +157,7 @@ export class StartEventShape extends EventShape {
 export class EndEventShape extends EventShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
-    this.isUsingThrowIcons = true;
+    this.withFilledIcon = true;
   }
 }
 
