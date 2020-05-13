@@ -25,10 +25,6 @@ import json from '@rollup/plugin-json';
 
 const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
-// eslint-disable-next-line no-console
-console.info('devLiveReloadMode: ' + devLiveReloadMode);
-// eslint-disable-next-line no-console
-console.info('devMode: ' + devMode);
 
 const plugins = [
   typescript({
