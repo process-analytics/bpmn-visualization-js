@@ -67,7 +67,8 @@ Note: information about the library internals are available in the [documentatio
 
 - `npm run test`        *Run all tests*
 - `npm run coverage`    *Run all tests and the coverage*
-- `npm run e2e`         *Run all end-to-end tests*
+- `npm run e2e`         *Run all end-to-end tests*. To see the web browser used by tests, disable the `headless` mode by
+                        setting the `HEADLESS` environment variable to `false`.
 
 ### Code style
 
