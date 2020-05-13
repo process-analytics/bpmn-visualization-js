@@ -45,7 +45,8 @@
     "eslint-plugin-notice": "^0.8.9",
     "eslint-plugin-prettier": "^3.1.2",
     "husky": "^4.2.3",
-    "jest": "^25.1.0",
+    "jest": "^25.5.4",
+    "jest-each": "^25.5.0",
     "jest-environment-puppeteer-jsdom": "^4.3.1",
     "jest-puppeteer": "^4.4.0",
     "lint-staged": "^10.0.8",
@@ -58,7 +59,7 @@
     "rollup-plugin-livereload": "^1.0.4",
     "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-typescript2": "^0.26.0",
-    "ts-jest": "^25.2.1",
+    "ts-jest": "^25.5.1",
     "typescript": "^3.8.2"
   },
   "dependencies": {

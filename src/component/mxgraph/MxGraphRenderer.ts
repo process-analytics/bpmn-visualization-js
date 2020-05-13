@@ -83,7 +83,14 @@ export default class MxGraphRenderer {
       const bpmnElement = edge.bpmnElement;
       if (bpmnElement) {
         const parent = this.graph.getDefaultParent();
-        const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, this.getCell(bpmnElement.sourceRefId), this.getCell(bpmnElement.targetRefId));
+        const mxEdge = this.graph.insertEdge(
+          parent,
+          bpmnElement.id,
+          bpmnElement.name,
+          this.getCell(bpmnElement.sourceRefId),
+          this.getCell(bpmnElement.targetRefId),
+          bpmnElement.kind,
+        );
         this.insertWaypoints(edge.waypoints, mxEdge);
       }
     });

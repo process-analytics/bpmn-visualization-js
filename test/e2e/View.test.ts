@@ -18,6 +18,7 @@ import { ShapeBpmnElementKind } from '../../src/model/bpmn/shape/ShapeBpmnElemen
 import { mxgraph } from 'ts-mxgraph';
 import { MxGraphFactoryService } from '../../src/service/MxGraphFactoryService';
 import { ShapeBpmnEventKind } from '../../src/model/bpmn/shape/ShapeBpmnEventKind';
+import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
 
 function expectGeometry(cell: mxgraph.mxCell, geometry: mxgraph.mxGeometry): void {
   const cellGeometry = cell.getGeometry();
@@ -39,7 +40,7 @@ describe('BPMN Visualization JS', () => {
 <semantic:definitions id="_1373649849716" name="A.1.0" targetNamespace="http://www.trisotech.com/definitions/_1373649849716" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <semantic:process isExecutable="false" id="WFP-6-">
         <semantic:startEvent name="Start Event" id="startEvent_1">
-            <semantic:outgoing>_e16564d7-0c4c-413e-95f6-f668a3f851fb</semantic:outgoing>
+            <semantic:outgoing>normal_sequence_flow_id</semantic:outgoing>
         </semantic:startEvent>
         <semantic:startEvent name="Timer Start Event" id="startEvent_2_timer">
             <semantic:timerEventDefinition/>
@@ -47,12 +48,12 @@ describe('BPMN Visualization JS', () => {
         <semantic:startEvent name="Message Start Event" id="startEvent_3_message">
             <semantic:messageEventDefinition/>
         </semantic:startEvent>
-        <semantic:task completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task 1" id="task_1">
-            <semantic:incoming>_e16564d7-0c4c-413e-95f6-f668a3f851fb</semantic:incoming>
-            <semantic:outgoing>_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599</semantic:outgoing>
+        <semantic:task completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task 1" id="task_1" default="default_sequence_flow_id">
+            <semantic:incoming>normal_sequence_flow_id</semantic:incoming>
+            <semantic:outgoing>default_sequence_flow_id</semantic:outgoing>
         </semantic:task>
         <semantic:serviceTask implementation="##WebService" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Service Task 2" id="serviceTask_2">
-            <semantic:incoming>_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599</semantic:incoming>
+            <semantic:incoming>default_sequence_flow_id</semantic:incoming>
             <semantic:outgoing>_2aa47410-1b0e-4f8b-ad54-d6f798080cb4</semantic:outgoing>
         </semantic:serviceTask>
         <semantic:userTask completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task 3" id="userTask_3">
@@ -77,8 +78,8 @@ describe('BPMN Visualization JS', () => {
          <semantic:endEvent name="Message End Event" id="messageEndEvent">
             <semantic:messageEventDefinition/>
         </semantic:endEvent>
-        <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="" id="_e16564d7-0c4c-413e-95f6-f668a3f851fb"/>
-        <semantic:sequenceFlow sourceRef="task_1" targetRef="serviceTask_2" name="" id="_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599"/>
+        <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="" id="normal_sequence_flow_id"/>
+        <semantic:sequenceFlow sourceRef="task_1" targetRef="serviceTask_2" name="" id="default_sequence_flow_id"/>
         <semantic:sequenceFlow sourceRef="serviceTask_2" targetRef="userTask_3" name="" id="_2aa47410-1b0e-4f8b-ad54-d6f798080cb4"/>
         <semantic:sequenceFlow sourceRef="userTask_3" targetRef="noneIntermediateThrowEvent" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff80" />
         <semantic:sequenceFlow sourceRef="noneIntermediateThrowEvent" targetRef="messageIntermediateThrowEvent" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff22" />
@@ -144,12 +145,12 @@ describe('BPMN Visualization JS', () => {
                     <dc:Bounds x="259" y="336" width="62" height="40" />
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNEdge bpmnElement="_d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599" id="E1373649849864__d77dd5ec-e4e7-420e-bbe7-8ac9cd1df599">
+            <bpmndi:BPMNEdge bpmnElement="default_sequence_flow_id" id="E1373649849864_default_sequence_flow_id">
                 <di:waypoint x="342.0" y="351.0"/>
                 <di:waypoint x="390.0" y="351.0"/>
                 <bpmndi:BPMNLabel/>
             </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge bpmnElement="_e16564d7-0c4c-413e-95f6-f668a3f851fb" id="E1373649849865__e16564d7-0c4c-413e-95f6-f668a3f851fb">
+            <bpmndi:BPMNEdge bpmnElement="normal_sequence_flow_id" id="E1373649849865_normal_sequence_flow_id">
                 <di:waypoint x="216.0" y="351.0"/>
                 <di:waypoint x="234.0" y="351.0"/>
                 <di:waypoint x="258.0" y="351.0"/>
@@ -195,18 +196,29 @@ describe('BPMN Visualization JS', () => {
     await expect(page.title()).resolves.toMatch('BPMN Visualization JS');
   });
 
-  function expectModelContainsCell(cellId: string, shapeKind: ShapeBpmnElementKind): mxgraph.mxCell {
+  function expectModelContainsCell(cellId: string): mxgraph.mxCell {
     const cell = bpmnVisu.graph.model.getCell(cellId);
     expect(cell).not.toBeUndefined();
     expect(cell).not.toBeNull();
+    return cell;
+  }
+
+  function expectModelContainsShape(cellId: string, shapeKind: ShapeBpmnElementKind): mxgraph.mxCell {
+    const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(shapeKind);
     const state = bpmnVisu.graph.getView().getState(cell);
     expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(shapeKind);
     return cell;
   }
 
+  function expectModelContainsEdge(cellId: string, kind: SequenceFlowKind): mxgraph.mxCell {
+    const cell = expectModelContainsCell(cellId);
+    expect(cell.style).toContain(kind);
+    return cell;
+  }
+
   function expectModelContainsBpmnEvent(cellId: string, shapeKind: ShapeBpmnElementKind, bpmnEventKind: ShapeBpmnEventKind): void {
-    const cell = expectModelContainsCell(cellId, shapeKind);
+    const cell = expectModelContainsShape(cellId, shapeKind);
     expect(cell.style).toContain(`bpmn.eventKind=${bpmnEventKind}`);
   }
 
@@ -233,9 +245,11 @@ describe('BPMN Visualization JS', () => {
     expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.TIMER);
 
     // other
-    expectModelContainsCell('task_1', ShapeBpmnElementKind.TASK);
-    expectModelContainsCell('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE);
-    expectModelContainsCell('userTask_3', ShapeBpmnElementKind.TASK_USER);
+    expectModelContainsShape('task_1', ShapeBpmnElementKind.TASK);
+    expectModelContainsShape('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE);
+    expectModelContainsShape('userTask_3', ShapeBpmnElementKind.TASK_USER);
+    expectModelContainsEdge('default_sequence_flow_id', SequenceFlowKind.DEFAULT);
+    expectModelContainsEdge('normal_sequence_flow_id', SequenceFlowKind.NORMAL);
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {

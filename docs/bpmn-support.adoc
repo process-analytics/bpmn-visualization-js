@@ -157,7 +157,11 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 |sequence flow
 |icon:flask[]
-|Subject to change: arrow shape and position endpoint
+|Subject to change: arrow shape, color and position endpoint
+
+|default sequence flow
+|icon:flask[]
+|Subject to change: arrow shape, color and position endpoint
 
 |way points
 |icon:flask[]
