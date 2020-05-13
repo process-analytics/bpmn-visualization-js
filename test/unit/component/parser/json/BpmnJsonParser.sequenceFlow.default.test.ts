@@ -15,6 +15,7 @@
  */
 import { parseJsonAndExpectOnlyEdgesAndFlowNodes, verifyEdge } from './JsonTestUtils';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
+import each from 'jest-each';
 
 describe('parse bpmn as json for default sequence flow', () => {
   it('json containing one process with a default sequence flow & a sequence flow', () => {
@@ -77,15 +78,37 @@ describe('parse bpmn as json for default sequence flow', () => {
     });
   });
 
-  it('json containing one process with a sequence flow defined as default in a exclusive gateway', () => {
+  each([
+    ['exclusiveGateway'],
+    ['inclusiveGateway'],
+    ['task'],
+    ['userTask'],
+    ['serviceTask'],
+    // TODO: To uncomment when we support complex gateway
+    //['complexGateway'],
+    // TODO: To uncomment when we support manualTask
+    //['manualTask'],
+    // TODO: To uncomment when we support receiveTask
+    //['receiveTask'],
+    // TODO: To uncomment when we support scriptTask
+    //['scriptTask'],
+    // TODO: To uncomment when we support sendTask
+    //['sendTask'],
+    // TODO: To uncomment when we support businessRuleTask
+    //['businessRuleTask'],
+    // TODO: To uncomment when we support callActivity
+    //['callActivity'],
+    // TODO: To uncomment when we support subProcess
+    //['subProcess'],
+  ]).it('json containing one process with a sequence flow defined as default in a %s', sourceKind => {
     const json = `{
           "definitions": {
               "process": {
                   "id": "Process_1",
-                  "exclusiveGateway": { "id": "gateway_id_0", "default": "sequenceFlow_id_0"},
+                  "${sourceKind}": { "id": "source_id_0", "default": "sequenceFlow_id_0"},
                   "sequenceFlow": {
                       "id": "sequenceFlow_id_0",
-                      "sourceRef": "gateway_id_0",
+                      "sourceRef": "source_id_0",
                       "targetRef": "targetRef_RLk"
                   }
               },
@@ -94,8 +117,8 @@ describe('parse bpmn as json for default sequence flow', () => {
                   "BPMNPlane": {
                       "id": "BpmnPlane_1",
                       "BPMNShape": {
-                          "id":"shape_gateway_id_0",
-                          "bpmnElement":"gateway_id_0",
+                          "id":"shape_source_id_0",
+                          "bpmnElement":"source_id_0",
                           "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
                       },
                       "BPMNEdge": {
@@ -113,539 +136,11 @@ describe('parse bpmn as json for default sequence flow', () => {
       edgeId: 'edge_sequenceFlow_id_0',
       bpmnElementId: 'sequenceFlow_id_0',
       bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'gateway_id_0',
+      bpmnElementSourceRefId: 'source_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
       bpmnElementKind: SequenceFlowKind.DEFAULT,
     });
   });
-
-  it('json containing one process with a sequence flow defined as default in a inclusive gateway', () => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "inclusiveGateway": { "id": "gateway_id_0", "default": "sequenceFlow_id_0"},
-                  "sequenceFlow": {
-                      "id": "sequenceFlow_id_0",
-                      "sourceRef": "gateway_id_0",
-                      "targetRef": "targetRef_RLk"
-                  }
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id":"shape_gateway_id_0",
-                          "bpmnElement":"gateway_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                      },
-                      "BPMNEdge": {
-                          "id": "edge_sequenceFlow_id_0",
-                          "bpmnElement": "sequenceFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
-
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
-
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_sequenceFlow_id_0',
-      bpmnElementId: 'sequenceFlow_id_0',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'gateway_id_0',
-      bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementKind: SequenceFlowKind.DEFAULT,
-    });
-  });
-
-  // TODO: To uncomment when we support complex gateway
-  /*
-  it('json containing one process with a sequence flow defined as default in a complex gateway', () => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "complexGateway": { "id": "gateway_id_0", "default": "sequenceFlow_id_0"},
-                  "sequenceFlow": {
-                      "id": "sequenceFlow_id_0",
-                      "sourceRef": "gateway_id_0",
-                      "targetRef": "targetRef_RLk"
-                  }
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id":"shape_gateway_id_0",
-                          "bpmnElement":"gateway_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                      },
-                      "BPMNEdge": {
-                          "id": "edge_sequenceFlow_id_0",
-                          "bpmnElement": "sequenceFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
-
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
-
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_sequenceFlow_id_0',
-      bpmnElementId: 'sequenceFlow_id_0',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'gateway_id_0',
-      bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnIsDefault: true,
-    });
-  });
-*/
-
-  it('json containing one process with a sequence flow defined as default in a task', () => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "task": { "id": "activity_id_0", "default": "sequenceFlow_id_0"},
-                  "sequenceFlow": {
-                      "id": "sequenceFlow_id_0",
-                      "sourceRef": "activity_id_0",
-                      "targetRef": "targetRef_RLk"
-                  }
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id":"shape_activity_id_0",
-                          "bpmnElement":"activity_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                      },
-                      "BPMNEdge": {
-                          "id": "edge_sequenceFlow_id_0",
-                          "bpmnElement": "sequenceFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
-
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
-
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_sequenceFlow_id_0',
-      bpmnElementId: 'sequenceFlow_id_0',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'activity_id_0',
-      bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementKind: SequenceFlowKind.DEFAULT,
-    });
-  });
-
-  it('json containing one process with a sequence flow defined as default in a user task', () => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "userTask": { "id": "activity_id_0", "default": "sequenceFlow_id_0"},
-                  "sequenceFlow": {
-                      "id": "sequenceFlow_id_0",
-                      "sourceRef": "activity_id_0",
-                      "targetRef": "targetRef_RLk"
-                  }
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id":"shape_activity_id_0",
-                          "bpmnElement":"activity_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                      },
-                      "BPMNEdge": {
-                          "id": "edge_sequenceFlow_id_0",
-                          "bpmnElement": "sequenceFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
-
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
-
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_sequenceFlow_id_0',
-      bpmnElementId: 'sequenceFlow_id_0',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'activity_id_0',
-      bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementKind: SequenceFlowKind.DEFAULT,
-    });
-  });
-
-  it('json containing one process with a sequence flow defined as default in a service task', () => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "serviceTask": { "id": "activity_id_0", "default": "sequenceFlow_id_0"},
-                  "sequenceFlow": {
-                      "id": "sequenceFlow_id_0",
-                      "sourceRef": "activity_id_0",
-                      "targetRef": "targetRef_RLk"
-                  }
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id":"shape_activity_id_0",
-                          "bpmnElement":"activity_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                      },
-                      "BPMNEdge": {
-                          "id": "edge_sequenceFlow_id_0",
-                          "bpmnElement": "sequenceFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
-
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
-
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_sequenceFlow_id_0',
-      bpmnElementId: 'sequenceFlow_id_0',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'activity_id_0',
-      bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementKind: SequenceFlowKind.DEFAULT,
-    });
-  });
-
-  // TODO: To uncomment when we support manualTask
-  /*
-  it('json containing one process with a sequence flow defined as default in a manual task', () => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "manualTask": { "id": "activity_id_0", "default": "sequenceFlow_id_0"},
-                  "sequenceFlow": {
-                      "id": "sequenceFlow_id_0",
-                      "sourceRef": "activity_id_0",
-                      "targetRef": "targetRef_RLk"
-                  }
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id":"shape_activity_id_0",
-                          "bpmnElement":"activity_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                      },
-                      "BPMNEdge": {
-                          "id": "edge_sequenceFlow_id_0",
-                          "bpmnElement": "sequenceFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
-
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
-
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_sequenceFlow_id_0',
-      bpmnElementId: 'sequenceFlow_id_0',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'activity_id_0',
-      bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnIsDefault: true,
-    });
-  });
-*/
-
-  // TODO: To uncomment when we support receiveTask
-  /*
-  it('json containing one process with a sequence flow defined as default in a receive task', () => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "receiveTask": { "id": "activity_id_0", "default": "sequenceFlow_id_0"},
-                  "sequenceFlow": {
-                      "id": "sequenceFlow_id_0",
-                      "sourceRef": "activity_id_0",
-                      "targetRef": "targetRef_RLk"
-                  }
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id":"shape_activity_id_0",
-                          "bpmnElement":"activity_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                      },
-                      "BPMNEdge": {
-                          "id": "edge_sequenceFlow_id_0",
-                          "bpmnElement": "sequenceFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
-
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
-
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_sequenceFlow_id_0',
-      bpmnElementId: 'sequenceFlow_id_0',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'activity_id_0',
-      bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnIsDefault: true,
-    });
-  });
-*/
-
-  // TODO: To uncomment when we support scriptTask
-  /*
-  it('json containing one process with a sequence flow defined as default in a script task', () => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "scriptTask": { "id": "activity_id_0", "default": "sequenceFlow_id_0"},
-                  "sequenceFlow": {
-                      "id": "sequenceFlow_id_0",
-                      "sourceRef": "activity_id_0",
-                      "targetRef": "targetRef_RLk"
-                  }
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id":"shape_activity_id_0",
-                          "bpmnElement":"activity_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                      },
-                      "BPMNEdge": {
-                          "id": "edge_sequenceFlow_id_0",
-                          "bpmnElement": "sequenceFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
-
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
-
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_sequenceFlow_id_0',
-      bpmnElementId: 'sequenceFlow_id_0',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'activity_id_0',
-      bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnIsDefault: true,
-    });
-  });
-*/
-
-  // TODO: To uncomment when we support sendTask
-  /*
-  it('json containing one process with a sequence flow defined as default in a send task', () => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "sendTask": { "id": "activity_id_0", "default": "sequenceFlow_id_0"},
-                  "sequenceFlow": {
-                      "id": "sequenceFlow_id_0",
-                      "sourceRef": "activity_id_0",
-                      "targetRef": "targetRef_RLk"
-                  }
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id":"shape_activity_id_0",
-                          "bpmnElement":"activity_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                      },
-                      "BPMNEdge": {
-                          "id": "edge_sequenceFlow_id_0",
-                          "bpmnElement": "sequenceFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
-
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
-
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_sequenceFlow_id_0',
-      bpmnElementId: 'sequenceFlow_id_0',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'activity_id_0',
-      bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnIsDefault: true,
-    });
-  });
-*/
-
-  // TODO: To uncomment when we support businessRuleTask
-  /*
-  it('json containing one process with a sequence flow defined as default in a business rule task', () => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "businessRuleTask": { "id": "activity_id_0", "default": "sequenceFlow_id_0"},
-                  "sequenceFlow": {
-                      "id": "sequenceFlow_id_0",
-                      "sourceRef": "activity_id_0",
-                      "targetRef": "targetRef_RLk"
-                  }
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id":"shape_activity_id_0",
-                          "bpmnElement":"activity_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                      },
-                      "BPMNEdge": {
-                          "id": "edge_sequenceFlow_id_0",
-                          "bpmnElement": "sequenceFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
-
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
-
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_sequenceFlow_id_0',
-      bpmnElementId: 'sequenceFlow_id_0',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'activity_id_0',
-      bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnIsDefault: true,
-    });
-  });
-*/
-
-  // TODO: To uncomment when we support callActivity
-  /*
-  it('json containing one process with a sequence flow defined as default in a call activity', () => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "callActivity": { "id": "activity_id_0", "default": "sequenceFlow_id_0"},
-                  "sequenceFlow": {
-                      "id": "sequenceFlow_id_0",
-                      "sourceRef": "activity_id_0",
-                      "targetRef": "targetRef_RLk"
-                  }
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id":"shape_activity_id_0",
-                          "bpmnElement":"activity_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                      },
-                      "BPMNEdge": {
-                          "id": "edge_sequenceFlow_id_0",
-                          "bpmnElement": "sequenceFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
-
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
-
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_sequenceFlow_id_0',
-      bpmnElementId: 'sequenceFlow_id_0',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'activity_id_0',
-      bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnIsDefault: true,
-    });
-  });
-*/
-
-  // TODO: To uncomment when we support subProcess
-  /*
-  it('json containing one process with a sequence flow defined as default in a subProcess', () => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "subProcess": { "id": "activity_id_0", "default": "sequenceFlow_id_0"},
-                  "sequenceFlow": {
-                      "id": "sequenceFlow_id_0",
-                      "sourceRef": "activity_id_0",
-                      "targetRef": "targetRef_RLk"
-                  }
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id":"shape_activity_id_0",
-                          "bpmnElement":"activity_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                      },
-                      "BPMNEdge": {
-                          "id": "edge_sequenceFlow_id_0",
-                          "bpmnElement": "sequenceFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
-
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
-
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_sequenceFlow_id_0',
-      bpmnElementId: 'sequenceFlow_id_0',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'activity_id_0',
-      bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnIsDefault: true,
-    });
-  });
-*/
 
   it('json containing one process with a sequence flow can not be default for parallel gateway', () => {
     const json = `{
