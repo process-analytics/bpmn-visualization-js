@@ -142,7 +142,7 @@ describe('parse bpmn as json for default sequence flow', () => {
     });
   });
 
-  it('json containing one process with a sequence flow can not be default for parallel gateway', () => {
+  it('json containing one process with a flow node who define a sequence flow as default, but not possible in BPMN Semantic', () => {
     const json = `{
           "definitions": {
               "process": {
