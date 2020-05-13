@@ -85,6 +85,8 @@ describe('BPMN Visualization JS', () => {
         <semantic:sequenceFlow sourceRef="noneIntermediateThrowEvent" targetRef="messageIntermediateThrowEvent" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff22" />
         <semantic:sequenceFlow sourceRef="messageIntermediateThrowEvent" targetRef="endEvent_1" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff33" />
         <semantic:sequenceFlow id="Flow_028jkgv" sourceRef="startEvent_2_timer" targetRef="IntermediateCatchEvent_Timer_01" />
+        <semantic:inclusiveGateway id="inclusiveGateway_1" name="Inclusive Gateway 1">
+        </semantic:inclusiveGateway>
     </semantic:process>
     <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
         <bpmndi:BPMNPlane bpmnElement="WFP-6-">
@@ -144,6 +146,12 @@ describe('BPMN Visualization JS', () => {
                 <bpmndi:BPMNLabel>
                     <dc:Bounds x="259" y="336" width="62" height="40" />
                 </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="shape_inclusiveGateway_1" bpmnElement="inclusiveGateway_1">
+              <dc:Bounds x="905" y="265" width="50" height="50" />
+              <bpmndi:BPMNLabel>
+                <dc:Bounds x="885" y="322" width="90" height="14" />
+              </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge bpmnElement="default_sequence_flow_id" id="E1373649849864_default_sequence_flow_id">
                 <di:waypoint x="342.0" y="351.0"/>
@@ -250,6 +258,7 @@ describe('BPMN Visualization JS', () => {
     expectModelContainsShape('userTask_3', ShapeBpmnElementKind.TASK_USER);
     expectModelContainsEdge('default_sequence_flow_id', SequenceFlowKind.DEFAULT);
     expectModelContainsEdge('normal_sequence_flow_id', SequenceFlowKind.NORMAL);
+    expectModelContainsShape('inclusiveGateway_1', ShapeBpmnElementKind.GATEWAY_INCLUSIVE);
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {
