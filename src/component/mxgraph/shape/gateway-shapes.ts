@@ -123,7 +123,7 @@ export class InclusiveGatewayShape extends GatewayShape {
   private addInclusiveGatewaySymbol(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     const canvas = this.configureCanvasForIcon(c, w, h, 0.5);
     this.translateToStartingIconPosition(c, x, y, w, h);
-    c.setFillColor('#fff');
+    c.setFillColor(this.fill);
     c.setStrokeWidth(StyleConstant.STROKE_WIDTH_THICK);
 
     const arcRay = 1 / 6;
