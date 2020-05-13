@@ -46,7 +46,7 @@ export interface ExpectedEdge {
   bpmnElementName: string;
   bpmnElementSourceRefId: string;
   bpmnElementTargetRefId: string;
-  bpmnElementKind: SequenceFlowKind;
+  bpmnElementKind?: SequenceFlowKind;
   waypoints?: Waypoint[];
 }
 
@@ -122,7 +122,12 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge): void {
   expect(bpmnElement.name).toEqual(expectedValue.bpmnElementName);
   expect(bpmnElement.sourceRefId).toEqual(expectedValue.bpmnElementSourceRefId);
   expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
-  expect(bpmnElement.kind).toEqual(expectedValue.bpmnElementKind);
+
+  if (expectedValue.bpmnElementKind) {
+    expect(bpmnElement.kind).toEqual(expectedValue.bpmnElementKind);
+  } else {
+    expect(bpmnElement.kind).toEqual(SequenceFlowKind.NORMAL);
+  }
 }
 
 export function verifyEvent(model: BpmnModel, kind: ShapeBpmnEventKind, expectedNumber: number): void {

@@ -15,7 +15,6 @@
  */
 import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
-import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 
 describe('parse bpmn as json for sequence flow', () => {
   it('json containing one process with a single sequence flow without waypoint', () => {
@@ -51,7 +50,6 @@ describe('parse bpmn as json for sequence flow', () => {
       bpmnElementName: 'label 1',
       bpmnElementSourceRefId: 'sourceRef_id_xsdas',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementKind: SequenceFlowKind.NORMAL,
     });
   });
 
@@ -88,7 +86,6 @@ describe('parse bpmn as json for sequence flow', () => {
       bpmnElementName: 'label 1',
       bpmnElementSourceRefId: 'sourceRef_id_xsdas',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementKind: SequenceFlowKind.NORMAL,
     });
   });
 
@@ -132,7 +129,6 @@ describe('parse bpmn as json for sequence flow', () => {
       bpmnElementName: 'label 1',
       bpmnElementSourceRefId: 'sourceRef_id_xsdas',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementKind: SequenceFlowKind.NORMAL,
     });
     verifyEdge(model.edges[1], {
       edgeId: 'edge_sequenceFlow_id_1',
@@ -140,7 +136,6 @@ describe('parse bpmn as json for sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'sequenceFlow_id_1',
       bpmnElementTargetRefId: 'targetRef_1',
-      bpmnElementKind: SequenceFlowKind.NORMAL,
     });
   });
 
@@ -195,7 +190,6 @@ describe('parse bpmn as json for sequence flow', () => {
       bpmnElementSourceRefId: 'sourceRef_id_xsdas',
       bpmnElementTargetRefId: 'targetRef_RLk',
       waypoints: [new Waypoint(1, 1)],
-      bpmnElementKind: SequenceFlowKind.NORMAL,
     });
     verifyEdge(model.edges[1], {
       edgeId: 'edge_sequenceFlow_id_1',
@@ -204,7 +198,6 @@ describe('parse bpmn as json for sequence flow', () => {
       bpmnElementSourceRefId: 'sequenceFlow_id_1',
       bpmnElementTargetRefId: 'targetRef_1',
       waypoints: [new Waypoint(2, 2), new Waypoint(3, 3)],
-      bpmnElementKind: SequenceFlowKind.NORMAL,
     });
   });
 });
