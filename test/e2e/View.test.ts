@@ -45,6 +45,9 @@ describe('BPMN Visualization JS', () => {
         <semantic:startEvent name="Timer Start Event" id="startEvent_2_timer">
             <semantic:timerEventDefinition/>
         </semantic:startEvent>
+        <semantic:startEvent name="Message Start Event" id="startEvent_3_message">
+            <semantic:messageEventDefinition/>
+        </semantic:startEvent>
         <semantic:task completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task 1" id="task_1" default="default_sequence_flow_id">
             <semantic:incoming>normal_sequence_flow_id</semantic:incoming>
             <semantic:outgoing>default_sequence_flow_id</semantic:outgoing>
@@ -72,6 +75,9 @@ describe('BPMN Visualization JS', () => {
             <semantic:incoming>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:incoming>
             <semantic:terminateEventDefinition/>
         </semantic:endEvent>
+         <semantic:endEvent name="Message End Event" id="messageEndEvent">
+            <semantic:messageEventDefinition/>
+        </semantic:endEvent>
         <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="" id="normal_sequence_flow_id"/>
         <semantic:sequenceFlow sourceRef="task_1" targetRef="serviceTask_2" name="" id="default_sequence_flow_id"/>
         <semantic:sequenceFlow sourceRef="serviceTask_2" targetRef="userTask_3" name="" id="_2aa47410-1b0e-4f8b-ad54-d6f798080cb4"/>
@@ -90,6 +96,9 @@ describe('BPMN Visualization JS', () => {
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="startEvent_2_timer" id="shape_startEvent_2_timer">
                 <dc:Bounds height="30.0" width="30.0" x="186.0" y="536.0"/>
+            </bpmndi:BPMNShape>
+             <bpmndi:BPMNShape bpmnElement="startEvent_3_message" id="shape_startEvent_3_message">
+                <dc:Bounds height="30.0" width="30.0" x="86.0" y="536.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="task_1" id="shape_task_1">
                 <dc:Bounds height="68.0" width="83.0" x="258.0" y="317.0"/>
@@ -127,6 +136,9 @@ describe('BPMN Visualization JS', () => {
                     <dc:Bounds height="12.804751171875008" width="94.93333333333335" x="616.5963254593177" y="372.3333333333333"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="messageEndEvent" id="S1373649849862_messageEndEvent">
+	           <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+	        </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="shape_IntermediateCatchEvent_Timer_01" bpmnElement="IntermediateCatchEvent_Timer_01">
                 <dc:Bounds x="272" y="293" width="36" height="36" />
                 <bpmndi:BPMNLabel>
@@ -215,13 +227,24 @@ describe('BPMN Visualization JS', () => {
     bpmnVisu.load(xmlContent);
 
     // model is OK
+    // start event
     expectModelContainsBpmnEvent('startEvent_1', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.NONE);
     expectModelContainsBpmnEvent('startEvent_2_timer', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.TIMER);
+    expectModelContainsBpmnEvent('startEvent_3_message', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.MESSAGE);
+
+    // end event
     expectModelContainsBpmnEvent('endEvent_1', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.TERMINATE);
+    expectModelContainsBpmnEvent('messageEndEvent', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.MESSAGE);
+
+    // throw intermediate event
     expectModelContainsBpmnEvent('noneIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.NONE);
     expectModelContainsBpmnEvent('messageIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.MESSAGE);
+
+    // catch intermediate event
     expectModelContainsBpmnEvent('messageIntermediateCatchEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.MESSAGE);
     expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.TIMER);
+
+    // other
     expectModelContainsShape('task_1', ShapeBpmnElementKind.TASK);
     expectModelContainsShape('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE);
     expectModelContainsShape('userTask_3', ShapeBpmnElementKind.TASK_USER);

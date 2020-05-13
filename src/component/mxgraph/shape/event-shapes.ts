@@ -29,7 +29,7 @@ abstract class EventShape extends mxEllipse {
     [ShapeBpmnEventKind.MESSAGE, (c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number) => this.paintMessageIcon(c, x, y, w, h)],
     [ShapeBpmnEventKind.TERMINATE, (c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number) => this.paintTerminateIcon(c, x, y, w, h)],
   ]);
-  protected isUsingThrowIcons = false;
+  protected withFilledIcon = false;
 
   protected constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -46,10 +46,6 @@ abstract class EventShape extends mxEllipse {
     const eventKind = this.getBpmnEventKind();
     if (eventKind == ShapeBpmnEventKind.TIMER) {
       c.setFillColor('green');
-      c.setFillAlpha(0.3);
-    } // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    else if (eventKind == ShapeBpmnEventKind.MESSAGE && (this instanceof StartEventShape || this instanceof EndEventShape)) {
-      c.setFillColor('yellow');
       c.setFillAlpha(0.3);
     }
   }
@@ -76,11 +72,7 @@ abstract class EventShape extends mxEllipse {
   // this implementation is adapted from the draw.io BPMN 'message' symbol
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465
   private paintMessageIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    if (!(this instanceof IntermediateEventShape)) {
-      return;
-    }
-    const isInverse = this.isUsingThrowIcons;
+    const isInverse = this.withFilledIcon;
     // Change the coordinate referential
     c.translate(x + w * 0.24, y + h * 0.34);
     w = w * 0.52;
@@ -157,6 +149,7 @@ export class StartEventShape extends EventShape {
 export class EndEventShape extends EventShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
+    this.withFilledIcon = true;
   }
 }
 
@@ -186,6 +179,6 @@ export class CatchIntermediateEventShape extends IntermediateEventShape {
 export class ThrowIntermediateEventShape extends IntermediateEventShape {
   public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
-    this.isUsingThrowIcons = true;
+    this.withFilledIcon = true;
   }
 }
