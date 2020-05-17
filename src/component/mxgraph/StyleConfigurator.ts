@@ -41,6 +41,9 @@ export default class StyleConfigurator {
     this.configureLaneStyle();
     this.configureEventsStyle();
     this.configureTasksStyle();
+
+    this.configureCallActivityStyle();
+
     this.configureGatewaysStyle();
 
     this.configureSequenceFlowsStyle();
@@ -123,6 +126,17 @@ export default class StyleConfigurator {
       style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
       this.putCellStyle(kind, style);
     });
+  }
+
+  private configureCallActivityStyle(): void {
+    const style = this.cloneDefaultVertexStyle();
+    style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RECTANGLE;
+    style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RectanglePerimeter;
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
+    style[this.mxConstants.STYLE_STROKECOLOR] = '#2C6DA3';
+    style[this.mxConstants.STYLE_STROKEWIDTH] = 4;
+    style[this.mxConstants.STYLE_ROUNDED] = true;
+    this.putCellStyle(ShapeBpmnElementKind.CALL_ACTIVITY, style);
   }
 
   private configureGatewaysStyle(): void {

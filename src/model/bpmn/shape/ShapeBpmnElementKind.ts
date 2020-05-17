@@ -60,7 +60,7 @@ export enum ShapeBpmnElementKind {
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
   // TODO : Uncomment corresponding line in src/model/bpmn/shape/ShapeUtil.ts
-  // CALL_ACTIVITY = 'callActivity',
+  CALL_ACTIVITY = 'callActivity',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
