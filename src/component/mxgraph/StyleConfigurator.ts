@@ -35,15 +35,13 @@ export default class StyleConfigurator {
 
   public configureStyles(): void {
     this.mxConstants.RECTANGLE_ROUNDING_FACTOR = 0.1;
-
     this.configureDefaultVertexStyle();
+
     this.configurePoolStyle();
     this.configureLaneStyle();
+
+    this.configureActivitiesStyle();
     this.configureEventsStyle();
-    this.configureTasksStyle();
-
-    this.configureCallActivityStyle();
-
     this.configureGatewaysStyle();
 
     this.configureSequenceFlowsStyle();
@@ -117,6 +115,11 @@ export default class StyleConfigurator {
       style[this.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = 'bottom';
       this.putCellStyle(kind, style);
     });
+  }
+
+  private configureActivitiesStyle(): void {
+    this.configureTasksStyle();
+    this.configureCallActivityStyle();
   }
 
   private configureTasksStyle(): void {
