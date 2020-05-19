@@ -163,6 +163,10 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |icon:flask[]
 |Subject to change: arrow shape, color and position endpoint
 
+|conditional sequence flow
+|icon:flask[]
+|Subject to change: arrow shape, color and position endpoint
+
 |way points
 |icon:flask[]
 |Subject to change: paths may be rounded

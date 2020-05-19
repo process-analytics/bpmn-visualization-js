@@ -16,4 +16,5 @@
 export enum SequenceFlowKind {
   NORMAL = 'normal',
   DEFAULT = 'default',
+  CONDITIONAL = 'conditional',
 }

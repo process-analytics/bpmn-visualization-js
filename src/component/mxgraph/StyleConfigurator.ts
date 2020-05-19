@@ -144,6 +144,7 @@ export default class StyleConfigurator {
   private configureSequenceFlowsStyle(): void {
     this.configureNormalSequenceFlowStyle();
     this.configureDefaultSequenceFlowStyle();
+    this.configureConditionalSequenceFlowStyle();
   }
 
   private configureNormalSequenceFlowStyle(): void {
@@ -158,5 +159,14 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_STROKECOLOR] = 'HotPink';
     style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
     this.graph.getStylesheet().putCellStyle(SequenceFlowKind.DEFAULT, style);
+  }
+
+  private configureConditionalSequenceFlowStyle(): void {
+    const style = this.cloneDefaultEdgeStyle();
+    style[this.mxConstants.STYLE_STARTARROW] = this.mxConstants.ARROW_DIAMOND_THIN;
+    style[this.mxConstants.STYLE_STARTSIZE] = 20;
+    style[this.mxConstants.STYLE_STROKECOLOR] = 'Chartreuse';
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
+    this.graph.getStylesheet().putCellStyle(SequenceFlowKind.CONDITIONAL, style);
   }
 }
