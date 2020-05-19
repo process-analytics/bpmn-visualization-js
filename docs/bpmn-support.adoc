@@ -86,8 +86,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |
 
 |Timer Start Event
-|
-|
+|icon:check-circle-o[]
+|The icon width may be adjusted
 
 |Message Start Event
 |icon:check-circle-o[]
@@ -103,8 +103,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Comments
 
 |Timer Intermediate Catch Event
-|
-|Stroke fits the BPMN specification but no icon
+|icon:check-circle-o[]
+|The icon width may be adjusted
 
 |Message Intermediate Catch Event
 |icon:check-circle-o[]
