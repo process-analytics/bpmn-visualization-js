@@ -43,4 +43,5 @@ To build the project, see the [Contributing guide](CONTRIBUTING.md#Build) :sligh
 Some BPMN icons used by `bpmn-visualization-js` are derived from existing projects. See the [BPMN Support page](docs/bpmn-support.adoc)
 for more details:
 - [draw.io](https://github.com/jgraph/drawio) (Apache-2.0)
+- [flaticon](https://www.flaticon.com) ([freepikcompany license](https://www.freepikcompany.com/legal#nav-flaticon))
 - [primer octicons](https://github.com/primer/octicons) (MIT)
