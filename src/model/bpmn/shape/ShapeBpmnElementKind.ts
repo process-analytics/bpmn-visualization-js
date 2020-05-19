@@ -23,18 +23,23 @@ export enum ShapeBpmnElementKind {
   TASK_SERVICE = 'serviceTask',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
   // TASK_MANUAL = 'manualTask',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
   // TASK_RECEIVE = 'receiveTask',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
   // TASK_SCRIPT = 'scriptTask',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
   // TASK_SEND = 'sendTask',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
   // TASK_BUSINESS_RULE = 'businessRuleTask',
 
   TASK = 'task',
@@ -43,6 +48,7 @@ export enum ShapeBpmnElementKind {
   GATEWAY_INCLUSIVE = 'inclusiveGateway',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
   // TODO : Uncomment corresponding line in src/model/bpmn/shape/ShapeUtil.ts
   // GATEWAY_COMPLEX = 'complexGateway',
 
@@ -52,10 +58,12 @@ export enum ShapeBpmnElementKind {
   EVENT_INTERMEDIATE_THROW = 'intermediateThrowEvent',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
   // TODO : Uncomment corresponding line in src/model/bpmn/shape/ShapeUtil.ts
   // CALL_ACTIVITY = 'callActivity',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
   // TODO : Uncomment corresponding line in src/model/bpmn/shape/ShapeUtil.ts
   // SUB_PROCESS = 'subProcess',
 }
