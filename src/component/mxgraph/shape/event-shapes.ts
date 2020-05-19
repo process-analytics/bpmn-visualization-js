@@ -142,6 +142,7 @@ abstract class EventShape extends mxEllipse {
     c.fillAndStroke();
   }
 
+  // implementation adapted from https://www.flaticon.com/free-icon/clock_223404
   private paintTimerIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     const canvas = this.configureCanvasForIcon(c, w, h, 152);
     this.translateToStartingIconPosition(c, x, y, w, h);
