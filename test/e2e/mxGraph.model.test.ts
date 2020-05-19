@@ -189,10 +189,6 @@ describe('mxGraph model', () => {
   // endregion
   const bpmnVisu = new BpmnVisu(null);
 
-  beforeEach(() => {
-    jest.setTimeout(100000);
-  });
-
   function expectModelContainsCell(cellId: string): mxgraph.mxCell {
     const cell = bpmnVisu.graph.model.getCell(cellId);
     expect(cell).not.toBeUndefined();

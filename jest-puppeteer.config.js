@@ -24,5 +24,6 @@ module.exports = {
     dumpio: true,
     headless: process.env.HEADLESS !== 'false',
     args: ['--disable-infobars'],
+    timeout: 120000,
   },
 };

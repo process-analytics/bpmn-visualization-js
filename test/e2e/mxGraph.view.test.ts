@@ -99,10 +99,6 @@ function expectTask(cellId: string, expectedText: string): void {
 describe('mxGraph view', () => {
   const bpmnVisu = initializeBpmnVisu();
 
-  beforeEach(() => {
-    jest.setTimeout(100000);
-  });
-
   it('should display page title', async () => {
     await page.goto('http://localhost:10001');
     await page.waitForSelector('#graph');
