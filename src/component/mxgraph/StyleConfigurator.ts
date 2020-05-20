@@ -148,6 +148,7 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_ENDARROW] = this.mxConstants.ARROW_BLOCK_THIN;
     style[this.mxConstants.STYLE_ENDSIZE] = 12;
     style[this.mxConstants.STYLE_STROKECOLOR] = 'Black';
+    style[this.mxConstants.STYLE_STROKEWIDTH] = 1.5;
     style[this.mxConstants.STYLE_ROUNDED] = 1;
     style[this.mxConstants.STYLE_ARCSIZE] = 5;
 
