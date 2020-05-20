@@ -174,7 +174,7 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_FILLCOLOR] = 'White';
     style[this.mxConstants.STYLE_FONTCOLOR] = 'Black';
     style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
-    style[this.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = 'top';
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
   }
 
   private configureSequenceFlowsStyle(): void {
@@ -206,8 +206,6 @@ export default class StyleConfigurator {
 
   private configureConditionalSequenceFlowFromGatewayStyle(): void {
     const style = this.cloneDefaultEdgeStyle();
-    style[this.mxConstants.STYLE_STROKECOLOR] = 'Chartreuse';
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
     this.graph.getStylesheet().putCellStyle(SequenceFlowKind.CONDITIONAL_FROM_GATEWAY, style);
   }
 }
