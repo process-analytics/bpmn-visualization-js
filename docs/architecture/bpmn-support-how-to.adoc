@@ -19,8 +19,8 @@ Do not forget to add tests related to the new BPMN element to ensure everything 
 
 * Add json parsing tests related to the new BPMN element to ensure that the parser is able to make it available to the
 `ProcessConverter`. The convention is to have a test file per BPMN element, please follow the existing file name scheme.
-* Depending on the BPMN element, you may also have to add tests about `default sequence flow` support (see `ShapeBpmnElementKind`
-for more details)
+* Depending on the BPMN element, you may also have to add tests about `default sequence flow` and/or `conditional sequence
+flow` support (see `ShapeBpmnElementKind` for more details)
 * Add end-to-end tests, mainly to ensure that the new BPMN element is now stored in the `mxGraph model`, see `mxGraph.model.test.ts`.
 * No need to create specific XML tests, the XML parsing is tested globally using BPMN files for various BPMN vendors.
 
