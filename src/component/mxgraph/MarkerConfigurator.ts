@@ -31,27 +31,20 @@ export default class MarkerConfigurator {
   private registerArrowDashMarker(): void {
     // This implementation is adapted from the draw.io BPMN 'dash' marker
     // https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796
-    this.mxMarker.addMarker(MarkerConstant.ARROW_DASH, function(
-      c: mxgraph.mxXmlCanvas2D,
-      shape: mxgraph.mxShape,
-      type: any,
-      pe: any,
-      unitX: number,
-      unitY: number,
-      size: number,
-      source: mxgraph.mxCell,
-      sw: any,
-      filled: any,
-    ) {
-      const nx = unitX * (size + sw + 1);
-      const ny = unitY * (size + sw + 1);
 
-      return function() {
-        c.begin();
-        c.moveTo(pe.x - nx / 2 - ny / 2, pe.y - ny / 2 + nx / 2);
-        c.lineTo(pe.x + ny / 2 - (3 * nx) / 2, pe.y - (3 * ny) / 2 - nx / 2);
-        c.stroke();
+    const createMarker =
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (c: mxgraph.mxXmlCanvas2D, shape: mxgraph.mxShape, type: any, pe: any, unitX: number, unitY: number, size: number, source: mxgraph.mxCell, sw: any): any => {
+        const nx = unitX * (size + sw + 1);
+        const ny = unitY * (size + sw + 1);
+
+        return function() {
+          c.begin();
+          c.moveTo(pe.x - nx / 2 - ny / 2, pe.y - ny / 2 + nx / 2);
+          c.lineTo(pe.x + ny / 2 - (3 * nx) / 2, pe.y - (3 * ny) / 2 - nx / 2);
+          c.stroke();
+        };
       };
-    });
+    this.mxMarker.addMarker(MarkerConstant.ARROW_DASH, createMarker);
   }
 }
