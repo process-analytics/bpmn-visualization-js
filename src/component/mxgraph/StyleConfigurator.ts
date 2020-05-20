@@ -191,8 +191,6 @@ export default class StyleConfigurator {
   private configureDefaultSequenceFlowStyle(): void {
     const style = this.cloneDefaultEdgeStyle();
     style[this.mxConstants.STYLE_STARTARROW] = MarkerConstant.ARROW_DASH;
-    style[this.mxConstants.STYLE_STROKECOLOR] = 'HotPink';
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
     this.graph.getStylesheet().putCellStyle(SequenceFlowKind.DEFAULT, style);
   }
 

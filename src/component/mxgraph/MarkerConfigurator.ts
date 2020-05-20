@@ -35,8 +35,8 @@ export default class MarkerConfigurator {
     const createMarker =
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (c: mxgraph.mxXmlCanvas2D, shape: mxgraph.mxShape, type: any, pe: any, unitX: number, unitY: number, size: number, source: mxgraph.mxCell, sw: any): any => {
-        const nx = unitX * (size + sw + 1);
-        const ny = unitY * (size + sw + 1);
+        const nx = unitX * (size + sw + 4);
+        const ny = unitY * (size + sw + 4);
 
         return function() {
           c.begin();
