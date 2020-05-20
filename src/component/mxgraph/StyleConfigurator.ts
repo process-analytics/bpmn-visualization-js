@@ -198,9 +198,8 @@ export default class StyleConfigurator {
   private configureConditionalSequenceFlowFromActivityStyle(): void {
     const style = this.cloneDefaultEdgeStyle();
     style[this.mxConstants.STYLE_STARTARROW] = this.mxConstants.ARROW_DIAMOND_THIN;
-    style[this.mxConstants.STYLE_STARTSIZE] = 20;
-    style[this.mxConstants.STYLE_STROKECOLOR] = 'Chartreuse';
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
+    style[this.mxConstants.STYLE_STARTSIZE] = 18;
+    style[this.mxConstants.STYLE_STARTFILL] = 0;
     this.graph.getStylesheet().putCellStyle(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY, style);
   }
 
