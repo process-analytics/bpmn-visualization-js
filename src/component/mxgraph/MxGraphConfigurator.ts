@@ -36,7 +36,7 @@ export default class MxGraphConfigurator {
     this.graph = new this.mxGraph(container, new this.mxGraphModel());
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
-    new MarkerConfigurator().configureMerkers();
+    new MarkerConfigurator().configureMarkers();
   }
 
   public getGraph(): mxgraph.mxGraph {

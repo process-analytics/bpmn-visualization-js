@@ -23,7 +23,7 @@ export enum MarkerConstant {
 export default class MarkerConfigurator {
   private mxMarker: typeof mxgraph.mxMarker = MxGraphFactoryService.getMxGraphProperty('mxMarker');
 
-  public configureMerkers(): void {
+  public configureMarkers(): void {
     // Registers and defines the custom markers
     this.registerArrowDashMarker();
   }
