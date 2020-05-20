@@ -1,6 +1,6 @@
 {
   "name": "bpmn-visu-js",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Javascript lib to visualize BPMN diagrams",
   "repository": "https://github.com/process-analytics/bpmn-visualization-js",
   "license": "Apache-2.0",
