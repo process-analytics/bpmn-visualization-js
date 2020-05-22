@@ -599,6 +599,11 @@ the BPMN elements are rendered with their final shapes.</p>
 </tr>
 </tbody>
 </table>
+<div class="paragraph">
+<p>|Call Activity
+|
+|</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_events"><a class="anchor" href="#_events"></a><a class="link" href="#_events">2.3. Events</a></h3>
@@ -902,13 +907,31 @@ types requires changes in <code>ShapeBpmnEventKind</code> to add the newly suppo
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Do not forget to add json parsing tests related to the new BPMN element to ensure that the parser is able to
-make it available to the <code>ProcessConverter</code>. The convention is to have a test file per BPMN element, please follow the
-existing file name scheme.
-No need to create specific XML tests when adding new BPMN elements support.
+Do not forget to add tests related to the new BPMN element to ensure everything works fine.
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p><strong>Test guidelines:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add json parsing tests related to the new BPMN element to ensure that the parser is able to make it available to the
+<code>ProcessConverter</code>. The convention is to have a test file per BPMN element, please follow the existing file name scheme.</p>
+</li>
+<li>
+<p>Depending on the BPMN element, you may also have to add tests about <code>default sequence flow</code> and/or <code>conditional sequence
+flow</code> support (see <code>ShapeBpmnElementKind</code> for more details)</p>
+</li>
+<li>
+<p>Add end-to-end tests, mainly to ensure that the new BPMN element is now stored in the <code>mxGraph model</code>, see <code>mxGraph.model.test.ts</code>.</p>
+</li>
+<li>
+<p>No need to create specific XML tests, the XML parsing is tested globally using BPMN files for various BPMN vendors.</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -947,7 +970,7 @@ tool can transform it. See <a href="https://github.com/process-analytics/bpmn-vi
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-19 15:24:30 UTC
+Last updated 2020-05-22 08:34:04 UTC
 </div>
 </div>
 </body>
