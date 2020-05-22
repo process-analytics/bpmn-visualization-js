@@ -24,6 +24,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     ['task'],
     ['userTask'],
     ['serviceTask'],
+    ['callActivity'],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway'],
     // TODO: To uncomment when we support manualTask
@@ -36,8 +37,6 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     //['sendTask'],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask'],
-    // TODO: To uncomment when we support callActivity
-    //['callActivity'],
     // TODO: To uncomment when we support subProcess
     //['subProcess'],
   ]).it('json containing one process with a sequence flow defined as conditional in a %s', sourceKind => {

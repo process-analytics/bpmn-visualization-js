@@ -26,9 +26,7 @@ export default class ShapeUtil {
 
   private static ACTIVITY_KINDS = [
     ...ShapeUtil.TASK_KINDS,
-
-    // TODO: Uncomment when call activity are supported
-    // ShapeBpmnElementKind.CALL_ACTIVITY,
+    ShapeBpmnElementKind.CALL_ACTIVITY,
 
     // TODO: Uncomment when sub process are supported
     // ShapeBpmnElementKind.SUB_PROCESS

@@ -35,12 +35,13 @@ export default class StyleConfigurator {
 
   public configureStyles(): void {
     this.mxConstants.RECTANGLE_ROUNDING_FACTOR = 0.1;
-
     this.configureDefaultVertexStyle();
+
     this.configurePoolStyle();
     this.configureLaneStyle();
+
+    this.configureActivitiesStyle();
     this.configureEventsStyle();
-    this.configureTasksStyle();
     this.configureGatewaysStyle();
 
     this.configureSequenceFlowsStyle();
@@ -116,6 +117,11 @@ export default class StyleConfigurator {
     });
   }
 
+  private configureActivitiesStyle(): void {
+    this.configureTasksStyle();
+    this.configureCallActivityStyle();
+  }
+
   private configureTasksStyle(): void {
     ShapeUtil.taskKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
@@ -123,6 +129,17 @@ export default class StyleConfigurator {
       style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
       this.putCellStyle(kind, style);
     });
+  }
+
+  private configureCallActivityStyle(): void {
+    const style = this.cloneDefaultVertexStyle();
+    style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RECTANGLE;
+    style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RectanglePerimeter;
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
+    style[this.mxConstants.STYLE_STROKECOLOR] = '#2C6DA3';
+    style[this.mxConstants.STYLE_STROKEWIDTH] = 4;
+    style[this.mxConstants.STYLE_ROUNDED] = true;
+    this.putCellStyle(ShapeBpmnElementKind.CALL_ACTIVITY, style);
   }
 
   private configureGatewaysStyle(): void {
