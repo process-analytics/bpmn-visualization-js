@@ -18,7 +18,7 @@ import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
 import { StyleConstant } from '../StyleConfigurator';
 import { ShapeBpmnEventKind } from '../../../model/bpmn/shape/ShapeBpmnEventKind';
-import MxScaleFactorCanvas from '../extension/MxScaleFactorCanvas';
+import { MxCanvasUtil } from '../extension/MxScaleFactorCanvas';
 
 const mxEllipse: typeof mxgraph.mxEllipse = MxGraphFactoryService.getMxGraphProperty('mxEllipse');
 const mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
@@ -144,8 +144,8 @@ abstract class EventShape extends mxEllipse {
 
   // implementation adapted from https://www.flaticon.com/free-icon/clock_223404
   private paintTimerIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const canvas = this.configureCanvasForIcon(c, w, h, 152);
-    this.translateToStartingIconPosition(c, x, y, w, h);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 152, this.stroke);
+    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 5);
     c.setFillColor(this.fill);
     c.setStrokeWidth(0);
 
@@ -237,23 +237,6 @@ abstract class EventShape extends mxEllipse {
     canvas.curveTo(352, 276.8, 276.8, 352, 184, 352);
 
     canvas.fillAndStroke();
-  }
-
-  protected configureCanvasForIcon(c: mxgraph.mxXmlCanvas2D, parentWidth: number, parentHeight: number, iconOriginalSize: number): MxScaleFactorCanvas {
-    c.setStrokeWidth(1);
-    c.setFillColor(this.stroke);
-
-    const parentSize = Math.min(parentWidth, parentHeight);
-    const ratioFromParent = 0.25;
-    const scaleFactor = (parentSize / iconOriginalSize) * ratioFromParent;
-
-    return new MxScaleFactorCanvas(c, scaleFactor);
-  }
-
-  protected translateToStartingIconPosition(c: mxgraph.mxXmlCanvas2D, parentX: number, parentY: number, parentWidth: number, parentHeight: number): void {
-    const xTranslation = parentX + parentWidth / 5;
-    const yTranslation = parentY + parentHeight / 5;
-    c.translate(xTranslation, yTranslation);
   }
 }
 
