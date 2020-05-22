@@ -17,7 +17,7 @@
 import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
 import { StyleConstant } from '../StyleConfigurator';
-import MxScaleFactorCanvas from '../extension/MxScaleFactorCanvas';
+import MxScaleFactorCanvas, { MxCanvasUtil } from '../extension/MxScaleFactorCanvas';
 
 const mxRhombus: typeof mxgraph.mxRhombus = MxGraphFactoryService.getMxGraphProperty('mxRhombus');
 
@@ -35,24 +35,6 @@ abstract class GatewayShape extends mxRhombus {
 
   protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintVertexShape(c, x, y, w, h);
-  }
-
-  protected configureCanvasForIcon(c: mxgraph.mxXmlCanvas2D, parentWidth: number, parentHeight: number, iconOriginalSize: number): MxScaleFactorCanvas {
-    // ensure we are not impacted by the configured shape stroke width
-    c.setStrokeWidth(1);
-    c.setFillColor(this.stroke);
-
-    const parentSize = Math.min(parentWidth, parentHeight);
-    const ratioFromParent = 0.25;
-    const scaleFactor = (parentSize / iconOriginalSize) * ratioFromParent;
-
-    return new MxScaleFactorCanvas(c, scaleFactor);
-  }
-
-  protected translateToStartingIconPosition(c: mxgraph.mxXmlCanvas2D, parentX: number, parentY: number, parentWidth: number, parentHeight: number): void {
-    const xTranslation = parentX + parentWidth / 4;
-    const yTranslation = parentY + parentHeight / 4;
-    c.translate(xTranslation, yTranslation);
   }
 
   protected paintCrossIcon(canvas: MxScaleFactorCanvas): void {
@@ -83,8 +65,8 @@ export class ExclusiveGatewayShape extends GatewayShape {
   }
 
   private addExclusiveGatewaySymbol(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const canvas = this.configureCanvasForIcon(c, w, h, 0.5);
-    this.translateToStartingIconPosition(c, x, y, w, h);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, this.stroke);
+    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
     this.paintCrossIcon(canvas);
     const xRotation = w / 4;
     const yRotation = h / 4;
@@ -103,8 +85,8 @@ export class ParallelGatewayShape extends GatewayShape {
   }
 
   private addParallelGatewaySymbol(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const canvas = this.configureCanvasForIcon(c, w, h, 0.5);
-    this.translateToStartingIconPosition(c, x, y, w, h);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, this.stroke);
+    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
 
     this.paintCrossIcon(canvas);
     canvas.fillAndStroke();
@@ -121,8 +103,8 @@ export class InclusiveGatewayShape extends GatewayShape {
   }
 
   private addInclusiveGatewaySymbol(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const canvas = this.configureCanvasForIcon(c, w, h, 0.5);
-    this.translateToStartingIconPosition(c, x, y, w, h);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, this.stroke);
+    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
     c.setFillColor(this.fill);
     c.setStrokeWidth(StyleConstant.STROKE_WIDTH_THICK);
 

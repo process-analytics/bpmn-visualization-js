@@ -67,3 +67,45 @@ export default class MxScaleFactorCanvas {
     this.c.rotate(theta, flipH, flipV, cx, cy);
   }
 }
+
+export class MxCanvasUtil {
+  public static getConfiguredCanvas(
+    canvas: mxgraph.mxXmlCanvas2D,
+    parentWidth: number,
+    parentHeight: number,
+    iconOriginalSize: number,
+    fillColor = '#FFF',
+    strokeWidth = 1,
+  ): MxScaleFactorCanvas {
+    canvas.setStrokeWidth(strokeWidth);
+    canvas.setFillColor(fillColor);
+
+    const parentSize = Math.min(parentWidth, parentHeight);
+    const ratioFromParent = 0.25;
+    const scaleFactor = (parentSize / iconOriginalSize) * ratioFromParent;
+
+    return new MxScaleFactorCanvas(canvas, scaleFactor);
+  }
+
+  /**
+   * Moves canvas cursor to drawing starting point.
+   * @param canvas
+   * @param parentX
+   * @param parentY
+   * @param parentWidth
+   * @param parentHeight
+   * @param positionIndex - helps to define the position of the Icon relatively to top left corner
+   */
+  public static translateToStartingIconPosition(
+    canvas: mxgraph.mxXmlCanvas2D,
+    parentX: number,
+    parentY: number,
+    parentWidth: number,
+    parentHeight: number,
+    positionIndex: number,
+  ): void {
+    const xTranslation = parentX + parentWidth / positionIndex;
+    const yTranslation = parentY + parentHeight / positionIndex;
+    canvas.translate(xTranslation, yTranslation);
+  }
+}

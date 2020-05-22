@@ -32,7 +32,6 @@ const mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraph
 const mxGeometry: typeof mxgraph.mxGeometry = MxGraphFactoryService.getMxGraphProperty('mxGeometry');
 
 describe('mxGraph model', () => {
-  // region html string literal
   const xmlContent = `
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
 <semantic:definitions id="_1373649849716" name="A.1.0" targetNamespace="http://www.trisotech.com/definitions/_1373649849716" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -86,6 +85,7 @@ describe('mxGraph model', () => {
         <semantic:sequenceFlow sourceRef="messageIntermediateThrowEvent" targetRef="endEvent_1" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff33" />
         <semantic:sequenceFlow id="Flow_028jkgv" sourceRef="startEvent_2_timer" targetRef="IntermediateCatchEvent_Timer_01" />
         <semantic:inclusiveGateway id="inclusiveGateway_1" name="Inclusive Gateway 1"/>
+        <semantic:callActivity calledElement="Process_unknown" name="Call Activity Collapsed" id="callActivity_1" />
     </semantic:process>
     <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
         <bpmndi:BPMNPlane bpmnElement="WFP-6-">
@@ -152,6 +152,12 @@ describe('mxGraph model', () => {
                 <dc:Bounds x="885" y="322" width="90" height="14" />
               </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="callActivity_1" isExpanded="false" id="shape_callActivity_1">
+                <dc:Bounds height="68.0" width="83.0" x="455.0" y="419.0"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds height="25" width="72.5" x="460" y="440.18"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge bpmnElement="default_sequence_flow_id" id="E1373649849864_default_sequence_flow_id">
                 <di:waypoint x="342.0" y="351.0"/>
                 <di:waypoint x="390.0" y="351.0"/>
@@ -186,7 +192,6 @@ describe('mxGraph model', () => {
     </bpmndi:BPMNDiagram>
 </semantic:definitions>
 `;
-  // endregion
   const bpmnVisu = new BpmnVisu(null);
 
   function expectModelContainsCell(cellId: string): mxgraph.mxCell {
@@ -196,11 +201,14 @@ describe('mxGraph model', () => {
     return cell;
   }
 
-  function expectModelContainsShape(cellId: string, shapeKind: ShapeBpmnElementKind): mxgraph.mxCell {
+  // styleShape is only required when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented)
+  function expectModelContainsShape(cellId: string, shapeKind: ShapeBpmnElementKind, styleShape?: string): mxgraph.mxCell {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(shapeKind);
     const state = bpmnVisu.graph.getView().getState(cell);
-    expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(shapeKind);
+
+    styleShape = !styleShape ? shapeKind : styleShape;
+    expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(styleShape);
     return cell;
   }
 
@@ -237,10 +245,11 @@ describe('mxGraph model', () => {
     expectModelContainsBpmnEvent('messageIntermediateCatchEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.MESSAGE);
     expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.TIMER);
 
-    // task
+    // activity
     expectModelContainsShape('task_1', ShapeBpmnElementKind.TASK);
     expectModelContainsShape('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE);
     expectModelContainsShape('userTask_3', ShapeBpmnElementKind.TASK_USER);
+    expectModelContainsShape('callActivity_1', ShapeBpmnElementKind.CALL_ACTIVITY, 'rectangle');
 
     // gateways
     expectModelContainsShape('inclusiveGateway_1', ShapeBpmnElementKind.GATEWAY_INCLUSIVE);
