@@ -8,3 +8,14 @@ We are currently focusing on the <<supported-bpmn-elements,BPMN support>> to be 
 elements. Then, we will work on BPMN extensions, library extension points.
 
 **Supported Browsers**: Chrome, Firefox, Safari, Edge
+
+
+== Demo environment
+
+The https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/index.html[demo environment]
+let you load a BPMN file to see how the lib renders it. Various versions of the lib are available.
+
+If you need BPMN examples, you can use resources of the http://www.omgwiki.org/bpmn-miwg[BPMN Model Interchange Working Group (BPMN MIWG)]
+
+* https://github.com/bpmn-miwg/bpmn-miwg-test-suite
+* https://github.com/bpmn-miwg/bpmn-miwg-demos
