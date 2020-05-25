@@ -50,6 +50,6 @@ for more details:
 
 # Powered by
 
-![statically.io logo](https://statically.io/icons/icon-96x96.png)
+[![statically.io logo](https://statically.io/icons/icon-96x96.png "statically.io")](https://statically.io)
 
-**[statically.io](https://statically.io/)** (demo environment)
+**[statically.io](https://statically.io)** (demo environment)
