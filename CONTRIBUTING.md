@@ -140,7 +140,16 @@ It helps to avoid coding mistakes -> reduced technical debt
 
 ### Sign the Contributor License Agreement
 
-Please make sure you have signed our [Contributor License Agreement](). We are not asking you to assign copyright to us, but to give us the right to distribute your code without restriction. We ask this of all contributors in order to assure our users of the origin and continuing existence of the code. You only need to sign the CLA once.
+By signing the CLA, we acknowledge that your contribution is accepted as it and that you cannot be held responsible for
+any impacts on its integration. You then grant us the right to modify and distribute your code without restrictions. We
+ask this of all contributors in order to assure our users of the origin and continuing existence of the code.
+
+When you contribute to the project on GitHub with a new pull request, the [cla-assistant bot](https://cla-assistant.io/)
+will evaluate whether you have signed the CLA. If required, the bot will comment on the pull request, including a link
+to this system to accept the agreement.
+
+You only need to sign the CLA once or when the CLA terms have changed.
+
 
 ### Open a Pull Request
 
