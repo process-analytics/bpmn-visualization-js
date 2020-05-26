@@ -444,20 +444,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_introduction">1. Introduction</a></li>
-<li><a href="#supported-bpmn-elements">2. Supported BPMN Elements</a>
+<li><a href="#_demo_environment">2. Demo environment</a></li>
+<li><a href="#supported-bpmn-elements">3. Supported BPMN Elements</a>
 <ul class="sectlevel2">
-<li><a href="#_containers">2.1. Containers</a></li>
-<li><a href="#_activities">2.2. Activities</a></li>
-<li><a href="#_events">2.3. Events</a></li>
-<li><a href="#_flows">2.4. Flows</a></li>
-<li><a href="#_gateways">2.5. Gateways</a></li>
+<li><a href="#_containers">3.1. Containers</a></li>
+<li><a href="#_activities">3.2. Activities</a></li>
+<li><a href="#_events">3.3. Events</a></li>
+<li><a href="#_flows">3.4. Flows</a></li>
+<li><a href="#_gateways">3.5. Gateways</a></li>
 </ul>
 </li>
-<li><a href="#_architecture_and_development">3. Architecture and Development</a>
+<li><a href="#_architecture_and_development">4. Architecture and Development</a>
 <ul class="sectlevel2">
-<li><a href="#_bpmn_internal_model">3.1. BPMN Internal Model</a></li>
-<li><a href="#_bpmn_parsing">3.2. BPMN Parsing</a></li>
-<li><a href="#_bpmn_support_how_to">3.3. BPMN Support - How To</a></li>
+<li><a href="#_bpmn_internal_model">4.1. BPMN Internal Model</a></li>
+<li><a href="#_bpmn_parsing">4.2. BPMN Parsing</a></li>
+<li><a href="#_bpmn_support_how_to">4.3. BPMN Support - How To</a></li>
 </ul>
 </li>
 </ul>
@@ -482,7 +483,29 @@ elements. Then, we will work on BPMN extensions, library extension points.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="supported-bpmn-elements"><a class="anchor" href="#supported-bpmn-elements"></a><a class="link" href="#supported-bpmn-elements">2. Supported BPMN Elements</a></h2>
+<h2 id="_demo_environment"><a class="anchor" href="#_demo_environment"></a><a class="link" href="#_demo_environment">2. Demo environment</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/index.html">demo environment</a>
+let you load a BPMN file to see how the lib renders it. Various versions of the lib are available.</p>
+</div>
+<div class="paragraph">
+<p>If you need BPMN examples, you can use resources of the <a href="http://www.omgwiki.org/bpmn-miwg">BPMN Model Interchange Working Group (BPMN MIWG)</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/bpmn-miwg/bpmn-miwg-test-suite" class="bare">https://github.com/bpmn-miwg/bpmn-miwg-test-suite</a></p>
+</li>
+<li>
+<p><a href="https://github.com/bpmn-miwg/bpmn-miwg-demos" class="bare">https://github.com/bpmn-miwg/bpmn-miwg-demos</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="supported-bpmn-elements"><a class="anchor" href="#supported-bpmn-elements"></a><a class="link" href="#supported-bpmn-elements">3. Supported BPMN Elements</a></h2>
 <div class="sectionbody">
 <div class="admonitionblock note">
 <table>
@@ -532,7 +555,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_containers"><a class="anchor" href="#_containers"></a><a class="link" href="#_containers">2.1. Containers</a></h3>
+<h3 id="_containers"><a class="anchor" href="#_containers"></a><a class="link" href="#_containers">3.1. Containers</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Containers</caption>
 <colgroup>
@@ -564,7 +587,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_activities"><a class="anchor" href="#_activities"></a><a class="link" href="#_activities">2.2. Activities</a></h3>
+<h3 id="_activities"><a class="anchor" href="#_activities"></a><a class="link" href="#_activities">3.2. Activities</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 2. Activities</caption>
 <colgroup>
@@ -606,7 +629,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_events"><a class="anchor" href="#_events"></a><a class="link" href="#_events">2.3. Events</a></h3>
+<h3 id="_events"><a class="anchor" href="#_events"></a><a class="link" href="#_events">3.3. Events</a></h3>
 <div class="paragraph">
 <p><strong>Note</strong>: the following icons are derived from existing solutions</p>
 </div>
@@ -740,7 +763,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_flows"><a class="anchor" href="#_flows"></a><a class="link" href="#_flows">2.4. Flows</a></h3>
+<h3 id="_flows"><a class="anchor" href="#_flows"></a><a class="link" href="#_flows">3.4. Flows</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 7. Flows</caption>
 <colgroup>
@@ -789,7 +812,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_gateways"><a class="anchor" href="#_gateways"></a><a class="link" href="#_gateways">2.5. Gateways</a></h3>
+<h3 id="_gateways"><a class="anchor" href="#_gateways"></a><a class="link" href="#_gateways">3.5. Gateways</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 8. Gateways</caption>
 <colgroup>
@@ -826,7 +849,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_architecture_and_development"><a class="anchor" href="#_architecture_and_development"></a><a class="link" href="#_architecture_and_development">3. Architecture and Development</a></h2>
+<h2 id="_architecture_and_development"><a class="anchor" href="#_architecture_and_development"></a><a class="link" href="#_architecture_and_development">4. Architecture and Development</a></h2>
 <div class="sectionbody">
 <div class="admonitionblock tip">
 <table>
@@ -841,7 +864,7 @@ To know how to build the project, please have a look at the <a href="https://git
 </table>
 </div>
 <div class="sect2">
-<h3 id="_bpmn_internal_model"><a class="anchor" href="#_bpmn_internal_model"></a><a class="link" href="#_bpmn_internal_model">3.1. BPMN Internal Model</a></h3>
+<h3 id="_bpmn_internal_model"><a class="anchor" href="#_bpmn_internal_model"></a><a class="link" href="#_bpmn_internal_model">4.1. BPMN Internal Model</a></h3>
 <div class="paragraph">
 <p>Our internal model is based on the <a href="https://www.omg.org/spec/BPMN/2.0.2/PDF">BPMN specification</a>.</p>
 </div>
@@ -856,9 +879,9 @@ file with <a href="https://app.diagrams.net" class="bare">https://app.diagrams.n
 </div>
 </div>
 <div class="sect2">
-<h3 id="_bpmn_parsing"><a class="anchor" href="#_bpmn_parsing"></a><a class="link" href="#_bpmn_parsing">3.2. BPMN Parsing</a></h3>
+<h3 id="_bpmn_parsing"><a class="anchor" href="#_bpmn_parsing"></a><a class="link" href="#_bpmn_parsing">4.2. BPMN Parsing</a></h3>
 <div class="sect3">
-<h4 id="_xml_parser"><a class="anchor" href="#_xml_parser"></a><a class="link" href="#_xml_parser">3.2.1. XML Parser</a></h4>
+<h4 id="_xml_parser"><a class="anchor" href="#_xml_parser"></a><a class="link" href="#_xml_parser">4.2.1. XML Parser</a></h4>
 <div class="paragraph">
 <p>To parse XML data, we use the library <a href="https://github.com/NaturalIntelligence/fast-xml-parser">fast-xml-parser</a>.</p>
 </div>
@@ -867,7 +890,7 @@ file with <a href="https://app.diagrams.net" class="bare">https://app.diagrams.n
 </div>
 </div>
 <div class="sect3">
-<h4 id="_json_parser"><a class="anchor" href="#_json_parser"></a><a class="link" href="#_json_parser">3.2.2. Json Parser</a></h4>
+<h4 id="_json_parser"><a class="anchor" href="#_json_parser"></a><a class="link" href="#_json_parser">4.2.2. Json Parser</a></h4>
 <div class="paragraph">
 <p>To parse a JSON data, we use the library <a href="https://github.com/AppVision-GmbH/json2typescript">json2typescript</a>.</p>
 </div>
@@ -878,9 +901,9 @@ We create our custom <em>converters</em> (in the <strong>converter</strong> fold
 </div>
 </div>
 <div class="sect2">
-<h3 id="_bpmn_support_how_to"><a class="anchor" href="#_bpmn_support_how_to"></a><a class="link" href="#_bpmn_support_how_to">3.3. BPMN Support - How To</a></h3>
+<h3 id="_bpmn_support_how_to"><a class="anchor" href="#_bpmn_support_how_to"></a><a class="link" href="#_bpmn_support_how_to">4.3. BPMN Support - How To</a></h3>
 <div class="sect3">
-<h4 id="_elements_detection"><a class="anchor" href="#_elements_detection"></a><a class="link" href="#_elements_detection">3.3.1. Elements detection</a></h4>
+<h4 id="_elements_detection"><a class="anchor" href="#_elements_detection"></a><a class="link" href="#_elements_detection">4.3.1. Elements detection</a></h4>
 <div class="paragraph">
 <p>Except for special container elements like <code>Pool</code>, <code>Lane</code> and <code>Subprocess</code>, detecting a new BPMN element only requires to
 add a new value in the <code>ShapeBpmnElementKind</code> enum.</p>
@@ -936,7 +959,7 @@ flow</code> support (see <code>ShapeBpmnElementKind</code> for more details)</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_elements_rendering"><a class="anchor" href="#_elements_rendering"></a><a class="link" href="#_elements_rendering">3.3.2. Elements rendering</a></h4>
+<h4 id="_elements_rendering"><a class="anchor" href="#_elements_rendering"></a><a class="link" href="#_elements_rendering">4.3.2. Elements rendering</a></h4>
 <div class="paragraph">
 <p>When inserting an element on the graph, a style is passed to identify the way it will be rendered.</p>
 </div>
@@ -950,7 +973,7 @@ used for the rendering.</p>
 which associates the <code>mxShape</code> name (used in style definition) with the <code>mxShape</code> class to be used.</p>
 </div>
 <div class="sect4">
-<h5 id="_bpmn_icon_tips"><a class="anchor" href="#_bpmn_icon_tips"></a><a class="link" href="#_bpmn_icon_tips">3.3.2.1. BPMN icon tips</a></h5>
+<h5 id="_bpmn_icon_tips"><a class="anchor" href="#_bpmn_icon_tips"></a><a class="link" href="#_bpmn_icon_tips">4.3.2.1. BPMN icon tips</a></h5>
 <div class="paragraph">
 <p>The icon of the BPMN elements must be defined in the mxGraph custom shapes and this currently must be done using <code>TypeScript</code>
 code.</p>
@@ -971,7 +994,7 @@ tool can transform it. See <a href="https://github.com/process-analytics/bpmn-vi
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-26 14:17:57 UTC
+Last updated 2020-05-26 16:14:59 UTC
 </div>
 </div>
 </body>
