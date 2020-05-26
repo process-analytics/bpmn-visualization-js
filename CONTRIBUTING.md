@@ -214,7 +214,7 @@ Maintainers need to do the following to push out a release.
 
 #### Issues and milestones update
 
-Milestone names are based on version
+Milestone names are based on the lib version
 - Clean the opened milestone if some issues are still opened (move them to a new one or discard milestone from them)
 - Close the milestone
 - Clean the [Day to Day Board](https://github.com/process-analytics/bpmn-visualization-js/projects/1): archive all cards
@@ -235,3 +235,10 @@ of the `Done` column related to the milestone
   - Open [github releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
   - Create a new release based on the newly created tags. Check `This is a pre-release`
   - In the description, at least add a link to the related milestone
+
+### Demo environment update
+
+Make the new version available for demo
+- build: `npm run build`
+- push the built resources to the demo folder of the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples)
+repository
