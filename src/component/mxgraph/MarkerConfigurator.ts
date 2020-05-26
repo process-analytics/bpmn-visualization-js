@@ -17,14 +17,13 @@ import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
 
 export enum MarkerConstant {
-  ARROW_DASH = 'dash',
+  ARROW_DASH = 'bpmn.dash',
 }
 
 export default class MarkerConfigurator {
   private mxMarker: typeof mxgraph.mxMarker = MxGraphFactoryService.getMxGraphProperty('mxMarker');
 
   public configureMarkers(): void {
-    // Registers and defines the custom markers
     this.registerArrowDashMarker();
   }
 
