@@ -5,6 +5,8 @@
 To know how to build the project, please have a look at the https://github.com/process-analytics/bpmn-visualization-js/blob/master/CONTRIBUTING.md[contributing guide].
 
 
+include::architecture-overview.adoc[]
+
 include::bpmn-internal-model.adoc[]
 
 include::bpmn-parsing.adoc[]

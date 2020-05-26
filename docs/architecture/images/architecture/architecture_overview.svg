@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 210 297"
+   height="297mm"
+   width="210mm">
+  <defs
+     id="defs2">
+    <rect
+       id="rect841"
+       height="17.308871"
+       width="37.686111"
+       y="67.977417"
+       x="39.004604" />
+  </defs>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1">
+    <rect
+       y="18.720821"
+       x="29.409294"
+       height="57.254982"
+       width="98.026413"
+       id="rect10"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.359762;stroke-linejoin:round;stroke-miterlimit:20;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
+    <rect
+       y="39.990208"
+       x="35.507282"
+       height="18.750973"
+       width="26.164038"
+       id="rect835"
+       style="fill:none;stroke:#000000;stroke-width:0.352999;stroke-linejoin:round;stroke-miterlimit:20;stroke-dasharray:0.0352999, 0.0352999;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+    <rect
+       y="39.317379"
+       x="72.056038"
+       height="19.947149"
+       width="35.267536"
+       id="rect837"
+       style="fill:none;stroke:#000000;stroke-width:0.352999;stroke-linejoin:round;stroke-miterlimit:20;stroke-dasharray:0.0352999, 0.0352999;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+    <text
+       style="fill:black;fill-opacity:1;line-height:1.25;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:10.58333333px;white-space:pre;shape-inside:url(#rect841);"
+       id="text839"
+       xml:space="preserve" />
+    <text
+       id="text847"
+       y="46.900341"
+       x="37.929108"
+       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:3.52778px;stroke:none;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         y="46.900341"
+         x="37.929108"
+         id="tspan845">xml parser</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.52777px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       x="80.081909"
+       y="48.313313"
+       id="text847-3"><tspan
+         id="tspan845-6"
+         x="80.081909"
+         y="48.313313"
+         style="font-size:3.52777px;stroke:none;stroke-width:0.264999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">json parser</tspan></text>
+    <text
+       id="text847-3-7"
+       y="28.943476"
+       x="45.578266"
+       style="font-style:normal;font-weight:normal;font-size:3.52777px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:3.52777px;stroke:none;stroke-width:0.264999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         y="28.943476"
+         x="45.578266"
+         id="tspan845-6-5">BPMN parser</tspan></text>
+  </g>
+</svg>
