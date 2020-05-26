@@ -19,6 +19,7 @@ import { mxgraph } from 'ts-mxgraph';
 import { MxGraphFactoryService } from '../../src/service/MxGraphFactoryService';
 import { ShapeBpmnEventKind } from '../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
+import { MarkerConstant } from '../../src/component/mxgraph/MarkerConfigurator';
 
 function expectGeometry(cell: mxgraph.mxCell, geometry: mxgraph.mxGeometry): void {
   const cellGeometry = cell.getGeometry();
@@ -212,9 +213,12 @@ describe('mxGraph model', () => {
     return cell;
   }
 
-  function expectModelContainsEdge(cellId: string, kind: SequenceFlowKind): mxgraph.mxCell {
+  function expectModelContainsEdge(cellId: string, kind: SequenceFlowKind, startArrow?: string): mxgraph.mxCell {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(kind);
+
+    const state = bpmnVisu.graph.getView().getState(cell);
+    expect(state.style[mxConstants.STYLE_STARTARROW]).toEqual(startArrow);
     return cell;
   }
 
@@ -255,9 +259,9 @@ describe('mxGraph model', () => {
     expectModelContainsShape('inclusiveGateway_1', ShapeBpmnElementKind.GATEWAY_INCLUSIVE);
 
     // sequence flow
-    expectModelContainsEdge('default_sequence_flow_id', SequenceFlowKind.DEFAULT);
+    expectModelContainsEdge('default_sequence_flow_id', SequenceFlowKind.DEFAULT, MarkerConstant.ARROW_DASH);
     expectModelContainsEdge('normal_sequence_flow_id', SequenceFlowKind.NORMAL);
-    expectModelContainsEdge('conditional_sequence_flow_id', SequenceFlowKind.CONDITIONAL);
+    expectModelContainsEdge('conditional_sequence_flow_id', SequenceFlowKind.CONDITIONAL, mxConstants.ARROW_DIAMOND_THIN);
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {
