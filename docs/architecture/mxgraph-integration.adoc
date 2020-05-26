@@ -5,3 +5,13 @@ https://jgraph.github.io/mxgraph/docs/manual.html#3.1.1:[mxGraph model] from the
 
 The lib defines the mxGraph BPMN styles and associates them to the right render, using dedicated BPMN mxGraph shapes.
 For more technical details, see the <<bpmn-support-howto-elements-rendering,BPMN Elements rendering>>
+
+==== BPMN elements positioning
+
+*WIP*
+Apply to both BPMN shapes and edges
+
+* mxGraph coordinates: relative to parent
+* BPMN: absolute
+
+--> required a transformation layer
