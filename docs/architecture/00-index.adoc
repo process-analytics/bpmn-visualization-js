@@ -11,6 +11,6 @@ include::bpmn-internal-model.adoc[]
 
 include::bpmn-parsing.adoc[]
 
-include::bpmn-support-how-to.adoc[]
-
 include::mxgraph-integration.adoc[]
+
+include::bpmn-support-how-to.adoc[]

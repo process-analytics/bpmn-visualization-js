@@ -1,1 +1,7 @@
 === mxGraph Integration
+
+The https://jgraph.github.io/mxgraph/[mxGraph] integration is in charge of displaying the BPMN diagrams, by filling the
+https://jgraph.github.io/mxgraph/docs/manual.html#3.1.1:[mxGraph model] from the BPMN model and the mxGraph BPMN styles.
+
+The lib defines the mxGraph BPMN styles and associates them to the right render, using dedicated BPMN mxGraph shapes.
+For more technical details, see the <<bpmn-support-howto-elements-rendering,BPMN Elements rendering>>

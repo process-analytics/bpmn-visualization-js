@@ -24,10 +24,10 @@ flow` support (see `ShapeBpmnElementKind` for more details)
 * Add end-to-end tests, mainly to ensure that the new BPMN element is now stored in the `mxGraph model`, see `mxGraph.model.test.ts`.
 * No need to create specific XML tests, the XML parsing is tested globally using BPMN files for various BPMN vendors.
 
-
+[[bpmn-support-howto-elements-rendering]]
 ==== Elements rendering
 
-When inserting an element on the graph, a style is passed to identify the way it will be rendered.
+When inserting an element on the `mxGraph` graph, a style is passed to identify the way it will be rendered.
 
 The https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html[style] is defined and registered in
 `StyleConfigurator`. In particular, it refers to the name of a https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html[mxShape]
