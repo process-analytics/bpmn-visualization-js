@@ -44,6 +44,7 @@ export default class StyleConfigurator {
     this.configureEventsStyle();
     this.configureGatewaysStyle();
 
+    this.configureDefaultEdgeStyle();
     this.configureSequenceFlowsStyle();
   }
 
@@ -158,6 +159,23 @@ export default class StyleConfigurator {
     });
   }
 
+  private configureDefaultEdgeStyle(): void {
+    const style = this.getDefaultEdgeStyle();
+    style[this.mxConstants.STYLE_EDGE] = this.mxConstants.EDGESTYLE_SEGMENT;
+    style[this.mxConstants.STYLE_ENDARROW] = this.mxConstants.ARROW_BLOCK_THIN;
+    style[this.mxConstants.STYLE_ENDSIZE] = 12;
+    style[this.mxConstants.STYLE_STROKECOLOR] = 'Black';
+    style[this.mxConstants.STYLE_STROKEWIDTH] = 1.5;
+    style[this.mxConstants.STYLE_ROUNDED] = 1;
+    style[this.mxConstants.STYLE_ARCSIZE] = 5;
+
+    style[this.mxConstants.STYLE_FONTSIZE] = 15;
+    style[this.mxConstants.STYLE_FILLCOLOR] = 'White';
+    style[this.mxConstants.STYLE_FONTCOLOR] = 'Black';
+    style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
+    style[this.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = 'top';
+  }
+
   private configureSequenceFlowsStyle(): void {
     this.configureNormalSequenceFlowStyle();
     this.configureDefaultSequenceFlowStyle();
@@ -166,8 +184,6 @@ export default class StyleConfigurator {
 
   private configureNormalSequenceFlowStyle(): void {
     const style = this.cloneDefaultEdgeStyle();
-    style[this.mxConstants.STYLE_STROKECOLOR] = 'DodgerBlue';
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
     this.graph.getStylesheet().putCellStyle(SequenceFlowKind.NORMAL, style);
   }
 
