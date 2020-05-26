@@ -95,17 +95,20 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
+      let shapeBpmnElement;
+
       if (ShapeUtil.isEvent(kind)) {
-        const shapeBpmnEvent = this.buildShapeBpmnEvent(bpmnElement, kind, processId);
-        if (shapeBpmnEvent) {
-          convertedFlowNodeBpmnElements.push(shapeBpmnEvent);
-        }
+        shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind, processId);
       } else {
-        convertedFlowNodeBpmnElements.push(new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId));
+        shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate);
 
         if (ShapeUtil.isWithDefaultSequenceFlow(kind) && bpmnElement.default) {
           defaultSequenceFlowIds.push(bpmnElement.default);
         }
+      }
+
+      if (shapeBpmnElement) {
+        convertedFlowNodeBpmnElements.push(shapeBpmnElement);
       }
     });
   }
