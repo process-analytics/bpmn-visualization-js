@@ -1,7 +1,5 @@
 === Architecture Overview
 
-*WIP* architecture
-
 image::images/architecture/architecture_overview.svg[]
 
 
