@@ -265,6 +265,6 @@ export class ReceiveTaskShape extends BaseTaskShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
   protected paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {}
 }
