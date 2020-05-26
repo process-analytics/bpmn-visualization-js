@@ -197,12 +197,12 @@ export default class StyleConfigurator {
   private configureSequenceFlowsStyle(): void {
     Object.values(SequenceFlowKind).forEach(kind => {
       const style = this.cloneDefaultEdgeStyle();
-      const updatesEdgeStyle =
+      const updateEdgeStyle =
         this.specificEdgeStyles.get(kind) ||
         (() => {
           // Do nothing
         });
-      updatesEdgeStyle(style);
+      updateEdgeStyle(style);
       this.graph.getStylesheet().putCellStyle(kind, style);
     });
   }
