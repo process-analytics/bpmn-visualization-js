@@ -18,6 +18,7 @@ import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKin
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../model/bpmn/edge/SequenceFlowKind';
+import { MarkerConstant } from './MarkerConfigurator';
 
 export enum StyleConstant {
   STROKE_WIDTH_THIN = 2,
@@ -189,8 +190,7 @@ export default class StyleConfigurator {
 
   private configureDefaultSequenceFlowStyle(): void {
     const style = this.cloneDefaultEdgeStyle();
-    style[this.mxConstants.STYLE_STROKECOLOR] = 'HotPink';
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
+    style[this.mxConstants.STYLE_STARTARROW] = MarkerConstant.ARROW_DASH;
     this.graph.getStylesheet().putCellStyle(SequenceFlowKind.DEFAULT, style);
   }
 
