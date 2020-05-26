@@ -17,6 +17,7 @@ import { mxgraph } from 'ts-mxgraph';
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import StyleConfigurator from './StyleConfigurator';
 import ShapeConfigurator from './ShapeConfigurator';
+import MarkerConfigurator from './MarkerConfigurator';
 
 /**
  * Configure mxgraph
@@ -35,6 +36,7 @@ export default class MxGraphConfigurator {
     this.graph = new this.mxGraph(container, new this.mxGraphModel());
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
+    new MarkerConfigurator().configureMarkers();
   }
 
   public getGraph(): mxgraph.mxGraph {

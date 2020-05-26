@@ -17,6 +17,7 @@ import { mxgraphFactory } from 'ts-mxgraph';
 
 type MxGraphProperty =
   | 'mxCellRenderer'
+  | 'mxMarker'
   | 'mxClient'
   | 'mxConstants'
   | 'mxEllipse'
