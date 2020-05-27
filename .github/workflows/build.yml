@@ -6,6 +6,7 @@ on:
       - master
     paths-ignore:
       - '.github/workflows/generate-documentation.yml'
+      - '.github/workflows/release-drafter.yml'
       - '.gitignore'
       - 'docs/**'
       - '*.md'
@@ -15,6 +16,7 @@ on:
       - master
     paths-ignore:
       - '.github/workflows/generate-documentation.yml'
+      - '.github/workflows/release-drafter.yml'
       - '.gitignore'
       - 'docs/**'
       - '*.md'

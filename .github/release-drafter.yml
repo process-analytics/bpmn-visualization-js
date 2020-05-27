@@ -1,0 +1,53 @@
+name-template: '$NEXT_PATCH_VERSION'
+tag-template: 'v$NEXT_PATCH_VERSION'
+prerelease: true
+categories:
+#  - title: 🚀 New Features and Improvements
+#    labels:
+#      - feature
+#      - enhancement
+  - title: 🚀 BPMN support
+    labels:
+      - BPMN support
+  - title: 🚀 BPMN rendering
+    labels:
+      - BPMN rendering
+  - title: 🐛 Bug Fixes
+    labels:
+      - bug
+  - title: 📝 Documentation
+    label: documentation
+  - title: 📦 Dependency updates
+    labels:
+      # Default label used by dependabot
+      - dependencies
+  - title: 👻 Maintenance
+    labels:
+      - infra:build
+      - infra:refactoring
+      - infra:repo
+      - chore
+      - internal
+exclude-labels:
+  - invalid
+  - no-changelog
+  - skip-changelog
+  - reverted
+  - wontfix
+#change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+template: |
+  Thanks to all the contributors of this release 🌈: $CONTRIBUTORS
+
+  <!-- TODO: add milestone id when publishing -->
+  See [milestone $NEXT_PATCH_VERSION](https://github.com/process-analytics/bpmn-visualization-js/milestone/x?closed=1)
+  to get the list of issues covered by this release.
+
+  # Highlights
+  <!-- TODO: add screenshots and user oriented info -->
+
+  # Changelog
+  $CHANGES
+
+replacers:
+  - search: '@dependabot-preview'
+    replace: '@dependabot'
