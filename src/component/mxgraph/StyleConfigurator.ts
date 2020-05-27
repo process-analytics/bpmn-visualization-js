@@ -32,6 +32,23 @@ export default class StyleConfigurator {
   private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
   private mxPerimeter: typeof mxgraph.mxPerimeter = MxGraphFactoryService.getMxGraphProperty('mxPerimeter');
 
+  private specificEdgeStyles: Map<SequenceFlowKind, (style: any) => void> = new Map([
+    [
+      SequenceFlowKind.DEFAULT,
+      (style: any) => {
+        style[this.mxConstants.STYLE_STARTARROW] = MarkerConstant.ARROW_DASH;
+      },
+    ],
+    [
+      SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
+      (style: any) => {
+        style[this.mxConstants.STYLE_STARTARROW] = this.mxConstants.ARROW_DIAMOND_THIN;
+        style[this.mxConstants.STYLE_STARTSIZE] = 18;
+        style[this.mxConstants.STYLE_STARTFILL] = 0;
+      },
+    ],
+  ]);
+
   constructor(private graph: mxgraph.mxGraph) {}
 
   public configureStyles(): void {
@@ -174,32 +191,19 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_FILLCOLOR] = 'White';
     style[this.mxConstants.STYLE_FONTCOLOR] = 'Black';
     style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
-    style[this.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = 'top';
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
   }
 
   private configureSequenceFlowsStyle(): void {
-    this.configureNormalSequenceFlowStyle();
-    this.configureDefaultSequenceFlowStyle();
-    this.configureConditionalSequenceFlowStyle();
-  }
-
-  private configureNormalSequenceFlowStyle(): void {
-    const style = this.cloneDefaultEdgeStyle();
-    this.graph.getStylesheet().putCellStyle(SequenceFlowKind.NORMAL, style);
-  }
-
-  private configureDefaultSequenceFlowStyle(): void {
-    const style = this.cloneDefaultEdgeStyle();
-    style[this.mxConstants.STYLE_STARTARROW] = MarkerConstant.ARROW_DASH;
-    this.graph.getStylesheet().putCellStyle(SequenceFlowKind.DEFAULT, style);
-  }
-
-  private configureConditionalSequenceFlowStyle(): void {
-    const style = this.cloneDefaultEdgeStyle();
-    style[this.mxConstants.STYLE_STARTARROW] = this.mxConstants.ARROW_DIAMOND_THIN;
-    style[this.mxConstants.STYLE_STARTSIZE] = 20;
-    style[this.mxConstants.STYLE_STROKECOLOR] = 'Chartreuse';
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
-    this.graph.getStylesheet().putCellStyle(SequenceFlowKind.CONDITIONAL, style);
+    Object.values(SequenceFlowKind).forEach(kind => {
+      const style = this.cloneDefaultEdgeStyle();
+      const updateEdgeStyle =
+        this.specificEdgeStyles.get(kind) ||
+        (() => {
+          // Do nothing
+        });
+      updateEdgeStyle(style);
+      this.graph.getStylesheet().putCellStyle(kind, style);
+    });
   }
 }
