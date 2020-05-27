@@ -28,7 +28,7 @@ For all contributions, please respect the following guidelines:
 
 5. Be sure you have followed the [code style](CONTRIBUTING.md#code-style) for the project.
 
-6. Sign the [Contributor License Agreement](CONTRIBUTING.md#contributor-license-agreement)
+6. Sign the [Contributor License Agreement](CONTRIBUTING.md#sign-the-contributor-license-agreement)
 
 7. Open a [GitHub Pull Request](CONTRIBUTING.md#open-a-pull-request) with your patches. (**1** pull request = **1** feature or bug)
    We will review your contribution and respond as quickly as possible. Keep in mind that this is an open source project, and it may take us some time to get back to you. Your patience is very much appreciated.
