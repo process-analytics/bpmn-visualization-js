@@ -15,7 +15,7 @@ The main entry point for `mxGraph` rendering is `MxGraphRenderer`.
 For more technical details, see <<bpmn-support-howto-elements-rendering,BPMN Elements rendering>>.
 
 If you are new to `mxGraph` or want to know more about it, please have a look at the https://jgraph.github.io/mxgraph/docs/tutorial.html[mxGraph tutorial]
-and https://jgraph.github.io/mxgraph/docs/manual.html[mxGraph manual]
+and https://jgraph.github.io/mxgraph/docs/manual.html[mxGraph manual].
 
 
 ==== Logical Groups of BPMN Elements
