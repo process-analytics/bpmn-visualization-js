@@ -61,7 +61,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 |User Task
 |icon:check-circle-o[]
-|*icon*: the task icon is derived from the https://www.flaticon.com/free-icon/employees_554768[flaticon 'employees' icon] "Icons made by https://www.flaticon.com/authors/freepik[freepik] from https://www.flaticon.com"
+|Icon may be subject to change +
+*icon*: the task icon is derived from the https://www.flaticon.com/free-icon/employees_554768[flaticon 'employees' icon] "Icons made by https://www.flaticon.com/authors/freepik[freepik] from https://www.flaticon.com"
 
 |Call Activity
 |
