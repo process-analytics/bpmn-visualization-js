@@ -449,16 +449,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_containers">3.1. Containers</a></li>
 <li><a href="#_activities">3.2. Activities</a></li>
-<li><a href="#_events">3.3. Events</a></li>
-<li><a href="#_flows">3.4. Flows</a></li>
-<li><a href="#_gateways">3.5. Gateways</a></li>
-</ul>
-</li>
-<li><a href="#_architecture_and_development">4. Architecture and Development</a>
-<ul class="sectlevel2">
-<li><a href="#_bpmn_internal_model">4.1. BPMN Internal Model</a></li>
-<li><a href="#_bpmn_parsing">4.2. BPMN Parsing</a></li>
-<li><a href="#_bpmn_support_how_to">4.3. BPMN Support - How To</a></li>
 </ul>
 </li>
 </ul>
@@ -621,380 +611,270 @@ the BPMN elements are rendered with their final shapes.</p>
 <strong>icon</strong>: the task icon is derived from the <a href="https://www.flaticon.com/free-icon/employees_554768">flaticon 'employees' icon</a> "Icons made by <a href="https://www.flaticon.com/authors/freepik">freepik</a> from <a href="https://www.flaticon.com"" class="bare">https://www.flaticon.com"</a></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Receive Task</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Call Activity</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="sect2">
-<h3 id="_events"><a class="anchor" href="#_events"></a><a class="link" href="#_events">3.3. Events</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">=== Events</p>
+<p class="tableblock"><strong>Note</strong>: the following icons are derived from existing solutions</p>
+<p class="tableblock">* message: <a href="https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465">draw.io bpmn mxgraph stencil</a>
+* timer: <a href="https://www.flaticon.com/free-icon/clock_223404">Timer Icon</a> "Icons made by <a href="https://www.flaticon.com/authors/kirill-kazachek">Kirill Kazachek</a> from <a href="https://www.flaticon.com"" class="bare">https://www.flaticon.com"</a></p>
+<p class="tableblock">[cols="1,1,4", options="header"]
+.Start Events</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
-<p><strong>Note</strong>: the following icons are derived from existing solutions</p>
+<p>|Name
+|Rendering
+|Comments</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>message: <a href="https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465">draw.io bpmn mxgraph stencil</a></p>
-</li>
-<li>
-<p>timer: <a href="https://www.flaticon.com/free-icon/clock_223404">Timer Icon</a> "Icons made by <a href="https://www.flaticon.com/authors/kirill-kazachek">Kirill Kazachek</a> from <a href="https://www.flaticon.com"" class="bare">https://www.flaticon.com"</a></p>
-</li>
-</ul>
+<div class="paragraph">
+<p>|None Start Event
+|<span class="icon"><i class="fa fa-check-circle"></i></span>
+|</p>
+</div>
+<div class="paragraph">
+<p>|Timer Start Event
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|The icon width may be adjusted</p>
+</div>
+<div class="paragraph">
+<p>|Message Start Event
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|The stroke &amp; icon width may be adjusted</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 3. Start Events</caption>
 <colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 66.6668%;">
+<col style="width: 100%;">
 </colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Rendering</th>
-<th class="tableblock halign-left valign-top">Comments</th>
-</tr>
-</thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">None Start Event</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle"></i></span></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Timer Start Event</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The icon width may be adjusted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Message Start Event</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The stroke &amp; icon width may be adjusted</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[cols="1,1,4", options="header"]
+.Intermediate Catch Events</p></td>
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 4. Intermediate Catch Events</caption>
-<colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 66.6668%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Rendering</th>
-<th class="tableblock halign-left valign-top">Comments</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Timer Intermediate Catch Event</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The icon width may be adjusted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Message Intermediate Catch Event</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The stroke &amp; icon width may be adjusted</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 5. Intermediate Throw Events</caption>
-<colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 66.6668%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Rendering</th>
-<th class="tableblock halign-left valign-top">Comments</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">None Intermediate Throw Event</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The stroke width may be adjusted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Message Intermediate Throw Event</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The stroke &amp; icon width may be adjusted</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 6. End Events</caption>
-<colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 66.6668%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Rendering</th>
-<th class="tableblock halign-left valign-top">Comments</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">None End Event</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The stroke width may be adjusted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Terminate End Event</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The stroke width may be adjusted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Message End Event</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The stroke &amp; icon width may be adjusted</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>|Name
+|Rendering
+|Comments</p>
 </div>
-<div class="sect2">
-<h3 id="_flows"><a class="anchor" href="#_flows"></a><a class="link" href="#_flows">3.4. Flows</a></h3>
+<div class="paragraph">
+<p>|Timer Intermediate Catch Event
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|The icon width may be adjusted</p>
+</div>
+<div class="paragraph">
+<p>|Message Intermediate Catch Event
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|The stroke &amp; icon width may be adjusted</p>
+</div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 7. Flows</caption>
 <colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 66.6668%;">
+<col style="width: 100%;">
 </colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Rendering</th>
-<th class="tableblock halign-left valign-top">Comments</th>
-</tr>
-</thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sequence flow</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p>Subject to change: arrow size/form and position endpoint</p>
-</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[cols="1,1,4", options="header"]
+.Intermediate Throw Events</p></td>
 </tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>|Name
+|Rendering
+|Comments</p>
+</div>
+<div class="paragraph">
+<p>|None Intermediate Throw Event
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|The stroke width may be adjusted</p>
+</div>
+<div class="paragraph">
+<p>|Message Intermediate Throw Event
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|The stroke &amp; icon width may be adjusted</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">default sequence flow</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p>Subject to change: arrow size/form and position endpoint<br>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[cols="1,1,4", options="header"]
+.End Events</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>|Name
+|Rendering
+|Comments</p>
+</div>
+<div class="paragraph">
+<p>|None End Event
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|The stroke width may be adjusted</p>
+</div>
+<div class="paragraph">
+<p>|Terminate End Event
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|The stroke width may be adjusted</p>
+</div>
+<div class="paragraph">
+<p>|Message End Event
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|The stroke &amp; icon width may be adjusted</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">=== Flows</p>
+<p class="tableblock">[cols="1,1,4a", options="header"]
+.Flows</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>|Name
+|Rendering
+|Comments</p>
+</div>
+<div class="paragraph">
+<p>|sequence flow
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|Subject to change: arrow size/form and position endpoint</p>
+</div>
+<div class="paragraph">
+<p>|default sequence flow
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|Subject to change: arrow size/form and position endpoint<br>
 <strong>marker</strong> is derived from <a href="https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796">dash marker</a> of draw.io</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">conditional sequence flow</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p>Subject to change: arrow size/form and position endpoint</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">way points</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-flask"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p>Subject to change: paths may be rounded</p>
-</div></div></td>
-</tr>
-</tbody>
-</table>
 </div>
-<div class="sect2">
-<h3 id="_gateways"><a class="anchor" href="#_gateways"></a><a class="link" href="#_gateways">3.5. Gateways</a></h3>
+<div class="paragraph">
+<p>|conditional sequence flow
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|Subject to change: arrow size/form and position endpoint</p>
+</div>
+<div class="paragraph">
+<p>|way points
+|<span class="icon"><i class="fa fa-flask"></i></span>
+|Subject to change: paths may be rounded</p>
+</div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 8. Gateways</caption>
 <colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 66.6668%;">
+<col style="width: 100%;">
 </colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Rendering</th>
-<th class="tableblock halign-left valign-top">Comments</th>
-</tr>
-</thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Icon may be subject to change<br></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Inclusive</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Icon may be subject to change<br></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Parallel</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Icon may be subject to change<br></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">=== Gateways</p>
+<p class="tableblock">[cols="1,1,4", options="header"]
+.Gateways</p></td>
 </tr>
 </tbody>
 </table>
+<div class="paragraph">
+<p>|Name
+|Rendering
+|Comments</p>
 </div>
+<div class="paragraph">
+<p>|Exclusive
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|Icon may be subject to change<br></p>
 </div>
+<div class="paragraph">
+<p>|Inclusive
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|Icon may be subject to change<br></p>
 </div>
-<div class="sect1">
-<h2 id="_architecture_and_development"><a class="anchor" href="#_architecture_and_development"></a><a class="link" href="#_architecture_and_development">4. Architecture and Development</a></h2>
-<div class="sectionbody">
-<div class="admonitionblock tip">
-<table>
+<div class="paragraph">
+<p>|Parallel
+|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
+|Icon may be subject to change<br></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<tbody>
 <tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-To know how to build the project, please have a look at the <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/master/CONTRIBUTING.md">contributing guide</a>.
-</td>
-</tr>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_bpmn_internal_model"><a class="anchor" href="#_bpmn_internal_model"></a><a class="link" href="#_bpmn_internal_model">4.1. BPMN Internal Model</a></h3>
-<div class="paragraph">
-<p>Our internal model is based on the <a href="https://www.omg.org/spec/BPMN/2.0.2/PDF">BPMN specification</a>.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/architecture/internal-model.svg" alt="internal model">
-</div>
-</div>
-<div class="paragraph">
-<p><strong>Note</strong>: If you want to update the model, you need to update the <a href="images/architecture/internal-model.drawio">Model as draw.io</a>
+<td class="tableblock halign-left valign-top"><p class="tableblock">== Architecture and Development
+:icons: font</p>
+<p class="tableblock">[TIP]
+To know how to build the project, please have a look at the <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/master/CONTRIBUTING.md">contributing guide</a>.</p>
+<p class="tableblock">=== BPMN Internal Model</p>
+<p class="tableblock">Our internal model is based on the <a href="https://www.omg.org/spec/BPMN/2.0.2/PDF">BPMN specification</a>.</p>
+<p class="tableblock">image::images/architecture/internal-model.svg[]</p>
+<p class="tableblock"><strong>Note</strong>: If you want to update the model, you need to update the <a href="images/architecture/internal-model.drawio">Model as draw.io</a>
 file with <a href="https://app.diagrams.net" class="bare">https://app.diagrams.net</a>, and export it as SVG in the <a href="images/architecture/internal-model.svg">svg file</a>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_bpmn_parsing"><a class="anchor" href="#_bpmn_parsing"></a><a class="link" href="#_bpmn_parsing">4.2. BPMN Parsing</a></h3>
-<div class="sect3">
-<h4 id="_xml_parser"><a class="anchor" href="#_xml_parser"></a><a class="link" href="#_xml_parser">4.2.1. XML Parser</a></h4>
-<div class="paragraph">
-<p>To parse XML data, we use the library <a href="https://github.com/NaturalIntelligence/fast-xml-parser">fast-xml-parser</a>.</p>
-</div>
-<div class="paragraph">
-<p>You can see the implementation in <strong>BpmnXmlParser.ts</strong>.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_json_parser"><a class="anchor" href="#_json_parser"></a><a class="link" href="#_json_parser">4.2.2. Json Parser</a></h4>
-<div class="paragraph">
-<p>To parse a JSON data, we use the library <a href="https://github.com/AppVision-GmbH/json2typescript">json2typescript</a>.</p>
-</div>
-<div class="paragraph">
-<p>You can see the implementation in <strong>BpmnJsonParser.ts</strong>.
+<p class="tableblock">=== BPMN Parsing</p>
+<p class="tableblock">==== XML Parser</p>
+<p class="tableblock">To parse XML data, we use the library <a href="https://github.com/NaturalIntelligence/fast-xml-parser">fast-xml-parser</a>.</p>
+<p class="tableblock">You can see the implementation in <strong>BpmnXmlParser.ts</strong>.</p>
+<p class="tableblock">==== Json Parser</p>
+<p class="tableblock">To parse a JSON data, we use the library <a href="https://github.com/AppVision-GmbH/json2typescript">json2typescript</a>.</p>
+<p class="tableblock">You can see the implementation in <strong>BpmnJsonParser.ts</strong>.
 We create our custom <em>converters</em> (in the <strong>converter</strong> folder where the <strong>BpmnJsonParser</strong> file is) in order to match the BPMN model to our internal model.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_bpmn_support_how_to"><a class="anchor" href="#_bpmn_support_how_to"></a><a class="link" href="#_bpmn_support_how_to">4.3. BPMN Support - How To</a></h3>
-<div class="sect3">
-<h4 id="_elements_detection"><a class="anchor" href="#_elements_detection"></a><a class="link" href="#_elements_detection">4.3.1. Elements detection</a></h4>
-<div class="paragraph">
-<p>Except for special container elements like <code>Pool</code>, <code>Lane</code> and <code>Subprocess</code>, detecting a new BPMN element only requires to
+<p class="tableblock">=== BPMN Support - How To
+:icons: font</p>
+<p class="tableblock">==== Elements detection</p>
+<p class="tableblock">Except for special container elements like <code>Pool</code>, <code>Lane</code> and <code>Subprocess</code>, detecting a new BPMN element only requires to
 add a new value in the <code>ShapeBpmnElementKind</code> enum.</p>
-</div>
-<div class="paragraph">
-<p>The <code>ProcessConverter</code> uses the <code>ShapeBpmnElementKind</code> values to detect elements in the BPMN source.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
+<p class="tableblock">The <code>ProcessConverter</code> uses the <code>ShapeBpmnElementKind</code> values to detect elements in the BPMN source.</p>
+<p class="tableblock">[NOTE]
 For BPMN Events, the actual type in controlled by <code>EventDefinition</code> fields in the BPMN specification. Detecting new event
-types requires changes in <code>ShapeBpmnEventKind</code> to add the newly supported BPMN Event Definition.
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Do not forget to add tests related to the new BPMN element to ensure everything works fine.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p><strong>Test guidelines:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Add json parsing tests related to the new BPMN element to ensure that the parser is able to make it available to the
-<code>ProcessConverter</code>. The convention is to have a test file per BPMN element, please follow the existing file name scheme.</p>
-</li>
-<li>
-<p>Depending on the BPMN element, you may also have to add tests about <code>default sequence flow</code> and/or <code>conditional sequence
-flow</code> support (see <code>ShapeBpmnElementKind</code> for more details)</p>
-</li>
-<li>
-<p>Add end-to-end tests, mainly to ensure that the new BPMN element is now stored in the <code>mxGraph model</code>, see <code>mxGraph.model.test.ts</code>.</p>
-</li>
-<li>
-<p>No need to create specific XML tests, the XML parsing is tested globally using BPMN files for various BPMN vendors.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_elements_rendering"><a class="anchor" href="#_elements_rendering"></a><a class="link" href="#_elements_rendering">4.3.2. Elements rendering</a></h4>
-<div class="paragraph">
-<p>When inserting an element on the graph, a style is passed to identify the way it will be rendered.</p>
-</div>
-<div class="paragraph">
-<p>The <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html">style</a> is defined and registered in
+types requires changes in <code>ShapeBpmnEventKind</code> to add the newly supported BPMN Event Definition.</p>
+<p class="tableblock">[IMPORTANT]
+Do not forget to add tests related to the new BPMN element to ensure everything works fine.</p>
+<p class="tableblock"><strong>Test guidelines:</strong></p>
+<p class="tableblock">* Add json parsing tests related to the new BPMN element to ensure that the parser is able to make it available to the
+<code>ProcessConverter</code>. The convention is to have a test file per BPMN element, please follow the existing file name scheme.
+* Depending on the BPMN element, you may also have to add tests about <code>default sequence flow</code> and/or <code>conditional sequence
+flow</code> support (see <code>ShapeBpmnElementKind</code> for more details)
+* Add end-to-end tests, mainly to ensure that the new BPMN element is now stored in the <code>mxGraph model</code>, see <code>mxGraph.model.test.ts</code>.
+* No need to create specific XML tests, the XML parsing is tested globally using BPMN files for various BPMN vendors.</p>
+<p class="tableblock">==== Elements rendering</p>
+<p class="tableblock">When inserting an element on the graph, a style is passed to identify the way it will be rendered.</p>
+<p class="tableblock">The <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html">style</a> is defined and registered in
 <code>StyleConfigurator</code>. In particular, it refers to the name of a <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html">mxShape</a>
 used for the rendering.</p>
-</div>
-<div class="paragraph">
-<p>The <code>mxShape</code> can be a standard <code>mxGraph</code> class or a custom BPMN <code>mxShape</code> defined by the lib. The custom <code>mxShapes</code> are registered by <code>ShapeConfigurator</code>
+<p class="tableblock">The <code>mxShape</code> can be a standard <code>mxGraph</code> class or a custom BPMN <code>mxShape</code> defined by the lib. The custom <code>mxShapes</code> are registered by <code>ShapeConfigurator</code>
 which associates the <code>mxShape</code> name (used in style definition) with the <code>mxShape</code> class to be used.</p>
-</div>
-<div class="sect4">
-<h5 id="_bpmn_icon_tips"><a class="anchor" href="#_bpmn_icon_tips"></a><a class="link" href="#_bpmn_icon_tips">4.3.2.1. BPMN icon tips</a></h5>
-<div class="paragraph">
-<p>The icon of the BPMN elements must be defined in the mxGraph custom shapes and this currently must be done using <code>TypeScript</code>
+<p class="tableblock">===== BPMN icon tips</p>
+<p class="tableblock">The icon of the BPMN elements must be defined in the mxGraph custom shapes and this currently must be done using <code>TypeScript</code>
 code.</p>
-</div>
-<div class="paragraph">
-<p>It is possible to adapt an SVG icon thanks to <a href="https://github.com/process-analytics/mxgraph-svg2shape">mxgraph-svg2shape</a>,
+<p class="tableblock">It is possible to adapt an SVG icon thanks to <a href="https://github.com/process-analytics/mxgraph-svg2shape">mxgraph-svg2shape</a>,
 a Java tool that will let you transform your SVG file into a set of <code>TypeScript</code> commands.</p>
-</div>
-<div class="paragraph">
-<p>Please be aware that the tool is not able to support all SVG files, and you may need to adapt the SVG definition prior the
-tool can transform it. See <a href="https://github.com/process-analytics/bpmn-visualization-js/pull/210">PR #210</a> for instance.</p>
-</div>
-</div>
-</div>
+<p class="tableblock">Please be aware that the tool is not able to support all SVG files, and you may need to adapt the SVG definition prior the
+tool can transform it. See <a href="https://github.com/process-analytics/bpmn-visualization-js/pull/210">PR #210</a> for instance.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-27 10:23:55 UTC
+Last updated 2020-05-27 12:21:24 UTC
 </div>
 </div>
 </body>
