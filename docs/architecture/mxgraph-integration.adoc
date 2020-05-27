@@ -25,14 +25,16 @@ Apply to both BPMN shapes and edges
 
 ==== Logical Groups of BPMN Elements
 
-https://jgraph.github.io/mxgraph/docs/manual.html#3.1.4[mxGraph group structure] allows to define a parent-child relationship
-that leverages various rendering feature like collapse/expand, group move/hide, ...
-The following group of BPMN elements are created
+https://jgraph.github.io/mxgraph/docs/manual.html#3.1.4[mxGraph Group Structure] allows to define a parent-child relationship
+that leverages various rendering features like collapsing/expanding, layering, drill down, group move/hide, ...
+See https://jgraph.github.io/mxgraph/docs/manual.html#3.1.5[mxGraph Complexity Management] for more details.
+
+On `mxGraph` graph creation, the lib fills the following group of BPMN elements:
 
 * `pool` is the parent of `lanes` and `inter-lane elements` (for instance, `message flows`)
 * `lane` is the parent of elements it includes in the BPMN source
 
 The default mxGraph parent is the parent of
 
-* inter pool elements ( (for instance, `message flows)`)
-* elements when the the BPMN source doesn't define any lane/pool
+* inter pool elements (for instance, `message flows`)
+* elements when the BPMN source doesn't define any lane/pool
