@@ -259,3 +259,13 @@ export class UserTaskShape extends BaseTaskShape {
     canvas.fill();
   }
 }
+
+export class ReceiveTaskShape extends BaseTaskShape {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
+    super(bounds, fill, stroke, strokewidth);
+    this.gradient = 'Salmon';
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
+  protected paintTaskIcon(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {}
+}

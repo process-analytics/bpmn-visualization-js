@@ -17,7 +17,7 @@ import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
 import { ShapeBpmnEventKind } from './ShapeBpmnEventKind';
 
 export default class ShapeBpmnElement {
-  constructor(readonly id: string, readonly name: string, readonly kind: ShapeBpmnElementKind, public parentId?: string) {}
+  constructor(readonly id: string, readonly name: string, readonly kind: ShapeBpmnElementKind, public parentId?: string, readonly instantiate: boolean = false) {}
 }
 
 export class ShapeBpmnEvent extends ShapeBpmnElement {

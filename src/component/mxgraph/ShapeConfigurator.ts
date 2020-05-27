@@ -18,7 +18,7 @@ import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape } from './shape/event-shapes';
 import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from './shape/gateway-shapes';
-import { ServiceTaskShape, TaskShape, UserTaskShape } from './shape/task-shapes';
+import { ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape } from './shape/task-shapes';
 
 export default class ShapeConfigurator {
   private mxClient: typeof mxgraph.mxClient = MxGraphFactoryService.getMxGraphProperty('mxClient');
@@ -44,6 +44,7 @@ export default class ShapeConfigurator {
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK, TaskShape);
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_USER, UserTaskShape);
+    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape);
   }
 
   private initMxShapePrototype(isFF: boolean): void {
