@@ -19,27 +19,27 @@ import each from 'jest-each';
 
 describe('parse bpmn as json for conditional sequence flow', () => {
   each([
-    ['exclusiveGateway'],
-    ['inclusiveGateway'],
-    ['task'],
-    ['userTask'],
-    ['serviceTask'],
-    ['callActivity'],
+    ['exclusiveGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
+    ['inclusiveGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
+    ['task', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
+    ['userTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
+    ['serviceTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
+    ['callActivity', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support complex gateway
-    //['complexGateway'],
+    //['complexGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
     // TODO: To uncomment when we support manualTask
-    //['manualTask'],
+    //['manualTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support receiveTask
-    //['receiveTask'],
+    //['receiveTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support scriptTask
-    //['scriptTask'],
+    //['scriptTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support sendTask
-    //['sendTask'],
+    //['sendTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support businessRuleTask
-    //['businessRuleTask'],
+    //['businessRuleTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support subProcess
-    //['subProcess'],
-  ]).it('json containing one process with a sequence flow defined as conditional in a %s', sourceKind => {
+    //['subProcess', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
+  ]).it('json containing one process with a sequence flow defined as conditional in a %s', (sourceKind, expectedBpmnElementKind) => {
     const json = `{
           "definitions": {
               "process": {
@@ -81,7 +81,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'source_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementKind: SequenceFlowKind.CONDITIONAL,
+      bpmnElementKind: expectedBpmnElementKind,
     });
   });
 

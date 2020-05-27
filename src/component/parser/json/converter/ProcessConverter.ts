@@ -192,7 +192,11 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     } else {
       const sourceShapeBpmnElement = findFlowNodeBpmnElement(sequenceFlow.sourceRef);
       if (sourceShapeBpmnElement && ShapeUtil.isWithDefaultSequenceFlow(sourceShapeBpmnElement.kind) && sequenceFlow.conditionExpression) {
-        return SequenceFlowKind.CONDITIONAL;
+        if (ShapeUtil.isActivity(sourceShapeBpmnElement.kind)) {
+          return SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY;
+        } else {
+          return SequenceFlowKind.CONDITIONAL_FROM_GATEWAY;
+        }
       }
     }
     return SequenceFlowKind.NORMAL;

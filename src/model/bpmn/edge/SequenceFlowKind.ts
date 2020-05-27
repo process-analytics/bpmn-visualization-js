@@ -16,5 +16,6 @@
 export enum SequenceFlowKind {
   NORMAL = 'normal',
   DEFAULT = 'default',
-  CONDITIONAL = 'conditional',
+  CONDITIONAL_FROM_ACTIVITY = 'conditional_from_activity',
+  CONDITIONAL_FROM_GATEWAY = 'conditional_from_gateway',
 }

@@ -173,8 +173,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 *marker* is derived from https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796[dash marker] of draw.io
 
 |conditional sequence flow
-|icon:flask[]
-|Subject to change: arrow shape, color and position endpoint
+|icon:check-circle-o[]
+|Subject to change: arrow size/form and position endpoint
 
 |way points
 |icon:flask[]

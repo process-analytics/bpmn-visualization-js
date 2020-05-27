@@ -53,6 +53,10 @@ export default class ShapeUtil {
     return this.EVENT_KINDS.includes(kind);
   }
 
+  public static isActivity(kind: ShapeBpmnElementKind): boolean {
+    return this.ACTIVITY_KINDS.includes(kind);
+  }
+
   public static isWithDefaultSequenceFlow(kind: ShapeBpmnElementKind): boolean {
     return this.FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS.includes(kind);
   }
