@@ -2,10 +2,6 @@ name-template: '$NEXT_PATCH_VERSION'
 tag-template: 'v$NEXT_PATCH_VERSION'
 prerelease: true
 categories:
-#  - title: 🚀 New Features and Improvements
-#    labels:
-#      - feature
-#      - enhancement
   - title: 🚀 BPMN support
     labels:
       - BPMN support
@@ -34,7 +30,6 @@ exclude-labels:
   - skip-changelog
   - reverted
   - wontfix
-#change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 template: |
   Thanks to all the contributors of this release 🌈: $CONTRIBUTORS
 
@@ -45,7 +40,7 @@ template: |
   # Highlights
   <!-- TODO: add screenshots and user oriented info -->
 
-  # Changelog
+  # What's Changed
   $CHANGES
 
 replacers:
