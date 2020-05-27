@@ -138,6 +138,13 @@ Additionally, it is advised to install SonarLint Plugin
 It helps to avoid coding mistakes -> reduced technical debt
 
 
+*AsciiDoc*
+
+We use [asciidoc](https://asciidoctor.org/docs/what-is-asciidoc/) to write the documentation.
+
+An [AsciiDoc IntelliJ Plugin](https://plugins.jetbrains.com/plugin/7391-asciidoc) is a helpful plugin that permits visualizing .adoc files directly in IntelliJ
+
+
 ### Sign the Contributor License Agreement
 
 By signing the CLA, we acknowledge that your contribution is accepted as it and that you cannot be held responsible for
