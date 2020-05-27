@@ -76,8 +76,10 @@ describe('mxGraph model', () => {
          <semantic:endEvent name="Message End Event" id="messageEndEvent">
             <semantic:messageEventDefinition/>
         </semantic:endEvent>
-         <semantic:inclusiveGateway id="inclusiveGateway_1" name="Inclusive Gateway 1"/>
-         <semantic:callActivity calledElement="Process_unknown" name="Call Activity Collapsed" id="callActivity_1" />
+        <semantic:inclusiveGateway id="inclusiveGateway_1" name="Inclusive Gateway 1"/>
+        <semantic:callActivity calledElement="Process_unknown" name="Call Activity Collapsed" id="callActivity_1" />
+        <semantic:receiveTask id="receiveTask_not_instantiated" name="Not instantiated Receive Task"/>
+        <semantic:receiveTask id="receiveTask_instantiated" name="Instantiated Receive Task" instantiate=true/>
         <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="" id="normal_sequence_flow_id"/>
         <semantic:sequenceFlow sourceRef="task_1" targetRef="serviceTask_2" name="" id="default_sequence_flow_id"/>
         <semantic:sequenceFlow sourceRef="serviceTask_2" targetRef="userTask_3" name="" id="conditional_sequence_flow_from_activity_id">
@@ -162,6 +164,12 @@ describe('mxGraph model', () => {
                     <dc:Bounds height="25" width="72.5" x="460" y="440.18"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="receiveTask_not_instantiated" id="S1373649849862_receiveTask_not_instantiated">
+	           <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+	        </bpmndi:BPMNShape>
+	        <bpmndi:BPMNShape bpmnElement="receiveTask_instantiated" id="S1373649849862_receiveTask_instantiated">
+	           <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+	        </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge bpmnElement="default_sequence_flow_id" id="E1373649849864_default_sequence_flow_id">
                 <di:waypoint x="342.0" y="351.0"/>
                 <di:waypoint x="390.0" y="351.0"/>
@@ -262,6 +270,8 @@ describe('mxGraph model', () => {
     expectModelContainsShape('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE);
     expectModelContainsShape('userTask_3', ShapeBpmnElementKind.TASK_USER);
     expectModelContainsShape('callActivity_1', ShapeBpmnElementKind.CALL_ACTIVITY, 'rectangle');
+    expectModelContainsShape('receiveTask_not_instantiated', ShapeBpmnElementKind.TASK_RECEIVE);
+    expectModelContainsShape('receiveTask_instantiated', ShapeBpmnElementKind.TASK_RECEIVE);
 
     // gateways
     expectModelContainsShape('inclusiveGateway_1', ShapeBpmnElementKind.GATEWAY_INCLUSIVE);

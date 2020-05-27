@@ -85,12 +85,11 @@ describe('parse bpmn as json for default sequence flow', () => {
     ['userTask'],
     ['serviceTask'],
     ['callActivity'],
+    ['receiveTask'],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway'],
     // TODO: To uncomment when we support manualTask
     //['manualTask'],
-    // TODO: To uncomment when we support receiveTask
-    //['receiveTask'],
     // TODO: To uncomment when we support scriptTask
     //['scriptTask'],
     // TODO: To uncomment when we support sendTask
