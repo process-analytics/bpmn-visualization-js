@@ -5,8 +5,8 @@ on:
     branches:
       - master
     paths-ignore:
+      - '.github/workflows/fill-gh-draft-release.yml'
       - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/release-drafter.yml'
       - '.gitignore'
       - 'docs/**'
       - '*.md'
@@ -15,8 +15,8 @@ on:
     branches:
       - master
     paths-ignore:
+      - '.github/workflows/fill-gh-draft-release.yml'
       - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/release-drafter.yml'
       - '.gitignore'
       - 'docs/**'
       - '*.md'
