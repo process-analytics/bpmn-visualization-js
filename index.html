@@ -449,6 +449,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_containers">3.1. Containers</a></li>
 <li><a href="#_activities">3.2. Activities</a></li>
+<li><a href="#_events">3.3. Events</a></li>
+<li><a href="#_flows">3.4. Flows</a></li>
+<li><a href="#_gateways">3.5. Gateways</a></li>
+</ul>
+</li>
+<li><a href="#_architecture_and_development">4. Architecture and Development</a>
+<ul class="sectlevel2">
+<li><a href="#_architecture_overview">4.1. Architecture Overview</a></li>
+<li><a href="#_bpmn_internal_model">4.2. BPMN Internal Model</a></li>
+<li><a href="#_bpmn_parsing">4.3. BPMN Parsing</a></li>
+<li><a href="#_mxgraph_integration">4.4. mxGraph Integration</a></li>
+<li><a href="#_bpmn_support_how_to">4.5. BPMN Support - How To</a></li>
 </ul>
 </li>
 </ul>
@@ -622,325 +634,529 @@ the BPMN elements are rendered with their final shapes.</p>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="sect2">
+<h3 id="_events"><a class="anchor" href="#_events"></a><a class="link" href="#_events">3.3. Events</a></h3>
+<div class="paragraph">
+<p><strong>Note</strong>: the following icons are derived from existing solutions</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>message: <a href="https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465">draw.io bpmn mxgraph stencil</a></p>
+</li>
+<li>
+<p>timer: <a href="https://www.flaticon.com/free-icon/clock_223404">Timer Icon</a> "Icons made by <a href="https://www.flaticon.com/authors/kirill-kazachek">Kirill Kazachek</a> from <a href="https://www.flaticon.com"" class="bare">https://www.flaticon.com"</a></p>
+</li>
+</ul>
+</div>
 <table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. Start Events</caption>
 <colgroup>
-<col style="width: 100%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
 </colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Rendering</th>
+<th class="tableblock halign-left valign-top">Comments</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">=== Events</p>
-<p class="tableblock"><strong>Note</strong>: the following icons are derived from existing solutions</p>
-<p class="tableblock">* message: <a href="https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465">draw.io bpmn mxgraph stencil</a>
-* timer: <a href="https://www.flaticon.com/free-icon/clock_223404">Timer Icon</a> "Icons made by <a href="https://www.flaticon.com/authors/kirill-kazachek">Kirill Kazachek</a> from <a href="https://www.flaticon.com"" class="bare">https://www.flaticon.com"</a></p>
-<p class="tableblock">[cols="1,1,4", options="header"]
-.Start Events</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None Start Event</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle"></i></span></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Timer Start Event</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The icon width may be adjusted</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message Start Event</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The stroke &amp; icon width may be adjusted</p></td>
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>|Name
-|Rendering
-|Comments</p>
-</div>
-<div class="paragraph">
-<p>|None Start Event
-|<span class="icon"><i class="fa fa-check-circle"></i></span>
-|</p>
-</div>
-<div class="paragraph">
-<p>|Timer Start Event
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|The icon width may be adjusted</p>
-</div>
-<div class="paragraph">
-<p>|Message Start Event
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|The stroke &amp; icon width may be adjusted</p>
-</div>
 <table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 4. Intermediate Catch Events</caption>
 <colgroup>
-<col style="width: 100%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
 </colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Rendering</th>
+<th class="tableblock halign-left valign-top">Comments</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">[cols="1,1,4", options="header"]
-.Intermediate Catch Events</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Timer Intermediate Catch Event</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The icon width may be adjusted</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message Intermediate Catch Event</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The stroke &amp; icon width may be adjusted</p></td>
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>|Name
-|Rendering
-|Comments</p>
-</div>
-<div class="paragraph">
-<p>|Timer Intermediate Catch Event
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|The icon width may be adjusted</p>
-</div>
-<div class="paragraph">
-<p>|Message Intermediate Catch Event
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|The stroke &amp; icon width may be adjusted</p>
-</div>
 <table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 5. Intermediate Throw Events</caption>
 <colgroup>
-<col style="width: 100%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
 </colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Rendering</th>
+<th class="tableblock halign-left valign-top">Comments</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">[cols="1,1,4", options="header"]
-.Intermediate Throw Events</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None Intermediate Throw Event</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The stroke width may be adjusted</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message Intermediate Throw Event</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The stroke &amp; icon width may be adjusted</p></td>
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>|Name
-|Rendering
-|Comments</p>
-</div>
-<div class="paragraph">
-<p>|None Intermediate Throw Event
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|The stroke width may be adjusted</p>
-</div>
-<div class="paragraph">
-<p>|Message Intermediate Throw Event
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|The stroke &amp; icon width may be adjusted</p>
-</div>
 <table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 6. End Events</caption>
 <colgroup>
-<col style="width: 100%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
 </colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Rendering</th>
+<th class="tableblock halign-left valign-top">Comments</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">[cols="1,1,4", options="header"]
-.End Events</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None End Event</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The stroke width may be adjusted</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Terminate End Event</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The stroke width may be adjusted</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message End Event</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The stroke &amp; icon width may be adjusted</p></td>
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>|Name
-|Rendering
-|Comments</p>
 </div>
-<div class="paragraph">
-<p>|None End Event
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|The stroke width may be adjusted</p>
-</div>
-<div class="paragraph">
-<p>|Terminate End Event
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|The stroke width may be adjusted</p>
-</div>
-<div class="paragraph">
-<p>|Message End Event
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|The stroke &amp; icon width may be adjusted</p>
-</div>
+<div class="sect2">
+<h3 id="_flows"><a class="anchor" href="#_flows"></a><a class="link" href="#_flows">3.4. Flows</a></h3>
 <table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 7. Flows</caption>
 <colgroup>
-<col style="width: 100%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
 </colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Rendering</th>
+<th class="tableblock halign-left valign-top">Comments</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">=== Flows</p>
-<p class="tableblock">[cols="1,1,4a", options="header"]
-.Flows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sequence flow</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>Subject to change: arrow size/form and position endpoint</p>
+</div></div></td>
 </tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>|Name
-|Rendering
-|Comments</p>
-</div>
-<div class="paragraph">
-<p>|sequence flow
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|Subject to change: arrow size/form and position endpoint</p>
-</div>
-<div class="paragraph">
-<p>|default sequence flow
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|Subject to change: arrow size/form and position endpoint<br>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">default sequence flow</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>Subject to change: arrow size/form and position endpoint<br>
 <strong>marker</strong> is derived from <a href="https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796">dash marker</a> of draw.io</p>
-</div>
-<div class="paragraph">
-<p>|conditional sequence flow
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|Subject to change: arrow size/form and position endpoint</p>
-</div>
-<div class="paragraph">
-<p>|way points
-|<span class="icon"><i class="fa fa-flask"></i></span>
-|Subject to change: paths may be rounded</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 100%;">
-</colgroup>
-<tbody>
+</div></div></td>
+</tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">=== Gateways</p>
-<p class="tableblock">[cols="1,1,4", options="header"]
-.Gateways</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">conditional sequence flow</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>Subject to change: arrow size/form and position endpoint</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">way points</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-flask"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>Subject to change: paths may be rounded</p>
+</div></div></td>
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>|Name
-|Rendering
-|Comments</p>
 </div>
-<div class="paragraph">
-<p>|Exclusive
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|Icon may be subject to change<br></p>
-</div>
-<div class="paragraph">
-<p>|Inclusive
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|Icon may be subject to change<br></p>
-</div>
-<div class="paragraph">
-<p>|Parallel
-|<span class="icon"><i class="fa fa-check-circle-o"></i></span>
-|Icon may be subject to change<br></p>
-</div>
+<div class="sect2">
+<h3 id="_gateways"><a class="anchor" href="#_gateways"></a><a class="link" href="#_gateways">3.5. Gateways</a></h3>
 <table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 8. Gateways</caption>
 <colgroup>
-<col style="width: 100%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
 </colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Rendering</th>
+<th class="tableblock halign-left valign-top">Comments</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">== Architecture and Development
-:icons: font</p>
-<p class="tableblock">[TIP]
-To know how to build the project, please have a look at the <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/master/CONTRIBUTING.md">contributing guide</a>.</p>
-<p class="tableblock">=== Architecture Overview</p>
-<p class="tableblock">The lib consists on 2 main modules</p>
-<p class="tableblock">* parsing: read a BPMN source (xml string) and convert it into its own <a href="bpmn-internal-model.adoc">internal Model</a>
-* rendering: display the BPMN diagrams represented by the internal Model, using the <a href="https://jgraph.github.io/mxgraph/">mxGraph library</a></p>
-<p class="tableblock">image::images/architecture/architecture_overview.svg[]</p>
-<p class="tableblock">=== BPMN Internal Model</p>
-<p class="tableblock">Our internal model is based on the <a href="https://www.omg.org/spec/BPMN/2.0.2/PDF">BPMN specification</a>.</p>
-<p class="tableblock">image::images/architecture/internal-model.svg[]</p>
-<p class="tableblock"><strong>Note</strong>: If you want to update the model, you need to update the <a href="images/architecture/internal-model.drawio">Model as draw.io</a>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exclusive</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Icon may be subject to change<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Inclusive</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Icon may be subject to change<br></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parallel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Icon may be subject to change<br></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_architecture_and_development"><a class="anchor" href="#_architecture_and_development"></a><a class="link" href="#_architecture_and_development">4. Architecture and Development</a></h2>
+<div class="sectionbody">
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+To know how to build the project, please have a look at the <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/master/CONTRIBUTING.md">contributing guide</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_architecture_overview"><a class="anchor" href="#_architecture_overview"></a><a class="link" href="#_architecture_overview">4.1. Architecture Overview</a></h3>
+<div class="paragraph">
+<p>The lib consists on 2 main modules</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>parsing: read a BPMN source (xml string) and convert it into its own <a href="bpmn-internal-model.adoc">internal Model</a></p>
+</li>
+<li>
+<p>rendering: display the BPMN diagrams represented by the internal Model, using the <a href="https://jgraph.github.io/mxgraph/">mxGraph library</a></p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/architecture/architecture_overview.svg" alt="architecture overview">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bpmn_internal_model"><a class="anchor" href="#_bpmn_internal_model"></a><a class="link" href="#_bpmn_internal_model">4.2. BPMN Internal Model</a></h3>
+<div class="paragraph">
+<p>Our internal model is based on the <a href="https://www.omg.org/spec/BPMN/2.0.2/PDF">BPMN specification</a>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/architecture/internal-model.svg" alt="internal model">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: If you want to update the model, you need to update the <a href="images/architecture/internal-model.drawio">Model as draw.io</a>
 file with <a href="https://app.diagrams.net" class="bare">https://app.diagrams.net</a>, and export it as SVG in the <a href="images/architecture/internal-model.svg">svg file</a>.</p>
-<p class="tableblock">=== BPMN Parsing</p>
-<p class="tableblock">==== XML Parser</p>
-<p class="tableblock">To parse XML data, we use the library <a href="https://github.com/NaturalIntelligence/fast-xml-parser">fast-xml-parser</a>.</p>
-<p class="tableblock">You can see the implementation in <strong>BpmnXmlParser.ts</strong>.</p>
-<p class="tableblock">==== Json Parser</p>
-<p class="tableblock">To parse a JSON data, we use the library <a href="https://github.com/AppVision-GmbH/json2typescript">json2typescript</a>.</p>
-<p class="tableblock">You can see the implementation in <strong>BpmnJsonParser.ts</strong>.
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bpmn_parsing"><a class="anchor" href="#_bpmn_parsing"></a><a class="link" href="#_bpmn_parsing">4.3. BPMN Parsing</a></h3>
+<div class="sect3">
+<h4 id="_xml_parser"><a class="anchor" href="#_xml_parser"></a><a class="link" href="#_xml_parser">4.3.1. XML Parser</a></h4>
+<div class="paragraph">
+<p>To parse XML data, we use the library <a href="https://github.com/NaturalIntelligence/fast-xml-parser">fast-xml-parser</a>.</p>
+</div>
+<div class="paragraph">
+<p>You can see the implementation in <strong>BpmnXmlParser.ts</strong>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_json_parser"><a class="anchor" href="#_json_parser"></a><a class="link" href="#_json_parser">4.3.2. Json Parser</a></h4>
+<div class="paragraph">
+<p>To parse a JSON data, we use the library <a href="https://github.com/AppVision-GmbH/json2typescript">json2typescript</a>.</p>
+</div>
+<div class="paragraph">
+<p>You can see the implementation in <strong>BpmnJsonParser.ts</strong>.
 We create our custom <em>converters</em> (in the <strong>converter</strong> folder where the <strong>BpmnJsonParser</strong> file is) in order to match the BPMN model to our internal model.</p>
-<p class="tableblock">=== mxGraph Integration</p>
-<p class="tableblock">The <a href="https://jgraph.github.io/mxgraph/">mxGraph</a> integration is in charge of displaying the BPMN diagrams, by filling the
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mxgraph_integration"><a class="anchor" href="#_mxgraph_integration"></a><a class="link" href="#_mxgraph_integration">4.4. mxGraph Integration</a></h3>
+<div class="paragraph">
+<p>The <a href="https://jgraph.github.io/mxgraph/">mxGraph</a> integration is in charge of displaying the BPMN diagrams, by filling the
 <a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.1:">mxGraph model</a> from the BPMN model.</p>
-<p class="tableblock">It defines the <a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.1">BPMN styles</a> including dedicated BPMN shapes
+</div>
+<div class="paragraph">
+<p>It defines the <a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.1">BPMN styles</a> including dedicated BPMN shapes
 which are associated to the <code>mxGraph</code> <a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.4">mxCell</a> when the elements
 are inserted into the <code>mxGraph</code> model:</p>
-<p class="tableblock">* <code>vertex</code> for BPMN Shapes
-* <code>edge</code> for BPMN Edges</p>
-<p class="tableblock">The main entry point for <code>mxGraph</code> rendering is <code>MxGraphRenderer</code>.</p>
-<p class="tableblock">For more technical details, see <a href="#bpmn-support-howto-elements-rendering">BPMN Elements rendering</a>.</p>
-<p class="tableblock">If you are new to <code>mxGraph</code> or want to know more about it, please have a look at the <a href="https://jgraph.github.io/mxgraph/docs/tutorial.html">mxGraph tutorial</a>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>vertex</code> for BPMN Shapes</p>
+</li>
+<li>
+<p><code>edge</code> for BPMN Edges</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The main entry point for <code>mxGraph</code> rendering is <code>MxGraphRenderer</code>.</p>
+</div>
+<div class="paragraph">
+<p>For more technical details, see <a href="#bpmn-support-howto-elements-rendering">BPMN Elements rendering</a>.</p>
+</div>
+<div class="paragraph">
+<p>If you are new to <code>mxGraph</code> or want to know more about it, please have a look at the <a href="https://jgraph.github.io/mxgraph/docs/tutorial.html">mxGraph tutorial</a>
 and <a href="https://jgraph.github.io/mxgraph/docs/manual.html">mxGraph manual</a>.</p>
-<p class="tableblock">==== Logical Groups of BPMN Elements</p>
-<p class="tableblock"><a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.4">mxGraph Group Structure</a> allows to define a parent-child relationship
+</div>
+<div class="sect3">
+<h4 id="_logical_groups_of_bpmn_elements"><a class="anchor" href="#_logical_groups_of_bpmn_elements"></a><a class="link" href="#_logical_groups_of_bpmn_elements">4.4.1. Logical Groups of BPMN Elements</a></h4>
+<div class="paragraph">
+<p><a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.4">mxGraph Group Structure</a> allows to define a parent-child relationship
 that leverages various rendering features like collapsing/expanding, layering, drill down, group move/hide, &#8230;&#8203;
 See <a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.5">mxGraph Complexity Management</a> for more details.</p>
-<p class="tableblock">On <code>mxGraph</code> graph creation, the lib fills the following group of BPMN elements:</p>
-<p class="tableblock">* <code>pool</code> is the parent of <code>lanes</code> and <code>inter-lane elements</code> (for instance, <code>message flows</code>)
-* <code>lane</code> is the parent of elements it includes in the BPMN source</p>
-<p class="tableblock">The default mxGraph parent is the parent of</p>
-<p class="tableblock">* inter pool elements (for instance, <code>message flows</code>)
-* elements when the BPMN source doesn&#8217;t define any lane/pool</p>
-<p class="tableblock">==== BPMN elements positioning</p>
-<p class="tableblock"><strong>Note</strong>: the following applies to both BPMN shapes and edges (including waypoints)</p>
-<p class="tableblock">The bpmn input source coordinates are absolute whereas mxgraph uses coordinates in the referential of the parent cell.
+</div>
+<div class="paragraph">
+<p>On <code>mxGraph</code> graph creation, the lib fills the following group of BPMN elements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>pool</code> is the parent of <code>lanes</code> and <code>inter-lane elements</code> (for instance, <code>message flows</code>)</p>
+</li>
+<li>
+<p><code>lane</code> is the parent of elements it includes in the BPMN source</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The default mxGraph parent is the parent of</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>inter pool elements (for instance, <code>message flows</code>)</p>
+</li>
+<li>
+<p>elements when the BPMN source doesn&#8217;t define any lane/pool</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_bpmn_elements_positioning"><a class="anchor" href="#_bpmn_elements_positioning"></a><a class="link" href="#_bpmn_elements_positioning">4.4.2. BPMN elements positioning</a></h4>
+<div class="paragraph">
+<p><strong>Note</strong>: the following applies to both BPMN shapes and edges (including waypoints)</p>
+</div>
+<div class="paragraph">
+<p>The bpmn input source coordinates are absolute whereas mxgraph uses coordinates in the referential of the parent cell.
 As we define a parent-child relationship when inserting BPMN elements in the mxGraph model, a coordinate transformation
 layer is required. See <code>MxGraphRenderer</code> for more details.</p>
-<p class="tableblock">===== Resources</p>
-<p class="tableblock">====== mxGraph</p>
-<p class="tableblock">.https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.2[mxgraph Geometry]
-[quote]
+</div>
+<div class="sect4">
+<h5 id="_resources"><a class="anchor" href="#_resources"></a><a class="link" href="#_resources">4.4.2.1. Resources</a></h5>
+<div class="sect5">
+<h6 id="_mxgraph"><a class="anchor" href="#_mxgraph"></a><a class="link" href="#_mxgraph">4.4.2.1.1. mxGraph</a></h6>
+<div class="quoteblock">
+<div class="title"><a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.2">mxgraph Geometry</a></div>
+<blockquote>
 The coordinate system in JavaScript is x is positive to the right and y is positive
 downwards, and in terms of the graph, the positioning is absolute to the container
-within which the mxGraph is placed.</p>
-<p class="tableblock">.https://jgraph.github.io/mxgraph/docs/manual.html#3.1.4[mxgraph Group Structure]
-[quote]
+within which the mxGraph is placed.
+</blockquote>
+</div>
+<div class="quoteblock">
+<div class="title"><a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.4">mxgraph Group Structure</a></div>
+<blockquote>
 The x,y position of a vertex is its position relative to its parent, so in the case of
 default grouping (all cells sharing the default parent) the cell positioning is also
-the absolute co-ordinates on the graph component.</p>
-<p class="tableblock">====== BPMN specification</p>
-<p class="tableblock">.BPMNPlane (page 371)
-[quote]
+the absolute co-ordinates on the graph component.
+</blockquote>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_bpmn_specification"><a class="anchor" href="#_bpmn_specification"></a><a class="link" href="#_bpmn_specification">4.4.2.1.2. BPMN specification</a></h6>
+<div class="quoteblock">
+<div class="title">BPMNPlane (page 371)</div>
+<blockquote>
 BPMNPlane element is always owned by a BPMNDiagram and represents the root diagram element of that diagram.
 The plane represents a 2 dimensional surface with an origin at (0, 0) along the x and y axes with increasing coordinates
-to the right and bottom. Only positive coordinates are allowed for diagram elements that are nested in a BPMNPlane.</p>
-<p class="tableblock">.BPMNShape (page 372)
-[quote]
+to the right and bottom. Only positive coordinates are allowed for diagram elements that are nested in a BPMNPlane.
+</blockquote>
+</div>
+<div class="quoteblock">
+<div class="title">BPMNShape (page 372)</div>
+<blockquote>
 All BPMNShape elements are owned directly by a BPMNPlane (that is the root element in a BPMNDiagram), i.e., shapes
 are not nested within each other in the BPMN DI model although they may appear that way when depicted. The bounds
 of a BPMNShape are always relative to that plane’s origin point and are REQUIRED to be positive coordinates. Note that
 the bounds’ x and y coordinates are the position of the upper left corner of the shape (relative to the upper left corner of
-the plane).</p>
-<p class="tableblock">.BPMNEdge (page 375)
-[quote]
+the plane).
+</blockquote>
+</div>
+<div class="quoteblock">
+<div class="title">BPMNEdge (page 375)</div>
+<blockquote>
 All BPMNEdge elements are owned directly by a BPMNPlane (that is the root element in a BPMNDiagram). The
-waypoints of BPMNEdge are always relative to that plane’s origin point and are REQUIRED to be positive coordinates.</p>
-<p class="tableblock">.BPMNLabel (page 377)
-[quote]
+waypoints of BPMNEdge are always relative to that plane’s origin point and are REQUIRED to be positive coordinates.
+</blockquote>
+</div>
+<div class="quoteblock">
+<div class="title">BPMNLabel (page 377)</div>
+<blockquote>
 The bounds of BPMNLabel are always relative to the containing plane’s origin point. Note that the bounds’ x and y
-coordinates are the position of the upper left corner of the label (relative to the upper left corner of the plane).</p>
-<p class="tableblock">=== BPMN Support - How To
-:icons: font</p>
-<p class="tableblock">==== Elements detection</p>
-<p class="tableblock">Except for special container elements like <code>Pool</code>, <code>Lane</code> and <code>Subprocess</code>, detecting a new BPMN element only requires to
+coordinates are the position of the upper left corner of the label (relative to the upper left corner of the plane).
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bpmn_support_how_to"><a class="anchor" href="#_bpmn_support_how_to"></a><a class="link" href="#_bpmn_support_how_to">4.5. BPMN Support - How To</a></h3>
+<div class="sect3">
+<h4 id="_elements_detection"><a class="anchor" href="#_elements_detection"></a><a class="link" href="#_elements_detection">4.5.1. Elements detection</a></h4>
+<div class="paragraph">
+<p>Except for special container elements like <code>Pool</code>, <code>Lane</code> and <code>Subprocess</code>, detecting a new BPMN element only requires to
 add a new value in the <code>ShapeBpmnElementKind</code> enum.</p>
-<p class="tableblock">The <code>ProcessConverter</code> uses the <code>ShapeBpmnElementKind</code> values to detect elements in the BPMN source.</p>
-<p class="tableblock">[NOTE]
+</div>
+<div class="paragraph">
+<p>The <code>ProcessConverter</code> uses the <code>ShapeBpmnElementKind</code> values to detect elements in the BPMN source.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
 For BPMN Events, the actual type in controlled by <code>EventDefinition</code> fields in the BPMN specification. Detecting new event
-types requires changes in <code>ShapeBpmnEventKind</code> to add the newly supported BPMN Event Definition.</p>
-<p class="tableblock">[IMPORTANT]
-Do not forget to add tests related to the new BPMN element to ensure everything works fine.</p>
-<p class="tableblock"><strong>Test guidelines:</strong></p>
-<p class="tableblock">* Add json parsing tests related to the new BPMN element to ensure that the parser is able to make it available to the
-<code>ProcessConverter</code>. The convention is to have a test file per BPMN element, please follow the existing file name scheme.
-* Depending on the BPMN element, you may also have to add tests about <code>default sequence flow</code> and/or <code>conditional sequence
-flow</code> support (see <code>ShapeBpmnElementKind</code> for more details)
-* Add end-to-end tests, mainly to ensure that the new BPMN element is now stored in the <code>mxGraph model</code>, see <code>mxGraph.model.test.ts</code>.
-* No need to create specific XML tests, the XML parsing is tested globally using BPMN files for various BPMN vendors.</p>
-<p class="tableblock"><a id="bpmn-support-howto-elements-rendering"></a>
-==== Elements rendering</p>
-<p class="tableblock">When inserting an element on the <code>mxGraph</code> graph, a style is passed to identify the way it will be rendered.</p>
-<p class="tableblock">The <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html">style</a> is defined and registered in
+types requires changes in <code>ShapeBpmnEventKind</code> to add the newly supported BPMN Event Definition.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Do not forget to add tests related to the new BPMN element to ensure everything works fine.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>Test guidelines:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add json parsing tests related to the new BPMN element to ensure that the parser is able to make it available to the
+<code>ProcessConverter</code>. The convention is to have a test file per BPMN element, please follow the existing file name scheme.</p>
+</li>
+<li>
+<p>Depending on the BPMN element, you may also have to add tests about <code>default sequence flow</code> and/or <code>conditional sequence
+flow</code> support (see <code>ShapeBpmnElementKind</code> for more details)</p>
+</li>
+<li>
+<p>Add end-to-end tests, mainly to ensure that the new BPMN element is now stored in the <code>mxGraph model</code>, see <code>mxGraph.model.test.ts</code>.</p>
+</li>
+<li>
+<p>No need to create specific XML tests, the XML parsing is tested globally using BPMN files for various BPMN vendors.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="bpmn-support-howto-elements-rendering"><a class="anchor" href="#bpmn-support-howto-elements-rendering"></a><a class="link" href="#bpmn-support-howto-elements-rendering">4.5.2. Elements rendering</a></h4>
+<div class="paragraph">
+<p>When inserting an element on the <code>mxGraph</code> graph, a style is passed to identify the way it will be rendered.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html">style</a> is defined and registered in
 <code>StyleConfigurator</code>. In particular, it refers to the name of a <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html">mxShape</a>
 used for the rendering.</p>
-<p class="tableblock">The <code>mxShape</code> can be a standard <code>mxGraph</code> class or a custom BPMN <code>mxShape</code> defined by the lib. The custom <code>mxShapes</code> are registered by <code>ShapeConfigurator</code>
+</div>
+<div class="paragraph">
+<p>The <code>mxShape</code> can be a standard <code>mxGraph</code> class or a custom BPMN <code>mxShape</code> defined by the lib. The custom <code>mxShapes</code> are registered by <code>ShapeConfigurator</code>
 which associates the <code>mxShape</code> name (used in style definition) with the <code>mxShape</code> class to be used.</p>
-<p class="tableblock">===== BPMN icon tips</p>
-<p class="tableblock">The icon of the BPMN elements must be defined in the mxGraph custom shapes and this currently must be done using <code>TypeScript</code>
+</div>
+<div class="sect4">
+<h5 id="_bpmn_icon_tips"><a class="anchor" href="#_bpmn_icon_tips"></a><a class="link" href="#_bpmn_icon_tips">4.5.2.1. BPMN icon tips</a></h5>
+<div class="paragraph">
+<p>The icon of the BPMN elements must be defined in the mxGraph custom shapes and this currently must be done using <code>TypeScript</code>
 code.</p>
-<p class="tableblock">It is possible to adapt an SVG icon thanks to <a href="https://github.com/process-analytics/mxgraph-svg2shape">mxgraph-svg2shape</a>,
+</div>
+<div class="paragraph">
+<p>It is possible to adapt an SVG icon thanks to <a href="https://github.com/process-analytics/mxgraph-svg2shape">mxgraph-svg2shape</a>,
 a Java tool that will let you transform your SVG file into a set of <code>TypeScript</code> commands.</p>
-<p class="tableblock">Please be aware that the tool is not able to support all SVG files, and you may need to adapt the SVG definition prior the
-tool can transform it. See <a href="https://github.com/process-analytics/bpmn-visualization-js/pull/210">PR #210</a> for instance.</p></td>
-</tr>
-</tbody>
-</table>
+</div>
+<div class="paragraph">
+<p>Please be aware that the tool is not able to support all SVG files, and you may need to adapt the SVG definition prior the
+tool can transform it. See <a href="https://github.com/process-analytics/bpmn-visualization-js/pull/210">PR #210</a> for instance.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-27 15:34:32 UTC
+Last updated 2020-06-02 12:43:49 UTC
 </div>
 </div>
 </body>
