@@ -237,11 +237,19 @@ of the `Done` column related to the milestone
 
 #### GitHub update
 
-- Ensure the latest closed milestone matches the name of the tag/version that has just been pushed
-- Create a new GitHub release
+- GitHub release
   - Open [github releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
-  - Create a new release based on the newly created tags. Check `This is a pre-release`
-  - In the description, at least add a link to the related milestone
+  - The draft release for the newly tagged version should already exist:
+    - [release-drafter](https://github.com/release-drafter/release-drafter) creates or updates draft release for the
+    next version each time a pull request is merged on the `master` branch.
+    - create a new release if it is missing or rename the existing one.
+  - Assign the new tag as release target and save the draft: this ensures that next merged pull requests will be assign
+  to a new release by `release-drafter` even if the current draft is not published.
+  - Check `This is a pre-release`
+  - In the release description (check previous releases as a source of inspiration)
+    - at least add/update a link to the related milestone
+    - put screenshots/gif of the new features
+- Ensure the latest closed milestone matches the name of the tag/version that has just been pushed
 
 ### Demo environment update
 
