@@ -22,6 +22,7 @@ import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
 import { ShapeBpmnEvent } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
+import Label, { Font } from '../../../../../src/model/bpmn/Label';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -48,6 +49,15 @@ export interface ExpectedEdge {
   bpmnElementTargetRefId: string;
   bpmnElementKind?: SequenceFlowKind;
   waypoints?: Waypoint[];
+}
+
+export interface ExpectedFont {
+  name?: string;
+  size?: number;
+  isBold?: boolean;
+  isItalic?: boolean;
+  isUnderline?: boolean;
+  isStrikeThrough?: boolean;
 }
 
 export function parseJson(json: string): BpmnModel {
@@ -142,6 +152,22 @@ export function verifyEvents(model: BpmnModel, expectedEvents: ExpectedEvent[]):
   expectedEvents.forEach(expectedEvent => {
     verifyEvent(model, expectedEvent.kind, expectedEvent.expectedNumber);
   });
+}
+
+export function verifyLabel(label: Label, expectedValue?: ExpectedFont): void {
+  expect(label).toBeDefined();
+
+  const font = label.font;
+  if (expectedValue) {
+    expect(font.isBold).toEqual(expectedValue.isBold);
+    expect(font.isItalic).toEqual(expectedValue.isItalic);
+    expect(font.isStrikeThrough).toEqual(expectedValue.isStrikeThrough);
+    expect(font.isUnderline).toEqual(expectedValue.isUnderline);
+    expect(font.name).toEqual(expectedValue.name);
+    expect(font.size).toEqual(expectedValue.size);
+  } else {
+    expect(font).toBeUndefined();
+  }
 }
 
 export function parseJsonAndExpectOnlyEvent(json: string, kind: ShapeBpmnEventKind, expectedNumber: number): BpmnModel {

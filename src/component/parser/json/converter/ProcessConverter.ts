@@ -205,18 +205,3 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     return SequenceFlowKind.NORMAL;
   }
 }
-
-@JsonConverter
-export class SequenceFlowConverter extends AbstractConverter<SequenceFlow> {
-  deserialize(data: string): SequenceFlow {
-    return findSequenceFlow(data);
-  }
-}
-
-@JsonConverter
-export class WaypointConverter extends AbstractConverter<Waypoint[]> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  deserialize(waypoints: any): Waypoint[] {
-    return this.jsonConvert.deserializeArray(ensureIsArray(waypoints), Waypoint);
-  }
-}

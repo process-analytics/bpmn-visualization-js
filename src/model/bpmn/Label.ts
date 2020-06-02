@@ -13,10 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import ShapeBpmnElement from './ShapeBpmnElement';
-import Bounds from '../Bounds';
-import Label from '../Label';
+import Bounds from './Bounds';
 
-export default class Shape {
-  constructor(readonly id?: string, readonly bpmnElement?: ShapeBpmnElement, readonly bounds?: Bounds, readonly label?: Label) {}
+export default class Label {
+  constructor(readonly font?: Font, readonly bounds?: Bounds) {}
+}
+
+export class Font {
+  constructor(
+    readonly name?: string,
+    readonly size?: number,
+    readonly isBold?: boolean,
+    readonly isItalic?: boolean,
+    readonly isUnderline?: boolean,
+    readonly isStrikeThrough?: boolean,
+  ) {}
 }

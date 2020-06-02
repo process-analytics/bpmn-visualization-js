@@ -20,8 +20,9 @@ import Bounds from '../../../../model/bpmn/Bounds';
 import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
-import { findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement } from './ProcessConverter';
+import { findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, findSequenceFlow } from './ProcessConverter';
 import { findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
+import Waypoint from '../../../../model/bpmn/edge/Waypoint';
 
 function findProcessElement(participantId: string): ShapeBpmnElement {
   const participant = findProcessRefParticipant(participantId);
@@ -37,11 +38,11 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(bpmnDiagram: Array<any> | any): BpmnModel {
     try {
-      const plane = bpmnDiagram.BPMNPlane;
+      const labelStyle = bpmnDiagram.BPMNLabelStyle;
 
+      const plane = bpmnDiagram.BPMNPlane;
       const edges = { edges: this.deserializeEdges(plane.BPMNEdge) };
       const shapes = this.deserializeShapes(plane.BPMNShape);
-
       return { ...shapes, ...edges };
     } catch (e) {
       // TODO error management
@@ -90,6 +91,8 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   private deserializeShape(shape: any, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
     const bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
+      // shape.BPMNLabel
+
       const bounds = this.jsonConvert.deserializeObject(shape.Bounds, Bounds);
 
       if (bpmnElement.parentId) {
@@ -99,12 +102,23 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
         }
       }
 
-      return new Shape(shape.id, bpmnElement, bounds);
+      let label;
+      return new Shape(shape.id, bpmnElement, bounds, label);
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeEdges(edges: any): Edge[] {
-    return this.jsonConvert.deserializeArray(ensureIsArray(edges), Edge);
+    return ensureIsArray(edges).map(edge => {
+      const sequenceFlow = findSequenceFlow(edge.bpmnElement);
+
+      let waypoints;
+      if (edge.waypoint) {
+        waypoints = this.jsonConvert.deserializeArray(ensureIsArray(edge.waypoint), Waypoint);
+      }
+
+      let label;
+      return new Edge(edge.id, sequenceFlow, waypoints, label);
+    });
   }
 }
