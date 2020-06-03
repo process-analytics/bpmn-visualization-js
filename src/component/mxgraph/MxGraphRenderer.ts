@@ -103,8 +103,7 @@ export default class MxGraphRenderer {
         } else if (font.isItalic) {
           style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_ITALIC;
         } else if (font.isStrikeThrough) {
-          // style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_STRIKETHROUGH;
-          style += ';' + this.mxConstants.STYLE_FONTSIZE + '=8';
+          style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_STRIKETHROUGH;
         } else if (font.isStrikeThrough) {
           style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_UNDERLINE;
         }

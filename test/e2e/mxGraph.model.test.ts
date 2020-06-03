@@ -235,8 +235,7 @@ describe('mxGraph model', () => {
       }
 
       if (expectedValue.isUnderline) {
-        // expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_STRIKETHROUGH);
-        expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(8);
+        expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_STRIKETHROUGH);
       }
 
       expect(state.style[mxConstants.STYLE_FONTFAMILY]).toEqual(expectedValue.name);
