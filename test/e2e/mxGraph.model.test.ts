@@ -182,7 +182,7 @@ describe('mxGraph model', () => {
             <bpmndi:BPMNEdge bpmnElement="default_sequence_flow_id" id="E1373649849864_default_sequence_flow_id">
                 <di:waypoint x="342.0" y="351.0"/>
                 <di:waypoint x="390.0" y="351.0"/>
-                <bpmndi:BPMNLabel labelStyle="LS1373649849858">
+                <bpmndi:BPMNLabel labelStyle="bold_font_id">
                     <dc:Bounds height="12.804751171875008" width="94.93333333333335" x="153.67766754457273" y="371.3333333333333"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNEdge>
@@ -352,7 +352,7 @@ describe('mxGraph model', () => {
     expectModelContainsShape('inclusiveGateway_1', ShapeBpmnElementKind.GATEWAY_INCLUSIVE);
 
     // sequence flow
-    expectModelContainsEdge('default_sequence_flow_id', SequenceFlowKind.DEFAULT, MarkerConstant.ARROW_DASH, expectedFont);
+    expectModelContainsEdge('default_sequence_flow_id', SequenceFlowKind.DEFAULT, MarkerConstant.ARROW_DASH, expectedBoldFont);
     expectModelContainsEdge('normal_sequence_flow_id', SequenceFlowKind.NORMAL);
     expectModelContainsEdge('conditional_sequence_flow_from_activity_id', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY, mxConstants.ARROW_DIAMOND_THIN);
     expectModelContainsEdge('conditional_sequence_flow_from_gateway_id', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY);
