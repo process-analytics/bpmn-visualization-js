@@ -20,7 +20,6 @@ import { MxGraphFactoryService } from '../../src/service/MxGraphFactoryService';
 import { ShapeBpmnEventKind } from '../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
 import { MarkerConstant } from '../../src/component/mxgraph/MarkerConfigurator';
-import Label from '../../src/model/bpmn/Label';
 
 export interface ExpectedFont {
   name?: string;
