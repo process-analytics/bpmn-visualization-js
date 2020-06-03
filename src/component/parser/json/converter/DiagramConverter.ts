@@ -140,17 +140,15 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeLabel(bpmnLabel: any, id: string): Label {
-    if (bpmnLabel) {
-      const labelStyle = bpmnLabel.labelStyle;
-      if (labelStyle) {
-        const font = this.findFont(labelStyle);
+    const labelStyle = bpmnLabel?.labelStyle;
+    if (labelStyle) {
+      const font = this.findFont(labelStyle);
 
-        if (font) {
-          return new Label(font);
-        } else {
-          // TODO error management
-          console.warn('Unable to assign font %s to shape/edge %s', labelStyle, id);
-        }
+      if (font) {
+        return new Label(font);
+      } else {
+        // TODO error management
+        console.warn('Unable to assign font %s to shape/edge %s', labelStyle, id);
       }
     }
   }
