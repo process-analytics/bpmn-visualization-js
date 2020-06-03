@@ -20,6 +20,16 @@ import { MxGraphFactoryService } from '../../src/service/MxGraphFactoryService';
 import { ShapeBpmnEventKind } from '../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
 import { MarkerConstant } from '../../src/component/mxgraph/MarkerConfigurator';
+import Label from '../../src/model/bpmn/Label';
+
+export interface ExpectedFont {
+  name?: string;
+  size?: number;
+  isBold?: boolean;
+  isItalic?: boolean;
+  isUnderline?: boolean;
+  isStrikeThrough?: boolean;
+}
 
 function expectGeometry(cell: mxgraph.mxCell, geometry: mxgraph.mxGeometry): void {
   const cellGeometry = cell.getGeometry();
@@ -211,6 +221,30 @@ describe('mxGraph model', () => {
 `;
   const bpmnVisu = new BpmnVisu(null);
 
+  function expectFont(state: mxgraph.mxCellState, expectedValue: ExpectedFont): void {
+    if (expectedValue) {
+      if (expectedValue.isBold) {
+        expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_BOLD);
+      }
+
+      if (expectedValue.isItalic) {
+        expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_ITALIC);
+      }
+
+      if (expectedValue.isStrikeThrough) {
+        expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_UNDERLINE);
+      }
+
+      if (expectedValue.isUnderline) {
+        // expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_STRIKETHROUGH);
+        expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(8);
+      }
+
+      expect(state.style[mxConstants.STYLE_FONTFAMILY]).toEqual(expectedValue.name);
+      expect(state.style[mxConstants.STYLE_FONTSIZE]).toEqual(expectedValue.size);
+    }
+  }
+
   function expectModelContainsCell(cellId: string): mxgraph.mxCell {
     const cell = bpmnVisu.graph.model.getCell(cellId);
     expect(cell).not.toBeUndefined();
@@ -219,13 +253,14 @@ describe('mxGraph model', () => {
   }
 
   // styleShape is only required when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented)
-  function expectModelContainsShape(cellId: string, shapeKind: ShapeBpmnElementKind, styleShape?: string): mxgraph.mxCell {
+  function expectModelContainsShape(cellId: string, shapeKind: ShapeBpmnElementKind, expectedValue?: ExpectedFont, styleShape?: string): mxgraph.mxCell {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(shapeKind);
     const state = bpmnVisu.graph.getView().getState(cell);
 
     styleShape = !styleShape ? shapeKind : styleShape;
     expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(styleShape);
+    expectFont(state, expectedValue);
     return cell;
   }
 
@@ -238,8 +273,8 @@ describe('mxGraph model', () => {
     return cell;
   }
 
-  function expectModelContainsBpmnEvent(cellId: string, shapeKind: ShapeBpmnElementKind, bpmnEventKind: ShapeBpmnEventKind): void {
-    const cell = expectModelContainsShape(cellId, shapeKind);
+  function expectModelContainsBpmnEvent(cellId: string, shapeKind: ShapeBpmnElementKind, bpmnEventKind: ShapeBpmnEventKind, expectedValue?: ExpectedFont): void {
+    const cell = expectModelContainsShape(cellId, shapeKind, expectedValue);
     expect(cell.style).toContain(`bpmn.eventKind=${bpmnEventKind}`);
   }
 
@@ -249,16 +284,24 @@ describe('mxGraph model', () => {
 
     // model is OK
     // start event
-    expectModelContainsBpmnEvent('startEvent_1', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.NONE);
+    const expectedFont = {
+      isBold: false,
+      isItalic: false,
+      isStrikeThrough: false,
+      isUnderline: false,
+      name: 'Arial',
+      size: 11.0,
+    };
+    expectModelContainsBpmnEvent('startEvent_1', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.NONE, expectedFont);
     expectModelContainsBpmnEvent('startEvent_2_timer', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.TIMER);
     expectModelContainsBpmnEvent('startEvent_3_message', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.MESSAGE);
 
     // end event
-    expectModelContainsBpmnEvent('endEvent_1', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.TERMINATE);
+    expectModelContainsBpmnEvent('endEvent_1', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.TERMINATE, expectedFont);
     expectModelContainsBpmnEvent('messageEndEvent', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.MESSAGE);
 
     // throw intermediate event
-    expectModelContainsBpmnEvent('noneIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.NONE);
+    expectModelContainsBpmnEvent('noneIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.NONE, expectedFont);
     expectModelContainsBpmnEvent('messageIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.MESSAGE);
 
     // catch intermediate event
@@ -266,10 +309,10 @@ describe('mxGraph model', () => {
     expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.TIMER);
 
     // activity
-    expectModelContainsShape('task_1', ShapeBpmnElementKind.TASK);
-    expectModelContainsShape('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE);
-    expectModelContainsShape('userTask_3', ShapeBpmnElementKind.TASK_USER);
-    expectModelContainsShape('callActivity_1', ShapeBpmnElementKind.CALL_ACTIVITY, 'rectangle');
+    expectModelContainsShape('task_1', ShapeBpmnElementKind.TASK, expectedFont);
+    expectModelContainsShape('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE, expectedFont);
+    expectModelContainsShape('userTask_3', ShapeBpmnElementKind.TASK_USER, expectedFont);
+    expectModelContainsShape('callActivity_1', ShapeBpmnElementKind.CALL_ACTIVITY, undefined, 'rectangle');
     expectModelContainsShape('receiveTask_not_instantiated', ShapeBpmnElementKind.TASK_RECEIVE);
     expectModelContainsShape('receiveTask_instantiated', ShapeBpmnElementKind.TASK_RECEIVE);
 

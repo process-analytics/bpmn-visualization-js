@@ -29,6 +29,7 @@ interface Coordinate {
 
 export default class MxGraphRenderer {
   private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
+  private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
   constructor(readonly graph: mxgraph.mxGraph) {}
 
   public render(bpmnModel: BpmnModel): void {
@@ -65,15 +66,49 @@ export default class MxGraphRenderer {
       const bounds = shape.bounds;
       const parent = this.getParent(bpmnElement);
       const absoluteCoordinate = { x: bounds.x, y: bounds.y };
-      const style = this.computeStyleName(bpmnElement);
+      const style = this.computeStyleName(shape);
       this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
     }
   }
 
-  private computeStyleName(bpmnElement: ShapeBpmnEvent | ShapeBpmnElement): string {
+  private computeStyleName(shape: Shape): string {
+    const bpmnElement = shape.bpmnElement;
+
     let style = bpmnElement.kind as string;
     if (bpmnElement instanceof ShapeBpmnEvent) {
       style += ';' + StyleConstant.BPMN_STYLE_EVENT_KIND + '=' + bpmnElement.eventKind;
+    }
+    style += this.computeFontStyle(shape);
+
+    return style;
+  }
+
+  private computeFontStyle(bpmnCell: Shape | Edge): string {
+    let style = '';
+
+    const label = bpmnCell.label;
+    if (label) {
+      const font = label.font;
+      if (font) {
+        if (font.name) {
+          style += ';' + this.mxConstants.STYLE_FONTFAMILY + '=' + font.name;
+        }
+
+        if (font.size) {
+          style += ';' + this.mxConstants.STYLE_FONTSIZE + '=' + font.size;
+        }
+
+        if (font.isBold) {
+          style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_BOLD;
+        } else if (font.isItalic) {
+          style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_ITALIC;
+        } else if (font.isStrikeThrough) {
+          // style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_STRIKETHROUGH;
+          style += ';' + this.mxConstants.STYLE_FONTSIZE + '=8';
+        } else if (font.isStrikeThrough) {
+          style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_UNDERLINE;
+        }
+      }
     }
     return style;
   }

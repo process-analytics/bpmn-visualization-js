@@ -47,5 +47,6 @@ export default class MxGraphConfigurator {
     this.mxGraph.prototype.edgeLabelsMovable = false;
     this.mxGraph.prototype.cellsLocked = true;
     this.mxGraph.prototype.cellsSelectable = false;
+    //  this.mxGraph.prototype.htmlLabels = true;
   }
 }
