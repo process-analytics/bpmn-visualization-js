@@ -95,7 +95,7 @@ export default class StyleConfigurator {
   private configureDefaultVertexStyle(): void {
     const style = this.getDefaultVertexStyle();
     style[this.mxConstants.STYLE_HORIZONTAL] = true;
-    style[this.mxConstants.STYLE_FONTSIZE] = 15;
+    style[this.mxConstants.STYLE_FONTSIZE] = 12;
     style[this.mxConstants.STYLE_FILLCOLOR] = 'white';
     style[this.mxConstants.STYLE_FONTCOLOR] = 'black';
     style[this.mxConstants.STYLE_STROKECOLOR] = 'black';
