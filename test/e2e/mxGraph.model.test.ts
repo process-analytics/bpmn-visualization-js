@@ -251,14 +251,14 @@ describe('mxGraph model', () => {
   }
 
   // styleShape is only required when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented)
-  function expectModelContainsShape(cellId: string, shapeKind: ShapeBpmnElementKind, expectedValue?: ExpectedFont, styleShape?: string): mxgraph.mxCell {
+  function expectModelContainsShape(cellId: string, shapeKind: ShapeBpmnElementKind, expectedFont?: ExpectedFont, styleShape?: string): mxgraph.mxCell {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(shapeKind);
     const state = bpmnVisu.graph.getView().getState(cell);
 
     styleShape = !styleShape ? shapeKind : styleShape;
     expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(styleShape);
-    expectFont(state, expectedValue);
+    expectFont(state, expectedFont);
     return cell;
   }
 
@@ -271,8 +271,8 @@ describe('mxGraph model', () => {
     return cell;
   }
 
-  function expectModelContainsBpmnEvent(cellId: string, shapeKind: ShapeBpmnElementKind, bpmnEventKind: ShapeBpmnEventKind, expectedValue?: ExpectedFont): void {
-    const cell = expectModelContainsShape(cellId, shapeKind, expectedValue);
+  function expectModelContainsBpmnEvent(cellId: string, shapeKind: ShapeBpmnElementKind, bpmnEventKind: ShapeBpmnEventKind, expectedFont?: ExpectedFont): void {
+    const cell = expectModelContainsShape(cellId, shapeKind, expectedFont);
     expect(cell.style).toContain(`bpmn.eventKind=${bpmnEventKind}`);
   }
 
