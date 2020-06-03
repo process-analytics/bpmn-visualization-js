@@ -86,27 +86,24 @@ export default class MxGraphRenderer {
   private computeFontStyle(bpmnCell: Shape | Edge): string {
     let style = '';
 
-    const label = bpmnCell.label;
-    if (label) {
-      const font = label.font;
-      if (font) {
-        if (font.name) {
-          style += ';' + this.mxConstants.STYLE_FONTFAMILY + '=' + font.name;
-        }
+    const font = bpmnCell?.label?.font;
+    if (font) {
+      if (font.name) {
+        style += ';' + this.mxConstants.STYLE_FONTFAMILY + '=' + font.name;
+      }
 
-        if (font.size) {
-          style += ';' + this.mxConstants.STYLE_FONTSIZE + '=' + font.size;
-        }
+      if (font.size) {
+        style += ';' + this.mxConstants.STYLE_FONTSIZE + '=' + font.size;
+      }
 
-        if (font.isBold) {
-          style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_BOLD;
-        } else if (font.isItalic) {
-          style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_ITALIC;
-        } else if (font.isStrikeThrough) {
-          style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_STRIKETHROUGH;
-        } else if (font.isUnderline) {
-          style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_UNDERLINE;
-        }
+      if (font.isBold) {
+        style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_BOLD;
+      } else if (font.isItalic) {
+        style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_ITALIC;
+      } else if (font.isStrikeThrough) {
+        style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_STRIKETHROUGH;
+      } else if (font.isUnderline) {
+        style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_UNDERLINE;
       }
     }
     return style;
