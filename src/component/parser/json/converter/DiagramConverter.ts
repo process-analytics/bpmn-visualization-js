@@ -36,7 +36,7 @@ function findProcessElement(participantId: string): ShapeBpmnElement {
 
 @JsonConverter
 export default class DiagramConverter extends AbstractConverter<BpmnModel> {
-  private convertedLabelStyles: Map<string, Font> = new Map();
+  private convertedFonts: Map<string, Font> = new Map();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(bpmnDiagram: Array<any> | any): BpmnModel {
@@ -56,10 +56,12 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeFonts(bpmnLabelStyle: any): void {
+    this.convertedFonts = new Map();
+
     ensureIsArray(bpmnLabelStyle).forEach(labelStyle => {
       const font = labelStyle.Font;
       if (font) {
-        this.convertedLabelStyles.set(labelStyle.id, new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough));
+        this.convertedFonts.set(labelStyle.id, new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough));
       }
     });
   }
@@ -149,6 +151,6 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   }
 
   private findFont(labelStyle: string): Font {
-    return this.convertedLabelStyles.get(labelStyle);
+    return this.convertedFonts.get(labelStyle);
   }
 }
