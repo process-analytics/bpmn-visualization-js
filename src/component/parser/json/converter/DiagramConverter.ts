@@ -116,7 +116,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
         }
       }
 
-      const label = this.deserializeLabel(shape.BPMNLabel);
+      const label = this.deserializeLabel(shape.BPMNLabel, shape.id);
       return new Shape(shape.id, bpmnElement, bounds, label);
     }
   }
@@ -125,26 +125,32 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   private deserializeEdges(edges: any): Edge[] {
     return ensureIsArray(edges).map(edge => {
       const sequenceFlow = findSequenceFlow(edge.bpmnElement);
-      const waypoints = this.deserializeWaypoints(edge);
-      const label = this.deserializeLabel(edge.BPMNLabel);
+      const waypoints = this.deserializeWaypoints(edge.waypoint);
+      const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
       return new Edge(edge.id, sequenceFlow, waypoints, label);
     });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private deserializeWaypoints(edge: any): Waypoint[] {
-    if (edge.waypoint) {
-      return this.jsonConvert.deserializeArray(ensureIsArray(edge.waypoint), Waypoint);
+  private deserializeWaypoints(waypoint: any): Waypoint[] {
+    if (waypoint) {
+      return this.jsonConvert.deserializeArray(ensureIsArray(waypoint), Waypoint);
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private deserializeLabel(bpmnLabel: any): Label {
+  private deserializeLabel(bpmnLabel: any, id: string): Label {
     if (bpmnLabel) {
-      const font = this.findFont(bpmnLabel.labelStyle);
+      const labelStyle = bpmnLabel.labelStyle;
+      if (labelStyle) {
+        const font = this.findFont(labelStyle);
 
-      if (font) {
-        return new Label(font);
+        if (font) {
+          return new Label(font);
+        } else {
+          // TODO error management
+          console.warn('Unable to assign font %s to shape/edge %s', labelStyle, id);
+        }
       }
     }
   }
