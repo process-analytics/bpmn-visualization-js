@@ -13,14 +13,60 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJson, parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes, verifyEdge, verifyShape } from './JsonTestUtils';
-import each from 'jest-each';
-import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
-import { Font } from '../../../../../src/model/bpmn/Label';
-import Edge from '../../../../../src/model/bpmn/edge/Edge';
+import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes } from './JsonTestUtils';
 
 describe('parse bpmn as json for label font', () => {
+  it('json containing a BPMNShape with empty label', () => {
+    const json = `{
+       "definitions": {
+          "process": {
+             "task": {
+                "id": "task_id_0",
+                "name": "task name"
+             }
+          },
+          "BPMNDiagram": {
+             "id": "BpmnDiagram_1",
+             "BPMNPlane": {
+                "id": "BpmnPlane_1",
+                "BPMNShape": {
+                   "id": "BPMNShape_id_0",
+                   "bpmnElement": "task_id_0",
+                   "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
+                   "BPMNLabel": ""
+                }
+             }
+          }
+       }
+    }`;
+
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+    expect(model.flowNodes[0].label).toBeUndefined();
+  });
+
+  it('json containing a BPMNEdge with empty label', () => {
+    const json = `{
+       "definitions": {
+          "process": "",
+          "BPMNDiagram": {
+             "id": "BpmnDiagram_1",
+             "BPMNPlane": {
+                "id": "BpmnPlane_1",
+                "BPMNEdge": {
+                   "id": "BPMNEdge_id_0",
+                   "BPMNLabel": ""
+                }
+             }
+          }
+       }
+    }`;
+
+    const model = parseJsonAndExpectOnlyEdges(json, 1);
+
+    expect(model.edges[0].label).toBeUndefined();
+  });
+
   it('json containing a BPMNShape without label', () => {
     const json = `{
        "definitions": {
