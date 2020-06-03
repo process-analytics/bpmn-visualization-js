@@ -36,6 +36,8 @@ function findProcessElement(participantId: string): ShapeBpmnElement {
 
 @JsonConverter
 export default class DiagramConverter extends AbstractConverter<BpmnModel> {
+  private convertedLabelStyles: Map<string, Font> = new Map();
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(bpmnDiagram: Array<any> | any): BpmnModel {
     try {
@@ -129,8 +131,13 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   private deserializeLabel(bpmnLabel: any): Label {
     let label;
     if (bpmnLabel) {
-      label = new Label();
+      const font = this.findFont(bpmnLabel.labelStyle);
+      label = new Label(font);
     }
     return label;
+  }
+
+  private findFont(labelStyle: string): Font {
+    return this.convertedLabelStyles.get(labelStyle);
   }
 }
