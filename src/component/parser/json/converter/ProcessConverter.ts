@@ -19,7 +19,6 @@ import ShapeBpmnElement, { ShapeBpmnEvent } from '../../../../model/bpmn/shape/S
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
-import Waypoint from '../../../../model/bpmn/edge/Waypoint';
 import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
 import ShapeUtil from '../../../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';
@@ -203,20 +202,5 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       }
     }
     return SequenceFlowKind.NORMAL;
-  }
-}
-
-@JsonConverter
-export class SequenceFlowConverter extends AbstractConverter<SequenceFlow> {
-  deserialize(data: string): SequenceFlow {
-    return findSequenceFlow(data);
-  }
-}
-
-@JsonConverter
-export class WaypointConverter extends AbstractConverter<Waypoint[]> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  deserialize(waypoints: any): Waypoint[] {
-    return this.jsonConvert.deserializeArray(ensureIsArray(waypoints), Waypoint);
   }
 }

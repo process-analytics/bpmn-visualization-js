@@ -13,37 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { JsonObject, JsonProperty } from 'json2typescript';
 import SequenceFlow from './SequenceFlow';
 import Waypoint from './Waypoint';
-import { SequenceFlowConverter, WaypointConverter } from '../../../component/parser/json/converter/ProcessConverter';
+import Label from '../Label';
 
-@JsonObject('BPMNEdge')
 export default class Edge {
-  @JsonProperty('id', String)
-  private readonly _id: string;
-
-  @JsonProperty('bpmnElement', SequenceFlowConverter)
-  private readonly _bpmnElement: SequenceFlow;
-
-  @JsonProperty('waypoint', WaypointConverter, true)
-  private readonly _waypoints: Waypoint[];
-
-  constructor(id?: string, bpmnElement?: SequenceFlow, waypoints?: Waypoint[]) {
-    this._id = id;
-    this._bpmnElement = bpmnElement;
-    this._waypoints = waypoints;
-  }
-
-  public get id(): string {
-    return this._id;
-  }
-
-  public get bpmnElement(): SequenceFlow {
-    return this._bpmnElement;
-  }
-
-  public get waypoints(): Waypoint[] {
-    return this._waypoints;
-  }
+  constructor(readonly id?: string, readonly bpmnElement?: SequenceFlow, readonly waypoints?: Waypoint[], readonly label?: Label) {}
 }

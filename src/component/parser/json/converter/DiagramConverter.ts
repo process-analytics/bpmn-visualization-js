@@ -20,8 +20,10 @@ import Bounds from '../../../../model/bpmn/Bounds';
 import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
-import { findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement } from './ProcessConverter';
+import { findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, findSequenceFlow } from './ProcessConverter';
 import { findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
+import Waypoint from '../../../../model/bpmn/edge/Waypoint';
+import Label, { Font } from '../../../../model/bpmn/Label';
 
 function findProcessElement(participantId: string): ShapeBpmnElement {
   const participant = findProcessRefParticipant(participantId);
@@ -34,19 +36,34 @@ function findProcessElement(participantId: string): ShapeBpmnElement {
 
 @JsonConverter
 export default class DiagramConverter extends AbstractConverter<BpmnModel> {
+  private convertedFonts: Map<string, Font> = new Map();
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(bpmnDiagram: Array<any> | any): BpmnModel {
     try {
-      const plane = bpmnDiagram.BPMNPlane;
+      // Need to be done before deserialization of Shape and Edge, to link the converted fonts to them
+      this.deserializeFonts(bpmnDiagram.BPMNLabelStyle);
 
+      const plane = bpmnDiagram.BPMNPlane;
       const edges = { edges: this.deserializeEdges(plane.BPMNEdge) };
       const shapes = this.deserializeShapes(plane.BPMNShape);
-
       return { ...shapes, ...edges };
     } catch (e) {
       // TODO error management
       console.error(e as Error);
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private deserializeFonts(bpmnLabelStyle: any): void {
+    this.convertedFonts = new Map();
+
+    ensureIsArray(bpmnLabelStyle).forEach(labelStyle => {
+      const font = labelStyle.Font;
+      if (font) {
+        this.convertedFonts.set(labelStyle.id, new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough));
+      }
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -99,12 +116,46 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
         }
       }
 
-      return new Shape(shape.id, bpmnElement, bounds);
+      const label = this.deserializeLabel(shape.BPMNLabel, shape.id);
+      return new Shape(shape.id, bpmnElement, bounds, label);
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeEdges(edges: any): Edge[] {
-    return this.jsonConvert.deserializeArray(ensureIsArray(edges), Edge);
+    return ensureIsArray(edges).map(edge => {
+      const sequenceFlow = findSequenceFlow(edge.bpmnElement);
+      const waypoints = this.deserializeWaypoints(edge.waypoint);
+      const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
+      return new Edge(edge.id, sequenceFlow, waypoints, label);
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private deserializeWaypoints(waypoint: any): Waypoint[] {
+    if (waypoint) {
+      return this.jsonConvert.deserializeArray(ensureIsArray(waypoint), Waypoint);
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private deserializeLabel(bpmnLabel: any, id: string): Label {
+    if (bpmnLabel) {
+      const labelStyle = bpmnLabel.labelStyle;
+      if (labelStyle) {
+        const font = this.findFont(labelStyle);
+
+        if (font) {
+          return new Label(font);
+        } else {
+          // TODO error management
+          console.warn('Unable to assign font %s to shape/edge %s', labelStyle, id);
+        }
+      }
+    }
+  }
+
+  private findFont(labelStyle: string): Font {
+    return this.convertedFonts.get(labelStyle);
   }
 }
