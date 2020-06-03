@@ -107,7 +107,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   private deserializeShape(shape: any, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
     const bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
-      const bounds = this.jsonConvert.deserializeObject(shape.Bounds, Bounds);
+      const bounds = this.deserializeBounds(shape);
 
       if (bpmnElement.parentId) {
         const participant = findProcessRefParticipantByProcessRef(bpmnElement.parentId);
@@ -118,6 +118,14 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
 
       const label = this.deserializeLabel(shape.BPMNLabel, shape.id);
       return new Shape(shape.id, bpmnElement, bounds, label);
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private deserializeBounds(boundedElement: any): Bounds {
+    const bounds = boundedElement.Bounds;
+    if (bounds) {
+      return this.jsonConvert.deserializeObject(bounds, Bounds);
     }
   }
 
@@ -140,20 +148,28 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeLabel(bpmnLabel: any, id: string): Label {
-    const labelStyle = bpmnLabel?.labelStyle;
-    if (labelStyle) {
-      const font = this.findFont(labelStyle);
+    if (bpmnLabel) {
+      const labelStyle = bpmnLabel.labelStyle;
+      const font = this.findFont(labelStyle, id);
+      const bounds = this.deserializeBounds(bpmnLabel);
 
-      if (font) {
-        return new Label(font);
-      } else {
-        // TODO error management
-        console.warn('Unable to assign font %s to shape/edge %s', labelStyle, id);
+      if (font || bounds) {
+        return new Label(font, bounds);
       }
     }
   }
 
-  private findFont(labelStyle: string): Font {
-    return this.convertedFonts.get(labelStyle);
+  private findFont(labelStyle: string, id: string): Font {
+    let font;
+    if (labelStyle) {
+      font = this.convertedFonts.get(labelStyle);
+    }
+
+    if (!font) {
+      // TODO error management
+      console.warn('Unable to assign font from style %s to shape/edge %s', labelStyle, id);
+    }
+
+    return font;
   }
 }

@@ -387,7 +387,7 @@ describe('parse bpmn as json for label font', () => {
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
     expect(model.flowNodes[0].label).toBeUndefined();
-    expect(console.warn).toHaveBeenCalledWith('Unable to assign font %s to shape/edge %s', 'non-existing_style_id', 'BPMNShape_id_0');
+    expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNShape_id_0');
   });
 
   it('json containing a BPMNEdge who references a non-existing label style', () => {
@@ -414,6 +414,6 @@ describe('parse bpmn as json for label font', () => {
     const model = parseJsonAndExpectOnlyEdges(json, 1);
 
     expect(model.edges[0].label).toBeUndefined();
-    expect(console.warn).toHaveBeenCalledWith('Unable to assign font %s to shape/edge %s', 'non-existing_style_id', 'BPMNEdge_id_0');
+    expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNEdge_id_0');
   });
 });
