@@ -220,26 +220,26 @@ describe('mxGraph model', () => {
 `;
   const bpmnVisu = new BpmnVisu(null);
 
-  function expectFont(state: mxgraph.mxCellState, expectedValue: ExpectedFont): void {
-    if (expectedValue) {
-      if (expectedValue.isBold) {
+  function expectFont(state: mxgraph.mxCellState, expectedFont: ExpectedFont): void {
+    if (expectedFont) {
+      if (expectedFont.isBold) {
         expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_BOLD);
       }
 
-      if (expectedValue.isItalic) {
+      if (expectedFont.isItalic) {
         expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_ITALIC);
       }
 
-      if (expectedValue.isStrikeThrough) {
+      if (expectedFont.isStrikeThrough) {
         expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_UNDERLINE);
       }
 
-      if (expectedValue.isUnderline) {
+      if (expectedFont.isUnderline) {
         expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_STRIKETHROUGH);
       }
 
-      expect(state.style[mxConstants.STYLE_FONTFAMILY]).toEqual(expectedValue.name);
-      expect(state.style[mxConstants.STYLE_FONTSIZE]).toEqual(expectedValue.size);
+      expect(state.style[mxConstants.STYLE_FONTFAMILY]).toEqual(expectedFont.name);
+      expect(state.style[mxConstants.STYLE_FONTSIZE]).toEqual(expectedFont.size);
     }
   }
 
