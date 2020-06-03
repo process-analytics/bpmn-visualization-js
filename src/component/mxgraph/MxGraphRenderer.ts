@@ -21,6 +21,7 @@ import ShapeBpmnElement, { ShapeBpmnEvent } from '../../model/bpmn/shape/ShapeBp
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
 import { StyleConstant } from './StyleConfigurator';
+import { Font } from '../../model/bpmn/Label';
 
 interface Coordinate {
   x: number;
@@ -72,41 +73,41 @@ export default class MxGraphRenderer {
   }
 
   private computeStyle(bpmnCell: Shape | Edge): string {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    const styleValues = new Map<string, any>();
+
+    const font = bpmnCell.label?.font;
+    if (font) {
+      styleValues.set(this.mxConstants.STYLE_FONTFAMILY, font.name);
+      styleValues.set(this.mxConstants.STYLE_FONTSIZE, font.size);
+      styleValues.set(this.mxConstants.STYLE_FONTSTYLE, this.getFontStyleValue(font));
+    }
+
     const bpmnElement = bpmnCell.bpmnElement;
+    if (bpmnElement instanceof ShapeBpmnEvent) {
+      styleValues.set(StyleConstant.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
+    }
 
     let style = bpmnElement.kind as string;
-    if (bpmnElement instanceof ShapeBpmnEvent) {
-      style += ';' + StyleConstant.BPMN_STYLE_EVENT_KIND + '=' + bpmnElement.eventKind;
-    }
-    style += this.computeFontStyle(bpmnCell);
+    styleValues.forEach((value, key) => {
+      if (value) {
+        style += ';' + key + '=' + value;
+      }
+    });
 
     return style;
   }
 
-  private computeFontStyle(bpmnCell: Shape | Edge): string {
-    let style = '';
-
-    const font = bpmnCell?.label?.font;
-    if (font) {
-      if (font.name) {
-        style += ';' + this.mxConstants.STYLE_FONTFAMILY + '=' + font.name;
-      }
-
-      if (font.size) {
-        style += ';' + this.mxConstants.STYLE_FONTSIZE + '=' + font.size;
-      }
-
-      if (font.isBold) {
-        style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_BOLD;
-      } else if (font.isItalic) {
-        style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_ITALIC;
-      } else if (font.isStrikeThrough) {
-        style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_STRIKETHROUGH;
-      } else if (font.isUnderline) {
-        style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_UNDERLINE;
-      }
+  private getFontStyleValue(font: Font): number {
+    if (font.isBold) {
+      return this.mxConstants.FONT_BOLD;
+    } else if (font.isItalic) {
+      return this.mxConstants.FONT_ITALIC;
+    } else if (font.isStrikeThrough) {
+      return this.mxConstants.FONT_STRIKETHROUGH;
+    } else if (font.isUnderline) {
+      return this.mxConstants.FONT_UNDERLINE;
     }
-    return style;
   }
 
   private insertEdges(edges: Edge[]): void {
