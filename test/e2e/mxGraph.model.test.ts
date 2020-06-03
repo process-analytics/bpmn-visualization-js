@@ -78,7 +78,7 @@ describe('mxGraph model', () => {
             <semantic:incoming>Flow_028jkgv</semantic:incoming>
             <semantic:timerEventDefinition id="TimerEventDefinition_0t6k83a" />
         </semantic:intermediateCatchEvent>
-        <semantic:endEvent name="End Event" id="endEvent_1">
+        <semantic:endEvent name="End Event" id="terminateEndEvent">
             <semantic:incoming>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:incoming>
             <semantic:terminateEventDefinition/>
         </semantic:endEvent>
@@ -96,7 +96,7 @@ describe('mxGraph model', () => {
         </semantic:sequenceFlow>
         <semantic:sequenceFlow sourceRef="userTask_3" targetRef="noneIntermediateThrowEvent" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff80" />
         <semantic:sequenceFlow sourceRef="noneIntermediateThrowEvent" targetRef="messageIntermediateThrowEvent" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff22" />
-        <semantic:sequenceFlow sourceRef="messageIntermediateThrowEvent" targetRef="endEvent_1" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff33" />
+        <semantic:sequenceFlow sourceRef="messageIntermediateThrowEvent" targetRef="terminateEndEvent" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff33" />
         <semantic:sequenceFlow id="Flow_028jkgv" sourceRef="startEvent_2_timer" targetRef="IntermediateCatchEvent_Timer_01" />
         <semantic:sequenceFlow sourceRef="inclusiveGateway_1" targetRef="userTask_3" name="" id="conditional_sequence_flow_from_gateway_id">
           <semantic:conditionExpression xsi:type="semantic:tFormalExpression" id="_WsCFcRszEeqkhYLXtt1BFw" evaluatesToTypeRef="java:java.lang.Boolean">&quot;Contract to be written&quot;.equals(loanRequested.status)</semantic:conditionExpression>
@@ -106,7 +106,7 @@ describe('mxGraph model', () => {
         <bpmndi:BPMNPlane bpmnElement="WFP-6-">
             <bpmndi:BPMNShape bpmnElement="startEvent_1" id="shape_startEvent_1">
                 <dc:Bounds height="30.0" width="30.0" x="186.0" y="336.0"/>
-                <bpmndi:BPMNLabel labelStyle="LS1373649849858">
+                <bpmndi:BPMNLabel labelStyle="bold_font_id">
                     <dc:Bounds height="12.804751171875008" width="94.93333333333335" x="153.67766754457273" y="371.3333333333333"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
@@ -118,25 +118,25 @@ describe('mxGraph model', () => {
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="task_1" id="shape_task_1">
                 <dc:Bounds height="68.0" width="83.0" x="258.0" y="317.0"/>
-                <bpmndi:BPMNLabel labelStyle="LS1373649849858">
+                <bpmndi:BPMNLabel labelStyle="underline_font_id">
                     <dc:Bounds height="12.804751171875008" width="72.48293963254594" x="263.3333333333333" y="344.5818763825664"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="serviceTask_2" id="shape_serviceTask_2">
                 <dc:Bounds height="68.0" width="83.0" x="390.0" y="317.0"/>
-                <bpmndi:BPMNLabel labelStyle="LS1373649849858">
+                <bpmndi:BPMNLabel labelStyle="bold_font_id">
                     <dc:Bounds height="12.804751171875008" width="72.48293963254594" x="395.3333333333333" y="344.5818763825664"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="userTask_3" id="shape_userTask_3">
                 <dc:Bounds height="68.0" width="83.0" x="522.0" y="317.0"/>
-                <bpmndi:BPMNLabel labelStyle="LS1373649849858">
+                <bpmndi:BPMNLabel labelStyle="bold_font_id">
                     <dc:Bounds height="12.804751171875008" width="72.48293963254594" x="527.3333333333334" y="344.5818763825664"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="noneIntermediateThrowEvent" id="S1373649849862_noneIntermediateThrowEvent">
 	           <dc:Bounds height="32.0" width="32.0" x="648.0" y="336.0" />
-	           <bpmndi:BPMNLabel labelStyle="LS1373649849858">
+	           <bpmndi:BPMNLabel labelStyle="strike_through_font_id">
 	              <dc:Bounds height="12.804751171875008" width="94.93333333333335" x="686.5963254593177" y="372.3333333333333" />
 	           </bpmndi:BPMNLabel>
 	        </bpmndi:BPMNShape>
@@ -146,9 +146,9 @@ describe('mxGraph model', () => {
 	         <bpmndi:BPMNShape bpmnElement="messageIntermediateCatchEvent" id="S1373649849862_messageIntermediateCatchEvent">
 	           <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
 	        </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape bpmnElement="endEvent_1" id="S1373649849862_endEvent_1">
+            <bpmndi:BPMNShape bpmnElement="terminateEndEvent" id="S1373649849862_terminateEndEvent">
                 <dc:Bounds height="32.0" width="32.0" x="648.0" y="335.0"/>
-                <bpmndi:BPMNLabel labelStyle="LS1373649849858">
+                <bpmndi:BPMNLabel labelStyle="italic_font_id">
                     <dc:Bounds height="12.804751171875008" width="94.93333333333335" x="616.5963254593177" y="372.3333333333333"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
@@ -212,8 +212,17 @@ describe('mxGraph model', () => {
          <bpmndi:BPMNEdge bpmnElement="_8e8fe679-eb3b-4c43-a4d6-891e7087ff33" id="E1373649849867__8e8fe679-eb3b-4c43-a4d6-891e7087ff33" />
          <bpmndi:BPMNEdge bpmnElement="Flow_028jkgv" id="E1373649849867__Flow_028jkgv" />
         </bpmndi:BPMNPlane>
-        <bpmndi:BPMNLabelStyle id="LS1373649849858">
-            <dc:Font isBold="false" isItalic="false" isStrikeThrough="false" isUnderline="false" name="Arial" size="11.0"/>
+        <bpmndi:BPMNLabelStyle id="bold_font_id">
+            <dc:Font isBold="true" isItalic="false" isStrikeThrough="false" isUnderline="false" name="Arial" size="11.0"/>
+        </bpmndi:BPMNLabelStyle>
+         <bpmndi:BPMNLabelStyle id="italic_font_id">
+            <dc:Font isBold="false" isItalic="true" isStrikeThrough="false" isUnderline="false" name="Arial" size="11.0"/>
+        </bpmndi:BPMNLabelStyle>
+         <bpmndi:BPMNLabelStyle id="strike_through_font_id">
+            <dc:Font isBold="false" isItalic="false" isStrikeThrough="true" isUnderline="false" name="Arial" size="11.0"/>
+        </bpmndi:BPMNLabelStyle>
+         <bpmndi:BPMNLabelStyle id="underline_font_id">
+            <dc:Font isBold="false" isItalic="false" isStrikeThrough="false" isUnderline="true" name="Arial" size="11.0"/>
         </bpmndi:BPMNLabelStyle>
     </bpmndi:BPMNDiagram>
 </semantic:definitions>
@@ -230,11 +239,11 @@ describe('mxGraph model', () => {
         expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_ITALIC);
       }
 
-      if (expectedFont.isStrikeThrough) {
+      if (expectedFont.isUnderline) {
         expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_UNDERLINE);
       }
 
-      if (expectedFont.isUnderline) {
+      if (expectedFont.isStrikeThrough) {
         expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_STRIKETHROUGH);
       }
 
@@ -281,25 +290,40 @@ describe('mxGraph model', () => {
     bpmnVisu.load(xmlContent);
 
     // model is OK
-    // start event
-    const expectedFont = {
-      isBold: false,
+    const expectedBoldFont = {
+      isBold: true,
       isItalic: false,
       isStrikeThrough: false,
       isUnderline: false,
       name: 'Arial',
       size: 11.0,
     };
-    expectModelContainsBpmnEvent('startEvent_1', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.NONE, expectedFont);
+
+    // start event
+    expectModelContainsBpmnEvent('startEvent_1', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.NONE, expectedBoldFont);
     expectModelContainsBpmnEvent('startEvent_2_timer', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.TIMER);
     expectModelContainsBpmnEvent('startEvent_3_message', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.MESSAGE);
 
     // end event
-    expectModelContainsBpmnEvent('endEvent_1', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.TERMINATE, expectedFont);
+    expectModelContainsBpmnEvent('terminateEndEvent', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.TERMINATE, {
+      isBold: false,
+      isItalic: true,
+      isStrikeThrough: false,
+      isUnderline: false,
+      name: 'Arial',
+      size: 11.0,
+    });
     expectModelContainsBpmnEvent('messageEndEvent', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.MESSAGE);
 
     // throw intermediate event
-    expectModelContainsBpmnEvent('noneIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.NONE, expectedFont);
+    expectModelContainsBpmnEvent('noneIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.NONE, {
+      isBold: false,
+      isItalic: false,
+      isStrikeThrough: true,
+      isUnderline: false,
+      name: 'Arial',
+      size: 11.0,
+    });
     expectModelContainsBpmnEvent('messageIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.MESSAGE);
 
     // catch intermediate event
@@ -307,9 +331,16 @@ describe('mxGraph model', () => {
     expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.TIMER);
 
     // activity
-    expectModelContainsShape('task_1', ShapeBpmnElementKind.TASK, expectedFont);
-    expectModelContainsShape('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE, expectedFont);
-    expectModelContainsShape('userTask_3', ShapeBpmnElementKind.TASK_USER, expectedFont);
+    expectModelContainsShape('task_1', ShapeBpmnElementKind.TASK, {
+      isBold: false,
+      isItalic: false,
+      isStrikeThrough: false,
+      isUnderline: true,
+      name: 'Arial',
+      size: 11.0,
+    });
+    expectModelContainsShape('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE, expectedBoldFont);
+    expectModelContainsShape('userTask_3', ShapeBpmnElementKind.TASK_USER, expectedBoldFont);
     expectModelContainsShape('callActivity_1', ShapeBpmnElementKind.CALL_ACTIVITY, undefined, 'rectangle');
     expectModelContainsShape('receiveTask_not_instantiated', ShapeBpmnElementKind.TASK_RECEIVE);
     expectModelContainsShape('receiveTask_instantiated', ShapeBpmnElementKind.TASK_RECEIVE);
