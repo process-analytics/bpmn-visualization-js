@@ -66,19 +66,19 @@ export default class MxGraphRenderer {
       const bounds = shape.bounds;
       const parent = this.getParent(bpmnElement);
       const absoluteCoordinate = { x: bounds.x, y: bounds.y };
-      const style = this.computeStyleName(shape);
+      const style = this.computeStyle(shape);
       this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
     }
   }
 
-  private computeStyleName(shape: Shape): string {
-    const bpmnElement = shape.bpmnElement;
+  private computeStyle(bpmnCell: Shape | Edge): string {
+    const bpmnElement = bpmnCell.bpmnElement;
 
     let style = bpmnElement.kind as string;
     if (bpmnElement instanceof ShapeBpmnEvent) {
       style += ';' + StyleConstant.BPMN_STYLE_EVENT_KIND + '=' + bpmnElement.eventKind;
     }
-    style += this.computeFontStyle(shape);
+    style += this.computeFontStyle(bpmnCell);
 
     return style;
   }
@@ -114,14 +114,10 @@ export default class MxGraphRenderer {
       const bpmnElement = edge.bpmnElement;
       if (bpmnElement) {
         const parent = this.graph.getDefaultParent();
-        const mxEdge = this.graph.insertEdge(
-          parent,
-          bpmnElement.id,
-          bpmnElement.name,
-          this.getCell(bpmnElement.sourceRefId),
-          this.getCell(bpmnElement.targetRefId),
-          bpmnElement.kind,
-        );
+        const source = this.getCell(bpmnElement.sourceRefId);
+        const target = this.getCell(bpmnElement.targetRefId);
+        const style = this.computeStyle(edge);
+        const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
         this.insertWaypoints(edge.waypoints, mxEdge);
       }
     });

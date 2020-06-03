@@ -187,7 +187,7 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_ROUNDED] = 1;
     style[this.mxConstants.STYLE_ARCSIZE] = 5;
 
-    style[this.mxConstants.STYLE_FONTSIZE] = 15;
+    style[this.mxConstants.STYLE_FONTSIZE] = 12;
     style[this.mxConstants.STYLE_FILLCOLOR] = 'White';
     style[this.mxConstants.STYLE_FONTCOLOR] = 'Black';
     style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
