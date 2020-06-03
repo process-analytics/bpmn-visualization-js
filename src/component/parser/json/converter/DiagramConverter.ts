@@ -23,6 +23,7 @@ import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
 import { findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, findSequenceFlow } from './ProcessConverter';
 import { findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
 import Waypoint from '../../../../model/bpmn/edge/Waypoint';
+import Label, { Font } from '../../../../model/bpmn/Label';
 
 function findProcessElement(participantId: string): ShapeBpmnElement {
   const participant = findProcessRefParticipant(participantId);
@@ -91,8 +92,6 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   private deserializeShape(shape: any, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
     const bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
-      // shape.BPMNLabel
-
       const bounds = this.jsonConvert.deserializeObject(shape.Bounds, Bounds);
 
       if (bpmnElement.parentId) {
@@ -102,7 +101,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
         }
       }
 
-      let label;
+      const label = this.deserializeLabel(shape.BPMNLabel);
       return new Shape(shape.id, bpmnElement, bounds, label);
     }
   }
@@ -111,14 +110,27 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   private deserializeEdges(edges: any): Edge[] {
     return ensureIsArray(edges).map(edge => {
       const sequenceFlow = findSequenceFlow(edge.bpmnElement);
-
-      let waypoints;
-      if (edge.waypoint) {
-        waypoints = this.jsonConvert.deserializeArray(ensureIsArray(edge.waypoint), Waypoint);
-      }
-
-      let label;
+      const waypoints = this.deserializeWaypoints(edge);
+      const label = this.deserializeLabel(edge.BPMNLabel);
       return new Edge(edge.id, sequenceFlow, waypoints, label);
     });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private deserializeWaypoints(edge: any): Waypoint[] {
+    let waypoints;
+    if (edge.waypoint) {
+      waypoints = this.jsonConvert.deserializeArray(ensureIsArray(edge.waypoint), Waypoint);
+    }
+    return waypoints;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private deserializeLabel(bpmnLabel: any): Label {
+    let label;
+    if (bpmnLabel) {
+      label = new Label();
+    }
+    return label;
   }
 }
