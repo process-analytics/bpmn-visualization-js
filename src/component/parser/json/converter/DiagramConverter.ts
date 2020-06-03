@@ -41,7 +41,8 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   deserialize(bpmnDiagram: Array<any> | any): BpmnModel {
     try {
-      const labelStyle = bpmnDiagram.BPMNLabelStyle;
+      // Need to be done before deserialization of Shape and Edge, to link the converted fonts to them
+      this.deserializeFonts(bpmnDiagram.BPMNLabelStyle);
 
       const plane = bpmnDiagram.BPMNPlane;
       const edges = { edges: this.deserializeEdges(plane.BPMNEdge) };
@@ -51,6 +52,16 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
       // TODO error management
       console.error(e as Error);
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private deserializeFonts(bpmnLabelStyle: any): void {
+    ensureIsArray(bpmnLabelStyle).forEach(labelStyle => {
+      const font = labelStyle.Font;
+      if (font) {
+        this.convertedLabelStyles.set(labelStyle.id, new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough));
+      }
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
