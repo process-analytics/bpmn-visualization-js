@@ -13,20 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import {
-  parseJson,
-  parseJsonAndExpectOnlyEdges,
-  parseJsonAndExpectOnlyEdgesAndFlowNodes,
-  parseJsonAndExpectOnlyFlowNodes,
-  verifyEdge,
-  verifyLabel,
-  verifyShape,
-} from './JsonTestUtils';
-import each from 'jest-each';
-import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
-import { Font } from '../../../../../src/model/bpmn/Label';
-import Edge from '../../../../../src/model/bpmn/edge/Edge';
+import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabel } from './JsonTestUtils';
 
 describe('parse bpmn as json for label font', () => {
   it('json containing a BPMNShape who references a label style with font', () => {
