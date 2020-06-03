@@ -36,7 +36,8 @@ describe('parse bpmn as json for label font', () => {
                 "id": "BpmnPlane_1",
                 "BPMNShape": {
                    "id": "BPMNShape_id_0",
-                   "bpmnElement": "task_id_0"
+                   "bpmnElement": "task_id_0",
+                   "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
                 }
              }
           }
@@ -51,6 +52,7 @@ describe('parse bpmn as json for label font', () => {
   it('json containing a BPMNEdge without label', () => {
     const json = `{
        "definitions": {
+          "process": "",
           "BPMNDiagram": {
              "id": "BpmnDiagram_1",
              "BPMNPlane": {
