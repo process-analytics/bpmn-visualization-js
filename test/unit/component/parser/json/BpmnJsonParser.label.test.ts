@@ -67,6 +67,61 @@ describe('parse bpmn as json for label font', () => {
     expect(model.edges[0].label).toBeUndefined();
   });
 
+  it('json containing a BPMNShape with label with just id', () => {
+    const json = `{
+       "definitions": {
+          "process": {
+             "task": {
+                "id": "task_id_0",
+                "name": "task name"
+             }
+          },
+          "BPMNDiagram": {
+             "id": "BpmnDiagram_1",
+             "BPMNPlane": {
+                "id": "BpmnPlane_1",
+                "BPMNShape": {
+                   "id": "BPMNShape_id_0",
+                   "bpmnElement": "task_id_0",
+                   "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
+                   "BPMNLabel": {
+                      "id": ""
+                   }
+                }
+             }
+          }
+       }
+    }`;
+
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+    expect(model.flowNodes[0].label).toBeUndefined();
+  });
+
+  it('json containing a BPMNEdge with empty label with just id', () => {
+    const json = `{
+       "definitions": {
+          "process": "",
+          "BPMNDiagram": {
+             "id": "BpmnDiagram_1",
+             "BPMNPlane": {
+                "id": "BpmnPlane_1",
+                "BPMNEdge": {
+                   "id": "BPMNEdge_id_0",
+                   "BPMNLabel": {
+                      "id": ""
+                   }
+                }
+             }
+          }
+       }
+    }`;
+
+    const model = parseJsonAndExpectOnlyEdges(json, 1);
+
+    expect(model.edges[0].label).toBeUndefined();
+  });
+
   it('json containing a BPMNShape without label', () => {
     const json = `{
        "definitions": {
