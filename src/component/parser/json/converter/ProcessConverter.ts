@@ -19,7 +19,6 @@ import ShapeBpmnElement, { ShapeBpmnEvent } from '../../../../model/bpmn/shape/S
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
-import Waypoint from '../../../../model/bpmn/edge/Waypoint';
 import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
 import ShapeUtil from '../../../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';

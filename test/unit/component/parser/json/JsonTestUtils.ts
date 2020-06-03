@@ -22,7 +22,7 @@ import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
 import { ShapeBpmnEvent } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
-import Label, { Font } from '../../../../../src/model/bpmn/Label';
+import Label from '../../../../../src/model/bpmn/Label';
 
 export interface ExpectedShape {
   shapeId: string;
