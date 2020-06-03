@@ -235,7 +235,7 @@ describe('parse bpmn as json for label font', () => {
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
     verifyLabel(model.flowNodes[0].label, { name: 'Arial', size: 11.0, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false });
-    verifyLabel(model.flowNodes[1].label, {});
+    expect(model.flowNodes[1].label).toBeUndefined();
   });
 
   it('json containing an array of label styles and BPMNEdges who reference a label style with font with/without all attributes', () => {
@@ -284,7 +284,7 @@ describe('parse bpmn as json for label font', () => {
     const model = parseJsonAndExpectOnlyEdges(json, 2);
 
     verifyLabel(model.edges[0].label, { name: 'Arial', size: 11.0, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false });
-    verifyLabel(model.edges[1].label, {});
+    expect(model.edges[1].label).toBeUndefined();
   });
 
   it('json containing a BPMNShape who references a label style without font', () => {
@@ -319,7 +319,7 @@ describe('parse bpmn as json for label font', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyLabel(model.flowNodes[0].label);
+    expect(model.flowNodes[0].label).toBeUndefined();
   });
 
   it('json containing a BPMNEdge who references a label style without font', () => {
@@ -347,7 +347,7 @@ describe('parse bpmn as json for label font', () => {
 
     const model = parseJsonAndExpectOnlyEdges(json, 1);
 
-    verifyLabel(model.edges[0].label);
+    expect(model.edges[0].label).toBeUndefined();
   });
 
   it('json containing a BPMNShape who references a non-existing label style', () => {
@@ -379,7 +379,7 @@ describe('parse bpmn as json for label font', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyLabel(model.flowNodes[0].label);
+    expect(model.flowNodes[0].label).toBeUndefined();
   });
 
   it('json containing a BPMNEdge who references a non-existing label style', () => {
@@ -404,6 +404,6 @@ describe('parse bpmn as json for label font', () => {
 
     const model = parseJsonAndExpectOnlyEdges(json, 1);
 
-    verifyLabel(model.edges[0].label);
+    expect(model.edges[0].label).toBeUndefined();
   });
 });

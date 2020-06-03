@@ -133,21 +133,20 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeWaypoints(edge: any): Waypoint[] {
-    let waypoints;
     if (edge.waypoint) {
-      waypoints = this.jsonConvert.deserializeArray(ensureIsArray(edge.waypoint), Waypoint);
+      return this.jsonConvert.deserializeArray(ensureIsArray(edge.waypoint), Waypoint);
     }
-    return waypoints;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeLabel(bpmnLabel: any): Label {
-    let label;
     if (bpmnLabel) {
       const font = this.findFont(bpmnLabel.labelStyle);
-      label = new Label(font);
+
+      if (font) {
+        return new Label(font);
+      }
     }
-    return label;
   }
 
   private findFont(labelStyle: string): Font {
