@@ -104,7 +104,7 @@ export default class MxGraphRenderer {
           style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_ITALIC;
         } else if (font.isStrikeThrough) {
           style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_STRIKETHROUGH;
-        } else if (font.isStrikeThrough) {
+        } else if (font.isUnderline) {
           style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_UNDERLINE;
         }
       }
