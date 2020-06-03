@@ -185,7 +185,7 @@ export default class StyleConfigurator {
     this.configureCommonDefaultStyle(style);
   }
 
-  private configureCommonDefaultStyle(style: any) {
+  private configureCommonDefaultStyle(style: any): void {
     style[this.mxConstants.STYLE_FONTSIZE] = 12;
     style[this.mxConstants.STYLE_FONTCOLOR] = 'Black';
     style[this.mxConstants.STYLE_FILLCOLOR] = 'White';
