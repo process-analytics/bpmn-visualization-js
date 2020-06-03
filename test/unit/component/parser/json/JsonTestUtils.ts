@@ -154,17 +154,17 @@ export function verifyEvents(model: BpmnModel, expectedEvents: ExpectedEvent[]):
   });
 }
 
-export function verifyLabel(label: Label, expectedValue?: ExpectedFont): void {
+export function verifyLabel(label: Label, expectedFont?: ExpectedFont): void {
   expect(label).toBeDefined();
 
   const font = label.font;
-  if (expectedValue) {
-    expect(font.isBold).toEqual(expectedValue.isBold);
-    expect(font.isItalic).toEqual(expectedValue.isItalic);
-    expect(font.isStrikeThrough).toEqual(expectedValue.isStrikeThrough);
-    expect(font.isUnderline).toEqual(expectedValue.isUnderline);
-    expect(font.name).toEqual(expectedValue.name);
-    expect(font.size).toEqual(expectedValue.size);
+  if (expectedFont) {
+    expect(font.isBold).toEqual(expectedFont.isBold);
+    expect(font.isItalic).toEqual(expectedFont.isItalic);
+    expect(font.isStrikeThrough).toEqual(expectedFont.isStrikeThrough);
+    expect(font.isUnderline).toEqual(expectedFont.isUnderline);
+    expect(font.name).toEqual(expectedFont.name);
+    expect(font.size).toEqual(expectedFont.size);
   } else {
     expect(font).toBeUndefined();
   }
