@@ -32,11 +32,6 @@ export interface ExpectedShape {
   parentId?: string;
 }
 
-export interface ExpectedEvent {
-  kind: ShapeBpmnEventKind;
-  expectedNumber: number;
-}
-
 export interface ExpectedEdge {
   edgeId: string;
   bpmnElementId: string;
@@ -149,12 +144,6 @@ export function verifyEvent(model: BpmnModel, kind: ShapeBpmnEventKind, expected
     return bpmnElement instanceof ShapeBpmnEvent && (bpmnElement as ShapeBpmnEvent).eventKind === kind;
   });
   expect(events).toHaveLength(expectedNumber);
-}
-
-export function verifyEvents(model: BpmnModel, expectedEvents: ExpectedEvent[]): void {
-  expectedEvents.forEach(expectedEvent => {
-    verifyEvent(model, expectedEvent.kind, expectedEvent.expectedNumber);
-  });
 }
 
 export function verifyLabelFont(label: Label, expectedFont?: ExpectedFont): void {
