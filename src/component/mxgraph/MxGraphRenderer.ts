@@ -93,15 +93,20 @@ export default class MxGraphRenderer {
   }
 
   private getFontStyleValue(font: Font): number {
+    let value = 0;
     if (font.isBold) {
-      return this.mxConstants.FONT_BOLD;
-    } else if (font.isItalic) {
-      return this.mxConstants.FONT_ITALIC;
-    } else if (font.isStrikeThrough) {
-      return this.mxConstants.FONT_STRIKETHROUGH;
-    } else if (font.isUnderline) {
-      return this.mxConstants.FONT_UNDERLINE;
+      value += this.mxConstants.FONT_BOLD;
     }
+    if (font.isItalic) {
+      value += this.mxConstants.FONT_ITALIC;
+    }
+    if (font.isStrikeThrough) {
+      value += this.mxConstants.FONT_STRIKETHROUGH;
+    }
+    if (font.isUnderline) {
+      value += this.mxConstants.FONT_UNDERLINE;
+    }
+    return value;
   }
 
   private insertEdges(edges: Edge[]): void {
