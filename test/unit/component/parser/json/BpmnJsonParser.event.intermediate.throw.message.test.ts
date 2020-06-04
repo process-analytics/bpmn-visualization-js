@@ -42,16 +42,21 @@ describe('parse bpmn as json for throw Message intermediate event', () => {
 
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.MESSAGE, 1);
 
-    verifyShape(model.flowNodes[0], {
-      shapeId: 'shape_intermediateThrowEvent_id_7',
-      bpmnElementId: 'event_id_7',
-      bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
-      boundsX: 362,
-      boundsY: 932,
-      boundsWidth: 36,
-      boundsHeight: 45,
-    });
+    verifyShape(
+      model.flowNodes[0],
+      {
+        shapeId: 'shape_intermediateThrowEvent_id_7',
+        bpmnElementId: 'event_id_7',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
+      },
+      {
+        x: 362,
+        y: 932,
+        width: 36,
+        height: 45,
+      },
+    );
   });
 
   it('json containing one process with an throw Message intermediate event defined as object, throw Message intermediate event is present', () => {
@@ -78,16 +83,21 @@ describe('parse bpmn as json for throw Message intermediate event', () => {
 
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.MESSAGE, 1);
 
-    verifyShape(model.flowNodes[0], {
-      shapeId: 'shape_intermediateThrowEvent_id_7',
-      bpmnElementId: 'event_id_7',
-      bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
-      boundsX: 362,
-      boundsY: 932,
-      boundsWidth: 36,
-      boundsHeight: 45,
-    });
+    verifyShape(
+      model.flowNodes[0],
+      {
+        shapeId: 'shape_intermediateThrowEvent_id_7',
+        bpmnElementId: 'event_id_7',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
+      },
+      {
+        x: 362,
+        y: 932,
+        width: 36,
+        height: 45,
+      },
+    );
   });
 
   it('json containing one process with an end event with terminate definition and another definition, throw Message intermediate event is NOT present', () => {

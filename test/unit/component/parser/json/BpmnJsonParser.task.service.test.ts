@@ -41,16 +41,21 @@ describe('parse bpmn as json for service task', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyShape(model.flowNodes[0], {
-      shapeId: 'shape_serviceTask_id_0',
-      bpmnElementId: 'serviceTask_id_0',
-      bpmnElementName: 'serviceTask name',
-      bpmnElementKind: ShapeBpmnElementKind.TASK_SERVICE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
-    });
+    verifyShape(
+      model.flowNodes[0],
+      {
+        shapeId: 'shape_serviceTask_id_0',
+        bpmnElementId: 'serviceTask_id_0',
+        bpmnElementName: 'serviceTask name',
+        bpmnElementKind: ShapeBpmnElementKind.TASK_SERVICE,
+      },
+      {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+    );
   });
 
   it('json containing one process declared as array with a single service task', () => {
@@ -79,16 +84,21 @@ describe('parse bpmn as json for service task', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyShape(model.flowNodes[0], {
-      shapeId: 'shape_serviceTask_id_1',
-      bpmnElementId: 'serviceTask_id_1',
-      bpmnElementName: 'serviceTask name',
-      bpmnElementKind: ShapeBpmnElementKind.TASK_SERVICE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
-    });
+    verifyShape(
+      model.flowNodes[0],
+      {
+        shapeId: 'shape_serviceTask_id_1',
+        bpmnElementId: 'serviceTask_id_1',
+        bpmnElementName: 'serviceTask name',
+        bpmnElementKind: ShapeBpmnElementKind.TASK_SERVICE,
+      },
+      {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+    );
   });
 
   it('json containing one process with an array of service tasks with name & without name', () => {
@@ -126,25 +136,35 @@ describe('parse bpmn as json for service task', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
-    verifyShape(model.flowNodes[0], {
-      shapeId: 'shape_serviceTask_id_0',
-      bpmnElementId: 'serviceTask_id_0',
-      bpmnElementName: 'serviceTask name',
-      bpmnElementKind: ShapeBpmnElementKind.TASK_SERVICE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
-    });
-    verifyShape(model.flowNodes[1], {
-      shapeId: 'shape_serviceTask_id_1',
-      bpmnElementId: 'serviceTask_id_1',
-      bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.TASK_SERVICE,
-      boundsX: 365,
-      boundsY: 235,
-      boundsWidth: 35,
-      boundsHeight: 46,
-    });
+    verifyShape(
+      model.flowNodes[0],
+      {
+        shapeId: 'shape_serviceTask_id_0',
+        bpmnElementId: 'serviceTask_id_0',
+        bpmnElementName: 'serviceTask name',
+        bpmnElementKind: ShapeBpmnElementKind.TASK_SERVICE,
+      },
+      {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+    );
+    verifyShape(
+      model.flowNodes[1],
+      {
+        shapeId: 'shape_serviceTask_id_1',
+        bpmnElementId: 'serviceTask_id_1',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.TASK_SERVICE,
+      },
+      {
+        x: 365,
+        y: 235,
+        width: 35,
+        height: 46,
+      },
+    );
   });
 });

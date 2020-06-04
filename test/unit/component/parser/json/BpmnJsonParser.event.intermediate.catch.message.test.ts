@@ -43,16 +43,21 @@ describe('parse bpmn as json for message intermediate catch event', () => {
 
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.MESSAGE, 1);
 
-    verifyShape(model.flowNodes[0], {
-      shapeId: 'shape_intermediateCatchEvent_id_0',
-      bpmnElementId: 'event_id_0',
-      bpmnElementName: 'event name',
-      bpmnElementKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
-    });
+    verifyShape(
+      model.flowNodes[0],
+      {
+        shapeId: 'shape_intermediateCatchEvent_id_0',
+        bpmnElementId: 'event_id_0',
+        bpmnElementName: 'event name',
+        bpmnElementKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+      },
+      {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+    );
   });
 
   it('json containing one process with a message intermediate catch event defined as object, message intermediate catch event is present', () => {
@@ -80,16 +85,21 @@ describe('parse bpmn as json for message intermediate catch event', () => {
 
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.MESSAGE, 1);
 
-    verifyShape(model.flowNodes[0], {
-      shapeId: 'shape_intermediateCatchEvent_id_0',
-      bpmnElementId: 'event_id_0',
-      bpmnElementName: 'event name',
-      bpmnElementKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
-    });
+    verifyShape(
+      model.flowNodes[0],
+      {
+        shapeId: 'shape_intermediateCatchEvent_id_0',
+        bpmnElementId: 'event_id_0',
+        bpmnElementName: 'event name',
+        bpmnElementKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+      },
+      {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+    );
   });
 
   it('json containing one process with a intermediate catch event with message definition and another definition, message event is NOT present', () => {

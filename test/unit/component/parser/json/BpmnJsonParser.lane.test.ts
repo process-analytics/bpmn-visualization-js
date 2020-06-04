@@ -39,16 +39,21 @@ describe('parse bpmn as json for lane', () => {
 
     const model = parseJsonAndExpectOnlyLanes(json, 1);
 
-    verifyShape(model.lanes[0], {
-      shapeId: 'Lane_1h5yeu4_di',
-      bpmnElementId: 'Lane_12u5n6x',
-      bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
-    });
+    verifyShape(
+      model.lanes[0],
+      {
+        shapeId: 'Lane_1h5yeu4_di',
+        bpmnElementId: 'Lane_12u5n6x',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.LANE,
+      },
+      {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+    );
   });
 
   it('json containing one process with a single lane with flowNodeRef as object & flowNode already parsed', () => {
@@ -81,16 +86,21 @@ describe('parse bpmn as json for lane', () => {
     const model = parseJson(json);
 
     expect(model.lanes).toHaveLength(1);
-    verifyShape(model.lanes[0], {
-      shapeId: 'Lane_1h5yeu4_di',
-      bpmnElementId: 'Lane_12u5n6x',
-      bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
-    });
+    verifyShape(
+      model.lanes[0],
+      {
+        shapeId: 'Lane_1h5yeu4_di',
+        bpmnElementId: 'Lane_12u5n6x',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.LANE,
+      },
+      {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+    );
 
     expect(model.flowNodes).toHaveLength(1);
     expect(model.flowNodes[0].bpmnElement.parentId).toEqual('Lane_12u5n6x');
@@ -118,16 +128,21 @@ describe('parse bpmn as json for lane', () => {
 
     const model = parseJsonAndExpectOnlyLanes(json, 1);
 
-    verifyShape(model.lanes[0], {
-      shapeId: 'Lane_1h5yeu4_di',
-      bpmnElementId: 'Lane_12u5n6x',
-      bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
-    });
+    verifyShape(
+      model.lanes[0],
+      {
+        shapeId: 'Lane_1h5yeu4_di',
+        bpmnElementId: 'Lane_12u5n6x',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.LANE,
+      },
+      {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+    );
   });
 
   it('json containing one process with a single lane with flowNodeRef as object & flowNode not parsed', () => {
@@ -153,16 +168,21 @@ describe('parse bpmn as json for lane', () => {
     const model = parseJson(json);
 
     expect(model.lanes).toHaveLength(1);
-    verifyShape(model.lanes[0], {
-      shapeId: 'Lane_1h5yeu4_di',
-      bpmnElementId: 'Lane_12u5n6x',
-      bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
-    });
+    verifyShape(
+      model.lanes[0],
+      {
+        shapeId: 'Lane_1h5yeu4_di',
+        bpmnElementId: 'Lane_12u5n6x',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.LANE,
+      },
+      {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+    );
   });
 
   it('json containing one process with a single lane with flowNodeRef as array', () => {
@@ -195,16 +215,21 @@ describe('parse bpmn as json for lane', () => {
     const model = parseJson(json);
 
     expect(model.lanes).toHaveLength(1);
-    verifyShape(model.lanes[0], {
-      shapeId: 'Lane_1h5yeu4_di',
-      bpmnElementId: 'Lane_12u5n6x',
-      bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
-    });
+    verifyShape(
+      model.lanes[0],
+      {
+        shapeId: 'Lane_1h5yeu4_di',
+        bpmnElementId: 'Lane_12u5n6x',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.LANE,
+      },
+      {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+    );
 
     expect(model.flowNodes).toHaveLength(1);
     expect(model.flowNodes[0].bpmnElement.parentId).toEqual('Lane_12u5n6x');
@@ -235,16 +260,21 @@ describe('parse bpmn as json for lane', () => {
 
     const model = parseJsonAndExpectOnlyLanes(json, 1);
 
-    verifyShape(model.lanes[0], {
-      shapeId: 'Lane_1h5yeu4_di',
-      bpmnElementId: 'Lane_12u5n6x',
-      bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
-    });
+    verifyShape(
+      model.lanes[0],
+      {
+        shapeId: 'Lane_1h5yeu4_di',
+        bpmnElementId: 'Lane_12u5n6x',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.LANE,
+      },
+      {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+    );
   });
 
   it('json containing one process with an array of lanes with & without name', () => {
@@ -287,25 +317,35 @@ describe('parse bpmn as json for lane', () => {
 
     const model = parseJsonAndExpectOnlyLanes(json, 2);
 
-    verifyShape(model.lanes[0], {
-      shapeId: 'Lane_164yevk_di',
-      bpmnElementId: 'Lane_164yevk',
-      bpmnElementName: 'Customer',
-      bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
-    });
-    verifyShape(model.lanes[1], {
-      shapeId: 'Lane_12u5n6x_di',
-      bpmnElementId: 'Lane_12u5n6x',
-      bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 666,
-      boundsY: 222,
-      boundsWidth: 22,
-      boundsHeight: 33,
-    });
+    verifyShape(
+      model.lanes[0],
+      {
+        shapeId: 'Lane_164yevk_di',
+        bpmnElementId: 'Lane_164yevk',
+        bpmnElementName: 'Customer',
+        bpmnElementKind: ShapeBpmnElementKind.LANE,
+      },
+      {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+    );
+    verifyShape(
+      model.lanes[1],
+      {
+        shapeId: 'Lane_12u5n6x_di',
+        bpmnElementId: 'Lane_12u5n6x',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.LANE,
+      },
+      {
+        x: 666,
+        y: 222,
+        width: 22,
+        height: 33,
+      },
+    );
   });
 });
