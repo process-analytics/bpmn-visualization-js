@@ -273,13 +273,13 @@ describe('mxGraph model', () => {
     return cell;
   }
 
-  function expectModelContainsEdge(cellId: string, kind: SequenceFlowKind, startArrow?: string, expectedValue?: ExpectedFont): mxgraph.mxCell {
+  function expectModelContainsEdge(cellId: string, kind: SequenceFlowKind, startArrow?: string, expectedFont?: ExpectedFont): mxgraph.mxCell {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(kind);
 
     const state = bpmnVisu.graph.getView().getState(cell);
     expect(state.style[mxConstants.STYLE_STARTARROW]).toEqual(startArrow);
-    expectFont(state, expectedValue);
+    expectFont(state, expectedFont);
     return cell;
   }
 
