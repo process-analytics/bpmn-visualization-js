@@ -164,6 +164,20 @@ export function verifyLabelFont(label: Label, expectedFont?: ExpectedFont): void
   }
 }
 
+export function verifyLabelBounds(label: Label, expectedValue?: ExpectedBounds): void {
+  expect(label).toBeDefined();
+
+  const bounds = label.bounds;
+  if (expectedValue) {
+    expect(bounds.x).toEqual(expectedValue.x);
+    expect(bounds.y).toEqual(expectedValue.y);
+    expect(bounds.width).toEqual(expectedValue.width);
+    expect(bounds.height).toEqual(expectedValue.height);
+  } else {
+    expect(bounds).toBeUndefined();
+  }
+}
+
 export function parseJsonAndExpectOnlyEvent(json: string, kind: ShapeBpmnEventKind, expectedNumber: number): BpmnModel {
   const model = parseJson(json);
 
