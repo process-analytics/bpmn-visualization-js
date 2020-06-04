@@ -89,11 +89,23 @@ export default class MxGraphRenderer {
     }
 
     let style = bpmnElement.kind as string;
-    styleValues.forEach((value, key) => {
-      if (value) {
-        style += ';' + key + '=' + value;
-      }
-    });
+    // styleValues.forEach((value, key) => {
+    //   if (value) {
+    //     style += ';' + key + '=' + value;
+    //   }
+    // });
+
+    style +=
+      ';' + // TODO only if the style values generate not empty string
+      [...styleValues]
+        .filter(([, v]) => v)
+        .map(([key, value]) => key + '=' + value)
+        .join(';');
+
+    // TODO refactor to manage empty string
+    // let styleArray: string[] = [bpmnElement.kind];
+    // push styleValues as string[] in styleArray
+    // join everything with ';'
 
     return style;
   }
