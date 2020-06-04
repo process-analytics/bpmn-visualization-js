@@ -38,30 +38,22 @@ describe('mxgraph renderer', () => {
 
   it('compute style of shape with no label', () => {
     const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_USER));
-
-    const style = mxGraphRenderer.computeStyle(shape);
-    expect(style).toEqual('userTask');
+    expect(mxGraphRenderer.computeStyle(shape)).toEqual('userTask');
   });
 
   it('compute style of shape with a no font label', () => {
     const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_END), undefined, new Label(undefined, undefined));
-
-    const style = mxGraphRenderer.computeStyle(shape);
-    expect(style).toEqual('endEvent');
+    expect(mxGraphRenderer.computeStyle(shape)).toEqual('endEvent');
   });
 
   it('compute style of shape with label including bold font', () => {
     const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE), undefined, new Label(toFont({ name: 'Courier', size: 9, isBold: true }), undefined));
-
-    const style = mxGraphRenderer.computeStyle(shape);
-    expect(style).toEqual('exclusiveGateway;fontFamily=Courier;fontSize=9;fontStyle=1');
+    expect(mxGraphRenderer.computeStyle(shape)).toEqual('exclusiveGateway;fontFamily=Courier;fontSize=9;fontStyle=1');
   });
 
   it('compute style of shape with label including italic font', () => {
     const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH), undefined, new Label(toFont({ name: 'Arial', isItalic: true }), undefined));
-
-    const style = mxGraphRenderer.computeStyle(shape);
-    expect(style).toEqual('intermediateCatchEvent;fontFamily=Arial;fontStyle=2');
+    expect(mxGraphRenderer.computeStyle(shape)).toEqual('intermediateCatchEvent;fontFamily=Arial;fontStyle=2');
   });
 
   // it('compute edge style', () => {
