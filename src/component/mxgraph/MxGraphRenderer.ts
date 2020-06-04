@@ -21,6 +21,7 @@ import ShapeBpmnElement, { ShapeBpmnEvent } from '../../model/bpmn/shape/ShapeBp
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
 import { StyleConstant } from './StyleConfigurator';
+import { Font } from '../../model/bpmn/Label';
 
 interface Coordinate {
   x: number;
@@ -66,47 +67,41 @@ export default class MxGraphRenderer {
       const bounds = shape.bounds;
       const parent = this.getParent(bpmnElement);
       const absoluteCoordinate = { x: bounds.x, y: bounds.y };
-      const style = this.computeStyleName(shape);
+      const style = this.computeStyle(shape);
       this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
     }
   }
 
-  private computeStyleName(shape: Shape): string {
-    const bpmnElement = shape.bpmnElement;
+  computeStyle(bpmnCell: Shape | Edge): string {
+    const styleValues = new Map<string, string | number>();
 
-    let style = bpmnElement.kind as string;
-    if (bpmnElement instanceof ShapeBpmnEvent) {
-      style += ';' + StyleConstant.BPMN_STYLE_EVENT_KIND + '=' + bpmnElement.eventKind;
+    const font = bpmnCell.label?.font;
+    if (font) {
+      styleValues.set(this.mxConstants.STYLE_FONTFAMILY, font.name);
+      styleValues.set(this.mxConstants.STYLE_FONTSIZE, font.size);
+      styleValues.set(this.mxConstants.STYLE_FONTSTYLE, this.getFontStyleValue(font));
     }
-    style += this.computeFontStyle(shape);
 
-    return style;
+    const bpmnElement = bpmnCell.bpmnElement;
+    if (bpmnElement instanceof ShapeBpmnEvent) {
+      styleValues.set(StyleConstant.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
+    }
+
+    return [bpmnElement.kind as string] //
+      .concat([...styleValues].filter(([, v]) => v).map(([key, value]) => key + '=' + value))
+      .join(';');
   }
 
-  private computeFontStyle(bpmnCell: Shape | Edge): string {
-    let style = '';
-
-    const font = bpmnCell?.label?.font;
-    if (font) {
-      if (font.name) {
-        style += ';' + this.mxConstants.STYLE_FONTFAMILY + '=' + font.name;
-      }
-
-      if (font.size) {
-        style += ';' + this.mxConstants.STYLE_FONTSIZE + '=' + font.size;
-      }
-
-      if (font.isBold) {
-        style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_BOLD;
-      } else if (font.isItalic) {
-        style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_ITALIC;
-      } else if (font.isStrikeThrough) {
-        style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_STRIKETHROUGH;
-      } else if (font.isUnderline) {
-        style += ';' + this.mxConstants.STYLE_FONTSTYLE + '=' + this.mxConstants.FONT_UNDERLINE;
-      }
+  private getFontStyleValue(font: Font): number {
+    if (font.isBold) {
+      return this.mxConstants.FONT_BOLD;
+    } else if (font.isItalic) {
+      return this.mxConstants.FONT_ITALIC;
+    } else if (font.isStrikeThrough) {
+      return this.mxConstants.FONT_STRIKETHROUGH;
+    } else if (font.isUnderline) {
+      return this.mxConstants.FONT_UNDERLINE;
     }
-    return style;
   }
 
   private insertEdges(edges: Edge[]): void {
@@ -114,14 +109,10 @@ export default class MxGraphRenderer {
       const bpmnElement = edge.bpmnElement;
       if (bpmnElement) {
         const parent = this.graph.getDefaultParent();
-        const mxEdge = this.graph.insertEdge(
-          parent,
-          bpmnElement.id,
-          bpmnElement.name,
-          this.getCell(bpmnElement.sourceRefId),
-          this.getCell(bpmnElement.targetRefId),
-          bpmnElement.kind,
-        );
+        const source = this.getCell(bpmnElement.sourceRefId);
+        const target = this.getCell(bpmnElement.targetRefId);
+        const style = this.computeStyle(edge);
+        const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
         this.insertWaypoints(edge.waypoints, mxEdge);
       }
     });

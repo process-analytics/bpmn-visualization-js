@@ -94,12 +94,7 @@ export default class StyleConfigurator {
 
   private configureDefaultVertexStyle(): void {
     const style = this.getDefaultVertexStyle();
-    style[this.mxConstants.STYLE_HORIZONTAL] = true;
-    style[this.mxConstants.STYLE_FONTSIZE] = 12;
-    style[this.mxConstants.STYLE_FILLCOLOR] = 'white';
-    style[this.mxConstants.STYLE_FONTCOLOR] = 'black';
-    style[this.mxConstants.STYLE_STROKECOLOR] = 'black';
-    style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
+    this.configureCommonDefaultStyle(style);
   }
 
   private configurePoolStyle(): void {
@@ -182,16 +177,20 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_EDGE] = this.mxConstants.EDGESTYLE_SEGMENT;
     style[this.mxConstants.STYLE_ENDARROW] = this.mxConstants.ARROW_BLOCK_THIN;
     style[this.mxConstants.STYLE_ENDSIZE] = 12;
-    style[this.mxConstants.STYLE_STROKECOLOR] = 'Black';
     style[this.mxConstants.STYLE_STROKEWIDTH] = 1.5;
     style[this.mxConstants.STYLE_ROUNDED] = 1;
     style[this.mxConstants.STYLE_ARCSIZE] = 5;
-
-    style[this.mxConstants.STYLE_FONTSIZE] = 15;
-    style[this.mxConstants.STYLE_FILLCOLOR] = 'White';
-    style[this.mxConstants.STYLE_FONTCOLOR] = 'Black';
-    style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
     style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
+
+    this.configureCommonDefaultStyle(style);
+  }
+
+  private configureCommonDefaultStyle(style: any): void {
+    style[this.mxConstants.STYLE_FONTSIZE] = 12;
+    style[this.mxConstants.STYLE_FONTCOLOR] = 'Black';
+    style[this.mxConstants.STYLE_FILLCOLOR] = 'White';
+    style[this.mxConstants.STYLE_STROKECOLOR] = 'Black';
+    style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
   }
 
   private configureSequenceFlowsStyle(): void {
