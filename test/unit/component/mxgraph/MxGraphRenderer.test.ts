@@ -20,6 +20,9 @@ import ShapeBpmnElement from '../../../../src/model/bpmn/shape/ShapeBpmnElement'
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import Label, { Font } from '../../../../src/model/bpmn/Label';
 import { ExpectedFont } from '../parser/json/JsonTestUtils';
+import Edge from '../../../../src/model/bpmn/edge/Edge';
+import SequenceFlow from '../../../../src/model/bpmn/edge/SequenceFlow';
+import { SequenceFlowKind } from '../../../../src/model/bpmn/edge/SequenceFlowKind';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
@@ -31,6 +34,14 @@ function toFont(font: ExpectedFont): Font {
  */
 function newShapeBpmnElement(kind: ShapeBpmnElementKind): ShapeBpmnElement {
   return new ShapeBpmnElement('id', 'name', kind);
+}
+
+/**
+ * Returns a new `SequenceFlow` instance with arbitrary id and name.
+ * @param kind the `SequenceFlowKind` to set in the new `SequenceFlow` instance
+ */
+function newSequenceFlow(kind: SequenceFlowKind): SequenceFlow {
+  return new SequenceFlow('id', 'name', undefined, undefined, kind);
 }
 
 describe('mxgraph renderer', () => {
@@ -56,10 +67,23 @@ describe('mxgraph renderer', () => {
     expect(mxGraphRenderer.computeStyle(shape)).toEqual('intermediateCatchEvent;fontFamily=Arial;fontStyle=2');
   });
 
-  // it('compute edge style', () => {
-  //
-  //   const shape = new Shape('id', null, undefined, undefined);
-  //
-  //   mxGraphRenderer.computeStyle(null);
-  // });
+  it('compute style of edge with no label', () => {
+    const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_GATEWAY));
+    expect(mxGraphRenderer.computeStyle(edge)).toEqual('conditional_from_gateway');
+  });
+
+  it('compute style of edge with a no font label', () => {
+    const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(undefined, undefined));
+    expect(mxGraphRenderer.computeStyle(edge)).toEqual('normal');
+  });
+
+  it('compute style of edge with label including strike-through font', () => {
+    const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
+    expect(mxGraphRenderer.computeStyle(edge)).toEqual('conditional_from_activity;fontSize=14.2;fontStyle=8');
+  });
+
+  it('compute style of edge with label including underline font', () => {
+    const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
+    expect(mxGraphRenderer.computeStyle(edge)).toEqual('default;fontStyle=4');
+  });
 });
