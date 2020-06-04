@@ -67,6 +67,11 @@ describe('mxgraph renderer', () => {
     expect(mxGraphRenderer.computeStyle(shape)).toEqual('intermediateCatchEvent;fontFamily=Arial;fontStyle=2');
   });
 
+  it('compute style of shape with label including bold/italic font', () => {
+    const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW), undefined, new Label(toFont({ isBold: true, isItalic: true }), undefined));
+    expect(mxGraphRenderer.computeStyle(shape)).toEqual('intermediateThrowEvent;fontStyle=3');
+  });
+
   it('compute style of edge with no label', () => {
     const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_GATEWAY));
     expect(mxGraphRenderer.computeStyle(edge)).toEqual('conditional_from_gateway');
@@ -85,5 +90,15 @@ describe('mxgraph renderer', () => {
   it('compute style of edge with label including underline font', () => {
     const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
     expect(mxGraphRenderer.computeStyle(edge)).toEqual('default;fontStyle=4');
+  });
+
+  it('compute style of edge with label including bold/italic/strike-through/underline font', () => {
+    const edge = new Edge(
+      'id',
+      newSequenceFlow(SequenceFlowKind.NORMAL),
+      undefined,
+      new Label(toFont({ isBold: true, isItalic: true, isStrikeThrough: true, isUnderline: true }), undefined),
+    );
+    expect(mxGraphRenderer.computeStyle(edge)).toEqual('normal;fontStyle=15');
   });
 });
