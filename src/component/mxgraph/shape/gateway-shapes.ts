@@ -16,8 +16,8 @@
 
 import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
-import { StyleConstant } from '../StyleConfigurator';
-import MxScaleFactorCanvas, { MxCanvasUtil } from '../extension/MxScaleFactorCanvas';
+import { StyleConstant } from '../StyleUtils';
+import IconPainter, { PaintParameter } from './IconPainter';
 
 const mxRhombus: typeof mxgraph.mxRhombus = MxGraphFactoryService.getMxGraphProperty('mxRhombus');
 
@@ -26,32 +26,15 @@ abstract class GatewayShape extends mxRhombus {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  protected abstract paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void;
+  protected abstract paintInnerShape(paintParameter: PaintParameter): void;
 
   public paintVertexShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    this.paintOuterShape(c, x, y, w, h);
-    this.paintInnerShape(c, x, y, w, h);
+    this.paintOuterShape({ c, x, y, w, h });
+    this.paintInnerShape({ c, x, y, w, h, style: this.style });
   }
 
-  protected paintOuterShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+  protected paintOuterShape({ c, x, y, w, h }: PaintParameter): void {
     super.paintVertexShape(c, x, y, w, h);
-  }
-
-  protected paintCrossIcon(canvas: MxScaleFactorCanvas): void {
-    canvas.begin();
-    canvas.moveTo(0.38, 0);
-    canvas.lineTo(0.62, 0);
-    canvas.lineTo(0.62, 0.38);
-    canvas.lineTo(1, 0.38);
-    canvas.lineTo(1, 0.62);
-    canvas.lineTo(0.62, 0.62);
-    canvas.lineTo(0.62, 1);
-    canvas.lineTo(0.38, 1);
-    canvas.lineTo(0.38, 0.62);
-    canvas.lineTo(0, 0.62);
-    canvas.lineTo(0, 0.38);
-    canvas.lineTo(0.38, 0.38);
-    canvas.close();
   }
 }
 
@@ -60,18 +43,8 @@ export class ExclusiveGatewayShape extends GatewayShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    this.addExclusiveGatewaySymbol(c, x, y, w, h);
-  }
-
-  private addExclusiveGatewaySymbol(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, this.stroke);
-    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
-    this.paintCrossIcon(canvas);
-    const xRotation = w / 4;
-    const yRotation = h / 4;
-    canvas.rotate(45, false, false, xRotation, yRotation);
-    canvas.fillAndStroke();
+  protected paintInnerShape(paintParameter: PaintParameter): void {
+    IconPainter.paintXCrossIcon(paintParameter);
   }
 }
 
@@ -80,16 +53,8 @@ export class ParallelGatewayShape extends GatewayShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    this.addParallelGatewaySymbol(c, x, y, w, h);
-  }
-
-  private addParallelGatewaySymbol(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, this.stroke);
-    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
-
-    this.paintCrossIcon(canvas);
-    canvas.fillAndStroke();
+  protected paintInnerShape(paintParameter: PaintParameter): void {
+    IconPainter.paintPlusCrossIcon(paintParameter);
   }
 }
 
@@ -98,25 +63,7 @@ export class InclusiveGatewayShape extends GatewayShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  protected paintInnerShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    this.addInclusiveGatewaySymbol(c, x, y, w, h);
-  }
-
-  private addInclusiveGatewaySymbol(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, this.stroke);
-    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
-    c.setFillColor(this.fill);
-    c.setStrokeWidth(StyleConstant.STROKE_WIDTH_THICK);
-
-    const arcRay = 1 / 6;
-    const arcX = 1 / 6;
-    const arcY = 1 / 6;
-    canvas.begin();
-    canvas.moveTo(arcX, arcY);
-    canvas.arcTo(arcRay, arcRay, 0, 0, 0, 5 * arcX, 5 * arcY);
-    canvas.arcTo(arcRay, arcRay, 0, 0, 0, arcX, arcY);
-    canvas.close();
-
-    canvas.fillAndStroke();
+  protected paintInnerShape(paintParameter: PaintParameter): void {
+    IconPainter.paintUnfilledCircleIcon(paintParameter);
   }
 }

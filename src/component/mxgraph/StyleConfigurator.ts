@@ -20,12 +20,6 @@ import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../model/bpmn/edge/SequenceFlowKind';
 import { MarkerConstant } from './MarkerConfigurator';
 
-export enum StyleConstant {
-  STROKE_WIDTH_THIN = 2,
-  STROKE_WIDTH_THICK = 5,
-  BPMN_STYLE_EVENT_KIND = 'bpmn.eventKind',
-}
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
   private mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');

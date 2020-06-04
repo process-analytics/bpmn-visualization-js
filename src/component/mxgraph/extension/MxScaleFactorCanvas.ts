@@ -68,6 +68,42 @@ export default class MxScaleFactorCanvas {
   }
 }
 
+export interface MxCanvasConfiguration {
+  dx: number;
+  dy: number;
+  scale: number;
+  alpha: number;
+  fillAlpha: number;
+  fillColor: any;
+  strokeAlpha: number;
+  strokeColor: any;
+  strokeWidth: number;
+  fontColor: string;
+  fontBackgroundColor: any;
+  fontBorderColor: any;
+  fontSize: number;
+  fontFamily: string;
+  fontStyle: number;
+  shadow: boolean;
+  shadowColor: string;
+  shadowAlpha: number;
+  shadowDx: number;
+  shadowDy: number;
+  gradientFillAlpha: number;
+  gradientColor: any;
+  gradientAlpha: number;
+  gradientDirection: any;
+  dashed: boolean;
+  dashPattern: string;
+  fixDash: boolean;
+  lineCap: string;
+  lineJoin: string;
+  miterLimit: number;
+  rotation: number;
+  rotationCx: number;
+  rotationCy: number;
+}
+
 export class MxCanvasUtil {
   public static getConfiguredCanvas(
     canvas: mxgraph.mxXmlCanvas2D,
