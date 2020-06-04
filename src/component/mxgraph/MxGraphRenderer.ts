@@ -73,8 +73,7 @@ export default class MxGraphRenderer {
   }
 
   computeStyle(bpmnCell: Shape | Edge): string {
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    const styleValues = new Map<string, any>();
+    const styleValues = new Map<string, string | number>();
 
     const font = bpmnCell.label?.font;
     if (font) {
@@ -88,26 +87,9 @@ export default class MxGraphRenderer {
       styleValues.set(StyleConstant.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
     }
 
-    let style = bpmnElement.kind as string;
-    styleValues.forEach((value, key) => {
-      if (value) {
-        style += ';' + key + '=' + value;
-      }
-    });
-
-    // style +=
-    //   ';' + // TODO only if the style values generate not empty string
-    //   [...styleValues]
-    //     .filter(([, v]) => v)
-    //     .map(([key, value]) => key + '=' + value)
-    //     .join(';');
-
-    // TODO refactor to manage empty string
-    // let styleArray: string[] = [bpmnElement.kind];
-    // push styleValues as string[] in styleArray
-    // join everything with ';'
-
-    return style;
+    return [bpmnElement.kind as string] //
+      .concat([...styleValues].filter(([, v]) => v).map(([key, value]) => key + '=' + value))
+      .join(';');
   }
 
   private getFontStyleValue(font: Font): number {
