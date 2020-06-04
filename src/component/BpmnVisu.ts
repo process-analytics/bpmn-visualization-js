@@ -13,15 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
 import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { defaultBpmnParser } from './parser/BpmnParser';
-import { MxGraphFactoryService } from '../service/MxGraphFactoryService';
+
+declare const mxClient: typeof mxgraph.mxClient;
+declare const mxUtils: typeof mxgraph.mxUtils;
 
 export default class BpmnVisu {
-  private mxClient: typeof mxgraph.mxClient = MxGraphFactoryService.getMxGraphProperty('mxClient');
-  private mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
+  private mxClient: typeof mxgraph.mxClient = mxClient;
+  private mxUtils: typeof mxgraph.mxUtils = mxUtils;
 
   public readonly graph: mxgraph.mxGraph;
 

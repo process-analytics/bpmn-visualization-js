@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
+
 import { mxgraph } from 'ts-mxgraph';
+
+declare const mxMarker: typeof mxgraph.mxMarker;
 
 export enum MarkerConstant {
   ARROW_DASH = 'bpmn.dash',
 }
 
 export default class MarkerConfigurator {
-  private mxMarker: typeof mxgraph.mxMarker = MxGraphFactoryService.getMxGraphProperty('mxMarker');
+  private mxMarker: typeof mxgraph.mxMarker = mxMarker;
 
   public configureMarkers(): void {
     this.registerArrowDashMarker();

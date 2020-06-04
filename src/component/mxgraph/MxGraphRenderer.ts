@@ -13,20 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { mxgraph } from 'ts-mxgraph';
 import Shape from '../../model/bpmn/shape/Shape';
 import Edge from '../../model/bpmn/edge/Edge';
 import BpmnModel from '../../model/bpmn/BpmnModel';
 import ShapeBpmnElement, { ShapeBpmnEvent } from '../../model/bpmn/shape/ShapeBpmnElement';
-import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
 import { StyleConstant } from './StyleUtils';
 import { Font } from '../../model/bpmn/Label';
 import CoordinatesTranslator from './extension/CoordinatesTranslator';
 
+declare const mxPoint: typeof mxgraph.mxPoint;
+declare const mxConstants: typeof mxgraph.mxConstants;
+
 export default class MxGraphRenderer {
-  private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
-  private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
+  private mxPoint: typeof mxgraph.mxPoint = mxPoint;
+  private mxConstants: typeof mxgraph.mxConstants = mxConstants;
 
   constructor(readonly graph: mxgraph.mxGraph, readonly coordinatesTranslator: CoordinatesTranslator) {}
 

@@ -13,17 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
+
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape } from './shape/event-shapes';
 import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from './shape/gateway-shapes';
 import { ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape } from './shape/task-shapes';
 
+declare const mxClient: typeof mxgraph.mxClient;
+declare const mxShape: typeof mxgraph.mxShape;
+declare const mxCellRenderer: typeof mxgraph.mxCellRenderer;
+declare const mxSvgCanvas2D: any;
+
 export default class ShapeConfigurator {
-  private mxClient: typeof mxgraph.mxClient = MxGraphFactoryService.getMxGraphProperty('mxClient');
-  private mxShape: typeof mxgraph.mxShape = MxGraphFactoryService.getMxGraphProperty('mxShape');
-  private mxCellRenderer: typeof mxgraph.mxCellRenderer = MxGraphFactoryService.getMxGraphProperty('mxCellRenderer');
+  private mxClient: typeof mxgraph.mxClient = mxClient;
+  private mxShape: typeof mxgraph.mxShape = mxShape;
+  private mxCellRenderer: typeof mxgraph.mxCellRenderer = mxCellRenderer;
 
   public configureShapes(): void {
     this.initMxShapePrototype(this.mxClient.IS_FF);
@@ -52,7 +57,6 @@ export default class ShapeConfigurator {
     this.mxShape.prototype.createSvgCanvas = function() {
       // TODO should be 'typeof mxgraph.mxSvgCanvas2D', current type definition does not declare 'minStrokeWidth'
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const mxSvgCanvas2D: any = MxGraphFactoryService.getMxGraphProperty('mxSvgCanvas2D');
       const canvas = new mxSvgCanvas2D(this.node, false);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
       canvas.pointerEventsValue = this.svgPointerEvents;

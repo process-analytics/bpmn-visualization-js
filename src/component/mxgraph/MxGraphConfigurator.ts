@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { mxgraph } from 'ts-mxgraph';
-import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import StyleConfigurator from './StyleConfigurator';
 import ShapeConfigurator from './ShapeConfigurator';
 import MarkerConfigurator from './MarkerConfigurator';
+
+declare const mxGraph: typeof mxgraph.mxGraph;
+declare const mxGraphModel: typeof mxgraph.mxGraphModel;
 
 /**
  * Configure the mxGraph graph that can be used by the lib
@@ -27,8 +30,8 @@ import MarkerConfigurator from './MarkerConfigurator';
  *     <li>markers
  */
 export default class MxGraphConfigurator {
-  private mxGraph: typeof mxgraph.mxGraph = MxGraphFactoryService.getMxGraphProperty('mxGraph');
-  private mxGraphModel: typeof mxgraph.mxGraphModel = MxGraphFactoryService.getMxGraphProperty('mxGraphModel');
+  private mxGraph: typeof mxgraph.mxGraph = mxGraph;
+  private mxGraphModel: typeof mxgraph.mxGraphModel = mxGraphModel;
 
   private readonly graph: mxgraph.mxGraph;
 

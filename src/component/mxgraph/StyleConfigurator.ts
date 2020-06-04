@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
-import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../model/bpmn/edge/SequenceFlowKind';
 import { MarkerConstant } from './MarkerConfigurator';
@@ -23,9 +23,9 @@ import { StyleConstant } from './StyleUtils';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
-  private mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
-  private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
-  private mxPerimeter: typeof mxgraph.mxPerimeter = MxGraphFactoryService.getMxGraphProperty('mxPerimeter');
+  private mxUtils: typeof mxgraph.mxUtils = mxUtils;
+  private mxConstants: typeof mxgraph.mxConstants = mxConstants;
+  private mxPerimeter: typeof mxgraph.mxPerimeter = mxPerimeter;
 
   private specificEdgeStyles: Map<SequenceFlowKind, (style: any) => void> = new Map([
     [
