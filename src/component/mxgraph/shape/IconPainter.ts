@@ -50,8 +50,7 @@ export default class IconPainter {
     const strokeColor = StyleUtils.getStrokeColor(style);
 
     // Choose dark color for the envelope outline
-    c.setStrokeWidth('inherit');
-    c.setStrokeColor(strokeColor);
+    c.setStrokeWidth(0);
 
     if (isFilled) {
       // Choose dark color for the envelope background
@@ -110,11 +109,8 @@ export default class IconPainter {
   }
 
   public static paintUnfilledCircleIcon({ c, x, y, w, h, style }: PaintParameter) {
-    const fillColor = StyleUtils.getFillColor(style);
-
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, fillColor);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, StyleConstant.STROKE_WIDTH_THICK);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
-    c.setStrokeWidth(StyleConstant.STROKE_WIDTH_THICK);
 
     const arcRay = 1 / 6;
     const arcX = 1 / 6;
@@ -131,7 +127,7 @@ export default class IconPainter {
   // implementation adapted from https://www.flaticon.com/free-icon/clock_223404
   public static paintClockIcon({ c, x, y, w, h, style }: PaintParameter): void {
     const strokeColor = StyleUtils.getStrokeColor(style);
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 152, strokeColor, 0);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 152, 0, strokeColor);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 5);
 
     canvas.begin();
@@ -226,7 +222,7 @@ export default class IconPainter {
 
   public static paintXCrossIcon({ c, x, y, w, h, style }: PaintParameter) {
     const strokeColor = StyleUtils.getStrokeColor(style);
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, strokeColor);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, 0, strokeColor);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
     IconPainter.drawCrossIcon(canvas);
     const xRotation = w / 4;
@@ -237,7 +233,7 @@ export default class IconPainter {
 
   public static paintPlusCrossIcon({ c, x, y, w, h, style }: PaintParameter) {
     const strokeColor = StyleUtils.getStrokeColor(style);
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, strokeColor);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, 0, strokeColor);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
 
     IconPainter.drawCrossIcon(canvas);
@@ -267,7 +263,7 @@ export default class IconPainter {
     // generated icon h="239.68" w="143.61"
     const generatedIconHeight = 239;
     const strokeColor = StyleUtils.getStrokeColor(style);
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, generatedIconHeight, strokeColor, 0);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, generatedIconHeight, 0, strokeColor);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 20);
 
     canvas.begin();
@@ -353,7 +349,7 @@ export default class IconPainter {
   // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L898
   public static paintGearIcon({ c, x, y, w, h, style }: PaintParameter) {
     // icon coordinates fill a 100x100 rectangle (approximately: 90x90 + foreground translation)
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 100);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 100, 0);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 20);
 
     // background

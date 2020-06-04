@@ -68,40 +68,26 @@ export default class MxScaleFactorCanvas {
   }
 }
 
-export interface MxCanvasConfiguration {
-  dx: number;
-  dy: number;
-  scale: number;
+export interface MxXmlCanvas2DConfiguration {
   alpha: number;
   fillAlpha: number;
-  fillColor: any;
+  fillColor: string;
   strokeAlpha: number;
-  strokeColor: any;
+  strokeColor: string;
   strokeWidth: number;
   fontColor: string;
-  fontBackgroundColor: any;
-  fontBorderColor: any;
+  fontBackgroundColor: string;
+  fontBorderColor: string;
   fontSize: number;
   fontFamily: string;
   fontStyle: number;
   shadow: boolean;
   shadowColor: string;
   shadowAlpha: number;
-  shadowDx: number;
-  shadowDy: number;
   gradientFillAlpha: number;
-  gradientColor: any;
+  gradientColor: string;
   gradientAlpha: number;
-  gradientDirection: any;
-  dashed: boolean;
-  dashPattern: string;
-  fixDash: boolean;
-  lineCap: string;
-  lineJoin: string;
-  miterLimit: number;
-  rotation: number;
-  rotationCx: number;
-  rotationCy: number;
+  gradientDirection: string;
 }
 
 export class MxCanvasUtil {
@@ -110,11 +96,15 @@ export class MxCanvasUtil {
     parentWidth: number,
     parentHeight: number,
     iconOriginalSize: number,
-    fillColor = '#FFF',
-    strokeWidth = 1,
+    strokeWidth?: number,
+    fillColor?: string,
   ): MxScaleFactorCanvas {
-    canvas.setStrokeWidth(strokeWidth);
-    canvas.setFillColor(fillColor);
+    if (strokeWidth || strokeWidth === 0) {
+      canvas.setStrokeWidth(strokeWidth);
+    }
+    if (fillColor) {
+      canvas.setFillColor(fillColor);
+    }
 
     const parentSize = Math.min(parentWidth, parentHeight);
     const ratioFromParent = 0.25;
