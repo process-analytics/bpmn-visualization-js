@@ -72,7 +72,7 @@ export default class MxGraphRenderer {
     }
   }
 
-  private computeStyle(bpmnCell: Shape | Edge): string {
+  computeStyle(bpmnCell: Shape | Edge): string {
     /* eslint-disable @typescript-eslint/no-explicit-any */
     const styleValues = new Map<string, any>();
 
@@ -89,18 +89,18 @@ export default class MxGraphRenderer {
     }
 
     let style = bpmnElement.kind as string;
-    // styleValues.forEach((value, key) => {
-    //   if (value) {
-    //     style += ';' + key + '=' + value;
-    //   }
-    // });
+    styleValues.forEach((value, key) => {
+      if (value) {
+        style += ';' + key + '=' + value;
+      }
+    });
 
-    style +=
-      ';' + // TODO only if the style values generate not empty string
-      [...styleValues]
-        .filter(([, v]) => v)
-        .map(([key, value]) => key + '=' + value)
-        .join(';');
+    // style +=
+    //   ';' + // TODO only if the style values generate not empty string
+    //   [...styleValues]
+    //     .filter(([, v]) => v)
+    //     .map(([key, value]) => key + '=' + value)
+    //     .join(';');
 
     // TODO refactor to manage empty string
     // let styleArray: string[] = [bpmnElement.kind];
