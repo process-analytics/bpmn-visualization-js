@@ -68,44 +68,8 @@ export default class MxScaleFactorCanvas {
   }
 }
 
-export interface MxXmlCanvas2DConfiguration {
-  alpha: number;
-  fillAlpha: number;
-  fillColor: string;
-  strokeAlpha: number;
-  strokeColor: string;
-  strokeWidth: number;
-  fontColor: string;
-  fontBackgroundColor: string;
-  fontBorderColor: string;
-  fontSize: number;
-  fontFamily: string;
-  fontStyle: number;
-  shadow: boolean;
-  shadowColor: string;
-  shadowAlpha: number;
-  gradientFillAlpha: number;
-  gradientColor: string;
-  gradientAlpha: number;
-  gradientDirection: string;
-}
-
 export class MxCanvasUtil {
-  public static getConfiguredCanvas(
-    canvas: mxgraph.mxXmlCanvas2D,
-    parentWidth: number,
-    parentHeight: number,
-    iconOriginalSize: number,
-    strokeWidth?: number,
-    fillColor?: string,
-  ): MxScaleFactorCanvas {
-    if (strokeWidth || strokeWidth === 0) {
-      canvas.setStrokeWidth(strokeWidth);
-    }
-    if (fillColor) {
-      canvas.setFillColor(fillColor);
-    }
-
+  public static getConfiguredCanvas(canvas: mxgraph.mxXmlCanvas2D, parentWidth: number, parentHeight: number, iconOriginalSize: number): MxScaleFactorCanvas {
     const parentSize = Math.min(parentWidth, parentHeight);
     const ratioFromParent = 0.25;
     const scaleFactor = (parentSize / iconOriginalSize) * ratioFromParent;

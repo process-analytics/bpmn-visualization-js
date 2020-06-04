@@ -32,7 +32,31 @@ export interface PaintParameter {
   isFilled?: boolean;
 }
 
+export interface MxXmlCanvas2DConfiguration {
+  fillColor: string;
+  strokeColor: string;
+  strokeWidth: number;
+}
+
 export default class IconPainter {
+  private static updateCanvasStyle(canvas: mxgraph.mxXmlCanvas2D, style: any, isFilled = false, strokeWidth?: number) {
+    if (isFilled) {
+      // Choose dark color to fill the icon
+      const strokeColor = StyleUtils.getStrokeColor(style);
+      canvas.setFillColor(strokeColor);
+    } else {
+      // Choose light color to fill the icon
+      const fillColor = StyleUtils.getFillColor(style);
+      canvas.setFillColor(fillColor);
+    }
+
+    if (strokeWidth) {
+      canvas.setStrokeWidth(strokeWidth);
+    } else {
+      canvas.setStrokeWidth(0);
+    }
+  }
+
   public static paintEmptyIcon(): void {
     // empty by nature
   }
@@ -45,27 +69,15 @@ export default class IconPainter {
     w = w * 0.52;
     h = h * 0.32;
 
-    // Paint
-    const fillColor = StyleUtils.getFillColor(style);
-    const strokeColor = StyleUtils.getStrokeColor(style);
+    this.updateCanvasStyle(c, style, isFilled);
 
-    // Choose dark color for the envelope outline
-    c.setStrokeWidth(0);
-
-    if (isFilled) {
-      // Choose dark color for the envelope background
-      c.setFillColor(strokeColor);
-    } else {
-      // Choose light color for the envelope background
-      c.setFillColor(fillColor);
-    }
-
-    // Paint the envelope outline
+    // Paint the envelope outline with dark color
     c.rect(0, 0, w, h);
     c.fillAndStroke();
 
     if (isFilled) {
       // Choose light color for envelope closure
+      const fillColor = StyleUtils.getFillColor(style);
       c.setStrokeColor(fillColor);
     }
 
@@ -91,10 +103,9 @@ export default class IconPainter {
   // highly inspired from mxDoubleEllipse
   public static paintFilledCircleIcon({ c, x, y, w, h, style }: PaintParameter): void {
     const strokeWidth = StyleUtils.getStrokeWidth(style);
-    const strokeColor = StyleUtils.getStrokeColor(style);
 
-    c.setFillColor(strokeColor);
-    c.setStrokeWidth(0);
+    this.updateCanvasStyle(c, style, true);
+
     const inset = mxUtils.getValue(style, mxConstants.STYLE_MARGIN, Math.min(3 + strokeWidth, Math.min(w / 5, h / 5)));
     x += inset;
     y += inset;
@@ -109,8 +120,10 @@ export default class IconPainter {
   }
 
   public static paintUnfilledCircleIcon({ c, x, y, w, h, style }: PaintParameter) {
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, StyleConstant.STROKE_WIDTH_THICK);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
+
+    this.updateCanvasStyle(c, style, false, StyleConstant.STROKE_WIDTH_THICK);
 
     const arcRay = 1 / 6;
     const arcX = 1 / 6;
@@ -126,9 +139,10 @@ export default class IconPainter {
 
   // implementation adapted from https://www.flaticon.com/free-icon/clock_223404
   public static paintClockIcon({ c, x, y, w, h, style }: PaintParameter): void {
-    const strokeColor = StyleUtils.getStrokeColor(style);
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 152, 0, strokeColor);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 152);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 5);
+
+    this.updateCanvasStyle(c, style);
 
     canvas.begin();
     canvas.moveTo(184, 60);
@@ -221,9 +235,11 @@ export default class IconPainter {
   }
 
   public static paintXCrossIcon({ c, x, y, w, h, style }: PaintParameter) {
-    const strokeColor = StyleUtils.getStrokeColor(style);
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, 0, strokeColor);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
+
+    this.updateCanvasStyle(c, style, true);
+
     IconPainter.drawCrossIcon(canvas);
     const xRotation = w / 4;
     const yRotation = h / 4;
@@ -232,9 +248,10 @@ export default class IconPainter {
   }
 
   public static paintPlusCrossIcon({ c, x, y, w, h, style }: PaintParameter) {
-    const strokeColor = StyleUtils.getStrokeColor(style);
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, 0, strokeColor);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
+
+    this.updateCanvasStyle(c, style, true);
 
     IconPainter.drawCrossIcon(canvas);
     canvas.fillAndStroke();
@@ -262,9 +279,10 @@ export default class IconPainter {
   public static paintWomanIcon({ c, x, y, w, h, style }: PaintParameter) {
     // generated icon h="239.68" w="143.61"
     const generatedIconHeight = 239;
-    const strokeColor = StyleUtils.getStrokeColor(style);
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, generatedIconHeight, 0, strokeColor);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, generatedIconHeight);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 20);
+
+    this.updateCanvasStyle(c, style, true);
 
     canvas.begin();
     canvas.moveTo(124.31, 150.29);
@@ -349,8 +367,10 @@ export default class IconPainter {
   // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L898
   public static paintGearIcon({ c, x, y, w, h, style }: PaintParameter) {
     // icon coordinates fill a 100x100 rectangle (approximately: 90x90 + foreground translation)
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 100, 0);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 100);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 20);
+
+    this.updateCanvasStyle(c, style);
 
     // background
     this.paintGearIconBackground(canvas);
