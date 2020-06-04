@@ -164,15 +164,15 @@ export function verifyLabelFont(label: Label, expectedFont?: ExpectedFont): void
   }
 }
 
-export function verifyLabelBounds(label: Label, expectedValue?: ExpectedBounds): void {
+export function verifyLabelBounds(label: Label, expectedBounds?: ExpectedBounds): void {
   expect(label).toBeDefined();
 
   const bounds = label.bounds;
-  if (expectedValue) {
-    expect(bounds.x).toEqual(expectedValue.x);
-    expect(bounds.y).toEqual(expectedValue.y);
-    expect(bounds.width).toEqual(expectedValue.width);
-    expect(bounds.height).toEqual(expectedValue.height);
+  if (expectedBounds) {
+    expect(bounds.x).toEqual(expectedBounds.x);
+    expect(bounds.y).toEqual(expectedBounds.y);
+    expect(bounds.width).toEqual(expectedBounds.width);
+    expect(bounds.height).toEqual(expectedBounds.height);
   } else {
     expect(bounds).toBeUndefined();
   }
