@@ -41,21 +41,18 @@ describe('parse bpmn as json for receive task', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_receiveTask_id_0',
-        bpmnElementId: 'receiveTask_id_0',
-        bpmnElementName: 'receiveTask name',
-        bpmnElementKind: ShapeBpmnElementKind.TASK_RECEIVE,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_receiveTask_id_0',
+      bpmnElementId: 'receiveTask_id_0',
+      bpmnElementName: 'receiveTask name',
+      bpmnElementKind: ShapeBpmnElementKind.TASK_RECEIVE,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process declared as array with a single receive task', () => {
@@ -84,21 +81,18 @@ describe('parse bpmn as json for receive task', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_receiveTask_id_1',
-        bpmnElementId: 'receiveTask_id_1',
-        bpmnElementName: 'receiveTask name',
-        bpmnElementKind: ShapeBpmnElementKind.TASK_RECEIVE,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_receiveTask_id_1',
+      bpmnElementId: 'receiveTask_id_1',
+      bpmnElementName: 'receiveTask name',
+      bpmnElementKind: ShapeBpmnElementKind.TASK_RECEIVE,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process with an array of receive tasks with/without name & instantiate', () => {
@@ -137,38 +131,32 @@ describe('parse bpmn as json for receive task', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_receiveTask_id_0',
-        bpmnElementId: 'receiveTask_id_0',
-        bpmnElementName: 'receiveTask name',
-        bpmnElementKind: ShapeBpmnElementKind.TASK_RECEIVE,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_receiveTask_id_0',
+      bpmnElementId: 'receiveTask_id_0',
+      bpmnElementName: 'receiveTask name',
+      bpmnElementKind: ShapeBpmnElementKind.TASK_RECEIVE,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
     expect(model.flowNodes[0].bpmnElement.instantiate).toBeFalsy();
 
-    verifyShape(
-      model.flowNodes[1],
-      {
-        shapeId: 'shape_receiveTask_id_1',
-        bpmnElementId: 'receiveTask_id_1',
-        bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.TASK_RECEIVE,
-      },
-      {
+    verifyShape(model.flowNodes[1], {
+      shapeId: 'shape_receiveTask_id_1',
+      bpmnElementId: 'receiveTask_id_1',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.TASK_RECEIVE,
+      bounds: {
         x: 365,
         y: 235,
         width: 35,
         height: 46,
       },
-    );
+    });
     expect(model.flowNodes[1].bpmnElement.instantiate).toBeTruthy();
   });
 });

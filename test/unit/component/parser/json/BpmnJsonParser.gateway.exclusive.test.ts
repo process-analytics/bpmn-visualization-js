@@ -41,21 +41,18 @@ describe('parse bpmn as json for exclusive gateway', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_exclusiveGateway_id_0',
-        bpmnElementId: 'exclusiveGateway_id_0',
-        bpmnElementName: 'exclusiveGateway name',
-        bpmnElementKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_exclusiveGateway_id_0',
+      bpmnElementId: 'exclusiveGateway_id_0',
+      bpmnElementName: 'exclusiveGateway name',
+      bpmnElementKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process declared as array with a single exclusive gateway', () => {
@@ -84,21 +81,18 @@ describe('parse bpmn as json for exclusive gateway', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_exclusiveGateway_id_1',
-        bpmnElementId: 'exclusiveGateway_id_1',
-        bpmnElementName: 'exclusiveGateway name',
-        bpmnElementKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_exclusiveGateway_id_1',
+      bpmnElementId: 'exclusiveGateway_id_1',
+      bpmnElementName: 'exclusiveGateway name',
+      bpmnElementKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process with an array of exclusive gateways with name & without name', () => {
@@ -135,35 +129,29 @@ describe('parse bpmn as json for exclusive gateway', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_exclusiveGateway_id_0',
-        bpmnElementId: 'exclusiveGateway_id_0',
-        bpmnElementName: 'exclusiveGateway name',
-        bpmnElementKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_exclusiveGateway_id_0',
+      bpmnElementId: 'exclusiveGateway_id_0',
+      bpmnElementName: 'exclusiveGateway name',
+      bpmnElementKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
-    verifyShape(
-      model.flowNodes[1],
-      {
-        shapeId: 'shape_exclusiveGateway_id_1',
-        bpmnElementId: 'exclusiveGateway_id_1',
-        bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
-      },
-      {
+    });
+    verifyShape(model.flowNodes[1], {
+      shapeId: 'shape_exclusiveGateway_id_1',
+      bpmnElementId: 'exclusiveGateway_id_1',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
+      bounds: {
         x: 365,
         y: 235,
         width: 35,
         height: 46,
       },
-    );
+    });
   });
 });

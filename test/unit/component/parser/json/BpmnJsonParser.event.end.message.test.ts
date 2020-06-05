@@ -42,21 +42,18 @@ describe('parse bpmn as json for Message end event', () => {
 
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.MESSAGE, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_endEvent_id_7',
-        bpmnElementId: 'event_id_7',
-        bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_endEvent_id_7',
+      bpmnElementId: 'event_id_7',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+      bounds: {
         x: 362,
         y: 932,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process with an Message end event defined as object, Message end event is present', () => {
@@ -83,21 +80,18 @@ describe('parse bpmn as json for Message end event', () => {
 
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.MESSAGE, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_endEvent_id_7',
-        bpmnElementId: 'event_id_7',
-        bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_endEvent_id_7',
+      bpmnElementId: 'event_id_7',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+      bounds: {
         x: 362,
         y: 932,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process with an end event with message definition and another definition, Message end event is NOT present', () => {

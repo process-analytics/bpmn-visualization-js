@@ -46,22 +46,19 @@ describe('parse bpmn as json for process/pool', () => {
 
     const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 0);
     const pool = model.pools[0];
-    verifyShape(
-      pool,
-      {
-        shapeId: 'shape_Participant_1',
-        bpmnElementId: 'Participant_1',
-        bpmnElementName: 'Process 1',
-        bpmnElementKind: ShapeBpmnElementKind.POOL,
-        parentId: undefined,
-      },
-      {
+    verifyShape(pool, {
+      shapeId: 'shape_Participant_1',
+      bpmnElementId: 'Participant_1',
+      bpmnElementName: 'Process 1',
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+      parentId: undefined,
+      bounds: {
         x: 158,
         y: 50,
         width: 1620,
         height: 430,
       },
-    );
+    });
   });
 
   it('json containing one process with a single lane without flowNodeRef', () => {
@@ -99,40 +96,34 @@ describe('parse bpmn as json for process/pool', () => {
 
     const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 1);
     const pool = model.pools[0];
-    verifyShape(
-      pool,
-      {
-        shapeId: 'shape_Participant_0nuvj8r',
-        bpmnElementId: 'Participant_0nuvj8r',
-        bpmnElementName: 'Pool 1',
-        bpmnElementKind: ShapeBpmnElementKind.POOL,
-        parentId: undefined,
-      },
-      {
+    verifyShape(pool, {
+      shapeId: 'shape_Participant_0nuvj8r',
+      bpmnElementId: 'Participant_0nuvj8r',
+      bpmnElementName: 'Pool 1',
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+      parentId: undefined,
+      bounds: {
         x: 158,
         y: 50,
         width: 1620,
         height: 430,
       },
-    );
+    });
 
     const lane = model.lanes[0];
-    verifyShape(
-      lane,
-      {
-        shapeId: 'shape_Lane_1h5yeu4',
-        bpmnElementId: 'Lane_12u5n6x',
-        bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.LANE,
-        parentId: 'Participant_0nuvj8r',
-      },
-      {
+    verifyShape(lane, {
+      shapeId: 'shape_Lane_1h5yeu4',
+      bpmnElementId: 'Lane_12u5n6x',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.LANE,
+      parentId: 'Participant_0nuvj8r',
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing several processes and participants (with lane or laneset)', () => {
@@ -195,71 +186,59 @@ describe('parse bpmn as json for process/pool', () => {
 }`;
 
     const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 2, 2);
-    verifyShape(
-      model.pools[0],
-      {
-        shapeId: 'shape_Participant_1',
-        bpmnElementId: 'Participant_1',
-        bpmnElementName: 'Pool 1',
-        bpmnElementKind: ShapeBpmnElementKind.POOL,
-        parentId: undefined,
-      },
-      {
+    verifyShape(model.pools[0], {
+      shapeId: 'shape_Participant_1',
+      bpmnElementId: 'Participant_1',
+      bpmnElementName: 'Pool 1',
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+      parentId: undefined,
+      bounds: {
         x: 158,
         y: 50,
         width: 1620,
         height: 430,
       },
-    );
-    verifyShape(
-      model.pools[1],
-      {
-        shapeId: 'Participant_2_di',
-        bpmnElementId: 'Participant_2',
-        bpmnElementName: 'Pool 2',
-        bpmnElementKind: ShapeBpmnElementKind.POOL,
-        parentId: undefined,
-      },
-      {
+    });
+    verifyShape(model.pools[1], {
+      shapeId: 'Participant_2_di',
+      bpmnElementId: 'Participant_2',
+      bpmnElementName: 'Pool 2',
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+      parentId: undefined,
+      bounds: {
         x: 158,
         y: 1050,
         width: 1620,
         height: 430,
       },
-    );
+    });
 
-    verifyShape(
-      model.lanes[0],
-      {
-        shapeId: 'shape_Lane_1_1',
-        bpmnElementId: 'Lane_1_1',
-        bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.LANE,
-        parentId: 'Participant_1',
-      },
-      {
+    verifyShape(model.lanes[0], {
+      shapeId: 'shape_Lane_1_1',
+      bpmnElementId: 'Lane_1_1',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.LANE,
+      parentId: 'Participant_1',
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
-    verifyShape(
-      model.lanes[1],
-      {
-        shapeId: 'shape_Lane_2_1',
-        bpmnElementId: 'Lane_2_1',
-        bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.LANE,
-        parentId: 'Participant_2',
-      },
-      {
+    });
+    verifyShape(model.lanes[1], {
+      shapeId: 'shape_Lane_2_1',
+      bpmnElementId: 'Lane_2_1',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.LANE,
+      parentId: 'Participant_2',
+      bounds: {
         x: 362,
         y: 1232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('participant without processRef are not considered as pool', () => {
@@ -293,22 +272,19 @@ describe('parse bpmn as json for process/pool', () => {
 
     const model = parseJsonAndExpectOnlyPools(json, 1);
     const pool = model.pools[0];
-    verifyShape(
-      pool,
-      {
-        shapeId: 'shape_Participant_1',
-        bpmnElementId: 'Participant_1',
-        bpmnElementName: 'Pool 1',
-        bpmnElementKind: ShapeBpmnElementKind.POOL,
-        parentId: undefined,
-      },
-      {
+    verifyShape(pool, {
+      shapeId: 'shape_Participant_1',
+      bpmnElementId: 'Participant_1',
+      bpmnElementName: 'Pool 1',
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+      parentId: undefined,
+      bounds: {
         x: 158,
         y: 50,
         width: 1620,
         height: 430,
       },
-    );
+    });
 
     // Check detected participants during json parsing
     expect(findProcessRefParticipant('Participant_2')).toBeUndefined;
@@ -351,40 +327,34 @@ describe('parse bpmn as json for process/pool', () => {
 
     const model = parseJsonAndExpectOnlyPoolsAndFlowNodes(json, 1, 1);
     const pool = model.pools[0];
-    verifyShape(
-      pool,
-      {
-        shapeId: 'shape_Participant_1',
-        bpmnElementId: 'Participant_1',
-        bpmnElementName: 'Pool 1',
-        bpmnElementKind: ShapeBpmnElementKind.POOL,
-        parentId: undefined,
-      },
-      {
+    verifyShape(pool, {
+      shapeId: 'shape_Participant_1',
+      bpmnElementId: 'Participant_1',
+      bpmnElementName: 'Pool 1',
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+      parentId: undefined,
+      bounds: {
         x: 158,
         y: 50,
         width: 1620,
         height: 630,
       },
-    );
+    });
 
     const flowNode = model.flowNodes[0];
-    verifyShape(
-      flowNode,
-      {
-        shapeId: 'shape_startEvent_id_0',
-        bpmnElementId: 'event_id_0',
-        bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
-        parentId: 'Participant_1',
-      },
-      {
+    verifyShape(flowNode, {
+      shapeId: 'shape_startEvent_id_0',
+      bpmnElementId: 'event_id_0',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+      parentId: 'Participant_1',
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process, bpmn elements but no participant', () => {

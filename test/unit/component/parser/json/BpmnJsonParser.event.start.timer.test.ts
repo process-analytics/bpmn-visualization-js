@@ -43,21 +43,18 @@ describe('parse bpmn as json for timer start event', () => {
 
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.TIMER, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_startEvent_id_0',
-        bpmnElementId: 'event_id_0',
-        bpmnElementName: 'event name',
-        bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_startEvent_id_0',
+      bpmnElementId: 'event_id_0',
+      bpmnElementName: 'event name',
+      bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process with a timer start event defined as object, timer start event is present', () => {
@@ -85,21 +82,18 @@ describe('parse bpmn as json for timer start event', () => {
 
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.TIMER, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_startEvent_id_0',
-        bpmnElementId: 'event_id_0',
-        bpmnElementName: 'event name',
-        bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_startEvent_id_0',
+      bpmnElementId: 'event_id_0',
+      bpmnElementName: 'event name',
+      bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process with a start event with timer definition and another definition, timer start end event is NOT present', () => {

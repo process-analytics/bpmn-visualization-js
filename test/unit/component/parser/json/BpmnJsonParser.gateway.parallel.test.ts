@@ -41,21 +41,18 @@ describe('parse bpmn as json for parallel gateway', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_parallelGateway_id_0',
-        bpmnElementId: 'parallelGateway_id_0',
-        bpmnElementName: 'parallelGateway name',
-        bpmnElementKind: ShapeBpmnElementKind.GATEWAY_PARALLEL,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_parallelGateway_id_0',
+      bpmnElementId: 'parallelGateway_id_0',
+      bpmnElementName: 'parallelGateway name',
+      bpmnElementKind: ShapeBpmnElementKind.GATEWAY_PARALLEL,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process declared as array with a single parallel gateway', () => {
@@ -84,21 +81,18 @@ describe('parse bpmn as json for parallel gateway', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_parallelGateway_id_1',
-        bpmnElementId: 'parallelGateway_id_1',
-        bpmnElementName: 'parallelGateway name',
-        bpmnElementKind: ShapeBpmnElementKind.GATEWAY_PARALLEL,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_parallelGateway_id_1',
+      bpmnElementId: 'parallelGateway_id_1',
+      bpmnElementName: 'parallelGateway name',
+      bpmnElementKind: ShapeBpmnElementKind.GATEWAY_PARALLEL,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process with an array of parallel gateways with name & without name', () => {
@@ -135,35 +129,29 @@ describe('parse bpmn as json for parallel gateway', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_parallelGateway_id_0',
-        bpmnElementId: 'parallelGateway_id_0',
-        bpmnElementName: 'parallelGateway name',
-        bpmnElementKind: ShapeBpmnElementKind.GATEWAY_PARALLEL,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_parallelGateway_id_0',
+      bpmnElementId: 'parallelGateway_id_0',
+      bpmnElementName: 'parallelGateway name',
+      bpmnElementKind: ShapeBpmnElementKind.GATEWAY_PARALLEL,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
-    verifyShape(
-      model.flowNodes[1],
-      {
-        shapeId: 'shape_parallelGateway_id_1',
-        bpmnElementId: 'parallelGateway_id_1',
-        bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.GATEWAY_PARALLEL,
-      },
-      {
+    });
+    verifyShape(model.flowNodes[1], {
+      shapeId: 'shape_parallelGateway_id_1',
+      bpmnElementId: 'parallelGateway_id_1',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.GATEWAY_PARALLEL,
+      bounds: {
         x: 365,
         y: 235,
         width: 35,
         height: 46,
       },
-    );
+    });
   });
 });

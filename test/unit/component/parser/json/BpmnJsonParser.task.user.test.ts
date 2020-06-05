@@ -41,21 +41,18 @@ describe('parse bpmn as json for user task', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_userTask_id_0',
-        bpmnElementId: 'userTask_id_0',
-        bpmnElementName: 'userTask name',
-        bpmnElementKind: ShapeBpmnElementKind.TASK_USER,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_userTask_id_0',
+      bpmnElementId: 'userTask_id_0',
+      bpmnElementName: 'userTask name',
+      bpmnElementKind: ShapeBpmnElementKind.TASK_USER,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process declared as array with a single user task', () => {
@@ -84,21 +81,18 @@ describe('parse bpmn as json for user task', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_userTask_id_1',
-        bpmnElementId: 'userTask_id_1',
-        bpmnElementName: 'userTask name',
-        bpmnElementKind: ShapeBpmnElementKind.TASK_USER,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_userTask_id_1',
+      bpmnElementId: 'userTask_id_1',
+      bpmnElementName: 'userTask name',
+      bpmnElementKind: ShapeBpmnElementKind.TASK_USER,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process with an array of user tasks  with name & without name', () => {
@@ -136,35 +130,29 @@ describe('parse bpmn as json for user task', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_userTask_id_0',
-        bpmnElementId: 'userTask_id_0',
-        bpmnElementName: 'userTask name',
-        bpmnElementKind: ShapeBpmnElementKind.TASK_USER,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_userTask_id_0',
+      bpmnElementId: 'userTask_id_0',
+      bpmnElementName: 'userTask name',
+      bpmnElementKind: ShapeBpmnElementKind.TASK_USER,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
-    verifyShape(
-      model.flowNodes[1],
-      {
-        shapeId: 'shape_userTask_id_1',
-        bpmnElementId: 'userTask_id_1',
-        bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.TASK_USER,
-      },
-      {
+    });
+    verifyShape(model.flowNodes[1], {
+      shapeId: 'shape_userTask_id_1',
+      bpmnElementId: 'userTask_id_1',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.TASK_USER,
+      bounds: {
         x: 365,
         y: 235,
         width: 35,
         height: 46,
       },
-    );
+    });
   });
 });

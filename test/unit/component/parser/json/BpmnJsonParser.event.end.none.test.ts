@@ -42,21 +42,18 @@ describe('parse bpmn as json for end event', () => {
 
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.NONE, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_endEvent_id_0',
-        bpmnElementId: 'event_id_0',
-        bpmnElementName: 'event name',
-        bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_endEvent_id_0',
+      bpmnElementId: 'event_id_0',
+      bpmnElementName: 'event name',
+      bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process declared as array with a single end event', () => {
@@ -85,21 +82,18 @@ describe('parse bpmn as json for end event', () => {
 
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.NONE, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_endEvent_id_1',
-        bpmnElementId: 'event_id_1',
-        bpmnElementName: 'event name',
-        bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_endEvent_id_1',
+      bpmnElementId: 'event_id_1',
+      bpmnElementName: 'event name',
+      bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 
   it('json containing one process with an array of end events with name & without name', () => {
@@ -136,36 +130,30 @@ describe('parse bpmn as json for end event', () => {
 
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.NONE, 2);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_endEvent_id_0',
-        bpmnElementId: 'event_id_0',
-        bpmnElementName: 'event name',
-        bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_endEvent_id_0',
+      bpmnElementId: 'event_id_0',
+      bpmnElementName: 'event name',
+      bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
-    verifyShape(
-      model.flowNodes[1],
-      {
-        shapeId: 'shape_endEvent_id_1',
-        bpmnElementId: 'event_id_1',
-        bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
-      },
-      {
+    });
+    verifyShape(model.flowNodes[1], {
+      shapeId: 'shape_endEvent_id_1',
+      bpmnElementId: 'event_id_1',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+      bounds: {
         x: 365,
         y: 235,
         width: 35,
         height: 46,
       },
-    );
+    });
   });
 
   it('json containing one process with an array of end events, some are not NONE event', () => {
@@ -227,20 +215,17 @@ describe('parse bpmn as json for end event', () => {
 
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.NONE, 1);
 
-    verifyShape(
-      model.flowNodes[0],
-      {
-        shapeId: 'shape_endEvent_id_0',
-        bpmnElementId: 'event_id_0',
-        bpmnElementName: 'none end event',
-        bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
-      },
-      {
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_endEvent_id_0',
+      bpmnElementId: 'event_id_0',
+      bpmnElementName: 'none end event',
+      bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+      bounds: {
         x: 362,
         y: 232,
         width: 36,
         height: 45,
       },
-    );
+    });
   });
 });

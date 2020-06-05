@@ -30,6 +30,7 @@ export interface ExpectedShape {
   bpmnElementName: string;
   bpmnElementKind: ShapeBpmnElementKind;
   parentId?: string;
+  bounds?: ExpectedBounds;
 }
 
 export interface ExpectedEdge {
@@ -105,7 +106,7 @@ export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: string, numberOfEx
   return parseJsonAndExpect(json, 0, 0, numberOfExpectedFlowNodes, numberOfExpectedEdges);
 }
 
-export function verifyShape(shape: Shape, expectedShape: ExpectedShape, expectedBounds: ExpectedBounds): void {
+export function verifyShape(shape: Shape, expectedShape: ExpectedShape): void {
   expect(shape.id).toEqual(expectedShape.shapeId);
 
   const bpmnElement = shape.bpmnElement;
@@ -115,6 +116,7 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape, expected
   expect(bpmnElement.parentId).toEqual(expectedShape.parentId);
 
   const bounds = shape.bounds;
+  const expectedBounds = expectedShape.bounds;
   expect(bounds.x).toEqual(expectedBounds.x);
   expect(bounds.y).toEqual(expectedBounds.y);
   expect(bounds.width).toEqual(expectedBounds.width);
