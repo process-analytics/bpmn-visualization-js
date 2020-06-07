@@ -29,8 +29,8 @@ interface Coordinate {
 }
 
 export default class MxGraphRenderer {
-  private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
   private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
+  private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
   constructor(readonly graph: mxgraph.mxGraph) {}
 
   public render(bpmnModel: BpmnModel): void {
@@ -146,7 +146,9 @@ export default class MxGraphRenderer {
     style?: string,
   ): mxgraph.mxCell {
     const relativeCoordinate = this.getRelativeCoordinates(parent, absoluteCoordinate);
-    return this.graph.insertVertex(parent, id, value, relativeCoordinate.x, relativeCoordinate.y, width, height, style);
+    const mxCell = this.graph.insertVertex(parent, id, value, relativeCoordinate.x, relativeCoordinate.y, width, height, style);
+    mxCell.geometry.offset = new this.mxPoint(30, 30); // demonstrate how to set label position
+    return mxCell;
   }
 
   private getRelativeCoordinates(parent: mxgraph.mxCell, absoluteCoordinate: Coordinate): Coordinate {
