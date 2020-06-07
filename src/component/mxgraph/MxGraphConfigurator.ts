@@ -20,10 +20,11 @@ import ShapeConfigurator from './ShapeConfigurator';
 import MarkerConfigurator from './MarkerConfigurator';
 
 /**
- * Configure mxgraph
+ * Configure the mxGraph graph that can be used by the lib
  * <ul>
  *     <li>styles
  *     <li>shapes
+ *     <li>markers
  */
 export default class MxGraphConfigurator {
   private mxGraph: typeof mxgraph.mxGraph = MxGraphFactoryService.getMxGraphProperty('mxGraph');
@@ -32,8 +33,8 @@ export default class MxGraphConfigurator {
   private readonly graph: mxgraph.mxGraph;
 
   constructor(container: Element) {
-    this.initMxGraphPrototype();
     this.graph = new this.mxGraph(container, new this.mxGraphModel());
+    this.configureGraph();
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
     new MarkerConfigurator().configureMarkers();
@@ -43,9 +44,9 @@ export default class MxGraphConfigurator {
     return this.graph;
   }
 
-  private initMxGraphPrototype(): void {
-    this.mxGraph.prototype.edgeLabelsMovable = false;
-    this.mxGraph.prototype.cellsLocked = true;
-    this.mxGraph.prototype.cellsSelectable = false;
+  private configureGraph(): void {
+    this.graph.setEdgeLabelsMovable(false);
+    this.graph.setCellsLocked(true);
+    this.graph.setCellsSelectable(false);
   }
 }
