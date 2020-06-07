@@ -22,6 +22,8 @@ import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
 import { StyleConstant } from './StyleUtils';
 import { Font } from '../../model/bpmn/Label';
+import Bounds from '../../model/bpmn/Bounds';
+
 import CoordinatesTranslator from './extension/CoordinatesTranslator';
 
 export default class MxGraphRenderer {
@@ -61,11 +63,13 @@ export default class MxGraphRenderer {
   private insertShape(shape: Shape): void {
     const bpmnElement = shape.bpmnElement;
     if (bpmnElement) {
-      const bounds = shape.bounds;
       const parent = this.getParent(bpmnElement);
-      const absoluteCoordinate = new this.mxPoint(bounds.x, bounds.y);
       const style = this.computeStyle(shape);
-      this.insertVertex(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
+
+      const bounds = shape.bounds;
+      const labelBounds = shape.label?.bounds;
+
+      this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
     }
   }
 
@@ -132,18 +136,17 @@ export default class MxGraphRenderer {
     return this.graph.getModel().getCell(id);
   }
 
-  private insertVertex(
-    parent: mxgraph.mxCell,
-    id: string | null,
-    value: string,
-    absoluteCoordinate: mxgraph.mxPoint,
-    width: number,
-    height: number,
-    style?: string,
-  ): mxgraph.mxCell {
-    const relativeCoordinate = this.coordinatesTranslator.computeRelativeCoordinates(parent, absoluteCoordinate);
-    const mxCell = this.graph.insertVertex(parent, id, value, relativeCoordinate.x, relativeCoordinate.y, width, height, style);
-    mxCell.geometry.offset = new this.mxPoint(30, 30); // demonstrate how to set label position
+  private insertVertex(parent: mxgraph.mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxgraph.mxCell {
+    const relativeCoordinate = this.coordinatesTranslator.computeRelativeCoordinates(parent, new this.mxPoint(bounds.x, bounds.y));
+    const mxCell = this.graph.insertVertex(parent, id, value, relativeCoordinate.x, relativeCoordinate.y, bounds.width, bounds.height, style);
+
+    // demonstrate how to set label position using the cell geometry offset
+    // label relative coordinates to the cell
+    if (labelBounds) {
+      const relativeLabelX = labelBounds.x - bounds.x;
+      const relativeLabelY = labelBounds.y - bounds.y;
+      mxCell.geometry.offset = new this.mxPoint(relativeLabelX, relativeLabelY);
+    }
     return mxCell;
   }
 }
