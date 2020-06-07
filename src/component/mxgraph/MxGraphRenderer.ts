@@ -22,6 +22,7 @@ import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
 import { StyleConstant } from './StyleConfigurator';
 import { Font } from '../../model/bpmn/Label';
+import Bounds from '../../model/bpmn/Bounds';
 
 interface Coordinate {
   x: number;
@@ -29,8 +30,8 @@ interface Coordinate {
 }
 
 export default class MxGraphRenderer {
-  private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
   private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
+  private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
   constructor(readonly graph: mxgraph.mxGraph) {}
 
   public render(bpmnModel: BpmnModel): void {
@@ -64,11 +65,13 @@ export default class MxGraphRenderer {
   private insertShape(shape: Shape): void {
     const bpmnElement = shape.bpmnElement;
     if (bpmnElement) {
-      const bounds = shape.bounds;
       const parent = this.getParent(bpmnElement);
-      const absoluteCoordinate = { x: bounds.x, y: bounds.y };
       const style = this.computeStyle(shape);
-      this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
+
+      const bounds = shape.bounds;
+      const labelBounds = shape.label?.bounds;
+
+      this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
     }
   }
 
@@ -136,17 +139,18 @@ export default class MxGraphRenderer {
     return this.graph.getModel().getCell(id);
   }
 
-  private insertVertexGivenAbsoluteCoordinates(
-    parent: mxgraph.mxCell,
-    id: string | null,
-    value: string,
-    absoluteCoordinate: Coordinate,
-    width: number,
-    height: number,
-    style?: string,
-  ): mxgraph.mxCell {
-    const relativeCoordinate = this.getRelativeCoordinates(parent, absoluteCoordinate);
-    return this.graph.insertVertex(parent, id, value, relativeCoordinate.x, relativeCoordinate.y, width, height, style);
+  private insertVertex(parent: mxgraph.mxCell, id: string | null, label: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxgraph.mxCell {
+    const relativeCoordinate = this.getRelativeCoordinates(parent, { x: bounds.x, y: bounds.y });
+    const mxCell = this.graph.insertVertex(parent, id, label, relativeCoordinate.x, relativeCoordinate.y, bounds.width, bounds.height, style);
+
+    // demonstrate how to set label position using the cell geometry offset
+    // label relative coordinates to the cell
+    // if (labelBounds) {
+    //   const relativeLabelX = labelBounds.x - bounds.x;
+    //   const relativeLabelY = labelBounds.y - bounds.y;
+    //   mxCell.geometry.offset = new this.mxPoint(relativeLabelX, relativeLabelY);
+    // }
+    return mxCell;
   }
 
   private getRelativeCoordinates(parent: mxgraph.mxCell, absoluteCoordinate: Coordinate): Coordinate {
