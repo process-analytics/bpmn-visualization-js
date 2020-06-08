@@ -24,6 +24,7 @@ export enum StyleConstant {
   STROKE_WIDTH_THIN = 2,
   STROKE_WIDTH_THICK = 5,
   BPMN_STYLE_EVENT_KIND = 'bpmn.eventKind',
+  BPMN_STYLE_LABEL = 'bpmn.label',
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -236,6 +237,6 @@ export default class StyleConfigurator {
     // STYLE_SPACING to relax too small bounds (ref mgiw
     // Defines the key for the spacing.  The value represents the spacing, in pixels, added to each side of a label in a vertex (style applies to vertices only).  Value is “spacing”.
 
-    this.graph.getStylesheet().putCellStyle('bpmn.label.vertex', style);
+    this.graph.getStylesheet().putCellStyle(StyleConstant.BPMN_STYLE_LABEL, style);
   }
 }

@@ -159,7 +159,7 @@ export default class MxGraphRenderer {
             labelRelativeCoordinate.y,
             labelBounds.width,
             labelBounds.height,
-            this.computeLabelStyle('bpmn.label.vertex', edge.label),
+            this.computeLabelStyle(StyleConstant.BPMN_STYLE_LABEL, edge.label),
           );
         }
       }
@@ -193,7 +193,7 @@ export default class MxGraphRenderer {
       // const labelRelativeCoordinate = this.getRelativeCoordinates(vertex, { x: labelBounds.x, y: labelBounds.y });
       // this.graph.insertVertex(vertex, null, labelText, labelRelativeCoordinate.x, labelRelativeCoordinate.y, labelBounds.width, labelBounds.height);
       const labelRelativeCoordinate = this.getRelativeCoordinates(parent, { x: labelBounds.x, y: labelBounds.y });
-      this.graph.insertVertex(parent, null, labelText, labelRelativeCoordinate.x, labelRelativeCoordinate.y, labelBounds.width, labelBounds.height, 'bpmn.label.vertex');
+      this.graph.insertVertex(parent, null, labelText, labelRelativeCoordinate.x, labelRelativeCoordinate.y, labelBounds.width, labelBounds.height, StyleConstant.BPMN_STYLE_LABEL);
     }
     return vertex;
   }
