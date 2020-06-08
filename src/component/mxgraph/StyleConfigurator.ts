@@ -193,7 +193,8 @@ export default class StyleConfigurator {
   }
 
   private configureCommonDefaultStyle(style: any): void {
-    style[this.mxConstants.STYLE_FONTSIZE] = 12;
+    style[this.mxConstants.STYLE_FONTFAMILY] = 'Arial, sans-serif';
+    style[this.mxConstants.STYLE_FONTSIZE] = 11; // 11px to better render miwg-test-suite diagrams
     style[this.mxConstants.STYLE_FONTCOLOR] = 'Black';
     style[this.mxConstants.STYLE_FILLCOLOR] = 'White';
     style[this.mxConstants.STYLE_STROKECOLOR] = 'Black';

@@ -105,6 +105,11 @@ export default class MxGraphRenderer {
       // only apply to vertex
       // style[this.mxConstants.STYLE_SPACING_TOP] = 55;
       // style[this.mxConstants.STYLE_SPACING_RIGHT] = 110;
+      // add negative STYLE_SPACING to relax too small bounds (ref miwg-test-suite)
+      // TODO adjust the value
+      // TODO warn apply only to vertex, not edge
+      styleValues.set(this.mxConstants.STYLE_SPACING_LEFT, -5);
+      styleValues.set(this.mxConstants.STYLE_SPACING_RIGHT, -5);
     }
 
     return [bpmnElement.kind as string] //
