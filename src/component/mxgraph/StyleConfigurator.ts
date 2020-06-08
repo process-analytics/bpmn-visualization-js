@@ -218,7 +218,6 @@ export default class StyleConfigurator {
   }
 
   private configureLabelStyles(): void {
-    // for vertex
     const style = this.cloneDefaultVertexStyle();
     style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RECTANGLE;
     style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RectanglePerimeter;
@@ -229,10 +228,8 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_STROKECOLOR] = 'orange'; // TODO temp for identification
     // style[this.mxConstants.STYLE_STROKEWIDTH] = 0; // TODO hide stroke
 
-    // style[this.mxConstants.STYLE_FILL_OPACITY] = 0;
-    style[this.mxConstants.STYLE_FILLCOLOR] = this.mxConstants.NONE;
+    style[this.mxConstants.STYLE_FILLCOLOR] = this.mxConstants.NONE; // ensure we do note see the label shape
 
-    // label bounds are provided from the top left
     style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_TOP;
     style[this.mxConstants.STYLE_ALIGN] = this.mxConstants.ALIGN_MIDDLE;
 
