@@ -198,6 +198,7 @@ export default class StyleConfigurator {
   }
 
   private configureCommonDefaultStyle(style: any): void {
+    style[this.mxConstants.STYLE_FONTFAMILY] = 'Arial, sans-serif';
     style[this.mxConstants.STYLE_FONTSIZE] = 11; // 11px to better render miwg-test-suite diagrams
     style[this.mxConstants.STYLE_FONTCOLOR] = 'Black';
     style[this.mxConstants.STYLE_FILLCOLOR] = 'White';
@@ -223,19 +224,23 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RECTANGLE;
     style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RectanglePerimeter;
 
-    style[this.mxConstants.STYLE_ROUNDED] = 0; // non rounded rectangle if possible
-    style[this.mxConstants.STYLE_DASHED] = this.mxPerimeter.RectanglePerimeter;
+    style[this.mxConstants.STYLE_ROUNDED] = false; // non rounded rectangle if possible
+    style[this.mxConstants.STYLE_DASHED] = true;
 
     style[this.mxConstants.STYLE_STROKECOLOR] = 'orange'; // TODO temp for identification
-    // style[this.mxConstants.STYLE_STROKEWIDTH] = 0; // TODO hide stroke
+    // style[this.mxConstants.STYLE_STROKEWIDTH] = false; // TODO hide stroke
 
-    style[this.mxConstants.STYLE_FILLCOLOR] = this.mxConstants.NONE; // ensure we do note see the label shape
+    style[this.mxConstants.STYLE_FILLCOLOR] = this.mxConstants.NONE; // ensure we do not see the label shape
 
     style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_TOP;
     style[this.mxConstants.STYLE_ALIGN] = this.mxConstants.ALIGN_MIDDLE;
 
-    // STYLE_SPACING to relax too small bounds (ref mgiw
-    // Defines the key for the spacing.  The value represents the spacing, in pixels, added to each side of a label in a vertex (style applies to vertices only).  Value is “spacing”.
+    // add negative STYLE_SPACING to relax too small bounds (ref miwg-test-suite)
+    // Defines the key for the spacing.  The value represents the spacing, in pixels, added to each side of a label in a
+    // vertex (style applies to vertices only).  Value is “spacing”.
+    // TODO adjust the value
+    style[this.mxConstants.STYLE_SPACING_LEFT] = -5;
+    style[this.mxConstants.STYLE_SPACING_RIGHT] = -5;
 
     this.graph.getStylesheet().putCellStyle(StyleConstant.BPMN_STYLE_LABEL, style);
   }

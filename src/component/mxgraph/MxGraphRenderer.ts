@@ -193,6 +193,7 @@ export default class MxGraphRenderer {
       // const labelRelativeCoordinate = this.getRelativeCoordinates(vertex, { x: labelBounds.x, y: labelBounds.y });
       // this.graph.insertVertex(vertex, null, labelText, labelRelativeCoordinate.x, labelRelativeCoordinate.y, labelBounds.width, labelBounds.height);
       const labelRelativeCoordinate = this.getRelativeCoordinates(parent, { x: labelBounds.x, y: labelBounds.y });
+      // TODO label style should contains font configuration (as done for edge)
       this.graph.insertVertex(parent, null, labelText, labelRelativeCoordinate.x, labelRelativeCoordinate.y, labelBounds.width, labelBounds.height, StyleConstant.BPMN_STYLE_LABEL);
     }
     return vertex;
