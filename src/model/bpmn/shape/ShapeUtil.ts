@@ -80,4 +80,8 @@ export default class ShapeUtil {
       return kind != ShapeBpmnElementKind.LANE;
     });
   }
+
+  public static isPoolOrLane(kind: ShapeBpmnElementKind): boolean {
+    return kind == ShapeBpmnElementKind.POOL || kind == ShapeBpmnElementKind.LANE;
+  }
 }

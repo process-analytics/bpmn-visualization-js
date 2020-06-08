@@ -23,6 +23,7 @@ import Waypoint from '../../model/bpmn/edge/Waypoint';
 import { StyleConstant } from './StyleConfigurator';
 import { Font } from '../../model/bpmn/Label';
 import Bounds from '../../model/bpmn/Bounds';
+import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 
 interface Coordinate {
   x: number;
@@ -66,16 +67,19 @@ export default class MxGraphRenderer {
     const bpmnElement = shape.bpmnElement;
     if (bpmnElement) {
       const parent = this.getParent(bpmnElement);
-      const style = this.computeStyle(shape);
 
       const bounds = shape.bounds;
       const labelBounds = shape.label?.bounds;
+
+      // TODO pool/lane not managed for now
+      const isSupportLabelBounds = !ShapeUtil.isPoolOrLane(bpmnElement.kind) && !!labelBounds;
+      const style = this.computeStyle(shape, isSupportLabelBounds);
 
       this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
     }
   }
 
-  computeStyle(bpmnCell: Shape | Edge): string {
+  computeStyle(bpmnCell: Shape | Edge, isSupportLabelBounds = false): string {
     const styleValues = new Map<string, string | number>();
 
     const font = bpmnCell.label?.font;
@@ -88,6 +92,21 @@ export default class MxGraphRenderer {
     const bpmnElement = bpmnCell.bpmnElement;
     if (bpmnElement instanceof ShapeBpmnEvent) {
       styleValues.set(StyleConstant.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
+    }
+
+    if (isSupportLabelBounds) {
+      styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
+      styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_LEFT);
+      styleValues.set(this.mxConstants.STYLE_LABEL_BORDERCOLOR, 'green'); // TODO only for detection in this POC
+      // erase eventual style configuration for BPMN element
+      styleValues.set(this.mxConstants.STYLE_LABEL_POSITION, this.mxConstants.NONE);
+      styleValues.set(this.mxConstants.STYLE_VERTICAL_LABEL_POSITION, this.mxConstants.NONE);
+      // TODO to add
+      //styleValues.set(this.mxConstants.STYLE_LABEL_WIDTH, 100); // todo taken from label bounds
+      //styleValues.set(this.mxConstants.STYLE_LABEL_PADDING, 0); // todo adjust
+      // only apply to vertex
+      // style[this.mxConstants.STYLE_SPACING_TOP] = 55;
+      // style[this.mxConstants.STYLE_SPACING_RIGHT] = 110;
     }
 
     return [bpmnElement.kind as string] //
