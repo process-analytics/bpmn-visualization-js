@@ -21,7 +21,7 @@ import ShapeBpmnElement, { ShapeBpmnEvent } from '../../model/bpmn/shape/ShapeBp
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
 import { StyleConstant } from './StyleConfigurator';
-import { Font } from '../../model/bpmn/Label';
+import Label, { Font } from '../../model/bpmn/Label';
 import Bounds from '../../model/bpmn/Bounds';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 
@@ -114,6 +114,21 @@ export default class MxGraphRenderer {
     return value;
   }
 
+  // TODO to be tested + remove duplication with computeStyle
+  private computeLabelStyle(styleName: string, label: Label): string {
+    const styleValues = new Map<string, string | number>();
+
+    const font = label?.font;
+    if (font) {
+      styleValues.set(this.mxConstants.STYLE_FONTFAMILY, font.name);
+      styleValues.set(this.mxConstants.STYLE_FONTSIZE, font.size);
+      styleValues.set(this.mxConstants.STYLE_FONTSTYLE, this.getFontStyleValue(font));
+    }
+    return [styleName] //
+      .concat([...styleValues].filter(([, v]) => v).map(([key, value]) => key + '=' + value))
+      .join(';');
+  }
+
   private insertEdges(edges: Edge[]): void {
     edges.forEach(edge => {
       const bpmnElement = edge.bpmnElement;
@@ -122,8 +137,31 @@ export default class MxGraphRenderer {
         const source = this.getCell(bpmnElement.sourceRefId);
         const target = this.getCell(bpmnElement.targetRefId);
         const style = this.computeStyle(edge);
-        const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
+
+        const labelBounds = edge.label?.bounds;
+        const labelText = bpmnElement.name;
+        const vertexLabel = labelBounds ? '' : labelText; // TODO test this code that manages label without provided bounds
+
+        const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, vertexLabel, source, target, style);
         this.insertWaypoints(edge.waypoints, mxEdge);
+
+        // TODO duplicated with insertVertex
+        // demonstrate how to set label position using a dedicate label shape associated to the vertex
+        // label relative coordinates to the cell
+        if (labelBounds) {
+          const labelRelativeCoordinate = this.getRelativeCoordinates(parent, { x: labelBounds.x, y: labelBounds.y });
+          // let mxgraph generate the id as it does not exist in the bpmn source
+          this.graph.insertVertex(
+            parent,
+            null,
+            labelText,
+            labelRelativeCoordinate.x,
+            labelRelativeCoordinate.y,
+            labelBounds.width,
+            labelBounds.height,
+            this.computeLabelStyle('bpmn.label.vertex', edge.label),
+          );
+        }
       }
     });
   }
