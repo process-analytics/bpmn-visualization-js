@@ -64,6 +64,8 @@ export default class StyleConfigurator {
 
     this.configureDefaultEdgeStyle();
     this.configureSequenceFlowsStyle();
+
+    this.configureLabelStyles();
   }
 
   private getStylesheet(): any {
@@ -96,9 +98,11 @@ export default class StyleConfigurator {
     const style = this.getDefaultVertexStyle();
     this.configureCommonDefaultStyle(style);
 
+    // TODO decide if we want this for the label shape or also for the label manage directly by the shape (no label bounds)
+    // if configured here, it applies to both
     // only works with html labels (see MxGraphConfigurator to enable html labels)
     // style[this.mxConstants.STYLE_OVERFLOW] = 'hidden'; // enable clipping
-    // style[this.mxConstants.STYLE_WHITE_SPACE] = 'wrap'; // wrap for html labels
+    style[this.mxConstants.STYLE_WHITE_SPACE] = 'wrap'; // wrap for html labels
   }
 
   private configurePoolStyle(): void {
@@ -211,5 +215,30 @@ export default class StyleConfigurator {
       updateEdgeStyle(style);
       this.graph.getStylesheet().putCellStyle(kind, style);
     });
+  }
+
+  private configureLabelStyles(): void {
+    // for vertex
+    const style = this.cloneDefaultVertexStyle();
+    style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RECTANGLE;
+    style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RectanglePerimeter;
+
+    style[this.mxConstants.STYLE_ROUNDED] = 0; // non rounded rectangle if possible
+    style[this.mxConstants.STYLE_DASHED] = this.mxPerimeter.RectanglePerimeter;
+
+    style[this.mxConstants.STYLE_STROKECOLOR] = 'orange'; // TODO temp for identification
+    // style[this.mxConstants.STYLE_STROKEWIDTH] = 0; // TODO hide stroke
+
+    // style[this.mxConstants.STYLE_FILL_OPACITY] = 0;
+    style[this.mxConstants.STYLE_FILLCOLOR] = this.mxConstants.NONE;
+
+    // label bounds are provided from the top left
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_TOP;
+    style[this.mxConstants.STYLE_ALIGN] = this.mxConstants.ALIGN_MIDDLE;
+
+    // STYLE_SPACING to relax too small bounds (ref mgiw
+    // Defines the key for the spacing.  The value represents the spacing, in pixels, added to each side of a label in a vertex (style applies to vertices only).  Value is “spacing”.
+
+    this.graph.getStylesheet().putCellStyle('bpmn.label.vertex', style);
   }
 }

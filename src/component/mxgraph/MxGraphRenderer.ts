@@ -23,6 +23,7 @@ import Waypoint from '../../model/bpmn/edge/Waypoint';
 import { StyleConstant } from './StyleConfigurator';
 import { Font } from '../../model/bpmn/Label';
 import Bounds from '../../model/bpmn/Bounds';
+import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 
 interface Coordinate {
   x: number;
@@ -69,7 +70,8 @@ export default class MxGraphRenderer {
       const style = this.computeStyle(shape);
 
       const bounds = shape.bounds;
-      const labelBounds = shape.label?.bounds;
+      // TODO temp to manage pool and lane label bounds later
+      const labelBounds = bpmnElement.kind == ShapeBpmnElementKind.POOL || bpmnElement.kind == ShapeBpmnElementKind.LANE ? undefined : shape.label?.bounds;
 
       this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
     }
@@ -139,18 +141,23 @@ export default class MxGraphRenderer {
     return this.graph.getModel().getCell(id);
   }
 
-  private insertVertex(parent: mxgraph.mxCell, id: string | null, label: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxgraph.mxCell {
-    const relativeCoordinate = this.getRelativeCoordinates(parent, { x: bounds.x, y: bounds.y });
-    const mxCell = this.graph.insertVertex(parent, id, label, relativeCoordinate.x, relativeCoordinate.y, bounds.width, bounds.height, style);
+  private insertVertex(parent: mxgraph.mxCell, id: string | null, labelText: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxgraph.mxCell {
+    const vertexLabel = labelBounds ? '' : labelText; // TODO test this code that manages label without provided bounds
 
-    // demonstrate how to set label position using the cell geometry offset
+    const vertexRelativeCoordinate = this.getRelativeCoordinates(parent, { x: bounds.x, y: bounds.y });
+    const vertex = this.graph.insertVertex(parent, id, vertexLabel, vertexRelativeCoordinate.x, vertexRelativeCoordinate.y, bounds.width, bounds.height, style);
+
+    // demonstrate how to set label position using a dedicate label shape associated to the vertex
     // label relative coordinates to the cell
-    // if (labelBounds) {
-    //   const relativeLabelX = labelBounds.x - bounds.x;
-    //   const relativeLabelY = labelBounds.y - bounds.y;
-    //   mxCell.geometry.offset = new this.mxPoint(relativeLabelX, relativeLabelY);
-    // }
-    return mxCell;
+    if (labelBounds) {
+      // let mxgraph generate the id as it does not exist in the bpmn source
+      // TODO configure dedicated shape and style for bpmn label
+      // const labelRelativeCoordinate = this.getRelativeCoordinates(vertex, { x: labelBounds.x, y: labelBounds.y });
+      // this.graph.insertVertex(vertex, null, labelText, labelRelativeCoordinate.x, labelRelativeCoordinate.y, labelBounds.width, labelBounds.height);
+      const labelRelativeCoordinate = this.getRelativeCoordinates(parent, { x: labelBounds.x, y: labelBounds.y });
+      this.graph.insertVertex(parent, null, labelText, labelRelativeCoordinate.x, labelRelativeCoordinate.y, labelBounds.width, labelBounds.height, 'bpmn.label.vertex');
+    }
+    return vertex;
   }
 
   private getRelativeCoordinates(parent: mxgraph.mxCell, absoluteCoordinate: Coordinate): Coordinate {
