@@ -95,11 +95,6 @@ export default class StyleConfigurator {
   private configureDefaultVertexStyle(): void {
     const style = this.getDefaultVertexStyle();
     this.configureCommonDefaultStyle(style);
-
-    // TODO move this to also support wrapping for edge labels
-    // only works with html labels (see MxGraphConfigurator to enable html labels)
-    // style[this.mxConstants.STYLE_OVERFLOW] = 'hidden'; // enable clipping
-    style[this.mxConstants.STYLE_WHITE_SPACE] = 'wrap'; // wrap for html labels
   }
 
   private configurePoolStyle(): void {
@@ -199,6 +194,11 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_FILLCOLOR] = 'White';
     style[this.mxConstants.STYLE_STROKECOLOR] = 'Black';
     style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = this.mxConstants.NONE;
+
+    // TODO decide if we want this to apply to default label (configure here = always apply)
+    // only works with html labels (see MxGraphConfigurator to enable html labels)
+    // style[this.mxConstants.STYLE_OVERFLOW] = 'hidden'; // enable clipping
+    style[this.mxConstants.STYLE_WHITE_SPACE] = 'wrap'; // wrap for html labels
   }
 
   private configureSequenceFlowsStyle(): void {

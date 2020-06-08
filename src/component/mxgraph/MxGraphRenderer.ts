@@ -141,9 +141,39 @@ export default class MxGraphRenderer {
         const parent = this.graph.getDefaultParent();
         const source = this.getCell(bpmnElement.sourceRefId);
         const target = this.getCell(bpmnElement.targetRefId);
-        const style = this.computeStyle(edge);
+
+        const labelBounds = edge.label?.bounds;
+        const style = this.computeStyle(edge, labelBounds);
+
         const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
         this.insertWaypoints(edge.waypoints, mxEdge);
+
+        // eslint-disable-next-line no-console
+        console.info('###Rendering edge, geometry prior applying info from label bounds:');
+        // eslint-disable-next-line no-console
+        console.info(mxEdge.geometry);
+
+        // demonstrate how to set label position using the cell geometry offset
+        // label relative coordinates to the cell
+        if (labelBounds) {
+          mxEdge.geometry.relative = false;
+          const relativeCoordinate = this.getRelativeCoordinates(mxEdge.parent, { x: labelBounds.x, y: labelBounds.y });
+          mxEdge.geometry.x = relativeCoordinate.x;
+          mxEdge.geometry.y = relativeCoordinate.y;
+          // as described in the doc,
+          // "The width and height parameter for edge geometries can be used to set the label width and height (eg. for word wrapping)."
+          mxEdge.geometry.width = labelBounds.width;
+          mxEdge.geometry.height = labelBounds.height;
+
+          // const relativeLabelX = labelBounds.x - bounds.x;
+          // const relativeLabelY = labelBounds.y - bounds.y;
+          // mxEdge.geometry.offset = new this.mxPoint(relativeLabelX, relativeLabelY);
+
+          // eslint-disable-next-line no-console
+          console.info('###Rendering edge, geometry AFTER applying info from label bounds:');
+          // eslint-disable-next-line no-console
+          console.info(mxEdge.geometry);
+        }
       }
     });
   }
