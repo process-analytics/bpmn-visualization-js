@@ -64,12 +64,12 @@ export default class IconPainter {
   // this implementation is adapted from the draw.io BPMN 'message' symbol
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465
   public static paintEnvelopIcon({ c, x, y, w, h, style, isFilled }: PaintParameter): void {
+    this.updateCanvasStyle(c, style, isFilled);
+
     // Change the coordinate referential
     c.translate(x + w * 0.24, y + h * 0.34);
     w = w * 0.52;
     h = h * 0.32;
-
-    this.updateCanvasStyle(c, style, isFilled);
 
     // Paint the envelope outline with dark color
     c.rect(0, 0, w, h);
@@ -102,11 +102,10 @@ export default class IconPainter {
 
   // highly inspired from mxDoubleEllipse
   public static paintFilledCircleIcon({ c, x, y, w, h, style }: PaintParameter): void {
-    const strokeWidth = StyleUtils.getStrokeWidth(style);
-
     this.updateCanvasStyle(c, style, true);
 
-    const inset = mxUtils.getValue(style, mxConstants.STYLE_MARGIN, Math.min(3 + strokeWidth, Math.min(w / 5, h / 5)));
+    const strokeWidth = StyleUtils.getStrokeWidth(style);
+    const inset = StyleUtils.getMargin(style, Math.min(3 + strokeWidth, Math.min(w / 5, h / 5)));
     x += inset;
     y += inset;
     w -= 2 * inset;
@@ -120,29 +119,26 @@ export default class IconPainter {
   }
 
   public static paintUnfilledCircleIcon({ c, x, y, w, h, style }: PaintParameter) {
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5);
-    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
-
     this.updateCanvasStyle(c, style, false, StyleConstant.STROKE_WIDTH_THICK);
 
-    const arcRay = 1 / 6;
-    const arcX = 1 / 6;
-    const arcY = 1 / 6;
-    canvas.begin();
-    canvas.moveTo(arcX, arcY);
-    canvas.arcTo(arcRay, arcRay, 0, 0, 0, 5 * arcX, 5 * arcY);
-    canvas.arcTo(arcRay, arcRay, 0, 0, 0, arcX, arcY);
-    canvas.close();
+    const strokeWidth = StyleUtils.getStrokeWidth(style);
+    const inset = StyleUtils.getMargin(style, Math.min(3.5 + strokeWidth, Math.min(w / 5.5, h / 5.5)));
+    x += inset * 2;
+    y += inset * 2;
+    w -= 2 * inset * 2;
+    h -= 2 * inset * 2;
 
-    canvas.fillAndStroke();
+    if (w > 0 && h > 0) {
+      c.ellipse(x, y, w, h);
+    }
+    c.stroke();
   }
 
   // implementation adapted from https://www.flaticon.com/free-icon/clock_223404
   public static paintClockIcon({ c, x, y, w, h, style }: PaintParameter): void {
+    this.updateCanvasStyle(c, style);
     const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 152);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 5);
-
-    this.updateCanvasStyle(c, style);
 
     canvas.begin();
     canvas.moveTo(184, 60);
@@ -235,10 +231,9 @@ export default class IconPainter {
   }
 
   public static paintXCrossIcon({ c, x, y, w, h, style }: PaintParameter) {
+    this.updateCanvasStyle(c, style, true);
     const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
-
-    this.updateCanvasStyle(c, style, true);
 
     IconPainter.drawCrossIcon(canvas);
     const xRotation = w / 4;
@@ -248,10 +243,9 @@ export default class IconPainter {
   }
 
   public static paintPlusCrossIcon({ c, x, y, w, h, style }: PaintParameter) {
+    this.updateCanvasStyle(c, style, true);
     const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
-
-    this.updateCanvasStyle(c, style, true);
 
     IconPainter.drawCrossIcon(canvas);
     canvas.fillAndStroke();
@@ -278,8 +272,7 @@ export default class IconPainter {
   // use https://github.com/process-analytics/mxgraph-svg2shape to generate the xml stencil and port it to code
   public static paintWomanIcon({ c, x, y, w, h, style }: PaintParameter) {
     // generated icon h="239.68" w="143.61"
-    const generatedIconHeight = 239;
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, generatedIconHeight);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 239);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 20);
 
     this.updateCanvasStyle(c, style, true);

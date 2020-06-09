@@ -19,6 +19,7 @@ import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnEventKind } from '../../../model/bpmn/shape/ShapeBpmnEventKind';
 import IconPainter, { PaintParameter } from './IconPainter';
 import StyleUtils, { StyleConstant } from '../StyleUtils';
+import { MxCanvasUtil } from '../extension/MxScaleFactorCanvas';
 
 const mxEllipse: typeof mxgraph.mxEllipse = MxGraphFactoryService.getMxGraphProperty('mxEllipse');
 const mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');

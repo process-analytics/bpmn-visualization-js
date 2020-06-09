@@ -16,7 +16,7 @@
 
 import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
-import { StyleConstant } from '../StyleUtils';
+import StyleUtils, { StyleConstant } from '../StyleUtils';
 import IconPainter, { PaintParameter } from './IconPainter';
 
 const mxRhombus: typeof mxgraph.mxRhombus = MxGraphFactoryService.getMxGraphProperty('mxRhombus');

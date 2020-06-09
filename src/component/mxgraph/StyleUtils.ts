@@ -40,6 +40,10 @@ export default class StyleUtils {
     return mxUtils.getValue(style, mxConstants.STYLE_STROKEWIDTH, StyleConstant.STROKE_WIDTH_THIN);
   }
 
+  public static getMargin(style: any, defaultMargin: number): number {
+    return mxUtils.getValue(style, mxConstants.STYLE_MARGIN, defaultMargin);
+  }
+
   public static getBpmnEventKind(style: any): ShapeBpmnEventKind {
     return mxUtils.getValue(style, StyleConstant.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
   }
