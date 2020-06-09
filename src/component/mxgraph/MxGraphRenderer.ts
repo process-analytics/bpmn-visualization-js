@@ -145,32 +145,41 @@ export default class MxGraphRenderer {
         const labelBounds = edge.label?.bounds;
         const style = this.computeStyle(edge, labelBounds);
 
-        const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
+        const labelText = bpmnElement.name;
+        // eslint-disable-next-line no-console
+        console.info('###Processing edge with label:', labelText);
+        const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, labelText, source, target, style);
         this.insertWaypoints(edge.waypoints, mxEdge);
 
         // eslint-disable-next-line no-console
-        console.info('###Rendering edge, geometry prior applying info from label bounds:');
+        console.info('###geometry prior applying info from label bounds');
+        const geometry = mxEdge.geometry;
         // eslint-disable-next-line no-console
-        console.info(mxEdge.geometry);
+        console.info(geometry);
+        // eslint-disable-next-line no-console
+        console.info('###center: %s / %s', geometry.getCenterX(), geometry.getCenterY());
 
         // demonstrate how to set label position using the cell geometry offset
         // label relative coordinates to the cell
         if (labelBounds) {
-          mxEdge.geometry.relative = false;
+          // mxEdge.geometry.relative = false;
           const relativeCoordinate = this.getRelativeCoordinates(mxEdge.parent, { x: labelBounds.x, y: labelBounds.y });
-          mxEdge.geometry.x = relativeCoordinate.x;
-          mxEdge.geometry.y = relativeCoordinate.y;
-          // as described in the doc,
-          // "The width and height parameter for edge geometries can be used to set the label width and height (eg. for word wrapping)."
+          // mxEdge.geometry.x = relativeCoordinate.x;
+          // mxEdge.geometry.y = relativeCoordinate.y;
+
+          // described in the doc
+          // "The width and height parameter for edge geometries can be used to set the label width and height
+          // (eg. for word wrapping)."
           mxEdge.geometry.width = labelBounds.width;
           mxEdge.geometry.height = labelBounds.height;
 
+          // TODO ensure we do not need offset here
           // const relativeLabelX = labelBounds.x - bounds.x;
           // const relativeLabelY = labelBounds.y - bounds.y;
           // mxEdge.geometry.offset = new this.mxPoint(relativeLabelX, relativeLabelY);
 
           // eslint-disable-next-line no-console
-          console.info('###Rendering edge, geometry AFTER applying info from label bounds:');
+          console.info('###geometry AFTER applying info from label bounds');
           // eslint-disable-next-line no-console
           console.info(mxEdge.geometry);
         }
@@ -203,6 +212,31 @@ export default class MxGraphRenderer {
       mxCell.geometry.offset = new this.mxPoint(relativeLabelX, relativeLabelY);
     }
     return mxCell;
+  }
+
+  // ===================================================================================================================
+  // TODO move to a dedicated class
+  // ===================================================================================================================
+  //
+  // https://jgraph.github.io/mxgraph/docs/js-api/files/model/mxGeometry-js.html#mxGeometry
+  // Edge Labels
+  //
+  // Using the x- and y-coordinates of a cell’s geometry, it is possible to position the label on edges on a specific
+  // location on the actual edge shape as it appears on the screen.  The x-coordinate of an edge’s geometry is used to
+  // describe the distance from the center of the edge from -1 to 1 with 0 being the center of the edge and the default value.
+  // The y-coordinate of an edge’s geometry is used to describe the absolute, orthogonal distance in pixels from that point.
+  // In addition, the mxGeometry.offset is used as an absolute offset vector from the resulting point.
+  //
+  // This coordinate system is applied if relative is true, otherwise the offset defines the absolute vector from the edge’s center point to the label and the values for <x> and <y> are ignored.
+  //
+  // The width and height parameter for edge geometries can be used to set the label width and height (eg. for word wrapping).
+
+  // coordinate in the same referential as the mxCell, so here, relative to its parent
+  private computeEgeCenter(mxEdge: mxgraph.mxCell): Coordinate {
+    // TODO final impl should ensure we have an edge
+    const wayPoints = mxEdge.geometry.points;
+
+    return null;
   }
 
   private getRelativeCoordinates(parent: mxgraph.mxCell, absoluteCoordinate: Coordinate): Coordinate {
