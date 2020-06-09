@@ -149,8 +149,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeLabel(bpmnLabel: any, id: string): Label {
     if (bpmnLabel) {
-      const labelStyle = bpmnLabel.labelStyle;
-      const font = this.findFont(labelStyle, id);
+      const font = this.findFont(bpmnLabel.labelStyle, id);
       const bounds = this.deserializeBounds(bpmnLabel);
 
       if (font || bounds) {
@@ -163,11 +162,11 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
     let font;
     if (labelStyle) {
       font = this.convertedFonts.get(labelStyle);
-    }
 
-    if (!font) {
-      // TODO error management
-      console.warn('Unable to assign font from style %s to shape/edge %s', labelStyle, id);
+      if (!font) {
+        // TODO error management
+        console.warn('Unable to assign font from style %s to shape/edge %s', labelStyle, id);
+      }
     }
 
     return font;
