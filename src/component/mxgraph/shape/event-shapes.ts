@@ -21,8 +21,6 @@ import IconPainter, { PaintParameter } from './IconPainter';
 import StyleUtils, { StyleConstant } from '../StyleUtils';
 
 const mxEllipse: typeof mxgraph.mxEllipse = MxGraphFactoryService.getMxGraphProperty('mxEllipse');
-const mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
-const mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
 
 abstract class EventShape extends mxEllipse {
   // TODO: when all/more event types will be supported, we could move to a Record/MappedType
@@ -36,8 +34,6 @@ abstract class EventShape extends mxEllipse {
 
   protected constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
-
-    this.style = mxUtils.setStyle(this.style, mxConstants.STYLE_STROKEWIDTH, strokewidth);
   }
 
   public paintVertexShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
