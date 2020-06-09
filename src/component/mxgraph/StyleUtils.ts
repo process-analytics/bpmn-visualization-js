@@ -24,24 +24,29 @@ export enum StyleConstant {
   STROKE_WIDTH_THIN = 2,
   STROKE_WIDTH_THICK = 5,
   BPMN_STYLE_EVENT_KIND = 'bpmn.eventKind',
+  DEFAULT_FILL_COLOR = 'White',
+  DEFAULT_STROKE_COLOR = 'Black',
+  DEFAULT_FONT_SIZE = 12,
+  DEFAULT_FONT_COLOR = 'Black',
+  DEFAULT_MARGIN = 0,
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleUtils {
   public static getFillColor(style: any): string {
-    return mxUtils.getValue(style, mxConstants.STYLE_FILLCOLOR, '#ffffff');
+    return mxUtils.getValue(style, mxConstants.STYLE_FILLCOLOR, StyleConstant.DEFAULT_FILL_COLOR);
   }
 
   public static getStrokeColor(style: any): string {
-    return mxUtils.getValue(style, mxConstants.STYLE_STROKECOLOR, '#000000');
+    return mxUtils.getValue(style, mxConstants.STYLE_STROKECOLOR, StyleConstant.DEFAULT_STROKE_COLOR);
   }
 
   public static getStrokeWidth(style: any): number {
     return mxUtils.getValue(style, mxConstants.STYLE_STROKEWIDTH, StyleConstant.STROKE_WIDTH_THIN);
   }
 
-  public static getMargin(style: any, defaultMargin: number): number {
-    return mxUtils.getValue(style, mxConstants.STYLE_MARGIN, defaultMargin);
+  public static getMargin(style: any): number {
+    return mxUtils.getValue(style, mxConstants.STYLE_MARGIN, StyleConstant.DEFAULT_MARGIN);
   }
 
   public static getBpmnEventKind(style: any): ShapeBpmnEventKind {
