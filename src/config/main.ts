@@ -29,7 +29,8 @@ function readAndLoadFile(f: File): void {
 }
 
 // TODO: move to UI initializer
-new DropFileUserInterface(window, 'drop-container', 'graph', readAndLoadFile);
+// TODO disabled because prevent action buttons usage
+//new DropFileUserInterface(window, 'drop-container', 'graph', readAndLoadFile);
 
 // TODO: make File Open Button a self contained component
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
