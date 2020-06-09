@@ -31,15 +31,15 @@ export interface CellConfiguration {
   y: number;
   w: number;
   h: number;
-  strokeWidth?: number;
+  strokeWidth: number;
 }
 
 export interface IconConfiguration {
-  isFilled?: boolean;
-  fillColor?: string;
-  strokeColor?: string;
-  strokeWidth?: number;
-  margin?: number;
+  isFilled: boolean;
+  fillColor: string;
+  strokeColor: string;
+  strokeWidth: number;
+  margin: number;
 }
 
 export default class IconPainter {
@@ -67,20 +67,16 @@ export default class IconPainter {
     };
   }
 
-  private static updateCanvasStyle(canvas: mxgraph.mxXmlCanvas2D, icon: IconConfiguration) {
-    if (icon.isFilled) {
+  private static updateCanvasStyle(canvas: mxgraph.mxXmlCanvas2D, { isFilled, strokeColor, fillColor, strokeWidth }: IconConfiguration) {
+    if (isFilled) {
       // Choose dark color to fill the icon
-      canvas.setFillColor(icon.strokeColor);
+      canvas.setFillColor(strokeColor);
     } else {
       // Choose light color to fill the icon
-      canvas.setFillColor(icon.fillColor);
+      canvas.setFillColor(fillColor);
     }
 
-    if (icon.strokeWidth) {
-      canvas.setStrokeWidth(icon.strokeWidth);
-    } else {
-      canvas.setStrokeWidth(0);
-    }
+    canvas.setStrokeWidth(strokeWidth);
   }
 
   public static paintEmptyIcon(): void {

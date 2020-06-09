@@ -16,7 +16,7 @@
 
 import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
-import StyleUtils, { StyleConstant } from '../StyleUtils';
+import { StyleConstant } from '../StyleUtils';
 import IconPainter, { PaintParameter } from './IconPainter';
 
 const mxRhombus: typeof mxgraph.mxRhombus = MxGraphFactoryService.getMxGraphProperty('mxRhombus');
@@ -29,11 +29,12 @@ abstract class GatewayShape extends mxRhombus {
   protected abstract paintInnerShape(paintParameter: PaintParameter): void;
 
   public paintVertexShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
-    this.paintOuterShape({ c, x, y, w, h });
-    this.paintInnerShape({ c, x, y, w, h, style: this.style });
+    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, this);
+    this.paintOuterShape(paintParameter);
+    this.paintInnerShape(paintParameter);
   }
 
-  protected paintOuterShape({ c, x, y, w, h }: PaintParameter): void {
+  protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {
     super.paintVertexShape(c, x, y, w, h);
   }
 }
@@ -64,6 +65,10 @@ export class InclusiveGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    IconPainter.paintUnfilledCircleIcon(paintParameter);
+    IconPainter.paintCircleIcon({
+      ...paintParameter,
+      ratioFromParent: 0.5,
+      icon: { ...paintParameter.icon, isFilled: false, strokeWidth: StyleConstant.STROKE_WIDTH_THICK.valueOf() },
+    });
   }
 }

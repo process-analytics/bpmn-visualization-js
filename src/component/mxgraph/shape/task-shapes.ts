@@ -33,7 +33,9 @@ abstract class BaseTaskShape extends mxRectangleShape {
 
   public paintForeground(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
-    this.paintTaskIcon({ c, x, y, w, h, style: this.style });
+
+    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, this);
+    this.paintTaskIcon(paintParameter);
   }
 
   protected abstract paintTaskIcon(paintParameter: PaintParameter): void;

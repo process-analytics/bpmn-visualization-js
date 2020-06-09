@@ -19,7 +19,6 @@ import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnEventKind } from '../../../model/bpmn/shape/ShapeBpmnEventKind';
 import IconPainter, { PaintParameter } from './IconPainter';
 import StyleUtils, { StyleConstant } from '../StyleUtils';
-import { MxCanvasUtil } from '../extension/MxScaleFactorCanvas';
 
 const mxEllipse: typeof mxgraph.mxEllipse = MxGraphFactoryService.getMxGraphProperty('mxEllipse');
 const mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
@@ -29,7 +28,7 @@ abstract class EventShape extends mxEllipse {
   // TODO: when all/more event types will be supported, we could move to a Record/MappedType
   private iconPainters: Map<ShapeBpmnEventKind, (paintParameter: PaintParameter) => void> = new Map([
     [ShapeBpmnEventKind.MESSAGE, (paintParameter: PaintParameter) => IconPainter.paintEnvelopIcon(paintParameter)],
-    [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => IconPainter.paintFilledCircleIcon(paintParameter)],
+    [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => IconPainter.paintCircleIcon(paintParameter)],
     [ShapeBpmnEventKind.TIMER, (paintParameter: PaintParameter) => IconPainter.paintClockIcon(paintParameter)],
   ]);
 
@@ -44,8 +43,9 @@ abstract class EventShape extends mxEllipse {
   public paintVertexShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     // TODO: This will be removed after implementation of all supported events
     // this.markNonFullyRenderedEvents(c);
-    this.paintOuterShape({ c, x, y, w, h });
-    this.paintInnerShape({ c, x, y, w, h });
+    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, this, 1, this.withFilledIcon);
+    this.paintOuterShape(paintParameter);
+    this.paintInnerShape(paintParameter);
   }
 
   // This will be removed after implementation of all supported events
@@ -57,13 +57,13 @@ abstract class EventShape extends mxEllipse {
   //   }
   // }
 
-  protected paintOuterShape({ c, x, y, w, h }: PaintParameter): void {
+  protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {
     super.paintVertexShape(c, x, y, w, h);
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
     const paintIcon = this.iconPainters.get(StyleUtils.getBpmnEventKind(this.style)) || (() => IconPainter.paintEmptyIcon());
-    paintIcon({ ...paintParameter, style: this.style, isFilled: this.withFilledIcon });
+    paintIcon(paintParameter);
   }
 }
 
@@ -87,11 +87,11 @@ abstract class IntermediateEventShape extends EventShape {
 
   // this implementation is adapted from the draw.io BPMN 'throwing' outlines
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L431
-  protected paintOuterShape({ c, x, y, w, h }: PaintParameter): void {
+  protected paintOuterShape({ c, shape: { x, y, w, h, strokeWidth } }: PaintParameter): void {
     c.ellipse(x, y, w, h);
     c.fillAndStroke();
 
-    const inset = this.strokewidth * 1.5;
+    const inset = strokeWidth * 1.5;
     c.ellipse(w * 0.02 + inset + x, h * 0.02 + inset + y, w * 0.96 - 2 * inset, h * 0.96 - 2 * inset);
     c.stroke();
   }
