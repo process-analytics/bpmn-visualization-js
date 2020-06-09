@@ -47,10 +47,12 @@ describe('parse bpmn as json for Message end event', () => {
       bpmnElementId: 'event_id_7',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
-      boundsX: 362,
-      boundsY: 932,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 932,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
@@ -83,10 +85,12 @@ describe('parse bpmn as json for Message end event', () => {
       bpmnElementId: 'event_id_7',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
-      boundsX: 362,
-      boundsY: 932,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 932,
+        width: 36,
+        height: 45,
+      },
     });
   });
 

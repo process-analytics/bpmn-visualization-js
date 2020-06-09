@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabel } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelFont } from './JsonTestUtils';
 
 describe('parse bpmn as json for label font', () => {
   jest.spyOn(console, 'warn');
@@ -58,7 +58,7 @@ describe('parse bpmn as json for label font', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyLabel(model.flowNodes[0].label, { name: 'Arial', size: 11.0 });
+    verifyLabelFont(model.flowNodes[0].label, { name: 'Arial', size: 11.0 });
   });
 
   it('json containing a BPMNEdge who references a label style with font', () => {
@@ -90,7 +90,7 @@ describe('parse bpmn as json for label font', () => {
 
     const model = parseJsonAndExpectOnlyEdges(json, 1);
 
-    verifyLabel(model.edges[0].label, { name: 'Arial', size: 11.0 });
+    verifyLabelFont(model.edges[0].label, { name: 'Arial', size: 11.0 });
   });
 
   it('json containing several BPMNShapes who reference the same label style', () => {
@@ -140,8 +140,8 @@ describe('parse bpmn as json for label font', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
-    verifyLabel(model.flowNodes[0].label, { name: 'Arial', size: 11.0 });
-    verifyLabel(model.flowNodes[1].label, { name: 'Arial', size: 11.0 });
+    verifyLabelFont(model.flowNodes[0].label, { name: 'Arial', size: 11.0 });
+    verifyLabelFont(model.flowNodes[1].label, { name: 'Arial', size: 11.0 });
   });
 
   it('json containing several BPMNEdges who reference the same label style', () => {
@@ -178,8 +178,8 @@ describe('parse bpmn as json for label font', () => {
 
     const model = parseJsonAndExpectOnlyEdges(json, 2);
 
-    verifyLabel(model.edges[0].label, { name: 'Arial', size: 11.0 });
-    verifyLabel(model.edges[1].label, { name: 'Arial', size: 11.0 });
+    verifyLabelFont(model.edges[0].label, { name: 'Arial', size: 11.0 });
+    verifyLabelFont(model.edges[1].label, { name: 'Arial', size: 11.0 });
   });
 
   it('json containing an array of label styles and BPMNShapes who reference a label style with font with/without all attributes', () => {
@@ -240,7 +240,7 @@ describe('parse bpmn as json for label font', () => {
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
-    verifyLabel(model.flowNodes[0].label, { name: 'Arial', size: 11.0, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false });
+    verifyLabelFont(model.flowNodes[0].label, { name: 'Arial', size: 11.0, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false });
     expect(model.flowNodes[1].label).toBeUndefined();
   });
 
@@ -289,7 +289,7 @@ describe('parse bpmn as json for label font', () => {
 
     const model = parseJsonAndExpectOnlyEdges(json, 2);
 
-    verifyLabel(model.edges[0].label, { name: 'Arial', size: 11.0, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false });
+    verifyLabelFont(model.edges[0].label, { name: 'Arial', size: 11.0, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false });
     expect(model.edges[1].label).toBeUndefined();
   });
 

@@ -51,11 +51,13 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Process 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      boundsX: 158,
-      boundsY: 50,
-      boundsWidth: 1620,
-      boundsHeight: 430,
       parentId: undefined,
+      bounds: {
+        x: 158,
+        y: 50,
+        width: 1620,
+        height: 430,
+      },
     });
   });
 
@@ -99,11 +101,13 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_0nuvj8r',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      boundsX: 158,
-      boundsY: 50,
-      boundsWidth: 1620,
-      boundsHeight: 430,
       parentId: undefined,
+      bounds: {
+        x: 158,
+        y: 50,
+        width: 1620,
+        height: 430,
+      },
     });
 
     const lane = model.lanes[0];
@@ -112,11 +116,13 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
       parentId: 'Participant_0nuvj8r',
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
@@ -185,22 +191,26 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      boundsX: 158,
-      boundsY: 50,
-      boundsWidth: 1620,
-      boundsHeight: 430,
       parentId: undefined,
+      bounds: {
+        x: 158,
+        y: 50,
+        width: 1620,
+        height: 430,
+      },
     });
     verifyShape(model.pools[1], {
       shapeId: 'Participant_2_di',
       bpmnElementId: 'Participant_2',
       bpmnElementName: 'Pool 2',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      boundsX: 158,
-      boundsY: 1050,
-      boundsWidth: 1620,
-      boundsHeight: 430,
       parentId: undefined,
+      bounds: {
+        x: 158,
+        y: 1050,
+        width: 1620,
+        height: 430,
+      },
     });
 
     verifyShape(model.lanes[0], {
@@ -208,22 +218,26 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Lane_1_1',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
       parentId: 'Participant_1',
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
     verifyShape(model.lanes[1], {
       shapeId: 'shape_Lane_2_1',
       bpmnElementId: 'Lane_2_1',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 1232,
-      boundsWidth: 36,
-      boundsHeight: 45,
       parentId: 'Participant_2',
+      bounds: {
+        x: 362,
+        y: 1232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
@@ -263,11 +277,13 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      boundsX: 158,
-      boundsY: 50,
-      boundsWidth: 1620,
-      boundsHeight: 430,
       parentId: undefined,
+      bounds: {
+        x: 158,
+        y: 50,
+        width: 1620,
+        height: 430,
+      },
     });
 
     // Check detected participants during json parsing
@@ -316,11 +332,13 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      boundsX: 158,
-      boundsY: 50,
-      boundsWidth: 1620,
-      boundsHeight: 630,
       parentId: undefined,
+      bounds: {
+        x: 158,
+        y: 50,
+        width: 1620,
+        height: 630,
+      },
     });
 
     const flowNode = model.flowNodes[0];
@@ -329,11 +347,13 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'event_id_0',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
       parentId: 'Participant_1',
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 

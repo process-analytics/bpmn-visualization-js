@@ -29,16 +29,8 @@ export interface ExpectedShape {
   bpmnElementId: string;
   bpmnElementName: string;
   bpmnElementKind: ShapeBpmnElementKind;
-  boundsX: number;
-  boundsY: number;
-  boundsWidth: number;
-  boundsHeight: number;
   parentId?: string;
-}
-
-export interface ExpectedEvent {
-  kind: ShapeBpmnEventKind;
-  expectedNumber: number;
+  bounds?: ExpectedBounds;
 }
 
 export interface ExpectedEdge {
@@ -58,6 +50,13 @@ export interface ExpectedFont {
   isItalic?: boolean;
   isUnderline?: boolean;
   isStrikeThrough?: boolean;
+}
+
+export interface ExpectedBounds {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 export function parseJson(json: string): BpmnModel {
@@ -107,20 +106,21 @@ export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: string, numberOfEx
   return parseJsonAndExpect(json, 0, 0, numberOfExpectedFlowNodes, numberOfExpectedEdges);
 }
 
-export function verifyShape(shape: Shape, expectedValue: ExpectedShape): void {
-  expect(shape.id).toEqual(expectedValue.shapeId);
+export function verifyShape(shape: Shape, expectedShape: ExpectedShape): void {
+  expect(shape.id).toEqual(expectedShape.shapeId);
 
   const bpmnElement = shape.bpmnElement;
-  expect(bpmnElement.id).toEqual(expectedValue.bpmnElementId);
-  expect(bpmnElement.name).toEqual(expectedValue.bpmnElementName);
-  expect(bpmnElement.kind).toEqual(expectedValue.bpmnElementKind);
-  expect(bpmnElement.parentId).toEqual(expectedValue.parentId);
+  expect(bpmnElement.id).toEqual(expectedShape.bpmnElementId);
+  expect(bpmnElement.name).toEqual(expectedShape.bpmnElementName);
+  expect(bpmnElement.kind).toEqual(expectedShape.bpmnElementKind);
+  expect(bpmnElement.parentId).toEqual(expectedShape.parentId);
 
   const bounds = shape.bounds;
-  expect(bounds.x).toEqual(expectedValue.boundsX);
-  expect(bounds.y).toEqual(expectedValue.boundsY);
-  expect(bounds.width).toEqual(expectedValue.boundsWidth);
-  expect(bounds.height).toEqual(expectedValue.boundsHeight);
+  const expectedBounds = expectedShape.bounds;
+  expect(bounds.x).toEqual(expectedBounds.x);
+  expect(bounds.y).toEqual(expectedBounds.y);
+  expect(bounds.width).toEqual(expectedBounds.width);
+  expect(bounds.height).toEqual(expectedBounds.height);
 }
 
 export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge): void {
@@ -148,13 +148,7 @@ export function verifyEvent(model: BpmnModel, kind: ShapeBpmnEventKind, expected
   expect(events).toHaveLength(expectedNumber);
 }
 
-export function verifyEvents(model: BpmnModel, expectedEvents: ExpectedEvent[]): void {
-  expectedEvents.forEach(expectedEvent => {
-    verifyEvent(model, expectedEvent.kind, expectedEvent.expectedNumber);
-  });
-}
-
-export function verifyLabel(label: Label, expectedFont?: ExpectedFont): void {
+export function verifyLabelFont(label: Label, expectedFont?: ExpectedFont): void {
   expect(label).toBeDefined();
 
   const font = label.font;

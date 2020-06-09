@@ -44,10 +44,12 @@ describe('parse bpmn as json for lane', () => {
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
@@ -86,10 +88,12 @@ describe('parse bpmn as json for lane', () => {
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
 
     expect(model.flowNodes).toHaveLength(1);
@@ -123,10 +127,12 @@ describe('parse bpmn as json for lane', () => {
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
@@ -158,10 +164,12 @@ describe('parse bpmn as json for lane', () => {
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
@@ -200,10 +208,12 @@ describe('parse bpmn as json for lane', () => {
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
 
     expect(model.flowNodes).toHaveLength(1);
@@ -240,10 +250,12 @@ describe('parse bpmn as json for lane', () => {
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
@@ -292,20 +304,24 @@ describe('parse bpmn as json for lane', () => {
       bpmnElementId: 'Lane_164yevk',
       bpmnElementName: 'Customer',
       bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
     verifyShape(model.lanes[1], {
       shapeId: 'Lane_12u5n6x_di',
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
-      boundsX: 666,
-      boundsY: 222,
-      boundsWidth: 22,
-      boundsHeight: 33,
+      bounds: {
+        x: 666,
+        y: 222,
+        width: 22,
+        height: 33,
+      },
     });
   });
 });

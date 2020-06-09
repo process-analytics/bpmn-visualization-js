@@ -47,10 +47,12 @@ describe('parse bpmn as json for start event', () => {
       bpmnElementId: 'event_id_0',
       bpmnElementName: 'event name',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
@@ -85,10 +87,12 @@ describe('parse bpmn as json for start event', () => {
       bpmnElementId: 'event_id_1',
       bpmnElementName: 'event name',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
@@ -131,10 +135,12 @@ describe('parse bpmn as json for start event', () => {
       bpmnElementId: 'event_id_0',
       bpmnElementName: 'event name',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
 
     verifyShape(model.flowNodes[1], {
@@ -142,10 +148,12 @@ describe('parse bpmn as json for start event', () => {
       bpmnElementId: 'event_id_1',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
-      boundsX: 365,
-      boundsY: 235,
-      boundsWidth: 35,
-      boundsHeight: 46,
+      bounds: {
+        x: 365,
+        y: 235,
+        width: 35,
+        height: 46,
+      },
     });
   });
 
@@ -198,10 +206,12 @@ describe('parse bpmn as json for start event', () => {
       bpmnElementId: 'event_id_0',
       bpmnElementName: 'none start event',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 });

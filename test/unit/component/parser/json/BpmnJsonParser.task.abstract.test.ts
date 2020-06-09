@@ -46,10 +46,12 @@ describe('parse bpmn as json for task', () => {
       bpmnElementId: 'task_id_0',
       bpmnElementName: 'task name',
       bpmnElementKind: ShapeBpmnElementKind.TASK,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
@@ -84,10 +86,12 @@ describe('parse bpmn as json for task', () => {
       bpmnElementId: 'task_id_1',
       bpmnElementName: 'task name',
       bpmnElementKind: ShapeBpmnElementKind.TASK,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
@@ -131,20 +135,24 @@ describe('parse bpmn as json for task', () => {
       bpmnElementId: 'task_id_0',
       bpmnElementName: 'task name',
       bpmnElementKind: ShapeBpmnElementKind.TASK,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
     verifyShape(model.flowNodes[1], {
       shapeId: 'shape_task_id_1',
       bpmnElementId: 'task_id_1',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.TASK,
-      boundsX: 365,
-      boundsY: 235,
-      boundsWidth: 35,
-      boundsHeight: 46,
+      bounds: {
+        x: 365,
+        y: 235,
+        width: 35,
+        height: 46,
+      },
     });
   });
 });

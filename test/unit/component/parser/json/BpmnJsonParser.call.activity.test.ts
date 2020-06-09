@@ -47,10 +47,12 @@ describe('parse bpmn as json for call activity', () => {
       bpmnElementId: 'call_activity_id_0',
       bpmnElementName: 'call activity name',
       bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
@@ -86,10 +88,12 @@ describe('parse bpmn as json for call activity', () => {
       bpmnElementId: 'call_activity_id_1',
       bpmnElementName: 'call activity name',
       bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
@@ -135,20 +139,24 @@ describe('parse bpmn as json for call activity', () => {
       bpmnElementId: 'call_activity_id_0',
       bpmnElementName: 'call activity name',
       bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
     verifyShape(model.flowNodes[1], {
       shapeId: 'shape_call_activity_id_1',
       bpmnElementId: 'call_activity_id_1',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
-      boundsX: 365,
-      boundsY: 235,
-      boundsWidth: 35,
-      boundsHeight: 46,
+      bounds: {
+        x: 365,
+        y: 235,
+        width: 35,
+        height: 46,
+      },
     });
   });
 });

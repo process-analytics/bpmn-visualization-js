@@ -48,10 +48,12 @@ describe('parse bpmn as json for timer intermediate catch event', () => {
       bpmnElementId: 'event_id_0',
       bpmnElementName: 'event name',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
@@ -85,10 +87,12 @@ describe('parse bpmn as json for timer intermediate catch event', () => {
       bpmnElementId: 'event_id_0',
       bpmnElementName: 'event name',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
-      boundsX: 362,
-      boundsY: 232,
-      boundsWidth: 36,
-      boundsHeight: 45,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
     });
   });
 
