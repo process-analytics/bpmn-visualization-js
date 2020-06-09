@@ -20,12 +20,12 @@ import StyleUtils from '../StyleUtils';
 
 export interface PaintParameter {
   c: mxgraph.mxXmlCanvas2D;
-  shape: CellConfiguration;
+  shape: ShapeConfiguration;
   icon: IconConfiguration;
   ratioFromParent?: number;
 }
 
-export interface CellConfiguration {
+export interface ShapeConfiguration {
   x: number;
   y: number;
   w: number;
