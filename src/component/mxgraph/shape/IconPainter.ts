@@ -1,8 +1,3 @@
-import { mxgraph } from 'ts-mxgraph';
-import MxScaleFactorCanvas, { MxCanvasUtil } from '../extension/MxScaleFactorCanvas';
-import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
-import StyleUtils, { StyleConstant } from '../StyleUtils';
-
 /**
  * Copyright 2020 Bonitasoft S.A.
  *
@@ -18,6 +13,10 @@ import StyleUtils, { StyleConstant } from '../StyleUtils';
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import { mxgraph } from 'ts-mxgraph';
+import MxScaleFactorCanvas, { MxCanvasUtil } from '../extension/MxScaleFactorCanvas';
+import StyleUtils from '../StyleUtils';
 
 export interface PaintParameter {
   c: mxgraph.mxXmlCanvas2D;
@@ -67,7 +66,7 @@ export default class IconPainter {
     };
   }
 
-  private static updateCanvasStyle(canvas: mxgraph.mxXmlCanvas2D, { isFilled, strokeColor, fillColor, strokeWidth }: IconConfiguration) {
+  private static updateCanvasStyle(canvas: mxgraph.mxXmlCanvas2D, { isFilled, strokeColor, fillColor, strokeWidth }: IconConfiguration): void {
     if (isFilled) {
       // Choose dark color to fill the icon
       canvas.setFillColor(strokeColor);
@@ -243,7 +242,7 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  public static paintXCrossIcon({ c, shape: { x, y, w, h }, icon }: PaintParameter) {
+  public static paintXCrossIcon({ c, shape: { x, y, w, h }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, { ...icon, isFilled: true });
     const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
@@ -255,7 +254,7 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  public static paintPlusCrossIcon({ c, shape: { x, y, w, h }, icon }: PaintParameter) {
+  public static paintPlusCrossIcon({ c, shape: { x, y, w, h }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, { ...icon, isFilled: true });
     const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5);
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
@@ -283,7 +282,7 @@ export default class IconPainter {
 
   // implementation adapted from https://www.flaticon.com/free-icon/employees_554768
   // use https://github.com/process-analytics/mxgraph-svg2shape to generate the xml stencil and port it to code
-  public static paintWomanIcon({ c, shape: { x, y, w, h }, icon }: PaintParameter) {
+  public static paintWomanIcon({ c, shape: { x, y, w, h }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, { ...icon, isFilled: true });
 
     // generated icon h="239.68" w="143.61"
@@ -371,7 +370,7 @@ export default class IconPainter {
 
   // this implementation is adapted from the draw.io BPMN 'Service Task' stencil
   // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L898
-  public static paintGearIcon({ c, shape: { x, y, w, h }, icon }: PaintParameter) {
+  public static paintGearIcon({ c, shape: { x, y, w, h }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
 
     // icon coordinates fill a 100x100 rectangle (approximately: 90x90 + foreground translation)
