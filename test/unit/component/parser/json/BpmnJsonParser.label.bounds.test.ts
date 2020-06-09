@@ -16,7 +16,7 @@
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelBounds } from './JsonTestUtils';
 
 describe('parse bpmn as json for label bounds', () => {
-  it('json containing a BPMNShape who has a label with bounds with all attributes', () => {
+  it('json containing a BPMNShape which has a label with bounds with all attributes', () => {
     const json = `{
        "definitions": {
           "process": {
@@ -48,7 +48,7 @@ describe('parse bpmn as json for label bounds', () => {
     verifyLabelBounds(model.flowNodes[0].label, { x: 25, y: 26, width: 27, height: 28 });
   });
 
-  it('json containing a BPMNEdge who has a label with bounds with all attributes', () => {
+  it('json containing a BPMNEdge which has a label with bounds with all attributes', () => {
     const json = `{
        "definitions": {
           "process": "",
@@ -73,7 +73,7 @@ describe('parse bpmn as json for label bounds', () => {
     verifyLabelBounds(model.edges[0].label, { x: 25, y: 26, width: 27, height: 28 });
   });
 
-  it('json containing a BPMNShape who has a label with bounds without attribute', () => {
+  it('json containing a BPMNShape which has a label with bounds without attribute', () => {
     const json = `{
        "definitions": {
           "process": {
@@ -105,7 +105,7 @@ describe('parse bpmn as json for label bounds', () => {
     expect(model.flowNodes[0].label).toBeUndefined();
   });
 
-  it('json containing a BPMNEdge who has a label with bounds without attribute', () => {
+  it('json containing a BPMNEdge which has a label with bounds without attribute', () => {
     const json = `{
        "definitions": {
           "process": "",
@@ -130,7 +130,7 @@ describe('parse bpmn as json for label bounds', () => {
     expect(model.edges[0].label).toBeUndefined();
   });
 
-  it('json containing a BPMNShape who has a label without bounds', () => {
+  it('json containing a BPMNShape which has a label without bounds', () => {
     const json = `{
        "definitions": {
           "process": {
@@ -161,7 +161,7 @@ describe('parse bpmn as json for label bounds', () => {
     expect(model.flowNodes[0].label).toBeUndefined();
   });
 
-  it('json containing a BPMNEdge who has a label without bounds', () => {
+  it('json containing a BPMNEdge which has a label without bounds', () => {
     const json = `{
        "definitions": {
           "process": "",
