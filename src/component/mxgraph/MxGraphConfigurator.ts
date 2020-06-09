@@ -45,12 +45,12 @@ export default class MxGraphConfigurator {
   }
 
   private configureGraph(): void {
-    this.graph.setCellsLocked(true);
-    this.graph.setCellsSelectable(false);
+    this.graph.setCellsLocked(false);
+    this.graph.setCellsSelectable(true);
     this.graph.htmlLabels = true; // required for wrapping and clipping
 
     // TODO see if this changes something
-    this.graph.setEdgeLabelsMovable(false);
+    this.graph.setEdgeLabelsMovable(true);
     this.graph.setVertexLabelsMovable(false);
   }
 }
