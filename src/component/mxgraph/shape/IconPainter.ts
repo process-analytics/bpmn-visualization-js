@@ -124,12 +124,8 @@ export default class IconPainter {
   public static paintCircleIcon({ c, ratioFromParent, shape: { x, y, w, h, strokeWidth }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
 
-    let margin = icon.margin || Math.min(3 + strokeWidth, Math.min(w / 5, h / 5));
-    if (ratioFromParent !== 1) {
-      margin += ratioFromParent;
-    }
-
-    const inset = margin / ratioFromParent;
+    const margin = icon.margin || Math.max(3 + (strokeWidth + icon.strokeWidth) / 2, Math.min((w + icon.strokeWidth) / 2, (h + icon.strokeWidth) / 2));
+    const inset = (1 - ratioFromParent) * margin;
     x += inset;
     y += inset;
     w -= 2 * inset;

@@ -26,7 +26,7 @@ abstract class EventShape extends mxEllipse {
   // TODO: when all/more event types will be supported, we could move to a Record/MappedType
   private iconPainters: Map<ShapeBpmnEventKind, (paintParameter: PaintParameter) => void> = new Map([
     [ShapeBpmnEventKind.MESSAGE, (paintParameter: PaintParameter) => IconPainter.paintEnvelopIcon(paintParameter)],
-    [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => IconPainter.paintCircleIcon(paintParameter)],
+    [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => IconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
     [ShapeBpmnEventKind.TIMER, (paintParameter: PaintParameter) => IconPainter.paintClockIcon(paintParameter)],
   ]);
 
