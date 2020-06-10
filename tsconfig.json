@@ -9,12 +9,11 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "sourceMap": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["./types", "./node_modules/@types"]
   },
   "include": [
     "src/**/*"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules", "types"]
 }

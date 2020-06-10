@@ -21,6 +21,10 @@ import { SequenceFlowKind } from '../../model/bpmn/edge/SequenceFlowKind';
 import { MarkerConstant } from './MarkerConfigurator';
 import { StyleConstant } from './StyleUtils';
 
+declare const mxUtils: typeof mxgraph.mxUtils;
+declare const mxConstants: typeof mxgraph.mxConstants;
+declare const mxPerimeter: typeof mxgraph.mxPerimeter;
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
   private mxUtils: typeof mxgraph.mxUtils = mxUtils;
