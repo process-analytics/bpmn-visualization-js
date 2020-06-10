@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import BpmnVisu from '../component/BpmnVisu';
-import { DropFileUserInterface } from '../component/ui_ux/DropFileUserInterface';
+import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { ZoomOptions } from '../component/BpmnVisuOptions';
 
 export const bpmnVisu = new BpmnVisu(window.document.getElementById('graph'), { activatePanning: true });
