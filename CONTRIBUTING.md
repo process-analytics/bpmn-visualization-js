@@ -28,12 +28,15 @@ For all contributions, please respect the following guidelines:
 
 5. Be sure you have followed the [code style](CONTRIBUTING.md#code-style) for the project.
 
-6. Sign the [Contributor License Agreement](CONTRIBUTING.md#sign-the-contributor-license-agreement)
+6. Prior opening a Pull Request, ensure the build is fully working by locally running `npm run all` (build, check and
+test everything)
 
 7. Open a [GitHub Pull Request](CONTRIBUTING.md#open-a-pull-request) with your patches. (**1** pull request = **1** feature or bug)
    We will review your contribution and respond as quickly as possible. Keep in mind that this is an open source project, and it may take us some time to get back to you. Your patience is very much appreciated.
 
-8. Be willing to accept criticism and work on improving your code. 
+8. If this is your 1st Pull Request, sign the [Contributor License Agreement](CONTRIBUTING.md#sign-the-contributor-license-agreement)
+
+9. Be willing to accept criticism and work on improving your code. 
 
 **Working on your first Pull Request?** You can learn how from this *free* series [How to Contribute to an Open Source Project on  GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)    
 
@@ -65,10 +68,12 @@ Note: information about the library internals are available in the [documentatio
 
 ### Running tests 
 
-- `npm run test`        *Run all tests*
-- `npm run coverage`    *Run all tests and the coverage*
-- `npm run e2e`         *Run all end-to-end tests*. To see the web browser used by tests, disable the `headless` mode by
-                        setting the `HEADLESS` environment variable to `false`.
+See `package.json` for extra available scripts
+- `npm run test`                *Run all tests*
+- `npm run test:unit`           *Run unit tests*
+- `npm run test:unit:coverage`  *Run unit tests with coverage*
+- `npm run test:e2e`            *Run end-to-end tests*. To see the web browser used by tests, disable the `headless` mode by
+                                setting the `HEADLESS` environment variable to `false`.
 
 ### Code style
 
