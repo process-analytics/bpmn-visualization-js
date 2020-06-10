@@ -24,5 +24,5 @@ export enum ZoomOptions {
   In,
   Out,
   Actual,
-  Fit,
+  FitHorizontal,
 }

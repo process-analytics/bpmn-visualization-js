@@ -71,8 +71,9 @@ export default class BpmnVisu {
       case ZoomOptions.Actual:
         this.graph.zoomActual();
         break;
-      case ZoomOptions.Fit:
+      case ZoomOptions.FitHorizontal:
         this.graph.fit();
+        //this.graph.center(true, true);
         break;
       case ZoomOptions.In:
         this.graph.zoomIn();

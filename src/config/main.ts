@@ -55,7 +55,7 @@ document.getElementById('btn-zoom-actual').onclick = function() {
   bpmnVisu.zoom(ZoomOptions.Actual);
 };
 document.getElementById('btn-zoom-fit').onclick = function() {
-  bpmnVisu.zoom(ZoomOptions.Fit);
+  bpmnVisu.zoom(ZoomOptions.FitHorizontal);
 };
 
 // =====================================================================================================================
