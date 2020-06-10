@@ -10,16 +10,17 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
-    "all": "run-s lint-check build test e2e",
+    "all": "run-s lint-check build test:unit test:e2e",
     "build": "rollup -c",
     "start": "rollup -c --silent --environment devMode:true",
     "watch": "rollup -cw --environment devLiveReloadMode:true",
     "lint": "tsc --noEmit && eslint \"*/**/*.{js,ts,tsx}\" NOTICE --quiet --fix",
     "lint-check": "tsc --noEmit && eslint \"*/**/*.{js,ts,tsx}\" NOTICE --max-warnings 0",
-    "test": "jest --runInBand --config=jest.config.unit.js",
-    "coverage": "jest --runInBand --config=jest.config.unit.js --coverage",
-    "test:watch": "jest --runInBand --config=jest.config.unit.js --coverage --watchAll",
-    "e2e": "jest --runInBand --detectOpenHandles --config=jest.config.e2e.js"
+    "test:unit": "jest --runInBand --config=jest.config.unit.js",
+    "test:unit:coverage": "jest --runInBand --config=jest.config.unit.js --coverage",
+    "test:unit:watch": "jest --runInBand --config=jest.config.unit.js --coverage --watchAll",
+    "test:e2e": "jest --runInBand --detectOpenHandles --config=jest.config.e2e.js",
+    "test:e2e:coverage": "jest --runInBand --detectOpenHandles --config=jest.config.e2e.js --coverage"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
