@@ -1,0 +1,47 @@
+name: Upload Demo Archive
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '.github/workflows/build.yml'
+      - '.github/workflows/fill-gh-draft-release.yml'
+      - '.github/workflows/generate-documentation.yml'
+      - '.gitignore'
+      - 'docs/**'
+      - '*.md'
+      - LICENSE
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - '.github/workflows/build.yml'
+      - '.github/workflows/fill-gh-draft-release.yml'
+      - '.github/workflows/generate-documentation.yml'
+      - '.gitignore'
+      - 'docs/**'
+      - '*.md'
+      - LICENSE
+
+jobs:
+  upload_demo_archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Verify node, npm version
+        run: |
+          node --version
+          npm --version
+      - name: Build Demo
+        run: npm run demo
+      - name: Upload
+        uses: actions/upload-artifact@v1
+        with:
+          name: demo
+          path: dist
+
