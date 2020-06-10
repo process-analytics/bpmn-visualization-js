@@ -37,6 +37,8 @@ jobs:
         run: |
           node --version
           npm --version
+      - name: Install dependencies
+        run: npm ci
       - name: Build Demo
         run: npm run demo
       - name: Upload
