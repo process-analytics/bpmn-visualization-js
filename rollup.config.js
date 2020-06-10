@@ -22,9 +22,11 @@ import commonjs from 'rollup-plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import pkg from './package.json';
 import json from '@rollup/plugin-json';
+import del from 'rollup-plugin-delete';
 
 const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
+const demoMode = process.env.demoMode;
 
 const plugins = [
   typescript({
@@ -46,7 +48,7 @@ if (devMode) {
   if (devLiveReloadMode) {
     plugins.push(livereload({ watch: 'dist', verbose: true }));
   }
-  // Copy index.html to dist
+  // Copy static resources to dist
   plugins.push(
     copy({
       targets: [
@@ -54,6 +56,21 @@ if (devMode) {
         { src: 'src/static/css/main.css', dest: 'dist/static/css/' },
       ],
     }),
+  );
+}
+
+if (demoMode) {
+  plugins.push(
+    // TODO duplication with 'devMode'
+    // Copy static resources to dist
+    copy({
+      targets: [
+        { src: 'src/index.html', dest: 'dist/' },
+        { src: 'src/static/css/main.css', dest: 'dist/static/css/' },
+      ],
+    }),
+    // no need for TypeScript definitions
+    del({ targets: 'dist/**/*.d.ts' }),
   );
 }
 
