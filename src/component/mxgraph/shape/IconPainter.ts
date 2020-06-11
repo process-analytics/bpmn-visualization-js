@@ -130,11 +130,11 @@ export default class IconPainter {
 
     // First bottom line
     c.moveTo(0, paintIconHeight);
-    c.lineTo(paintIconWidth / 3, paintIconHeight * 0.5);
+    c.lineTo(paintIconWidth * 0.41, paintIconHeight * 0.5);
 
     // Second bottom line
     c.moveTo(paintIconWidth, paintIconHeight);
-    c.lineTo((paintIconWidth * 2) / 3, paintIconHeight * 0.5);
+    c.lineTo(paintIconWidth * 0.59, paintIconHeight * 0.5);
 
     c.stroke();
   }
