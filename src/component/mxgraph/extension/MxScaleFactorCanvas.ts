@@ -69,17 +69,7 @@ export default class MxScaleFactorCanvas {
 }
 
 export class MxCanvasUtil {
-  public static getConfiguredCanvas(
-    canvas: mxgraph.mxXmlCanvas2D,
-    parentWidth: number,
-    parentHeight: number,
-    iconOriginalSize: number,
-    fillColor = '#FFF',
-    strokeWidth = 1,
-  ): MxScaleFactorCanvas {
-    canvas.setStrokeWidth(strokeWidth);
-    canvas.setFillColor(fillColor);
-
+  public static getConfiguredCanvas(canvas: mxgraph.mxXmlCanvas2D, parentWidth: number, parentHeight: number, iconOriginalSize: number): MxScaleFactorCanvas {
     const parentSize = Math.min(parentWidth, parentHeight);
     const ratioFromParent = 0.25;
     const scaleFactor = (parentSize / iconOriginalSize) * ratioFromParent;

@@ -19,12 +19,7 @@ import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../model/bpmn/edge/SequenceFlowKind';
 import { MarkerConstant } from './MarkerConfigurator';
-
-export enum StyleConstant {
-  STROKE_WIDTH_THIN = 2,
-  STROKE_WIDTH_THICK = 5,
-  BPMN_STYLE_EVENT_KIND = 'bpmn.eventKind',
-}
+import { StyleConstant } from './StyleUtils';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
@@ -186,10 +181,10 @@ export default class StyleConfigurator {
   }
 
   private configureCommonDefaultStyle(style: any): void {
-    style[this.mxConstants.STYLE_FONTSIZE] = 12;
-    style[this.mxConstants.STYLE_FONTCOLOR] = 'Black';
-    style[this.mxConstants.STYLE_FILLCOLOR] = 'White';
-    style[this.mxConstants.STYLE_STROKECOLOR] = 'Black';
+    style[this.mxConstants.STYLE_FONTSIZE] = StyleConstant.DEFAULT_FONT_SIZE;
+    style[this.mxConstants.STYLE_FONTCOLOR] = StyleConstant.DEFAULT_FONT_COLOR;
+    style[this.mxConstants.STYLE_FILLCOLOR] = StyleConstant.DEFAULT_FILL_COLOR;
+    style[this.mxConstants.STYLE_STROKECOLOR] = StyleConstant.DEFAULT_STROKE_COLOR;
     style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
   }
 
