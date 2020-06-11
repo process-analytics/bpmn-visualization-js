@@ -25,11 +25,14 @@ export interface PaintParameter {
   ratioFromParent?: number;
 }
 
-export interface ShapeConfiguration {
+export interface Size {
+  width: number;
+  height: number;
+}
+
+export interface ShapeConfiguration extends Size {
   x: number;
   y: number;
-  w: number;
-  h: number;
   strokeWidth: number;
 }
 
@@ -61,7 +64,7 @@ export default class IconPainter {
     return {
       c,
       ratioFromParent,
-      shape: { x, y, w: width, h: height, strokeWidth: shapeStrokeWidth },
+      shape: { x, y, width, height, strokeWidth: shapeStrokeWidth },
       icon: { isFilled, fillColor, strokeColor, strokeWidth: iconStrokeWidth, margin },
     };
   }
@@ -87,11 +90,12 @@ export default class IconPainter {
   public static paintEnvelopIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
 
-    const { iconWidth, iconHeight } = this.calculateIconSize(485.41, 321.76, icon, shape, ratioFromParent);
-    this.translateIconToShapeCenter(c, shape, icon, iconWidth, iconHeight);
+    const initialIconSize = { width: 485.41, height: 321.76 };
+    const iconSize = this.calculateIconSize(initialIconSize, icon, shape, ratioFromParent);
+    this.translateIconToShapeCenter(c, shape, iconSize.width, iconSize.height);
 
     // Paint the envelope outline with dark color
-    c.rect(0, 0, iconWidth, iconHeight);
+    c.rect(0, 0, iconSize.width, iconSize.height);
     c.fillAndStroke();
 
     if (icon.isFilled) {
@@ -104,38 +108,38 @@ export default class IconPainter {
 
     // V line
     c.moveTo(0, 0);
-    c.lineTo(iconWidth * 0.5, iconHeight * 0.6);
-    c.lineTo(iconWidth, 0);
+    c.lineTo(iconSize.width * 0.5, iconSize.height * 0.6);
+    c.lineTo(iconSize.width, 0);
 
     // First bottom line
-    c.moveTo(0, iconHeight);
-    c.lineTo(iconWidth * 0.41, iconHeight * 0.5);
+    c.moveTo(0, iconSize.height);
+    c.lineTo(iconSize.width * 0.41, iconSize.height * 0.5);
 
     // Second bottom line
-    c.moveTo(iconWidth, iconHeight);
-    c.lineTo(iconWidth * 0.59, iconHeight * 0.5);
+    c.moveTo(iconSize.width, iconSize.height);
+    c.lineTo(iconSize.width * 0.59, iconSize.height * 0.5);
 
     c.stroke();
   }
 
-  private static translateIconToShapeCenter(c: mxgraph.mxXmlCanvas2D, shape: ShapeConfiguration, icon: IconConfiguration, iconWidth: number, iconHeight: number) {
+  private static translateIconToShapeCenter(c: mxgraph.mxXmlCanvas2D, shape: ShapeConfiguration, iconWidth: number, iconHeight: number) {
     // Change the coordinate referential
-    const insetW = (shape.w - iconWidth) / 2;
-    const insetH = (shape.h - iconHeight) / 2;
+    const insetW = (shape.width - iconWidth) / 2;
+    const insetH = (shape.height - iconHeight) / 2;
     c.translate(shape.x + insetW, shape.y + insetH);
   }
 
-  private static calculateIconSize(initialIconWidth: number, initialIconHeight: number, icon: IconConfiguration, shape: ShapeConfiguration, ratioFromParent: number) {
+  private static calculateIconSize(initialIconSize: Size, icon: IconConfiguration, shape: ShapeConfiguration, ratioFromParent: number): Size {
     // Calculate the icon size proportionally to the shape size
     // (the longest side of the icon has the same value of the same side of the shape)
     let iconWidthProportionalToShape;
     let iconHeightProportionalToShape;
-    if (initialIconHeight <= initialIconWidth) {
-      iconWidthProportionalToShape = shape.w;
-      iconHeightProportionalToShape = (shape.w * initialIconHeight) / initialIconWidth;
+    if (initialIconSize.height <= initialIconSize.width) {
+      iconWidthProportionalToShape = shape.width;
+      iconHeightProportionalToShape = (shape.width * initialIconSize.height) / initialIconSize.width;
     } else {
-      iconWidthProportionalToShape = (shape.h * initialIconWidth) / initialIconHeight;
-      iconHeightProportionalToShape = shape.h;
+      iconWidthProportionalToShape = (shape.height * initialIconSize.width) / initialIconSize.height;
+      iconHeightProportionalToShape = shape.height;
     }
 
     // Calculate icon size proportionally to the ratio define in the shape
@@ -149,11 +153,12 @@ export default class IconPainter {
   public static paintCircleIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
 
-    const { iconWidth, iconHeight } = this.calculateIconSize(shape.w, shape.h, icon, shape, ratioFromParent);
-    this.translateIconToShapeCenter(c, shape, icon, iconWidth, iconHeight);
+    const initialIconSize = { width: shape.width, height: shape.height };
+    const iconSize = this.calculateIconSize(initialIconSize, icon, shape, ratioFromParent);
+    this.translateIconToShapeCenter(c, shape, iconSize.width, iconSize.height);
 
-    if (iconWidth > 0 && iconHeight > 0) {
-      c.ellipse(0, 0, iconWidth, iconHeight);
+    if (iconSize.width > 0 && iconSize.height > 0) {
+      c.ellipse(0, 0, iconSize.width, iconSize.height);
     }
 
     if (icon.isFilled) {
@@ -164,10 +169,10 @@ export default class IconPainter {
   }
 
   // implementation adapted from https://www.flaticon.com/free-icon/clock_223404
-  public static paintClockIcon({ c, shape: { x, y, w, h }, icon }: PaintParameter): void {
+  public static paintClockIcon({ c, shape: { x, y, width, height }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 152);
-    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 5);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, width, height, 152);
+    MxCanvasUtil.translateToStartingIconPosition(c, x, y, width, height, 5);
 
     canvas.begin();
     canvas.moveTo(184, 60);
@@ -259,22 +264,22 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  public static paintXCrossIcon({ c, shape: { x, y, w, h }, icon }: PaintParameter): void {
+  public static paintXCrossIcon({ c, shape: { x, y, width, height }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, { ...icon, isFilled: true });
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5);
-    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, width, height, 0.5);
+    MxCanvasUtil.translateToStartingIconPosition(c, x, y, width, height, 4);
 
     IconPainter.drawCrossIcon(canvas);
-    const xRotation = w / 4;
-    const yRotation = h / 4;
+    const xRotation = width / 4;
+    const yRotation = height / 4;
     canvas.rotate(45, false, false, xRotation, yRotation);
     canvas.fillAndStroke();
   }
 
-  public static paintPlusCrossIcon({ c, shape: { x, y, w, h }, icon }: PaintParameter): void {
+  public static paintPlusCrossIcon({ c, shape: { x, y, width, height }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, { ...icon, isFilled: true });
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5);
-    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, width, height, 0.5);
+    MxCanvasUtil.translateToStartingIconPosition(c, x, y, width, height, 4);
 
     IconPainter.drawCrossIcon(canvas);
     canvas.fillAndStroke();
@@ -299,12 +304,12 @@ export default class IconPainter {
 
   // implementation adapted from https://www.flaticon.com/free-icon/employees_554768
   // use https://github.com/process-analytics/mxgraph-svg2shape to generate the xml stencil and port it to code
-  public static paintWomanIcon({ c, shape: { x, y, w, h }, icon }: PaintParameter): void {
+  public static paintWomanIcon({ c, shape: { x, y, width, height }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, { ...icon, isFilled: true });
 
     // generated icon h="239.68" w="143.61"
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 239);
-    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 20);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, width, height, 239);
+    MxCanvasUtil.translateToStartingIconPosition(c, x, y, width, height, 20);
 
     canvas.begin();
     canvas.moveTo(124.31, 150.29);
@@ -387,12 +392,12 @@ export default class IconPainter {
 
   // this implementation is adapted from the draw.io BPMN 'Service Task' stencil
   // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L898
-  public static paintGearIcon({ c, shape: { x, y, w, h }, icon }: PaintParameter): void {
+  public static paintGearIcon({ c, shape: { x, y, width, height }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
 
     // icon coordinates fill a 100x100 rectangle (approximately: 90x90 + foreground translation)
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 100);
-    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 20);
+    const canvas = MxCanvasUtil.getConfiguredCanvas(c, width, height, 100);
+    MxCanvasUtil.translateToStartingIconPosition(c, x, y, width, height, 20);
 
     // background
     this.paintGearIconBackground(canvas);
