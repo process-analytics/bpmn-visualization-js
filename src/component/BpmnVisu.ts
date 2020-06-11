@@ -15,7 +15,7 @@
  */
 import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
 import { mxgraph } from 'ts-mxgraph';
-import MxGraphRenderer from './mxgraph/MxGraphRenderer';
+import MxGraphRenderer, { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { defaultBpmnParser } from './parser/BpmnParser';
 import { MxGraphFactoryService } from '../service/MxGraphFactoryService';
 
@@ -44,7 +44,7 @@ export default class BpmnVisu {
     try {
       // TODO the BpmnParser should be a field and injected (see #110)
       const bpmnModel = defaultBpmnParser().parse(xml);
-      new MxGraphRenderer(this.graph).render(bpmnModel);
+      defaultMxGraphRenderer(this.graph).render(bpmnModel);
     } catch (e) {
       // TODO error handling
       this.mxUtils.alert('Cannot load bpmn diagram: ' + e.message);

@@ -28,12 +28,7 @@ export default class MxGraphRenderer {
   private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
   private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
 
-  private readonly coordinatesTranslator: CoordinatesTranslator;
-
-  constructor(readonly graph: mxgraph.mxGraph) {
-    // TODO temp prior injection
-    this.coordinatesTranslator = new CoordinatesTranslator(graph);
-  }
+  constructor(readonly graph: mxgraph.mxGraph, readonly coordinatesTranslator: CoordinatesTranslator) {}
 
   public render(bpmnModel: BpmnModel): void {
     const model = this.graph.getModel();
@@ -149,4 +144,8 @@ export default class MxGraphRenderer {
     const relativeCoordinate = this.coordinatesTranslator.computeRelativeCoordinates(parent, absoluteCoordinate);
     return this.graph.insertVertex(parent, id, value, relativeCoordinate.x, relativeCoordinate.y, width, height, style);
   }
+}
+
+export function defaultMxGraphRenderer(graph: mxgraph.mxGraph): MxGraphRenderer {
+  return new MxGraphRenderer(graph, new CoordinatesTranslator(graph));
 }
