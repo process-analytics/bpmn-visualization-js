@@ -159,31 +159,5 @@ export default class MxGraphRenderer {
 
   private getRelativeCoordinates(parent: mxgraph.mxCell, absoluteCoordinate: Coordinate): Coordinate {
     return this.coordinatesTranslator.computeRelativeCoordinates(parent, absoluteCoordinate);
-    // const translateForRoot = this.getTranslateForRoot(parent);
-    // const relativeX = absoluteCoordinate.x + translateForRoot.x;
-    // const relativeY = absoluteCoordinate.y + translateForRoot.y;
-    // return { x: relativeX, y: relativeY };
   }
-
-  // // Returns the translation to be applied to a cell whose mxGeometry x and y values are expressed with absolute coordinates
-  // // (i.e related to the graph default parent) you want to assign as parent to the cell passed as argument of this function.
-  // // That way, you will be able to express the cell coordinates as relative to its parent cell.
-  // //
-  // // The implementation taken from the example described in the documentation of mxgraph#getTranslateForRoot
-  // // The translation is generally negative
-  // private getTranslateForRoot(cell: mxgraph.mxCell): mxgraph.mxPoint {
-  //   const model = this.graph.getModel();
-  //   const offset = new this.mxPoint(0, 0);
-  //
-  //   while (cell != null) {
-  //     const geo = model.getGeometry(cell);
-  //     if (geo != null) {
-  //       offset.x -= geo.x;
-  //       offset.y -= geo.y;
-  //     }
-  //     cell = model.getParent(cell);
-  //   }
-  //
-  //   return offset;
-  // }
 }
