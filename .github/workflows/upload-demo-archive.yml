@@ -26,7 +26,7 @@ on:
 
 jobs:
   upload_demo_archive:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - name: Setup node
@@ -42,8 +42,8 @@ jobs:
       - name: Build Demo
         run: npm run demo
       - name: Upload
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
-          name: demo
+          name: demo-${{github.sha}}
           path: dist
 
