@@ -162,8 +162,7 @@ export default class StyleConfigurator {
       style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RhombusPerimeter;
       style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_TOP;
 
-      // TODO find a better way with label position that can be easily overridden when label bounds are available in BPMN
-      // // left just to not break current rendering
+      // TODO Default positioning in case there is no BPMN LabelStyle
       // style[this.mxConstants.STYLE_SPACING_TOP] = 55;
       // style[this.mxConstants.STYLE_SPACING_RIGHT] = 110;
 

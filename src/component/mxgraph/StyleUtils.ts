@@ -26,7 +26,7 @@ export enum StyleConstant {
   BPMN_STYLE_EVENT_KIND = 'bpmn.eventKind',
   DEFAULT_FILL_COLOR = 'White',
   DEFAULT_STROKE_COLOR = 'Black',
-  DEFAULT_FONT_FAMILY = 'Arial, sans-serif',
+  DEFAULT_FONT_FAMILY = 'Arial,sans-serif',
   DEFAULT_FONT_SIZE = 11,
   DEFAULT_FONT_COLOR = 'Black',
   DEFAULT_MARGIN = 0,
