@@ -102,8 +102,9 @@ export default class IconPainter {
       iconHeightProportionalToShape = shape.h;
     }
 
-    const paintIconWidth = iconWidthProportionalToShape;
-    const paintIconHeight = iconHeightProportionalToShape;
+    // Calculate icon size proportionally to the ratio define in the shape
+    const paintIconWidth = iconWidthProportionalToShape * ratioFromParent;
+    const paintIconHeight = iconHeightProportionalToShape * ratioFromParent;
 
     // Change the coordinate referential
     const insetW = icon.strokeWidth + (shape.w - paintIconWidth) / 2;
