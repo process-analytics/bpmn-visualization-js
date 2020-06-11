@@ -92,6 +92,7 @@ export default class MxGraphRenderer {
     }
 
     if (labelBounds) {
+      // TODO review align
       styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
       styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_MIDDLE);
       styleValues.set(this.mxConstants.STYLE_LABEL_BORDERCOLOR, 'red'); // TODO activate only for debugging via a new options of this class

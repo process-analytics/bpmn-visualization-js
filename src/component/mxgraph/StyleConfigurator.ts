@@ -163,9 +163,9 @@ export default class StyleConfigurator {
       style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RhombusPerimeter;
       style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_TOP;
 
-      // TODO Default positioning in case there is no BPMN LabelStyle
-      // style[this.mxConstants.STYLE_SPACING_TOP] = 55;
-      // style[this.mxConstants.STYLE_SPACING_RIGHT] = 110;
+      // Default positioning in case there is no BPMN LabelStyle
+      style[this.mxConstants.STYLE_LABEL_POSITION] = this.mxConstants.ALIGN_LEFT;
+      style[this.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = this.mxConstants.ALIGN_TOP;
 
       this.putCellStyle(kind, style);
     });
