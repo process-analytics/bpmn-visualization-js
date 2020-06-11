@@ -69,6 +69,9 @@ if (demoMode) {
     // use a hook run after the typescript definition files have been generated
     del({ targets: 'dist/**/*.ts', verbose: false, dryRun: false, hook: 'writeBundle' }),
     // TODO empty directories
+    // 'dist/*/' all subdirectories
+    // , '!dist/static/'
+    // del({ targets: ['dist/*/'], verbose: true, dryRun: true, hook: 'writeBundle' }),
   );
 }
 
