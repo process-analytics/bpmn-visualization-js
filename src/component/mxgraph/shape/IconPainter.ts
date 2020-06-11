@@ -88,11 +88,7 @@ export default class IconPainter {
     this.updateCanvasStyle(c, icon);
 
     const { paintIconWidth, paintIconHeight } = this.calculateIconSize(485.41, 321.76, shape, ratioFromParent);
-
-    // Change the coordinate referential
-    const insetW = icon.strokeWidth + (shape.w - paintIconWidth) / 2;
-    const insetH = icon.strokeWidth + (shape.h - paintIconHeight) / 2;
-    c.translate(shape.x + insetW, shape.y + insetH);
+    this.translateIconToShapeCenter(c, shape, icon, paintIconWidth, paintIconHeight);
 
     // Paint the envelope outline with dark color
     c.rect(0, 0, paintIconWidth, paintIconHeight);
@@ -122,6 +118,13 @@ export default class IconPainter {
     c.stroke();
   }
 
+  private static translateIconToShapeCenter(c: mxgraph.mxXmlCanvas2D, shape: ShapeConfiguration, icon: IconConfiguration, iconWidth: number, iconHeight: number) {
+    // Change the coordinate referential
+    const insetW = icon.strokeWidth + (shape.w - iconWidth) / 2;
+    const insetH = icon.strokeWidth + (shape.h - iconHeight) / 2;
+    c.translate(shape.x + insetW, shape.y + insetH);
+  }
+
   private static calculateIconSize(initialIconWidth: number, initialIconHeight: number, shape: ShapeConfiguration, ratioFromParent: number) {
     // Calculate the icon size proportionally to the shape size
     // (the longest side of the icon has the same value of the same side of the shape)
@@ -147,10 +150,11 @@ export default class IconPainter {
 
     const margin = icon.margin || Math.max(3 + (strokeWidth + icon.strokeWidth) / 2, Math.min((w + icon.strokeWidth) / 2, (h + icon.strokeWidth) / 2));
     const inset = (1 - ratioFromParent) * margin;
-    x += inset;
-    y += inset;
     w -= 2 * inset;
     h -= 2 * inset;
+
+    x += inset;
+    y += inset;
 
     if (w > 0 && h > 0) {
       c.ellipse(x, y, w, h);
