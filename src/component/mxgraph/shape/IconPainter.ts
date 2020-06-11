@@ -87,24 +87,7 @@ export default class IconPainter {
   public static paintEnvelopIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
 
-    const initialIconWidth = 485.41;
-    const initialIconHeight = 321.76;
-
-    // Calculate the icon size proportionally to the shape size
-    // (the longest side of the icon has the same value of the same side of the shape)
-    let iconWidthProportionalToShape;
-    let iconHeightProportionalToShape;
-    if (initialIconHeight <= initialIconWidth) {
-      iconWidthProportionalToShape = shape.w;
-      iconHeightProportionalToShape = (shape.w * initialIconHeight) / initialIconWidth;
-    } else {
-      iconWidthProportionalToShape = (shape.h * initialIconWidth) / initialIconHeight;
-      iconHeightProportionalToShape = shape.h;
-    }
-
-    // Calculate icon size proportionally to the ratio define in the shape
-    const paintIconWidth = iconWidthProportionalToShape * ratioFromParent;
-    const paintIconHeight = iconHeightProportionalToShape * ratioFromParent;
+    const { paintIconWidth, paintIconHeight } = this.calculateIconSize(485.41, 321.76, shape, ratioFromParent);
 
     // Change the coordinate referential
     const insetW = icon.strokeWidth + (shape.w - paintIconWidth) / 2;
@@ -137,6 +120,25 @@ export default class IconPainter {
     c.lineTo(paintIconWidth * 0.59, paintIconHeight * 0.5);
 
     c.stroke();
+  }
+
+  private static calculateIconSize(initialIconWidth: number, initialIconHeight: number, shape: ShapeConfiguration, ratioFromParent: number) {
+    // Calculate the icon size proportionally to the shape size
+    // (the longest side of the icon has the same value of the same side of the shape)
+    let iconWidthProportionalToShape;
+    let iconHeightProportionalToShape;
+    if (initialIconHeight <= initialIconWidth) {
+      iconWidthProportionalToShape = shape.w;
+      iconHeightProportionalToShape = (shape.w * initialIconHeight) / initialIconWidth;
+    } else {
+      iconWidthProportionalToShape = (shape.h * initialIconWidth) / initialIconHeight;
+      iconHeightProportionalToShape = shape.h;
+    }
+
+    // Calculate icon size proportionally to the ratio define in the shape
+    const paintIconWidth = iconWidthProportionalToShape * ratioFromParent;
+    const paintIconHeight = iconHeightProportionalToShape * ratioFromParent;
+    return { paintIconWidth, paintIconHeight };
   }
 
   // highly inspired from mxDoubleEllipse
