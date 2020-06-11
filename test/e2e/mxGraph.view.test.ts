@@ -74,6 +74,7 @@ function bpmnStartTaskEnd(): string {
 }
 
 // TODO find a way to get the label when using mxGraph html labels
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function expectLabel(cellId: string, expectedText: string): void {
   // const label = cellGroups[1] as SVGGElement;
   // const text = label.firstChild.firstChild as SVGTextElement;
