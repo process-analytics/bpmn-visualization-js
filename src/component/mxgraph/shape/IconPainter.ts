@@ -84,16 +84,34 @@ export default class IconPainter {
 
   // this implementation is adapted from the draw.io BPMN 'message' symbol
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465
-  public static paintEnvelopIcon({ c, shape: { x, y, w, h }, icon }: PaintParameter): void {
+  public static paintEnvelopIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
 
+    const initialIconWidth = 485.41;
+    const initialIconHeight = 321.76;
+
+    // Calculate the icon size proportionally to the shape size
+    // (the longest side of the icon has the same value of the same side of the shape)
+    let iconWidthProportionalToShape;
+    let iconHeightProportionalToShape;
+    if (initialIconHeight <= initialIconWidth) {
+      iconWidthProportionalToShape = shape.w;
+      iconHeightProportionalToShape = (shape.w * initialIconHeight) / initialIconWidth;
+    } else {
+      iconWidthProportionalToShape = (shape.h * initialIconWidth) / initialIconHeight;
+      iconHeightProportionalToShape = shape.h;
+    }
+
+    const paintIconWidth = iconWidthProportionalToShape;
+    const paintIconHeight = iconHeightProportionalToShape;
+
     // Change the coordinate referential
-    c.translate(x + w * 0.24, y + h * 0.34);
-    w = w * 0.52;
-    h = h * 0.32;
+    const insetW = icon.strokeWidth + (shape.w - paintIconWidth) / 2;
+    const insetH = icon.strokeWidth + (shape.h - paintIconHeight) / 2;
+    c.translate(shape.x + insetW, shape.y + insetH);
 
     // Paint the envelope outline with dark color
-    c.rect(0, 0, w, h);
+    c.rect(0, 0, paintIconWidth, paintIconHeight);
     c.fillAndStroke();
 
     if (icon.isFilled) {
@@ -106,16 +124,16 @@ export default class IconPainter {
 
     // V line
     c.moveTo(0, 0);
-    c.lineTo(w * 0.5, h * 0.6);
-    c.lineTo(w, 0);
+    c.lineTo(paintIconWidth * 0.5, paintIconHeight * 0.6);
+    c.lineTo(paintIconWidth, 0);
 
     // First bottom line
-    c.moveTo(0, h);
-    c.lineTo(w / 3, h * 0.5);
+    c.moveTo(0, paintIconHeight);
+    c.lineTo(paintIconWidth / 3, paintIconHeight * 0.5);
 
     // Second bottom line
-    c.moveTo(w, h);
-    c.lineTo((w * 2) / 3, h * 0.5);
+    c.moveTo(paintIconWidth, paintIconHeight);
+    c.lineTo((paintIconWidth * 2) / 3, paintIconHeight * 0.5);
 
     c.stroke();
   }
