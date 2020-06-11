@@ -15,7 +15,7 @@
  */
 import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
 import { mxgraph } from 'ts-mxgraph';
-import MxGraphRenderer, { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
+import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { defaultBpmnParser } from './parser/BpmnParser';
 import { MxGraphFactoryService } from '../service/MxGraphFactoryService';
 
