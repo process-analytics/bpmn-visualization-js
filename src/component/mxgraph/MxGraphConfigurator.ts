@@ -48,5 +48,7 @@ export default class MxGraphConfigurator {
     this.graph.setEdgeLabelsMovable(false);
     this.graph.setCellsLocked(true);
     this.graph.setCellsSelectable(false);
+
+    // this.graph.htmlLabels = true; // required for wrapping and clipping
   }
 }
