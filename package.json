@@ -15,7 +15,7 @@
     "build": "rollup -c",
     "demo": "run-s demo:*",
     "demo:clean": "rimraf dist",
-    "demo:build": "rollup -c --silent  --environment demoMode:true",
+    "demo:build": "rollup -c --silent --environment demoMode:true",
     "start": "rollup -c --silent --environment devMode:true",
     "watch": "rollup -cw --environment devLiveReloadMode:true",
     "lint": "tsc --noEmit && eslint \"*/**/*.{js,ts,tsx}\" NOTICE --quiet --fix",
