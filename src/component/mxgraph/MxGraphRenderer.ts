@@ -65,7 +65,7 @@ export default class MxGraphRenderer {
       const parent = this.getParent(bpmnElement);
       const absoluteCoordinate = new this.mxPoint(bounds.x, bounds.y);
       const style = this.computeStyle(shape);
-      this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
+      this.insertVertex(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
     }
   }
 
@@ -132,7 +132,7 @@ export default class MxGraphRenderer {
     return this.graph.getModel().getCell(id);
   }
 
-  private insertVertexGivenAbsoluteCoordinates(
+  private insertVertex(
     parent: mxgraph.mxCell,
     id: string | null,
     value: string,
