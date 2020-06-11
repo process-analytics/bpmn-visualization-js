@@ -20,7 +20,7 @@ import BpmnModel from '../../model/bpmn/BpmnModel';
 import ShapeBpmnElement, { ShapeBpmnEvent } from '../../model/bpmn/shape/ShapeBpmnElement';
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
-import { StyleConstant } from './StyleConfigurator';
+import { StyleConstant } from './StyleUtils';
 import { Font } from '../../model/bpmn/Label';
 
 interface Coordinate {
