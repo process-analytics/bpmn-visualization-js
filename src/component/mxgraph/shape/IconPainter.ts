@@ -69,6 +69,33 @@ export default class IconPainter {
     };
   }
 
+  private static translateIconToShapeCenter(c: mxgraph.mxXmlCanvas2D, shape: ShapeConfiguration, iconWidth: number, iconHeight: number): void {
+    // Change the coordinate referential
+    const insetW = (shape.width - iconWidth) / 2;
+    const insetH = (shape.height - iconHeight) / 2;
+    c.translate(shape.x + insetW, shape.y + insetH);
+  }
+
+  private static calculateIconSize(initialIconSize: Size, icon: IconConfiguration, shape: ShapeConfiguration, ratioFromParent: number): Size {
+    // Calculate the icon size proportionally to the shape size
+    // (the longest side of the icon has the same value of the same side of the shape)
+    let iconWidthProportionalToShape;
+    let iconHeightProportionalToShape;
+    if (initialIconSize.height <= initialIconSize.width) {
+      iconWidthProportionalToShape = shape.width;
+      iconHeightProportionalToShape = (shape.width * initialIconSize.height) / initialIconSize.width;
+    } else {
+      iconWidthProportionalToShape = (shape.height * initialIconSize.width) / initialIconSize.height;
+      iconHeightProportionalToShape = shape.height;
+    }
+
+    // Calculate icon size proportionally to the ratio define in the shape
+    const inset = icon.strokeWidth ? (icon.strokeWidth - 1) * 2 : 0;
+    const paintIconWidth = iconWidthProportionalToShape * ratioFromParent - inset;
+    const paintIconHeight = iconHeightProportionalToShape * ratioFromParent - inset;
+    return { width: paintIconWidth, height: paintIconHeight };
+  }
+
   private static updateCanvasStyle(canvas: mxgraph.mxXmlCanvas2D, { isFilled, strokeColor, fillColor, strokeWidth }: IconConfiguration): void {
     if (isFilled) {
       // Choose dark color to fill the icon
@@ -120,33 +147,6 @@ export default class IconPainter {
     canvas.lineTo(iconSize.width * 0.59, iconSize.height * 0.5);
 
     canvas.stroke();
-  }
-
-  private static translateIconToShapeCenter(c: mxgraph.mxXmlCanvas2D, shape: ShapeConfiguration, iconWidth: number, iconHeight: number): void {
-    // Change the coordinate referential
-    const insetW = (shape.width - iconWidth) / 2;
-    const insetH = (shape.height - iconHeight) / 2;
-    c.translate(shape.x + insetW, shape.y + insetH);
-  }
-
-  private static calculateIconSize(initialIconSize: Size, icon: IconConfiguration, shape: ShapeConfiguration, ratioFromParent: number): Size {
-    // Calculate the icon size proportionally to the shape size
-    // (the longest side of the icon has the same value of the same side of the shape)
-    let iconWidthProportionalToShape;
-    let iconHeightProportionalToShape;
-    if (initialIconSize.height <= initialIconSize.width) {
-      iconWidthProportionalToShape = shape.width;
-      iconHeightProportionalToShape = (shape.width * initialIconSize.height) / initialIconSize.width;
-    } else {
-      iconWidthProportionalToShape = (shape.height * initialIconSize.width) / initialIconSize.height;
-      iconHeightProportionalToShape = shape.height;
-    }
-
-    // Calculate icon size proportionally to the ratio define in the shape
-    const inset = icon.strokeWidth ? (icon.strokeWidth - 1) * 2 : 0;
-    const paintIconWidth = iconWidthProportionalToShape * ratioFromParent - inset;
-    const paintIconHeight = iconHeightProportionalToShape * ratioFromParent - inset;
-    return { width: paintIconWidth, height: paintIconHeight };
   }
 
   // highly inspired from mxDoubleEllipse
