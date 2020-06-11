@@ -35,11 +35,7 @@ const plugins = [
     tsconfigOverride: tsconfigOverride,
   }),
   resolve(),
-  commonjs({
-    namedExports: {
-      'node_modules/ts-mxgraph/index.js': ['mxgraph'],
-    },
-  }),
+  commonjs(),
   json(),
 ];
 
