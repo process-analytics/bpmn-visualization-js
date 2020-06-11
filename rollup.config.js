@@ -37,7 +37,7 @@ const plugins = [
   resolve(),
   commonjs({
     namedExports: {
-      'node_modules/ts-mxgraph/index.js': ['mxgraph', 'mxgraphFactory'],
+      'node_modules/ts-mxgraph/index.js': ['mxgraph'],
     },
   }),
   json(),
