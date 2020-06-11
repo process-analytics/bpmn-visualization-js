@@ -91,6 +91,7 @@ export default class StyleConfigurator {
     const style = this.getDefaultVertexStyle();
     this.configureCommonDefaultStyle(style);
 
+    // TODO give a try to this.mxConstants.WORD_WRAP configuration
     style[this.mxConstants.STYLE_WHITE_SPACE] = 'wrap'; // only works with html labels (enabled by MxGraphConfigurator)
   }
 
