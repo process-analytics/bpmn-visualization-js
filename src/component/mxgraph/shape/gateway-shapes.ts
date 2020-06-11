@@ -34,8 +34,8 @@ abstract class GatewayShape extends mxRhombus {
     this.paintInnerShape(paintParameter);
   }
 
-  protected paintOuterShape({ c, shape: { x, y, width, height } }: PaintParameter): void {
-    super.paintVertexShape(c, x, y, width, height);
+  protected paintOuterShape({ canvas, shape: { x, y, width, height } }: PaintParameter): void {
+    super.paintVertexShape(canvas, x, y, width, height);
   }
 }
 
