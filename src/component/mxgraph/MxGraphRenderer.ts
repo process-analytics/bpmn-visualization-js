@@ -94,17 +94,17 @@ export default class MxGraphRenderer {
     if (labelBounds) {
       styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
       styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_MIDDLE);
-      styleValues.set(this.mxConstants.STYLE_LABEL_BORDERCOLOR, 'red'); // TODO only for detection in this POC
-      styleValues.set(this.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width); // TODO how do we manage height constraints?
+      styleValues.set(this.mxConstants.STYLE_LABEL_BORDERCOLOR, 'red'); // TODO activate only for debugging via a new options of this class
+      // TODO how do we manage height constraints?
+      // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
+      styleValues.set(this.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
       // erase eventual style configuration for BPMN element
       styleValues.set(this.mxConstants.STYLE_LABEL_POSITION, this.mxConstants.NONE);
       styleValues.set(this.mxConstants.STYLE_VERTICAL_LABEL_POSITION, this.mxConstants.NONE);
       styleValues.set(this.mxConstants.STYLE_SPACING_TOP, 0);
+      styleValues.set(this.mxConstants.STYLE_SPACING_BOTTOM, 0);
+      styleValues.set(this.mxConstants.STYLE_SPACING_LEFT, 0);
       styleValues.set(this.mxConstants.STYLE_SPACING_RIGHT, 0);
-      // TODO adjust the value
-      // add negative STYLE_SPACING to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
-      styleValues.set(this.mxConstants.STYLE_SPACING_LEFT, -5);
-      styleValues.set(this.mxConstants.STYLE_SPACING_RIGHT, -5);
     }
 
     return [bpmnElement.kind as string] //
