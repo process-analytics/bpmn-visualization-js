@@ -87,11 +87,11 @@ export default class IconPainter {
   public static paintEnvelopIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
 
-    const { paintIconWidth, paintIconHeight } = this.calculateIconSize(485.41, 321.76, icon, shape, ratioFromParent);
-    this.translateIconToShapeCenter(c, shape, icon, paintIconWidth, paintIconHeight);
+    const { iconWidth, iconHeight } = this.calculateIconSize(485.41, 321.76, icon, shape, ratioFromParent);
+    this.translateIconToShapeCenter(c, shape, icon, iconWidth, iconHeight);
 
     // Paint the envelope outline with dark color
-    c.rect(0, 0, paintIconWidth, paintIconHeight);
+    c.rect(0, 0, iconWidth, iconHeight);
     c.fillAndStroke();
 
     if (icon.isFilled) {
@@ -104,16 +104,16 @@ export default class IconPainter {
 
     // V line
     c.moveTo(0, 0);
-    c.lineTo(paintIconWidth * 0.5, paintIconHeight * 0.6);
-    c.lineTo(paintIconWidth, 0);
+    c.lineTo(iconWidth * 0.5, iconHeight * 0.6);
+    c.lineTo(iconWidth, 0);
 
     // First bottom line
-    c.moveTo(0, paintIconHeight);
-    c.lineTo(paintIconWidth * 0.41, paintIconHeight * 0.5);
+    c.moveTo(0, iconHeight);
+    c.lineTo(iconWidth * 0.41, iconHeight * 0.5);
 
     // Second bottom line
-    c.moveTo(paintIconWidth, paintIconHeight);
-    c.lineTo(paintIconWidth * 0.59, paintIconHeight * 0.5);
+    c.moveTo(iconWidth, iconHeight);
+    c.lineTo(iconWidth * 0.59, iconHeight * 0.5);
 
     c.stroke();
   }
@@ -149,17 +149,7 @@ export default class IconPainter {
   public static paintCircleIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
 
-    // const margin = icon.margin || Math.max(3 + (strokeWidth + icon.strokeWidth) / 2, Math.min((w + icon.strokeWidth) / 2, (h + icon.strokeWidth) / 2));
-    // const inset = (1 - ratioFromParent) * margin;
-    // x += inset;
-    // y += inset;
-    // const iconWidth = shape.w - 2 * inset;
-    // const iconHeight = shape.h - 2 * inset;
-
-    const { paintIconWidth, paintIconHeight } = this.calculateIconSize(shape.w, shape.h, icon, shape, ratioFromParent);
-
-    const iconWidth = paintIconWidth;
-    const iconHeight = paintIconHeight;
+    const { iconWidth, iconHeight } = this.calculateIconSize(shape.w, shape.h, icon, shape, ratioFromParent);
     this.translateIconToShapeCenter(c, shape, icon, iconWidth, iconHeight);
 
     if (iconWidth > 0 && iconHeight > 0) {
