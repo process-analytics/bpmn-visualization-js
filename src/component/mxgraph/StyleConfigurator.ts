@@ -91,10 +91,7 @@ export default class StyleConfigurator {
     const style = this.getDefaultVertexStyle();
     this.configureCommonDefaultStyle(style);
 
-    // TODO move this to also support wrapping for edge labels
-    // only works with html labels (see MxGraphConfigurator to enable html labels)
-    // style[this.mxConstants.STYLE_OVERFLOW] = 'hidden'; // enable clipping
-    style[this.mxConstants.STYLE_WHITE_SPACE] = 'wrap'; // wrap for html labels
+    style[this.mxConstants.STYLE_WHITE_SPACE] = 'wrap'; // only works with html labels (enabled by MxGraphConfigurator)
   }
 
   private configurePoolStyle(): void {
