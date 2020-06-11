@@ -122,7 +122,7 @@ export default class IconPainter {
     canvas.stroke();
   }
 
-  private static translateIconToShapeCenter(c: mxgraph.mxXmlCanvas2D, shape: ShapeConfiguration, iconWidth: number, iconHeight: number) {
+  private static translateIconToShapeCenter(c: mxgraph.mxXmlCanvas2D, shape: ShapeConfiguration, iconWidth: number, iconHeight: number): void {
     // Change the coordinate referential
     const insetW = (shape.width - iconWidth) / 2;
     const insetH = (shape.height - iconHeight) / 2;
