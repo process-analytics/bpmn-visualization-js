@@ -24,12 +24,6 @@ import { StyleConstant } from './StyleUtils';
 import { Font } from '../../model/bpmn/Label';
 import CoordinatesTranslator from './extension/CoordinatesTranslator';
 
-// TODO move
-export interface Coordinate {
-  x: number;
-  y: number;
-}
-
 export default class MxGraphRenderer {
   private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
   private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
@@ -74,7 +68,7 @@ export default class MxGraphRenderer {
     if (bpmnElement) {
       const bounds = shape.bounds;
       const parent = this.getParent(bpmnElement);
-      const absoluteCoordinate = { x: bounds.x, y: bounds.y };
+      const absoluteCoordinate = new this.mxPoint(bounds.x, bounds.y);
       const style = this.computeStyle(shape);
       this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
     }
@@ -147,12 +141,12 @@ export default class MxGraphRenderer {
     parent: mxgraph.mxCell,
     id: string | null,
     value: string,
-    absoluteCoordinate: Coordinate,
+    absoluteCoordinate: mxgraph.mxPoint,
     width: number,
     height: number,
     style?: string,
   ): mxgraph.mxCell {
-    const relativeCoordinate = this.coordinatesTranslator.computeRelativeCoordinates(parent, new this.mxPoint(absoluteCoordinate.x, absoluteCoordinate.y));
+    const relativeCoordinate = this.coordinatesTranslator.computeRelativeCoordinates(parent, absoluteCoordinate);
     return this.graph.insertVertex(parent, id, value, relativeCoordinate.x, relativeCoordinate.y, width, height, style);
   }
 }
