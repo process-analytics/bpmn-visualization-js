@@ -87,7 +87,7 @@ export default class IconPainter {
   public static paintEnvelopIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
 
-    const { paintIconWidth, paintIconHeight } = this.calculateIconSize(485.41, 321.76, shape, ratioFromParent);
+    const { paintIconWidth, paintIconHeight } = this.calculateIconSize(485.41, 321.76, icon, shape, ratioFromParent);
     this.translateIconToShapeCenter(c, shape, icon, paintIconWidth, paintIconHeight);
 
     // Paint the envelope outline with dark color
@@ -120,12 +120,12 @@ export default class IconPainter {
 
   private static translateIconToShapeCenter(c: mxgraph.mxXmlCanvas2D, shape: ShapeConfiguration, icon: IconConfiguration, iconWidth: number, iconHeight: number) {
     // Change the coordinate referential
-    const insetW = icon.strokeWidth + (shape.w - iconWidth) / 2;
-    const insetH = icon.strokeWidth + (shape.h - iconHeight) / 2;
+    const insetW = (shape.w - iconWidth) / 2;
+    const insetH = (shape.h - iconHeight) / 2;
     c.translate(shape.x + insetW, shape.y + insetH);
   }
 
-  private static calculateIconSize(initialIconWidth: number, initialIconHeight: number, shape: ShapeConfiguration, ratioFromParent: number) {
+  private static calculateIconSize(initialIconWidth: number, initialIconHeight: number, icon: IconConfiguration, shape: ShapeConfiguration, ratioFromParent: number) {
     // Calculate the icon size proportionally to the shape size
     // (the longest side of the icon has the same value of the same side of the shape)
     let iconWidthProportionalToShape;
@@ -139,25 +139,31 @@ export default class IconPainter {
     }
 
     // Calculate icon size proportionally to the ratio define in the shape
-    const paintIconWidth = iconWidthProportionalToShape * ratioFromParent;
-    const paintIconHeight = iconHeightProportionalToShape * ratioFromParent;
-    return { paintIconWidth, paintIconHeight };
+    const inset = icon.strokeWidth ? (icon.strokeWidth - 1) * 2 : 0;
+    const paintIconWidth = iconWidthProportionalToShape * ratioFromParent - inset;
+    const paintIconHeight = iconHeightProportionalToShape * ratioFromParent - inset;
+    return { width: paintIconWidth, height: paintIconHeight };
   }
 
   // highly inspired from mxDoubleEllipse
-  public static paintCircleIcon({ c, ratioFromParent, shape: { x, y, w, h, strokeWidth }, icon }: PaintParameter): void {
+  public static paintCircleIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
 
-    const margin = icon.margin || Math.max(3 + (strokeWidth + icon.strokeWidth) / 2, Math.min((w + icon.strokeWidth) / 2, (h + icon.strokeWidth) / 2));
-    const inset = (1 - ratioFromParent) * margin;
-    w -= 2 * inset;
-    h -= 2 * inset;
+    // const margin = icon.margin || Math.max(3 + (strokeWidth + icon.strokeWidth) / 2, Math.min((w + icon.strokeWidth) / 2, (h + icon.strokeWidth) / 2));
+    // const inset = (1 - ratioFromParent) * margin;
+    // x += inset;
+    // y += inset;
+    // const iconWidth = shape.w - 2 * inset;
+    // const iconHeight = shape.h - 2 * inset;
 
-    x += inset;
-    y += inset;
+    const { paintIconWidth, paintIconHeight } = this.calculateIconSize(shape.w, shape.h, icon, shape, ratioFromParent);
 
-    if (w > 0 && h > 0) {
-      c.ellipse(x, y, w, h);
+    const iconWidth = paintIconWidth;
+    const iconHeight = paintIconHeight;
+    this.translateIconToShapeCenter(c, shape, icon, iconWidth, iconHeight);
+
+    if (iconWidth > 0 && iconHeight > 0) {
+      c.ellipse(0, 0, iconWidth, iconHeight);
     }
 
     if (icon.isFilled) {

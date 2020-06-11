@@ -67,7 +67,7 @@ export class InclusiveGatewayShape extends GatewayShape {
   protected paintInnerShape(paintParameter: PaintParameter): void {
     IconPainter.paintCircleIcon({
       ...paintParameter,
-      ratioFromParent: 0.5,
+      ratioFromParent: 0.6,
       icon: { ...paintParameter.icon, isFilled: false, strokeWidth: StyleConstant.STROKE_WIDTH_THICK.valueOf() },
     });
   }
