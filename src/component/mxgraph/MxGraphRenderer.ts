@@ -134,8 +134,7 @@ export default class MxGraphRenderer {
   private insertWaypoints(waypoints: Waypoint[], mxEdge: mxgraph.mxCell): void {
     if (waypoints) {
       mxEdge.geometry.points = waypoints.map(waypoint => {
-        const relativeCoordinate = this.getRelativeCoordinates(mxEdge.parent, { x: waypoint.x, y: waypoint.y });
-        return new this.mxPoint(relativeCoordinate.x, relativeCoordinate.y);
+        return this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new this.mxPoint(waypoint.x, waypoint.y));
       });
     }
   }
@@ -153,11 +152,7 @@ export default class MxGraphRenderer {
     height: number,
     style?: string,
   ): mxgraph.mxCell {
-    const relativeCoordinate = this.getRelativeCoordinates(parent, absoluteCoordinate);
+    const relativeCoordinate = this.coordinatesTranslator.computeRelativeCoordinates(parent, new this.mxPoint(absoluteCoordinate.x, absoluteCoordinate.y));
     return this.graph.insertVertex(parent, id, value, relativeCoordinate.x, relativeCoordinate.y, width, height, style);
-  }
-
-  private getRelativeCoordinates(parent: mxgraph.mxCell, absoluteCoordinate: Coordinate): Coordinate {
-    return this.coordinatesTranslator.computeRelativeCoordinates(parent, absoluteCoordinate);
   }
 }

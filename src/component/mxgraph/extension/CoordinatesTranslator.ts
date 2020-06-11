@@ -15,7 +15,6 @@
  */
 import { mxgraph } from 'ts-mxgraph';
 import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
-import { Coordinate } from '../MxGraphRenderer';
 
 export default class CoordinatesTranslator {
   private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
@@ -27,11 +26,11 @@ export default class CoordinatesTranslator {
    * @param parent the cell to use for the new coordinate referential
    * @param absoluteCoordinate
    */
-  public computeRelativeCoordinates(parent: mxgraph.mxCell, absoluteCoordinate: Coordinate): Coordinate {
+  public computeRelativeCoordinates(parent: mxgraph.mxCell, absoluteCoordinate: mxgraph.mxPoint): mxgraph.mxPoint {
     const translateForRoot = this.getTranslateForRoot(parent);
     const relativeX = absoluteCoordinate.x + translateForRoot.x;
     const relativeY = absoluteCoordinate.y + translateForRoot.y;
-    return { x: relativeX, y: relativeY };
+    return new this.mxPoint(relativeX, relativeY);
   }
 
   // Returns the translation to be applied to a cell whose mxGeometry x and y values are expressed with absolute coordinates
