@@ -10,7 +10,7 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
-    "all": "run-s clean lint-check build test",
+    "all": "run-s clean lint lint-check build test",
     "clean": "rimraf build coverage dist",
     "build": "rollup -c",
     "start": "rollup -c --silent --environment devMode:true",
