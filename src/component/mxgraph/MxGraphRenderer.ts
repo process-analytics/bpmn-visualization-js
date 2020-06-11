@@ -29,8 +29,8 @@ import CoordinatesTranslator from './extension/CoordinatesTranslator';
 
 export default class MxGraphRenderer {
   private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
-
   private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
+
   constructor(readonly graph: mxgraph.mxGraph, readonly coordinatesTranslator: CoordinatesTranslator) {}
 
   public render(bpmnModel: BpmnModel): void {
