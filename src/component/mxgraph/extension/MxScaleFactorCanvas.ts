@@ -69,9 +69,14 @@ export default class MxScaleFactorCanvas {
 }
 
 export class MxCanvasUtil {
-  public static getConfiguredCanvas(canvas: mxgraph.mxXmlCanvas2D, parentWidth: number, parentHeight: number, iconOriginalSize: number): MxScaleFactorCanvas {
+  public static getConfiguredCanvas(
+    canvas: mxgraph.mxXmlCanvas2D,
+    parentWidth: number,
+    parentHeight: number,
+    iconOriginalSize: number,
+    ratioFromParent: number,
+  ): MxScaleFactorCanvas {
     const parentSize = Math.min(parentWidth, parentHeight);
-    const ratioFromParent = 0.25;
     const scaleFactor = (parentSize / iconOriginalSize) * ratioFromParent;
 
     return new MxScaleFactorCanvas(canvas, scaleFactor);

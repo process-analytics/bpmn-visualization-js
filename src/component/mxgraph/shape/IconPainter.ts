@@ -52,7 +52,7 @@ export default class IconPainter {
     width: number,
     height: number,
     shape: mxgraph.mxShape,
-    ratioFromParent = 1,
+    ratioFromParent = 0.25,
     isFilled = false,
     iconStrokeWidth = 0,
   ): PaintParameter {
@@ -169,9 +169,9 @@ export default class IconPainter {
   }
 
   // implementation adapted from https://www.flaticon.com/free-icon/clock_223404
-  public static paintClockIcon({ canvas, shape: { x, y, width, height }, icon }: PaintParameter): void {
+  public static paintClockIcon({ canvas, ratioFromParent, shape: { x, y, width, height }, icon }: PaintParameter): void {
     this.updateCanvasStyle(canvas, icon);
-    const scaleCanvas = MxCanvasUtil.getConfiguredCanvas(canvas, width, height, 152);
+    const scaleCanvas = MxCanvasUtil.getConfiguredCanvas(canvas, width, height, 152, ratioFromParent);
     MxCanvasUtil.translateToStartingIconPosition(canvas, x, y, width, height, 5);
 
     scaleCanvas.begin();
@@ -264,9 +264,9 @@ export default class IconPainter {
     scaleCanvas.fillAndStroke();
   }
 
-  public static paintXCrossIcon({ canvas, shape: { x, y, width, height }, icon }: PaintParameter): void {
+  public static paintXCrossIcon({ canvas, ratioFromParent, shape: { x, y, width, height }, icon }: PaintParameter): void {
     this.updateCanvasStyle(canvas, { ...icon, isFilled: true });
-    const scaleCanvas = MxCanvasUtil.getConfiguredCanvas(canvas, width, height, 0.5);
+    const scaleCanvas = MxCanvasUtil.getConfiguredCanvas(canvas, width, height, 0.5, ratioFromParent);
     MxCanvasUtil.translateToStartingIconPosition(canvas, x, y, width, height, 4);
 
     IconPainter.drawCrossIcon(scaleCanvas);
@@ -276,9 +276,9 @@ export default class IconPainter {
     scaleCanvas.fillAndStroke();
   }
 
-  public static paintPlusCrossIcon({ canvas, shape: { x, y, width, height }, icon }: PaintParameter): void {
+  public static paintPlusCrossIcon({ canvas, ratioFromParent, shape: { x, y, width, height }, icon }: PaintParameter): void {
     this.updateCanvasStyle(canvas, { ...icon, isFilled: true });
-    const scaleCanvas = MxCanvasUtil.getConfiguredCanvas(canvas, width, height, 0.5);
+    const scaleCanvas = MxCanvasUtil.getConfiguredCanvas(canvas, width, height, 0.5, ratioFromParent);
     MxCanvasUtil.translateToStartingIconPosition(canvas, x, y, width, height, 4);
 
     IconPainter.drawCrossIcon(scaleCanvas);
@@ -304,11 +304,11 @@ export default class IconPainter {
 
   // implementation adapted from https://www.flaticon.com/free-icon/employees_554768
   // use https://github.com/process-analytics/mxgraph-svg2shape to generate the xml stencil and port it to code
-  public static paintWomanIcon({ canvas, shape: { x, y, width, height }, icon }: PaintParameter): void {
+  public static paintWomanIcon({ canvas, ratioFromParent, shape: { x, y, width, height }, icon }: PaintParameter): void {
     this.updateCanvasStyle(canvas, { ...icon, isFilled: true });
 
     // generated icon h="239.68" w="143.61"
-    const scaleCanvas = MxCanvasUtil.getConfiguredCanvas(canvas, width, height, 239);
+    const scaleCanvas = MxCanvasUtil.getConfiguredCanvas(canvas, width, height, 239, ratioFromParent);
     MxCanvasUtil.translateToStartingIconPosition(canvas, x, y, width, height, 20);
 
     scaleCanvas.begin();
@@ -392,11 +392,11 @@ export default class IconPainter {
 
   // this implementation is adapted from the draw.io BPMN 'Service Task' stencil
   // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L898
-  public static paintGearIcon({ canvas, shape: { x, y, width, height }, icon }: PaintParameter): void {
+  public static paintGearIcon({ canvas, ratioFromParent, shape: { x, y, width, height }, icon }: PaintParameter): void {
     this.updateCanvasStyle(canvas, icon);
 
     // icon coordinates fill a 100x100 rectangle (approximately: 90x90 + foreground translation)
-    const scaleCanvas = MxCanvasUtil.getConfiguredCanvas(canvas, width, height, 100);
+    const scaleCanvas = MxCanvasUtil.getConfiguredCanvas(canvas, width, height, 100, ratioFromParent);
     MxCanvasUtil.translateToStartingIconPosition(canvas, x, y, width, height, 20);
 
     // background

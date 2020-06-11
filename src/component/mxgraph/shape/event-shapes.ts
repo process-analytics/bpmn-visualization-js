@@ -39,7 +39,7 @@ abstract class EventShape extends mxEllipse {
   public paintVertexShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     // TODO: This will be removed after implementation of all supported events
     // this.markNonFullyRenderedEvents(c);
-    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, this, 1, this.withFilledIcon);
+    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, this, 0.25, this.withFilledIcon);
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);
   }
