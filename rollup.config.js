@@ -66,7 +66,9 @@ if (devMode) {
 if (demoMode) {
   plugins.push(
     // no need for TypeScript definitions
-    del({ targets: 'dist/**/*.d.ts' }),
+    // use a hook run after the typescript definition files have been generated
+    del({ targets: 'dist/**/*.ts', verbose: false, dryRun: false, hook: 'writeBundle' }),
+    // TODO empty directories
   );
 }
 
