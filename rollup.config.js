@@ -22,7 +22,6 @@ import commonjs from 'rollup-plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import pkg from './package.json';
 import json from '@rollup/plugin-json';
-//import del from 'rollup-plugin-delete';
 
 const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
@@ -63,18 +62,6 @@ if (devMode) {
     plugins.push(livereload({ watch: 'dist', verbose: true }));
   }
 }
-
-// if (demoMode) {
-//   plugins.push(
-//     // no need for TypeScript definitions
-//     // use a hook run after the typescript definition files have been generated
-//     del({ targets: 'dist/**/*.ts', verbose: true, dryRun: false, hook: 'writeBundle' }),
-//     // TODO empty directories
-//     // 'dist/*/' all subdirectories
-//     // , '!dist/static/'
-//     // del({ targets: ['dist/*/'], verbose: true, dryRun: true, hook: 'writeBundle' }),
-//   );
-// }
 
 export default {
   input: 'src/index.ts',
