@@ -263,7 +263,7 @@ Make the new version available for demo
 - build it locally ()
   - checkout the git tag related to the new version
   - run `npm run demo` which generates it in the `dist` folder
-- alternatively, if the GitHub workflow building the demo has run on the tag commit, you can download the demo artifact
+- alternatively, if the GitHub workflow building the demo has run on the tag, you can download the demo artifact
 associated to the run workflow
-- push the built resources to the demo folder of the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/demo)
-repository (see existing )
+- push the demo resources to the demo folder of the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/demo)
+repository (proceed how it has been done for prior versions)
