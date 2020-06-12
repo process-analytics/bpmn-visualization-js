@@ -22,15 +22,18 @@ import commonjs from 'rollup-plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import pkg from './package.json';
 import json from '@rollup/plugin-json';
-import del from 'rollup-plugin-delete';
+//import del from 'rollup-plugin-delete';
 
 const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
 const demoMode = process.env.demoMode;
 
+const override = demoMode ? { compilerOptions: { declaration: false } } : {};
+
 const plugins = [
   typescript({
     typescript: require('typescript'),
+    tsconfigOverride: override,
   }),
   resolve(),
   commonjs({
@@ -61,17 +64,17 @@ if (devMode) {
   }
 }
 
-if (demoMode) {
-  plugins.push(
-    // no need for TypeScript definitions
-    // use a hook run after the typescript definition files have been generated
-    del({ targets: 'dist/**/*.ts', verbose: false, dryRun: false, hook: 'writeBundle' }),
-    // TODO empty directories
-    // 'dist/*/' all subdirectories
-    // , '!dist/static/'
-    // del({ targets: ['dist/*/'], verbose: true, dryRun: true, hook: 'writeBundle' }),
-  );
-}
+// if (demoMode) {
+//   plugins.push(
+//     // no need for TypeScript definitions
+//     // use a hook run after the typescript definition files have been generated
+//     del({ targets: 'dist/**/*.ts', verbose: true, dryRun: false, hook: 'writeBundle' }),
+//     // TODO empty directories
+//     // 'dist/*/' all subdirectories
+//     // , '!dist/static/'
+//     // del({ targets: ['dist/*/'], verbose: true, dryRun: true, hook: 'writeBundle' }),
+//   );
+// }
 
 export default {
   input: 'src/index.ts',
