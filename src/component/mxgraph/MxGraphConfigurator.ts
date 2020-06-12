@@ -69,10 +69,30 @@ export default class MxGraphConfigurator {
     this.graph.panningHandler.useLeftButtonForPanning = true;
     this.graph.panningHandler.ignoreCell = true; // Specifies if panning should be active even if there is a cell under the mouse pointer
 
-    // TODO experiment this settings
+    // TODO experiment this settings because currently panning increases makes scrollbars to appears when going right and/or bottom
+    // Specifies if the size of the graph should be automatically extended if the mouse goes near the container edge while dragging.
+    // This is only taken into account if the container has scrollbars.  Default is true.  See autoScroll.
     //this.graph.autoExtend = false;
+
+    // Specifies if scrollbars should be used for panning in panGraph if any scrollbars are available.  If scrollbars are
+    // enabled in CSS, but no scrollbars appear because the graph is smaller than the container size, then no panning occurs if this is true.
+    // Default is true.
+    // this.graph.useScrollbarsForPanning = false;
+
     // this.graph.scroautoExtend = false;
     //this.graph.translateToScrollPosition = false;
+
+    // Specifies if the graph should automatically scroll if the mouse goes near the container edge while dragging.  This is only taken into account if the container has scrollbars.  Default is true.
+    //
+    // If you need this to work without scrollbars then set ignoreScrollbars to true.  Please consult the ignoreScrollbars for details.  In general, with no scrollbars, the use of allowAutoPanning is recommended.
+    // this.graph.autoscroll = true;
+
+    // ignoreScrollbars
+    // Specifies if the graph should automatically scroll regardless of the scrollbars.  This will scroll the container using positive values for scroll positions (ie usually only rightwards and downwards).  To avoid possible conflicts with panning, set translateToScrollPosition to true.
+    // this.graph.ignoreScrollbars = true;
+
+    // allowAutoPanning
+    // Specifies if panning via panGraph should be allowed to implement autoscroll if no scrollbars are available in scrollPointToVisible.  To enable panning inside the container, near the edge, set mxPanningManager.border to a positive value.  Default is false.
 
     // TODO dynamic option to move elsewhere
     if (options?.activatePanning) {
