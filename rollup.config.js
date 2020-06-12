@@ -27,12 +27,12 @@ const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
 const demoMode = process.env.demoMode;
 
-const override = demoMode ? { compilerOptions: { declaration: false } } : {};
+const tsconfigOverride = demoMode ? { compilerOptions: { declaration: false } } : {};
 
 const plugins = [
   typescript({
     typescript: require('typescript'),
-    tsconfigOverride: override,
+    tsconfigOverride: tsconfigOverride,
   }),
   resolve(),
   commonjs({
