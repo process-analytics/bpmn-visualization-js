@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import MxGraphRenderer from '../../../../src/component/mxgraph/MxGraphRenderer';
+import { defaultMxGraphRenderer } from '../../../../src/component/mxgraph/MxGraphRenderer';
 import Shape from '../../../../src/model/bpmn/shape/Shape';
 import ShapeBpmnElement from '../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
@@ -45,7 +45,7 @@ function newSequenceFlow(kind: SequenceFlowKind): SequenceFlow {
 }
 
 describe('mxgraph renderer', () => {
-  const mxGraphRenderer = new MxGraphRenderer(null, null); // we don't care of mxgraph graph here
+  const mxGraphRenderer = defaultMxGraphRenderer(null); // we don't care of mxgraph graph here
 
   it('compute style of shape with no label', () => {
     const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_USER));
