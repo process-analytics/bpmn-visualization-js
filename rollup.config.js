@@ -43,16 +43,18 @@ const plugins = [
   json(),
 ];
 
-plugins.push(
-  // Copy static resources to dist
-  // TODO for 'devLiveReloadMode' this should be managed via livereload to consider static resources changes
-  copy({
-    targets: [
-      { src: 'src/index.html', dest: 'dist/' },
-      { src: 'src/static/css/main.css', dest: 'dist/static/css/' },
-    ],
-  }),
-);
+if (devMode || demoMode) {
+  plugins.push(
+    // Copy static resources to dist
+    // TODO for 'devLiveReloadMode' this should be managed via livereload to consider static resources changes
+    copy({
+      targets: [
+        { src: 'src/index.html', dest: 'dist/' },
+        { src: 'src/static/css/main.css', dest: 'dist/static/css/' },
+      ],
+    }),
+  );
+}
 
 if (devMode) {
   // Create a server for dev mode
