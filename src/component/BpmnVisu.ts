@@ -54,7 +54,7 @@ export default class BpmnVisu {
       defaultMxGraphRenderer(this.graph).render(bpmnModel);
       console.info('Rendering done');
       if (this.fitOnLoad) {
-        this.graph.fit();
+        this.fitHorizontal();
         console.info('Fit on load rendering done');
       }
       console.info('BPMN loaded');
@@ -65,15 +65,23 @@ export default class BpmnVisu {
     }
   }
 
+  private fitHorizontal(): void {
+    console.info('Zooming to Fit Horizontal');
+    this.graph.fit();
+    console.info('Zoom to Fit Horizontal completed');
+  }
+
   // TODO zoom factor should be configurable (in global BpmnVisuOptions)
   public zoom(options: ZoomOptions): void {
     // this.graph.centerZoom = false;
     switch (options) {
       case ZoomOptions.Actual:
+        console.info('Zooming to actual');
         this.graph.zoomActual();
+        console.info('Zoom to actual completed');
         break;
       case ZoomOptions.FitHorizontal:
-        this.graph.fit();
+        this.fitHorizontal();
         //this.graph.center(true, true);
         break;
       case ZoomOptions.In:
