@@ -74,16 +74,24 @@ document.getElementById('btn-export-svg').onclick = function() {
   console.info('button triggers export svg');
   const svg = bpmnVisu.exportAsSvg();
 
+  // TODO add ;charset=utf-8 ?
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  download('diagram.svg', svg);
+  download('diagram.svg', 'data:image/svg+xml', svg);
 };
 
 // inspired from https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
-function download(filename: string, text: string): void {
+function download(filename: string, contentType: string, text: string): void {
   const element = document.createElement('a');
-  // TODO add ;charset=utf-8 ?
-  element.setAttribute('href', 'data:image/svg+xml,' + encodeURIComponent(text));
+  // only for svg
+  if (contentType.startsWith('data:image/svg+xml')) {
+    text = encodeURIComponent(text);
+    contentType += ',';
+  }
+
+  element.setAttribute('href', contentType + text);
   element.setAttribute('download', filename);
+  // TODO find a way to stay on the page to keep console logs (same issue with demo.bpmn.io)
+  // element.setAttribute('target', '_blank');
 
   element.style.display = 'none';
   document.body.appendChild(element);
@@ -147,10 +155,11 @@ document.getElementById('btn-export-png').onclick = function() {
   console.info('button triggers export png');
   const svg = bpmnVisu.exportAsSvg();
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  const pngBase64 = svgToPNGBase64(svg);
+  svgToPNGBase64(svg);
+  // const pngBase64 = svgToPNGBase64(svg);
 
   // eslint-disable-next-line no-console
-  console.info('@@@@png image as base64:', pngBase64);
+  // console.info('@@@@png image as base64:', pngBase64);
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   // download('diagram.png', svg);
 };
@@ -191,11 +200,13 @@ function svgToPNGBase64(svg: string): string {
       // eslint-disable-next-line no-console
       console.info('call img.onload');
       canvasCtx.drawImage(img, 0, 0);
+      // TODO find a way to improve quality of the export that is currently fuzzy
       svgToPNGBase64 = canvas.toDataURL('image/png');
       // TODO do this in a finally block
       document.body.removeChild(imgPreview);
       // eslint-disable-next-line no-console
       console.info('image data:', svgToPNGBase64);
+      download('diagram.png', '', svgToPNGBase64);
     };
   };
 
