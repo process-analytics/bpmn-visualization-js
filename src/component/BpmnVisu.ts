@@ -71,9 +71,24 @@ export default class BpmnVisu {
     console.info('Zoom to Fit Horizontal completed');
   }
 
+  // TODO make it work!!!
+  private fitVertical(): void {
+    // border	Optional number that specifies the border.  Default is border.
+    // keepOrigin	Optional boolean that specifies if the translate should be changed.  Default is false.
+    // margin	Optional margin in pixels.  Default is 0.
+    // enabled	Optional boolean that specifies if the scale should be set or just returned.  Default is true.
+    // ignoreWidth	Optional boolean that specifies if the width should be ignored.  Default is false.
+    // ignoreHeight	Optional boolean that specifies if the height should be ignored.  Default is false.
+    // maxHeight	Optional maximum height.
+    console.info('Zooming to Fit Vertical');
+    this.graph.fit(0, false, 0, true, true, false);
+    console.info('Zoom to Fit Vertical completed');
+  }
+
   // TODO zoom factor should be configurable (in global BpmnVisuOptions)
   public zoom(options: ZoomOptions): void {
-    // this.graph.centerZoom = false;
+    // TODO add an option to center without zooming
+    //this.graph.center(true, true);
     switch (options) {
       case ZoomOptions.Actual:
         console.info('Zooming to actual');
@@ -82,7 +97,9 @@ export default class BpmnVisu {
         break;
       case ZoomOptions.FitHorizontal:
         this.fitHorizontal();
-        //this.graph.center(true, true);
+        break;
+      case ZoomOptions.FitVertical:
+        this.fitVertical();
         break;
       case ZoomOptions.In:
         this.graph.zoomIn();
