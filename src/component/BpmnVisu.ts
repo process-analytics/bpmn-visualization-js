@@ -119,11 +119,12 @@ export default class BpmnVisu {
     preview.open(undefined, undefined, undefined, undefined);
   }
 
-  public exportAsSvg(): void {
+  public exportAsSvg(): string {
     console.info('Starting svg export');
     const svg = new SvgExporter(this.graph).exportSvg();
     console.info('Svg export completed');
     console.info(svg);
+    return svg;
   }
 
   public toggleOutline(): void {

@@ -72,5 +72,22 @@ document.getElementById('btn-export-preview').onclick = function() {
 document.getElementById('btn-export-svg').onclick = function() {
   // eslint-disable-next-line no-console
   console.info('button triggers export svg');
-  bpmnVisu.exportAsSvg();
+  const svg = bpmnVisu.exportAsSvg();
+
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  download('diagram.svg', svg);
 };
+
+// inspired from https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
+function download(filename: string, text: string): void {
+  const element = document.createElement('a');
+  element.setAttribute('href', 'data:image/svg+xml,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+  // TODO do this in a finally block
+  document.body.removeChild(element);
+}
