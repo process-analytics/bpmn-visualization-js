@@ -133,25 +133,27 @@ export default class BpmnVisu {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   public pan(options: PanOptions): void {
+    console.info('Panning %s', options);
     const panValue = 20;
+    const view = this.graph.getView();
     switch (options) {
       case PanOptions.VERTICAL_UP:
-        this.graph.panGraph(0, panValue);
+        view.setTranslate(0, panValue);
         break;
       case PanOptions.VERTICAL_DOWN:
-        this.graph.panGraph(0, -panValue);
+        view.setTranslate(0, -panValue);
         break;
       case PanOptions.HORIZONTAL_LEFT:
-        this.graph.panGraph(panValue, 0);
+        view.setTranslate(panValue, 0);
         break;
       case PanOptions.HORIZONTAL_RIGHT:
-        this.graph.panGraph(-panValue, 0);
+        view.setTranslate(-panValue, 0);
         break;
       default:
         throw new Error('Unsupported pan option ' + options);
     }
+    console.info('panning done');
   }
 
   public preview(): void {
