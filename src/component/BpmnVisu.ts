@@ -133,6 +133,9 @@ export default class BpmnVisu {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  public pan(): void {}
+
   public preview(): void {
     const preview = new mxPrintPreview(this.graph, 1, undefined, undefined);
     preview.open(undefined, undefined, undefined, undefined);

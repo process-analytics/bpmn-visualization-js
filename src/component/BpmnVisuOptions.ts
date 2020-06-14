@@ -27,3 +27,10 @@ export enum ZoomOptions {
   FitHorizontal,
   FitVertical,
 }
+
+export enum PanOptions {
+  HORIZONTAL_RIGHT,
+  HORIZONTAL_LEFT,
+  VERTICAL_UP,
+  VERTICAL_DOWN,
+}
