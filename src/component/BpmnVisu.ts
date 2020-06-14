@@ -39,6 +39,25 @@ export default class BpmnVisu {
       }
       // Instantiate and configure Graph
       const configurator = new MxGraphConfigurator(this.container, options);
+
+      // Changes the zoom on mouseWheel events
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      const self = this; // TODO replace with array function to access to this directly
+      this.mxEvent.addMouseWheelListener(function(evt: MouseEvent, up: boolean) {
+        if (!self.mxEvent.isConsumed(evt)) {
+          // eslint-disable-next-line no-console
+          console.info('MouseWheelListener: up: %s / altkey: %s / ctrlKey: %s / shiftKey: %s', up, evt.altKey, evt.ctrlKey, evt.shiftKey);
+
+          const zoomKey = evt.ctrlKey && !evt.altKey;
+          // const panKey = !evt.ctrlKey && evt.altKey;
+
+          if (zoomKey) {
+            self.zoom(up ? ZoomOptions.In : ZoomOptions.Out);
+            self.mxEvent.consume(evt);
+          }
+        }
+      }, null);
+
       this.graph = configurator.getGraph();
     } catch (e) {
       // TODO error handling
