@@ -100,7 +100,8 @@ export default class MxGraphRenderer {
       // erase eventual style configuration for BPMN element
       styleValues.set(this.mxConstants.STYLE_LABEL_POSITION, this.mxConstants.NONE);
       styleValues.set(this.mxConstants.STYLE_VERTICAL_LABEL_POSITION, this.mxConstants.NONE);
-      styleValues.set(this.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width); // TODO how do we manage height constraints?
+      // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
+      styleValues.set(this.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1); // TODO how do we manage height constraints?
       //styleValues.set(this.mxConstants.STYLE_LABEL_PADDING, 0); // todo adjust
       // only apply to vertex
       // style[this.mxConstants.STYLE_SPACING_TOP] = 55;
@@ -108,8 +109,8 @@ export default class MxGraphRenderer {
       // add negative STYLE_SPACING to relax too small bounds (ref miwg-test-suite)
       // TODO adjust the value
       // TODO warn apply only to vertex, not edge
-      styleValues.set(this.mxConstants.STYLE_SPACING_LEFT, -5);
-      styleValues.set(this.mxConstants.STYLE_SPACING_RIGHT, -5);
+      // styleValues.set(this.mxConstants.STYLE_SPACING_LEFT, -5);
+      // styleValues.set(this.mxConstants.STYLE_SPACING_RIGHT, -5);
     }
 
     return [bpmnElement.kind as string] //
