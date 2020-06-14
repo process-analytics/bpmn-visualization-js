@@ -147,24 +147,25 @@ export default class MxGraphRenderer {
         const style = this.computeStyle(edge, labelBounds);
 
         const labelText = bpmnElement.name;
-        // eslint-disable-next-line no-console
-        console.info('###Processing edge with label:', labelText);
         const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, labelText, source, target, style);
         this.insertWaypoints(edge.waypoints, mxEdge);
 
-        // eslint-disable-next-line no-console
-        console.info('###geometry prior applying info from label bounds');
-        const geometry = mxEdge.geometry;
-        // eslint-disable-next-line no-console
-        console.info(geometry);
-        // eslint-disable-next-line no-console
-        console.info('###center: %s / %s', geometry.getCenterX(), geometry.getCenterY());
-
-        // demonstrate how to set label position using the cell geometry offset
-        // label relative coordinates to the cell
         if (labelBounds) {
-          // mxEdge.geometry.relative = false;
-          const relativeCoordinate = this.getRelativeCoordinates(mxEdge.parent, { x: labelBounds.x, y: labelBounds.y });
+          // eslint-disable-next-line no-console
+          console.info('###Processing edge label bounds with label:', labelText);
+          // eslint-disable-next-line no-console
+          console.info('###geometry BEFORE applying info from label bounds');
+          // eslint-disable-next-line no-console
+          console.info(mxEdge.geometry);
+
+          // only if we have waypoints to compute the center of the edge
+          mxEdge.geometry.relative = true;
+          const labelBoundsRelativeCoordinateFromParent = this.getRelativeCoordinates(mxEdge.parent, { x: labelBounds.x, y: labelBounds.y });
+          // eslint-disable-next-line no-console
+          console.info('labelBoundsRelativeCoordinateFromParent:');
+          // eslint-disable-next-line no-console
+          console.info(labelBoundsRelativeCoordinateFromParent);
+
           // mxEdge.geometry.x = relativeCoordinate.x;
           // mxEdge.geometry.y = relativeCoordinate.y;
 
@@ -178,6 +179,14 @@ export default class MxGraphRenderer {
           // const relativeLabelX = labelBounds.x - bounds.x;
           // const relativeLabelY = labelBounds.y - bounds.y;
           // mxEdge.geometry.offset = new this.mxPoint(relativeLabelX, relativeLabelY);
+
+          const edgeCenterCoordinate = this.computeEgeCenter(mxEdge);
+          // eslint-disable-next-line no-console
+          console.info('Computed edgeCenterCoordinate');
+          // eslint-disable-next-line no-console
+          console.info(edgeCenterCoordinate);
+          if (edgeCenterCoordinate) {
+          }
 
           // eslint-disable-next-line no-console
           console.info('###geometry AFTER applying info from label bounds');
@@ -232,12 +241,53 @@ export default class MxGraphRenderer {
   //
   // The width and height parameter for edge geometries can be used to set the label width and height (eg. for word wrapping).
 
+  // mxGraphView.prototype.updateEdgeLabelOffset = function(	state	)
+  // Updates mxCellState.absoluteOffset for the given state.
+  // The absolute offset is normally used for the position of the edge label.
+  // Is is calculated from the geometry as an absolute offset from the center between the two endpoints if the
+  // geometry is absolute, or as the relative distance between the center along the line and the absolute orthogonal
+  // distance if the geometry is relative.
+  //
+  // 			var p0 = points[0];
+  // 			var pe = points[points.length - 1];
+  //
+  // 			if (p0 != null && pe != null)
+  // 			{
+  // 				var dx = pe.x - p0.x;
+  // 				var dy = pe.y - p0.y;
+  // 				var x0 = 0;
+  // 				var y0 = 0;
+  //
+  // 				var off = geometry.offset;
+  //
+  // 				if (off != null)
+  // 				{
+  // 					x0 = off.x;
+  // 					y0 = off.y;
+  // 				}
+  //
+  // 				var x = p0.x + dx / 2 + x0 * this.scale;
+  // 				var y = p0.y + dy / 2 + y0 * this.scale;
+  //
+  // 				state.absoluteOffset.x = x;
+  // 				state.absoluteOffset.y = y;
+  // 			}
+
   // coordinate in the same referential as the mxCell, so here, relative to its parent
   private computeEgeCenter(mxEdge: mxgraph.mxCell): Coordinate {
     // TODO final impl should ensure we have an edge
-    const wayPoints = mxEdge.geometry.points;
+    const points: mxgraph.mxPoint[] = mxEdge.geometry.points;
 
-    return null;
+    const p0 = points[0];
+    const pe = points[points.length - 1];
+
+    if (p0 != null && pe != null) {
+      const dx = pe.x - p0.x;
+      const dy = pe.y - p0.y;
+      return { x: p0.x + dx / 2, y: p0.y + dy / 2 };
+    }
+
+    return undefined;
   }
 
   private getRelativeCoordinates(parent: mxgraph.mxCell, absoluteCoordinate: Coordinate): Coordinate {
