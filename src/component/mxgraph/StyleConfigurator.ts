@@ -239,8 +239,8 @@ export default class StyleConfigurator {
     // Defines the key for the spacing.  The value represents the spacing, in pixels, added to each side of a label in a
     // vertex (style applies to vertices only).  Value is “spacing”.
     // TODO adjust the value
-    style[this.mxConstants.STYLE_SPACING_LEFT] = -5;
-    style[this.mxConstants.STYLE_SPACING_RIGHT] = -5;
+    // style[this.mxConstants.STYLE_SPACING_LEFT] = -5;
+    // style[this.mxConstants.STYLE_SPACING_RIGHT] = -5;
 
     this.graph.getStylesheet().putCellStyle(StyleConstant.BPMN_STYLE_LABEL, style);
   }

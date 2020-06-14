@@ -157,7 +157,7 @@ export default class MxGraphRenderer {
             labelText,
             labelRelativeCoordinate.x,
             labelRelativeCoordinate.y,
-            labelBounds.width,
+            labelBounds.width + 1, // increase arbitrarily to relax too small bounds (ref miwg-test-suite)
             labelBounds.height,
             this.computeLabelStyle(StyleConstant.BPMN_STYLE_LABEL, edge.label),
           );
