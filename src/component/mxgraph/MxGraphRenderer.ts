@@ -92,18 +92,18 @@ export default class MxGraphRenderer {
     }
 
     if (bpmnCell instanceof Shape && labelBounds) {
-      // TODO review align
-      styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
-      styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_MIDDLE); // TODO invalid value --> CENTER
       styleValues.set(this.mxConstants.STYLE_LABEL_BORDERCOLOR, 'red'); // TODO activate only for debugging via a new options of this class
       // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
       styleValues.set(this.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
       // TODO how do we manage height constraints?
       // styleValues.set('labelHeight', labelBounds.height );
-      // erase eventual style configuration for BPMN element
+      // text align
+      styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
+      styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_CENTER);
       // TODO Find the right value for label position
       styleValues.set(this.mxConstants.STYLE_LABEL_POSITION, this.mxConstants.ALIGN_TOP);
       styleValues.set(this.mxConstants.STYLE_VERTICAL_LABEL_POSITION, this.mxConstants.ALIGN_LEFT);
+      // erase eventual style configuration for BPMN element
       styleValues.set(this.mxConstants.STYLE_SPACING_TOP, 0);
       styleValues.set(this.mxConstants.STYLE_SPACING_BOTTOM, 0);
       styleValues.set(this.mxConstants.STYLE_SPACING_LEFT, 0);
@@ -159,8 +159,8 @@ export default class MxGraphRenderer {
   }
 
   private insertVertex(parent: mxgraph.mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxgraph.mxCell {
-    const relativeCoordinate = this.coordinatesTranslator.computeRelativeCoordinates(parent, new this.mxPoint(bounds.x, bounds.y));
-    const mxCell = this.graph.insertVertex(parent, id, value, relativeCoordinate.x, relativeCoordinate.y, bounds.width, bounds.height, style);
+    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new this.mxPoint(bounds.x, bounds.y));
+    const mxCell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 
     if (labelBounds) {
       // label coordinates are relative in the cell referential coordinates
