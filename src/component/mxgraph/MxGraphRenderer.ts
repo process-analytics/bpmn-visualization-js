@@ -94,12 +94,27 @@ export default class MxGraphRenderer {
     }
 
     if (labelBounds) {
-      styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
-      styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_MIDDLE);
       styleValues.set(this.mxConstants.STYLE_LABEL_BORDERCOLOR, 'red'); // TODO only for detection in this POC
       // erase eventual style configuration for BPMN element
-      styleValues.set(this.mxConstants.STYLE_LABEL_POSITION, this.mxConstants.NONE);
-      styleValues.set(this.mxConstants.STYLE_VERTICAL_LABEL_POSITION, this.mxConstants.NONE);
+      if (bpmnCell instanceof Shape) {
+        styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
+        styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_MIDDLE); // TODO invalid value
+        styleValues.set(this.mxConstants.STYLE_VERTICAL_LABEL_POSITION, this.mxConstants.NONE); // TODO invalid value
+        styleValues.set(this.mxConstants.STYLE_LABEL_POSITION, this.mxConstants.NONE); // TODO invalid value
+      } else {
+        // put the the top left of label bounds on the offset point, but text aligns on top left as well
+        // in that case, don't add 1/2 width to offset point x coordinate
+        // styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
+        // styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_LEFT);
+
+        // another try with add 1/2 width
+        styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
+        styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_CENTER);
+
+        // TODO this changes nothing
+        // styleValues.set(this.mxConstants.STYLE_VERTICAL_LABEL_POSITION, this.mxConstants.ALIGN_BOTTOM);
+        // styleValues.set(this.mxConstants.STYLE_LABEL_POSITION, this.mxConstants.ALIGN_LEFT);
+      }
       // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
       styleValues.set(this.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1); // TODO how do we manage height constraints?
       //styleValues.set(this.mxConstants.STYLE_LABEL_PADDING, 0); // todo adjust
@@ -158,27 +173,11 @@ export default class MxGraphRenderer {
           // eslint-disable-next-line no-console
           console.info(mxEdge.geometry);
 
-          // only if we have waypoints to compute the center of the edge
-          mxEdge.geometry.relative = true;
-          const labelBoundsRelativeCoordinateFromParent = this.getRelativeCoordinates(mxEdge.parent, { x: labelBounds.x, y: labelBounds.y });
-          // eslint-disable-next-line no-console
-          console.info('labelBoundsRelativeCoordinateFromParent:');
-          // eslint-disable-next-line no-console
-          console.info(labelBoundsRelativeCoordinateFromParent);
-
-          // mxEdge.geometry.x = relativeCoordinate.x;
-          // mxEdge.geometry.y = relativeCoordinate.y;
-
-          // described in the doc
+          // described in the mxGeometry doc
           // "The width and height parameter for edge geometries can be used to set the label width and height
           // (eg. for word wrapping)."
           mxEdge.geometry.width = labelBounds.width;
           mxEdge.geometry.height = labelBounds.height;
-
-          // TODO ensure we do not need offset here
-          // const relativeLabelX = labelBounds.x - bounds.x;
-          // const relativeLabelY = labelBounds.y - bounds.y;
-          // mxEdge.geometry.offset = new this.mxPoint(relativeLabelX, relativeLabelY);
 
           const edgeCenterCoordinate = this.computeEgeCenter(mxEdge);
           // eslint-disable-next-line no-console
@@ -186,6 +185,23 @@ export default class MxGraphRenderer {
           // eslint-disable-next-line no-console
           console.info(edgeCenterCoordinate);
           if (edgeCenterCoordinate) {
+            // only if we have waypoints to compute the center of the edge
+            mxEdge.geometry.relative = false;
+            // eslint-disable-next-line no-console
+            console.info('labelBounds:');
+            // eslint-disable-next-line no-console
+            console.info(labelBounds);
+
+            const labelBoundsRelativeCoordinateFromParent = this.getRelativeCoordinates(mxEdge.parent, { x: labelBounds.x, y: labelBounds.y });
+            // eslint-disable-next-line no-console
+            console.info('labelBoundsRelativeCoordinateFromParent:');
+            // eslint-disable-next-line no-console
+            console.info(labelBoundsRelativeCoordinateFromParent);
+
+            // const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x - edgeCenterCoordinate.x;
+            const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
+            const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
+            mxEdge.geometry.offset = new this.mxPoint(relativeLabelX, relativeLabelY);
           }
 
           // eslint-disable-next-line no-console
@@ -237,7 +253,8 @@ export default class MxGraphRenderer {
   // The y-coordinate of an edge’s geometry is used to describe the absolute, orthogonal distance in pixels from that point.
   // In addition, the mxGeometry.offset is used as an absolute offset vector from the resulting point.
   //
-  // This coordinate system is applied if relative is true, otherwise the offset defines the absolute vector from the edge’s center point to the label and the values for <x> and <y> are ignored.
+  // This coordinate system is applied if relative is true, otherwise the offset defines the absolute vector from the edge’s
+  // center point to the label and the values for <x> and <y> are ignored.
   //
   // The width and height parameter for edge geometries can be used to set the label width and height (eg. for word wrapping).
 
