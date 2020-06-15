@@ -91,10 +91,10 @@ export default class MxGraphRenderer {
       styleValues.set(StyleConstant.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
     }
 
-    if (labelBounds) {
+    if (bpmnCell instanceof Shape && labelBounds) {
       // TODO review align
       styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
-      styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_MIDDLE);
+      styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_MIDDLE); // TODO invalid value --> CENTER
       styleValues.set(this.mxConstants.STYLE_LABEL_BORDERCOLOR, 'red'); // TODO activate only for debugging via a new options of this class
       // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
       styleValues.set(this.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
