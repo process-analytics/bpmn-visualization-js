@@ -49,8 +49,8 @@ export default class MxGraphConfigurator {
     this.graph.setCellsSelectable(true);
     this.graph.htmlLabels = true; // required for wrapping and clipping
 
-    // TODO see if this changes something
+    // TODO this is to see the label offset point (in yellow by default)
     this.graph.setEdgeLabelsMovable(true);
-    this.graph.setVertexLabelsMovable(false);
+    this.graph.setVertexLabelsMovable(true);
   }
 }
