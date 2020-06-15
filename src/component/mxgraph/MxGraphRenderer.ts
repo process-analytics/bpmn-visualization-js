@@ -22,16 +22,13 @@ import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
 import { StyleConstant } from './StyleUtils';
 import { Font } from '../../model/bpmn/Label';
-
-interface Coordinate {
-  x: number;
-  y: number;
-}
+import CoordinatesTranslator from './extension/CoordinatesTranslator';
 
 export default class MxGraphRenderer {
   private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
   private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
-  constructor(readonly graph: mxgraph.mxGraph) {}
+
+  constructor(readonly graph: mxgraph.mxGraph, readonly coordinatesTranslator: CoordinatesTranslator) {}
 
   public render(bpmnModel: BpmnModel): void {
     const model = this.graph.getModel();
@@ -66,9 +63,9 @@ export default class MxGraphRenderer {
     if (bpmnElement) {
       const bounds = shape.bounds;
       const parent = this.getParent(bpmnElement);
-      const absoluteCoordinate = { x: bounds.x, y: bounds.y };
+      const absoluteCoordinate = new this.mxPoint(bounds.x, bounds.y);
       const style = this.computeStyle(shape);
-      this.insertVertexGivenAbsoluteCoordinates(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
+      this.insertVertex(parent, bpmnElement.id, bpmnElement.name, absoluteCoordinate, bounds.width, bounds.height, style);
     }
   }
 
@@ -126,8 +123,7 @@ export default class MxGraphRenderer {
   private insertWaypoints(waypoints: Waypoint[], mxEdge: mxgraph.mxCell): void {
     if (waypoints) {
       mxEdge.geometry.points = waypoints.map(waypoint => {
-        const relativeCoordinate = this.getRelativeCoordinates(mxEdge.parent, { x: waypoint.x, y: waypoint.y });
-        return new this.mxPoint(relativeCoordinate.x, relativeCoordinate.y);
+        return this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new this.mxPoint(waypoint.x, waypoint.y));
       });
     }
   }
@@ -136,45 +132,20 @@ export default class MxGraphRenderer {
     return this.graph.getModel().getCell(id);
   }
 
-  private insertVertexGivenAbsoluteCoordinates(
+  private insertVertex(
     parent: mxgraph.mxCell,
     id: string | null,
     value: string,
-    absoluteCoordinate: Coordinate,
+    absoluteCoordinate: mxgraph.mxPoint,
     width: number,
     height: number,
     style?: string,
   ): mxgraph.mxCell {
-    const relativeCoordinate = this.getRelativeCoordinates(parent, absoluteCoordinate);
+    const relativeCoordinate = this.coordinatesTranslator.computeRelativeCoordinates(parent, absoluteCoordinate);
     return this.graph.insertVertex(parent, id, value, relativeCoordinate.x, relativeCoordinate.y, width, height, style);
   }
+}
 
-  private getRelativeCoordinates(parent: mxgraph.mxCell, absoluteCoordinate: Coordinate): Coordinate {
-    const translateForRoot = this.getTranslateForRoot(parent);
-    const relativeX = absoluteCoordinate.x + translateForRoot.x;
-    const relativeY = absoluteCoordinate.y + translateForRoot.y;
-    return { x: relativeX, y: relativeY };
-  }
-
-  // Returns the translation to be applied to a cell whose mxGeometry x and y values are expressed with absolute coordinates
-  // (i.e related to the graph default parent) you want to assign as parent to the cell passed as argument of this function.
-  // That way, you will be able to express the cell coordinates as relative to its parent cell.
-  //
-  // The implementation taken from the example described in the documentation of mxgraph#getTranslateForRoot
-  // The translation is generally negative
-  private getTranslateForRoot(cell: mxgraph.mxCell): mxgraph.mxPoint {
-    const model = this.graph.getModel();
-    const offset = new this.mxPoint(0, 0);
-
-    while (cell != null) {
-      const geo = model.getGeometry(cell);
-      if (geo != null) {
-        offset.x -= geo.x;
-        offset.y -= geo.y;
-      }
-      cell = model.getParent(cell);
-    }
-
-    return offset;
-  }
+export function defaultMxGraphRenderer(graph: mxgraph.mxGraph): MxGraphRenderer {
+  return new MxGraphRenderer(graph, new CoordinatesTranslator(graph));
 }
