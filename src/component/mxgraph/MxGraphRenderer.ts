@@ -92,22 +92,13 @@ export default class MxGraphRenderer {
     }
 
     if (bpmnCell instanceof Shape && labelBounds) {
-      styleValues.set(this.mxConstants.STYLE_LABEL_BORDERCOLOR, 'red'); // TODO activate only for debugging via a new options of this class
       // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
       styleValues.set(this.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
-      // TODO how do we manage height constraints?
-      // styleValues.set('labelHeight', labelBounds.height );
       // text align
       styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
       styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_CENTER);
-      // TODO Find the right value for label position
       styleValues.set(this.mxConstants.STYLE_LABEL_POSITION, this.mxConstants.ALIGN_TOP);
       styleValues.set(this.mxConstants.STYLE_VERTICAL_LABEL_POSITION, this.mxConstants.ALIGN_LEFT);
-      // erase eventual style configuration for BPMN element
-      styleValues.set(this.mxConstants.STYLE_SPACING_TOP, 0);
-      styleValues.set(this.mxConstants.STYLE_SPACING_BOTTOM, 0);
-      styleValues.set(this.mxConstants.STYLE_SPACING_LEFT, 0);
-      styleValues.set(this.mxConstants.STYLE_SPACING_RIGHT, 0);
     }
 
     return [bpmnElement.kind as string] //
@@ -164,11 +155,6 @@ export default class MxGraphRenderer {
 
     if (labelBounds) {
       // label coordinates are relative in the cell referential coordinates
-      // from mxGeometry
-      // The offset field is interpreted in 3 different ways, depending on the cell and the geometry.
-      // For edges, the offset defines the absolute offset for the edge label.
-      // For relative geometries, the offset defines the absolute offset for the origin (top, left corner) of the vertex,
-      // otherwise the offset defines the absolute offset for the label inside the vertex or group.
       const relativeLabelX = labelBounds.x - bounds.x;
       const relativeLabelY = labelBounds.y - bounds.y;
       mxCell.geometry.offset = new this.mxPoint(relativeLabelX, relativeLabelY);
