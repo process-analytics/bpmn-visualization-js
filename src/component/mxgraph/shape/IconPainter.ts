@@ -71,10 +71,10 @@ export default class IconPainter {
     };
   }
 
-  private static translateIconToShapeCenter(c: mxgraph.mxXmlCanvas2D, shape: ShapeConfiguration, iconWidth: number, iconHeight: number): void {
+  private static translateIconToShapeCenter(c: mxgraph.mxXmlCanvas2D, shape: ShapeConfiguration, iconSize: Size): void {
     // Change the coordinate referential
-    const insetW = (shape.w - iconWidth) / 2;
-    const insetH = (shape.h - iconHeight) / 2;
+    const insetW = (shape.w - iconSize.width) / 2;
+    const insetH = (shape.h - iconSize.height) / 2;
     c.translate(shape.x + insetW, shape.y + insetH);
   }
 
@@ -121,10 +121,13 @@ export default class IconPainter {
 
     const initialIconSize = { width: 485.41, height: 321.76 };
     const iconSize = this.calculateIconSize(initialIconSize, icon, shape, ratioFromParent);
-    this.translateIconToShapeCenter(c, shape, iconSize.width, iconSize.height);
+    this.translateIconToShapeCenter(c, shape, iconSize);
+
+    const w = iconSize.width;
+    const h = iconSize.height;
 
     // Paint the envelope outline with dark color
-    c.rect(0, 0, iconSize.width, iconSize.height);
+    c.rect(0, 0, w, h);
     c.fillAndStroke();
 
     if (icon.isFilled) {
@@ -137,16 +140,16 @@ export default class IconPainter {
 
     // V line
     c.moveTo(0, 0);
-    c.lineTo(iconSize.width * 0.5, iconSize.height * 0.6);
-    c.lineTo(iconSize.width, 0);
+    c.lineTo(w * 0.5, h * 0.6);
+    c.lineTo(w, 0);
 
     // First bottom line
-    c.moveTo(0, iconSize.height);
-    c.lineTo(iconSize.width * 0.41, iconSize.height * 0.5);
+    c.moveTo(0, h);
+    c.lineTo(w * 0.41, h * 0.5);
 
     // Second bottom line
-    c.moveTo(iconSize.width, iconSize.height);
-    c.lineTo(iconSize.width * 0.59, iconSize.height * 0.5);
+    c.moveTo(w, h);
+    c.lineTo(w * 0.59, h * 0.5);
 
     c.stroke();
   }
@@ -157,10 +160,12 @@ export default class IconPainter {
 
     const initialIconSize = { width: shape.w, height: shape.h };
     const iconSize = this.calculateIconSize(initialIconSize, icon, shape, ratioFromParent);
-    this.translateIconToShapeCenter(c, shape, iconSize.width, iconSize.height);
+    this.translateIconToShapeCenter(c, shape, iconSize);
 
-    if (iconSize.width > 0 && iconSize.height > 0) {
-      c.ellipse(0, 0, iconSize.width, iconSize.height);
+    const w = iconSize.width;
+    const h = iconSize.height;
+    if (w > 0 && h > 0) {
+      c.ellipse(0, 0, w, h);
     }
 
     if (icon.isFilled) {
