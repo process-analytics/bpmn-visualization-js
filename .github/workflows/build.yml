@@ -7,6 +7,7 @@ on:
     paths-ignore:
       - '.github/workflows/fill-gh-draft-release.yml'
       - '.github/workflows/generate-documentation.yml'
+      - '.github/workflows/upload-demo-archive.yml'
       - '.gitignore'
       - 'docs/**'
       - '*.md'
@@ -17,6 +18,7 @@ on:
     paths-ignore:
       - '.github/workflows/fill-gh-draft-release.yml'
       - '.github/workflows/generate-documentation.yml'
+      - '.github/workflows/upload-demo-archive.yml'
       - '.gitignore'
       - 'docs/**'
       - '*.md'
