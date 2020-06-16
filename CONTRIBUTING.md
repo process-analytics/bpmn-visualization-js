@@ -260,7 +260,7 @@ of the `Done` column related to the milestone
 
 Make the new version available for demo
 
-- build it locally ()
+- build it locally
   - checkout the git tag related to the new version
   - run `npm run demo` which generates it in the `dist` folder
 - alternatively, if the GitHub workflow building the demo has run on the tag, you can download the demo artifact
