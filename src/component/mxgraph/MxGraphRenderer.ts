@@ -24,7 +24,6 @@ import { StyleConstant } from './StyleUtils';
 import { Font } from '../../model/bpmn/Label';
 import Bounds from '../../model/bpmn/Bounds';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
-
 import CoordinatesTranslator from './extension/CoordinatesTranslator';
 
 export default class MxGraphRenderer {
