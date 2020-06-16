@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 import { mxgraph } from 'ts-mxgraph';
-import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
+
+declare const mxPoint: typeof mxgraph.mxPoint;
 
 export default class CoordinatesTranslator {
-  private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
+  private mxPoint: typeof mxgraph.mxPoint = mxPoint;
 
   constructor(readonly graph: mxgraph.mxGraph) {}
 

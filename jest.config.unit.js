@@ -21,4 +21,5 @@ module.exports = {
     },
   },
   coverageReporters: ['json', 'json-summary', 'lcov', 'text', 'text-summary', 'clover'],
+  setupFiles: ['<rootDir>/test/unit/jest.globals.ts'],
 };
