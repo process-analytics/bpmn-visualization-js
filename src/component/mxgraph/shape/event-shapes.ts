@@ -53,8 +53,8 @@ abstract class EventShape extends mxEllipse {
   //   }
   // }
 
-  protected paintOuterShape({ canvas, shape: { x, y, width, height } }: PaintParameter): void {
-    super.paintVertexShape(canvas, x, y, width, height);
+  protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {
+    super.paintVertexShape(c, x, y, w, h);
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
@@ -83,13 +83,13 @@ abstract class IntermediateEventShape extends EventShape {
 
   // this implementation is adapted from the draw.io BPMN 'throwing' outlines
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L431
-  protected paintOuterShape({ canvas, shape: { x, y, width, height, strokeWidth } }: PaintParameter): void {
-    canvas.ellipse(x, y, width, height);
-    canvas.fillAndStroke();
+  protected paintOuterShape({ c, shape: { x, y, w, h, strokeWidth } }: PaintParameter): void {
+    c.ellipse(x, y, w, h);
+    c.fillAndStroke();
 
     const inset = strokeWidth * 1.5;
-    canvas.ellipse(width * 0.02 + inset + x, height * 0.02 + inset + y, width * 0.96 - 2 * inset, height * 0.96 - 2 * inset);
-    canvas.stroke();
+    c.ellipse(w * 0.02 + inset + x, h * 0.02 + inset + y, w * 0.96 - 2 * inset, h * 0.96 - 2 * inset);
+    c.stroke();
   }
 }
 
