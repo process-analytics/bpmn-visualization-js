@@ -73,9 +73,10 @@ function bpmnStartTaskEnd(): string {
 `;
 }
 
-// TODO find a way to get the label when using mxGraph html labels
+// TODO test the label when using mxGraph html labels (find the right selector)
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function expectLabel(cellId: string, expectedText: string): void {
+  // const cellGroups = document.querySelectorAll(`#graph-test svg g g[data-cell-id="${cellId}]`);
   // const label = cellGroups[1] as SVGGElement;
   // const text = label.firstChild.firstChild as SVGTextElement;
   // expect(text.nodeName).toBe('text');
@@ -84,7 +85,6 @@ function expectLabel(cellId: string, expectedText: string): void {
 
 function expectEvent(cellId: string, expectedText: string): void {
   const cellGroups = document.querySelectorAll(`#graph-test svg g g[data-cell-id="${cellId}"]`);
-  // const cellGroups = document.querySelectorAll(`g[data-cell-id="${cellId}"]`);
   const event = cellGroups[0] as SVGGElement;
   const shape = event.firstChild as SVGEllipseElement;
   expect(shape.nodeName).toBe('ellipse');
