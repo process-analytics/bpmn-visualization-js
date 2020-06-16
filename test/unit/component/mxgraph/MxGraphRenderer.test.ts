@@ -48,7 +48,7 @@ function newSequenceFlow(kind: SequenceFlowKind): SequenceFlow {
 describe('mxgraph renderer', () => {
   const mxGraphRenderer = defaultMxGraphRenderer(null); // we don't care of mxgraph graph here
 
-  // shortcut as the current computeStyle implementation require to pass the label bounds of the BPMN as extra argument
+  // shortcut as the current computeStyle implementation requires to pass the BPMN label bounds as extra argument
   function computeStyle(bpmnCell: Shape | Edge): string {
     return mxGraphRenderer.computeStyle(bpmnCell, bpmnCell.label?.bounds);
   }
