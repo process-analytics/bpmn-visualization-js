@@ -25,10 +25,14 @@ import json from '@rollup/plugin-json';
 
 const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
+const demoMode = process.env.demoMode;
+
+const tsconfigOverride = demoMode ? { compilerOptions: { declaration: false } } : {};
 
 const plugins = [
   typescript({
     typescript: require('typescript'),
+    tsconfigOverride: tsconfigOverride,
   }),
   resolve(),
   commonjs({
@@ -39,15 +43,10 @@ const plugins = [
   json(),
 ];
 
-if (devMode) {
-  // Create a server for dev mode
-  plugins.push(serve({ contentBase: 'dist', port: 10001 }));
-  // Allow to livereload on any update
-  if (devLiveReloadMode) {
-    plugins.push(livereload({ watch: 'dist', verbose: true }));
-  }
-  // Copy index.html to dist
+if (devMode || demoMode) {
   plugins.push(
+    // Copy static resources to dist
+    // TODO for 'devLiveReloadMode' this should be managed via livereload to consider static resources changes
     copy({
       targets: [
         { src: 'src/index.html', dest: 'dist/' },
@@ -55,6 +54,15 @@ if (devMode) {
       ],
     }),
   );
+}
+
+if (devMode) {
+  // Create a server for dev mode
+  plugins.push(serve({ contentBase: 'dist', port: 10001 }));
+  // Allow to livereload on any update
+  if (devLiveReloadMode) {
+    plugins.push(livereload({ watch: 'dist', verbose: true }));
+  }
 }
 
 export default {
