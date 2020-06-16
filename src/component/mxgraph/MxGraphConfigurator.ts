@@ -50,10 +50,5 @@ export default class MxGraphConfigurator {
     this.graph.setEdgeLabelsMovable(false);
 
     this.graph.setHtmlLabels(true); // required for wrapping
-
-    // TODO temp for label position fine tuning
-    this.graph.setCellsLocked(false);
-    this.graph.setCellsSelectable(true);
-    this.graph.setVertexLabelsMovable(true);
   }
 }
