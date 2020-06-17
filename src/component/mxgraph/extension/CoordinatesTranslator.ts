@@ -25,7 +25,7 @@ export default class CoordinatesTranslator {
    * @param parent the cell to use for the new coordinate referential
    * @param absoluteCoordinate
    */
-  public computeRelativeCoordinates(parent: mxgraph.mxCell, absoluteCoordinate: mxgraph.mxPoint): mxgraph.mxPoint {
+  public computeRelativeCoordinates(parent: mxCell, absoluteCoordinate: mxgraph.mxPoint): mxgraph.mxPoint {
     const translateForRoot = this.getTranslateForRoot(parent);
     const relativeX = absoluteCoordinate.x + translateForRoot.x;
     const relativeY = absoluteCoordinate.y + translateForRoot.y;
@@ -38,9 +38,9 @@ export default class CoordinatesTranslator {
   //
   // This implementation is taken from the example described in the documentation of mxgraph#getTranslateForRoot (4.1.1)
   // The translation is generally negative
-  private getTranslateForRoot(cell: mxgraph.mxCell): mxgraph.mxPoint {
+  private getTranslateForRoot(cell: mxCell): mxgraph.mxPoint {
     const model = this.graph.getModel();
-    const offset = new mxPoint(0, 0);
+    const offset = new this.mxPoint(0, 0);
 
     while (cell != null) {
       const geo = model.getGeometry(cell);

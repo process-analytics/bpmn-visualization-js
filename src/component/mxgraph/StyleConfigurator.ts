@@ -43,7 +43,7 @@ export default class StyleConfigurator {
     ],
   ]);
 
-  constructor(private graph: mxgraph.mxGraph) {}
+  constructor(private graph: mxGraph) {}
 
   public configureStyles(): void {
     mxConstants.RECTANGLE_ROUNDING_FACTOR = 0.1;

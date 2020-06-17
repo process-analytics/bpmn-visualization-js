@@ -38,7 +38,7 @@ export default class MarkerConfigurator {
       unitX: number,
       unitY: number,
       size: number,
-      source: mxgraph.mxCell,
+      source: mxCell,
       strokewidth: number,
     ): (() => void) => {
       const nx = unitX * (size + strokewidth + 4);

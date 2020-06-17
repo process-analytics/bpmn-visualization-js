@@ -19,9 +19,6 @@ import ShapeConfigurator from './ShapeConfigurator';
 import MarkerConfigurator from './MarkerConfigurator';
 import MxClientConfigurator from './MxClientConfigurator';
 
-declare const mxGraph: typeof mxgraph.mxGraph;
-declare const mxGraphModel: typeof mxgraph.mxGraphModel;
-
 /**
  * Configure the mxGraph graph that can be used by the lib
  * <ul>
@@ -30,18 +27,18 @@ declare const mxGraphModel: typeof mxgraph.mxGraphModel;
  *     <li>markers
  */
 export default class MxGraphConfigurator {
-  private readonly graph: mxgraph.mxGraph;
+  private readonly graph: mxGraph;
 
   constructor(container: Element) {
-    this.graph = new mxGraph(container, new mxGraphModel());
     this.configureGraph();
+    this.graph = new mxGraph(container, new mxGraphModel(null));
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
     new MarkerConfigurator().configureMarkers();
     new MxClientConfigurator().configureMxCodec();
   }
 
-  public getGraph(): mxgraph.mxGraph {
+  public getGraph(): mxGraph {
     return this.graph;
   }
 
