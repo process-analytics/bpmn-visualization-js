@@ -116,7 +116,7 @@ export default class IconPainter {
 
   // this implementation is adapted from the draw.io BPMN 'message' symbol
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465
-  public static paintEnvelopIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+  public static paintEnvelopeIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
 
     const initialIconSize = { width: 485.41, height: 321.76 };
@@ -145,11 +145,11 @@ export default class IconPainter {
 
     // First bottom line
     c.moveTo(0, h);
-    c.lineTo(w * 0.41, h * 0.5);
+    c.lineTo(w / 3, h * 0.45);
 
     // Second bottom line
     c.moveTo(w, h);
-    c.lineTo(w * 0.59, h * 0.5);
+    c.lineTo((w * 2) / 3, h * 0.45);
 
     c.stroke();
   }
