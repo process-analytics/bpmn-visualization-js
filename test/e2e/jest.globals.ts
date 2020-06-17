@@ -16,11 +16,28 @@
 
 import { mxgraphFactory } from 'ts-mxgraph';
 
-const { mxClient, mxUtils, mxConstants, mxSvgCanvas2D, mxCellRenderer, mxGeometry, mxPerimeter, mxGraph, mxGraphModel, mxShape, mxMarker, mxPoint, mxEllipse, mxRhombus, mxRectangleShape } = mxgraphFactory({
+const {
+  mxClient,
+  mxUtils,
+  mxConstants,
+  mxSvgCanvas2D,
+  mxCellRenderer,
+  mxGeometry,
+  mxPerimeter,
+  mxGraph,
+  mxGraphModel,
+  mxShape,
+  mxMarker,
+  mxPoint,
+  mxEllipse,
+  mxRhombus,
+  mxRectangleShape,
+} = mxgraphFactory({
   mxLoadResources: false,
   mxLoadStylesheets: false,
 });
 // to prevent TS error Property 'mxXyz' does not exist on type 'Global'.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const globalAny: any = global;
 
 globalAny.mxClient = mxClient;

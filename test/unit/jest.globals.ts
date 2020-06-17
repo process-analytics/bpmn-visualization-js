@@ -20,6 +20,7 @@ const { mxConstants, mxPoint } = mxgraphFactory({
   mxLoadStylesheets: false,
 });
 // to prevent TS error Property 'mxXyz' does not exist on type 'Global'.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const globalAny: any = global;
 
 globalAny.mxPoint = mxPoint;

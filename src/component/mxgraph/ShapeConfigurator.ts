@@ -23,6 +23,7 @@ import { ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape } from './
 declare const mxClient: typeof mxgraph.mxClient;
 declare const mxShape: typeof mxgraph.mxShape;
 declare const mxCellRenderer: typeof mxgraph.mxCellRenderer;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const mxSvgCanvas2D: any;
 
 export default class ShapeConfigurator {
