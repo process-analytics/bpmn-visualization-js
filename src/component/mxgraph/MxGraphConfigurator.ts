@@ -18,6 +18,7 @@ import StyleConfigurator from './StyleConfigurator';
 import ShapeConfigurator from './ShapeConfigurator';
 import MarkerConfigurator from './MarkerConfigurator';
 import MxClientConfigurator from './MxClientConfigurator';
+import BpmnVisuOptions from '../BpmnVisuOptions';
 
 declare const mxGraph: typeof mxgraph.mxGraph;
 declare const mxGraphModel: typeof mxgraph.mxGraphModel;
@@ -32,9 +33,16 @@ declare const mxGraphModel: typeof mxgraph.mxGraphModel;
 export default class MxGraphConfigurator {
   private readonly graph: mxgraph.mxGraph;
 
-  constructor(container: Element) {
+  constructor(container: Element, options?: BpmnVisuOptions) {
     this.graph = new mxGraph(container, new mxGraphModel());
     this.configureGraph();
+    if (options) {
+      if (options.activatePanning) {
+        this.graph.setPanning(true);
+        this.graph.useScrollbarsForPanning = false;
+      }
+    }
+
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
     new MarkerConfigurator().configureMarkers();

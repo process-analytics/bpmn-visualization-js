@@ -16,7 +16,7 @@
 import BpmnVisu from '../component/BpmnVisu';
 import { DropFileUserInterface } from '../component/ui_ux/DropFileUserInterface';
 
-export const bpmnVisu = new BpmnVisu(window.document.getElementById('graph'));
+export const bpmnVisu = new BpmnVisu(window.document.getElementById('graph'), { activatePanning: true });
 
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {

@@ -20,17 +20,18 @@ import { defaultBpmnParser } from './parser/BpmnParser';
 
 declare const mxClient: typeof mxgraph.mxClient;
 declare const mxUtils: typeof mxgraph.mxUtils;
+import BpmnVisuOptions from './BpmnVisuOptions';
 
 export default class BpmnVisu {
   public readonly graph: mxgraph.mxGraph;
 
-  constructor(protected container: Element) {
+  constructor(protected container: Element, options?: BpmnVisuOptions) {
     try {
       if (!mxClient.isBrowserSupported()) {
         mxUtils.error('Browser is not supported!', 200, false);
       }
       // Instantiate and configure Graph
-      const configurator = new MxGraphConfigurator(this.container);
+      const configurator = new MxGraphConfigurator(this.container, options);
       this.graph = configurator.getGraph();
     } catch (e) {
       // TODO error handling
