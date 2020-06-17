@@ -71,13 +71,6 @@ export default class IconPainter {
     };
   }
 
-  private static translateIconToShapeCenter(c: mxgraph.mxXmlCanvas2D, shape: ShapeConfiguration, iconSize: Size): void {
-    // Change the coordinate referential
-    const insetW = (shape.w - iconSize.width) / 2;
-    const insetH = (shape.h - iconSize.height) / 2;
-    c.translate(shape.x + insetW, shape.y + insetH);
-  }
-
   private static calculateIconSize(initialIconSize: Size, icon: IconConfiguration, shape: ShapeConfiguration, ratioFromParent: number): Size {
     // Calculate the icon size proportionally to the shape size
     // (the longest side of the icon has the same value of the same side of the shape)
@@ -121,7 +114,7 @@ export default class IconPainter {
 
     const initialIconSize = { width: 485.41, height: 321.76 };
     const iconSize = this.calculateIconSize(initialIconSize, icon, shape, ratioFromParent);
-    this.translateIconToShapeCenter(c, shape, iconSize);
+    MxCanvasUtil.translateIconToShapeCenter(c, shape, iconSize);
 
     const w = iconSize.width;
     const h = iconSize.height;
@@ -160,7 +153,7 @@ export default class IconPainter {
 
     const initialIconSize = { width: shape.w, height: shape.h };
     const iconSize = this.calculateIconSize(initialIconSize, icon, shape, ratioFromParent);
-    this.translateIconToShapeCenter(c, shape, iconSize);
+    MxCanvasUtil.translateIconToShapeCenter(c, shape, iconSize);
 
     const w = iconSize.width;
     const h = iconSize.height;
