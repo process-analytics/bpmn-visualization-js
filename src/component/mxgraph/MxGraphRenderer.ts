@@ -85,7 +85,7 @@ export default class MxGraphRenderer {
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds?: Bounds): string {
-    const styleValues = new Map<string, string | number>();
+    const styleValues = new Map<string, string | number | boolean>();
 
     const font = bpmnCell.label?.font;
     if (font) {
