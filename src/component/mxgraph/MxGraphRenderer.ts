@@ -17,7 +17,7 @@ import { mxgraph } from 'ts-mxgraph';
 import Shape from '../../model/bpmn/shape/Shape';
 import Edge from '../../model/bpmn/edge/Edge';
 import BpmnModel from '../../model/bpmn/BpmnModel';
-import ShapeBpmnElement, { ShapeBpmnEvent } from '../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../model/bpmn/shape/ShapeBpmnElement';
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
 import { StyleConstant } from './StyleUtils';
@@ -86,7 +86,7 @@ export default class MxGraphRenderer {
     }
 
     const bpmnElement = bpmnCell.bpmnElement;
-    if (bpmnElement instanceof ShapeBpmnEvent) {
+    if (bpmnElement instanceof ShapeBpmnEvent || bpmnElement instanceof ShapeBpmnBoundaryEvent) {
       styleValues.set(StyleConstant.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
     }
 

@@ -53,4 +53,8 @@ export default class StyleUtils {
   public static getBpmnEventKind(style: any): ShapeBpmnEventKind {
     return mxUtils.getValue(style, StyleConstant.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
   }
+
+  public static getBpmnIsInterrupting(style: any): string {
+    return mxUtils.getValue(style, StyleConstant.BPMN_STYLE_IS_INTERRUPTING, undefined);
+  }
 }

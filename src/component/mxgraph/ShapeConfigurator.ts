@@ -16,7 +16,7 @@
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
-import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape } from './shape/event-shapes';
+import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape, BoundaryEventShape } from './shape/event-shapes';
 import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from './shape/gateway-shapes';
 import { ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape } from './shape/task-shapes';
 
@@ -36,6 +36,7 @@ export default class ShapeConfigurator {
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_START, StartEventShape);
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape);
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, CatchIntermediateEventShape);
+    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_BOUNDARY, BoundaryEventShape);
     // gateways
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
     this.mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape);

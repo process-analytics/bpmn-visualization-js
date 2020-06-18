@@ -105,3 +105,20 @@ export class ThrowIntermediateEventShape extends IntermediateEventShape {
     this.withFilledIcon = true;
   }
 }
+
+export class BoundaryEventShape extends IntermediateEventShape {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth?: number) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+
+  protected paintOuterShape(paintParameter: PaintParameter): void {
+    const isInterrupting = StyleUtils.getBpmnIsInterrupting(this.style);
+    if (isInterrupting === 'true' || isInterrupting === undefined) {
+      paintParameter.c.setFillColor('yellow');
+    } else if (isInterrupting === 'false') {
+      paintParameter.c.setFillColor('LightPink');
+    }
+
+    super.paintOuterShape(paintParameter);
+  }
+}
