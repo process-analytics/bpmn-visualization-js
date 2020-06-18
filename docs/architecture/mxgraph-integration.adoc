@@ -91,31 +91,31 @@ coordinates are the position of the upper left corner of the label (relative to 
 
 ==== Label Font and Bounds
 
-The `mxGraph` renders labels based on definition taken from the BPMN source. When the label style is not or only partially
-defined in BPMN, the following fallback takes place:
+The `mxGraph` integration renders labels based on the definition taken from the BPMN source. When the label style is not
+or only partially defined in BPMN, the following fallback takes place:
 
 * for labels without a font, the rendering may not be accurate as the default font used by the original modeller may differ
 from the one we use, and the bounds set in the BPMN file may be too small. So the resulting text wrapping cannot be the
 same as with the original modeler.
-* for labels without bounds, we use an arbitrary position which depends on the type of BPMN elements (for instance, middle
+* for labels without bounds, we use an arbitrary position which depends on the type of the BPMN element (for instance, middle
 centred for tasks or on the bottom for start events). As for fonts, this does not cover all use cases, but works most of
 the time.
 
 ===== Shape
 
-The mxGraph integration uses a settings mix to set the label bounds
+The `mxGraph` integration uses the following to set the label bounds
 
-* the shape `mxCell` geometry offset, see https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/model/mxGeometry.js#L60[mxGeometry]
+* the `vertex mxCell` geometry offset, see https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/model/mxGeometry.js#L60[mxGeometry]
 for more details
-** x and y position relative to the shape itself
-** as for the Shape Position, a coordinate transformation layer is required.
+** x and y position relative to the shape `vertex` itself
+** as for the  shape `vertex` position, a coordinate transformation layer is required.
 * styling for the label width (for word wrapping)
 
 ===== Edge
 
 ====== Overview
 
-The mxGraph integration uses the edge `mxCell` geometry to set the label bounds
+The mxGraph integration uses the `edge mxCell` geometry to set the label bounds
 
 * absolute geometry
 * offset x and y: position related to the center of the edge and as for the Shape Position, a coordinate transformation layer is required.
@@ -128,7 +128,7 @@ see https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/mode
 ====== mxGraph Details
 
 The label position is related to the 'center' of the edge, see https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/model/mxGeometry.js#L35[mxGeometry]
-for more details. The definition of 'center' differs whether the `geometry` is `relative` or not:
+for more details. The definition of 'center' differs whether the `mxGeometry` is `relative` or not:
 
 * if relative, it is the center along the line
 * if absolute, it is derived from the terminal points
