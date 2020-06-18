@@ -17,25 +17,27 @@ import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
 import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { defaultBpmnParser } from './parser/BpmnParser';
-import { MxGraphFactoryService } from '../service/MxGraphFactoryService';
+import MxClientConfigurator from './mxgraph/MxClientConfigurator';
+
+declare const mxClient: typeof mxgraph.mxClient;
+declare const mxUtils: typeof mxgraph.mxUtils;
 
 export default class BpmnVisu {
-  private mxClient: typeof mxgraph.mxClient = MxGraphFactoryService.getMxGraphProperty('mxClient');
-  private mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
-
   public readonly graph: mxgraph.mxGraph;
 
   constructor(protected container: Element) {
     try {
-      if (!this.mxClient.isBrowserSupported()) {
-        this.mxUtils.error('Browser is not supported!', 200, false);
+      if (!mxClient.isBrowserSupported()) {
+        mxUtils.error('Browser is not supported!', 200, false);
       }
+      // Configure codec in mxClient
+      MxClientConfigurator.configureMxCodec();
       // Instantiate and configure Graph
       const configurator = new MxGraphConfigurator(this.container);
       this.graph = configurator.getGraph();
     } catch (e) {
       // TODO error handling
-      this.mxUtils.alert('Cannot start application: ' + e.message);
+      mxUtils.alert('Cannot start application: ' + e.message);
       throw e;
     }
   }
@@ -47,7 +49,7 @@ export default class BpmnVisu {
       defaultMxGraphRenderer(this.graph).render(bpmnModel);
     } catch (e) {
       // TODO error handling
-      this.mxUtils.alert('Cannot load bpmn diagram: ' + e.message);
+      mxUtils.alert('Cannot load bpmn diagram: ' + e.message);
       throw e;
     }
   }
