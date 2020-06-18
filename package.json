@@ -75,6 +75,6 @@
     "entities": "^2.0.0",
     "fast-xml-parser": "^3.16.0",
     "json2typescript": "^1.2.5",
-    "ts-mxgraph": "git+https://github.com/process-analytics/ts-mxgraph.git"
+    "ts-mxgraph": "git+https://github.com/process-analytics/ts-mxgraph.git#v1.0.1"
   }
 }
