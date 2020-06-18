@@ -90,6 +90,10 @@ export default class MxGraphRenderer {
       styleValues.set(StyleConstant.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
     }
 
+    if (bpmnElement instanceof ShapeBpmnBoundaryEvent) {
+      styleValues.set(StyleConstant.BPMN_STYLE_IS_INTERRUPTING, bpmnElement.isInterrupting);
+    }
+
     if (bpmnCell instanceof Shape && labelBounds) {
       // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
       styleValues.set(this.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);

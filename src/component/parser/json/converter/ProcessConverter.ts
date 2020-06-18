@@ -15,7 +15,7 @@
  */
 import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
-import ShapeBpmnElement, { ShapeBpmnEvent } from '../../../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
@@ -113,19 +113,22 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildShapeBpmnEvent(bpmnElement: any, elementKind: ShapeBpmnElementKind, processId: string): ShapeBpmnEvent | void {
+  private buildShapeBpmnEvent(bpmnElement: any, elementKind: ShapeBpmnElementKind, processId: string): ShapeBpmnEvent {
     const eventDefinitions = this.getEventDefinitions(bpmnElement);
     const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
 
     // do we have a None Event?
-    if (numberOfEventDefinitions == 0) {
+    if (numberOfEventDefinitions == 0 && ShapeUtil.isWithNoneEvent(elementKind)) {
       return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, ShapeBpmnEventKind.NONE, processId);
     }
 
     if (numberOfEventDefinitions == 1) {
-      const eventDefinition = eventDefinitions[0];
-      if (supportedBpmnEventKinds.includes(eventDefinition.kind)) {
-        return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinition.kind, processId);
+      const eventKind = eventDefinitions[0].kind;
+      if (supportedBpmnEventKinds.includes(eventKind)) {
+        if (ShapeUtil.isBoundaryEvent(elementKind)) {
+          return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, elementKind, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity, processId);
+        }
+        return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventKind, processId);
       }
     }
   }

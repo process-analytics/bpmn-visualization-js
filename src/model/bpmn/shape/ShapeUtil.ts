@@ -53,6 +53,14 @@ export default class ShapeUtil {
     return this.EVENT_KINDS.includes(kind);
   }
 
+  public static isBoundaryEvent(kind: ShapeBpmnElementKind): boolean {
+    return ShapeBpmnElementKind.EVENT_BOUNDARY === kind;
+  }
+
+  public static isWithNoneEvent(kind: ShapeBpmnElementKind): boolean {
+    return ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW === kind || ShapeBpmnElementKind.EVENT_END === kind || ShapeBpmnElementKind.EVENT_START === kind;
+  }
+
   public static isActivity(kind: ShapeBpmnElementKind): boolean {
     return this.ACTIVITY_KINDS.includes(kind);
   }
