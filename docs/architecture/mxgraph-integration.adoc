@@ -56,64 +56,45 @@ same as with the original modeler.
 centred for tasks or on the bottom for start events). As for fonts, this does not cover all use cases, but works most of
 the time.
 
-
-
 ===== Shape
 
+The mxGraph integration uses a settings mix to set the label bounds
 
+* the shape `mxCell` geometry offset, see https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/model/mxGeometry.js#L60[mxGeometry]
+for more details
+** x and y position relative to the shape itself
+** as for the Shape Position, a coordinate transformation layer is required.
+* styling for the label width (for word wrapping)
 
 ===== Edge
 
 ====== Overview
 
-The mxGraph integration uses the edge geometry to set the label bounds
+The mxGraph integration uses the edge `mxCell` geometry to set the label bounds
 
 * absolute geometry
-* x and y: position related to the center of the edge and as for the Shape Position, a coordinate transformation layer is required.
+* offset x and y: position related to the center of the edge and as for the Shape Position, a coordinate transformation layer is required.
 ** the center depends on the 2 terminal waypoints
 ** if the waypoints are not available, no position is set and the label is placed on the edge center
 * width and height: for word wrapping.
 
+see https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/model/mxGeometry.js#L60[mxGeometry]
 
 ====== mxGraph Details
 
-The label position is related to the 'center' of the edge, see https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/model/mxGeometry.js#L35
-The definition of 'center' differs whether the `geometry` is `relative` or not
+The label position is related to the 'center' of the edge, see https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/model/mxGeometry.js#L35[mxGeometry]
+for more details. The definition of 'center' differs whether the `geometry` is `relative` or not:
 
 * if relative, it is the center along the line
 * if absolute, it is derived from the terminal points
 
-This is explained in `mxGraphView.updateEdgeLabelOffset` (see https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/view/mxGraphView.js#L2187)
+This is explained in https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/view/mxGraphView.js#L2187[mxGraphView.updateEdgeLabelOffset]
 
 * center between the two endpoints if the geometry is absolute
-* the relative distance between the center along the line and the absolute orthogonal distance if the geometry is relative.
+* the relative distance between the center along the line, and the absolute orthogonal distance if the geometry is relative.
 
-See https://github.com/process-analytics/bpmn-visualization-js/pull/291#issuecomment-642024601[GitHub Pull Request #291]
+Check the https://github.com/process-analytics/bpmn-visualization-js/pull/291#issuecomment-642024601[GitHub Pull Request #291]
 to see various positioning methods in action.
-
-
-
-  // https://jgraph.github.io/mxgraph/docs/js-api/files/model/mxGeometry-js.html#mxGeometry
-  // Edge Labels
-  //
-  // Using the x- and y-coordinates of a cell’s geometry, it is possible to position the label on edges on a specific
-  // location on the actual edge shape as it appears on the screen.  The x-coordinate of an edge’s geometry is used to
-  // describe the distance from the center of the edge from -1 to 1 with 0 being the center of the edge and the default value.
-  // The y-coordinate of an edge’s geometry is used to describe the absolute, orthogonal distance in pixels from that point.
-  // In addition, the mxGeometry.offset is used as an absolute offset vector from the resulting point.
-  //
-  // This coordinate system is applied if relative is true, otherwise the offset defines the absolute vector from the edge’s
-  // center point to the label and the values for <x> and <y> are ignored.
-  //
-  // The width and height parameter for edge geometries can be used to set the label width and height (eg. for word wrapping).
-
-  // mxGraphView.prototype.updateEdgeLabelOffset = function(	state	)
-  // Updates mxCellState.absoluteOffset for the given state.
-  // The absolute offset is normally used for the position of the edge label.
-  // Is is calculated from the geometry as an absolute offset from the center between the two endpoints if the
-  // geometry is absolute, or as the relative distance between the center along the line and the absolute orthogonal
-  // distance if the geometry is relative.
-
 
 
 ===== Resources
