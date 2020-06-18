@@ -90,12 +90,16 @@ export default class StyleConfigurator {
   private configureDefaultVertexStyle(): void {
     const style = this.getDefaultVertexStyle();
     this.configureCommonDefaultStyle(style);
+
+    // only works with html labels (enabled by MxGraphConfigurator)
+    style[this.mxConstants.STYLE_WHITE_SPACE] = 'wrap';
   }
 
   private configurePoolStyle(): void {
     const style = this.cloneDefaultVertexStyle();
     style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_SWIMLANE;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_MIDDLE;
+    style[this.mxConstants.STYLE_ALIGN] = this.mxConstants.ALIGN_CENTER;
     style[this.mxConstants.STYLE_HORIZONTAL] = false;
     style[this.mxConstants.STYLE_FILLCOLOR] = '#d3d2d1';
 
@@ -109,7 +113,8 @@ export default class StyleConfigurator {
   private configureLaneStyle(): void {
     const style = this.cloneDefaultVertexStyle();
     style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_SWIMLANE;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_MIDDLE;
+    style[this.mxConstants.STYLE_ALIGN] = this.mxConstants.ALIGN_CENTER;
     style[this.mxConstants.STYLE_HORIZONTAL] = false;
     style[this.mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
 
@@ -121,7 +126,7 @@ export default class StyleConfigurator {
       const style = this.cloneDefaultVertexStyle();
       style[this.mxConstants.STYLE_SHAPE] = kind;
       style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.EllipsePerimeter;
-      style[this.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = 'bottom';
+      style[this.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = this.mxConstants.ALIGN_BOTTOM;
       this.putCellStyle(kind, style);
     });
   }
@@ -135,7 +140,7 @@ export default class StyleConfigurator {
     ShapeUtil.taskKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
       style[this.mxConstants.STYLE_SHAPE] = kind;
-      style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
+      style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_MIDDLE;
       this.putCellStyle(kind, style);
     });
   }
@@ -144,7 +149,7 @@ export default class StyleConfigurator {
     const style = this.cloneDefaultVertexStyle();
     style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RECTANGLE;
     style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RectanglePerimeter;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'middle';
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_MIDDLE;
     style[this.mxConstants.STYLE_STROKECOLOR] = '#2C6DA3';
     style[this.mxConstants.STYLE_STROKEWIDTH] = 4;
     style[this.mxConstants.STYLE_ROUNDED] = true;
@@ -156,12 +161,11 @@ export default class StyleConfigurator {
       const style = this.cloneDefaultVertexStyle();
       style[this.mxConstants.STYLE_SHAPE] = kind;
       style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RhombusPerimeter;
-      style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'top';
+      style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_TOP;
 
-      // TODO to be removed when supporting label position
-      // left just to not break current rendering
-      style[this.mxConstants.STYLE_SPACING_TOP] = 55;
-      style[this.mxConstants.STYLE_SPACING_RIGHT] = 110;
+      // Default positioning in case there is no BPMN LabelStyle
+      style[this.mxConstants.STYLE_LABEL_POSITION] = this.mxConstants.ALIGN_LEFT;
+      style[this.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = this.mxConstants.ALIGN_TOP;
 
       this.putCellStyle(kind, style);
     });
@@ -175,17 +179,18 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_STROKEWIDTH] = 1.5;
     style[this.mxConstants.STYLE_ROUNDED] = 1;
     style[this.mxConstants.STYLE_ARCSIZE] = 5;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = 'bottom';
+    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_BOTTOM;
 
     this.configureCommonDefaultStyle(style);
   }
 
   private configureCommonDefaultStyle(style: any): void {
+    style[this.mxConstants.STYLE_FONTFAMILY] = StyleConstant.DEFAULT_FONT_FAMILY;
     style[this.mxConstants.STYLE_FONTSIZE] = StyleConstant.DEFAULT_FONT_SIZE;
     style[this.mxConstants.STYLE_FONTCOLOR] = StyleConstant.DEFAULT_FONT_COLOR;
     style[this.mxConstants.STYLE_FILLCOLOR] = StyleConstant.DEFAULT_FILL_COLOR;
     style[this.mxConstants.STYLE_STROKECOLOR] = StyleConstant.DEFAULT_STROKE_COLOR;
-    style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
+    style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = this.mxConstants.NONE;
   }
 
   private configureSequenceFlowsStyle(): void {
