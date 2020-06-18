@@ -25,7 +25,7 @@ const mxEllipse: typeof mxgraph.mxEllipse = MxGraphFactoryService.getMxGraphProp
 abstract class EventShape extends mxEllipse {
   // TODO: when all/more event types will be supported, we could move to a Record/MappedType
   private iconPainters: Map<ShapeBpmnEventKind, (paintParameter: PaintParameter) => void> = new Map([
-    [ShapeBpmnEventKind.MESSAGE, (paintParameter: PaintParameter) => IconPainter.paintEnvelopIcon(paintParameter)],
+    [ShapeBpmnEventKind.MESSAGE, (paintParameter: PaintParameter) => IconPainter.paintEnvelopeIcon({ ...paintParameter, ratioFromParent: 0.5 })],
     [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => IconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
     [ShapeBpmnEventKind.TIMER, (paintParameter: PaintParameter) => IconPainter.paintClockIcon(paintParameter)],
   ]);
@@ -39,7 +39,7 @@ abstract class EventShape extends mxEllipse {
   public paintVertexShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
     // TODO: This will be removed after implementation of all supported events
     // this.markNonFullyRenderedEvents(c);
-    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, this, 1, this.withFilledIcon);
+    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, this, 0.25, this.withFilledIcon);
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);
   }

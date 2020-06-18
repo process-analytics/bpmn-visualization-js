@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { mxgraph } from 'ts-mxgraph';
+import { ShapeConfiguration, Size } from '../shape/IconPainter';
 
 /**
  * Scale dimensions passed to the method of the original {@link mxgraph.mxXmlCanvas2D}
@@ -69,9 +70,14 @@ export default class MxScaleFactorCanvas {
 }
 
 export class MxCanvasUtil {
-  public static getConfiguredCanvas(canvas: mxgraph.mxXmlCanvas2D, parentWidth: number, parentHeight: number, iconOriginalSize: number): MxScaleFactorCanvas {
+  public static getConfiguredCanvas(
+    canvas: mxgraph.mxXmlCanvas2D,
+    parentWidth: number,
+    parentHeight: number,
+    iconOriginalSize: number,
+    ratioFromParent: number,
+  ): MxScaleFactorCanvas {
     const parentSize = Math.min(parentWidth, parentHeight);
-    const ratioFromParent = 0.25;
     const scaleFactor = (parentSize / iconOriginalSize) * ratioFromParent;
 
     return new MxScaleFactorCanvas(canvas, scaleFactor);
@@ -97,5 +103,12 @@ export class MxCanvasUtil {
     const xTranslation = parentX + parentWidth / positionIndex;
     const yTranslation = parentY + parentHeight / positionIndex;
     canvas.translate(xTranslation, yTranslation);
+  }
+
+  public static translateIconToShapeCenter(c: mxgraph.mxXmlCanvas2D, shape: ShapeConfiguration, iconSize: Size): void {
+    // Change the coordinate referential
+    const insetW = (shape.w - iconSize.width) / 2;
+    const insetH = (shape.h - iconSize.height) / 2;
+    c.translate(shape.x + insetW, shape.y + insetH);
   }
 }
