@@ -94,10 +94,10 @@ coordinates are the position of the upper left corner of the label (relative to 
 The `mxGraph` integration renders labels based on the definition taken from the BPMN source. When the label style is not
 or only partially defined in BPMN, the following fallback takes place:
 
-* for labels without a font, the rendering may not be accurate as the default font used by the original modeller may differ
-from the one we use, and the bounds set in the BPMN file may be too small. So the resulting text wrapping cannot be the
-same as with the original modeler.
-* for labels without bounds, we use an arbitrary position which depends on the type of the BPMN element (for instance, middle
+* for labels without a font, the rendering may not be accurate: the default font used by the original modeler may differ
+from the one the lib uses. As a result, the bounds set in the BPMN file may be too small or large for the lib font. So the
+resulting text wrapping cannot be the same as with the original modeler.
+* for labels without bounds, the lib uses an arbitrary position which depends on the type of the BPMN element (for instance, middle
 centred for tasks or on the bottom for start events). As for fonts, this does not cover all use cases, but works most of
 the time.
 
