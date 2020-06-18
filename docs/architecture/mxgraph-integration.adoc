@@ -69,7 +69,9 @@ the time.
 The mxGraph integration uses the edge geometry to set the label bounds
 
 * absolute geometry
-* x and y: position related to the center of the edge. As for the Shape Position, a coordinate transformation layer is required.
+* x and y: position related to the center of the edge and as for the Shape Position, a coordinate transformation layer is required.
+** the center depends on the 2 terminal waypoints
+** if the waypoints are not available, no position is set and the label is placed on the edge center
 * width and height: for word wrapping.
 
 
