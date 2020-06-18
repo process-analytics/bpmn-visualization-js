@@ -118,7 +118,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
 
     // do we have a None Event?
-    if (numberOfEventDefinitions == 0 && ShapeUtil.isWithNoneEvent(elementKind)) {
+    if (numberOfEventDefinitions == 0 && ShapeUtil.canHaveNoneEvent(elementKind)) {
       return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, ShapeBpmnEventKind.NONE, processId);
     }
 
@@ -126,7 +126,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       const eventKind = eventDefinitions[0].kind;
       if (supportedBpmnEventKinds.includes(eventKind)) {
         if (ShapeUtil.isBoundaryEvent(elementKind)) {
-          return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity, processId);
+          return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity);
         }
         return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventKind, processId);
       }
@@ -173,7 +173,9 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       const shapeBpmnElement = findFlowNodeBpmnElement(flowNodeRef);
       const laneId = lane.id;
       if (shapeBpmnElement) {
-        shapeBpmnElement.parentId = laneId;
+        if (!ShapeUtil.isBoundaryEvent(shapeBpmnElement.kind)) {
+          shapeBpmnElement.parentId = laneId;
+        }
       } else {
         // TODO error management
         console.warn('Unable to assign lane %s as parent: flow node %s is not found', laneId, flowNodeRef);

@@ -25,6 +25,7 @@ import { Font } from '../../model/bpmn/Label';
 import Bounds from '../../model/bpmn/Bounds';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import CoordinatesTranslator from './extension/CoordinatesTranslator';
+import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 
 export default class MxGraphRenderer {
   private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
@@ -39,7 +40,8 @@ export default class MxGraphRenderer {
     try {
       this.insertShapes(bpmnModel.pools);
       this.insertShapes(bpmnModel.lanes);
-      this.insertShapes(bpmnModel.flowNodes);
+      this.insertShapes(bpmnModel.flowNodes.filter(shape => !ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind)));
+      this.insertShapes(bpmnModel.flowNodes.filter(shape => ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind)));
       this.insertEdges(bpmnModel.edges);
     } finally {
       model.endUpdate();
@@ -57,21 +59,28 @@ export default class MxGraphRenderer {
     if (bpmnElementParent) {
       return bpmnElementParent;
     }
-    return this.graph.getDefaultParent();
+
+    if (bpmnElement.kind !== ShapeBpmnElementKind.EVENT_BOUNDARY) {
+      return this.graph.getDefaultParent();
+    }
   }
 
   private insertShape(shape: Shape): void {
     const bpmnElement = shape.bpmnElement;
     if (bpmnElement) {
       const parent = this.getParent(bpmnElement);
+      if (parent) {
+        const bounds = shape.bounds;
+        let labelBounds = shape.label?.bounds;
+        // pool/lane label bounds are not managed for now (use hard coded values)
+        labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
+        const style = this.computeStyle(shape, labelBounds);
 
-      const bounds = shape.bounds;
-      let labelBounds = shape.label?.bounds;
-      // pool/lane label bounds are not managed for now (use hard coded values)
-      labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
-      const style = this.computeStyle(shape, labelBounds);
-
-      this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
+        this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
+      } else {
+        // TODO error management
+        console.warn('Not possible to insert shape %s: parent cell %s is not found', bpmnElement.id, bpmnElement.parentId);
+      }
     }
   }
 

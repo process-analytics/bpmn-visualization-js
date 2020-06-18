@@ -31,9 +31,8 @@ export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
     readonly id: string,
     readonly name: string,
     readonly eventKind: ShapeBpmnEventKind,
-    readonly attachedToRef: string,
+    readonly parentId: string,
     readonly isInterrupting: boolean = true,
-    parentId?: string,
   ) {
     super(id, name, ShapeBpmnElementKind.EVENT_BOUNDARY, eventKind, parentId);
   }

@@ -54,10 +54,11 @@ describe('parse bpmn as json for message interrupting boundary event', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.MESSAGE, 1, 'task_id_0', true);
+    const model = parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.MESSAGE, 1, true);
 
     verifyShape(model.flowNodes[1], {
       shapeId: 'shape_boundaryEvent_id_0',
+      parentId: 'task_id_0',
       bpmnElementId: 'event_id_0',
       bpmnElementName: 'event name',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_BOUNDARY,
@@ -106,10 +107,11 @@ describe('parse bpmn as json for message interrupting boundary event', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.MESSAGE, 1, 'task_id_0', true);
+    const model = parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.MESSAGE, 1, true);
 
     verifyShape(model.flowNodes[1], {
       shapeId: 'shape_boundaryEvent_id_0',
+      parentId: 'task_id_0',
       bpmnElementId: 'event_id_0',
       bpmnElementName: 'event name',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_BOUNDARY,
@@ -157,10 +159,11 @@ describe('parse bpmn as json for message interrupting boundary event', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.MESSAGE, 1, 'task_id_0', true);
+    const model = parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.MESSAGE, 1, true);
 
     verifyShape(model.flowNodes[1], {
       shapeId: 'shape_boundaryEvent_id_0',
+      parentId: 'task_id_0',
       bpmnElementId: 'event_id_0',
       bpmnElementName: 'event name',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_BOUNDARY,
