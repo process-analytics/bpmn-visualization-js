@@ -111,7 +111,13 @@ The documentation is generated in the `build/docs` folder.
 
 To fully benefit the ESLint and Jest testing frameworks, you must properly set up your IDE.
 
-##### IntelliJ
+##### Intellij
+
+*EditorConfig* (https://www.jetbrains.com/help/idea/configuring-code-style.html#editorconfig)
+
+Go to `File` -> `Settings` and `Editor` --> `Code Style`, then tick the `Enable EditorConfig support`
+
+
 *ESLint* (https://www.jetbrains.com/help/idea/eslint.html#)
 
 Go to `File` -> `Settings` and type ESLint in search box
