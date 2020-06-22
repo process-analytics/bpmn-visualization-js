@@ -85,7 +85,7 @@ export default class MxGraphRenderer {
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds?: Bounds): string {
-    const styleValues = new Map<string, string | number | boolean>();
+    const styleValues = new Map<string, string | number>();
 
     const font = bpmnCell.label?.font;
     if (font) {
@@ -100,7 +100,7 @@ export default class MxGraphRenderer {
     }
 
     if (bpmnElement instanceof ShapeBpmnBoundaryEvent) {
-      styleValues.set(StyleConstant.BPMN_STYLE_IS_INTERRUPTING, bpmnElement.isInterrupting);
+      styleValues.set(StyleConstant.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
     }
 
     if (bpmnCell instanceof Shape && labelBounds) {
