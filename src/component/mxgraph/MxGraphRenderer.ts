@@ -95,7 +95,7 @@ export default class MxGraphRenderer {
     }
 
     const bpmnElement = bpmnCell.bpmnElement;
-    if (bpmnElement instanceof ShapeBpmnEvent || bpmnElement instanceof ShapeBpmnBoundaryEvent) {
+    if (bpmnElement instanceof ShapeBpmnEvent) {
       styleValues.set(StyleConstant.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
     }
 
