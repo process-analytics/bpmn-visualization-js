@@ -113,8 +113,8 @@ describe('mxgraph renderer', () => {
     expect(computeStyle(edge)).toEqual('normal;fontStyle=15');
   });
 
-  it('compute style of edge with label bounds: style kept unchanged', () => {
+  it('compute style of edge with label bounds', () => {
     const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), new Bounds(20, 20, 30, 120)));
-    expect(computeStyle(edge)).toEqual('normal;fontFamily=Helvetica');
+    expect(computeStyle(edge)).toEqual('normal;fontFamily=Helvetica;verticalAlign=top;align=center');
   });
 });
