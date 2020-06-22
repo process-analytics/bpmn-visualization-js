@@ -55,7 +55,12 @@ export default class CoordinatesTranslator {
     return offset;
   }
 
-  // coordinate in the same referential as the mxCell, so here, relative to its parent
+  /**
+   * Compute the center of the provided `mxCell` for absolute geometry: this is the center point of a segment whose edges
+   * are the terminal points of the mxCell geometry points. Returns `undefined` if the 2 terminal points are not available.
+   *
+   * The center coordinates are given in the same referential as the `mxCell`, so relative to its parent.
+   */
   public computeEgeCenter(mxEdge: mxgraph.mxCell): mxgraph.mxPoint {
     const points: mxgraph.mxPoint[] = mxEdge.geometry.points;
 

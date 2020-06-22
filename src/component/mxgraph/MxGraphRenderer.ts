@@ -144,7 +144,6 @@ export default class MxGraphRenderer {
 
           const edgeCenterCoordinate = this.coordinatesTranslator.computeEgeCenter(mxEdge);
           if (edgeCenterCoordinate) {
-            // only if we have waypoints to compute the center of the edge
             mxEdge.geometry.relative = false;
 
             const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new this.mxPoint(labelBounds.x, labelBounds.y));
