@@ -102,7 +102,7 @@ describe('mxgraph renderer', () => {
 
   it('compute style of shape with label bounds', () => {
     const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.CALL_ACTIVITY), undefined, new Label(undefined, new Bounds(40, 200, 80, 140)));
-    expect(computeStyle(shape)).toEqual('callActivity;labelWidth=81;verticalAlign=top;align=center;labelPosition=top;verticalLabelPosition=left');
+    expect(computeStyle(shape)).toEqual('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=top;verticalLabelPosition=left');
   });
 
   it('compute style of edge with no label', () => {
@@ -135,9 +135,9 @@ describe('mxgraph renderer', () => {
     expect(computeStyle(edge)).toEqual('normal;fontStyle=15');
   });
 
-  it('compute style of edge with label bounds: style kept unchanged', () => {
+  it('compute style of edge with label bounds', () => {
     const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), new Bounds(20, 20, 30, 120)));
-    expect(computeStyle(edge)).toEqual('normal;fontFamily=Helvetica');
+    expect(computeStyle(edge)).toEqual('normal;fontFamily=Helvetica;verticalAlign=top;align=center');
   });
 
   describe('compute style - events kind', () => {
