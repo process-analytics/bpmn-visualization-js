@@ -126,7 +126,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       const eventKind = eventDefinitions[0].kind;
       if (supportedBpmnEventKinds.includes(eventKind)) {
         if (ShapeUtil.isBoundaryEvent(elementKind)) {
-          return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, elementKind, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity, processId);
+          return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity, processId);
         }
         return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventKind, processId);
       }
