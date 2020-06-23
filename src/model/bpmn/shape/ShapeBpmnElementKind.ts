@@ -53,6 +53,7 @@ export enum ShapeBpmnElementKind {
   EVENT_END = 'endEvent',
   EVENT_INTERMEDIATE_CATCH = 'intermediateCatchEvent',
   EVENT_INTERMEDIATE_THROW = 'intermediateThrowEvent',
+  EVENT_BOUNDARY = 'boundaryEvent',
 
   CALL_ACTIVITY = 'callActivity',
 

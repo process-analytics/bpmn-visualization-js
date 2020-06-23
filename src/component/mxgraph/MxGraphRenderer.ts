@@ -17,7 +17,7 @@ import { mxgraph } from 'ts-mxgraph';
 import Shape from '../../model/bpmn/shape/Shape';
 import Edge from '../../model/bpmn/edge/Edge';
 import BpmnModel from '../../model/bpmn/BpmnModel';
-import ShapeBpmnElement, { ShapeBpmnEvent } from '../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../model/bpmn/shape/ShapeBpmnElement';
 import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
 import { StyleConstant } from './StyleUtils';
@@ -39,7 +39,8 @@ export default class MxGraphRenderer {
     try {
       this.insertShapes(bpmnModel.pools);
       this.insertShapes(bpmnModel.lanes);
-      this.insertShapes(bpmnModel.flowNodes);
+      this.insertShapes(bpmnModel.flowNodes.filter(shape => !ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind)));
+      this.insertShapes(bpmnModel.flowNodes.filter(shape => ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind)));
       this.insertEdges(bpmnModel.edges);
     } finally {
       model.endUpdate();
@@ -57,14 +58,21 @@ export default class MxGraphRenderer {
     if (bpmnElementParent) {
       return bpmnElementParent;
     }
-    return this.graph.getDefaultParent();
+
+    if (!ShapeUtil.isBoundaryEvent(bpmnElement.kind)) {
+      return this.graph.getDefaultParent();
+    }
   }
 
   private insertShape(shape: Shape): void {
     const bpmnElement = shape.bpmnElement;
     if (bpmnElement) {
       const parent = this.getParent(bpmnElement);
-
+      if (!parent) {
+        // TODO error management
+        console.warn('Not possible to insert shape %s: parent cell %s is not found', bpmnElement.id, bpmnElement.parentId);
+        return;
+      }
       const bounds = shape.bounds;
       let labelBounds = shape.label?.bounds;
       // pool/lane label bounds are not managed for now (use hard coded values)
@@ -88,6 +96,10 @@ export default class MxGraphRenderer {
     const bpmnElement = bpmnCell.bpmnElement;
     if (bpmnElement instanceof ShapeBpmnEvent) {
       styleValues.set(StyleConstant.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
+    }
+
+    if (bpmnElement instanceof ShapeBpmnBoundaryEvent) {
+      styleValues.set(StyleConstant.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
     }
 
     if (bpmnCell instanceof Shape && labelBounds) {
