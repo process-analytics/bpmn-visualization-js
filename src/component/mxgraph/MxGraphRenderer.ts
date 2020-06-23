@@ -69,18 +69,18 @@ export default class MxGraphRenderer {
     const bpmnElement = shape.bpmnElement;
     if (bpmnElement) {
       const parent = this.getParent(bpmnElement);
-      if (parent) {
-        const bounds = shape.bounds;
-        let labelBounds = shape.label?.bounds;
-        // pool/lane label bounds are not managed for now (use hard coded values)
-        labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
-        const style = this.computeStyle(shape, labelBounds);
-
-        this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
-      } else {
+      if (!parent) {
         // TODO error management
         console.warn('Not possible to insert shape %s: parent cell %s is not found', bpmnElement.id, bpmnElement.parentId);
+        return;
       }
+      const bounds = shape.bounds;
+      let labelBounds = shape.label?.bounds;
+      // pool/lane label bounds are not managed for now (use hard coded values)
+      labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
+      const style = this.computeStyle(shape, labelBounds);
+
+      this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
     }
   }
 
