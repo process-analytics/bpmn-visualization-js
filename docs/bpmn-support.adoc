@@ -144,7 +144,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Rendering
 |Comments
 
-|
+|Timer Interrupting Boundary Event
 |
 |
 
