@@ -103,17 +103,14 @@ export default class MxGraphRenderer {
     }
 
     if (labelBounds) {
+      styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
+      styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_CENTER);
       if (bpmnCell instanceof Shape) {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
         styleValues.set(this.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
         // align settings
-        styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
-        styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_CENTER);
         styleValues.set(this.mxConstants.STYLE_LABEL_POSITION, this.mxConstants.ALIGN_TOP);
         styleValues.set(this.mxConstants.STYLE_VERTICAL_LABEL_POSITION, this.mxConstants.ALIGN_LEFT);
-      } else {
-        styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
-        styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_CENTER);
       }
     }
 
