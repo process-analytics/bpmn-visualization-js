@@ -115,7 +115,8 @@ To fully benefit the ESLint and Jest testing frameworks, you must properly set u
 
 *EditorConfig* (https://www.jetbrains.com/help/idea/configuring-code-style.html#editorconfig)
 
-Go to `File` -> `Settings` and `Editor` --> `Code Style`, then tick the `Enable EditorConfig support`
+Go to `File` -> `Settings` ( `IntelliJ IDEA` -> `Preferences` on `macOS`) and `Editor` --> `Code Style`, then tick the
+`Enable EditorConfig support`
 
 
 *ESLint* (https://www.jetbrains.com/help/idea/eslint.html#)
