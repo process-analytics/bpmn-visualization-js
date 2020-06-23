@@ -260,6 +260,11 @@ describe('mxGraph model', () => {
     }
   }
 
+  function expectModelNotContainCell(cellId: string): void {
+    const cell = bpmnVisu.graph.model.getCell(cellId);
+    expect(cell).toBeUndefined();
+  }
+
   function expectModelContainsCell(cellId: string): mxgraph.mxCell {
     const cell = bpmnVisu.graph.model.getCell(cellId);
     expect(cell).not.toBeUndefined();
@@ -371,6 +376,32 @@ describe('mxGraph model', () => {
     expectModelContainsEdge('normal_sequence_flow_id', SequenceFlowKind.NORMAL);
     expectModelContainsEdge('conditional_sequence_flow_from_activity_id', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY, mxConstants.ARROW_DIAMOND_THIN);
     expectModelContainsEdge('conditional_sequence_flow_from_gateway_id', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY);
+  });
+
+  it('bpmn elements should not be available in the mxGraph model, if they are attached to not existing elements', async () => {
+    // load BPMN
+    const xmlContent = `
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<semantic:definitions id="_1373649849716" name="A.1.0" targetNamespace="http://www.trisotech.com/definitions/_1373649849716" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <semantic:process isExecutable="false" id="WFP-6-">
+        <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="true" name="Boundary Intermediate Event Interrupting Message" id="boundary_event_interrupting_message_id">
+            <semantic:messageEventDefinition/>
+        </semantic:boundaryEvent>
+    </semantic:process>
+    <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
+        <bpmndi:BPMNPlane bpmnElement="WFP-6-">
+            <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_message_id" id="S1373649849862_boundary_event_interrupting_message_id">
+	           <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+	        </bpmndi:BPMNShape>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</semantic:definitions>
+`;
+    bpmnVisu.load(xmlContent);
+
+    // model is OK
+    // boundary event
+    expectModelNotContainCell('boundary_event_interrupting_message_id');
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {
