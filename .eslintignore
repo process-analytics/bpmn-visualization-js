@@ -1,7 +1,8 @@
 .github/*
 .idea/*
 .nyc_output/*
+build/*
+config/*
 coverage/*
 dist/*
 node_modules/*
-config/*
