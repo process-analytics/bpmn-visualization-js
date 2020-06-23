@@ -15,7 +15,7 @@
  */
 import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
-import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { BpmnEventKind, ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
@@ -97,7 +97,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       let shapeBpmnElement;
 
       if (ShapeUtil.isEvent(kind)) {
-        shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind, processId);
+        shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, processId);
       } else {
         shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate);
 
@@ -113,7 +113,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildShapeBpmnEvent(bpmnElement: any, elementKind: ShapeBpmnElementKind, processId: string): ShapeBpmnEvent {
+  private buildShapeBpmnEvent(bpmnElement: any, elementKind: BpmnEventKind, processId: string): ShapeBpmnEvent {
     const eventDefinitions = this.getEventDefinitions(bpmnElement);
     const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
 

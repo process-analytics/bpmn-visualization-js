@@ -20,8 +20,14 @@ export default class ShapeBpmnElement {
   constructor(readonly id: string, readonly name: string, readonly kind: ShapeBpmnElementKind, public parentId?: string, readonly instantiate: boolean = false) {}
 }
 
+export type BpmnEventKind =
+  | ShapeBpmnElementKind.EVENT_BOUNDARY
+  | ShapeBpmnElementKind.EVENT_START
+  | ShapeBpmnElementKind.EVENT_END
+  | ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW
+  | ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH;
 export class ShapeBpmnEvent extends ShapeBpmnElement {
-  constructor(id: string, name: string, elementKind: ShapeBpmnElementKind, readonly eventKind: ShapeBpmnEventKind, parentId: string) {
+  constructor(id: string, name: string, elementKind: BpmnEventKind, readonly eventKind: ShapeBpmnEventKind, parentId: string) {
     super(id, name, elementKind, parentId);
   }
 }

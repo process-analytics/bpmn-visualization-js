@@ -16,7 +16,7 @@
 
 import { defaultMxGraphRenderer } from '../../../../src/component/mxgraph/MxGraphRenderer';
 import Shape from '../../../../src/model/bpmn/shape/Shape';
-import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../../../src/model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { BpmnEventKind, ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import Label, { Font } from '../../../../src/model/bpmn/Label';
 import { ExpectedFont } from '../parser/json/JsonTestUtils';
@@ -50,7 +50,7 @@ function newShapeBpmnElement(kind: ShapeBpmnElementKind): ShapeBpmnElement {
   return new ShapeBpmnElement('id', 'name', kind);
 }
 
-function newShapeBpmnEvent(bpmnElementKind: ShapeBpmnElementKind, eventKind: ShapeBpmnEventKind): ShapeBpmnEvent {
+function newShapeBpmnEvent(bpmnElementKind: BpmnEventKind, eventKind: ShapeBpmnEventKind): ShapeBpmnEvent {
   return new ShapeBpmnEvent('id', 'name', bpmnElementKind, eventKind, null);
 }
 
