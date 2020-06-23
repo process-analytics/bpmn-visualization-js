@@ -25,7 +25,6 @@ import { Font } from '../../model/bpmn/Label';
 import Bounds from '../../model/bpmn/Bounds';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import CoordinatesTranslator from './extension/CoordinatesTranslator';
-import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 
 export default class MxGraphRenderer {
   private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
@@ -60,7 +59,7 @@ export default class MxGraphRenderer {
       return bpmnElementParent;
     }
 
-    if (bpmnElement.kind !== ShapeBpmnElementKind.EVENT_BOUNDARY) {
+    if (!ShapeUtil.isBoundaryEvent(bpmnElement.kind)) {
       return this.graph.getDefaultParent();
     }
   }

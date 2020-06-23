@@ -16,7 +16,7 @@
 
 import { defaultMxGraphRenderer } from '../../../../src/component/mxgraph/MxGraphRenderer';
 import Shape from '../../../../src/model/bpmn/shape/Shape';
-import ShapeBpmnElement, { BpmnEventKind, ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../../../src/model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import Label, { Font } from '../../../../src/model/bpmn/Label';
 import { ExpectedFont } from '../parser/json/JsonTestUtils';
@@ -25,6 +25,7 @@ import SequenceFlow from '../../../../src/model/bpmn/edge/SequenceFlow';
 import { SequenceFlowKind } from '../../../../src/model/bpmn/edge/SequenceFlowKind';
 import Bounds from '../../../../src/model/bpmn/Bounds';
 import { ShapeBpmnEventKind } from '../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
+import { BpmnEventKind } from '../../../../src/model/bpmn/shape/ShapeUtil';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);

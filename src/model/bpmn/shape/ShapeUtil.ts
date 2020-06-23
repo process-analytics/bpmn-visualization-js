@@ -15,6 +15,13 @@
  */
 import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
 
+export type BpmnEventKind =
+  | ShapeBpmnElementKind.EVENT_BOUNDARY
+  | ShapeBpmnElementKind.EVENT_START
+  | ShapeBpmnElementKind.EVENT_END
+  | ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW
+  | ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH;
+
 // TODO move to ShapeBpmnElementKind? and rename into ShapeBpmnElementKindUtil?
 // TODO bpmnEventKinds currently hosted in ProcessConverter may be hosted here
 export default class ShapeUtil {
