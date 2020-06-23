@@ -21,19 +21,13 @@ export default class ShapeBpmnElement {
 }
 
 export class ShapeBpmnEvent extends ShapeBpmnElement {
-  constructor(readonly id: string, readonly name: string, readonly elementKind: ShapeBpmnElementKind, readonly eventKind: ShapeBpmnEventKind, parentId?: string) {
+  constructor(id: string, name: string, elementKind: ShapeBpmnElementKind, readonly eventKind: ShapeBpmnEventKind, parentId: string) {
     super(id, name, elementKind, parentId);
   }
 }
 
 export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
-  constructor(
-    readonly id: string,
-    readonly name: string,
-    readonly eventKind: ShapeBpmnEventKind,
-    readonly parentId: string,
-    readonly isInterrupting: boolean = true,
-  ) {
+  constructor(id: string, name: string, eventKind: ShapeBpmnEventKind, parentId: string, readonly isInterrupting: boolean = true) {
     super(id, name, ShapeBpmnElementKind.EVENT_BOUNDARY, eventKind, parentId);
   }
 }
