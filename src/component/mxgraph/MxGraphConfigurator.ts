@@ -50,5 +50,9 @@ export default class MxGraphConfigurator {
     this.graph.setEdgeLabelsMovable(false);
 
     this.graph.setHtmlLabels(true); // required for wrapping
+
+    // To have the boundary event on the border of a task
+    this.graph.setConstrainChildren(false);
+    this.graph.setExtendParents(false);
   }
 }

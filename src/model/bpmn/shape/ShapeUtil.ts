@@ -15,6 +15,13 @@
  */
 import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
 
+export type BpmnEventKind =
+  | ShapeBpmnElementKind.EVENT_BOUNDARY
+  | ShapeBpmnElementKind.EVENT_START
+  | ShapeBpmnElementKind.EVENT_END
+  | ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW
+  | ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH;
+
 // TODO move to ShapeBpmnElementKind? and rename into ShapeBpmnElementKindUtil?
 // TODO bpmnEventKinds currently hosted in ProcessConverter may be hosted here
 export default class ShapeUtil {
@@ -51,6 +58,14 @@ export default class ShapeUtil {
 
   public static isEvent(kind: ShapeBpmnElementKind): boolean {
     return this.EVENT_KINDS.includes(kind);
+  }
+
+  public static isBoundaryEvent(kind: ShapeBpmnElementKind): boolean {
+    return ShapeBpmnElementKind.EVENT_BOUNDARY === kind;
+  }
+
+  public static canHaveNoneEvent(kind: ShapeBpmnElementKind): boolean {
+    return ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW === kind || ShapeBpmnElementKind.EVENT_END === kind || ShapeBpmnElementKind.EVENT_START === kind;
   }
 
   public static isActivity(kind: ShapeBpmnElementKind): boolean {

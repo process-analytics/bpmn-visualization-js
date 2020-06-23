@@ -15,12 +15,12 @@
  */
 import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
-import ShapeBpmnElement, { ShapeBpmnEvent } from '../../../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
 import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
-import ShapeUtil from '../../../../model/bpmn/shape/ShapeUtil';
+import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
@@ -97,7 +97,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       let shapeBpmnElement;
 
       if (ShapeUtil.isEvent(kind)) {
-        shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind, processId);
+        shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, processId);
       } else {
         shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate);
 
@@ -113,19 +113,22 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildShapeBpmnEvent(bpmnElement: any, elementKind: ShapeBpmnElementKind, processId: string): ShapeBpmnEvent | void {
+  private buildShapeBpmnEvent(bpmnElement: any, elementKind: BpmnEventKind, processId: string): ShapeBpmnEvent {
     const eventDefinitions = this.getEventDefinitions(bpmnElement);
     const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
 
     // do we have a None Event?
-    if (numberOfEventDefinitions == 0) {
+    if (numberOfEventDefinitions == 0 && ShapeUtil.canHaveNoneEvent(elementKind)) {
       return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, ShapeBpmnEventKind.NONE, processId);
     }
 
     if (numberOfEventDefinitions == 1) {
-      const eventDefinition = eventDefinitions[0];
-      if (supportedBpmnEventKinds.includes(eventDefinition.kind)) {
-        return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinition.kind, processId);
+      const eventKind = eventDefinitions[0].kind;
+      if (supportedBpmnEventKinds.includes(eventKind)) {
+        if (ShapeUtil.isBoundaryEvent(elementKind)) {
+          return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity);
+        }
+        return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventKind, processId);
       }
     }
   }
@@ -170,7 +173,9 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       const shapeBpmnElement = findFlowNodeBpmnElement(flowNodeRef);
       const laneId = lane.id;
       if (shapeBpmnElement) {
-        shapeBpmnElement.parentId = laneId;
+        if (!ShapeUtil.isBoundaryEvent(shapeBpmnElement.kind)) {
+          shapeBpmnElement.parentId = laneId;
+        }
       } else {
         // TODO error management
         console.warn('Unable to assign lane %s as parent: flow node %s is not found', laneId, flowNodeRef);

@@ -19,7 +19,7 @@ import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/
 import Edge from '../../../../../src/model/bpmn/edge/Edge';
 import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
-import { ShapeBpmnEvent } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
+import { ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import Label from '../../../../../src/model/bpmn/Label';
@@ -148,6 +148,18 @@ export function verifyEvent(model: BpmnModel, kind: ShapeBpmnEventKind, expected
   expect(events).toHaveLength(expectedNumber);
 }
 
+export function verifyBoundaryEvent(model: BpmnModel, kind: ShapeBpmnEventKind, expectedNumber: number, isInterrupting?: boolean): void {
+  const events = model.flowNodes.filter(shape => {
+    const bpmnElement = shape.bpmnElement;
+    return (
+      bpmnElement instanceof ShapeBpmnBoundaryEvent &&
+      (bpmnElement as ShapeBpmnBoundaryEvent).eventKind === kind &&
+      (bpmnElement as ShapeBpmnBoundaryEvent).isInterrupting === isInterrupting
+    );
+  });
+  expect(events).toHaveLength(expectedNumber);
+}
+
 export function verifyLabelFont(label: Label, expectedFont?: ExpectedFont): void {
   expect(label).toBeDefined();
 
@@ -186,6 +198,18 @@ export function parseJsonAndExpectOnlyEvent(json: string, kind: ShapeBpmnEventKi
   expect(model.edges).toHaveLength(0);
 
   verifyEvent(model, kind, expectedNumber);
+
+  return model;
+}
+
+export function parseJsonAndExpectOnlyBoundaryEvent(json: string, kind: ShapeBpmnEventKind, expectedNumber: number, isInterrupting?: boolean): BpmnModel {
+  const model = parseJson(json);
+
+  expect(model.lanes).toHaveLength(0);
+  expect(model.pools).toHaveLength(0);
+  expect(model.edges).toHaveLength(0);
+
+  verifyBoundaryEvent(model, kind, expectedNumber, isInterrupting);
 
   return model;
 }

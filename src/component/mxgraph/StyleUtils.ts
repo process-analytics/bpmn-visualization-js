@@ -24,6 +24,7 @@ export enum StyleConstant {
   STROKE_WIDTH_THIN = 2,
   STROKE_WIDTH_THICK = 5,
   BPMN_STYLE_EVENT_KIND = 'bpmn.eventKind',
+  BPMN_STYLE_IS_INTERRUPTING = 'bpmn.isInterrupting',
   DEFAULT_FILL_COLOR = 'White',
   DEFAULT_STROKE_COLOR = 'Black',
   DEFAULT_FONT_FAMILY = 'Arial, Helvetica, sans-serif', // define our own to not depend on eventual mxGraph default change
@@ -52,5 +53,9 @@ export default class StyleUtils {
 
   public static getBpmnEventKind(style: any): ShapeBpmnEventKind {
     return mxUtils.getValue(style, StyleConstant.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
+  }
+
+  public static getBpmnIsInterrupting(style: any): string {
+    return mxUtils.getValue(style, StyleConstant.BPMN_STYLE_IS_INTERRUPTING, undefined);
   }
 }
