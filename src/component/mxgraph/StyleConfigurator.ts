@@ -90,9 +90,6 @@ export default class StyleConfigurator {
   private configureDefaultVertexStyle(): void {
     const style = this.getDefaultVertexStyle();
     this.configureCommonDefaultStyle(style);
-
-    // only works with html labels (enabled by MxGraphConfigurator)
-    style[this.mxConstants.STYLE_WHITE_SPACE] = 'wrap';
   }
 
   private configurePoolStyle(): void {
@@ -191,6 +188,9 @@ export default class StyleConfigurator {
     style[this.mxConstants.STYLE_FILLCOLOR] = StyleConstant.DEFAULT_FILL_COLOR;
     style[this.mxConstants.STYLE_STROKECOLOR] = StyleConstant.DEFAULT_STROKE_COLOR;
     style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = this.mxConstants.NONE;
+
+    // only works with html labels (enabled by MxGraphConfigurator)
+    style[this.mxConstants.STYLE_WHITE_SPACE] = 'wrap';
   }
 
   private configureSequenceFlowsStyle(): void {
