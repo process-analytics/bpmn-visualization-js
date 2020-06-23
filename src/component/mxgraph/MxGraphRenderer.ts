@@ -83,7 +83,7 @@ export default class MxGraphRenderer {
     }
   }
 
-  computeStyle(bpmnCell: Shape | Edge, labelBounds?: Bounds): string {
+  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
     const styleValues = new Map<string, string | number>();
 
     const font = bpmnCell.label?.font;
@@ -102,14 +102,16 @@ export default class MxGraphRenderer {
       styleValues.set(StyleConstant.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
     }
 
-    if (bpmnCell instanceof Shape && labelBounds) {
-      // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
-      styleValues.set(this.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
-      // align settings
+    if (labelBounds) {
       styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
       styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_CENTER);
-      styleValues.set(this.mxConstants.STYLE_LABEL_POSITION, this.mxConstants.ALIGN_TOP);
-      styleValues.set(this.mxConstants.STYLE_VERTICAL_LABEL_POSITION, this.mxConstants.ALIGN_LEFT);
+      if (bpmnCell instanceof Shape) {
+        // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
+        styleValues.set(this.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
+        // align settings
+        styleValues.set(this.mxConstants.STYLE_LABEL_POSITION, this.mxConstants.ALIGN_TOP);
+        styleValues.set(this.mxConstants.STYLE_VERTICAL_LABEL_POSITION, this.mxConstants.ALIGN_LEFT);
+      }
     }
 
     return [bpmnElement.kind as string] //
@@ -141,9 +143,25 @@ export default class MxGraphRenderer {
         const parent = this.graph.getDefaultParent();
         const source = this.getCell(bpmnElement.sourceRefId);
         const target = this.getCell(bpmnElement.targetRefId);
-        const style = this.computeStyle(edge);
+        const labelBounds = edge.label?.bounds;
+        const style = this.computeStyle(edge, labelBounds);
         const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
         this.insertWaypoints(edge.waypoints, mxEdge);
+
+        if (labelBounds) {
+          mxEdge.geometry.width = labelBounds.width;
+          mxEdge.geometry.height = labelBounds.height;
+
+          const edgeCenterCoordinate = this.coordinatesTranslator.computeEgeCenter(mxEdge);
+          if (edgeCenterCoordinate) {
+            mxEdge.geometry.relative = false;
+
+            const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new this.mxPoint(labelBounds.x, labelBounds.y));
+            const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
+            const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
+            mxEdge.geometry.offset = new this.mxPoint(relativeLabelX, relativeLabelY);
+          }
+        }
       }
     });
   }
