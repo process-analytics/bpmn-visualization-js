@@ -21,16 +21,17 @@ export const bpmnVisu = new BpmnVisu(window.document.getElementById('graph'), { 
 
 function log(message?: any, ...optionalParams: any[]): void {
   // eslint-disable-next-line no-console
-  console.info(message, ...optionalParams);
+  console.info('[DEMO] ' + message, ...optionalParams);
 }
 
 function loadBpmn(bpmn: string): void {
-  // TODO make this an option that can be updated at runtime)
+  // TODO make this an option that can be updated at runtime + configure which kind of fit
   const fitOnLoad = true;
 
   bpmnVisu.load(bpmn);
   if (fitOnLoad) {
-    bpmnVisu.zoom(ZoomType.FitHorizontal);
+    log('Request Fit after load');
+    bpmnVisu.zoom(ZoomType.Fit);
     log('Fit on load rendering done');
   }
 }
@@ -63,6 +64,7 @@ document.getElementById('file-selector').classList.remove('hidden');
 // =====================================================================================================================
 
 function fetchBpmnContent(url: string): Promise<string> {
+  log('Fetching BPMN content from url <%s>', url);
   return fetch(url)
     .then(response => {
       // log(response);
@@ -73,6 +75,7 @@ function fetchBpmnContent(url: string): Promise<string> {
     })
     .then(responseBody => {
       // log('retrieved content: %s', responseBody);
+      log('BPMN content fetched');
       return responseBody;
     })
     .catch(error => {
@@ -81,7 +84,6 @@ function fetchBpmnContent(url: string): Promise<string> {
 }
 
 function openFromUrl(url: string): void {
-  log('Trying to open url <%s>', url);
   fetchBpmnContent(url).then(bpmn => {
     loadBpmn(bpmn);
     log('Bpmn loaded from url <%s>', url);
@@ -133,7 +135,13 @@ document.getElementById('btn-zoom-actual').onclick = function() {
   bpmnVisu.zoom(ZoomType.Actual);
 };
 document.getElementById('btn-zoom-fit').onclick = function() {
+  bpmnVisu.zoom(ZoomType.Fit);
+};
+document.getElementById('btn-zoom-fit-horizontal').onclick = function() {
   bpmnVisu.zoom(ZoomType.FitHorizontal);
+};
+document.getElementById('btn-zoom-fit-vertical').onclick = function() {
+  bpmnVisu.zoom(ZoomType.FitVertical);
 };
 
 // =====================================================================================================================
