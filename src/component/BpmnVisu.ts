@@ -29,8 +29,6 @@ declare const mxWindow: typeof mxgraph.mxWindow;
 
 export default class BpmnVisu {
   public readonly graph: mxgraph.mxGraph;
-  // TODO make this an option (set with BpmnVisuOptions and updatable at runtime)
-  private fitOnLoad = true;
 
   constructor(protected container: Element, options?: BpmnVisuOptions) {
     try {
@@ -76,10 +74,6 @@ export default class BpmnVisu {
       console.info('Parsing done');
       defaultMxGraphRenderer(this.graph).render(bpmnModel);
       console.info('Rendering done');
-      if (this.fitOnLoad) {
-        this.fitHorizontal();
-        console.info('Fit on load rendering done');
-      }
       console.info('BPMN loaded');
     } catch (e) {
       // TODO error handling

@@ -24,11 +24,22 @@ function log(message?: any, ...optionalParams: any[]): void {
   console.info(message, ...optionalParams);
 }
 
+function loadBpmn(bpmn: string): void {
+  // TODO make this an option that can be updated at runtime)
+  const fitOnLoad = true;
+
+  bpmnVisu.load(bpmn);
+  if (fitOnLoad) {
+    bpmnVisu.zoom(ZoomType.FitHorizontal);
+    log('Fit on load rendering done');
+  }
+}
+
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {
   const reader = new FileReader();
   reader.onload = () => {
-    bpmnVisu.load(reader.result as string);
+    loadBpmn(reader.result as string);
   };
   reader.readAsText(f);
 }
@@ -72,7 +83,7 @@ function fetchBpmnContent(url: string): Promise<string> {
 function openFromUrl(url: string): void {
   log('Trying to open url <%s>', url);
   fetchBpmnContent(url).then(bpmn => {
-    bpmnVisu.load(bpmn);
+    loadBpmn(bpmn);
     log('Bpmn loaded from url <%s>', url);
   });
 }
