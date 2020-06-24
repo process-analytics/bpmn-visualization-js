@@ -89,6 +89,13 @@ document.getElementById('btn-open-migw').onclick = function() {
   openFromUrl(url);
 };
 
+document.getElementById('btn-open-bpmn-visualization-example').onclick = function() {
+  const fileName = (document.getElementById('select-open-bpmn-visualization-example') as HTMLSelectElement).value;
+  log('Start opening bpmn-visualization-example file %s', fileName);
+  const url = `https://raw.githubusercontent.com/process-analytics/bpmn-visualization-examples/master/bpmn-files/${fileName}`;
+  openFromUrl(url);
+};
+
 // TODO     auto open ?url=diagram-url
 //
 //     (function() {
