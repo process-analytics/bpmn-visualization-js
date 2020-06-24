@@ -116,10 +116,12 @@ export class BoundaryEventShape extends IntermediateEventShape {
         paintParameter.c.setFillColor('LightPink');
       } else {
         paintParameter.c.setDashed(1, 0);
+        paintParameter.c.setDashPattern('3 2');
       }
     }
 
     super.paintOuterShape(paintParameter);
-    paintParameter.c.setDashed(0, 0);
+    paintParameter.c.setDashed(StyleUtils.isDashed(this.style), StyleUtils.getFixDash(this.style));
+    paintParameter.c.setDashPattern(StyleUtils.getDashPattern(this.style));
   }
 }

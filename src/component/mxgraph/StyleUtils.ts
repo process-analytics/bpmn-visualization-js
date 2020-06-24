@@ -30,6 +30,9 @@ export enum StyleConstant {
   DEFAULT_FONT_SIZE = 11,
   DEFAULT_FONT_COLOR = 'Black',
   DEFAULT_MARGIN = 0,
+  DEFAULT_DASHED = 0,
+  DEFAULT_FIX_DASH = 0,
+  DEFAULT_DASH_PATTERN = '3 3',
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -48,6 +51,18 @@ export default class StyleUtils {
 
   public static getMargin(style: any): number {
     return mxUtils.getValue(style, mxConstants.STYLE_MARGIN, StyleConstant.DEFAULT_MARGIN);
+  }
+
+  public static isDashed(style: any): number {
+    return mxUtils.getValue(style, mxConstants.STYLE_DASHED, StyleConstant.DEFAULT_DASHED);
+  }
+
+  public static getFixDash(style: any): number {
+    return mxUtils.getValue(style, mxConstants.STYLE_FIX_DASH, StyleConstant.DEFAULT_FIX_DASH);
+  }
+
+  public static getDashPattern(style: any): string {
+    return mxUtils.getValue(style, mxConstants.STYLE_DASH_PATTERN, StyleConstant.DEFAULT_DASH_PATTERN);
   }
 
   public static getBpmnEventKind(style: any): ShapeBpmnEventKind {
