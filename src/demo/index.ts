@@ -19,6 +19,11 @@ import { PanType, ZoomType } from '../component/BpmnVisuOptions';
 
 export const bpmnVisu = new BpmnVisu(window.document.getElementById('graph'), { activatePanning: true });
 
+function log(message?: any, ...optionalParams: any[]): void {
+  // eslint-disable-next-line no-console
+  console.info(message, ...optionalParams);
+}
+
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {
   const reader = new FileReader();
@@ -41,6 +46,71 @@ function handleFileSelect(evt: any): void {
 
 document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
 document.getElementById('file-selector').classList.remove('hidden');
+
+// =====================================================================================================================
+// BPMN from remote url
+// =====================================================================================================================
+
+function fetchBpmnContent(url: string): Promise<string> {
+  return fetch(url)
+    .then(response => {
+      // log(response);
+      if (!response.ok) {
+        throw Error(String(response.status));
+      }
+      return response.text();
+    })
+    .then(responseBody => {
+      log('retrieved content: %s', responseBody);
+      return responseBody;
+    })
+    .catch(error => {
+      throw new Error(`Unable to fetch ${url}. ${error}`);
+    });
+}
+
+function openFromUrl(url: string): void {
+  log('Trying to open url <%s>', url);
+  fetchBpmnContent(url).then(bpmn => {
+    bpmnVisu.load(bpmn);
+    log('Bpmn loaded from url <%s>', url);
+  });
+}
+
+document.getElementById('btn-open-url').onclick = function() {
+  // console.info('click btn-open-url');
+  const url = (document.getElementById('input-open-url') as HTMLInputElement).value;
+  openFromUrl(url);
+  // log('Trying to open url <%s>', url);
+  //
+  // fetchBpmnContent(url);
+  // fetch(url)
+  //   .then(response => {
+  //     log(response);
+  //     if (!response.ok) {
+  //       throw Error(String(response.status));
+  //     }
+  //     return response.text();
+  //   })
+  //   .then(responseBody => {
+  //     log('retrieved content: %s', responseBody);
+  //     return responseBody;
+  //   })
+  //   .catch(error => log(error));
+};
+
+// TODO     auto open ?url=diagram-url
+//
+//     (function() {
+//       var str = window.location.search;
+//       var match = /(?:\&|\?)url=([^&]+)/.exec(str);
+//
+//       if (match) {
+//         var url = decodeURIComponent(match[1]);
+//         $('#input-open-url').val(url);
+//         openFromUrl(url);
+//       }
+//     })();
 
 // =====================================================================================================================
 // ZOOM
