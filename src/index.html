@@ -5,11 +5,47 @@
     <title>BPMN Visualization JS</title>
     <link href="./static/css/main.css" rel="stylesheet">
     <style>
+        .graph-container {
+            /*element*/
+            margin: 20px 20px 40px 70px;
+            /*touch-action: none;*/
+            /*div.base#graph*/
+            border-style: solid;
+            border-color: #F2F2F2;
+            border-width: 1px;
+            /*background: url('images/grid.gif');*/
+            /*div.base*/
+            position: absolute;
+            overflow: hidden;
+            /*font-family: Arial;*/
+            /*font-size: 8pt;*/
+        }
+        .btn-group-general {
+            /* TODO probably common to all button group*/
+            background: #FAFAFA;
+            border: solid 1px black;
+            border-radius: 2px;
+
+
+            position: absolute;
+            /*left: 20px;*/
+            /*top: 20px;*/
+            box-sizing: border-box;
+            /*width: 48px;*/
+            /*height: 60px;*/
+
+            left: 15px !important;
+            top: 15px !important;
+        }
         .btn-common {
+            z-index: 2;
             display: inline-block;
             content: "";
             background-repeat: no-repeat;
             background-size: 1rem 1rem;
+            /*height: 32px;*/
+            width: 32px;
+            margin: 5px;
         }
         .btn-help {
             /* https://icons.getbootstrap.com/icons/question-circle/ */
@@ -28,7 +64,7 @@
 <body>
 <!--    <div class="info-centered"><p>(either drop a file here)</p></div>-->
 <div id="btn-container">
-    <div id="btn-group-general">
+    <div id="btn-group-general" class="btn-group-general">
         <input type="button" class="btn-common btn-settings" id="btn-settings" title="Configure"/>
         <input type="button" class="btn-common btn-help" id="btn-help" title="Getting Help"/>
     </div>
@@ -119,7 +155,7 @@
         <!--        </div>-->
     </div>
 </div>
-<div id="graph"></div>
+<div id="graph" class="graph-container"></div>
 
 <!-- load global settings -->
     <script src="./static/js/configureMxGraphGlobals.js"></script>
