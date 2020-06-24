@@ -162,8 +162,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Comments
 
 |Timer Non-interrupting Boundary Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 
 |Message Non-interrupting Boundary Event
 |icon:check-circle-o[]
