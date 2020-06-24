@@ -69,6 +69,9 @@ describe('mxGraph model', () => {
         <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Message" id="boundary_event_interrupting_message_id">
             <semantic:messageEventDefinition/>
         </semantic:boundaryEvent>
+        <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Message" id="boundary_event_interrupting_timer_id">
+            <semantic:timerEventDefinition/>
+        </semantic:boundaryEvent>
         <semantic:intermediateThrowEvent name="Throw None Intermediate Event" id="noneIntermediateThrowEvent" />
         <semantic:intermediateThrowEvent name="Throw Message Intermediate Event" id="messageIntermediateThrowEvent">
             <semantic:messageEventDefinition />
@@ -138,7 +141,10 @@ describe('mxGraph model', () => {
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_message_id" id="S1373649849862_boundary_event_interrupting_message_id">
 	           <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
-	        </bpmndi:BPMNShape>
+	          </bpmndi:BPMNShape>
+	          <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_timer_id" id="S1373649849862_boundary_event_interrupting_timer_id">
+	           <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+	          </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="noneIntermediateThrowEvent" id="S1373649849862_noneIntermediateThrowEvent">
 	           <dc:Bounds height="32.0" width="32.0" x="648.0" y="336.0" />
 	           <bpmndi:BPMNLabel labelStyle="strike_through_font_id">
@@ -351,6 +357,7 @@ describe('mxGraph model', () => {
 
     // boundary event
     expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_message_id', ShapeBpmnEventKind.MESSAGE, true);
+    expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_timer_id', ShapeBpmnEventKind.TIMER, true);
 
     // activity
     expectModelContainsShape('task_1', ShapeBpmnElementKind.TASK, {
@@ -386,6 +393,9 @@ describe('mxGraph model', () => {
         <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="true" name="Boundary Intermediate Event Interrupting Message" id="boundary_event_interrupting_message_id">
             <semantic:messageEventDefinition/>
         </semantic:boundaryEvent>
+        <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="true" name="Boundary Intermediate Event Interrupting Timer" id="boundary_event_interrupting_timer_id">
+            <semantic:timerEventDefinition/>
+        </semantic:boundaryEvent>
     </semantic:process>
     <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
         <bpmndi:BPMNPlane bpmnElement="WFP-6-">
@@ -401,6 +411,7 @@ describe('mxGraph model', () => {
     // model is OK
     // boundary event
     expectModelNotContainCell('boundary_event_interrupting_message_id');
+    expectModelNotContainCell('boundary_event_interrupting_timer_id');
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {
