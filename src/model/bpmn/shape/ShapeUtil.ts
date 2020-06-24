@@ -31,13 +31,7 @@ export default class ShapeUtil {
   // TODO : To modify when we will support globalTask (They are not considered as Task in the BPMN Semantic)
   private static TASK_KINDS = ShapeUtil.filterKind('Task', true);
 
-  private static ACTIVITY_KINDS = [
-    ...ShapeUtil.TASK_KINDS,
-    ShapeBpmnElementKind.CALL_ACTIVITY,
-
-    // TODO: Uncomment when sub process are supported
-    // ShapeBpmnElementKind.SUB_PROCESS
-  ];
+  private static ACTIVITY_KINDS = [...ShapeUtil.TASK_KINDS, ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.SUB_PROCESS];
   private static FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = [
     ...ShapeUtil.ACTIVITY_KINDS,
     ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,

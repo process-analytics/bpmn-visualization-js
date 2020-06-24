@@ -15,13 +15,14 @@
  */
 import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
-import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { Process } from '../Definitions';
 import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
 import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
 import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';
+import { ShapeBpmnSubProcessKind } from '../../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
@@ -98,6 +99,8 @@ export default class ProcessConverter extends AbstractConverter<Process> {
 
       if (ShapeUtil.isEvent(kind)) {
         shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, processId);
+      } else if (ShapeUtil.isSubProcess(kind)) {
+        shapeBpmnElement = this.buildShapeBpmnSubProcess(bpmnElement, processId);
       } else {
         shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate);
 
@@ -149,6 +152,13 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       .filter(eventDefinition => {
         return eventDefinition.counter > 0;
       });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private buildShapeBpmnSubProcess(bpmnElement: any, processId: string): ShapeBpmnSubProcess {
+    if (!bpmnElement.triggeredByEvent) {
+      return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, processId);
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
