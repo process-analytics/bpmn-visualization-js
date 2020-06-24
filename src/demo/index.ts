@@ -61,7 +61,7 @@ function fetchBpmnContent(url: string): Promise<string> {
       return response.text();
     })
     .then(responseBody => {
-      log('retrieved content: %s', responseBody);
+      // log('retrieved content: %s', responseBody);
       return responseBody;
     })
     .catch(error => {
@@ -78,25 +78,15 @@ function openFromUrl(url: string): void {
 }
 
 document.getElementById('btn-open-url').onclick = function() {
-  // console.info('click btn-open-url');
   const url = (document.getElementById('input-open-url') as HTMLInputElement).value;
   openFromUrl(url);
-  // log('Trying to open url <%s>', url);
-  //
-  // fetchBpmnContent(url);
-  // fetch(url)
-  //   .then(response => {
-  //     log(response);
-  //     if (!response.ok) {
-  //       throw Error(String(response.status));
-  //     }
-  //     return response.text();
-  //   })
-  //   .then(responseBody => {
-  //     log('retrieved content: %s', responseBody);
-  //     return responseBody;
-  //   })
-  //   .catch(error => log(error));
+};
+
+document.getElementById('btn-open-migw').onclick = function() {
+  const fileName = (document.getElementById('select-open-migw') as HTMLSelectElement).value;
+  log('Start opening MIGW file %s', fileName);
+  const url = `https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/${fileName}`;
+  openFromUrl(url);
 };
 
 // TODO     auto open ?url=diagram-url
