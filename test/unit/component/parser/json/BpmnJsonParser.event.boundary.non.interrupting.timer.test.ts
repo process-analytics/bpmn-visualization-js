@@ -181,12 +181,12 @@ describe('parse bpmn as json for timer non-interrupting boundary event', () => {
     "definitions" : {
         "process": {
             "task": { "id":"task_id_0", "name":"task name" },
-            "boundaryEvent": { 
-                "id":"event_id_0", 
+            "boundaryEvent": {
+                "id":"event_id_0",
                 "attachedToRef":"task_id_0",
                 "cancelActivity":true,
-                "timerEventDefinition": "", 
-                "timerEventDefinition": "" 
+                "timerEventDefinition": "",
+                "conditionalEventDefinition": ""
             }
         },
         "BPMNDiagram": {
@@ -217,11 +217,11 @@ describe('parse bpmn as json for timer non-interrupting boundary event', () => {
     "definitions" : {
         "process": {
             "task": { "id":"task_id_0", "name":"task name" },
-            "boundaryEvent": { 
-                "id":"event_id_0", 
+            "boundaryEvent": {
+                "id":"event_id_0",
                 "attachedToRef":"task_id_0",
                 "cancelActivity":true,
-                "timerEventDefinition": ["", ""] 
+                "timerEventDefinition": ["", ""]
             }
         },
         "BPMNDiagram": {
