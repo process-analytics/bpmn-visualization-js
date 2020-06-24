@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
 import { StyleConstant } from '../StyleUtils';
 import IconPainter, { PaintParameter } from './IconPainter';
 
-const mxRhombus: typeof mxgraph.mxRhombus = MxGraphFactoryService.getMxGraphProperty('mxRhombus');
+declare const mxRhombus: typeof mxgraph.mxRhombus;
 
 abstract class GatewayShape extends mxRhombus {
   protected constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {

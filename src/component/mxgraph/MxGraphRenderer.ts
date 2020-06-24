@@ -18,7 +18,6 @@ import Shape from '../../model/bpmn/shape/Shape';
 import Edge from '../../model/bpmn/edge/Edge';
 import BpmnModel from '../../model/bpmn/BpmnModel';
 import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../model/bpmn/shape/ShapeBpmnElement';
-import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
 import { StyleConstant } from './StyleUtils';
 import { Font } from '../../model/bpmn/Label';
@@ -26,10 +25,10 @@ import Bounds from '../../model/bpmn/Bounds';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import CoordinatesTranslator from './extension/CoordinatesTranslator';
 
-export default class MxGraphRenderer {
-  private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
-  private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
+declare const mxPoint: typeof mxgraph.mxPoint;
+declare const mxConstants: typeof mxgraph.mxConstants;
 
+export default class MxGraphRenderer {
   constructor(readonly graph: mxgraph.mxGraph, readonly coordinatesTranslator: CoordinatesTranslator) {}
 
   public render(bpmnModel: BpmnModel): void {
@@ -88,9 +87,9 @@ export default class MxGraphRenderer {
 
     const font = bpmnCell.label?.font;
     if (font) {
-      styleValues.set(this.mxConstants.STYLE_FONTFAMILY, font.name);
-      styleValues.set(this.mxConstants.STYLE_FONTSIZE, font.size);
-      styleValues.set(this.mxConstants.STYLE_FONTSTYLE, this.getFontStyleValue(font));
+      styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
+      styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
+      styleValues.set(mxConstants.STYLE_FONTSTYLE, this.getFontStyleValue(font));
     }
 
     const bpmnElement = bpmnCell.bpmnElement;
@@ -103,14 +102,14 @@ export default class MxGraphRenderer {
     }
 
     if (labelBounds) {
-      styleValues.set(this.mxConstants.STYLE_VERTICAL_ALIGN, this.mxConstants.ALIGN_TOP);
-      styleValues.set(this.mxConstants.STYLE_ALIGN, this.mxConstants.ALIGN_CENTER);
+      styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
+      styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
       if (bpmnCell instanceof Shape) {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
-        styleValues.set(this.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
+        styleValues.set(mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
         // align settings
-        styleValues.set(this.mxConstants.STYLE_LABEL_POSITION, this.mxConstants.ALIGN_TOP);
-        styleValues.set(this.mxConstants.STYLE_VERTICAL_LABEL_POSITION, this.mxConstants.ALIGN_LEFT);
+        styleValues.set(mxConstants.STYLE_LABEL_POSITION, mxConstants.ALIGN_TOP);
+        styleValues.set(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_LEFT);
       }
     }
 
@@ -122,16 +121,16 @@ export default class MxGraphRenderer {
   private getFontStyleValue(font: Font): number {
     let value = 0;
     if (font.isBold) {
-      value += this.mxConstants.FONT_BOLD;
+      value += mxConstants.FONT_BOLD;
     }
     if (font.isItalic) {
-      value += this.mxConstants.FONT_ITALIC;
+      value += mxConstants.FONT_ITALIC;
     }
     if (font.isStrikeThrough) {
-      value += this.mxConstants.FONT_STRIKETHROUGH;
+      value += mxConstants.FONT_STRIKETHROUGH;
     }
     if (font.isUnderline) {
-      value += this.mxConstants.FONT_UNDERLINE;
+      value += mxConstants.FONT_UNDERLINE;
     }
     return value;
   }
@@ -156,10 +155,10 @@ export default class MxGraphRenderer {
           if (edgeCenterCoordinate) {
             mxEdge.geometry.relative = false;
 
-            const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new this.mxPoint(labelBounds.x, labelBounds.y));
+            const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(labelBounds.x, labelBounds.y));
             const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
             const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
-            mxEdge.geometry.offset = new this.mxPoint(relativeLabelX, relativeLabelY);
+            mxEdge.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
           }
         }
       }
@@ -169,7 +168,7 @@ export default class MxGraphRenderer {
   private insertWaypoints(waypoints: Waypoint[], mxEdge: mxgraph.mxCell): void {
     if (waypoints) {
       mxEdge.geometry.points = waypoints.map(waypoint => {
-        return this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new this.mxPoint(waypoint.x, waypoint.y));
+        return this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(waypoint.x, waypoint.y));
       });
     }
   }
@@ -179,14 +178,14 @@ export default class MxGraphRenderer {
   }
 
   private insertVertex(parent: mxgraph.mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxgraph.mxCell {
-    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new this.mxPoint(bounds.x, bounds.y));
+    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new mxPoint(bounds.x, bounds.y));
     const mxCell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 
     if (labelBounds) {
       // label coordinates are relative in the cell referential coordinates
       const relativeLabelX = labelBounds.x - bounds.x;
       const relativeLabelY = labelBounds.y - bounds.y;
-      mxCell.geometry.offset = new this.mxPoint(relativeLabelX, relativeLabelY);
+      mxCell.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
     }
     return mxCell;
   }
