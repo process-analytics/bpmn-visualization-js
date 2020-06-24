@@ -15,31 +15,30 @@
  */
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
-import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../model/bpmn/edge/SequenceFlowKind';
 import { MarkerConstant } from './MarkerConfigurator';
 import { StyleConstant } from './StyleUtils';
 
+declare const mxUtils: typeof mxgraph.mxUtils;
+declare const mxConstants: typeof mxgraph.mxConstants;
+declare const mxPerimeter: typeof mxgraph.mxPerimeter;
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
-  private mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
-  private mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
-  private mxPerimeter: typeof mxgraph.mxPerimeter = MxGraphFactoryService.getMxGraphProperty('mxPerimeter');
-
   private specificEdgeStyles: Map<SequenceFlowKind, (style: any) => void> = new Map([
     [
       SequenceFlowKind.DEFAULT,
       (style: any) => {
-        style[this.mxConstants.STYLE_STARTARROW] = MarkerConstant.ARROW_DASH;
+        style[mxConstants.STYLE_STARTARROW] = MarkerConstant.ARROW_DASH;
       },
     ],
     [
       SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
       (style: any) => {
-        style[this.mxConstants.STYLE_STARTARROW] = this.mxConstants.ARROW_DIAMOND_THIN;
-        style[this.mxConstants.STYLE_STARTSIZE] = 18;
-        style[this.mxConstants.STYLE_STARTFILL] = 0;
+        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_DIAMOND_THIN;
+        style[mxConstants.STYLE_STARTSIZE] = 18;
+        style[mxConstants.STYLE_STARTFILL] = 0;
       },
     ],
   ]);
@@ -47,7 +46,7 @@ export default class StyleConfigurator {
   constructor(private graph: mxgraph.mxGraph) {}
 
   public configureStyles(): void {
-    this.mxConstants.RECTANGLE_ROUNDING_FACTOR = 0.1;
+    mxConstants.RECTANGLE_ROUNDING_FACTOR = 0.1;
     this.configureDefaultVertexStyle();
 
     this.configurePoolStyle();
@@ -75,12 +74,12 @@ export default class StyleConfigurator {
 
   private cloneDefaultVertexStyle(): any {
     const defaultStyle = this.getDefaultVertexStyle();
-    return this.mxUtils.clone(defaultStyle);
+    return mxUtils.clone(defaultStyle);
   }
 
   private cloneDefaultEdgeStyle(): any {
     const defaultStyle = this.getDefaultEdgeStyle();
-    return this.mxUtils.clone(defaultStyle);
+    return mxUtils.clone(defaultStyle);
   }
 
   private putCellStyle(name: ShapeBpmnElementKind, style: any): void {
@@ -94,26 +93,26 @@ export default class StyleConfigurator {
 
   private configurePoolStyle(): void {
     const style = this.cloneDefaultVertexStyle();
-    style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_SWIMLANE;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_MIDDLE;
-    style[this.mxConstants.STYLE_ALIGN] = this.mxConstants.ALIGN_CENTER;
-    style[this.mxConstants.STYLE_HORIZONTAL] = false;
-    style[this.mxConstants.STYLE_FILLCOLOR] = '#d3d2d1';
+    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_SWIMLANE;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
+    style[mxConstants.STYLE_HORIZONTAL] = false;
+    style[mxConstants.STYLE_FILLCOLOR] = '#d3d2d1';
 
     // TODO manage pool text area rendering
     // most of BPMN pool are ok when setting it to 30
-    style[this.mxConstants.STYLE_STARTSIZE] = 30;
+    style[mxConstants.STYLE_STARTSIZE] = 30;
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.POOL, style);
   }
 
   private configureLaneStyle(): void {
     const style = this.cloneDefaultVertexStyle();
-    style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_SWIMLANE;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_MIDDLE;
-    style[this.mxConstants.STYLE_ALIGN] = this.mxConstants.ALIGN_CENTER;
-    style[this.mxConstants.STYLE_HORIZONTAL] = false;
-    style[this.mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
+    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_SWIMLANE;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
+    style[mxConstants.STYLE_HORIZONTAL] = false;
+    style[mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.LANE, style);
   }
@@ -121,9 +120,9 @@ export default class StyleConfigurator {
   private configureEventsStyle(): void {
     ShapeUtil.topLevelBpmnEventKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
-      style[this.mxConstants.STYLE_SHAPE] = kind;
-      style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.EllipsePerimeter;
-      style[this.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = this.mxConstants.ALIGN_BOTTOM;
+      style[mxConstants.STYLE_SHAPE] = kind;
+      style[mxConstants.STYLE_PERIMETER] = mxPerimeter.EllipsePerimeter;
+      style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_BOTTOM;
       this.putCellStyle(kind, style);
     });
   }
@@ -136,33 +135,33 @@ export default class StyleConfigurator {
   private configureTasksStyle(): void {
     ShapeUtil.taskKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
-      style[this.mxConstants.STYLE_SHAPE] = kind;
-      style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_MIDDLE;
+      style[mxConstants.STYLE_SHAPE] = kind;
+      style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
       this.putCellStyle(kind, style);
     });
   }
 
   private configureCallActivityStyle(): void {
     const style = this.cloneDefaultVertexStyle();
-    style[this.mxConstants.STYLE_SHAPE] = this.mxConstants.SHAPE_RECTANGLE;
-    style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RectanglePerimeter;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_MIDDLE;
-    style[this.mxConstants.STYLE_STROKECOLOR] = '#2C6DA3';
-    style[this.mxConstants.STYLE_STROKEWIDTH] = 4;
-    style[this.mxConstants.STYLE_ROUNDED] = true;
+    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RECTANGLE;
+    style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+    style[mxConstants.STYLE_STROKECOLOR] = '#2C6DA3';
+    style[mxConstants.STYLE_STROKEWIDTH] = 4;
+    style[mxConstants.STYLE_ROUNDED] = true;
     this.putCellStyle(ShapeBpmnElementKind.CALL_ACTIVITY, style);
   }
 
   private configureGatewaysStyle(): void {
     ShapeUtil.gatewayKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
-      style[this.mxConstants.STYLE_SHAPE] = kind;
-      style[this.mxConstants.STYLE_PERIMETER] = this.mxPerimeter.RhombusPerimeter;
-      style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_TOP;
+      style[mxConstants.STYLE_SHAPE] = kind;
+      style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
+      style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
 
       // Default positioning in case there is no BPMN LabelStyle
-      style[this.mxConstants.STYLE_LABEL_POSITION] = this.mxConstants.ALIGN_LEFT;
-      style[this.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = this.mxConstants.ALIGN_TOP;
+      style[mxConstants.STYLE_LABEL_POSITION] = mxConstants.ALIGN_LEFT;
+      style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_TOP;
 
       this.putCellStyle(kind, style);
     });
@@ -170,27 +169,27 @@ export default class StyleConfigurator {
 
   private configureDefaultEdgeStyle(): void {
     const style = this.getDefaultEdgeStyle();
-    style[this.mxConstants.STYLE_EDGE] = this.mxConstants.EDGESTYLE_SEGMENT;
-    style[this.mxConstants.STYLE_ENDARROW] = this.mxConstants.ARROW_BLOCK_THIN;
-    style[this.mxConstants.STYLE_ENDSIZE] = 12;
-    style[this.mxConstants.STYLE_STROKEWIDTH] = 1.5;
-    style[this.mxConstants.STYLE_ROUNDED] = 1;
-    style[this.mxConstants.STYLE_ARCSIZE] = 5;
-    style[this.mxConstants.STYLE_VERTICAL_ALIGN] = this.mxConstants.ALIGN_BOTTOM;
+    style[mxConstants.STYLE_EDGE] = mxConstants.EDGESTYLE_SEGMENT;
+    style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
+    style[mxConstants.STYLE_ENDSIZE] = 12;
+    style[mxConstants.STYLE_STROKEWIDTH] = 1.5;
+    style[mxConstants.STYLE_ROUNDED] = 1;
+    style[mxConstants.STYLE_ARCSIZE] = 5;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_BOTTOM;
 
     this.configureCommonDefaultStyle(style);
   }
 
   private configureCommonDefaultStyle(style: any): void {
-    style[this.mxConstants.STYLE_FONTFAMILY] = StyleConstant.DEFAULT_FONT_FAMILY;
-    style[this.mxConstants.STYLE_FONTSIZE] = StyleConstant.DEFAULT_FONT_SIZE;
-    style[this.mxConstants.STYLE_FONTCOLOR] = StyleConstant.DEFAULT_FONT_COLOR;
-    style[this.mxConstants.STYLE_FILLCOLOR] = StyleConstant.DEFAULT_FILL_COLOR;
-    style[this.mxConstants.STYLE_STROKECOLOR] = StyleConstant.DEFAULT_STROKE_COLOR;
-    style[this.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = this.mxConstants.NONE;
+    style[mxConstants.STYLE_FONTFAMILY] = StyleConstant.DEFAULT_FONT_FAMILY;
+    style[mxConstants.STYLE_FONTSIZE] = StyleConstant.DEFAULT_FONT_SIZE;
+    style[mxConstants.STYLE_FONTCOLOR] = StyleConstant.DEFAULT_FONT_COLOR;
+    style[mxConstants.STYLE_FILLCOLOR] = StyleConstant.DEFAULT_FILL_COLOR;
+    style[mxConstants.STYLE_STROKECOLOR] = StyleConstant.DEFAULT_STROKE_COLOR;
+    style[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = mxConstants.NONE;
 
     // only works with html labels (enabled by MxGraphConfigurator)
-    style[this.mxConstants.STYLE_WHITE_SPACE] = 'wrap';
+    style[mxConstants.STYLE_WHITE_SPACE] = 'wrap';
   }
 
   private configureSequenceFlowsStyle(): void {

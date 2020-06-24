@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 import { mxgraph } from 'ts-mxgraph';
-import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
+
+declare const mxPoint: typeof mxgraph.mxPoint;
 
 export default class CoordinatesTranslator {
-  private mxPoint: typeof mxgraph.mxPoint = MxGraphFactoryService.getMxGraphProperty('mxPoint');
-
   constructor(readonly graph: mxgraph.mxGraph) {}
 
   /**
@@ -30,7 +29,7 @@ export default class CoordinatesTranslator {
     const translateForRoot = this.getTranslateForRoot(parent);
     const relativeX = absoluteCoordinate.x + translateForRoot.x;
     const relativeY = absoluteCoordinate.y + translateForRoot.y;
-    return new this.mxPoint(relativeX, relativeY);
+    return new mxPoint(relativeX, relativeY);
   }
 
   // Returns the translation to be applied to a cell whose mxGeometry x and y values are expressed with absolute coordinates
@@ -41,7 +40,7 @@ export default class CoordinatesTranslator {
   // The translation is generally negative
   private getTranslateForRoot(cell: mxgraph.mxCell): mxgraph.mxPoint {
     const model = this.graph.getModel();
-    const offset = new this.mxPoint(0, 0);
+    const offset = new mxPoint(0, 0);
 
     while (cell != null) {
       const geo = model.getGeometry(cell);
@@ -70,7 +69,7 @@ export default class CoordinatesTranslator {
     if (p0 != null && pe != null) {
       const dx = pe.x - p0.x;
       const dy = pe.y - p0.y;
-      return new this.mxPoint(p0.x + dx / 2, p0.y + dy / 2);
+      return new mxPoint(p0.x + dx / 2, p0.y + dy / 2);
     }
 
     return undefined;
