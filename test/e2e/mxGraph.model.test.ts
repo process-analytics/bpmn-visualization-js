@@ -33,6 +33,7 @@ export interface ExpectedFont {
 }
 
 export interface ExpectedShapeModelElement {
+  label?: string;
   kind: ShapeBpmnElementKind;
   font?: ExpectedFont;
   /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
@@ -48,6 +49,7 @@ export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
 }
 
 export interface ExpectedEdgeModelElement {
+  label?: string;
   kind: SequenceFlowKind;
   font?: ExpectedFont;
   startArrow?: string;
@@ -88,7 +90,7 @@ describe('mxGraph model', () => {
             <semantic:incoming>default_sequence_flow_id</semantic:incoming>
             <semantic:outgoing>conditional_sequence_flow_from_activity_id</semantic:outgoing>
         </semantic:serviceTask>
-        <semantic:userTask completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task 3" id="userTask_3">
+        <semantic:userTask completionQuantity="1" isForCompensation="false" startQuantity="1" name="User Task 3" id="userTask_3">
             <semantic:incoming>conditional_sequence_flow_from_activity_id</semantic:incoming>
             <semantic:outgoing>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:outgoing>
         </semantic:userTask>
@@ -106,7 +108,7 @@ describe('mxGraph model', () => {
             <semantic:incoming>Flow_028jkgv</semantic:incoming>
             <semantic:timerEventDefinition id="TimerEventDefinition_0t6k83a" />
         </semantic:intermediateCatchEvent>
-        <semantic:endEvent name="End Event" id="terminateEndEvent">
+        <semantic:endEvent name="Terminate End Event" id="terminateEndEvent">
             <semantic:incoming>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:incoming>
             <semantic:terminateEventDefinition/>
         </semantic:endEvent>
@@ -117,9 +119,9 @@ describe('mxGraph model', () => {
         <semantic:callActivity calledElement="Process_unknown" name="Call Activity Collapsed" id="callActivity_1" />
         <semantic:receiveTask id="receiveTask_not_instantiated" name="Not instantiated Receive Task"/>
         <semantic:receiveTask id="receiveTask_instantiated" name="Instantiated Receive Task" instantiate=true/>
-        <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="" id="normal_sequence_flow_id"/>
-        <semantic:sequenceFlow sourceRef="task_1" targetRef="serviceTask_2" name="" id="default_sequence_flow_id"/>
-        <semantic:sequenceFlow sourceRef="serviceTask_2" targetRef="userTask_3" name="" id="conditional_sequence_flow_from_activity_id">
+        <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="From 'start event 1' to 'task 1'" id="normal_sequence_flow_id"/>
+        <semantic:sequenceFlow sourceRef="task_1" targetRef="serviceTask_2" id="default_sequence_flow_id"/>
+        <semantic:sequenceFlow sourceRef="serviceTask_2" targetRef="userTask_3" id="conditional_sequence_flow_from_activity_id">
           <semantic:conditionExpression xsi:type="semantic:tFormalExpression" id="_WsCFcRszEeqkhYLXtt1BFw" evaluatesToTypeRef="java:java.lang.Boolean">&quot;Contract to be written&quot;.equals(loanRequested.status)</semantic:conditionExpression>
         </semantic:sequenceFlow>
         <semantic:sequenceFlow sourceRef="userTask_3" targetRef="noneIntermediateThrowEvent" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff80" />
@@ -304,6 +306,7 @@ describe('mxGraph model', () => {
 
     const styleShape = !modelElement.styleShape ? modelElement.kind : modelElement.styleShape;
     expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(styleShape);
+    expect(cell.value).toEqual(modelElement.label);
     expectFont(state, modelElement.font);
     return cell;
   }
@@ -314,6 +317,7 @@ describe('mxGraph model', () => {
 
     const state = bpmnVisu.graph.getView().getState(cell);
     expect(state.style[mxConstants.STYLE_STARTARROW]).toEqual(modelElement.startArrow);
+    expect(cell.value).toEqual(modelElement.label);
     expectFont(state, modelElement.font);
     return cell;
   }
@@ -344,9 +348,9 @@ describe('mxGraph model', () => {
     };
 
     // start event
-    expectModelContainsBpmnEvent('startEvent_1', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.NONE, font: expectedBoldFont });
-    expectModelContainsBpmnEvent('startEvent_2_timer', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.TIMER });
-    expectModelContainsBpmnEvent('startEvent_3_message', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.MESSAGE });
+    expectModelContainsBpmnEvent('startEvent_1', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.NONE, font: expectedBoldFont, label: 'Start Event' });
+    expectModelContainsBpmnEvent('startEvent_2_timer', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.TIMER, label: 'Timer Start Event' });
+    expectModelContainsBpmnEvent('startEvent_3_message', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.MESSAGE, label: 'Message Start Event' });
 
     // end event
     expectModelContainsBpmnEvent('terminateEndEvent', {
@@ -360,8 +364,9 @@ describe('mxGraph model', () => {
         name: 'Arial',
         size: 11.0,
       },
+      label: 'Terminate End Event',
     });
-    expectModelContainsBpmnEvent('messageEndEvent', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.MESSAGE });
+    expectModelContainsBpmnEvent('messageEndEvent', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.MESSAGE, label: 'Message End Event' });
 
     // throw intermediate event
     expectModelContainsBpmnEvent('noneIntermediateThrowEvent', {
@@ -375,15 +380,33 @@ describe('mxGraph model', () => {
         name: 'Arial',
         size: 11.0,
       },
+      label: 'Throw None Intermediate Event',
     });
-    expectModelContainsBpmnEvent('messageIntermediateThrowEvent', { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, eventKind: ShapeBpmnEventKind.MESSAGE });
+    expectModelContainsBpmnEvent('messageIntermediateThrowEvent', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      label: 'Throw Message Intermediate Event',
+    });
 
     // catch intermediate event
-    expectModelContainsBpmnEvent('messageIntermediateCatchEvent', { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, eventKind: ShapeBpmnEventKind.MESSAGE });
-    expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01', { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, eventKind: ShapeBpmnEventKind.TIMER });
+    expectModelContainsBpmnEvent('messageIntermediateCatchEvent', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      label: 'Catch Message Intermediate Event',
+    });
+    expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+      eventKind: ShapeBpmnEventKind.TIMER,
+      label: 'Timer Intermediate Catch Event',
+    });
 
     // boundary event
-    expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_message_id', { kind: null, eventKind: ShapeBpmnEventKind.MESSAGE, isInterrupting: true });
+    expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_message_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      isInterrupting: true,
+      label: 'Boundary Intermediate Event Interrupting Message',
+    });
 
     // activity
     expectModelContainsShape('task_1', {
@@ -396,21 +419,22 @@ describe('mxGraph model', () => {
         name: 'Arial',
         size: 11.0,
       },
+      label: 'Task 1',
     });
-    expectModelContainsShape('serviceTask_2', { kind: ShapeBpmnElementKind.TASK_SERVICE, font: expectedBoldFont });
-    expectModelContainsShape('userTask_3', { kind: ShapeBpmnElementKind.TASK_USER, font: expectedBoldFont });
-    expectModelContainsShape('callActivity_1', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, styleShape: 'rectangle' });
-    expectModelContainsShape('receiveTask_not_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE });
-    expectModelContainsShape('receiveTask_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE });
+    expectModelContainsShape('serviceTask_2', { kind: ShapeBpmnElementKind.TASK_SERVICE, font: expectedBoldFont, label: 'Service Task 2' });
+    expectModelContainsShape('userTask_3', { kind: ShapeBpmnElementKind.TASK_USER, font: expectedBoldFont, label: 'User Task 3' });
+    expectModelContainsShape('callActivity_1', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, styleShape: 'rectangle', label: 'Call Activity Collapsed' });
+    expectModelContainsShape('receiveTask_not_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Not instantiated Receive Task' });
+    expectModelContainsShape('receiveTask_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Instantiated Receive Task' });
 
     // gateways
-    expectModelContainsShape('inclusiveGateway_1', { kind: ShapeBpmnElementKind.GATEWAY_INCLUSIVE });
+    expectModelContainsShape('inclusiveGateway_1', { kind: ShapeBpmnElementKind.GATEWAY_INCLUSIVE, label: 'Inclusive Gateway 1' });
 
     // sequence flow
     expectModelContainsEdge('default_sequence_flow_id', { kind: SequenceFlowKind.DEFAULT, startArrow: MarkerConstant.ARROW_DASH, font: expectedBoldFont });
-    expectModelContainsEdge('normal_sequence_flow_id', { kind: SequenceFlowKind.NORMAL });
+    expectModelContainsEdge('normal_sequence_flow_id', { kind: SequenceFlowKind.NORMAL, label: "From 'start event 1' to 'task 1'" });
     expectModelContainsEdge('conditional_sequence_flow_from_activity_id', { kind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY, startArrow: mxConstants.ARROW_DIAMOND_THIN });
-    expectModelContainsEdge('conditional_sequence_flow_from_gateway_id', { kind: SequenceFlowKind.CONDITIONAL_FROM_GATEWAY });
+    expectModelContainsEdge('conditional_sequence_flow_from_gateway_id', { kind: SequenceFlowKind.CONDITIONAL_FROM_GATEWAY, label: '' });
   });
 
   it('bpmn elements should not be available in the mxGraph model, if they are attached to not existing elements', async () => {
