@@ -30,7 +30,7 @@ function loadBpmn(bpmn: string): void {
 
   bpmnVisu.load(bpmn);
   if (fitOnLoad) {
-    bpmnVisu.zoom(ZoomType.Fit);
+    bpmnVisu.zoom(ZoomType.FitHorizontal);
     log('Fit on load rendering done');
   }
 }
@@ -133,7 +133,7 @@ document.getElementById('btn-zoom-actual').onclick = function() {
   bpmnVisu.zoom(ZoomType.Actual);
 };
 document.getElementById('btn-zoom-fit').onclick = function() {
-  bpmnVisu.zoom(ZoomType.Fit);
+  bpmnVisu.zoom(ZoomType.FitHorizontal);
 };
 
 // =====================================================================================================================
