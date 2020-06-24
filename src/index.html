@@ -7,7 +7,11 @@
     <style>
         .graph-container {
             /*element*/
-            margin: 20px 20px 40px 70px;
+            /*    margin: 20px 20px 40px 70px;*/
+            top: 310px;
+            bottom: 20px;
+            left: 40px;
+            right: 40px;
             /*touch-action: none;*/
             /*div.base#graph*/
             border-style: solid;
@@ -20,22 +24,25 @@
             /*font-family: Arial;*/
             /*font-size: 8pt;*/
         }
-        .btn-group-general {
-            /* TODO probably common to all button group*/
+        .btn-group {
             background: #FAFAFA;
             border: solid 1px black;
             border-radius: 2px;
 
-
             position: absolute;
+            box-sizing: border-box;
             /*left: 20px;*/
             /*top: 20px;*/
-            box-sizing: border-box;
             /*width: 48px;*/
             /*height: 60px;*/
-
+        }
+        .btn-group-general {
             left: 15px !important;
             top: 15px !important;
+        }
+        .btn-group-export {
+            left: 15px !important;
+            top: 65px !important;
         }
         .btn-common {
             z-index: 2;
@@ -59,12 +66,16 @@
             /* https://icons.getbootstrap.com/icons/download/ */
             background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8z'/><path fill-rule='evenodd' d='M5 7.5a.5.5 0 0 1 .707 0L8 9.793 10.293 7.5a.5.5 0 1 1 .707.707l-2.646 2.647a.5.5 0 0 1-.708 0L5 8.207A.5.5 0 0 1 5 7.5z'/><path fill-rule='evenodd' d='M8 1a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0v-8A.5.5 0 0 1 8 1z'/></svg>");
         }
+        .btn-download-png {
+            /* https://icons.getbootstrap.com/icons/image/ */
+            background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M14.002 2h-12a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zm-12-1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12z'/><path d='M10.648 7.646a.5.5 0 0 1 .577-.093L15.002 9.5V14h-14v-2l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71z'/><path fill-rule='evenodd' d='M4.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z'/> </svg>");
+        }
     </style>
 </head>
 <body>
 <!--    <div class="info-centered"><p>(either drop a file here)</p></div>-->
 <div id="btn-container">
-    <div id="btn-group-general" class="btn-group-general">
+    <div id="btn-group-general" class="btn-group btn-group-general">
         <input type="button" class="btn-common btn-settings" id="btn-settings" title="Configure"/>
         <input type="button" class="btn-common btn-help" id="btn-help" title="Getting Help"/>
     </div>
@@ -91,25 +102,10 @@
         </select>
         <button id="btn-open-bpmn-visualization-example">Open bpmn-visualization example</button>
     </div>
-    <div id="btn-group-export">
-        <input type="button" class="btn-download-svg" id="btn-export-svg" title="Download as SVG image"/>
-        <!--        <button id="btn-export-svg" title="Download as SVG image">-->
-        <!--            &lt;!&ndash; from https://icons.getbootstrap.com/icons/download/ &ndash;&gt;-->
-        <!--            <svg class="bi bi-download" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">-->
-        <!--                <path fill-rule="evenodd" d="M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8z"/>-->
-        <!--                <path fill-rule="evenodd" d="M5 7.5a.5.5 0 0 1 .707 0L8 9.793 10.293 7.5a.5.5 0 1 1 .707.707l-2.646 2.647a.5.5 0 0 1-.708 0L5 8.207A.5.5 0 0 1 5 7.5z"/>-->
-        <!--                <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0v-8A.5.5 0 0 1 8 1z"/>-->
-        <!--            </svg>-->
-        <!--        </button>-->
-        <button id="btn-export-png" title="Download as PNG image">
-            <!-- from https://icons.getbootstrap.com/icons/image/ -->
-            <svg class="bi bi-image" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M14.002 2h-12a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zm-12-1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12z"/>
-                <path d="M10.648 7.646a.5.5 0 0 1 .577-.093L15.002 9.5V14h-14v-2l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71z"/>
-                <path fill-rule="evenodd" d="M4.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
-            </svg>
-        </button>
-        <button id="btn-export-preview">Preview</button>
+    <div id="btn-group-export" class="btn-group btn-group-export">
+        <input type="button" class="btn-common btn-download-svg" id="btn-export-svg" title="Download as SVG image"/>
+        <input type="button" class="btn-common btn-download-png" id="btn-export-png" title="Download as PNG image"/>
+        <input type="button" class="btn-common" id="btn-export-preview" title="Print Preview" value="Print">
     </div>
     <div id="btn-group-zoom">
         <button id="btn-zoom-in">+</button>
