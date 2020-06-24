@@ -35,11 +35,7 @@ const plugins = [
     tsconfigOverride: tsconfigOverride,
   }),
   resolve(),
-  commonjs({
-    namedExports: {
-      'node_modules/ts-mxgraph/index.js': ['mxgraph', 'mxgraphFactory'],
-    },
-  }),
+  commonjs(),
   json(),
 ];
 
@@ -51,6 +47,8 @@ if (devMode || demoMode) {
       targets: [
         { src: 'src/index.html', dest: 'dist/' },
         { src: 'src/static/css/main.css', dest: 'dist/static/css/' },
+        { src: 'src/static/js/configureMxGraphGlobals.js', dest: 'dist/static/js/' },
+        { src: 'node_modules/mxgraph/javascript/mxClient.js', dest: 'dist/static/js/' },
       ],
     }),
   );
