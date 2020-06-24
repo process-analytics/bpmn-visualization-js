@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 import { mxgraph } from 'ts-mxgraph';
-import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import { ShapeBpmnEventKind } from '../../model/bpmn/shape/ShapeBpmnEventKind';
 
-const mxUtils: typeof mxgraph.mxUtils = MxGraphFactoryService.getMxGraphProperty('mxUtils');
-const mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
+declare const mxUtils: typeof mxgraph.mxUtils;
+declare const mxConstants: typeof mxgraph.mxConstants;
 
 export enum StyleConstant {
   STROKE_WIDTH_THIN = 2,

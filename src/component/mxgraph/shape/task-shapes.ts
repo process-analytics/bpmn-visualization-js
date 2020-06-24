@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
 import { StyleConstant } from '../StyleUtils';
 import IconPainter, { PaintParameter } from './IconPainter';
 
-const mxRectangleShape: typeof mxgraph.mxRectangleShape = MxGraphFactoryService.getMxGraphProperty('mxRectangleShape');
+declare const mxRectangleShape: typeof mxgraph.mxRectangleShape;
 
 abstract class BaseTaskShape extends mxRectangleShape {
   // TODO we need to declare this field here because it is missing in the current mxShape type definition
