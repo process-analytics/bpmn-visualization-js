@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import { MxGraphFactoryService } from '../../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnEventKind } from '../../../model/bpmn/shape/ShapeBpmnEventKind';
 import IconPainter, { PaintParameter } from './IconPainter';
 import StyleUtils, { StyleConstant } from '../StyleUtils';
 
-const mxEllipse: typeof mxgraph.mxEllipse = MxGraphFactoryService.getMxGraphProperty('mxEllipse');
+declare const mxEllipse: typeof mxgraph.mxEllipse;
 
 abstract class EventShape extends mxEllipse {
   // TODO: when all/more event types will be supported, we could move to a Record/MappedType
