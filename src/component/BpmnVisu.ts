@@ -82,10 +82,10 @@ export default class BpmnVisu {
     }
   }
 
-  private fitHorizontal(): void {
-    console.info('Zooming to Fit Horizontal');
+  private fit(): void {
+    console.info('Zooming to Fit');
     this.graph.fit();
-    console.info('Zoom to Fit Horizontal completed');
+    console.info('Zoom to Fit completed');
   }
 
   // TODO make it work!!!
@@ -112,11 +112,8 @@ export default class BpmnVisu {
         this.graph.zoomActual();
         console.info('Zoom to actual completed');
         break;
-      case ZoomType.FitHorizontal:
-        this.fitHorizontal();
-        break;
-      case ZoomType.FitVertical:
-        this.fitVertical();
+      case ZoomType.Fit:
+        this.fit();
         break;
       case ZoomType.In:
         this.graph.zoomIn();

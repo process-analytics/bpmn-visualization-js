@@ -23,8 +23,7 @@ export enum ZoomType {
   In,
   Out,
   Actual,
-  FitHorizontal,
-  FitVertical,
+  Fit,
 }
 
 export enum PanType {
