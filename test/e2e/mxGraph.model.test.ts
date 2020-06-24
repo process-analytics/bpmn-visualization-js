@@ -16,10 +16,12 @@
 import BpmnVisu from '../../src/component/BpmnVisu';
 import { ShapeBpmnElementKind } from '../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { mxgraph } from 'ts-mxgraph';
-import { MxGraphFactoryService } from '../../src/service/MxGraphFactoryService';
 import { ShapeBpmnEventKind } from '../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
 import { MarkerConstant } from '../../src/component/mxgraph/MarkerConfigurator';
+
+declare const mxConstants: typeof mxgraph.mxConstants;
+declare const mxGeometry: typeof mxgraph.mxGeometry;
 
 export interface ExpectedFont {
   name?: string;
@@ -37,9 +39,6 @@ function expectGeometry(cell: mxgraph.mxCell, geometry: mxgraph.mxGeometry): voi
   expect(cellGeometry.width).toEqual(geometry.width);
   expect(cellGeometry.height).toEqual(geometry.height);
 }
-
-const mxConstants: typeof mxgraph.mxConstants = MxGraphFactoryService.getMxGraphProperty('mxConstants');
-const mxGeometry: typeof mxgraph.mxGeometry = MxGraphFactoryService.getMxGraphProperty('mxGeometry');
 
 describe('mxGraph model', () => {
   const xmlContent = `

@@ -13,47 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { MxGraphFactoryService } from '../../service/MxGraphFactoryService';
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape, BoundaryEventShape } from './shape/event-shapes';
 import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from './shape/gateway-shapes';
 import { ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape } from './shape/task-shapes';
 
-export default class ShapeConfigurator {
-  private mxClient: typeof mxgraph.mxClient = MxGraphFactoryService.getMxGraphProperty('mxClient');
-  private mxShape: typeof mxgraph.mxShape = MxGraphFactoryService.getMxGraphProperty('mxShape');
-  private mxCellRenderer: typeof mxgraph.mxCellRenderer = MxGraphFactoryService.getMxGraphProperty('mxCellRenderer');
+declare const mxClient: typeof mxgraph.mxClient;
+declare const mxShape: typeof mxgraph.mxShape;
+declare const mxCellRenderer: typeof mxgraph.mxCellRenderer;
+// TODO should be 'typeof mxgraph.mxSvgCanvas2D', current type definition does not declare 'minStrokeWidth'
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare const mxSvgCanvas2D: any;
 
+export default class ShapeConfigurator {
   public configureShapes(): void {
-    this.initMxShapePrototype(this.mxClient.IS_FF);
+    this.initMxShapePrototype(mxClient.IS_FF);
     this.registerShapes();
   }
 
   private registerShapes(): void {
     // events
-    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_END, EndEventShape);
-    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_START, StartEventShape);
-    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape);
-    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, CatchIntermediateEventShape);
-    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_BOUNDARY, BoundaryEventShape);
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_END, EndEventShape);
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_START, StartEventShape);
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape);
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, CatchIntermediateEventShape);
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_BOUNDARY, BoundaryEventShape);
     // gateways
-    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
-    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape);
-    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape);
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape);
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape);
     // tasks
-    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK, TaskShape);
-    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);
-    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_USER, UserTaskShape);
-    this.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape);
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK, TaskShape);
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_USER, UserTaskShape);
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape);
   }
 
   private initMxShapePrototype(isFF: boolean): void {
     // this change is needed for adding the custom attributes that permits identification of the BPMN elements
-    this.mxShape.prototype.createSvgCanvas = function() {
-      // TODO should be 'typeof mxgraph.mxSvgCanvas2D', current type definition does not declare 'minStrokeWidth'
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const mxSvgCanvas2D: any = MxGraphFactoryService.getMxGraphProperty('mxSvgCanvas2D');
+    mxShape.prototype.createSvgCanvas = function() {
       const canvas = new mxSvgCanvas2D(this.node, false);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
       canvas.pointerEventsValue = this.svgPointerEvents;
