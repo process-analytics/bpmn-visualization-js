@@ -20,8 +20,9 @@ declare const mxCodecRegistry: typeof mxgraph.mxCodecRegistry;
 declare const mxCodec: typeof mxgraph.mxCodec;
 
 export default class MxClientConfigurator {
-  public static configureMxCodec(): void {
+  public configureMxCodec(): void {
     mxCodec.prototype.decode = function(node: Element, into: Element) {
+      // Check for the existance of global constructor, throw explicit Error if not
       if (node !== null && node.nodeType === mxConstants.NODETYPE_ELEMENT) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const ctor = (window as any)[node.nodeName];

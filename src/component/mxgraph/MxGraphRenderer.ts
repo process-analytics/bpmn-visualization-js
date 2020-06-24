@@ -155,10 +155,10 @@ export default class MxGraphRenderer {
           if (edgeCenterCoordinate) {
             mxEdge.geometry.relative = false;
 
-            const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new this.mxPoint(labelBounds.x, labelBounds.y));
+            const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(labelBounds.x, labelBounds.y));
             const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
             const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
-            mxEdge.geometry.offset = new this.mxPoint(relativeLabelX, relativeLabelY);
+            mxEdge.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
           }
         }
       }
@@ -178,7 +178,7 @@ export default class MxGraphRenderer {
   }
 
   private insertVertex(parent: mxgraph.mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxgraph.mxCell {
-    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new this.mxPoint(bounds.x, bounds.y));
+    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new mxPoint(bounds.x, bounds.y));
     const mxCell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 
     if (labelBounds) {

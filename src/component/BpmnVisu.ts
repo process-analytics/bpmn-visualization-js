@@ -17,7 +17,6 @@ import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
 import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { defaultBpmnParser } from './parser/BpmnParser';
-import MxClientConfigurator from './mxgraph/MxClientConfigurator';
 
 declare const mxClient: typeof mxgraph.mxClient;
 declare const mxUtils: typeof mxgraph.mxUtils;
@@ -30,8 +29,6 @@ export default class BpmnVisu {
       if (!mxClient.isBrowserSupported()) {
         mxUtils.error('Browser is not supported!', 200, false);
       }
-      // Configure codec in mxClient
-      MxClientConfigurator.configureMxCodec();
       // Instantiate and configure Graph
       const configurator = new MxGraphConfigurator(this.container);
       this.graph = configurator.getGraph();
