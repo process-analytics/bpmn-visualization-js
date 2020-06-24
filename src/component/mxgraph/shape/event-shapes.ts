@@ -109,12 +109,16 @@ export class BoundaryEventShape extends IntermediateEventShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  protected paintOuterShape(paintParameter: PaintParameter): void {
+  public configureCanvas(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+    super.configureCanvas(c, x, y, w, h);
+
     const isInterrupting = StyleUtils.getBpmnIsInterrupting(this.style);
     if (isInterrupting === 'false') {
-      paintParameter.c.setFillColor('LightPink');
+      if (StyleUtils.getBpmnEventKind(this.style) === ShapeBpmnEventKind.TIMER) {
+        c.setFillColor('LightPink');
+      } else {
+        c.setDashed(1, null);
+      }
     }
-
-    super.paintOuterShape(paintParameter);
   }
 }
