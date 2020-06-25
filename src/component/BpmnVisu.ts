@@ -102,6 +102,8 @@ export default class BpmnVisu {
       div.style.background = 'white';
       div.style.cursor = 'move';
 
+      // TODO window position is currently at the bottom of the page
+      // the mxWindow api doc provides lot of example about how to manage and limit position
       // title: any,
       //     content: any,
       //     x: any,
@@ -113,6 +115,9 @@ export default class BpmnVisu {
       //     replaceNode?: any,
       //     style?: any,
       const wnd = new mxWindow('Outline', div, 600, 480, 200, 200, false);
+      // TODO default implementaton requires some images to be available, currently generates 404
+      // path to images can be overriden: see https://github.com/jgraph/mxgraph2/blame/5d407ab0e9d6103d1245d1ebe216dd46b5c7be5a/javascript/src/js/util/mxWindow.js#L228-L256
+      // for instance mxWindow.prototype.minimizeImage
 
       // Creates the outline in the specified div
       // and links it to the existing graph
