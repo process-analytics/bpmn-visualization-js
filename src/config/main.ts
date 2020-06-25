@@ -39,3 +39,31 @@ function handleFileSelect(evt: any): void {
 
 document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
 document.getElementById('file-selector').classList.remove('hidden');
+
+////////////////////////////////////////////////////////////////////////////////
+// if bpmn passed as request parameter, try to load it directly
+////////////////////////////////////////////////////////////////////////////////
+function log(header: string, message: unknown, ...optionalParams: unknown[]): void {
+  // eslint-disable-next-line no-console
+  console.info(header + ' ' + message, ...optionalParams);
+}
+
+function logStartup(message?: string, ...optionalParams: unknown[]): void {
+  log('[DEMO STARTUP]', message, ...optionalParams);
+}
+
+// TODO is this the best way to run this function on page load?
+(function() {
+  const log = logStartup;
+  log("Checking if 'BPMN auto loading from url parameter' is requested");
+  const parameters = new URLSearchParams(window.location.search);
+  const bpmnParameterValue = parameters.get('bpmn');
+  if (bpmnParameterValue) {
+    const bpmn = decodeURIComponent(bpmnParameterValue);
+    log('BPMN auto loading');
+    bpmnVisu.load(bpmn);
+    log('BPMN auto loading completed');
+  } else {
+    log('No BPMN auto loading');
+  }
+})();

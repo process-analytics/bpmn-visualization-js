@@ -13,18 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnVisu from '../../src/component/BpmnVisu';
 
-function initializeBpmnVisu(): BpmnVisu {
-  // insert graph container
-  const containerDiv = document.createElement('div');
-  containerDiv.id = 'graph-test';
-  document.body.insertBefore(containerDiv, document.body.firstChild);
-  // initialize graph
-  const graphTest = document.getElementById('graph-test');
-  return new BpmnVisu(graphTest);
-}
+const graphContainerId = 'graph';
 
+// TODO the bpmn content should be moved to a fixture file for reuse
 function bpmnStartTaskEnd(): string {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0x0opj6" targetNamespace="http://example.bpmn.com/schema/bpmn">
@@ -32,7 +24,7 @@ function bpmnStartTaskEnd(): string {
     <bpmn:startEvent id="StartEvent_1" name="Start Event 1">
       <bpmn:outgoing>Flow_1</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Activity_1" />
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Activity_1" name="Sequence Flow 1"/>
     <bpmn:task id="Activity_1" name="Task 1">
       <bpmn:incoming>Flow_1</bpmn:incoming>
       <bpmn:outgoing>Flow_2</bpmn:outgoing>
@@ -73,47 +65,54 @@ function bpmnStartTaskEnd(): string {
 `;
 }
 
-// TODO test the label when using mxGraph html labels (find the right selector)
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function expectLabel(cellId: string, expectedText: string): void {
-  // const cellGroups = document.querySelectorAll(`#graph-test svg g g[data-cell-id="${cellId}]`);
-  // const label = cellGroups[1] as SVGGElement;
-  // const text = label.firstChild.firstChild as SVGTextElement;
-  // expect(text.nodeName).toBe('text');
-  // expect(text.innerHTML).toBe(expectedText);
+async function expectLabel(cellId: string, expectedText?: string): Promise<void> {
+  if (!expectedText) {
+    return;
+  }
+  const svgElementHandle = await page.waitForSelector(`#${graphContainerId} svg g g[data-cell-id="${cellId}"] g foreignObject`);
+  // contains 3 div
+  expect(await svgElementHandle.evaluate(node => (node.firstChild.firstChild.firstChild as HTMLElement).innerHTML)).toBe(expectedText);
 }
 
-function expectEvent(cellId: string, expectedText: string): void {
-  const cellGroups = document.querySelectorAll(`#graph-test svg g g[data-cell-id="${cellId}"]`);
-  const event = cellGroups[0] as SVGGElement;
-  const shape = event.firstChild as SVGEllipseElement;
-  expect(shape.nodeName).toBe('ellipse');
-  expect(shape.getAttribute('rx')).toBe('18');
-  expectLabel(cellId, expectedText);
+async function expectEvent(cellId: string, expectedText: string): Promise<void> {
+  const svgElementHandle = await page.waitForSelector(`#${graphContainerId} svg g g[data-cell-id="${cellId}"]`);
+  // TODO do we test class?
+  expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('ellipse');
+  expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('rx'))).toBe('18');
+  expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('ry'))).toBe('18');
+  await expectLabel(cellId, expectedText);
 }
 
-function expectTask(cellId: string, expectedText: string): void {
-  const cellGroups = document.querySelectorAll(`#graph-test svg g g[data-cell-id="${cellId}"]`);
-  const task = cellGroups[0] as SVGGElement;
-  const shape = task.firstChild as SVGGElement;
-  expect(shape.nodeName).toBe('rect');
-  expectLabel(cellId, expectedText);
+async function expectTask(cellId: string, expectedText: string): Promise<void> {
+  const svgElementHandle = await page.waitForSelector(`#${graphContainerId} svg g g[data-cell-id="${cellId}"]`);
+  expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-task');
+  expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('rect');
+  expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('width'))).toBe('100');
+  expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('height'))).toBe('80');
+  await expectLabel(cellId, expectedText);
 }
 
-describe('mxGraph view', () => {
-  const bpmnVisu = initializeBpmnVisu();
+async function expectSequenceFlow(cellId: string, expectedText?: string): Promise<void> {
+  const svgElementHandle = await page.waitForSelector(`#${graphContainerId} svg g g[data-cell-id="${cellId}"]`);
+  expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-normal');
+  expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('path');
+  await expectLabel(cellId, expectedText);
+}
 
+describe('BpmnVisu view', () => {
   it('should display page title', async () => {
     await page.goto('http://localhost:10001');
-    await page.waitForSelector('#graph');
+    await page.waitForSelector(`#${graphContainerId}`);
     await expect(page.title()).resolves.toMatch('BPMN Visualization JS');
   });
 
-  it('DOM should contains BPMN elements', async () => {
-    bpmnVisu.load(bpmnStartTaskEnd());
+  it('should display graph in page', async () => {
+    await page.goto(`http://localhost:10001?bpmn=${bpmnStartTaskEnd()}`);
 
-    expectEvent('StartEvent_1', 'Start Event 1');
-    expectTask('Activity_1', 'Task 1');
-    expectEvent('EndEvent_1', 'End Event 1');
+    await expectEvent('StartEvent_1', 'Start Event 1');
+    await expectSequenceFlow('Flow_1', 'Sequence Flow 1');
+    await expectTask('Activity_1', 'Task 1');
+    await expectSequenceFlow('Flow_2');
+    await expectEvent('EndEvent_1', 'End Event 1');
   });
 });
