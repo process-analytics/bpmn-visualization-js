@@ -17,7 +17,7 @@ import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
 import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { defaultBpmnParser } from './parser/BpmnParser';
-import BpmnVisuOptions, { PanOptions, ZoomOptions } from './BpmnVisuOptions';
+import BpmnVisuOptions, { PanType, ZoomType } from './BpmnVisuOptions';
 import SvgExporter from './mxgraph/extension/SvgExporter';
 
 declare const mxClient: typeof mxgraph.mxClient;
@@ -52,7 +52,7 @@ export default class BpmnVisu {
           // const panKey = !evt.ctrlKey && evt.altKey;
 
           if (zoomKey) {
-            self.zoom(up ? ZoomOptions.In : ZoomOptions.Out);
+            self.zoom(up ? ZoomType.In : ZoomType.Out);
             mxEvent.consume(evt);
           }
         }
@@ -107,51 +107,51 @@ export default class BpmnVisu {
   }
 
   // TODO zoom factor should be configurable (in global BpmnVisuOptions)
-  public zoom(options: ZoomOptions): void {
+  public zoom(zoomType: ZoomType): void {
     // TODO add an option to center without zooming
     //this.graph.center(true, true);
-    switch (options) {
-      case ZoomOptions.Actual:
+    switch (zoomType) {
+      case ZoomType.Actual:
         console.info('Zooming to actual');
         this.graph.zoomActual();
         console.info('Zoom to actual completed');
         break;
-      case ZoomOptions.FitHorizontal:
+      case ZoomType.FitHorizontal:
         this.fitHorizontal();
         break;
-      case ZoomOptions.FitVertical:
+      case ZoomType.FitVertical:
         this.fitVertical();
         break;
-      case ZoomOptions.In:
+      case ZoomType.In:
         this.graph.zoomIn();
         break;
-      case ZoomOptions.Out:
+      case ZoomType.Out:
         this.graph.zoomOut();
         break;
       default:
-        throw new Error('Unsupported zoom option ' + options);
+        throw new Error('Unsupported zoom option ' + zoomType);
     }
   }
 
-  public pan(options: PanOptions): void {
-    console.info('Panning %s', options);
+  public pan(panType: PanType): void {
+    console.info('Panning %s', panType);
     const panValue = 20;
     const view = this.graph.getView();
-    switch (options) {
-      case PanOptions.VERTICAL_UP:
+    switch (panType) {
+      case PanType.VerticalUp:
         view.setTranslate(0, panValue);
         break;
-      case PanOptions.VERTICAL_DOWN:
+      case PanType.VerticalDown:
         view.setTranslate(0, -panValue);
         break;
-      case PanOptions.HORIZONTAL_LEFT:
+      case PanType.HorizontalLeft:
         view.setTranslate(panValue, 0);
         break;
-      case PanOptions.HORIZONTAL_RIGHT:
+      case PanType.HorizontalRight:
         view.setTranslate(-panValue, 0);
         break;
       default:
-        throw new Error('Unsupported pan option ' + options);
+        throw new Error('Unsupported pan option ' + panType);
     }
     console.info('panning done');
   }

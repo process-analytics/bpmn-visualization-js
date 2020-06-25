@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import BpmnVisu from '../component/BpmnVisu';
-import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { PanOptions, ZoomOptions } from '../component/BpmnVisuOptions';
+// import { DropFileUserInterface } from './component/DropFileUserInterface';
+import { PanType, ZoomType } from '../component/BpmnVisuOptions';
 
 export const bpmnVisu = new BpmnVisu(window.document.getElementById('graph'), { activatePanning: true });
 
@@ -29,7 +29,7 @@ function readAndLoadFile(f: File): void {
 }
 
 // TODO: move to UI initializer
-// TODO disabled because prevent action buttons usage
+// TODO disabled because prevent buttons usage
 //new DropFileUserInterface(window, 'drop-container', 'graph', readAndLoadFile);
 
 // TODO: make File Open Button a self contained component
@@ -46,32 +46,32 @@ document.getElementById('file-selector').classList.remove('hidden');
 // ZOOM
 // =====================================================================================================================
 document.getElementById('btn-zoom-in').onclick = function() {
-  bpmnVisu.zoom(ZoomOptions.In);
+  bpmnVisu.zoom(ZoomType.In);
 };
 document.getElementById('btn-zoom-out').onclick = function() {
-  bpmnVisu.zoom(ZoomOptions.Out);
+  bpmnVisu.zoom(ZoomType.Out);
 };
 document.getElementById('btn-zoom-actual').onclick = function() {
-  bpmnVisu.zoom(ZoomOptions.Actual);
+  bpmnVisu.zoom(ZoomType.Actual);
 };
 document.getElementById('btn-zoom-fit').onclick = function() {
-  bpmnVisu.zoom(ZoomOptions.FitHorizontal);
+  bpmnVisu.zoom(ZoomType.FitHorizontal);
 };
 
 // =====================================================================================================================
 // PAN
 // =====================================================================================================================
 document.getElementById('btn-pan-up').onclick = function() {
-  bpmnVisu.pan(PanOptions.VERTICAL_UP);
+  bpmnVisu.pan(PanType.VerticalUp);
 };
 document.getElementById('btn-pan-down').onclick = function() {
-  bpmnVisu.pan(PanOptions.VERTICAL_DOWN);
+  bpmnVisu.pan(PanType.VerticalDown);
 };
 document.getElementById('btn-pan-left').onclick = function() {
-  bpmnVisu.pan(PanOptions.HORIZONTAL_LEFT);
+  bpmnVisu.pan(PanType.HorizontalLeft);
 };
 document.getElementById('btn-pan-right').onclick = function() {
-  bpmnVisu.pan(PanOptions.HORIZONTAL_RIGHT);
+  bpmnVisu.pan(PanType.HorizontalRight);
 };
 
 // =====================================================================================================================

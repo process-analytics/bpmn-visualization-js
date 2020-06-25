@@ -19,8 +19,7 @@ export default interface BpmnVisuOptions {
   activateKeysHandler?: boolean;
 }
 
-// TODO a single option should be passed for a given instance
-export enum ZoomOptions {
+export enum ZoomType {
   In,
   Out,
   Actual,
@@ -28,9 +27,9 @@ export enum ZoomOptions {
   FitVertical,
 }
 
-export enum PanOptions {
-  VERTICAL_UP,
-  VERTICAL_DOWN,
-  HORIZONTAL_LEFT,
-  HORIZONTAL_RIGHT,
+export enum PanType {
+  VerticalUp,
+  VerticalDown,
+  HorizontalLeft,
+  HorizontalRight,
 }
