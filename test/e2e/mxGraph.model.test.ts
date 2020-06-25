@@ -93,7 +93,7 @@ describe('mxGraph model', () => {
         <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Message" id="boundary_event_interrupting_message_id">
             <semantic:messageEventDefinition/>
         </semantic:boundaryEvent>
-        <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Message" id="boundary_event_interrupting_timer_id">
+        <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Timer" id="boundary_event_interrupting_timer_id">
             <semantic:timerEventDefinition/>
         </semantic:boundaryEvent>
         <semantic:intermediateThrowEvent name="Throw None Intermediate Event" id="noneIntermediateThrowEvent" />
@@ -409,7 +409,12 @@ describe('mxGraph model', () => {
       isInterrupting: true,
       label: 'Boundary Intermediate Event Interrupting Message',
     });
-    expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_timer_id', { kind: null, eventKind: ShapeBpmnEventKind.TIMER, isInterrupting: true });
+    expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_timer_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.TIMER,
+      isInterrupting: true,
+      label: 'Boundary Intermediate Event Interrupting Timer',
+    });
 
     // activity
     expectModelContainsShape('task_1', {
