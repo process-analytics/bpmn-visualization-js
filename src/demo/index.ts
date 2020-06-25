@@ -69,3 +69,8 @@ document.getElementById('btn-export-preview').onclick = function() {
   console.info('button triggers preview');
   bpmnVisu.preview();
 };
+document.getElementById('btn-export-svg').onclick = function() {
+  // eslint-disable-next-line no-console
+  console.info('button triggers export svg');
+  bpmnVisu.exportAsSvg();
+};

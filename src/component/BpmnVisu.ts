@@ -18,6 +18,7 @@ import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { defaultBpmnParser } from './parser/BpmnParser';
 import BpmnVisuOptions, { ZoomOptions } from './BpmnVisuOptions';
+import SvgExporter from './mxgraph/extension/SvgExporter';
 
 declare const mxClient: typeof mxgraph.mxClient;
 declare const mxUtils: typeof mxgraph.mxUtils;
@@ -116,6 +117,13 @@ export default class BpmnVisu {
   public preview(): void {
     const preview = new mxPrintPreview(this.graph, 1, undefined, undefined);
     preview.open(undefined, undefined, undefined, undefined);
+  }
+
+  public exportAsSvg(): void {
+    console.info('Starting svg export');
+    const svg = new SvgExporter(this.graph).exportSvg();
+    console.info('Svg export completed');
+    console.info(svg);
   }
 
   public toggleOutline(): void {
