@@ -41,9 +41,11 @@ export default class BpmnVisu {
       const configurator = new MxGraphConfigurator(this.container, options);
 
       // Changes the zoom on mouseWheel events
+      // TODO make activation/deactivation configurable
       // eslint-disable-next-line @typescript-eslint/no-this-alias
       const self = this; // TODO replace with array function to access to this directly
       mxEvent.addMouseWheelListener(function(evt: MouseEvent, up: boolean) {
+        // TODO only manage event related to the graph or in the container of the graph
         if (!mxEvent.isConsumed(evt)) {
           // eslint-disable-next-line no-console
           console.info('MouseWheelListener: up: %s / altkey: %s / ctrlKey: %s / shiftKey: %s', up, evt.altKey, evt.ctrlKey, evt.shiftKey);
