@@ -30,24 +30,24 @@ function initializeBpmnVisu(): BpmnVisu {
   return new BpmnVisu(bpmnVisuGraphContainer);
 }
 
-function expectEvent(cellId: string): void {
+function findSvgElement(cellId: string): SVGGeometryElement {
   const cellGroups = document.querySelectorAll(`#${graphContainerId} svg g g[data-cell-id="${cellId}"]`);
   const event = cellGroups[0] as SVGGElement;
-  const shape = event.firstChild as SVGEllipseElement;
-  expect(shape.nodeName).toBe('ellipse');
+  return event.firstChild as SVGGeometryElement;
+}
+
+function expectEvent(cellId: string): void {
+  expect(findSvgElement(cellId).nodeName).toBe('ellipse');
 }
 
 function expectTask(cellId: string): void {
-  const cellGroups = document.querySelectorAll(`#${graphContainerId} svg g g[data-cell-id="${cellId}"]`);
-  const task = cellGroups[0] as SVGGElement;
-  const shape = task.firstChild as SVGGElement;
-  expect(shape.nodeName).toBe('rect');
+  expect(findSvgElement(cellId).nodeName).toBe('rect');
 }
 
-describe('BpmnVisu dom only checks', () => {
+describe('BpmnVisu DOM only checks', () => {
   const bpmnVisu = initializeBpmnVisu();
 
-  it('DOM should contains BPMN elements', async () => {
+  it('DOM should contains BPMN elements when loading simple-start-task-end.bpmn', async () => {
     bpmnVisu.load(bpmnStartTaskEnd);
 
     expectEvent('StartEvent_1');
