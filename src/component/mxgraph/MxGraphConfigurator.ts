@@ -65,10 +65,27 @@ export default class MxGraphConfigurator {
     // This also prevents requesting unavailable images (see #185) as we don't override mxGraph folding default images.
     this.graph.foldingEnabled = false;
 
-    // panning configuration
+    // TODO backport this to fix https://github.com/process-analytics/bpmn-visualization-js/issues/185
+    this.graph.foldingEnabled = false;
+
+    this.applyDefaultGraphConfiguration();
+
+    // TODO dynamic option to move elsewhere
+    if (options?.activatePanning) {
+      // eslint-disable-next-line no-console
+      console.info('activate panning');
+      this.graph.setPanning(true);
+    }
+  }
+
+  private applyDefaultGraphConfiguration(): void {
+    this.applyDefaultGraphConfigurationForPanning();
+    this.applyDefaultConfigurationForZoom();
+  }
+
+  private applyDefaultGraphConfigurationForPanning(): void {
     this.graph.panningHandler.useLeftButtonForPanning = true;
     this.graph.panningHandler.ignoreCell = true; // Specifies if panning should be active even if there is a cell under the mouse pointer
-
     // TODO experiment this settings because currently panning increases makes scrollbars to appears when going right and/or bottom
     // Specifies if the size of the graph should be automatically extended if the mouse goes near the container edge while dragging.
     // This is only taken into account if the container has scrollbars.  Default is true.  See autoScroll.
@@ -79,8 +96,8 @@ export default class MxGraphConfigurator {
     // Default is true.
     // this.graph.useScrollbarsForPanning = false;
 
-    // this.graph.scroautoExtend = false;
-    //this.graph.translateToScrollPosition = false;
+    // this.graph.scrollAutoExtend = false;
+    // this.graph.translateToScrollPosition = false;
 
     // Specifies if the graph should automatically scroll if the mouse goes near the container edge while dragging.  This is only taken into account if the container has scrollbars.  Default is true.
     //
@@ -93,13 +110,15 @@ export default class MxGraphConfigurator {
 
     // allowAutoPanning
     // Specifies if panning via panGraph should be allowed to implement autoscroll if no scrollbars are available in scrollPointToVisible.  To enable panning inside the container, near the edge, set mxPanningManager.border to a positive value.  Default is false.
+  }
 
-    // TODO dynamic option to move elsewhere
-    if (options?.activatePanning) {
-      // eslint-disable-next-line no-console
-      console.info('activate panning');
-      this.graph.setPanning(true);
-    }
+  private applyDefaultConfigurationForZoom(): void {
+    // zoomFactor
+    // Specifies the factor used for zoomIn and zoomOut.  Default is 1.2 (120%).
+    // keepSelectionVisibleOnZoom
+    // Specifies if the viewport should automatically contain the selection cells after a zoom operation.  Default is false.
+    // centerZoom
+    // Specifies if the zoom operations should go into the center of the actual diagram rather than going from top, left.  Default is true.
     // this.graph.centerZoom = true;
   }
 }
