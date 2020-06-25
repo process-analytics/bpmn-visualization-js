@@ -25,6 +25,7 @@ function initializeBpmnVisu(): BpmnVisu {
   return new BpmnVisu(graphTest);
 }
 
+// TODO duplication with view tests
 function bpmnStartTaskEnd(): string {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0x0opj6" targetNamespace="http://example.bpmn.com/schema/bpmn">
@@ -73,23 +74,11 @@ function bpmnStartTaskEnd(): string {
 `;
 }
 
-// TODO test the label when using mxGraph html labels (find the right selector)
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function expectLabel(cellId: string, expectedText: string): void {
-  // const cellGroups = document.querySelectorAll(`#graph-test svg g g[data-cell-id="${cellId}]`);
-  // const label = cellGroups[1] as SVGGElement;
-  // const text = label.firstChild.firstChild as SVGTextElement;
-  // expect(text.nodeName).toBe('text');
-  // expect(text.innerHTML).toBe(expectedText);
-}
-
 function expectEvent(cellId: string, expectedText: string): void {
   const cellGroups = document.querySelectorAll(`#graph-test svg g g[data-cell-id="${cellId}"]`);
   const event = cellGroups[0] as SVGGElement;
   const shape = event.firstChild as SVGEllipseElement;
   expect(shape.nodeName).toBe('ellipse');
-  expect(shape.getAttribute('rx')).toBe('18');
-  expectLabel(cellId, expectedText);
 }
 
 function expectTask(cellId: string, expectedText: string): void {
@@ -97,7 +86,6 @@ function expectTask(cellId: string, expectedText: string): void {
   const task = cellGroups[0] as SVGGElement;
   const shape = task.firstChild as SVGGElement;
   expect(shape.nodeName).toBe('rect');
-  expectLabel(cellId, expectedText);
 }
 
 describe('BpmnVisu dom only checks', () => {
