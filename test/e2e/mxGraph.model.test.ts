@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import BpmnVisu from '../../src/component/BpmnVisu';
 import { ShapeBpmnElementKind } from '../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { mxgraph } from 'ts-mxgraph';
@@ -33,7 +32,7 @@ export interface ExpectedFont {
   isStrikeThrough?: boolean;
 }
 
-function expectGeometry(cell: mxgraph.mxCell, geometry: mxgraph.mxGeometry): void {
+function expectGeometry(cell: mxCell, geometry: mxgraph.mxGeometry): void {
   const cellGeometry = cell.getGeometry();
   expect(cellGeometry.x).toEqual(geometry.x);
   expect(cellGeometry.y).toEqual(geometry.y);
@@ -237,7 +236,7 @@ describe('mxGraph model', () => {
 `;
   const bpmnVisu = new BpmnVisu(null);
 
-  function expectFont(state: mxgraph.mxCellState, expectedFont: ExpectedFont): void {
+  function expectFont(state: mxCellState, expectedFont: ExpectedFont): void {
     if (expectedFont) {
       if (expectedFont.isBold) {
         expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_BOLD);
@@ -265,7 +264,7 @@ describe('mxGraph model', () => {
     expect(cell).toBeUndefined();
   }
 
-  function expectModelContainsCell(cellId: string): mxgraph.mxCell {
+  function expectModelContainsCell(cellId: string): mxCell {
     const cell = bpmnVisu.graph.model.getCell(cellId);
     expect(cell).not.toBeUndefined();
     expect(cell).not.toBeNull();
@@ -273,7 +272,7 @@ describe('mxGraph model', () => {
   }
 
   // styleShape is only required when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented)
-  function expectModelContainsShape(cellId: string, shapeKind: ShapeBpmnElementKind, expectedFont?: ExpectedFont, styleShape?: string): mxgraph.mxCell {
+  function expectModelContainsShape(cellId: string, shapeKind: ShapeBpmnElementKind, expectedFont?: ExpectedFont, styleShape?: string): mxCell {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(shapeKind);
     const state = bpmnVisu.graph.getView().getState(cell);
@@ -284,7 +283,7 @@ describe('mxGraph model', () => {
     return cell;
   }
 
-  function expectModelContainsEdge(cellId: string, kind: SequenceFlowKind, startArrow?: string, expectedFont?: ExpectedFont): mxgraph.mxCell {
+  function expectModelContainsEdge(cellId: string, kind: SequenceFlowKind, startArrow?: string, expectedFont?: ExpectedFont): mxCell {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(kind);
 
@@ -294,7 +293,7 @@ describe('mxGraph model', () => {
     return cell;
   }
 
-  function expectModelContainsBpmnEvent(cellId: string, shapeKind: ShapeBpmnElementKind, bpmnEventKind: ShapeBpmnEventKind, expectedFont?: ExpectedFont): mxgraph.mxCell {
+  function expectModelContainsBpmnEvent(cellId: string, shapeKind: ShapeBpmnElementKind, bpmnEventKind: ShapeBpmnEventKind, expectedFont?: ExpectedFont): mxCell {
     const cell = expectModelContainsShape(cellId, shapeKind, expectedFont);
     expect(cell.style).toContain(`bpmn.eventKind=${bpmnEventKind}`);
     return cell;
