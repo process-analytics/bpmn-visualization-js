@@ -22,9 +22,9 @@ declare const mxClient: typeof mxgraph.mxClient;
 declare const mxUtils: typeof mxgraph.mxUtils;
 
 export default class BpmnVisu {
-  public readonly graph: mxgraph.mxGraph;
+  public readonly graph: mxGraph;
 
-  constructor(protected container: Element) {
+  constructor(protected container: HTMLElement) {
     try {
       if (!mxClient.isBrowserSupported()) {
         mxUtils.error('Browser is not supported!', 200, false);

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
 import StyleConfigurator from './StyleConfigurator';
 import ShapeConfigurator from './ShapeConfigurator';
 import MarkerConfigurator from './MarkerConfigurator';
@@ -29,7 +28,7 @@ import MxClientConfigurator from './MxClientConfigurator';
 export default class MxGraphConfigurator {
   private readonly graph: mxGraph;
 
-  constructor(container: Element) {
+  constructor(container: HTMLElement) {
     this.configureGraph();
     this.graph = new mxGraph(container, new mxGraphModel(null));
     new StyleConfigurator(this.graph).configureStyles();
