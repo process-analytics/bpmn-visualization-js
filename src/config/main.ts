@@ -15,6 +15,7 @@
  */
 import BpmnVisu from '../component/BpmnVisu';
 import { DropFileUserInterface } from '../component/ui_ux/DropFileUserInterface';
+import { ZoomOptions } from '../component/BpmnVisuOptions';
 
 export const bpmnVisu = new BpmnVisu(window.document.getElementById('graph'), { activatePanning: true });
 
@@ -39,3 +40,16 @@ function handleFileSelect(evt: any): void {
 
 document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
 document.getElementById('file-selector').classList.remove('hidden');
+
+document.getElementById('btn-zoom-in').onclick = function() {
+  bpmnVisu.zoom(ZoomOptions.In);
+};
+document.getElementById('btn-zoom-out').onclick = function() {
+  bpmnVisu.zoom(ZoomOptions.Out);
+};
+document.getElementById('btn-zoom-actual').onclick = function() {
+  bpmnVisu.zoom(ZoomOptions.Actual);
+};
+document.getElementById('btn-zoom-fit').onclick = function() {
+  bpmnVisu.zoom(ZoomOptions.Fit);
+};

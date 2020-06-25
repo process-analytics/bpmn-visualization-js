@@ -18,3 +18,11 @@ export default interface BpmnVisuOptions {
   activateOutline?: boolean;
   activateKeysHandler?: boolean;
 }
+
+// TODO a single option should be passed for a given instance
+export enum ZoomOptions {
+  In,
+  Out,
+  Actual,
+  Fit,
+}

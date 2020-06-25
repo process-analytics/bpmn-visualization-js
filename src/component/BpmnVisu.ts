@@ -20,7 +20,7 @@ import { defaultBpmnParser } from './parser/BpmnParser';
 
 declare const mxClient: typeof mxgraph.mxClient;
 declare const mxUtils: typeof mxgraph.mxUtils;
-import BpmnVisuOptions from './BpmnVisuOptions';
+import BpmnVisuOptions, { ZoomOptions } from './BpmnVisuOptions';
 
 export default class BpmnVisu {
   public readonly graph: mxgraph.mxGraph;
@@ -49,6 +49,26 @@ export default class BpmnVisu {
       // TODO error handling
       mxUtils.alert('Cannot load bpmn diagram: ' + e.message);
       throw e;
+    }
+  }
+
+  // TODO zoom factor should be configurable (in global BpmnVisuOptions)
+  public zoom(options: ZoomOptions): void {
+    switch (options) {
+      case ZoomOptions.Actual:
+        this.graph.zoomActual();
+        break;
+      case ZoomOptions.Fit:
+        this.graph.fit();
+        break;
+      case ZoomOptions.In:
+        this.graph.zoomIn();
+        break;
+      case ZoomOptions.Out:
+        this.graph.zoomOut();
+        break;
+      default:
+        throw new Error('Unsupported zoom option');
     }
   }
 }
