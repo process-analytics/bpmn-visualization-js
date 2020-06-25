@@ -94,8 +94,6 @@ export default class MxGraphRenderer {
 
     const bpmnElement = bpmnCell.bpmnElement;
     if (bpmnCell instanceof Shape) {
-      styleValues.set(StyleConstant.BPMN_STYLE_IS_EXPANDED, String(bpmnCell.isExpanded));
-
       if (bpmnElement instanceof ShapeBpmnEvent) {
         styleValues.set(StyleConstant.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
       }
@@ -106,6 +104,7 @@ export default class MxGraphRenderer {
 
       if (bpmnElement instanceof ShapeBpmnSubProcess) {
         styleValues.set(StyleConstant.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
+        styleValues.set(StyleConstant.BPMN_STYLE_IS_EXPANDED, String(bpmnCell.isExpanded));
       }
     }
 

@@ -110,7 +110,12 @@ export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: string, numberOfEx
 
 export function verifyShape(shape: Shape, expectedShape: ExpectedShape): void {
   expect(shape.id).toEqual(expectedShape.shapeId);
-  expect(shape.isExpanded).toEqual(expectedShape.isExpanded);
+
+  if (shape.isExpanded) {
+    expect(shape.isExpanded).toEqual(expectedShape.isExpanded);
+  } else {
+    expect(shape.isExpanded).toBeFalsy();
+  }
 
   const bpmnElement = shape.bpmnElement;
   expect(bpmnElement.id).toEqual(expectedShape.bpmnElementId);
