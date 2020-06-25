@@ -4,46 +4,92 @@
     <meta charset="UTF-8">
     <title>BPMN Visualization JS</title>
     <link href="./static/css/main.css" rel="stylesheet">
+    <style>
+        .btn-download-svg {
+            display: inline-block;
+            content: "";
+            /*background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z' clip-rule='evenodd'/></svg>");*/
+            background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8z'/><path fill-rule='evenodd' d='M5 7.5a.5.5 0 0 1 .707 0L8 9.793 10.293 7.5a.5.5 0 1 1 .707.707l-2.646 2.647a.5.5 0 0 1-.708 0L5 8.207A.5.5 0 0 1 5 7.5z'/><path fill-rule='evenodd' d='M8 1a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0v-8A.5.5 0 0 1 8 1z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: 1rem 1rem;
+        }
+    </style>
 </head>
 <body>
 <!--    <div class="info-centered"><p>(either drop a file here)</p></div>-->
-    <div id="btn-container">
-        <div id="btn-group-action">
-            <div id="file-selector" class="hidden">
-                <input type="file" id="bpmn-file" name="file"/>
-                <label for="bpmn-file" class="btn"><span>open BPMN file</span></label>
-            </div>
-            <button id="btn-export-svg">Save SVG</button>
-            <button id="btn-export-png">Save PNG</button>
-            <button id="btn-export-preview">Preview</button>
+<div id="btn-container">
+    <div id="btn-group-action">
+        <div id="file-selector" class="hidden">
+            <input type="file" id="bpmn-file" name="file"/>
+            <label for="bpmn-file" class="btn"><span>open BPMN file</span></label>
         </div>
-        <div id="btn-group-zoom">
-            <button id="btn-zoom-in">+</button>
-            <button id="btn-zoom-out">-</button>
-            <button id="btn-zoom-actual">Reset to Actual</button>
-            <button id="btn-zoom-fit">Horizontal Fit</button>
-<!--            <button id="btn-zoom-fit-vertical">Vertical Fit (not working)</button>-->
-        </div>
-        <div id="btn-group-pan">
-            <button id="btn-pan-up">Up</button>
-            <button id="btn-pan-down">Down</button>
-            <button id="btn-pan-left">Left</button>
-            <button id="btn-pan-right">Right</button>
-        </div>
-        <div id="btn-group-general">
-            <div>
-                <input type="checkbox" id="btn-outline" name="btn-outline">
-                <label for="btn-outline">Outline</label>
-            </div>
-    <!--        <div>-->
-    <!--            <input type="checkbox" id="btn-panning" name="btn-panning" checked>-->
-    <!--            <label for="btn-panning">Panning</label>-->
-    <!--        </div>-->
-        </div>
-    </div>
-    <div id="graph"></div>
+        <input type="button" class="btn-download-svg" id="btn-export-svg2" title="Download as SVG image v2"/>
 
-    <!-- load global settings -->
+        <button id="btn-export-svg" title="Download as SVG image">
+            <!-- from https://icons.getbootstrap.com/icons/download/ -->
+            <svg class="bi bi-download" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8z"/>
+                <path fill-rule="evenodd" d="M5 7.5a.5.5 0 0 1 .707 0L8 9.793 10.293 7.5a.5.5 0 1 1 .707.707l-2.646 2.647a.5.5 0 0 1-.708 0L5 8.207A.5.5 0 0 1 5 7.5z"/>
+                <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0v-8A.5.5 0 0 1 8 1z"/>
+            </svg>
+        </button>
+        <button id="btn-export-png" title="Download as PNG image">
+            <!-- from https://icons.getbootstrap.com/icons/image/ -->
+            <svg class="bi bi-image" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M14.002 2h-12a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zm-12-1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12z"/>
+                <path d="M10.648 7.646a.5.5 0 0 1 .577-.093L15.002 9.5V14h-14v-2l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71z"/>
+                <path fill-rule="evenodd" d="M4.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+            </svg>
+        </button>
+        <button id="btn-export-preview">Preview</button>
+    </div>
+    <div id="btn-group-zoom">
+        <button id="btn-zoom-in">+</button>
+        <button id="btn-zoom-out">-</button>
+        <button id="btn-zoom-actual">Reset to Actual</button>
+        <button id="btn-zoom-fit">Horizontal Fit</button>
+        <!--            <button id="btn-zoom-fit-vertical">Vertical Fit (not working)</button>-->
+    </div>
+    <div id="btn-group-pan">
+        <button id="btn-pan-up" title="Pan/Scroll Up">
+            Up
+        </button>
+        <button id="btn-pan-down" title="Pan/Scroll Down">
+            <!-- https://icons.getbootstrap.com/icons/arrow-down/ -->
+            <svg class="bi bi-arrow-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M4.646 9.646a.5.5 0 0 1 .708 0L8 12.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/>
+                <path fill-rule="evenodd" d="M8 2.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V3a.5.5 0 0 1 .5-.5z"/>
+            </svg>
+        </button>
+        <button id="btn-pan-left" title="Pan/Scroll Left">
+            <!-- https://icons.getbootstrap.com/icons/arrow-left-circle-fill/ -->
+            <svg class="bi bi-arrow-left-circle-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.646 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L6.207 7.5H11a.5.5 0 0 1 0 1H6.207l2.147 2.146z"/>
+            </svg>
+        </button>
+        <button id="btn-pan-right" title="Pan/Scroll Right">
+            <!-- https://icons.getbootstrap.com/icons/arrow-right-circle/ -->
+            <svg class="bi bi-arrow-right-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path fill-rule="evenodd" d="M7.646 11.354a.5.5 0 0 1 0-.708L10.293 8 7.646 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
+                <path fill-rule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+        </button>
+    </div>
+    <div id="btn-group-general">
+        <div>
+            <input type="checkbox" id="btn-outline" name="btn-outline">
+            <label for="btn-outline">Outline</label>
+        </div>
+        <!--        <div>-->
+        <!--            <input type="checkbox" id="btn-panning" name="btn-panning" checked>-->
+        <!--            <label for="btn-panning">Panning</label>-->
+        <!--        </div>-->
+    </div>
+</div>
+<div id="graph"></div>
+
+<!-- load global settings -->
     <script src="./static/js/configureMxGraphGlobals.js"></script>
     <!-- load mxGraph client library -->
     <script src="./static/js/mxClient.js"></script>
