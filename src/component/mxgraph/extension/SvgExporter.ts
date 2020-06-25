@@ -241,6 +241,7 @@ export default class SvgExporter {
   /**
    * Hook for creating the canvas used in getSvg.
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private updateSvgLinks(node: Element, target: string, removeCustom: boolean): void {
     const links = node.getElementsByTagName('a');
 

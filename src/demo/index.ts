@@ -19,7 +19,7 @@ import { PanType, ZoomType } from '../component/BpmnVisuOptions';
 
 export const bpmnVisu = new BpmnVisu(window.document.getElementById('graph'), { activatePanning: true });
 
-function log(message?: any, ...optionalParams: any[]): void {
+function log(message?: unknown, ...optionalParams: unknown[]): void {
   // eslint-disable-next-line no-console
   console.info('[DEMO] ' + message, ...optionalParams);
 }
