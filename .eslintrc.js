@@ -12,7 +12,6 @@ module.exports = {
   },
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
-    '@typescript-eslint/triple-slash-reference': 'off',
     '@typescript-eslint/explicit-function-return-type': [
       'warn',
       {
