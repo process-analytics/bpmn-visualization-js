@@ -23,6 +23,7 @@ declare const mxClient: typeof mxgraph.mxClient;
 declare const mxUtils: typeof mxgraph.mxUtils;
 declare const mxEvent: typeof mxgraph.mxEvent;
 declare const mxOutline: typeof mxgraph.mxOutline;
+declare const mxPrintPreview: typeof mxgraph.mxPrintPreview;
 declare const mxWindow: typeof mxgraph.mxWindow;
 
 export default class BpmnVisu {
@@ -110,6 +111,11 @@ export default class BpmnVisu {
       default:
         throw new Error('Unsupported zoom option');
     }
+  }
+
+  public preview(): void {
+    const preview = new mxPrintPreview(this.graph, 1, undefined, undefined);
+    preview.open(undefined, undefined, undefined, undefined);
   }
 
   public toggleOutline(): void {

@@ -64,3 +64,8 @@ document.getElementById('btn-zoom-fit').onclick = function() {
 document.getElementById('btn-outline').onclick = function() {
   bpmnVisu.toggleOutline();
 };
+document.getElementById('btn-export-preview').onclick = function() {
+  // eslint-disable-next-line no-console
+  console.info('button triggers preview');
+  bpmnVisu.preview();
+};

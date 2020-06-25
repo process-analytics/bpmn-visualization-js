@@ -6,12 +6,17 @@
     <link href="./static/css/main.css" rel="stylesheet">
 </head>
 <body>
-    <div id="file-selector" class="hidden">
-        <input type="file" id="bpmn-file" name="file"/>
-        <label for="bpmn-file" class="btn"><span>open BPMN file</span></label>
-    </div>
-    <div class="info-centered"><p>(either drop a file here)</p></div>
+<!--    <div class="info-centered"><p>(either drop a file here)</p></div>-->
     <div id="btn-container">
+        <div id="btn-group-general">
+            <div id="file-selector" class="hidden">
+                <input type="file" id="bpmn-file" name="file"/>
+                <label for="bpmn-file" class="btn"><span>open BPMN file</span></label>
+            </div>
+            <button id="btn-export-png">Save PNG</button>
+            <button id="btn-export-svg">Save SVG</button>
+            <button id="btn-export-preview">Preview</button>
+        </div>
         <div id="btn-group-zoom">
             <button id="btn-zoom-in">+</button>
             <button id="btn-zoom-out">-</button>
