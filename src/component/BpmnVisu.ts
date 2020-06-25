@@ -67,6 +67,7 @@ export default class BpmnVisu {
 
   // TODO zoom factor should be configurable (in global BpmnVisuOptions)
   public zoom(options: ZoomOptions): void {
+    // this.graph.centerZoom = false;
     switch (options) {
       case ZoomOptions.Actual:
         this.graph.zoomActual();
@@ -133,6 +134,12 @@ export default class BpmnVisu {
       // Creates the outline in the specified div
       // and links it to the existing graph
       const outline = new mxOutline(this.graph, div);
+      outline.setZoomEnabled(false);
+      // TODO review carefully as this can impact performance
+      //outline.graphRenderHint = 'fastest'; // have no effect on svg browser
+      outline.updateOnPan = true;
+      outline.labelsVisible = true; // TODO see how we can make it work
+      // outline.hilabelsVisible = true;
       wnd.setClosable(false);
       wnd.setResizable(false);
       // TODO missing in types declaration
