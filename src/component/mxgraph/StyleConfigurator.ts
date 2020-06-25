@@ -98,6 +98,8 @@ export default class StyleConfigurator {
     style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
     style[mxConstants.STYLE_HORIZONTAL] = false;
     style[mxConstants.STYLE_FILLCOLOR] = '#d3d2d1';
+    // TODO check pool fill color (none or fill, relevant for image export)
+    style[mxConstants.STYLE_SWIMLANE_FILLCOLOR] = StyleConstant.DEFAULT_FILL_COLOR;
 
     // TODO manage pool text area rendering
     // most of BPMN pool are ok when setting it to 30
@@ -113,6 +115,10 @@ export default class StyleConfigurator {
     style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
     style[mxConstants.STYLE_HORIZONTAL] = false;
     style[mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
+    // TODO check lane fill color (none or fill, relevant for image export)
+    const fillColor = 'none'; // StyleConstant.DEFAULT_FILL_COLOR
+    style[mxConstants.STYLE_FILLCOLOR] = 'swimlane';
+    // style[this.mxConstants.STYLE_SWIMLANE_FILLCOLOR] = StyleConstant.DEFAULT_FILL_COLOR;
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.LANE, style);
   }
