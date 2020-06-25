@@ -41,6 +41,9 @@ function handleFileSelect(evt: any): void {
 document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
 document.getElementById('file-selector').classList.remove('hidden');
 
+// =====================================================================================================================
+// ZOOM
+// =====================================================================================================================
 document.getElementById('btn-zoom-in').onclick = function() {
   bpmnVisu.zoom(ZoomOptions.In);
 };
@@ -52,4 +55,11 @@ document.getElementById('btn-zoom-actual').onclick = function() {
 };
 document.getElementById('btn-zoom-fit').onclick = function() {
   bpmnVisu.zoom(ZoomOptions.Fit);
+};
+
+// =====================================================================================================================
+// General action
+// =====================================================================================================================
+document.getElementById('btn-outline').onclick = function() {
+  bpmnVisu.toggleOutline();
 };
