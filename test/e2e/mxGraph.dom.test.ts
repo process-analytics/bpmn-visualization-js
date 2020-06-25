@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as fs from 'fs';
-import * as path from 'path';
 import BpmnVisu from '../../src/component/BpmnVisu';
+import { readFileSync } from './e2e-helpers';
 
-const bpmnStartTaskEnd = fs.readFileSync(path.join(__dirname, '../fixtures/bpmn/simple-start-task-end.bpmn'), 'utf-8');
 const graphContainerId = 'bpmn-visualization-graph';
 
 function initializeBpmnVisu(): BpmnVisu {
@@ -45,10 +43,8 @@ function expectTask(cellId: string): void {
 }
 
 describe('BpmnVisu DOM only checks', () => {
-  const bpmnVisu = initializeBpmnVisu();
-
   it('DOM should contains BPMN elements when loading simple-start-task-end.bpmn', async () => {
-    bpmnVisu.load(bpmnStartTaskEnd);
+    initializeBpmnVisu().load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
 
     expectEvent('StartEvent_1');
     expectTask('Activity_1');
