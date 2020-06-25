@@ -35,13 +35,7 @@ export default class MxGraphConfigurator {
 
   constructor(container: Element, options?: BpmnVisuOptions) {
     this.graph = new mxGraph(container, new mxGraphModel());
-    this.configureGraph();
-    if (options) {
-      if (options.activatePanning) {
-        this.graph.setPanning(true);
-        this.graph.useScrollbarsForPanning = false;
-      }
-    }
+    this.configureGraph(options);
 
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
@@ -53,10 +47,13 @@ export default class MxGraphConfigurator {
     return this.graph;
   }
 
-  private configureGraph(): void {
-    this.graph.setCellsLocked(true);
-    this.graph.setCellsSelectable(false);
+  private configureGraph(options?: BpmnVisuOptions): void {
     this.graph.setEdgeLabelsMovable(false);
+    this.graph.setVertexLabelsMovable(false);
+    this.graph.setCellsLocked(false); // true value prevents panning to work
+    // the following is needed when cells are not locked for panning
+    this.graph.setCellsSelectable(false);
+    this.graph.setCellsMovable(false);
 
     this.graph.setHtmlLabels(true); // required for wrapping
 
@@ -67,5 +64,22 @@ export default class MxGraphConfigurator {
     // Disable folding for container mxCell (pool, lane, sub process, call activity) because we don't need it.
     // This also prevents requesting unavailable images (see #185) as we don't override mxGraph folding default images.
     this.graph.foldingEnabled = false;
+
+    // panning configuration
+    this.graph.panningHandler.useLeftButtonForPanning = true;
+    this.graph.panningHandler.ignoreCell = true; // Specifies if panning should be active even if there is a cell under the mouse pointer
+
+    // TODO experiment this settings
+    //this.graph.autoExtend = false;
+    // this.graph.scroautoExtend = false;
+    //this.graph.translateToScrollPosition = false;
+
+    // TODO dynamic option to move elsewhere
+    if (options?.activatePanning) {
+      // eslint-disable-next-line no-console
+      console.info('activate panning');
+      this.graph.setPanning(true);
+    }
+    // this.graph.centerZoom = true;
   }
 }
