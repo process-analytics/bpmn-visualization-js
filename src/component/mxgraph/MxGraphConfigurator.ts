@@ -29,8 +29,8 @@ export default class MxGraphConfigurator {
   private readonly graph: mxGraph;
 
   constructor(container: HTMLElement) {
-    this.configureGraph();
     this.graph = new mxGraph(container, new mxGraphModel(null));
+    this.configureGraph();
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
     new MarkerConfigurator().configureMarkers();
