@@ -18,7 +18,7 @@ import { mxgraph } from 'ts-mxgraph';
 declare const mxPoint: typeof mxgraph.mxPoint;
 
 export default class CoordinatesTranslator {
-  constructor(readonly graph: mxgraph.mxGraph) {}
+  constructor(readonly graph: mxGraph) {}
 
   /**
    * Compute an absolute coordinate in relative coordinates in the parent cell referential.
@@ -40,7 +40,7 @@ export default class CoordinatesTranslator {
   // The translation is generally negative
   private getTranslateForRoot(cell: mxCell): mxgraph.mxPoint {
     const model = this.graph.getModel();
-    const offset = new this.mxPoint(0, 0);
+    const offset = new mxPoint(0, 0);
 
     while (cell != null) {
       const geo = model.getGeometry(cell);
@@ -60,7 +60,7 @@ export default class CoordinatesTranslator {
    *
    * The center coordinates are given in the same referential as the `mxCell`, so relative to its parent.
    */
-  public computeEgeCenter(mxEdge: mxgraph.mxCell): mxgraph.mxPoint {
+  public computeEgeCenter(mxEdge: mxCell): mxgraph.mxPoint {
     const points: mxgraph.mxPoint[] = mxEdge.geometry.points;
 
     const p0 = points[0];

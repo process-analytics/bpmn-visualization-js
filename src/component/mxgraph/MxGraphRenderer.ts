@@ -29,8 +29,6 @@ declare const mxPoint: typeof mxgraph.mxPoint;
 declare const mxConstants: typeof mxgraph.mxConstants;
 
 export default class MxGraphRenderer {
-  private mxPoint: typeof mxgraph.mxPoint = mxPoint;
-  private mxConstants: typeof mxgraph.mxConstants = mxConstants;
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator) {}
 
   public render(bpmnModel: BpmnModel): void {
@@ -179,7 +177,7 @@ export default class MxGraphRenderer {
     return this.graph.getModel().getCell(id);
   }
 
-  private insertVertex(parent: mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxgraph.mxCell {
+  private insertVertex(parent: mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxCell {
     const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new mxPoint(bounds.x, bounds.y));
     const mxCell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 
