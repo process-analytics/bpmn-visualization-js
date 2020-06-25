@@ -44,10 +44,6 @@ export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
   eventKind: ShapeBpmnEventKind;
 }
 
-export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
-  eventKind: ShapeBpmnEventKind;
-}
-
 export interface ExpectedEdgeModelElement {
   label?: string;
   kind: SequenceFlowKind;
