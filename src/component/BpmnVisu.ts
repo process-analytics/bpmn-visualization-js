@@ -17,7 +17,7 @@ import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
 import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { defaultBpmnParser } from './parser/BpmnParser';
-import BpmnVisuOptions, { ZoomOptions } from './BpmnVisuOptions';
+import BpmnVisuOptions, { PanOptions, ZoomOptions } from './BpmnVisuOptions';
 import SvgExporter from './mxgraph/extension/SvgExporter';
 
 declare const mxClient: typeof mxgraph.mxClient;
@@ -43,8 +43,8 @@ export default class BpmnVisu {
       // Changes the zoom on mouseWheel events
       // eslint-disable-next-line @typescript-eslint/no-this-alias
       const self = this; // TODO replace with array function to access to this directly
-      this.mxEvent.addMouseWheelListener(function(evt: MouseEvent, up: boolean) {
-        if (!self.mxEvent.isConsumed(evt)) {
+      mxEvent.addMouseWheelListener(function(evt: MouseEvent, up: boolean) {
+        if (!mxEvent.isConsumed(evt)) {
           // eslint-disable-next-line no-console
           console.info('MouseWheelListener: up: %s / altkey: %s / ctrlKey: %s / shiftKey: %s', up, evt.altKey, evt.ctrlKey, evt.shiftKey);
 
@@ -53,7 +53,7 @@ export default class BpmnVisu {
 
           if (zoomKey) {
             self.zoom(up ? ZoomOptions.In : ZoomOptions.Out);
-            self.mxEvent.consume(evt);
+            mxEvent.consume(evt);
           }
         }
       }, null);
@@ -129,12 +129,30 @@ export default class BpmnVisu {
         this.graph.zoomOut();
         break;
       default:
-        throw new Error('Unsupported zoom option');
+        throw new Error('Unsupported zoom option ' + options);
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  public pan(): void {}
+  public pan(options: PanOptions): void {
+    const panValue = 20;
+    switch (options) {
+      case PanOptions.VERTICAL_UP:
+        this.graph.panGraph(0, panValue);
+        break;
+      case PanOptions.VERTICAL_DOWN:
+        this.graph.panGraph(0, -panValue);
+        break;
+      case PanOptions.HORIZONTAL_LEFT:
+        this.graph.panGraph(panValue, 0);
+        break;
+      case PanOptions.HORIZONTAL_RIGHT:
+        this.graph.panGraph(-panValue, 0);
+        break;
+      default:
+        throw new Error('Unsupported pan option ' + options);
+    }
+  }
 
   public preview(): void {
     const preview = new mxPrintPreview(this.graph, 1, undefined, undefined);

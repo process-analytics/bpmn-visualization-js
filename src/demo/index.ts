@@ -15,7 +15,7 @@
  */
 import BpmnVisu from '../component/BpmnVisu';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { ZoomOptions } from '../component/BpmnVisuOptions';
+import { PanOptions, ZoomOptions } from '../component/BpmnVisuOptions';
 
 export const bpmnVisu = new BpmnVisu(window.document.getElementById('graph'), { activatePanning: true });
 
@@ -59,14 +59,30 @@ document.getElementById('btn-zoom-fit').onclick = function() {
 };
 
 // =====================================================================================================================
-// General action
+// PAN
+// =====================================================================================================================
+document.getElementById('btn-pan-up').onclick = function() {
+  bpmnVisu.pan(PanOptions.VERTICAL_UP);
+};
+document.getElementById('btn-pan-down').onclick = function() {
+  bpmnVisu.pan(PanOptions.VERTICAL_DOWN);
+};
+document.getElementById('btn-pan-left').onclick = function() {
+  bpmnVisu.pan(PanOptions.HORIZONTAL_LEFT);
+};
+document.getElementById('btn-pan-right').onclick = function() {
+  bpmnVisu.pan(PanOptions.HORIZONTAL_RIGHT);
+};
+
+// =====================================================================================================================
+// General
 // =====================================================================================================================
 document.getElementById('btn-outline').onclick = function() {
   bpmnVisu.toggleOutline();
 };
 
 // =====================================================================================================================
-// General action
+// Actions
 // =====================================================================================================================
 
 document.getElementById('btn-export-preview').onclick = function() {

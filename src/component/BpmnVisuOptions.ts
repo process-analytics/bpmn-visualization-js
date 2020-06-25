@@ -29,8 +29,8 @@ export enum ZoomOptions {
 }
 
 export enum PanOptions {
-  HORIZONTAL_RIGHT,
-  HORIZONTAL_LEFT,
   VERTICAL_UP,
   VERTICAL_DOWN,
+  HORIZONTAL_LEFT,
+  HORIZONTAL_RIGHT,
 }
