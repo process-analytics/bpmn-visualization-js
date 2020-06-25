@@ -54,6 +54,10 @@ export default class ShapeUtil {
     return this.EVENT_KINDS.includes(kind);
   }
 
+  public static isSubProcess(kind: ShapeBpmnElementKind): boolean {
+    return ShapeBpmnElementKind.SUB_PROCESS === kind;
+  }
+
   public static isBoundaryEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_BOUNDARY === kind;
   }
@@ -74,6 +78,10 @@ export default class ShapeUtil {
   // topLevelBpmnEventKinds to not mixed with the bpmnEventKinds that currently are the list of non None event subtypes
   public static topLevelBpmnEventKinds(): ShapeBpmnElementKind[] {
     return this.EVENT_KINDS;
+  }
+
+  public static activityKinds(): ShapeBpmnElementKind[] {
+    return this.ACTIVITY_KINDS;
   }
 
   public static taskKinds(): ShapeBpmnElementKind[] {

@@ -15,6 +15,7 @@
  */
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnEventKind } from '../../model/bpmn/shape/ShapeBpmnEventKind';
+import { ShapeBpmnSubProcessKind } from '../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 
 declare const mxUtils: typeof mxgraph.mxUtils;
 declare const mxConstants: typeof mxgraph.mxConstants;
@@ -23,7 +24,9 @@ export enum StyleConstant {
   STROKE_WIDTH_THIN = 2,
   STROKE_WIDTH_THICK = 5,
   BPMN_STYLE_EVENT_KIND = 'bpmn.eventKind',
+  BPMN_STYLE_SUB_PROCESS_KIND = 'bpmn.subProcessKind',
   BPMN_STYLE_IS_INTERRUPTING = 'bpmn.isInterrupting',
+  BPMN_STYLE_IS_EXPANDED = 'bpmn.isExpanded',
   DEFAULT_FILL_COLOR = 'White',
   DEFAULT_STROKE_COLOR = 'Black',
   DEFAULT_FONT_FAMILY = 'Arial, Helvetica, sans-serif', // define our own to not depend on eventual mxGraph default change
@@ -54,7 +57,15 @@ export default class StyleUtils {
     return mxUtils.getValue(style, StyleConstant.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
   }
 
+  public static getBpmnSubProcessKind(style: any): ShapeBpmnSubProcessKind {
+    return mxUtils.getValue(style, StyleConstant.BPMN_STYLE_SUB_PROCESS_KIND, undefined);
+  }
+
   public static getBpmnIsInterrupting(style: any): string {
     return mxUtils.getValue(style, StyleConstant.BPMN_STYLE_IS_INTERRUPTING, undefined);
+  }
+
+  public static getBpmnIsExpanded(style: any): string {
+    return mxUtils.getValue(style, StyleConstant.BPMN_STYLE_IS_EXPANDED, 'false');
   }
 }

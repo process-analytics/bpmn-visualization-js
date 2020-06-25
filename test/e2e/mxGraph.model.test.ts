@@ -19,6 +19,7 @@ import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnEventKind } from '../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
 import { MarkerConstant } from '../../src/component/mxgraph/MarkerConfigurator';
+import { ShapeBpmnSubProcessKind } from '../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
 
 declare const mxConstants: typeof mxgraph.mxConstants;
 declare const mxGeometry: typeof mxgraph.mxGeometry;
@@ -38,10 +39,16 @@ export interface ExpectedShapeModelElement {
   font?: ExpectedFont;
   /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
   styleShape?: string;
+  isExpanded?: boolean;
 }
 
 export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
   eventKind: ShapeBpmnEventKind;
+}
+
+// TODO find a way to not be forced to pass 'kind'
+export interface ExpectedSubProcessModelElement extends ExpectedShapeModelElement {
+  subProcessKind: ShapeBpmnSubProcessKind;
 }
 
 export interface ExpectedEdgeModelElement {
@@ -118,6 +125,8 @@ describe('mxGraph model', () => {
         <semantic:callActivity calledElement="Process_unknown" name="Call Activity Collapsed" id="callActivity_1" />
         <semantic:receiveTask id="receiveTask_not_instantiated" name="Not instantiated Receive Task"/>
         <semantic:receiveTask id="receiveTask_instantiated" name="Instantiated Receive Task" instantiate=true/>
+        <semantic:subProcess triggeredByEvent="false" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Expanded Embedded Sub-Process" id="expanded_embedded_sub_process_id"/>
+        <semantic:subProcess triggeredByEvent="false" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Collapsed Embedded Sub-Process" id="collapsed_embedded_sub_process_id"/>
         <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="From 'start event 1' to 'task 1'" id="normal_sequence_flow_id"/>
         <semantic:sequenceFlow sourceRef="task_1" targetRef="serviceTask_2" id="default_sequence_flow_id"/>
         <semantic:sequenceFlow sourceRef="serviceTask_2" targetRef="userTask_3" id="conditional_sequence_flow_from_activity_id">
@@ -209,11 +218,17 @@ describe('mxGraph model', () => {
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="receiveTask_not_instantiated" id="S1373649849862_receiveTask_not_instantiated">
-	           <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
-	        </bpmndi:BPMNShape>
-	        <bpmndi:BPMNShape bpmnElement="receiveTask_instantiated" id="S1373649849862_receiveTask_instantiated">
-	           <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
-	        </bpmndi:BPMNShape>
+               <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="receiveTask_instantiated" id="S1373649849862_receiveTask_instantiated">
+               <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape isExpanded="true" bpmnElement="expanded_embedded_sub_process_id" id="S1373649849862_expanded_embedded_sub_process_id">
+               <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape isExpanded="false" bpmnElement="collapsed_embedded_sub_process_id" id="S1373649849862_collapsed_embedded_sub_process_id">
+               <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+            </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge bpmnElement="default_sequence_flow_id" id="E1373649849864_default_sequence_flow_id">
                 <di:waypoint x="342.0" y="351.0"/>
                 <di:waypoint x="390.0" y="351.0"/>
@@ -304,6 +319,9 @@ describe('mxGraph model', () => {
   function expectModelContainsShape(cellId: string, modelElement: ExpectedShapeModelElement): mxgraph.mxCell {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(modelElement.kind);
+    if (modelElement.isExpanded !== undefined) {
+      expect(cell.style).toContain(`bpmn.isExpanded=${modelElement.isExpanded}`);
+    }
     const state = bpmnVisu.graph.getView().getState(cell);
 
     const styleShape = !modelElement.styleShape ? modelElement.kind : modelElement.styleShape;
@@ -333,6 +351,16 @@ describe('mxGraph model', () => {
   function expectModelContainsBpmnBoundaryEvent(cellId: string, boundaryEventModelElement: ExpectedBoundaryEventModelElement): void {
     const cell = expectModelContainsBpmnEvent(cellId, { ...boundaryEventModelElement, kind: ShapeBpmnElementKind.EVENT_BOUNDARY });
     expect(cell.style).toContain(`bpmn.isInterrupting=${boundaryEventModelElement.isInterrupting}`);
+  }
+
+  function expectModelContainsSubProcess(cellId: string, subProcessModelElement: ExpectedSubProcessModelElement): mxgraph.mxCell {
+    const cell = expectModelContainsShape(cellId, {
+      ...subProcessModelElement,
+      kind: ShapeBpmnElementKind.SUB_PROCESS,
+      isExpanded: subProcessModelElement.isExpanded ? true : false,
+    });
+    expect(cell.style).toContain(`bpmn.subProcessKind=${subProcessModelElement.subProcessKind}`);
+    return cell;
   }
 
   it('bpmn elements should be available in the mxGraph model', async () => {
@@ -416,6 +444,20 @@ describe('mxGraph model', () => {
       label: 'Boundary Intermediate Event Interrupting Timer',
     });
 
+    // Sub-process
+    expectModelContainsSubProcess('expanded_embedded_sub_process_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      label: 'Expanded Embedded Sub-Process',
+      isExpanded: true,
+    });
+    expectModelContainsSubProcess('collapsed_embedded_sub_process_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      label: 'Collapsed Embedded Sub-Process',
+      isExpanded: false,
+    });
+
     // activity
     expectModelContainsShape('task_1', {
       kind: ShapeBpmnElementKind.TASK,
@@ -431,7 +473,7 @@ describe('mxGraph model', () => {
     });
     expectModelContainsShape('serviceTask_2', { kind: ShapeBpmnElementKind.TASK_SERVICE, font: expectedBoldFont, label: 'Service Task 2' });
     expectModelContainsShape('userTask_3', { kind: ShapeBpmnElementKind.TASK_USER, font: expectedBoldFont, label: 'User Task 3' });
-    expectModelContainsShape('callActivity_1', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, styleShape: 'rectangle', label: 'Call Activity Collapsed' });
+    expectModelContainsShape('callActivity_1', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, label: 'Call Activity Collapsed' });
     expectModelContainsShape('receiveTask_not_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Not instantiated Receive Task' });
     expectModelContainsShape('receiveTask_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Instantiated Receive Task' });
 

@@ -22,10 +22,3 @@ export enum ShapeBpmnSubProcessKind {
   // TRANSACTION = 'transaction',
   // AD_HOC = 'ad_hoc',
 }
-
-/**
- * List supported events in addition to the NONE event.
- *
- * Temporarily used until we support all events
- */
-export const supportedBpmnSubProcessKindKinds = [ShapeBpmnSubProcessKind.EMBEDDED];
