@@ -111,9 +111,7 @@ export class BoundaryEventShape extends IntermediateEventShape {
 
   protected paintOuterShape(paintParameter: PaintParameter): void {
     const isInterrupting = StyleUtils.getBpmnIsInterrupting(this.style);
-    if (isInterrupting === 'true' || isInterrupting === undefined) {
-      paintParameter.c.setFillColor('yellow');
-    } else if (isInterrupting === 'false') {
+    if (isInterrupting === 'false') {
       paintParameter.c.setFillColor('LightPink');
     }
 
