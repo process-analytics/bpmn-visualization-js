@@ -1,16 +1,19 @@
-# BPMN Visualization JS
-A JavaScript library to visualize process execution data. Diagrams are displayed from [BPMN](https://www.omg.org/spec/BPMN/2.0.2/PDF) files. With additional display
-options for execution data (highlight some transitions, counters, and more). With interactive capacities (mouse hover,
-click).
+# bpmn-visualization
+
 
 [![Build](https://github.com/process-analytics/bpmn-visualization-js/workflows/Build/badge.svg)](https://github.com/process-analytics/bpmn-visualization-js/actions)
-[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/bonitasoft-labs/bpmn-visu-js?color=orange&include_prereleases)](https://github.com/process-analytics/bpmn-visualization-js/releases)
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/process-analytics/bpmn-visualization-js?color=orange&include_prereleases)](https://github.com/process-analytics/bpmn-visualization-js/releases)
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
+`bpmn-visualization` is a TypeScript library to visualize process execution data on [BPMN](https://www.omg.org/spec/BPMN/2.0.2/)
+diagrams with
+- additional display options for execution data (highlight some transitions, counters, and more)
+- with interactive capacities (mouse hover, click)
 
-**Supported Browsers**: Chrome, Firefox, Safari, Edge
+
+**Supported Browsers**: Chrome, Firefox, Safari, Edge.
 
 
 # Demos
@@ -25,12 +28,15 @@ If you need BPMN examples, you can use resources of the [BPMN Model Interchange 
 
 # Roadmap
 
-`BPMN Visualization JS` is in early development stages and is subject to changes until the `1.0.0` version is released.
+`bpmn-visualization` is in early development stages and is subject to changes prior to the `1.0.0` release.
 
 We are currently focusing on the [BPMN support](https://github.com/process-analytics/bpmn-visualization-js/milestone/6)
-to be able to render most of the BPMN elements.
+to be able to render most of the BPMN elements. Notice that there is currently no plan to support `Conversation` and
+`Choreography`.
 
-Then, we will work on BPMN extensions, library extension points.
+Then, we will work on BPMN extensions, library extension points, display options for execution data with interactive
+capacities.
+
 
 # Development
 
@@ -39,9 +45,9 @@ To build the project, see the [Contributing guide](CONTRIBUTING.md#Build) :sligh
 
 # License
 
-`bpmn-visualization-js` is released under the Apache 2.0 license.
+`bpmn-visualization` is released under the `Apache 2.0` license.
 
-Some BPMN icons used by `bpmn-visualization-js` are derived from existing projects. See the [BPMN Support page](docs/bpmn-support.adoc)
+Some BPMN icons used by `bpmn-visualization` are derived from existing projects. See the [BPMN Support page](docs/bpmn-support.adoc)
 for more details:
 - [draw.io](https://github.com/jgraph/drawio) (Apache-2.0)
 - [flaticon](https://www.flaticon.com) ([freepikcompany license](https://www.freepikcompany.com/legal#nav-flaticon))

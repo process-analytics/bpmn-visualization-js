@@ -1,4 +1,4 @@
-= BPMN Visualization JS
+= bpmn-visualization
 :toc: left
 // see: https://asciidoctor.org/docs/user-manual/#table-of-contents-summary
 :toc-title: Table of Contents
