@@ -113,13 +113,13 @@ To fully benefit the ESLint and Jest testing frameworks, you must properly set u
 
 ##### Intellij
 
-*EditorConfig* (https://www.jetbrains.com/help/idea/configuring-code-style.html#editorconfig)
+###### [EditorConfig](https://www.jetbrains.com/help/idea/configuring-code-style.html#editorconfig)
 
 Go to `File` -> `Settings` ( `IntelliJ IDEA` -> `Preferences` on `macOS`) and `Editor` --> `Code Style`, then tick the
 `Enable EditorConfig support`
 
 
-*ESLint* (https://www.jetbrains.com/help/idea/eslint.html#)
+###### [ESLint](https://www.jetbrains.com/help/idea/eslint.html#)
 
 Go to `File` -> `Settings` and type ESLint in search box
 
@@ -133,7 +133,7 @@ You also need to set up Coding Style rules
 
 It is as simple as doing `right-click` on the file `.eslintrc.js` and choosing option `Apply ESLint Code Style Rules`
 
-*Jest tests* (https://www.jetbrains.com/help/idea/running-unit-tests-on-jest.html)
+###### [Jest tests](https://www.jetbrains.com/help/idea/running-unit-tests-on-jest.html)
 
 To be able to run tests from IntelliJ, you must set up the default Jest template in `Run/Debug Configurations`
 
@@ -142,15 +142,25 @@ Adjust following parameters:
   - unit tests: `<project_dir>/jest.config.unit.js`
   - end to end tests: `<project_dir>/jest.config.e2e.js`
 
+###### [Debugging TypeScript code](https://www.jetbrains.com/help/idea/running-and-debugging-typescript.html#ws_ts_debug_client_side_on_external_dev_server)
 
-*SonarLint*
+- create a new `JavaScript Debug` configuration as described in the [Intellij documentation](https://www.jetbrains.com/help/idea/running-and-debugging-typescript.html#ws_ts_debug_client_side_on_external_dev_server)
+  - the targeted url is: http://localhost:10001/
+  - use `Chrome` as browser
+  - check `Ensure breakpoints are detected when loading scripts`  
+- start the application in development mode by running `npm run start` or `npm run watch`
+- select the `JavaScript Debug` configuration and run it with Debug Runner
+- the browser opens, and debug session starts (see [Intellij documentation](https://www.jetbrains.com/help/idea/running-and-debugging-typescript.html#ws_ts_debug_client_side_on_external_dev_server)
+documentation for more details) 
+
+###### SonarLint
 
 Additionally, it is advised to install SonarLint Plugin
 
 It helps to avoid coding mistakes -> reduced technical debt
 
 
-*AsciiDoc*
+###### AsciiDoc
 
 We use [asciidoc](https://asciidoctor.org/docs/what-is-asciidoc/) to write the documentation.
 
