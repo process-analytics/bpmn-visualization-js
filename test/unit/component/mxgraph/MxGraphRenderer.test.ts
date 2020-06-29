@@ -173,10 +173,10 @@ describe('mxgraph renderer', () => {
       expect(computeStyle(shape)).toEqual('boundaryEvent;fontStyle=8;bpmn.eventKind=cancel;bpmn.isInterrupting=true');
     });
   });
-  describe('compute style - sub-proceses', () => {
+  describe('compute style - sub-processes', () => {
     each([
       ['expanded', true],
-      ['collapased', false],
+      ['collapsed', false],
     ]).it('%s embedded sub-process', (testName, isExpanded: boolean) => {
       const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED), newLabel({ name: 'Arial' }), isExpanded);
       expect(computeStyle(shape)).toEqual(`subProcess;fontFamily=Arial;bpmn.subProcessKind=embedded;bpmn.isExpanded=${isExpanded}`);
