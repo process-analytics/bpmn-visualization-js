@@ -112,9 +112,12 @@ export class BoundaryEventShape extends IntermediateEventShape {
   protected paintOuterShape(paintParameter: PaintParameter): void {
     const isInterrupting = StyleUtils.getBpmnIsInterrupting(this.style);
     if (isInterrupting === 'false') {
-      paintParameter.c.setFillColor('LightPink');
+      paintParameter.c.setDashed(1, 0);
+      paintParameter.c.setDashPattern('3 2');
     }
 
     super.paintOuterShape(paintParameter);
+    paintParameter.c.setDashed(StyleUtils.isDashed(this.style), StyleUtils.getFixDash(this.style));
+    paintParameter.c.setDashPattern(StyleUtils.getDashPattern(this.style));
   }
 }
