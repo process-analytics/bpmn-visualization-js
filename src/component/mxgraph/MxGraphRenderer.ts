@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
 import Shape from '../../model/bpmn/shape/Shape';
 import Edge from '../../model/bpmn/edge/Edge';
 import BpmnModel from '../../model/bpmn/BpmnModel';
@@ -24,9 +23,6 @@ import { Font } from '../../model/bpmn/Label';
 import Bounds from '../../model/bpmn/Bounds';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import CoordinatesTranslator from './extension/CoordinatesTranslator';
-
-declare const mxPoint: typeof mxgraph.mxPoint;
-declare const mxConstants: typeof mxgraph.mxConstants;
 
 export default class MxGraphRenderer {
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator) {}
