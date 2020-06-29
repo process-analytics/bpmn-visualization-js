@@ -13,11 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
-
-// TODO manage mxGraph globals to remove 'ts-mxgraph' import
-declare const mxConstants: typeof mxgraph.mxConstants;
-declare const mxCodecRegistry: typeof mxgraph.mxCodecRegistry;
 
 export default class MxClientConfigurator {
   public configureMxCodec(): void {
