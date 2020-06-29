@@ -10,13 +10,12 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "typeRoots": ["./types", "./node_modules/@types"]
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/mxgraph-type-definitions"
+    ]
   },
   "include": [
     "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "types"
   ]
 }
