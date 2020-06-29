@@ -21,7 +21,7 @@ import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/Sha
 describe('parse bpmn as json for embedded sub-process', () => {
   each([
     ['expanded', true],
-    ['collapased', false],
+    ['collapsed', false],
   ]).it('json containing one process with a single %s embedded sub-process', (testName, isExpanded: boolean) => {
     const json = `{
                 "definitions" : {
