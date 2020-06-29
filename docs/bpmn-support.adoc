@@ -145,12 +145,12 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Comments
 
 |Timer Interrupting Boundary Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 
 |Message Interrupting Boundary Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -162,12 +162,12 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Comments
 
 |Timer Non-interrupting Boundary Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 
 |Message Non-interrupting Boundary Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -242,4 +242,24 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Parallel
 |icon:check-circle-o[]
 |Icon may be subject to change +
+|===
+
+
+=== Labels
+
+
+[cols="1,1,4", options="header"]
+.Labels
+|===
+|Name
+|Rendering
+|Comments
+
+|Shape Label
+|icon:check-circle-o[]
+|By default the size of the font is: 11 and family is set to : 'Arial, Helvetica, sans-serif' +
+
+|Edge Label
+|icon:check-circle-o[]
+|By default the size of the font is: 11 and family is set to : 'Arial, Helvetica, sans-serif' +
 |===

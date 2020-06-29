@@ -32,6 +32,30 @@ export interface ExpectedFont {
   isStrikeThrough?: boolean;
 }
 
+export interface ExpectedShapeModelElement {
+  label?: string;
+  kind: ShapeBpmnElementKind;
+  font?: ExpectedFont;
+  /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
+  styleShape?: string;
+}
+
+export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
+  eventKind: ShapeBpmnEventKind;
+}
+
+export interface ExpectedEdgeModelElement {
+  label?: string;
+  kind: SequenceFlowKind;
+  font?: ExpectedFont;
+  startArrow?: string;
+}
+
+// TODO find a way to not be forced to pass 'kind'
+export interface ExpectedBoundaryEventModelElement extends ExpectedEventModelElement {
+  isInterrupting?: boolean;
+}
+
 function expectGeometry(cell: mxCell, geometry: mxgraph.mxGeometry): void {
   const cellGeometry = cell.getGeometry();
   expect(cellGeometry.x).toEqual(geometry.x);
@@ -62,12 +86,21 @@ describe('mxGraph model', () => {
             <semantic:incoming>default_sequence_flow_id</semantic:incoming>
             <semantic:outgoing>conditional_sequence_flow_from_activity_id</semantic:outgoing>
         </semantic:serviceTask>
-        <semantic:userTask completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task 3" id="userTask_3">
+        <semantic:userTask completionQuantity="1" isForCompensation="false" startQuantity="1" name="User Task 3" id="userTask_3">
             <semantic:incoming>conditional_sequence_flow_from_activity_id</semantic:incoming>
             <semantic:outgoing>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:outgoing>
         </semantic:userTask>
         <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Message" id="boundary_event_interrupting_message_id">
             <semantic:messageEventDefinition/>
+        </semantic:boundaryEvent>
+        <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Message" id="boundary_event_non_interrupting_message_id">
+            <semantic:messageEventDefinition/>
+        </semantic:boundaryEvent>
+        <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Timer" id="boundary_event_interrupting_timer_id">
+            <semantic:timerEventDefinition/>
+        </semantic:boundaryEvent>
+        <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Timer" id="boundary_event_non_interrupting_timer_id">
+            <semantic:timerEventDefinition/>
         </semantic:boundaryEvent>
         <semantic:intermediateThrowEvent name="Throw None Intermediate Event" id="noneIntermediateThrowEvent" />
         <semantic:intermediateThrowEvent name="Throw Message Intermediate Event" id="messageIntermediateThrowEvent">
@@ -80,7 +113,7 @@ describe('mxGraph model', () => {
             <semantic:incoming>Flow_028jkgv</semantic:incoming>
             <semantic:timerEventDefinition id="TimerEventDefinition_0t6k83a" />
         </semantic:intermediateCatchEvent>
-        <semantic:endEvent name="End Event" id="terminateEndEvent">
+        <semantic:endEvent name="Terminate End Event" id="terminateEndEvent">
             <semantic:incoming>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:incoming>
             <semantic:terminateEventDefinition/>
         </semantic:endEvent>
@@ -91,9 +124,9 @@ describe('mxGraph model', () => {
         <semantic:callActivity calledElement="Process_unknown" name="Call Activity Collapsed" id="callActivity_1" />
         <semantic:receiveTask id="receiveTask_not_instantiated" name="Not instantiated Receive Task"/>
         <semantic:receiveTask id="receiveTask_instantiated" name="Instantiated Receive Task" instantiate=true/>
-        <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="" id="normal_sequence_flow_id"/>
-        <semantic:sequenceFlow sourceRef="task_1" targetRef="serviceTask_2" name="" id="default_sequence_flow_id"/>
-        <semantic:sequenceFlow sourceRef="serviceTask_2" targetRef="userTask_3" name="" id="conditional_sequence_flow_from_activity_id">
+        <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="From 'start event 1' to 'task 1'" id="normal_sequence_flow_id"/>
+        <semantic:sequenceFlow sourceRef="task_1" targetRef="serviceTask_2" id="default_sequence_flow_id"/>
+        <semantic:sequenceFlow sourceRef="serviceTask_2" targetRef="userTask_3" id="conditional_sequence_flow_from_activity_id">
           <semantic:conditionExpression xsi:type="semantic:tFormalExpression" id="_WsCFcRszEeqkhYLXtt1BFw" evaluatesToTypeRef="java:java.lang.Boolean">&quot;Contract to be written&quot;.equals(loanRequested.status)</semantic:conditionExpression>
         </semantic:sequenceFlow>
         <semantic:sequenceFlow sourceRef="userTask_3" targetRef="noneIntermediateThrowEvent" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff80" />
@@ -138,7 +171,16 @@ describe('mxGraph model', () => {
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_message_id" id="S1373649849862_boundary_event_interrupting_message_id">
 	           <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
-	        </bpmndi:BPMNShape>
+	          </bpmndi:BPMNShape>
+	           <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_message_id" id="S1373649849862_boundary_event_non_interrupting_message_id">
+	           <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+	          </bpmndi:BPMNShape>
+	          <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_timer_id" id="S1373649849862_boundary_event_interrupting_timer_id">
+	           <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+	          </bpmndi:BPMNShape>
+	          <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_timer_id" id="S1373649849862_boundary_event_non_interrupting_timer_id">
+	           <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+	          </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="noneIntermediateThrowEvent" id="S1373649849862_noneIntermediateThrowEvent">
 	           <dc:Bounds height="32.0" width="32.0" x="648.0" y="336.0" />
 	           <bpmndi:BPMNLabel labelStyle="strike_through_font_id">
@@ -271,37 +313,38 @@ describe('mxGraph model', () => {
     return cell;
   }
 
-  // styleShape is only required when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented)
-  function expectModelContainsShape(cellId: string, shapeKind: ShapeBpmnElementKind, expectedFont?: ExpectedFont, styleShape?: string): mxCell {
+  function expectModelContainsShape(cellId: string, modelElement: ExpectedShapeModelElement): mxCell {
     const cell = expectModelContainsCell(cellId);
-    expect(cell.style).toContain(shapeKind);
+    expect(cell.style).toContain(modelElement.kind);
     const state = bpmnVisu.graph.getView().getState(cell);
 
-    styleShape = !styleShape ? shapeKind : styleShape;
+    const styleShape = !modelElement.styleShape ? modelElement.kind : modelElement.styleShape;
     expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(styleShape);
-    expectFont(state, expectedFont);
+    expect(cell.value).toEqual(modelElement.label);
+    expectFont(state, modelElement.font);
     return cell;
   }
 
-  function expectModelContainsEdge(cellId: string, kind: SequenceFlowKind, startArrow?: string, expectedFont?: ExpectedFont): mxCell {
+  function expectModelContainsEdge(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
     const cell = expectModelContainsCell(cellId);
-    expect(cell.style).toContain(kind);
+    expect(cell.style).toContain(modelElement.kind);
 
     const state = bpmnVisu.graph.getView().getState(cell);
-    expect(state.style[mxConstants.STYLE_STARTARROW]).toEqual(startArrow);
-    expectFont(state, expectedFont);
+    expect(state.style[mxConstants.STYLE_STARTARROW]).toEqual(modelElement.startArrow);
+    expect(cell.value).toEqual(modelElement.label);
+    expectFont(state, modelElement.font);
     return cell;
   }
 
-  function expectModelContainsBpmnEvent(cellId: string, shapeKind: ShapeBpmnElementKind, bpmnEventKind: ShapeBpmnEventKind, expectedFont?: ExpectedFont): mxCell {
-    const cell = expectModelContainsShape(cellId, shapeKind, expectedFont);
-    expect(cell.style).toContain(`bpmn.eventKind=${bpmnEventKind}`);
+  function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {
+    const cell = expectModelContainsShape(cellId, eventModelElement);
+    expect(cell.style).toContain(`bpmn.eventKind=${eventModelElement.eventKind}`);
     return cell;
   }
 
-  function expectModelContainsBpmnBoundaryEvent(cellId: string, bpmnEventKind: ShapeBpmnEventKind, isInterrupting?: boolean, expectedFont?: ExpectedFont): void {
-    const cell = expectModelContainsBpmnEvent(cellId, ShapeBpmnElementKind.EVENT_BOUNDARY, bpmnEventKind, expectedFont);
-    expect(cell.style).toContain(`bpmn.isInterrupting=${isInterrupting}`);
+  function expectModelContainsBpmnBoundaryEvent(cellId: string, boundaryEventModelElement: ExpectedBoundaryEventModelElement): void {
+    const cell = expectModelContainsBpmnEvent(cellId, { ...boundaryEventModelElement, kind: ShapeBpmnElementKind.EVENT_BOUNDARY });
+    expect(cell.style).toContain(`bpmn.isInterrupting=${boundaryEventModelElement.isInterrupting}`);
   }
 
   it('bpmn elements should be available in the mxGraph model', async () => {
@@ -319,62 +362,113 @@ describe('mxGraph model', () => {
     };
 
     // start event
-    expectModelContainsBpmnEvent('startEvent_1', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.NONE, expectedBoldFont);
-    expectModelContainsBpmnEvent('startEvent_2_timer', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.TIMER);
-    expectModelContainsBpmnEvent('startEvent_3_message', ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.MESSAGE);
+    expectModelContainsBpmnEvent('startEvent_1', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.NONE, font: expectedBoldFont, label: 'Start Event' });
+    expectModelContainsBpmnEvent('startEvent_2_timer', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.TIMER, label: 'Timer Start Event' });
+    expectModelContainsBpmnEvent('startEvent_3_message', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.MESSAGE, label: 'Message Start Event' });
 
     // end event
-    expectModelContainsBpmnEvent('terminateEndEvent', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.TERMINATE, {
-      isBold: false,
-      isItalic: true,
-      isStrikeThrough: false,
-      isUnderline: false,
-      name: 'Arial',
-      size: 11.0,
+    expectModelContainsBpmnEvent('terminateEndEvent', {
+      kind: ShapeBpmnElementKind.EVENT_END,
+      eventKind: ShapeBpmnEventKind.TERMINATE,
+      font: {
+        isBold: false,
+        isItalic: true,
+        isStrikeThrough: false,
+        isUnderline: false,
+        name: 'Arial',
+        size: 11.0,
+      },
+      label: 'Terminate End Event',
     });
-    expectModelContainsBpmnEvent('messageEndEvent', ShapeBpmnElementKind.EVENT_END, ShapeBpmnEventKind.MESSAGE);
+    expectModelContainsBpmnEvent('messageEndEvent', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.MESSAGE, label: 'Message End Event' });
 
     // throw intermediate event
-    expectModelContainsBpmnEvent('noneIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.NONE, {
-      isBold: false,
-      isItalic: false,
-      isStrikeThrough: true,
-      isUnderline: false,
-      name: 'Arial',
-      size: 11.0,
+    expectModelContainsBpmnEvent('noneIntermediateThrowEvent', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
+      eventKind: ShapeBpmnEventKind.NONE,
+      font: {
+        isBold: false,
+        isItalic: false,
+        isStrikeThrough: true,
+        isUnderline: false,
+        name: 'Arial',
+        size: 11.0,
+      },
+      label: 'Throw None Intermediate Event',
     });
-    expectModelContainsBpmnEvent('messageIntermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnEventKind.MESSAGE);
+    expectModelContainsBpmnEvent('messageIntermediateThrowEvent', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      label: 'Throw Message Intermediate Event',
+    });
 
     // catch intermediate event
-    expectModelContainsBpmnEvent('messageIntermediateCatchEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.MESSAGE);
-    expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.TIMER);
+    expectModelContainsBpmnEvent('messageIntermediateCatchEvent', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      label: 'Catch Message Intermediate Event',
+    });
+    expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+      eventKind: ShapeBpmnEventKind.TIMER,
+      label: 'Timer Intermediate Catch Event',
+    });
 
-    // boundary event
-    expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_message_id', ShapeBpmnEventKind.MESSAGE, true);
+    // boundary event: interrupting
+    expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_message_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      isInterrupting: true,
+      label: 'Boundary Intermediate Event Interrupting Message',
+    });
+    expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_timer_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.TIMER,
+      isInterrupting: true,
+      label: 'Boundary Intermediate Event Interrupting Timer',
+    });
+
+    // boundary event: non-interrupting
+    expectModelContainsBpmnBoundaryEvent('boundary_event_non_interrupting_message_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      isInterrupting: false,
+      label: 'Boundary Intermediate Event Non-interrupting Message',
+    });
+    expectModelContainsBpmnBoundaryEvent('boundary_event_non_interrupting_timer_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.TIMER,
+      isInterrupting: false,
+      label: 'Boundary Intermediate Event Non-interrupting Timer',
+    });
 
     // activity
-    expectModelContainsShape('task_1', ShapeBpmnElementKind.TASK, {
-      isBold: false,
-      isItalic: false,
-      isStrikeThrough: false,
-      isUnderline: true,
-      name: 'Arial',
-      size: 11.0,
+    expectModelContainsShape('task_1', {
+      kind: ShapeBpmnElementKind.TASK,
+      font: {
+        isBold: false,
+        isItalic: false,
+        isStrikeThrough: false,
+        isUnderline: true,
+        name: 'Arial',
+        size: 11.0,
+      },
+      label: 'Task 1',
     });
-    expectModelContainsShape('serviceTask_2', ShapeBpmnElementKind.TASK_SERVICE, expectedBoldFont);
-    expectModelContainsShape('userTask_3', ShapeBpmnElementKind.TASK_USER, expectedBoldFont);
-    expectModelContainsShape('callActivity_1', ShapeBpmnElementKind.CALL_ACTIVITY, undefined, 'rectangle');
-    expectModelContainsShape('receiveTask_not_instantiated', ShapeBpmnElementKind.TASK_RECEIVE);
-    expectModelContainsShape('receiveTask_instantiated', ShapeBpmnElementKind.TASK_RECEIVE);
+    expectModelContainsShape('serviceTask_2', { kind: ShapeBpmnElementKind.TASK_SERVICE, font: expectedBoldFont, label: 'Service Task 2' });
+    expectModelContainsShape('userTask_3', { kind: ShapeBpmnElementKind.TASK_USER, font: expectedBoldFont, label: 'User Task 3' });
+    expectModelContainsShape('callActivity_1', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, styleShape: 'rectangle', label: 'Call Activity Collapsed' });
+    expectModelContainsShape('receiveTask_not_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Not instantiated Receive Task' });
+    expectModelContainsShape('receiveTask_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Instantiated Receive Task' });
 
     // gateways
-    expectModelContainsShape('inclusiveGateway_1', ShapeBpmnElementKind.GATEWAY_INCLUSIVE);
+    expectModelContainsShape('inclusiveGateway_1', { kind: ShapeBpmnElementKind.GATEWAY_INCLUSIVE, label: 'Inclusive Gateway 1' });
 
     // sequence flow
-    expectModelContainsEdge('default_sequence_flow_id', SequenceFlowKind.DEFAULT, MarkerConstant.ARROW_DASH, expectedBoldFont);
-    expectModelContainsEdge('normal_sequence_flow_id', SequenceFlowKind.NORMAL);
-    expectModelContainsEdge('conditional_sequence_flow_from_activity_id', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY, mxConstants.ARROW_DIAMOND_THIN);
-    expectModelContainsEdge('conditional_sequence_flow_from_gateway_id', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY);
+    expectModelContainsEdge('default_sequence_flow_id', { kind: SequenceFlowKind.DEFAULT, startArrow: MarkerConstant.ARROW_DASH, font: expectedBoldFont });
+    expectModelContainsEdge('normal_sequence_flow_id', { kind: SequenceFlowKind.NORMAL, label: "From 'start event 1' to 'task 1'" });
+    expectModelContainsEdge('conditional_sequence_flow_from_activity_id', { kind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY, startArrow: mxConstants.ARROW_DIAMOND_THIN });
+    expectModelContainsEdge('conditional_sequence_flow_from_gateway_id', { kind: SequenceFlowKind.CONDITIONAL_FROM_GATEWAY, label: '' });
   });
 
   it('bpmn elements should not be available in the mxGraph model, if they are attached to not existing elements', async () => {
@@ -385,6 +479,15 @@ describe('mxGraph model', () => {
     <semantic:process isExecutable="false" id="WFP-6-">
         <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="true" name="Boundary Intermediate Event Interrupting Message" id="boundary_event_interrupting_message_id">
             <semantic:messageEventDefinition/>
+        </semantic:boundaryEvent>
+        <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="false" name="Boundary Intermediate Event Non-nterrupting Message" id="boundary_event_non_interrupting_message_id">
+            <semantic:messageEventDefinition/>
+        </semantic:boundaryEvent>
+        <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="true" name="Boundary Intermediate Event Interrupting Timer" id="boundary_event_interrupting_timer_id">
+            <semantic:timerEventDefinition/>
+        </semantic:boundaryEvent>
+        <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="false" name="Boundary Intermediate Event Non-nterrupting Timer" id="boundary_event_non_interrupting_timer_id">
+            <semantic:timerEventDefinition/>
         </semantic:boundaryEvent>
     </semantic:process>
     <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
@@ -399,8 +502,13 @@ describe('mxGraph model', () => {
     bpmnVisu.load(xmlContent);
 
     // model is OK
-    // boundary event
+    // boundary event: interrupting
     expectModelNotContainCell('boundary_event_interrupting_message_id');
+    expectModelNotContainCell('boundary_event_interrupting_timer_id');
+
+    // boundary event: non-interrupting
+    expectModelNotContainCell('boundary_event_non_interrupting_message_id');
+    expectModelNotContainCell('boundary_event_non_interrupting_timer_id');
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {
