@@ -5,10 +5,12 @@ Failure to do so may result in the rejection of the Pull Request.
 
 Put the title like `[KIND OF CHANGE] SHORT DESCRIPTION`
 
-*KIND OF CHANGE* can be:
-- Infra
-- Bug
-- Feat
+*KIND OF CHANGE* can be (see existing Pull Request for more elements):
+- DOC
+- FEAT
+- FIX
+- INFRA
+- REFACTOR
 ...
 
 **Details**
@@ -16,6 +18,6 @@ Put the title like `[KIND OF CHANGE] SHORT DESCRIPTION`
 Explain the **details** for making this change: What existing problem does the Pull Request solve? Why is this feature beneficial?
 
 
-**On automtatic closing of ISSUES**
+**On automatic closing of ISSUES**
 
-Put `closes #XXXX` in your comment to auto-close the issue that your PR fixes (if such).
+Put `closes #XXXX` (remove backticks to let GitHub create the link) in your comment to auto-close the issue that your PR fixes (if such).
