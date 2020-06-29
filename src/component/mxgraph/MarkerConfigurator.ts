@@ -15,6 +15,7 @@
  */
 import { mxgraph } from 'ts-mxgraph';
 
+// TODO manage mxGraph globals to remove 'ts-mxgraph' import
 declare const mxMarker: typeof mxgraph.mxMarker;
 
 export enum MarkerConstant {

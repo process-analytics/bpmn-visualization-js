@@ -20,6 +20,7 @@ import { SequenceFlowKind } from '../../model/bpmn/edge/SequenceFlowKind';
 import { MarkerConstant } from './MarkerConfigurator';
 import { StyleConstant } from './StyleUtils';
 
+// TODO manage mxGraph globals to remove 'ts-mxgraph' import
 declare const mxUtils: typeof mxgraph.mxUtils;
 declare const mxConstants: typeof mxgraph.mxConstants;
 declare const mxPerimeter: typeof mxgraph.mxPerimeter;

@@ -19,12 +19,9 @@ import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchInter
 import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from './shape/gateway-shapes';
 import { ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape } from './shape/task-shapes';
 
+// TODO manage mxGraph globals to remove 'ts-mxgraph' import
 declare const mxClient: typeof mxgraph.mxClient;
-declare const mxShape: typeof mxgraph.mxShape;
 declare const mxCellRenderer: typeof mxgraph.mxCellRenderer;
-// TODO should be 'typeof mxgraph.mxSvgCanvas2D', current type definition does not declare 'minStrokeWidth'
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const mxSvgCanvas2D: any;
 
 export default class ShapeConfigurator {
   public configureShapes(): void {
@@ -73,12 +70,13 @@ export default class ShapeConfigurator {
       //
       canvas.minStrokeWidth = this.minSvgStrokeWidth;
 
-      if (!this.antiAlias) {
-        // Rounds all numbers in the SVG output to integers
-        canvas.format = function(value: string) {
-          return Math.round(parseFloat(value));
-        };
-      }
+      // TODO mxgraph-definitions 1.0.2 wrong value arg type in the format function (should be 'string', but is 'number')
+      // if (!this.antiAlias) {
+      //   // Rounds all numbers in the SVG output to integers
+      //   canvas.format = function(value: string) {
+      //     return Math.round(parseFloat(value));
+      //   };
+      // }
 
       return canvas;
     };
