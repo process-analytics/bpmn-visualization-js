@@ -19,8 +19,9 @@ import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchInter
 import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from './shape/gateway-shapes';
 import { ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape } from './shape/task-shapes';
 
-// TODO manage mxGraph globals to remove 'ts-mxgraph' import
+// TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
+// TODO find the way to pass the shape constructor as 2nd argument of registerShape
 declare const mxCellRenderer: typeof mxgraph.mxCellRenderer;
 
 export default class ShapeConfigurator {

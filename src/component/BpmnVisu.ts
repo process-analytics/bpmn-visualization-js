@@ -18,7 +18,9 @@ import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { defaultBpmnParser } from './parser/BpmnParser';
 
+// TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
+// TODO 'error' and 'alert' functions are missing in mxgraph-type-definitions@1.0.2
 declare const mxUtils: typeof mxgraph.mxUtils;
 
 export default class BpmnVisu {

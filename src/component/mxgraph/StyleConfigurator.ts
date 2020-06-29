@@ -20,7 +20,7 @@ import { SequenceFlowKind } from '../../model/bpmn/edge/SequenceFlowKind';
 import { MarkerConstant } from './MarkerConfigurator';
 import { StyleConstant } from './StyleUtils';
 
-// TODO manage mxGraph globals to remove 'ts-mxgraph' import
+// TODO 'clone' function is missing in mxgraph-type-definitions@1.0.2
 declare const mxUtils: typeof mxgraph.mxUtils;
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

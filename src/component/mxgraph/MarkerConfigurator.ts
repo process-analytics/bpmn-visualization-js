@@ -15,9 +15,6 @@
  */
 import { mxgraph } from 'ts-mxgraph';
 
-// TODO manage mxGraph globals to remove 'ts-mxgraph' import
-declare const mxMarker: typeof mxgraph.mxMarker;
-
 export enum MarkerConstant {
   ARROW_DASH = 'bpmn.dash',
 }
@@ -32,10 +29,11 @@ export default class MarkerConfigurator {
     // https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796
 
     const createMarker = (
+      // TODO mxXmlCanvas2D is missing in mxgraph-type-definitions@1.0.2
       c: mxgraph.mxXmlCanvas2D,
-      shape: mxgraph.mxShape,
+      shape: mxShape,
       type: string,
-      pe: mxgraph.mxPoint,
+      pe: mxPoint,
       unitX: number,
       unitY: number,
       size: number,
