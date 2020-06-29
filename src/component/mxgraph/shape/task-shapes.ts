@@ -17,22 +17,23 @@ import { mxgraph } from 'ts-mxgraph';
 import { StyleConstant } from '../StyleUtils';
 import IconPainter, { PaintParameter } from './IconPainter';
 
-declare const mxRectangleShape: typeof mxgraph.mxRectangleShape;
-
 abstract class BaseTaskShape extends mxRectangleShape {
-  // TODO we need to declare this field here because it is missing in the current mxShape type definition
+  // TODO missing in mxgraph-type-definitions@1.0.2 mxShape
   isRounded: boolean;
+  // TODO missing in mxgraph-type-definitions@1.0.2 mxShape
+  gradient: string;
 
-  protected constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+  protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
     // enforced by BPMN
     this.isRounded = true;
   }
 
-  public paintForeground(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+  public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
 
-    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, this);
+    // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
+    const paintParameter = IconPainter.buildPaintParameter((c as unknown) as mxgraph.mxXmlCanvas2D, x, y, w, h, (this as unknown) as mxgraph.mxShape);
     this.paintTaskIcon(paintParameter);
   }
 
@@ -40,7 +41,7 @@ abstract class BaseTaskShape extends mxRectangleShape {
 }
 
 export class TaskShape extends BaseTaskShape {
-  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -52,7 +53,7 @@ export class TaskShape extends BaseTaskShape {
 }
 
 export class ServiceTaskShape extends BaseTaskShape {
-  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -62,7 +63,7 @@ export class ServiceTaskShape extends BaseTaskShape {
 }
 
 export class UserTaskShape extends BaseTaskShape {
-  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -72,7 +73,7 @@ export class UserTaskShape extends BaseTaskShape {
 }
 
 export class ReceiveTaskShape extends BaseTaskShape {
-  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
     this.gradient = 'Salmon';
   }
