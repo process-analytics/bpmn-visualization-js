@@ -19,6 +19,9 @@
 export enum ShapeBpmnElementKind {
   LANE = 'lane',
   POOL = 'pool',
+  CALL_ACTIVITY = 'callActivity',
+  SUB_PROCESS = 'subProcess',
+  TASK = 'task',
   TASK_USER = 'userTask',
   TASK_SERVICE = 'serviceTask',
   TASK_RECEIVE = 'receiveTask',
@@ -39,7 +42,6 @@ export enum ShapeBpmnElementKind {
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
   // TASK_BUSINESS_RULE = 'businessRuleTask',
 
-  TASK = 'task',
   GATEWAY_PARALLEL = 'parallelGateway',
   GATEWAY_EXCLUSIVE = 'exclusiveGateway',
   GATEWAY_INCLUSIVE = 'inclusiveGateway',
@@ -54,11 +56,4 @@ export enum ShapeBpmnElementKind {
   EVENT_INTERMEDIATE_CATCH = 'intermediateCatchEvent',
   EVENT_INTERMEDIATE_THROW = 'intermediateThrowEvent',
   EVENT_BOUNDARY = 'boundaryEvent',
-
-  CALL_ACTIVITY = 'callActivity',
-
-  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
-  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
-  // TODO : Uncomment corresponding line in src/model/bpmn/shape/ShapeUtil.ts
-  // SUB_PROCESS = 'subProcess',
 }
