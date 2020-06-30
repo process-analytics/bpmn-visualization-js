@@ -73,8 +73,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |
 
 |Embedded Sub-Process
-|icon:check-circle[]
-|
+|icon:check-circle-o[]
+|Need to add the render of collapsed sub-process 
 
 |Event Sub-Process
 |
