@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
 import Shape from '../../model/bpmn/shape/Shape';
 import Edge from '../../model/bpmn/edge/Edge';
 import BpmnModel from '../../model/bpmn/BpmnModel';
@@ -25,11 +24,8 @@ import Bounds from '../../model/bpmn/Bounds';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import CoordinatesTranslator from './extension/CoordinatesTranslator';
 
-declare const mxPoint: typeof mxgraph.mxPoint;
-declare const mxConstants: typeof mxgraph.mxConstants;
-
 export default class MxGraphRenderer {
-  constructor(readonly graph: mxgraph.mxGraph, readonly coordinatesTranslator: CoordinatesTranslator) {}
+  constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator) {}
 
   public render(bpmnModel: BpmnModel): void {
     const model = this.graph.getModel();
@@ -52,7 +48,7 @@ export default class MxGraphRenderer {
     });
   }
 
-  private getParent(bpmnElement: ShapeBpmnElement): mxgraph.mxCell {
+  private getParent(bpmnElement: ShapeBpmnElement): mxCell {
     const bpmnElementParent = this.getCell(bpmnElement.parentId);
     if (bpmnElementParent) {
       return bpmnElementParent;
@@ -172,7 +168,7 @@ export default class MxGraphRenderer {
     });
   }
 
-  private insertWaypoints(waypoints: Waypoint[], mxEdge: mxgraph.mxCell): void {
+  private insertWaypoints(waypoints: Waypoint[], mxEdge: mxCell): void {
     if (waypoints) {
       mxEdge.geometry.points = waypoints.map(waypoint => {
         return this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(waypoint.x, waypoint.y));
@@ -180,11 +176,11 @@ export default class MxGraphRenderer {
     }
   }
 
-  private getCell(id: string): mxgraph.mxCell {
+  private getCell(id: string): mxCell {
     return this.graph.getModel().getCell(id);
   }
 
-  private insertVertex(parent: mxgraph.mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxgraph.mxCell {
+  private insertVertex(parent: mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxCell {
     const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new mxPoint(bounds.x, bounds.y));
     const mxCell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 
@@ -198,6 +194,6 @@ export default class MxGraphRenderer {
   }
 }
 
-export function defaultMxGraphRenderer(graph: mxgraph.mxGraph): MxGraphRenderer {
+export function defaultMxGraphRenderer(graph: mxGraph): MxGraphRenderer {
   return new MxGraphRenderer(graph, new CoordinatesTranslator(graph));
 }

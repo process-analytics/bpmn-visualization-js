@@ -18,13 +18,15 @@ import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { defaultBpmnParser } from './parser/BpmnParser';
 
+// TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
+// TODO 'error' and 'alert' functions are missing in mxgraph-type-definitions@1.0.2
 declare const mxUtils: typeof mxgraph.mxUtils;
 
 export default class BpmnVisu {
-  public readonly graph: mxgraph.mxGraph;
+  public readonly graph: mxGraph;
 
-  constructor(protected container: Element) {
+  constructor(protected container: HTMLElement) {
     try {
       if (!mxClient.isBrowserSupported()) {
         mxUtils.error('Browser is not supported!', 200, false);

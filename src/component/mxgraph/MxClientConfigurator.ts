@@ -13,16 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
-
-declare const mxConstants: typeof mxgraph.mxConstants;
-declare const mxCodecRegistry: typeof mxgraph.mxCodecRegistry;
-declare const mxCodec: typeof mxgraph.mxCodec;
 
 export default class MxClientConfigurator {
   public configureMxCodec(): void {
     mxCodec.prototype.decode = function(node: Element, into: Element) {
-      // Check for the existance of global constructor, throw explicit Error if not
+      // Check for the existence of global constructor, throw explicit Error if not
       if (node !== null && node.nodeType === mxConstants.NODETYPE_ELEMENT) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const ctor = (window as any)[node.nodeName];

@@ -159,6 +159,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     if (!bpmnElement.triggeredByEvent) {
       return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, processId);
     }
+    return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EVENT, processId);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

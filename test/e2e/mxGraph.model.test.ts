@@ -15,14 +15,10 @@
  */
 import BpmnVisu from '../../src/component/BpmnVisu';
 import { ShapeBpmnElementKind } from '../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnEventKind } from '../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
 import { MarkerConstant } from '../../src/component/mxgraph/MarkerConfigurator';
 import { ShapeBpmnSubProcessKind } from '../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
-
-declare const mxConstants: typeof mxgraph.mxConstants;
-declare const mxGeometry: typeof mxgraph.mxGeometry;
 
 export interface ExpectedFont {
   name?: string;
@@ -63,7 +59,7 @@ export interface ExpectedBoundaryEventModelElement extends ExpectedEventModelEle
   isInterrupting?: boolean;
 }
 
-function expectGeometry(cell: mxgraph.mxCell, geometry: mxgraph.mxGeometry): void {
+function expectGeometry(cell: mxCell, geometry: mxGeometry): void {
   const cellGeometry = cell.getGeometry();
   expect(cellGeometry.x).toEqual(geometry.x);
   expect(cellGeometry.y).toEqual(geometry.y);
@@ -133,6 +129,8 @@ describe('mxGraph model', () => {
         <semantic:receiveTask id="receiveTask_instantiated" name="Instantiated Receive Task" instantiate=true/>
         <semantic:subProcess triggeredByEvent="false" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Expanded Embedded Sub-Process" id="expanded_embedded_sub_process_id"/>
         <semantic:subProcess triggeredByEvent="false" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Collapsed Embedded Sub-Process" id="collapsed_embedded_sub_process_id"/>
+        <semantic:subProcess triggeredByEvent="true" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Expanded Event Sub-Process" id="expanded_event_sub_process_id"/>
+        <semantic:subProcess triggeredByEvent="true" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Collapsed Event Sub-Process" id="collapsed_event_sub_process_id"/>
         <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="From 'start event 1' to 'task 1'" id="normal_sequence_flow_id"/>
         <semantic:sequenceFlow sourceRef="task_1" targetRef="serviceTask_2" id="default_sequence_flow_id"/>
         <semantic:sequenceFlow sourceRef="serviceTask_2" targetRef="userTask_3" id="conditional_sequence_flow_from_activity_id">
@@ -241,6 +239,12 @@ describe('mxGraph model', () => {
             <bpmndi:BPMNShape isExpanded="false" bpmnElement="collapsed_embedded_sub_process_id" id="S1373649849862_collapsed_embedded_sub_process_id">
                <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
             </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape isExpanded="true" bpmnElement="expanded_event_sub_process_id" id="S1373649849862_expanded_event_sub_process_id">
+               <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape isExpanded="false" bpmnElement="collapsed_event_sub_process_id" id="S1373649849862_collapsed_event_sub_process_id">
+               <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+            </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge bpmnElement="default_sequence_flow_id" id="E1373649849864_default_sequence_flow_id">
                 <di:waypoint x="342.0" y="351.0"/>
                 <di:waypoint x="390.0" y="351.0"/>
@@ -293,7 +297,7 @@ describe('mxGraph model', () => {
 `;
   const bpmnVisu = new BpmnVisu(null);
 
-  function expectFont(state: mxgraph.mxCellState, expectedFont: ExpectedFont): void {
+  function expectFont(state: mxCellState, expectedFont: ExpectedFont): void {
     if (expectedFont) {
       if (expectedFont.isBold) {
         expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_BOLD);
@@ -321,14 +325,14 @@ describe('mxGraph model', () => {
     expect(cell).toBeUndefined();
   }
 
-  function expectModelContainsCell(cellId: string): mxgraph.mxCell {
+  function expectModelContainsCell(cellId: string): mxCell {
     const cell = bpmnVisu.graph.model.getCell(cellId);
     expect(cell).not.toBeUndefined();
     expect(cell).not.toBeNull();
     return cell;
   }
 
-  function expectModelContainsShape(cellId: string, modelElement: ExpectedShapeModelElement): mxgraph.mxCell {
+  function expectModelContainsShape(cellId: string, modelElement: ExpectedShapeModelElement): mxCell {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(modelElement.kind);
     if (modelElement.isExpanded !== undefined) {
@@ -343,7 +347,7 @@ describe('mxGraph model', () => {
     return cell;
   }
 
-  function expectModelContainsEdge(cellId: string, modelElement: ExpectedEdgeModelElement): mxgraph.mxCell {
+  function expectModelContainsEdge(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(modelElement.kind);
 
@@ -354,7 +358,7 @@ describe('mxGraph model', () => {
     return cell;
   }
 
-  function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxgraph.mxCell {
+  function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {
     const cell = expectModelContainsShape(cellId, eventModelElement);
     expect(cell.style).toContain(`bpmn.eventKind=${eventModelElement.eventKind}`);
     return cell;
@@ -365,7 +369,7 @@ describe('mxGraph model', () => {
     expect(cell.style).toContain(`bpmn.isInterrupting=${boundaryEventModelElement.isInterrupting}`);
   }
 
-  function expectModelContainsSubProcess(cellId: string, subProcessModelElement: ExpectedSubProcessModelElement): mxgraph.mxCell {
+  function expectModelContainsSubProcess(cellId: string, subProcessModelElement: ExpectedSubProcessModelElement): mxCell {
     const cell = expectModelContainsShape(cellId, {
       ...subProcessModelElement,
       kind: ShapeBpmnElementKind.SUB_PROCESS,
@@ -483,6 +487,18 @@ describe('mxGraph model', () => {
       label: 'Collapsed Embedded Sub-Process',
       isExpanded: false,
     });
+    expectModelContainsSubProcess('expanded_event_sub_process_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      label: 'Expanded Event Sub-Process',
+      isExpanded: true,
+    });
+    expectModelContainsSubProcess('collapsed_event_sub_process_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      label: 'Collapsed Event Sub-Process',
+      isExpanded: false,
+    });
 
     // activity
     expectModelContainsShape('task_1', {
@@ -553,7 +569,7 @@ describe('mxGraph model', () => {
     expectModelNotContainCell('boundary_event_non_interrupting_timer_id');
   });
 
-  function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {
+  function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxGeometry): void {
     const cell = bpmnVisu.graph.model.getCell(cellId);
     expect(cell).not.toBeNull();
     expect(cell.parent.id).toEqual(parentId);

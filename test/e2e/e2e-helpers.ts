@@ -13,12 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * Base name of the BPMN specification.
- */
-export enum ShapeBpmnSubProcessKind {
-  EMBEDDED = 'embedded',
-  EVENT = 'event',
-  // TRANSACTION = 'transaction',
-  // AD_HOC = 'ad_hoc',
+import * as fs from 'fs';
+import * as path from 'path';
+
+export function readFileSync(relPathToE2eSource: string): string {
+  return fs.readFileSync(path.join(__dirname, relPathToE2eSource), 'utf-8');
 }
