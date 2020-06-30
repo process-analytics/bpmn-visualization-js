@@ -133,6 +133,8 @@ describe('mxGraph model', () => {
         <semantic:receiveTask id="receiveTask_instantiated" name="Instantiated Receive Task" instantiate=true/>
         <semantic:subProcess triggeredByEvent="false" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Expanded Embedded Sub-Process" id="expanded_embedded_sub_process_id"/>
         <semantic:subProcess triggeredByEvent="false" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Collapsed Embedded Sub-Process" id="collapsed_embedded_sub_process_id"/>
+        <semantic:subProcess triggeredByEvent="true" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Expanded Event Sub-Process" id="expanded_event_sub_process_id"/>
+        <semantic:subProcess triggeredByEvent="true" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Collapsed Event Sub-Process" id="collapsed_event_sub_process_id"/>
         <semantic:sequenceFlow sourceRef="startEvent_1" targetRef="task_1" name="From 'start event 1' to 'task 1'" id="normal_sequence_flow_id"/>
         <semantic:sequenceFlow sourceRef="task_1" targetRef="serviceTask_2" id="default_sequence_flow_id"/>
         <semantic:sequenceFlow sourceRef="serviceTask_2" targetRef="userTask_3" id="conditional_sequence_flow_from_activity_id">
@@ -239,6 +241,12 @@ describe('mxGraph model', () => {
                <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape isExpanded="false" bpmnElement="collapsed_embedded_sub_process_id" id="S1373649849862_collapsed_embedded_sub_process_id">
+               <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape isExpanded="true" bpmnElement="expanded_event_sub_process_id" id="S1373649849862_expanded_event_sub_process_id">
+               <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape isExpanded="false" bpmnElement="collapsed_event_sub_process_id" id="S1373649849862_collapsed_event_sub_process_id">
                <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge bpmnElement="default_sequence_flow_id" id="E1373649849864_default_sequence_flow_id">
@@ -481,6 +489,18 @@ describe('mxGraph model', () => {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process',
+      isExpanded: false,
+    });
+    expectModelContainsSubProcess('expanded_event_sub_process_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      label: 'Expanded Event Sub-Process',
+      isExpanded: true,
+    });
+    expectModelContainsSubProcess('collapsed_event_sub_process_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      label: 'Collapsed Event Sub-Process',
       isExpanded: false,
     });
 
