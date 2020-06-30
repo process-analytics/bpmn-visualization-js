@@ -15,6 +15,7 @@
  */
 import BpmnVisu from '../component/BpmnVisu';
 import { DropFileUserInterface } from '../component/ui_ux/DropFileUserInterface';
+import { documentReady, logStartup } from './helper';
 
 export const bpmnVisu = new BpmnVisu(window.document.getElementById('graph'));
 
@@ -43,17 +44,7 @@ document.getElementById('file-selector').classList.remove('hidden');
 ////////////////////////////////////////////////////////////////////////////////
 // if bpmn passed as request parameter, try to load it directly
 ////////////////////////////////////////////////////////////////////////////////
-function log(header: string, message: unknown, ...optionalParams: unknown[]): void {
-  // eslint-disable-next-line no-console
-  console.info(header + ' ' + message, ...optionalParams);
-}
-
-function logStartup(message?: string, ...optionalParams: unknown[]): void {
-  log('[DEMO STARTUP]', message, ...optionalParams);
-}
-
-// TODO is this the best way to run this function on page load?
-(function() {
+documentReady(function() {
   const log = logStartup;
   log("Checking if 'BPMN auto loading from url parameter' is requested");
   const parameters = new URLSearchParams(window.location.search);
@@ -66,4 +57,4 @@ function logStartup(message?: string, ...optionalParams: unknown[]): void {
   } else {
     log('No BPMN auto loading');
   }
-})();
+});
