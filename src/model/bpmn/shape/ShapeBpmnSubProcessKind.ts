@@ -18,7 +18,7 @@
  */
 export enum ShapeBpmnSubProcessKind {
   EMBEDDED = 'embedded',
-  // EVENT = 'event',
+  EVENT = 'event',
   // TRANSACTION = 'transaction',
   // AD_HOC = 'ad_hoc',
 }
