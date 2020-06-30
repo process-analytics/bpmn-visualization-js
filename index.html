@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>BPMN Visualization JS</title>
+<title>bpmn-visualization</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,7 +439,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>BPMN Visualization JS</h1>
+<h1>bpmn-visualization</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -472,16 +472,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_introduction"><a class="anchor" href="#_introduction"></a><a class="link" href="#_introduction">1. Introduction</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><code>BPMN Visualization JS</code> is JavaScript library relying on <a href="https://www.omg.org/spec/BPMN/2.0.2/PDF">BPMN</a> to
-visualize process execution data. It is in early development stages and is subject to changes prior to the <code>1.0.0</code>
-release.</p>
+<p><code>bpmn-visualization</code> is a TypeScript library to visualize process execution data on <a href="https://www.omg.org/spec/BPMN/2.0.2/">BPMN</a>
+diagrams. It is in early development stages and is subject to changes prior to the <code>1.0.0</code> release.</p>
 </div>
 <div class="paragraph">
 <p>We are currently focusing on the <a href="#supported-bpmn-elements">BPMN support</a> to be able to render most of the BPMN
-elements. Then, we will work on BPMN extensions, library extension points.</p>
+elements. Then, we will work on BPMN extensions, library extension points, display options for execution data with interactive
+capacities.</p>
 </div>
 <div class="paragraph">
-<p><strong>Supported Browsers</strong>: Chrome, Firefox, Safari, Edge</p>
+<p><strong>Supported Browsers</strong>: Chrome, Firefox, Safari, Edge.</p>
 </div>
 </div>
 </div>
@@ -549,7 +549,7 @@ the BPMN elements are rendered with their final shapes.</p>
 <p><span class="icon"><i class="fa fa-flask"></i></span> experimental (subject to change)</p>
 </li>
 <li>
-<p>no status means that are arbitrary rendering is used (not following BPMNN), generally using a dedicated color to identify the shape among other</p>
+<p>no status means that are arbitrary rendering is used (i.e. not following the BPMN specification requirements), generally using a dedicated color to identify the shape among others</p>
 </li>
 </ul>
 </div>
@@ -1367,7 +1367,7 @@ tool can transform it. See <a href="https://github.com/process-analytics/bpmn-vi
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-06-30 15:55:30 UTC
+Last updated 2020-06-30 16:25:22 UTC
 </div>
 </div>
 </body>
