@@ -1,6 +1,6 @@
 # Contributing
 
-You are here to help on BPMN Visualization JS? Awesome, feel welcome and read the following guidelines in order to know how to contribute, to ask questions and to make BPMN Visualization JS such a great tool.
+You are here to help on `bpmn-visualization`? Awesome, feel welcome and read the following guidelines in order to know how to contribute, to ask questions and to make `bpmn-visualization` such a great tool.
 
 All members of our community are expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md). Please make sure you are welcoming and friendly in all of our spaces.
 
@@ -10,9 +10,9 @@ There are many ways to contribute:
 
 - help people with the questions they ask on the [Github Issues](https://github.com/process-analytics/bpmn-visualization-js/issues )
 - submitting bug reports and feature requests in the [Github Issues](https://github.com/process-analytics/bpmn-visualization-js/issues/new )
-- [writing code](CONTRIBUTING.md#code-and-documentation-changes) which can be incorporated into BPMN Visualization JS itself
+- [writing code](CONTRIBUTING.md#code-and-documentation-changes) which can be incorporated into `bpmn-visualization` itself
 - [improving](CONTRIBUTING.md#code-and-documentation-changes) the documentation
-- improve the existing example applications to demonstrate features in BPMN Visualization JS
+- improve the existing example applications to demonstrate features in `bpmn-visualization`
 
 ## Code and documentation changes
 
@@ -42,7 +42,7 @@ test everything)
 
 ### Fork & create a branch
 
-[Fork BPMN Visualization JS](https://help.github.com/articles/fork-a-repo) and create a branch with a descriptive name. 
+[Fork bpmn-visualization](https://help.github.com/articles/fork-a-repo) and create a branch with a descriptive name. 
 
 A good branch name would be (where issue #25 is the ticket you're working on): **25_add-annotations-to-tasks**
 
@@ -182,7 +182,8 @@ You only need to sign the CLA once or when the CLA terms have changed.
 
 ### Open a Pull Request
 
-At this point, you should switch back to your master branch and make sure it's up to date with BPMN Visualization JS's master branch:
+At this point, you should switch back to your master branch and make sure it's up to date with `bpmn-visualization`
+`master` branch:
 
 ```sh
 git remote add upstream git@github.com:process-analytics/bpmn-visualization-js.git

@@ -55,7 +55,7 @@ describe('BpmnVisu view', () => {
   it('should display page title', async () => {
     await page.goto('http://localhost:10001');
     await page.waitForSelector(`#${graphContainerId}`);
-    await expect(page.title()).resolves.toMatch('BPMN Visualization JS');
+    await expect(page.title()).resolves.toMatch('BPMN Visualization Demo');
   });
 
   it('should display graph in page', async () => {

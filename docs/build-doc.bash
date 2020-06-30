@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-echo "Building bpmn-visualization-js html documentation with Docker"
+echo "Building bpmn-visualization html documentation with Docker"
 
 doc_input="$(pwd)/docs"
 doc_output="$(pwd)/build/docs"
@@ -9,7 +9,7 @@ rm -rf ${doc_output}
 mkdir -p ${doc_output}
 
 docker run --rm -v "${doc_input}:/documents/" -v "${doc_output}:/documents-generated/" \
-    --name bpmn-visu-js-asciidoc \
+    --name bpmn-visualization-asciidoc \
     asciidoctor/docker-asciidoctor:1.1.0 \
     asciidoctor -D /documents-generated index.adoc
 

@@ -1,13 +1,13 @@
 == Introduction
 
-`BPMN Visualization JS` is JavaScript library relying on https://www.omg.org/spec/BPMN/2.0.2/PDF[BPMN] to
-visualize process execution data. It is in early development stages and is subject to changes prior to the `1.0.0`
-release.
+`bpmn-visualization` is a TypeScript library to visualize process execution data on https://www.omg.org/spec/BPMN/2.0.2/[BPMN]
+diagrams. It is in early development stages and is subject to changes prior to the `1.0.0` release.
 
 We are currently focusing on the <<supported-bpmn-elements,BPMN support>> to be able to render most of the BPMN
-elements. Then, we will work on BPMN extensions, library extension points.
+elements. Then, we will work on BPMN extensions, library extension points, display options for execution data with interactive
+capacities.
 
-**Supported Browsers**: Chrome, Firefox, Safari, Edge
+**Supported Browsers**: Chrome, Firefox, Safari, Edge.
 
 
 == Demo environment
