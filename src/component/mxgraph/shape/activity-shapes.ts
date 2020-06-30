@@ -108,14 +108,17 @@ export class SubProcessShape extends BaseActivityShape {
   }
 
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    if (StyleUtils.getBpmnSubProcessKind(this.style) === ShapeBpmnSubProcessKind.EMBEDDED) {
+    const isExpanded = StyleUtils.getBpmnIsExpanded(this.style);
+    if (isExpanded === 'false' && StyleUtils.getBpmnSubProcessKind(this.style) === ShapeBpmnSubProcessKind.EMBEDDED) {
       c.setFillColor('Lavender');
-    } else {
+    } else if (StyleUtils.getBpmnSubProcessKind(this.style) === ShapeBpmnSubProcessKind.EVENT) {
       c.setFillColor('LightCyan');
     }
 
-    if (StyleUtils.getBpmnIsExpanded(this.style) === 'true') {
-      c.setStrokeColor('Chartreuse');
+    if (isExpanded === 'true') {
+      if (StyleUtils.getBpmnSubProcessKind(this.style) === ShapeBpmnSubProcessKind.EVENT) {
+        c.setStrokeColor('Chartreuse');
+      }
     } else {
       c.setStrokeColor('Fuchsia');
     }
