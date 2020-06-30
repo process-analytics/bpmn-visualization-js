@@ -27,6 +27,7 @@ const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
 const demoMode = process.env.demoMode;
 
+const sourceMap = !demoMode;
 const tsconfigOverride = demoMode ? { compilerOptions: { declaration: false } } : {};
 
 const plugins = [
@@ -69,6 +70,7 @@ export default {
     {
       file: pkg.module,
       format: 'es',
+      sourcemap: sourceMap,
     },
   ],
   external: [...Object.keys(pkg.peerDependencies || {})],
