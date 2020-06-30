@@ -31,13 +31,7 @@ export default class ShapeUtil {
   // TODO : To modify when we will support globalTask (They are not considered as Task in the BPMN Semantic)
   private static TASK_KINDS = ShapeUtil.filterKind('Task', true);
 
-  private static ACTIVITY_KINDS = [
-    ...ShapeUtil.TASK_KINDS,
-    ShapeBpmnElementKind.CALL_ACTIVITY,
-
-    // TODO: Uncomment when sub process are supported
-    // ShapeBpmnElementKind.SUB_PROCESS
-  ];
+  private static ACTIVITY_KINDS = [...ShapeUtil.TASK_KINDS, ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.SUB_PROCESS];
   private static FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = [
     ...ShapeUtil.ACTIVITY_KINDS,
     ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
@@ -60,6 +54,10 @@ export default class ShapeUtil {
     return this.EVENT_KINDS.includes(kind);
   }
 
+  public static isSubProcess(kind: ShapeBpmnElementKind): boolean {
+    return ShapeBpmnElementKind.SUB_PROCESS === kind;
+  }
+
   public static isBoundaryEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_BOUNDARY === kind;
   }
@@ -80,6 +78,10 @@ export default class ShapeUtil {
   // topLevelBpmnEventKinds to not mixed with the bpmnEventKinds that currently are the list of non None event subtypes
   public static topLevelBpmnEventKinds(): ShapeBpmnElementKind[] {
     return this.EVENT_KINDS;
+  }
+
+  public static activityKinds(): ShapeBpmnElementKind[] {
+    return this.ACTIVITY_KINDS;
   }
 
   public static taskKinds(): ShapeBpmnElementKind[] {

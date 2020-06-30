@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import ShapeBpmnElement from './ShapeBpmnElement';
-import Bounds from '../Bounds';
-import Label from '../Label';
+import * as fs from 'fs';
+import * as path from 'path';
 
-export default class Shape {
-  constructor(readonly id?: string, readonly bpmnElement?: ShapeBpmnElement, readonly bounds?: Bounds, readonly label?: Label, readonly isExpanded: boolean = false) {}
+export function readFileSync(relPathToE2eSource: string): string {
+  return fs.readFileSync(path.join(__dirname, relPathToE2eSource), 'utf-8');
 }

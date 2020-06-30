@@ -16,7 +16,7 @@
 
 import { defaultMxGraphRenderer } from '../../../../src/component/mxgraph/MxGraphRenderer';
 import Shape from '../../../../src/model/bpmn/shape/Shape';
-import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../../../src/model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import Label, { Font } from '../../../../src/model/bpmn/Label';
 import { ExpectedFont } from '../parser/json/JsonTestUtils';
@@ -26,6 +26,8 @@ import { SequenceFlowKind } from '../../../../src/model/bpmn/edge/SequenceFlowKi
 import Bounds from '../../../../src/model/bpmn/Bounds';
 import { ShapeBpmnEventKind } from '../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { BpmnEventKind } from '../../../../src/model/bpmn/shape/ShapeUtil';
+import { ShapeBpmnSubProcessKind } from '../../../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
+import each from 'jest-each';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
@@ -39,8 +41,8 @@ function newLabel(font: ExpectedFont, bounds?: Bounds): Label {
  * Returns a new `Shape` instance with arbitrary id and `undefined` bounds.
  * @param kind the `ShapeBpmnElementKind` to set in the new `ShapeBpmnElement` instance
  */
-function newShape(bpmnElement: ShapeBpmnElement, label?: Label): Shape {
-  return new Shape('id', bpmnElement, undefined, label);
+function newShape(bpmnElement: ShapeBpmnElement, label?: Label, isExpanded = false): Shape {
+  return new Shape('id', bpmnElement, undefined, label, isExpanded);
 }
 
 /**
@@ -57,6 +59,10 @@ function newShapeBpmnEvent(bpmnElementKind: BpmnEventKind, eventKind: ShapeBpmnE
 
 function newShapeBpmnBoundaryEvent(eventKind: ShapeBpmnEventKind, isInterrupting: boolean): ShapeBpmnBoundaryEvent {
   return new ShapeBpmnBoundaryEvent('id', 'name', eventKind, null, isInterrupting);
+}
+
+function newShapeBpmnSubProcess(subPorcessKind: ShapeBpmnSubProcessKind): ShapeBpmnSubProcess {
+  return new ShapeBpmnSubProcess('id', 'name', subPorcessKind, null);
 }
 
 /**
@@ -165,6 +171,15 @@ describe('mxgraph renderer', () => {
     it('cancel with undefined interrupting value', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventKind.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
       expect(computeStyle(shape)).toEqual('boundaryEvent;fontStyle=8;bpmn.eventKind=cancel;bpmn.isInterrupting=true');
+    });
+  });
+  describe('compute style - sub-processes', () => {
+    each([
+      ['expanded', true],
+      ['collapsed', false],
+    ]).it('%s embedded sub-process', (testName, isExpanded: boolean) => {
+      const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED), newLabel({ name: 'Arial' }), isExpanded);
+      expect(computeStyle(shape)).toEqual(`subProcess;fontFamily=Arial;bpmn.subProcessKind=embedded;bpmn.isExpanded=${isExpanded}`);
     });
   });
 });

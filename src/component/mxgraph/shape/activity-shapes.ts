@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 import { mxgraph } from 'ts-mxgraph';
-import { StyleConstant } from '../StyleUtils';
+import StyleUtils, { StyleConstant } from '../StyleUtils';
 import IconPainter, { PaintParameter } from './IconPainter';
+import { ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 
-abstract class BaseTaskShape extends mxRectangleShape {
+export abstract class BaseActivityShape extends mxRectangleShape {
   // TODO missing in mxgraph-type-definitions@1.0.2 mxShape
   isRounded: boolean;
   // TODO missing in mxgraph-type-definitions@1.0.2 mxShape
@@ -27,6 +28,12 @@ abstract class BaseTaskShape extends mxRectangleShape {
     super(bounds, fill, stroke, strokewidth);
     // enforced by BPMN
     this.isRounded = true;
+  }
+}
+
+abstract class BaseTaskShape extends BaseActivityShape {
+  protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+    super(bounds, fill, stroke, strokewidth);
   }
 
   public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
@@ -80,4 +87,39 @@ export class ReceiveTaskShape extends BaseTaskShape {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function
   protected paintTaskIcon(paintParameter: PaintParameter): void {}
+}
+
+export class CallActivityShape extends BaseActivityShape {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+
+  public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+    c.setStrokeColor('#2C6DA3');
+    c.setStrokeWidth(4);
+
+    super.paintVertexShape(c, x, y, w, h);
+  }
+}
+
+export class SubProcessShape extends BaseActivityShape {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+
+  public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+    if (StyleUtils.getBpmnSubProcessKind(this.style) === ShapeBpmnSubProcessKind.EMBEDDED) {
+      c.setFillColor('Lavender');
+    } else {
+      c.setFillColor('LightCyan');
+    }
+
+    if (StyleUtils.getBpmnIsExpanded(this.style) === 'true') {
+      c.setStrokeColor('Chartreuse');
+    } else {
+      c.setStrokeColor('Fuchsia');
+    }
+
+    super.paintVertexShape(c, x, y, w, h);
+  }
 }

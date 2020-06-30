@@ -16,7 +16,7 @@
 import Shape from '../../model/bpmn/shape/Shape';
 import Edge from '../../model/bpmn/edge/Edge';
 import BpmnModel from '../../model/bpmn/BpmnModel';
-import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../model/bpmn/shape/ShapeBpmnElement';
 import Waypoint from '../../model/bpmn/edge/Waypoint';
 import { StyleConstant } from './StyleUtils';
 import { Font } from '../../model/bpmn/Label';
@@ -89,12 +89,19 @@ export default class MxGraphRenderer {
     }
 
     const bpmnElement = bpmnCell.bpmnElement;
-    if (bpmnElement instanceof ShapeBpmnEvent) {
-      styleValues.set(StyleConstant.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
-    }
+    if (bpmnCell instanceof Shape) {
+      if (bpmnElement instanceof ShapeBpmnEvent) {
+        styleValues.set(StyleConstant.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
+      }
 
-    if (bpmnElement instanceof ShapeBpmnBoundaryEvent) {
-      styleValues.set(StyleConstant.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
+      if (bpmnElement instanceof ShapeBpmnBoundaryEvent) {
+        styleValues.set(StyleConstant.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
+      }
+
+      if (bpmnElement instanceof ShapeBpmnSubProcess) {
+        styleValues.set(StyleConstant.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
+        styleValues.set(StyleConstant.BPMN_STYLE_IS_EXPANDED, String(bpmnCell.isExpanded));
+      }
     }
 
     if (labelBounds) {

@@ -8,9 +8,13 @@ add a new value in the `ShapeBpmnElementKind` enum.
 
 The `ProcessConverter` uses the `ShapeBpmnElementKind` values to detect elements in the BPMN source.
 
-[NOTE]
-For BPMN Events, the actual type in controlled by `EventDefinition` fields in the BPMN specification. Detecting new event
+===== Elements requiring special attention 
+
+- For BPMN Events, the actual type in controlled by `EventDefinition` fields in the BPMN specification. Detecting new event
 types requires changes in `ShapeBpmnEventKind` to add the newly supported BPMN Event Definition.
+- For BPMN SubProcesses, the actual type is controlled by `ShapeBpmnSubProcessKind` which is set accordingly during the BPMN parsing.
+
+===== Tests for elements detection 
 
 [IMPORTANT]
 Do not forget to add tests related to the new BPMN element to ensure everything works fine.

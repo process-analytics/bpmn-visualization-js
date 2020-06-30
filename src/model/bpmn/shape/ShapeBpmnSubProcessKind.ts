@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import ShapeBpmnElement from './ShapeBpmnElement';
-import Bounds from '../Bounds';
-import Label from '../Label';
-
-export default class Shape {
-  constructor(readonly id?: string, readonly bpmnElement?: ShapeBpmnElement, readonly bounds?: Bounds, readonly label?: Label, readonly isExpanded: boolean = false) {}
+/**
+ * Base name of the BPMN specification.
+ */
+export enum ShapeBpmnSubProcessKind {
+  EMBEDDED = 'embedded',
+  EVENT = 'event',
+  // TRANSACTION = 'transaction',
+  // AD_HOC = 'ad_hoc',
 }
