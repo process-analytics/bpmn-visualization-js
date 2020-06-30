@@ -117,7 +117,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
       }
 
       const label = this.deserializeLabel(shape.BPMNLabel, shape.id);
-      return new Shape(shape.id, bpmnElement, bounds, label);
+      return new Shape(shape.id, bpmnElement, bounds, label, shape.isExpanded);
     }
   }
 
