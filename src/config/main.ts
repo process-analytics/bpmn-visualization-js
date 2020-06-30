@@ -15,6 +15,7 @@
  */
 import BpmnVisu from '../component/BpmnVisu';
 import { DropFileUserInterface } from '../component/ui_ux/DropFileUserInterface';
+import { documentReady, logStartup } from './helper';
 
 export const bpmnVisu = new BpmnVisu(window.document.getElementById('graph'));
 
@@ -39,3 +40,21 @@ function handleFileSelect(evt: any): void {
 
 document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
 document.getElementById('file-selector').classList.remove('hidden');
+
+////////////////////////////////////////////////////////////////////////////////
+// if bpmn passed as request parameter, try to load it directly
+////////////////////////////////////////////////////////////////////////////////
+documentReady(function() {
+  const log = logStartup;
+  log("Checking if 'BPMN auto loading from url parameter' is requested");
+  const parameters = new URLSearchParams(window.location.search);
+  const bpmnParameterValue = parameters.get('bpmn');
+  if (bpmnParameterValue) {
+    const bpmn = decodeURIComponent(bpmnParameterValue);
+    log('BPMN auto loading');
+    bpmnVisu.load(bpmn);
+    log('BPMN auto loading completed');
+  } else {
+    log('No BPMN auto loading');
+  }
+});
