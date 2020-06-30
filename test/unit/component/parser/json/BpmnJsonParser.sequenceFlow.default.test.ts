@@ -86,6 +86,7 @@ describe('parse bpmn as json for default sequence flow', () => {
     ['serviceTask'],
     ['callActivity'],
     ['receiveTask'],
+    ['subProcess'],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway'],
     // TODO: To uncomment when we support manualTask
@@ -96,8 +97,6 @@ describe('parse bpmn as json for default sequence flow', () => {
     //['sendTask'],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask'],
-    // TODO: To uncomment when we support subProcess
-    //['subProcess'],
   ]).it('json containing one process with a sequence flow defined as default in a %s', sourceKind => {
     const json = `{
           "definitions": {

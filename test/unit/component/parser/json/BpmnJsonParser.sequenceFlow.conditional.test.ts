@@ -26,6 +26,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     ['serviceTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['callActivity', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['receiveTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
+    ['subProcess', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
     // TODO: To uncomment when we support manualTask
@@ -36,8 +37,6 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     //['sendTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-    // TODO: To uncomment when we support subProcess
-    //['subProcess', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
   ]).it('json containing one process with a sequence flow defined as conditional in a %s', (sourceKind, expectedBpmnElementKind) => {
     const json = `{
           "definitions": {
