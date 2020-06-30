@@ -20,9 +20,8 @@ import { SequenceFlowKind } from '../../model/bpmn/edge/SequenceFlowKind';
 import { MarkerConstant } from './MarkerConfigurator';
 import { StyleConstant } from './StyleUtils';
 
+// TODO 'clone' function is missing in mxgraph-type-definitions@1.0.2
 declare const mxUtils: typeof mxgraph.mxUtils;
-declare const mxConstants: typeof mxgraph.mxConstants;
-declare const mxPerimeter: typeof mxgraph.mxPerimeter;
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
@@ -43,7 +42,7 @@ export default class StyleConfigurator {
     ],
   ]);
 
-  constructor(private graph: mxgraph.mxGraph) {}
+  constructor(private graph: mxGraph) {}
 
   public configureStyles(): void {
     mxConstants.RECTANGLE_ROUNDING_FACTOR = 0.1;
