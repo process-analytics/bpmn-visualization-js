@@ -109,9 +109,13 @@ export class SubProcessShape extends BaseActivityShape {
 
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const subProcessKind = StyleUtils.getBpmnSubProcessKind(this.style);
+
+    // TODO temp. Wrong type for setDashed & setDashPattern
+    const xmlCanvas = (c as unknown) as mxgraph.mxXmlCanvas2D;
+
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
-      c.setDashed(1, 0);
-      c.setDashPattern('1 2');
+      xmlCanvas.setDashed(1, 0);
+      xmlCanvas.setDashPattern('1 2');
     }
 
     if (StyleUtils.getBpmnIsExpanded(this.style) === 'false') {
@@ -125,6 +129,10 @@ export class SubProcessShape extends BaseActivityShape {
     }
 
     super.paintVertexShape(c, x, y, w, h);
-    this.configureCanvas(c, x, y, w, h);
+
+    // TODO temp. missing in mxgraph-type-definitions@1.0.2 mxShape
+    // this.configureCanvas(c, x, y, w, h);
+    xmlCanvas.setDashed(StyleUtils.isDashed(this.style), StyleUtils.getFixDash(this.style));
+    xmlCanvas.setDashPattern(StyleUtils.getDashPattern(this.style));
   }
 }

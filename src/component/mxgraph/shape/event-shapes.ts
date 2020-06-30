@@ -117,6 +117,9 @@ export class BoundaryEventShape extends IntermediateEventShape {
     }
 
     super.paintOuterShape(paintParameter);
+
+    // TODO temp. missing in mxgraph-type-definitions@1.0.2 mxShape
+    // this.configureCanvas(c, x, y, w, h);
     paintParameter.c.setDashed(StyleUtils.isDashed(this.style), StyleUtils.getFixDash(this.style));
     paintParameter.c.setDashPattern(StyleUtils.getDashPattern(this.style));
   }
