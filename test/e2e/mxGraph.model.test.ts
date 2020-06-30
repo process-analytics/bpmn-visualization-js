@@ -15,14 +15,10 @@
  */
 import BpmnVisu from '../../src/component/BpmnVisu';
 import { ShapeBpmnElementKind } from '../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnEventKind } from '../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
 import { MarkerConstant } from '../../src/component/mxgraph/MarkerConfigurator';
 import { ShapeBpmnSubProcessKind } from '../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
-
-declare const mxConstants: typeof mxgraph.mxConstants;
-declare const mxGeometry: typeof mxgraph.mxGeometry;
 
 export interface ExpectedFont {
   name?: string;
@@ -63,7 +59,7 @@ export interface ExpectedBoundaryEventModelElement extends ExpectedEventModelEle
   isInterrupting?: boolean;
 }
 
-function expectGeometry(cell: mxgraph.mxCell, geometry: mxgraph.mxGeometry): void {
+function expectGeometry(cell: mxCell, geometry: mxGeometry): void {
   const cellGeometry = cell.getGeometry();
   expect(cellGeometry.x).toEqual(geometry.x);
   expect(cellGeometry.y).toEqual(geometry.y);
@@ -301,7 +297,7 @@ describe('mxGraph model', () => {
 `;
   const bpmnVisu = new BpmnVisu(null);
 
-  function expectFont(state: mxgraph.mxCellState, expectedFont: ExpectedFont): void {
+  function expectFont(state: mxCellState, expectedFont: ExpectedFont): void {
     if (expectedFont) {
       if (expectedFont.isBold) {
         expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_BOLD);
@@ -329,14 +325,14 @@ describe('mxGraph model', () => {
     expect(cell).toBeUndefined();
   }
 
-  function expectModelContainsCell(cellId: string): mxgraph.mxCell {
+  function expectModelContainsCell(cellId: string): mxCell {
     const cell = bpmnVisu.graph.model.getCell(cellId);
     expect(cell).not.toBeUndefined();
     expect(cell).not.toBeNull();
     return cell;
   }
 
-  function expectModelContainsShape(cellId: string, modelElement: ExpectedShapeModelElement): mxgraph.mxCell {
+  function expectModelContainsShape(cellId: string, modelElement: ExpectedShapeModelElement): mxCell {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(modelElement.kind);
     if (modelElement.isExpanded !== undefined) {
@@ -351,7 +347,7 @@ describe('mxGraph model', () => {
     return cell;
   }
 
-  function expectModelContainsEdge(cellId: string, modelElement: ExpectedEdgeModelElement): mxgraph.mxCell {
+  function expectModelContainsEdge(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(modelElement.kind);
 
@@ -362,7 +358,7 @@ describe('mxGraph model', () => {
     return cell;
   }
 
-  function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxgraph.mxCell {
+  function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {
     const cell = expectModelContainsShape(cellId, eventModelElement);
     expect(cell.style).toContain(`bpmn.eventKind=${eventModelElement.eventKind}`);
     return cell;
@@ -373,7 +369,7 @@ describe('mxGraph model', () => {
     expect(cell.style).toContain(`bpmn.isInterrupting=${boundaryEventModelElement.isInterrupting}`);
   }
 
-  function expectModelContainsSubProcess(cellId: string, subProcessModelElement: ExpectedSubProcessModelElement): mxgraph.mxCell {
+  function expectModelContainsSubProcess(cellId: string, subProcessModelElement: ExpectedSubProcessModelElement): mxCell {
     const cell = expectModelContainsShape(cellId, {
       ...subProcessModelElement,
       kind: ShapeBpmnElementKind.SUB_PROCESS,
@@ -573,7 +569,7 @@ describe('mxGraph model', () => {
     expectModelNotContainCell('boundary_event_non_interrupting_timer_id');
   });
 
-  function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxgraph.mxGeometry): void {
+  function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxGeometry): void {
     const cell = bpmnVisu.graph.model.getCell(cellId);
     expect(cell).not.toBeNull();
     expect(cell.parent.id).toEqual(parentId);

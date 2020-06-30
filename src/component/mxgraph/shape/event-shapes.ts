@@ -18,8 +18,6 @@ import { ShapeBpmnEventKind } from '../../../model/bpmn/shape/ShapeBpmnEventKind
 import IconPainter, { PaintParameter } from './IconPainter';
 import StyleUtils, { StyleConstant } from '../StyleUtils';
 
-declare const mxEllipse: typeof mxgraph.mxEllipse;
-
 abstract class EventShape extends mxEllipse {
   // TODO: when all/more event types will be supported, we could move to a Record/MappedType
   private iconPainters: Map<ShapeBpmnEventKind, (paintParameter: PaintParameter) => void> = new Map([
@@ -30,20 +28,21 @@ abstract class EventShape extends mxEllipse {
 
   protected withFilledIcon = false;
 
-  protected constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  public paintVertexShape(c: mxgraph.mxXmlCanvas2D, x: number, y: number, w: number, h: number): void {
+  public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     // TODO: This will be removed after implementation of all supported events
     // this.markNonFullyRenderedEvents(c);
-    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, this, 0.25, this.withFilledIcon);
+    // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
+    const paintParameter = IconPainter.buildPaintParameter((c as unknown) as mxgraph.mxXmlCanvas2D, x, y, w, h, (this as unknown) as mxgraph.mxShape, 0.25, this.withFilledIcon);
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);
   }
 
   // This will be removed after implementation of all supported events
-  // private markNonFullyRenderedEvents(c: mxgraph.mxXmlCanvas2D): void {
+  // private markNonFullyRenderedEvents(c: mxAbstractCanvas2D): void {
   //   const eventKind = this.getBpmnEventKind();
   //   if (eventKind == ShapeBpmnEventKind.TIMER) {
   //     c.setFillColor('green');
@@ -52,7 +51,8 @@ abstract class EventShape extends mxEllipse {
   // }
 
   protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {
-    super.paintVertexShape(c, x, y, w, h);
+    // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
+    super.paintVertexShape((c as unknown) as mxAbstractCanvas2D, x, y, w, h);
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
@@ -62,20 +62,20 @@ abstract class EventShape extends mxEllipse {
 }
 
 export class StartEventShape extends EventShape {
-  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 }
 
 export class EndEventShape extends EventShape {
-  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THICK) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
     this.withFilledIcon = true;
   }
 }
 
 abstract class IntermediateEventShape extends EventShape {
-  protected constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+  protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -92,20 +92,20 @@ abstract class IntermediateEventShape extends EventShape {
 }
 
 export class CatchIntermediateEventShape extends IntermediateEventShape {
-  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth?: number) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 }
 
 export class ThrowIntermediateEventShape extends IntermediateEventShape {
-  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth?: number) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
     this.withFilledIcon = true;
   }
 }
 
 export class BoundaryEventShape extends IntermediateEventShape {
-  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth?: number) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 

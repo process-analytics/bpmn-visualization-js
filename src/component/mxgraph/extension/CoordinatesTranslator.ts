@@ -13,19 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
-
-declare const mxPoint: typeof mxgraph.mxPoint;
 
 export default class CoordinatesTranslator {
-  constructor(readonly graph: mxgraph.mxGraph) {}
+  constructor(readonly graph: mxGraph) {}
 
   /**
    * Compute an absolute coordinate in relative coordinates in the parent cell referential.
    * @param parent the cell to use for the new coordinate referential
    * @param absoluteCoordinate
    */
-  public computeRelativeCoordinates(parent: mxgraph.mxCell, absoluteCoordinate: mxgraph.mxPoint): mxgraph.mxPoint {
+  public computeRelativeCoordinates(parent: mxCell, absoluteCoordinate: mxPoint): mxPoint {
     const translateForRoot = this.getTranslateForRoot(parent);
     const relativeX = absoluteCoordinate.x + translateForRoot.x;
     const relativeY = absoluteCoordinate.y + translateForRoot.y;
@@ -38,7 +35,7 @@ export default class CoordinatesTranslator {
   //
   // This implementation is taken from the example described in the documentation of mxgraph#getTranslateForRoot (4.1.1)
   // The translation is generally negative
-  private getTranslateForRoot(cell: mxgraph.mxCell): mxgraph.mxPoint {
+  private getTranslateForRoot(cell: mxCell): mxPoint {
     const model = this.graph.getModel();
     const offset = new mxPoint(0, 0);
 
@@ -60,8 +57,8 @@ export default class CoordinatesTranslator {
    *
    * The center coordinates are given in the same referential as the `mxCell`, so relative to its parent.
    */
-  public computeEgeCenter(mxEdge: mxgraph.mxCell): mxgraph.mxPoint {
-    const points: mxgraph.mxPoint[] = mxEdge.geometry.points;
+  public computeEgeCenter(mxEdge: mxCell): mxPoint {
+    const points: mxPoint[] = mxEdge.geometry.points;
 
     const p0 = points[0];
     const pe = points[points.length - 1];

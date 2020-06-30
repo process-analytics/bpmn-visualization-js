@@ -13,14 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
 import StyleConfigurator from './StyleConfigurator';
 import ShapeConfigurator from './ShapeConfigurator';
 import MarkerConfigurator from './MarkerConfigurator';
 import MxClientConfigurator from './MxClientConfigurator';
-
-declare const mxGraph: typeof mxgraph.mxGraph;
-declare const mxGraphModel: typeof mxgraph.mxGraphModel;
 
 /**
  * Configure the mxGraph graph that can be used by the lib
@@ -30,10 +26,10 @@ declare const mxGraphModel: typeof mxgraph.mxGraphModel;
  *     <li>markers
  */
 export default class MxGraphConfigurator {
-  private readonly graph: mxgraph.mxGraph;
+  private readonly graph: mxGraph;
 
-  constructor(container: Element) {
-    this.graph = new mxGraph(container, new mxGraphModel());
+  constructor(container: HTMLElement) {
+    this.graph = new mxGraph(container, new mxGraphModel(null));
     this.configureGraph();
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
@@ -41,7 +37,7 @@ export default class MxGraphConfigurator {
     new MxClientConfigurator().configureMxCodec();
   }
 
-  public getGraph(): mxgraph.mxGraph {
+  public getGraph(): mxGraph {
     return this.graph;
   }
 

@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnEventKind } from '../../model/bpmn/shape/ShapeBpmnEventKind';
 import { ShapeBpmnSubProcessKind } from '../../model/bpmn/shape/ShapeBpmnSubProcessKind';
-
-declare const mxUtils: typeof mxgraph.mxUtils;
-declare const mxConstants: typeof mxgraph.mxConstants;
 
 export enum StyleConstant {
   STROKE_WIDTH_THIN = 2,
