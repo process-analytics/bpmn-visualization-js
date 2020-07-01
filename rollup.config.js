@@ -16,6 +16,7 @@
 import serve from 'rollup-plugin-serve';
 import livereload from 'rollup-plugin-livereload';
 import copy from 'rollup-plugin-copy';
+import copyWatch from 'rollup-plugin-copy-watch';
 
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
@@ -40,19 +41,25 @@ const plugins = [
   json(),
 ];
 
+// Copy static resources to dist
 if (devMode || demoMode) {
-  plugins.push(
-    // Copy static resources to dist
-    // TODO for 'devLiveReloadMode' this should be managed via livereload to consider static resources changes
-    copy({
-      targets: [
-        { src: 'src/index.html', dest: 'dist/' },
-        { src: 'src/static/css/main.css', dest: 'dist/static/css/' },
-        { src: 'src/static/js/configureMxGraphGlobals.js', dest: 'dist/static/js/' },
-        { src: 'node_modules/mxgraph/javascript/mxClient.js', dest: 'dist/static/js/' },
-      ],
-    }),
-  );
+  const copyTargets = [];
+  copyTargets.push({ src: 'src/index.html', dest: 'dist/' });
+  copyTargets.push({ src: 'src/static/css/main.css', dest: 'dist/static/css/' });
+  copyTargets.push({ src: 'src/static/js/configureMxGraphGlobals.js', dest: 'dist/static/js/' });
+  copyTargets.push({ src: 'node_modules/mxgraph/javascript/mxClient.js', dest: 'dist/static/js/' });
+  let copyPlugin;
+  if (devLiveReloadMode) {
+    copyPlugin = copyWatch({
+      watch: ['src/static/**', 'src/index.html'],
+      targets: copyTargets,
+    });
+  } else {
+    copyPlugin = copy({
+      targets: copyTargets,
+    });
+  }
+  plugins.push(copyPlugin);
 }
 
 if (devMode) {
