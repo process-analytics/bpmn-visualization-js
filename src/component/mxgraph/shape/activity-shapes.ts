@@ -114,7 +114,7 @@ export class SubProcessShape extends BaseActivityShape {
     const xmlCanvas = (c as unknown) as mxgraph.mxXmlCanvas2D;
 
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
-      xmlCanvas.setDashed(1, 0);
+      c.setDashed(true, false);
       xmlCanvas.setDashPattern('1 2');
     }
 
