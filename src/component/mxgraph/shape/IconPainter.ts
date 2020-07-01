@@ -502,4 +502,32 @@ export default class IconPainter {
     canvas.close();
     canvas.fillAndStroke();
   }
+
+  // this implementation is adapted from the 'plus square' symbol: https://icons.getbootstrap.com/icons/plus-square/
+  public static paintExpandIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+    this.updateCanvasStyle(c, icon);
+
+    const initialIconSize = { width: 16, height: 16 };
+    const iconSize = this.calculateIconSize(initialIconSize, icon, shape, ratioFromParent);
+    MxCanvasUtil.translateIconToShapeBottomCenter(c, shape, iconSize);
+
+    const w = iconSize.width;
+    const h = iconSize.height;
+
+    // Rounded rectangle
+    c.roundrect(0, 0, w, h, 2, 2);
+    c.stroke();
+
+    // Rounded cross
+    c.setLineJoin('round');
+
+    c.begin();
+    c.moveTo(w / 2, h / 4);
+    c.lineTo(w / 2, (h * 3) / 4);
+    c.close();
+    c.moveTo(w / 4, h / 2);
+    c.lineTo((w * 3) / 4, h / 2);
+    c.close();
+    c.fillAndStroke();
+  }
 }

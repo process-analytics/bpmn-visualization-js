@@ -119,11 +119,8 @@ export class SubProcessShape extends BaseActivityShape {
     }
 
     if (StyleUtils.getBpmnIsExpanded(this.style) === 'false') {
-      c.setStrokeColor('Fuchsia');
-
-      if (subProcessKind === ShapeBpmnSubProcessKind.EMBEDDED) {
-        c.setFillColor('Lavender');
-      } else if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
+      if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
+        c.setStrokeColor('Fuchsia');
         c.setFillColor('LightCyan');
       }
     }
@@ -134,5 +131,17 @@ export class SubProcessShape extends BaseActivityShape {
     // this.configureCanvas(c, x, y, w, h);
     xmlCanvas.setDashed(StyleUtils.isDashed(this.style), StyleUtils.getFixDash(this.style));
     xmlCanvas.setDashPattern(StyleUtils.getDashPattern(this.style));
+  }
+
+  public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+    super.paintForeground(c, x, y, w, h);
+
+    if (StyleUtils.getBpmnIsExpanded(this.style) === 'false') {
+      const subProcessKind = StyleUtils.getBpmnSubProcessKind(this.style);
+      if (subProcessKind === ShapeBpmnSubProcessKind.EMBEDDED) {
+        const paintParameter = IconPainter.buildPaintParameter((c as unknown) as mxgraph.mxXmlCanvas2D, x, y, w, h, (this as unknown) as mxgraph.mxShape, 0.17, false, 1.5);
+        IconPainter.paintExpandIcon(paintParameter);
+      }
+    }
   }
 }

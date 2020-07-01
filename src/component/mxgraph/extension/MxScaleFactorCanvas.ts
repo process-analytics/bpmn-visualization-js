@@ -111,4 +111,10 @@ export class MxCanvasUtil {
     const insetH = (shape.h - iconSize.height) / 2;
     c.translate(shape.x + insetW, shape.y + insetH);
   }
+
+  public static translateIconToShapeBottomCenter(canvas: mxgraph.mxXmlCanvas2D, shape: ShapeConfiguration, iconSize: Size) {
+    const insetW = (shape.w - iconSize.width) / 2;
+    const insetH = shape.h - iconSize.height - 7;
+    canvas.translate(shape.x + insetW, shape.y + insetH);
+  }
 }
