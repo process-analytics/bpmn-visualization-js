@@ -130,7 +130,7 @@ export default class StyleConfigurator {
     ShapeUtil.activityKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
       style[mxConstants.STYLE_SHAPE] = kind;
-      style[mxConstants.STYLE_VERTICAL_ALIGN] = kind === ShapeBpmnElementKind.SUB_PROCESS ? mxConstants.ALIGN_TOP : mxConstants.ALIGN_MIDDLE;
+      style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
       this.putCellStyle(kind, style);
     });
   }
