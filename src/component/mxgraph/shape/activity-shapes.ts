@@ -110,7 +110,7 @@ export class SubProcessShape extends BaseActivityShape {
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const subProcessKind = StyleUtils.getBpmnSubProcessKind(this.style);
 
-    // TODO temp. Wrong type for setDashed & setDashPattern
+    // TODO temp. Wrong type for setDashPattern
     const xmlCanvas = (c as unknown) as mxgraph.mxXmlCanvas2D;
 
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
