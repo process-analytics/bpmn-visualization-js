@@ -115,6 +115,10 @@ export default class MxGraphRenderer {
         styleValues.set(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_LEFT);
       }
     }
+    // when no label bounds, adjust the default style dynamically
+    else if (bpmnCell instanceof Shape && bpmnCell.isExpanded && bpmnElement instanceof ShapeBpmnSubProcess) {
+      styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
+    }
 
     return [bpmnElement.kind as string] //
       .concat([...styleValues].filter(([, v]) => v).map(([key, value]) => key + '=' + value))

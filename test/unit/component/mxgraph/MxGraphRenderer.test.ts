@@ -177,9 +177,20 @@ describe('mxgraph renderer', () => {
     each([
       ['expanded', true],
       ['collapsed', false],
-    ]).it('%s embedded sub-process', (testName, isExpanded: boolean) => {
+    ]).it('%s embedded sub-process without label bounds', (testName, isExpanded: boolean) => {
       const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED), newLabel({ name: 'Arial' }), isExpanded);
-      expect(computeStyle(shape)).toEqual(`subProcess;fontFamily=Arial;bpmn.subProcessKind=embedded;bpmn.isExpanded=${isExpanded}`);
+      const additionalTerminalStyle = isExpanded ? ';verticalAlign=top' : '';
+      expect(computeStyle(shape)).toEqual(`subProcess;fontFamily=Arial;bpmn.subProcessKind=embedded;bpmn.isExpanded=${isExpanded}${additionalTerminalStyle}`);
+    });
+
+    each([
+      ['expanded', true],
+      ['collapsed', false],
+    ]).it('%s embedded sub-process with label bounds', (testName, isExpanded: boolean) => {
+      const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)), isExpanded);
+      expect(computeStyle(shape)).toEqual(
+        `subProcess;fontFamily=sans-serif;bpmn.subProcessKind=embedded;bpmn.isExpanded=${isExpanded};verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
+      );
     });
   });
 });
