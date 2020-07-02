@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { mxgraph } from 'ts-mxgraph';
-import StyleUtils, { StyleConstant } from '../StyleUtils';
+import StyleUtils, { StyleDefault } from '../StyleUtils';
 import IconPainter, { PaintParameter } from './IconPainter';
 import { ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 
@@ -24,7 +24,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   // TODO missing in mxgraph-type-definitions@1.0.2 mxShape
   gradient: string;
 
-  protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+  protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
     // enforced by BPMN
     this.isRounded = true;
