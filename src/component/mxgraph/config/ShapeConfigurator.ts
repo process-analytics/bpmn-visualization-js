@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import { mxgraph } from 'ts-mxgraph';
-import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
-import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape, BoundaryEventShape } from './shape/event-shapes';
-import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from './shape/gateway-shapes';
-import { SubProcessShape, ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape, CallActivityShape } from './shape/activity-shapes';
+import { ShapeBpmnElementKind } from '../../../model/bpmn/shape/ShapeBpmnElementKind';
+import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape, BoundaryEventShape } from '../shape/event-shapes';
+import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from '../shape/gateway-shapes';
+import { SubProcessShape, ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape, CallActivityShape } from '../shape/activity-shapes';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;

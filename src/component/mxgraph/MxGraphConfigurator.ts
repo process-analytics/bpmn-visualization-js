@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import StyleConfigurator from './StyleConfigurator';
-import ShapeConfigurator from './ShapeConfigurator';
-import MarkerConfigurator from './MarkerConfigurator';
-import MxClientConfigurator from './MxClientConfigurator';
+import StyleConfigurator from './config/StyleConfigurator';
+import ShapeConfigurator from './config/ShapeConfigurator';
+import MarkerConfigurator from './config/MarkerConfigurator';
+import MxClientConfigurator from './config/MxClientConfigurator';
 
 /**
  * Configure the mxGraph graph that can be used by the lib

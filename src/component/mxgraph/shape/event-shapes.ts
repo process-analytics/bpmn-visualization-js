@@ -16,7 +16,7 @@
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnEventKind } from '../../../model/bpmn/shape/ShapeBpmnEventKind';
 import IconPainter, { PaintParameter } from './IconPainter';
-import StyleUtils, { StyleConstant } from '../StyleUtils';
+import StyleUtils, { StyleDefault } from '../StyleUtils';
 
 abstract class EventShape extends mxEllipse {
   // TODO: when all/more event types will be supported, we could move to a Record/MappedType
@@ -62,20 +62,20 @@ abstract class EventShape extends mxEllipse {
 }
 
 export class StartEventShape extends EventShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 }
 
 export class EndEventShape extends EventShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THICK) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
     this.withFilledIcon = true;
   }
 }
 
 abstract class IntermediateEventShape extends EventShape {
-  protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+  protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 
