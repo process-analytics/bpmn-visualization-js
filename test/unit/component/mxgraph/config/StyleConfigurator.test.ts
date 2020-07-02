@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { StyleComputer } from '../../../../../src/component/mxgraph/renderer/StyleComputer';
+import StyleConfigurator from '../../../../../src/component/mxgraph/config/StyleConfigurator';
 import Shape from '../../../../../src/model/bpmn/shape/Shape';
 import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
@@ -74,11 +74,11 @@ function newSequenceFlow(kind: SequenceFlowKind): SequenceFlow {
 }
 
 describe('mxgraph renderer', () => {
-  const styleComputer = new StyleComputer();
+  const styleConfigurator = new StyleConfigurator(null); // we don't care of mxgraph graph here
 
   // shortcut as the current computeStyle implementation requires to pass the BPMN label bounds as extra argument
   function computeStyle(bpmnCell: Shape | Edge): string {
-    return styleComputer.computeStyle(bpmnCell, bpmnCell.label?.bounds);
+    return styleConfigurator.computeStyle(bpmnCell, bpmnCell.label?.bounds);
   }
 
   it('compute style of shape with no label', () => {

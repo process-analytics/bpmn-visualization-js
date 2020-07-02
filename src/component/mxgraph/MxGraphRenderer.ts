@@ -21,10 +21,10 @@ import Waypoint from '../../model/bpmn/edge/Waypoint';
 import Bounds from '../../model/bpmn/Bounds';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
-import { StyleComputer } from './renderer/StyleComputer';
+import StyleConfigurator from './config/StyleConfigurator';
 
 export default class MxGraphRenderer {
-  constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleComputer: StyleComputer) {}
+  constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
 
   public render(bpmnModel: BpmnModel): void {
     const model = this.graph.getModel();
@@ -71,7 +71,7 @@ export default class MxGraphRenderer {
       let labelBounds = shape.label?.bounds;
       // pool/lane label bounds are not managed for now (use hard coded values)
       labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
-      const style = this.styleComputer.computeStyle(shape, labelBounds);
+      const style = this.styleConfigurator.computeStyle(shape, labelBounds);
 
       this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
     }
@@ -85,7 +85,7 @@ export default class MxGraphRenderer {
         const source = this.getCell(bpmnElement.sourceRefId);
         const target = this.getCell(bpmnElement.targetRefId);
         const labelBounds = edge.label?.bounds;
-        const style = this.styleComputer.computeStyle(edge, labelBounds);
+        const style = this.styleConfigurator.computeStyle(edge, labelBounds);
         const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
         this.insertWaypoints(edge.waypoints, mxEdge);
 
@@ -134,5 +134,5 @@ export default class MxGraphRenderer {
 }
 
 export function defaultMxGraphRenderer(graph: mxGraph): MxGraphRenderer {
-  return new MxGraphRenderer(graph, new CoordinatesTranslator(graph), new StyleComputer());
+  return new MxGraphRenderer(graph, new CoordinatesTranslator(graph), new StyleConfigurator(graph));
 }
