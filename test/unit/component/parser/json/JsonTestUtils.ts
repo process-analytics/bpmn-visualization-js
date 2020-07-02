@@ -36,14 +36,17 @@ export interface ExpectedShape {
   isExpanded?: boolean;
 }
 
-export interface ExpectedEdge {
+interface ExpectedEdge {
   edgeId: string;
   bpmnElementId: string;
   bpmnElementName: string;
   bpmnElementSourceRefId: string;
   bpmnElementTargetRefId: string;
-  bpmnElementKind?: SequenceFlowKind;
   waypoints?: Waypoint[];
+}
+
+export interface ExpectedSequenceEdge extends ExpectedEdge {
+  sequenceFlowKind?: SequenceFlowKind;
 }
 
 export interface ExpectedFont {
@@ -132,7 +135,7 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape): void {
   expect(bounds.height).toEqual(expectedBounds.height);
 }
 
-export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge): void {
+export function verifyEdge(edge: Edge, expectedValue: ExpectedSequenceEdge): void {
   expect(edge.id).toEqual(expectedValue.edgeId);
   expect(edge.waypoints).toEqual(expectedValue.waypoints);
 
@@ -143,8 +146,8 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge): void {
   expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
 
   if (bpmnElement instanceof SequenceFlow) {
-    if (expectedValue.bpmnElementKind) {
-      expect(bpmnElement.sequenceFlowKind).toEqual(expectedValue.bpmnElementKind);
+    if (expectedValue.sequenceFlowKind) {
+      expect(bpmnElement.sequenceFlowKind).toEqual(expectedValue.sequenceFlowKind);
     } else {
       expect(bpmnElement.sequenceFlowKind).toEqual(SequenceFlowKind.NORMAL);
     }
