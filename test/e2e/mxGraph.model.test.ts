@@ -17,8 +17,8 @@ import BpmnVisu from '../../src/component/BpmnVisu';
 import { ShapeBpmnElementKind } from '../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { ShapeBpmnEventKind } from '../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
-import { MarkerConstant } from '../../src/component/mxgraph/MarkerConfigurator';
 import { ShapeBpmnSubProcessKind } from '../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
+import { MarkerIdentifier } from '../../src/component/mxgraph/StyleUtils';
 
 export interface ExpectedFont {
   name?: string;
@@ -523,7 +523,7 @@ describe('mxGraph model', () => {
     expectModelContainsShape('inclusiveGateway_1', { kind: ShapeBpmnElementKind.GATEWAY_INCLUSIVE, label: 'Inclusive Gateway 1' });
 
     // sequence flow
-    expectModelContainsEdge('default_sequence_flow_id', { kind: SequenceFlowKind.DEFAULT, startArrow: MarkerConstant.ARROW_DASH, font: expectedBoldFont });
+    expectModelContainsEdge('default_sequence_flow_id', { kind: SequenceFlowKind.DEFAULT, startArrow: MarkerIdentifier.ARROW_DASH, font: expectedBoldFont });
     expectModelContainsEdge('normal_sequence_flow_id', { kind: SequenceFlowKind.NORMAL, label: "From 'start event 1' to 'task 1'" });
     expectModelContainsEdge('conditional_sequence_flow_from_activity_id', { kind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY, startArrow: mxConstants.ARROW_DIAMOND_THIN });
     expectModelContainsEdge('conditional_sequence_flow_from_gateway_id', { kind: SequenceFlowKind.CONDITIONAL_FROM_GATEWAY, label: '' });

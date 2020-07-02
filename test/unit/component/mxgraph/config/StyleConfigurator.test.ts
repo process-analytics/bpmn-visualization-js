@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-import { defaultMxGraphRenderer } from '../../../../src/component/mxgraph/MxGraphRenderer';
-import Shape from '../../../../src/model/bpmn/shape/Shape';
-import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../src/model/bpmn/shape/ShapeBpmnElement';
-import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import Label, { Font } from '../../../../src/model/bpmn/Label';
-import { ExpectedFont } from '../parser/json/JsonTestUtils';
-import Edge from '../../../../src/model/bpmn/edge/Edge';
-import SequenceFlow from '../../../../src/model/bpmn/edge/SequenceFlow';
-import { SequenceFlowKind } from '../../../../src/model/bpmn/edge/SequenceFlowKind';
-import Bounds from '../../../../src/model/bpmn/Bounds';
-import { ShapeBpmnEventKind } from '../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
-import { BpmnEventKind } from '../../../../src/model/bpmn/shape/ShapeUtil';
-import { ShapeBpmnSubProcessKind } from '../../../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
+import StyleConfigurator from '../../../../../src/component/mxgraph/config/StyleConfigurator';
+import Shape from '../../../../../src/model/bpmn/shape/Shape';
+import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
+import Label, { Font } from '../../../../../src/model/bpmn/Label';
+import { ExpectedFont } from '../../parser/json/JsonTestUtils';
+import Edge from '../../../../../src/model/bpmn/edge/Edge';
+import SequenceFlow from '../../../../../src/model/bpmn/edge/SequenceFlow';
+import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
+import Bounds from '../../../../../src/model/bpmn/Bounds';
+import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
+import { BpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeUtil';
+import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
 import each from 'jest-each';
 
 function toFont(font: ExpectedFont): Font {
@@ -74,11 +74,11 @@ function newSequenceFlow(kind: SequenceFlowKind): SequenceFlow {
 }
 
 describe('mxgraph renderer', () => {
-  const mxGraphRenderer = defaultMxGraphRenderer(null); // we don't care of mxgraph graph here
+  const styleConfigurator = new StyleConfigurator(null); // we don't care of mxgraph graph here
 
   // shortcut as the current computeStyle implementation requires to pass the BPMN label bounds as extra argument
   function computeStyle(bpmnCell: Shape | Edge): string {
-    return mxGraphRenderer.computeStyle(bpmnCell, bpmnCell.label?.bounds);
+    return styleConfigurator.computeStyle(bpmnCell, bpmnCell.label?.bounds);
   }
 
   it('compute style of shape with no label', () => {

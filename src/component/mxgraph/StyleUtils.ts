@@ -16,13 +16,13 @@
 import { ShapeBpmnEventKind } from '../../model/bpmn/shape/ShapeBpmnEventKind';
 import { ShapeBpmnSubProcessKind } from '../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 
-export enum StyleConstant {
+export enum MarkerIdentifier {
+  ARROW_DASH = 'bpmn.dash',
+}
+
+export enum StyleDefault {
   STROKE_WIDTH_THIN = 2,
   STROKE_WIDTH_THICK = 5,
-  BPMN_STYLE_EVENT_KIND = 'bpmn.eventKind',
-  BPMN_STYLE_SUB_PROCESS_KIND = 'bpmn.subProcessKind',
-  BPMN_STYLE_IS_INTERRUPTING = 'bpmn.isInterrupting',
-  BPMN_STYLE_IS_EXPANDED = 'bpmn.isExpanded',
   DEFAULT_FILL_COLOR = 'White',
   DEFAULT_STROKE_COLOR = 'Black',
   DEFAULT_FONT_FAMILY = 'Arial, Helvetica, sans-serif', // define our own to not depend on eventual mxGraph default change
@@ -34,49 +34,56 @@ export enum StyleConstant {
   DEFAULT_DASH_PATTERN = '3 3',
 }
 
+export enum StyleIdentifier {
+  BPMN_STYLE_EVENT_KIND = 'bpmn.eventKind',
+  BPMN_STYLE_SUB_PROCESS_KIND = 'bpmn.subProcessKind',
+  BPMN_STYLE_IS_INTERRUPTING = 'bpmn.isInterrupting',
+  BPMN_STYLE_IS_EXPANDED = 'bpmn.isExpanded',
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleUtils {
   public static getFillColor(style: any): string {
-    return mxUtils.getValue(style, mxConstants.STYLE_FILLCOLOR, StyleConstant.DEFAULT_FILL_COLOR);
+    return mxUtils.getValue(style, mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
   }
 
   public static getStrokeColor(style: any): string {
-    return mxUtils.getValue(style, mxConstants.STYLE_STROKECOLOR, StyleConstant.DEFAULT_STROKE_COLOR);
+    return mxUtils.getValue(style, mxConstants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
   }
 
   public static getStrokeWidth(style: any): number {
-    return mxUtils.getValue(style, mxConstants.STYLE_STROKEWIDTH, StyleConstant.STROKE_WIDTH_THIN);
+    return mxUtils.getValue(style, mxConstants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
   }
 
   public static getMargin(style: any): number {
-    return mxUtils.getValue(style, mxConstants.STYLE_MARGIN, StyleConstant.DEFAULT_MARGIN);
+    return mxUtils.getValue(style, mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
   }
 
   public static isDashed(style: any): number {
-    return mxUtils.getValue(style, mxConstants.STYLE_DASHED, StyleConstant.DEFAULT_DASHED);
+    return mxUtils.getValue(style, mxConstants.STYLE_DASHED, StyleDefault.DEFAULT_DASHED);
   }
 
   public static getFixDash(style: any): number {
-    return mxUtils.getValue(style, mxConstants.STYLE_FIX_DASH, StyleConstant.DEFAULT_FIX_DASH);
+    return mxUtils.getValue(style, mxConstants.STYLE_FIX_DASH, StyleDefault.DEFAULT_FIX_DASH);
   }
 
   public static getDashPattern(style: any): string {
-    return mxUtils.getValue(style, mxConstants.STYLE_DASH_PATTERN, StyleConstant.DEFAULT_DASH_PATTERN);
+    return mxUtils.getValue(style, mxConstants.STYLE_DASH_PATTERN, StyleDefault.DEFAULT_DASH_PATTERN);
   }
 
   public static getBpmnEventKind(style: any): ShapeBpmnEventKind {
-    return mxUtils.getValue(style, StyleConstant.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
+    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
   }
 
   public static getBpmnSubProcessKind(style: any): ShapeBpmnSubProcessKind {
-    return mxUtils.getValue(style, StyleConstant.BPMN_STYLE_SUB_PROCESS_KIND, undefined);
+    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, undefined);
   }
 
   public static getBpmnIsInterrupting(style: any): string {
-    return mxUtils.getValue(style, StyleConstant.BPMN_STYLE_IS_INTERRUPTING, undefined);
+    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, undefined);
   }
 
   public static getBpmnIsExpanded(style: any): string {
-    return mxUtils.getValue(style, StyleConstant.BPMN_STYLE_IS_EXPANDED, 'false');
+    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_EXPANDED, 'false');
   }
 }
