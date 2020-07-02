@@ -108,22 +108,31 @@ export class SubProcessShape extends BaseActivityShape {
   }
 
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const isExpanded = StyleUtils.getBpmnIsExpanded(this.style);
-    const processKind = StyleUtils.getBpmnSubProcessKind(this.style);
-    if (isExpanded === 'false' && processKind === ShapeBpmnSubProcessKind.EMBEDDED) {
-      c.setFillColor('Lavender');
-    } else if (processKind === ShapeBpmnSubProcessKind.EVENT) {
-      c.setFillColor('LightCyan');
+    const subProcessKind = StyleUtils.getBpmnSubProcessKind(this.style);
+
+    // TODO temp. Wrong type for setDashPattern
+    const xmlCanvas = (c as unknown) as mxgraph.mxXmlCanvas2D;
+
+    if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
+      c.setDashed(true, false);
+      xmlCanvas.setDashPattern('1 2');
     }
 
-    if (isExpanded === 'true') {
-      if (processKind === ShapeBpmnSubProcessKind.EVENT) {
-        c.setStrokeColor('Chartreuse');
-      }
-    } else {
+    if (StyleUtils.getBpmnIsExpanded(this.style) === 'false') {
       c.setStrokeColor('Fuchsia');
+
+      if (subProcessKind === ShapeBpmnSubProcessKind.EMBEDDED) {
+        c.setFillColor('Lavender');
+      } else if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
+        c.setFillColor('LightCyan');
+      }
     }
 
     super.paintVertexShape(c, x, y, w, h);
+
+    // TODO temp. missing in mxgraph-type-definitions@1.0.2 mxShape
+    // this.configureCanvas(c, x, y, w, h);
+    xmlCanvas.setDashed(StyleUtils.isDashed(this.style), StyleUtils.getFixDash(this.style));
+    xmlCanvas.setDashPattern(StyleUtils.getDashPattern(this.style));
   }
 }
