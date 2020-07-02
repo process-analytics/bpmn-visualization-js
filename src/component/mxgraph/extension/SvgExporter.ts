@@ -268,6 +268,7 @@ export default class SvgExporter {
   createSvgCanvas(node: Element): mxSvgCanvas2D {
     const canvas = new mxSvgCanvas2D(node);
 
+    // TODO why do we need to handle events here
     canvas.pointerEvents = true;
 
     return canvas;
