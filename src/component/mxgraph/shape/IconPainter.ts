@@ -503,7 +503,6 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  // this implementation is adapted from the 'plus square' symbol: https://icons.getbootstrap.com/icons/plus-square/
   public static paintExpandIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
 
