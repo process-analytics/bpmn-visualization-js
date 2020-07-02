@@ -24,6 +24,7 @@ import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpm
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import Label from '../../../../../src/model/bpmn/Label';
 import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
+import { SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -141,10 +142,12 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge): void {
   expect(bpmnElement.sourceRefId).toEqual(expectedValue.bpmnElementSourceRefId);
   expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
 
-  if (expectedValue.bpmnElementKind) {
-    expect(bpmnElement.kind).toEqual(expectedValue.bpmnElementKind);
-  } else {
-    expect(bpmnElement.kind).toEqual(SequenceFlowKind.NORMAL);
+  if (bpmnElement instanceof SequenceFlow) {
+    if (expectedValue.bpmnElementKind) {
+      expect(bpmnElement.sequenceFlowKind).toEqual(expectedValue.bpmnElementKind);
+    } else {
+      expect(bpmnElement.sequenceFlowKind).toEqual(SequenceFlowKind.NORMAL);
+    }
   }
 }
 

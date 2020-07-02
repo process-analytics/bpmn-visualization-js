@@ -21,7 +21,7 @@ import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeB
 import Label, { Font } from '../../../../../src/model/bpmn/Label';
 import { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import Edge from '../../../../../src/model/bpmn/edge/Edge';
-import SequenceFlow from '../../../../../src/model/bpmn/edge/SequenceFlow';
+import { SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import Bounds from '../../../../../src/model/bpmn/Bounds';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
@@ -113,22 +113,22 @@ describe('mxgraph renderer', () => {
 
   it('compute style of edge with no label', () => {
     const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_GATEWAY));
-    expect(computeStyle(edge)).toEqual('conditional_from_gateway');
+    expect(computeStyle(edge)).toEqual('sequenceFlow;conditional_from_gateway');
   });
 
   it('compute style of edge with a no font label', () => {
     const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(undefined, undefined));
-    expect(computeStyle(edge)).toEqual('normal');
+    expect(computeStyle(edge)).toEqual('sequenceFlow;normal');
   });
 
   it('compute style of edge with label including strike-through font', () => {
     const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
-    expect(computeStyle(edge)).toEqual('conditional_from_activity;fontSize=14.2;fontStyle=8');
+    expect(computeStyle(edge)).toEqual('sequenceFlow;conditional_from_activity;fontSize=14.2;fontStyle=8');
   });
 
   it('compute style of edge with label including underline font', () => {
     const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
-    expect(computeStyle(edge)).toEqual('default;fontStyle=4');
+    expect(computeStyle(edge)).toEqual('sequenceFlow;default;fontStyle=4');
   });
 
   it('compute style of edge with label including bold/italic/strike-through/underline font', () => {
@@ -138,39 +138,39 @@ describe('mxgraph renderer', () => {
       undefined,
       new Label(toFont({ isBold: true, isItalic: true, isStrikeThrough: true, isUnderline: true }), undefined),
     );
-    expect(computeStyle(edge)).toEqual('normal;fontStyle=15');
+    expect(computeStyle(edge)).toEqual('sequenceFlow;normal;fontStyle=15');
   });
 
   it('compute style of edge with label bounds', () => {
     const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), new Bounds(20, 20, 30, 120)));
-    expect(computeStyle(edge)).toEqual('normal;fontFamily=Helvetica;verticalAlign=top;align=center');
+    expect(computeStyle(edge)).toEqual('sequenceFlow;normal;fontFamily=Helvetica;verticalAlign=top;align=center');
   });
 
   describe('compute style - events kind', () => {
     it('intermediate catch conditional', () => {
       const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.CONDITIONAL), newLabel({ name: 'Ubuntu' }));
-      expect(computeStyle(shape)).toEqual('intermediateCatchEvent;fontFamily=Ubuntu;bpmn.eventKind=conditional');
+      expect(computeStyle(shape)).toEqual('intermediateCatchEvent;bpmn.eventKind=conditional;fontFamily=Ubuntu');
     });
 
     it('start signal', () => {
       const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.SIGNAL), newLabel({ isBold: true }));
-      expect(computeStyle(shape)).toEqual('startEvent;fontStyle=1;bpmn.eventKind=signal');
+      expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventKind=signal;fontStyle=1');
     });
   });
   describe('compute style - boundary events', () => {
     it('interrupting message', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventKind.MESSAGE, true), newLabel({ name: 'Arial' }));
-      expect(computeStyle(shape)).toEqual('boundaryEvent;fontFamily=Arial;bpmn.eventKind=message;bpmn.isInterrupting=true');
+      expect(computeStyle(shape)).toEqual('boundaryEvent;bpmn.eventKind=message;bpmn.isInterrupting=true;fontFamily=Arial');
     });
 
     it('non interrupting timer', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventKind.TIMER, false), newLabel({ isItalic: true }));
-      expect(computeStyle(shape)).toEqual('boundaryEvent;fontStyle=2;bpmn.eventKind=timer;bpmn.isInterrupting=false');
+      expect(computeStyle(shape)).toEqual('boundaryEvent;bpmn.eventKind=timer;bpmn.isInterrupting=false;fontStyle=2');
     });
 
     it('cancel with undefined interrupting value', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventKind.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
-      expect(computeStyle(shape)).toEqual('boundaryEvent;fontStyle=8;bpmn.eventKind=cancel;bpmn.isInterrupting=true');
+      expect(computeStyle(shape)).toEqual('boundaryEvent;bpmn.eventKind=cancel;bpmn.isInterrupting=true;fontStyle=8');
     });
   });
   describe('compute style - sub-processes', () => {
@@ -180,7 +180,7 @@ describe('mxgraph renderer', () => {
     ]).it('%s embedded sub-process without label bounds', (testName, isExpanded: boolean) => {
       const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED), newLabel({ name: 'Arial' }), isExpanded);
       const additionalTerminalStyle = isExpanded ? ';verticalAlign=top' : '';
-      expect(computeStyle(shape)).toEqual(`subProcess;fontFamily=Arial;bpmn.subProcessKind=embedded;bpmn.isExpanded=${isExpanded}${additionalTerminalStyle}`);
+      expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded;bpmn.isExpanded=${isExpanded};fontFamily=Arial${additionalTerminalStyle}`);
     });
 
     each([
@@ -189,7 +189,7 @@ describe('mxgraph renderer', () => {
     ]).it('%s embedded sub-process with label bounds', (testName, isExpanded: boolean) => {
       const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)), isExpanded);
       expect(computeStyle(shape)).toEqual(
-        `subProcess;fontFamily=sans-serif;bpmn.subProcessKind=embedded;bpmn.isExpanded=${isExpanded};verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
+        `subProcess;bpmn.subProcessKind=embedded;bpmn.isExpanded=${isExpanded};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
       );
     });
   });
