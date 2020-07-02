@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 import { mxgraph } from 'ts-mxgraph';
-import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
-import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
-import { SequenceFlowKind } from '../../model/bpmn/edge/SequenceFlowKind';
-import { MarkerConstant } from './MarkerConfigurator';
-import { StyleConstant } from './StyleUtils';
+import { ShapeBpmnElementKind } from '../../../model/bpmn/shape/ShapeBpmnElementKind';
+import ShapeUtil from '../../../model/bpmn/shape/ShapeUtil';
+import { SequenceFlowKind } from '../../../model/bpmn/edge/SequenceFlowKind';
+import { MarkerIdentifier, StyleDefault } from '../StyleUtils';
 
 // TODO 'clone' function is missing in mxgraph-type-definitions@1.0.2
 declare const mxUtils: typeof mxgraph.mxUtils;
@@ -29,7 +28,7 @@ export default class StyleConfigurator {
     [
       SequenceFlowKind.DEFAULT,
       (style: any) => {
-        style[mxConstants.STYLE_STARTARROW] = MarkerConstant.ARROW_DASH;
+        style[mxConstants.STYLE_STARTARROW] = MarkerIdentifier.ARROW_DASH;
       },
     ],
     [
@@ -164,11 +163,11 @@ export default class StyleConfigurator {
   }
 
   private configureCommonDefaultStyle(style: any): void {
-    style[mxConstants.STYLE_FONTFAMILY] = StyleConstant.DEFAULT_FONT_FAMILY;
-    style[mxConstants.STYLE_FONTSIZE] = StyleConstant.DEFAULT_FONT_SIZE;
-    style[mxConstants.STYLE_FONTCOLOR] = StyleConstant.DEFAULT_FONT_COLOR;
-    style[mxConstants.STYLE_FILLCOLOR] = StyleConstant.DEFAULT_FILL_COLOR;
-    style[mxConstants.STYLE_STROKECOLOR] = StyleConstant.DEFAULT_STROKE_COLOR;
+    style[mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
+    style[mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
+    style[mxConstants.STYLE_FONTCOLOR] = StyleDefault.DEFAULT_FONT_COLOR;
+    style[mxConstants.STYLE_FILLCOLOR] = StyleDefault.DEFAULT_FILL_COLOR;
+    style[mxConstants.STYLE_STROKECOLOR] = StyleDefault.DEFAULT_STROKE_COLOR;
     style[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = mxConstants.NONE;
 
     // only works with html labels (enabled by MxGraphConfigurator)

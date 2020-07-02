@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 import { mxgraph } from 'ts-mxgraph';
-
-export enum MarkerConstant {
-  ARROW_DASH = 'bpmn.dash',
-}
+import { MarkerIdentifier } from '../StyleUtils';
 
 export default class MarkerConfigurator {
   public configureMarkers(): void {
@@ -50,6 +47,6 @@ export default class MarkerConfigurator {
         c.stroke();
       };
     };
-    mxMarker.addMarker(MarkerConstant.ARROW_DASH, createMarker);
+    mxMarker.addMarker(MarkerIdentifier.ARROW_DASH, createMarker);
   }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { mxgraph } from 'ts-mxgraph';
-import { StyleConstant } from '../StyleUtils';
+import { StyleDefault } from '../StyleUtils';
 import IconPainter, { PaintParameter } from './IconPainter';
 
 abstract class GatewayShape extends mxRhombus {
@@ -38,7 +38,7 @@ abstract class GatewayShape extends mxRhombus {
 }
 
 export class ExclusiveGatewayShape extends GatewayShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -48,7 +48,7 @@ export class ExclusiveGatewayShape extends GatewayShape {
 }
 
 export class ParallelGatewayShape extends GatewayShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -58,7 +58,7 @@ export class ParallelGatewayShape extends GatewayShape {
 }
 
 export class InclusiveGatewayShape extends GatewayShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleConstant.STROKE_WIDTH_THIN) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -66,7 +66,7 @@ export class InclusiveGatewayShape extends GatewayShape {
     IconPainter.paintCircleIcon({
       ...paintParameter,
       ratioFromParent: 0.62,
-      icon: { ...paintParameter.icon, isFilled: false, strokeWidth: StyleConstant.STROKE_WIDTH_THICK.valueOf() },
+      icon: { ...paintParameter.icon, isFilled: false, strokeWidth: StyleDefault.STROKE_WIDTH_THICK.valueOf() },
     });
   }
 }
