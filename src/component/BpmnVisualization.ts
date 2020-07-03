@@ -78,6 +78,24 @@ export default class BpmnVisualization {
             console.info('[MouseWheelListener] cursor position', cursorPosition);
             self.zoom(up ? ZoomType.In : ZoomType.Out);
             mxEvent.consume(evt);
+
+            // console.info('[MouseWheelListener] after zoom - scrolling to cursorPosition');
+            // // https://github.com/jgraph/drawio/blob/051eed36389f5bebe487663097f340e59940d87a/src/main/webapp/js/mxgraph/EditorUi.js#L2216
+            // // const sp = new mxPoint(self.graph.container.scrollLeft, self.graph.container.scrollTop);
+            // const offset = mxUtils.getOffset(self.graph.container);
+            // console.info('[MouseWheelListener] after zoom - offset', offset);
+            // // const prev = self.graph.view.scale;
+            // let dx = 0;
+            // let dy = 0;
+            //
+            // dx = self.graph.container.offsetWidth / 2 - cursorPosition.x + offset.x;
+            // dy = self.graph.container.offsetHeight / 2 - cursorPosition.y + offset.y;
+            // console.info('[MouseWheelListener] after zoom - dx', dx);
+            // console.info('[MouseWheelListener] after zoom - dy', dy);
+            //
+            // self.graph.container.scrollLeft -= dx;
+            // self.graph.container.scrollTop -= dy;
+            // console.info('[MouseWheelListener] after zoom - scrolling done');
           }
           // shift only
           const isPanningHorizontalWheelEvent = evt.shiftKey && !evt.altKey && !evt.ctrlKey && !evt.metaKey;
