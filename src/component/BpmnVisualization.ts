@@ -25,6 +25,7 @@ declare const mxClient: typeof mxgraph.mxClient;
 // TODO missing in mxgraph-type-definitions@1.0.2
 declare const mxWindow: typeof mxgraph.mxWindow;
 
+/* eslint-disable no-console */
 export default class BpmnVisualization {
   public readonly graph: mxGraph;
 
@@ -36,22 +37,66 @@ export default class BpmnVisualization {
       // Instantiate and configure Graph
       const configurator = new MxGraphConfigurator(this.container, options);
 
-      // Changes the zoom on mouseWheel events
+      // Changes the zoom / panning on mouseWheel events
       // TODO make activation/deactivation configurable
       // eslint-disable-next-line @typescript-eslint/no-this-alias
       const self = this; // TODO replace with array function to access to this directly
       mxEvent.addMouseWheelListener(function(evt: MouseEvent, up: boolean) {
         // TODO only manage event related to the graph or in the container of the graph
         // TODO review type: this hack is due to the introduction of mxgraph-type-definitions
-        if (!mxEvent.isConsumed((evt as unknown) as mxMouseEvent)) {
-          // eslint-disable-next-line no-console
-          console.info('MouseWheelListener: up: %s / altkey: %s / ctrlKey: %s / shiftKey: %s', up, evt.altKey, evt.ctrlKey, evt.shiftKey);
+        const mxMouseEvent = (evt as unknown) as mxMouseEvent;
+        if (!mxEvent.isConsumed(mxMouseEvent)) {
+          console.info('[MouseWheelListener] evt: up: %s / altkey: %s / ctrlKey: %s / shiftKey: %s', up, evt.altKey, evt.ctrlKey, evt.shiftKey);
+          console.info('[MouseWheelListener] evt: x: %s / y: %s', evt.clientX, evt.clientY);
+          // console.info('MouseWheelListener mxMouseEvent: graphX: %s / graphY: %s', mxMouseEvent.graphX, mxMouseEvent.graphY);
 
-          const zoomKey = evt.ctrlKey && !evt.altKey;
-          // const panKey = !evt.ctrlKey && evt.altKey;
+          // TODO is the event related to the graph container
+          let isEventRelatedToGraphContainer = false;
+          let source = mxEvent.getSource(evt);
+          console.info('[MouseWheelListener] Checking source');
+          while (source != null) {
+            // console.info('[MouseWheelListener] source', source);
+            if (source == self.graph.container) {
+              // console.info('[MouseWheelListener] is graph container!!');
+              isEventRelatedToGraphContainer = true;
+              break;
+            }
+            source = source.parentNode;
+          }
+          console.info('[MouseWheelListener] event related to the graph container?', isEventRelatedToGraphContainer);
+          if (!isEventRelatedToGraphContainer) {
+            return;
+          }
 
-          if (zoomKey) {
+          // const isZoomWheelEvent = evt.ctrlKey && !evt.altKey;
+          // only the ctrl key or the meta key on mac
+          const isZoomWheelEvent = (evt.ctrlKey || (mxClient.IS_MAC && evt.metaKey)) && !evt.altKey && !evt.shiftKey;
+
+          if (isZoomWheelEvent) {
+            console.info('[MouseWheelListener] zooming');
+            // TODO pass the point coordinate to use as center
+            // cursorPosition = new mxPoint(mxEvent.getClientX(evt), mxEvent.getClientY(evt));
             self.zoom(up ? ZoomType.In : ZoomType.Out);
+            mxEvent.consume(evt);
+          }
+          // shift only
+          const isPanningHorizontalWheelEvent = evt.shiftKey && !evt.altKey && !evt.ctrlKey && !evt.metaKey;
+          // no key
+          const isPanningVerticalWheelEvent = !evt.altKey && !evt.shiftKey && !evt.ctrlKey && !evt.metaKey;
+
+          // TODO processing to externalize to be reuse with panning buttons
+          // inspired from https://github.com/jgraph/drawio/blob/c6a423432912165e9d9e67a21dad22c8a27e8e8e/src/main/webapp/js/mxgraph/EditorUi.js#L2391
+          if (isPanningHorizontalWheelEvent || isPanningVerticalWheelEvent) {
+            const translatePoint = self.graph.view.getTranslate();
+            const step = 40 / self.graph.view.scale;
+            const translateValue = up ? step : -step;
+            if (isPanningHorizontalWheelEvent) {
+              console.info('[MouseWheelListener] Horizontal panning up?', up);
+              self.graph.view.setTranslate(translatePoint.x + translateValue, translatePoint.y);
+            } else {
+              console.info('[MouseWheelListener] Vertical panning up?', up);
+              self.graph.view.setTranslate(translatePoint.x, translatePoint.y + translateValue);
+            }
             mxEvent.consume(evt);
           }
         }
@@ -65,7 +110,7 @@ export default class BpmnVisualization {
     }
   }
 
-  /* eslint-disable no-console */ public load(xml: string): void {
+  public load(xml: string): void {
     console.info('Start loading BPMN');
     try {
       // TODO the BpmnParser should be a field and injected (see #110)
@@ -100,6 +145,7 @@ export default class BpmnVisualization {
   }
 
   // TODO zoom factor should be configurable (in global BpmnVisuOptions)
+  // TODO see lazyZoom of draw.io
   public zoom(zoomType: ZoomType): void {
     // TODO add an option to center without zooming
     //this.graph.center(true, true);
