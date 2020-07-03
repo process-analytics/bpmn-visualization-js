@@ -22,6 +22,7 @@ const {
   mxConstants,
   mxCodec,
   mxCodecRegistry,
+  mxEvent,
   mxSvgCanvas2D,
   mxCellRenderer,
   mxGeometry,
@@ -47,6 +48,7 @@ globalAny.mxUtils = mxUtils;
 globalAny.mxConstants = mxConstants;
 globalAny.mxCodec = mxCodec;
 globalAny.mxCodecRegistry = mxCodecRegistry;
+globalAny.mxEvent = mxEvent;
 globalAny.mxSvgCanvas2D = mxSvgCanvas2D;
 globalAny.mxCellRenderer = mxCellRenderer;
 globalAny.mxGeometry = mxGeometry;
