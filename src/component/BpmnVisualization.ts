@@ -102,19 +102,14 @@ export default class BpmnVisualization {
           // no key
           const isPanningVerticalWheelEvent = !evt.altKey && !evt.shiftKey && !evt.ctrlKey && !evt.metaKey;
 
-          // TODO processing to externalize to be reuse with panning buttons
-          // inspired from https://github.com/jgraph/drawio/blob/c6a423432912165e9d9e67a21dad22c8a27e8e8e/src/main/webapp/js/mxgraph/EditorUi.js#L2391
           if (isPanningHorizontalWheelEvent || isPanningVerticalWheelEvent) {
-            const translatePoint = self.graph.view.getTranslate();
-            const step = 40 / self.graph.view.scale;
-            const translateValue = up ? step : -step;
+            let panType: PanType;
             if (isPanningHorizontalWheelEvent) {
-              console.info('[MouseWheelListener] Horizontal panning up?', up);
-              self.graph.view.setTranslate(translatePoint.x + translateValue, translatePoint.y);
+              panType = up ? PanType.HorizontalLeft : PanType.HorizontalRight;
             } else {
-              console.info('[MouseWheelListener] Vertical panning up?', up);
-              self.graph.view.setTranslate(translatePoint.x, translatePoint.y + translateValue);
+              panType = up ? PanType.VerticalUp : PanType.VerticalDown;
             }
+            self.pan(panType);
             mxEvent.consume(evt);
           }
         }
@@ -191,20 +186,24 @@ export default class BpmnVisualization {
 
   public pan(panType: PanType): void {
     console.info('Panning %s', panType);
-    const panValue = 20;
     const view = this.graph.getView();
+    const panValue = 40 / view.scale;
+
+    // inspired from https://github.com/jgraph/drawio/blob/c6a423432912165e9d9e67a21dad22c8a27e8e8e/src/main/webapp/js/mxgraph/EditorUi.js#L2391
+    const translatePoint = view.getTranslate();
+
     switch (panType) {
       case PanType.VerticalUp:
-        view.setTranslate(0, panValue);
+        view.setTranslate(translatePoint.x, translatePoint.y + panValue);
         break;
       case PanType.VerticalDown:
-        view.setTranslate(0, -panValue);
+        view.setTranslate(translatePoint.x, translatePoint.y - panValue);
         break;
       case PanType.HorizontalLeft:
-        view.setTranslate(panValue, 0);
+        view.setTranslate(translatePoint.x + panValue, translatePoint.y);
         break;
       case PanType.HorizontalRight:
-        view.setTranslate(-panValue, 0);
+        view.setTranslate(translatePoint.x - panValue, translatePoint.y);
         break;
       default:
         throw new Error('Unsupported pan option ' + panType);
