@@ -46,11 +46,10 @@ export default class BpmnVisualization {
         // TODO review type: this hack is due to the introduction of mxgraph-type-definitions
         const mxMouseEvent = (evt as unknown) as mxMouseEvent;
         if (!mxEvent.isConsumed(mxMouseEvent)) {
-          console.info('[MouseWheelListener] evt: up: %s / altkey: %s / ctrlKey: %s / shiftKey: %s', up, evt.altKey, evt.ctrlKey, evt.shiftKey);
-          console.info('[MouseWheelListener] evt: x: %s / y: %s', evt.clientX, evt.clientY);
+          // console.info('[MouseWheelListener] evt: up: %s / altkey: %s / ctrlKey: %s / shiftKey: %s', up, evt.altKey, evt.ctrlKey, evt.shiftKey);
+          // console.info('[MouseWheelListener] evt: x: %s / y: %s', evt.clientX, evt.clientY);
           // console.info('MouseWheelListener mxMouseEvent: graphX: %s / graphY: %s', mxMouseEvent.graphX, mxMouseEvent.graphY);
 
-          // TODO is the event related to the graph container
           let isEventRelatedToGraphContainer = false;
           let source = mxEvent.getSource(evt);
           console.info('[MouseWheelListener] Checking source');
@@ -68,14 +67,15 @@ export default class BpmnVisualization {
             return;
           }
 
-          // const isZoomWheelEvent = evt.ctrlKey && !evt.altKey;
           // only the ctrl key or the meta key on mac
           const isZoomWheelEvent = (evt.ctrlKey || (mxClient.IS_MAC && evt.metaKey)) && !evt.altKey && !evt.shiftKey;
 
           if (isZoomWheelEvent) {
             console.info('[MouseWheelListener] zooming');
             // TODO pass the point coordinate to use as center
-            // cursorPosition = new mxPoint(mxEvent.getClientX(evt), mxEvent.getClientY(evt));
+            const cursorPosition = new mxPoint(mxEvent.getClientX(evt), mxEvent.getClientY(evt));
+            // TODO we could have an option to ignoreCursorPosition
+            console.info('[MouseWheelListener] cursor position', cursorPosition);
             self.zoom(up ? ZoomType.In : ZoomType.Out);
             mxEvent.consume(evt);
           }
