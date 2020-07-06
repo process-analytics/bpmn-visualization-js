@@ -107,7 +107,7 @@ export class SubProcessShape extends BaseActivityShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  public paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const subProcessKind = StyleUtils.getBpmnSubProcessKind(this.style);
 
     // TODO temp. Wrong type for setDashPattern
@@ -115,17 +115,11 @@ export class SubProcessShape extends BaseActivityShape {
 
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
       c.setDashed(true, false);
+
       xmlCanvas.setDashPattern('1 2');
     }
 
-    if (StyleUtils.getBpmnIsExpanded(this.style) === 'false') {
-      if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
-        c.setStrokeColor('Fuchsia');
-        c.setFillColor('LightCyan');
-      }
-    }
-
-    super.paintVertexShape(c, x, y, w, h);
+    super.paintBackground(c, x, y, w, h);
 
     // TODO temp. missing in mxgraph-type-definitions@1.0.2 mxShape
     // this.configureCanvas(c, x, y, w, h);
@@ -137,11 +131,8 @@ export class SubProcessShape extends BaseActivityShape {
     super.paintForeground(c, x, y, w, h);
 
     if (StyleUtils.getBpmnIsExpanded(this.style) === 'false') {
-      const subProcessKind = StyleUtils.getBpmnSubProcessKind(this.style);
-      if (subProcessKind === ShapeBpmnSubProcessKind.EMBEDDED) {
-        const paintParameter = IconPainter.buildPaintParameter((c as unknown) as mxgraph.mxXmlCanvas2D, x, y, w, h, (this as unknown) as mxgraph.mxShape, 0.17, false, 1.5);
-        IconPainter.paintExpandIcon(paintParameter);
-      }
+      const paintParameter = IconPainter.buildPaintParameter((c as unknown) as mxgraph.mxXmlCanvas2D, x, y, w, h, (this as unknown) as mxgraph.mxShape, 0.17, false, 1.5);
+      IconPainter.paintExpandIcon(paintParameter);
     }
   }
 }
