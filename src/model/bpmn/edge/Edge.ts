@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import SequenceFlow from './Flow';
 import Waypoint from './Waypoint';
 import Label from '../Label';
+import Flow from './Flow';
 
 export default class Edge {
-  constructor(readonly id?: string, readonly bpmnElement?: SequenceFlow, readonly waypoints?: Waypoint[], readonly label?: Label) {}
+  constructor(readonly id?: string, readonly bpmnElement?: Flow, readonly waypoints?: Waypoint[], readonly label?: Label) {}
 }

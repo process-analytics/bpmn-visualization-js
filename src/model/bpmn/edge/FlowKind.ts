@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/**
+ The real name of the field in the BPMN XSD
+ */
 export enum FlowKind {
   SEQUENCE_FLOW = 'sequenceFlow',
+  MESSAGE_FLOW = 'messageFlow',
 }

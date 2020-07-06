@@ -17,8 +17,11 @@ import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import { Participant } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { Collaboration } from '../Definitions';
+import { MessageFlow } from '../../../../model/bpmn/edge/Flow';
+import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
 
 const convertedProcessRefParticipants: Participant[] = [];
+const convertedMessageFlows: MessageFlow[] = [];
 
 export function findProcessRefParticipant(id: string): Participant {
   return convertedProcessRefParticipants.find(i => i.id === id);
@@ -28,6 +31,10 @@ export function findProcessRefParticipantByProcessRef(processRef: string): Parti
   return convertedProcessRefParticipants.find(i => i.processRef === processRef);
 }
 
+export function findMessageFlow(id: string): MessageFlow {
+  return convertedMessageFlows.find(i => i.id === id);
+}
+
 @JsonConverter
 export default class CollaborationConverter extends AbstractConverter<Collaboration> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,17 +42,33 @@ export default class CollaborationConverter extends AbstractConverter<Collaborat
     try {
       // Deletes everything in the array, which does hit other references. For better performance.
       convertedProcessRefParticipants.length = 0;
+      convertedMessageFlows.length = 0;
 
-      ensureIsArray(collaboration['participant']).forEach(participant => {
-        if (participant.processRef) {
-          convertedProcessRefParticipants.push(new Participant(participant.id, participant.name, participant.processRef));
-        }
-      });
+      this.buildParticipant(collaboration['participant']);
+      this.buildMessageFlows(collaboration[FlowKind.MESSAGE_FLOW]);
 
       return {};
     } catch (e) {
       // TODO error management
       console.error(e as Error);
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private buildParticipant(bpmnElements: Array<any> | any): void {
+    ensureIsArray(bpmnElements).forEach(participant => {
+      if (participant.processRef) {
+        convertedProcessRefParticipants.push(new Participant(participant.id, participant.name, participant.processRef));
+      }
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private buildMessageFlows(bpmnElements: Array<any> | any): void {
+    ensureIsArray(bpmnElements).forEach(messageFlow => {
+      const hasMessage = messageFlow.messageRef ? true : false;
+      const convertedMessageFlow = new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef, hasMessage);
+      convertedMessageFlows.push(convertedMessageFlow);
+    });
   }
 }

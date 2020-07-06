@@ -24,7 +24,8 @@ import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpm
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import Label from '../../../../../src/model/bpmn/Label';
 import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
-import { SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
+import { MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
+import { FlowKind } from '../../../../../src/model/bpmn/edge/FlowKind';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -46,7 +47,15 @@ interface ExpectedEdge {
 }
 
 export interface ExpectedSequenceEdge extends ExpectedEdge {
-  sequenceFlowKind?: SequenceFlowKind;
+  bpmnElementSequenceFlowKind?: SequenceFlowKind;
+}
+
+export interface ExpectedMessageEdge extends ExpectedEdge {
+  bpmnElementHasMessage: boolean;
+}
+
+function isMessageEdge(expectedEdge: ExpectedEdge): expectedEdge is ExpectedMessageEdge {
+  return (expectedEdge as ExpectedMessageEdge).bpmnElementHasMessage !== undefined;
 }
 
 export interface ExpectedFont {
@@ -135,7 +144,7 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape): void {
   expect(bounds.height).toEqual(expectedBounds.height);
 }
 
-export function verifyEdge(edge: Edge, expectedValue: ExpectedSequenceEdge): void {
+export function verifyEdge(edge: Edge, expectedValue: ExpectedSequenceEdge | ExpectedMessageEdge): void {
   expect(edge.id).toEqual(expectedValue.edgeId);
   expect(edge.waypoints).toEqual(expectedValue.waypoints);
 
@@ -145,9 +154,13 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedSequenceEdge): voi
   expect(bpmnElement.sourceRefId).toEqual(expectedValue.bpmnElementSourceRefId);
   expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
 
-  if (bpmnElement instanceof SequenceFlow) {
-    if (expectedValue.sequenceFlowKind) {
-      expect(bpmnElement.sequenceFlowKind).toEqual(expectedValue.sequenceFlowKind);
+  if (isMessageEdge(expectedValue) && bpmnElement instanceof MessageFlow) {
+    expect(edge.bpmnElement.kind).toEqual(FlowKind.MESSAGE_FLOW);
+    expect(bpmnElement.hasMessage).toEqual(expectedValue.bpmnElementHasMessage);
+  } else if (!isMessageEdge(expectedValue) && bpmnElement instanceof SequenceFlow) {
+    expect(edge.bpmnElement.kind).toEqual(FlowKind.SEQUENCE_FLOW);
+    if (expectedValue.bpmnElementSequenceFlowKind) {
+      expect(bpmnElement.sequenceFlowKind).toEqual(expectedValue.bpmnElementSequenceFlowKind);
     } else {
       expect(bpmnElement.sequenceFlowKind).toEqual(SequenceFlowKind.NORMAL);
     }

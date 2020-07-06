@@ -21,7 +21,7 @@ import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeB
 import Label, { Font } from '../../../../../src/model/bpmn/Label';
 import { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import Edge from '../../../../../src/model/bpmn/edge/Edge';
-import { SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
+import { MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import Bounds from '../../../../../src/model/bpmn/Bounds';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
@@ -73,6 +73,10 @@ function newSequenceFlow(kind: SequenceFlowKind): SequenceFlow {
   return new SequenceFlow('id', 'name', undefined, undefined, kind);
 }
 
+function newMessageFlow(hasMessage: boolean): MessageFlow {
+  return new MessageFlow('id', 'name', undefined, undefined, hasMessage);
+}
+
 describe('mxgraph renderer', () => {
   const styleConfigurator = new StyleConfigurator(null); // we don't care of mxgraph graph here
 
@@ -81,69 +85,96 @@ describe('mxgraph renderer', () => {
     return styleConfigurator.computeStyle(bpmnCell, bpmnCell.label?.bounds);
   }
 
-  it('compute style of shape with no label', () => {
-    const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_USER));
-    expect(computeStyle(shape)).toEqual('userTask');
+  describe('compute style - shape label', () => {
+    it('compute style of shape with no label', () => {
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_USER));
+      expect(computeStyle(shape)).toEqual('userTask');
+    });
+
+    it('compute style of shape with a no font label', () => {
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_END), undefined, new Label(undefined, undefined));
+      expect(computeStyle(shape)).toEqual('endEvent');
+    });
+
+    it('compute style of shape with label including bold font', () => {
+      const shape = new Shape(
+        'id',
+        newShapeBpmnElement(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE),
+        undefined,
+        new Label(toFont({ name: 'Courier', size: 9, isBold: true }), undefined),
+      );
+      expect(computeStyle(shape)).toEqual('exclusiveGateway;fontFamily=Courier;fontSize=9;fontStyle=1');
+    });
+
+    it('compute style of shape with label including italic font', () => {
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH), undefined, new Label(toFont({ name: 'Arial', isItalic: true }), undefined));
+      expect(computeStyle(shape)).toEqual('intermediateCatchEvent;fontFamily=Arial;fontStyle=2');
+    });
+
+    it('compute style of shape with label including bold/italic font', () => {
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW), undefined, new Label(toFont({ isBold: true, isItalic: true }), undefined));
+      expect(computeStyle(shape)).toEqual('intermediateThrowEvent;fontStyle=3');
+    });
+
+    it('compute style of shape with label bounds', () => {
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.CALL_ACTIVITY), undefined, new Label(undefined, new Bounds(40, 200, 80, 140)));
+      expect(computeStyle(shape)).toEqual('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=top;verticalLabelPosition=left');
+    });
   });
 
-  it('compute style of shape with a no font label', () => {
-    const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_END), undefined, new Label(undefined, undefined));
-    expect(computeStyle(shape)).toEqual('endEvent');
+  describe('compute style - edge label', () => {
+    it('compute style of edge with no label', () => {
+      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_GATEWAY));
+      expect(computeStyle(edge)).toEqual('sequenceFlow;conditional_from_gateway');
+    });
+
+    it('compute style of edge with a no font label', () => {
+      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(undefined, undefined));
+      expect(computeStyle(edge)).toEqual('sequenceFlow;normal');
+    });
+
+    it('compute style of edge with label including strike-through font', () => {
+      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
+      expect(computeStyle(edge)).toEqual('sequenceFlow;conditional_from_activity;fontSize=14.2;fontStyle=8');
+    });
+
+    it('compute style of edge with label including underline font', () => {
+      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
+      expect(computeStyle(edge)).toEqual('sequenceFlow;default;fontStyle=4');
+    });
+
+    it('compute style of edge with label including bold/italic/strike-through/underline font', () => {
+      const edge = new Edge(
+        'id',
+        newSequenceFlow(SequenceFlowKind.NORMAL),
+        undefined,
+        new Label(toFont({ isBold: true, isItalic: true, isStrikeThrough: true, isUnderline: true }), undefined),
+      );
+      expect(computeStyle(edge)).toEqual('sequenceFlow;normal;fontStyle=15');
+    });
+
+    it('compute style of edge with label bounds', () => {
+      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), new Bounds(20, 20, 30, 120)));
+      expect(computeStyle(edge)).toEqual('sequenceFlow;normal;fontFamily=Helvetica;verticalAlign=top;align=center');
+    });
   });
 
-  it('compute style of shape with label including bold font', () => {
-    const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE), undefined, new Label(toFont({ name: 'Courier', size: 9, isBold: true }), undefined));
-    expect(computeStyle(shape)).toEqual('exclusiveGateway;fontFamily=Courier;fontSize=9;fontStyle=1');
+  each([
+    [SequenceFlowKind.CONDITIONAL_FROM_GATEWAY, 'conditional_from_gateway'],
+    [SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY, 'conditional_from_activity'],
+    [SequenceFlowKind.DEFAULT, 'default'],
+    [SequenceFlowKind.NORMAL, 'normal'],
+  ]).it('compute style - sequence flows: %s', (kind, expected) => {
+    const edge = new Edge('id', newSequenceFlow(kind));
+    expect(computeStyle(edge)).toEqual(`sequenceFlow;${expected}`);
   });
 
-  it('compute style of shape with label including italic font', () => {
-    const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH), undefined, new Label(toFont({ name: 'Arial', isItalic: true }), undefined));
-    expect(computeStyle(shape)).toEqual('intermediateCatchEvent;fontFamily=Arial;fontStyle=2');
-  });
-
-  it('compute style of shape with label including bold/italic font', () => {
-    const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW), undefined, new Label(toFont({ isBold: true, isItalic: true }), undefined));
-    expect(computeStyle(shape)).toEqual('intermediateThrowEvent;fontStyle=3');
-  });
-
-  it('compute style of shape with label bounds', () => {
-    const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.CALL_ACTIVITY), undefined, new Label(undefined, new Bounds(40, 200, 80, 140)));
-    expect(computeStyle(shape)).toEqual('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=top;verticalLabelPosition=left');
-  });
-
-  it('compute style of edge with no label', () => {
-    const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_GATEWAY));
-    expect(computeStyle(edge)).toEqual('sequenceFlow;conditional_from_gateway');
-  });
-
-  it('compute style of edge with a no font label', () => {
-    const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(undefined, undefined));
-    expect(computeStyle(edge)).toEqual('sequenceFlow;normal');
-  });
-
-  it('compute style of edge with label including strike-through font', () => {
-    const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
-    expect(computeStyle(edge)).toEqual('sequenceFlow;conditional_from_activity;fontSize=14.2;fontStyle=8');
-  });
-
-  it('compute style of edge with label including underline font', () => {
-    const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
-    expect(computeStyle(edge)).toEqual('sequenceFlow;default;fontStyle=4');
-  });
-
-  it('compute style of edge with label including bold/italic/strike-through/underline font', () => {
-    const edge = new Edge(
-      'id',
-      newSequenceFlow(SequenceFlowKind.NORMAL),
-      undefined,
-      new Label(toFont({ isBold: true, isItalic: true, isStrikeThrough: true, isUnderline: true }), undefined),
-    );
-    expect(computeStyle(edge)).toEqual('sequenceFlow;normal;fontStyle=15');
-  });
-
-  it('compute style of edge with label bounds', () => {
-    const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), new Bounds(20, 20, 30, 120)));
-    expect(computeStyle(edge)).toEqual('sequenceFlow;normal;fontFamily=Helvetica;verticalAlign=top;align=center');
+  each([
+    [true, ';strokeColor=DeepSkyBlue'],
+    [false, ''],
+  ]).it('compute style - message flows: %s', (hasMessage, expected) => {
+    const edge = new Edge('id', newMessageFlow(hasMessage));
+    expect(computeStyle(edge)).toEqual(`messageFlow${expected}`);
   });
 
   describe('compute style - events kind', () => {
