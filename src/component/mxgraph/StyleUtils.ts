@@ -23,6 +23,7 @@ export enum MarkerIdentifier {
 export enum StyleDefault {
   STROKE_WIDTH_THIN = 2,
   STROKE_WIDTH_THICK = 5,
+  TASK_SHAPE_BOTTOM_MARGIN = 7,
   DEFAULT_FILL_COLOR = 'White',
   DEFAULT_STROKE_COLOR = 'Black',
   DEFAULT_FONT_FAMILY = 'Arial, Helvetica, sans-serif', // define our own to not depend on eventual mxGraph default change
