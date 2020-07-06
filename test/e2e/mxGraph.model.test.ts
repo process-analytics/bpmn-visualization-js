@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnVisu from '../../src/component/BpmnVisu';
+import BpmnVisualization from '../../src/component/BpmnVisualization';
 import { ShapeBpmnElementKind } from '../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { ShapeBpmnEventKind } from '../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
@@ -295,7 +295,7 @@ describe('mxGraph model', () => {
     </bpmndi:BPMNDiagram>
 </semantic:definitions>
 `;
-  const bpmnVisu = new BpmnVisu(null);
+  const bpmnVisualization = new BpmnVisualization(null);
 
   function expectFont(state: mxCellState, expectedFont: ExpectedFont): void {
     if (expectedFont) {
@@ -321,12 +321,12 @@ describe('mxGraph model', () => {
   }
 
   function expectModelNotContainCell(cellId: string): void {
-    const cell = bpmnVisu.graph.model.getCell(cellId);
+    const cell = bpmnVisualization.graph.model.getCell(cellId);
     expect(cell).toBeUndefined();
   }
 
   function expectModelContainsCell(cellId: string): mxCell {
-    const cell = bpmnVisu.graph.model.getCell(cellId);
+    const cell = bpmnVisualization.graph.model.getCell(cellId);
     expect(cell).not.toBeUndefined();
     expect(cell).not.toBeNull();
     return cell;
@@ -338,7 +338,7 @@ describe('mxGraph model', () => {
     if (modelElement.isExpanded !== undefined) {
       expect(cell.style).toContain(`bpmn.isExpanded=${modelElement.isExpanded}`);
     }
-    const state = bpmnVisu.graph.getView().getState(cell);
+    const state = bpmnVisualization.graph.getView().getState(cell);
 
     const styleShape = !modelElement.styleShape ? modelElement.kind : modelElement.styleShape;
     expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(styleShape);
@@ -351,7 +351,7 @@ describe('mxGraph model', () => {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(modelElement.kind);
 
-    const state = bpmnVisu.graph.getView().getState(cell);
+    const state = bpmnVisualization.graph.getView().getState(cell);
     expect(state.style[mxConstants.STYLE_STARTARROW]).toEqual(modelElement.startArrow);
     expect(cell.value).toEqual(modelElement.label);
     expectFont(state, modelElement.font);
@@ -381,7 +381,7 @@ describe('mxGraph model', () => {
 
   it('bpmn elements should be available in the mxGraph model', async () => {
     // load BPMN
-    bpmnVisu.load(xmlContent);
+    bpmnVisualization.load(xmlContent);
 
     // model is OK
     const expectedBoldFont = {
@@ -557,7 +557,7 @@ describe('mxGraph model', () => {
     </bpmndi:BPMNDiagram>
 </semantic:definitions>
 `;
-    bpmnVisu.load(xmlContent);
+    bpmnVisualization.load(xmlContent);
 
     // model is OK
     // boundary event: interrupting
@@ -570,14 +570,14 @@ describe('mxGraph model', () => {
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxGeometry): void {
-    const cell = bpmnVisu.graph.model.getCell(cellId);
+    const cell = bpmnVisualization.graph.model.getCell(cellId);
     expect(cell).not.toBeNull();
     expect(cell.parent.id).toEqual(parentId);
     expectGeometry(cell, geometry);
   }
 
   function getDefaultParentId(): string {
-    return bpmnVisu.graph.getDefaultParent().id;
+    return bpmnVisualization.graph.getDefaultParent().id;
   }
 
   it('bpmn element shape should have coordinates relative to the pool when no lane', async () => {
@@ -605,7 +605,7 @@ describe('mxGraph model', () => {
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
 `;
-    bpmnVisu.load(bpmn);
+    bpmnVisualization.load(bpmn);
 
     expectModelContainsCellWithGeometry(
       'Participant_1',
@@ -662,7 +662,7 @@ describe('mxGraph model', () => {
 </bpmndi:BPMNDiagram>
 </bpmn:definitions>
 `;
-    bpmnVisu.load(bpmn);
+    bpmnVisualization.load(bpmn);
 
     expectModelContainsCellWithGeometry(
       'Participant_1',
