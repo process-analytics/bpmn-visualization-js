@@ -15,6 +15,7 @@
  */
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeConfiguration, Size } from '../shape/IconPainter';
+import { StyleDefault } from '../StyleUtils';
 
 /**
  * Scale dimensions passed to the method of the original {@link mxgraph.mxXmlCanvas2D}
@@ -110,5 +111,11 @@ export class MxCanvasUtil {
     const insetW = (shape.w - iconSize.width) / 2;
     const insetH = (shape.h - iconSize.height) / 2;
     c.translate(shape.x + insetW, shape.y + insetH);
+  }
+
+  public static translateIconToShapeBottomCenter(canvas: mxgraph.mxXmlCanvas2D, shape: ShapeConfiguration, iconSize: Size): void {
+    const insetW = (shape.w - iconSize.width) / 2;
+    const insetH = shape.h - iconSize.height - StyleDefault.TASK_SHAPE_BOTTOM_MARGIN;
+    canvas.translate(shape.x + insetW, shape.y + insetH);
   }
 }
