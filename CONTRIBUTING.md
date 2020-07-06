@@ -240,7 +240,9 @@ A PR can only be merged into master by a maintainer, if all of these conditions 
 
 ### Release (maintainers only)
 
-Maintainers need to do the following to push out a release.
+Maintainers need to do the manual following actions to push out a release.
+
+For automation, see [#139](https://github.com/process-analytics/bpmn-visualization-js/issues/139).
 
 #### Issues and milestones update
 
@@ -264,11 +266,13 @@ of the `Done` column related to the milestone
   - Open [github releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
   - The draft release for the newly tagged version should already exist:
     - [release-drafter](https://github.com/release-drafter/release-drafter) creates or updates draft release for the
-    next version each time a pull request is merged on the `master` branch.
+    next version each time a pull request is merged to the `master` branch.
     - create a new release if it is missing or rename the existing one.
-  - Assign the new tag as release target and save the draft: this ensures that next merged pull requests will be assign
-  to a new release by `release-drafter` even if the current draft is not published.
-  - Check `This is a pre-release`
+  - Create a new draft release and name it `New`. This ensures that development can continue without impacting the
+  writing of the release content. That way, if a PR is merged, `release-drafter` will update the `New` draft release
+  keeping the in-progress release untouched.
+  - Assign the new tag as release target and save the draft (this should have already been managed by `release-drafter`)
+  - Ensure that `This is a pre-release` is unchecked (except if we are releasing alpha, beta, rc, ...)
   - In the release description (check previous releases as a source of inspiration)
     - at least add/update a link to the related milestone
     - put screenshots/gif of the new features
