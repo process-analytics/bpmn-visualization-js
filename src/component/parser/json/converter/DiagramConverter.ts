@@ -24,6 +24,7 @@ import { findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, f
 import { findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
 import Waypoint from '../../../../model/bpmn/edge/Waypoint';
 import Label, { Font } from '../../../../model/bpmn/Label';
+import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 
 function findProcessElement(participantId: string): ShapeBpmnElement {
   const participant = findProcessRefParticipant(participantId);
@@ -116,9 +117,14 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
         }
       }
 
-      const label = this.deserializeLabel(shape.BPMNLabel, shape.id);
+      const label = this.getLabelForShape(shape, bpmnElement, bounds);
       return new Shape(shape.id, bpmnElement, bounds, label, shape.isExpanded);
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private getLabelForShape(shape: any, bpmnElement: ShapeBpmnElement, bounds: Bounds): Label {
+    return bpmnElement.kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? new Label(new Font(), bounds) : this.deserializeLabel(shape.BPMNLabel, shape.id);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

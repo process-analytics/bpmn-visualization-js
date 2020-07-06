@@ -42,6 +42,8 @@ export enum ShapeBpmnElementKind {
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
   // TASK_BUSINESS_RULE = 'businessRuleTask',
 
+  TEXT_ANNOTATION = 'textAnnotation',
+
   GATEWAY_PARALLEL = 'parallelGateway',
   GATEWAY_EXCLUSIVE = 'exclusiveGateway',
   GATEWAY_INCLUSIVE = 'inclusiveGateway',
