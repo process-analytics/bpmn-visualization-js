@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnVisu from '../component/BpmnVisu';
+import BpmnVisualization from '../component/BpmnVisualization';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { documentReady, logStartup } from './helper';
 
-export const bpmnVisu = new BpmnVisu(window.document.getElementById('graph'));
+export const bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'));
 
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {
   const reader = new FileReader();
   reader.onload = () => {
-    bpmnVisu.load(reader.result as string);
+    bpmnVisualization.load(reader.result as string);
   };
   reader.readAsText(f);
 }
@@ -52,7 +52,7 @@ documentReady(function() {
   if (bpmnParameterValue) {
     const bpmn = decodeURIComponent(bpmnParameterValue);
     log('BPMN auto loading');
-    bpmnVisu.load(bpmn);
+    bpmnVisualization.load(bpmn);
     log('BPMN auto loading completed');
   } else {
     log('No BPMN auto loading');

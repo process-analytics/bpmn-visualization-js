@@ -23,7 +23,7 @@ declare const mxClient: typeof mxgraph.mxClient;
 // TODO 'error' and 'alert' functions are missing in mxgraph-type-definitions@1.0.2
 declare const mxUtils: typeof mxgraph.mxUtils;
 
-export default class BpmnVisu {
+export default class BpmnVisualization {
   public readonly graph: mxGraph;
 
   constructor(protected container: HTMLElement) {

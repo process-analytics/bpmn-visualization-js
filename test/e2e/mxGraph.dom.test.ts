@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnVisu from '../../src/component/BpmnVisu';
+import BpmnVisualization from '../../src/component/BpmnVisualization';
 import { readFileSync } from './e2e-helpers';
 
 const graphContainerId = 'bpmn-visualization-graph';
 
-function initializeBpmnVisu(): BpmnVisu {
+function initializeBpmnVisualization(): BpmnVisualization {
   // insert graph container
   const containerDiv = document.createElement('div');
   containerDiv.id = graphContainerId;
   document.body.insertBefore(containerDiv, document.body.firstChild);
   // initialize graph
   const bpmnVisuGraphContainer = document.getElementById(graphContainerId);
-  return new BpmnVisu(bpmnVisuGraphContainer);
+  return new BpmnVisualization(bpmnVisuGraphContainer);
 }
 
 function findSvgElement(cellId: string): SVGGeometryElement {
@@ -44,7 +44,7 @@ function expectTask(cellId: string): void {
 
 describe('BpmnVisu DOM only checks', () => {
   it('DOM should contains BPMN elements when loading simple-start-task-end.bpmn', async () => {
-    initializeBpmnVisu().load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+    initializeBpmnVisualization().load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
 
     expectEvent('StartEvent_1');
     expectTask('Activity_1');
