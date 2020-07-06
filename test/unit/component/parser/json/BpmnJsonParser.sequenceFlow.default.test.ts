@@ -66,7 +66,7 @@ describe('parse bpmn as json for default sequence flow', () => {
       bpmnElementName: 'label 1',
       bpmnElementSourceRefId: 'task_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementKind: SequenceFlowKind.DEFAULT,
+      sequenceFlowKind: SequenceFlowKind.DEFAULT,
     });
     verifyEdge(model.edges[1], {
       edgeId: 'edge_sequenceFlow_id_1',
@@ -74,7 +74,7 @@ describe('parse bpmn as json for default sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'task_id_0',
       bpmnElementTargetRefId: 'targetRef_2',
-      bpmnElementKind: SequenceFlowKind.NORMAL,
+      sequenceFlowKind: SequenceFlowKind.NORMAL,
     });
   });
 
@@ -135,7 +135,7 @@ describe('parse bpmn as json for default sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'source_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementKind: SequenceFlowKind.DEFAULT,
+      sequenceFlowKind: SequenceFlowKind.DEFAULT,
     });
   });
 
@@ -177,7 +177,7 @@ describe('parse bpmn as json for default sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'gateway_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementKind: SequenceFlowKind.NORMAL,
+      sequenceFlowKind: SequenceFlowKind.NORMAL,
     });
   });
 });

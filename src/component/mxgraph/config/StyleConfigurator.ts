@@ -23,6 +23,8 @@ import Edge from '../../../model/bpmn/edge/Edge';
 import Bounds from '../../../model/bpmn/Bounds';
 import { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../model/bpmn/shape/ShapeBpmnElement';
 import { Font } from '../../../model/bpmn/Label';
+import { FlowKind } from '../../../model/bpmn/edge/FlowKind';
+import { SequenceFlow } from '../../../model/bpmn/edge/Flow';
 
 // TODO 'clone' function is missing in mxgraph-type-definitions@1.0.2
 declare const mxUtils: typeof mxgraph.mxUtils;
@@ -55,12 +57,12 @@ export default class StyleConfigurator {
     this.configurePoolStyle();
     this.configureLaneStyle();
 
-    this.configureActivitiesStyle();
-    this.configureEventsStyle();
-    this.configureGatewaysStyle();
+    this.configureActivityStyles();
+    this.configureEventStyles();
+    this.configureGatewayStyles();
 
     this.configureDefaultEdgeStyle();
-    this.configureSequenceFlowsStyle();
+    this.configureFlowStyles();
   }
 
   private getStylesheet(): any {
@@ -120,7 +122,7 @@ export default class StyleConfigurator {
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.LANE, style);
   }
 
-  private configureEventsStyle(): void {
+  private configureEventStyles(): void {
     ShapeUtil.topLevelBpmnEventKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
       style[mxConstants.STYLE_SHAPE] = kind;
@@ -130,7 +132,7 @@ export default class StyleConfigurator {
     });
   }
 
-  private configureActivitiesStyle(): void {
+  private configureActivityStyles(): void {
     ShapeUtil.activityKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
       style[mxConstants.STYLE_SHAPE] = kind;
@@ -139,7 +141,7 @@ export default class StyleConfigurator {
     });
   }
 
-  private configureGatewaysStyle(): void {
+  private configureGatewayStyles(): void {
     ShapeUtil.gatewayKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
       style[mxConstants.STYLE_SHAPE] = kind;
@@ -179,7 +181,7 @@ export default class StyleConfigurator {
     style[mxConstants.STYLE_WHITE_SPACE] = 'wrap';
   }
 
-  private configureSequenceFlowsStyle(): void {
+  private configureSequenceFlowStyles(): void {
     Object.values(SequenceFlowKind).forEach(kind => {
       const style = this.cloneDefaultEdgeStyle();
       const updateEdgeStyle =
@@ -192,17 +194,19 @@ export default class StyleConfigurator {
     });
   }
 
+  private configureFlowStyles(): void {
+    Object.values(FlowKind).forEach(kind => {
+      const style = this.cloneDefaultEdgeStyle();
+      this.graph.getStylesheet().putCellStyle(kind, style);
+    });
+    this.configureSequenceFlowStyles();
+  }
+
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
     const styleValues = new Map<string, string | number>();
 
-    const font = bpmnCell.label?.font;
-    if (font) {
-      styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
-      styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
-      styleValues.set(mxConstants.STYLE_FONTSTYLE, StyleConfigurator.getFontStyleValue(font));
-    }
-
     const bpmnElement = bpmnCell.bpmnElement;
+    const styles: string[] = [bpmnElement.kind as string];
     if (bpmnCell instanceof Shape) {
       if (bpmnElement instanceof ShapeBpmnEvent) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
@@ -216,6 +220,17 @@ export default class StyleConfigurator {
         styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
         styleValues.set(StyleIdentifier.BPMN_STYLE_IS_EXPANDED, String(bpmnCell.isExpanded));
       }
+    } else {
+      if (bpmnCell.bpmnElement instanceof SequenceFlow) {
+        styles.push(bpmnCell.bpmnElement.sequenceFlowKind);
+      }
+    }
+
+    const font = bpmnCell.label?.font;
+    if (font) {
+      styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
+      styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
+      styleValues.set(mxConstants.STYLE_FONTSTYLE, StyleConfigurator.getFontStyleValue(font));
     }
 
     if (labelBounds) {
@@ -234,7 +249,8 @@ export default class StyleConfigurator {
       styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
     }
 
-    return [bpmnElement.kind as string] //
+    return [] //
+      .concat([...styles])
       .concat([...styleValues].filter(([, v]) => v).map(([key, value]) => key + '=' + value))
       .join(';');
   }

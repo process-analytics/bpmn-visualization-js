@@ -24,6 +24,7 @@ import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpm
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import Label from '../../../../../src/model/bpmn/Label';
 import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
+import { SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -35,14 +36,17 @@ export interface ExpectedShape {
   isExpanded?: boolean;
 }
 
-export interface ExpectedEdge {
+interface ExpectedEdge {
   edgeId: string;
   bpmnElementId: string;
   bpmnElementName: string;
   bpmnElementSourceRefId: string;
   bpmnElementTargetRefId: string;
-  bpmnElementKind?: SequenceFlowKind;
   waypoints?: Waypoint[];
+}
+
+export interface ExpectedSequenceEdge extends ExpectedEdge {
+  sequenceFlowKind?: SequenceFlowKind;
 }
 
 export interface ExpectedFont {
@@ -131,7 +135,7 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape): void {
   expect(bounds.height).toEqual(expectedBounds.height);
 }
 
-export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge): void {
+export function verifyEdge(edge: Edge, expectedValue: ExpectedSequenceEdge): void {
   expect(edge.id).toEqual(expectedValue.edgeId);
   expect(edge.waypoints).toEqual(expectedValue.waypoints);
 
@@ -141,10 +145,12 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge): void {
   expect(bpmnElement.sourceRefId).toEqual(expectedValue.bpmnElementSourceRefId);
   expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
 
-  if (expectedValue.bpmnElementKind) {
-    expect(bpmnElement.kind).toEqual(expectedValue.bpmnElementKind);
-  } else {
-    expect(bpmnElement.kind).toEqual(SequenceFlowKind.NORMAL);
+  if (bpmnElement instanceof SequenceFlow) {
+    if (expectedValue.sequenceFlowKind) {
+      expect(bpmnElement.sequenceFlowKind).toEqual(expectedValue.sequenceFlowKind);
+    } else {
+      expect(bpmnElement.sequenceFlowKind).toEqual(SequenceFlowKind.NORMAL);
+    }
   }
 }
 
