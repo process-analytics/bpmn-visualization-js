@@ -227,9 +227,10 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Subject to change: arrow size/form and position endpoint
 
 |message flow
-|
-|
-
+|icon:check-circle-o[]
+|- No message: Subject to change: arrow size/form and position endpoint +
+- Initiating message: To do
+- Non-initiating message: To do
 
 |way points
 |icon:flask[]
