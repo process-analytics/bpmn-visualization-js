@@ -30,4 +30,5 @@ export interface Size {
 export interface IconConfiguration {
   originalSize: Size;
   ratioFromShape: number;
+  style: IconStyleConfiguration;
 }

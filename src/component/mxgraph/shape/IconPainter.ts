@@ -79,6 +79,8 @@ export default class IconPainter {
     return { width: paintIconWidth, height: paintIconHeight };
   }
 
+  // TODO duplicated with BpmnCanvas.updateCanvasStyle
+  // This will be removed when all paint functions will use updateCanvasStyle
   private static updateCanvasStyle(canvas: mxgraph.mxXmlCanvas2D, { isFilled, strokeColor, fillColor, strokeWidth }: IconStyleConfiguration): void {
     if (isFilled) {
       // Choose dark color to fill the icon
@@ -158,17 +160,16 @@ export default class IconPainter {
 
   // implementation adapted from https://www.flaticon.com/free-icon/clock_223404
   public static paintClockIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
-    this.updateCanvasStyle(c, icon);
-
     const canvas = new BpmnCanvas({
       mxCanvas: c,
       shapeConfiguration: { x, y, w, h },
       iconConfiguration: {
         originalSize: { height: 152, width: 152 },
         ratioFromShape: ratioFromParent,
+        style: icon,
       },
     });
-    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 5);
+    canvas.setIconOriginPosition(5);
 
     canvas.begin();
     canvas.moveTo(184, 60);
@@ -261,37 +262,37 @@ export default class IconPainter {
   }
 
   public static paintXCrossIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
-    this.updateCanvasStyle(c, { ...icon, isFilled: true });
     const canvas = new BpmnCanvas({
       mxCanvas: c,
       shapeConfiguration: { x, y, w, h },
       iconConfiguration: {
         originalSize: { height: 0.5, width: 0.5 },
         ratioFromShape: ratioFromParent,
+        style: { ...icon, isFilled: true },
       },
     });
-    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
+    canvas.setIconOriginPosition(4);
 
-    IconPainter.drawCrossIcon(canvas);
-    const xRotation = w / 4;
-    const yRotation = h / 4;
-    canvas.rotate(45, false, false, xRotation, yRotation);
+    this.drawCrossIcon(canvas);
+    const rotationCenterX = w / 4;
+    const rotationCenterY = h / 4;
+    canvas.rotate(45, false, false, rotationCenterX, rotationCenterY);
     canvas.fillAndStroke();
   }
 
   public static paintPlusCrossIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
-    this.updateCanvasStyle(c, { ...icon, isFilled: true });
     const canvas = new BpmnCanvas({
       mxCanvas: c,
       shapeConfiguration: { x, y, w, h },
       iconConfiguration: {
         originalSize: { height: 0.5, width: 0.5 },
         ratioFromShape: ratioFromParent,
+        style: { ...icon, isFilled: true },
       },
     });
-    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
+    canvas.setIconOriginPosition(4);
 
-    IconPainter.drawCrossIcon(canvas);
+    this.drawCrossIcon(canvas);
     canvas.fillAndStroke();
   }
 
@@ -315,17 +316,16 @@ export default class IconPainter {
   // implementation adapted from https://www.flaticon.com/free-icon/employees_554768
   // use https://github.com/process-analytics/mxgraph-svg2shape to generate the xml stencil and port it to code
   public static paintWomanIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
-    this.updateCanvasStyle(c, { ...icon, isFilled: true });
-
     const canvas = new BpmnCanvas({
       mxCanvas: c,
       shapeConfiguration: { x, y, w, h },
       iconConfiguration: {
         originalSize: { height: 239, width: 239 }, // TODO use h="239.68" w="143.61"
         ratioFromShape: ratioFromParent,
+        style: { ...icon, isFilled: true },
       },
     });
-    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 20);
+    canvas.setIconOriginPosition(20);
 
     canvas.begin();
     canvas.moveTo(124.31, 150.29);
@@ -409,8 +409,6 @@ export default class IconPainter {
   // this implementation is adapted from the draw.io BPMN 'Service Task' stencil
   // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L898
   public static paintGearIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
-    this.updateCanvasStyle(c, icon);
-
     const canvas = new BpmnCanvas({
       mxCanvas: c,
       shapeConfiguration: { x, y, w, h },
@@ -418,15 +416,16 @@ export default class IconPainter {
         // icon coordinates fill a 100x100 rectangle (approximately: 90x90 + foreground translation)
         originalSize: { height: 100, width: 100 },
         ratioFromShape: ratioFromParent,
+        style: icon,
       },
     });
-    MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 20);
+    canvas.setIconOriginPosition(20);
 
     // background
     this.paintGearIconBackground(canvas);
 
     // foreground
-    canvas.translate(14, 14);
+    canvas.translateIconOrigin(14, 14);
     this.paintGearIconForeground(canvas);
   }
 
