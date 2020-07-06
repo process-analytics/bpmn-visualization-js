@@ -517,9 +517,7 @@ export default class IconPainter {
     c.roundrect(0, 0, w, h, 2, 2);
     c.stroke();
 
-    // Rounded cross
-    c.setLineJoin('round');
-
+    // Cross
     c.begin();
     c.moveTo(w / 2, h / 4);
     c.lineTo(w / 2, (h * 3) / 4);
