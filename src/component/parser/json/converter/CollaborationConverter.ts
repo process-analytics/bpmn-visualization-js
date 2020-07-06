@@ -66,8 +66,7 @@ export default class CollaborationConverter extends AbstractConverter<Collaborat
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildMessageFlows(bpmnElements: Array<any> | any): void {
     ensureIsArray(bpmnElements).forEach(messageFlow => {
-      const hasMessage = messageFlow.messageRef ? true : false;
-      const convertedMessageFlow = new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef, hasMessage);
+      const convertedMessageFlow = new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef);
       convertedMessageFlows.push(convertedMessageFlow);
     });
   }

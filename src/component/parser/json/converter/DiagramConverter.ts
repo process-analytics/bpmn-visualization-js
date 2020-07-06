@@ -24,6 +24,7 @@ import { findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, f
 import { findMessageFlow, findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
 import Waypoint from '../../../../model/bpmn/edge/Waypoint';
 import Label, { Font } from '../../../../model/bpmn/Label';
+import { MessageVisibleKind } from '../../../../model/bpmn/edge/MessageVisibleKind';
 
 function findProcessElement(participantId: string): ShapeBpmnElement {
   const participant = findProcessRefParticipant(participantId);
@@ -135,7 +136,8 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
       const flow = findSequenceFlow(edge.bpmnElement) || findMessageFlow(edge.bpmnElement);
       const waypoints = this.deserializeWaypoints(edge.waypoint);
       const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
-      return new Edge(edge.id, flow, waypoints, label);
+      const messageVisibleKind = edge.messageVisibleKind ? edge.messageVisibleKind : MessageVisibleKind.NONE;
+      return new Edge(edge.id, flow, waypoints, label, messageVisibleKind);
     });
   }
 

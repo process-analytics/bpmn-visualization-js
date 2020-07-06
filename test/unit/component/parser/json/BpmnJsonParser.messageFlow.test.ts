@@ -15,6 +15,7 @@
  */
 import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
+import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
 
 describe('parse bpmn as json for message flow', () => {
   it('json containing a collaboration with a single message flow without waypoint', () => {
@@ -26,8 +27,7 @@ describe('parse bpmn as json for message flow', () => {
                     "id": "messageFlow_id_0",
                     "name": "Message Flow 0",
                     "sourceRef": "sourceRef_id",
-                    "targetRef": "targetRef_id",
-                    "messageRef": "Message_0"
+                    "targetRef": "targetRef_id"
                   }
               },
               "process":"",
@@ -52,11 +52,10 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementName: 'Message Flow 0',
       bpmnElementSourceRefId: 'sourceRef_id',
       bpmnElementTargetRefId: 'targetRef_id',
-      bpmnElementHasMessage: true,
     });
   });
 
-  it('json containing a collaboration with an array of message flows with name & without name/messageRef', () => {
+  it('json containing a collaboration with an array of message flows with name & without name', () => {
     const json = `{
           "definitions": {
               "collaboration": {
@@ -65,12 +64,11 @@ describe('parse bpmn as json for message flow', () => {
                     "id": "messageFlow_id_0",
                     "name": "Message Flow 0",
                     "sourceRef": "sourceRef_id",
-                    "targetRef": "targetRef_id",
-                    "messageRef": "Message_0"
+                    "targetRef": "targetRef_id"
                   },{
                       "id": "messageFlow_id_1",
                       "sourceRef": "messageFlow_id_1",
-                      "targetRef": "targetRef_1"
+                      "targetRef": "targetRef_id_1"
                   }]
               },
               "process":"",
@@ -98,15 +96,13 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementName: 'Message Flow 0',
       bpmnElementSourceRefId: 'sourceRef_id',
       bpmnElementTargetRefId: 'targetRef_id',
-      bpmnElementHasMessage: true,
     });
     verifyEdge(model.edges[1], {
       edgeId: 'edge_messageFlow_id_1',
       bpmnElementId: 'messageFlow_id_1',
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'messageFlow_id_1',
-      bpmnElementTargetRefId: 'targetRef_1',
-      bpmnElementHasMessage: false,
+      bpmnElementTargetRefId: 'targetRef_id_1',
     });
   });
 
@@ -121,8 +117,8 @@ describe('parse bpmn as json for message flow', () => {
                     "targetRef": "targetRef_id"
                   },{
                       "id": "messageFlow_id_1",
-                      "sourceRef": "messageFlow_id_1",
-                      "targetRef": "targetRef_1"
+                      "sourceRef": "sourceRef_id_1",
+                      "targetRef": "targetRef_id_1"
                   }]
               },
               "process":"",
@@ -161,17 +157,100 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'sourceRef_id',
       bpmnElementTargetRefId: 'targetRef_id',
-      bpmnElementHasMessage: false,
       waypoints: [new Waypoint(1, 1)],
     });
     verifyEdge(model.edges[1], {
       edgeId: 'edge_messageFlow_id_1',
       bpmnElementId: 'messageFlow_id_1',
       bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'messageFlow_id_1',
-      bpmnElementTargetRefId: 'targetRef_1',
-      bpmnElementHasMessage: false,
+      bpmnElementSourceRefId: 'sourceRef_id_1',
+      bpmnElementTargetRefId: 'targetRef_id_1',
       waypoints: [new Waypoint(2, 2), new Waypoint(3, 3)],
+    });
+  });
+
+  it('json containing a collaboration with none/initiating/non-initiating message flows', () => {
+    const json = `{
+          "definitions": {
+              "collaboration": {
+                  "id": "collaboration_id_0",
+                  "messageFlow": [{
+                    "id": "messageFlow_id_0",
+                    "sourceRef": "sourceRef_id",
+                    "targetRef": "targetRef_id"
+                  },{
+                      "id": "messageFlow_id_1",
+                      "sourceRef": "sourceRef_id_1",
+                      "targetRef": "targetRef_id_1"
+                  },{
+                      "id": "messageFlow_id_2",
+                      "sourceRef": "sourceRef_id_2",
+                      "targetRef": "targetRef_id_2"
+                  },{
+                      "id": "messageFlow_id_3",
+                      "sourceRef": "sourceRef_id_3",
+                      "targetRef": "targetRef_id_3"
+                  }]
+              },
+              "process":"",
+              "BPMNDiagram": {
+                  "id": "BpmnDiagram_1",
+                  "BPMNPlane": {
+                      "id": "BpmnPlane_1",
+                      "BPMNEdge": [{
+                          "id": "edge_messageFlow_id_0",
+                          "bpmnElement": "messageFlow_id_0"
+                      },{
+                          "id": "edge_messageFlow_id_1",
+                          "bpmnElement": "messageFlow_id_1",
+                          "messageVisibleKind":""
+                      },{
+                          "id": "edge_messageFlow_id_2",
+                          "bpmnElement": "messageFlow_id_2",
+                          "messageVisibleKind":"initiating"
+                      },{
+                          "id": "edge_messageFlow_id_3",
+                          "bpmnElement": "messageFlow_id_3",
+                          "messageVisibleKind":"non-initiating"
+                      }]
+                  }
+              }
+          }
+      }`;
+
+    const model = parseJsonAndExpectOnlyEdges(json, 4);
+
+    verifyEdge(model.edges[0], {
+      edgeId: 'edge_messageFlow_id_0',
+      bpmnElementId: 'messageFlow_id_0',
+      bpmnElementName: undefined,
+      bpmnElementSourceRefId: 'sourceRef_id',
+      bpmnElementTargetRefId: 'targetRef_id',
+      messageVisibleKind: MessageVisibleKind.NONE,
+    });
+    verifyEdge(model.edges[1], {
+      edgeId: 'edge_messageFlow_id_1',
+      bpmnElementId: 'messageFlow_id_1',
+      bpmnElementName: undefined,
+      bpmnElementSourceRefId: 'sourceRef_id_1',
+      bpmnElementTargetRefId: 'targetRef_id_1',
+      messageVisibleKind: MessageVisibleKind.NONE,
+    });
+    verifyEdge(model.edges[2], {
+      edgeId: 'edge_messageFlow_id_2',
+      bpmnElementId: 'messageFlow_id_2',
+      bpmnElementName: undefined,
+      bpmnElementSourceRefId: 'sourceRef_id_2',
+      bpmnElementTargetRefId: 'targetRef_id_2',
+      messageVisibleKind: MessageVisibleKind.INITIATING,
+    });
+    verifyEdge(model.edges[3], {
+      edgeId: 'edge_messageFlow_id_3',
+      bpmnElementId: 'messageFlow_id_3',
+      bpmnElementName: undefined,
+      bpmnElementSourceRefId: 'sourceRef_id_3',
+      bpmnElementTargetRefId: 'targetRef_id_3',
+      messageVisibleKind: MessageVisibleKind.NON_INITIATING,
     });
   });
 });

@@ -28,6 +28,7 @@ import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpm
 import { BpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeUtil';
 import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
 import each from 'jest-each';
+import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
@@ -73,8 +74,8 @@ function newSequenceFlow(kind: SequenceFlowKind): SequenceFlow {
   return new SequenceFlow('id', 'name', undefined, undefined, kind);
 }
 
-function newMessageFlow(hasMessage: boolean): MessageFlow {
-  return new MessageFlow('id', 'name', undefined, undefined, hasMessage);
+function newMessageFlow(): MessageFlow {
+  return new MessageFlow('id', 'name', undefined, undefined);
 }
 
 describe('mxgraph renderer', () => {
@@ -170,10 +171,11 @@ describe('mxgraph renderer', () => {
   });
 
   each([
-    [true, ';strokeColor=DeepSkyBlue'],
-    [false, ''],
-  ]).it('compute style - message flows: %s', (hasMessage, expected) => {
-    const edge = new Edge('id', newMessageFlow(hasMessage));
+    [MessageVisibleKind.NON_INITIATING, ';strokeColor=DeepSkyBlue'],
+    [MessageVisibleKind.INITIATING, ';strokeColor=Yellow'],
+    [MessageVisibleKind.NONE, ''],
+  ]).it('compute style - message flows: %s', (messageVisibleKind, expected) => {
+    const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
     expect(computeStyle(edge)).toEqual(`messageFlow${expected}`);
   });
 

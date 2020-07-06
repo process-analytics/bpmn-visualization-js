@@ -24,7 +24,8 @@ import Bounds from '../../../model/bpmn/Bounds';
 import { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../model/bpmn/shape/ShapeBpmnElement';
 import { Font } from '../../../model/bpmn/Label';
 import { FlowKind } from '../../../model/bpmn/edge/FlowKind';
-import { MessageFlow, SequenceFlow } from '../../../model/bpmn/edge/Flow';
+import { SequenceFlow } from '../../../model/bpmn/edge/Flow';
+import { MessageVisibleKind } from '../../../model/bpmn/edge/MessageVisibleKind';
 
 // TODO 'clone' function is missing in mxgraph-type-definitions@1.0.2
 declare const mxUtils: typeof mxgraph.mxUtils;
@@ -233,8 +234,21 @@ export default class StyleConfigurator {
     } else {
       if (bpmnCell.bpmnElement instanceof SequenceFlow) {
         styles.push(bpmnCell.bpmnElement.sequenceFlowKind);
-      } else if (bpmnCell.bpmnElement instanceof MessageFlow && bpmnCell.bpmnElement.hasMessage) {
-        styleValues.set(mxConstants.STYLE_STROKECOLOR, 'DeepSkyBlue');
+      }
+
+      switch (bpmnCell.messageVisibleKind) {
+        case MessageVisibleKind.INITIATING: {
+          styleValues.set(mxConstants.STYLE_STROKECOLOR, 'Yellow');
+          break;
+        }
+        case MessageVisibleKind.NON_INITIATING: {
+          styleValues.set(mxConstants.STYLE_STROKECOLOR, 'DeepSkyBlue');
+          break;
+        }
+        default: {
+          // No specific style
+          break;
+        }
       }
     }
 

@@ -27,7 +27,7 @@ export class SequenceFlow extends Flow {
 }
 
 export class MessageFlow extends Flow {
-  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly hasMessage: boolean = false) {
+  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string) {
     super(id, name, FlowKind.MESSAGE_FLOW, sourceRefId, targetRefId);
   }
 }

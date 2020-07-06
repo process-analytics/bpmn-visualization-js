@@ -20,6 +20,7 @@ import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
 import { ShapeBpmnSubProcessKind } from '../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { MarkerIdentifier } from '../../src/component/mxgraph/StyleUtils';
 import { FlowKind } from '../../src/model/bpmn/edge/FlowKind';
+import { MessageVisibleKind } from '../../src/model/bpmn/edge/MessageVisibleKind';
 
 export interface ExpectedFont {
   name?: string;
@@ -53,14 +54,11 @@ interface ExpectedEdgeModelElement {
   kind?: FlowKind;
   font?: ExpectedFont;
   startArrow?: string;
+  messageVisibleKind?: MessageVisibleKind;
 }
 
 export interface ExpectedSequenceFlowModelElement extends ExpectedEdgeModelElement {
   sequenceFlowKind?: SequenceFlowKind;
-}
-
-export interface ExpectedMessageFlowModelElement extends ExpectedEdgeModelElement {
-  hasMessage: boolean;
 }
 
 // TODO find a way to not be forced to pass 'kind'
@@ -82,8 +80,9 @@ describe('mxGraph model', () => {
 <semantic:definitions id="_1373649849716" name="A.1.0" targetNamespace="http://www.trisotech.com/definitions/_1373649849716" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <semantic:message id="Message_1"/>
     <semantic:collaboration>
-        <semantic:messageFlow id="message_flow_with_message_id" name="Message Flow with message" sourceRef="startEvent_3_message" targetRef="startEvent_2_1_message" messageRef="Message_1" />
-        <semantic:messageFlow id="message_flow_without_message_id" name="Message Flow without message" sourceRef="boundary_event_interrupting_message_id" targetRef="startEvent_2_1_message" />
+        <semantic:messageFlow id="message_flow_initiating_message_id" name="Message Flow with initiating message" sourceRef="startEvent_3_message" targetRef="startEvent_2_1_message" messageRef="Message_1" />
+        <semantic:messageFlow id="message_flow_non_initiating_message_id" name="Message Flow with non-initiating message" sourceRef="startEvent_3_message" targetRef="startEvent_2_1_message" messageRef="Message_1" />
+        <semantic:messageFlow id="message_flow_no_visible_id" name="Message Flow without message" sourceRef="boundary_event_interrupting_message_id" targetRef="startEvent_2_1_message" />
     </semantic:collaboration>
     <semantic:process isExecutable="false" id="WFP-6-">
         <semantic:startEvent name="Start Event" id="startEvent_1">
@@ -298,8 +297,9 @@ describe('mxGraph model', () => {
          </bpmndi:BPMNEdge>
          <bpmndi:BPMNEdge bpmnElement="_8e8fe679-eb3b-4c43-a4d6-891e7087ff33" id="E1373649849867__8e8fe679-eb3b-4c43-a4d6-891e7087ff33" />
          <bpmndi:BPMNEdge bpmnElement="Flow_028jkgv" id="E1373649849867__Flow_028jkgv" />
-         <bpmndi:BPMNEdge bpmnElement="message_flow_with_message_id" id="Edge_message_flow_with_message_id" />
-         <bpmndi:BPMNEdge bpmnElement="message_flow_without_message_id" id="Edge_message_flow_without_message_id" />
+         <bpmndi:BPMNEdge bpmnElement="message_flow_initiating_message_id" id="Edge_message_flow_initiating_message_id" messageVisibleKind="initiating" />
+         <bpmndi:BPMNEdge bpmnElement="message_flow_non_initiating_message_id" id="Edge_message_flow_non_initiating_message_id" messageVisibleKind="non-initiating" />
+         <bpmndi:BPMNEdge bpmnElement="message_flow_no_visible_id" id="Edge_message_flow_no_visible_id" />
         </bpmndi:BPMNPlane>
         <bpmndi:BPMNLabelStyle id="bold_font_id">
             <dc:Font isBold="true" isItalic="false" isStrikeThrough="false" isUnderline="false" name="Arial" size="11.0"/>
@@ -372,6 +372,12 @@ describe('mxGraph model', () => {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(modelElement.kind);
 
+    if (modelElement.messageVisibleKind === MessageVisibleKind.NON_INITIATING) {
+      expect(cell.style).toContain('strokeColor=DeepSkyBlue');
+    } else if (modelElement.messageVisibleKind === MessageVisibleKind.INITIATING) {
+      expect(cell.style).toContain('strokeColor=Yellow');
+    }
+
     if (modelElement.startArrow || modelElement.font) {
       const state = bpmnVisualization.graph.getView().getState(cell);
       expect(state.style[mxConstants.STYLE_STARTARROW]).toEqual(modelElement.startArrow);
@@ -388,12 +394,8 @@ describe('mxGraph model', () => {
     return cell;
   }
 
-  function expectModelContainsMessageFlow(cellId: string, modelElement: ExpectedMessageFlowModelElement): mxCell {
-    const cell = expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.MESSAGE_FLOW });
-    if (modelElement.hasMessage) {
-      expect(cell.style).toContain('strokeColor=DeepSkyBlue');
-    }
-    return cell;
+  function expectModelContainsMessageFlow(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
+    return expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.MESSAGE_FLOW });
   }
 
   function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {
@@ -570,8 +572,12 @@ describe('mxGraph model', () => {
     expectModelContainsSequenceFlow('conditional_sequence_flow_from_gateway_id', { sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_GATEWAY, label: '' });
 
     // message flow
-    expectModelContainsMessageFlow('message_flow_with_message_id', { label: 'Message Flow with message', hasMessage: true });
-    expectModelContainsMessageFlow('message_flow_without_message_id', { label: 'Message Flow without message', hasMessage: false });
+    expectModelContainsMessageFlow('message_flow_initiating_message_id', { label: 'Message Flow with initiating message', messageVisibleKind: MessageVisibleKind.INITIATING });
+    expectModelContainsMessageFlow('message_flow_non_initiating_message_id', {
+      label: 'Message Flow with non-initiating message',
+      messageVisibleKind: MessageVisibleKind.NON_INITIATING,
+    });
+    expectModelContainsMessageFlow('message_flow_no_visible_id', { label: 'Message Flow without message', messageVisibleKind: MessageVisibleKind.NONE });
   });
 
   it('bpmn elements should not be available in the mxGraph model, if they are attached to not existing elements', async () => {

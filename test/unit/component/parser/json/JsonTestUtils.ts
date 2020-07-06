@@ -24,8 +24,9 @@ import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpm
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import Label from '../../../../../src/model/bpmn/Label';
 import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
-import { MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
+import { SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
 import { FlowKind } from '../../../../../src/model/bpmn/edge/FlowKind';
+import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -44,18 +45,11 @@ interface ExpectedEdge {
   bpmnElementSourceRefId: string;
   bpmnElementTargetRefId: string;
   waypoints?: Waypoint[];
+  messageVisibleKind?: MessageVisibleKind;
 }
 
 export interface ExpectedSequenceEdge extends ExpectedEdge {
   bpmnElementSequenceFlowKind?: SequenceFlowKind;
-}
-
-export interface ExpectedMessageEdge extends ExpectedEdge {
-  bpmnElementHasMessage: boolean;
-}
-
-function isMessageEdge(expectedEdge: ExpectedEdge): expectedEdge is ExpectedMessageEdge {
-  return (expectedEdge as ExpectedMessageEdge).bpmnElementHasMessage !== undefined;
 }
 
 export interface ExpectedFont {
@@ -144,9 +138,15 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape): void {
   expect(bounds.height).toEqual(expectedBounds.height);
 }
 
-export function verifyEdge(edge: Edge, expectedValue: ExpectedSequenceEdge | ExpectedMessageEdge): void {
+export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge | ExpectedSequenceEdge): void {
   expect(edge.id).toEqual(expectedValue.edgeId);
   expect(edge.waypoints).toEqual(expectedValue.waypoints);
+
+  if (expectedValue.messageVisibleKind) {
+    expect(edge.messageVisibleKind).toEqual(expectedValue.messageVisibleKind);
+  } else {
+    expect(edge.messageVisibleKind).toEqual(MessageVisibleKind.NONE);
+  }
 
   const bpmnElement = edge.bpmnElement;
   expect(bpmnElement.id).toEqual(expectedValue.bpmnElementId);
@@ -154,13 +154,11 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedSequenceEdge | Exp
   expect(bpmnElement.sourceRefId).toEqual(expectedValue.bpmnElementSourceRefId);
   expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
 
-  if (isMessageEdge(expectedValue) && bpmnElement instanceof MessageFlow) {
-    expect(edge.bpmnElement.kind).toEqual(FlowKind.MESSAGE_FLOW);
-    expect(bpmnElement.hasMessage).toEqual(expectedValue.bpmnElementHasMessage);
-  } else if (!isMessageEdge(expectedValue) && bpmnElement instanceof SequenceFlow) {
+  if (bpmnElement instanceof SequenceFlow) {
     expect(edge.bpmnElement.kind).toEqual(FlowKind.SEQUENCE_FLOW);
-    if (expectedValue.bpmnElementSequenceFlowKind) {
-      expect(bpmnElement.sequenceFlowKind).toEqual(expectedValue.bpmnElementSequenceFlowKind);
+    const sequenceEdge = expectedValue as ExpectedSequenceEdge;
+    if (sequenceEdge.bpmnElementSequenceFlowKind) {
+      expect(bpmnElement.sequenceFlowKind).toEqual(sequenceEdge.bpmnElementSequenceFlowKind);
     } else {
       expect(bpmnElement.sequenceFlowKind).toEqual(SequenceFlowKind.NORMAL);
     }
