@@ -13,10 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import SequenceFlow from './Flow';
-import Waypoint from './Waypoint';
-import Label from '../Label';
+import { SequenceFlowKind } from './SequenceFlowKind';
+import { FlowKind } from './FlowKind';
 
-export default class Edge {
-  constructor(readonly id?: string, readonly bpmnElement?: SequenceFlow, readonly waypoints?: Waypoint[], readonly label?: Label) {}
+export default abstract class Flow {
+  constructor(readonly id: string, readonly name: string, readonly kind: FlowKind, readonly sourceRefId?: string, readonly targetRefId?: string) {}
+}
+
+export class SequenceFlow extends Flow {
+  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly sequenceFlowKind = SequenceFlowKind.NORMAL) {
+    super(id, name, FlowKind.SEQUENCE_FLOW, sourceRefId, targetRefId);
+  }
 }

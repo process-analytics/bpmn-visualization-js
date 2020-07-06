@@ -37,7 +37,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     //['sendTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-  ]).it('json containing one process with a sequence flow defined as conditional in a %s', (sourceKind, expectedBpmnElementKind) => {
+  ]).it('json containing one process with a sequence flow defined as conditional in a %s', (sourceKind, expectedSequenceFlowKind) => {
     const json = `{
           "definitions": {
               "process": {
@@ -79,7 +79,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'source_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementKind: expectedBpmnElementKind,
+      sequenceFlowKind: expectedSequenceFlowKind,
     });
   });
 
@@ -125,7 +125,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'gateway_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementKind: SequenceFlowKind.NORMAL,
+      sequenceFlowKind: SequenceFlowKind.NORMAL,
     });
   });
 });

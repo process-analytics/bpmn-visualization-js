@@ -18,7 +18,7 @@ import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { Process } from '../Definitions';
-import SequenceFlow from '../../../../model/bpmn/edge/SequenceFlow';
+import { SequenceFlow } from '../../../../model/bpmn/edge/Flow';
 import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
 import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';

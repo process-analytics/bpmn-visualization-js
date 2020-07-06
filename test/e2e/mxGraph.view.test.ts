@@ -46,7 +46,7 @@ async function expectTask(cellId: string, expectedText: string): Promise<void> {
 
 async function expectSequenceFlow(cellId: string, expectedText?: string): Promise<void> {
   const svgElementHandle = await page.waitForSelector(`#${graphContainerId} svg g g[data-cell-id="${cellId}"]`);
-  expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-normal');
+  expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-sequenceFlow-normal');
   expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('path');
   await expectLabel(cellId, expectedText);
 }

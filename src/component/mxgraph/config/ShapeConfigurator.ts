@@ -68,7 +68,7 @@ export default class ShapeConfigurator {
 
       // add attributes to be able to identify elements in DOM
       if (this.state && this.state.cell) {
-        this.node.setAttribute('class', 'class-state-cell-style-' + this.state.cell.style);
+        this.node.setAttribute('class', 'class-state-cell-style-' + this.state.cell.style.replace(';', '-'));
         this.node.setAttribute('data-cell-id', this.state.cell.id);
       }
       //
