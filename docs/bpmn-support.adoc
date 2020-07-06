@@ -74,11 +74,14 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 |Embedded Sub-Process
 |icon:check-circle-o[]
-|Need to add the render of collapsed sub-process 
+|Collapsed sub-process : + 
+- Plus icon may be subject to change
 
 |Event Sub-Process
 |icon:check-circle-o[]
-|Need to add the render of collapsed sub-process
+|Collapsed sub-process : + 
+- Plus icon may be subject to change + 
+- Missing start event icon
 |===
 
 
