@@ -48,7 +48,7 @@ describe('parse bpmn as json for label font', () => {
           "definitions": {
               "process": {
                   "id": "Process_1",
-                  "${sourceKind}": { "id": "source_id_0", "name": "sequenceFlow_id_0"}
+                  "${sourceKind}": { "id": "source_id_0", "name": "${sourceKind}_id_0"}
               },
               "BPMNDiagram": {
                   "id": "BpmnDiagram_1",
