@@ -69,6 +69,7 @@ export default class StyleConfigurator {
     this.configurePoolStyle();
     this.configureLaneStyle();
 
+    this.configureTextAnnotationStyle();
     this.configureActivityStyles();
     this.configureEventStyles();
     this.configureGatewayStyles();
@@ -142,6 +143,14 @@ export default class StyleConfigurator {
       style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_BOTTOM;
       this.putCellStyle(kind, style);
     });
+  }
+
+  private configureTextAnnotationStyle(): void {
+    const style = this.cloneDefaultVertexStyle();
+    style[mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TEXT_ANNOTATION;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+    style[mxConstants.STYLE_FILLCOLOR] = 'aqua';
+    this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
   }
 
   private configureActivityStyles(): void {

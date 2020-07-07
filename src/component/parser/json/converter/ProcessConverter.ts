@@ -103,7 +103,8 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       } else if (ShapeUtil.isSubProcess(kind)) {
         shapeBpmnElement = this.buildShapeBpmnSubProcess(bpmnElement, processId);
       } else {
-        shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate);
+        const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
+        shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, processId, bpmnElement.instantiate);
       }
 
       if (ShapeUtil.isWithDefaultSequenceFlow(kind) && bpmnElement.default) {
