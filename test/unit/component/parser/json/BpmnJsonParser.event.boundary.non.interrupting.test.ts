@@ -16,9 +16,13 @@
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyBoundaryEvent, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
+import each from 'jest-each';
 
-describe('parse bpmn as json for message non-interrupting boundary event', () => {
-  it('json containing one process with a message non-interrupting boundary event, attached to an activity, defined as empty string, message non-interrupting boundary event is present', () => {
+describe.each([
+  ['message', ShapeBpmnEventKind.MESSAGE],
+  ['timer', ShapeBpmnEventKind.TIMER],
+])('parse bpmn as json for %s interrupting boundary event', (eventKind, shapeBpmnEventKind) => {
+  it(`json containing one process with a ${eventKind} non-interrupting boundary event, attached to an activity, defined as empty string, ${eventKind} non-interrupting boundary event is present`, () => {
     const json = `{
                 "definitions" : {
                     "process": {
@@ -31,7 +35,7 @@ describe('parse bpmn as json for message non-interrupting boundary event', () =>
                             "name":"event name",
                             "attachedToRef":"task_id_0",
                             "cancelActivity":false,
-                            "messageEventDefinition": ""
+                            "${eventKind}EventDefinition": ""
                         }
                     },
                     "BPMNDiagram": {
@@ -54,7 +58,7 @@ describe('parse bpmn as json for message non-interrupting boundary event', () =>
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.MESSAGE, 1, false);
+    const model = parseJsonAndExpectOnlyBoundaryEvent(json, shapeBpmnEventKind, 1, false);
 
     verifyShape(model.flowNodes[1], {
       shapeId: 'shape_boundaryEvent_id_0',
@@ -71,7 +75,7 @@ describe('parse bpmn as json for message non-interrupting boundary event', () =>
     });
   });
 
-  it('json containing one process with a message non-interrupting boundary event, attached to an activity, defined as object, message non-interrupting boundary event is present', () => {
+  it(`json containing one process with a ${eventKind} non-interrupting boundary event, attached to an activity, defined as object, ${eventKind} non-interrupting boundary event is present`, () => {
     const json = `{
                 "definitions" : {
                     "process": {
@@ -84,7 +88,7 @@ describe('parse bpmn as json for message non-interrupting boundary event', () =>
                             "name":"event name",
                             "attachedToRef":"task_id_0",
                             "cancelActivity":false,
-                            "messageEventDefinition": { "id": "messageEventDefinition_1" }
+                            "${eventKind}EventDefinition": { "id": "${eventKind}EventDefinition_1" }
                         }
                     },
                     "BPMNDiagram": {
@@ -107,7 +111,7 @@ describe('parse bpmn as json for message non-interrupting boundary event', () =>
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.MESSAGE, 1, false);
+    const model = parseJsonAndExpectOnlyBoundaryEvent(json, shapeBpmnEventKind, 1, false);
 
     verifyShape(model.flowNodes[1], {
       shapeId: 'shape_boundaryEvent_id_0',
@@ -124,17 +128,17 @@ describe('parse bpmn as json for message non-interrupting boundary event', () =>
     });
   });
 
-  it('json containing one process with a non-interrupting boundary event, attached to an activity, with message definition and another definition, message event is NOT present', () => {
+  it(`json containing one process with a non-interrupting boundary event, attached to an activity, with ${eventKind} definition and another definition, ${eventKind} event is NOT present`, () => {
     const json = `{
     "definitions" : {
         "process": {
             "task": { "id":"task_id_0", "name":"task name" },
-            "boundaryEvent": { 
-                "id":"event_id_0", 
+            "boundaryEvent": {
+                "id":"event_id_0",
                 "attachedToRef":"task_id_0",
                 "cancelActivity":false,
-                "messageEventDefinition": "", 
-                "timerEventDefinition": "" 
+                "${eventKind}EventDefinition": "",
+                "conditionalEventDefinition": ""
             }
         },
         "BPMNDiagram": {
@@ -157,19 +161,19 @@ describe('parse bpmn as json for message non-interrupting boundary event', () =>
     }
 }`;
 
-    parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.MESSAGE, 0);
+    parseJsonAndExpectOnlyBoundaryEvent(json, shapeBpmnEventKind, 0);
   });
 
-  it('json containing one process with a non-interrupting boundary event, attached to an activity, with several message definitions, message event is NOT present', () => {
+  it(`json containing one process with a non-interrupting boundary event, attached to an activity, with several ${eventKind} definitions, ${eventKind} event is NOT present`, () => {
     const json = `{
     "definitions" : {
         "process": {
             "task": { "id":"task_id_0", "name":"task name" },
-            "boundaryEvent": { 
-                "id":"event_id_0", 
+            "boundaryEvent": {
+                "id":"event_id_0",
                 "attachedToRef":"task_id_0",
                 "cancelActivity":false,
-                "messageEventDefinition": ["", ""] 
+                "${eventKind}EventDefinition": ["", ""]
             }
         },
         "BPMNDiagram": {
@@ -192,10 +196,10 @@ describe('parse bpmn as json for message non-interrupting boundary event', () =>
     }
 }`;
 
-    parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.MESSAGE, 0);
+    parseJsonAndExpectOnlyBoundaryEvent(json, shapeBpmnEventKind, 0);
   });
 
-  it('message non-interrupting boundary event cannot be attached to anything than an activity', () => {
+  it(`${eventKind} non-interrupting boundary event cannot be attached to anything than an activity`, () => {
     const json = `{
                 "definitions" : {
                     "process": {
@@ -206,7 +210,7 @@ describe('parse bpmn as json for message non-interrupting boundary event', () =>
                             "id":"event_id_0",
                             "name":"event name",
                             "attachedToRef":"not_task_id_0",
-                            "messageEventDefinition": ""
+                            "${eventKind}EventDefinition": ""
                         }
                     },
                     "BPMNDiagram": {
@@ -229,6 +233,6 @@ describe('parse bpmn as json for message non-interrupting boundary event', () =>
                 }
             }`;
 
-    parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.MESSAGE, 0);
+    parseJsonAndExpectOnlyBoundaryEvent(json, shapeBpmnEventKind, 0);
   });
 });
