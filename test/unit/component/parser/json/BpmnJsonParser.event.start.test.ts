@@ -17,15 +17,18 @@ import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeB
 import { parseJsonAndExpectOnlyEvent, parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 
-describe('parse bpmn as json for timer start event', () => {
-  it('json containing one process with a timer start event defined as empty string, timer start event is present', () => {
+describe.each([
+  ['message', ShapeBpmnEventKind.MESSAGE],
+  ['timer', ShapeBpmnEventKind.TIMER],
+])('parse bpmn as json for %s start event', (eventKind: string, shapeBpmnEventKind: ShapeBpmnEventKind) => {
+  it(`json containing one process with a ${eventKind} start event defined as empty string, ${eventKind} start event is present`, () => {
     const json = `{
                 "definitions" : {
                     "process": {
                         "startEvent": {
                             "id":"event_id_0",
                             "name":"event name",
-                            "timerEventDefinition": ""
+                            "${eventKind}EventDefinition": ""
                         }
                     },
                     "BPMNDiagram": {
@@ -41,7 +44,7 @@ describe('parse bpmn as json for timer start event', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.TIMER, 1);
+    const model = parseJsonAndExpectOnlyEvent(json, shapeBpmnEventKind, 1);
 
     verifyShape(model.flowNodes[0], {
       shapeId: 'shape_startEvent_id_0',
@@ -57,14 +60,14 @@ describe('parse bpmn as json for timer start event', () => {
     });
   });
 
-  it('json containing one process with a timer start event defined as object, timer start event is present', () => {
+  it(`json containing one process with a ${eventKind} start event defined as object, ${eventKind} start event is present`, () => {
     const json = `{
                 "definitions" : {
                     "process": {
                         "startEvent": {
                             "id":"event_id_0",
                             "name":"event name",
-                            "timerEventDefinition": { "id": "timerEventDefinition_1" }
+                            "${eventKind}EventDefinition": { "id": "${eventKind}EventDefinition_1" }
                         }
                     },
                     "BPMNDiagram": {
@@ -80,7 +83,7 @@ describe('parse bpmn as json for timer start event', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.TIMER, 1);
+    const model = parseJsonAndExpectOnlyEvent(json, shapeBpmnEventKind, 1);
 
     verifyShape(model.flowNodes[0], {
       shapeId: 'shape_startEvent_id_0',
@@ -96,11 +99,11 @@ describe('parse bpmn as json for timer start event', () => {
     });
   });
 
-  it('json containing one process with a start event with timer definition and another definition, timer start end event is NOT present', () => {
+  it(`json containing one process with a start event with ${eventKind} definition and another definition, ${eventKind} start end event is NOT present`, () => {
     const json = `{
     "definitions" : {
         "process": {
-            "startEvent": { "id":"event_id_0", "timerEventDefinition": "", "messageEventDefinition": "" }
+            "startEvent": { "id":"event_id_0", "${eventKind}EventDefinition": "", "conditionalEventDefinition": "" }
         },
         "BPMNDiagram": {
             "name":"process 0",
@@ -118,11 +121,11 @@ describe('parse bpmn as json for timer start event', () => {
     parseJsonAndExpectOnlyFlowNodes(json, 0);
   });
 
-  it('json containing one process with a start event with several timer definitions, timer start end event is NOT present', () => {
+  it(`json containing one process with a start event with several ${eventKind} definitions, ${eventKind} start end event is NOT present`, () => {
     const json = `{
     "definitions" : {
         "process": {
-            "startEvent": { "id":"event_id_0", "timerEventDefinition": ["", ""] }
+            "startEvent": { "id":"event_id_0", "${eventKind}EventDefinition": ["", ""] }
         },
         "BPMNDiagram": {
             "name":"process 0",
