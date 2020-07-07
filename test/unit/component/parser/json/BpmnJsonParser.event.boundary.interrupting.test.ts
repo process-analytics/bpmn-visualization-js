@@ -16,9 +16,13 @@
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyBoundaryEvent, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
+import each from 'jest-each';
 
-describe('parse bpmn as json for timer interrupting boundary event', () => {
-  it('json containing one process with a timer interrupting boundary event, attached to an activity, defined as empty string, timer interrupting boundary event is present', () => {
+describe.each([
+  ['message', ShapeBpmnEventKind.MESSAGE],
+  ['timer', ShapeBpmnEventKind.TIMER],
+])('parse bpmn as json for %s interrupting boundary event', (eventKind, shapeBpmnEventKind) => {
+  it(`json containing one process with a ${eventKind} interrupting boundary event, attached to an activity, defined as empty string, ${eventKind} interrupting boundary event is present`, () => {
     const json = `{
                 "definitions" : {
                     "process": {
@@ -31,7 +35,7 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
                             "name":"event name",
                             "attachedToRef":"task_id_0",
                             "cancelActivity":true,
-                            "timerEventDefinition": ""
+                            "${eventKind}EventDefinition": ""
                         }
                     },
                     "BPMNDiagram": {
@@ -54,7 +58,7 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.TIMER, 1, true);
+    const model = parseJsonAndExpectOnlyBoundaryEvent(json, shapeBpmnEventKind, 1, true);
 
     verifyShape(model.flowNodes[1], {
       shapeId: 'shape_boundaryEvent_id_0',
@@ -71,7 +75,7 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
     });
   });
 
-  it('json containing one process with a timer interrupting boundary event, attached to an activity, defined as object, timer interrupting boundary event is present', () => {
+  it(`json containing one process with a ${eventKind} interrupting boundary event, attached to an activity, defined as object, ${eventKind} interrupting boundary event is present`, () => {
     const json = `{
                 "definitions" : {
                     "process": {
@@ -84,7 +88,7 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
                             "name":"event name",
                             "attachedToRef":"task_id_0",
                             "cancelActivity":true,
-                            "timerEventDefinition": { "id": "timerEventDefinition_1" }
+                            "${eventKind}EventDefinition": { "id": "${eventKind}EventDefinition_1" }
                         }
                     },
                     "BPMNDiagram": {
@@ -107,7 +111,7 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.TIMER, 1, true);
+    const model = parseJsonAndExpectOnlyBoundaryEvent(json, shapeBpmnEventKind, 1, true);
 
     verifyShape(model.flowNodes[1], {
       shapeId: 'shape_boundaryEvent_id_0',
@@ -124,7 +128,7 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
     });
   });
 
-  it('json containing one process with a timer interrupting boundary event, attached to an activity, without cancelActivity attribute, timer interrupting boundary event is present', () => {
+  it(`json containing one process with a ${eventKind} interrupting boundary event, attached to an activity, without cancelActivity attribute, ${eventKind} interrupting boundary event is present`, () => {
     const json = `{
                 "definitions" : {
                     "process": {
@@ -136,7 +140,7 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
                             "id":"event_id_0",
                             "name":"event name",
                             "attachedToRef":"task_id_0",
-                            "timerEventDefinition": ""
+                            "${eventKind}EventDefinition": ""
                         }
                     },
                     "BPMNDiagram": {
@@ -159,7 +163,7 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
                 }
             }`;
 
-    const model = parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.TIMER, 1, true);
+    const model = parseJsonAndExpectOnlyBoundaryEvent(json, shapeBpmnEventKind, 1, true);
 
     verifyShape(model.flowNodes[1], {
       shapeId: 'shape_boundaryEvent_id_0',
@@ -176,7 +180,7 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
     });
   });
 
-  it('json containing one process with a interrupting boundary event, attached to an activity, with timer definition and another definition, timer event is NOT present', () => {
+  it(`json containing one process with a interrupting boundary event, attached to an activity, with ${eventKind} definition and another definition, ${eventKind} event is NOT present`, () => {
     const json = `{
     "definitions" : {
         "process": {
@@ -185,7 +189,7 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
                 "id":"event_id_0",
                 "attachedToRef":"task_id_0",
                 "cancelActivity":true,
-                "timerEventDefinition": "",
+                "${eventKind}EventDefinition": "",
                 "conditionalEventDefinition": ""
             }
         },
@@ -209,10 +213,10 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
     }
 }`;
 
-    parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.TIMER, 0);
+    parseJsonAndExpectOnlyBoundaryEvent(json, shapeBpmnEventKind, 0);
   });
 
-  it('json containing one process with a interrupting boundary event, attached to an activity, with several timer definitions, timer event is NOT present', () => {
+  it(`json containing one process with a interrupting boundary event, attached to an activity, with several ${eventKind} definitions, ${eventKind} event is NOT present`, () => {
     const json = `{
     "definitions" : {
         "process": {
@@ -221,7 +225,7 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
                 "id":"event_id_0",
                 "attachedToRef":"task_id_0",
                 "cancelActivity":true,
-                "timerEventDefinition": ["", ""]
+                "${eventKind}EventDefinition": ["", ""]
             }
         },
         "BPMNDiagram": {
@@ -244,10 +248,10 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
     }
 }`;
 
-    parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.TIMER, 0);
+    parseJsonAndExpectOnlyBoundaryEvent(json, shapeBpmnEventKind, 0);
   });
 
-  it('timer interrupting boundary event cannot be attached to anything than an activity', () => {
+  it(`${eventKind} interrupting boundary event cannot be attached to anything than an activity`, () => {
     const json = `{
                 "definitions" : {
                     "process": {
@@ -258,7 +262,7 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
                             "id":"event_id_0",
                             "name":"event name",
                             "attachedToRef":"not_task_id_0",
-                            "timerEventDefinition": ""
+                            "${eventKind}EventDefinition": ""
                         }
                     },
                     "BPMNDiagram": {
@@ -281,6 +285,6 @@ describe('parse bpmn as json for timer interrupting boundary event', () => {
                 }
             }`;
 
-    parseJsonAndExpectOnlyBoundaryEvent(json, ShapeBpmnEventKind.TIMER, 0);
+    parseJsonAndExpectOnlyBoundaryEvent(json, shapeBpmnEventKind, 0);
   });
 });
