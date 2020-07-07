@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 /**
- The real name of the field in the BPMN XSD
+ The real value of the field in the BPMN XSD, except 'None'.
  */
-export enum FlowKind {
-  SEQUENCE_FLOW = 'sequenceFlow',
-  MESSAGE_FLOW = 'messageFlow',
+export enum MessageVisibleKind {
+  NONE = 'none',
+  INITIATING = 'initiating',
+  NON_INITIATING = 'non-initiating',
 }

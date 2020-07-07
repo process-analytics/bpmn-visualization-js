@@ -25,3 +25,9 @@ export class SequenceFlow extends Flow {
     super(id, name, FlowKind.SEQUENCE_FLOW, sourceRefId, targetRefId);
   }
 }
+
+export class MessageFlow extends Flow {
+  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string) {
+    super(id, name, FlowKind.MESSAGE_FLOW, sourceRefId, targetRefId);
+  }
+}

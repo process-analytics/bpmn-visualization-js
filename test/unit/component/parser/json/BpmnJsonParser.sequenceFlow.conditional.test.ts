@@ -79,7 +79,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'source_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      sequenceFlowKind: expectedSequenceFlowKind,
+      bpmnElementSequenceFlowKind: expectedSequenceFlowKind,
     });
   });
 
@@ -125,7 +125,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'gateway_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      sequenceFlowKind: SequenceFlowKind.NORMAL,
+      bpmnElementSequenceFlowKind: SequenceFlowKind.NORMAL,
     });
   });
 });

@@ -228,6 +228,11 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |icon:check-circle-o[]
 |Subject to change: arrow size/form and position endpoint
 
+|message flow
+|
+|
+
+
 |way points
 |icon:flask[]
 |Subject to change: paths may be rounded
@@ -275,4 +280,21 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Edge Label
 |icon:check-circle-o[]
 |By default the size of the font is: 11 and family is set to : 'Arial, Helvetica, sans-serif' +
+|===
+
+
+
+=== Text Annotation
+
+
+[cols="1,1,4", options="header"]
+.Text Annotation
+|===
+|Name
+|Rendering
+|Comments
+
+|Text Annotation
+|
+|
 |===
