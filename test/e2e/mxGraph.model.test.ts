@@ -157,6 +157,14 @@ describe('mxGraph model', () => {
         <semantic:sequenceFlow sourceRef="inclusiveGateway_1" targetRef="userTask_3" name="" id="conditional_sequence_flow_from_gateway_id">
           <semantic:conditionExpression xsi:type="semantic:tFormalExpression" id="_WsCFcRszEeqkhYLXtt1BFw" evaluatesToTypeRef="java:java.lang.Boolean">&quot;Contract to be written&quot;.equals(loanRequested.status)</semantic:conditionExpression>
         </semantic:sequenceFlow>
+        <semantic:textAnnotation id="text_annotation_id_1">
+            <semantic:text>Annotation</semantic:text>
+        </semantic:textAnnotation>
+    </semantic:process>
+    <semantic:process isExecutable="false" id="process_2">
+        <semantic:startEvent name="Message Start Event" id="startEvent_2_1_message">
+            <semantic:messageEventDefinition/>
+        </semantic:startEvent>
     </semantic:process>
     <semantic:process isExecutable="false" id="process_2">
         <semantic:startEvent name="Message Start Event" id="startEvent_2_1_message">
@@ -263,6 +271,10 @@ describe('mxGraph model', () => {
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape isExpanded="false" bpmnElement="collapsed_event_sub_process_id" id="S1373649849862_collapsed_event_sub_process_id">
                <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="text_annotation_id_1" id="S1373638080887_text_annotation_id_1">
+                <dc:Bounds height="23.0" width="102.0" x="930.0" y="344.0"/>
+                <bpmndi:BPMNLabel/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge bpmnElement="default_sequence_flow_id" id="E1373649849864_default_sequence_flow_id">
                 <di:waypoint x="342.0" y="351.0"/>
@@ -559,6 +571,9 @@ describe('mxGraph model', () => {
     expectModelContainsShape('callActivity_1', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, label: 'Call Activity Collapsed' });
     expectModelContainsShape('receiveTask_not_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Not instantiated Receive Task' });
     expectModelContainsShape('receiveTask_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Instantiated Receive Task' });
+
+    // text annotation
+    expectModelContainsShape('text_annotation_id_1', { kind: ShapeBpmnElementKind.TEXT_ANNOTATION, label: 'Annotation' });
 
     // gateways
     expectModelContainsShape('inclusiveGateway_1', { kind: ShapeBpmnElementKind.GATEWAY_INCLUSIVE, label: 'Inclusive Gateway 1' });
