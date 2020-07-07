@@ -14,34 +14,53 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelBounds } from './JsonTestUtils';
+import each from 'jest-each';
 
 describe('parse bpmn as json for label bounds', () => {
-  it('json containing a BPMNShape which has a label with bounds with all attributes', () => {
+  each([
+    ['exclusiveGateway'],
+    ['inclusiveGateway'],
+    ['task'],
+    ['userTask'],
+    ['serviceTask'],
+    ['callActivity'],
+    ['receiveTask'],
+    ['subProcess'],
+    ['textAnnotation'],
+    // TODO: To uncomment when we support complex gateway
+    //['complexGateway'],
+    // TODO: To uncomment when we support manualTask
+    //['manualTask'],
+    // TODO: To uncomment when we support scriptTask
+    //['scriptTask'],
+    // TODO: To uncomment when we support sendTask
+    //['sendTask'],
+    // TODO: To uncomment when we support businessRuleTask
+    //['businessRuleTask'],
+  ]).it('json containing a BPMNShape which has a label with bounds with all attributes in a %s', sourceKind => {
     const json = `{
-       "definitions": {
-          "process": {
-             "task": {
-                "id": "task_id_0",
-                "name": "task name"
-             }
-          },
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNShape": {
-                   "id": "BPMNShape_id_0",
-                   "bpmnElement": "task_id_0",
-                   "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
-                   "BPMNLabel": {
-                      "id": "label_id",
-                      "Bounds": { "x": 25, "y": 26, "width": 27, "height": 28 }
-                   }
-                }
-             }
+          "definitions": {
+              "process": {
+                  "id": "Process_1",
+                  "${sourceKind}": { "id": "source_id_0", "name": "sequenceFlow_id_0"}
+              },
+              "BPMNDiagram": {
+                  "id": "BpmnDiagram_1",
+                  "BPMNPlane": {
+                      "id": "BpmnPlane_1",
+                      "BPMNShape": {
+                          "id": "shape_source_id_0",
+                          "bpmnElement": "source_id_0",
+                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
+                          "BPMNLabel": {
+                             "id": "label_id",
+                             "Bounds": { "x": 25, "y": 26, "width": 27, "height": 28 }
+                          }
+                      }
+                  }
+              }
           }
-       }
-    }`;
+      }`;
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
