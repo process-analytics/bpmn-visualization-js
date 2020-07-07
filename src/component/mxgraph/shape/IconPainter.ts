@@ -15,19 +15,15 @@
  */
 
 import { mxgraph } from 'ts-mxgraph';
-import MxScaleFactorCanvas, { MxCanvasUtil } from '../extension/MxScaleFactorCanvas';
+import BpmnCanvas, { MxCanvasUtil } from './render/BpmnCanvas';
 import StyleUtils from '../StyleUtils';
+import { IconStyleConfiguration, Size } from './render/render-types';
 
 export interface PaintParameter {
   c: mxgraph.mxXmlCanvas2D;
   shape: ShapeConfiguration;
-  icon: IconConfiguration;
+  icon: IconStyleConfiguration;
   ratioFromParent?: number;
-}
-
-export interface Size {
-  width: number;
-  height: number;
 }
 
 export interface ShapeConfiguration {
@@ -35,15 +31,7 @@ export interface ShapeConfiguration {
   y: number;
   w: number;
   h: number;
-  strokeWidth: number;
-}
-
-export interface IconConfiguration {
-  isFilled: boolean;
-  fillColor: string;
-  strokeColor: string;
-  strokeWidth: number;
-  margin: number;
+  strokeWidth?: number;
 }
 
 export default class IconPainter {
@@ -71,7 +59,7 @@ export default class IconPainter {
     };
   }
 
-  private static calculateIconSize(initialIconSize: Size, icon: IconConfiguration, shape: ShapeConfiguration, ratioFromParent: number): Size {
+  private static calculateIconSize(initialIconSize: Size, icon: IconStyleConfiguration, shape: ShapeConfiguration, ratioFromParent: number): Size {
     // Calculate the icon size proportionally to the shape size
     // (the longest side of the icon has the same value of the same side of the shape)
     let iconWidthProportionalToShape;
@@ -91,7 +79,7 @@ export default class IconPainter {
     return { width: paintIconWidth, height: paintIconHeight };
   }
 
-  private static updateCanvasStyle(canvas: mxgraph.mxXmlCanvas2D, { isFilled, strokeColor, fillColor, strokeWidth }: IconConfiguration): void {
+  private static updateCanvasStyle(canvas: mxgraph.mxXmlCanvas2D, { isFilled, strokeColor, fillColor, strokeWidth }: IconStyleConfiguration): void {
     if (isFilled) {
       // Choose dark color to fill the icon
       canvas.setFillColor(strokeColor);
@@ -171,7 +159,15 @@ export default class IconPainter {
   // implementation adapted from https://www.flaticon.com/free-icon/clock_223404
   public static paintClockIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 152, ratioFromParent);
+
+    const canvas = new BpmnCanvas({
+      mxCanvas: c,
+      shapeConfiguration: { x, y, w, h },
+      iconConfiguration: {
+        originalSize: { height: 152, width: 152 },
+        ratioFromShape: ratioFromParent,
+      },
+    });
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 5);
 
     canvas.begin();
@@ -266,7 +262,14 @@ export default class IconPainter {
 
   public static paintXCrossIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, { ...icon, isFilled: true });
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, ratioFromParent);
+    const canvas = new BpmnCanvas({
+      mxCanvas: c,
+      shapeConfiguration: { x, y, w, h },
+      iconConfiguration: {
+        originalSize: { height: 0.5, width: 0.5 },
+        ratioFromShape: ratioFromParent,
+      },
+    });
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
 
     IconPainter.drawCrossIcon(canvas);
@@ -278,14 +281,21 @@ export default class IconPainter {
 
   public static paintPlusCrossIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, { ...icon, isFilled: true });
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 0.5, ratioFromParent);
+    const canvas = new BpmnCanvas({
+      mxCanvas: c,
+      shapeConfiguration: { x, y, w, h },
+      iconConfiguration: {
+        originalSize: { height: 0.5, width: 0.5 },
+        ratioFromShape: ratioFromParent,
+      },
+    });
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 4);
 
     IconPainter.drawCrossIcon(canvas);
     canvas.fillAndStroke();
   }
 
-  private static drawCrossIcon(canvas: MxScaleFactorCanvas): void {
+  private static drawCrossIcon(canvas: BpmnCanvas): void {
     canvas.begin();
     canvas.moveTo(0.38, 0);
     canvas.lineTo(0.62, 0);
@@ -307,8 +317,14 @@ export default class IconPainter {
   public static paintWomanIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, { ...icon, isFilled: true });
 
-    // generated icon h="239.68" w="143.61"
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 239, ratioFromParent);
+    const canvas = new BpmnCanvas({
+      mxCanvas: c,
+      shapeConfiguration: { x, y, w, h },
+      iconConfiguration: {
+        originalSize: { height: 239, width: 239 }, // TODO use h="239.68" w="143.61"
+        ratioFromShape: ratioFromParent,
+      },
+    });
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 20);
 
     canvas.begin();
@@ -395,20 +411,26 @@ export default class IconPainter {
   public static paintGearIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
     this.updateCanvasStyle(c, icon);
 
-    // icon coordinates fill a 100x100 rectangle (approximately: 90x90 + foreground translation)
-    const canvas = MxCanvasUtil.getConfiguredCanvas(c, w, h, 100, ratioFromParent);
+    const canvas = new BpmnCanvas({
+      mxCanvas: c,
+      shapeConfiguration: { x, y, w, h },
+      iconConfiguration: {
+        // icon coordinates fill a 100x100 rectangle (approximately: 90x90 + foreground translation)
+        originalSize: { height: 100, width: 100 },
+        ratioFromShape: ratioFromParent,
+      },
+    });
     MxCanvasUtil.translateToStartingIconPosition(c, x, y, w, h, 20);
 
     // background
     this.paintGearIconBackground(canvas);
 
     // foreground
-    const foregroundTranslation = 14 * canvas.scaleFactor;
-    c.translate(foregroundTranslation, foregroundTranslation);
+    canvas.translate(14, 14);
     this.paintGearIconForeground(canvas);
   }
 
-  private static paintGearIconBackground(canvas: MxScaleFactorCanvas): void {
+  private static paintGearIconBackground(canvas: BpmnCanvas): void {
     canvas.begin();
     canvas.moveTo(2.06, 24.62);
     canvas.lineTo(10.17, 30.95);
@@ -449,7 +471,7 @@ export default class IconPainter {
     this.paintInnerCircle(canvas, arcStartX, arcStartY);
   }
 
-  private static paintGearIconForeground(canvas: MxScaleFactorCanvas): void {
+  private static paintGearIconForeground(canvas: BpmnCanvas): void {
     canvas.begin();
     canvas.moveTo(16.46, 41.42);
     canvas.lineTo(24.57, 47.75);
@@ -494,7 +516,7 @@ export default class IconPainter {
     this.paintInnerCircle(canvas, arcStartX, arcStartY);
   }
 
-  private static paintInnerCircle(canvas: MxScaleFactorCanvas, arcStartX: number, arcStartY: number): void {
+  private static paintInnerCircle(canvas: BpmnCanvas, arcStartX: number, arcStartY: number): void {
     const arcRay = 13.5;
     canvas.moveTo(arcStartX, arcStartY);
     canvas.arcTo(arcRay, arcRay, 0, 1, 1, arcStartX + 2 * arcRay, arcStartY);
