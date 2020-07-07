@@ -14,27 +14,47 @@
  * limitations under the License.
  */
 import { mxgraph } from 'ts-mxgraph';
-import { ShapeConfiguration, Size } from '../shape/IconPainter';
-import { StyleDefault } from '../StyleUtils';
+import { ShapeConfiguration } from '../IconPainter';
+import { StyleDefault } from '../../StyleUtils';
+import { IconConfiguration, Size } from './render-types';
+
+export interface BpmnCanvasConfiguration {
+  mxCanvas: mxgraph.mxXmlCanvas2D; // TODO use mxAbstractCanvas2D when fully available in mxgraph-type-definitions
+  shapeConfiguration: ShapeConfiguration;
+  iconConfiguration: IconConfiguration;
+}
 
 /**
  * Scale dimensions passed to the method of the original {@link mxgraph.mxXmlCanvas2D}
  *
  * @example vanilla canvas calls when a scale factor must be applied to positions
- * const scaleFactor = 0.26;
- * c.moveTo(8 * scaleFactor, 39 * scaleFactor);
- * c.lineTo(12 * scaleFactor, 25 * scaleFactor);
+ * const scaleX = 0.26;
+ * const scaleY = 0.35;
+ * c.moveTo(8 * scaleX, 39 * scaleY);
+ * c.lineTo(12 * scaleX, 25 * scaleY);
  *
- * @example with `MxScaleFactorCanvas`
- * const canvas = new MxScaleFactorCanvas(c, 0.26);
+ * @example with `BpmnCanvas`
+ * const canvas = new BpmnCanvas(c, 0.26, 0.35);
  * canvas.moveTo(8, 39);
  * canvas.lineTo(12, 25);
  */
-export default class MxScaleFactorCanvas {
-  constructor(private readonly c: mxgraph.mxXmlCanvas2D, readonly scaleFactor: number) {}
+export default class BpmnCanvas {
+  private c: mxgraph.mxXmlCanvas2D; // TODO use mxAbstractCanvas2D when fully available in mxgraph-type-definitions
+  private readonly scaleX: number;
+  private readonly scaleY: number;
+
+  constructor(config: BpmnCanvasConfiguration) {
+    this.c = config.mxCanvas;
+    const parentSize = Math.min(config.shapeConfiguration.w, config.shapeConfiguration.h);
+
+    const iconConfiguration = config.iconConfiguration;
+    const iconOriginalSize = iconConfiguration.originalSize;
+    this.scaleX = (parentSize / iconOriginalSize.width) * iconConfiguration.ratioFromShape;
+    this.scaleY = (parentSize / iconOriginalSize.height) * iconConfiguration.ratioFromShape;
+  }
 
   arcTo(rx: number, ry: number, angle: number, largeArcFlag: number, sweepFlag: number, x: number, y: number): void {
-    this.c.arcTo(rx * this.scaleFactor, ry * this.scaleFactor, angle, largeArcFlag, sweepFlag, x * this.scaleFactor, y * this.scaleFactor);
+    this.c.arcTo(rx * this.scaleX, ry * this.scaleY, angle, largeArcFlag, sweepFlag, x * this.scaleX, y * this.scaleY);
   }
 
   begin(): void {
@@ -46,7 +66,7 @@ export default class MxScaleFactorCanvas {
   }
 
   curveTo(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): void {
-    this.c.curveTo(x1 * this.scaleFactor, y1 * this.scaleFactor, x2 * this.scaleFactor, y2 * this.scaleFactor, x3 * this.scaleFactor, y3 * this.scaleFactor);
+    this.c.curveTo(x1 * this.scaleX, y1 * this.scaleY, x2 * this.scaleX, y2 * this.scaleY, x3 * this.scaleX, y3 * this.scaleY);
   }
 
   fill(): void {
@@ -58,32 +78,23 @@ export default class MxScaleFactorCanvas {
   }
 
   lineTo(x: number, y: number): void {
-    this.c.lineTo(x * this.scaleFactor, y * this.scaleFactor);
+    this.c.lineTo(x * this.scaleX, y * this.scaleY);
   }
 
   moveTo(x: number, y: number): void {
-    this.c.moveTo(x * this.scaleFactor, y * this.scaleFactor);
+    this.c.moveTo(x * this.scaleX, y * this.scaleY);
   }
 
   rotate(theta: number, flipH: boolean, flipV: boolean, cx: number, cy: number): void {
     this.c.rotate(theta, flipH, flipV, cx, cy);
   }
+
+  translate(dx: number, dy: number): void {
+    this.c.translate(this.scaleX * dx, this.scaleY * dy);
+  }
 }
 
 export class MxCanvasUtil {
-  public static getConfiguredCanvas(
-    canvas: mxgraph.mxXmlCanvas2D,
-    parentWidth: number,
-    parentHeight: number,
-    iconOriginalSize: number,
-    ratioFromParent: number,
-  ): MxScaleFactorCanvas {
-    const parentSize = Math.min(parentWidth, parentHeight);
-    const scaleFactor = (parentSize / iconOriginalSize) * ratioFromParent;
-
-    return new MxScaleFactorCanvas(canvas, scaleFactor);
-  }
-
   /**
    * Moves canvas cursor to drawing starting point.
    * @param canvas
