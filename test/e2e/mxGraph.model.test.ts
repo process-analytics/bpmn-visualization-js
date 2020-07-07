@@ -19,6 +19,8 @@ import { ShapeBpmnEventKind } from '../../src/model/bpmn/shape/ShapeBpmnEventKin
 import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
 import { ShapeBpmnSubProcessKind } from '../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { MarkerIdentifier } from '../../src/component/mxgraph/StyleUtils';
+import { FlowKind } from '../../src/model/bpmn/edge/FlowKind';
+import { MessageVisibleKind } from '../../src/model/bpmn/edge/MessageVisibleKind';
 
 export interface ExpectedFont {
   name?: string;
@@ -47,11 +49,16 @@ export interface ExpectedSubProcessModelElement extends ExpectedShapeModelElemen
   subProcessKind: ShapeBpmnSubProcessKind;
 }
 
-export interface ExpectedEdgeModelElement {
+interface ExpectedEdgeModelElement {
   label?: string;
-  kind: SequenceFlowKind;
+  kind?: FlowKind;
   font?: ExpectedFont;
   startArrow?: string;
+  messageVisibleKind?: MessageVisibleKind;
+}
+
+export interface ExpectedSequenceFlowModelElement extends ExpectedEdgeModelElement {
+  sequenceFlowKind?: SequenceFlowKind;
 }
 
 // TODO find a way to not be forced to pass 'kind'
@@ -71,6 +78,12 @@ describe('mxGraph model', () => {
   const xmlContent = `
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
 <semantic:definitions id="_1373649849716" name="A.1.0" targetNamespace="http://www.trisotech.com/definitions/_1373649849716" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <semantic:message id="Message_1"/>
+    <semantic:collaboration>
+        <semantic:messageFlow id="message_flow_initiating_message_id" name="Message Flow with initiating message" sourceRef="startEvent_3_message" targetRef="startEvent_2_1_message" messageRef="Message_1" />
+        <semantic:messageFlow id="message_flow_non_initiating_message_id" name="Message Flow with non-initiating message" sourceRef="startEvent_3_message" targetRef="startEvent_2_1_message" messageRef="Message_1" />
+        <semantic:messageFlow id="message_flow_no_visible_id" name="Message Flow without message" sourceRef="boundary_event_interrupting_message_id" targetRef="startEvent_2_1_message" />
+    </semantic:collaboration>
     <semantic:process isExecutable="false" id="WFP-6-">
         <semantic:startEvent name="Start Event" id="startEvent_1">
             <semantic:outgoing>normal_sequence_flow_id</semantic:outgoing>
@@ -143,6 +156,14 @@ describe('mxGraph model', () => {
         <semantic:sequenceFlow sourceRef="inclusiveGateway_1" targetRef="userTask_3" name="" id="conditional_sequence_flow_from_gateway_id">
           <semantic:conditionExpression xsi:type="semantic:tFormalExpression" id="_WsCFcRszEeqkhYLXtt1BFw" evaluatesToTypeRef="java:java.lang.Boolean">&quot;Contract to be written&quot;.equals(loanRequested.status)</semantic:conditionExpression>
         </semantic:sequenceFlow>
+        <semantic:textAnnotation id="text_annotation_id_1">
+            <semantic:text>Annotation</semantic:text>
+        </semantic:textAnnotation>
+    </semantic:process>
+    <semantic:process isExecutable="false" id="process_2">
+        <semantic:startEvent name="Message Start Event" id="startEvent_2_1_message">
+            <semantic:messageEventDefinition/>
+        </semantic:startEvent>
     </semantic:process>
     <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
         <bpmndi:BPMNPlane bpmnElement="WFP-6-">
@@ -245,6 +266,10 @@ describe('mxGraph model', () => {
             <bpmndi:BPMNShape isExpanded="false" bpmnElement="collapsed_event_sub_process_id" id="S1373649849862_collapsed_event_sub_process_id">
                <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
             </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="text_annotation_id_1" id="S1373638080887_text_annotation_id_1">
+                <dc:Bounds height="23.0" width="102.0" x="930.0" y="344.0"/>
+                <bpmndi:BPMNLabel/>
+            </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge bpmnElement="default_sequence_flow_id" id="E1373649849864_default_sequence_flow_id">
                 <di:waypoint x="342.0" y="351.0"/>
                 <di:waypoint x="390.0" y="351.0"/>
@@ -279,6 +304,9 @@ describe('mxGraph model', () => {
          </bpmndi:BPMNEdge>
          <bpmndi:BPMNEdge bpmnElement="_8e8fe679-eb3b-4c43-a4d6-891e7087ff33" id="E1373649849867__8e8fe679-eb3b-4c43-a4d6-891e7087ff33" />
          <bpmndi:BPMNEdge bpmnElement="Flow_028jkgv" id="E1373649849867__Flow_028jkgv" />
+         <bpmndi:BPMNEdge bpmnElement="message_flow_initiating_message_id" id="Edge_message_flow_initiating_message_id" messageVisibleKind="initiating" />
+         <bpmndi:BPMNEdge bpmnElement="message_flow_non_initiating_message_id" id="Edge_message_flow_non_initiating_message_id" messageVisibleKind="non-initiating" />
+         <bpmndi:BPMNEdge bpmnElement="message_flow_no_visible_id" id="Edge_message_flow_no_visible_id" />
         </bpmndi:BPMNPlane>
         <bpmndi:BPMNLabelStyle id="bold_font_id">
             <dc:Font isBold="true" isItalic="false" isStrikeThrough="false" isUnderline="false" name="Arial" size="11.0"/>
@@ -351,11 +379,30 @@ describe('mxGraph model', () => {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(modelElement.kind);
 
-    const state = bpmnVisualization.graph.getView().getState(cell);
-    expect(state.style[mxConstants.STYLE_STARTARROW]).toEqual(modelElement.startArrow);
+    if (modelElement.messageVisibleKind === MessageVisibleKind.NON_INITIATING) {
+      expect(cell.style).toContain('strokeColor=DeepSkyBlue');
+    } else if (modelElement.messageVisibleKind === MessageVisibleKind.INITIATING) {
+      expect(cell.style).toContain('strokeColor=Yellow');
+    }
+
+    if (modelElement.startArrow || modelElement.font) {
+      const state = bpmnVisualization.graph.getView().getState(cell);
+      expect(state.style[mxConstants.STYLE_STARTARROW]).toEqual(modelElement.startArrow);
+      expectFont(state, modelElement.font);
+    }
+
     expect(cell.value).toEqual(modelElement.label);
-    expectFont(state, modelElement.font);
     return cell;
+  }
+
+  function expectModelContainsSequenceFlow(cellId: string, modelElement: ExpectedSequenceFlowModelElement): mxCell {
+    const cell = expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.SEQUENCE_FLOW });
+    expect(cell.style).toContain(modelElement.sequenceFlowKind);
+    return cell;
+  }
+
+  function expectModelContainsMessageFlow(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
+    return expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.MESSAGE_FLOW });
   }
 
   function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {
@@ -519,14 +566,28 @@ describe('mxGraph model', () => {
     expectModelContainsShape('receiveTask_not_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Not instantiated Receive Task' });
     expectModelContainsShape('receiveTask_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Instantiated Receive Task' });
 
+    // text annotation
+    expectModelContainsShape('text_annotation_id_1', { kind: ShapeBpmnElementKind.TEXT_ANNOTATION, label: 'Annotation' });
+
     // gateways
     expectModelContainsShape('inclusiveGateway_1', { kind: ShapeBpmnElementKind.GATEWAY_INCLUSIVE, label: 'Inclusive Gateway 1' });
 
     // sequence flow
-    expectModelContainsEdge('default_sequence_flow_id', { kind: SequenceFlowKind.DEFAULT, startArrow: MarkerIdentifier.ARROW_DASH, font: expectedBoldFont });
-    expectModelContainsEdge('normal_sequence_flow_id', { kind: SequenceFlowKind.NORMAL, label: "From 'start event 1' to 'task 1'" });
-    expectModelContainsEdge('conditional_sequence_flow_from_activity_id', { kind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY, startArrow: mxConstants.ARROW_DIAMOND_THIN });
-    expectModelContainsEdge('conditional_sequence_flow_from_gateway_id', { kind: SequenceFlowKind.CONDITIONAL_FROM_GATEWAY, label: '' });
+    expectModelContainsSequenceFlow('default_sequence_flow_id', { sequenceFlowKind: SequenceFlowKind.DEFAULT, startArrow: MarkerIdentifier.ARROW_DASH, font: expectedBoldFont });
+    expectModelContainsSequenceFlow('normal_sequence_flow_id', { sequenceFlowKind: SequenceFlowKind.NORMAL, label: "From 'start event 1' to 'task 1'" });
+    expectModelContainsSequenceFlow('conditional_sequence_flow_from_activity_id', {
+      sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
+      startArrow: mxConstants.ARROW_DIAMOND_THIN,
+    });
+    expectModelContainsSequenceFlow('conditional_sequence_flow_from_gateway_id', { sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_GATEWAY, label: '' });
+
+    // message flow
+    expectModelContainsMessageFlow('message_flow_initiating_message_id', { label: 'Message Flow with initiating message', messageVisibleKind: MessageVisibleKind.INITIATING });
+    expectModelContainsMessageFlow('message_flow_non_initiating_message_id', {
+      label: 'Message Flow with non-initiating message',
+      messageVisibleKind: MessageVisibleKind.NON_INITIATING,
+    });
+    expectModelContainsMessageFlow('message_flow_no_visible_id', { label: 'Message Flow without message', messageVisibleKind: MessageVisibleKind.NONE });
   });
 
   it('bpmn elements should not be available in the mxGraph model, if they are attached to not existing elements', async () => {

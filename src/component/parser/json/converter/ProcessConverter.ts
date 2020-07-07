@@ -23,6 +23,7 @@ import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/b
 import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';
 import { ShapeBpmnSubProcessKind } from '../../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
+import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
@@ -89,7 +90,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     this.buildLaneSetBpmnElements(processId, process['laneSet']);
 
     // flows
-    this.buildSequenceFlows(process['sequenceFlow']);
+    this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW]);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -102,7 +103,8 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       } else if (ShapeUtil.isSubProcess(kind)) {
         shapeBpmnElement = this.buildShapeBpmnSubProcess(bpmnElement, processId);
       } else {
-        shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate);
+        const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
+        shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, processId, bpmnElement.instantiate);
       }
 
       if (ShapeUtil.isWithDefaultSequenceFlow(kind) && bpmnElement.default) {

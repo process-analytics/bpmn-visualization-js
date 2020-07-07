@@ -25,13 +25,25 @@ import { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../
 import { Font } from '../../../model/bpmn/Label';
 import { FlowKind } from '../../../model/bpmn/edge/FlowKind';
 import { SequenceFlow } from '../../../model/bpmn/edge/Flow';
+import { MessageVisibleKind } from '../../../model/bpmn/edge/MessageVisibleKind';
 
 // TODO 'clone' function is missing in mxgraph-type-definitions@1.0.2
 declare const mxUtils: typeof mxgraph.mxUtils;
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
-  private specificEdgeStyles: Map<SequenceFlowKind, (style: any) => void> = new Map([
+  private specificFlowStyles: Map<FlowKind, (style: any) => void> = new Map([
+    [
+      FlowKind.MESSAGE_FLOW,
+      (style: any) => {
+        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OVAL;
+        style[mxConstants.STYLE_STARTSIZE] = 7;
+        style[mxConstants.STYLE_STARTFILL] = false;
+        style[mxConstants.STYLE_STROKECOLOR] = 'DeepPink';
+      },
+    ],
+  ]);
+  private specificSequenceFlowStyles: Map<SequenceFlowKind, (style: any) => void> = new Map([
     [
       SequenceFlowKind.DEFAULT,
       (style: any) => {
@@ -43,7 +55,7 @@ export default class StyleConfigurator {
       (style: any) => {
         style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_DIAMOND_THIN;
         style[mxConstants.STYLE_STARTSIZE] = 18;
-        style[mxConstants.STYLE_STARTFILL] = 0;
+        style[mxConstants.STYLE_STARTFILL] = false;
       },
     ],
   ]);
@@ -57,6 +69,7 @@ export default class StyleConfigurator {
     this.configurePoolStyle();
     this.configureLaneStyle();
 
+    this.configureTextAnnotationStyle();
     this.configureActivityStyles();
     this.configureEventStyles();
     this.configureGatewayStyles();
@@ -132,6 +145,14 @@ export default class StyleConfigurator {
     });
   }
 
+  private configureTextAnnotationStyle(): void {
+    const style = this.cloneDefaultVertexStyle();
+    style[mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TEXT_ANNOTATION;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+    style[mxConstants.STYLE_FILLCOLOR] = 'aqua';
+    this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
+  }
+
   private configureActivityStyles(): void {
     ShapeUtil.activityKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
@@ -181,24 +202,25 @@ export default class StyleConfigurator {
     style[mxConstants.STYLE_WHITE_SPACE] = 'wrap';
   }
 
-  private configureSequenceFlowStyles(): void {
-    Object.values(SequenceFlowKind).forEach(kind => {
+  private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: any) => void>): void {
+    styleKinds.forEach(kind => {
       const style = this.cloneDefaultEdgeStyle();
       const updateEdgeStyle =
-        this.specificEdgeStyles.get(kind) ||
+        specificStyles.get(kind) ||
         (() => {
           // Do nothing
         });
       updateEdgeStyle(style);
-      this.graph.getStylesheet().putCellStyle(kind, style);
+      this.graph.getStylesheet().putCellStyle(kind.toString(), style);
     });
   }
 
+  private configureSequenceFlowStyles(): void {
+    this.configureEdgeStyles<SequenceFlowKind>(Object.values(SequenceFlowKind), this.specificSequenceFlowStyles);
+  }
+
   private configureFlowStyles(): void {
-    Object.values(FlowKind).forEach(kind => {
-      const style = this.cloneDefaultEdgeStyle();
-      this.graph.getStylesheet().putCellStyle(kind, style);
-    });
+    this.configureEdgeStyles<FlowKind>(Object.values(FlowKind), this.specificFlowStyles);
     this.configureSequenceFlowStyles();
   }
 
@@ -210,19 +232,32 @@ export default class StyleConfigurator {
     if (bpmnCell instanceof Shape) {
       if (bpmnElement instanceof ShapeBpmnEvent) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
-      }
 
-      if (bpmnElement instanceof ShapeBpmnBoundaryEvent) {
-        styleValues.set(StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
-      }
-
-      if (bpmnElement instanceof ShapeBpmnSubProcess) {
+        if (bpmnElement instanceof ShapeBpmnBoundaryEvent) {
+          styleValues.set(StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
+        }
+      } else if (bpmnElement instanceof ShapeBpmnSubProcess) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
         styleValues.set(StyleIdentifier.BPMN_STYLE_IS_EXPANDED, String(bpmnCell.isExpanded));
       }
     } else {
       if (bpmnCell.bpmnElement instanceof SequenceFlow) {
         styles.push(bpmnCell.bpmnElement.sequenceFlowKind);
+      }
+
+      switch (bpmnCell.messageVisibleKind) {
+        case MessageVisibleKind.INITIATING: {
+          styleValues.set(mxConstants.STYLE_STROKECOLOR, 'Yellow');
+          break;
+        }
+        case MessageVisibleKind.NON_INITIATING: {
+          styleValues.set(mxConstants.STYLE_STROKECOLOR, 'DeepSkyBlue');
+          break;
+        }
+        default: {
+          // No specific style
+          break;
+        }
       }
     }
 
