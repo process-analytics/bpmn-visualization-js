@@ -17,13 +17,16 @@ import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeB
 import { parseJsonAndExpectOnlyEvent, parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 
-describe('parse bpmn as json for terminate end event', () => {
-  it('json containing one process with an terminate end event, terminate end event is present', () => {
+describe.each([
+  ['message', ShapeBpmnEventKind.MESSAGE],
+  ['terminate', ShapeBpmnEventKind.TERMINATE],
+])('parse bpmn as json for %s end event', (eventKind: string, shapeBpmnEventKind: ShapeBpmnEventKind) => {
+  it(`json containing one process with an ${eventKind} end event defined as empty string, ${eventKind} end event is present`, () => {
     const json = `{
   "definitions": {
     "process": {
       "endEvent": [
-        { "id": "event_id_7", "terminateEventDefinition": "" }
+        { "id": "event_id_7", "${eventKind}EventDefinition": "" }
       ]
     },
     "BPMNDiagram": {
@@ -40,7 +43,7 @@ describe('parse bpmn as json for terminate end event', () => {
   }
 }`;
 
-    const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.TERMINATE, 1);
+    const model = parseJsonAndExpectOnlyEvent(json, shapeBpmnEventKind, 1);
 
     verifyShape(model.flowNodes[0], {
       shapeId: 'shape_endEvent_id_7',
@@ -56,12 +59,50 @@ describe('parse bpmn as json for terminate end event', () => {
     });
   });
 
-  it('json containing one process with an end event with terminate definition and another definition, terminate end event is NOT present', () => {
+  it(`json containing one process with an ${eventKind} end event defined as object, ${eventKind} end event is present`, () => {
     const json = `{
   "definitions": {
     "process": {
       "endEvent": [
-        { "id": "event_id_7", "terminateEventDefinition": "", "messageEventDefinition": "" }
+        { "id": "event_id_7", "${eventKind}EventDefinition": {} }
+      ]
+    },
+    "BPMNDiagram": {
+      "name": "process 0",
+      "BPMNPlane": {
+        "BPMNShape": [
+          {
+            "id": "shape_endEvent_id_7", "bpmnElement": "event_id_7",
+            "Bounds": { "x": 362, "y": 932, "width": 36, "height": 45 }
+          }
+        ]
+      }
+    }
+  }
+}`;
+
+    const model = parseJsonAndExpectOnlyEvent(json, shapeBpmnEventKind, 1);
+
+    verifyShape(model.flowNodes[0], {
+      shapeId: 'shape_endEvent_id_7',
+      bpmnElementId: 'event_id_7',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+      bounds: {
+        x: 362,
+        y: 932,
+        width: 36,
+        height: 45,
+      },
+    });
+  });
+
+  it(`json containing one process with an end event with ${eventKind} definition and another definition, ${eventKind} end event is NOT present`, () => {
+    const json = `{
+  "definitions": {
+    "process": {
+      "endEvent": [
+        { "id": "event_id_7", "${eventKind}EventDefinition": "", "escalationEventDefinition": "" }
       ]
     },
     "BPMNDiagram": {
@@ -81,12 +122,12 @@ describe('parse bpmn as json for terminate end event', () => {
     parseJsonAndExpectOnlyFlowNodes(json, 0);
   });
 
-  it('json containing one process with an end event with several terminate definition, terminate end event is NOT present', () => {
+  it(`json containing one process with an end event with several ${eventKind} definitions, ${eventKind} end event is NOT present`, () => {
     const json = `{
   "definitions": {
     "process": {
       "endEvent": [
-        { "id": "event_id_7", "terminateEventDefinition": ["", ""] }
+        { "id": "event_id_7", "${eventKind}EventDefinition": ["", ""] }
       ]
     },
     "BPMNDiagram": {
@@ -104,30 +145,5 @@ describe('parse bpmn as json for terminate end event', () => {
 }`;
 
     parseJsonAndExpectOnlyFlowNodes(json, 0);
-  });
-
-  it('json containing one process with an end event with terminate definition as simple <semantic:escalationEventDefinition/>', () => {
-    const json = `{
-  "definitions": {
-    "process": {
-      "endEvent": [
-        { "id": "event_id_7", "terminateEventDefinition": "" }
-      ]
-    },
-    "BPMNDiagram": {
-      "name": "process 0",
-      "BPMNPlane": {
-        "BPMNShape": [
-          {
-            "id": "shape_endEvent_id_7", "bpmnElement": "event_id_7",
-            "Bounds": { "x": 362, "y": 932, "width": 36, "height": 45 }
-          }
-        ]
-      }
-    }
-  }
-}`;
-
-    parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.TERMINATE, 1);
   });
 });
