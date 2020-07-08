@@ -72,6 +72,7 @@ function expectGeometry(cell: mxCell, geometry: mxGeometry): void {
   expect(cellGeometry.y).toEqual(geometry.y);
   expect(cellGeometry.width).toEqual(geometry.width);
   expect(cellGeometry.height).toEqual(geometry.height);
+  expect(cellGeometry.points).toEqual(geometry.points);
 }
 
 describe('mxGraph model', () => {
@@ -162,6 +163,11 @@ describe('mxGraph model', () => {
         <semantic:textAnnotation id="text_annotation_id_1">
             <semantic:text>Annotation</semantic:text>
         </semantic:textAnnotation>
+    </semantic:process>
+    <semantic:process isExecutable="false" id="process_2">
+        <semantic:startEvent name="Message Start Event" id="startEvent_2_1_message">
+            <semantic:messageEventDefinition/>
+        </semantic:startEvent>
     </semantic:process>
     <semantic:process isExecutable="false" id="process_2">
         <semantic:startEvent name="Message Start Event" id="startEvent_2_1_message">
@@ -640,7 +646,13 @@ describe('mxGraph model', () => {
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxGeometry): void {
     const cell = bpmnVisualization.graph.model.getCell(cellId);
     expect(cell).not.toBeNull();
-    expect(cell.parent.id).toEqual(parentId);
+
+    if (parentId) {
+      expect(cell.parent.id).toEqual(parentId);
+    } else {
+      expect(cell.parent).toEqual(bpmnVisualization.graph.getDefaultParent());
+    }
+
     expectGeometry(cell, geometry);
   }
 
@@ -653,22 +665,52 @@ describe('mxGraph model', () => {
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://example.com/schema/bpmn">
   <bpmn:collaboration id="Collaboration_1">
     <bpmn:participant id="Participant_1" name="Process" processRef="Process_1" />
+    <bpmn:participant id="Participant_2" processRef="Process_2" />
+    <bpmn:messageFlow id="MessageFlow_1" sourceRef="Participant_1" targetRef="StartEvent_2" />
   </bpmn:collaboration>
   <bpmn:process id="Process_1" isExecutable="false">
-    <bpmn:startEvent id="StartEvent_1" name="start">
-    </bpmn:startEvent>
+    <bpmn:startEvent id="StartEvent_1" name="Start Event" />
+    <bpmn:endEvent id="EndEvent_1" name="End Event" />
+    <bpmn:sequenceFlow id="SequenceFlow_id" sourceRef="StartEvent_1" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmn:process id="Process_2" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_2" name="Start Event 2" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
       <bpmndi:BPMNShape id="BPMNShape_Participant_1" bpmnElement="Participant_1" isHorizontal="true">
-        <dc:Bounds x="100" y="20" width="900" height="180" />
+        <dc:Bounds x="160" y="80" width="900" height="180" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="StartEvent_1">
-        <dc:Bounds x="250" y="100" width="40" height="40" />
+        <dc:Bounds x="310" y="160" width="40" height="40" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="260" y="60" width="30" height="20" />
+          <dc:Bounds x="288" y="130" width="55" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_1">
+        <dc:Bounds x="510" y="160" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="505" y="200" width="51" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Participant_2" bpmnElement="Participant_2" isHorizontal="true">
+        <dc:Bounds x="160" y="280" width="900" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_StartEvent_2" bpmnElement="StartEvent_2">
+        <dc:Bounds x="316" y="342" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="302" y="378" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_id" bpmnElement="SequenceFlow_id">
+        <di:waypoint x="350" y="180" />
+        <di:waypoint x="510" y="180" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_MessageFlow_1" bpmnElement="MessageFlow_1">
+        <di:waypoint x="334" y="260" />
+        <di:waypoint x="334" y="342" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
@@ -679,55 +721,114 @@ describe('mxGraph model', () => {
       'Participant_1',
       getDefaultParentId(),
       // unchanged as this is a pool, coordinates are the ones from the bpmn source
-      new mxGeometry(100, 20, 900, 180),
+      new mxGeometry(160, 80, 900, 180),
     );
 
     expectModelContainsCellWithGeometry(
       'StartEvent_1',
       'Participant_1',
       new mxGeometry(
-        150, // absolute coordinates: parent 100, cell 250
-        80, // absolute coordinates: parent 20, cell 100
+        150, // absolute coordinates: parent 160, cell 310
+        80, // absolute coordinates: parent 80, cell 160
         40, // unchanged as no transformation on size
         40, // unchanged as no transformation on size
       ),
     );
+
+    const sequenceFlowMxGeometry = new mxGeometry(0, 0, 0, 0);
+    sequenceFlowMxGeometry.points = [
+      new mxPoint(190, 100), // absolute coordinates: parent x="160" y="80", cell x="350" y="180"
+      new mxPoint(350, 100), // absolute coordinates: parent x="160" y="80", cell x="510" y="180"
+    ];
+    expectModelContainsCellWithGeometry('SequenceFlow_id', 'Participant_1', sequenceFlowMxGeometry);
+
+    const messageFlowMxGeometry = new mxGeometry(0, 0, 0, 0);
+    messageFlowMxGeometry.points = [
+      new mxPoint(334, 260), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="260"
+      new mxPoint(334, 342), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="342"
+    ];
+    expectModelContainsCellWithGeometry('MessageFlow_1', undefined, messageFlowMxGeometry);
   });
 
   it('lanes and bpmn element shapes should have coordinates relative to the pool or the lane', async () => {
     const bpmn = `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://example.com/schema/bpmn">
-<bpmn:collaboration id="Collaboration_1">
+  <bpmn:collaboration id="Collaboration_1">
     <bpmn:participant id="Participant_1" name="Process" processRef="Process_1" />
-</bpmn:collaboration>
-<bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:participant id="Participant_2" name="Process 2" processRef="Process_2" />
+    <bpmn:messageFlow id="MessageFlow_1" sourceRef="Participant_1" targetRef="StartEvent_2" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_1" isExecutable="false">
     <bpmn:laneSet id="LaneSet_1">
-        <bpmn:lane id="Lane_1" name="Lane 1">
-            <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
-        </bpmn:lane>
-        <bpmn:lane id="Lane_2" />
+      <bpmn:lane id="Lane_1_2" />
+      <bpmn:lane id="Lane_1_1" name="Lane 1">
+        <bpmn:flowNodeRef>SequenceFlow_id</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_1</bpmn:flowNodeRef>
+      </bpmn:lane>
     </bpmn:laneSet>
-    <bpmn:startEvent id="StartEvent_1" name="start"/>
-</bpmn:process>
-<bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
-        <bpmndi:BPMNShape id="BPMNShape_Participant_1" bpmnElement="Participant_1" isHorizontal="true">
-            <dc:Bounds x="100" y="20" width="900" height="400" />
-        </bpmndi:BPMNShape>
-        <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="StartEvent_1">
-            <dc:Bounds x="250" y="100" width="40" height="40" />
-            <bpmndi:BPMNLabel>
-                <dc:Bounds x="260" y="60" width="30" height="20" />
-            </bpmndi:BPMNLabel>
-        </bpmndi:BPMNShape>
-        <bpmndi:BPMNShape id="BPMNShape_Lane_1" bpmnElement="Lane_1" isHorizontal="true">
-            <dc:Bounds x="130" y="20" width="870" height="200" />
-        </bpmndi:BPMNShape>
-        <bpmndi:BPMNShape id="BPMNShape_Lane_2" bpmnElement="Lane_2" isHorizontal="true">
-            <dc:Bounds x="130" y="220" width="870" height="200" />
-        </bpmndi:BPMNShape>
+    <bpmn:startEvent id="StartEvent_1" name="Start Event" />
+    <bpmn:endEvent id="EndEvent_1" name="End Event" />
+    <bpmn:sequenceFlow id="SequenceFlow_id" sourceRef="StartEvent_1" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmn:process id="Process_2" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_2">
+      <bpmn:lane id="Lane_2_1">
+        <bpmn:flowNodeRef>StartEvent_2</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_2_2" />
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_2" name="Start Event 2" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPLane_1_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="BPMNShape_Participant_1" bpmnElement="Participant_1" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="900" height="400" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_1_1" bpmnElement="Lane_1_1" isHorizontal="true">
+        <dc:Bounds x="190" y="80" width="870" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_1_2" bpmnElement="Lane_1_2" isHorizontal="true">
+        <dc:Bounds x="190" y="280" width="870" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="StartEvent_1">
+        <dc:Bounds x="310" y="160" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="306" y="133" width="55" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_1">
+        <dc:Bounds x="510" y="160" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="505" y="213" width="51" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Participant_2" bpmnElement="Participant_2" isHorizontal="true">
+        <dc:Bounds x="160" y="570" width="900" height="300" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_2_1" bpmnElement="Lane_2_1" isHorizontal="true">
+        <dc:Bounds x="190" y="570" width="870" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_2_2" bpmnElement="Lane_2_2" isHorizontal="true">
+        <dc:Bounds x="190" y="750" width="870" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_StartEvent_2" bpmnElement="StartEvent_2">
+        <dc:Bounds x="316" y="632" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="302" y="683" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_id" bpmnElement="SequenceFlow_id">
+        <di:waypoint x="350" y="180" />
+        <di:waypoint x="510" y="180" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_MessageFlow_1" bpmnElement="MessageFlow_1">
+        <di:waypoint x="334" y="480" />
+        <di:waypoint x="334" y="632" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
-</bpmndi:BPMNDiagram>
+  </bpmndi:BPMNDiagram>
 </bpmn:definitions>
 `;
     bpmnVisualization.load(bpmn);
@@ -736,15 +837,15 @@ describe('mxGraph model', () => {
       'Participant_1',
       getDefaultParentId(),
       // unchanged as this is a pool, coordinates are the ones from the bpmn source
-      new mxGeometry(100, 20, 900, 400),
+      new mxGeometry(160, 80, 900, 400),
     );
 
     expectModelContainsCellWithGeometry(
-      'Lane_1',
+      'Lane_1_1',
       'Participant_1',
       new mxGeometry(
-        30, // absolute coordinates: parent 100, cell 130
-        0, // absolute coordinates: parent 20, cell 20
+        30, // absolute coordinates: parent 160, cell 190
+        0, // absolute coordinates: parent 80, cell 80
         870, // unchanged as no transformation on size
         200, // unchanged as no transformation on size
       ),
@@ -752,24 +853,38 @@ describe('mxGraph model', () => {
 
     expectModelContainsCellWithGeometry(
       'StartEvent_1',
-      'Lane_1',
+      'Lane_1_1',
       new mxGeometry(
-        120, // absolute coordinates: parent 130, cell 250
-        80, // absolute coordinates: parent 20, cell 100
+        120, // absolute coordinates: parent 190, cell 310
+        80, // absolute coordinates: parent 80, cell 160
         40, // unchanged as no transformation on size
         40, // unchanged as no transformation on size
       ),
     );
 
     expectModelContainsCellWithGeometry(
-      'Lane_2',
+      'Lane_1_2',
       'Participant_1',
       new mxGeometry(
-        30, // absolute coordinates: parent 100, cell 130
-        200, // absolute coordinates: parent 20, cell 220
+        30, // absolute coordinates: parent 160, cell 190
+        200, // absolute coordinates: parent 80, cell 280
         870, // unchanged as no transformation on size
         200, // unchanged as no transformation on size
       ),
     );
+
+    const sequenceFlowMxGeometry = new mxGeometry(0, 0, 0, 0);
+    sequenceFlowMxGeometry.points = [
+      new mxPoint(160, 100), // absolute coordinates: parent x="190" y="80", cell x="350" y="180"
+      new mxPoint(320, 100), // absolute coordinates: parent x="190" y="80", cell x="510" y="180"
+    ];
+    expectModelContainsCellWithGeometry('SequenceFlow_id', 'Lane_1_1', sequenceFlowMxGeometry);
+
+    const messageFlowMxGeometry = new mxGeometry(0, 0, 0, 0);
+    messageFlowMxGeometry.points = [
+      new mxPoint(334, 480), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="480"
+      new mxPoint(334, 632), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="632"
+    ];
+    expectModelContainsCellWithGeometry('MessageFlow_1', undefined, messageFlowMxGeometry);
   });
 });
