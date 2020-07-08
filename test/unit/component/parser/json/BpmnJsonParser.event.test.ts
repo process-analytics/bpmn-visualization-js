@@ -19,40 +19,46 @@ import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpm
 
 describe.each([
   ['startEvent', ShapeBpmnElementKind.EVENT_START],
+  ['endEvent', ShapeBpmnElementKind.EVENT_END],
   ['intermediateCatchEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
   ['intermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW],
 ])('parse bpmn as json for %ss', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
   describe.each([
     ['message', ShapeBpmnEventKind.MESSAGE],
     ['timer', ShapeBpmnEventKind.TIMER],
-  ])('parse bpmn as json for %s ${bpmnKind}', (eventDefinitionKind: string, expectedShapeBpmnEventKind: ShapeBpmnEventKind) => {
-    if (expectedShapeBpmnEventKind === ShapeBpmnEventKind.TIMER && expectedShapeBpmnElementKind === ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW) {
+    ['terminate', ShapeBpmnEventKind.TERMINATE],
+  ])(`parse bpmn as json for %s ${bpmnKind}`, (eventDefinitionKind: string, expectedShapeBpmnEventKind: ShapeBpmnEventKind) => {
+    if (
+      (expectedShapeBpmnElementKind === ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW && expectedShapeBpmnEventKind === ShapeBpmnEventKind.TIMER) ||
+      (expectedShapeBpmnElementKind !== ShapeBpmnElementKind.EVENT_END && expectedShapeBpmnEventKind === ShapeBpmnEventKind.TERMINATE)
+    ) {
       // Not supported in BPMN specification
       return;
     }
 
     it(`json containing one process with a ${eventDefinitionKind} ${bpmnKind} defined as empty string, ${eventDefinitionKind} ${bpmnKind} is present`, () => {
-      const json = `{
-                "definitions" : {
-                    "process": {
-                        "${bpmnKind}": {
-                            "id":"event_id_0",
-                            "name":"event name",
-                            "${eventDefinitionKind}EventDefinition": ""
-                        }
-                    },
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": {
-                                "id":"shape_${bpmnKind}_id_0",
-                                "bpmnElement":"event_id_0",
-                                "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                            }
-                        }
-                    }
-                }
-            }`;
+      const json = `
+      {
+         "definitions": {
+            "process": {
+               "${bpmnKind}": {
+                  "id": "event_id_0",
+                  "name": "event name",
+                  "${eventDefinitionKind}EventDefinition": ""
+               }
+            },
+            "BPMNDiagram": {
+               "name": "process 0",
+               "BPMNPlane": {
+                  "BPMNShape": {
+                     "id": "shape_${bpmnKind}_id_0",
+                     "bpmnElement": "event_id_0",
+                     "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
+                  }
+               }
+            }
+         }
+      }`;
 
       const model = parseJsonAndExpectOnlyEvent(json, expectedShapeBpmnEventKind, 1);
 
@@ -71,27 +77,28 @@ describe.each([
     });
 
     it(`json containing one process with a ${eventDefinitionKind} ${bpmnKind} defined as object, ${eventDefinitionKind} ${bpmnKind} is present`, () => {
-      const json = `{
-                "definitions" : {
-                    "process": {
-                        "${bpmnKind}": {
-                            "id":"event_id_0",
-                            "name":"event name",
-                            "${eventDefinitionKind}EventDefinition": { "id": "${eventDefinitionKind}EventDefinition_1" }
-                        }
-                    },
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": {
-                                "id":"shape_${bpmnKind}_id_0",
-                                "bpmnElement":"event_id_0",
-                                "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                            }
-                        }
-                    }
-                }
-            }`;
+      const json = `
+      {
+         "definitions": {
+            "process": {
+               "${bpmnKind}": {
+                  "id": "event_id_0",
+                  "name": "event name",
+                  "${eventDefinitionKind}EventDefinition": { "id": "${eventDefinitionKind}EventDefinition_1" }
+               }
+            },
+            "BPMNDiagram": {
+               "name": "process 0",
+               "BPMNPlane": {
+                  "BPMNShape": {
+                     "id": "shape_${bpmnKind}_id_0",
+                     "bpmnElement": "event_id_0",
+                     "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
+                  }
+               }
+            }
+         }
+      }`;
 
       const model = parseJsonAndExpectOnlyEvent(json, expectedShapeBpmnEventKind, 1);
 
@@ -110,45 +117,55 @@ describe.each([
     });
 
     it(`json containing one process with a ${bpmnKind} with ${eventDefinitionKind} definition and another definition, ${eventDefinitionKind} event is NOT present`, () => {
-      const json = `{
-    "definitions" : {
-        "process": {
-            "${bpmnKind}": { "id":"event_id_0", "${eventDefinitionKind}EventDefinition": "", "conditionalEventDefinition": "" }
-        },
-        "BPMNDiagram": {
-            "name":"process 0",
-            "BPMNPlane": {
-                "BPMNShape": {
-                    "id":"shape_${bpmnKind}_id_0",
-                    "bpmnElement":"event_id_0",
-                    "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                }
+      const otherEventDefinition = expectedShapeBpmnEventKind === ShapeBpmnEventKind.SIGNAL ? 'message' : 'signal';
+      const json = `
+      {
+         "definitions": {
+            "process": {
+               "${bpmnKind}": {
+                  "id": "event_id_0",
+                  "${eventDefinitionKind}EventDefinition": "",
+                  "${otherEventDefinition}EventDefinition": ""
+               }
+            },
+            "BPMNDiagram": {
+               "name": "process 0",
+               "BPMNPlane": {
+                  "BPMNShape": {
+                     "id": "shape_${bpmnKind}_id_0",
+                     "bpmnElement": "event_id_0",
+                     "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
+                  }
+               }
             }
-        }
-    }
-}`;
+         }
+      }`;
 
       parseJsonAndExpectOnlyFlowNodes(json, 0);
     });
 
     it(`json containing one process with a ${bpmnKind} with several ${eventDefinitionKind} definitions, ${eventDefinitionKind} event is NOT present`, () => {
-      const json = `{
-    "definitions" : {
-        "process": {
-            "${bpmnKind}": { "id":"event_id_0", "${eventDefinitionKind}EventDefinition": ["", ""] }
-        },
-        "BPMNDiagram": {
-            "name":"process 0",
-            "BPMNPlane": {
-                "BPMNShape": {
-                    "id":"shape_${bpmnKind}_id_0",
-                    "bpmnElement":"event_id_0",
-                    "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                }
+      const json = `
+      {
+         "definitions": {
+            "process": {
+               "${bpmnKind}": {
+                  "id": "event_id_0",
+                  "${eventDefinitionKind}EventDefinition": [ "", "" ]
+               }
+            },
+            "BPMNDiagram": {
+               "name": "process 0",
+               "BPMNPlane": {
+                  "BPMNShape": {
+                     "id": "shape_${bpmnKind}_id_0",
+                     "bpmnElement": "event_id_0",
+                     "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
+                  }
+               }
             }
-        }
-    }
-}`;
+         }
+      }`;
 
       parseJsonAndExpectOnlyFlowNodes(json, 0);
     });
