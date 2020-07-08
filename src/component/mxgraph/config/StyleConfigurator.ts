@@ -151,7 +151,8 @@ export default class StyleConfigurator {
     const style = this.cloneDefaultVertexStyle();
     style[mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TEXT_ANNOTATION;
     style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
-    style[mxConstants.STYLE_FILLCOLOR] = 'aqua';
+    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
+    style[mxConstants.STYLE_SPACING_LEFT] = 5;
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
   }
 
@@ -272,7 +273,10 @@ export default class StyleConfigurator {
 
     if (labelBounds) {
       styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
-      styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
+      if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
+        styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
+      }
+
       if (bpmnCell instanceof Shape) {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
         styleValues.set(mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
