@@ -18,6 +18,7 @@ import { parseJsonAndExpectOnlyEvent, parseJsonAndExpectOnlyFlowNodes, verifySha
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 
 describe.each([
+  ['startEvent', ShapeBpmnElementKind.EVENT_START],
   ['intermediateCatchEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
   ['intermediateThrowEvent', ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW],
 ])('parse bpmn as json for %ss', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
