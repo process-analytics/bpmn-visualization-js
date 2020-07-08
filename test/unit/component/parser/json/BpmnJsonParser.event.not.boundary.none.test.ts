@@ -20,7 +20,8 @@ import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpm
 describe.each([
   ['startEvent', ['message', 'timer', 'conditional', 'signal'], ShapeBpmnElementKind.EVENT_START],
   ['endEvent', ['message', 'error', 'escalation', 'cancel', 'compensate', 'signal', 'terminate'], ShapeBpmnElementKind.EVENT_END],
-])('parse bpmn as json for none %ss', (bpmnKind: string, allDefinitionKinds: string[], expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
+  ['intermediateThrowEvent', ['message', 'escalation', 'compensate', 'link', 'signal'], ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW],
+])('parse bpmn as json for None %ss', (bpmnKind: string, allDefinitionKinds: string[], expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
   it(`json containing one process with a single ${bpmnKind}`, () => {
     const json = `{
                 "definitions" : {
@@ -175,7 +176,8 @@ describe.each([
   "definitions": {
     "process": {
       "${bpmnKind}": [
-        { "id": "none_${bpmnKind}_id", "name": "none ${bpmnKind}" }${processElements}
+        { "id": "none_${bpmnKind}_id", "name": "none ${bpmnKind}" }${processElements},
+        { "id": "multiple_${bpmnKind}_id", "name": "multiple ${bpmnKind}", "messageEventDefinition": {}, "timerEventDefinition": {} }
       ]
     },
     "BPMNDiagram": {
@@ -185,7 +187,11 @@ describe.each([
           {
             "id": "shape_none_${bpmnKind}_id", "bpmnElement": "none_${bpmnKind}_id",
             "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-          }${diagramShapes}
+          }${diagramShapes},
+          {
+            "id": "shape_multiple_${bpmnKind}_id", "bpmnElement": "multiple_${bpmnKind}_id",
+            "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
+          }
         ]
       }
     }
