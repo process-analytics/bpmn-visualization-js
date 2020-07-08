@@ -95,6 +95,9 @@ describe('mxGraph model', () => {
         <semantic:startEvent name="Message Start Event" id="startEvent_3_message">
             <semantic:messageEventDefinition/>
         </semantic:startEvent>
+        <semantic:startEvent name="Signal Start Event" id="startEvent_4_signal">
+            <semantic:signalEventDefinition/>
+        </semantic:startEvent>
         <semantic:task completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task 1" id="task_1" default="default_sequence_flow_id">
             <semantic:incoming>normal_sequence_flow_id</semantic:incoming>
             <semantic:outgoing>default_sequence_flow_id</semantic:outgoing>
@@ -183,6 +186,9 @@ describe('mxGraph model', () => {
                 <dc:Bounds height="30.0" width="30.0" x="186.0" y="536.0"/>
             </bpmndi:BPMNShape>
              <bpmndi:BPMNShape bpmnElement="startEvent_3_message" id="shape_startEvent_3_message">
+                <dc:Bounds height="30.0" width="30.0" x="86.0" y="536.0"/>
+            </bpmndi:BPMNShape>
+              <bpmndi:BPMNShape bpmnElement="startEvent_4_signal" id="shape_startEvent_4_signal">
                 <dc:Bounds height="30.0" width="30.0" x="86.0" y="536.0"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="task_1" id="shape_task_1">
@@ -450,6 +456,7 @@ describe('mxGraph model', () => {
     expectModelContainsBpmnEvent('startEvent_1', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.NONE, font: expectedBoldFont, label: 'Start Event' });
     expectModelContainsBpmnEvent('startEvent_2_timer', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.TIMER, label: 'Timer Start Event' });
     expectModelContainsBpmnEvent('startEvent_3_message', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.MESSAGE, label: 'Message Start Event' });
+    expectModelContainsBpmnEvent('startEvent_4_signal', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.SIGNAL, label: 'Signal Start Event' });
 
     // end event
     expectModelContainsBpmnEvent('terminateEndEvent', {
