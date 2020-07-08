@@ -38,4 +38,4 @@ export enum ShapeBpmnEventKind {
  *
  * Temporarily used until we support all events
  */
-export const supportedBpmnEventKinds = [ShapeBpmnEventKind.TERMINATE, ShapeBpmnEventKind.TIMER, ShapeBpmnEventKind.MESSAGE];
+export const supportedBpmnEventKinds = [ShapeBpmnEventKind.TERMINATE, ShapeBpmnEventKind.TIMER, ShapeBpmnEventKind.MESSAGE, ShapeBpmnEventKind.SIGNAL];
