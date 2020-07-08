@@ -17,12 +17,15 @@ import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeB
 import { parseJsonAndExpectOnlyEvent, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 
-describe('parse bpmn as json for end event', () => {
-  it('json containing one process with a single end event', () => {
+describe.each([
+  ['startEvent', ['message', 'timer', 'conditional', 'signal'], ShapeBpmnElementKind.EVENT_START],
+  ['endEvent', ['message', 'error', 'escalation', 'cancel', 'compensate', 'signal', 'terminate'], ShapeBpmnElementKind.EVENT_END],
+])('parse bpmn as json for none %ss', (bpmnKind: string, allDefinitionKinds: string[], expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
+  it(`json containing one process with a single ${bpmnKind}`, () => {
     const json = `{
                 "definitions" : {
                     "process": {
-                        "endEvent": {
+                        "${bpmnKind}": {
                             "id":"event_id_0",
                             "name":"event name"
                         }
@@ -31,7 +34,7 @@ describe('parse bpmn as json for end event', () => {
                         "name":"process 0",
                         "BPMNPlane": {
                             "BPMNShape": {
-                                "id":"shape_endEvent_id_0",
+                                "id":"shape_${bpmnKind}_id_0",
                                 "bpmnElement":"event_id_0",
                                 "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
                             }
@@ -43,10 +46,10 @@ describe('parse bpmn as json for end event', () => {
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.NONE, 1);
 
     verifyShape(model.flowNodes[0], {
-      shapeId: 'shape_endEvent_id_0',
+      shapeId: `shape_${bpmnKind}_id_0`,
       bpmnElementId: 'event_id_0',
       bpmnElementName: 'event name',
-      bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+      bpmnElementKind: expectedShapeBpmnElementKind,
       bounds: {
         x: 362,
         y: 232,
@@ -56,12 +59,12 @@ describe('parse bpmn as json for end event', () => {
     });
   });
 
-  it('json containing one process declared as array with a single end event', () => {
+  it(`json containing one process declared as array with a single ${bpmnKind}`, () => {
     const json = `{
                 "definitions": {
                     "process": [
                         {
-                            "endEvent": {
+                            "${bpmnKind}": {
                                 "id":"event_id_1",
                                 "name":"event name"
                             }
@@ -71,7 +74,7 @@ describe('parse bpmn as json for end event', () => {
                         "name":"process 0",
                         "BPMNPlane": {
                             "BPMNShape": {
-                                "id":"shape_endEvent_id_1",
+                                "id":"shape_${bpmnKind}_id_1",
                                 "bpmnElement":"event_id_1",
                                 "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
                             }
@@ -83,10 +86,10 @@ describe('parse bpmn as json for end event', () => {
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.NONE, 1);
 
     verifyShape(model.flowNodes[0], {
-      shapeId: 'shape_endEvent_id_1',
+      shapeId: `shape_${bpmnKind}_id_1`,
       bpmnElementId: 'event_id_1',
       bpmnElementName: 'event name',
-      bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+      bpmnElementKind: expectedShapeBpmnElementKind,
       bounds: {
         x: 362,
         y: 232,
@@ -96,11 +99,11 @@ describe('parse bpmn as json for end event', () => {
     });
   });
 
-  it('json containing one process with an array of end events with name & without name', () => {
+  it(`json containing one process with an array of ${bpmnKind}s with name & without name`, () => {
     const json = `{
                 "definitions" : {
                     "process": {
-                        "endEvent": [
+                        "${bpmnKind}": [
                           {
                               "id":"event_id_0",
                               "name":"event name"
@@ -114,11 +117,11 @@ describe('parse bpmn as json for end event', () => {
                         "BPMNPlane": {
                             "BPMNShape": [
                               {
-                                "id":"shape_endEvent_id_0",
+                                "id":"shape_${bpmnKind}_id_0",
                                 "bpmnElement":"event_id_0",
                                 "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
                               }, {
-                                "id":"shape_endEvent_id_1",
+                                "id":"shape_${bpmnKind}_id_1",
                                 "bpmnElement":"event_id_1",
                                 "Bounds": { "x": 365, "y": 235, "width": 35, "height": 46 }
                               }
@@ -131,10 +134,10 @@ describe('parse bpmn as json for end event', () => {
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.NONE, 2);
 
     verifyShape(model.flowNodes[0], {
-      shapeId: 'shape_endEvent_id_0',
+      shapeId: `shape_${bpmnKind}_id_0`,
       bpmnElementId: 'event_id_0',
       bpmnElementName: 'event name',
-      bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+      bpmnElementKind: expectedShapeBpmnElementKind,
       bounds: {
         x: 362,
         y: 232,
@@ -142,11 +145,12 @@ describe('parse bpmn as json for end event', () => {
         height: 45,
       },
     });
+
     verifyShape(model.flowNodes[1], {
-      shapeId: 'shape_endEvent_id_1',
+      shapeId: `shape_${bpmnKind}_id_1`,
       bpmnElementId: 'event_id_1',
       bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+      bpmnElementKind: expectedShapeBpmnElementKind,
       bounds: {
         x: 365,
         y: 235,
@@ -156,19 +160,22 @@ describe('parse bpmn as json for end event', () => {
     });
   });
 
-  it('json containing one process with an array of end events, some are not NONE event', () => {
+  it(`json containing one process with an array of ${bpmnKind}s, some are not NONE event`, () => {
+    let processElements = '';
+    let diagramShapes = '';
+    allDefinitionKinds.forEach((definitionKind, index) => {
+      processElements += `,\n\t\t{ "id": "${definitionKind}_${bpmnKind}_id_${index}", "${definitionKind}EventDefinition": {} }`;
+      diagramShapes += `,\n\t\t{
+            "id": "shape_${definitionKind}_${bpmnKind}_id_${index}", "bpmnElement": "${definitionKind}_${bpmnKind}_id_${index}",
+            "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
+          }`;
+    });
+
     const json = `{
   "definitions": {
     "process": {
-      "endEvent": [
-        { "id": "event_id_0", "name": "none end event" },
-        { "id": "event_id_1", "cancelEventDefinition": {} },
-        { "id": "event_id_2", "compensateEventDefinition": {} },
-        { "id": "event_id_3", "errorEventDefinition": {} },
-        { "id": "event_id_4", "escalationEventDefinition": {} },
-        { "id": "event_id_5", "messageEventDefinition": {} },
-        { "id": "event_id_6", "signalEventDefinition": {} },
-        { "id": "event_id_7", "terminateEventDefinition": {} }
+      "${bpmnKind}": [
+        { "id": "none_${bpmnKind}_id", "name": "none ${bpmnKind}" }${processElements}
       ]
     },
     "BPMNDiagram": {
@@ -176,37 +183,9 @@ describe('parse bpmn as json for end event', () => {
       "BPMNPlane": {
         "BPMNShape": [
           {
-            "id": "shape_endEvent_id_0", "bpmnElement": "event_id_0",
+            "id": "shape_none_${bpmnKind}_id", "bpmnElement": "none_${bpmnKind}_id",
             "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-          },
-          {
-            "id": "shape_endEvent_id_1", "bpmnElement": "event_id_1",
-            "Bounds": { "x": 362, "y": 332, "width": 36, "height": 45 }
-          },
-          {
-            "id": "shape_endEvent_id_2", "bpmnElement": "event_id_2",
-            "Bounds": { "x": 362, "y": 432, "width": 36, "height": 45 }
-          },
-          {
-            "id": "shape_endEvent_id_3", "bpmnElement": "event_id_3",
-            "Bounds": { "x": 362, "y": 532, "width": 36, "height": 45 }
-          },
-          {
-            "id": "shape_endEvent_id_4", "bpmnElement": "event_id_4",
-            "Bounds": { "x": 362, "y": 632, "width": 36, "height": 45 }
-          },
-          {
-            "id": "shape_endEvent_id_5", "bpmnElement": "event_id_5",
-            "Bounds": { "x": 362, "y": 732, "width": 36, "height": 45 }
-          },
-          {
-            "id": "shape_endEvent_id_6", "bpmnElement": "event_id_6",
-            "Bounds": { "x": 362, "y": 832, "width": 36, "height": 45 }
-          },
-          {
-            "id": "shape_endEvent_id_7", "bpmnElement": "event_id_7",
-            "Bounds": { "x": 362, "y": 932, "width": 36, "height": 45 }
-          }
+          }${diagramShapes}
         ]
       }
     }
@@ -216,10 +195,10 @@ describe('parse bpmn as json for end event', () => {
     const model = parseJsonAndExpectOnlyEvent(json, ShapeBpmnEventKind.NONE, 1);
 
     verifyShape(model.flowNodes[0], {
-      shapeId: 'shape_endEvent_id_0',
-      bpmnElementId: 'event_id_0',
-      bpmnElementName: 'none end event',
-      bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+      shapeId: `shape_none_${bpmnKind}_id`,
+      bpmnElementId: `none_${bpmnKind}_id`,
+      bpmnElementName: `none ${bpmnKind}`,
+      bpmnElementKind: expectedShapeBpmnElementKind,
       bounds: {
         x: 362,
         y: 232,
