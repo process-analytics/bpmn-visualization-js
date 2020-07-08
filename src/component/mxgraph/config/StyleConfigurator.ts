@@ -152,6 +152,7 @@ export default class StyleConfigurator {
     style[mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TEXT_ANNOTATION;
     style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
     style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
+    style[mxConstants.STYLE_SPACING_LEFT] = 5;
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
   }
 

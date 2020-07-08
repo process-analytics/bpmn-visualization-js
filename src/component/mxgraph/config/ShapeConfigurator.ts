@@ -50,7 +50,7 @@ export default class ShapeConfigurator {
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_USER, UserTaskShape);
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape);
-    // text annotation
+    // artifacts
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
   }
 
