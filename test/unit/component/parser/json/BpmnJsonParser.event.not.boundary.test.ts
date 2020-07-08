@@ -27,6 +27,7 @@ describe.each([
     ['message', ShapeBpmnEventKind.MESSAGE],
     ['timer', ShapeBpmnEventKind.TIMER],
     ['terminate', ShapeBpmnEventKind.TERMINATE],
+    ['signal', ShapeBpmnEventKind.SIGNAL],
   ])(`parse bpmn as json for %s ${bpmnKind}`, (eventDefinitionKind: string, expectedShapeBpmnEventKind: ShapeBpmnEventKind) => {
     if (
       (expectedShapeBpmnElementKind === ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW && expectedShapeBpmnEventKind === ShapeBpmnEventKind.TIMER) ||
