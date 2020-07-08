@@ -47,6 +47,7 @@ export default class BpmnCanvas {
 
   private iconPaintingOriginX = 0;
   private iconPaintingOriginY = 0;
+  private iconOriginalSize: Size;
 
   private shapeConfiguration: ShapeConfiguration;
 
@@ -56,9 +57,9 @@ export default class BpmnCanvas {
 
     const parentSize = Math.min(this.shapeConfiguration.w, this.shapeConfiguration.h);
     const iconConfiguration = config.iconConfiguration;
-    const iconOriginalSize = iconConfiguration.originalSize;
-    this.scaleX = (parentSize / iconOriginalSize.width) * iconConfiguration.ratioFromShape;
-    this.scaleY = (parentSize / iconOriginalSize.height) * iconConfiguration.ratioFromShape;
+    this.iconOriginalSize = iconConfiguration.originalSize;
+    this.scaleX = (parentSize / this.iconOriginalSize.width) * iconConfiguration.ratioFromShape;
+    this.scaleY = (parentSize / this.iconOriginalSize.height) * iconConfiguration.ratioFromShape;
 
     this.updateCanvasStyle(config.iconConfiguration.style);
   }
@@ -85,6 +86,16 @@ export default class BpmnCanvas {
   translateIconOrigin(dx: number, dy: number): void {
     this.iconPaintingOriginX += this.scaleX * dx;
     this.iconPaintingOriginY += this.scaleY * dy;
+  }
+
+  /**
+   *
+   */
+  setIconOriginToShapeCenter(): void {
+    const shape = this.shapeConfiguration;
+    // TODO manage scaling (will be done later with another refactoring)
+    this.iconPaintingOriginX = shape.x + (shape.w - this.iconOriginalSize.width * this.scaleX) / 2;
+    this.iconPaintingOriginY = shape.y + (shape.h - this.iconOriginalSize.height * this.scaleY) / 2;
   }
 
   private computeScaleFromOriginX(x: number): number {
