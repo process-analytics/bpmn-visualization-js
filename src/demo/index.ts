@@ -17,7 +17,7 @@ import BpmnVisualization from '../component/BpmnVisualization';
 // import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { PanType, ZoomType } from '../component/BpmnVisuOptions';
 import { documentReady, log, logStartup } from './helper';
-import { download, svgToPNGBase64 } from './component/download';
+import { downloadAsPng, downloadAsSvg } from './component/download';
 
 // TODO make this an option that can be updated at runtime + configure which kind of fit
 let fitOnLoad = false;
@@ -153,36 +153,17 @@ document.getElementById('btn-outline').onclick = function() {
 };
 
 // =====================================================================================================================
-// Actions
+// Export/Download
 // =====================================================================================================================
-
 document.getElementById('btn-export-preview').onclick = function() {
-  // eslint-disable-next-line no-console
-  console.info('button triggers preview');
   bpmnVisualization.preview();
 };
 document.getElementById('btn-export-svg').onclick = function() {
-  // eslint-disable-next-line no-console
-  console.info('button triggers export svg');
-  const svg = bpmnVisualization.exportAsSvg();
-
-  // TODO add ;charset=utf-8 ?
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  download('diagram.svg', 'data:image/svg+xml', svg);
+  downloadAsSvg(bpmnVisualization.exportAsSvg());
 };
 
 document.getElementById('btn-export-png').onclick = function() {
-  // eslint-disable-next-line no-console
-  console.info('button triggers export png');
-  const svg = bpmnVisualization.exportAsSvg();
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  svgToPNGBase64(svg);
-  // const pngBase64 = svgToPNGBase64(svg);
-
-  // eslint-disable-next-line no-console
-  // console.info('@@@@png image as base64:', pngBase64);
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  // download('diagram.png', svg);
+  downloadAsPng(bpmnVisualization.exportAsSvg());
 };
 
 ////////////////////////////////////////////////////////////////////////////////

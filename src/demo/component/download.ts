@@ -15,7 +15,7 @@
  */
 
 // inspired from https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
-export function download(filename: string, contentType: string, text: string): void {
+function download(filename: string, contentType: string, text: string): void {
   const element = document.createElement('a');
   // only for svg
   if (contentType.startsWith('data:image/svg+xml')) {
@@ -34,6 +34,11 @@ export function download(filename: string, contentType: string, text: string): v
   element.click();
   // TODO do this in a finally block
   document.body.removeChild(element);
+}
+
+export function downloadAsSvg(svg: string): void {
+  // TODO add ;charset=utf-8 ?
+  download('diagram.svg', 'data:image/svg+xml', svg);
 }
 
 // adapted from ES6 code from https://stackoverflow.com/a/23451803/3180025
@@ -95,7 +100,7 @@ export function download(filename: string, contentType: string, text: string): v
 //     get png data string from canvas: canvas.toDataURL();
 //
 // see also https://stackoverflow.com/a/38019175/3180025
-export function svgToPNGBase64(svg: string): string {
+export function downloadAsPng(svg: string): string {
   const canvas = document.createElement('canvas');
 
   const svgBlob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
