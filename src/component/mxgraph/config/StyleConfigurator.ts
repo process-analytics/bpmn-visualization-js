@@ -273,17 +273,16 @@ export default class StyleConfigurator {
 
     if (labelBounds) {
       styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
-      styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
+      if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
+        styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
+      }
+
       if (bpmnCell instanceof Shape) {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
         styleValues.set(mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
         // align settings
         styleValues.set(mxConstants.STYLE_LABEL_POSITION, mxConstants.ALIGN_TOP);
         styleValues.set(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_LEFT);
-        // TODO keep default in that case + add test even if this modification is not accepted
-        if (bpmnCell.bpmnElement.kind == ShapeBpmnElementKind.TEXT_ANNOTATION) {
-          styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_LEFT);
-        }
       }
     }
     // when no label bounds, adjust the default style dynamically
