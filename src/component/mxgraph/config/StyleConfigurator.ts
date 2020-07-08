@@ -182,7 +182,6 @@ export default class StyleConfigurator {
 
   private configureDefaultEdgeStyle(): void {
     const style = this.getDefaultEdgeStyle();
-    style[mxConstants.STYLE_EDGE] = mxConstants.EDGESTYLE_SEGMENT;
     style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
     style[mxConstants.STYLE_ENDSIZE] = 12;
     style[mxConstants.STYLE_STROKEWIDTH] = 1.5;
