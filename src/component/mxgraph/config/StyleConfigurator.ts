@@ -149,7 +149,7 @@ export default class StyleConfigurator {
     const style = this.cloneDefaultVertexStyle();
     style[mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TEXT_ANNOTATION;
     style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
-    style[mxConstants.STYLE_FILLCOLOR] = 'aqua';
+    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
   }
 
