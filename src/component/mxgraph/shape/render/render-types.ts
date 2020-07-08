@@ -29,6 +29,7 @@ export interface Size {
 
 export interface IconConfiguration {
   originalSize: Size;
-  ratioFromShape: number;
+  /** If `undefined`, no scaling will be done in {@link BpmnCanvas}. */
+  ratioFromShape?: number;
   style: IconStyleConfiguration;
 }
