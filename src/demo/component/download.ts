@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { logDownload } from '../helper';
 
 // inspired from https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
 function download(filename: string, contentType: string, text: string): void {
@@ -25,7 +26,7 @@ function download(filename: string, contentType: string, text: string): void {
 
   element.setAttribute('href', contentType + text);
   element.setAttribute('download', filename);
-  // TODO find a way to stay on the page to keep console logs (same issue with demo.bpmn.io)
+  // TODO find a way to stay on the page to keep console logs when downloading (same issue with demo.bpmn.io), opening the file in the browser is ok
   // element.setAttribute('target', '_blank');
 
   element.style.display = 'none';
@@ -112,28 +113,26 @@ export function downloadAsPng(svg: string): string {
   document.body.appendChild(imgPreview);
   const canvasCtx = canvas.getContext('2d');
 
-  let svgToPNGBase64 = 'not set';
+  let pngInBase64 = 'not set';
   imgPreview.onload = function() {
-    // eslint-disable-next-line no-console
-    console.info('call imgPreview.onload');
+    logDownload('call imgPreview.onload');
+
     const img = new Image();
     canvas.width = imgPreview.clientWidth;
     canvas.height = imgPreview.clientHeight;
     // img.crossOrigin = 'anonymous';
     img.src = imgPreview.src;
     img.onload = function() {
-      // eslint-disable-next-line no-console
-      console.info('call img.onload');
+      logDownload('call img.onload');
       canvasCtx.drawImage(img, 0, 0);
       // TODO find a way to improve quality of the export that is currently fuzzy
-      svgToPNGBase64 = canvas.toDataURL('image/png');
+      pngInBase64 = canvas.toDataURL('image/png');
       // TODO do this in a finally block
       document.body.removeChild(imgPreview);
-      // eslint-disable-next-line no-console
-      console.info('image data:', svgToPNGBase64);
-      download('diagram.png', '', svgToPNGBase64);
+      logDownload('image data:', pngInBase64);
+      download('diagram.png', '', pngInBase64);
     };
   };
 
-  return svgToPNGBase64;
+  return pngInBase64;
 }
