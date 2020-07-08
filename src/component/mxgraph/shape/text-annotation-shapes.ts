@@ -17,8 +17,7 @@ import { mxgraph } from 'ts-mxgraph';
 import { StyleDefault } from '../StyleUtils';
 
 export class TextAnnotationShape extends mxRectangleShape {
-  private readonly TEXT_ANNOTATION_BORDER_LENGTH = 20;
-  private readonly TEXT_ANNOTATION_MARGIN_FROM_SHAPE = 1;
+  private readonly TEXT_ANNOTATION_BORDER_LENGTH = 10;
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
@@ -29,10 +28,10 @@ export class TextAnnotationShape extends mxRectangleShape {
 
     // paint sort of left square bracket shape - for text annotation
     xmlCanvas.begin();
-    xmlCanvas.moveTo(x + this.TEXT_ANNOTATION_BORDER_LENGTH, y + this.TEXT_ANNOTATION_MARGIN_FROM_SHAPE);
-    xmlCanvas.lineTo(x, y + this.TEXT_ANNOTATION_MARGIN_FROM_SHAPE);
-    xmlCanvas.lineTo(x, y + h - 2 * this.TEXT_ANNOTATION_MARGIN_FROM_SHAPE);
-    xmlCanvas.lineTo(x + this.TEXT_ANNOTATION_BORDER_LENGTH, y + h - 2 * this.TEXT_ANNOTATION_MARGIN_FROM_SHAPE);
+    xmlCanvas.moveTo(x + this.TEXT_ANNOTATION_BORDER_LENGTH, y);
+    xmlCanvas.lineTo(x, y);
+    xmlCanvas.lineTo(x, y + h);
+    xmlCanvas.lineTo(x + this.TEXT_ANNOTATION_BORDER_LENGTH, y + h);
 
     xmlCanvas.fillAndStroke();
   }
