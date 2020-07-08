@@ -34,7 +34,7 @@ abstract class EventShape extends mxEllipse {
 
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     // TODO: This will be removed after implementation of all supported events
-    // this.markNonFullyRenderedEvents(c);
+    this.markNonFullyRenderedEvents(c);
     // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
     const paintParameter = IconPainter.buildPaintParameter((c as unknown) as mxgraph.mxXmlCanvas2D, x, y, w, h, (this as unknown) as mxgraph.mxShape, 0.25, this.withFilledIcon);
     this.paintOuterShape(paintParameter);
@@ -42,13 +42,13 @@ abstract class EventShape extends mxEllipse {
   }
 
   // This will be removed after implementation of all supported events
-  // private markNonFullyRenderedEvents(c: mxAbstractCanvas2D): void {
-  //   const eventKind = this.getBpmnEventKind();
-  //   if (eventKind == ShapeBpmnEventKind.TIMER) {
-  //     c.setFillColor('green');
-  //     c.setFillAlpha(0.3);
-  //   }
-  // }
+  private markNonFullyRenderedEvents(c: mxAbstractCanvas2D): void {
+    const eventKind = StyleUtils.getBpmnEventKind(this.style);
+    if (eventKind == ShapeBpmnEventKind.SIGNAL) {
+      c.setFillColor('deeppink');
+      c.setFillAlpha(0.3);
+    }
+  }
 
   protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {
     // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
