@@ -36,10 +36,12 @@ export default class StyleConfigurator {
     [
       FlowKind.MESSAGE_FLOW,
       (style: any) => {
+        style[mxConstants.STYLE_DASHED] = true;
+        style[mxConstants.STYLE_DASH_PATTERN] = '8 5';
         style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OVAL;
-        style[mxConstants.STYLE_STARTSIZE] = 7;
+        style[mxConstants.STYLE_STARTSIZE] = 8;
         style[mxConstants.STYLE_STARTFILL] = false;
-        style[mxConstants.STYLE_STROKECOLOR] = 'DeepPink';
+        style[mxConstants.STYLE_ENDFILL] = false;
       },
     ],
   ]);
