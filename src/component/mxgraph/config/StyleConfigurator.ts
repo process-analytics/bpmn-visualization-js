@@ -149,7 +149,7 @@ export default class StyleConfigurator {
     const style = this.cloneDefaultVertexStyle();
     style[mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TEXT_ANNOTATION;
     style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
-    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
+    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
   }
 
@@ -277,6 +277,10 @@ export default class StyleConfigurator {
         // align settings
         styleValues.set(mxConstants.STYLE_LABEL_POSITION, mxConstants.ALIGN_TOP);
         styleValues.set(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_LEFT);
+        // TODO keep default in that case + add test even if this modification is not accepted
+        if (bpmnCell.bpmnElement.kind == ShapeBpmnElementKind.TEXT_ANNOTATION) {
+          styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_LEFT);
+        }
       }
     }
     // when no label bounds, adjust the default style dynamically

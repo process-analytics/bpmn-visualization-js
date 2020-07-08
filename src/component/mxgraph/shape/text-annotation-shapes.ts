@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 import { mxgraph } from 'ts-mxgraph';
+import { StyleDefault } from '../StyleUtils';
 
 export class TextAnnotationShape extends mxRectangleShape {
   private readonly TEXT_ANNOTATION_BORDER_LENGTH = 20;
   private readonly TEXT_ANNOTATION_MARGIN_FROM_SHAPE = 1;
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 
