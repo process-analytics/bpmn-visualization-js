@@ -20,6 +20,7 @@ import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpm
 describe.each([
   ['message', ShapeBpmnEventKind.MESSAGE],
   ['timer', ShapeBpmnEventKind.TIMER],
+  ['signal', ShapeBpmnEventKind.SIGNAL],
 ])('parse bpmn as json for %s events', (eventKind: string, shapeBpmnEventKind: ShapeBpmnEventKind) => {
   describe.each([
     ['interrupting', true],
