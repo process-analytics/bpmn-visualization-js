@@ -96,6 +96,10 @@ describe('mxgraph renderer', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_END), undefined, new Label(undefined, undefined));
       expect(computeStyle(shape)).toEqual('endEvent');
     });
+    it('compute style of text annotation', () => {
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION));
+      expect(computeStyle(shape)).toEqual('textAnnotation');
+    });
 
     it('compute style of shape with label including bold font', () => {
       const shape = new Shape(
