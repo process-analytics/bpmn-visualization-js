@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { readFileSync } from './e2e-helpers';
+import { readFileSync } from '../helpers/file-helper';
 
 const graphContainerId = 'bpmn-visualization-graph';
 
