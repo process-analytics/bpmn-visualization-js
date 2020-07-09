@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
 import { StyleDefault } from '../StyleUtils';
 
 export class TextAnnotationShape extends mxRectangleShape {
@@ -23,16 +22,13 @@ export class TextAnnotationShape extends mxRectangleShape {
   }
 
   public paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    // TODO temp. Missing fillAndStroke on mxAbstractCanvas2D
-    const xmlCanvas = (c as unknown) as mxgraph.mxXmlCanvas2D;
-
     // paint sort of left square bracket shape - for text annotation
-    xmlCanvas.begin();
-    xmlCanvas.moveTo(x + this.TEXT_ANNOTATION_BORDER_LENGTH, y);
-    xmlCanvas.lineTo(x, y);
-    xmlCanvas.lineTo(x, y + h);
-    xmlCanvas.lineTo(x + this.TEXT_ANNOTATION_BORDER_LENGTH, y + h);
+    c.begin();
+    c.moveTo(x + this.TEXT_ANNOTATION_BORDER_LENGTH, y);
+    c.lineTo(x, y);
+    c.lineTo(x, y + h);
+    c.lineTo(x + this.TEXT_ANNOTATION_BORDER_LENGTH, y + h);
 
-    xmlCanvas.fillAndStroke();
+    c.fillAndStroke();
   }
 }

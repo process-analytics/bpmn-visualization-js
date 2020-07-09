@@ -19,9 +19,9 @@ import IconPainter, { PaintParameter } from './IconPainter';
 import { ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 
 export abstract class BaseActivityShape extends mxRectangleShape {
-  // TODO missing in mxgraph-type-definitions@1.0.2 mxShape
+  // TODO missing in mxgraph-type-definitions mxShape
   isRounded: boolean;
-  // TODO missing in mxgraph-type-definitions@1.0.2 mxShape
+  // TODO missing in mxgraph-type-definitions mxShape
   gradient: string;
 
   protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
@@ -39,8 +39,7 @@ abstract class BaseTaskShape extends BaseActivityShape {
   public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
 
-    // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
-    const paintParameter = IconPainter.buildPaintParameter((c as unknown) as mxgraph.mxXmlCanvas2D, x, y, w, h, (this as unknown) as mxgraph.mxShape);
+    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, (this as unknown) as mxgraph.mxShape);
     this.paintTaskIcon(paintParameter);
   }
 
@@ -109,29 +108,24 @@ export class SubProcessShape extends BaseActivityShape {
 
   public paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const subProcessKind = StyleUtils.getBpmnSubProcessKind(this.style);
-
-    // TODO temp. Wrong type for setDashPattern
-    const xmlCanvas = (c as unknown) as mxgraph.mxXmlCanvas2D;
-
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
       c.setDashed(true, false);
-
-      xmlCanvas.setDashPattern('1 2');
+      c.setDashPattern('1 2');
     }
 
     super.paintBackground(c, x, y, w, h);
 
-    // TODO temp. missing in mxgraph-type-definitions@1.0.2 mxShape
+    // TODO temp. missing in mxgraph-type-definitions mxShape
     // this.configureCanvas(c, x, y, w, h);
-    xmlCanvas.setDashed(StyleUtils.isDashed(this.style), StyleUtils.getFixDash(this.style));
-    xmlCanvas.setDashPattern(StyleUtils.getDashPattern(this.style));
+    c.setDashed(StyleUtils.isDashed(this.style), StyleUtils.isFixDash(this.style));
+    c.setDashPattern(StyleUtils.getDashPattern(this.style));
   }
 
   public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
 
     if (StyleUtils.getBpmnIsExpanded(this.style) === 'false') {
-      const paintParameter = IconPainter.buildPaintParameter((c as unknown) as mxgraph.mxXmlCanvas2D, x, y, w, h, (this as unknown) as mxgraph.mxShape, 0.17, false, 1.5);
+      const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, (this as unknown) as mxgraph.mxShape, 0.17, false, 1.5);
       IconPainter.paintExpandIcon(paintParameter);
     }
   }

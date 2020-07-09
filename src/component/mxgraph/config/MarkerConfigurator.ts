@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
 import { MarkerIdentifier } from '../StyleUtils';
 
 export default class MarkerConfigurator {
@@ -26,8 +25,7 @@ export default class MarkerConfigurator {
     // https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796
 
     const createMarker = (
-      // TODO should be mxAbstractCanvas2D, but it is missing the 'stroke' method in mxgraph-type-definitions@1.0.2
-      c: mxgraph.mxXmlCanvas2D,
+      c: mxAbstractCanvas2D,
       shape: mxShape,
       type: string,
       pe: mxPoint,

@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
 import { ShapeConfiguration } from '../IconPainter';
 import { StyleDefault } from '../../StyleUtils';
 import { IconConfiguration, IconStyleConfiguration, Size } from './render-types';
 
 export interface BpmnCanvasConfiguration {
-  mxCanvas: mxgraph.mxXmlCanvas2D; // TODO use mxAbstractCanvas2D when fully available in mxgraph-type-definitions
+  mxCanvas: mxAbstractCanvas2D;
   shapeConfiguration: ShapeConfiguration;
   iconConfiguration: IconConfiguration;
 }
@@ -27,7 +26,7 @@ export interface BpmnCanvasConfiguration {
 /**
  * Wrapper of {@link mxAbstractCanvas2D} to simplify method calls when painting icons/markers of BPMN shapes.
  *
- * It can scale dimensions passed to the method of the original {@link mxgraph.mxXmlCanvas2D}
+ * It can scale dimensions passed to the method of the original {@link mxAbstractCanvas2D}
  *
  * @example vanilla canvas calls when a scale factor must be applied to positions
  * const scaleX = 0.26;
@@ -41,7 +40,7 @@ export interface BpmnCanvasConfiguration {
  * canvas.lineTo(12, 25);
  */
 export default class BpmnCanvas {
-  private c: mxgraph.mxXmlCanvas2D; // TODO use mxAbstractCanvas2D when fully available in mxgraph-type-definitions
+  private c: mxAbstractCanvas2D;
 
   private readonly iconOriginalSize: Size;
   private readonly scaleX: number;
