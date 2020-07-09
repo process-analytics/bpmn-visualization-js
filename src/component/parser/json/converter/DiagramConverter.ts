@@ -20,11 +20,12 @@ import Bounds from '../../../../model/bpmn/Bounds';
 import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
-import { findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, findSequenceFlow } from './ProcessConverter';
+import { findAssociationFlow, findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, findSequenceFlow } from './ProcessConverter';
 import { findMessageFlow, findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
 import Waypoint from '../../../../model/bpmn/edge/Waypoint';
 import Label, { Font } from '../../../../model/bpmn/Label';
 import { MessageVisibleKind } from '../../../../model/bpmn/edge/MessageVisibleKind';
+import { AssociationDirectionKind } from '../../../../model/bpmn/edge/AssociationDirectionKind';
 
 function findProcessElement(participantId: string): ShapeBpmnElement {
   const participant = findProcessRefParticipant(participantId);
@@ -133,11 +134,12 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private deserializeEdges(edges: any): Edge[] {
     return ensureIsArray(edges).map(edge => {
-      const flow = findSequenceFlow(edge.bpmnElement) || findMessageFlow(edge.bpmnElement);
+      const flow = findSequenceFlow(edge.bpmnElement) || findMessageFlow(edge.bpmnElement) || findAssociationFlow(edge.bpmnElement);
       const waypoints = this.deserializeWaypoints(edge.waypoint);
       const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
       const messageVisibleKind = edge.messageVisibleKind ? edge.messageVisibleKind : MessageVisibleKind.NONE;
-      return new Edge(edge.id, flow, waypoints, label, messageVisibleKind);
+      const associationDirectionKind = edge.AssociationDirectionKind ? edge.AssociationDirectionKind : AssociationDirectionKind.NONE;
+      return new Edge(edge.id, flow, waypoints, label, messageVisibleKind, associationDirectionKind);
     });
   }
 

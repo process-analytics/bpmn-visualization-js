@@ -13,19 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Waypoint from './Waypoint';
-import Label from '../Label';
-import Flow from './Flow';
-import { MessageVisibleKind } from './MessageVisibleKind';
-import { AssociationDirectionKind } from './AssociationDirectionKind';
-
-export default class Edge {
-  constructor(
-    readonly id?: string,
-    readonly bpmnElement?: Flow,
-    readonly waypoints?: Waypoint[],
-    readonly label?: Label,
-    readonly messageVisibleKind: MessageVisibleKind = MessageVisibleKind.NONE,
-    readonly associationDirectionKind: AssociationDirectionKind = AssociationDirectionKind.NONE,
-  ) {}
+/**
+ The real name of the field in the BPMN XSD
+ */
+export enum AssociationDirectionKind {
+  NONE = 'None',
+  ONE = 'One',
+  BOTH = 'Both',
 }

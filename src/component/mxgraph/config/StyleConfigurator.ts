@@ -44,6 +44,12 @@ export default class StyleConfigurator {
         style[mxConstants.STYLE_ENDFILL] = false;
       },
     ],
+    [
+      FlowKind.ASSOCIATION_FLOW,
+      (style: any) => {
+        style[mxConstants.STYLE_STROKECOLOR] = 'Chartreuse';
+      },
+    ],
   ]);
   private specificSequenceFlowStyles: Map<SequenceFlowKind, (style: any) => void> = new Map([
     [

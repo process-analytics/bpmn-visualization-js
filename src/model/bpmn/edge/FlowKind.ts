@@ -19,4 +19,5 @@
 export enum FlowKind {
   SEQUENCE_FLOW = 'sequenceFlow',
   MESSAGE_FLOW = 'messageFlow',
+  ASSOCIATION_FLOW = 'association',
 }

@@ -15,6 +15,7 @@
  */
 import { SequenceFlowKind } from './SequenceFlowKind';
 import { FlowKind } from './FlowKind';
+import { AssociationDirectionKind } from './AssociationDirectionKind';
 
 export default abstract class Flow {
   constructor(readonly id: string, readonly name: string, readonly kind: FlowKind, readonly sourceRefId?: string, readonly targetRefId?: string) {}
@@ -29,5 +30,11 @@ export class SequenceFlow extends Flow {
 export class MessageFlow extends Flow {
   constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string) {
     super(id, name, FlowKind.MESSAGE_FLOW, sourceRefId, targetRefId);
+  }
+}
+
+export class AssociationFlow extends Flow {
+  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, associationDirectionKind = AssociationDirectionKind.NONE) {
+    super(id, name, FlowKind.ASSOCIATION_FLOW, sourceRefId, targetRefId);
   }
 }

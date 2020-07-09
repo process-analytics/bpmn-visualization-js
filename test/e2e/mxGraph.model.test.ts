@@ -22,6 +22,7 @@ import { MarkerIdentifier } from '../../src/component/mxgraph/StyleUtils';
 import { FlowKind } from '../../src/model/bpmn/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/edge/MessageVisibleKind';
 import { readFileSync } from '../helpers/file-helper';
+import { AssociationDirectionKind } from '../../src/model/bpmn/edge/AssociationDirectionKind';
 
 export interface ExpectedFont {
   name?: string;
@@ -56,6 +57,7 @@ interface ExpectedEdgeModelElement {
   font?: ExpectedFont;
   startArrow?: string;
   messageVisibleKind?: MessageVisibleKind;
+  associationDirectionKind?: AssociationDirectionKind;
 }
 
 export interface ExpectedSequenceFlowModelElement extends ExpectedEdgeModelElement {
@@ -157,6 +159,10 @@ describe('mxGraph model', () => {
 
   function expectModelContainsMessageFlow(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
     return expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.MESSAGE_FLOW });
+  }
+
+  function expectModelContainsAssociationFlow(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
+    return expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.ASSOCIATION_FLOW });
   }
 
   function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {
@@ -354,6 +360,9 @@ describe('mxGraph model', () => {
       messageVisibleKind: MessageVisibleKind.NON_INITIATING,
     });
     expectModelContainsMessageFlow('message_flow_no_visible_id', { label: 'Message Flow without message', messageVisibleKind: MessageVisibleKind.NONE });
+
+    // association
+    expectModelContainsAssociationFlow('association_id_1', { associationDirectionKind: AssociationDirectionKind.NONE });
   });
 
   it('bpmn elements should not be available in the mxGraph model, if they are attached to not existing elements', async () => {
