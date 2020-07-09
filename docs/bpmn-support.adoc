@@ -298,11 +298,11 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 
 
-=== Text Annotation
+=== Artifacts
 
 
 [cols="1,1,4", options="header"]
-.Text Annotation
+.Artifacts
 |===
 |Name
 |Rendering
@@ -311,4 +311,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Text Annotation
 |icon:check-circle-o[]
 |By default the size of the font is: 11 and family is set to : 'Arial, Helvetica, sans-serif' +
+
+|Text Annotation Association
+|
+|
 |===
