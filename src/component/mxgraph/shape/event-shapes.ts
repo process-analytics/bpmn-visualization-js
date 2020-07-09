@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnEventKind } from '../../../model/bpmn/shape/ShapeBpmnEventKind';
-import IconPainter, { PaintParameter } from './IconPainter';
+import IconPainter, { PaintParameter, buildPaintParameter } from './render/IconPainter';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 
 abstract class EventShape extends mxEllipse {
@@ -36,7 +35,7 @@ abstract class EventShape extends mxEllipse {
     // TODO: This will be removed after implementation of all supported events
     this.markNonFullyRenderedEvents(c);
     // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
-    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, (this as unknown) as mxgraph.mxShape, 0.25, this.withFilledIcon);
+    const paintParameter = buildPaintParameter(c, x, y, w, h, this, 0.25, this.withFilledIcon);
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);
   }

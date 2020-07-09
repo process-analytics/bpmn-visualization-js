@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
 import { StyleDefault } from '../StyleUtils';
-import IconPainter, { PaintParameter } from './IconPainter';
+import IconPainter, { PaintParameter, buildPaintParameter } from './render/IconPainter';
 
 abstract class GatewayShape extends mxRhombus {
   protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
@@ -25,7 +24,7 @@ abstract class GatewayShape extends mxRhombus {
   protected abstract paintInnerShape(paintParameter: PaintParameter): void;
 
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, (this as unknown) as mxgraph.mxShape);
+    const paintParameter = buildPaintParameter(c, x, y, w, h, this);
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);
   }
