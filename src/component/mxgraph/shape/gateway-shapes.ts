@@ -25,15 +25,13 @@ abstract class GatewayShape extends mxRhombus {
   protected abstract paintInnerShape(paintParameter: PaintParameter): void;
 
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
-    const paintParameter = IconPainter.buildPaintParameter((c as unknown) as mxgraph.mxXmlCanvas2D, x, y, w, h, (this as unknown) as mxgraph.mxShape);
+    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, (this as unknown) as mxgraph.mxShape);
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);
   }
 
   protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {
-    // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
-    super.paintVertexShape((c as unknown) as mxAbstractCanvas2D, x, y, w, h);
+    super.paintVertexShape(c, x, y, w, h);
   }
 }
 

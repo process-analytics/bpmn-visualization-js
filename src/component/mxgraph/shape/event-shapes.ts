@@ -36,7 +36,7 @@ abstract class EventShape extends mxEllipse {
     // TODO: This will be removed after implementation of all supported events
     this.markNonFullyRenderedEvents(c);
     // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
-    const paintParameter = IconPainter.buildPaintParameter((c as unknown) as mxgraph.mxXmlCanvas2D, x, y, w, h, (this as unknown) as mxgraph.mxShape, 0.25, this.withFilledIcon);
+    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, (this as unknown) as mxgraph.mxShape, 0.25, this.withFilledIcon);
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);
   }
@@ -51,8 +51,7 @@ abstract class EventShape extends mxEllipse {
   }
 
   protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {
-    // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
-    super.paintVertexShape((c as unknown) as mxAbstractCanvas2D, x, y, w, h);
+    super.paintVertexShape(c, x, y, w, h);
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
@@ -112,15 +111,16 @@ export class BoundaryEventShape extends IntermediateEventShape {
   protected paintOuterShape(paintParameter: PaintParameter): void {
     const isInterrupting = StyleUtils.getBpmnIsInterrupting(this.style);
     if (isInterrupting === 'false') {
-      paintParameter.c.setDashed(1, 0);
+      paintParameter.c.setDashed(true, false);
       paintParameter.c.setDashPattern('3 2');
     }
 
     super.paintOuterShape(paintParameter);
 
-    // TODO temp. missing in mxgraph-type-definitions@1.0.2 mxShape
+    // Restore original configuration
+    // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
     // this.configureCanvas(c, x, y, w, h);
-    paintParameter.c.setDashed(StyleUtils.isDashed(this.style), StyleUtils.getFixDash(this.style));
+    paintParameter.c.setDashed(StyleUtils.isDashed(this.style), StyleUtils.isFixDash(this.style));
     paintParameter.c.setDashPattern(StyleUtils.getDashPattern(this.style));
   }
 }
