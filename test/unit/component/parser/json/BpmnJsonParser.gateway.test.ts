@@ -20,16 +20,21 @@ describe.each([
   ['exclusive', ShapeBpmnElementKind.GATEWAY_EXCLUSIVE],
   ['inclusive', ShapeBpmnElementKind.GATEWAY_INCLUSIVE],
   ['parallel', ShapeBpmnElementKind.GATEWAY_PARALLEL],
-])('parse bpmn as json for %s gateways', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
-  it(`json containing one process with a single ${bpmnKind} gateway`, () => {
-    const json = `{
-                "definitions" : {
-                    "process": {
+])('parse bpmn as json for %s gateway', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
+  const processJsonAsObjectWithGatewayJsonAsObject = `{
                         "${bpmnKind}Gateway": {
                             "id":"${bpmnKind}Gateway_id_0",
                             "name":"${bpmnKind}Gateway name"
                         }
-                    },
+                    }`;
+
+  it.each([
+    ['object', `${processJsonAsObjectWithGatewayJsonAsObject}`],
+    ['array', `[${processJsonAsObjectWithGatewayJsonAsObject}]`],
+  ])(`should convert as Shape, when a ${bpmnKind} gateway is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: string) => {
+    const json = `{
+                "definitions" : {
+                    "process": ${processJson},
                     "BPMNDiagram": {
                         "name":"process 0",
                         "BPMNPlane": {
@@ -59,47 +64,7 @@ describe.each([
     });
   });
 
-  it(`json containing one process declared as array with a single ${bpmnKind} gateway`, () => {
-    const json = `{
-                "definitions": {
-                    "process": [
-                        {
-                            "${bpmnKind}Gateway": {
-                                "id":"${bpmnKind}Gateway_id_1",
-                                "name":"${bpmnKind}Gateway name"
-                            }
-                        }
-                    ],
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": {
-                                "id":"shape_${bpmnKind}Gateway_id_1",
-                                "bpmnElement":"${bpmnKind}Gateway_id_1",
-                                "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                            }
-                        }
-                    }
-                }
-            }`;
-
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
-
-    verifyShape(model.flowNodes[0], {
-      shapeId: `shape_${bpmnKind}Gateway_id_1`,
-      bpmnElementId: `${bpmnKind}Gateway_id_1`,
-      bpmnElementName: `${bpmnKind}Gateway name`,
-      bpmnElementKind: expectedShapeBpmnElementKind,
-      bounds: {
-        x: 362,
-        y: 232,
-        width: 36,
-        height: 45,
-      },
-    });
-  });
-
-  it(`json containing one process with an array of ${bpmnKind} gateways with name & without name`, () => {
+  it(`should convert as Shape, when a ${bpmnKind} gateway (with/without name) is an attribute (as array) of 'process'`, () => {
     const json = `{
                 "definitions" : {
                     "process": {
