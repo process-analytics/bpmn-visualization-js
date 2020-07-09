@@ -71,17 +71,21 @@ describe('parse bpmn as json for all events', () => {
         return;
       }
 
-      const eventDefinitionJson = expectedShapeBpmnEventKind === ShapeBpmnEventKind.NONE ? '' : `, \n\t\t"${eventDefinitionKind}EventDefinition": ""`;
-
-      it(`json containing one process with a single ${eventDefinitionKind} ${bpmnKind}`, () => {
-        const json = `{
-                "definitions" : {
-                    "process": {
+      const eventDefinitionJson = expectedShapeBpmnEventKind === ShapeBpmnEventKind.NONE ? '' : `,"${eventDefinitionKind}EventDefinition": ""`;
+      const processJsonAsObjectWithEventJsonAsObject = `{
                         "${bpmnKind}": {
                             "id":"event_id_0",
                             "name":"event name"${eventDefinitionJson}
                         }
-                    },
+                    }`;
+
+      it.each([
+        ['object', `${processJsonAsObjectWithEventJsonAsObject}`],
+        ['array', `[${processJsonAsObjectWithEventJsonAsObject}]`],
+      ])(`json containing one process declared as %s with a single ${eventDefinitionKind} ${bpmnKind}`, (title: string, processJson: string) => {
+        const json = `{
+                "definitions" : {
+                    "process": ${processJson},
                     "BPMNDiagram": {
                         "name":"process 0",
                         "BPMNPlane": {
@@ -100,46 +104,6 @@ describe('parse bpmn as json for all events', () => {
         verifyShape(model.flowNodes[0], {
           shapeId: `shape_${bpmnKind}_id_0`,
           bpmnElementId: 'event_id_0',
-          bpmnElementName: 'event name',
-          bpmnElementKind: expectedShapeBpmnElementKind,
-          bounds: {
-            x: 362,
-            y: 232,
-            width: 36,
-            height: 45,
-          },
-        });
-      });
-
-      it(`json containing one process declared as array with a single ${eventDefinitionKind} ${bpmnKind}`, () => {
-        const json = `{
-                "definitions": {
-                    "process": [
-                        {
-                            "${bpmnKind}": {
-                                "id":"event_id_1",
-                                "name":"event name"${eventDefinitionJson}
-                            }
-                        }
-                    ],
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": {
-                                "id":"shape_${bpmnKind}_id_1",
-                                "bpmnElement":"event_id_1",
-                                "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                            }
-                        }
-                    }
-                }
-            }`;
-
-        const model = parseJsonAndExpectOnlyEvent(json, expectedShapeBpmnEventKind, 1);
-
-        verifyShape(model.flowNodes[0], {
-          shapeId: `shape_${bpmnKind}_id_1`,
-          bpmnElementId: 'event_id_1',
           bpmnElementName: 'event name',
           bpmnElementKind: expectedShapeBpmnElementKind,
           bounds: {
@@ -213,15 +177,20 @@ describe('parse bpmn as json for all events', () => {
       });
 
       if (expectedShapeBpmnEventKind !== ShapeBpmnEventKind.NONE) {
-        it(`json containing one process with a ${eventDefinitionKind} ${bpmnKind} defined as empty string, ${eventDefinitionKind} ${bpmnKind} is present`, () => {
-          const json = `
+        it.each([
+          ['empty string', '""'],
+          ['object', `{ "id": "${eventDefinitionKind}EventDefinition_1" }`],
+        ])(
+          `json containing one process with a ${eventDefinitionKind} ${bpmnKind} defined as %s, ${eventDefinitionKind} ${bpmnKind} is present`,
+          (title: string, eventDefinitionJson: string) => {
+            const json = `
       {
          "definitions": {
             "process": {
                "${bpmnKind}": {
                   "id": "event_id_0",
                   "name": "event name",
-                  "${eventDefinitionKind}EventDefinition": ""
+                  "${eventDefinitionKind}EventDefinition": ${eventDefinitionJson}
                }
             },
             "BPMNDiagram": {
@@ -237,98 +206,35 @@ describe('parse bpmn as json for all events', () => {
          }
       }`;
 
-          const model = parseJsonAndExpectOnlyEvent(json, expectedShapeBpmnEventKind, 1);
+            const model = parseJsonAndExpectOnlyEvent(json, expectedShapeBpmnEventKind, 1);
 
-          verifyShape(model.flowNodes[0], {
-            shapeId: `shape_${bpmnKind}_id_0`,
-            bpmnElementId: 'event_id_0',
-            bpmnElementName: 'event name',
-            bpmnElementKind: expectedShapeBpmnElementKind,
-            bounds: {
-              x: 362,
-              y: 232,
-              width: 36,
-              height: 45,
-            },
-          });
-        });
+            verifyShape(model.flowNodes[0], {
+              shapeId: `shape_${bpmnKind}_id_0`,
+              bpmnElementId: 'event_id_0',
+              bpmnElementName: 'event name',
+              bpmnElementKind: expectedShapeBpmnElementKind,
+              bounds: {
+                x: 362,
+                y: 232,
+                width: 36,
+                height: 45,
+              },
+            });
+          },
+        );
 
-        it(`json containing one process with a ${eventDefinitionKind} ${bpmnKind} defined as object, ${eventDefinitionKind} ${bpmnKind} is present`, () => {
+        const otherEventDefinition = expectedShapeBpmnEventKind === ShapeBpmnEventKind.SIGNAL ? 'message' : 'signal';
+        it.each([
+          [`${eventDefinitionKind} definition and another definition`, `"${eventDefinitionKind}EventDefinition": "", "${otherEventDefinition}EventDefinition": ""`],
+          [`several ${eventDefinitionKind} definitions`, `"${eventDefinitionKind}EventDefinition": [ "", "" ]`],
+        ])(`json containing one process with a ${bpmnKind} with %s, ${eventDefinitionKind} event is NOT present`, (title: string, eventDefinitionsJson: string) => {
           const json = `
       {
          "definitions": {
             "process": {
                "${bpmnKind}": {
                   "id": "event_id_0",
-                  "name": "event name",
-                  "${eventDefinitionKind}EventDefinition": { "id": "${eventDefinitionKind}EventDefinition_1" }
-               }
-            },
-            "BPMNDiagram": {
-               "name": "process 0",
-               "BPMNPlane": {
-                  "BPMNShape": {
-                     "id": "shape_${bpmnKind}_id_0",
-                     "bpmnElement": "event_id_0",
-                     "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                  }
-               }
-            }
-         }
-      }`;
-
-          const model = parseJsonAndExpectOnlyEvent(json, expectedShapeBpmnEventKind, 1);
-
-          verifyShape(model.flowNodes[0], {
-            shapeId: `shape_${bpmnKind}_id_0`,
-            bpmnElementId: 'event_id_0',
-            bpmnElementName: 'event name',
-            bpmnElementKind: expectedShapeBpmnElementKind,
-            bounds: {
-              x: 362,
-              y: 232,
-              width: 36,
-              height: 45,
-            },
-          });
-        });
-
-        it(`json containing one process with a ${bpmnKind} with ${eventDefinitionKind} definition and another definition, ${eventDefinitionKind} event is NOT present`, () => {
-          const otherEventDefinition = expectedShapeBpmnEventKind === ShapeBpmnEventKind.SIGNAL ? 'message' : 'signal';
-          const json = `
-      {
-         "definitions": {
-            "process": {
-               "${bpmnKind}": {
-                  "id": "event_id_0",
-                  "${eventDefinitionKind}EventDefinition": "",
-                  "${otherEventDefinition}EventDefinition": ""
-               }
-            },
-            "BPMNDiagram": {
-               "name": "process 0",
-               "BPMNPlane": {
-                  "BPMNShape": {
-                     "id": "shape_${bpmnKind}_id_0",
-                     "bpmnElement": "event_id_0",
-                     "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                  }
-               }
-            }
-         }
-      }`;
-
-          parseJsonAndExpectOnlyFlowNodes(json, 0);
-        });
-
-        it(`json containing one process with a ${bpmnKind} with several ${eventDefinitionKind} definitions, ${eventDefinitionKind} event is NOT present`, () => {
-          const json = `
-      {
-         "definitions": {
-            "process": {
-               "${bpmnKind}": {
-                  "id": "event_id_0",
-                  "${eventDefinitionKind}EventDefinition": [ "", "" ]
+                  ${eventDefinitionsJson}
                }
             },
             "BPMNDiagram": {
@@ -406,31 +312,38 @@ describe('parse bpmn as json for all events', () => {
     }
   });
 
-  describe('parse bpmn as json for intermediate boundary events attached to an activity', () => {
-    describe.each(eventDefinitionParameters)('parse bpmn as json for %s events', (eventDefinitionKind: string, expectedShapeBpmnEventKind: ShapeBpmnEventKind) => {
-      describe.each([
-        ['interrupting', true],
-        ['non-interrupting', false],
-      ])(`parse bpmn as json for ${eventDefinitionKind} %s boundary event`, (boundaryEventKind: string, isInterrupting: boolean) => {
-        if (
-          (isInterrupting &&
-            (expectedShapeBpmnEventKind === ShapeBpmnEventKind.NONE ||
-              expectedShapeBpmnEventKind === ShapeBpmnEventKind.LINK ||
-              expectedShapeBpmnEventKind === ShapeBpmnEventKind.TERMINATE)) ||
-          (!isInterrupting &&
-            (expectedShapeBpmnEventKind === ShapeBpmnEventKind.NONE ||
-              expectedShapeBpmnEventKind === ShapeBpmnEventKind.ERROR ||
-              expectedShapeBpmnEventKind === ShapeBpmnEventKind.CANCEL ||
-              expectedShapeBpmnEventKind === ShapeBpmnEventKind.COMPENSATION ||
-              expectedShapeBpmnEventKind === ShapeBpmnEventKind.LINK ||
-              expectedShapeBpmnEventKind === ShapeBpmnEventKind.TERMINATE))
-        ) {
-          // Not supported in BPMN specification
-          return;
-        }
+  describe('parse bpmn as json for intermediate boundary events', () => {
+    describe.each(eventDefinitionParameters)(
+      'parse bpmn as json for %s intermediate boundary events',
+      (eventDefinitionKind: string, expectedShapeBpmnEventKind: ShapeBpmnEventKind) => {
+        describe.each([
+          ['interrupting', true],
+          ['non-interrupting', false],
+        ])(`parse bpmn as json for %s ${eventDefinitionKind} intermediate boundary events`, (boundaryEventKind: string, isInterrupting: boolean) => {
+          if (
+            (isInterrupting &&
+              (expectedShapeBpmnEventKind === ShapeBpmnEventKind.NONE ||
+                expectedShapeBpmnEventKind === ShapeBpmnEventKind.LINK ||
+                expectedShapeBpmnEventKind === ShapeBpmnEventKind.TERMINATE)) ||
+            (!isInterrupting &&
+              (expectedShapeBpmnEventKind === ShapeBpmnEventKind.NONE ||
+                expectedShapeBpmnEventKind === ShapeBpmnEventKind.ERROR ||
+                expectedShapeBpmnEventKind === ShapeBpmnEventKind.CANCEL ||
+                expectedShapeBpmnEventKind === ShapeBpmnEventKind.COMPENSATION ||
+                expectedShapeBpmnEventKind === ShapeBpmnEventKind.LINK ||
+                expectedShapeBpmnEventKind === ShapeBpmnEventKind.TERMINATE))
+          ) {
+            // Not supported in BPMN specification
+            return;
+          }
 
-        it(`json containing one process with a ${eventDefinitionKind} ${boundaryEventKind} boundary event, attached to an activity, defined as empty string, ${eventDefinitionKind} ${boundaryEventKind} boundary event is present`, () => {
-          const json = `{
+          it([
+            ['empty string', '""'],
+            ['object', `{ "id": "${eventDefinitionKind}EventDefinition_1" }`],
+          ])(
+            `json containing one process with a ${boundaryEventKind} ${eventDefinitionKind} boundary event, attached to an activity, defined as %s, ${boundaryEventKind} ${eventDefinitionKind} boundary event is present`,
+            (title: string, eventDefinitionJson: string) => {
+              const json = `{
                 "definitions" : {
                     "process": {
                         "task": {
@@ -442,7 +355,7 @@ describe('parse bpmn as json for all events', () => {
                             "name":"event name",
                             "attachedToRef":"task_id_0",
                             "cancelActivity":${isInterrupting},
-                            "${eventDefinitionKind}EventDefinition": ""
+                            "${eventDefinitionKind}EventDefinition": ${eventDefinitionJson}
                         }
                     },
                     "BPMNDiagram": {
@@ -465,79 +378,27 @@ describe('parse bpmn as json for all events', () => {
                 }
             }`;
 
-          const model = parseJsonAndExpectOnlyBoundaryEvent(json, expectedShapeBpmnEventKind, 1, isInterrupting);
+              const model = parseJsonAndExpectOnlyBoundaryEvent(json, expectedShapeBpmnEventKind, 1, isInterrupting);
 
-          verifyShape(model.flowNodes[1], {
-            shapeId: 'shape_boundaryEvent_id_0',
-            parentId: 'task_id_0',
-            bpmnElementId: 'event_id_0',
-            bpmnElementName: 'event name',
-            bpmnElementKind: ShapeBpmnElementKind.EVENT_BOUNDARY,
-            bounds: {
-              x: 362,
-              y: 232,
-              width: 36,
-              height: 45,
+              verifyShape(model.flowNodes[1], {
+                shapeId: 'shape_boundaryEvent_id_0',
+                parentId: 'task_id_0',
+                bpmnElementId: 'event_id_0',
+                bpmnElementName: 'event name',
+                bpmnElementKind: ShapeBpmnElementKind.EVENT_BOUNDARY,
+                bounds: {
+                  x: 362,
+                  y: 232,
+                  width: 36,
+                  height: 45,
+                },
+              });
             },
-          });
-        });
+          );
 
-        it(`json containing one process with a ${eventDefinitionKind} ${boundaryEventKind} boundary event, attached to an activity, defined as object, ${eventDefinitionKind} ${boundaryEventKind} boundary event is present`, () => {
-          const json = `{
-                "definitions" : {
-                    "process": {
-                        "task": {
-                            "id":"task_id_0",
-                            "name":"task name"
-                        },
-                        "boundaryEvent": {
-                            "id":"event_id_0",
-                            "name":"event name",
-                            "attachedToRef":"task_id_0",
-                            "cancelActivity":${isInterrupting},
-                            "${eventDefinitionKind}EventDefinition": { "id": "${eventDefinitionKind}EventDefinition_1" }
-                        }
-                    },
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": [
-                              {
-                                  "id":"shape_task_id_0",
-                                  "bpmnElement":"task_id_0",
-                                  "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                              },
-                              {
-                                  "id":"shape_boundaryEvent_id_0",
-                                  "bpmnElement":"event_id_0",
-                                  "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                              }
-                            ]
-                        }
-                    }
-                }
-            }`;
-
-          const model = parseJsonAndExpectOnlyBoundaryEvent(json, expectedShapeBpmnEventKind, 1, isInterrupting);
-
-          verifyShape(model.flowNodes[1], {
-            shapeId: 'shape_boundaryEvent_id_0',
-            parentId: 'task_id_0',
-            bpmnElementId: 'event_id_0',
-            bpmnElementName: 'event name',
-            bpmnElementKind: ShapeBpmnElementKind.EVENT_BOUNDARY,
-            bounds: {
-              x: 362,
-              y: 232,
-              width: 36,
-              height: 45,
-            },
-          });
-        });
-
-        if (isInterrupting) {
-          it(`json containing one process with a ${eventDefinitionKind} ${boundaryEventKind} boundary event, attached to an activity, without cancelActivity attribute, ${eventDefinitionKind} ${boundaryEventKind} boundary event is present`, () => {
-            const json = `{
+          if (isInterrupting) {
+            it(`json containing one process with a ${boundaryEventKind} ${eventDefinitionKind} boundary event, attached to an activity, without cancelActivity attribute, ${boundaryEventKind} ${eventDefinitionKind} boundary event is present`, () => {
+              const json = `{
                 "definitions" : {
                     "process": {
                         "task": {
@@ -571,26 +432,32 @@ describe('parse bpmn as json for all events', () => {
                 }
             }`;
 
-            const model = parseJsonAndExpectOnlyBoundaryEvent(json, expectedShapeBpmnEventKind, 1, isInterrupting);
+              const model = parseJsonAndExpectOnlyBoundaryEvent(json, expectedShapeBpmnEventKind, 1, isInterrupting);
 
-            verifyShape(model.flowNodes[1], {
-              shapeId: 'shape_boundaryEvent_id_0',
-              parentId: 'task_id_0',
-              bpmnElementId: 'event_id_0',
-              bpmnElementName: 'event name',
-              bpmnElementKind: ShapeBpmnElementKind.EVENT_BOUNDARY,
-              bounds: {
-                x: 362,
-                y: 232,
-                width: 36,
-                height: 45,
-              },
+              verifyShape(model.flowNodes[1], {
+                shapeId: 'shape_boundaryEvent_id_0',
+                parentId: 'task_id_0',
+                bpmnElementId: 'event_id_0',
+                bpmnElementName: 'event name',
+                bpmnElementKind: ShapeBpmnElementKind.EVENT_BOUNDARY,
+                bounds: {
+                  x: 362,
+                  y: 232,
+                  width: 36,
+                  height: 45,
+                },
+              });
             });
-          });
-        }
+          }
 
-        it(`json containing one process with a ${boundaryEventKind} boundary event, attached to an activity, with ${eventDefinitionKind} definition and another definition, ${eventDefinitionKind} event is NOT present`, () => {
-          const json = `{
+          const otherEventDefinition = expectedShapeBpmnEventKind === ShapeBpmnEventKind.SIGNAL ? 'message' : 'signal';
+          it.each([
+            [`${eventDefinitionKind} definition and another definition`, `"${eventDefinitionKind}EventDefinition": "", "${otherEventDefinition}EventDefinition": ""`],
+            [`several ${eventDefinitionKind} definitions`, `"${eventDefinitionKind}EventDefinition": [ "", "" ]`],
+          ])(
+            `json containing one process with a ${boundaryEventKind} boundary event, attached to an activity, with %s, ${eventDefinitionKind} event is NOT present`,
+            (title: string, eventDefinitionsJson: string) => {
+              const json = `{
     "definitions" : {
         "process": {
             "task": { "id":"task_id_0", "name":"task name" },
@@ -598,8 +465,7 @@ describe('parse bpmn as json for all events', () => {
                 "id":"event_id_0",
                 "attachedToRef":"task_id_0",
                 "cancelActivity":${isInterrupting},
-                "${eventDefinitionKind}EventDefinition": "",
-                "conditionalEventDefinition": ""
+                ${eventDefinitionsJson}
             }
         },
         "BPMNDiagram": {
@@ -622,46 +488,12 @@ describe('parse bpmn as json for all events', () => {
     }
 }`;
 
-          parseJsonAndExpectOnlyBoundaryEvent(json, expectedShapeBpmnEventKind, 0);
-        });
+              parseJsonAndExpectOnlyBoundaryEvent(json, expectedShapeBpmnEventKind, 0);
+            },
+          );
 
-        it(`json containing one process with a ${boundaryEventKind} boundary event, attached to an activity, with several ${eventDefinitionKind} definitions, ${eventDefinitionKind} event is NOT present`, () => {
-          const json = `{
-    "definitions" : {
-        "process": {
-            "task": { "id":"task_id_0", "name":"task name" },
-            "boundaryEvent": {
-                "id":"event_id_0",
-                "attachedToRef":"task_id_0",
-                "cancelActivity":${isInterrupting},
-                "${eventDefinitionKind}EventDefinition": ["", ""]
-            }
-        },
-        "BPMNDiagram": {
-            "name":"process 0",
-            "BPMNPlane": {
-                "BPMNShape": [
-                    {
-                        "id":"shape_task_id_0",
-                        "bpmnElement":"task_id_0",
-                        "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                    },
-                    {
-                         "id":"shape_boundaryEvent_id_0",
-                         "bpmnElement":"event_id_0",
-                         "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                    }
-                ]
-            }
-        }
-    }
-}`;
-
-          parseJsonAndExpectOnlyBoundaryEvent(json, expectedShapeBpmnEventKind, 0);
-        });
-
-        it(`${eventDefinitionKind} ${boundaryEventKind} boundary event cannot be attached to anything than an activity`, () => {
-          const json = `{
+          it(`${boundaryEventKind} ${eventDefinitionKind} boundary event cannot be attached to anything than an activity`, () => {
+            const json = `{
                 "definitions" : {
                     "process": {
                         "startEvent": {
@@ -694,9 +526,10 @@ describe('parse bpmn as json for all events', () => {
                 }
             }`;
 
-          parseJsonAndExpectOnlyBoundaryEvent(json, expectedShapeBpmnEventKind, 0);
+            parseJsonAndExpectOnlyBoundaryEvent(json, expectedShapeBpmnEventKind, 0);
+          });
         });
-      });
-    });
+      },
+    );
   });
 });
