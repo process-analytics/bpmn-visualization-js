@@ -20,7 +20,7 @@ import StyleUtils from '../StyleUtils';
 import { IconStyleConfiguration, Size } from './render/render-types';
 
 export interface PaintParameter {
-  c: mxgraph.mxXmlCanvas2D;
+  c: mxAbstractCanvas2D;
   shape: ShapeConfiguration;
   icon: IconStyleConfiguration;
   ratioFromParent?: number;
@@ -36,12 +36,12 @@ export interface ShapeConfiguration {
 
 export default class IconPainter {
   public static buildPaintParameter(
-    c: mxgraph.mxXmlCanvas2D,
+    c: mxAbstractCanvas2D,
     x: number,
     y: number,
     width: number,
     height: number,
-    shape: mxgraph.mxShape,
+    shape: mxgraph.mxShape, // TODO use mxShape from mxgraph-type-definitions (missing fill and stroke properties)
     ratioFromParent = 0.25,
     isFilled = false,
     iconStrokeWidth = 0,
