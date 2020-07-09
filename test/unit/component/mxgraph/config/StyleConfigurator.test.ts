@@ -96,7 +96,6 @@ describe('mxgraph renderer', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_END), undefined, new Label(undefined, undefined));
       expect(computeStyle(shape)).toEqual('endEvent');
     });
-
     it('compute style of shape with label including bold font', () => {
       const shape = new Shape(
         'id',
@@ -224,6 +223,17 @@ describe('mxgraph renderer', () => {
       expect(computeStyle(shape)).toEqual(
         `subProcess;bpmn.subProcessKind=embedded;bpmn.isExpanded=${isExpanded};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
       );
+    });
+  });
+
+  describe('compute style - text annotation', () => {
+    it('without label', () => {
+      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION));
+      expect(computeStyle(shape)).toEqual('textAnnotation');
+    });
+    it('with label bounds', () => {
+      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION), newLabel({ name: 'Segoe UI' }, new Bounds(50, 50, 100, 100)));
+      expect(computeStyle(shape)).toEqual('textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=top;verticalLabelPosition=left');
     });
   });
 });

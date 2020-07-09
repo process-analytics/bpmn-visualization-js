@@ -18,6 +18,7 @@ import { ShapeBpmnElementKind } from '../../../model/bpmn/shape/ShapeBpmnElement
 import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape, BoundaryEventShape } from '../shape/event-shapes';
 import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from '../shape/gateway-shapes';
 import { SubProcessShape, ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape, CallActivityShape } from '../shape/activity-shapes';
+import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -49,6 +50,8 @@ export default class ShapeConfigurator {
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_USER, UserTaskShape);
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape);
+    // artifacts
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
   }
 
   private initMxShapePrototype(isFF: boolean): void {
