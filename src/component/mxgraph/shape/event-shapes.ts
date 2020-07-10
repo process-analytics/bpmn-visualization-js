@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 import { ShapeBpmnEventKind } from '../../../model/bpmn/shape/ShapeBpmnEventKind';
-import IconPainter, { PaintParameter, buildPaintParameter } from './render/IconPainter';
+import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render/IconPainter';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 
 abstract class EventShape extends mxEllipse {
+  protected iconPainter = IconPainterProvider.get();
+
   // TODO: when all/more event types will be supported, we could move to a Record/MappedType
   private iconPainters: Map<ShapeBpmnEventKind, (paintParameter: PaintParameter) => void> = new Map([
-    [ShapeBpmnEventKind.MESSAGE, (paintParameter: PaintParameter) => IconPainter.paintEnvelopeIcon({ ...paintParameter, ratioFromParent: 0.5 })],
-    [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => IconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
-    [ShapeBpmnEventKind.TIMER, (paintParameter: PaintParameter) => IconPainter.paintClockIcon(paintParameter)],
+    [ShapeBpmnEventKind.MESSAGE, (paintParameter: PaintParameter) => this.iconPainter.paintEnvelopeIcon({ ...paintParameter, ratioFromParent: 0.5 })],
+    [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => this.iconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
+    [ShapeBpmnEventKind.TIMER, (paintParameter: PaintParameter) => this.iconPainter.paintClockIcon(paintParameter)],
   ]);
 
   protected withFilledIcon = false;
@@ -54,7 +56,7 @@ abstract class EventShape extends mxEllipse {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    const paintIcon = this.iconPainters.get(StyleUtils.getBpmnEventKind(this.style)) || (() => IconPainter.paintEmptyIcon());
+    const paintIcon = this.iconPainters.get(StyleUtils.getBpmnEventKind(this.style)) || (() => this.iconPainter.paintEmptyIcon());
     paintIcon(paintParameter);
   }
 }
