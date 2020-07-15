@@ -205,6 +205,9 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
+|Signal Start Event
+|
+|
 |===
 
 
