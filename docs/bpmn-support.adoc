@@ -174,6 +174,10 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Message Interrupting Boundary Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Signal Interrupting Boundary Event
+|
+|
 |===
 
 
@@ -192,7 +196,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
-|Signal Non-interrupting Event
+|Signal Non-interrupting Boundary Event
 |
 |
 |===

@@ -37,6 +37,9 @@
     <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Timer" id="boundary_event_interrupting_timer_id">
       <semantic:timerEventDefinition/>
     </semantic:boundaryEvent>
+    <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Signal" id="boundary_event_interrupting_signal_id">
+      <semantic:signalEventDefinition/>
+    </semantic:boundaryEvent>
     <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Message" id="boundary_event_non_interrupting_message_id">
       <semantic:messageEventDefinition/>
     </semantic:boundaryEvent>
@@ -142,6 +145,9 @@
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_timer_id" id="S1373649849862_boundary_event_interrupting_timer_id">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_signal_id" id="S1373649849862_boundary_event_interrupting_signal_id">
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_message_id" id="S1373649849862_boundary_event_non_interrupting_message_id">
