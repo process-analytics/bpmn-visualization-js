@@ -16,18 +16,22 @@
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 
-describe('parse bpmn as json for call activity', () => {
-  const processJsonAsObjectWithCallActivityJsonAsObject = `{
-                        "callActivity": {
-                            "id":"callActivity_id_0",
-                            "name":"callActivity name"
+describe.each([
+  ['exclusive', ShapeBpmnElementKind.GATEWAY_EXCLUSIVE],
+  ['inclusive', ShapeBpmnElementKind.GATEWAY_INCLUSIVE],
+  ['parallel', ShapeBpmnElementKind.GATEWAY_PARALLEL],
+])('parse bpmn as json for %s gateway', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
+  const processJsonAsObjectWithGatewayJsonAsObject = `{
+                        "${bpmnKind}Gateway": {
+                            "id":"${bpmnKind}Gateway_id_0",
+                            "name":"${bpmnKind}Gateway name"
                         }
                     }`;
 
   it.each([
-    ['object', `${processJsonAsObjectWithCallActivityJsonAsObject}`],
-    ['array', `[${processJsonAsObjectWithCallActivityJsonAsObject}]`],
-  ])(`should convert as Shape, when a callActivity is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: string) => {
+    ['object', `${processJsonAsObjectWithGatewayJsonAsObject}`],
+    ['array', `[${processJsonAsObjectWithGatewayJsonAsObject}]`],
+  ])(`should convert as Shape, when a ${bpmnKind} gateway is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: string) => {
     const json = `{
                 "definitions" : {
                     "process": ${processJson},
@@ -35,8 +39,8 @@ describe('parse bpmn as json for call activity', () => {
                         "name":"process 0",
                         "BPMNPlane": {
                             "BPMNShape": {
-                                "id":"shape_callActivity_id_0",
-                                "bpmnElement":"callActivity_id_0",
+                                "id":"shape_${bpmnKind}Gateway_id_0",
+                                "bpmnElement":"${bpmnKind}Gateway_id_0",
                                 "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
                             }
                         }
@@ -47,10 +51,10 @@ describe('parse bpmn as json for call activity', () => {
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
     verifyShape(model.flowNodes[0], {
-      shapeId: `shape_callActivity_id_0`,
-      bpmnElementId: `callActivity_id_0`,
-      bpmnElementName: `callActivity name`,
-      bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+      shapeId: `shape_${bpmnKind}Gateway_id_0`,
+      bpmnElementId: `${bpmnKind}Gateway_id_0`,
+      bpmnElementName: `${bpmnKind}Gateway name`,
+      bpmnElementKind: expectedShapeBpmnElementKind,
       bounds: {
         x: 362,
         y: 232,
@@ -60,17 +64,16 @@ describe('parse bpmn as json for call activity', () => {
     });
   });
 
-  it('json containing one process with an array of call activities with/without name', () => {
+  it(`should convert as Shape, when a ${bpmnKind} gateway (with/without name) is an attribute (as array) of 'process'`, () => {
     const json = `{
                 "definitions" : {
                     "process": {
-                        "callActivity": [
+                        "${bpmnKind}Gateway": [
                           {
-                              "id":"callActivity_id_0",
-                              "name":"callActivity name"
-                          },{
-                              "id":"callActivity_id_1",
-                              "instantiate":true
+                              "id":"${bpmnKind}Gateway_id_0",
+                              "name":"${bpmnKind}Gateway name"
+                          }, {
+                              "id":"${bpmnKind}Gateway_id_1"
                           }
                         ]
                     },
@@ -79,12 +82,12 @@ describe('parse bpmn as json for call activity', () => {
                         "BPMNPlane": {
                             "BPMNShape": [
                               {
-                                "id":"shape_callActivity_id_0",
-                                "bpmnElement":"callActivity_id_0",
+                                "id":"shape_${bpmnKind}Gateway_id_0",
+                                "bpmnElement":"${bpmnKind}Gateway_id_0",
                                 "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
                               }, {
-                                "id":"shape_callActivity_id_1",
-                                "bpmnElement":"callActivity_id_1",
+                                "id":"shape_${bpmnKind}Gateway_id_1",
+                                "bpmnElement":"${bpmnKind}Gateway_id_1",
                                 "Bounds": { "x": 365, "y": 235, "width": 35, "height": 46 }
                               }
                             ]
@@ -96,10 +99,10 @@ describe('parse bpmn as json for call activity', () => {
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
     verifyShape(model.flowNodes[0], {
-      shapeId: 'shape_callActivity_id_0',
-      bpmnElementId: 'callActivity_id_0',
-      bpmnElementName: 'callActivity name',
-      bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+      shapeId: `shape_${bpmnKind}Gateway_id_0`,
+      bpmnElementId: `${bpmnKind}Gateway_id_0`,
+      bpmnElementName: `${bpmnKind}Gateway name`,
+      bpmnElementKind: expectedShapeBpmnElementKind,
       bounds: {
         x: 362,
         y: 232,
@@ -107,12 +110,11 @@ describe('parse bpmn as json for call activity', () => {
         height: 45,
       },
     });
-
     verifyShape(model.flowNodes[1], {
-      shapeId: 'shape_callActivity_id_1',
-      bpmnElementId: 'callActivity_id_1',
+      shapeId: `shape_${bpmnKind}Gateway_id_1`,
+      bpmnElementId: `${bpmnKind}Gateway_id_1`,
       bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+      bpmnElementKind: expectedShapeBpmnElementKind,
       bounds: {
         x: 365,
         y: 235,
