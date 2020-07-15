@@ -47,6 +47,9 @@
     <semantic:intermediateThrowEvent name="Throw Message Intermediate Event" id="messageIntermediateThrowEvent">
       <semantic:messageEventDefinition />
     </semantic:intermediateThrowEvent>
+    <semantic:intermediateThrowEvent name="Throw Signal Intermediate Event" id="signalIntermediateThrowEvent">
+      <semantic:signalEventDefinition />
+    </semantic:intermediateThrowEvent>
     <semantic:intermediateCatchEvent name="Catch Message Intermediate Event" id="messageIntermediateCatchEvent">
       <semantic:messageEventDefinition />
     </semantic:intermediateCatchEvent>
@@ -150,6 +153,9 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="messageIntermediateThrowEvent" id="S1373649849862_messageIntermediateThrowEvent">
+        <dc:Bounds height="32.0" width="32.0" x="698.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="signalIntermediateThrowEvent" id="S1373649849862_signalIntermediateThrowEvent">
         <dc:Bounds height="32.0" width="32.0" x="698.0" y="335.0" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="messageIntermediateCatchEvent" id="S1373649849862_messageIntermediateCatchEvent">

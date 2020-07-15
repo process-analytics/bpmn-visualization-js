@@ -236,6 +236,11 @@ describe('mxGraph model', () => {
       eventKind: ShapeBpmnEventKind.MESSAGE,
       label: 'Throw Message Intermediate Event',
     });
+    expectModelContainsBpmnEvent('signalIntermediateThrowEvent', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
+      eventKind: ShapeBpmnEventKind.SIGNAL,
+      label: 'Throw Signal Intermediate Event',
+    });
 
     // catch intermediate event
     expectModelContainsBpmnEvent('messageIntermediateCatchEvent', {
