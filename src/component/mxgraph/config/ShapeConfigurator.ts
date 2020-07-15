@@ -79,13 +79,12 @@ export default class ShapeConfigurator {
       //
       canvas.minStrokeWidth = this.minSvgStrokeWidth;
 
-      // TODO mxgraph-definitions 1.0.2 wrong value arg type in the format function (should be 'string', but is 'number')
-      // if (!this.antiAlias) {
-      //   // Rounds all numbers in the SVG output to integers
-      //   canvas.format = function(value: string) {
-      //     return Math.round(parseFloat(value));
-      //   };
-      // }
+      if (!this.antiAlias) {
+        // Rounds all numbers in the SVG output to integers
+        canvas.format = function(value: string) {
+          return Math.round(parseFloat(value));
+        };
+      }
 
       return canvas;
     };
