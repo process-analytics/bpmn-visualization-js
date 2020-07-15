@@ -290,6 +290,12 @@ describe('mxGraph model', () => {
       isInterrupting: false,
       label: 'Boundary Intermediate Event Non-interrupting Timer',
     });
+    expectModelContainsBpmnBoundaryEvent('boundary_event_non_interrupting_signal_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.SIGNAL,
+      isInterrupting: false,
+      label: 'Boundary Intermediate Event Non-interrupting Signal',
+    });
 
     // Sub-process
     expectModelContainsSubProcess('expanded_embedded_sub_process_id', {
