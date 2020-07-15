@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 import { StyleDefault } from '../StyleUtils';
-import IconPainter, { PaintParameter, buildPaintParameter } from './render/IconPainter';
+import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render/IconPainter';
 
 abstract class GatewayShape extends mxRhombus {
+  protected iconPainter = IconPainterProvider.get();
+
   protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
@@ -40,7 +42,7 @@ export class ExclusiveGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    IconPainter.paintXCrossIcon(paintParameter);
+    this.iconPainter.paintXCrossIcon(paintParameter);
   }
 }
 
@@ -50,7 +52,7 @@ export class ParallelGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    IconPainter.paintPlusCrossIcon(paintParameter);
+    this.iconPainter.paintPlusCrossIcon(paintParameter);
   }
 }
 
@@ -60,7 +62,7 @@ export class InclusiveGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    IconPainter.paintCircleIcon({
+    this.iconPainter.paintCircleIcon({
       ...paintParameter,
       ratioFromParent: 0.62,
       icon: { ...paintParameter.icon, isFilled: false, strokeWidth: StyleDefault.STROKE_WIDTH_THICK.valueOf() },

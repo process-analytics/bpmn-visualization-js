@@ -53,13 +53,13 @@ export function buildPaintParameter(
 }
 
 export default class IconPainter {
-  public static paintEmptyIcon(): void {
+  public paintEmptyIcon(): void {
     // empty by nature
   }
 
   // this implementation is adapted from the draw.io BPMN 'message' symbol
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465
-  public static paintEnvelopeIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+  public paintEnvelopeIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     const originalIconSize = { width: 485.41, height: 321.76 };
     const canvas = new BpmnCanvas({
       mxCanvas: c,
@@ -105,7 +105,7 @@ export default class IconPainter {
   }
 
   // highly inspired from mxDoubleEllipse
-  public static paintCircleIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+  public paintCircleIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     const originalIconSize = { width: shape.w, height: shape.h };
     const canvas = new BpmnCanvas({
       mxCanvas: c,
@@ -133,7 +133,7 @@ export default class IconPainter {
   }
 
   // implementation adapted from https://www.flaticon.com/free-icon/clock_223404
-  public static paintClockIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+  public paintClockIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     const canvas = new BpmnCanvas({
       mxCanvas: c,
       shapeConfiguration: shape,
@@ -235,7 +235,7 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  public static paintXCrossIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+  public paintXCrossIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     const canvas = new BpmnCanvas({
       mxCanvas: c,
       shapeConfiguration: shape,
@@ -247,14 +247,14 @@ export default class IconPainter {
     });
     canvas.setIconOriginPosition(4);
 
-    this.drawCrossIcon(canvas);
+    IconPainter.drawCrossIcon(canvas);
     const rotationCenterX = shape.w / 4;
     const rotationCenterY = shape.h / 4;
     canvas.rotate(45, false, false, rotationCenterX, rotationCenterY);
     canvas.fillAndStroke();
   }
 
-  public static paintPlusCrossIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+  public paintPlusCrossIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     const canvas = new BpmnCanvas({
       mxCanvas: c,
       shapeConfiguration: shape,
@@ -266,7 +266,7 @@ export default class IconPainter {
     });
     canvas.setIconOriginPosition(4);
 
-    this.drawCrossIcon(canvas);
+    IconPainter.drawCrossIcon(canvas);
     canvas.fillAndStroke();
   }
 
@@ -289,7 +289,7 @@ export default class IconPainter {
 
   // implementation adapted from https://www.flaticon.com/free-icon/employees_554768
   // use https://github.com/process-analytics/mxgraph-svg2shape to generate the xml stencil and port it to code
-  public static paintWomanIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+  public paintWomanIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     const canvas = new BpmnCanvas({
       mxCanvas: c,
       shapeConfiguration: shape,
@@ -382,7 +382,7 @@ export default class IconPainter {
 
   // this implementation is adapted from the draw.io BPMN 'Service Task' stencil
   // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L898
-  public static paintGearIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+  public paintGearIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     const canvas = new BpmnCanvas({
       mxCanvas: c,
       shapeConfiguration: shape,
@@ -396,11 +396,11 @@ export default class IconPainter {
     canvas.setIconOriginPosition(20);
 
     // background
-    this.paintGearIconBackground(canvas);
+    IconPainter.paintGearIconBackground(canvas);
 
     // foreground
     canvas.translateIconOrigin(14, 14);
-    this.paintGearIconForeground(canvas);
+    IconPainter.paintGearIconForeground(canvas);
   }
 
   private static paintGearIconBackground(canvas: BpmnCanvas): void {
@@ -441,7 +441,7 @@ export default class IconPainter {
 
     const arcStartX = 24.8;
     const arcStartY = 39;
-    this.paintGearInnerCircle(canvas, arcStartX, arcStartY);
+    IconPainter.paintGearInnerCircle(canvas, arcStartX, arcStartY);
   }
 
   private static paintGearIconForeground(canvas: BpmnCanvas): void {
@@ -482,11 +482,11 @@ export default class IconPainter {
 
     const arcStartX = 39.2;
     const arcStartY = 55.8;
-    this.paintGearInnerCircle(canvas, arcStartX, arcStartY);
+    IconPainter.paintGearInnerCircle(canvas, arcStartX, arcStartY);
 
     // fill the inner circle to mask the background
     canvas.begin();
-    this.paintGearInnerCircle(canvas, arcStartX, arcStartY);
+    IconPainter.paintGearInnerCircle(canvas, arcStartX, arcStartY);
   }
 
   private static paintGearInnerCircle(canvas: BpmnCanvas, arcStartX: number, arcStartY: number): void {
@@ -498,7 +498,7 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  public static paintExpandIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+  public paintExpandIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     const originalIconSize = { width: 16, height: 16 };
     const canvas = new BpmnCanvas({
       mxCanvas: c,
@@ -528,5 +528,16 @@ export default class IconPainter {
     canvas.lineTo((w * 3) / 4, h / 2);
     canvas.close();
     canvas.fillAndStroke();
+  }
+}
+
+export class IconPainterProvider {
+  private static instance = new IconPainter();
+
+  static get(): IconPainter {
+    return this.instance;
+  }
+  static set(painter: IconPainter): void {
+    this.instance = painter;
   }
 }
