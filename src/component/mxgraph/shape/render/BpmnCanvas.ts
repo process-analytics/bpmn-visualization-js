@@ -44,9 +44,9 @@ export default class BpmnCanvas {
   private readonly scaleX: number;
   private readonly scaleY: number;
 
+  private iconOriginalSize: Size;
   private iconPaintingOriginX = 0;
   private iconPaintingOriginY = 0;
-  private iconOriginalSize: Size;
 
   private readonly shapeConfiguration: ShapeConfiguration;
 
