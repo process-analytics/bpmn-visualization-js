@@ -54,6 +54,9 @@
       <semantic:incoming>Flow_028jkgv</semantic:incoming>
       <semantic:timerEventDefinition id="TimerEventDefinition_0t6k83a" />
     </semantic:intermediateCatchEvent>
+    <semantic:intermediateCatchEvent name="Catch Signal Intermediate Event" id="signalIntermediateCatchEvent">
+      <semantic:signalEventDefinition />
+    </semantic:intermediateCatchEvent>
     <semantic:endEvent name="Terminate End Event" id="terminateEndEvent">
       <semantic:incoming>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:incoming>
       <semantic:terminateEventDefinition/>
@@ -150,6 +153,9 @@
         <dc:Bounds height="32.0" width="32.0" x="698.0" y="335.0" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="messageIntermediateCatchEvent" id="S1373649849862_messageIntermediateCatchEvent">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="signalIntermediateCatchEvent" id="S1373649849862_signalIntermediateCatchEvent">
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="terminateEndEvent" id="S1373649849862_terminateEndEvent">

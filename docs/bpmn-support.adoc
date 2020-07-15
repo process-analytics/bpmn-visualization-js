@@ -132,6 +132,10 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Message Intermediate Catch Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Signal Intermediate Catch Event
+|
+|
 |===
 
 
