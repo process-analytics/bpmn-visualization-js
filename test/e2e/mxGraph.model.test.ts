@@ -248,6 +248,11 @@ describe('mxGraph model', () => {
       eventKind: ShapeBpmnEventKind.TIMER,
       label: 'Timer Intermediate Catch Event',
     });
+    expectModelContainsBpmnEvent('signalIntermediateCatchEvent', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+      eventKind: ShapeBpmnEventKind.SIGNAL,
+      label: 'Catch Signal Intermediate Event',
+    });
 
     // boundary event: interrupting
     expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_message_id', {
