@@ -159,6 +159,10 @@ describe('mxGraph model', () => {
     return expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.MESSAGE_FLOW });
   }
 
+  function expectModelContainsAssociationFlow(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
+    return expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.ASSOCIATION_FLOW });
+  }
+
   function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {
     const cell = expectModelContainsShape(cellId, eventModelElement);
     expect(cell.style).toContain(`bpmn.eventKind=${eventModelElement.eventKind}`);
@@ -366,6 +370,9 @@ describe('mxGraph model', () => {
       messageVisibleKind: MessageVisibleKind.NON_INITIATING,
     });
     expectModelContainsMessageFlow('message_flow_no_visible_id', { label: 'Message Flow without message', messageVisibleKind: MessageVisibleKind.NONE });
+
+    // association
+    expectModelContainsAssociationFlow('association_id_1', { kind: FlowKind.ASSOCIATION_FLOW });
   });
 
   it('bpmn elements should not be available in the mxGraph model, if they are attached to not existing elements', async () => {

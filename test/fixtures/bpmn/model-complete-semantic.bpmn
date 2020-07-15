@@ -99,6 +99,7 @@
     <semantic:textAnnotation id="text_annotation_id_1">
       <semantic:text>Annotation</semantic:text>
     </semantic:textAnnotation>
+    <semantic:association associationDirection="None" sourceRef="callActivity_1" targetRef="text_annotation_id_1" id="association_id_1"/>
   </semantic:process>
   <semantic:process isExecutable="false" id="process_2">
     <semantic:startEvent name="Message Start Event" id="startEvent_2_1_message">
@@ -265,6 +266,7 @@
       <bpmndi:BPMNEdge bpmnElement="message_flow_initiating_message_id" id="Edge_message_flow_initiating_message_id" messageVisibleKind="initiating" />
       <bpmndi:BPMNEdge bpmnElement="message_flow_non_initiating_message_id" id="Edge_message_flow_non_initiating_message_id" messageVisibleKind="non-initiating" />
       <bpmndi:BPMNEdge bpmnElement="message_flow_no_visible_id" id="Edge_message_flow_no_visible_id" />
+      <bpmndi:BPMNEdge bpmnElement="association_id_1" id="E1373638081003__5362a7ef-ce7e-4a91-9c38-66c07b1b5f49" />
     </bpmndi:BPMNPlane>
     <bpmndi:BPMNLabelStyle id="bold_font_id">
       <dc:Font isBold="true" isItalic="false" isStrikeThrough="false" isUnderline="false" name="Arial" size="11.0"/>

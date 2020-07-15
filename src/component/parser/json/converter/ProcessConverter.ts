@@ -18,7 +18,7 @@ import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { Process } from '../Definitions';
-import { SequenceFlow } from '../../../../model/bpmn/edge/Flow';
+import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/edge/Flow';
 import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
 import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';
@@ -29,6 +29,7 @@ const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
 const convertedProcessBpmnElements: ShapeBpmnElement[] = [];
 const convertedSequenceFlows: SequenceFlow[] = [];
+const convertedAssociationFlows: AssociationFlow[] = [];
 const defaultSequenceFlowIds: string[] = [];
 
 const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
@@ -51,6 +52,10 @@ export function findSequenceFlow(id: string): SequenceFlow {
   return convertedSequenceFlows.find(i => i.id === id);
 }
 
+export function findAssociationFlow(id: string): AssociationFlow {
+  return convertedAssociationFlows.find(i => i.id === id);
+}
+
 interface EventDefinition {
   kind: ShapeBpmnEventKind;
   counter: number;
@@ -66,6 +71,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       convertedLaneBpmnElements.length = 0;
       convertedProcessBpmnElements.length = 0;
       convertedSequenceFlows.length = 0;
+      convertedAssociationFlows.length = 0;
       defaultSequenceFlowIds.length = 0;
 
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
@@ -91,6 +97,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
 
     // flows
     this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW]);
+    this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW]);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -202,6 +209,14 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       const kind = this.getSequenceFlowKind(sequenceFlow);
       const convertedSequenceFlow = new SequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.sourceRef, sequenceFlow.targetRef, kind);
       convertedSequenceFlows.push(convertedSequenceFlow);
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private buildAssociationFlows(bpmnElements: Array<any> | any): void {
+    ensureIsArray(bpmnElements).forEach(association => {
+      const convertedAssociationFlow = new AssociationFlow(association.id, association.name, association.sourceRef, association.targetRef, association.associationDirection);
+      convertedAssociationFlows.push(convertedAssociationFlow);
     });
   }
 
