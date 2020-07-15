@@ -34,7 +34,7 @@ export class MessageFlow extends Flow {
 }
 
 export class AssociationFlow extends Flow {
-  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, associationDirectionKind = AssociationDirectionKind.NONE) {
+  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly associationDirectionKind = AssociationDirectionKind.NONE) {
     super(id, name, FlowKind.ASSOCIATION_FLOW, sourceRefId, targetRefId);
   }
 }

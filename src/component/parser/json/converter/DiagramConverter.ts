@@ -138,7 +138,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
       const waypoints = this.deserializeWaypoints(edge.waypoint);
       const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
       const messageVisibleKind = edge.messageVisibleKind ? edge.messageVisibleKind : MessageVisibleKind.NONE;
-      const associationDirectionKind = edge.AssociationDirectionKind ? edge.AssociationDirectionKind : AssociationDirectionKind.NONE;
+      const associationDirectionKind = edge.associationDirectionKind ? edge.associationDirectionKind : AssociationDirectionKind.NONE;
       return new Edge(edge.id, flow, waypoints, label, messageVisibleKind, associationDirectionKind);
     });
   }
