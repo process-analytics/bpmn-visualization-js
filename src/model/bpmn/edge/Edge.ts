@@ -17,7 +17,6 @@ import Waypoint from './Waypoint';
 import Label from '../Label';
 import Flow from './Flow';
 import { MessageVisibleKind } from './MessageVisibleKind';
-import { AssociationDirectionKind } from './AssociationDirectionKind';
 
 export default class Edge {
   constructor(
@@ -26,6 +25,5 @@ export default class Edge {
     readonly waypoints?: Waypoint[],
     readonly label?: Label,
     readonly messageVisibleKind: MessageVisibleKind = MessageVisibleKind.NONE,
-    readonly associationDirectionKind: AssociationDirectionKind = AssociationDirectionKind.NONE,
   ) {}
 }
