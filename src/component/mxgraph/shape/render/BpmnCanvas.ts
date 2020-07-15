@@ -41,10 +41,10 @@ export interface BpmnCanvasConfiguration {
 export default class BpmnCanvas {
   private c: mxAbstractCanvas2D;
 
+  private iconOriginalSize: Size;
   private readonly scaleX: number;
   private readonly scaleY: number;
 
-  private iconOriginalSize: Size;
   private iconPaintingOriginX = 0;
   private iconPaintingOriginY = 0;
 
