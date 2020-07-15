@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 import StyleUtils, { StyleDefault } from '../StyleUtils';
-import IconPainter, { buildPaintParameter, PaintParameter } from './render/IconPainter';
+import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render/IconPainter';
 import { ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 
 export abstract class BaseActivityShape extends mxRectangleShape {
+  protected iconPainter = IconPainterProvider.get();
+
   // TODO missing in mxgraph-type-definitions mxShape
   isRounded: boolean;
   // TODO missing in mxgraph-type-definitions mxShape
@@ -51,7 +53,7 @@ export class TaskShape extends BaseTaskShape {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected paintTaskIcon(paintParameter: PaintParameter): void {
     // No symbol for the BPMN Task
-    IconPainter.paintEmptyIcon();
+    this.iconPainter.paintEmptyIcon();
   }
 }
 
@@ -61,7 +63,7 @@ export class ServiceTaskShape extends BaseTaskShape {
   }
 
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    IconPainter.paintGearIcon(paintParameter);
+    this.iconPainter.paintGearIcon(paintParameter);
   }
 }
 
@@ -71,7 +73,7 @@ export class UserTaskShape extends BaseTaskShape {
   }
 
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    IconPainter.paintWomanIcon(paintParameter);
+    this.iconPainter.paintWomanIcon(paintParameter);
   }
 }
 
@@ -122,7 +124,7 @@ export class SubProcessShape extends BaseActivityShape {
     super.paintForeground(c, x, y, w, h);
 
     if (StyleUtils.getBpmnIsExpanded(this.style) === 'false') {
-      IconPainter.paintExpandIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
+      this.iconPainter.paintExpandIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
     }
   }
 }
