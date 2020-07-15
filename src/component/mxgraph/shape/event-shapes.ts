@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnEventKind } from '../../../model/bpmn/shape/ShapeBpmnEventKind';
-import IconPainter, { PaintParameter } from './IconPainter';
+import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render/IconPainter';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 
 abstract class EventShape extends mxEllipse {
+  protected iconPainter = IconPainterProvider.get();
+
   // TODO: when all/more event types will be supported, we could move to a Record/MappedType
   private iconPainters: Map<ShapeBpmnEventKind, (paintParameter: PaintParameter) => void> = new Map([
-    [ShapeBpmnEventKind.MESSAGE, (paintParameter: PaintParameter) => IconPainter.paintEnvelopeIcon({ ...paintParameter, ratioFromParent: 0.5 })],
-    [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => IconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
-    [ShapeBpmnEventKind.TIMER, (paintParameter: PaintParameter) => IconPainter.paintClockIcon(paintParameter)],
-    [ShapeBpmnEventKind.SIGNAL, (paintParameter: PaintParameter) => IconPainter.paintTriangleIcon({ ...paintParameter, ratioFromParent: 0.5 })],
+    [ShapeBpmnEventKind.MESSAGE, (paintParameter: PaintParameter) => this.iconPainter.paintEnvelopeIcon({ ...paintParameter, ratioFromParent: 0.5 })],
+    [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => this.iconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
+    [ShapeBpmnEventKind.TIMER, (paintParameter: PaintParameter) => this.iconPainter.paintClockIcon(paintParameter)],
+    [ShapeBpmnEventKind.SIGNAL, (paintParameter: PaintParameter) => this.iconPainter.paintTriangleIcon({ ...paintParameter, ratioFromParent: 0.5 })],
   ]);
 
   protected withFilledIcon = false;
@@ -36,7 +37,7 @@ abstract class EventShape extends mxEllipse {
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     this.markNonFullyRenderedEvents(c);
     // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
-    const paintParameter = IconPainter.buildPaintParameter((c as unknown) as mxgraph.mxXmlCanvas2D, x, y, w, h, (this as unknown) as mxgraph.mxShape, 0.25, this.withFilledIcon);
+    const paintParameter = buildPaintParameter(c, x, y, w, h, this, 0.25, this.withFilledIcon);
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);
   }
@@ -51,12 +52,11 @@ abstract class EventShape extends mxEllipse {
   }
 
   protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {
-    // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
-    super.paintVertexShape((c as unknown) as mxAbstractCanvas2D, x, y, w, h);
+    super.paintVertexShape(c, x, y, w, h);
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    const paintIcon = this.iconPainters.get(StyleUtils.getBpmnEventKind(this.style)) || (() => IconPainter.paintEmptyIcon());
+    const paintIcon = this.iconPainters.get(StyleUtils.getBpmnEventKind(this.style)) || (() => this.iconPainter.paintEmptyIcon());
     paintIcon(paintParameter);
   }
 }
@@ -112,15 +112,16 @@ export class BoundaryEventShape extends IntermediateEventShape {
   protected paintOuterShape(paintParameter: PaintParameter): void {
     const isInterrupting = StyleUtils.getBpmnIsInterrupting(this.style);
     if (isInterrupting === 'false') {
-      paintParameter.c.setDashed(1, 0);
+      paintParameter.c.setDashed(true, false);
       paintParameter.c.setDashPattern('3 2');
     }
 
     super.paintOuterShape(paintParameter);
 
-    // TODO temp. missing in mxgraph-type-definitions@1.0.2 mxShape
+    // Restore original configuration
+    // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
     // this.configureCanvas(c, x, y, w, h);
-    paintParameter.c.setDashed(StyleUtils.isDashed(this.style), StyleUtils.getFixDash(this.style));
+    paintParameter.c.setDashed(StyleUtils.isDashed(this.style), StyleUtils.isFixDash(this.style));
     paintParameter.c.setDashPattern(StyleUtils.getDashPattern(this.style));
   }
 }

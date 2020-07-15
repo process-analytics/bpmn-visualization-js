@@ -18,6 +18,7 @@ import { ShapeBpmnElementKind } from '../../../model/bpmn/shape/ShapeBpmnElement
 import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape, BoundaryEventShape } from '../shape/event-shapes';
 import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from '../shape/gateway-shapes';
 import { SubProcessShape, ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape, CallActivityShape } from '../shape/activity-shapes';
+import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -49,6 +50,8 @@ export default class ShapeConfigurator {
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_USER, UserTaskShape);
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape);
+    // artifacts
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
   }
 
   private initMxShapePrototype(isFF: boolean): void {
@@ -57,7 +60,9 @@ export default class ShapeConfigurator {
       const canvas = new mxSvgCanvas2D(this.node, false);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
       canvas.pointerEventsValue = this.svgPointerEvents;
-      canvas.blockImagePointerEvents = isFF;
+      // TODO existed in mxgraph-type-definitions@1.0.2, no more in mxgraph-type-definitions@1.0.3
+      // this is probably because mxSvgCanvas2D definition matches mxgraph@4.1.1 and we are using  mxgraph@4.1.0
+      ((canvas as unknown) as mxgraph.mxSvgCanvas2D).blockImagePointerEvents = isFF;
       const off = this.getSvgScreenOffset();
 
       if (off != 0) {
@@ -74,13 +79,12 @@ export default class ShapeConfigurator {
       //
       canvas.minStrokeWidth = this.minSvgStrokeWidth;
 
-      // TODO mxgraph-definitions 1.0.2 wrong value arg type in the format function (should be 'string', but is 'number')
-      // if (!this.antiAlias) {
-      //   // Rounds all numbers in the SVG output to integers
-      //   canvas.format = function(value: string) {
-      //     return Math.round(parseFloat(value));
-      //   };
-      // }
+      if (!this.antiAlias) {
+        // Rounds all numbers in the SVG output to integers
+        canvas.format = function(value: string) {
+          return Math.round(parseFloat(value));
+        };
+      }
 
       return canvas;
     };

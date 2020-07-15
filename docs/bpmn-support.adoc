@@ -132,6 +132,10 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Message Intermediate Catch Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Signal Intermediate Catch Event
+|
+|
 |===
 
 
@@ -149,6 +153,10 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Message Intermediate Throw Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Signal Intermediate Throw Event
+|
+|
 |===
 
 
@@ -205,6 +213,9 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
+|Signal End Event
+|
+|
 |===
 
 
@@ -298,6 +309,6 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Comments
 
 |Text Annotation
-|
-|
+|icon:check-circle-o[]
+|By default the size of the font is: 11 and family is set to : 'Arial, Helvetica, sans-serif' +
 |===

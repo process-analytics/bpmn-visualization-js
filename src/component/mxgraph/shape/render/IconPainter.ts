@@ -15,154 +15,128 @@
  */
 
 import { mxgraph } from 'ts-mxgraph';
-import BpmnCanvas, { MxCanvasUtil } from './render/BpmnCanvas';
-import StyleUtils, { StyleDefault } from '../StyleUtils';
-import { IconStyleConfiguration, Size } from './render/render-types';
+import BpmnCanvas from './BpmnCanvas';
+import StyleUtils, { StyleDefault } from '../../StyleUtils';
+import { IconStyleConfiguration, ShapeConfiguration } from './render-types';
 
 export interface PaintParameter {
-  c: mxgraph.mxXmlCanvas2D;
+  c: mxAbstractCanvas2D;
   shape: ShapeConfiguration;
   icon: IconStyleConfiguration;
   ratioFromParent?: number;
 }
 
-export interface ShapeConfiguration {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  strokeWidth?: number;
+export function buildPaintParameter(
+  c: mxAbstractCanvas2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  shape: mxShape,
+  ratioFromParent = 0.25,
+  isFilled = false,
+  iconStrokeWidth = 0,
+): PaintParameter {
+  const _shape = (shape as unknown) as mxgraph.mxShape; // TODO use mxShape from mxgraph-type-definitions (missing fill and stroke properties)
+
+  const shapeStrokeWidth = _shape.strokewidth || StyleUtils.getStrokeWidth(_shape.style);
+  const fillColor = _shape.fill || StyleUtils.getFillColor(_shape.style);
+  const strokeColor = _shape.stroke || StyleUtils.getStrokeColor(_shape.style);
+  const margin = StyleUtils.getMargin(_shape.style);
+
+  return {
+    c,
+    ratioFromParent,
+    shape: { x, y, w: width, h: height, strokeWidth: shapeStrokeWidth },
+    icon: { isFilled, fillColor, strokeColor, strokeWidth: iconStrokeWidth, margin },
+  };
 }
 
 export default class IconPainter {
-  public static buildPaintParameter(
-    c: mxgraph.mxXmlCanvas2D,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    shape: mxgraph.mxShape,
-    ratioFromParent = 0.25,
-    isFilled = false,
-    iconStrokeWidth = 0,
-  ): PaintParameter {
-    const shapeStrokeWidth = shape.strokewidth || StyleUtils.getStrokeWidth(shape.style);
-    const fillColor = shape.fill || StyleUtils.getFillColor(shape.style);
-    const strokeColor = shape.stroke || StyleUtils.getStrokeColor(shape.style);
-    const margin = StyleUtils.getMargin(shape.style);
-
-    return {
-      c,
-      ratioFromParent,
-      shape: { x, y, w: width, h: height, strokeWidth: shapeStrokeWidth },
-      icon: { isFilled, fillColor, strokeColor, strokeWidth: iconStrokeWidth, margin },
-    };
-  }
-
-  private static calculateIconSize(initialIconSize: Size, icon: IconStyleConfiguration, shape: ShapeConfiguration, ratioFromParent: number): Size {
-    // Calculate the icon size proportionally to the shape size
-    // (the longest side of the icon has the same value of the same side of the shape)
-    let iconWidthProportionalToShape;
-    let iconHeightProportionalToShape;
-    if (initialIconSize.height <= initialIconSize.width) {
-      iconWidthProportionalToShape = shape.w;
-      iconHeightProportionalToShape = (shape.w * initialIconSize.height) / initialIconSize.width;
-    } else {
-      iconWidthProportionalToShape = (shape.h * initialIconSize.width) / initialIconSize.height;
-      iconHeightProportionalToShape = shape.h;
-    }
-
-    // Calculate icon size proportionally to the ratio define in the shape
-    const inset = icon.strokeWidth ? (icon.strokeWidth - 1) * 2 : 0;
-    const paintIconWidth = iconWidthProportionalToShape * ratioFromParent - inset;
-    const paintIconHeight = iconHeightProportionalToShape * ratioFromParent - inset;
-    return { width: paintIconWidth, height: paintIconHeight };
-  }
-
-  // TODO duplicated with BpmnCanvas.updateCanvasStyle
-  // This will be removed when all paint functions will use updateCanvasStyle
-  private static updateCanvasStyle(canvas: mxgraph.mxXmlCanvas2D, { isFilled, strokeColor, fillColor, strokeWidth }: IconStyleConfiguration): void {
-    if (isFilled) {
-      // Choose dark color to fill the icon
-      canvas.setFillColor(strokeColor);
-    } else {
-      // Choose light color to fill the icon
-      canvas.setFillColor(fillColor);
-    }
-
-    canvas.setStrokeWidth(strokeWidth);
-  }
-
-  public static paintEmptyIcon(): void {
+  public paintEmptyIcon(): void {
     // empty by nature
   }
 
   // this implementation is adapted from the draw.io BPMN 'message' symbol
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465
-  public static paintEnvelopeIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
-    this.updateCanvasStyle(c, icon);
+  public paintEnvelopeIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+    const originalIconSize = { width: 485.41, height: 321.76 };
+    const canvas = new BpmnCanvas({
+      mxCanvas: c,
+      shapeConfiguration: shape,
+      iconConfiguration: {
+        originalSize: originalIconSize,
+        style: icon,
+        ratioFromShape: ratioFromParent,
+        computeAlternateScaling: true,
+      },
+    });
+    canvas.setIconOriginToShapeCenter();
 
-    const initialIconSize = { width: 485.41, height: 321.76 };
-    const iconSize = this.calculateIconSize(initialIconSize, icon, shape, ratioFromParent);
-    MxCanvasUtil.translateIconToShapeCenter(c, shape, iconSize);
-
-    const w = iconSize.width;
-    const h = iconSize.height;
+    const w = originalIconSize.width;
+    const h = originalIconSize.height;
 
     // Paint the envelope outline with dark color
-    c.rect(0, 0, w, h);
-    c.fillAndStroke();
+    canvas.rect(0, 0, w, h);
+    canvas.fillAndStroke();
 
     if (icon.isFilled) {
       // Choose light color for envelope closure
-      c.setStrokeColor(icon.fillColor);
+      canvas.setStrokeColor(icon.fillColor);
     }
 
     // Paint the envelope closure
-    c.begin();
+    canvas.begin();
 
     // V line
-    c.moveTo(0, 0);
-    c.lineTo(w * 0.5, h * 0.6);
-    c.lineTo(w, 0);
+    canvas.moveTo(0, 0);
+    canvas.lineTo(w * 0.5, h * 0.6);
+    canvas.lineTo(w, 0);
 
     // First bottom line
-    c.moveTo(0, h);
-    c.lineTo(w / 3, h * 0.45);
+    canvas.moveTo(0, h);
+    canvas.lineTo(w / 3, h * 0.45);
 
     // Second bottom line
-    c.moveTo(w, h);
-    c.lineTo((w * 2) / 3, h * 0.45);
+    canvas.moveTo(w, h);
+    canvas.lineTo((w * 2) / 3, h * 0.45);
 
-    c.stroke();
+    canvas.stroke();
   }
 
   // highly inspired from mxDoubleEllipse
-  public static paintCircleIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
-    this.updateCanvasStyle(c, icon);
+  public paintCircleIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+    const originalIconSize = { width: shape.w, height: shape.h };
+    const canvas = new BpmnCanvas({
+      mxCanvas: c,
+      shapeConfiguration: shape,
+      iconConfiguration: {
+        originalSize: originalIconSize,
+        style: icon,
+        ratioFromShape: ratioFromParent,
+        computeAlternateScaling: true,
+      },
+    });
+    canvas.setIconOriginToShapeCenter();
 
-    const initialIconSize = { width: shape.w, height: shape.h };
-    const iconSize = this.calculateIconSize(initialIconSize, icon, shape, ratioFromParent);
-    MxCanvasUtil.translateIconToShapeCenter(c, shape, iconSize);
-
-    const w = iconSize.width;
-    const h = iconSize.height;
+    const w = originalIconSize.width;
+    const h = originalIconSize.height;
     if (w > 0 && h > 0) {
-      c.ellipse(0, 0, w, h);
+      canvas.ellipse(0, 0, w, h);
     }
 
     if (icon.isFilled) {
-      c.fillAndStroke();
+      canvas.fillAndStroke();
     } else {
-      c.stroke();
+      canvas.stroke();
     }
   }
 
   // implementation adapted from https://www.flaticon.com/free-icon/clock_223404
-  public static paintClockIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
+  public paintClockIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     const canvas = new BpmnCanvas({
       mxCanvas: c,
-      shapeConfiguration: { x, y, w, h },
+      shapeConfiguration: shape,
       iconConfiguration: {
         originalSize: { height: 152, width: 152 },
         ratioFromShape: ratioFromParent,
@@ -262,7 +236,7 @@ export default class IconPainter {
   }
 
   // implementation adapted from https://thenounproject.com/search/?q=triangle&i=2452089
-  public static paintTriangleIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
+  public paintTriangleIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
     c.setStrokeWidth(StyleDefault.STROKE_WIDTH_THIN);
     const canvas = new BpmnCanvas({
       mxCanvas: c,
@@ -289,10 +263,10 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  public static paintXCrossIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
+  public paintXCrossIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     const canvas = new BpmnCanvas({
       mxCanvas: c,
-      shapeConfiguration: { x, y, w, h },
+      shapeConfiguration: shape,
       iconConfiguration: {
         originalSize: { height: 0.5, width: 0.5 },
         ratioFromShape: ratioFromParent,
@@ -301,17 +275,17 @@ export default class IconPainter {
     });
     canvas.setIconOriginPosition(4);
 
-    this.drawCrossIcon(canvas);
-    const rotationCenterX = w / 4;
-    const rotationCenterY = h / 4;
+    IconPainter.drawCrossIcon(canvas);
+    const rotationCenterX = shape.w / 4;
+    const rotationCenterY = shape.h / 4;
     canvas.rotate(45, false, false, rotationCenterX, rotationCenterY);
     canvas.fillAndStroke();
   }
 
-  public static paintPlusCrossIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
+  public paintPlusCrossIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     const canvas = new BpmnCanvas({
       mxCanvas: c,
-      shapeConfiguration: { x, y, w, h },
+      shapeConfiguration: shape,
       iconConfiguration: {
         originalSize: { height: 0.5, width: 0.5 },
         ratioFromShape: ratioFromParent,
@@ -320,7 +294,7 @@ export default class IconPainter {
     });
     canvas.setIconOriginPosition(4);
 
-    this.drawCrossIcon(canvas);
+    IconPainter.drawCrossIcon(canvas);
     canvas.fillAndStroke();
   }
 
@@ -343,10 +317,10 @@ export default class IconPainter {
 
   // implementation adapted from https://www.flaticon.com/free-icon/employees_554768
   // use https://github.com/process-analytics/mxgraph-svg2shape to generate the xml stencil and port it to code
-  public static paintWomanIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
+  public paintWomanIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     const canvas = new BpmnCanvas({
       mxCanvas: c,
-      shapeConfiguration: { x, y, w, h },
+      shapeConfiguration: shape,
       iconConfiguration: {
         originalSize: { height: 239, width: 239 }, // TODO use h="239.68" w="143.61"
         ratioFromShape: ratioFromParent,
@@ -436,10 +410,10 @@ export default class IconPainter {
 
   // this implementation is adapted from the draw.io BPMN 'Service Task' stencil
   // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L898
-  public static paintGearIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
+  public paintGearIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
     const canvas = new BpmnCanvas({
       mxCanvas: c,
-      shapeConfiguration: { x, y, w, h },
+      shapeConfiguration: shape,
       iconConfiguration: {
         // icon coordinates fill a 100x100 rectangle (approximately: 90x90 + foreground translation)
         originalSize: { height: 100, width: 100 },
@@ -450,11 +424,11 @@ export default class IconPainter {
     canvas.setIconOriginPosition(20);
 
     // background
-    this.paintGearIconBackground(canvas);
+    IconPainter.paintGearIconBackground(canvas);
 
     // foreground
     canvas.translateIconOrigin(14, 14);
-    this.paintGearIconForeground(canvas);
+    IconPainter.paintGearIconForeground(canvas);
   }
 
   private static paintGearIconBackground(canvas: BpmnCanvas): void {
@@ -495,7 +469,7 @@ export default class IconPainter {
 
     const arcStartX = 24.8;
     const arcStartY = 39;
-    this.paintInnerCircle(canvas, arcStartX, arcStartY);
+    IconPainter.paintGearInnerCircle(canvas, arcStartX, arcStartY);
   }
 
   private static paintGearIconForeground(canvas: BpmnCanvas): void {
@@ -536,14 +510,14 @@ export default class IconPainter {
 
     const arcStartX = 39.2;
     const arcStartY = 55.8;
-    this.paintInnerCircle(canvas, arcStartX, arcStartY);
+    IconPainter.paintGearInnerCircle(canvas, arcStartX, arcStartY);
 
     // fill the inner circle to mask the background
     canvas.begin();
-    this.paintInnerCircle(canvas, arcStartX, arcStartY);
+    IconPainter.paintGearInnerCircle(canvas, arcStartX, arcStartY);
   }
 
-  private static paintInnerCircle(canvas: BpmnCanvas, arcStartX: number, arcStartY: number): void {
+  private static paintGearInnerCircle(canvas: BpmnCanvas, arcStartX: number, arcStartY: number): void {
     const arcRay = 13.5;
     canvas.moveTo(arcStartX, arcStartY);
     canvas.arcTo(arcRay, arcRay, 0, 1, 1, arcStartX + 2 * arcRay, arcStartY);
@@ -552,28 +526,46 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  public static paintExpandIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
-    this.updateCanvasStyle(c, icon);
+  public paintExpandIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+    const originalIconSize = { width: 16, height: 16 };
+    const canvas = new BpmnCanvas({
+      mxCanvas: c,
+      shapeConfiguration: shape,
+      iconConfiguration: {
+        originalSize: originalIconSize,
+        style: icon,
+        ratioFromShape: ratioFromParent,
+        computeAlternateScaling: true,
+      },
+    });
+    canvas.setIconOriginToShapeBottomCenter();
 
-    const initialIconSize = { width: 16, height: 16 };
-    const iconSize = this.calculateIconSize(initialIconSize, icon, shape, ratioFromParent);
-    MxCanvasUtil.translateIconToShapeBottomCenter(c, shape, iconSize);
-
-    const w = iconSize.width;
-    const h = iconSize.height;
+    const w = originalIconSize.width;
+    const h = originalIconSize.height;
 
     // Rounded rectangle
-    c.roundrect(0, 0, w, h, 2, 2);
-    c.stroke();
+    canvas.roundrect(0, 0, w, h, 2, 2);
+    canvas.stroke();
 
     // Cross
-    c.begin();
-    c.moveTo(w / 2, h / 4);
-    c.lineTo(w / 2, (h * 3) / 4);
-    c.close();
-    c.moveTo(w / 4, h / 2);
-    c.lineTo((w * 3) / 4, h / 2);
-    c.close();
-    c.fillAndStroke();
+    canvas.begin();
+    canvas.moveTo(w / 2, h / 4);
+    canvas.lineTo(w / 2, (h * 3) / 4);
+    canvas.close();
+    canvas.moveTo(w / 4, h / 2);
+    canvas.lineTo((w * 3) / 4, h / 2);
+    canvas.close();
+    canvas.fillAndStroke();
+  }
+}
+
+export class IconPainterProvider {
+  private static instance = new IconPainter();
+
+  static get(): IconPainter {
+    return this.instance;
+  }
+  static set(painter: IconPainter): void {
+    this.instance = painter;
   }
 }

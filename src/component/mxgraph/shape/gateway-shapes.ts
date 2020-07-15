@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
 import { StyleDefault } from '../StyleUtils';
-import IconPainter, { PaintParameter } from './IconPainter';
+import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render/IconPainter';
 
 abstract class GatewayShape extends mxRhombus {
+  protected iconPainter = IconPainterProvider.get();
+
   protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
@@ -25,15 +26,13 @@ abstract class GatewayShape extends mxRhombus {
   protected abstract paintInnerShape(paintParameter: PaintParameter): void;
 
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
-    const paintParameter = IconPainter.buildPaintParameter((c as unknown) as mxgraph.mxXmlCanvas2D, x, y, w, h, (this as unknown) as mxgraph.mxShape);
+    const paintParameter = buildPaintParameter(c, x, y, w, h, this);
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);
   }
 
   protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {
-    // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
-    super.paintVertexShape((c as unknown) as mxAbstractCanvas2D, x, y, w, h);
+    super.paintVertexShape(c, x, y, w, h);
   }
 }
 
@@ -43,7 +42,7 @@ export class ExclusiveGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    IconPainter.paintXCrossIcon(paintParameter);
+    this.iconPainter.paintXCrossIcon(paintParameter);
   }
 }
 
@@ -53,7 +52,7 @@ export class ParallelGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    IconPainter.paintPlusCrossIcon(paintParameter);
+    this.iconPainter.paintPlusCrossIcon(paintParameter);
   }
 }
 
@@ -63,7 +62,7 @@ export class InclusiveGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    IconPainter.paintCircleIcon({
+    this.iconPainter.paintCircleIcon({
       ...paintParameter,
       ratioFromParent: 0.62,
       icon: { ...paintParameter.icon, isFilled: false, strokeWidth: StyleDefault.STROKE_WIDTH_THICK.valueOf() },

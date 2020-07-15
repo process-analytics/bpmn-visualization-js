@@ -23,15 +23,15 @@ export enum MarkerIdentifier {
 export enum StyleDefault {
   STROKE_WIDTH_THIN = 2,
   STROKE_WIDTH_THICK = 5,
-  TASK_SHAPE_BOTTOM_MARGIN = 7,
+  SHAPE_ACTIVITY_BOTTOM_MARGIN = 7,
   DEFAULT_FILL_COLOR = 'White',
   DEFAULT_STROKE_COLOR = 'Black',
   DEFAULT_FONT_FAMILY = 'Arial, Helvetica, sans-serif', // define our own to not depend on eventual mxGraph default change
   DEFAULT_FONT_SIZE = 11,
   DEFAULT_FONT_COLOR = 'Black',
   DEFAULT_MARGIN = 0,
-  DEFAULT_DASHED = 0,
-  DEFAULT_FIX_DASH = 0,
+  DEFAULT_DASHED = 0, // it means 'false'
+  DEFAULT_FIX_DASH = 0, // it means 'false'
   DEFAULT_DASH_PATTERN = '3 3',
 }
 
@@ -60,11 +60,11 @@ export default class StyleUtils {
     return mxUtils.getValue(style, mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
   }
 
-  public static isDashed(style: any): number {
+  public static isDashed(style: any): boolean {
     return mxUtils.getValue(style, mxConstants.STYLE_DASHED, StyleDefault.DEFAULT_DASHED);
   }
 
-  public static getFixDash(style: any): number {
+  public static isFixDash(style: any): boolean {
     return mxUtils.getValue(style, mxConstants.STYLE_FIX_DASH, StyleDefault.DEFAULT_FIX_DASH);
   }
 

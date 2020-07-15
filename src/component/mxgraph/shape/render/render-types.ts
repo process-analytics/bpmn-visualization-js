@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+export interface ShapeConfiguration {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  strokeWidth?: number;
+}
+
 export interface IconStyleConfiguration {
   isFilled: boolean;
   fillColor: string;
@@ -29,6 +37,9 @@ export interface Size {
 
 export interface IconConfiguration {
   originalSize: Size;
-  ratioFromShape: number;
+  /** If `undefined`, no scaling will be done in {@link BpmnCanvas}. */
+  ratioFromShape?: number;
+  /** TODO temp solution prior merging all scaling computation solutions */
+  computeAlternateScaling?: boolean;
   style: IconStyleConfiguration;
 }
