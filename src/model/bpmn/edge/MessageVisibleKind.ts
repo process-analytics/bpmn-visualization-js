@@ -19,5 +19,5 @@
 export enum MessageVisibleKind {
   NONE = 'none',
   INITIATING = 'initiating',
-  NON_INITIATING = 'non-initiating',
+  NON_INITIATING = 'non_initiating',
 }

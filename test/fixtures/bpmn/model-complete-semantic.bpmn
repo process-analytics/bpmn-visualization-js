@@ -251,7 +251,7 @@
       <bpmndi:BPMNEdge bpmnElement="_8e8fe679-eb3b-4c43-a4d6-891e7087ff33" id="E1373649849867__8e8fe679-eb3b-4c43-a4d6-891e7087ff33" />
       <bpmndi:BPMNEdge bpmnElement="Flow_028jkgv" id="E1373649849867__Flow_028jkgv" />
       <bpmndi:BPMNEdge bpmnElement="message_flow_initiating_message_id" id="Edge_message_flow_initiating_message_id" messageVisibleKind="initiating" />
-      <bpmndi:BPMNEdge bpmnElement="message_flow_non_initiating_message_id" id="Edge_message_flow_non_initiating_message_id" messageVisibleKind="non-initiating" />
+      <bpmndi:BPMNEdge bpmnElement="message_flow_non_initiating_message_id" id="Edge_message_flow_non_initiating_message_id" messageVisibleKind="non_initiating" />
       <bpmndi:BPMNEdge bpmnElement="message_flow_no_visible_id" id="Edge_message_flow_no_visible_id" />
     </bpmndi:BPMNPlane>
     <bpmndi:BPMNLabelStyle id="bold_font_id">
