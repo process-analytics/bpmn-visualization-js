@@ -311,7 +311,20 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Text Annotation
 |icon:check-circle-o[]
 |By default the size of the font is: 11 and family is set to : 'Arial, Helvetica, sans-serif' +
+|===
 
+
+
+
+=== Associations
+
+
+[cols="1,1,4", options="header"]
+.Associations
+|===
+|Name
+|Rendering
+|Comments
 |Text Annotation Association
 |
 |
