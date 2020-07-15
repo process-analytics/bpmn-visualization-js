@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
-import IconPainter, { PaintParameter } from './IconPainter';
+import IconPainter, { buildPaintParameter, PaintParameter } from './render/IconPainter';
 import { ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 
 export abstract class BaseActivityShape extends mxRectangleShape {
@@ -38,9 +37,7 @@ abstract class BaseTaskShape extends BaseActivityShape {
 
   public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
-
-    const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, (this as unknown) as mxgraph.mxShape);
-    this.paintTaskIcon(paintParameter);
+    this.paintTaskIcon(buildPaintParameter(c, x, y, w, h, this));
   }
 
   protected abstract paintTaskIcon(paintParameter: PaintParameter): void;
@@ -125,8 +122,7 @@ export class SubProcessShape extends BaseActivityShape {
     super.paintForeground(c, x, y, w, h);
 
     if (StyleUtils.getBpmnIsExpanded(this.style) === 'false') {
-      const paintParameter = IconPainter.buildPaintParameter(c, x, y, w, h, (this as unknown) as mxgraph.mxShape, 0.17, false, 1.5);
-      IconPainter.paintExpandIcon(paintParameter);
+      IconPainter.paintExpandIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
     }
   }
 }
