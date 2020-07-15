@@ -48,6 +48,8 @@ export default class StyleConfigurator {
       FlowKind.ASSOCIATION_FLOW,
       (style: any) => {
         style[mxConstants.STYLE_STROKECOLOR] = 'Chartreuse';
+        style[mxConstants.STYLE_ENDARROW] = null; // no arrow
+        style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
   ]);
