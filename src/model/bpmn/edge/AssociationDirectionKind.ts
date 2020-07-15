@@ -16,8 +16,8 @@
 /**
  The real name of the field in the BPMN XSD
  */
-export enum FlowKind {
-  SEQUENCE_FLOW = 'sequenceFlow',
-  MESSAGE_FLOW = 'messageFlow',
-  ASSOCIATION_FLOW = 'association',
+export enum AssociationDirectionKind {
+  NONE = 'None',
+  ONE = 'One',
+  BOTH = 'Both',
 }
