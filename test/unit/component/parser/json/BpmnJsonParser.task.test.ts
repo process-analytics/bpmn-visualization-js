@@ -20,6 +20,7 @@ describe.each([
   ['task', ShapeBpmnElementKind.TASK],
   ['serviceTask', ShapeBpmnElementKind.TASK_SERVICE],
   ['userTask', ShapeBpmnElementKind.TASK_USER],
+  ['receiveTask', ShapeBpmnElementKind.TASK_RECEIVE],
 ])('parse bpmn as json for %s', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
   const processJsonAsObjectWithTaskJsonAsObject = `{
                         "${bpmnKind}": {
@@ -123,4 +124,69 @@ describe.each([
       },
     });
   });
+
+  if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.TASK_RECEIVE) {
+    it(`should convert as Shape, when a ${bpmnKind} (with/without instantiate) is an attribute (as array) of 'process'`, () => {
+      const json = `{
+                "definitions" : {
+                    "process": {
+                        "receiveTask": [
+                          {
+                              "id":"receiveTask_id_0"
+                          },{
+                              "id":"receiveTask_id_1",
+                              "instantiate":true
+                          }
+                        ]
+                    },
+                    "BPMNDiagram": {
+                        "name":"process 0",
+                        "BPMNPlane": {
+                            "BPMNShape": [
+                              {
+                                "id":"shape_receiveTask_id_0",
+                                "bpmnElement":"receiveTask_id_0",
+                                "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
+                              }, {
+                                "id":"shape_receiveTask_id_1",
+                                "bpmnElement":"receiveTask_id_1",
+                                "Bounds": { "x": 365, "y": 235, "width": 35, "height": 46 }
+                              }
+                            ]
+                        }
+                    }
+                }
+            }`;
+
+      const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
+
+      verifyShape(model.flowNodes[0], {
+        shapeId: 'shape_receiveTask_id_0',
+        bpmnElementId: 'receiveTask_id_0',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.TASK_RECEIVE,
+        bounds: {
+          x: 362,
+          y: 232,
+          width: 36,
+          height: 45,
+        },
+      });
+      expect(model.flowNodes[0].bpmnElement.instantiate).toBeFalsy();
+
+      verifyShape(model.flowNodes[1], {
+        shapeId: 'shape_receiveTask_id_1',
+        bpmnElementId: 'receiveTask_id_1',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.TASK_RECEIVE,
+        bounds: {
+          x: 365,
+          y: 235,
+          width: 35,
+          height: 46,
+        },
+      });
+      expect(model.flowNodes[1].bpmnElement.instantiate).toBeTruthy();
+    });
+  }
 });
