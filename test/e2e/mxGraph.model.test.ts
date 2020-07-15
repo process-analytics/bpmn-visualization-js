@@ -215,6 +215,7 @@ describe('mxGraph model', () => {
       label: 'Terminate End Event',
     });
     expectModelContainsBpmnEvent('messageEndEvent', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.MESSAGE, label: 'Message End Event' });
+    expectModelContainsBpmnEvent('signalEndEvent', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.SIGNAL, label: 'Signal End Event' });
 
     // throw intermediate event
     expectModelContainsBpmnEvent('noneIntermediateThrowEvent', {

@@ -61,10 +61,13 @@
     <semantic:endEvent name="Message End Event" id="messageEndEvent">
       <semantic:messageEventDefinition/>
     </semantic:endEvent>
+    <semantic:endEvent name="Signal End Event" id="signalEndEvent">
+      <semantic:signalEventDefinition/>
+    </semantic:endEvent>
     <semantic:inclusiveGateway id="inclusiveGateway_1" name="Inclusive Gateway 1"/>
     <semantic:callActivity calledElement="Process_unknown" name="Call Activity Collapsed" id="callActivity_1" />
     <semantic:receiveTask id="receiveTask_not_instantiated" name="Not instantiated Receive Task"/>
-    <semantic:receiveTask id="receiveTask_instantiated" name="Instantiated Receive Task" instantiate=true/>
+    <semantic:receiveTask id="receiveTask_instantiated" name="Instantiated Receive Task" instantiate="true"/>
     <semantic:subProcess triggeredByEvent="false" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Expanded Embedded Sub-Process" id="expanded_embedded_sub_process_id"/>
     <semantic:subProcess triggeredByEvent="false" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Collapsed Embedded Sub-Process" id="collapsed_embedded_sub_process_id"/>
     <semantic:subProcess triggeredByEvent="true" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Expanded Event Sub-Process" id="expanded_event_sub_process_id"/>
@@ -79,16 +82,11 @@
     <semantic:sequenceFlow sourceRef="messageIntermediateThrowEvent" targetRef="terminateEndEvent" name="" id="_8e8fe679-eb3b-4c43-a4d6-891e7087ff33" />
     <semantic:sequenceFlow id="Flow_028jkgv" sourceRef="startEvent_2_timer" targetRef="IntermediateCatchEvent_Timer_01" />
     <semantic:sequenceFlow sourceRef="inclusiveGateway_1" targetRef="userTask_3" name="" id="conditional_sequence_flow_from_gateway_id">
-      <semantic:conditionExpression xsi:type="semantic:tFormalExpression" id="_WsCFcRszEeqkhYLXtt1BFw" evaluatesToTypeRef="java:java.lang.Boolean">&quot;Contract to be written&quot;.equals(loanRequested.status)</semantic:conditionExpression>
+      <semantic:conditionExpression xsi:type="semantic:tFormalExpression" id="condition_2" evaluatesToTypeRef="java:java.lang.Boolean">&quot;Contract to be written&quot;.equals(loanRequested.status)</semantic:conditionExpression>
     </semantic:sequenceFlow>
     <semantic:textAnnotation id="text_annotation_id_1">
       <semantic:text>Annotation</semantic:text>
     </semantic:textAnnotation>
-  </semantic:process>
-  <semantic:process isExecutable="false" id="process_2">
-    <semantic:startEvent name="Message Start Event" id="startEvent_2_1_message">
-      <semantic:messageEventDefinition/>
-    </semantic:startEvent>
   </semantic:process>
   <semantic:process isExecutable="false" id="process_2">
     <semantic:startEvent name="Message Start Event" id="startEvent_2_1_message">
@@ -161,6 +159,9 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="messageEndEvent" id="S1373649849862_messageEndEvent">
+        <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="signalEndEvent" id="S1373649849862_signalEndEvent">
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_IntermediateCatchEvent_Timer_01" bpmnElement="IntermediateCatchEvent_Timer_01">
