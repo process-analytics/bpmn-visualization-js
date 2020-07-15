@@ -237,7 +237,6 @@ export default class IconPainter {
 
   // implementation adapted from https://thenounproject.com/search/?q=triangle&i=2452089
   public paintTriangleIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
-    c.setStrokeWidth(StyleDefault.STROKE_WIDTH_THIN);
     const canvas = new BpmnCanvas({
       mxCanvas: c,
       shapeConfiguration: { x, y, w, h },
@@ -247,8 +246,8 @@ export default class IconPainter {
         style: icon,
       },
     });
-
-    canvas.setIconOriginToShapeCenter();
+    c.setStrokeWidth(StyleDefault.STROKE_WIDTH_THIN); // TODO should be done via icon style
+    canvas.setIconOriginToShapeCenter(); // TODO not fully center
 
     canvas.begin();
     canvas.moveTo(497, 55);
