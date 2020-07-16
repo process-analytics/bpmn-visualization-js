@@ -244,8 +244,8 @@ export default class IconPainter {
         style: icon,
       },
     });
-    c.setStrokeWidth(StyleDefault.STROKE_WIDTH_THIN); // TODO should be done via icon style
-    canvas.setIconOriginToShapeCenter(); // TODO not fully center
+    c.setStrokeWidth(StyleDefault.STROKE_WIDTH_THIN); // TODO should be done via icon style, but in that case, the strokeWidth change the ratio from shape
+    canvas.setIconOriginPosition(4);
 
     canvas.begin();
     canvas.moveTo(497, 55);
