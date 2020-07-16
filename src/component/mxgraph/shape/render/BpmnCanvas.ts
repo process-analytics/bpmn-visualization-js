@@ -23,6 +23,26 @@ export interface BpmnCanvasConfiguration {
 }
 
 /**
+ * Compute the icon size proportionally to a ratio of the shape size. The proportions of the icon are left untouched.
+ */
+export function computeScaledIconSize(initialIconSize: Size, iconStyleConfiguration: IconStyleConfiguration, shapeConfiguration: ShapeConfiguration, ratioFromShape: number): Size {
+  let iconWidthProportionalToShape;
+  let iconHeightProportionalToShape;
+  if (initialIconSize.height < initialIconSize.width || (initialIconSize.height == initialIconSize.width && shapeConfiguration.w <= shapeConfiguration.h)) {
+    iconWidthProportionalToShape = shapeConfiguration.w;
+    iconHeightProportionalToShape = (shapeConfiguration.w * initialIconSize.height) / initialIconSize.width;
+  } else {
+    iconWidthProportionalToShape = (shapeConfiguration.h * initialIconSize.width) / initialIconSize.height;
+    iconHeightProportionalToShape = shapeConfiguration.h;
+  }
+
+  const inset = iconStyleConfiguration.strokeWidth ? (iconStyleConfiguration.strokeWidth - 1) * 2 : 0;
+  const paintIconWidth = iconWidthProportionalToShape * ratioFromShape - inset;
+  const paintIconHeight = iconHeightProportionalToShape * ratioFromShape - inset;
+  return { width: paintIconWidth, height: paintIconHeight };
+}
+
+/**
  * Wrapper of {@link mxAbstractCanvas2D} to simplify method calls when painting icons/markers of BPMN shapes.
  *
  * It can scale dimensions passed to the method of the original {@link mxAbstractCanvas2D}
@@ -59,42 +79,15 @@ export default class BpmnCanvas {
 
     const ratioFromShape = iconConfiguration.ratioFromShape;
     if (ratioFromShape) {
-      if (!iconConfiguration.computeAlternateScaling) {
-        const parentSize = Math.min(this.shapeConfiguration.w, this.shapeConfiguration.h);
-        this.scaleX = (parentSize / this.iconOriginalSize.width) * ratioFromShape;
-        this.scaleY = (parentSize / this.iconOriginalSize.height) * ratioFromShape;
-      } else {
-        const scaledIconSize = BpmnCanvas.computeScaledIconSize(this.iconOriginalSize, iconConfiguration.style, this.shapeConfiguration, ratioFromShape);
-        this.scaleX = scaledIconSize.width / this.iconOriginalSize.width;
-        this.scaleY = scaledIconSize.height / this.iconOriginalSize.height;
-      }
+      const scaledIconSize = computeScaledIconSize(this.iconOriginalSize, iconConfiguration.style, this.shapeConfiguration, ratioFromShape);
+      this.scaleX = scaledIconSize.width / this.iconOriginalSize.width;
+      this.scaleY = scaledIconSize.height / this.iconOriginalSize.height;
     } else {
       this.scaleX = 1;
       this.scaleY = 1;
     }
 
     this.updateCanvasStyle(config.iconConfiguration.style);
-  }
-
-  // TODO taken from IconPainter, temp solution before merging with the existing scaling function
-  private static computeScaledIconSize(initialIconSize: Size, icon: IconStyleConfiguration, shape: ShapeConfiguration, ratioFromParent: number): Size {
-    // Compute the icon size proportionally to the shape size
-    // (the longest side of the icon has the same value of the same side of the shape)
-    let iconWidthProportionalToShape;
-    let iconHeightProportionalToShape;
-    if (initialIconSize.height <= initialIconSize.width) {
-      iconWidthProportionalToShape = shape.w;
-      iconHeightProportionalToShape = (shape.w * initialIconSize.height) / initialIconSize.width;
-    } else {
-      iconWidthProportionalToShape = (shape.h * initialIconSize.width) / initialIconSize.height;
-      iconHeightProportionalToShape = shape.h;
-    }
-
-    // Calculate icon size proportionally to the ratio define in the shape
-    const inset = icon.strokeWidth ? (icon.strokeWidth - 1) * 2 : 0;
-    const paintIconWidth = iconWidthProportionalToShape * ratioFromParent - inset;
-    const paintIconHeight = iconHeightProportionalToShape * ratioFromParent - inset;
-    return { width: paintIconWidth, height: paintIconHeight };
   }
 
   /**
@@ -110,16 +103,14 @@ export default class BpmnCanvas {
 
   setIconOriginToShapeCenter(): void {
     const shape = this.shapeConfiguration;
-    // TODO manage scaling (will be done later with another refactoring)
     this.iconPaintingOriginX = shape.x + (shape.w - this.iconOriginalSize.width * this.scaleX) / 2;
     this.iconPaintingOriginY = shape.y + (shape.h - this.iconOriginalSize.height * this.scaleY) / 2;
   }
 
   setIconOriginToShapeBottomCenter(bottomMargin: number = StyleDefault.SHAPE_ACTIVITY_BOTTOM_MARGIN): void {
     const shape = this.shapeConfiguration;
-    // TODO manage scaling (will be done later with another refactoring)
-    this.iconPaintingOriginX = shape.x + (shape.w - this.iconOriginalSize.width) / 2;
-    this.iconPaintingOriginY = shape.y + (shape.h - this.iconOriginalSize.height - bottomMargin);
+    this.iconPaintingOriginX = shape.x + (shape.w - this.iconOriginalSize.width * this.scaleX) / 2;
+    this.iconPaintingOriginY = shape.y + (shape.h - this.iconOriginalSize.height * this.scaleY - bottomMargin);
   }
 
   /**

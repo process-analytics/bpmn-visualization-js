@@ -39,7 +39,5 @@ export interface IconConfiguration {
   originalSize: Size;
   /** If `undefined`, no scaling will be done in {@link BpmnCanvas}. */
   ratioFromShape?: number;
-  /** TODO temp solution prior merging all scaling computation solutions */
-  computeAlternateScaling?: boolean;
   style: IconStyleConfiguration;
 }
