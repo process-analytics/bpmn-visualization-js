@@ -57,6 +57,10 @@ describe('compute scaled icon size', () => {
       const size = computeScaledIconSize({ width: 100, height: 200 }, newIconStyleConfiguration(), newShapeConfiguration(50, 50), 1);
       expectSize(size, { width: 25, height: 50 }); // max 50 50
     });
+    test('non zero stroke width', () => {
+      const size = computeScaledIconSize({ width: 100, height: 100 }, newIconStyleConfiguration(5), newShapeConfiguration(50, 50), 0.25);
+      expectSize(size, { width: 4.5, height: 4.5 }); // max 12.5 12.5
+    });
   });
 
   describe('parent width larger than height', () => {
@@ -76,6 +80,10 @@ describe('compute scaled icon size', () => {
       const size = computeScaledIconSize({ width: 200, height: 100 }, newIconStyleConfiguration(), newShapeConfiguration(100, 80), 1);
       expectSize(size, { width: 100, height: 50 }); // max 100 80
     });
+    test('non zero stroke width', () => {
+      const size = computeScaledIconSize({ width: 200, height: 100 }, newIconStyleConfiguration(3), newShapeConfiguration(100, 80), 0.25);
+      expectSize(size, { width: 21, height: 8.5 }); // max 25 20
+    });
   });
 
   describe('parent height larger than width', () => {
@@ -94,6 +102,10 @@ describe('compute scaled icon size', () => {
     test('ratio equal to 1', () => {
       const size = computeScaledIconSize({ width: 50, height: 50 }, newIconStyleConfiguration(), newShapeConfiguration(80, 100), 1);
       expectSize(size, { width: 80, height: 80 }); // max 80 100
+    });
+    test('non zero stroke width', () => {
+      const size = computeScaledIconSize({ width: 100, height: 200 }, newIconStyleConfiguration(1), newShapeConfiguration(80, 100), 0.25);
+      expectSize(size, { width: 12.5, height: 25 }); // max 25 20
     });
   });
 });
