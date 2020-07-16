@@ -68,7 +68,6 @@ export default class IconPainter {
         originalSize: originalIconSize,
         style: icon,
         ratioFromShape: ratioFromParent,
-        computeAlternateScaling: true,
       },
     });
     canvas.setIconOriginToShapeCenter();
@@ -114,7 +113,6 @@ export default class IconPainter {
         originalSize: originalIconSize,
         style: icon,
         ratioFromShape: ratioFromParent,
-        computeAlternateScaling: true,
       },
     });
     canvas.setIconOriginToShapeCenter();
@@ -294,7 +292,7 @@ export default class IconPainter {
       mxCanvas: c,
       shapeConfiguration: shape,
       iconConfiguration: {
-        originalSize: { height: 239, width: 239 }, // TODO use h="239.68" w="143.61"
+        originalSize: { height: 239.68, width: 143.61 },
         ratioFromShape: ratioFromParent,
         style: { ...icon, isFilled: true },
       },
@@ -507,7 +505,6 @@ export default class IconPainter {
         originalSize: originalIconSize,
         style: icon,
         ratioFromShape: ratioFromParent,
-        computeAlternateScaling: true,
       },
     });
     canvas.setIconOriginToShapeBottomCenter();
