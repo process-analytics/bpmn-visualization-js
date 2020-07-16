@@ -211,7 +211,7 @@ describe('parse bpmn as json for message flow', () => {
                       },{
                           "id": "edge_messageFlow_id_3",
                           "bpmnElement": "messageFlow_id_3",
-                          "messageVisibleKind":"non-initiating"
+                          "messageVisibleKind":"non_initiating"
                       }]
                   }
               }

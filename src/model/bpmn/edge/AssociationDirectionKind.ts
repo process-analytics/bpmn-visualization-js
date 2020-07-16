@@ -13,31 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-export interface ShapeConfiguration {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  strokeWidth?: number;
-}
-
-export interface IconStyleConfiguration {
-  isFilled: boolean;
-  fillColor: string;
-  strokeColor: string;
-  strokeWidth: number;
-  margin: number;
-}
-
-export interface Size {
-  width: number;
-  height: number;
-}
-
-export interface IconConfiguration {
-  originalSize: Size;
-  /** If `undefined`, no scaling will be done in {@link BpmnCanvas}. */
-  ratioFromShape?: number;
-  style: IconStyleConfiguration;
+/**
+ The real name of the field in the BPMN XSD
+ */
+export enum AssociationDirectionKind {
+  NONE = 'None',
+  ONE = 'One',
+  BOTH = 'Both',
 }

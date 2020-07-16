@@ -34,14 +34,20 @@
     <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Message" id="boundary_event_interrupting_message_id">
       <semantic:messageEventDefinition/>
     </semantic:boundaryEvent>
-    <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Message" id="boundary_event_non_interrupting_message_id">
-      <semantic:messageEventDefinition/>
-    </semantic:boundaryEvent>
     <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Timer" id="boundary_event_interrupting_timer_id">
       <semantic:timerEventDefinition/>
     </semantic:boundaryEvent>
+    <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Signal" id="boundary_event_interrupting_signal_id">
+      <semantic:signalEventDefinition/>
+    </semantic:boundaryEvent>
+    <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Message" id="boundary_event_non_interrupting_message_id">
+      <semantic:messageEventDefinition/>
+    </semantic:boundaryEvent>
     <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Timer" id="boundary_event_non_interrupting_timer_id">
       <semantic:timerEventDefinition/>
+    </semantic:boundaryEvent>
+    <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Signal" id="boundary_event_non_interrupting_signal_id">
+      <semantic:signalEventDefinition/>
     </semantic:boundaryEvent>
     <semantic:intermediateThrowEvent name="Throw None Intermediate Event" id="noneIntermediateThrowEvent" />
     <semantic:intermediateThrowEvent name="Throw Message Intermediate Event" id="messageIntermediateThrowEvent">
@@ -93,6 +99,7 @@
     <semantic:textAnnotation id="text_annotation_id_1">
       <semantic:text>Annotation</semantic:text>
     </semantic:textAnnotation>
+    <semantic:association associationDirection="None" sourceRef="callActivity_1" targetRef="text_annotation_id_1" id="association_id_1"/>
   </semantic:process>
   <semantic:process isExecutable="false" id="process_2">
     <semantic:startEvent name="Message Start Event" id="startEvent_2_1_message">
@@ -137,13 +144,19 @@
       <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_message_id" id="S1373649849862_boundary_event_interrupting_message_id">
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_message_id" id="S1373649849862_boundary_event_non_interrupting_message_id">
-        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_timer_id" id="S1373649849862_boundary_event_interrupting_timer_id">
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_signal_id" id="S1373649849862_boundary_event_interrupting_signal_id">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_message_id" id="S1373649849862_boundary_event_non_interrupting_message_id">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_timer_id" id="S1373649849862_boundary_event_non_interrupting_timer_id">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_signal_id" id="S1373649849862_boundary_event_non_interrupting_signal_id">
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="noneIntermediateThrowEvent" id="S1373649849862_noneIntermediateThrowEvent">
@@ -251,8 +264,9 @@
       <bpmndi:BPMNEdge bpmnElement="_8e8fe679-eb3b-4c43-a4d6-891e7087ff33" id="E1373649849867__8e8fe679-eb3b-4c43-a4d6-891e7087ff33" />
       <bpmndi:BPMNEdge bpmnElement="Flow_028jkgv" id="E1373649849867__Flow_028jkgv" />
       <bpmndi:BPMNEdge bpmnElement="message_flow_initiating_message_id" id="Edge_message_flow_initiating_message_id" messageVisibleKind="initiating" />
-      <bpmndi:BPMNEdge bpmnElement="message_flow_non_initiating_message_id" id="Edge_message_flow_non_initiating_message_id" messageVisibleKind="non-initiating" />
+      <bpmndi:BPMNEdge bpmnElement="message_flow_non_initiating_message_id" id="Edge_message_flow_non_initiating_message_id" messageVisibleKind="non_initiating" />
       <bpmndi:BPMNEdge bpmnElement="message_flow_no_visible_id" id="Edge_message_flow_no_visible_id" />
+      <bpmndi:BPMNEdge bpmnElement="association_id_1" id="E1373638081003__5362a7ef-ce7e-4a91-9c38-66c07b1b5f49" />
     </bpmndi:BPMNPlane>
     <bpmndi:BPMNLabelStyle id="bold_font_id">
       <dc:Font isBold="true" isItalic="false" isStrikeThrough="false" isUnderline="false" name="Arial" size="11.0"/>

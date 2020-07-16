@@ -36,7 +36,6 @@ abstract class EventShape extends mxEllipse {
 
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     this.markNonFullyRenderedEvents(c);
-    // TODO temp before removing ts-mxgraph (xxx as unknown as mxgraph.yyy)
     const paintParameter = buildPaintParameter(c, x, y, w, h, this, 0.25, this.withFilledIcon);
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);
