@@ -233,7 +233,7 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  // implementation adapted from https://thenounproject.com/search/?q=triangle&i=2452089
+  // implementation adapted from https://thenounproject.com/term/triangle/2452089/
   public paintTriangleIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
     const canvas = new BpmnCanvas({
       mxCanvas: c,

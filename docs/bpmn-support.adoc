@@ -90,6 +90,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 *Note*: the following icons are derived from existing solutions
 
 * message: https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465[draw.io bpmn mxgraph stencil]
+* signal: https://thenounproject.com/term/triangle/2452089/[triangle] By https://thenounproject.com/imamdji99[Imam], ID from https://thenounproject.com 
 * timer: https://www.flaticon.com/free-icon/clock_223404[Timer Icon] "Icons made by https://www.flaticon.com/authors/kirill-kazachek[Kirill Kazachek] from https://www.flaticon.com"
 
 
@@ -113,8 +114,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |The stroke & icon width may be adjusted
 
 |Signal Start Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -134,8 +135,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |The stroke & icon width may be adjusted
 
 |Signal Intermediate Catch Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -155,8 +156,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |The stroke & icon width may be adjusted
 
 |Signal Intermediate Throw Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -176,8 +177,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |The stroke & icon width may be adjusted
 
 |Signal Interrupting Boundary Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -197,8 +198,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |The stroke & icon width may be adjusted
 
 |Signal Non-interrupting Boundary Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -222,8 +223,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |The stroke & icon width may be adjusted
 
 |Signal End Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
