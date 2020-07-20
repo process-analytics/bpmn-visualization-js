@@ -240,7 +240,7 @@ A PR can only be merged into master by a maintainer, if all of these conditions 
 
 ### Release (maintainers only)
 
-Maintainers need to do the manual following actions to push out a release.
+Maintainers need to do the manual following actions **in the order described here** to push out a release.
 
 For automation, see [#139](https://github.com/process-analytics/bpmn-visualization-js/issues/139).
 
@@ -262,21 +262,22 @@ of the `Done` column related to the milestone
 
 #### GitHub update
 
+- Ensure the latest closed milestone matches the name of the tag/version that has just been pushed. Renamed it if needed
 - GitHub release
   - Open [github releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
+  - Create a new draft release and name it `Next` (the name is not relevant and will be replaced automatically later).
+  This ensures that development can continue without impacting the writing of the content of the in progress release. That way,
+  if a PR is merged, `release-drafter` will update the `Next` draft release keeping the in-progress release untouched.
   - The draft release for the newly tagged version should already exist:
     - [release-drafter](https://github.com/release-drafter/release-drafter) creates or updates draft release for the
     next version each time a pull request is merged to the `master` branch.
-    - create a new release if it is missing or rename the existing one.
-  - Create a new draft release and name it `New`. This ensures that development can continue without impacting the
-  writing of the release content. That way, if a PR is merged, `release-drafter` will update the `New` draft release
-  keeping the in-progress release untouched.
+    - create a new release if it is missing or rename the existing one to match .
   - Assign the new tag as release target and save the draft (this should have already been managed by `release-drafter`)
   - Ensure that `This is a pre-release` is unchecked (except if we are releasing alpha, beta, rc, ...)
   - In the release description (check previous releases as a source of inspiration)
     - at least add/update a link to the related milestone
     - put screenshots/gif of the new features
-- Ensure the latest closed milestone matches the name of the tag/version that has just been pushed
+  - Published the release **only when you are done** with the release content. At any time, you can save the draft
 
 ### Demo environment update
 
