@@ -27,7 +27,7 @@ import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/Sha
 import { SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
 import { FlowKind } from '../../../../../src/model/bpmn/edge/FlowKind';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
-import {BpmnJsonModel} from "../../../../../src/component/parser/xml/bpmn-json-model/BPMN20";
+import { BpmnJsonModel } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMN20';
 
 export interface ExpectedShape {
   shapeId: string;
