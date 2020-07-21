@@ -13,38 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
+import { verifyEdge } from './JsonTestUtils';
+// import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
+import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
+import * as bpmndi from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
 
 describe('parse bpmn as json for message flow', () => {
   it('json containing a collaboration with a single message flow without waypoint', () => {
-    const json = `{
-          "definitions": {
-              "collaboration": {
-                  "id": "collaboration_id_0",
-                  "messageFlow": {
-                    "id": "messageFlow_id_0",
-                    "name": "Message Flow 0",
-                    "sourceRef": "sourceRef_id",
-                    "targetRef": "targetRef_id"
-                  }
-              },
-              "process":"",
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNEdge": {
-                          "id": "edge_messageFlow_id_0",
-                          "bpmnElement": "messageFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        collaboration: {
+          id: 'collaboration_id_0',
+          messageFlow: {
+            id: 'messageFlow_id_0',
+            name: 'Message Flow 0',
+            sourceRef: 'sourceRef_id',
+            targetRef: 'targetRef_id',
+          },
+        },
+        process: '',
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNEdge: {
+              id: 'edge_messageFlow_id_0',
+              bpmnElement: 'messageFlow_id_0',
+              waypoint: [{ x: 10, y: 10 }],
+            },
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyEdges(json, 1);
+    // const model = parseJsonAndExpectOnlyEdges(json, 1);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(0);
+    expect(model.edges).toHaveLength(1);
 
     verifyEdge(model.edges[0], {
       edgeId: 'edge_messageFlow_id_0',
@@ -52,43 +63,59 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementName: 'Message Flow 0',
       bpmnElementSourceRefId: 'sourceRef_id',
       bpmnElementTargetRefId: 'targetRef_id',
+      waypoints: [new Waypoint(10, 10)],
     });
   });
 
   it('json containing a collaboration with an array of message flows with name & without name', () => {
-    const json = `{
-          "definitions": {
-              "collaboration": {
-                  "id": "collaboration_id_0",
-                  "messageFlow": [{
-                    "id": "messageFlow_id_0",
-                    "name": "Message Flow 0",
-                    "sourceRef": "sourceRef_id",
-                    "targetRef": "targetRef_id"
-                  },{
-                      "id": "messageFlow_id_1",
-                      "sourceRef": "messageFlow_id_1",
-                      "targetRef": "targetRef_id_1"
-                  }]
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        collaboration: {
+          id: 'collaboration_id_0',
+          messageFlow: [
+            {
+              id: 'messageFlow_id_0',
+              name: 'Message Flow 0',
+              sourceRef: 'sourceRef_id',
+              targetRef: 'targetRef_id',
+            },
+            {
+              id: 'messageFlow_id_1',
+              sourceRef: 'messageFlow_id_1',
+              targetRef: 'targetRef_id_1',
+            },
+          ],
+        },
+        process: '',
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNEdge: [
+              {
+                id: 'edge_messageFlow_id_0',
+                bpmnElement: 'messageFlow_id_0',
+                waypoint: [{ x: 10, y: 10 }],
               },
-              "process":"",
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNEdge": [{
-                          "id": "edge_messageFlow_id_0",
-                          "bpmnElement": "messageFlow_id_0"
-                      },{
-                          "id": "edge_messageFlow_id_1",
-                          "bpmnElement": "messageFlow_id_1"
-                      }]
-                  }
-              }
-          }
-      }`;
+              {
+                id: 'edge_messageFlow_id_1',
+                bpmnElement: 'messageFlow_id_1',
+                waypoint: [{ x: 10, y: 10 }],
+              },
+            ],
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyEdges(json, 2);
+    // const model = parseJsonAndExpectOnlyEdges(json, 2);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(0);
+    expect(model.edges).toHaveLength(2);
 
     verifyEdge(model.edges[0], {
       edgeId: 'edge_messageFlow_id_0',
@@ -96,6 +123,7 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementName: 'Message Flow 0',
       bpmnElementSourceRefId: 'sourceRef_id',
       bpmnElementTargetRefId: 'targetRef_id',
+      waypoints: [new Waypoint(10, 10)],
     });
     verifyEdge(model.edges[1], {
       edgeId: 'edge_messageFlow_id_1',
@@ -103,53 +131,72 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'messageFlow_id_1',
       bpmnElementTargetRefId: 'targetRef_id_1',
+      waypoints: [new Waypoint(10, 10)],
     });
   });
 
   it('json containing a collaboration with an array of message flows with one & several waypoints', () => {
-    const json = `{
-          "definitions": {
-              "collaboration": {
-                  "id": "collaboration_id_0",
-                  "messageFlow": [{
-                    "id": "messageFlow_id_0",
-                    "sourceRef": "sourceRef_id",
-                    "targetRef": "targetRef_id"
-                  },{
-                      "id": "messageFlow_id_1",
-                      "sourceRef": "sourceRef_id_1",
-                      "targetRef": "targetRef_id_1"
-                  }]
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        collaboration: {
+          id: 'collaboration_id_0',
+          messageFlow: [
+            {
+              id: 'messageFlow_id_0',
+              sourceRef: 'sourceRef_id',
+              targetRef: 'targetRef_id',
+            },
+            {
+              id: 'messageFlow_id_1',
+              sourceRef: 'sourceRef_id_1',
+              targetRef: 'targetRef_id_1',
+            },
+          ],
+        },
+        process: '',
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNEdge: [
+              {
+                id: 'edge_messageFlow_id_0',
+                bpmnElement: 'messageFlow_id_0',
+                waypoint: [
+                  {
+                    x: 1,
+                    y: 1,
+                  },
+                ],
               },
-              "process":"",
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNEdge": [{
-                          "id": "edge_messageFlow_id_0",
-                          "bpmnElement": "messageFlow_id_0",
-                          "waypoint": {
-                            "x":1,
-                            "y":1
-                          }
-                      },{
-                          "id": "edge_messageFlow_id_1",
-                          "bpmnElement": "messageFlow_id_1",
-                          "waypoint": [{
-                            "x":2,
-                            "y":2
-                          }, {
-                            "x":3,
-                            "y":3
-                          }]
-                      }]
-                  }
-              }
-          }
-      }`;
+              {
+                id: 'edge_messageFlow_id_1',
+                bpmnElement: 'messageFlow_id_1',
+                waypoint: [
+                  {
+                    x: 2,
+                    y: 2,
+                  },
+                  {
+                    x: 3,
+                    y: 3,
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyEdges(json, 2);
+    // const model = parseJsonAndExpectOnlyEdges(json, 2);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(0);
+    expect(model.edges).toHaveLength(2);
 
     verifyEdge(model.edges[0], {
       edgeId: 'edge_messageFlow_id_0',
@@ -170,55 +217,65 @@ describe('parse bpmn as json for message flow', () => {
   });
 
   it('json containing a collaboration with none/initiating/non-initiating message flows', () => {
-    const json = `{
-          "definitions": {
-              "collaboration": {
-                  "id": "collaboration_id_0",
-                  "messageFlow": [{
-                    "id": "messageFlow_id_0",
-                    "sourceRef": "sourceRef_id",
-                    "targetRef": "targetRef_id"
-                  },{
-                      "id": "messageFlow_id_1",
-                      "sourceRef": "sourceRef_id_1",
-                      "targetRef": "targetRef_id_1"
-                  },{
-                      "id": "messageFlow_id_2",
-                      "sourceRef": "sourceRef_id_2",
-                      "targetRef": "targetRef_id_2"
-                  },{
-                      "id": "messageFlow_id_3",
-                      "sourceRef": "sourceRef_id_3",
-                      "targetRef": "targetRef_id_3"
-                  }]
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        collaboration: {
+          id: 'collaboration_id_0',
+          messageFlow: [
+            {
+              id: 'messageFlow_id_0',
+              sourceRef: 'sourceRef_id',
+              targetRef: 'targetRef_id',
+            },
+            {
+              id: 'messageFlow_id_1',
+              sourceRef: 'sourceRef_id_1',
+              targetRef: 'targetRef_id_1',
+            },
+            {
+              id: 'messageFlow_id_2',
+              sourceRef: 'sourceRef_id_2',
+              targetRef: 'targetRef_id_2',
+            },
+          ],
+        },
+        process: '',
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNEdge: [
+              {
+                id: 'edge_messageFlow_id_0',
+                bpmnElement: 'messageFlow_id_0',
+                waypoint: [{ x: 10, y: 10 }],
               },
-              "process":"",
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNEdge": [{
-                          "id": "edge_messageFlow_id_0",
-                          "bpmnElement": "messageFlow_id_0"
-                      },{
-                          "id": "edge_messageFlow_id_1",
-                          "bpmnElement": "messageFlow_id_1",
-                          "messageVisibleKind":""
-                      },{
-                          "id": "edge_messageFlow_id_2",
-                          "bpmnElement": "messageFlow_id_2",
-                          "messageVisibleKind":"initiating"
-                      },{
-                          "id": "edge_messageFlow_id_3",
-                          "bpmnElement": "messageFlow_id_3",
-                          "messageVisibleKind":"non_initiating"
-                      }]
-                  }
-              }
-          }
-      }`;
+              {
+                id: 'edge_messageFlow_id_1',
+                bpmnElement: 'messageFlow_id_1',
+                messageVisibleKind: bpmndi.MessageVisibleKind.nonInitiating,
+                waypoint: [{ x: 10, y: 10 }],
+              },
+              {
+                id: 'edge_messageFlow_id_2',
+                bpmnElement: 'messageFlow_id_2',
+                messageVisibleKind: bpmndi.MessageVisibleKind.initiating,
+                waypoint: [{ x: 10, y: 10 }],
+              },
+            ],
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyEdges(json, 4);
+    // const model = parseJsonAndExpectOnlyEdges(json, 3);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(0);
+    expect(model.edges).toHaveLength(3);
 
     verifyEdge(model.edges[0], {
       edgeId: 'edge_messageFlow_id_0',
@@ -227,6 +284,7 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementSourceRefId: 'sourceRef_id',
       bpmnElementTargetRefId: 'targetRef_id',
       messageVisibleKind: MessageVisibleKind.NONE,
+      waypoints: [new Waypoint(10, 10)],
     });
     verifyEdge(model.edges[1], {
       edgeId: 'edge_messageFlow_id_1',
@@ -234,7 +292,8 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'sourceRef_id_1',
       bpmnElementTargetRefId: 'targetRef_id_1',
-      messageVisibleKind: MessageVisibleKind.NONE,
+      messageVisibleKind: MessageVisibleKind.NON_INITIATING,
+      waypoints: [new Waypoint(10, 10)],
     });
     verifyEdge(model.edges[2], {
       edgeId: 'edge_messageFlow_id_2',
@@ -243,14 +302,7 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementSourceRefId: 'sourceRef_id_2',
       bpmnElementTargetRefId: 'targetRef_id_2',
       messageVisibleKind: MessageVisibleKind.INITIATING,
-    });
-    verifyEdge(model.edges[3], {
-      edgeId: 'edge_messageFlow_id_3',
-      bpmnElementId: 'messageFlow_id_3',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'sourceRef_id_3',
-      bpmnElementTargetRefId: 'targetRef_id_3',
-      messageVisibleKind: MessageVisibleKind.NON_INITIATING,
+      waypoints: [new Waypoint(10, 10)],
     });
   });
 });
