@@ -14,37 +14,46 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
+// import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
+import { verifyShape } from './JsonTestUtils';
+import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 
 describe('parse bpmn as json for text annotation', () => {
   it('json containing one process with a text annotation', () => {
-    const json = `{
-                "definitions" : {
-                    "process": {
-                        "textAnnotation": {
-                            "id": "TextAnnotation_01",
-                            "text": "Task Annotation"
-                          }
-                    },
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": {
-                              "id": "TextAnnotation_01_di",
-                              "bpmnElement": "TextAnnotation_01",
-                              "Bounds": {
-                                "x": 430,
-                                "y": 160,
-                                "width": 100,
-                                "height": 30
-                              }
-                            }
-                        }
-                    }
-                }
-            }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          textAnnotation: {
+            id: 'TextAnnotation_01',
+            text: 'Task Annotation',
+          },
+        },
+        BPMNDiagram: {
+          name: 'process 0',
+          BPMNPlane: {
+            BPMNShape: {
+              id: 'TextAnnotation_01_di',
+              bpmnElement: 'TextAnnotation_01',
+              Bounds: {
+                x: 430,
+                y: 160,
+                width: 100,
+                height: 30,
+              },
+            },
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+    //const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(1);
+    expect(model.edges).toHaveLength(0);
 
     verifyShape(model.flowNodes[0], {
       shapeId: 'TextAnnotation_01_di',
@@ -61,33 +70,42 @@ describe('parse bpmn as json for text annotation', () => {
   });
 
   it('json containing one process declared as array with a single text annotation', () => {
-    const json = `{
-                "definitions" : {
-                    "process": [{
-                        "textAnnotation": {
-                            "id": "TextAnnotation_01",
-                            "text": "Task Annotation"
-                          }
-                    }],
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": {
-                              "id": "TextAnnotation_01_di",
-                              "bpmnElement": "TextAnnotation_01",
-                              "Bounds": {
-                                "x": 430,
-                                "y": 160,
-                                "width": 100,
-                                "height": 30
-                              }
-                            }
-                        }
-                    }
-                }
-            }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: [
+          {
+            textAnnotation: {
+              id: 'TextAnnotation_01',
+              text: 'Task Annotation',
+            },
+          },
+        ],
+        BPMNDiagram: {
+          name: 'process 0',
+          BPMNPlane: {
+            BPMNShape: {
+              id: 'TextAnnotation_01_di',
+              bpmnElement: 'TextAnnotation_01',
+              Bounds: {
+                x: 430,
+                y: 160,
+                width: 100,
+                height: 30,
+              },
+            },
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+    //const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(1);
+    expect(model.edges).toHaveLength(0);
 
     verifyShape(model.flowNodes[0], {
       shapeId: 'TextAnnotation_01_di',
@@ -104,45 +122,57 @@ describe('parse bpmn as json for text annotation', () => {
   });
 
   it('json containing one process with an array of text annotations with text & without text', () => {
-    const json = `{
-                "definitions" : {
-                    "process": {
-                        "textAnnotation": [{
-                            "id": "TextAnnotation_01",
-                            "text": "Task Annotation"
-                          }, {
-                            "id": "TextAnnotation_02"
-                          }
-                        ]
-                    },
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": [{
-                              "id": "TextAnnotation_01_di",
-                              "bpmnElement": "TextAnnotation_01",
-                              "Bounds": {
-                                "x": 430,
-                                "y": 160,
-                                "width": 100,
-                                "height": 30
-                              }
-                            }, {
-                              "id": "TextAnnotation_02_di",
-                              "bpmnElement": "TextAnnotation_02",
-                              "Bounds": {
-                                "x": 180,
-                                "y": 80,
-                                "width": 270,
-                                "height": 54
-                              }
-                            }]
-                        }
-                    }
-                }
-            }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          textAnnotation: [
+            {
+              id: 'TextAnnotation_01',
+              text: 'Task Annotation',
+            },
+            {
+              id: 'TextAnnotation_02',
+            },
+          ],
+        },
+        BPMNDiagram: {
+          name: 'process 0',
+          BPMNPlane: {
+            BPMNShape: [
+              {
+                id: 'TextAnnotation_01_di',
+                bpmnElement: 'TextAnnotation_01',
+                Bounds: {
+                  x: 430,
+                  y: 160,
+                  width: 100,
+                  height: 30,
+                },
+              },
+              {
+                id: 'TextAnnotation_02_di',
+                bpmnElement: 'TextAnnotation_02',
+                Bounds: {
+                  x: 180,
+                  y: 80,
+                  width: 270,
+                  height: 54,
+                },
+              },
+            ],
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
+    //const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(2);
+    expect(model.edges).toHaveLength(0);
 
     verifyShape(model.flowNodes[0], {
       shapeId: 'TextAnnotation_01_di',
