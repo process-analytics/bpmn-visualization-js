@@ -16,6 +16,8 @@
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 import arrayContaining = jasmine.arrayContaining;
 import anything = jasmine.anything;
+import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
+import { BPMNDiagram } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
 
 describe('parse bpmn as xml for ADONIS NP 8.0', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
@@ -2171,10 +2173,13 @@ describe('parse bpmn as xml for ADONIS NP 8.0', () => {
       },
     });
 
-    expect(json.definitions.process.task).toHaveLength(4);
-    expect(json.definitions.process.exclusiveGateway).toHaveLength(2);
-    expect(json.definitions.process.sequenceFlow).toHaveLength(11);
-    expect(json.definitions.BPMNDiagram.BPMNPlane.BPMNShape).toHaveLength(8);
-    expect(json.definitions.BPMNDiagram.BPMNPlane.BPMNEdge).toHaveLength(11);
+    const process: TProcess = json.definitions.process as TProcess;
+    expect(process.task).toHaveLength(4);
+    expect(process.exclusiveGateway).toHaveLength(2);
+    expect(process.sequenceFlow).toHaveLength(11);
+
+    const bpmnDiagram: BPMNDiagram = json.definitions.BPMNDiagram as BPMNDiagram;
+    expect(bpmnDiagram.BPMNPlane.BPMNShape).toHaveLength(8);
+    expect(bpmnDiagram.BPMNPlane.BPMNEdge).toHaveLength(11);
   });
 });
