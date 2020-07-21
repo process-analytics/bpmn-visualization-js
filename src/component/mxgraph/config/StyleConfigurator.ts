@@ -35,6 +35,12 @@ declare const mxUtils: typeof mxgraph.mxUtils;
 export default class StyleConfigurator {
   private specificFlowStyles: Map<FlowKind, (style: any) => void> = new Map([
     [
+      FlowKind.SEQUENCE_FLOW,
+      (style: any) => {
+        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
+      },
+    ],
+    [
       FlowKind.MESSAGE_FLOW,
       (style: any) => {
         style[mxConstants.STYLE_DASHED] = true;
@@ -42,6 +48,7 @@ export default class StyleConfigurator {
         style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OVAL;
         style[mxConstants.STYLE_STARTSIZE] = 8;
         style[mxConstants.STYLE_STARTFILL] = false;
+        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
         style[mxConstants.STYLE_ENDFILL] = false;
       },
     ],
@@ -49,7 +56,10 @@ export default class StyleConfigurator {
       FlowKind.ASSOCIATION_FLOW,
       (style: any) => {
         style[mxConstants.STYLE_DASHED] = true;
-        style[mxConstants.STYLE_DASH_PATTERN] = '2 2';
+        style[mxConstants.STYLE_DASH_PATTERN] = '1 2';
+        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_OPEN_THIN;
+        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OPEN_THIN;
+        style[mxConstants.STYLE_STARTSIZE] = 12;
       },
     ],
   ]);
@@ -81,16 +91,13 @@ export default class StyleConfigurator {
     [
       AssociationDirectionKind.ONE,
       (style: any) => {
-        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
+        style[mxConstants.STYLE_STARTARROW] = null;
         style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
     [
       AssociationDirectionKind.BOTH,
       (style: any) => {
-        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
-        style[mxConstants.STYLE_STARTSIZE] = 12;
-        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_BLOCK_THIN;
         style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
@@ -217,12 +224,13 @@ export default class StyleConfigurator {
   private configureDefaultEdgeStyle(): void {
     const style = this.getDefaultEdgeStyle();
     style[mxConstants.STYLE_EDGE] = mxConstants.EDGESTYLE_SEGMENT;
-    style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
     style[mxConstants.STYLE_ENDSIZE] = 12;
     style[mxConstants.STYLE_STROKEWIDTH] = 1.5;
     style[mxConstants.STYLE_ROUNDED] = 1;
     style[mxConstants.STYLE_ARCSIZE] = 5;
     style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_BOTTOM;
+
+    delete style[mxConstants.STYLE_ENDARROW];
 
     this.configureCommonDefaultStyle(style);
   }
