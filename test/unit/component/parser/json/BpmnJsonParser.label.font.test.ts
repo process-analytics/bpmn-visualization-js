@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelFont } from './JsonTestUtils';
+import { verifyLabelFont } from './JsonTestUtils';
+// import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelFont } from './JsonTestUtils';
 import each from 'jest-each';
+import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
+import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 
 describe('parse bpmn as json for label font', () => {
   jest.spyOn(console, 'warn');
@@ -44,366 +47,447 @@ describe('parse bpmn as json for label font', () => {
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask'],
   ]).it('json containing a BPMNShape who references a label style with font in a %s', sourceKind => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "${sourceKind}": { "id": "source_id_0", "name": "${sourceKind}_id_0"}
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          id: 'Process_1',
+        },
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNShape: {
+              id: 'shape_source_id_0',
+              bpmnElement: 'source_id_0',
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              BPMNLabel: {
+                id: 'label_id',
+                labelStyle: 'style_id',
               },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id": "shape_source_id_0",
-                          "bpmnElement": "source_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
-                          "BPMNLabel": {
-                             "id": "label_id",
-                             "labelStyle": "style_id"
-                          }
-                      }
-                  },
-                  "BPMNLabelStyle": {
-                     "id": "style_id",
-                     "Font": {
-                        "name": "Arial",
-                        "size": 11.0
-                     }
-                  }
-              }
-          }
-      }`;
+            },
+          },
+          BPMNLabelStyle: {
+            id: 'style_id',
+            Font: {
+              name: 'Arial',
+              size: 11.0,
+            },
+          },
+        },
+      },
+    };
+    (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+    //const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(1);
+    expect(model.edges).toHaveLength(0);
 
     verifyLabelFont(model.flowNodes[0].label, { name: 'Arial', size: 11.0 });
   });
 
   it('json containing a BPMNEdge who references a label style with font', () => {
-    const json = `{
-       "definitions": {
-          "process": "",
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNEdge": {
-                   "id": "BPMNEdge_id_0",
-                   "BPMNLabel": {
-                      "id": "label_id",
-                      "labelStyle": "style_id"
-                   }
-                }
-             },
-             "BPMNLabelStyle": {
-                "id": "style_id",
-                "Font": {
-                   "name": "Arial",
-                   "size": 11.0
-                }
-             }
-          }
-       }
-    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: '',
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNEdge: {
+              id: 'BPMNEdge_id_0',
+              waypoint: [{ x: 10, y: 10 }],
+              BPMNLabel: {
+                id: 'label_id',
+                labelStyle: 'style_id',
+              },
+            },
+          },
+          BPMNLabelStyle: {
+            id: 'style_id',
+            Font: {
+              name: 'Arial',
+              size: 11.0,
+            },
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyEdges(json, 1);
+    // const model = parseJsonAndExpectOnlyEdges(json, 1);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(0);
+    expect(model.edges).toHaveLength(1);
 
     verifyLabelFont(model.edges[0].label, { name: 'Arial', size: 11.0 });
   });
 
   it('json containing several BPMNShapes who reference the same label style', () => {
-    const json = `{
-       "definitions": {
-          "process": {
-             "task": {
-                "id": "task_id_0",
-                "name": "task name"
-             },
-             "userTask": {
-                "id": "user_task_id_0",
-                "name": "user task name"
-             }
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          task: {
+            id: 'task_id_0',
+            name: 'task name',
           },
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNShape": [{
-                     "id": "BPMNShape_id_0",
-                     "bpmnElement": "task_id_0",
-                     "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
-                     "BPMNLabel": {
-                        "labelStyle": "style_id_1"
-                     }
-                  }, {
-                     "id": "BPMNShape_id_1",
-                     "bpmnElement": "user_task_id_0",
-                     "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
-                     "BPMNLabel": {
-                        "labelStyle": "style_id_1"
-                     }
-                  }
-                ]
-             },
-             "BPMNLabelStyle": {
-                "id": "style_id_1",
-                "Font": {
-                   "name": "Arial",
-                   "size": 11.0
-                }
-             }
-          }
-       }
-    }`;
+          userTask: {
+            id: 'user_task_id_0',
+            name: 'user task name',
+          },
+        },
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNShape: [
+              {
+                id: 'BPMNShape_id_0',
+                bpmnElement: 'task_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                BPMNLabel: {
+                  labelStyle: 'style_id_1',
+                },
+              },
+              {
+                id: 'BPMNShape_id_1',
+                bpmnElement: 'user_task_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                BPMNLabel: {
+                  labelStyle: 'style_id_1',
+                },
+              },
+            ],
+          },
+          BPMNLabelStyle: {
+            id: 'style_id_1',
+            Font: {
+              name: 'Arial',
+              size: 11.0,
+            },
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
+    //const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(2);
+    expect(model.edges).toHaveLength(0);
 
     verifyLabelFont(model.flowNodes[0].label, { name: 'Arial', size: 11.0 });
     verifyLabelFont(model.flowNodes[1].label, { name: 'Arial', size: 11.0 });
   });
 
   it('json containing several BPMNEdges who reference the same label style', () => {
-    const json = `{
-       "definitions": {
-          "process": "",
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNEdge": [{
-                     "id": "BPMNEdge_id_0",
-                     "BPMNLabel": {
-                        "labelStyle": "style_id_1"
-                     }
-                  }, {
-                     "id": "BPMNEdge_id_1",
-                     "BPMNLabel": {
-                        "labelStyle": "style_id_1"
-                     }
-                  }
-                ]
-             },
-             "BPMNLabelStyle": {
-                "id": "style_id_1",
-                "Font": {
-                   "name": "Arial",
-                   "size": 11.0
-                }
-             }
-          }
-       }
-    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: '',
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNEdge: [
+              {
+                id: 'BPMNEdge_id_0',
+                waypoint: [{ x: 10, y: 10 }],
+                BPMNLabel: {
+                  labelStyle: 'style_id_1',
+                },
+              },
+              {
+                id: 'BPMNEdge_id_1',
+                waypoint: [{ x: 10, y: 10 }],
+                BPMNLabel: {
+                  labelStyle: 'style_id_1',
+                },
+              },
+            ],
+          },
+          BPMNLabelStyle: {
+            id: 'style_id_1',
+            Font: {
+              name: 'Arial',
+              size: 11.0,
+            },
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyEdges(json, 2);
+    // const model = parseJsonAndExpectOnlyEdges(json, 2);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(0);
+    expect(model.edges).toHaveLength(2);
 
     verifyLabelFont(model.edges[0].label, { name: 'Arial', size: 11.0 });
     verifyLabelFont(model.edges[1].label, { name: 'Arial', size: 11.0 });
   });
 
   it('json containing an array of label styles and BPMNShapes who reference a label style with font with/without all attributes', () => {
-    const json = `{
-       "definitions": {
-          "process": {
-             "task": {
-                "id": "task_id_0",
-                "name": "task name"
-             },
-             "userTask": {
-                "id": "user_task_id_0",
-                "name": "user task name"
-             }
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          task: {
+            id: 'task_id_0',
+            name: 'task name',
           },
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNShape": [{
-                     "id": "BPMNShape_id_0",
-                     "bpmnElement": "task_id_0",
-                     "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
-                     "BPMNLabel": {
-                        "id": "label_id_1",
-                        "labelStyle": "style_id_1"
-                     }
-                  }, {
-                     "id": "BPMNShape_id_1",
-                     "bpmnElement": "user_task_id_0",
-                     "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
-                     "BPMNLabel": {
-                        "id": "label_id_2",
-                        "labelStyle": "style_id_2"
-                     }
-                  }
-                ]
-             },
-             "BPMNLabelStyle": [{
-                  "id": "style_id_1",
-                  "Font": {
-                     "id": "1",
-                     "isBold": false,
-                     "isItalic": false,
-                     "isStrikeThrough": false,
-                     "isUnderline": false,
-                     "name": "Arial",
-                     "size": 11.0
-                  }
-               }, {
-                  "id": "style_id_2",
-                  "Font": ""
-               }
-             ]
-          }
-       }
-    }`;
+          userTask: {
+            id: 'user_task_id_0',
+            name: 'user task name',
+          },
+        },
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNShape: [
+              {
+                id: 'BPMNShape_id_0',
+                bpmnElement: 'task_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                BPMNLabel: {
+                  id: 'label_id_1',
+                  labelStyle: 'style_id_1',
+                },
+              },
+              {
+                id: 'BPMNShape_id_1',
+                bpmnElement: 'user_task_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                BPMNLabel: {
+                  id: 'label_id_2',
+                  labelStyle: 'style_id_2',
+                },
+              },
+            ],
+          },
+          BPMNLabelStyle: [
+            {
+              id: 'style_id_1',
+              Font: {
+                id: '1',
+                isBold: false,
+                isItalic: false,
+                isStrikeThrough: false,
+                isUnderline: false,
+                name: 'Arial',
+                size: 11.0,
+              },
+            },
+            {
+              id: 'style_id_2',
+              Font: '',
+            },
+          ],
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
+    //const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(2);
+    expect(model.edges).toHaveLength(0);
 
     verifyLabelFont(model.flowNodes[0].label, { name: 'Arial', size: 11.0, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false });
     expect(model.flowNodes[1].label).toBeUndefined();
   });
 
   it('json containing an array of label styles and BPMNEdges who reference a label style with font with/without all attributes', () => {
-    const json = `{
-       "definitions": {
-          "process": "",
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNEdge": [{
-                     "id": "BPMNEdge_id_0",
-                     "BPMNLabel": {
-                        "id": "label_id_1",
-                        "labelStyle": "style_id_1"
-                     }
-                  }, {
-                     "id": "BPMNEdge_id_1",
-                     "BPMNLabel": {
-                        "id": "label_id_2",
-                        "labelStyle": "style_id_2"
-                     }
-                  }
-                ]
-             },
-             "BPMNLabelStyle": [{
-                  "id": "style_id_1",
-                  "Font": {
-                     "id": "1",
-                     "isBold": false,
-                     "isItalic": false,
-                     "isStrikeThrough": false,
-                     "isUnderline": false,
-                     "name": "Arial",
-                     "size": 11.0
-                  }
-               }, {
-                  "id": "style_id_2",
-                  "Font": ""
-               }
-             ]
-          }
-       }
-    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: '',
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNEdge: [
+              {
+                id: 'BPMNEdge_id_0',
+                waypoint: [{ x: 10, y: 10 }],
+                BPMNLabel: {
+                  id: 'label_id_1',
+                  labelStyle: 'style_id_1',
+                },
+              },
+              {
+                id: 'BPMNEdge_id_1',
+                waypoint: [{ x: 10, y: 10 }],
+                BPMNLabel: {
+                  id: 'label_id_2',
+                  labelStyle: 'style_id_2',
+                },
+              },
+            ],
+          },
+          BPMNLabelStyle: [
+            {
+              id: 'style_id_1',
+              Font: {
+                id: '1',
+                isBold: false,
+                isItalic: false,
+                isStrikeThrough: false,
+                isUnderline: false,
+                name: 'Arial',
+                size: 11.0,
+              },
+            },
+            {
+              id: 'style_id_2',
+              Font: '',
+            },
+          ],
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyEdges(json, 2);
+    // const model = parseJsonAndExpectOnlyEdges(json, 2);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(0);
+    expect(model.edges).toHaveLength(2);
 
     verifyLabelFont(model.edges[0].label, { name: 'Arial', size: 11.0, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false });
     expect(model.edges[1].label).toBeUndefined();
   });
 
   it('json containing a BPMNShape who references a label style without font', () => {
-    const json = `{
-       "definitions": {
-          "process": {
-             "task": {
-                "id": "task_id_0",
-                "name": "task name"
-             }
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          task: {
+            id: 'task_id_0',
+            name: 'task name',
           },
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNShape": {
-                   "id": "BPMNShape_id_0",
-                   "bpmnElement": "task_id_0",
-                   "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
-                   "BPMNLabel": {
-                      "id": "label_id",
-                      "labelStyle": "style_id"
-                   }
-                }
-             },
-             "BPMNLabelStyle": {
-                "id": "style_id"
-             }
-          }
-       }
-    }`;
+        },
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNShape: {
+              id: 'BPMNShape_id_0',
+              bpmnElement: 'task_id_0',
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              BPMNLabel: {
+                id: 'label_id',
+                labelStyle: 'style_id',
+              },
+            },
+          },
+          BPMNLabelStyle: {
+            id: 'style_id',
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+    //const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(1);
+    expect(model.edges).toHaveLength(0);
 
     expect(model.flowNodes[0].label).toBeUndefined();
   });
 
   it('json containing a BPMNEdge who references a label style without font', () => {
-    const json = `{
-       "definitions": {
-          "process": "",
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNEdge": {
-                   "id": "BPMNEdge_id_0",
-                   "BPMNLabel": {
-                      "id": "label_id",
-                      "labelStyle": "style_id"
-                   }
-                }
-             },
-             "BPMNLabelStyle": {
-                "id": "style_id"
-             }
-          }
-       }
-    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: '',
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNEdge: {
+              id: 'BPMNEdge_id_0',
+              waypoint: [{ x: 10, y: 10 }],
+              BPMNLabel: {
+                id: 'label_id',
+                labelStyle: 'style_id',
+              },
+            },
+          },
+          BPMNLabelStyle: {
+            id: 'style_id',
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyEdges(json, 1);
+    // const model = parseJsonAndExpectOnlyEdges(json, 1);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(0);
+    expect(model.edges).toHaveLength(1);
 
     expect(model.edges[0].label).toBeUndefined();
   });
 
   it('json containing a BPMNShape who references a non-existing label style', () => {
     console.warn = jest.fn();
-    const json = `{
-       "definitions": {
-          "process": {
-             "task": {
-                "id": "task_id_0",
-                "name": "task name"
-             }
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          task: {
+            id: 'task_id_0',
+            name: 'task name',
           },
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNShape": {
-                   "id": "BPMNShape_id_0",
-                   "bpmnElement": "task_id_0",
-                   "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
-                   "BPMNLabel": {
-                      "id": "label_id",
-                      "labelStyle": "non-existing_style_id"
-                   }
-                }
-             }
-          }
-       }
-    }`;
+        },
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNShape: {
+              id: 'BPMNShape_id_0',
+              bpmnElement: 'task_id_0',
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              BPMNLabel: {
+                id: 'label_id',
+                labelStyle: 'non-existing_style_id',
+              },
+            },
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+    //const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(1);
+    expect(model.edges).toHaveLength(0);
 
     expect(model.flowNodes[0].label).toBeUndefined();
     expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNShape_id_0');
@@ -411,26 +495,34 @@ describe('parse bpmn as json for label font', () => {
 
   it('json containing a BPMNEdge who references a non-existing label style', () => {
     console.warn = jest.fn();
-    const json = `{
-       "definitions": {
-          "process": "",
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNEdge": {
-                   "id": "BPMNEdge_id_0",
-                   "BPMNLabel": {
-                      "id": "label_id",
-                      "labelStyle": "non-existing_style_id"
-                   }
-                }
-             }
-          }
-       }
-    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: '',
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNEdge: {
+              id: 'BPMNEdge_id_0',
+              waypoint: [{ x: 10, y: 10 }],
+              BPMNLabel: {
+                id: 'label_id',
+                labelStyle: 'non-existing_style_id',
+              },
+            },
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyEdges(json, 1);
+    // const model = parseJsonAndExpectOnlyEdges(json, 1);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(0);
+    expect(model.edges).toHaveLength(1);
 
     expect(model.edges[0].label).toBeUndefined();
     expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNEdge_id_0');
