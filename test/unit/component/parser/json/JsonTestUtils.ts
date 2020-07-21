@@ -27,6 +27,7 @@ import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/Sha
 import { SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
 import { FlowKind } from '../../../../../src/model/bpmn/edge/FlowKind';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
+import {BpmnJsonModel} from "../../../../../src/component/parser/xml/bpmn-json-model/BPMN20";
 
 export interface ExpectedShape {
   shapeId: string;
@@ -223,8 +224,9 @@ export function verifyLabelBounds(label: Label, expectedBounds?: ExpectedBounds)
   }
 }
 
-export function parseJsonAndExpectOnlyEvent(json: string, kind: ShapeBpmnEventKind, expectedNumber: number): BpmnModel {
-  const model = parseJson(json);
+export function parseJsonAndExpectOnlyEvent(json: BpmnJsonModel, kind: ShapeBpmnEventKind, expectedNumber: number): BpmnModel {
+  //const model = parseJson(json);
+  const model = defaultBpmnJsonParser().parse(json);
 
   expect(model.lanes).toHaveLength(0);
   expect(model.pools).toHaveLength(0);
@@ -235,8 +237,9 @@ export function parseJsonAndExpectOnlyEvent(json: string, kind: ShapeBpmnEventKi
   return model;
 }
 
-export function parseJsonAndExpectOnlyBoundaryEvent(json: string, kind: ShapeBpmnEventKind, expectedNumber: number, isInterrupting?: boolean): BpmnModel {
-  const model = parseJson(json);
+export function parseJsonAndExpectOnlyBoundaryEvent(json: BpmnJsonModel, kind: ShapeBpmnEventKind, expectedNumber: number, isInterrupting?: boolean): BpmnModel {
+  //const model = parseJson(json);
+  const model = defaultBpmnJsonParser().parse(json);
 
   expect(model.lanes).toHaveLength(0);
   expect(model.pools).toHaveLength(0);
