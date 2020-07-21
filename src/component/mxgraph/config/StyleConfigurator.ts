@@ -24,8 +24,9 @@ import Bounds from '../../../model/bpmn/Bounds';
 import { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../model/bpmn/shape/ShapeBpmnElement';
 import { Font } from '../../../model/bpmn/Label';
 import { FlowKind } from '../../../model/bpmn/edge/FlowKind';
-import { SequenceFlow } from '../../../model/bpmn/edge/Flow';
+import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/edge/Flow';
 import { MessageVisibleKind } from '../../../model/bpmn/edge/MessageVisibleKind';
+import { AssociationDirectionKind } from '../../../model/bpmn/edge/AssociationDirectionKind';
 
 // TODO 'clone' function is missing in mxgraph-type-definitions@1.0.2
 declare const mxUtils: typeof mxgraph.mxUtils;
@@ -47,9 +48,8 @@ export default class StyleConfigurator {
     [
       FlowKind.ASSOCIATION_FLOW,
       (style: any) => {
-        style[mxConstants.STYLE_STROKECOLOR] = 'Chartreuse';
-        style[mxConstants.STYLE_ENDARROW] = null; // no arrow
-        style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
+        style[mxConstants.STYLE_DASHED] = true;
+        style[mxConstants.STYLE_DASH_PATTERN] = '2 2';
       },
     ],
   ]);
@@ -66,6 +66,32 @@ export default class StyleConfigurator {
         style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_DIAMOND_THIN;
         style[mxConstants.STYLE_STARTSIZE] = 18;
         style[mxConstants.STYLE_STARTFILL] = false;
+      },
+    ],
+  ]);
+  private specificAssociationFlowStyles: Map<AssociationDirectionKind, (style: any) => void> = new Map([
+    [
+      AssociationDirectionKind.NONE,
+      (style: any) => {
+        style[mxConstants.STYLE_STARTARROW] = null;
+        style[mxConstants.STYLE_ENDARROW] = null;
+        style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
+      },
+    ],
+    [
+      AssociationDirectionKind.ONE,
+      (style: any) => {
+        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
+        style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
+      },
+    ],
+    [
+      AssociationDirectionKind.BOTH,
+      (style: any) => {
+        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
+        style[mxConstants.STYLE_STARTSIZE] = 12;
+        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_BLOCK_THIN;
+        style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
   ]);
@@ -230,9 +256,14 @@ export default class StyleConfigurator {
     this.configureEdgeStyles<SequenceFlowKind>(Object.values(SequenceFlowKind), this.specificSequenceFlowStyles);
   }
 
+  private configureAssociationFlowStyles(): void {
+    this.configureEdgeStyles<AssociationDirectionKind>(Object.values(AssociationDirectionKind), this.specificAssociationFlowStyles);
+  }
+
   private configureFlowStyles(): void {
     this.configureEdgeStyles<FlowKind>(Object.values(FlowKind), this.specificFlowStyles);
     this.configureSequenceFlowStyles();
+    this.configureAssociationFlowStyles();
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
@@ -254,6 +285,9 @@ export default class StyleConfigurator {
     } else {
       if (bpmnCell.bpmnElement instanceof SequenceFlow) {
         styles.push(bpmnCell.bpmnElement.sequenceFlowKind);
+      }
+      if (bpmnCell.bpmnElement instanceof AssociationFlow) {
+        styles.push(bpmnCell.bpmnElement.associationDirectionKind);
       }
 
       switch (bpmnCell.messageVisibleKind) {
