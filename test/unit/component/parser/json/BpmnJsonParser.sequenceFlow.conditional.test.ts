@@ -40,7 +40,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     //['sendTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-  ]).it('json containing one process with a sequence flow defined as conditional in a %s', (sourceKind, expectedSequenceFlowKind) => {
+  ]).it(`should convert as Edge, when an sequence flow (defined as conditional) is an attribute (as object) of 'process' (as object)`, (sourceKind, expectedSequenceFlowKind) => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -90,7 +90,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     });
   });
 
-  it('json containing one process with a flow node who define a sequence flow as conditional, but not possible in BPMN Semantic', () => {
+  it(`should NOT convert, when an sequence flow (defined as conditional) is an attribute of 'process' and attached to a flow node where is NOT possible in BPMN Semantic`, () => {
     const json = {
       definitions: {
         targetNamespace: '',

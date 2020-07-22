@@ -30,7 +30,7 @@ describe('parse bpmn as json for association', () => {
   it.each([
     ['object', processJsonAsObjectWithAssociationJsonAsObject],
     ['array', [processJsonAsObjectWithAssociationJsonAsObject]],
-  ])(`should convert as Edge, when a association is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess | TProcess[]) => {
+  ])(`should convert as Edge, when an association is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess | TProcess[]) => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -60,7 +60,7 @@ describe('parse bpmn as json for association', () => {
     });
   });
 
-  it('json containing one process with an array of associations with/without name', () => {
+  it(`should convert as Edge, when an association (with/without name) is an attribute (as array) of 'process'`, () => {
     const json = {
       definitions: {
         targetNamespace: '',

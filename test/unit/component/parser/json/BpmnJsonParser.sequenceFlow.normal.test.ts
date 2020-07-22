@@ -13,27 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyEdge, verifyShape } from './JsonTestUtils';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
+import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for sequence flow', () => {
-  it('json containing one process with a single sequence flow without waypoint', () => {
+  const processWithSequenceFlowAsObject = {
+    sequenceFlow: {
+      id: 'sequenceFlow_id_0',
+      name: 'label 1',
+      sourceRef: 'sourceRef_id_xsdas',
+      targetRef: 'targetRef_RLk',
+    },
+  } as TProcess;
+
+  it.each([
+    ['object', processWithSequenceFlowAsObject],
+    ['array', [processWithSequenceFlowAsObject]],
+  ])(`should convert as Edge, when a sequence flow is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess) => {
     const json = {
       definitions: {
         targetNamespace: '',
-        process: {
-          id: 'Process_1',
-          sequenceFlow: {
-            id: 'sequenceFlow_id_0',
-            name: 'label 1',
-            sourceRef: 'sourceRef_id_xsdas',
-            targetRef: 'targetRef_RLk',
-          },
-        },
+        process: processJson,
         BPMNDiagram: {
-          id: 'BpmnDiagram_1',
+          name: 'process 0',
           BPMNPlane: {
-            id: 'BpmnPlane_1',
             BPMNEdge: {
               id: 'edge_sequenceFlow_id_0',
               bpmnElement: 'sequenceFlow_id_0',
@@ -56,48 +60,7 @@ describe('parse bpmn as json for sequence flow', () => {
     });
   });
 
-  it('json containing one process declared as array with a single sequence flow', () => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        process: [
-          {
-            id: 'Process_1',
-            sequenceFlow: {
-              id: 'sequenceFlow_id_0',
-              name: 'label 1',
-              sourceRef: 'sourceRef_id_xsdas',
-              targetRef: 'targetRef_RLk',
-            },
-          },
-        ],
-        BPMNDiagram: {
-          id: 'BpmnDiagram_1',
-          BPMNPlane: {
-            id: 'BpmnPlane_1',
-            BPMNEdge: {
-              id: 'edge_sequenceFlow_id_0',
-              bpmnElement: 'sequenceFlow_id_0',
-              waypoint: [{ x: 10, y: 10 }],
-            },
-          },
-        },
-      },
-    };
-
-    const model = parseJsonAndExpectOnlyEdges(json, 1);
-
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_sequenceFlow_id_0',
-      bpmnElementId: 'sequenceFlow_id_0',
-      bpmnElementName: 'label 1',
-      bpmnElementSourceRefId: 'sourceRef_id_xsdas',
-      bpmnElementTargetRefId: 'targetRef_RLk',
-      waypoints: [new Waypoint(10, 10)],
-    });
-  });
-
-  it('json containing one process with an array of sequence flows with name & without name', () => {
+  it(`should convert as Edge, when a sequence flow (with/without name) is an attribute (as array) of 'process'`, () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -158,7 +121,7 @@ describe('parse bpmn as json for sequence flow', () => {
     });
   });
 
-  it('json containing one process with an array of sequence flows with 2 & several waypoints', () => {
+  it(`should convert as Edge, when a sequence flow (with 2 & several waypoints) is an attribute (as array) of 'process'`, () => {
     const json = {
       definitions: {
         targetNamespace: '',
