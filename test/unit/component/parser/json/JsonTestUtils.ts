@@ -249,8 +249,9 @@ export function parseJsonAndExpectOnlyBoundaryEvent(json: BpmnJsonModel, kind: S
 
   return model;
 }
-export function parseJsonAndExpectOnlySubProcess(json: string, kind: ShapeBpmnSubProcessKind, expectedNumber: number): BpmnModel {
-  const model = parseJson(json);
+export function parseJsonAndExpectOnlySubProcess(json: BpmnJsonModel, kind: ShapeBpmnSubProcessKind, expectedNumber: number): BpmnModel {
+  //const model = parseJson(json);
+  const model = defaultBpmnJsonParser().parse(json);
 
   expect(model.lanes).toHaveLength(0);
   expect(model.pools).toHaveLength(0);
