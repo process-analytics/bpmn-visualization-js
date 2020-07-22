@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJsonAndExpectOnlyFlowNodes, parseJsonAndExpectOnlySubProcess, verifyShape } from './JsonTestUtils';
+import { parseJsonAndExpectOnlySubProcess, verifyShape } from './JsonTestUtils';
 import each from 'jest-each';
 import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
