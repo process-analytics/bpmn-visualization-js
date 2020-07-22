@@ -27,13 +27,15 @@ describe('parse bpmn as json for label font', () => {
   each([
     ['exclusiveGateway'],
     ['inclusiveGateway'],
+    ['parallelGateway'],
     ['task'],
     ['userTask'],
     ['serviceTask'],
-    ['callActivity'],
     ['receiveTask'],
+    ['callActivity'],
     ['subProcess'],
     ['textAnnotation'],
+    ['callActivity'],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway'],
     // TODO: To uncomment when we support manualTask

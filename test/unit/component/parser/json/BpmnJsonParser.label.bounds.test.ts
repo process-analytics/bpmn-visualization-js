@@ -16,18 +16,21 @@
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelBounds } from './JsonTestUtils';
 import each from 'jest-each';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
+import {ShapeBpmnElementKind} from "../../../../../src/model/bpmn/shape/ShapeBpmnElementKind";
 
 describe('parse bpmn as json for label bounds', () => {
   each([
     ['exclusiveGateway'],
     ['inclusiveGateway'],
+    ['parallelGateway'],
     ['task'],
     ['userTask'],
     ['serviceTask'],
-    ['callActivity'],
     ['receiveTask'],
+    ['callActivity'],
     ['subProcess'],
     ['textAnnotation'],
+    ['callActivity'],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway'],
     // TODO: To uncomment when we support manualTask
