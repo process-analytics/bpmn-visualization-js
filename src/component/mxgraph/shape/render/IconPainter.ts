@@ -16,7 +16,7 @@
 
 import { mxgraph } from 'ts-mxgraph';
 import BpmnCanvas from './BpmnCanvas';
-import StyleUtils from '../../StyleUtils';
+import StyleUtils, { StyleDefault } from '../../StyleUtils';
 import { IconStyleConfiguration, ShapeConfiguration } from './render-types';
 
 export interface PaintParameter {
@@ -229,6 +229,32 @@ export default class IconPainter {
     canvas.curveTo(16, 91.2, 91.2, 16, 184, 16);
     canvas.curveTo(276.8, 16, 352, 91.2, 352, 184);
     canvas.curveTo(352, 276.8, 276.8, 352, 184, 352);
+
+    canvas.fillAndStroke();
+  }
+
+  // implementation adapted from https://thenounproject.com/term/triangle/2452089/
+  public paintTriangleIcon({ c, ratioFromParent, shape: { x, y, w, h }, icon }: PaintParameter): void {
+    const canvas = new BpmnCanvas({
+      mxCanvas: c,
+      shapeConfiguration: { x, y, w, h },
+      iconConfiguration: {
+        originalSize: { height: 735, width: 849 },
+        ratioFromShape: ratioFromParent,
+        style: icon,
+      },
+    });
+    canvas.setIconOriginPosition(4);
+
+    canvas.begin();
+    canvas.moveTo(497, 55);
+    canvas.lineTo(817, 609);
+    canvas.curveTo(849, 665, 808, 735, 744, 735);
+    canvas.lineTo(105, 735);
+    canvas.curveTo(40, 735, 0, 665, 32, 609);
+    canvas.lineTo(352, 55);
+    canvas.curveTo(384, 0, 465, 0, 497, 55);
+    canvas.close();
 
     canvas.fillAndStroke();
   }
