@@ -22,6 +22,7 @@ import Bounds from '../../model/bpmn/Bounds';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
+import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 
 export default class MxGraphRenderer {
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
@@ -33,8 +34,8 @@ export default class MxGraphRenderer {
     try {
       this.insertShapes(bpmnModel.pools);
       this.insertShapes(bpmnModel.lanes);
-      this.insertShapes(bpmnModel.flowNodes.filter(shape => !ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind)));
-      this.insertShapes(bpmnModel.flowNodes.filter(shape => ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind)));
+      this.insertShapes(bpmnModel.flowNodes.filter(shape => !ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind as ShapeBpmnElementKind)));
+      this.insertShapes(bpmnModel.flowNodes.filter(shape => ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind as ShapeBpmnElementKind)));
       this.insertEdges(bpmnModel.edges);
     } finally {
       model.endUpdate();
@@ -47,8 +48,10 @@ export default class MxGraphRenderer {
     });
   }
 
-  private getParent(bpmnElement: ShapeBpmnElement): mxCell {
-    const bpmnElementParent = this.getCell(bpmnElement.parentId);
+  //TODO: the following method should perhaps Throw Error (if not returning null) in case of not finding element - to be handled in following issues:
+  // See: #35 and #54
+  private getParent(bpmnElement: ShapeBpmnElement): mxCell | null {
+    const bpmnElementParent = this.getCell(bpmnElement.parentId as string);
     if (bpmnElementParent) {
       return bpmnElementParent;
     }
@@ -56,6 +59,7 @@ export default class MxGraphRenderer {
     if (!ShapeUtil.isBoundaryEvent(bpmnElement.kind)) {
       return this.graph.getDefaultParent();
     }
+    return null;
   }
 
   private insertShape(shape: Shape): void {
@@ -71,9 +75,9 @@ export default class MxGraphRenderer {
       let labelBounds = shape.label?.bounds;
       // pool/lane label bounds are not managed for now (use hard coded values)
       labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
-      const style = this.styleConfigurator.computeStyle(shape, labelBounds);
+      const style = this.styleConfigurator.computeStyle(shape, labelBounds as Bounds);
 
-      this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
+      this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds as Bounds, labelBounds as Bounds, style);
     }
   }
 
@@ -82,12 +86,12 @@ export default class MxGraphRenderer {
       const bpmnElement = edge.bpmnElement;
       if (bpmnElement) {
         const parent = this.graph.getDefaultParent();
-        const source = this.getCell(bpmnElement.sourceRefId);
-        const target = this.getCell(bpmnElement.targetRefId);
+        const source = this.getCell(bpmnElement.sourceRefId as string);
+        const target = this.getCell(bpmnElement.targetRefId as string);
         const labelBounds = edge.label?.bounds;
-        const style = this.styleConfigurator.computeStyle(edge, labelBounds);
+        const style = this.styleConfigurator.computeStyle(edge, labelBounds as Bounds);
         const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
-        this.insertWaypoints(edge.waypoints, mxEdge);
+        this.insertWaypoints(edge.waypoints as Waypoint[], mxEdge);
 
         if (labelBounds) {
           mxEdge.geometry.width = labelBounds.width;
@@ -119,7 +123,7 @@ export default class MxGraphRenderer {
     return this.graph.getModel().getCell(id);
   }
 
-  private insertVertex(parent: mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxCell {
+  private insertVertex(parent: mxCell, id: string, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxCell {
     const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new mxPoint(bounds.x, bounds.y));
     const mxCell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 

@@ -57,7 +57,7 @@ export default class CoordinatesTranslator {
    *
    * The center coordinates are given in the same referential as the `mxCell`, so relative to its parent.
    */
-  public computeEgeCenter(mxEdge: mxCell): mxPoint {
+  public computeEgeCenter(mxEdge: mxCell): mxPoint | undefined {
     const points: mxPoint[] = mxEdge.geometry.points;
 
     const p0 = points[0];

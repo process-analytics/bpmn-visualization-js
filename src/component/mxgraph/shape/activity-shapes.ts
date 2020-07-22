@@ -34,6 +34,9 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   // TODO missing in mxgraph-type-definitions mxShape
   isRounded: boolean;
   // TODO missing in mxgraph-type-definitions mxShape
+  // will be handled with adding the missing property in mxgraph-type-definitions
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
   gradient: string;
 
   protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {

@@ -79,6 +79,10 @@ interface EventDefinition {
 type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTextAnnotation;
 
 export default class ProcessConverter {
+  //TODO: the following method should perhaps Throw Error if no return at the end - to be handled in following issues:
+  // See: #35 and #54
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     try {
       convertedFlowNodeBpmnElements.clear();
@@ -98,7 +102,7 @@ export default class ProcessConverter {
   }
 
   private parseProcess(process: TProcess): void {
-    const processId = process.id;
+    const processId: string = process.id;
     convertedProcessBpmnElements.set(processId, new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
     this.buildProcessInnerElements(process);
   }
@@ -182,6 +186,10 @@ export default class ProcessConverter {
     return markers;
   }
 
+  //TODO: the following method should perhaps Throw Error if no return at the end - to be handled in following issues:
+  // See: #35 and #54
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
   private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventKind, processId: string): ShapeBpmnEvent {
     const eventDefinitions = this.getEventDefinitions(bpmnElement);
     const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
@@ -245,9 +253,9 @@ export default class ProcessConverter {
   private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
     this.buildSubProcessInnerElements(bpmnElement);
     if (!bpmnElement.triggeredByEvent) {
-      return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, processId, markers);
+      return new ShapeBpmnSubProcess(bpmnElement.id as string, bpmnElement.name as string, ShapeBpmnSubProcessKind.EMBEDDED, processId, markers);
     }
-    return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EVENT, processId, markers);
+    return new ShapeBpmnSubProcess(bpmnElement.id as string, bpmnElement.name as string, ShapeBpmnSubProcessKind.EVENT, processId, markers);
   }
 
   private buildSubProcessInnerElements(subProcess: TSubProcess): void {
@@ -301,7 +309,7 @@ export default class ProcessConverter {
   }
 
   private getSequenceFlowKind(sequenceFlow: TSequenceFlow): SequenceFlowKind {
-    if (defaultSequenceFlowIds.includes(sequenceFlow.id)) {
+    if (defaultSequenceFlowIds.includes(sequenceFlow.id as string)) {
       return SequenceFlowKind.DEFAULT;
     } else {
       const sourceShapeBpmnElement = findFlowNodeBpmnElement(sequenceFlow.sourceRef);

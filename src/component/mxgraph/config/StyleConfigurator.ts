@@ -31,6 +31,9 @@ import { ShapeBpmnMarkerKind } from '../../../model/bpmn/shape/ShapeBpmnMarkerKi
 
 // TODO 'clone' function is missing in mxgraph-type-definitions@1.0.2
 declare const mxUtils: typeof mxgraph.mxUtils;
+declare interface HasToString {
+  toString: () => string;
+}
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
@@ -248,7 +251,7 @@ export default class StyleConfigurator {
     style[mxConstants.STYLE_WHITE_SPACE] = 'wrap';
   }
 
-  private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: any) => void>): void {
+  private configureEdgeStyles<T extends HasToString>(styleKinds: T[], specificStyles: Map<T, (style: any) => void>): void {
     styleKinds.forEach(kind => {
       const style = this.cloneDefaultEdgeStyle();
       const updateEdgeStyle =
@@ -325,14 +328,14 @@ export default class StyleConfigurator {
 
     const font = bpmnCell.label?.font;
     if (font) {
-      styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
-      styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
+      styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name as string);
+      styleValues.set(mxConstants.STYLE_FONTSIZE, font.size as number);
       styleValues.set(mxConstants.STYLE_FONTSTYLE, StyleConfigurator.getFontStyleValue(font));
     }
 
     if (labelBounds) {
       styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
-      if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
+      if (bpmnCell.bpmnElement?.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
         styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
       }
 
@@ -352,11 +355,9 @@ export default class StyleConfigurator {
     ) {
       styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
     }
-
-    return [] //
-      .concat([...styles])
-      .concat([...styleValues].filter(([, v]) => v).map(([key, value]) => key + '=' + value))
-      .join(';');
+    let result: string[] = styles;
+    result = result.concat([...styleValues].filter(([, v]) => v).map(([key, value]) => key + '=' + value));
+    return result.join(';');
   }
 
   private static getFontStyleValue(font: Font): number {

@@ -17,7 +17,10 @@ import BpmnVisualization from '../component/BpmnVisualization';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { documentReady, logStartup } from './helper';
 
-export const bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'));
+const graphElement = window.document.getElementById('graph');
+if (!graphElement) throw Error('Element #graph not found, library could not be initialized');
+
+export const bpmnVisualization = new BpmnVisualization(graphElement);
 
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {
@@ -38,8 +41,11 @@ function handleFileSelect(evt: any): void {
   readAndLoadFile(f);
 }
 
-document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
-document.getElementById('file-selector').classList.remove('hidden');
+const bpmnFileInputElement = document.getElementById('bpmn-file');
+if (bpmnFileInputElement) bpmnFileInputElement.addEventListener('change', handleFileSelect, false);
+
+const fileSelectorElement = document.getElementById('file-selector');
+if (fileSelectorElement) fileSelectorElement.classList.remove('hidden');
 
 ////////////////////////////////////////////////////////////////////////////////
 // if bpmn passed as request parameter, try to load it directly

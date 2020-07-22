@@ -106,7 +106,7 @@ abstract class IntermediateEventShape extends EventShape {
     c.ellipse(x, y, w, h);
     c.fillAndStroke();
 
-    const inset = strokeWidth * 1.5;
+    const inset = (strokeWidth as number) * 1.5;
     c.ellipse(w * 0.02 + inset + x, h * 0.02 + inset + y, w * 0.96 - 2 * inset, h * 0.96 - 2 * inset);
     c.stroke();
   }

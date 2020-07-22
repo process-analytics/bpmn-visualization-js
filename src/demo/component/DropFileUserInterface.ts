@@ -30,7 +30,13 @@ export class DropFileUserInterface {
     this.addStyle();
 
     const dropContainer = document.getElementById(this.outerContainerId);
+    if (!dropContainer) {
+      throw Error(`Element #${this.outerContainerId} not found, dropping file functionality will not work. Make sure you have no typo in parameter: outerContainerId`);
+    }
     const containerToBeFaded = document.getElementById(this.containerToFadeId);
+    if (!containerToBeFaded) {
+      throw Error(`Element #${this.containerToFadeId} not found, dropping file functionality will not work. Make sure you have no typo in parameter: containerToFadeId`);
+    }
     // prevent loading file by the browser
     this.preventDefaultsOnEvents(['dragover', 'drop'], this.window);
     this.preventDefaultsOnEvents(['dragover', 'dragleave', 'drop'], dropContainer);
@@ -123,6 +129,9 @@ export class DropFileUserInterface {
 
   private getAddClassCallback(containerToBeFaded: HTMLElement, isDocument: boolean, outerContainerId?: string) {
     return function (): void {
+      // TODO: handle 'this' implicit any type
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
       isDocument ? this.querySelector('#' + outerContainerId).classList.add('dragging') : this.classList.add('dragging');
       containerToBeFaded.classList.add('faded');
     };
@@ -130,6 +139,9 @@ export class DropFileUserInterface {
 
   private getRemoveClassCallback(containerToBeFaded: HTMLElement, isDocument: boolean, outerContainerId?: string) {
     return function (): void {
+      // TODO: handle 'this' implicit any type
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
       isDocument ? this.querySelector('#' + outerContainerId).classList.remove('dragging') : this.classList.remove('dragging');
       containerToBeFaded.classList.remove('faded');
     };
@@ -139,12 +151,17 @@ export class DropFileUserInterface {
     return function (event: DragEvent): void {
       try {
         const dt = event.dataTransfer;
-        const files = dt.files;
-        dropCallback(files[0]);
+        const files = dt?.files;
+        if (files && files[0]) {
+          dropCallback(files[0]);
+        }
       } catch (e) {
         // TODO error management
         console.error(e as Error);
       } finally {
+        // TODO: handle 'this' implicit any type
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
         isDocument ? this.querySelector('#' + outerContainerId).classList.remove('dragging') : this.classList.remove('dragging');
         containerToBeFaded.classList.remove('faded');
       }
