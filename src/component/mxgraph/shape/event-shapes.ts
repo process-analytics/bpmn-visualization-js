@@ -25,7 +25,7 @@ abstract class EventShape extends mxEllipse {
     [ShapeBpmnEventKind.MESSAGE, (paintParameter: PaintParameter) => this.iconPainter.paintEnvelopeIcon({ ...paintParameter, ratioFromParent: 0.5 })],
     [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => this.iconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
     [ShapeBpmnEventKind.TIMER, (paintParameter: PaintParameter) => this.iconPainter.paintClockIcon(paintParameter)],
-    [ShapeBpmnEventKind.SIGNAL, (paintParameter: PaintParameter) => this.iconPainter.paintTriangleIcon({ ...paintParameter, ratioFromParent: 0.5 })],
+    [ShapeBpmnEventKind.SIGNAL, (paintParameter: PaintParameter) => this.iconPainter.paintTriangleIcon({ ...paintParameter, ratioFromParent: 0.55, icon: { ...paintParameter.icon, strokeWidth: StyleDefault.STROKE_WIDTH_THIN.valueOf() } })],
   ]);
 
   protected withFilledIcon = false;
