@@ -19,7 +19,7 @@ import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVi
 import * as bpmndi from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
 
 describe('parse bpmn as json for message flow', () => {
-  it('json containing a collaboration with a single message flow without waypoint', () => {
+  it('json containing a collaboration with a single message flow', () => {
     const json = {
       definitions: {
         targetNamespace: '',
