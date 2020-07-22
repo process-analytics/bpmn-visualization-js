@@ -21,7 +21,7 @@ import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeB
 import Label, { Font } from '../../../../../src/model/bpmn/Label';
 import { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import Edge from '../../../../../src/model/bpmn/edge/Edge';
-import { MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
+import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import Bounds from '../../../../../src/model/bpmn/Bounds';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
@@ -29,6 +29,7 @@ import { BpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeUtil';
 import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
 import each from 'jest-each';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
+import { AssociationDirectionKind } from '../../../../../src/model/bpmn/edge/AssociationDirectionKind';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
@@ -76,6 +77,10 @@ function newSequenceFlow(kind: SequenceFlowKind): SequenceFlow {
 
 function newMessageFlow(): MessageFlow {
   return new MessageFlow('id', 'name', undefined, undefined);
+}
+
+function newAssociationFlow(kind: AssociationDirectionKind): AssociationFlow {
+  return new AssociationFlow('id', 'name', undefined, undefined, kind);
 }
 
 describe('mxgraph renderer', () => {
@@ -167,6 +172,15 @@ describe('mxgraph renderer', () => {
   ]).it('compute style - sequence flows: %s', (kind, expected) => {
     const edge = new Edge('id', newSequenceFlow(kind));
     expect(computeStyle(edge)).toEqual(`sequenceFlow;${expected}`);
+  });
+
+  each([
+    [AssociationDirectionKind.NONE, 'None'],
+    [AssociationDirectionKind.ONE, 'One'],
+    [AssociationDirectionKind.BOTH, 'Both'],
+  ]).it('compute style - association flows: %s', (kind, expected) => {
+    const edge = new Edge('id', newAssociationFlow(kind));
+    expect(computeStyle(edge)).toEqual(`association;${expected}`);
   });
 
   each([
