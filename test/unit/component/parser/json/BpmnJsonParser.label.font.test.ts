@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { verifyLabelFont } from './JsonTestUtils';
-// import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelFont } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelFont } from './JsonTestUtils';
 import each from 'jest-each';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
-import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 
 describe('parse bpmn as json for label font', () => {
   jest.spyOn(console, 'warn');
@@ -79,13 +77,7 @@ describe('parse bpmn as json for label font', () => {
     };
     (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
 
-    //const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(1);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
     verifyLabelFont(model.flowNodes[0].label, { name: 'Arial', size: 11.0 });
   });
@@ -119,13 +111,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyEdges(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(1);
+    const model = parseJsonAndExpectOnlyEdges(json, 1);
 
     verifyLabelFont(model.edges[0].label, { name: 'Arial', size: 11.0 });
   });
@@ -178,13 +164,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(2);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
     verifyLabelFont(model.flowNodes[0].label, { name: 'Arial', size: 11.0 });
     verifyLabelFont(model.flowNodes[1].label, { name: 'Arial', size: 11.0 });
@@ -227,13 +207,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyEdges(json, 2);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(2);
+    const model = parseJsonAndExpectOnlyEdges(json, 2);
 
     verifyLabelFont(model.edges[0].label, { name: 'Arial', size: 11.0 });
     verifyLabelFont(model.edges[1].label, { name: 'Arial', size: 11.0 });
@@ -300,13 +274,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(2);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
     verifyLabelFont(model.flowNodes[0].label, { name: 'Arial', size: 11.0, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false });
     expect(model.flowNodes[1].label).toBeUndefined();
@@ -362,13 +330,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyEdges(json, 2);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(2);
+    const model = parseJsonAndExpectOnlyEdges(json, 2);
 
     verifyLabelFont(model.edges[0].label, { name: 'Arial', size: 11.0, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false });
     expect(model.edges[1].label).toBeUndefined();
@@ -405,13 +367,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(1);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
     expect(model.flowNodes[0].label).toBeUndefined();
   });
@@ -441,13 +397,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyEdges(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(1);
+    const model = parseJsonAndExpectOnlyEdges(json, 1);
 
     expect(model.edges[0].label).toBeUndefined();
   });
@@ -481,13 +431,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(1);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
     expect(model.flowNodes[0].label).toBeUndefined();
     expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNShape_id_0');
@@ -516,13 +460,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyEdges(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(1);
+    const model = parseJsonAndExpectOnlyEdges(json, 1);
 
     expect(model.edges[0].label).toBeUndefined();
     expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNEdge_id_0');

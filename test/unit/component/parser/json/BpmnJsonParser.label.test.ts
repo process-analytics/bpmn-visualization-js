@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes } from './JsonTestUtils';
 import each from 'jest-each';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
-import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 
 describe('parse bpmn as json for label font', () => {
   each([
@@ -62,13 +61,7 @@ describe('parse bpmn as json for label font', () => {
     };
     (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
 
-    //const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(1);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
     expect(model.flowNodes[0].label).toBeUndefined();
   });
@@ -92,13 +85,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyEdges(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(1);
+    const model = parseJsonAndExpectOnlyEdges(json, 1);
 
     expect(model.edges[0].label).toBeUndefined();
   });
@@ -130,13 +117,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(1);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
     expect(model.flowNodes[0].label).toBeUndefined();
   });
@@ -162,13 +143,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyEdges(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(1);
+    const model = parseJsonAndExpectOnlyEdges(json, 1);
 
     expect(model.edges[0].label).toBeUndefined();
   });
@@ -197,13 +172,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(1);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
     expect(model.flowNodes[0].label).toBeUndefined();
   });
@@ -226,13 +195,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyEdges(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(1);
+    const model = parseJsonAndExpectOnlyEdges(json, 1);
 
     expect(model.edges[0].label).toBeUndefined();
   });

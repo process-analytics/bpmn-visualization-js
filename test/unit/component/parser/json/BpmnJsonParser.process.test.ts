@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { verifyShape } from './JsonTestUtils';
-// import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
+import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
 import { findProcessRefParticipant } from '../../../../../src/component/parser/json/converter/CollaborationConverter';
-import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 
 describe('parse bpmn as json for process/pool', () => {
   it('json containing one participant without name and the related process has a name', () => {
@@ -47,12 +45,7 @@ describe('parse bpmn as json for process/pool', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 0);
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(1);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 0);
 
     const pool = model.pools[0];
     verifyShape(pool, {
@@ -104,12 +97,7 @@ describe('parse bpmn as json for process/pool', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 1);
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(1);
-    expect(model.pools).toHaveLength(1);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 1);
 
     const pool = model.pools[0];
     verifyShape(pool, {
@@ -202,12 +190,7 @@ describe('parse bpmn as json for process/pool', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 2, 2);
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(2);
-    expect(model.pools).toHaveLength(2);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 2, 2);
 
     verifyShape(model.pools[0], {
       shapeId: 'shape_Participant_1',
@@ -294,12 +277,7 @@ describe('parse bpmn as json for process/pool', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyPools(json, 1);
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(1);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyPools(json, 1);
 
     const pool = model.pools[0];
     verifyShape(pool, {
@@ -356,12 +334,7 @@ describe('parse bpmn as json for process/pool', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyPoolsAndFlowNodes(json, 1, 1);
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(1);
-    expect(model.flowNodes).toHaveLength(1);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyPoolsAndFlowNodes(json, 1, 1);
 
     const pool = model.pools[0];
     verifyShape(pool, {
@@ -660,12 +633,7 @@ describe('parse bpmn as json for process/pool', () => {
       },
     };
 
-    // const model = parseJsonAndExpect(json, 0, 0, 5, 4);
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(5);
-    expect(model.edges).toHaveLength(4);
+    const model = parseJsonAndExpect(json, 0, 0, 5, 4);
 
     model.flowNodes.map(flowNode => flowNode.bpmnElement).forEach(bpmnElement => expect(bpmnElement.parentId).toBeUndefined);
   });

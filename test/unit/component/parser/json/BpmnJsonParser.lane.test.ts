@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-// import { parseJson, parseJsonAndExpectOnlyLanes, verifyShape } from './JsonTestUtils';
-import { verifyShape } from './JsonTestUtils';
-import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
+import { parseJson, parseJsonAndExpectOnlyLanes, verifyShape } from './JsonTestUtils';
 
 describe('parse bpmn as json for lane', () => {
   it('json containing one process with a single lane without flowNodeRef', () => {
@@ -39,13 +37,7 @@ describe('parse bpmn as json for lane', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyLanes(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(1);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyLanes(json, 1);
 
     verifyShape(model.lanes[0], {
       shapeId: 'Lane_1h5yeu4_di',
@@ -89,8 +81,7 @@ describe('parse bpmn as json for lane', () => {
       },
     };
 
-    // const model = parseJson(json);
-    const model = defaultBpmnJsonParser().parse(json);
+    const model = parseJson(json);
 
     expect(model.lanes).toHaveLength(1);
     verifyShape(model.lanes[0], {
@@ -130,13 +121,7 @@ describe('parse bpmn as json for lane', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyLanes(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(1);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyLanes(json, 1);
 
     verifyShape(model.lanes[0], {
       shapeId: 'Lane_1h5yeu4_di',
@@ -172,8 +157,7 @@ describe('parse bpmn as json for lane', () => {
       },
     };
 
-    // const model = parseJson(json);
-    const model = defaultBpmnJsonParser().parse(json);
+    const model = parseJson(json);
 
     expect(model.lanes).toHaveLength(1);
     verifyShape(model.lanes[0], {
@@ -218,8 +202,7 @@ describe('parse bpmn as json for lane', () => {
       },
     };
 
-    // const model = parseJson(json);
-    const model = defaultBpmnJsonParser().parse(json);
+    const model = parseJson(json);
 
     expect(model.lanes).toHaveLength(1);
     verifyShape(model.lanes[0], {
@@ -264,13 +247,7 @@ describe('parse bpmn as json for lane', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyLanes(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(1);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyLanes(json, 1);
 
     verifyShape(model.lanes[0], {
       shapeId: 'Lane_1h5yeu4_di',
@@ -325,13 +302,7 @@ describe('parse bpmn as json for lane', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyLanes(json, 2);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(2);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyLanes(json, 2);
 
     verifyShape(model.lanes[0], {
       shapeId: 'Lane_164yevk_di',

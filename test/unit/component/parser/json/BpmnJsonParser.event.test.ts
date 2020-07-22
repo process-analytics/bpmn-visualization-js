@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJsonAndExpectOnlyBoundaryEvent, parseJsonAndExpectOnlyEvent, verifyShape } from './JsonTestUtils';
-// import { parseJsonAndExpectOnlyBoundaryEvent, parseJsonAndExpectOnlyEvent, parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyBoundaryEvent, parseJsonAndExpectOnlyEvent, parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 import { TEventDefinition } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/eventDefinition';
 import { TBoundaryEvent, TCatchEvent, TEvent, TThrowEvent } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowNode/event';
-import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import { BPMNShape } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
 
 const eventDefinitionParameters = [
@@ -260,12 +258,7 @@ describe('parse bpmn as json for all events', () => {
           };
           (json.definitions.process as TProcess)[`${bpmnKind}`] = eventJson;
 
-          //  parseJsonAndExpectOnlyFlowNodes(json, 0);
-          const model = defaultBpmnJsonParser().parse(json);
-          expect(model.lanes).toHaveLength(0);
-          expect(model.pools).toHaveLength(0);
-          expect(model.flowNodes).toHaveLength(0);
-          expect(model.edges).toHaveLength(0);
+          parseJsonAndExpectOnlyFlowNodes(json, 0);
         });
       }
     });

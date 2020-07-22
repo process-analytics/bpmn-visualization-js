@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-// import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
-import { verifyShape } from './JsonTestUtils';
-import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
+import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for call activity', () => {
@@ -48,13 +46,7 @@ describe('parse bpmn as json for call activity', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(1);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
     verifyShape(model.flowNodes[0], {
       shapeId: `shape_callActivity_id_0`,
@@ -106,13 +98,7 @@ describe('parse bpmn as json for call activity', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(2);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
     verifyShape(model.flowNodes[0], {
       shapeId: 'shape_callActivity_id_0',
@@ -161,13 +147,7 @@ describe('parse bpmn as json for call activity', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(1);
-    expect(model.edges).toHaveLength(0);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
     verifyShape(model.flowNodes[0], {
       shapeId: `shape_callActivity_id_0`,

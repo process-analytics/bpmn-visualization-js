@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { verifyEdge } from './JsonTestUtils';
-// import { parseJsonAndExpectOnlyEdgesAndFlowNodes, verifyEdge } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyEdgesAndFlowNodes, verifyEdge } from './JsonTestUtils';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import each from 'jest-each';
-import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 import { TSequenceFlow } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowElement';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
@@ -79,13 +77,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     process[`${sourceKind}`] = { id: 'source_id_0' };
     (process.sequenceFlow as TSequenceFlow).conditionExpression['#text'] = '&quot;Contract to be written&quot;.equals(loanRequested.status)';
 
-    // const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(1);
-    expect(model.edges).toHaveLength(1);
+    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
 
     verifyEdge(model.edges[0], {
       edgeId: 'edge_sequenceFlow_id_0',
@@ -134,12 +126,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(1);
-    expect(model.edges).toHaveLength(1);
+    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
 
     verifyEdge(model.edges[0], {
       edgeId: 'edge_sequenceFlow_id_0',

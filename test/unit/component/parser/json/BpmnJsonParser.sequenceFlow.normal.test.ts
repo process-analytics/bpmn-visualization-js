@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { verifyEdge } from './JsonTestUtils';
-// import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
-import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 
 describe('parse bpmn as json for sequence flow', () => {
   it('json containing one process with a single sequence flow without waypoint', () => {
@@ -46,12 +44,7 @@ describe('parse bpmn as json for sequence flow', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyEdges(json, 1);
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(1);
+    const model = parseJsonAndExpectOnlyEdges(json, 1);
 
     verifyEdge(model.edges[0], {
       edgeId: 'edge_sequenceFlow_id_0',
@@ -92,12 +85,7 @@ describe('parse bpmn as json for sequence flow', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyEdges(json, 1);
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(1);
+    const model = parseJsonAndExpectOnlyEdges(json, 1);
 
     verifyEdge(model.edges[0], {
       edgeId: 'edge_sequenceFlow_id_0',
@@ -150,12 +138,7 @@ describe('parse bpmn as json for sequence flow', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyEdges(json, 2);
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(2);
+    const model = parseJsonAndExpectOnlyEdges(json, 2);
 
     verifyEdge(model.edges[0], {
       edgeId: 'edge_sequenceFlow_id_0',
@@ -222,12 +205,7 @@ describe('parse bpmn as json for sequence flow', () => {
       },
     };
 
-    // const model = parseJsonAndExpectOnlyEdges(json, 2);
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(2);
+    const model = parseJsonAndExpectOnlyEdges(json, 2);
 
     verifyEdge(model.edges[0], {
       edgeId: 'edge_sequenceFlow_id_0',
