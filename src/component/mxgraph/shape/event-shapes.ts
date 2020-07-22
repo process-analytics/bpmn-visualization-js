@@ -25,6 +25,7 @@ abstract class EventShape extends mxEllipse {
     [ShapeBpmnEventKind.MESSAGE, (paintParameter: PaintParameter) => this.iconPainter.paintEnvelopeIcon({ ...paintParameter, ratioFromParent: 0.5 })],
     [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => this.iconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
     [ShapeBpmnEventKind.TIMER, (paintParameter: PaintParameter) => this.iconPainter.paintClockIcon(paintParameter)],
+    [ShapeBpmnEventKind.SIGNAL, (paintParameter: PaintParameter) => this.iconPainter.paintTriangleIcon({ ...paintParameter, ratioFromParent: 0.55, icon: { ...paintParameter.icon, strokeWidth: StyleDefault.STROKE_WIDTH_THIN.valueOf() } })],
   ]);
 
   protected withFilledIcon = false;
@@ -34,7 +35,6 @@ abstract class EventShape extends mxEllipse {
   }
 
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    // TODO: This will be removed after implementation of all supported events
     this.markNonFullyRenderedEvents(c);
     const paintParameter = buildPaintParameter(c, x, y, w, h, this, 0.25, this.withFilledIcon);
     this.paintOuterShape(paintParameter);
@@ -42,12 +42,13 @@ abstract class EventShape extends mxEllipse {
   }
 
   // This will be removed after implementation of all supported events
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private markNonFullyRenderedEvents(c: mxAbstractCanvas2D): void {
-    const eventKind = StyleUtils.getBpmnEventKind(this.style);
-    if (eventKind == ShapeBpmnEventKind.SIGNAL) {
-      c.setFillColor('deeppink');
-      c.setFillAlpha(0.3);
-    }
+    // const eventKind = StyleUtils.getBpmnEventKind(this.style);
+    // if (eventKind == ShapeBpmnEventKind.SIGNAL) {
+    //   c.setFillColor('deeppink');
+    //   c.setFillAlpha(0.3);
+    // }
   }
 
   protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {
