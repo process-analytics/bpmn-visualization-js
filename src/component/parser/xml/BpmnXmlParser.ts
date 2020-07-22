@@ -15,6 +15,7 @@
  */
 import { parse } from 'fast-xml-parser/src/parser';
 import * as entities from 'entities';
+import { BpmnJsonModel } from './bpmn-json-model/BPMN20';
 
 /**
  * Parse bpmn xml source
@@ -31,8 +32,7 @@ export default class BpmnXmlParser {
   };
 
   // disable eslint as it comes from 3rd party
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public parse(xml: string): any {
+  public parse(xml: string): BpmnJsonModel {
     return parse(xml, this.options);
   }
 }

@@ -19,6 +19,9 @@ import { Participant } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { Collaboration } from '../Definitions';
 import { MessageFlow } from '../../../../model/bpmn/edge/Flow';
 import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
+import { TCollaboration } from '../../xml/bpmn-json-model/baseElement/rootElement/collaboration';
+import { TParticipant } from '../../xml/bpmn-json-model/baseElement/participant';
+import { TMessageFlow } from '../../xml/bpmn-json-model/baseElement/baseElement';
 
 const convertedProcessRefParticipants: Participant[] = [];
 const convertedMessageFlows: MessageFlow[] = [];
@@ -37,8 +40,7 @@ export function findMessageFlow(id: string): MessageFlow {
 
 @JsonConverter
 export default class CollaborationConverter extends AbstractConverter<Collaboration> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  deserialize(collaboration: any): Collaboration {
+  deserialize(collaboration: TCollaboration): Collaboration {
     try {
       // Deletes everything in the array, which does hit other references. For better performance.
       convertedProcessRefParticipants.length = 0;
@@ -54,8 +56,7 @@ export default class CollaborationConverter extends AbstractConverter<Collaborat
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildParticipant(bpmnElements: Array<any> | any): void {
+  private buildParticipant(bpmnElements: Array<TParticipant> | TParticipant): void {
     ensureIsArray(bpmnElements).forEach(participant => {
       if (participant.processRef) {
         convertedProcessRefParticipants.push(new Participant(participant.id, participant.name, participant.processRef));
@@ -63,8 +64,7 @@ export default class CollaborationConverter extends AbstractConverter<Collaborat
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildMessageFlows(bpmnElements: Array<any> | any): void {
+  private buildMessageFlows(bpmnElements: Array<TMessageFlow> | TMessageFlow): void {
     ensureIsArray(bpmnElements).forEach(messageFlow => {
       const convertedMessageFlow = new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef);
       convertedMessageFlows.push(convertedMessageFlow);

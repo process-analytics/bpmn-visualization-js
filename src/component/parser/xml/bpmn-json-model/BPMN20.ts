@@ -49,6 +49,10 @@ import {
   TTimerEventDefinition,
 } from './baseElement/rootElement/eventDefinition';
 
+export interface BpmnJsonModel {
+  definitions: TDefinitions;
+}
+
 // <xsd:anyAttribute namespace="##other" processContents="lax"/>
 export interface TDefinitions {
   import?: TImport | TImport[];

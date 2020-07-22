@@ -24,6 +24,12 @@ import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/shape/ShapeUtil
 import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';
 import { ShapeBpmnSubProcessKind } from '../../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
+import { TProcess } from '../../xml/bpmn-json-model/baseElement/rootElement/rootElement';
+import { TEvent } from '../../xml/bpmn-json-model/baseElement/flowNode/event';
+import { TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
+import { TLane, TLaneSet } from '../../xml/bpmn-json-model/baseElement/baseElement';
+import { TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement';
+import { TAssociation } from '../../xml/bpmn-json-model/baseElement/artifact';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
@@ -64,7 +70,7 @@ interface EventDefinition {
 @JsonConverter
 export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  deserialize(processes: Array<any> | any): Process {
+  deserialize(processes: Array<TProcess> | TProcess): Process {
     try {
       // Deletes everything in the array, which does hit other references. For better performance.
       convertedFlowNodeBpmnElements.length = 0;
@@ -84,7 +90,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  parseProcess(process: { [index: string]: any }): void {
+  parseProcess(process: TProcess): void {
     const processId = process.id;
     convertedProcessBpmnElements.push(new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
 
@@ -150,8 +156,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
    *
    * @param bpmnElement The BPMN element from the XML data which represents a BPMN Event
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private getEventDefinitions(bpmnElement: any): EventDefinition[] {
+  private getEventDefinitions(bpmnElement: TEvent): EventDefinition[] {
     return bpmnEventKinds
       .map(eventKind => {
         // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
@@ -163,23 +168,20 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildShapeBpmnSubProcess(bpmnElement: any, processId: string): ShapeBpmnSubProcess {
+  private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string): ShapeBpmnSubProcess {
     if (!bpmnElement.triggeredByEvent) {
       return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, processId);
     }
     return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EVENT, processId);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildLaneSetBpmnElements(processId: string, laneSet: any): void {
-    if (laneSet) {
+  private buildLaneSetBpmnElements(processId: string, laneSets: Array<TLaneSet> | TLaneSet): void {
+    ensureIsArray(laneSets).forEach(laneSet => {
       this.buildLaneBpmnElements(processId, laneSet.lane);
-    }
+    });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildLaneBpmnElements(processId: string, lanes: Array<any> | any): void {
+  private buildLaneBpmnElements(processId: string, lanes: Array<TLane> | TLane): void {
     ensureIsArray(lanes).forEach(lane => {
       const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, processId);
       convertedLaneBpmnElements.push(laneShape);
@@ -187,8 +189,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private assignParentOfLaneFlowNodes(lane: any): void {
+  private assignParentOfLaneFlowNodes(lane: TLane): void {
     ensureIsArray(lane.flowNodeRef).forEach(flowNodeRef => {
       const shapeBpmnElement = findFlowNodeBpmnElement(flowNodeRef);
       const laneId = lane.id;
@@ -203,8 +204,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildSequenceFlows(bpmnElements: Array<any> | any): void {
+  private buildSequenceFlows(bpmnElements: Array<TSequenceFlow> | TSequenceFlow): void {
     ensureIsArray(bpmnElements).forEach(sequenceFlow => {
       const kind = this.getSequenceFlowKind(sequenceFlow);
       const convertedSequenceFlow = new SequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.sourceRef, sequenceFlow.targetRef, kind);
@@ -212,16 +212,14 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildAssociationFlows(bpmnElements: Array<any> | any): void {
+  private buildAssociationFlows(bpmnElements: Array<TAssociation> | TAssociation): void {
     ensureIsArray(bpmnElements).forEach(association => {
       const convertedAssociationFlow = new AssociationFlow(association.id, association.name, association.sourceRef, association.targetRef, association.associationDirection);
       convertedAssociationFlows.push(convertedAssociationFlow);
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private getSequenceFlowKind(sequenceFlow: any): SequenceFlowKind {
+  private getSequenceFlowKind(sequenceFlow: TSequenceFlow): SequenceFlowKind {
     if (defaultSequenceFlowIds.includes(sequenceFlow.id)) {
       return SequenceFlowKind.DEFAULT;
     } else {

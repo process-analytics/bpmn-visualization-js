@@ -44,7 +44,7 @@ interface ExpectedEdge {
   bpmnElementName: string;
   bpmnElementSourceRefId: string;
   bpmnElementTargetRefId: string;
-  waypoints?: Waypoint[];
+  waypoints: Waypoint[];
   messageVisibleKind?: MessageVisibleKind;
 }
 
