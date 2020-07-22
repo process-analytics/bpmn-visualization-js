@@ -13,9 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { parseJsonAndExpectOnlyEdgesAndFlowNodes, verifyEdge } from './JsonTestUtils';
+import { verifyEdge } from './JsonTestUtils';
+// import { parseJsonAndExpectOnlyEdgesAndFlowNodes, verifyEdge } from './JsonTestUtils';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import each from 'jest-each';
+import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
+import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
+import { TSequenceFlow } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowElement';
+import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
 
 describe('parse bpmn as json for conditional sequence flow', () => {
   each([
@@ -38,40 +43,49 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
   ]).it('json containing one process with a sequence flow defined as conditional in a %s', (sourceKind, expectedSequenceFlowKind) => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "${sourceKind}": { "id": "source_id_0" },
-                  "sequenceFlow": {
-                      "id": "sequenceFlow_id_0",
-                      "sourceRef": "source_id_0",
-                      "targetRef": "targetRef_RLk",
-                      "conditionExpression": {
-                        "#text": "&quot;Contract to be written&quot;.equals(loanRequested.status)",
-                        "evaluatesToTypeRef": "java:java.lang.Boolean"
-                      }
-                  }
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id":"shape_source_id_0",
-                          "bpmnElement":"source_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                      },
-                      "BPMNEdge": {
-                          "id": "edge_sequenceFlow_id_0",
-                          "bpmnElement": "sequenceFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          id: 'Process_1',
+          sequenceFlow: {
+            id: 'sequenceFlow_id_0',
+            sourceRef: 'source_id_0',
+            targetRef: 'targetRef_RLk',
+            conditionExpression: {
+              evaluatesToTypeRef: 'java:java.lang.Boolean',
+            },
+          },
+        },
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNShape: {
+              id: 'shape_source_id_0',
+              bpmnElement: 'source_id_0',
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+            },
+            BPMNEdge: {
+              id: 'edge_sequenceFlow_id_0',
+              bpmnElement: 'sequenceFlow_id_0',
+              waypoint: [{ x: 10, y: 10 }],
+            },
+          },
+        },
+      },
+    };
+    const process = json.definitions.process as TProcess;
+    process[`${sourceKind}`] = { id: 'source_id_0' };
+    (process.sequenceFlow as TSequenceFlow).conditionExpression['#text'] = '&quot;Contract to be written&quot;.equals(loanRequested.status)';
 
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+    // const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(1);
+    expect(model.edges).toHaveLength(1);
 
     verifyEdge(model.edges[0], {
       edgeId: 'edge_sequenceFlow_id_0',
@@ -80,44 +94,52 @@ describe('parse bpmn as json for conditional sequence flow', () => {
       bpmnElementSourceRefId: 'source_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
       bpmnElementSequenceFlowKind: expectedSequenceFlowKind,
+      waypoints: [new Waypoint(10, 10)],
     });
   });
 
   it('json containing one process with a flow node who define a sequence flow as conditional, but not possible in BPMN Semantic', () => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "parallelGateway": { "id": "gateway_id_0" },
-                  "sequenceFlow": {
-                      "id": "sequenceFlow_id_0",
-                      "sourceRef": "gateway_id_0",
-                      "targetRef": "targetRef_RLk",
-                      "conditionExpression": {
-                        "#text": "&quot;Contract to be written&quot;.equals(loanRequested.status)",
-                        "evaluatesToTypeRef": "java:java.lang.Boolean"
-                      }
-                  }
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id":"shape_gateway_id_0",
-                          "bpmnElement":"gateway_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                      },
-                      "BPMNEdge": {
-                          "id": "edge_sequenceFlow_id_0",
-                          "bpmnElement": "sequenceFlow_id_0"
-                      }
-                  }
-              }
-          }
-      }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          id: 'Process_1',
+          parallelGateway: { id: 'gateway_id_0' },
+          sequenceFlow: {
+            id: 'sequenceFlow_id_0',
+            sourceRef: 'gateway_id_0',
+            targetRef: 'targetRef_RLk',
+            conditionExpression: {
+              '#text': '&quot;Contract to be written&quot;.equals(loanRequested.status)',
+              evaluatesToTypeRef: 'java:java.lang.Boolean',
+            },
+          },
+        },
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNShape: {
+              id: 'shape_gateway_id_0',
+              bpmnElement: 'gateway_id_0',
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+            },
+            BPMNEdge: {
+              id: 'edge_sequenceFlow_id_0',
+              bpmnElement: 'sequenceFlow_id_0',
+              waypoint: [{ x: 10, y: 10 }],
+            },
+          },
+        },
+      },
+    };
 
-    const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+    // const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+    const model = defaultBpmnJsonParser().parse(json);
+    expect(model.lanes).toHaveLength(0);
+    expect(model.pools).toHaveLength(0);
+    expect(model.flowNodes).toHaveLength(1);
+    expect(model.edges).toHaveLength(1);
 
     verifyEdge(model.edges[0], {
       edgeId: 'edge_sequenceFlow_id_0',
@@ -126,6 +148,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
       bpmnElementSourceRefId: 'gateway_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
       bpmnElementSequenceFlowKind: SequenceFlowKind.NORMAL,
+      waypoints: [new Waypoint(10, 10)],
     });
   });
 });
