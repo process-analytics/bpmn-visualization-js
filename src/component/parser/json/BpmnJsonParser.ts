@@ -17,11 +17,12 @@ import { Definitions } from './Definitions';
 import BpmnModel from '../../../model/bpmn/BpmnModel';
 import JsonConvertConfig from './converter/JsonConvertConfig';
 import { JsonConvert } from 'json2typescript';
+import { BpmnJsonModel } from '../xml/bpmn-json-model/BPMN20';
 
 export default class BpmnJsonParser {
   constructor(readonly jsonConvert: JsonConvert) {}
 
-  public parse(json: { definitions: Definitions }): BpmnModel {
+  public parse(json: BpmnJsonModel): BpmnModel {
     const definitions = this.jsonConvert.deserializeObject(json.definitions, Definitions);
     return definitions.bpmnModel;
   }

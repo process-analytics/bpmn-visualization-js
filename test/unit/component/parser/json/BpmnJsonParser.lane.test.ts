@@ -18,24 +18,24 @@ import { parseJson, parseJsonAndExpectOnlyLanes, verifyShape } from './JsonTestU
 
 describe('parse bpmn as json for lane', () => {
   it('json containing one process with a single lane without flowNodeRef', () => {
-    const json = `{
-                      "definitions":{
-                        "process":{
-                          "lane": { "id":"Lane_12u5n6x" }
-                        },
-                        "BPMNDiagram":{
-                          "BPMNPlane":{
-                            "BPMNShape":
-                              {
-                                "id":"Lane_1h5yeu4_di",
-                                "bpmnElement":"Lane_12u5n6x",
-                                "isHorizontal":true,
-                                "Bounds": { "x":362, "y":232, "width":36, "height":45 }
-                              }
-                          }
-                        }
-                      }
-                    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          lane: { id: 'Lane_12u5n6x' },
+        },
+        BPMNDiagram: {
+          BPMNPlane: {
+            BPMNShape: {
+              id: 'Lane_1h5yeu4_di',
+              bpmnElement: 'Lane_12u5n6x',
+              isHorizontal: true,
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+            },
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlyLanes(json, 1);
 
@@ -54,31 +54,32 @@ describe('parse bpmn as json for lane', () => {
   });
 
   it('json containing one process with a single lane with flowNodeRef as object & flowNode already parsed', () => {
-    const json = `{
-                      "definitions":{
-                        "process":{
-                          "lane": { "id":"Lane_12u5n6x", "flowNodeRef":"event_id_0" },
-                          "startEvent": { "id":"event_id_0" }
-                        },
-                        "BPMNDiagram":{
-                          "BPMNPlane":{
-                            "BPMNShape":[
-                              {
-                                "id":"Lane_1h5yeu4_di",
-                                "bpmnElement":"Lane_12u5n6x",
-                                "isHorizontal":true,
-                                "Bounds": { "x":362, "y":232, "width":36, "height":45 }
-                              },
-                              {
-                                "id":"event_id_0_di",
-                                "bpmnElement":"event_id_0",
-                                "Bounds":{ "x":11, "y":11, "width":11, "height":11 }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          lane: { id: 'Lane_12u5n6x', flowNodeRef: 'event_id_0' },
+          startEvent: { id: 'event_id_0' },
+        },
+        BPMNDiagram: {
+          BPMNPlane: {
+            BPMNShape: [
+              {
+                id: 'Lane_1h5yeu4_di',
+                bpmnElement: 'Lane_12u5n6x',
+                isHorizontal: true,
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              },
+              {
+                id: 'event_id_0_di',
+                bpmnElement: 'event_id_0',
+                Bounds: { x: 11, y: 11, width: 11, height: 11 },
+              },
+            ],
+          },
+        },
+      },
+    };
 
     const model = parseJson(json);
 
@@ -101,24 +102,24 @@ describe('parse bpmn as json for lane', () => {
   });
 
   it('json containing one process with a single lane with flowNodeRef as object & flowNode not parsed', () => {
-    const json = `{
-                      "definitions":{
-                        "process":{
-                          "lane": { "id":"Lane_12u5n6x", "flowNodeRef":"event_id_0" }
-                        },
-                        "BPMNDiagram":{
-                          "BPMNPlane":{
-                            "BPMNShape":
-                              {
-                                "id":"Lane_1h5yeu4_di",
-                                "bpmnElement":"Lane_12u5n6x",
-                                "isHorizontal":true,
-                                "Bounds": { "x":362, "y":232, "width":36, "height":45 }
-                              }
-                          }
-                        }
-                      }
-                    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          lane: { id: 'Lane_12u5n6x', flowNodeRef: 'event_id_0' },
+        },
+        BPMNDiagram: {
+          BPMNPlane: {
+            BPMNShape: {
+              id: 'Lane_1h5yeu4_di',
+              bpmnElement: 'Lane_12u5n6x',
+              isHorizontal: true,
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+            },
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlyLanes(json, 1);
 
@@ -137,24 +138,24 @@ describe('parse bpmn as json for lane', () => {
   });
 
   it('json containing one process with a single lane with flowNodeRef as object & flowNode not parsed', () => {
-    const json = `{
-                      "definitions":{
-                        "process":{
-                          "lane": { "id":"Lane_12u5n6x", "flowNodeRef":"event_id_0" }
-                        },
-                        "BPMNDiagram":{
-                          "BPMNPlane":{
-                            "BPMNShape":
-                              {
-                                "id":"Lane_1h5yeu4_di",
-                                "bpmnElement":"Lane_12u5n6x",
-                                "isHorizontal":true,
-                                "Bounds": { "x":362, "y":232, "width":36, "height":45 }
-                              }
-                          }
-                        }
-                      }
-                    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          lane: { id: 'Lane_12u5n6x', flowNodeRef: 'event_id_0' },
+        },
+        BPMNDiagram: {
+          BPMNPlane: {
+            BPMNShape: {
+              id: 'Lane_1h5yeu4_di',
+              bpmnElement: 'Lane_12u5n6x',
+              isHorizontal: true,
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+            },
+          },
+        },
+      },
+    };
 
     const model = parseJson(json);
 
@@ -174,31 +175,32 @@ describe('parse bpmn as json for lane', () => {
   });
 
   it('json containing one process with a single lane with flowNodeRef as array', () => {
-    const json = `{
-                      "definitions":{
-                        "process":{
-                          "lane": { "id":"Lane_12u5n6x", "flowNodeRef":["event_id_0"] },
-                          "startEvent": { "id":"event_id_0" }
-                        },
-                        "BPMNDiagram":{
-                          "BPMNPlane":{
-                            "BPMNShape":[
-                              {
-                                "id":"Lane_1h5yeu4_di",
-                                "bpmnElement":"Lane_12u5n6x",
-                                "isHorizontal":true,
-                                "Bounds": { "x":362, "y":232, "width":36, "height":45 }
-                              },
-                              {
-                                "id":"event_id_0_di",
-                                "bpmnElement":"event_id_0",
-                                "Bounds":{ "x":11, "y":11, "width":11, "height":11 }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          lane: { id: 'Lane_12u5n6x', flowNodeRef: ['event_id_0'] },
+          startEvent: { id: 'event_id_0' },
+        },
+        BPMNDiagram: {
+          BPMNPlane: {
+            BPMNShape: [
+              {
+                id: 'Lane_1h5yeu4_di',
+                bpmnElement: 'Lane_12u5n6x',
+                isHorizontal: true,
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              },
+              {
+                id: 'event_id_0_di',
+                bpmnElement: 'event_id_0',
+                Bounds: { x: 11, y: 11, width: 11, height: 11 },
+              },
+            ],
+          },
+        },
+      },
+    };
 
     const model = parseJson(json);
 
@@ -221,27 +223,29 @@ describe('parse bpmn as json for lane', () => {
   });
 
   it('json containing one process declared as array with a laneset', () => {
-    const json = `{
-                      "definitions":{
-                        "process":[{
-                          "laneSet":{
-                            "id":"LaneSet_1i59xiy",
-                            "lane":{ "id":"Lane_12u5n6x" }
-                          }
-                        }],
-                        "BPMNDiagram":{
-                          "BPMNPlane":{
-                            "BPMNShape":
-                              {
-                                "id":"Lane_1h5yeu4_di",
-                                "bpmnElement":"Lane_12u5n6x",
-                                "isHorizontal":true,
-                                "Bounds":{ "x":362, "y":232, "width":36, "height":45 }
-                              }
-                          }
-                        }
-                      }
-                    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: [
+          {
+            laneSet: {
+              id: 'LaneSet_1i59xiy',
+              lane: { id: 'Lane_12u5n6x' },
+            },
+          },
+        ],
+        BPMNDiagram: {
+          BPMNPlane: {
+            BPMNShape: {
+              id: 'Lane_1h5yeu4_di',
+              bpmnElement: 'Lane_12u5n6x',
+              isHorizontal: true,
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+            },
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlyLanes(json, 1);
 
@@ -260,42 +264,43 @@ describe('parse bpmn as json for lane', () => {
   });
 
   it('json containing one process with an array of lanes with & without name', () => {
-    const json = `{
-                      "definitions":{
-                        "process":{
-                          "laneSet":{
-                            "id":"LaneSet_1i59xiy",
-                            "lane":[
-                              {
-                                "id":"Lane_164yevk",
-                                "name":"Customer",
-                                "flowNodeRef":"event_id_0"
-                              },
-                              { "id":"Lane_12u5n6x" }
-                            ]
-                          },
-                          "startEvent": { "id":"event_id_0" }
-                        },
-                        "BPMNDiagram":{
-                          "BPMNPlane":{
-                            "BPMNShape":[
-                              {
-                                "id":"Lane_164yevk_di",
-                                "bpmnElement":"Lane_164yevk",
-                                "isHorizontal":true,
-                                "Bounds":{ "x":362, "y":232, "width":36, "height":45 }
-                              },
-                              {
-                                "id":"Lane_12u5n6x_di",
-                                "bpmnElement":"Lane_12u5n6x",
-                                "isHorizontal":true,
-                                "Bounds":{ "x":666, "y":222, "width":22, "height":33 }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          laneSet: {
+            id: 'LaneSet_1i59xiy',
+            lane: [
+              {
+                id: 'Lane_164yevk',
+                name: 'Customer',
+                flowNodeRef: 'event_id_0',
+              },
+              { id: 'Lane_12u5n6x' },
+            ],
+          },
+          startEvent: { id: 'event_id_0' },
+        },
+        BPMNDiagram: {
+          BPMNPlane: {
+            BPMNShape: [
+              {
+                id: 'Lane_164yevk_di',
+                bpmnElement: 'Lane_164yevk',
+                isHorizontal: true,
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              },
+              {
+                id: 'Lane_12u5n6x_di',
+                bpmnElement: 'Lane_12u5n6x',
+                isHorizontal: true,
+                Bounds: { x: 666, y: 222, width: 22, height: 33 },
+              },
+            ],
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlyLanes(json, 2);
 

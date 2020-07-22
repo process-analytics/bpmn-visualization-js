@@ -16,6 +16,8 @@
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 import arrayContaining = jasmine.arrayContaining;
 import anything = jasmine.anything;
+import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
+import { BPMNDiagram } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
 
 describe('parse bpmn as xml for Activiti Designer 5.14.1', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
@@ -40,7 +42,7 @@ describe('parse bpmn as xml for Activiti Designer 5.14.1', () => {
     <sequenceFlow id="flow8" sourceRef="exclusivegateway2" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="usertask3" targetRef="endevent1"></sequenceFlow>
     <textAnnotation id="textannotation1">
-      <text>3. Gateways display the X symbol in all cases (no user control) but actually do not write it to the file. Always displaying it seems quite reasonable if the attribute is stored in the model. 
+      <text>3. Gateways display the X symbol in all cases (no user control) but actually do not write it to the file. Always displaying it seems quite reasonable if the attribute is stored in the model.
 4. Gateway labels not displayed on diagram. </text>
     </textAnnotation>
   </process>
@@ -148,10 +150,13 @@ describe('parse bpmn as xml for Activiti Designer 5.14.1', () => {
       },
     });
 
-    expect(json.definitions.process.userTask).toHaveLength(4);
-    expect(json.definitions.process.exclusiveGateway).toHaveLength(2);
-    expect(json.definitions.process.sequenceFlow).toHaveLength(9);
-    expect(json.definitions.BPMNDiagram.BPMNPlane.BPMNShape).toHaveLength(9);
-    expect(json.definitions.BPMNDiagram.BPMNPlane.BPMNEdge).toHaveLength(9);
+    const process: TProcess = json.definitions.process as TProcess;
+    expect(process.userTask).toHaveLength(4);
+    expect(process.exclusiveGateway).toHaveLength(2);
+    expect(process.sequenceFlow).toHaveLength(9);
+
+    const bpmnDiagram: BPMNDiagram = json.definitions.BPMNDiagram as BPMNDiagram;
+    expect(bpmnDiagram.BPMNPlane.BPMNShape).toHaveLength(9);
+    expect(bpmnDiagram.BPMNPlane.BPMNEdge).toHaveLength(9);
   });
 });

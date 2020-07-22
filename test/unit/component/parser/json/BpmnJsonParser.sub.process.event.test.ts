@@ -23,28 +23,29 @@ describe('parse bpmn as json for event sub-process', () => {
     ['expanded', true],
     ['collapsed', false],
   ]).it('json containing one process with a single %s event sub-process', (testName, isExpanded: boolean) => {
-    const json = `{
-                "definitions" : {
-                    "process": {
-                        "subProcess": {
-                            "id":"sub-process_id_0",
-                            "name":"sub-process name",
-                            "triggeredByEvent":true
-                        }
-                    },
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": {
-                                "id":"shape_sub-process_id_0",
-                                "bpmnElement":"sub-process_id_0",
-                                "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
-                                "isExpanded":${isExpanded}
-                            }
-                        }
-                    }
-                }
-            }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          subProcess: {
+            id: 'sub-process_id_0',
+            name: 'sub-process name',
+            triggeredByEvent: true,
+          },
+        },
+        BPMNDiagram: {
+          name: 'process 0',
+          BPMNPlane: {
+            BPMNShape: {
+              id: 'shape_sub-process_id_0',
+              bpmnElement: 'sub-process_id_0',
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              isExpanded: isExpanded,
+            },
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlySubProcess(json, ShapeBpmnSubProcessKind.EVENT, 1);
 
@@ -64,30 +65,31 @@ describe('parse bpmn as json for event sub-process', () => {
   });
 
   it('json containing one process declared as array with a single event sub-process', () => {
-    const json = `{
-                "definitions": {
-                    "process": [
-                        {
-                            "subProcess": {
-                                "id":"sub-process_id_1",
-                                "name":"sub-process name",
-                                "triggeredByEvent":true
-                            }
-                        }
-                    ],
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": {
-                                "id":"shape_sub-process_id_1",
-                                "bpmnElement":"sub-process_id_1",
-                                "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
-                                "isExpanded":false
-                            }
-                        }
-                    }
-                }
-            }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: [
+          {
+            subProcess: {
+              id: 'sub-process_id_1',
+              name: 'sub-process name',
+              triggeredByEvent: true,
+            },
+          },
+        ],
+        BPMNDiagram: {
+          name: 'process 0',
+          BPMNPlane: {
+            BPMNShape: {
+              id: 'shape_sub-process_id_1',
+              bpmnElement: 'sub-process_id_1',
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              isExpanded: false,
+            },
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlySubProcess(json, ShapeBpmnSubProcessKind.EVENT, 1);
 
@@ -107,39 +109,42 @@ describe('parse bpmn as json for event sub-process', () => {
   });
 
   it('json containing one process with an array of event sub-processes with/without name & isExpanded', () => {
-    const json = `{
-                "definitions" : {
-                    "process": {
-                        "subProcess": [
-                          {
-                              "id":"sub-process_id_0",
-                              "name":"sub-process name",
-                              "triggeredByEvent":true
-                          },{
-                              "id":"sub-process_id_1",
-                              "triggeredByEvent":true
-                          }
-                        ]
-                    },
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": [
-                              {
-                                "id":"shape_sub-process_id_0",
-                                "bpmnElement":"sub-process_id_0",
-                                "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
-                                "isExpanded":false
-                              }, {
-                                "id":"shape_sub-process_id_1",
-                                "bpmnElement":"sub-process_id_1",
-                                "Bounds": { "x": 365, "y": 235, "width": 35, "height": 46 }
-                              }
-                            ]
-                        }
-                    }
-                }
-            }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          subProcess: [
+            {
+              id: 'sub-process_id_0',
+              name: 'sub-process name',
+              triggeredByEvent: true,
+            },
+            {
+              id: 'sub-process_id_1',
+              triggeredByEvent: true,
+            },
+          ],
+        },
+        BPMNDiagram: {
+          name: 'process 0',
+          BPMNPlane: {
+            BPMNShape: [
+              {
+                id: 'shape_sub-process_id_0',
+                bpmnElement: 'sub-process_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                isExpanded: false,
+              },
+              {
+                id: 'shape_sub-process_id_1',
+                bpmnElement: 'sub-process_id_1',
+                Bounds: { x: 365, y: 235, width: 35, height: 46 },
+              },
+            ],
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlySubProcess(json, ShapeBpmnSubProcessKind.EVENT, 2);
 

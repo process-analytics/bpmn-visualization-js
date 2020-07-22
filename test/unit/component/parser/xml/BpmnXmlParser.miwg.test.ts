@@ -17,6 +17,8 @@ import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser
 import arrayContaining = jasmine.arrayContaining;
 import objectContaining = jasmine.objectContaining;
 import anything = jasmine.anything;
+import { BPMNDiagram } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
+import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as xml for MIWG', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
@@ -420,12 +422,15 @@ describe('parse bpmn as xml for MIWG', () => {
       },
     });
 
-    expect(json.definitions.process.task).toHaveLength(4);
-    expect(json.definitions.process.exclusiveGateway).toHaveLength(2);
-    expect(json.definitions.process.sequenceFlow).toHaveLength(11);
-    expect(json.definitions.BPMNDiagram.BPMNPlane.BPMNShape).toHaveLength(8);
-    expect(json.definitions.BPMNDiagram.BPMNPlane.BPMNEdge).toHaveLength(11);
-    expect(json.definitions.BPMNDiagram.BPMNLabelStyle).toHaveLength(10);
+    const process: TProcess = json.definitions.process as TProcess;
+    expect(process.task).toHaveLength(4);
+    expect(process.exclusiveGateway).toHaveLength(2);
+    expect(process.sequenceFlow).toHaveLength(11);
+
+    const bpmnDiagram: BPMNDiagram = json.definitions.BPMNDiagram as BPMNDiagram;
+    expect(bpmnDiagram.BPMNPlane.BPMNShape).toHaveLength(8);
+    expect(bpmnDiagram.BPMNPlane.BPMNEdge).toHaveLength(11);
+    expect(bpmnDiagram.BPMNLabelStyle).toHaveLength(10);
   });
 
   it('bpmn with number attribute, ensure xml number are json number', () => {

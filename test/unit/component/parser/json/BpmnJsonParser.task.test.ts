@@ -15,6 +15,7 @@
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
+import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 
 describe.each([
   ['task', ShapeBpmnElementKind.TASK],
@@ -22,32 +23,32 @@ describe.each([
   ['userTask', ShapeBpmnElementKind.TASK_USER],
   ['receiveTask', ShapeBpmnElementKind.TASK_RECEIVE],
 ])('parse bpmn as json for %s', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
-  const processJsonAsObjectWithTaskJsonAsObject = `{
-                        "${bpmnKind}": {
-                            "id":"${bpmnKind}_id_0",
-                            "name":"${bpmnKind} name"
-                        }
-                    }`;
+  const processJsonAsObjectWithTaskJsonAsObject = {} as TProcess;
+  processJsonAsObjectWithTaskJsonAsObject[`${bpmnKind}`] = {
+    id: `${bpmnKind}_id_0`,
+    name: `${bpmnKind} name`,
+  };
 
   it.each([
-    ['object', `${processJsonAsObjectWithTaskJsonAsObject}`],
-    ['array', `[${processJsonAsObjectWithTaskJsonAsObject}]`],
-  ])(`should convert as Shape, when a ${bpmnKind} is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: string) => {
-    const json = `{
-                "definitions" : {
-                    "process": ${processJson},
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": {
-                                "id":"shape_${bpmnKind}_id_0",
-                                "bpmnElement":"${bpmnKind}_id_0",
-                                "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                            }
-                        }
-                    }
-                }
-            }`;
+    ['object', processJsonAsObjectWithTaskJsonAsObject],
+    ['array', [processJsonAsObjectWithTaskJsonAsObject]],
+  ])(`should convert as Shape, when a ${bpmnKind} is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess) => {
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: processJson,
+        BPMNDiagram: {
+          name: 'process 0',
+          BPMNPlane: {
+            BPMNShape: {
+              id: `shape_${bpmnKind}_id_0`,
+              bpmnElement: `${bpmnKind}_id_0`,
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+            },
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
@@ -66,36 +67,38 @@ describe.each([
   });
 
   it(`should convert as Shape, when a ${bpmnKind} (with/without name) is an attribute (as array) of 'process'`, () => {
-    const json = `{
-                "definitions" : {
-                    "process": {
-                        "${bpmnKind}": [
-                          {
-                              "id":"${bpmnKind}_id_0",
-                              "name":"${bpmnKind} name"
-                          }, {
-                              "id":"${bpmnKind}_id_1"
-                          }
-                        ]
-                    },
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": [
-                              {
-                                "id":"shape_${bpmnKind}_id_0",
-                                "bpmnElement":"${bpmnKind}_id_0",
-                                "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                              }, {
-                                "id":"shape_${bpmnKind}_id_1",
-                                "bpmnElement":"${bpmnKind}_id_1",
-                                "Bounds": { "x": 365, "y": 235, "width": 35, "height": 46 }
-                              }
-                            ]
-                        }
-                    }
-                }
-            }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {},
+        BPMNDiagram: {
+          name: 'process 0',
+          BPMNPlane: {
+            BPMNShape: [
+              {
+                id: `shape_${bpmnKind}_id_0`,
+                bpmnElement: `${bpmnKind}_id_0`,
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              },
+              {
+                id: `shape_${bpmnKind}_id_1`,
+                bpmnElement: `${bpmnKind}_id_1`,
+                Bounds: { x: 365, y: 235, width: 35, height: 46 },
+              },
+            ],
+          },
+        },
+      },
+    };
+    (json.definitions.process as TProcess)[`${bpmnKind}`] = [
+      {
+        id: `${bpmnKind}_id_0`,
+        name: `${bpmnKind} name`,
+      },
+      {
+        id: `${bpmnKind}_id_1`,
+      },
+    ];
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
@@ -127,36 +130,39 @@ describe.each([
 
   if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.TASK_RECEIVE) {
     it(`should convert as Shape, when a ${bpmnKind} (with/without instantiate) is an attribute (as array) of 'process'`, () => {
-      const json = `{
-                "definitions" : {
-                    "process": {
-                        "receiveTask": [
-                          {
-                              "id":"receiveTask_id_0"
-                          },{
-                              "id":"receiveTask_id_1",
-                              "instantiate":true
-                          }
-                        ]
-                    },
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": [
-                              {
-                                "id":"shape_receiveTask_id_0",
-                                "bpmnElement":"receiveTask_id_0",
-                                "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                              }, {
-                                "id":"shape_receiveTask_id_1",
-                                "bpmnElement":"receiveTask_id_1",
-                                "Bounds": { "x": 365, "y": 235, "width": 35, "height": 46 }
-                              }
-                            ]
-                        }
-                    }
-                }
-            }`;
+      const json = {
+        definitions: {
+          targetNamespace: '',
+          process: {
+            receiveTask: [
+              {
+                id: 'receiveTask_id_0',
+              },
+              {
+                id: 'receiveTask_id_1',
+                instantiate: true,
+              },
+            ],
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_receiveTask_id_0',
+                  bpmnElement: 'receiveTask_id_0',
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                },
+                {
+                  id: 'shape_receiveTask_id_1',
+                  bpmnElement: 'receiveTask_id_1',
+                  Bounds: { x: 365, y: 235, width: 35, height: 46 },
+                },
+              ],
+            },
+          },
+        },
+      };
 
       const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 

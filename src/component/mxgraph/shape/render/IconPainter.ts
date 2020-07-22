@@ -16,7 +16,7 @@
 
 import { mxgraph } from 'ts-mxgraph';
 import BpmnCanvas from './BpmnCanvas';
-import StyleUtils, { StyleDefault } from '../../StyleUtils';
+import StyleUtils from '../../StyleUtils';
 import { IconStyleConfiguration, ShapeConfiguration } from './render-types';
 
 export interface PaintParameter {

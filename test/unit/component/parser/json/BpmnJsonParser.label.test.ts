@@ -15,6 +15,7 @@
  */
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes } from './JsonTestUtils';
 import each from 'jest-each';
+import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for label font', () => {
   each([
@@ -38,26 +39,27 @@ describe('parse bpmn as json for label font', () => {
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask'],
   ]).it('json containing a BPMNShape with empty label in a %s', sourceKind => {
-    const json = `{
-          "definitions": {
-              "process": {
-                  "id": "Process_1",
-                  "${sourceKind}": { "id": "source_id_0", "name": "${sourceKind}_id_0"}
-              },
-              "BPMNDiagram": {
-                  "id": "BpmnDiagram_1",
-                  "BPMNPlane": {
-                      "id": "BpmnPlane_1",
-                      "BPMNShape": {
-                          "id": "shape_source_id_0",
-                          "bpmnElement": "source_id_0",
-                          "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
-                          "BPMNLabel": ""
-                      }
-                  }
-              }
-          }
-      }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          id: 'Process_1',
+        },
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNShape: {
+              id: 'shape_source_id_0',
+              bpmnElement: 'source_id_0',
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              BPMNLabel: '',
+            },
+          },
+        },
+      },
+    };
+    (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
@@ -65,21 +67,23 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it('json containing a BPMNEdge with empty label', () => {
-    const json = `{
-       "definitions": {
-          "process": "",
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNEdge": {
-                   "id": "BPMNEdge_id_0",
-                   "BPMNLabel": ""
-                }
-             }
-          }
-       }
-    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: '',
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNEdge: {
+              id: 'BPMNEdge_id_0',
+              waypoint: [{ x: 10, y: 10 }],
+              BPMNLabel: '',
+            },
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlyEdges(json, 1);
 
@@ -87,30 +91,31 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it('json containing a BPMNShape with label with just id', () => {
-    const json = `{
-       "definitions": {
-          "process": {
-             "task": {
-                "id": "task_id_0",
-                "name": "task name"
-             }
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          task: {
+            id: 'task_id_0',
+            name: 'task name',
           },
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNShape": {
-                   "id": "BPMNShape_id_0",
-                   "bpmnElement": "task_id_0",
-                   "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 },
-                   "BPMNLabel": {
-                      "id": ""
-                   }
-                }
-             }
-          }
-       }
-    }`;
+        },
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNShape: {
+              id: 'BPMNShape_id_0',
+              bpmnElement: 'task_id_0',
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              BPMNLabel: {
+                id: '',
+              },
+            },
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
@@ -118,23 +123,25 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it('json containing a BPMNEdge with empty label with just id', () => {
-    const json = `{
-       "definitions": {
-          "process": "",
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNEdge": {
-                   "id": "BPMNEdge_id_0",
-                   "BPMNLabel": {
-                      "id": ""
-                   }
-                }
-             }
-          }
-       }
-    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: '',
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNEdge: {
+              id: 'BPMNEdge_id_0',
+              waypoint: [{ x: 10, y: 10 }],
+              BPMNLabel: {
+                id: '',
+              },
+            },
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlyEdges(json, 1);
 
@@ -142,27 +149,28 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it('json containing a BPMNShape without label', () => {
-    const json = `{
-       "definitions": {
-          "process": {
-             "task": {
-                "id": "task_id_0",
-                "name": "task name"
-             }
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          task: {
+            id: 'task_id_0',
+            name: 'task name',
           },
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNShape": {
-                   "id": "BPMNShape_id_0",
-                   "bpmnElement": "task_id_0",
-                   "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                }
-             }
-          }
-       }
-    }`;
+        },
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNShape: {
+              id: 'BPMNShape_id_0',
+              bpmnElement: 'task_id_0',
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+            },
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
@@ -170,20 +178,22 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it('json containing a BPMNEdge without label', () => {
-    const json = `{
-       "definitions": {
-          "process": "",
-          "BPMNDiagram": {
-             "id": "BpmnDiagram_1",
-             "BPMNPlane": {
-                "id": "BpmnPlane_1",
-                "BPMNEdge": {
-                   "id": "BPMNEdge_id_0"
-                }
-             }
-          }
-       }
-    }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: '',
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNEdge: {
+              id: 'BPMNEdge_id_0',
+              waypoint: [{ x: 10, y: 10 }],
+            },
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlyEdges(json, 1);
 

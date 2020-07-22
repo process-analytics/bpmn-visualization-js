@@ -25,6 +25,8 @@ import { findMessageFlow, findProcessRefParticipant, findProcessRefParticipantBy
 import Waypoint from '../../../../model/bpmn/edge/Waypoint';
 import Label, { Font } from '../../../../model/bpmn/Label';
 import { MessageVisibleKind } from '../../../../model/bpmn/edge/MessageVisibleKind';
+import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../xml/bpmn-json-model/BPMNDI';
+import { Point } from '../../xml/bpmn-json-model/DC';
 
 function findProcessElement(participantId: string): ShapeBpmnElement {
   const participant = findProcessRefParticipant(participantId);
@@ -39,24 +41,34 @@ function findProcessElement(participantId: string): ShapeBpmnElement {
 export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   private convertedFonts: Map<string, Font> = new Map();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  deserialize(bpmnDiagram: Array<any> | any): BpmnModel {
-    try {
-      // Need to be done before deserialization of Shape and Edge, to link the converted fonts to them
-      this.deserializeFonts(bpmnDiagram.BPMNLabelStyle);
+  deserialize(bpmnDiagrams: Array<BPMNDiagram> | BPMNDiagram): BpmnModel {
+    const flowNodes: Shape[] = [];
+    const lanes: Shape[] = [];
+    const pools: Shape[] = [];
+    const edges: Edge[] = [];
 
-      const plane = bpmnDiagram.BPMNPlane;
-      const edges = { edges: this.deserializeEdges(plane.BPMNEdge) };
-      const shapes = this.deserializeShapes(plane.BPMNShape);
-      return { ...shapes, ...edges };
-    } catch (e) {
-      // TODO error management
-      console.error(e as Error);
-    }
+    ensureIsArray(bpmnDiagrams).map(bpmnDiagram => {
+      try {
+        // Need to be done before deserialization of Shape and Edge, to link the converted fonts to them
+        this.deserializeFonts(bpmnDiagram.BPMNLabelStyle);
+
+        const plane = bpmnDiagram.BPMNPlane;
+        const convertedEdges = this.deserializeEdges(plane.BPMNEdge);
+        const convertedShapes = this.deserializeShapes(plane.BPMNShape);
+
+        flowNodes.push(...convertedShapes.flowNodes);
+        lanes.push(...convertedShapes.lanes);
+        pools.push(...convertedShapes.pools);
+        edges.push(...convertedEdges);
+      } catch (e) {
+        // TODO error management
+        console.error(e as Error);
+      }
+    });
+    return { flowNodes, lanes, pools, edges };
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private deserializeFonts(bpmnLabelStyle: any): void {
+  private deserializeFonts(bpmnLabelStyle: Array<BPMNLabelStyle> | BPMNLabelStyle): void {
     this.convertedFonts = new Map();
 
     ensureIsArray(bpmnLabelStyle).forEach(labelStyle => {
@@ -67,8 +79,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private deserializeShapes(shapes: any): Shapes {
+  private deserializeShapes(shapes: Array<BPMNShape> | BPMNShape): Shapes {
     // TODO find a way to avoid shape management duplication
     // common pattern:
     //    deserialize  shape base on custom function to find a bpmn element
@@ -104,8 +115,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
     return convertedShapes;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private deserializeShape(shape: any, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
+  private deserializeShape(shape: BPMNShape, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
     const bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
       const bounds = this.deserializeBounds(shape);
@@ -122,16 +132,14 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private deserializeBounds(boundedElement: any): Bounds {
+  private deserializeBounds(boundedElement: BPMNShape | BPMNLabel): Bounds {
     const bounds = boundedElement.Bounds;
     if (bounds) {
       return this.jsonConvert.deserializeObject(bounds, Bounds);
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private deserializeEdges(edges: any): Edge[] {
+  private deserializeEdges(edges: BPMNEdge): Edge[] {
     return ensureIsArray(edges).map(edge => {
       const flow = findSequenceFlow(edge.bpmnElement) || findMessageFlow(edge.bpmnElement) || findAssociationFlow(edge.bpmnElement);
       const waypoints = this.deserializeWaypoints(edge.waypoint);
@@ -141,16 +149,14 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private deserializeWaypoints(waypoint: any): Waypoint[] {
+  private deserializeWaypoints(waypoint: Point[]): Waypoint[] {
     if (waypoint) {
       return this.jsonConvert.deserializeArray(ensureIsArray(waypoint), Waypoint);
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private deserializeLabel(bpmnLabel: any, id: string): Label {
-    if (bpmnLabel) {
+  private deserializeLabel(bpmnLabel: string | BPMNLabel, id: string): Label {
+    if (bpmnLabel && typeof bpmnLabel === 'object') {
       const font = this.findFont(bpmnLabel.labelStyle, id);
       const bounds = this.deserializeBounds(bpmnLabel);
 

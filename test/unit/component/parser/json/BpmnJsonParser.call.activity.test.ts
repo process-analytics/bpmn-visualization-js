@@ -15,34 +15,36 @@
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
+import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for call activity', () => {
-  const processJsonAsObjectWithCallActivityJsonAsObject = `{
-                        "callActivity": {
-                            "id":"callActivity_id_0",
-                            "name":"callActivity name"
-                        }
-                    }`;
+  const processJsonAsObjectWithCallActivityJsonAsObject = {
+    callActivity: {
+      id: 'callActivity_id_0',
+      name: 'callActivity name',
+    },
+  };
 
   it.each([
-    ['object', `${processJsonAsObjectWithCallActivityJsonAsObject}`],
-    ['array', `[${processJsonAsObjectWithCallActivityJsonAsObject}]`],
-  ])(`should convert as Shape, when a callActivity is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: string) => {
-    const json = `{
-                "definitions" : {
-                    "process": ${processJson},
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": {
-                                "id":"shape_callActivity_id_0",
-                                "bpmnElement":"callActivity_id_0",
-                                "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                            }
-                        }
-                    }
-                }
-            }`;
+    ['object', processJsonAsObjectWithCallActivityJsonAsObject],
+    ['array', [processJsonAsObjectWithCallActivityJsonAsObject]],
+  ])(`should convert as Shape, when a callActivity is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess | TProcess[]) => {
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: processJson,
+        BPMNDiagram: {
+          name: 'process 0',
+          BPMNPlane: {
+            BPMNShape: {
+              id: 'shape_callActivity_id_0',
+              bpmnElement: 'callActivity_id_0',
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+            },
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
@@ -61,37 +63,40 @@ describe('parse bpmn as json for call activity', () => {
   });
 
   it('json containing one process with an array of call activities with/without name', () => {
-    const json = `{
-                "definitions" : {
-                    "process": {
-                        "callActivity": [
-                          {
-                              "id":"callActivity_id_0",
-                              "name":"callActivity name"
-                          },{
-                              "id":"callActivity_id_1",
-                              "instantiate":true
-                          }
-                        ]
-                    },
-                    "BPMNDiagram": {
-                        "name":"process 0",
-                        "BPMNPlane": {
-                            "BPMNShape": [
-                              {
-                                "id":"shape_callActivity_id_0",
-                                "bpmnElement":"callActivity_id_0",
-                                "Bounds": { "x": 362, "y": 232, "width": 36, "height": 45 }
-                              }, {
-                                "id":"shape_callActivity_id_1",
-                                "bpmnElement":"callActivity_id_1",
-                                "Bounds": { "x": 365, "y": 235, "width": 35, "height": 46 }
-                              }
-                            ]
-                        }
-                    }
-                }
-            }`;
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          callActivity: [
+            {
+              id: 'callActivity_id_0',
+              name: 'callActivity name',
+            },
+            {
+              id: 'callActivity_id_1',
+              instantiate: true,
+            },
+          ],
+        },
+        BPMNDiagram: {
+          name: 'process 0',
+          BPMNPlane: {
+            BPMNShape: [
+              {
+                id: 'shape_callActivity_id_0',
+                bpmnElement: 'callActivity_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              },
+              {
+                id: 'shape_callActivity_id_1',
+                bpmnElement: 'callActivity_id_1',
+                Bounds: { x: 365, y: 235, width: 35, height: 46 },
+              },
+            ],
+          },
+        },
+      },
+    };
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
@@ -118,6 +123,42 @@ describe('parse bpmn as json for call activity', () => {
         y: 235,
         width: 35,
         height: 46,
+      },
+    });
+  });
+
+  it('should convert as Shape, when BPMNDiagram is an array', () => {
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: processJsonAsObjectWithCallActivityJsonAsObject,
+        BPMNDiagram: [
+          {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_callActivity_id_0',
+                bpmnElement: 'callActivity_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              },
+            },
+          },
+        ],
+      },
+    };
+
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+    verifyShape(model.flowNodes[0], {
+      shapeId: `shape_callActivity_id_0`,
+      bpmnElementId: `callActivity_id_0`,
+      bpmnElementName: `callActivity name`,
+      bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
       },
     });
   });
