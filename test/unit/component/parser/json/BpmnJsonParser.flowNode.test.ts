@@ -18,20 +18,24 @@ import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 
 describe.each([
+  ['callActivity', ShapeBpmnElementKind.CALL_ACTIVITY],
   ['task', ShapeBpmnElementKind.TASK],
   ['serviceTask', ShapeBpmnElementKind.TASK_SERVICE],
   ['userTask', ShapeBpmnElementKind.TASK_USER],
   ['receiveTask', ShapeBpmnElementKind.TASK_RECEIVE],
+  ['exclusiveGateway', ShapeBpmnElementKind.GATEWAY_EXCLUSIVE],
+  ['inclusiveGateway', ShapeBpmnElementKind.GATEWAY_INCLUSIVE],
+  ['parallelGateway', ShapeBpmnElementKind.GATEWAY_PARALLEL],
 ])('parse bpmn as json for %s', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
-  const processJsonAsObjectWithTaskJsonAsObject = {} as TProcess;
-  processJsonAsObjectWithTaskJsonAsObject[`${bpmnKind}`] = {
+  const processWithFlowNodeAsObject = {} as TProcess;
+  processWithFlowNodeAsObject[`${bpmnKind}`] = {
     id: `${bpmnKind}_id_0`,
     name: `${bpmnKind} name`,
   };
 
   it.each([
-    ['object', processJsonAsObjectWithTaskJsonAsObject],
-    ['array', [processJsonAsObjectWithTaskJsonAsObject]],
+    ['object', processWithFlowNodeAsObject],
+    ['array', [processWithFlowNodeAsObject]],
   ])(`should convert as Shape, when a ${bpmnKind} is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess) => {
     const json = {
       definitions: {
@@ -128,34 +132,24 @@ describe.each([
     });
   });
 
-  if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.TASK_RECEIVE) {
+  if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.TASK_RECEIVE || expectedShapeBpmnElementKind === ShapeBpmnElementKind.CALL_ACTIVITY) {
     it(`should convert as Shape, when a ${bpmnKind} (with/without instantiate) is an attribute (as array) of 'process'`, () => {
       const json = {
         definitions: {
           targetNamespace: '',
-          process: {
-            receiveTask: [
-              {
-                id: 'receiveTask_id_0',
-              },
-              {
-                id: 'receiveTask_id_1',
-                instantiate: true,
-              },
-            ],
-          },
+          process: {},
           BPMNDiagram: {
             name: 'process 0',
             BPMNPlane: {
               BPMNShape: [
                 {
-                  id: 'shape_receiveTask_id_0',
-                  bpmnElement: 'receiveTask_id_0',
+                  id: `shape_${bpmnKind}_id_0`,
+                  bpmnElement: `${bpmnKind}_id_0`,
                   Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
                 {
-                  id: 'shape_receiveTask_id_1',
-                  bpmnElement: 'receiveTask_id_1',
+                  id: `shape_${bpmnKind}_id_1`,
+                  bpmnElement: `${bpmnKind}_id_1`,
                   Bounds: { x: 365, y: 235, width: 35, height: 46 },
                 },
               ],
@@ -163,14 +157,23 @@ describe.each([
           },
         },
       };
+      (json.definitions.process as TProcess)[`${bpmnKind}`] = [
+        {
+          id: `${bpmnKind}_id_0`,
+        },
+        {
+          id: `${bpmnKind}_id_1`,
+          instantiate: true,
+        },
+      ];
 
       const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
       verifyShape(model.flowNodes[0], {
-        shapeId: 'shape_receiveTask_id_0',
-        bpmnElementId: 'receiveTask_id_0',
+        shapeId: `shape_${bpmnKind}_id_0`,
+        bpmnElementId: `${bpmnKind}_id_0`,
         bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.TASK_RECEIVE,
+        bpmnElementKind: expectedShapeBpmnElementKind,
         bounds: {
           x: 362,
           y: 232,
@@ -181,10 +184,10 @@ describe.each([
       expect(model.flowNodes[0].bpmnElement.instantiate).toBeFalsy();
 
       verifyShape(model.flowNodes[1], {
-        shapeId: 'shape_receiveTask_id_1',
-        bpmnElementId: 'receiveTask_id_1',
+        shapeId: `shape_${bpmnKind}_id_1`,
+        bpmnElementId: `${bpmnKind}_id_1`,
         bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.TASK_RECEIVE,
+        bpmnElementKind: expectedShapeBpmnElementKind,
         bounds: {
           x: 365,
           y: 235,

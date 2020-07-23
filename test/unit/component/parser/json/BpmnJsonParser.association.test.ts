@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
-import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 
@@ -31,7 +30,7 @@ describe('parse bpmn as json for association', () => {
   it.each([
     ['object', processJsonAsObjectWithAssociationJsonAsObject],
     ['array', [processJsonAsObjectWithAssociationJsonAsObject]],
-  ])(`should convert as Edge, when a association is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess | TProcess[]) => {
+  ])(`should convert as Edge, when an association is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess | TProcess[]) => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -61,7 +60,7 @@ describe('parse bpmn as json for association', () => {
     });
   });
 
-  it('json containing one process with an array of associations with/without name', () => {
+  it(`should convert as Edge, when an association (with/without name) is an attribute (as array) of 'process'`, () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -101,13 +100,7 @@ describe('parse bpmn as json for association', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyEdges(json, 2);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(2);
+    const model = parseJsonAndExpectOnlyEdges(json, 2);
 
     verifyEdge(model.edges[0], {
       edgeId: 'edge_association_id_0',
@@ -148,13 +141,7 @@ describe('parse bpmn as json for association', () => {
       },
     };
 
-    //const model = parseJsonAndExpectOnlyEdges(json, 1);
-
-    const model = defaultBpmnJsonParser().parse(json);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
-    expect(model.flowNodes).toHaveLength(0);
-    expect(model.edges).toHaveLength(1);
+    const model = parseJsonAndExpectOnlyEdges(json, 1);
 
     verifyEdge(model.edges[0], {
       edgeId: `edge_association_id_0`,

@@ -21,11 +21,12 @@ describe('parse bpmn as json for label font', () => {
   each([
     ['exclusiveGateway'],
     ['inclusiveGateway'],
+    ['parallelGateway'],
     ['task'],
     ['userTask'],
     ['serviceTask'],
-    ['callActivity'],
     ['receiveTask'],
+    ['callActivity'],
     ['subProcess'],
     ['textAnnotation'],
     // TODO: To uncomment when we support complex gateway
@@ -38,7 +39,7 @@ describe('parse bpmn as json for label font', () => {
     //['sendTask'],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask'],
-  ]).it('json containing a BPMNShape with empty label in a %s', sourceKind => {
+  ]).it("should convert as Shape without Label, when a BPMNShape (attached to %s & with empty BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)", sourceKind => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -66,7 +67,7 @@ describe('parse bpmn as json for label font', () => {
     expect(model.flowNodes[0].label).toBeUndefined();
   });
 
-  it('json containing a BPMNEdge with empty label', () => {
+  it("should convert as Edge without Label, when a BPMNEdge (with empty BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -90,7 +91,7 @@ describe('parse bpmn as json for label font', () => {
     expect(model.edges[0].label).toBeUndefined();
   });
 
-  it('json containing a BPMNShape with label with just id', () => {
+  it("should convert as Shape without Label, when a BPMNShape (with BPMNLabel with just id) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -122,7 +123,7 @@ describe('parse bpmn as json for label font', () => {
     expect(model.flowNodes[0].label).toBeUndefined();
   });
 
-  it('json containing a BPMNEdge with empty label with just id', () => {
+  it("should convert as Edge without Label, when a BPMNEdge (with BPMNLabel with just id) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -148,7 +149,7 @@ describe('parse bpmn as json for label font', () => {
     expect(model.edges[0].label).toBeUndefined();
   });
 
-  it('json containing a BPMNShape without label', () => {
+  it("should convert as Shape without Label, when a BPMNShape (without BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -177,7 +178,7 @@ describe('parse bpmn as json for label font', () => {
     expect(model.flowNodes[0].label).toBeUndefined();
   });
 
-  it('json containing a BPMNEdge without label', () => {
+  it("should convert as Edge without Label, when a BPMNEdge (without BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',

@@ -27,11 +27,12 @@ describe('parse bpmn as json for label font', () => {
   each([
     ['exclusiveGateway'],
     ['inclusiveGateway'],
+    ['parallelGateway'],
     ['task'],
     ['userTask'],
     ['serviceTask'],
-    ['callActivity'],
     ['receiveTask'],
+    ['callActivity'],
     ['subProcess'],
     ['textAnnotation'],
     // TODO: To uncomment when we support complex gateway
@@ -44,45 +45,48 @@ describe('parse bpmn as json for label font', () => {
     //['sendTask'],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask'],
-  ]).it('json containing a BPMNShape who references a label style with font in a %s', sourceKind => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        process: {
-          id: 'Process_1',
-        },
-        BPMNDiagram: {
-          id: 'BpmnDiagram_1',
-          BPMNPlane: {
-            id: 'BpmnPlane_1',
-            BPMNShape: {
-              id: 'shape_source_id_0',
-              bpmnElement: 'source_id_0',
-              Bounds: { x: 362, y: 232, width: 36, height: 45 },
-              BPMNLabel: {
-                id: 'label_id',
-                labelStyle: 'style_id',
+  ]).it(
+    "should convert as Shape with Font, when a BPMNShape (attached to %s & who references a BPMNLabelStyle with font) is an attribute (as object) of 'BPMNPlane' (as object)",
+    sourceKind => {
+      const json = {
+        definitions: {
+          targetNamespace: '',
+          process: {
+            id: 'Process_1',
+          },
+          BPMNDiagram: {
+            id: 'BpmnDiagram_1',
+            BPMNPlane: {
+              id: 'BpmnPlane_1',
+              BPMNShape: {
+                id: 'shape_source_id_0',
+                bpmnElement: 'source_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                BPMNLabel: {
+                  id: 'label_id',
+                  labelStyle: 'style_id',
+                },
+              },
+            },
+            BPMNLabelStyle: {
+              id: 'style_id',
+              Font: {
+                name: 'Arial',
+                size: 11.0,
               },
             },
           },
-          BPMNLabelStyle: {
-            id: 'style_id',
-            Font: {
-              name: 'Arial',
-              size: 11.0,
-            },
-          },
         },
-      },
-    };
-    (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
+      };
+      (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+      const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyLabelFont(model.flowNodes[0].label, { name: 'Arial', size: 11.0 });
-  });
+      verifyLabelFont(model.flowNodes[0].label, { name: 'Arial', size: 11.0 });
+    },
+  );
 
-  it('json containing a BPMNEdge who references a label style with font', () => {
+  it("should convert as Edge with Font, when a BPMNEdge (who references a BPMNLabelStyle with font) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -116,7 +120,7 @@ describe('parse bpmn as json for label font', () => {
     verifyLabelFont(model.edges[0].label, { name: 'Arial', size: 11.0 });
   });
 
-  it('json containing several BPMNShapes who reference the same label style', () => {
+  it("should convert as Shape[] with Font, when several BPMNShapes (who reference the same BPMNLabelStyle) are an attribute (as array) of 'BPMNPlane' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -170,7 +174,7 @@ describe('parse bpmn as json for label font', () => {
     verifyLabelFont(model.flowNodes[1].label, { name: 'Arial', size: 11.0 });
   });
 
-  it('json containing several BPMNEdges who reference the same label style', () => {
+  it("should convert as Edge[] with Font, when several BPMNEdges (who reference the same BPMNLabelStyle) are an attribute (as array) of 'BPMNPlane' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -213,7 +217,7 @@ describe('parse bpmn as json for label font', () => {
     verifyLabelFont(model.edges[1].label, { name: 'Arial', size: 11.0 });
   });
 
-  it('json containing an array of label styles and BPMNShapes who reference a label style with font with/without all attributes', () => {
+  it("should convert as Shape[] without Font, when BPMNShapes (who reference a BPMNLabelStyle) are an attribute (as array) of 'BPMNPlane' (as object) & BPMNLabelStyle (with font with/without all attributes) is an attribute (as array) of 'BPMNDiagram' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -280,7 +284,7 @@ describe('parse bpmn as json for label font', () => {
     expect(model.flowNodes[1].label).toBeUndefined();
   });
 
-  it('json containing an array of label styles and BPMNEdges who reference a label style with font with/without all attributes', () => {
+  it("should convert as Edge[] without Font, when BPMNEdges (who reference a BPMNLabelStyle) are an attribute (as array) of 'BPMNPlane' (as object) & BPMNLabelStyle (with font with/without all attributes) is an attribute (as array) of 'BPMNDiagram' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -336,7 +340,7 @@ describe('parse bpmn as json for label font', () => {
     expect(model.edges[1].label).toBeUndefined();
   });
 
-  it('json containing a BPMNShape who references a label style without font', () => {
+  it("should convert as Shape without Font, when a BPMNShape (who references a BPMNLabelStyle without font) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -372,7 +376,7 @@ describe('parse bpmn as json for label font', () => {
     expect(model.flowNodes[0].label).toBeUndefined();
   });
 
-  it('json containing a BPMNEdge who references a label style without font', () => {
+  it("should convert as Edge without Font, when a BPMNEdge (who references a BPMNLabelStyle without font) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -402,7 +406,7 @@ describe('parse bpmn as json for label font', () => {
     expect(model.edges[0].label).toBeUndefined();
   });
 
-  it('json containing a BPMNShape who references a non-existing label style', () => {
+  it("should convert as Shape without Font, when a BPMNShape (who references a non-existing BPMNLabelStyle) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     console.warn = jest.fn();
     const json = {
       definitions: {
@@ -437,7 +441,7 @@ describe('parse bpmn as json for label font', () => {
     expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNShape_id_0');
   });
 
-  it('json containing a BPMNEdge who references a non-existing label style', () => {
+  it("should convert as Edge without Font, when a BPMNEdge (who references a non-existing BPMNLabelStyle) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     console.warn = jest.fn();
     const json = {
       definitions: {

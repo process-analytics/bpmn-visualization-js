@@ -21,11 +21,12 @@ describe('parse bpmn as json for label bounds', () => {
   each([
     ['exclusiveGateway'],
     ['inclusiveGateway'],
+    ['parallelGateway'],
     ['task'],
     ['userTask'],
     ['serviceTask'],
-    ['callActivity'],
     ['receiveTask'],
+    ['callActivity'],
     ['subProcess'],
     ['textAnnotation'],
     // TODO: To uncomment when we support complex gateway
@@ -38,38 +39,68 @@ describe('parse bpmn as json for label bounds', () => {
     //['sendTask'],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask'],
-  ]).it('json containing a BPMNShape which has a label with bounds with all attributes in a %s', sourceKind => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        process: {
-          id: 'Process_1',
-        },
-        BPMNDiagram: {
-          id: 'BpmnDiagram_1',
-          BPMNPlane: {
-            id: 'BpmnPlane_1',
-            BPMNShape: {
-              id: 'shape_source_id_0',
-              bpmnElement: 'source_id_0',
-              Bounds: { x: 362, y: 232, width: 36, height: 45 },
-              BPMNLabel: {
-                id: 'label_id',
-                Bounds: { x: 25, y: 26, width: 27, height: 28 },
+  ]).describe('parse bpmn as json for label bounds on %s', sourceKind => {
+    it(`should convert as Shape, when a BPMNShape (attached to ${sourceKind} & with bounds with all attributes) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
+      const json = {
+        definitions: {
+          targetNamespace: '',
+          process: {
+            id: 'Process_1',
+          },
+          BPMNDiagram: {
+            id: 'BpmnDiagram_1',
+            BPMNPlane: {
+              id: 'BpmnPlane_1',
+              BPMNShape: {
+                id: 'shape_source_id_0',
+                bpmnElement: 'source_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                BPMNLabel: {
+                  id: 'label_id',
+                  Bounds: { x: 25, y: 26, width: 27, height: 28 },
+                },
               },
             },
           },
         },
-      },
-    };
-    (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
+      };
+      (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+      const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyLabelBounds(model.flowNodes[0].label, { x: 25, y: 26, width: 27, height: 28 });
+      verifyLabelBounds(model.flowNodes[0].label, { x: 25, y: 26, width: 27, height: 28 });
+    });
+
+    it(`should convert as Shape, when a BPMNShape (attached to ${sourceKind} & without bounds) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
+      const json = {
+        definitions: {
+          targetNamespace: '',
+          process: {},
+          BPMNDiagram: {
+            id: 'BpmnDiagram_1',
+            BPMNPlane: {
+              id: 'BpmnPlane_1',
+              BPMNShape: {
+                id: 'BPMNShape_id_0',
+                bpmnElement: 'source_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                BPMNLabel: {
+                  id: 'label_id',
+                },
+              },
+            },
+          },
+        },
+      };
+      (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
+
+      const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+      expect(model.flowNodes[0].label).toBeUndefined();
+    });
   });
 
-  it('json containing a BPMNEdge which has a label with bounds with all attributes', () => {
+  it(`should convert as Edge, when a BPMNEdge (with bounds with all attributes) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -96,39 +127,7 @@ describe('parse bpmn as json for label bounds', () => {
     verifyLabelBounds(model.edges[0].label, { x: 25, y: 26, width: 27, height: 28 });
   });
 
-  it('json containing a BPMNShape which has a label without bounds', () => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        process: {
-          task: {
-            id: 'task_id_0',
-            name: 'task name',
-          },
-        },
-        BPMNDiagram: {
-          id: 'BpmnDiagram_1',
-          BPMNPlane: {
-            id: 'BpmnPlane_1',
-            BPMNShape: {
-              id: 'BPMNShape_id_0',
-              bpmnElement: 'task_id_0',
-              Bounds: { x: 362, y: 232, width: 36, height: 45 },
-              BPMNLabel: {
-                id: 'label_id',
-              },
-            },
-          },
-        },
-      },
-    };
-
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
-
-    expect(model.flowNodes[0].label).toBeUndefined();
-  });
-
-  it('json containing a BPMNEdge which has a label without bounds', () => {
+  it(`should convert as Edge, when a BPMNEdge (without bounds) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
     const json = {
       definitions: {
         targetNamespace: '',

@@ -19,7 +19,7 @@ import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVi
 import * as bpmndi from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
 
 describe('parse bpmn as json for message flow', () => {
-  it('json containing a collaboration with a single message flow without waypoint', () => {
+  it(`should convert as Edge, when an message flow is an attribute (as object) of 'collaboration' (as object)`, () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -59,7 +59,7 @@ describe('parse bpmn as json for message flow', () => {
     });
   });
 
-  it('json containing a collaboration with an array of message flows with name & without name', () => {
+  it(`should convert as Edge, when an message flow (with/without name) is an attribute (as array) of 'collaboration'`, () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -121,7 +121,7 @@ describe('parse bpmn as json for message flow', () => {
     });
   });
 
-  it('json containing a collaboration with an array of message flows with one & several waypoints', () => {
+  it(`should convert as Edge, when an message flow (with one & several waypoints) is an attribute (as array) of 'collaboration'`, () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -196,7 +196,7 @@ describe('parse bpmn as json for message flow', () => {
     });
   });
 
-  it('json containing a collaboration with none/initiating/non-initiating message flows', () => {
+  it(`should convert as Edge, when none/initiating/non-initiating message flows are an attribute (as array) of 'collaboration'`, () => {
     const json = {
       definitions: {
         targetNamespace: '',
