@@ -20,6 +20,18 @@ import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-mode
 import { TEventDefinition } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/eventDefinition';
 import { TBoundaryEvent, TCatchEvent, TEvent, TThrowEvent } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowNode/event';
 import { BPMNShape } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
+import { TDefinitions } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMN20';
+
+type BPMNTEvent = TCatchEvent | TThrowEvent | TBoundaryEvent;
+type BPMNEventDefinition = string | TEventDefinition | TEventDefinition[];
+
+interface BuildParameter {
+  eventDefinitionKind: string;
+  index: number;
+  withName: boolean;
+  eventDefinition?: BPMNEventDefinition;
+  isInterrupting?: boolean;
+}
 
 const eventDefinitionParameters = [
   ['none', ShapeBpmnEventKind.NONE],
@@ -37,18 +49,55 @@ const eventDefinitionParameters = [
   // ['link', ShapeBpmnEventKind.LINK],
 ];
 
-function buildTitleForEventDefinitionIsAttributeOf(bpmnKind: string, eventDefinitionKind: string, expectedShapeBpmnEventKind: ShapeBpmnEventKind): string[] {
+function addTEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, eventDefinition: BPMNEventDefinition = ''): TProcess | BPMNTEvent {
+  if (eventDefinitionKind !== 'none') {
+    bpmnElement[`${eventDefinitionKind}EventDefinition`] = eventDefinition;
+  }
+  return bpmnElement;
+}
+
+function addDifferentEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, expectedShapeBpmnEventKind: ShapeBpmnEventKind): TProcess | BPMNTEvent {
+  const otherEventDefinition = expectedShapeBpmnEventKind === ShapeBpmnEventKind.SIGNAL ? 'message' : 'signal';
+  return addTEventDefinition(bpmnElement, otherEventDefinition, '');
+}
+
+function buildTitleForEventDefinitionIsAttributeOf(
+  bpmnKind: string,
+  eventDefinitionKind: string,
+  expectedShapeBpmnEventKind: ShapeBpmnEventKind,
+  buildTEvent: (index?: number, withName?: boolean, isInterrupting?: boolean) => BPMNTEvent,
+): (string | ((index?: number, withName?: boolean, eventDefinition?: BPMNEventDefinition, eventDefinitionRef?: string | string[], isInterrupting?: boolean) => BPMNTEvent))[][] {
   if (expectedShapeBpmnEventKind === ShapeBpmnEventKind.NONE) {
-    return [`'${bpmnKind}' has no 'eventDefinition' & no 'eventDefinitionRef'`];
+    return [
+      [
+        `'${bpmnKind}' has no 'eventDefinition' & no 'eventDefinitionRef'`,
+        (index, withName, eventDefinition, eventDefinitionRef, isInterrupting): BPMNTEvent => buildTEvent(index, withName, isInterrupting),
+      ],
+    ];
   } else {
-    return [`'${bpmnKind}' has '${eventDefinitionKind}EventDefinition' & no 'eventDefinitionRef'`];
+    return [
+      [
+        `'${bpmnKind}' has '${eventDefinitionKind}EventDefinition' & no 'eventDefinitionRef'`,
+        (index, withName, eventDefinition, eventDefinitionRef, isInterrupting): BPMNTEvent => {
+          const event = buildTEvent(index, withName, isInterrupting);
+          addTEventDefinition(event, eventDefinitionKind, eventDefinition);
+          return event;
+        },
+      ],
+      // [
+      //   `'definitions' has '${eventDefinitionKind}EventDefinition' and '${bpmnKind}' has no '${eventDefinitionKind}EventDefinition' & 'eventDefinitionRef'`,
+      //   (index, withName, eventDefinition, eventDefinitionRef, isInterrupting): BPMNTEvent => {
+      //     const event = buildTEvent(index, withName, isInterrupting);
+      //     event.eventDefinitionRef = eventDefinitionRef ? eventDefinitionRef : 'event_id_0';
+      //     return event;
+      //   },
+      // ],
+    ];
   }
 }
 
-type BPMNTEvent = TCatchEvent | TThrowEvent | TBoundaryEvent;
-
-function buildTEvent(eventDefinitionKind: string, index = 0, withName = true, eventDefinition?: string | TEventDefinition | TEventDefinition[]): BPMNTEvent {
-  const event: TCatchEvent | TThrowEvent = {
+function buildTEvent(index = 0, withName = false): BPMNTEvent {
+  const event: BPMNTEvent = {
     id: `event_id_${index}`,
   };
 
@@ -56,28 +105,40 @@ function buildTEvent(eventDefinitionKind: string, index = 0, withName = true, ev
     event.name = 'event name';
   }
 
-  if (eventDefinitionKind !== 'none') {
-    event[`${eventDefinitionKind}EventDefinition`] = eventDefinition ? eventDefinition : '';
-  }
   return event;
 }
 
-function buildTBoundaryEvent(
-  eventDefinitionKind: string,
-  isInterrupting: boolean,
-  withName = true,
-  eventDefinition?: string | TEventDefinition | TEventDefinition[],
-): TBoundaryEvent {
-  const event: TBoundaryEvent = buildTEvent(eventDefinitionKind, 0, withName, eventDefinition) as TBoundaryEvent;
+function buildTBoundaryEvent(index = 0, withName = false, isInterrupting: boolean = undefined): TBoundaryEvent {
+  const event: TBoundaryEvent = buildTEvent(0, withName) as TBoundaryEvent;
   event.attachedToRef = 'task_id_0';
   event.cancelActivity = isInterrupting;
   return event;
 }
 
-function addOtherEventDefinition(expectedShapeBpmnEventKind: ShapeBpmnEventKind, eventWithOtherEventDefinition: BPMNTEvent) {
-  const otherEventDefinition = expectedShapeBpmnEventKind === ShapeBpmnEventKind.SIGNAL ? 'message' : 'signal';
-  eventWithOtherEventDefinition[`${otherEventDefinition}EventDefinition`] = '';
-  return eventWithOtherEventDefinition;
+function buildTDefinitionsWithEventDefinitionAndEventOnProcess(
+  eventDefinitionKind: string,
+  expectedShapeBpmnEventKind: ShapeBpmnEventKind,
+  processJson: TProcess | TProcess[] = {},
+) {
+  const json = {
+    definitions: {
+      targetNamespace: '',
+      process: processJson,
+      BPMNDiagram: {
+        name: 'process 0',
+        BPMNPlane: {
+          BPMNShape: {
+            id: `shape_id_0`,
+            bpmnElement: 'event_id_0',
+            Bounds: { x: 362, y: 232, width: 36, height: 45 },
+          },
+        },
+      },
+    },
+  };
+  addTEventDefinition(json.definitions, eventDefinitionKind);
+  addDifferentEventDefinition(json.definitions, expectedShapeBpmnEventKind);
+  return json;
 }
 
 describe('parse bpmn as json for all events', () => {
@@ -118,40 +179,28 @@ describe('parse bpmn as json for all events', () => {
         return;
       }
 
-      describe.each(buildTitleForEventDefinitionIsAttributeOf(bpmnKind, eventDefinitionKind, expectedShapeBpmnEventKind))(
+      describe.each(buildTitleForEventDefinitionIsAttributeOf(bpmnKind, eventDefinitionKind, expectedShapeBpmnEventKind, buildTEvent))(
         `when %s`,
-        (titleForEventDefinitionIsAttributeOf: string) => {
+        (
+          titleForEventDefinitionIsAttributeOf: string,
+          buildTEvent: (index?: number, withName?: boolean, eventDefinition?: BPMNEventDefinition, eventDefinitionRef?: string | string[]) => BPMNTEvent,
+        ) => {
           const processAsObjectWithEventAsObject = {} as TProcess;
-          processAsObjectWithEventAsObject[bpmnKind] = buildTEvent(eventDefinitionKind);
+          processAsObjectWithEventAsObject[bpmnKind] = buildTEvent();
           it.each([
             ['object', processAsObjectWithEventAsObject],
             ['array', [processAsObjectWithEventAsObject]],
           ])(
             `should convert as Shape, when 'process' (as %s) has '${bpmnKind}' (as object), ${titleForEventDefinitionIsAttributeOf}`,
             (title: string, processJson: TProcess | TProcess[]) => {
-              const json = {
-                definitions: {
-                  targetNamespace: '',
-                  process: processJson,
-                  BPMNDiagram: {
-                    name: 'process 0',
-                    BPMNPlane: {
-                      BPMNShape: {
-                        id: `shape_${bpmnKind}_id_0`,
-                        bpmnElement: 'event_id_0',
-                        Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                      },
-                    },
-                  },
-                },
-              };
+              const json = buildTDefinitionsWithEventDefinitionAndEventOnProcess(eventDefinitionKind, expectedShapeBpmnEventKind, processJson);
 
               const model = parseJsonAndExpectEvent(json, expectedShapeBpmnEventKind, 1);
 
               verifyShape(model.flowNodes[0], {
-                shapeId: `shape_${bpmnKind}_id_0`,
+                shapeId: `shape_id_0`,
                 bpmnElementId: 'event_id_0',
-                bpmnElementName: 'event name',
+                bpmnElementName: undefined,
                 bpmnElementKind: expectedShapeBpmnElementKind,
                 bounds: {
                   x: 362,
@@ -164,7 +213,7 @@ describe('parse bpmn as json for all events', () => {
           );
 
           const processAsObjectWithEventAsArray = {} as TProcess;
-          processAsObjectWithEventAsArray[bpmnKind] = [buildTEvent(eventDefinitionKind), buildTEvent(eventDefinitionKind, 1)];
+          processAsObjectWithEventAsArray[bpmnKind] = [buildTEvent(), buildTEvent(1)];
           it.each([
             ['object', processAsObjectWithEventAsArray],
             ['array', [processAsObjectWithEventAsArray]],
@@ -180,12 +229,12 @@ describe('parse bpmn as json for all events', () => {
                     BPMNPlane: {
                       BPMNShape: [
                         {
-                          id: `shape_${bpmnKind}_id_0`,
+                          id: `shape_id_0`,
                           bpmnElement: 'event_id_0',
                           Bounds: { x: 362, y: 232, width: 36, height: 45 },
                         },
                         {
-                          id: `shape_${bpmnKind}_id_1`,
+                          id: `shape_id_1`,
                           bpmnElement: 'event_id_1',
                           Bounds: { x: 365, y: 235, width: 35, height: 46 },
                         },
@@ -194,13 +243,15 @@ describe('parse bpmn as json for all events', () => {
                   },
                 },
               };
+              addTEventDefinition(json.definitions, eventDefinitionKind);
+              addDifferentEventDefinition(json.definitions, expectedShapeBpmnEventKind);
 
               const model = parseJsonAndExpectEvent(json, expectedShapeBpmnEventKind, 2);
 
               verifyShape(model.flowNodes[0], {
-                shapeId: `shape_${bpmnKind}_id_0`,
+                shapeId: `shape_id_0`,
                 bpmnElementId: 'event_id_0',
-                bpmnElementName: 'event name',
+                bpmnElementName: undefined,
                 bpmnElementKind: expectedShapeBpmnElementKind,
                 bounds: {
                   x: 362,
@@ -211,9 +262,9 @@ describe('parse bpmn as json for all events', () => {
               });
 
               verifyShape(model.flowNodes[1], {
-                shapeId: `shape_${bpmnKind}_id_1`,
+                shapeId: `shape_id_1`,
                 bpmnElementId: 'event_id_1',
-                bpmnElementName: 'event name',
+                bpmnElementName: undefined,
                 bpmnElementKind: expectedShapeBpmnElementKind,
                 bounds: {
                   x: 365,
@@ -229,28 +280,13 @@ describe('parse bpmn as json for all events', () => {
             ["'name'", true],
             ["no 'name'", false],
           ])(`should convert as Shape, when '${bpmnKind}' has %s, ${titleForEventDefinitionIsAttributeOf}`, (title: string, withName: boolean) => {
-            const json = {
-              definitions: {
-                targetNamespace: '',
-                process: {},
-                BPMNDiagram: {
-                  name: 'process 0',
-                  BPMNPlane: {
-                    BPMNShape: {
-                      id: `shape_${bpmnKind}_id_0`,
-                      bpmnElement: 'event_id_0',
-                      Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                    },
-                  },
-                },
-              },
-            };
-            (json.definitions.process as TProcess)[`${bpmnKind}`] = buildTEvent(eventDefinitionKind, 0, withName);
+            const json = buildTDefinitionsWithEventDefinitionAndEventOnProcess(eventDefinitionKind, expectedShapeBpmnEventKind);
+            (json.definitions.process as TProcess)[`${bpmnKind}`] = buildTEvent(0, withName);
 
             const model = parseJsonAndExpectEvent(json, expectedShapeBpmnEventKind, 1);
 
             verifyShape(model.flowNodes[0], {
-              shapeId: `shape_${bpmnKind}_id_0`,
+              shapeId: `shape_id_0`,
               bpmnElementId: 'event_id_0',
               bpmnElementName: withName ? 'event name' : undefined,
               bpmnElementKind: expectedShapeBpmnElementKind,
@@ -270,28 +306,13 @@ describe('parse bpmn as json for all events', () => {
             ])(
               `should convert as Shape, when '${eventDefinitionKind}EventDefinition' is %s, ${titleForEventDefinitionIsAttributeOf}`,
               (title: string, eventDefinitionJson: string | TEventDefinition) => {
-                const json = {
-                  definitions: {
-                    targetNamespace: '',
-                    process: {},
-                    BPMNDiagram: {
-                      name: 'process 0',
-                      BPMNPlane: {
-                        BPMNShape: {
-                          id: `shape_${bpmnKind}_id_0`,
-                          bpmnElement: 'event_id_0',
-                          Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                        },
-                      },
-                    },
-                  },
-                };
-                (json.definitions.process as TProcess)[`${bpmnKind}`] = buildTEvent(eventDefinitionKind, 0, true, eventDefinitionJson);
+                const json = buildTDefinitionsWithEventDefinitionAndEventOnProcess(eventDefinitionKind, expectedShapeBpmnEventKind);
+                (json.definitions.process as TProcess)[`${bpmnKind}`] = buildTEvent(0, true, eventDefinitionJson);
 
                 const model = parseJsonAndExpectEvent(json, expectedShapeBpmnEventKind, 1);
 
                 verifyShape(model.flowNodes[0], {
-                  shapeId: `shape_${bpmnKind}_id_0`,
+                  shapeId: `shape_id_0`,
                   bpmnElementId: 'event_id_0',
                   bpmnElementName: 'event name',
                   bpmnElementKind: expectedShapeBpmnElementKind,
@@ -306,25 +327,10 @@ describe('parse bpmn as json for all events', () => {
             );
 
             it.each([
-              [`'${eventDefinitionKind}EventDefinition' and another 'EventDefinition'`, addOtherEventDefinition(expectedShapeBpmnEventKind, buildTEvent(eventDefinitionKind))],
-              [`several '${eventDefinitionKind}EventDefinition'`, buildTEvent(eventDefinitionKind, 0, true, [{}, {}])],
+              [`'${eventDefinitionKind}EventDefinition' and another 'EventDefinition'`, addDifferentEventDefinition(buildTEvent(), expectedShapeBpmnEventKind)],
+              [`several '${eventDefinitionKind}EventDefinition'`, buildTEvent(0, true, [{}, {}])],
             ])(`should NOT convert, when there are %s in the same element`, (title: string, eventJson: TEvent[]) => {
-              const json = {
-                definitions: {
-                  targetNamespace: '',
-                  process: {},
-                  BPMNDiagram: {
-                    name: 'process 0',
-                    BPMNPlane: {
-                      BPMNShape: {
-                        id: 'shape_${bpmnKind}_id_0',
-                        bpmnElement: 'event_id_0',
-                        Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                      },
-                    },
-                  },
-                },
-              };
+              const json = buildTDefinitionsWithEventDefinitionAndEventOnProcess(eventDefinitionKind, expectedShapeBpmnEventKind);
               (json.definitions.process as TProcess)[`${bpmnKind}`] = eventJson;
 
               parseJsonAndExpectOnlyFlowNodes(json, 0);
@@ -332,6 +338,14 @@ describe('parse bpmn as json for all events', () => {
           }
         },
       );
+
+      it.skip(`should NOT convert, when 'definitions' has ${eventDefinitionKind}EventDefinition and '${bpmnKind}' has ${eventDefinitionKind}EventDefinition & eventDefinitionRef`, () => {
+        const json = buildTDefinitionsWithEventDefinitionAndEventOnProcess(eventDefinitionKind, expectedShapeBpmnEventKind);
+        // TODO Add eventDefinitionRef
+        (json.definitions.process as TProcess)[`${bpmnKind}`] = buildTEvent();
+
+        parseJsonAndExpectOnlyFlowNodes(json, 0);
+      });
     });
 
     //TODO We can delete it when all kind of event definition are implemented
@@ -432,9 +446,18 @@ describe('parse bpmn as json for all events', () => {
           return;
         }
 
-        describe.each(buildTitleForEventDefinitionIsAttributeOf('boundaryEvent', eventDefinitionKind, expectedShapeBpmnEventKind))(
+        describe.each(buildTitleForEventDefinitionIsAttributeOf('boundaryEvent', eventDefinitionKind, expectedShapeBpmnEventKind, buildTBoundaryEvent))(
           `when %s`,
-          (titleForEventDefinitionIsAttributeOf: string) => {
+          (
+            titleForEventDefinitionIsAttributeOf: string,
+            buildTBoundaryEvent: (
+              index?: number,
+              withName?: boolean,
+              eventDefinition?: BPMNEventDefinition,
+              eventDefinitionRef?: string | string[],
+              isInterrupting?: boolean,
+            ) => BPMNTEvent,
+          ) => {
             it.each([
               ['empty string', ''],
               ['object', { id: `${eventDefinitionKind}EventDefinition_1` }],
@@ -469,7 +492,8 @@ describe('parse bpmn as json for all events', () => {
                     },
                   },
                 };
-                (json.definitions.process as TProcess)['boundaryEvent'] = buildTBoundaryEvent(eventDefinitionKind, isInterrupting, true, eventDefinitionJson);
+                addTEventDefinition(json.definitions, eventDefinitionKind);
+                (json.definitions.process as TProcess)['boundaryEvent'] = buildTBoundaryEvent(0, false, eventDefinitionJson, undefined, isInterrupting) as TBoundaryEvent;
 
                 const model = parseJsonAndExpectEvent(json, expectedShapeBpmnEventKind, 1);
 
@@ -477,7 +501,7 @@ describe('parse bpmn as json for all events', () => {
                   shapeId: 'shape_boundaryEvent_id_0',
                   parentId: 'task_id_0',
                   bpmnElementId: 'event_id_0',
-                  bpmnElementName: 'event name',
+                  bpmnElementName: undefined,
                   bpmnElementKind: ShapeBpmnElementKind.EVENT_BOUNDARY,
                   bounds: {
                     x: 362,
@@ -520,7 +544,8 @@ describe('parse bpmn as json for all events', () => {
                     },
                   },
                 };
-                (json.definitions.process as TProcess)['boundaryEvent'] = buildTBoundaryEvent(eventDefinitionKind, undefined, true, '');
+                addTEventDefinition(json.definitions, eventDefinitionKind);
+                (json.definitions.process as TProcess)['boundaryEvent'] = buildTBoundaryEvent(0, false, '', undefined, undefined) as TBoundaryEvent;
 
                 const model = parseJsonAndExpectEvent(json, expectedShapeBpmnEventKind, 1);
 
@@ -528,7 +553,7 @@ describe('parse bpmn as json for all events', () => {
                   shapeId: 'shape_boundaryEvent_id_0',
                   parentId: 'task_id_0',
                   bpmnElementId: 'event_id_0',
-                  bpmnElementName: 'event name',
+                  bpmnElementName: undefined,
                   bpmnElementKind: ShapeBpmnElementKind.EVENT_BOUNDARY,
                   bounds: {
                     x: 362,
@@ -544,9 +569,9 @@ describe('parse bpmn as json for all events', () => {
             it.each([
               [
                 `'${eventDefinitionKind}EventDefinition' and another 'EventDefinition'`,
-                addOtherEventDefinition(expectedShapeBpmnEventKind, buildTBoundaryEvent(eventDefinitionKind, isInterrupting)),
+                addDifferentEventDefinition(buildTBoundaryEvent(0, false, '', undefined, isInterrupting), expectedShapeBpmnEventKind),
               ],
-              [`several '${eventDefinitionKind}EventDefinitions'`, buildTBoundaryEvent(eventDefinitionKind, isInterrupting)],
+              [`several '${eventDefinitionKind}EventDefinitions'`, buildTBoundaryEvent(0, false, '', undefined, isInterrupting)],
             ])(
               `should NOT convert, when there are %s in the same element, 'boundaryEvent' is ${boundaryEventKind} & attached to an 'activity'`,
               (title: string, eventJson: TBoundaryEvent) => {
@@ -575,6 +600,7 @@ describe('parse bpmn as json for all events', () => {
                     },
                   },
                 };
+                addTEventDefinition(json.definitions, eventDefinitionKind);
                 (json.definitions.process as TProcess)['boundaryEvent'] = eventJson;
 
                 parseJsonAndExpectEvent(json, undefined, 0);
@@ -610,7 +636,9 @@ describe('parse bpmn as json for all events', () => {
                   },
                 },
               };
-              (json.definitions.process as TProcess)['boundaryEvent'] = buildTBoundaryEvent(eventDefinitionKind, isInterrupting, true, '');
+              addTEventDefinition(json.definitions, eventDefinitionKind);
+              // TODO: modify attachedRef
+              (json.definitions.process as TProcess)['boundaryEvent'] = buildTBoundaryEvent(0, false, '', undefined, isInterrupting) as TBoundaryEvent;
 
               parseJsonAndExpectEvent(json, undefined, 0);
             });
