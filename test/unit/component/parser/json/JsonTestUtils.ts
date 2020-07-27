@@ -19,7 +19,7 @@ import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/
 import Edge from '../../../../../src/model/bpmn/edge/Edge';
 import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
-import { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
+import { ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import Label from '../../../../../src/model/bpmn/Label';
@@ -37,10 +37,6 @@ export interface ExpectedShape {
   parentId?: string;
   bounds?: ExpectedBounds;
   isExpanded?: boolean;
-}
-
-export interface ExpectedBoundaryEventShape extends ExpectedShape {
-  bpmnElementIsInterrupting: boolean;
 }
 
 interface ExpectedEdge {
@@ -120,7 +116,7 @@ export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: BpmnJsonModel, num
   return parseJsonAndExpect(json, 0, 0, numberOfExpectedFlowNodes, numberOfExpectedEdges);
 }
 
-export function verifyShape(shape: Shape, expectedShape: ExpectedShape | ExpectedBoundaryEventShape): void {
+export function verifyShape(shape: Shape, expectedShape: ExpectedShape): void {
   expect(shape.id).toEqual(expectedShape.shapeId);
 
   if (shape.isExpanded) {
@@ -141,11 +137,6 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape | Expecte
   expect(bounds.y).toEqual(expectedBounds.y);
   expect(bounds.width).toEqual(expectedBounds.width);
   expect(bounds.height).toEqual(expectedBounds.height);
-
-  if (expectedShape.hasOwnProperty('bpmnElementIsInterrupting')) {
-    expect(bpmnElement instanceof ShapeBpmnBoundaryEvent).toBeTruthy();
-    expect((bpmnElement as ShapeBpmnBoundaryEvent).isInterrupting).toEqual((expectedShape as ExpectedBoundaryEventShape).bpmnElementIsInterrupting);
-  }
 }
 
 export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge | ExpectedSequenceEdge): void {
