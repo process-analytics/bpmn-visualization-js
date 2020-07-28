@@ -51,6 +51,15 @@ interface BuildEventDefinitionParameter {
   withDifferentDefinition?: boolean;
 }
 
+interface TestParameter {
+  bpmnKind: string;
+  buildEventDefinitionParameter: BuildEventDefinitionParameter;
+  buildEventParameter: BuildEventParameter;
+  expectedShapeBpmnEventKind: ShapeBpmnEventKind;
+  expectedShapeBpmnElementKind: ShapeBpmnElementKind;
+  process?: TProcess | TProcess[];
+}
+
 function verifyBoundaryEvent(bpmnElement: ShapeBpmnElement, isInterrupting: boolean) {
   expect(bpmnElement instanceof ShapeBpmnBoundaryEvent).toBeTruthy();
   expect((bpmnElement as ShapeBpmnBoundaryEvent).isInterrupting).toEqual(isInterrupting);
@@ -84,11 +93,6 @@ function verifyEventShape(
   if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.EVENT_BOUNDARY) {
     verifyBoundaryEvent(shape.bpmnElement, buildEventParameter.isInterrupting);
   }
-}
-
-function expectOneShape(model: BpmnModel, buildEventParameter: BuildEventParameter, expectedShapeBpmnElementKind: ShapeBpmnElementKind) {
-  const shapes = getEventShapes(model);
-  verifyEventShape(shapes[0], buildEventParameter, expectedShapeBpmnElementKind);
 }
 
 function addEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, eventDefinition: BPMNEventDefinition = ''): TProcess | BPMNTEvent {
@@ -231,6 +235,23 @@ function buildDefinitionsAndProcessWithTask(process: TProcess | TProcess[] = {})
   return json;
 }
 
+function testMustConvertOneShape({
+  bpmnKind,
+  buildEventDefinitionParameter,
+  buildEventParameter,
+  expectedShapeBpmnEventKind,
+  expectedShapeBpmnElementKind,
+  process,
+}: TestParameter) {
+  const json = buildDefinitionsAndProcessWithTask(process);
+  addEvent(json, bpmnKind, buildEventDefinitionParameter, buildEventParameter);
+
+  const model = parseJsonAndExpectEvent(json, expectedShapeBpmnEventKind, 1);
+
+  const shapes = getEventShapes(model);
+  verifyEventShape(shapes[0], buildEventParameter, expectedShapeBpmnElementKind);
+}
+
 function executeEventCommonTests(
   bpmnKind: string,
   eventDefinitionKind: string,
@@ -254,18 +275,20 @@ function executeEventCommonTests(
   }
   describe.each(titlesForEventDefinitionIsAttributeOf)(`when %s`, (titleForEventDefinitionIsAttributeOf: string, eventDefinitionOn: EventDefinitionOn) => {
     const buildEventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind, eventDefinitionOn };
+    const testParameter: TestParameter = {
+      bpmnKind,
+      buildEventDefinitionParameter,
+      buildEventParameter: specificBuildEventParameter,
+      expectedShapeBpmnEventKind,
+      expectedShapeBpmnElementKind,
+    };
     it.each([
       ['object', {}],
       ['array', [{}]],
     ])(
       `should convert as Shape, when 'process' (as %s) has '${bpmnKind}' (as object)${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`,
       (title: string, process: TProcess | TProcess[]) => {
-        const json = buildDefinitionsAndProcessWithTask(process);
-        addEvent(json, bpmnKind, buildEventDefinitionParameter, specificBuildEventParameter);
-
-        const model = parseJsonAndExpectEvent(json, expectedShapeBpmnEventKind, 1);
-
-        expectOneShape(model, specificBuildEventParameter, expectedShapeBpmnElementKind);
+        testMustConvertOneShape({ ...testParameter, process });
       },
     );
 
@@ -291,13 +314,7 @@ function executeEventCommonTests(
       ["'name'", 'event name'],
       ["no 'name'", undefined],
     ])(`should convert as Shape, when '${bpmnKind}' has %s${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, (title: string, eventName: string) => {
-      const json = buildDefinitionsAndProcessWithTask();
-      const buildEventParameter = { ...specificBuildEventParameter, eventName };
-      addEvent(json, bpmnKind, buildEventDefinitionParameter, buildEventParameter);
-
-      const model = parseJsonAndExpectEvent(json, expectedShapeBpmnEventKind, 1);
-
-      expectOneShape(model, buildEventParameter, expectedShapeBpmnElementKind);
+      testMustConvertOneShape({ ...testParameter, buildEventParameter: { ...specificBuildEventParameter, eventName } });
     });
 
     if (expectedShapeBpmnEventKind !== ShapeBpmnEventKind.NONE) {
@@ -323,12 +340,7 @@ function executeEventCommonTests(
         ])(
           `should convert as Shape, when '${buildEventDefinitionParameter.eventDefinitionKind}EventDefinition' is %s, ${titleForEventDefinitionIsAttributeOf}`,
           (title: string, eventDefinition: string | TEventDefinition) => {
-            const json = buildDefinitionsAndProcessWithTask();
-            addEvent(json, bpmnKind, { ...buildEventDefinitionParameter, eventDefinition }, specificBuildEventParameter);
-
-            const model = parseJsonAndExpectEvent(json, expectedShapeBpmnEventKind, 1);
-
-            expectOneShape(model, specificBuildEventParameter, expectedShapeBpmnElementKind);
+            testMustConvertOneShape({ ...testParameter, buildEventDefinitionParameter: { ...buildEventDefinitionParameter, eventDefinition } });
           },
         );
       } else {
@@ -339,7 +351,8 @@ function executeEventCommonTests(
 
             const model = parseJsonAndExpectEvent(json, expectedShapeBpmnEventKind, 1);
 
-            expectOneShape(model, specificBuildEventParameter, ShapeBpmnElementKind.EVENT_BOUNDARY);
+            const shapes = getEventShapes(model);
+            verifyEventShape(shapes[0], specificBuildEventParameter, expectedShapeBpmnElementKind);
           });
         }
 
