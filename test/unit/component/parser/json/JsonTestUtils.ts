@@ -166,14 +166,6 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge | ExpectedSeq
   }
 }
 
-export function verifyEvent(model: BpmnModel, eventKind: ShapeBpmnEventKind, expectedNumber: number): void {
-  const events = model.flowNodes.filter(shape => {
-    const bpmnElement = shape.bpmnElement;
-    return bpmnElement instanceof ShapeBpmnEvent && (bpmnElement as ShapeBpmnEvent).eventKind === eventKind;
-  });
-  expect(events).toHaveLength(expectedNumber);
-}
-
 export function verifySubProcess(model: BpmnModel, kind: ShapeBpmnSubProcessKind, expectedNumber: number): void {
   const events = model.flowNodes.filter(shape => {
     const bpmnElement = shape.bpmnElement;
@@ -212,14 +204,18 @@ export function verifyLabelBounds(label: Label, expectedBounds?: ExpectedBounds)
   }
 }
 
-export function parseJsonAndExpectEvent(json: BpmnJsonModel, kind: ShapeBpmnEventKind, expectedNumber: number): BpmnModel {
+export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventKind: ShapeBpmnEventKind, expectedNumber: number): BpmnModel {
   const model = parseJson(json);
 
   expect(model.lanes).toHaveLength(0);
   expect(model.pools).toHaveLength(0);
   expect(model.edges).toHaveLength(0);
 
-  verifyEvent(model, kind, expectedNumber);
+  const events = model.flowNodes.filter(shape => {
+    const bpmnElement = shape.bpmnElement;
+    return bpmnElement instanceof ShapeBpmnEvent && (bpmnElement as ShapeBpmnEvent).eventKind === eventKind;
+  });
+  expect(events).toHaveLength(expectedNumber);
 
   return model;
 }

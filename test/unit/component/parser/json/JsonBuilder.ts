@@ -1,0 +1,189 @@
+/**
+ * Copyright 2020 Bonitasoft S.A.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowNode/event';
+import { TEventDefinition } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/eventDefinition';
+import { BpmnJsonModel, TDefinitions } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMN20';
+import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
+import { TFlowNode } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowElement';
+import { BPMNPlane, BPMNShape } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
+
+type BPMNTEvent = TCatchEvent | TThrowEvent | TBoundaryEvent;
+type BPMNEventDefinition = string | TEventDefinition | TEventDefinition[];
+
+export enum EventDefinitionOn {
+  NONE,
+  EVENT,
+  DEFINITIONS,
+  BOTH,
+}
+
+export interface BuildEventParameter {
+  index?: number;
+  eventName?: string;
+  isInterrupting?: boolean;
+  attachedToRef?: string;
+}
+
+export interface BuildEventDefinitionParameter {
+  eventDefinitionKind: string;
+  eventDefinitionOn: EventDefinitionOn;
+  eventDefinition?: BPMNEventDefinition;
+  withDifferentDefinition?: boolean;
+}
+
+export function addEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, eventDefinition: BPMNEventDefinition = ''): TProcess | BPMNTEvent {
+  if (eventDefinitionKind !== 'none') {
+    bpmnElement[`${eventDefinitionKind}EventDefinition`] = eventDefinition;
+  }
+  return bpmnElement;
+}
+
+export function addDifferentEventDefinition(
+  bpmnElement: TDefinitions | BPMNTEvent,
+  eventDefinitionKind: string,
+  differentEventDefinition?: TEventDefinition,
+): TProcess | BPMNTEvent {
+  const otherEventDefinition = eventDefinitionKind === 'signal' ? 'message' : 'signal';
+  return addEventDefinition(bpmnElement, otherEventDefinition, differentEventDefinition);
+}
+
+export function addEventDefinitions(
+  event: BPMNTEvent,
+  { eventDefinitionKind, eventDefinition, withDifferentDefinition = false }: BuildEventDefinitionParameter,
+  differentEventDefinition?: TEventDefinition,
+) {
+  addEventDefinition(event, eventDefinitionKind, eventDefinition);
+  if (withDifferentDefinition) {
+    addDifferentEventDefinition(event, eventDefinitionKind, differentEventDefinition);
+  }
+}
+
+export function getFirstElementOfArray(object: any | any[]): any {
+  if (Array.isArray(object)) {
+    return object[0];
+  } else {
+    return object;
+  }
+}
+
+export function updateBpmnElement<T>(parentElement: T | T[], childElement: T, setValue: (value: T | T[]) => void) {
+  if (parentElement) {
+    if (!Array.isArray(parentElement)) {
+      setValue([parentElement, childElement]);
+    } else {
+      parentElement.push(childElement);
+    }
+  } else {
+    setValue(childElement);
+  }
+}
+
+export function addFlownode(jsonModel: BpmnJsonModel, bpmnKind: string, flowNode: TFlowNode) {
+  const process: TProcess = getFirstElementOfArray(jsonModel.definitions.process);
+  updateBpmnElement(process[bpmnKind], flowNode, (value: TFlowNode | TFlowNode[]) => (process[bpmnKind] = value));
+}
+
+export function addShape(jsonModel: BpmnJsonModel, taskShape: BPMNShape) {
+  const bpmnPlane: BPMNPlane = getFirstElementOfArray(jsonModel.definitions.BPMNDiagram).BPMNPlane;
+  updateBpmnElement(bpmnPlane.BPMNShape, taskShape, (value: BPMNShape | BPMNShape[]) => (bpmnPlane.BPMNShape = value));
+}
+
+export function addTask(jsonModel: BpmnJsonModel) {
+  const task = {
+    id: 'task_id_0',
+    name: 'task name',
+  };
+  addFlownode(jsonModel, 'task', task);
+
+  const taskShape = {
+    id: 'shape_task_id_0',
+    bpmnElement: 'task_id_0',
+    Bounds: { x: 362, y: 232, width: 36, height: 45 },
+  };
+  addShape(jsonModel, taskShape);
+}
+
+export function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildParameter: BuildEventDefinitionParameter, event: BPMNTEvent) {
+  if (buildParameter.withDifferentDefinition) {
+    addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition: { id: 'event_definition_id' } }, { id: 'other_event_definition_id' });
+    (event.eventDefinitionRef as string[]) = ['event_definition_id', 'other_event_definition_id'];
+  } else {
+    const eventDefinition = buildParameter.eventDefinition ? buildParameter.eventDefinition : { id: 'event_definition_id' };
+    addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition });
+    if (Array.isArray(eventDefinition)) {
+      event.eventDefinitionRef = eventDefinition.map(eventDefinition => eventDefinition.id);
+    } else {
+      event.eventDefinitionRef = (eventDefinition as TEventDefinition).id;
+    }
+  }
+}
+
+export function buildEvent({ index = 0, eventName, isInterrupting, attachedToRef }: BuildEventParameter = {}): BPMNTEvent {
+  const event: BPMNTEvent = {
+    id: `event_id_${index}`,
+    name: eventName,
+  };
+
+  if (isInterrupting !== undefined) {
+    event.cancelActivity = isInterrupting;
+  }
+  if (attachedToRef) {
+    event.attachedToRef = attachedToRef;
+  }
+  return event;
+}
+
+export function addEvent(jsonModel: BpmnJsonModel, bpmnKind: string, eventDefinitionParameter: BuildEventDefinitionParameter, eventParameter: BuildEventParameter) {
+  const event = buildEvent(eventParameter);
+  switch (eventDefinitionParameter.eventDefinitionOn) {
+    case EventDefinitionOn.BOTH:
+      addEventDefinitions(event, eventDefinitionParameter);
+      addEventDefinitionsOnDefinition(jsonModel, eventDefinitionParameter, event);
+      break;
+    case EventDefinitionOn.DEFINITIONS:
+      addEventDefinitionsOnDefinition(jsonModel, eventDefinitionParameter, event);
+      break;
+    case EventDefinitionOn.EVENT:
+      addEventDefinitions(event, eventDefinitionParameter);
+      break;
+    case EventDefinitionOn.NONE:
+      break;
+  }
+  addFlownode(jsonModel, bpmnKind, event);
+
+  const index = eventParameter.index ? eventParameter.index : 0;
+  const eventShape = {
+    id: `shape_event_id_${index}`,
+    bpmnElement: `event_id_${index}`,
+    Bounds: { x: 362, y: 232, width: 36, height: 45 },
+  };
+  addShape(jsonModel, eventShape);
+}
+
+export function buildDefinitionsAndProcessWithTask(process: TProcess | TProcess[] = {}) {
+  const json: BpmnJsonModel = {
+    definitions: {
+      targetNamespace: '',
+      process: process,
+      BPMNDiagram: {
+        name: 'process 0',
+        BPMNPlane: {},
+      },
+    },
+  };
+  addTask(json);
+  return json;
+}
