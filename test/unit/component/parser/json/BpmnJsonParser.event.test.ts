@@ -147,7 +147,8 @@ function executeEventCommonTests(
         const json = buildDefinitionsAndProcessWithTask({ eventDefinitionKind });
         addEvent(json, bpmnKind, { ...buildEventDefinitionParameter, withDifferentDefinition: true }, specificBuildEventParameter);
 
-        parseJsonAndExpectOnlyFlowNodes(json, 1);
+        const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 1);
+        expect(getEventShapes(bpmnModel)).toHaveLength(0);
       });
 
       it(`should NOT convert, when there are several '${eventDefinitionKind}EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
@@ -155,7 +156,8 @@ function executeEventCommonTests(
         const json = buildDefinitionsAndProcessWithTask();
         addEvent(json, bpmnKind, { ...buildEventDefinitionParameter, eventDefinition }, specificBuildEventParameter);
 
-        parseJsonAndExpectOnlyFlowNodes(json, 1);
+        const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 1);
+        expect(getEventShapes(bpmnModel)).toHaveLength(0);
       });
 
       if (expectedShapeBpmnElementKind !== ShapeBpmnElementKind.EVENT_BOUNDARY) {
@@ -186,8 +188,8 @@ function executeEventCommonTests(
             definitions: {
               targetNamespace: '',
               process: {
-                startEvent: {
-                  id: 'not_task_id_0',
+                exclusiveGateway: {
+                  id: 'not_activity_id_0',
                 },
               },
               BPMNDiagram: {
@@ -195,8 +197,8 @@ function executeEventCommonTests(
                 BPMNPlane: {
                   BPMNShape: [
                     {
-                      id: 'shape_not_task_id_0',
-                      bpmnElement: 'not_task_id_0',
+                      id: 'shape_not_activity_id_0',
+                      bpmnElement: 'not_activity_id_0',
                       Bounds: { x: 362, y: 232, width: 36, height: 45 },
                     },
                   ],
@@ -204,9 +206,26 @@ function executeEventCommonTests(
               },
             },
           };
-          addEvent(json, 'boundaryEvent', buildEventDefinitionParameter, { ...specificBuildEventParameter, attachedToRef: 'not_task_id_0' });
+          addEvent(json, 'boundaryEvent', buildEventDefinitionParameter, { ...specificBuildEventParameter, attachedToRef: 'not_activity_id_0' });
 
-          parseJsonAndExpectEvent(json, undefined, 0);
+          const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 1);
+          expect(getEventShapes(bpmnModel)).toHaveLength(0);
+        });
+
+        it(`should NOT convert, when 'boundaryEvent' is ${boundaryEventKind} & attached to unexisting activity, ${titleForEventDefinitionIsAttributeOf}`, () => {
+          const json = {
+            definitions: {
+              targetNamespace: '',
+              process: {},
+              BPMNDiagram: {
+                name: 'process 0',
+                BPMNPlane: {},
+              },
+            },
+          };
+          addEvent(json, 'boundaryEvent', buildEventDefinitionParameter, { ...specificBuildEventParameter, attachedToRef: 'unexisting_activity_id_0' });
+
+          parseJsonAndExpectOnlyFlowNodes(json, 0);
         });
       }
     }
