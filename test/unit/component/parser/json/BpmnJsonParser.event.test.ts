@@ -50,7 +50,7 @@ function verifyEventShape(
     shapeId: expectedShapeId,
     parentId: buildEventParameter.attachedToRef,
     bpmnElementId: expectedBpmnElementId,
-    bpmnElementName: buildEventParameter.eventName,
+    bpmnElementName: buildEventParameter.name,
     bpmnElementKind: expectedShapeBpmnElementKind,
     bounds: {
       x: 362,
@@ -145,7 +145,7 @@ function executeEventCommonTests(
       ["'name'", 'event name'],
       ["no 'name'", undefined],
     ])(`should convert as Shape, when '${bpmnKind}' has %s${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, (title: string, eventName: string) => {
-      testMustConvertOneShape({ ...testParameter, buildEventParameter: { ...specificBuildEventParameter, eventName } });
+      testMustConvertOneShape({ ...testParameter, buildEventParameter: { ...specificBuildEventParameter, name: eventName } });
     });
 
     if (expectedShapeBpmnEventKind !== ShapeBpmnEventKind.NONE) {
@@ -232,7 +232,7 @@ describe('parse bpmn as json for all events', () => {
     ['endEvent', ['message', 'error', 'escalation', 'cancel', 'compensate', 'signal', 'terminate'], ShapeBpmnElementKind.EVENT_END],
     ['intermediateCatchEvent', ['message', 'timer', 'conditional', 'link', 'signal'], ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
     ['intermediateThrowEvent', ['message', 'escalation', 'compensate', 'link', 'signal'], ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW],
-    ['boundaryEvent', ['message', 'timer', 'conditional', 'error', 'escalation', 'cancel', 'compensate', 'signal'], ShapeBpmnElementKind.EVENT_BOUNDARY],
+    ['boundaryEvent', undefined, ShapeBpmnElementKind.EVENT_BOUNDARY],
   ])('for %ss', (bpmnKind: string, allDefinitionKinds: string[], expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
     describe.each([
       ['none', ShapeBpmnEventKind.NONE],

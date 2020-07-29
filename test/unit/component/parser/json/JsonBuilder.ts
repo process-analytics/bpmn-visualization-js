@@ -32,7 +32,7 @@ export enum EventDefinitionOn {
 
 export interface BuildEventParameter {
   index?: number;
-  eventName?: string;
+  name?: string;
   isInterrupting?: boolean;
   attachedToRef?: string;
 }
@@ -42,33 +42,6 @@ export interface BuildEventDefinitionParameter {
   eventDefinitionOn: EventDefinitionOn;
   eventDefinition?: BPMNEventDefinition;
   withDifferentDefinition?: boolean;
-}
-
-export function addEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, eventDefinition: BPMNEventDefinition = ''): TProcess | BPMNTEvent {
-  if (eventDefinitionKind !== 'none') {
-    bpmnElement[`${eventDefinitionKind}EventDefinition`] = eventDefinition;
-  }
-  return bpmnElement;
-}
-
-export function addDifferentEventDefinition(
-  bpmnElement: TDefinitions | BPMNTEvent,
-  eventDefinitionKind: string,
-  differentEventDefinition?: TEventDefinition,
-): TProcess | BPMNTEvent {
-  const otherEventDefinition = eventDefinitionKind === 'signal' ? 'message' : 'signal';
-  return addEventDefinition(bpmnElement, otherEventDefinition, differentEventDefinition);
-}
-
-export function addEventDefinitions(
-  event: BPMNTEvent,
-  { eventDefinitionKind, eventDefinition, withDifferentDefinition = false }: BuildEventDefinitionParameter,
-  differentEventDefinition?: TEventDefinition,
-) {
-  addEventDefinition(event, eventDefinitionKind, eventDefinition);
-  if (withDifferentDefinition) {
-    addDifferentEventDefinition(event, eventDefinitionKind, differentEventDefinition);
-  }
 }
 
 export function getFirstElementOfArray(object: any | any[]): any {
@@ -116,6 +89,48 @@ export function addTask(jsonModel: BpmnJsonModel) {
   addShape(jsonModel, taskShape);
 }
 
+export function buildDefinitionsAndProcessWithTask(process: TProcess | TProcess[] = {}) {
+  const json: BpmnJsonModel = {
+    definitions: {
+      targetNamespace: '',
+      process: process,
+      BPMNDiagram: {
+        name: 'process 0',
+        BPMNPlane: {},
+      },
+    },
+  };
+  addTask(json);
+  return json;
+}
+
+export function addEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, eventDefinition: BPMNEventDefinition = ''): TProcess | BPMNTEvent {
+  if (eventDefinitionKind !== 'none') {
+    bpmnElement[`${eventDefinitionKind}EventDefinition`] = eventDefinition;
+  }
+  return bpmnElement;
+}
+
+export function addDifferentEventDefinition(
+  bpmnElement: TDefinitions | BPMNTEvent,
+  eventDefinitionKind: string,
+  differentEventDefinition?: TEventDefinition,
+): TProcess | BPMNTEvent {
+  const otherEventDefinition = eventDefinitionKind === 'signal' ? 'message' : 'signal';
+  return addEventDefinition(bpmnElement, otherEventDefinition, differentEventDefinition);
+}
+
+export function addEventDefinitions(
+  event: BPMNTEvent,
+  { eventDefinitionKind, eventDefinition, withDifferentDefinition = false }: BuildEventDefinitionParameter,
+  differentEventDefinition?: TEventDefinition,
+) {
+  addEventDefinition(event, eventDefinitionKind, eventDefinition);
+  if (withDifferentDefinition) {
+    addDifferentEventDefinition(event, eventDefinitionKind, differentEventDefinition);
+  }
+}
+
 export function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildParameter: BuildEventDefinitionParameter, event: BPMNTEvent) {
   if (buildParameter.withDifferentDefinition) {
     addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition: { id: 'event_definition_id' } }, { id: 'other_event_definition_id' });
@@ -131,10 +146,10 @@ export function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildP
   }
 }
 
-export function buildEvent({ index = 0, eventName, isInterrupting, attachedToRef }: BuildEventParameter = {}): BPMNTEvent {
+export function buildEvent({ index = 0, name, isInterrupting, attachedToRef }: BuildEventParameter = {}): BPMNTEvent {
   const event: BPMNTEvent = {
     id: `event_id_${index}`,
-    name: eventName,
+    name: name,
   };
 
   if (isInterrupting !== undefined) {
@@ -171,19 +186,4 @@ export function addEvent(jsonModel: BpmnJsonModel, bpmnKind: string, eventDefini
     Bounds: { x: 362, y: 232, width: 36, height: 45 },
   };
   addShape(jsonModel, eventShape);
-}
-
-export function buildDefinitionsAndProcessWithTask(process: TProcess | TProcess[] = {}) {
-  const json: BpmnJsonModel = {
-    definitions: {
-      targetNamespace: '',
-      process: process,
-      BPMNDiagram: {
-        name: 'process 0',
-        BPMNPlane: {},
-      },
-    },
-  };
-  addTask(json);
-  return json;
 }
