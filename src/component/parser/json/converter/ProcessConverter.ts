@@ -25,7 +25,7 @@ import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';
 import { ShapeBpmnSubProcessKind } from '../../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
 import { TProcess } from '../../xml/bpmn-json-model/baseElement/rootElement/rootElement';
-import { TEvent } from '../../xml/bpmn-json-model/baseElement/flowNode/event';
+import {TBoundaryEvent, TCatchEvent, TEvent, TThrowEvent} from '../../xml/bpmn-json-model/baseElement/flowNode/event';
 import { TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
 import { TLane, TLaneSet } from '../../xml/bpmn-json-model/baseElement/baseElement';
 import { TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement';
@@ -96,7 +96,10 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     convertedProcessBpmnElements.push(new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
 
     // flow nodes
-    ShapeUtil.flowNodeKinds().forEach(kind => this.buildFlowNodeBpmnElements(processId, process[kind], kind));
+    ShapeUtil.flowNodeKinds()
+      .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
+      .forEach(kind => this.buildFlowNodeBpmnElements(processId, process[kind], kind));
+    this.buildFlowNodeBpmnElements(processId, process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY);
 
     // containers
     this.buildLaneBpmnElements(processId, process[ShapeBpmnElementKind.LANE]);
@@ -131,8 +134,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildShapeBpmnEvent(bpmnElement: any, elementKind: BpmnEventKind, processId: string): ShapeBpmnEvent {
+  private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventKind, processId: string): ShapeBpmnEvent {
     const eventDefinitions = this.getEventDefinitions(bpmnElement);
     const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
 
@@ -145,10 +147,21 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       const eventKind = eventDefinitions[0].kind;
       if (supportedBpmnEventKinds.includes(eventKind)) {
         if (ShapeUtil.isBoundaryEvent(elementKind)) {
-          return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity);
+          return this.buildShapeBpmnBoundaryEvent(bpmnElement as TBoundaryEvent, eventKind);
         }
         return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventKind, processId);
       }
+    }
+  }
+
+  private buildShapeBpmnBoundaryEvent(bpmnElement: TBoundaryEvent, eventKind: ShapeBpmnEventKind): ShapeBpmnBoundaryEvent {
+    const parent = findFlowNodeBpmnElement(bpmnElement.attachedToRef);
+
+    if (ShapeUtil.isActivity(parent?.kind)) {
+      return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity);
+    } else {
+      // TODO error management
+      console.warn('A boundary event must be attach to an activity, and not to %s', parent?.kind);
     }
   }
 
