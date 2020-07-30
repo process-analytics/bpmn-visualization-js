@@ -21,7 +21,7 @@ import { TFlowNode } from '../../../../../src/component/parser/xml/bpmn-json-mod
 import { BPMNPlane, BPMNShape } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
 
 type BPMNTEvent = TCatchEvent | TThrowEvent | TBoundaryEvent;
-type BPMNEventDefinition = string | TEventDefinition | TEventDefinition[];
+type BPMNEventDefinition = string | TEventDefinition | (string | TEventDefinition)[];
 
 export enum EventDefinitionOn {
   NONE,
@@ -140,7 +140,7 @@ export function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildP
     const eventDefinition = buildParameter.eventDefinition ? buildParameter.eventDefinition : { id: 'event_definition_id' };
     addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition });
     if (Array.isArray(eventDefinition)) {
-      event.eventDefinitionRef = eventDefinition.map(eventDefinition => eventDefinition.id);
+      event.eventDefinitionRef = eventDefinition.map(eventDefinition => (typeof eventDefinition === 'string' ? eventDefinition : eventDefinition.id));
     } else {
       event.eventDefinitionRef = (eventDefinition as TEventDefinition).id;
     }
