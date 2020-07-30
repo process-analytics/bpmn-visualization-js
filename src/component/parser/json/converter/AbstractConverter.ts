@@ -16,16 +16,25 @@
 import { JsonConverter, JsonCustomConvert } from 'json2typescript';
 import JsonConvertConfig from './JsonConvertConfig';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function ensureIsArray(elements: Array<any> | any, acceptEmptyString = false): Array<any> {
-  if (elements === undefined || elements === null || (!acceptEmptyString && elements === '')) {
-    elements = [];
-  } else if (elements === '' && acceptEmptyString) {
-    return [{}];
-  } else if (!Array.isArray(elements)) {
-    elements = [elements];
+function convertEmptyStringAndObject<T>(element: string | T, acceptEmptyString: boolean): T {
+  if (element === '') {
+    return acceptEmptyString ? ({} as T) : undefined;
   }
-  return elements;
+  return element as T;
+}
+
+export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEmptyString = false): Array<T> {
+  if (elements === undefined || elements === null) {
+    return [];
+  }
+
+  let returnedArray;
+  if (!Array.isArray(elements)) {
+    returnedArray = [convertEmptyStringAndObject(elements, acceptEmptyString)];
+  } else {
+    returnedArray = elements.map(element => convertEmptyStringAndObject(element, acceptEmptyString));
+  }
+  return returnedArray.filter(value => value);
 }
 
 @JsonConverter
