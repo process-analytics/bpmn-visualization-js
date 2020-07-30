@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import { Participant } from '../../../../model/bpmn/shape/ShapeBpmnElement';
-import { Collaboration } from '../Definitions';
 import { MessageFlow } from '../../../../model/bpmn/edge/Flow';
 import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
 import { TCollaboration } from '../../xml/bpmn-json-model/baseElement/rootElement/collaboration';
 import { TParticipant } from '../../xml/bpmn-json-model/baseElement/participant';
 import { TMessageFlow } from '../../xml/bpmn-json-model/baseElement/baseElement';
+
+// only define a type to fill data used to build the BpmnModel
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Collaboration {}
 
 const convertedProcessRefParticipants: Participant[] = [];
 const convertedMessageFlows: MessageFlow[] = [];
@@ -38,7 +40,6 @@ export function findMessageFlow(id: string): MessageFlow {
   return convertedMessageFlows.find(i => i.id === id);
 }
 
-@JsonConverter
 export default class CollaborationConverter extends AbstractConverter<Collaboration> {
   deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): Collaboration {
     try {

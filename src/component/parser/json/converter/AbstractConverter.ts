@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { JsonConverter, JsonCustomConvert } from 'json2typescript';
-import JsonConvertConfig from './JsonConvertConfig';
-
 function convertEmptyStringAndObject<T>(element: string | T, acceptEmptyString: boolean): T {
   if (element === '') {
     return acceptEmptyString ? ({} as T) : undefined;
@@ -37,17 +34,8 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
   return returnedArray.filter(value => value);
 }
 
-@JsonConverter
-export abstract class AbstractConverter<T> implements JsonCustomConvert<T> {
-  // TODO find a way to inject JsonConvert, see #110
-  protected readonly jsonConvert = JsonConvertConfig.jsonConvert();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-explicit-any
-  serialize(data: T): any {
-    // TODO throw exception
-    console.error('Not implemented !!');
-  }
-
+export abstract class AbstractConverter<T> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  abstract deserialize(data: any): T;
+  public abstract deserialize(data: any): T;
 }
