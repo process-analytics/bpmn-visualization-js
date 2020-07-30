@@ -30,10 +30,6 @@ import { TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement
 import { TAssociation } from '../../xml/bpmn-json-model/baseElement/artifact';
 import { AssociationDirectionKind } from '../../../../model/bpmn/edge/AssociationDirectionKind';
 
-// only define a type to fill data used to build the BpmnModel
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Process {}
-
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
 const convertedProcessBpmnElements: ShapeBpmnElement[] = [];
@@ -70,9 +66,9 @@ interface EventDefinition {
   counter: number;
 }
 
-export default class ProcessConverter extends AbstractConverter<Process> {
+export default class ProcessConverter extends AbstractConverter<void> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  deserialize(processes: string | TProcess | (string | TProcess)[]): Process {
+  deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     try {
       // Deletes everything in the array, which does hit other references. For better performance.
       convertedFlowNodeBpmnElements.length = 0;
@@ -83,8 +79,6 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       defaultSequenceFlowIds.length = 0;
 
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
-
-      return {};
     } catch (e) {
       // TODO error management
       console.error(e as Error);
