@@ -15,7 +15,6 @@
  */
 import { Diagram, Label, LabeledEdge, LabeledShape, Plane, Style } from './DI';
 import { Font } from './DC';
-import {TCollaboration} from "./baseElement/rootElement/collaboration";
 
 export interface BPMNDiagram extends Diagram {
   BPMNPlane: BPMNPlane;
