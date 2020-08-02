@@ -60,9 +60,6 @@ export default class MxGraphConfigurator {
     // This also prevents requesting unavailable images (see #185) as we don't override mxGraph folding default images.
     this.graph.foldingEnabled = false;
 
-    // TODO backport this to fix https://github.com/process-analytics/bpmn-visualization-js/issues/185
-    this.graph.foldingEnabled = false;
-
     this.applyDefaultGraphConfiguration();
 
     // TODO dynamic option to move elsewhere
