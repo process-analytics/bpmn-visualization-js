@@ -15,7 +15,6 @@
  */
 
 import { addEvent, buildDefinitionsAndProcessWithTask, BuildEventDefinitionParameter, EventDefinitionOn } from './JsonBuilder';
-import { BPMNPlane } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
 
 describe('build json', () => {
   it(

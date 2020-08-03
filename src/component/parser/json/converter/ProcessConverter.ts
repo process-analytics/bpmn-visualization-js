@@ -25,7 +25,7 @@ import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';
 import { ShapeBpmnSubProcessKind } from '../../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
 import { TProcess } from '../../xml/bpmn-json-model/baseElement/rootElement/rootElement';
-import {TBoundaryEvent, TCatchEvent, TEvent, TThrowEvent} from '../../xml/bpmn-json-model/baseElement/flowNode/event';
+import { TBoundaryEvent, TCatchEvent, TEvent, TThrowEvent } from '../../xml/bpmn-json-model/baseElement/flowNode/event';
 import { TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
 import { TLane, TLaneSet } from '../../xml/bpmn-json-model/baseElement/baseElement';
 import { TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement';

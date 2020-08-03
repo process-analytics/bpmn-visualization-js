@@ -35,7 +35,7 @@ interface TestParameter {
   process?: TProcess | TProcess[];
 }
 
-function getEventShapes(model: BpmnModel) {
+function getEventShapes(model: BpmnModel): Shape[] {
   return model.flowNodes.filter(shape => ShapeUtil.isEvent(shape.bpmnElement.kind));
 }
 
@@ -45,7 +45,7 @@ function verifyEventShape(
   expectedShapeBpmnElementKind: ShapeBpmnElementKind,
   expectedShapeId = `shape_event_id_0`,
   expectedBpmnElementId = 'event_id_0',
-) {
+): void {
   verifyShape(shape, {
     shapeId: expectedShapeId,
     parentId: buildEventParameter.attachedToRef,
@@ -73,7 +73,7 @@ function testMustConvertOneShape({
   expectedShapeBpmnEventKind,
   expectedShapeBpmnElementKind,
   process,
-}: TestParameter) {
+}: TestParameter): void {
   const json = buildDefinitionsAndProcessWithTask(process);
   addEvent(json, bpmnKind, buildEventDefinitionParameter, buildEventParameter);
 
@@ -91,7 +91,7 @@ function executeEventCommonTests(
   boundaryEventKind?: string,
   specificBuildEventParameter: BuildEventParameter = {},
   specificTitle = '',
-) {
+): void {
   let titlesForEventDefinitionIsAttributeOf;
   if (expectedShapeBpmnEventKind === ShapeBpmnEventKind.NONE) {
     titlesForEventDefinitionIsAttributeOf = [[`'${bpmnKind}' has no 'eventDefinition' & no 'eventDefinitionRef'`, EventDefinitionOn.NONE]];

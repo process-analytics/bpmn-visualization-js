@@ -44,6 +44,7 @@ export interface BuildEventDefinitionParameter {
   withDifferentDefinition?: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getFirstElementOfArray(object: any | any[]): any {
   if (Array.isArray(object)) {
     return object[0];
@@ -52,7 +53,7 @@ export function getFirstElementOfArray(object: any | any[]): any {
   }
 }
 
-export function updateBpmnElement<T>(parentElement: T | T[], childElement: T, setValue: (value: T | T[]) => void) {
+export function updateBpmnElement<T>(parentElement: T | T[], childElement: T, setValue: (value: T | T[]) => void): void {
   if (parentElement) {
     if (!Array.isArray(parentElement)) {
       setValue([parentElement, childElement]);
@@ -64,17 +65,17 @@ export function updateBpmnElement<T>(parentElement: T | T[], childElement: T, se
   }
 }
 
-export function addFlownode(jsonModel: BpmnJsonModel, bpmnKind: string, flowNode: TFlowNode) {
+export function addFlownode(jsonModel: BpmnJsonModel, bpmnKind: string, flowNode: TFlowNode): void {
   const process: TProcess = getFirstElementOfArray(jsonModel.definitions.process);
   updateBpmnElement(process[bpmnKind], flowNode, (value: TFlowNode | TFlowNode[]) => (process[bpmnKind] = value));
 }
 
-export function addShape(jsonModel: BpmnJsonModel, taskShape: BPMNShape) {
+export function addShape(jsonModel: BpmnJsonModel, taskShape: BPMNShape): void {
   const bpmnPlane: BPMNPlane = getFirstElementOfArray(jsonModel.definitions.BPMNDiagram).BPMNPlane;
   updateBpmnElement(bpmnPlane.BPMNShape, taskShape, (value: BPMNShape | BPMNShape[]) => (bpmnPlane.BPMNShape = value));
 }
 
-export function addTask(jsonModel: BpmnJsonModel) {
+export function addTask(jsonModel: BpmnJsonModel): void {
   const task = {
     id: 'task_id_0',
     name: 'task name',
@@ -89,7 +90,7 @@ export function addTask(jsonModel: BpmnJsonModel) {
   addShape(jsonModel, taskShape);
 }
 
-export function buildDefinitionsAndProcessWithTask(process: TProcess | TProcess[] = {}) {
+export function buildDefinitionsAndProcessWithTask(process: TProcess | TProcess[] = {}): BpmnJsonModel {
   const json: BpmnJsonModel = {
     definitions: {
       targetNamespace: '',
@@ -124,14 +125,14 @@ export function addEventDefinitions(
   event: BPMNTEvent,
   { eventDefinitionKind, eventDefinition, withDifferentDefinition = false }: BuildEventDefinitionParameter,
   differentEventDefinition?: TEventDefinition,
-) {
+): void {
   addEventDefinition(event, eventDefinitionKind, eventDefinition);
   if (withDifferentDefinition) {
     addDifferentEventDefinition(event, eventDefinitionKind, differentEventDefinition);
   }
 }
 
-export function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildParameter: BuildEventDefinitionParameter, event: BPMNTEvent) {
+export function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildParameter: BuildEventDefinitionParameter, event: BPMNTEvent): void {
   if (buildParameter.withDifferentDefinition) {
     addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition: { id: 'event_definition_id' } }, { id: 'other_event_definition_id' });
     (event.eventDefinitionRef as string[]) = ['event_definition_id', 'other_event_definition_id'];
@@ -161,7 +162,7 @@ export function buildEvent({ index = 0, name, isInterrupting, attachedToRef }: B
   return event;
 }
 
-export function addEvent(jsonModel: BpmnJsonModel, bpmnKind: string, eventDefinitionParameter: BuildEventDefinitionParameter, eventParameter: BuildEventParameter) {
+export function addEvent(jsonModel: BpmnJsonModel, bpmnKind: string, eventDefinitionParameter: BuildEventDefinitionParameter, eventParameter: BuildEventParameter): void {
   const event = buildEvent(eventParameter);
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH:
