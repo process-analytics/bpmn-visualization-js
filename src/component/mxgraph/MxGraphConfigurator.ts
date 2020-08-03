@@ -29,15 +29,15 @@ export default class MxGraphConfigurator {
   private readonly graph: mxGraph;
 
   constructor(container: HTMLElement) {
-    this.graph = new mxGraph(container, new mxGraphModel(null));
+    this.graph = new mxGraph(container);
+  }
+
+  public configure(): mxGraph {
     this.configureGraph();
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
     new MarkerConfigurator().configureMarkers();
     new MxClientConfigurator().configureMxCodec();
-  }
-
-  public getGraph(): mxGraph {
     return this.graph;
   }
 

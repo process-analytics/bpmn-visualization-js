@@ -33,7 +33,7 @@ export default class BpmnVisualization {
       }
       // Instantiate and configure Graph
       const configurator = new MxGraphConfigurator(this.container);
-      this.graph = configurator.getGraph();
+      this.graph = configurator.configure();
     } catch (e) {
       // TODO error handling
       mxUtils.alert('Cannot start application: ' + e.message);
