@@ -6,6 +6,10 @@
     <semantic:messageFlow id="message_flow_non_initiating_message_id" name="Message Flow with non-initiating message" sourceRef="startEvent_3_message" targetRef="startEvent_2_1_message" messageRef="Message_1" />
     <semantic:messageFlow id="message_flow_no_visible_id" name="Message Flow without message" sourceRef="boundary_event_interrupting_message_id" targetRef="startEvent_2_1_message" />
   </semantic:collaboration>
+  <semantic:messageEventDefinition id="top_message_definition_id"/>
+  <semantic:timerEventDefinition id="top_timer_definition_id"/>
+  <semantic:signalEventDefinition id="top_signal_definition_id"/>
+  <semantic:terminateEventDefinition id="top_terminate_definition_id"/>
   <semantic:process isExecutable="false" id="WFP-6-">
     <semantic:startEvent name="Start Event" id="startEvent_1">
       <semantic:outgoing>normal_sequence_flow_id</semantic:outgoing>
@@ -13,11 +17,20 @@
     <semantic:startEvent name="Timer Start Event" id="startEvent_2_timer">
       <semantic:timerEventDefinition/>
     </semantic:startEvent>
+    <semantic:startEvent name="Timer Start Event On Top" id="startEvent_2_timer_on_top">
+      <semantic:eventDefinitionRef>top_timer_definition_id</semantic:eventDefinitionRef>
+    </semantic:startEvent>
     <semantic:startEvent name="Message Start Event" id="startEvent_3_message">
       <semantic:messageEventDefinition/>
     </semantic:startEvent>
+    <semantic:startEvent name="Message Start Event On Top" id="startEvent_3_message_on_top">
+      <semantic:eventDefinitionRef>top_message_definition_id</semantic:eventDefinitionRef>
+    </semantic:startEvent>
     <semantic:startEvent name="Signal Start Event" id="startEvent_4_signal">
       <semantic:signalEventDefinition/>
+    </semantic:startEvent>
+    <semantic:startEvent name="Signal Start Event On Top" id="startEvent_4_signal_on_top">
+      <semantic:eventDefinitionRef>top_signal_definition_id</semantic:eventDefinitionRef>
     </semantic:startEvent>
     <semantic:task completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task 1" id="task_1" default="default_sequence_flow_id">
       <semantic:incoming>normal_sequence_flow_id</semantic:incoming>
@@ -34,47 +47,89 @@
     <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Message" id="boundary_event_interrupting_message_id">
       <semantic:messageEventDefinition/>
     </semantic:boundaryEvent>
+    <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Message On Top" id="boundary_event_interrupting_message_on_top_id">
+      <semantic:eventDefinitionRef>top_message_definition_id</semantic:eventDefinitionRef>
+    </semantic:boundaryEvent>
     <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Timer" id="boundary_event_interrupting_timer_id">
       <semantic:timerEventDefinition/>
+    </semantic:boundaryEvent>
+    <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Timer On Top" id="boundary_event_interrupting_timer_on_top_id">
+      <semantic:eventDefinitionRef>top_timer_definition_id</semantic:eventDefinitionRef>
     </semantic:boundaryEvent>
     <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Signal" id="boundary_event_interrupting_signal_id">
       <semantic:signalEventDefinition/>
     </semantic:boundaryEvent>
+    <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Signal On Top" id="boundary_event_interrupting_signal_on_top_id">
+      <semantic:eventDefinitionRef>top_signal_definition_id</semantic:eventDefinitionRef>
+    </semantic:boundaryEvent>
     <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Message" id="boundary_event_non_interrupting_message_id">
       <semantic:messageEventDefinition/>
+    </semantic:boundaryEvent>
+    <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Message On Top" id="boundary_event_non_interrupting_message_on_top_id">
+      <semantic:eventDefinitionRef>top_message_definition_id</semantic:eventDefinitionRef>
     </semantic:boundaryEvent>
     <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Timer" id="boundary_event_non_interrupting_timer_id">
       <semantic:timerEventDefinition/>
     </semantic:boundaryEvent>
+    <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Timer On Top" id="boundary_event_non_interrupting_timer_on_top_id">
+      <semantic:eventDefinitionRef>top_timer_definition_id</semantic:eventDefinitionRef>
+    </semantic:boundaryEvent>
     <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Signal" id="boundary_event_non_interrupting_signal_id">
       <semantic:signalEventDefinition/>
+    </semantic:boundaryEvent>
+    <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Signal On Top" id="boundary_event_non_interrupting_signal_on_top_id">
+      <semantic:eventDefinitionRef>top_signal_definition_id</semantic:eventDefinitionRef>
     </semantic:boundaryEvent>
     <semantic:intermediateThrowEvent name="Throw None Intermediate Event" id="noneIntermediateThrowEvent" />
     <semantic:intermediateThrowEvent name="Throw Message Intermediate Event" id="messageIntermediateThrowEvent">
       <semantic:messageEventDefinition />
     </semantic:intermediateThrowEvent>
+    <semantic:intermediateThrowEvent name="Throw Message Intermediate Event On Top" id="messageIntermediateThrowEvent_on_top">
+      <semantic:eventDefinitionRef>top_message_definition_id</semantic:eventDefinitionRef>
+    </semantic:intermediateThrowEvent>
     <semantic:intermediateThrowEvent name="Throw Signal Intermediate Event" id="signalIntermediateThrowEvent">
       <semantic:signalEventDefinition />
     </semantic:intermediateThrowEvent>
+    <semantic:intermediateThrowEvent name="Throw Signal Intermediate Event On Top" id="signalIntermediateThrowEvent_on_top">
+      <semantic:eventDefinitionRef>top_signal_definition_id</semantic:eventDefinitionRef>
+    </semantic:intermediateThrowEvent>
     <semantic:intermediateCatchEvent name="Catch Message Intermediate Event" id="messageIntermediateCatchEvent">
       <semantic:messageEventDefinition />
+    </semantic:intermediateCatchEvent>
+    <semantic:intermediateCatchEvent name="Catch Message Intermediate Event On Top" id="messageIntermediateCatchEvent_on_top">
+      <semantic:eventDefinitionRef>top_message_definition_id</semantic:eventDefinitionRef>
     </semantic:intermediateCatchEvent>
     <semantic:intermediateCatchEvent id="IntermediateCatchEvent_Timer_01" name="Timer Intermediate Catch Event">
       <semantic:incoming>Flow_028jkgv</semantic:incoming>
       <semantic:timerEventDefinition id="TimerEventDefinition_0t6k83a" />
     </semantic:intermediateCatchEvent>
+    <semantic:intermediateCatchEvent id="IntermediateCatchEvent_Timer_01_on_top" name="Timer Intermediate Catch Event On Top">
+      <semantic:eventDefinitionRef>top_timer_definition_id</semantic:eventDefinitionRef>
+    </semantic:intermediateCatchEvent>
     <semantic:intermediateCatchEvent name="Catch Signal Intermediate Event" id="signalIntermediateCatchEvent">
       <semantic:signalEventDefinition />
+    </semantic:intermediateCatchEvent>
+    <semantic:intermediateCatchEvent name="Catch Signal Intermediate Event On Top" id="signalIntermediateCatchEvent_on_top">
+      <semantic:eventDefinitionRef>top_signal_definition_id</semantic:eventDefinitionRef>
     </semantic:intermediateCatchEvent>
     <semantic:endEvent name="Terminate End Event" id="terminateEndEvent">
       <semantic:incoming>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:incoming>
       <semantic:terminateEventDefinition/>
     </semantic:endEvent>
+    <semantic:endEvent name="Terminate End Event On Top" id="terminateEndEvent_on_top">
+      <semantic:eventDefinitionRef>top_terminate_definition_id</semantic:eventDefinitionRef>
+    </semantic:endEvent>
     <semantic:endEvent name="Message End Event" id="messageEndEvent">
       <semantic:messageEventDefinition/>
     </semantic:endEvent>
+    <semantic:endEvent name="Message End Event On Top" id="messageEndEvent_on_top">
+      <semantic:eventDefinitionRef>top_message_definition_id</semantic:eventDefinitionRef>
+    </semantic:endEvent>
     <semantic:endEvent name="Signal End Event" id="signalEndEvent">
       <semantic:signalEventDefinition/>
+    </semantic:endEvent>
+    <semantic:endEvent name="Signal End Event On Top" id="signalEndEvent_on_top">
+      <semantic:eventDefinitionRef>top_signal_definition_id</semantic:eventDefinitionRef>
     </semantic:endEvent>
     <semantic:inclusiveGateway id="inclusiveGateway_1" name="Inclusive Gateway 1"/>
     <semantic:callActivity calledElement="Process_unknown" name="Call Activity Collapsed" id="callActivity_1" />
@@ -105,6 +160,9 @@
     <semantic:startEvent name="Message Start Event" id="startEvent_2_1_message">
       <semantic:messageEventDefinition/>
     </semantic:startEvent>
+    <semantic:startEvent name="Message Start Event On Top" id="startEvent_2_1_message_on_top">
+      <semantic:eventDefinitionRef>top_message_definition_id</semantic:eventDefinitionRef>
+    </semantic:startEvent>
   </semantic:process>
   <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
     <bpmndi:BPMNPlane bpmnElement="WFP-6-">
@@ -117,10 +175,19 @@
       <bpmndi:BPMNShape bpmnElement="startEvent_2_timer" id="shape_startEvent_2_timer">
         <dc:Bounds height="30.0" width="30.0" x="186.0" y="536.0"/>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startEvent_2_timer_on_top" id="shape_startEvent_2_timer_on_top">
+        <dc:Bounds height="30.0" width="30.0" x="186.0" y="536.0"/>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="startEvent_3_message" id="shape_startEvent_3_message">
         <dc:Bounds height="30.0" width="30.0" x="86.0" y="536.0"/>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startEvent_3_message_on_top" id="shape_startEvent_3_message_on_top">
+        <dc:Bounds height="30.0" width="30.0" x="86.0" y="536.0"/>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="startEvent_4_signal" id="shape_startEvent_4_signal">
+        <dc:Bounds height="30.0" width="30.0" x="86.0" y="536.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startEvent_4_signal_on_top" id="shape_startEvent_4_signal_on_top">
         <dc:Bounds height="30.0" width="30.0" x="86.0" y="536.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="task_1" id="shape_task_1">
@@ -144,19 +211,37 @@
       <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_message_id" id="S1373649849862_boundary_event_interrupting_message_id">
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_message_on_top_id" id="S1373649849862_boundary_event_interrupting_message_on_top_id">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_timer_id" id="S1373649849862_boundary_event_interrupting_timer_id">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_timer_on_top_id" id="S1373649849862_boundary_event_interrupting_timer_on_top_id">
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_signal_id" id="S1373649849862_boundary_event_interrupting_signal_id">
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_signal_on_top_id" id="S1373649849862_boundary_event_interrupting_signal_on_top_id">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_message_id" id="S1373649849862_boundary_event_non_interrupting_message_id">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_message_on_top_id" id="S1373649849862_boundary_event_non_interrupting_message_on_top_id">
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_timer_id" id="S1373649849862_boundary_event_non_interrupting_timer_id">
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_timer_on_top_id" id="S1373649849862_boundary_event_non_interrupting_timer_on_top_id">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_signal_id" id="S1373649849862_boundary_event_non_interrupting_signal_id">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_signal_on_top_id" id="S1373649849862_boundary_event_non_interrupting_signal_on_top_id">
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="noneIntermediateThrowEvent" id="S1373649849862_noneIntermediateThrowEvent">
@@ -168,13 +253,25 @@
       <bpmndi:BPMNShape bpmnElement="messageIntermediateThrowEvent" id="S1373649849862_messageIntermediateThrowEvent">
         <dc:Bounds height="32.0" width="32.0" x="698.0" y="335.0" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="messageIntermediateThrowEvent_on_top" id="S1373649849862_messageIntermediateThrowEvent_on_top">
+        <dc:Bounds height="32.0" width="32.0" x="698.0" y="335.0" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="signalIntermediateThrowEvent" id="S1373649849862_signalIntermediateThrowEvent">
+        <dc:Bounds height="32.0" width="32.0" x="698.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="signalIntermediateThrowEvent_on_top" id="S1373649849862_signalIntermediateThrowEvent_on_top">
         <dc:Bounds height="32.0" width="32.0" x="698.0" y="335.0" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="messageIntermediateCatchEvent" id="S1373649849862_messageIntermediateCatchEvent">
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="messageIntermediateCatchEvent_on_top" id="S1373649849862_messageIntermediateCatchEvent_on_top">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="signalIntermediateCatchEvent" id="S1373649849862_signalIntermediateCatchEvent">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="signalIntermediateCatchEvent_on_top" id="S1373649849862_signalIntermediateCatchEvent_on_top">
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="terminateEndEvent" id="S1373649849862_terminateEndEvent">
@@ -183,13 +280,31 @@
           <dc:Bounds height="12.804751171875008" width="94.93333333333335" x="616.5963254593177" y="372.3333333333333"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="terminateEndEvent_on_top" id="S1373649849862_terminateEndEvent_on_top">
+        <dc:Bounds height="32.0" width="32.0" x="648.0" y="335.0"/>
+        <bpmndi:BPMNLabel labelStyle="italic_font_id">
+          <dc:Bounds height="12.804751171875008" width="94.93333333333335" x="616.5963254593177" y="372.3333333333333"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="messageEndEvent" id="S1373649849862_messageEndEvent">
+        <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="messageEndEvent_on_top" id="S1373649849862_messageEndEvent_on_top">
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="signalEndEvent" id="S1373649849862_signalEndEvent">
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="signalEndEvent_on_top" id="S1373649849862_signalEndEvent_on_top">
+        <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_IntermediateCatchEvent_Timer_01" bpmnElement="IntermediateCatchEvent_Timer_01">
+        <dc:Bounds x="272" y="293" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="259" y="336" width="62" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_IntermediateCatchEvent_Timer_01_on_top" bpmnElement="IntermediateCatchEvent_Timer_01_on_top">
         <dc:Bounds x="272" y="293" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="259" y="336" width="62" height="40" />
