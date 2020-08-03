@@ -60,9 +60,6 @@ export interface TCatchEvent extends TEvent {
 
   eventDefinitionRef?: string | string[];
   parallelMultiple?: boolean; // default="false"
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
 }
 
 export type TIntermediateCatchEvent = TCatchEvent;
@@ -84,35 +81,23 @@ export interface TThrowEvent extends TEvent {
   inputSet?: TInputSet;
 
   // eventDefinition
-  eventDefinition?: string | TEventDefinition | TEventDefinition[];
-  cancelEventDefinition?: string | TCancelEventDefinition | TCancelEventDefinition[];
-  compensateEventDefinition?: string | TCompensateEventDefinition | TCompensateEventDefinition[];
-  conditionalEventDefinition?: string | TConditionalEventDefinition | TConditionalEventDefinition[];
-  errorEventDefinition?: string | TErrorEventDefinition | TErrorEventDefinition[];
-  escalationEventDefinition?: string | TEscalationEventDefinition | TEscalationEventDefinition[];
-  linkEventDefinition?: string | TLinkEventDefinition | TLinkEventDefinition[];
-  messageEventDefinition?: string | TMessageEventDefinition | TMessageEventDefinition[];
-  signalEventDefinition?: string | TSignalEventDefinition | TSignalEventDefinition[];
-  terminateEventDefinition?: string | TTerminateEventDefinition | TTerminateEventDefinition[];
-  timerEventDefinition?: string | TTimerEventDefinition | TTimerEventDefinition[];
+  eventDefinition?: string | TEventDefinition | (string | TEventDefinition)[];
+  cancelEventDefinition?: string | TCancelEventDefinition | (string | TCancelEventDefinition)[];
+  compensateEventDefinition?: string | TCompensateEventDefinition | (string | TCompensateEventDefinition)[];
+  conditionalEventDefinition?: string | TConditionalEventDefinition | (string | TConditionalEventDefinition)[];
+  errorEventDefinition?: string | TErrorEventDefinition | (string | TErrorEventDefinition)[];
+  escalationEventDefinition?: string | TEscalationEventDefinition | (string | TEscalationEventDefinition)[];
+  linkEventDefinition?: string | TLinkEventDefinition | (string | TLinkEventDefinition)[];
+  messageEventDefinition?: string | TMessageEventDefinition | (string | TMessageEventDefinition)[];
+  signalEventDefinition?: string | TSignalEventDefinition | (string | TSignalEventDefinition)[];
+  terminateEventDefinition?: string | TTerminateEventDefinition | (string | TTerminateEventDefinition)[];
+  timerEventDefinition?: string | TTimerEventDefinition | (string | TTimerEventDefinition)[];
 
   eventDefinitionRef?: string | string[];
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
 }
 
-export interface TImplicitThrowEvent extends TThrowEvent {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-}
+export type TImplicitThrowEvent = TThrowEvent;
 
-export interface TIntermediateThrowEvent extends TThrowEvent {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-}
+export type TIntermediateThrowEvent = TThrowEvent;
 
-export interface TEndEvent extends TThrowEvent {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-}
+export type TEndEvent = TThrowEvent;

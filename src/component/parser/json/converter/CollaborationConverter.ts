@@ -40,20 +40,24 @@ export function findMessageFlow(id: string): MessageFlow {
 
 @JsonConverter
 export default class CollaborationConverter extends AbstractConverter<Collaboration> {
-  deserialize(collaboration: TCollaboration): Collaboration {
+  deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): Collaboration {
     try {
       // Deletes everything in the array, which does hit other references. For better performance.
       convertedProcessRefParticipants.length = 0;
       convertedMessageFlows.length = 0;
 
-      this.buildParticipant(collaboration['participant']);
-      this.buildMessageFlows(collaboration[FlowKind.MESSAGE_FLOW]);
+      ensureIsArray(collaborations).forEach(collaboration => this.parseCollaboration(collaboration));
 
       return {};
     } catch (e) {
       // TODO error management
       console.error(e as Error);
     }
+  }
+
+  private parseCollaboration(collaboration: TCollaboration): void {
+    this.buildParticipant(collaboration['participant']);
+    this.buildMessageFlows(collaboration[FlowKind.MESSAGE_FLOW]);
   }
 
   private buildParticipant(bpmnElements: Array<TParticipant> | TParticipant): void {

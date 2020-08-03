@@ -21,7 +21,6 @@ describe('parse bpmn as json for association', () => {
   const processJsonAsObjectWithAssociationJsonAsObject = {
     association: {
       id: 'association_id_0',
-      name: 'association name',
       sourceRef: 'Activity_01',
       targetRef: 'Annotation_01',
     },
@@ -53,14 +52,13 @@ describe('parse bpmn as json for association', () => {
     verifyEdge(model.edges[0], {
       edgeId: 'edge_association_id_0',
       bpmnElementId: 'association_id_0',
-      bpmnElementName: `association name`,
       bpmnElementSourceRefId: 'Activity_01',
       bpmnElementTargetRefId: 'Annotation_01',
       waypoints: [new Waypoint(362, 232)],
     });
   });
 
-  it(`should convert as Edge, when an association (with/without name) is an attribute (as array) of 'process'`, () => {
+  it(`should convert as Edge, when an association is an attribute (as array) of 'process'`, () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -68,7 +66,6 @@ describe('parse bpmn as json for association', () => {
           association: [
             {
               id: 'association_id_0',
-              name: 'association name',
               sourceRef: 'Activity_01',
               targetRef: 'Annotation_01',
             },
@@ -105,7 +102,6 @@ describe('parse bpmn as json for association', () => {
     verifyEdge(model.edges[0], {
       edgeId: 'edge_association_id_0',
       bpmnElementId: 'association_id_0',
-      bpmnElementName: 'association name',
       bpmnElementSourceRefId: 'Activity_01',
       bpmnElementTargetRefId: 'Annotation_01',
       waypoints: [new Waypoint(362, 232)],
@@ -114,7 +110,6 @@ describe('parse bpmn as json for association', () => {
     verifyEdge(model.edges[1], {
       edgeId: 'edge_association_id_1',
       bpmnElementId: 'association_id_1',
-      bpmnElementName: undefined,
       bpmnElementSourceRefId: 'Activity_02',
       bpmnElementTargetRefId: 'Annotation_02',
       waypoints: [new Waypoint(362, 232)],
@@ -146,7 +141,6 @@ describe('parse bpmn as json for association', () => {
     verifyEdge(model.edges[0], {
       edgeId: `edge_association_id_0`,
       bpmnElementId: `association_id_0`,
-      bpmnElementName: `association name`,
       bpmnElementSourceRefId: 'Activity_01',
       bpmnElementTargetRefId: 'Annotation_01',
       waypoints: [new Waypoint(362, 232)],
