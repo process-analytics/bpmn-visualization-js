@@ -154,7 +154,7 @@ export default class ProcessConverter extends AbstractConverter<void> {
       return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity);
     } else {
       // TODO error management
-      console.warn('A boundary event must be attach to an activity, and not to %s', parent?.kind);
+      console.warn('The boundary event %s must be attach to an activity, and not to %s', bpmnElement.id, parent?.kind);
     }
   }
 
