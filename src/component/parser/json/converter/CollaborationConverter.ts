@@ -46,7 +46,7 @@ export default class CollaborationConverter extends AbstractConverter<Collaborat
       convertedProcessRefParticipants.length = 0;
       convertedMessageFlows.length = 0;
 
-      ensureIsArray(collaborations).forEach(collaboration => this.parseCollaboratation(collaboration));
+      ensureIsArray(collaborations).forEach(collaboration => this.parseCollaboration(collaboration));
 
       return {};
     } catch (e) {
@@ -55,7 +55,7 @@ export default class CollaborationConverter extends AbstractConverter<Collaborat
     }
   }
 
-  private parseCollaboratation(collaboration: TCollaboration): void {
+  private parseCollaboration(collaboration: TCollaboration): void {
     this.buildParticipant(collaboration['participant']);
     this.buildMessageFlows(collaboration[FlowKind.MESSAGE_FLOW]);
   }
