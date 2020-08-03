@@ -36,5 +36,5 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
 
 export abstract class AbstractConverter<T> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public abstract deserialize(data: any): T;
+  abstract deserialize(data: any): T;
 }
