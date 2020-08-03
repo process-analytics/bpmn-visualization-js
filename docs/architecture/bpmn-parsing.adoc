@@ -8,7 +8,7 @@ You can see the implementation in *BpmnXmlParser.ts*.
 
 ==== Json Parser
 
-To parse a JSON data, we use the library https://github.com/AppVision-GmbH/json2typescript[json2typescript].
+To parse a JSON data, we use a custom parser.
 
 You can see the implementation in *BpmnJsonParser.ts*.
-We create our custom _converters_ (in the *converter* folder where the *BpmnJsonParser* file is) in order to match the BPMN model to our internal model.
+We have different _converters_ (in the *converter* folder where the *BpmnJsonParser* file is) in order to match the BPMN model to our internal model.
