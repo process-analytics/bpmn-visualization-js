@@ -279,14 +279,25 @@ of the `Done` column related to the milestone
     - put screenshots/gif of the new features
   - Published the release **only when you are done** with the release content. At any time, you can save the draft
 
-### Demo environment update
 
+### bpmn-visualization-examples repository update
+
+You must create a Pull Request to integrate any changes to this repository.
+
+#### Demo environment update
 Make the new version available for demo
 
 - build it locally
   - checkout the git tag related to the new version
   - run `npm run demo` which generates it in the `dist` folder
-- alternatively, if the GitHub workflow building the demo has run on the tag, you can download the demo artifact
+- alternatively, as the GitHub workflow building the demo should have run on the tag, you can download the demo artifact
 associated to the run workflow
 - push the demo resources to the demo folder of the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/demo)
-repository (proceed how it has been done for prior versions)
+repository (proceed how it has been done for prior versions).
+
+#### Examples update
+If possible, make the examples use the latest version of the lib.
+
+
+#### Tagging
+When all updates have been completed, tag the repository with the same tag as the lib.
