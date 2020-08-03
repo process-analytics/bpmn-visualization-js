@@ -61,7 +61,7 @@ export interface TDefinitions {
   // rootElement
   category?: TCategory | TCategory[];
   choreography?: TChoreography | TChoreography[];
-  collaboration?: TCollaboration | TCollaboration[];
+  collaboration?: string | TCollaboration | (string | TCollaboration)[];
   correlationProperty?: TCorrelationProperty | TCorrelationProperty[];
   dataStore?: TDataStore | TDataStore[];
   endPoint?: TEndPoint | TEndPoint[];
@@ -79,23 +79,23 @@ export interface TDefinitions {
   message?: TMessage | TMessage[];
   partnerEntity?: TPartnerEntity | TPartnerEntity[];
   partnerRole?: TPartnerRole | TPartnerRole[];
-  process?: string | TProcess | TProcess[];
+  process?: string | TProcess | (string | TProcess)[];
   resource?: TResource | TResource[];
   rootElement?: TRootElement | TRootElement[];
   signal?: TSignal | TSignal[];
 
   // eventDefinition
-  eventDefinition?: string | TEventDefinition | TEventDefinition[];
-  cancelEventDefinition?: string | TCancelEventDefinition | TCancelEventDefinition[];
-  compensateEventDefinition?: string | TCompensateEventDefinition | TCompensateEventDefinition[];
-  conditionalEventDefinition?: string | TConditionalEventDefinition | TConditionalEventDefinition[];
-  errorEventDefinition?: string | TErrorEventDefinition | TErrorEventDefinition[];
-  escalationEventDefinition?: string | TEscalationEventDefinition | TEscalationEventDefinition[];
-  linkEventDefinition?: string | TLinkEventDefinition | TLinkEventDefinition[];
-  messageEventDefinition?: string | TMessageEventDefinition | TMessageEventDefinition[];
-  signalEventDefinition?: string | TSignalEventDefinition | TSignalEventDefinition[];
-  terminateEventDefinition?: string | TTerminateEventDefinition | TTerminateEventDefinition[];
-  timerEventDefinition?: string | TTimerEventDefinition | TTimerEventDefinition[];
+  eventDefinition?: string | TEventDefinition | (string | TEventDefinition)[];
+  cancelEventDefinition?: string | TCancelEventDefinition | (string | TCancelEventDefinition)[];
+  compensateEventDefinition?: string | TCompensateEventDefinition | (string | TCompensateEventDefinition)[];
+  conditionalEventDefinition?: string | TConditionalEventDefinition | (string | TConditionalEventDefinition)[];
+  errorEventDefinition?: string | TErrorEventDefinition | (string | TErrorEventDefinition)[];
+  escalationEventDefinition?: string | TEscalationEventDefinition | (string | TEscalationEventDefinition)[];
+  linkEventDefinition?: string | TLinkEventDefinition | (string | TLinkEventDefinition)[];
+  messageEventDefinition?: string | TMessageEventDefinition | (string | TMessageEventDefinition)[];
+  signalEventDefinition?: string | TSignalEventDefinition | (string | TSignalEventDefinition)[];
+  terminateEventDefinition?: string | TTerminateEventDefinition | (string | TTerminateEventDefinition)[];
+  timerEventDefinition?: string | TTimerEventDefinition | (string | TTimerEventDefinition)[];
 
   BPMNDiagram?: BPMNDiagram | BPMNDiagram[];
   relationship?: TRelationship | TRelationship[];

@@ -30,6 +30,7 @@ import { TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/acti
 import { TLane, TLaneSet } from '../../xml/bpmn-json-model/baseElement/baseElement';
 import { TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement';
 import { TAssociation } from '../../xml/bpmn-json-model/baseElement/artifact';
+import { AssociationDirectionKind } from '../../../../model/bpmn/edge/AssociationDirectionKind';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
@@ -70,7 +71,7 @@ interface EventDefinition {
 @JsonConverter
 export default class ProcessConverter extends AbstractConverter<Process> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  deserialize(processes: Array<TProcess> | TProcess): Process {
+  deserialize(processes: string | TProcess | (string | TProcess)[]): Process {
     try {
       // Deletes everything in the array, which does hit other references. For better performance.
       convertedFlowNodeBpmnElements.length = 0;
@@ -190,7 +191,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
   }
 
   private assignParentOfLaneFlowNodes(lane: TLane): void {
-    ensureIsArray(lane.flowNodeRef).forEach(flowNodeRef => {
+    ensureIsArray<string>(lane.flowNodeRef).forEach(flowNodeRef => {
       const shapeBpmnElement = findFlowNodeBpmnElement(flowNodeRef);
       const laneId = lane.id;
       if (shapeBpmnElement) {
@@ -214,7 +215,9 @@ export default class ProcessConverter extends AbstractConverter<Process> {
 
   private buildAssociationFlows(bpmnElements: Array<TAssociation> | TAssociation): void {
     ensureIsArray(bpmnElements).forEach(association => {
-      const convertedAssociationFlow = new AssociationFlow(association.id, association.name, association.sourceRef, association.targetRef, association.associationDirection);
+      // TODO Remove associationDirection conversion type when we merge/simplify internal model with BPMN json model
+      const direction = (association.associationDirection as unknown) as AssociationDirectionKind;
+      const convertedAssociationFlow = new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction);
       convertedAssociationFlows.push(convertedAssociationFlow);
     });
   }

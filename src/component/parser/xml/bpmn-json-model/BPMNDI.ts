@@ -49,7 +49,7 @@ export interface BPMNLabel extends Label {
 }
 
 export interface BPMNLabelStyle extends Style {
-  Font?: string | Font | Font[];
+  Font?: string | Font | (string | Font)[];
 }
 
 export enum ParticipantBandKind {

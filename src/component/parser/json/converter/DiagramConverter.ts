@@ -72,10 +72,9 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
     this.convertedFonts = new Map();
 
     ensureIsArray(bpmnLabelStyle).forEach(labelStyle => {
-      const font = labelStyle.Font;
-      if (font) {
+      ensureIsArray(labelStyle.Font).forEach(font => {
         this.convertedFonts.set(labelStyle.id, new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough));
-      }
+      });
     });
   }
 
@@ -139,12 +138,15 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
     }
   }
 
-  private deserializeEdges(edges: BPMNEdge): Edge[] {
+  private deserializeEdges(edges: BPMNEdge | BPMNEdge[]): Edge[] {
     return ensureIsArray(edges).map(edge => {
       const flow = findSequenceFlow(edge.bpmnElement) || findMessageFlow(edge.bpmnElement) || findAssociationFlow(edge.bpmnElement);
       const waypoints = this.deserializeWaypoints(edge.waypoint);
       const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
-      const messageVisibleKind = edge.messageVisibleKind ? edge.messageVisibleKind : MessageVisibleKind.NONE;
+
+      // TODO Remove messageVisibleKind conversion type when we merge/simplify internal model with BPMN json model
+      const messageVisibleKind = edge.messageVisibleKind ? ((edge.messageVisibleKind as unknown) as MessageVisibleKind) : MessageVisibleKind.NONE;
+
       return new Edge(edge.id, flow, waypoints, label, messageVisibleKind);
     });
   }

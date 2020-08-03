@@ -42,7 +42,7 @@ export interface ExpectedShape {
 interface ExpectedEdge {
   edgeId: string;
   bpmnElementId: string;
-  bpmnElementName: string;
+  bpmnElementName?: string;
   bpmnElementSourceRefId: string;
   bpmnElementTargetRefId: string;
   waypoints: Waypoint[];
