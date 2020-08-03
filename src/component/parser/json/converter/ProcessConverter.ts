@@ -99,6 +99,7 @@ export default class ProcessConverter extends AbstractConverter<Process> {
     ShapeUtil.flowNodeKinds()
       .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
       .forEach(kind => this.buildFlowNodeBpmnElements(processId, process[kind], kind));
+    // process boundary events afterwards as we need its parent activity to be available when building it
     this.buildFlowNodeBpmnElements(processId, process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY);
 
     // containers
