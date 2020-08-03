@@ -19,7 +19,7 @@ import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/
 import Edge from '../../../../../src/model/bpmn/edge/Edge';
 import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
-import { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
+import { ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import Label from '../../../../../src/model/bpmn/Label';
@@ -166,26 +166,6 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge | ExpectedSeq
   }
 }
 
-export function verifyEvent(model: BpmnModel, kind: ShapeBpmnEventKind, expectedNumber: number): void {
-  const events = model.flowNodes.filter(shape => {
-    const bpmnElement = shape.bpmnElement;
-    return bpmnElement instanceof ShapeBpmnEvent && (bpmnElement as ShapeBpmnEvent).eventKind === kind;
-  });
-  expect(events).toHaveLength(expectedNumber);
-}
-
-export function verifyBoundaryEvent(model: BpmnModel, kind: ShapeBpmnEventKind, expectedNumber: number, isInterrupting?: boolean): void {
-  const events = model.flowNodes.filter(shape => {
-    const bpmnElement = shape.bpmnElement;
-    return (
-      bpmnElement instanceof ShapeBpmnBoundaryEvent &&
-      (bpmnElement as ShapeBpmnBoundaryEvent).eventKind === kind &&
-      (bpmnElement as ShapeBpmnBoundaryEvent).isInterrupting === isInterrupting
-    );
-  });
-  expect(events).toHaveLength(expectedNumber);
-}
-
 export function verifySubProcess(model: BpmnModel, kind: ShapeBpmnSubProcessKind, expectedNumber: number): void {
   const events = model.flowNodes.filter(shape => {
     const bpmnElement = shape.bpmnElement;
@@ -224,29 +204,22 @@ export function verifyLabelBounds(label: Label, expectedBounds?: ExpectedBounds)
   }
 }
 
-export function parseJsonAndExpectOnlyEvent(json: BpmnJsonModel, kind: ShapeBpmnEventKind, expectedNumber: number): BpmnModel {
+export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventKind: ShapeBpmnEventKind, expectedNumber: number): BpmnModel {
   const model = parseJson(json);
 
   expect(model.lanes).toHaveLength(0);
   expect(model.pools).toHaveLength(0);
   expect(model.edges).toHaveLength(0);
 
-  verifyEvent(model, kind, expectedNumber);
+  const events = model.flowNodes.filter(shape => {
+    const bpmnElement = shape.bpmnElement;
+    return bpmnElement instanceof ShapeBpmnEvent && (bpmnElement as ShapeBpmnEvent).eventKind === eventKind;
+  });
+  expect(events).toHaveLength(expectedNumber);
 
   return model;
 }
 
-export function parseJsonAndExpectOnlyBoundaryEvent(json: BpmnJsonModel, kind: ShapeBpmnEventKind, expectedNumber: number, isInterrupting?: boolean): BpmnModel {
-  const model = parseJson(json);
-
-  expect(model.lanes).toHaveLength(0);
-  expect(model.pools).toHaveLength(0);
-  expect(model.edges).toHaveLength(0);
-
-  verifyBoundaryEvent(model, kind, expectedNumber, isInterrupting);
-
-  return model;
-}
 export function parseJsonAndExpectOnlySubProcess(json: BpmnJsonModel, kind: ShapeBpmnSubProcessKind, expectedNumber: number): BpmnModel {
   const model = parseJson(json);
 
