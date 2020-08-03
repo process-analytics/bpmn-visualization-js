@@ -150,9 +150,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   }
 
   private deserializeWaypoints(waypoints: Point[]): Waypoint[] {
-    if (waypoints) {
-      return ensureIsArray(waypoints).map(waypoint => new Waypoint(waypoint.x, waypoint.y));
-    }
+    return ensureIsArray(waypoints).map(waypoint => new Waypoint(waypoint.x, waypoint.y));
   }
 
   private deserializeLabel(bpmnLabel: string | BPMNLabel, id: string): Label {
