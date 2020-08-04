@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import { Participant } from '../../../../model/bpmn/shape/ShapeBpmnElement';
-import { Collaboration } from '../Definitions';
 import { MessageFlow } from '../../../../model/bpmn/edge/Flow';
 import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
 import { TCollaboration } from '../../xml/bpmn-json-model/baseElement/rootElement/collaboration';
@@ -38,17 +36,14 @@ export function findMessageFlow(id: string): MessageFlow {
   return convertedMessageFlows.find(i => i.id === id);
 }
 
-@JsonConverter
-export default class CollaborationConverter extends AbstractConverter<Collaboration> {
-  deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): Collaboration {
+export default class CollaborationConverter extends AbstractConverter<void> {
+  deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): void {
     try {
       // Deletes everything in the array, which does hit other references. For better performance.
       convertedProcessRefParticipants.length = 0;
       convertedMessageFlows.length = 0;
 
       ensureIsArray(collaborations).forEach(collaboration => this.parseCollaboration(collaboration));
-
-      return {};
     } catch (e) {
       // TODO error management
       console.error(e as Error);

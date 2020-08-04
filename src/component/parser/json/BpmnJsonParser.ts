@@ -13,22 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Definitions } from './Definitions';
 import BpmnModel from '../../../model/bpmn/BpmnModel';
-import JsonConvertConfig from './converter/JsonConvertConfig';
-import { JsonConvert } from 'json2typescript';
-import { BpmnJsonModel } from '../xml/bpmn-json-model/BPMN20';
+import { BpmnJsonModel, TDefinitions } from '../xml/bpmn-json-model/BPMN20';
+import CollaborationConverter from './converter/CollaborationConverter';
+import ProcessConverter from './converter/ProcessConverter';
+import DiagramConverter from './converter/DiagramConverter';
 
 export default class BpmnJsonParser {
-  constructor(readonly jsonConvert: JsonConvert) {}
+  constructor(readonly collaborationConverter: CollaborationConverter, readonly processConverter: ProcessConverter, readonly diagramConverter: DiagramConverter) {}
 
   public parse(json: BpmnJsonModel): BpmnModel {
-    const definitions = this.jsonConvert.deserializeObject(json.definitions, Definitions);
-    return definitions.bpmnModel;
+    const definitions: TDefinitions = json.definitions;
+
+    this.collaborationConverter.deserialize(definitions.collaboration);
+    this.processConverter.deserialize(definitions.process);
+    return this.diagramConverter.deserialize(definitions.BPMNDiagram);
   }
 }
 
 export function defaultBpmnJsonParser(): BpmnJsonParser {
   // TODO replace the function by dependency injection, see #110
-  return new BpmnJsonParser(JsonConvertConfig.jsonConvert());
+  return new BpmnJsonParser(new CollaborationConverter(), new ProcessConverter(), new DiagramConverter());
 }
