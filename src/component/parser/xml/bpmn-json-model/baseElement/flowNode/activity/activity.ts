@@ -40,9 +40,9 @@ export interface TActivity extends TFlowNode {
   potentialOwner?: TPotentialOwner | TPotentialOwner[];
 
   // loopCharacteristics
-  loopCharacteristics?: TLoopCharacteristics | TLoopCharacteristics[];
-  multiInstanceLoopCharacteristics?: TMultiInstanceLoopCharacteristics | TMultiInstanceLoopCharacteristics[];
-  standardLoopCharacteristics?: TStandardLoopCharacteristics | TStandardLoopCharacteristics[];
+  loopCharacteristics?: string | TLoopCharacteristics | (string | TLoopCharacteristics)[];
+  multiInstanceLoopCharacteristics?: string | TMultiInstanceLoopCharacteristics | (string | TMultiInstanceLoopCharacteristics)[];
+  standardLoopCharacteristics?: string | TStandardLoopCharacteristics | (string | TStandardLoopCharacteristics)[];
 
   isForCompensation?: boolean; // default="false"
   startQuantity?: number; // default="1"

@@ -21,10 +21,10 @@ import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
 import Shape from '../../../model/bpmn/shape/Shape';
 import Edge from '../../../model/bpmn/edge/Edge';
 import Bounds from '../../../model/bpmn/Bounds';
-import { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../model/bpmn/shape/ShapeBpmnElement';
 import { Font } from '../../../model/bpmn/Label';
 import { FlowKind } from '../../../model/bpmn/edge/FlowKind';
-import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/edge/Flow';
+import Flow, { AssociationFlow, SequenceFlow } from '../../../model/bpmn/edge/Flow';
 import { MessageVisibleKind } from '../../../model/bpmn/edge/MessageVisibleKind';
 import { AssociationDirectionKind } from '../../../model/bpmn/edge/AssociationDirectionKind';
 
@@ -277,9 +277,9 @@ export default class StyleConfigurator {
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
     const styleValues = new Map<string, string | number>();
 
-    const bpmnElement = bpmnCell.bpmnElement;
-    const styles: string[] = [bpmnElement.kind as string];
+    const styles: string[] = [bpmnCell.bpmnElement?.kind as string];
     if (bpmnCell instanceof Shape) {
+      const bpmnElement: ShapeBpmnElement = bpmnCell.bpmnElement;
       if (bpmnElement instanceof ShapeBpmnEvent) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
 
@@ -290,12 +290,17 @@ export default class StyleConfigurator {
         styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
         styleValues.set(StyleIdentifier.BPMN_STYLE_IS_EXPANDED, String(bpmnCell.isExpanded));
       }
-    } else {
-      if (bpmnCell.bpmnElement instanceof SequenceFlow) {
-        styles.push(bpmnCell.bpmnElement.sequenceFlowKind);
+
+      if (ShapeUtil.isActivity(bpmnElement.kind)) {
+        styleValues.set(StyleIdentifier.BPMN_STYLE_MARKER, bpmnElement.marker);
       }
-      if (bpmnCell.bpmnElement instanceof AssociationFlow) {
-        styles.push(bpmnCell.bpmnElement.associationDirectionKind);
+    } else {
+      const bpmnElement: Flow = bpmnCell.bpmnElement;
+      if (bpmnElement instanceof SequenceFlow) {
+        styles.push(bpmnElement.sequenceFlowKind);
+      }
+      if (bpmnElement instanceof AssociationFlow) {
+        styles.push(bpmnElement.associationDirectionKind);
       }
 
       switch (bpmnCell.messageVisibleKind) {
@@ -336,7 +341,7 @@ export default class StyleConfigurator {
       }
     }
     // when no label bounds, adjust the default style dynamically
-    else if (bpmnCell instanceof Shape && bpmnCell.isExpanded && bpmnElement instanceof ShapeBpmnSubProcess) {
+    else if (bpmnCell instanceof Shape && bpmnCell.isExpanded && bpmnCell.bpmnElement instanceof ShapeBpmnSubProcess) {
       styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
     }
 

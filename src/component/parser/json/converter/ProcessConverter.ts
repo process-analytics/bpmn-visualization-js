@@ -30,6 +30,7 @@ import { TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement
 import { TAssociation } from '../../xml/bpmn-json-model/baseElement/artifact';
 import { AssociationDirectionKind } from '../../../../model/bpmn/edge/AssociationDirectionKind';
 import { bpmnEventKinds, findEventDefinitionOfDefinitions } from './EventDefinitionConverter';
+import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
 const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
@@ -115,6 +116,11 @@ export default class ProcessConverter extends AbstractConverter<void> {
       } else {
         const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
         shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, processId, bpmnElement.instantiate);
+      }
+
+      const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
+      if (ShapeUtil.isActivity(kind) && (standardLoopCharacteristics || standardLoopCharacteristics === '')) {
+        shapeBpmnElement.marker = ShapeBpmnMarkerKind.LOOP;
       }
 
       if (ShapeUtil.isWithDefaultSequenceFlow(kind) && bpmnElement.default) {

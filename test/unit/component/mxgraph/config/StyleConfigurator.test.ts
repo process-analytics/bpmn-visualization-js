@@ -30,6 +30,7 @@ import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/Sha
 import each from 'jest-each';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
 import { AssociationDirectionKind } from '../../../../../src/model/bpmn/edge/AssociationDirectionKind';
+import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
@@ -51,8 +52,12 @@ function newShape(bpmnElement: ShapeBpmnElement, label?: Label, isExpanded = fal
  * Returns a new `ShapeBpmnElement` instance with arbitrary id and name.
  * @param kind the `ShapeBpmnElementKind` to set in the new `ShapeBpmnElement` instance
  */
-function newShapeBpmnElement(kind: ShapeBpmnElementKind): ShapeBpmnElement {
-  return new ShapeBpmnElement('id', 'name', kind);
+function newShapeBpmnElement(kind: ShapeBpmnElementKind, marker?: ShapeBpmnMarkerKind): ShapeBpmnElement {
+  const bpmnElement = new ShapeBpmnElement('id', 'name', kind);
+  if (marker) {
+    bpmnElement.marker = marker;
+  }
+  return bpmnElement;
 }
 
 function newShapeBpmnEvent(bpmnElementKind: BpmnEventKind, eventKind: ShapeBpmnEventKind): ShapeBpmnEvent {
@@ -239,7 +244,6 @@ describe('mxgraph renderer', () => {
       );
     });
   });
-
   describe('compute style - text annotation', () => {
     it('without label', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION));
@@ -248,6 +252,27 @@ describe('mxgraph renderer', () => {
     it('with label bounds', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION), newLabel({ name: 'Segoe UI' }, new Bounds(50, 50, 100, 100)));
       expect(computeStyle(shape)).toEqual('textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=top;verticalLabelPosition=left');
+    });
+  });
+  describe.each([
+    [ShapeBpmnElementKind.CALL_ACTIVITY],
+    [ShapeBpmnElementKind.SUB_PROCESS],
+    [ShapeBpmnElementKind.TASK],
+    [ShapeBpmnElementKind.TASK_SERVICE],
+    [ShapeBpmnElementKind.TASK_USER],
+    [ShapeBpmnElementKind.TASK_RECEIVE],
+
+    // TODO: To uncomment when it's supported
+    //[ShapeBpmnElementKind.TASK_SEND],
+    //[ShapeBpmnElementKind.MANUAL_TASK],
+    //[ShapeBpmnElementKind.BUSINESS_RULE_TASK],
+    //[ShapeBpmnElementKind.SCRIPT_TASK],
+    //[ShapeBpmnElementKind.AD_HOC_SUB_PROCESS],
+    //[ShapeBpmnElementKind.TRANSACTION],
+  ])('compute style - markers for %s', (bpmnKind: ShapeBpmnElementKind) => {
+    it(`${bpmnKind} with Loop marker`, () => {
+      const shape = newShape(newShapeBpmnElement(bpmnKind, ShapeBpmnMarkerKind.LOOP), newLabel({ name: 'Arial' }));
+      expect(computeStyle(shape)).toEqual(`${bpmnKind};bpmn.marker=loop;fontFamily=Arial`);
     });
   });
 });

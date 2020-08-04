@@ -22,6 +22,7 @@ import { MarkerIdentifier } from '../../src/component/mxgraph/StyleUtils';
 import { FlowKind } from '../../src/model/bpmn/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/edge/MessageVisibleKind';
 import { readFileSync } from '../helpers/file-helper';
+import { ShapeBpmnMarkerKind } from '../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
 
 export interface ExpectedFont {
   name?: string;
@@ -39,6 +40,7 @@ export interface ExpectedShapeModelElement {
   /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
   styleShape?: string;
   isExpanded?: boolean;
+  marker?: ShapeBpmnMarkerKind;
 }
 
 export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
@@ -120,8 +122,11 @@ describe('mxGraph model', () => {
     if (modelElement.isExpanded !== undefined) {
       expect(cell.style).toContain(`bpmn.isExpanded=${modelElement.isExpanded}`);
     }
-    const state = bpmnVisualization.graph.getView().getState(cell);
+    if (modelElement.marker) {
+      expect(cell.style).toContain(`bpmn.marker=${modelElement.marker}`);
+    }
 
+    const state = bpmnVisualization.graph.getView().getState(cell);
     const styleShape = !modelElement.styleShape ? modelElement.kind : modelElement.styleShape;
     expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(styleShape);
     expect(cell.value).toEqual(modelElement.label);
@@ -397,23 +402,54 @@ describe('mxGraph model', () => {
       label: 'Expanded Embedded Sub-Process',
       isExpanded: true,
     });
+    expectModelContainsSubProcess('expanded_embedded_sub_process_with_loop_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      label: 'Expanded Embedded Sub-Process With Loop',
+      isExpanded: true,
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
+
     expectModelContainsSubProcess('collapsed_embedded_sub_process_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process',
       isExpanded: false,
     });
+    expectModelContainsSubProcess('collapsed_embedded_sub_process_with_loop_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      label: 'Collapsed Embedded Sub-Process With Loop',
+      isExpanded: false,
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
+
     expectModelContainsSubProcess('expanded_event_sub_process_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Expanded Event Sub-Process',
       isExpanded: true,
     });
+    expectModelContainsSubProcess('expanded_event_sub_process_with_loop_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      label: 'Expanded Event Sub-Process With Loop',
+      isExpanded: true,
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
+
     expectModelContainsSubProcess('collapsed_event_sub_process_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Collapsed Event Sub-Process',
       isExpanded: false,
+    });
+    expectModelContainsSubProcess('collapsed_event_sub_process_with_loop_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      label: 'Collapsed Event Sub-Process With Loop',
+      isExpanded: false,
+      marker: ShapeBpmnMarkerKind.LOOP,
     });
 
     // activity
@@ -429,17 +465,60 @@ describe('mxGraph model', () => {
       },
       label: 'Task 1',
     });
+    expectModelContainsShape('task_with_loop', {
+      kind: ShapeBpmnElementKind.TASK,
+      font: {
+        isBold: false,
+        isItalic: false,
+        isStrikeThrough: false,
+        isUnderline: true,
+        name: 'Arial',
+        size: 11.0,
+      },
+      label: 'Task With Loop',
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
+
     expectModelContainsShape('serviceTask_2', { kind: ShapeBpmnElementKind.TASK_SERVICE, font: expectedBoldFont, label: 'Service Task 2' });
+    expectModelContainsShape('serviceTask_with_loop', {
+      kind: ShapeBpmnElementKind.TASK_SERVICE,
+      font: expectedBoldFont,
+      label: 'Service Task With Loop',
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
+
     expectModelContainsShape('userTask_3', { kind: ShapeBpmnElementKind.TASK_USER, font: expectedBoldFont, label: 'User Task 3' });
+    expectModelContainsShape('userTask_with_loop', {
+      kind: ShapeBpmnElementKind.TASK_USER,
+      font: expectedBoldFont,
+      label: 'User Task With Loop',
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
+
     expectModelContainsShape('callActivity_1', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, label: 'Call Activity Collapsed' });
+    expectModelContainsShape('callActivity_with_loop', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, label: 'Call Activity Collapsed With Loop', marker: ShapeBpmnMarkerKind.LOOP });
+
     expectModelContainsShape('receiveTask_not_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Not instantiated Receive Task' });
+    expectModelContainsShape('receiveTask_not_instantiated_with_loop', {
+      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+      label: 'Not instantiated Receive Task With Loop',
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
+
     expectModelContainsShape('receiveTask_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Instantiated Receive Task' });
+    expectModelContainsShape('receiveTask_instantiated_with_loop', {
+      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+      label: 'Instantiated Receive Task With Loop',
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
 
     // text annotation
     expectModelContainsShape('text_annotation_id_1', { kind: ShapeBpmnElementKind.TEXT_ANNOTATION, label: 'Annotation' });
 
     // gateways
     expectModelContainsShape('inclusiveGateway_1', { kind: ShapeBpmnElementKind.GATEWAY_INCLUSIVE, label: 'Inclusive Gateway 1' });
+    expectModelContainsShape('parallelGateway', { kind: ShapeBpmnElementKind.GATEWAY_PARALLEL, label: 'Parallel Gateway' });
+    expectModelContainsShape('exclusiveGateway', { kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, label: 'Exclusive Gateway' });
 
     // sequence flow
     expectModelContainsSequenceFlow('default_sequence_flow_id', { sequenceFlowKind: SequenceFlowKind.DEFAULT, startArrow: MarkerIdentifier.ARROW_DASH, font: expectedBoldFont });
@@ -529,87 +608,7 @@ describe('mxGraph model', () => {
   });
 
   it('lanes and bpmn element shapes should have coordinates relative to the pool or the lane', async () => {
-    const bpmn = `<?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://example.com/schema/bpmn">
-  <bpmn:collaboration id="Collaboration_1">
-    <bpmn:participant id="Participant_1" name="Process" processRef="Process_1" />
-    <bpmn:participant id="Participant_2" name="Process 2" processRef="Process_2" />
-    <bpmn:messageFlow id="MessageFlow_1" sourceRef="Participant_1" targetRef="StartEvent_2" />
-  </bpmn:collaboration>
-  <bpmn:process id="Process_1" isExecutable="false">
-    <bpmn:laneSet id="LaneSet_1">
-      <bpmn:lane id="Lane_1_2" />
-      <bpmn:lane id="Lane_1_1" name="Lane 1">
-        <bpmn:flowNodeRef>SequenceFlow_id</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>EndEvent_1</bpmn:flowNodeRef>
-      </bpmn:lane>
-    </bpmn:laneSet>
-    <bpmn:startEvent id="StartEvent_1" name="Start Event" />
-    <bpmn:endEvent id="EndEvent_1" name="End Event" />
-    <bpmn:sequenceFlow id="SequenceFlow_id" sourceRef="StartEvent_1" targetRef="EndEvent_1" />
-  </bpmn:process>
-  <bpmn:process id="Process_2" isExecutable="false">
-    <bpmn:laneSet id="LaneSet_2">
-      <bpmn:lane id="Lane_2_1">
-        <bpmn:flowNodeRef>StartEvent_2</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="Lane_2_2" />
-    </bpmn:laneSet>
-    <bpmn:startEvent id="StartEvent_2" name="Start Event 2" />
-  </bpmn:process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPLane_1_1" bpmnElement="Collaboration_1">
-      <bpmndi:BPMNShape id="BPMNShape_Participant_1" bpmnElement="Participant_1" isHorizontal="true">
-        <dc:Bounds x="160" y="80" width="900" height="400" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_Lane_1_1" bpmnElement="Lane_1_1" isHorizontal="true">
-        <dc:Bounds x="190" y="80" width="870" height="200" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_Lane_1_2" bpmnElement="Lane_1_2" isHorizontal="true">
-        <dc:Bounds x="190" y="280" width="870" height="200" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="StartEvent_1">
-        <dc:Bounds x="310" y="160" width="40" height="40" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="306" y="133" width="55" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_1">
-        <dc:Bounds x="510" y="160" width="40" height="40" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="505" y="213" width="51" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_Participant_2" bpmnElement="Participant_2" isHorizontal="true">
-        <dc:Bounds x="160" y="570" width="900" height="300" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_Lane_2_1" bpmnElement="Lane_2_1" isHorizontal="true">
-        <dc:Bounds x="190" y="570" width="870" height="180" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_Lane_2_2" bpmnElement="Lane_2_2" isHorizontal="true">
-        <dc:Bounds x="190" y="750" width="870" height="120" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_StartEvent_2" bpmnElement="StartEvent_2">
-        <dc:Bounds x="316" y="632" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="302" y="683" width="64" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_id" bpmnElement="SequenceFlow_id">
-        <di:waypoint x="350" y="180" />
-        <di:waypoint x="510" y="180" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_MessageFlow_1" bpmnElement="MessageFlow_1">
-        <di:waypoint x="334" y="480" />
-        <di:waypoint x="334" y="632" />
-      </bpmndi:BPMNEdge>
-    </bpmndi:BPMNPlane>
-  </bpmndi:BPMNDiagram>
-</bpmn:definitions>
-`;
-    bpmnVisualization.load(bpmn);
+    bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-coordinates-relative-to-pool-or-lane.bpmn'));
 
     expectModelContainsCellWithGeometry(
       'Participant_1',

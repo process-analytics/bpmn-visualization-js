@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as fs from 'fs';
-import * as path from 'path';
-
-export function readFileSync(relPathToSourceFile: string, encoding = 'utf8'): string {
-  return fs.readFileSync(path.join(__dirname, relPathToSourceFile), encoding);
+export enum ShapeBpmnMarkerKind {
+  LOOP = 'loop',
 }
