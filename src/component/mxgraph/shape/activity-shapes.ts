@@ -16,6 +16,7 @@
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render/IconPainter';
 import { ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
+import { ShapeBpmnMarkerKind } from '../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 
 export abstract class BaseActivityShape extends mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
@@ -29,6 +30,24 @@ export abstract class BaseActivityShape extends mxRectangleShape {
     super(bounds, fill, stroke, strokewidth);
     // enforced by BPMN
     this.isRounded = true;
+  }
+
+  public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+    super.paintForeground(c, x, y, w, h);
+    this.paintMarkerIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
+  }
+
+  protected paintMarkerIcon(paintParameter: PaintParameter): void {
+    switch (StyleUtils.getBpmnMarker(this.style)) {
+      case ShapeBpmnMarkerKind.LOOP:
+        this.iconPainter.paintLoopIcon(paintParameter);
+        break;
+    }
+
+    // Restore original configuration
+    // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
+    // this.configureCanvas(c, x, y, w, h);
+    paintParameter.c.setStrokeColor(StyleUtils.getStrokeColor(this.style));
   }
 }
 
