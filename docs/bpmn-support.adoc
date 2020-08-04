@@ -93,7 +93,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 |Loop Marker
 |
-|
+|The icon position is currently not centered but absolute, but this will be managed later.
 |===
 
 
