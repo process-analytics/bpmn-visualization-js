@@ -153,7 +153,7 @@ export function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildP
   }
 }
 
-function addEventDefinitionsOnEvent(event: TCatchEvent | TThrowEvent | TBoundaryEvent, buildParameter: BuildEventDefinitionParameter) {
+function addEventDefinitionsOnEvent(event: TCatchEvent | TThrowEvent | TBoundaryEvent, buildParameter: BuildEventDefinitionParameter): void {
   if (buildParameter.withMultipleDefinitions) {
     const eventDefinition = ['', {}];
     addEventDefinitions(event, { ...buildParameter, eventDefinition });
