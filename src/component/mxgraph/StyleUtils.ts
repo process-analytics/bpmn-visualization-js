@@ -15,6 +15,7 @@
  */
 import { ShapeBpmnEventKind } from '../../model/bpmn/shape/ShapeBpmnEventKind';
 import { ShapeBpmnSubProcessKind } from '../../model/bpmn/shape/ShapeBpmnSubProcessKind';
+import { ShapeBpmnMarkerKind } from '../../model/bpmn/shape/ShapeBpmnMarkerKind';
 
 export enum MarkerIdentifier {
   ARROW_DASH = 'bpmn.dash',
@@ -24,6 +25,7 @@ export enum StyleDefault {
   STROKE_WIDTH_THIN = 2,
   STROKE_WIDTH_THICK = 5,
   SHAPE_ACTIVITY_BOTTOM_MARGIN = 7,
+  SHAPE_ACTIVITY_FROM_CENTER_MARGIN = 7,
   DEFAULT_FILL_COLOR = 'White',
   DEFAULT_STROKE_COLOR = 'Black',
   DEFAULT_FONT_FAMILY = 'Arial, Helvetica, sans-serif', // define our own to not depend on eventual mxGraph default change
@@ -40,6 +42,7 @@ export enum StyleIdentifier {
   BPMN_STYLE_SUB_PROCESS_KIND = 'bpmn.subProcessKind',
   BPMN_STYLE_IS_INTERRUPTING = 'bpmn.isInterrupting',
   BPMN_STYLE_IS_EXPANDED = 'bpmn.isExpanded',
+  BPMN_STYLE_MARKER = 'bpmn.marker',
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -86,5 +89,9 @@ export default class StyleUtils {
 
   public static getBpmnIsExpanded(style: any): string {
     return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_EXPANDED, 'false');
+  }
+
+  public static getBpmnMarker(style: any): ShapeBpmnMarkerKind {
+    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_MARKER, undefined);
   }
 }
