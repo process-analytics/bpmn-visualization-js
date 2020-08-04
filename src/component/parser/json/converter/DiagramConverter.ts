@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import Shape from '../../../../model/bpmn/shape/Shape';
 import Bounds from '../../../../model/bpmn/Bounds';
@@ -37,7 +36,6 @@ function findProcessElement(participantId: string): ShapeBpmnElement {
   }
 }
 
-@JsonConverter
 export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   private convertedFonts: Map<string, Font> = new Map();
 
@@ -134,7 +132,7 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
   private deserializeBounds(boundedElement: BPMNShape | BPMNLabel): Bounds {
     const bounds = boundedElement.Bounds;
     if (bounds) {
-      return this.jsonConvert.deserializeObject(bounds, Bounds);
+      return new Bounds(bounds.x, bounds.y, bounds.width, bounds.height);
     }
   }
 
@@ -151,10 +149,8 @@ export default class DiagramConverter extends AbstractConverter<BpmnModel> {
     });
   }
 
-  private deserializeWaypoints(waypoint: Point[]): Waypoint[] {
-    if (waypoint) {
-      return this.jsonConvert.deserializeArray(ensureIsArray(waypoint), Waypoint);
-    }
+  private deserializeWaypoints(waypoints: Point[]): Waypoint[] {
+    return ensureIsArray(waypoints).map(waypoint => new Waypoint(waypoint.x, waypoint.y));
   }
 
   private deserializeLabel(bpmnLabel: string | BPMNLabel, id: string): Label {

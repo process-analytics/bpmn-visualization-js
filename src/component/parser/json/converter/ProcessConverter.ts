@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { JsonConverter } from 'json2typescript';
 import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
-import { Process } from '../Definitions';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/edge/Flow';
 import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
 import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/shape/ShapeUtil';
@@ -68,10 +66,9 @@ interface EventDefinition {
   counter: number;
 }
 
-@JsonConverter
-export default class ProcessConverter extends AbstractConverter<Process> {
+export default class ProcessConverter extends AbstractConverter<void> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  deserialize(processes: string | TProcess | (string | TProcess)[]): Process {
+  deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     try {
       // Deletes everything in the array, which does hit other references. For better performance.
       convertedFlowNodeBpmnElements.length = 0;
@@ -82,8 +79,6 @@ export default class ProcessConverter extends AbstractConverter<Process> {
       defaultSequenceFlowIds.length = 0;
 
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
-
-      return {};
     } catch (e) {
       // TODO error management
       console.error(e as Error);

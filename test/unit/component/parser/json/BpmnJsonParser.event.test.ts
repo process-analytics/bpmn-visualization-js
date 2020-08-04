@@ -152,7 +152,7 @@ function executeEventCommonTests(
       });
 
       it(`should NOT convert, when there are several '${eventDefinitionKind}EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
-        const eventDefinition = [{}, {}];
+        const eventDefinition = ['', {}];
         const json = buildDefinitionsAndProcessWithTask();
         addEvent(json, bpmnKind, { ...buildEventDefinitionParameter, eventDefinition }, specificBuildEventParameter);
 
