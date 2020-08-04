@@ -16,6 +16,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-export function readFileSync(relPathToSourceFile: string): string {
-  return fs.readFileSync(path.join(__dirname, relPathToSourceFile), 'utf-8');
+export function readFileSync(relPathToSourceFile: string, encoding = 'utf8'): string {
+  return fs.readFileSync(path.join(__dirname, relPathToSourceFile), encoding);
 }
