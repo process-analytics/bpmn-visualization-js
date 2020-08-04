@@ -42,6 +42,7 @@ export interface BuildEventDefinitionParameter {
   eventDefinitionOn: EventDefinitionOn;
   eventDefinition?: BPMNEventDefinition;
   withDifferentDefinition?: boolean;
+  withMultipleDefinitions?: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -137,13 +138,27 @@ export function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildP
     addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition: { id: 'event_definition_id' } }, { id: 'other_event_definition_id' });
     (event.eventDefinitionRef as string[]) = ['event_definition_id', 'other_event_definition_id'];
   } else {
-    const eventDefinition = buildParameter.eventDefinition ? buildParameter.eventDefinition : { id: 'event_definition_id' };
+    let eventDefinition = buildParameter.eventDefinition;
+    if (buildParameter.withMultipleDefinitions) {
+      eventDefinition = eventDefinition ? eventDefinition : [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }];
+    } else {
+      eventDefinition = eventDefinition ? eventDefinition : { id: 'event_definition_id' };
+    }
     addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition });
     if (Array.isArray(eventDefinition)) {
       event.eventDefinitionRef = eventDefinition.map(eventDefinition => (typeof eventDefinition === 'string' ? eventDefinition : eventDefinition.id));
     } else {
       event.eventDefinitionRef = (eventDefinition as TEventDefinition).id;
     }
+  }
+}
+
+function addEventDefinitionsOnEvent(event: TCatchEvent | TThrowEvent | TBoundaryEvent, buildParameter: BuildEventDefinitionParameter) {
+  if (buildParameter.withMultipleDefinitions) {
+    const eventDefinition = ['', {}];
+    addEventDefinitions(event, { ...buildParameter, eventDefinition });
+  } else {
+    addEventDefinitions(event, buildParameter);
   }
 }
 
@@ -166,14 +181,14 @@ export function addEvent(jsonModel: BpmnJsonModel, bpmnKind: string, eventDefini
   const event = buildEvent(eventParameter);
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH:
-      addEventDefinitions(event, eventDefinitionParameter);
+      addEventDefinitionsOnEvent(event, eventDefinitionParameter);
       addEventDefinitionsOnDefinition(jsonModel, eventDefinitionParameter, event);
       break;
     case EventDefinitionOn.DEFINITIONS:
       addEventDefinitionsOnDefinition(jsonModel, eventDefinitionParameter, event);
       break;
     case EventDefinitionOn.EVENT:
-      addEventDefinitions(event, eventDefinitionParameter);
+      addEventDefinitionsOnEvent(event, eventDefinitionParameter);
       break;
     case EventDefinitionOn.NONE:
       break;

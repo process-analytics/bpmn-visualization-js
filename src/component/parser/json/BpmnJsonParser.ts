@@ -18,14 +18,21 @@ import { BpmnJsonModel, TDefinitions } from '../xml/bpmn-json-model/BPMN20';
 import CollaborationConverter from './converter/CollaborationConverter';
 import ProcessConverter from './converter/ProcessConverter';
 import DiagramConverter from './converter/DiagramConverter';
+import EventDefinitionConverter from './converter/EventDefinitionConverter';
 
 export default class BpmnJsonParser {
-  constructor(readonly collaborationConverter: CollaborationConverter, readonly processConverter: ProcessConverter, readonly diagramConverter: DiagramConverter) {}
+  constructor(
+    readonly collaborationConverter: CollaborationConverter,
+    readonly eventDefinitionConverter: EventDefinitionConverter,
+    readonly processConverter: ProcessConverter,
+    readonly diagramConverter: DiagramConverter,
+  ) {}
 
   public parse(json: BpmnJsonModel): BpmnModel {
     const definitions: TDefinitions = json.definitions;
 
     this.collaborationConverter.deserialize(definitions.collaboration);
+    this.eventDefinitionConverter.deserialize(definitions);
     this.processConverter.deserialize(definitions.process);
     return this.diagramConverter.deserialize(definitions.BPMNDiagram);
   }
@@ -33,5 +40,5 @@ export default class BpmnJsonParser {
 
 export function defaultBpmnJsonParser(): BpmnJsonParser {
   // TODO replace the function by dependency injection, see #110
-  return new BpmnJsonParser(new CollaborationConverter(), new ProcessConverter(), new DiagramConverter());
+  return new BpmnJsonParser(new CollaborationConverter(), new EventDefinitionConverter(), new ProcessConverter(), new DiagramConverter());
 }

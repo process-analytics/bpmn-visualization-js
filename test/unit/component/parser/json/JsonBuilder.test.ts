@@ -550,6 +550,203 @@ describe('build json', () => {
   );
 
   it(
+    'build json with definitions, process, task, start event with messageEventDefinitions (empty string & empty object) & name, ' +
+      "when bpmnKind='startEvent', eventDefinitionKind='message', eventDefinitionOn=EVENT, withMultipleDefinitions=true, name is defined, attachedToRef & isInterrupting is not defined",
+    () => {
+      const buildEventDefinitionParameter: BuildEventDefinitionParameter = {
+        eventDefinitionKind: 'message',
+        eventDefinitionOn: EventDefinitionOn.EVENT,
+        withMultipleDefinitions: true,
+      };
+      const json = buildDefinitionsAndProcessWithTask();
+      addEvent(json, 'startEvent', buildEventDefinitionParameter, {
+        name: 'name',
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          process: {
+            task: {
+              id: 'task_id_0',
+              name: 'task name',
+            },
+            startEvent: {
+              id: 'event_id_0',
+              messageEventDefinition: ['', {}],
+              name: 'name',
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_task_id_0',
+                  bpmnElement: 'task_id_0',
+                  Bounds: {
+                    x: 362,
+                    y: 232,
+                    width: 36,
+                    height: 45,
+                  },
+                },
+                {
+                  id: 'shape_event_id_0',
+                  bpmnElement: 'event_id_0',
+                  Bounds: {
+                    x: 362,
+                    y: 232,
+                    width: 36,
+                    height: 45,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      });
+    },
+  );
+
+  it(
+    'build json with definitions with messageEventDefinitions with id, process, task, start event with name, ' +
+      "when bpmnKind='endEvent', eventDefinitionKind='message', eventDefinitionOn=DEFINITIONS, withMultipleDefinitions=true, name is defined, attachedToRef & isInterrupting is not defined",
+    () => {
+      const buildEventDefinitionParameter: BuildEventDefinitionParameter = {
+        eventDefinitionKind: 'message',
+        eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
+        withMultipleDefinitions: true,
+      };
+      const json = buildDefinitionsAndProcessWithTask();
+      addEvent(json, 'endEvent', buildEventDefinitionParameter, {
+        name: 'name',
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          messageEventDefinition: [
+            {
+              id: 'event_definition_1_id',
+            },
+            {
+              id: 'event_definition_2_id',
+            },
+          ],
+          process: {
+            task: {
+              id: 'task_id_0',
+              name: 'task name',
+            },
+            endEvent: {
+              id: 'event_id_0',
+              eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
+              name: 'name',
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_task_id_0',
+                  bpmnElement: 'task_id_0',
+                  Bounds: {
+                    x: 362,
+                    y: 232,
+                    width: 36,
+                    height: 45,
+                  },
+                },
+                {
+                  id: 'shape_event_id_0',
+                  bpmnElement: 'event_id_0',
+                  Bounds: {
+                    x: 362,
+                    y: 232,
+                    width: 36,
+                    height: 45,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      });
+    },
+  );
+
+  it(
+    'build json with definitions with messageEventDefinitions with id, process, task, intermediate catch event with messageEventDefinitions (empty string & empty object) & eventDefinitionRef & name, ' +
+      "when bpmnKind='intermediateCatchEvent', eventDefinitionKind='message', eventDefinitionOn=BOTH, withMultipleDefinitions=true, name is defined, attachedToRef & isInterrupting is not defined",
+    () => {
+      const buildEventDefinitionParameter: BuildEventDefinitionParameter = {
+        eventDefinitionKind: 'message',
+        eventDefinitionOn: EventDefinitionOn.BOTH,
+        withMultipleDefinitions: true,
+      };
+      const json = buildDefinitionsAndProcessWithTask();
+      addEvent(json, 'intermediateCatchEvent', buildEventDefinitionParameter, {
+        name: 'name',
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          messageEventDefinition: [
+            {
+              id: 'event_definition_1_id',
+            },
+            {
+              id: 'event_definition_2_id',
+            },
+          ],
+          process: {
+            task: {
+              id: 'task_id_0',
+              name: 'task name',
+            },
+            intermediateCatchEvent: {
+              id: 'event_id_0',
+              messageEventDefinition: ['', {}],
+              eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
+              name: 'name',
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_task_id_0',
+                  bpmnElement: 'task_id_0',
+                  Bounds: {
+                    x: 362,
+                    y: 232,
+                    width: 36,
+                    height: 45,
+                  },
+                },
+                {
+                  id: 'shape_event_id_0',
+                  bpmnElement: 'event_id_0',
+                  Bounds: {
+                    x: 362,
+                    y: 232,
+                    width: 36,
+                    height: 45,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      });
+    },
+  );
+
+  it(
     'build json with definitions, process, task, intermediate throw event, ' +
       "when bpmnKind='intermediateThrowEvent', eventDefinitionKind='message', eventDefinitionOn=NONE, eventDefinition is defined, name & attachedToRef & isInterrupting is not defined",
     () => {
