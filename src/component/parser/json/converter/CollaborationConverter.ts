@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import { Participant } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { MessageFlow } from '../../../../model/bpmn/edge/Flow';
 import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
 import { TCollaboration } from '../../xml/bpmn-json-model/baseElement/rootElement/collaboration';
 import { TParticipant } from '../../xml/bpmn-json-model/baseElement/participant';
 import { TMessageFlow } from '../../xml/bpmn-json-model/baseElement/baseElement';
+import { ensureIsArray } from './ConverterUtil';
 
 const convertedProcessRefParticipants: Participant[] = [];
 const convertedMessageFlows: MessageFlow[] = [];
@@ -36,7 +36,7 @@ export function findMessageFlow(id: string): MessageFlow {
   return convertedMessageFlows.find(i => i.id === id);
 }
 
-export default class CollaborationConverter extends AbstractConverter<void> {
+export default class CollaborationConverter {
   deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): void {
     try {
       // Deletes everything in the array, which does hit other references. For better performance.

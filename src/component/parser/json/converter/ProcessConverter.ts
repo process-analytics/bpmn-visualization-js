@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/edge/Flow';
@@ -23,13 +22,24 @@ import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';
 import { ShapeBpmnSubProcessKind } from '../../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
 import { TProcess } from '../../xml/bpmn-json-model/baseElement/rootElement/rootElement';
-import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../xml/bpmn-json-model/baseElement/flowNode/event';
-import { TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
+import {
+  TBoundaryEvent,
+  TCatchEvent,
+  TEndEvent,
+  TIntermediateCatchEvent,
+  TIntermediateThrowEvent,
+  TStartEvent,
+  TThrowEvent,
+} from '../../xml/bpmn-json-model/baseElement/flowNode/event';
+import { TAdHocSubProcess, TCallActivity, TSubProcess, TTransaction } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
 import { TLane, TLaneSet } from '../../xml/bpmn-json-model/baseElement/baseElement';
 import { TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement';
-import { TAssociation } from '../../xml/bpmn-json-model/baseElement/artifact';
+import { TAssociation, TTextAnnotation } from '../../xml/bpmn-json-model/baseElement/artifact';
 import { AssociationDirectionKind } from '../../../../model/bpmn/edge/AssociationDirectionKind';
 import { bpmnEventKinds, findEventDefinitionOfDefinitions } from './EventDefinitionConverter';
+import { TComplexGateway, TEventBasedGateway, TExclusiveGateway, TInclusiveGateway, TParallelGateway } from '../../xml/bpmn-json-model/baseElement/flowNode/gateway';
+import { TBusinessRuleTask, TManualTask, TReceiveTask, TScriptTask, TSendTask, TServiceTask, TTask, TUserTask } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/task';
+import { ensureIsArray } from './ConverterUtil';
 import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
@@ -64,8 +74,32 @@ interface EventDefinition {
   counter: number;
 }
 
-export default class ProcessConverter extends AbstractConverter<void> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+type FlowNode =
+  | TBoundaryEvent
+  | TEndEvent
+  | TStartEvent
+  | TIntermediateCatchEvent
+  | TIntermediateThrowEvent
+  | TCallActivity
+  | TSubProcess
+  | TAdHocSubProcess
+  | TTransaction
+  | TTask
+  | TBusinessRuleTask
+  | TManualTask
+  | TReceiveTask
+  | TSendTask
+  | TServiceTask
+  | TScriptTask
+  | TUserTask
+  | TComplexGateway
+  | TEventBasedGateway
+  | TExclusiveGateway
+  | TInclusiveGateway
+  | TParallelGateway
+  | TTextAnnotation;
+
+export default class ProcessConverter {
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     try {
       // Deletes everything in the array, which does hit other references. For better performance.
@@ -83,7 +117,6 @@ export default class ProcessConverter extends AbstractConverter<void> {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parseProcess(process: TProcess): void {
     const processId = process.id;
     convertedProcessBpmnElements.push(new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
@@ -104,8 +137,7 @@ export default class ProcessConverter extends AbstractConverter<void> {
     this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW]);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
+  private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<FlowNode> | FlowNode, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
       let shapeBpmnElement;
 
@@ -114,16 +146,17 @@ export default class ProcessConverter extends AbstractConverter<void> {
       } else if (ShapeUtil.isSubProcess(kind)) {
         shapeBpmnElement = this.buildShapeBpmnSubProcess(bpmnElement, processId);
       } else {
-        const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
-        shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, processId, bpmnElement.instantiate);
+        const name = 'name' in bpmnElement ? bpmnElement.name : 'text' in bpmnElement ? bpmnElement.text : undefined;
+        const instantiate = 'instantiate' in bpmnElement ? bpmnElement.instantiate : undefined;
+        shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, processId, instantiate);
       }
 
       const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
       if (ShapeUtil.isActivity(kind) && (standardLoopCharacteristics || standardLoopCharacteristics === '')) {
         shapeBpmnElement.marker = ShapeBpmnMarkerKind.LOOP;
       }
-
-      if (ShapeUtil.isWithDefaultSequenceFlow(kind) && bpmnElement.default) {
+  
+      if (ShapeUtil.isWithDefaultSequenceFlow(kind) && 'default' in bpmnElement && bpmnElement.default) {
         defaultSequenceFlowIds.push(bpmnElement.default);
       }
 
