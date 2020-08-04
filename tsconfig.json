@@ -6,6 +6,7 @@
     "module": "es6",
     "target": "es6",
     "noImplicitAny": true,
+    "strictBindCallApply": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
