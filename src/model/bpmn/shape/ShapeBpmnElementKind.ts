@@ -32,6 +32,7 @@ export enum ShapeBpmnElementKind {
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.marker.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/mxgraph/config/StyleConfigurator.test.ts
   // TASK_MANUAL = 'manualTask',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
@@ -40,6 +41,7 @@ export enum ShapeBpmnElementKind {
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.marker.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/mxgraph/config/StyleConfigurator.test.ts
   // TASK_SCRIPT = 'scriptTask',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
@@ -48,6 +50,7 @@ export enum ShapeBpmnElementKind {
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.marker.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/mxgraph/config/StyleConfigurator.test.ts
   // TASK_SEND = 'sendTask',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
@@ -56,6 +59,7 @@ export enum ShapeBpmnElementKind {
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.marker.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/mxgraph/config/StyleConfigurator.test.ts
   // TASK_BUSINESS_RULE = 'businessRuleTask',
 
   TEXT_ANNOTATION = 'textAnnotation',

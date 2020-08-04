@@ -22,6 +22,7 @@ import { MarkerIdentifier } from '../../src/component/mxgraph/StyleUtils';
 import { FlowKind } from '../../src/model/bpmn/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/edge/MessageVisibleKind';
 import { readFileSync } from '../helpers/file-helper';
+import { ShapeBpmnMarkerKind } from '../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
 
 export interface ExpectedFont {
   name?: string;
@@ -39,6 +40,7 @@ export interface ExpectedShapeModelElement {
   /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
   styleShape?: string;
   isExpanded?: boolean;
+  marker?: ShapeBpmnMarkerKind;
 }
 
 export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
@@ -120,8 +122,11 @@ describe('mxGraph model', () => {
     if (modelElement.isExpanded !== undefined) {
       expect(cell.style).toContain(`bpmn.isExpanded=${modelElement.isExpanded}`);
     }
-    const state = bpmnVisualization.graph.getView().getState(cell);
+    if (modelElement.marker) {
+      expect(cell.style).toContain(`bpmn.marker=${modelElement.marker}`);
+    }
 
+    const state = bpmnVisualization.graph.getView().getState(cell);
     const styleShape = !modelElement.styleShape ? modelElement.kind : modelElement.styleShape;
     expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(styleShape);
     expect(cell.value).toEqual(modelElement.label);
@@ -310,23 +315,54 @@ describe('mxGraph model', () => {
       label: 'Expanded Embedded Sub-Process',
       isExpanded: true,
     });
+    expectModelContainsSubProcess('expanded_embedded_sub_process_with_loop_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      label: 'Expanded Embedded Sub-Process With Loop',
+      isExpanded: true,
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
+
     expectModelContainsSubProcess('collapsed_embedded_sub_process_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process',
       isExpanded: false,
     });
+    expectModelContainsSubProcess('collapsed_embedded_sub_process_with_loop_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      label: 'Collapsed Embedded Sub-Process With Loop',
+      isExpanded: false,
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
+
     expectModelContainsSubProcess('expanded_event_sub_process_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Expanded Event Sub-Process',
       isExpanded: true,
     });
+    expectModelContainsSubProcess('expanded_event_sub_process_with_loop_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      label: 'Expanded Event Sub-Process With Loop',
+      isExpanded: true,
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
+
     expectModelContainsSubProcess('collapsed_event_sub_process_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Collapsed Event Sub-Process',
       isExpanded: false,
+    });
+    expectModelContainsSubProcess('collapsed_event_sub_process_with_loop_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      label: 'Collapsed Event Sub-Process With Loop',
+      isExpanded: false,
+      marker: ShapeBpmnMarkerKind.LOOP,
     });
 
     // activity
@@ -342,17 +378,60 @@ describe('mxGraph model', () => {
       },
       label: 'Task 1',
     });
+    expectModelContainsShape('task_with_loop', {
+      kind: ShapeBpmnElementKind.TASK,
+      font: {
+        isBold: false,
+        isItalic: false,
+        isStrikeThrough: false,
+        isUnderline: true,
+        name: 'Arial',
+        size: 11.0,
+      },
+      label: 'Task With Loop',
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
+
     expectModelContainsShape('serviceTask_2', { kind: ShapeBpmnElementKind.TASK_SERVICE, font: expectedBoldFont, label: 'Service Task 2' });
+    expectModelContainsShape('serviceTask_with_loop', {
+      kind: ShapeBpmnElementKind.TASK_SERVICE,
+      font: expectedBoldFont,
+      label: 'Service Task With Loop',
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
+
     expectModelContainsShape('userTask_3', { kind: ShapeBpmnElementKind.TASK_USER, font: expectedBoldFont, label: 'User Task 3' });
+    expectModelContainsShape('userTask_with_loop', {
+      kind: ShapeBpmnElementKind.TASK_USER,
+      font: expectedBoldFont,
+      label: 'User Task With Loop',
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
+
     expectModelContainsShape('callActivity_1', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, label: 'Call Activity Collapsed' });
+    expectModelContainsShape('callActivity_with_loop', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, label: 'Call Activity Collapsed With Loop', marker: ShapeBpmnMarkerKind.LOOP });
+
     expectModelContainsShape('receiveTask_not_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Not instantiated Receive Task' });
+    expectModelContainsShape('receiveTask_not_instantiated_with_loop', {
+      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+      label: 'Not instantiated Receive Task With Loop',
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
+
     expectModelContainsShape('receiveTask_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Instantiated Receive Task' });
+    expectModelContainsShape('receiveTask_instantiated_with_loop', {
+      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+      label: 'Instantiated Receive Task With Loop',
+      marker: ShapeBpmnMarkerKind.LOOP,
+    });
 
     // text annotation
     expectModelContainsShape('text_annotation_id_1', { kind: ShapeBpmnElementKind.TEXT_ANNOTATION, label: 'Annotation' });
 
     // gateways
     expectModelContainsShape('inclusiveGateway_1', { kind: ShapeBpmnElementKind.GATEWAY_INCLUSIVE, label: 'Inclusive Gateway 1' });
+    expectModelContainsShape('parallelGateway', { kind: ShapeBpmnElementKind.GATEWAY_PARALLEL, label: 'Parallel Gateway' });
+    expectModelContainsShape('exclusiveGateway', { kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, label: 'Exclusive Gateway' });
 
     // sequence flow
     expectModelContainsSequenceFlow('default_sequence_flow_id', { sequenceFlowKind: SequenceFlowKind.DEFAULT, startArrow: MarkerIdentifier.ARROW_DASH, font: expectedBoldFont });
