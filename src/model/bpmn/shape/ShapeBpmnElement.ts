@@ -17,9 +17,20 @@ import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
 import { ShapeBpmnEventKind } from './ShapeBpmnEventKind';
 import { BpmnEventKind } from './ShapeUtil';
 import { ShapeBpmnSubProcessKind } from './ShapeBpmnSubProcessKind';
+import { ShapeBpmnMarkerKind } from './ShapeBpmnMarkerKind';
 
 export default class ShapeBpmnElement {
+  private _marker?: ShapeBpmnMarkerKind;
+
   constructor(readonly id: string, readonly name: string, readonly kind: ShapeBpmnElementKind, public parentId?: string, readonly instantiate: boolean = false) {}
+
+  get marker(): ShapeBpmnMarkerKind {
+    return this._marker;
+  }
+
+  set marker(value: ShapeBpmnMarkerKind) {
+    this._marker = value;
+  }
 }
 
 export class ShapeBpmnEvent extends ShapeBpmnElement {

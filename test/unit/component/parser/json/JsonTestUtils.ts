@@ -28,6 +28,7 @@ import { SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
 import { FlowKind } from '../../../../../src/model/bpmn/edge/FlowKind';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
 import { BpmnJsonModel } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMN20';
+import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -37,6 +38,7 @@ export interface ExpectedShape {
   parentId?: string;
   bounds?: ExpectedBounds;
   isExpanded?: boolean;
+  bpmnElementMarker?: ShapeBpmnMarkerKind;
 }
 
 interface ExpectedEdge {
@@ -130,6 +132,7 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape): void {
   expect(bpmnElement.name).toEqual(expectedShape.bpmnElementName);
   expect(bpmnElement.kind).toEqual(expectedShape.bpmnElementKind);
   expect(bpmnElement.parentId).toEqual(expectedShape.parentId);
+  expect(bpmnElement.marker).toEqual(expectedShape.bpmnElementMarker);
 
   const bounds = shape.bounds;
   const expectedBounds = expectedShape.bounds;
