@@ -23,12 +23,13 @@ import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';
 import { ShapeBpmnSubProcessKind } from '../../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
 import { TProcess } from '../../xml/bpmn-json-model/baseElement/rootElement/rootElement';
-import { TBoundaryEvent, TCatchEvent, TEvent, TThrowEvent } from '../../xml/bpmn-json-model/baseElement/flowNode/event';
+import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../xml/bpmn-json-model/baseElement/flowNode/event';
 import { TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
 import { TLane, TLaneSet } from '../../xml/bpmn-json-model/baseElement/baseElement';
 import { TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement';
 import { TAssociation } from '../../xml/bpmn-json-model/baseElement/artifact';
 import { AssociationDirectionKind } from '../../../../model/bpmn/edge/AssociationDirectionKind';
+import { bpmnEventKinds, findEventDefinitionOfDefinitions } from './EventDefinitionConverter';
 import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 
 const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
@@ -37,10 +38,6 @@ const convertedProcessBpmnElements: ShapeBpmnElement[] = [];
 const convertedSequenceFlows: SequenceFlow[] = [];
 const convertedAssociationFlows: AssociationFlow[] = [];
 const defaultSequenceFlowIds: string[] = [];
-
-const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
-  return kind != ShapeBpmnEventKind.NONE;
-});
 
 export function findFlowNodeBpmnElement(id: string): ShapeBpmnElement {
   return convertedFlowNodeBpmnElements.find(i => i.id === id);
@@ -163,7 +160,7 @@ export default class ProcessConverter extends AbstractConverter<void> {
       return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity);
     } else {
       // TODO error management
-      console.warn('A boundary event must be attach to an activity, and not to %s', parent?.kind);
+      console.warn('The boundary event %s must be attach to an activity, and not to %s', bpmnElement.id, parent?.kind);
     }
   }
 
@@ -172,12 +169,24 @@ export default class ProcessConverter extends AbstractConverter<void> {
    *
    * @param bpmnElement The BPMN element from the XML data which represents a BPMN Event
    */
-  private getEventDefinitions(bpmnElement: TEvent): EventDefinition[] {
-    return bpmnEventKinds
-      .map(eventKind => {
-        // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
-        const eventDefinition = bpmnElement[eventKind + 'EventDefinition'];
-        return { kind: eventKind, counter: ensureIsArray(eventDefinition, true).length };
+  private getEventDefinitions(bpmnElement: TCatchEvent | TThrowEvent): EventDefinition[] {
+    const eventDefinitions = new Map<ShapeBpmnEventKind, number>();
+
+    bpmnEventKinds.forEach(eventKind => {
+      // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
+      const eventDefinition = bpmnElement[eventKind + 'EventDefinition'];
+      const counter = ensureIsArray(eventDefinition, true).length;
+      eventDefinitions.set(eventKind, counter);
+    });
+
+    ensureIsArray<string>(bpmnElement.eventDefinitionRef).forEach(eventDefinitionRef => {
+      const kind = findEventDefinitionOfDefinitions(eventDefinitionRef);
+      eventDefinitions.set(kind, eventDefinitions.get(kind) + 1);
+    });
+
+    return Array.from(eventDefinitions.keys())
+      .map(kind => {
+        return { kind, counter: eventDefinitions.get(kind) };
       })
       .filter(eventDefinition => {
         return eventDefinition.counter > 0;

@@ -206,8 +206,19 @@ describe('mxGraph model', () => {
     // start event
     expectModelContainsBpmnEvent('startEvent_1', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.NONE, font: expectedBoldFont, label: 'Start Event' });
     expectModelContainsBpmnEvent('startEvent_2_timer', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.TIMER, label: 'Timer Start Event' });
+    expectModelContainsBpmnEvent('startEvent_2_timer_on_top', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.TIMER, label: 'Timer Start Event On Top' });
     expectModelContainsBpmnEvent('startEvent_3_message', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.MESSAGE, label: 'Message Start Event' });
+    expectModelContainsBpmnEvent('startEvent_3_message_on_top', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      label: 'Message Start Event On Top',
+    });
     expectModelContainsBpmnEvent('startEvent_4_signal', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.SIGNAL, label: 'Signal Start Event' });
+    expectModelContainsBpmnEvent('startEvent_4_signal_on_top', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.SIGNAL,
+      label: 'Signal Start Event On Top',
+    });
 
     // end event
     expectModelContainsBpmnEvent('terminateEndEvent', {
@@ -223,8 +234,23 @@ describe('mxGraph model', () => {
       },
       label: 'Terminate End Event',
     });
+    expectModelContainsBpmnEvent('terminateEndEvent_on_top', {
+      kind: ShapeBpmnElementKind.EVENT_END,
+      eventKind: ShapeBpmnEventKind.TERMINATE,
+      font: {
+        isBold: false,
+        isItalic: true,
+        isStrikeThrough: false,
+        isUnderline: false,
+        name: 'Arial',
+        size: 11.0,
+      },
+      label: 'Terminate End Event On Top',
+    });
     expectModelContainsBpmnEvent('messageEndEvent', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.MESSAGE, label: 'Message End Event' });
+    expectModelContainsBpmnEvent('messageEndEvent_on_top', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.MESSAGE, label: 'Message End Event On Top' });
     expectModelContainsBpmnEvent('signalEndEvent', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.SIGNAL, label: 'Signal End Event' });
+    expectModelContainsBpmnEvent('signalEndEvent_on_top', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.SIGNAL, label: 'Signal End Event On Top' });
 
     // throw intermediate event
     expectModelContainsBpmnEvent('noneIntermediateThrowEvent', {
@@ -245,10 +271,20 @@ describe('mxGraph model', () => {
       eventKind: ShapeBpmnEventKind.MESSAGE,
       label: 'Throw Message Intermediate Event',
     });
+    expectModelContainsBpmnEvent('messageIntermediateThrowEvent_on_top', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      label: 'Throw Message Intermediate Event On Top',
+    });
     expectModelContainsBpmnEvent('signalIntermediateThrowEvent', {
       kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
       eventKind: ShapeBpmnEventKind.SIGNAL,
       label: 'Throw Signal Intermediate Event',
+    });
+    expectModelContainsBpmnEvent('signalIntermediateThrowEvent_on_top', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
+      eventKind: ShapeBpmnEventKind.SIGNAL,
+      label: 'Throw Signal Intermediate Event On Top',
     });
 
     // catch intermediate event
@@ -257,15 +293,30 @@ describe('mxGraph model', () => {
       eventKind: ShapeBpmnEventKind.MESSAGE,
       label: 'Catch Message Intermediate Event',
     });
+    expectModelContainsBpmnEvent('messageIntermediateCatchEvent_on_top', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      label: 'Catch Message Intermediate Event On Top',
+    });
     expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01', {
       kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
       eventKind: ShapeBpmnEventKind.TIMER,
       label: 'Timer Intermediate Catch Event',
     });
+    expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01_on_top', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+      eventKind: ShapeBpmnEventKind.TIMER,
+      label: 'Timer Intermediate Catch Event On Top',
+    });
     expectModelContainsBpmnEvent('signalIntermediateCatchEvent', {
       kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
       eventKind: ShapeBpmnEventKind.SIGNAL,
       label: 'Catch Signal Intermediate Event',
+    });
+    expectModelContainsBpmnEvent('signalIntermediateCatchEvent_on_top', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+      eventKind: ShapeBpmnEventKind.SIGNAL,
+      label: 'Catch Signal Intermediate Event On Top',
     });
 
     // boundary event: interrupting
@@ -275,17 +326,35 @@ describe('mxGraph model', () => {
       isInterrupting: true,
       label: 'Boundary Intermediate Event Interrupting Message',
     });
+    expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_message_on_top_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      isInterrupting: true,
+      label: 'Boundary Intermediate Event Interrupting Message On Top',
+    });
     expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_timer_id', {
       kind: null,
       eventKind: ShapeBpmnEventKind.TIMER,
       isInterrupting: true,
       label: 'Boundary Intermediate Event Interrupting Timer',
     });
+    expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_timer_on_top_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.TIMER,
+      isInterrupting: true,
+      label: 'Boundary Intermediate Event Interrupting Timer On Top',
+    });
     expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_signal_id', {
       kind: null,
       eventKind: ShapeBpmnEventKind.SIGNAL,
       isInterrupting: true,
       label: 'Boundary Intermediate Event Interrupting Signal',
+    });
+    expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_signal_on_top_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.SIGNAL,
+      isInterrupting: true,
+      label: 'Boundary Intermediate Event Interrupting Signal On Top',
     });
 
     // boundary event: non-interrupting
@@ -295,17 +364,35 @@ describe('mxGraph model', () => {
       isInterrupting: false,
       label: 'Boundary Intermediate Event Non-interrupting Message',
     });
+    expectModelContainsBpmnBoundaryEvent('boundary_event_non_interrupting_message_on_top_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      isInterrupting: false,
+      label: 'Boundary Intermediate Event Non-interrupting Message On Top',
+    });
     expectModelContainsBpmnBoundaryEvent('boundary_event_non_interrupting_timer_id', {
       kind: null,
       eventKind: ShapeBpmnEventKind.TIMER,
       isInterrupting: false,
       label: 'Boundary Intermediate Event Non-interrupting Timer',
     });
+    expectModelContainsBpmnBoundaryEvent('boundary_event_non_interrupting_timer_on_top_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.TIMER,
+      isInterrupting: false,
+      label: 'Boundary Intermediate Event Non-interrupting Timer On Top',
+    });
     expectModelContainsBpmnBoundaryEvent('boundary_event_non_interrupting_signal_id', {
       kind: null,
       eventKind: ShapeBpmnEventKind.SIGNAL,
       isInterrupting: false,
       label: 'Boundary Intermediate Event Non-interrupting Signal',
+    });
+    expectModelContainsBpmnBoundaryEvent('boundary_event_non_interrupting_signal_on_top_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.SIGNAL,
+      isInterrupting: false,
+      label: 'Boundary Intermediate Event Non-interrupting Signal On Top',
     });
 
     // Sub-process
