@@ -16,7 +16,7 @@
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
-import { TStandardLoopCharacteristics } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/loopCharacteristics';
+import { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/loopCharacteristics';
 import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
 
 describe.each([
@@ -34,51 +34,113 @@ describe.each([
   //['scriptTask', ShapeBpmnElementKind.SCRIPT_TASK],
   //['adHocSubProcess', ShapeBpmnElementKind.AD_HOC_SUB_PROCESS],
   //['transaction', ShapeBpmnElementKind.TRANSACTION],
-])('parse bpmn as json for %s', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
-  it.each([
-    ['empty string', ''],
-    ['object', {}],
-    ['array', ['', {}]],
-  ])(
-    `should convert as Shape with Loop marker, when 'standardLoopCharacteristics' is an attribute (as %s) of '${bpmnKind}'`,
-    (title: string, standardLoopCharacteristics: string | TStandardLoopCharacteristics | (string | TStandardLoopCharacteristics)[]) => {
-      const json = {
-        definitions: {
-          targetNamespace: '',
-          process: {},
-          BPMNDiagram: {
-            name: 'process 0',
-            BPMNPlane: {
-              BPMNShape: {
-                id: `shape_${bpmnKind}_id_0`,
-                bpmnElement: `${bpmnKind}_id_0`,
-                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+])(`parse bpmn as json for '%s'`, (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
+  describe.each([
+    ['standardLoopCharacteristics', ShapeBpmnMarkerKind.LOOP],
+    ['multiInstanceLoopCharacteristics', ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+  ])(`parse bpmn as json for '${bpmnKind}' with '%s'`, (bpmnLoopCharacteristicsKind: string, expectedMarkerKind: ShapeBpmnMarkerKind) => {
+    it.each([
+      ['empty string', ''],
+      ['empty object', {}],
+      ['array with empty string & object', ['', {}]],
+    ])(
+      `should convert as Shape with ${expectedMarkerKind} marker, when '${bpmnLoopCharacteristicsKind}' is an attribute (as %s) of '${bpmnKind}'`,
+      (
+        title: string,
+        loopCharacteristics:
+          | string
+          | TStandardLoopCharacteristics
+          | TMultiInstanceLoopCharacteristics
+          | (string | TStandardLoopCharacteristics | TMultiInstanceLoopCharacteristics)[],
+      ) => {
+        const json = {
+          definitions: {
+            targetNamespace: '',
+            process: {},
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: {
+                  id: `shape_${bpmnKind}_id_0`,
+                  bpmnElement: `${bpmnKind}_id_0`,
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                },
               },
             },
           },
-        },
-      };
-      (json.definitions.process as TProcess)[bpmnKind] = {
-        id: `${bpmnKind}_id_0`,
-        name: `${bpmnKind} name`,
-        standardLoopCharacteristics: standardLoopCharacteristics,
-      };
+        };
+        (json.definitions.process as TProcess)[bpmnKind] = {
+          id: `${bpmnKind}_id_0`,
+          name: `${bpmnKind} name`,
+        };
+        (json.definitions.process as TProcess)[bpmnKind][bpmnLoopCharacteristicsKind] = loopCharacteristics;
 
-      const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+        const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-      verifyShape(model.flowNodes[0], {
-        shapeId: `shape_${bpmnKind}_id_0`,
-        bpmnElementId: `${bpmnKind}_id_0`,
-        bpmnElementName: `${bpmnKind} name`,
-        bpmnElementKind: expectedShapeBpmnElementKind,
-        bpmnElementMarker: ShapeBpmnMarkerKind.LOOP,
-        bounds: {
-          x: 362,
-          y: 232,
-          width: 36,
-          height: 45,
+        verifyShape(model.flowNodes[0], {
+          shapeId: `shape_${bpmnKind}_id_0`,
+          bpmnElementId: `${bpmnKind}_id_0`,
+          bpmnElementName: `${bpmnKind} name`,
+          bpmnElementKind: expectedShapeBpmnElementKind,
+          bpmnElementMarker: expectedMarkerKind,
+          bounds: {
+            x: 362,
+            y: 232,
+            width: 36,
+            height: 45,
+          },
+        });
+      },
+    );
+  });
+  describe.each([[false, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL]])(
+    `parse bpmn as json for '${bpmnKind}' with 'multiInstanceLoopCharacteristics'`,
+    (isSequential: boolean, expectedMarkerKind: ShapeBpmnMarkerKind) => {
+      it.each([
+        ['object', { isSequential }],
+        ['array with object', [{ isSequential }]],
+      ])(
+        `should convert as Shape with ${expectedMarkerKind} marker, when 'isSequential' is an attribute (as ${isSequential}) of 'multiInstanceLoopCharacteristics' of '${bpmnKind}'`,
+        (title: string, loopCharacteristics: TMultiInstanceLoopCharacteristics | TMultiInstanceLoopCharacteristics[]) => {
+          const json = {
+            definitions: {
+              targetNamespace: '',
+              process: {},
+              BPMNDiagram: {
+                name: 'process 0',
+                BPMNPlane: {
+                  BPMNShape: {
+                    id: `shape_${bpmnKind}_id_0`,
+                    bpmnElement: `${bpmnKind}_id_0`,
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  },
+                },
+              },
+            },
+          };
+          (json.definitions.process as TProcess)[bpmnKind] = {
+            id: `${bpmnKind}_id_0`,
+            name: `${bpmnKind} name`,
+            multiInstanceLoopCharacteristics: loopCharacteristics,
+          };
+
+          const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+          verifyShape(model.flowNodes[0], {
+            shapeId: `shape_${bpmnKind}_id_0`,
+            bpmnElementId: `${bpmnKind}_id_0`,
+            bpmnElementName: `${bpmnKind} name`,
+            bpmnElementKind: expectedShapeBpmnElementKind,
+            bpmnElementMarker: expectedMarkerKind,
+            bounds: {
+              x: 362,
+              y: 232,
+              width: 36,
+              height: 45,
+            },
+          });
         },
-      });
+      );
     },
   );
 });
