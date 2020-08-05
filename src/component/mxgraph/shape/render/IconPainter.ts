@@ -553,8 +553,10 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
+  // this implementation is adapted from the draw.io BPMN 'Loop'
+  // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L543
   paintLoopIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
-    const originalIconSize = { width: 16, height: 16 };
+    const originalIconSize = { width: 22.49, height: 21.62 };
     const canvas = new BpmnCanvas({
       mxCanvas: c,
       shapeConfiguration: shape,
@@ -566,13 +568,15 @@ export default class IconPainter {
     });
     canvas.setIconOriginToShapeBottomLeft();
 
-    const w = originalIconSize.width;
-    const h = originalIconSize.height;
-
-    // Temporary render
-    c.setStrokeColor('Chartreuse');
-    canvas.roundrect(0, 0, w, h, 2, 2);
-    canvas.stroke();
+    // Loop
+    canvas.begin();
+    canvas.moveTo(5.5, 19.08);
+    canvas.arcTo(10, 10, 0, 1, 1, 10.5, 21.08);
+    canvas.moveTo(5.5, 14.08);
+    canvas.lineTo(5.5, 19.08);
+    canvas.lineTo(0, 17.58);
+    canvas.close();
+    canvas.fillAndStroke();
   }
 }
 
