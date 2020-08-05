@@ -73,7 +73,36 @@ if (devMode) {
 }
 
 if (demoMode) {
-  plugins.push(terser());
+  plugins.push(
+    terser({
+      compress: false,
+      // TODO test collapse_vars = false
+
+      // compress: {
+      //   ecma: 6,
+      //   // keep_classnames: true,
+      //   // keep_fnames: true,
+      // },
+      // named 'format' in newer versions
+      output: {
+        ecma: 6,
+      },
+      parse: {
+        ecma: 6,
+      },
+      mangle: false,
+      // mangle: {
+      //   keep_classnames: true,
+      //   keep_fnames: true,
+      // },
+      ecma: 6,
+      module: true,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      keep_classnames: true, //
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      keep_fnames: true, //
+    }),
+  );
 }
 
 export default {
