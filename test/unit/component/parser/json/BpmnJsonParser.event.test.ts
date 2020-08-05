@@ -92,7 +92,8 @@ function executeEventCommonTests(
   specificBuildEventParameter: BuildEventParameter = {},
   specificTitle = '',
 ): void {
-  let titlesForEventDefinitionIsAttributeOf;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let titlesForEventDefinitionIsAttributeOf: any[][];
   if (expectedShapeBpmnEventKind === ShapeBpmnEventKind.NONE) {
     titlesForEventDefinitionIsAttributeOf = [[`'${bpmnKind}' has no 'eventDefinition' & no 'eventDefinitionRef'`, EventDefinitionOn.NONE]];
   } else {
