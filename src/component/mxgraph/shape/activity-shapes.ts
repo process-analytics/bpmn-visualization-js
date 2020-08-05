@@ -38,9 +38,9 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   }
 
   protected paintMarkerIcons(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const markerIdentifiers = StyleUtils.getBpmnMarkers(this.style);
-    if (markerIdentifiers) {
-      markerIdentifiers.split(',').forEach(marker => {
+    const markers = StyleUtils.getBpmnMarkers(this.style);
+    if (markers) {
+      markers.split(',').forEach(marker => {
         switch (marker) {
           case ShapeBpmnMarkerKind.LOOP:
             const paintParameter = buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5);
