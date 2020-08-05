@@ -236,9 +236,7 @@ describe('mxgraph renderer', () => {
       const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED), newLabel({ name: 'Arial' }), isExpanded);
       const additionalMarkerStyle = !isExpanded ? ';bpmn.markers=expand' : '';
       const additionalTerminalStyle = isExpanded ? ';verticalAlign=top' : '';
-      expect(computeStyle(shape)).toEqual(
-        `subProcess;bpmn.subProcessKind=embedded;bpmn.isExpanded=${isExpanded}${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`,
-      );
+      expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
     });
 
     each([
@@ -248,7 +246,7 @@ describe('mxgraph renderer', () => {
       const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)), isExpanded);
       const additionalMarkerStyle = !isExpanded ? ';bpmn.markers=expand' : '';
       expect(computeStyle(shape)).toEqual(
-        `subProcess;bpmn.subProcessKind=embedded;bpmn.isExpanded=${isExpanded}${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
+        `subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
       );
     });
   });
@@ -287,7 +285,7 @@ describe('mxgraph renderer', () => {
     if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
       it(`${bpmnKind} with Loop marker and isExpanded=false (collapsed)`, () => {
         const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, ShapeBpmnMarkerKind.LOOP), undefined, false);
-        expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded;bpmn.isExpanded=false;bpmn.markers=expand,loop`);
+        expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded;bpmn.markers=expand,loop`);
       });
     }
   });
