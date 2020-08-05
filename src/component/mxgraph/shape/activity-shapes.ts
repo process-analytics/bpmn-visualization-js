@@ -52,14 +52,11 @@ export abstract class BaseActivityShape extends mxRectangleShape {
             // this.configureCanvas(c, x, y, w, h);
             paintParameter.c.setStrokeColor(StyleUtils.getStrokeColor(this.style));
             break;
+          case 'expand': // TODO remove hard coded value
+            this.iconPainter.paintExpandIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
+            break;
         }
       });
-    }
-
-    // TODO temp before putting it as a marker
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    if (this instanceof SubProcessShape && StyleUtils.getBpmnIsExpanded(this.style) === 'false') {
-      this.iconPainter.paintExpandIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
     }
   }
 }
