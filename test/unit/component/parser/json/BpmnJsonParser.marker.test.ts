@@ -37,7 +37,7 @@ describe.each([
 ])(`parse bpmn as json for '%s'`, (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
   describe.each([
     ['standardLoopCharacteristics', ShapeBpmnMarkerKind.LOOP],
-    ['multiInstanceLoopCharacteristics', ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+    //['multiInstanceLoopCharacteristics', ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
   ])(`parse bpmn as json for '${bpmnKind}' with '%s'`, (bpmnLoopCharacteristicsKind: string, expectedMarkerKind: ShapeBpmnMarkerKind) => {
     it.each([
       ['empty string', ''],
@@ -93,14 +93,14 @@ describe.each([
       },
     );
   });
-  describe.each([[false, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL]])(
+  describe.each([[true, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL]])(
     `parse bpmn as json for '${bpmnKind}' with 'multiInstanceLoopCharacteristics'`,
     (isSequential: boolean, expectedMarkerKind: ShapeBpmnMarkerKind) => {
       it.each([
         ['object', { isSequential }],
         ['array with object', [{ isSequential }]],
       ])(
-        `should convert as Shape with ${expectedMarkerKind} marker, when 'isSequential' is an attribute (as ${isSequential}) of 'multiInstanceLoopCharacteristics' of '${bpmnKind}'`,
+        `should convert as Shape with ${expectedMarkerKind} marker, when 'isSequential' is an attribute (as ${isSequential}) of 'multiInstanceLoopCharacteristics' (as %s) of '${bpmnKind}'`,
         (title: string, loopCharacteristics: TMultiInstanceLoopCharacteristics | TMultiInstanceLoopCharacteristics[]) => {
           const json = {
             definitions: {

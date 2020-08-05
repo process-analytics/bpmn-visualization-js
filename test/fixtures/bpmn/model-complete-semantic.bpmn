@@ -18,7 +18,7 @@
       <semantic:standardLoopCharacteristics />
     </semantic:callActivity>
     <semantic:callActivity calledElement="Process_unknown" name="Call Activity Collapsed With Sequential Multi-instance" id="callActivity_with_sequential_multi_instance" >
-      <semantic:multiInstanceLoopCharacteristics />
+      <semantic:multiInstanceLoopCharacteristics isSequential="true"/>
     </semantic:callActivity>
 
     <!-- Task -->
@@ -34,7 +34,7 @@
     <semantic:task completionQuantity="1" isForCompensation="false" startQuantity="1" name="Task With Sequential Multi-instance" id="task_with_sequential_multi_instance" default="default_sequence_flow_id">
       <semantic:incoming>normal_sequence_flow_id</semantic:incoming>
       <semantic:outgoing>default_sequence_flow_id</semantic:outgoing>
-      <semantic:multiInstanceLoopCharacteristics />
+      <semantic:multiInstanceLoopCharacteristics isSequential="true"/>
     </semantic:task>
 
     <!-- Service Task -->
@@ -50,7 +50,7 @@
     <semantic:serviceTask implementation="##WebService" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Service Task With Sequential Multi-instance" id="serviceTask_with_sequential_multi_instance">
       <semantic:incoming>default_sequence_flow_id</semantic:incoming>
       <semantic:outgoing>conditional_sequence_flow_from_activity_id</semantic:outgoing>
-      <semantic:multiInstanceLoopCharacteristics />
+      <semantic:multiInstanceLoopCharacteristics isSequential="true"/>
     </semantic:serviceTask>
 
     <!-- User Task -->
@@ -66,7 +66,7 @@
     <semantic:userTask completionQuantity="1" isForCompensation="false" startQuantity="1" name="User Task With Sequential Multi-instance" id="userTask_with_sequential_multi_instance">
       <semantic:incoming>conditional_sequence_flow_from_activity_id</semantic:incoming>
       <semantic:outgoing>_8e8fe679-eb3b-4c43-a4d6-891e7087ff80</semantic:outgoing>
-      <semantic:multiInstanceLoopCharacteristics />
+      <semantic:multiInstanceLoopCharacteristics isSequential="true"/>
     </semantic:userTask>
 
     <!-- Receive Task: Not instantiated -->
@@ -75,7 +75,7 @@
       <semantic:standardLoopCharacteristics id="1"/>
     </semantic:receiveTask>
     <semantic:receiveTask id="receiveTask_not_instantiated_with_sequential_multi_instance" name="Not instantiated Receive Task With Sequential Multi-instance" >
-      <semantic:multiInstanceLoopCharacteristics id="1"/>
+      <semantic:multiInstanceLoopCharacteristics isSequential="true"/>
     </semantic:receiveTask>
 
     <!-- Receive Task: Instantiated -->
@@ -84,7 +84,7 @@
       <semantic:standardLoopCharacteristics />
     </semantic:receiveTask>
     <semantic:receiveTask id="receiveTask_instantiated_with_sequential_multi_instance" name="Instantiated Receive Task With Sequential Multi-instance" instantiate="true">
-      <semantic:multiInstanceLoopCharacteristics isSequential="false"/>
+      <semantic:multiInstanceLoopCharacteristics isSequential="true"/>
     </semantic:receiveTask>
 
     <!-- Embedded Sub-Process -->
@@ -94,7 +94,7 @@
       <semantic:standardLoopCharacteristics />
     </semantic:subProcess>
     <semantic:subProcess triggeredByEvent="false" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Expanded Embedded Sub-Process With Sequential Multi-instance" id="expanded_embedded_sub_process_with_sequential_multi_instance_id">
-      <semantic:multiInstanceLoopCharacteristics isSequential="false" />
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
     </semantic:subProcess>
 
     <!-- Collapsed -->
@@ -103,7 +103,7 @@
       <semantic:standardLoopCharacteristics />
     </semantic:subProcess>
     <semantic:subProcess triggeredByEvent="false" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Collapsed Embedded Sub-Process With Sequential Multi-instance" id="collapsed_embedded_sub_process_with_sequential_multi_instance_id">
-      <semantic:multiInstanceLoopCharacteristics isSequential="false" />
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
     </semantic:subProcess>
 
     <!-- Event Sub-Process -->
@@ -113,7 +113,7 @@
       <semantic:standardLoopCharacteristics />
     </semantic:subProcess>
     <semantic:subProcess triggeredByEvent="true" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Expanded Event Sub-Process With Sequential Multi-instance" id="expanded_event_sub_process_with_sequential_multi_instance_id">
-      <semantic:multiInstanceLoopCharacteristics isSequential="false" />
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
     </semantic:subProcess>
 
     <!-- Collapsed -->
@@ -122,7 +122,7 @@
       <semantic:standardLoopCharacteristics />
     </semantic:subProcess>
     <semantic:subProcess triggeredByEvent="true" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Collapsed Event Sub-Process With Sequential Multi-instance" id="collapsed_event_sub_process_with_sequential_multi_instance_id">
-      <semantic:multiInstanceLoopCharacteristics isSequential="false" />
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
     </semantic:subProcess>
 
     <!-- Event -->
