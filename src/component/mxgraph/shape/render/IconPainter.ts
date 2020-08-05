@@ -556,6 +556,7 @@ export default class IconPainter {
   // this implementation is adapted from the draw.io BPMN 'Loop'
   // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L543
   paintLoopIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+    icon.fillColor = icon.strokeColor;
     const originalIconSize = { width: 22.49, height: 21.62 };
     const canvas = new BpmnCanvas({
       mxCanvas: c,
@@ -572,10 +573,9 @@ export default class IconPainter {
     canvas.begin();
     canvas.moveTo(5.5, 19.08);
     canvas.arcTo(10, 10, 0, 1, 1, 10.5, 21.08);
-    canvas.fillAndStroke();
+    canvas.stroke();
 
     // Arrow
-    canvas.setFillColor('Black');
     canvas.begin();
     canvas.moveTo(5.5, 14.08);
     canvas.lineTo(5.5, 19.08);

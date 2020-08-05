@@ -180,10 +180,6 @@ export default class BpmnCanvas {
     this.c.fill();
   }
 
-  setFillColor(color: string): void {
-    this.c.setFillColor(color);
-  }
-
   fillAndStroke(): void {
     this.c.fillAndStroke();
   }
