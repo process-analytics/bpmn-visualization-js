@@ -34,20 +34,26 @@ export abstract class BaseActivityShape extends mxRectangleShape {
 
   public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
-    this.paintMarkerIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
+    this.paintMarkerIcons(c, x, y, w, h);
   }
 
-  protected paintMarkerIcon(paintParameter: PaintParameter): void {
+  protected paintMarkerIcons(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     switch (StyleUtils.getBpmnMarker(this.style)) {
       case ShapeBpmnMarkerKind.LOOP:
+        const paintParameter = buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5);
         this.iconPainter.paintLoopIcon(paintParameter);
+        // Restore original configuration
+        // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
+        // this.configureCanvas(c, x, y, w, h);
+        paintParameter.c.setStrokeColor(StyleUtils.getStrokeColor(this.style));
         break;
     }
 
-    // Restore original configuration
-    // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
-    // this.configureCanvas(c, x, y, w, h);
-    paintParameter.c.setStrokeColor(StyleUtils.getStrokeColor(this.style));
+    // TODO temp before putting it as a marker
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    if (this instanceof SubProcessShape && StyleUtils.getBpmnIsExpanded(this.style) === 'false') {
+      this.iconPainter.paintExpandIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
+    }
   }
 }
 
@@ -137,13 +143,5 @@ export class SubProcessShape extends BaseActivityShape {
     // this.configureCanvas(c, x, y, w, h);
     c.setDashed(StyleUtils.isDashed(this.style), StyleUtils.isFixDash(this.style));
     c.setDashPattern(StyleUtils.getDashPattern(this.style));
-  }
-
-  public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    super.paintForeground(c, x, y, w, h);
-
-    if (StyleUtils.getBpmnIsExpanded(this.style) === 'false') {
-      this.iconPainter.paintExpandIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
-    }
   }
 }
