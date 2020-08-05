@@ -16,4 +16,5 @@
 export enum ShapeBpmnMarkerKind {
   LOOP = 'loop',
   MULTI_INSTANCE_SEQUENTIAL = 'sequential multi instance',
+  MULTI_INSTANCE_PARALLEL = 'parallel multi instance',
 }

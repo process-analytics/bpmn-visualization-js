@@ -37,7 +37,7 @@ describe.each([
 ])(`parse bpmn as json for '%s'`, (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
   describe.each([
     ['standardLoopCharacteristics', ShapeBpmnMarkerKind.LOOP],
-    //['multiInstanceLoopCharacteristics', ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+    ['multiInstanceLoopCharacteristics', ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
   ])(`parse bpmn as json for '${bpmnKind}' with '%s'`, (bpmnLoopCharacteristicsKind: string, expectedMarkerKind: ShapeBpmnMarkerKind) => {
     it.each([
       ['empty string', ''],
@@ -93,54 +93,54 @@ describe.each([
       },
     );
   });
-  describe.each([[true, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL]])(
-    `parse bpmn as json for '${bpmnKind}' with 'multiInstanceLoopCharacteristics'`,
-    (isSequential: boolean, expectedMarkerKind: ShapeBpmnMarkerKind) => {
-      it.each([
-        ['object', { isSequential }],
-        ['array with object', [{ isSequential }]],
-      ])(
-        `should convert as Shape with ${expectedMarkerKind} marker, when 'isSequential' is an attribute (as ${isSequential}) of 'multiInstanceLoopCharacteristics' (as %s) of '${bpmnKind}'`,
-        (title: string, loopCharacteristics: TMultiInstanceLoopCharacteristics | TMultiInstanceLoopCharacteristics[]) => {
-          const json = {
-            definitions: {
-              targetNamespace: '',
-              process: {},
-              BPMNDiagram: {
-                name: 'process 0',
-                BPMNPlane: {
-                  BPMNShape: {
-                    id: `shape_${bpmnKind}_id_0`,
-                    bpmnElement: `${bpmnKind}_id_0`,
-                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                  },
+  describe.each([
+    [true, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+    [false, ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+  ])(`parse bpmn as json for '${bpmnKind}' with 'multiInstanceLoopCharacteristics'`, (isSequential: boolean, expectedMarkerKind: ShapeBpmnMarkerKind) => {
+    it.each([
+      ['object', { isSequential }],
+      ['array with object', [{ isSequential }]],
+    ])(
+      `should convert as Shape with ${expectedMarkerKind} marker, when 'isSequential' is an attribute (as ${isSequential}) of 'multiInstanceLoopCharacteristics' (as %s) of '${bpmnKind}'`,
+      (title: string, loopCharacteristics: TMultiInstanceLoopCharacteristics | TMultiInstanceLoopCharacteristics[]) => {
+        const json = {
+          definitions: {
+            targetNamespace: '',
+            process: {},
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: {
+                  id: `shape_${bpmnKind}_id_0`,
+                  bpmnElement: `${bpmnKind}_id_0`,
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
               },
             },
-          };
-          (json.definitions.process as TProcess)[bpmnKind] = {
-            id: `${bpmnKind}_id_0`,
-            name: `${bpmnKind} name`,
-            multiInstanceLoopCharacteristics: loopCharacteristics,
-          };
+          },
+        };
+        (json.definitions.process as TProcess)[bpmnKind] = {
+          id: `${bpmnKind}_id_0`,
+          name: `${bpmnKind} name`,
+          multiInstanceLoopCharacteristics: loopCharacteristics,
+        };
 
-          const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+        const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-          verifyShape(model.flowNodes[0], {
-            shapeId: `shape_${bpmnKind}_id_0`,
-            bpmnElementId: `${bpmnKind}_id_0`,
-            bpmnElementName: `${bpmnKind} name`,
-            bpmnElementKind: expectedShapeBpmnElementKind,
-            bpmnElementMarker: expectedMarkerKind,
-            bounds: {
-              x: 362,
-              y: 232,
-              width: 36,
-              height: 45,
-            },
-          });
-        },
-      );
-    },
-  );
+        verifyShape(model.flowNodes[0], {
+          shapeId: `shape_${bpmnKind}_id_0`,
+          bpmnElementId: `${bpmnKind}_id_0`,
+          bpmnElementName: `${bpmnKind} name`,
+          bpmnElementKind: expectedShapeBpmnElementKind,
+          bpmnElementMarker: expectedMarkerKind,
+          bounds: {
+            x: 362,
+            y: 232,
+            width: 36,
+            height: 45,
+          },
+        });
+      },
+    );
+  });
 });

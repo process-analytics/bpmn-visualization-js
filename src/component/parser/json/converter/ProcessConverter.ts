@@ -133,6 +133,8 @@ export default class ProcessConverter {
           shapeBpmnElement.marker = ShapeBpmnMarkerKind.LOOP;
         } else if (multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.isSequential) {
           shapeBpmnElement.marker = ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL;
+        } else if ((multiInstanceLoopCharacteristics && !multiInstanceLoopCharacteristics.isSequential) || multiInstanceLoopCharacteristics === '') {
+          shapeBpmnElement.marker = ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL;
         }
       }
 
