@@ -50,7 +50,7 @@ function newShape(bpmnElement: ShapeBpmnElement, label?: Label, isExpanded = fal
 
 /**
  * Returns a new `ShapeBpmnElement` instance with arbitrary id and name.
- * @param kind the `ShapeBpmnElementKind` to set in the new `ShapeBpmnElement` instance
+ * `kind` is the `ShapeBpmnElementKind` to set in the new `ShapeBpmnElement` instance
  */
 function newShapeBpmnElement(kind: ShapeBpmnElementKind, marker?: ShapeBpmnMarkerKind): ShapeBpmnElement {
   const bpmnElement = new ShapeBpmnElement('id', 'name', kind);
@@ -68,8 +68,12 @@ function newShapeBpmnBoundaryEvent(eventKind: ShapeBpmnEventKind, isInterrupting
   return new ShapeBpmnBoundaryEvent('id', 'name', eventKind, null, isInterrupting);
 }
 
-function newShapeBpmnSubProcess(subPorcessKind: ShapeBpmnSubProcessKind): ShapeBpmnSubProcess {
-  return new ShapeBpmnSubProcess('id', 'name', subPorcessKind, null);
+function newShapeBpmnSubProcess(subProcessKind: ShapeBpmnSubProcessKind, marker?: ShapeBpmnMarkerKind): ShapeBpmnSubProcess {
+  const bpmnElement = new ShapeBpmnSubProcess('id', 'name', subProcessKind, null);
+  if (marker) {
+    bpmnElement.marker = marker;
+  }
+  return bpmnElement;
 }
 
 /**
@@ -274,5 +278,13 @@ describe('mxgraph renderer', () => {
       const shape = newShape(newShapeBpmnElement(bpmnKind, ShapeBpmnMarkerKind.LOOP), newLabel({ name: 'Arial' }));
       expect(computeStyle(shape)).toEqual(`${bpmnKind};bpmn.markers=loop;fontFamily=Arial`);
     });
+
+    // TODO same test when supporting CALL_ACTIVITY isExpanded
+    if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
+      it(`${bpmnKind} with Loop marker and isExpanded=false (collapsed)`, () => {
+        const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, ShapeBpmnMarkerKind.LOOP), undefined, false);
+        expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded;bpmn.isExpanded=false;bpmn.markers=loop`);
+      });
+    }
   });
 });
