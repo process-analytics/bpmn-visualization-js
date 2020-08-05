@@ -38,21 +38,23 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   }
 
   protected paintMarkerIcons(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const markerIdentifiers = StyleUtils.getBpmnMarkers(this.style).split(',');
-
-    markerIdentifiers.forEach(marker => {
-      switch (marker) {
-        case ShapeBpmnMarkerKind.LOOP:
-          const paintParameter = buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5);
-          this.iconPainter.paintLoopIcon(paintParameter);
-          // TODO remove as this is to avoid side effects if the iconPainter has changed colors
-          // Restore original configuration
-          // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
-          // this.configureCanvas(c, x, y, w, h);
-          paintParameter.c.setStrokeColor(StyleUtils.getStrokeColor(this.style));
-          break;
-      }
-    });
+    const markerIdentifiers = StyleUtils.getBpmnMarkers(this.style);
+    if (markerIdentifiers) {
+      markerIdentifiers.split(',').forEach(marker => {
+        switch (marker) {
+          case ShapeBpmnMarkerKind.LOOP:
+            const paintParameter = buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5);
+            this.iconPainter.paintLoopIcon(paintParameter);
+            // TODO remove as this is to avoid side effects if the iconPainter has changed colors. So this should be managed in the iconPainter implementation
+            // currently, we don't provide any way to do it (we could pass the original style)
+            // Restore original configuration
+            // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
+            // this.configureCanvas(c, x, y, w, h);
+            paintParameter.c.setStrokeColor(StyleUtils.getStrokeColor(this.style));
+            break;
+        }
+      });
+    }
 
     // TODO temp before putting it as a marker
     // eslint-disable-next-line @typescript-eslint/no-use-before-define

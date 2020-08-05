@@ -91,7 +91,7 @@ export default class StyleUtils {
     return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_EXPANDED, 'false');
   }
 
-  public static getBpmnMarkers(style: any): ShapeBpmnMarkerKind {
+  public static getBpmnMarkers(style: any): string {
     return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_MARKERS, undefined);
   }
 }
