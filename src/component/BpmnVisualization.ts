@@ -41,9 +41,14 @@ export default class BpmnVisualization {
       // TODO make activation/deactivation configurable
       // eslint-disable-next-line @typescript-eslint/no-this-alias
       const self = this; // TODO replace with array function to access to this directly
-      mxEvent.addMouseWheelListener(function(evt: MouseEvent, up: boolean) {
-        // TODO only manage event related to the graph or in the container of the graph
+      mxEvent.addMouseWheelListener(function(event: Event, up: boolean) {
+        if (!(event instanceof MouseEvent)) {
+          console.info('[MouseWheelListener] event is not a MouseEvent', event);
+          return;
+        }
+
         // TODO review type: this hack is due to the introduction of mxgraph-type-definitions
+        const evt = (event as unknown) as MouseEvent;
         const mxMouseEvent = (evt as unknown) as mxMouseEvent;
         if (!mxEvent.isConsumed(mxMouseEvent)) {
           // console.info('[MouseWheelListener] evt: up: %s / altkey: %s / ctrlKey: %s / shiftKey: %s', up, evt.altKey, evt.ctrlKey, evt.shiftKey);
