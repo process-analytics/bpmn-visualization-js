@@ -35,7 +35,7 @@ export default class BpmnVisualization {
         mxUtils.error('Browser is not supported!', 200, false);
       }
       // Instantiate and configure Graph
-      const configurator = new MxGraphConfigurator(this.container, options);
+      const configurator = new MxGraphConfigurator(this.container);
 
       // Changes the zoom / panning on mouseWheel events
       // TODO make activation/deactivation configurable
@@ -115,7 +115,7 @@ export default class BpmnVisualization {
         }
       }, null);
 
-      this.graph = configurator.configure();
+      this.graph = configurator.configure(options);
     } catch (e) {
       // TODO error handling
       mxUtils.alert('Cannot start application: ' + e.message);

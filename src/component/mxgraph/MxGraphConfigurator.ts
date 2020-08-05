@@ -29,11 +29,11 @@ import BpmnVisuOptions from '../BpmnVisuOptions';
 export default class MxGraphConfigurator {
   private readonly graph: mxGraph;
 
-  constructor(container: HTMLElement, options?: BpmnVisuOptions) {
+  constructor(container: HTMLElement) {
     this.graph = new mxGraph(container);
   }
 
-  public configure(): mxGraph {
+  public configure(options?: BpmnVisuOptions): mxGraph {
     this.configureGraph(options);
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
