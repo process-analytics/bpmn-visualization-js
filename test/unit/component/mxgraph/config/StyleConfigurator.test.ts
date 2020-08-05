@@ -272,7 +272,7 @@ describe('mxgraph renderer', () => {
   ])('compute style - markers for %s', (bpmnKind: ShapeBpmnElementKind) => {
     it(`${bpmnKind} with Loop marker`, () => {
       const shape = newShape(newShapeBpmnElement(bpmnKind, ShapeBpmnMarkerKind.LOOP), newLabel({ name: 'Arial' }));
-      expect(computeStyle(shape)).toEqual(`${bpmnKind};bpmn.marker=loop;fontFamily=Arial`);
+      expect(computeStyle(shape)).toEqual(`${bpmnKind};bpmn.markers=loop;fontFamily=Arial`);
     });
   });
 });

@@ -42,7 +42,7 @@ export enum StyleIdentifier {
   BPMN_STYLE_SUB_PROCESS_KIND = 'bpmn.subProcessKind',
   BPMN_STYLE_IS_INTERRUPTING = 'bpmn.isInterrupting',
   BPMN_STYLE_IS_EXPANDED = 'bpmn.isExpanded',
-  BPMN_STYLE_MARKER = 'bpmn.marker',
+  BPMN_STYLE_MARKERS = 'bpmn.markers',
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -92,6 +92,6 @@ export default class StyleUtils {
   }
 
   public static getBpmnMarker(style: any): ShapeBpmnMarkerKind {
-    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_MARKER, undefined);
+    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_MARKERS, undefined);
   }
 }

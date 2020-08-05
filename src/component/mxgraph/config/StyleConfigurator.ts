@@ -292,7 +292,7 @@ export default class StyleConfigurator {
       }
 
       if (ShapeUtil.isActivity(bpmnElement.kind)) {
-        styleValues.set(StyleIdentifier.BPMN_STYLE_MARKER, bpmnElement.marker);
+        styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, bpmnElement.marker);
       }
     } else {
       const bpmnElement: Flow = bpmnCell.bpmnElement;
