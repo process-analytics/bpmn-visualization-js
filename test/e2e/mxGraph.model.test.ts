@@ -414,6 +414,13 @@ describe('mxGraph model', () => {
       isExpanded: true,
       marker: ShapeBpmnMarkerKind.LOOP,
     });
+    expectModelContainsSubProcess('expanded_embedded_sub_process_with_sequential_multi_instance_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      label: 'Expanded Embedded Sub-Process With Sequential Multi-instance',
+      isExpanded: true,
+      marker: ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL,
+    });
 
     expectModelContainsSubProcess('collapsed_embedded_sub_process_id', {
       kind: null,
@@ -427,6 +434,13 @@ describe('mxGraph model', () => {
       label: 'Collapsed Embedded Sub-Process With Loop',
       isExpanded: false,
       marker: ShapeBpmnMarkerKind.LOOP,
+    });
+    expectModelContainsSubProcess('collapsed_embedded_sub_process_with_sequential_multi_instance_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      label: 'Collapsed Embedded Sub-Process With Sequential Multi-instance',
+      isExpanded: false,
+      marker: ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL,
     });
 
     expectModelContainsSubProcess('expanded_event_sub_process_id', {
@@ -442,6 +456,13 @@ describe('mxGraph model', () => {
       isExpanded: true,
       marker: ShapeBpmnMarkerKind.LOOP,
     });
+    expectModelContainsSubProcess('expanded_event_sub_process_with_sequential_multi_instance_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      label: 'Expanded Event Sub-Process With Sequential Multi-instance',
+      isExpanded: true,
+      marker: ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL,
+    });
 
     expectModelContainsSubProcess('collapsed_event_sub_process_id', {
       kind: null,
@@ -455,6 +476,13 @@ describe('mxGraph model', () => {
       label: 'Collapsed Event Sub-Process With Loop',
       isExpanded: false,
       marker: ShapeBpmnMarkerKind.LOOP,
+    });
+    expectModelContainsSubProcess('collapsed_event_sub_process_with_sequential_multi_instance_id', {
+      kind: null,
+      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      label: 'Collapsed Event Sub-Process With Sequential Multi-instance',
+      isExpanded: false,
+      marker: ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL,
     });
 
     // activity
@@ -483,6 +511,19 @@ describe('mxGraph model', () => {
       label: 'Task With Loop',
       marker: ShapeBpmnMarkerKind.LOOP,
     });
+    expectModelContainsShape('task_with_sequential_multi_instance', {
+      kind: ShapeBpmnElementKind.TASK,
+      font: {
+        isBold: false,
+        isItalic: false,
+        isStrikeThrough: false,
+        isUnderline: true,
+        name: 'Arial',
+        size: 11.0,
+      },
+      label: 'Task With Sequential Multi-instance',
+      marker: ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL,
+    });
 
     expectModelContainsShape('serviceTask_2', { kind: ShapeBpmnElementKind.TASK_SERVICE, font: expectedBoldFont, label: 'Service Task 2' });
     expectModelContainsShape('serviceTask_with_loop', {
@@ -490,6 +531,12 @@ describe('mxGraph model', () => {
       font: expectedBoldFont,
       label: 'Service Task With Loop',
       marker: ShapeBpmnMarkerKind.LOOP,
+    });
+    expectModelContainsShape('serviceTask_with_sequential_multi_instance', {
+      kind: ShapeBpmnElementKind.TASK_SERVICE,
+      font: expectedBoldFont,
+      label: 'Service Task With Sequential Multi-instance',
+      marker: ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL,
     });
 
     expectModelContainsShape('userTask_3', { kind: ShapeBpmnElementKind.TASK_USER, font: expectedBoldFont, label: 'User Task 3' });
@@ -499,9 +546,20 @@ describe('mxGraph model', () => {
       label: 'User Task With Loop',
       marker: ShapeBpmnMarkerKind.LOOP,
     });
+    expectModelContainsShape('userTask_with_sequential_multi_instance', {
+      kind: ShapeBpmnElementKind.TASK_USER,
+      font: expectedBoldFont,
+      label: 'User Task With Sequential Multi-instance',
+      marker: ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL,
+    });
 
     expectModelContainsShape('callActivity_1', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, label: 'Call Activity Collapsed' });
     expectModelContainsShape('callActivity_with_loop', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, label: 'Call Activity Collapsed With Loop', marker: ShapeBpmnMarkerKind.LOOP });
+    expectModelContainsShape('callActivity_with_sequential_multi_instance', {
+      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+      label: 'Call Activity Collapsed With Sequential Multi-instance',
+      marker: ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL,
+    });
 
     expectModelContainsShape('receiveTask_not_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Not instantiated Receive Task' });
     expectModelContainsShape('receiveTask_not_instantiated_with_loop', {
@@ -509,12 +567,22 @@ describe('mxGraph model', () => {
       label: 'Not instantiated Receive Task With Loop',
       marker: ShapeBpmnMarkerKind.LOOP,
     });
+    expectModelContainsShape('receiveTask_not_instantiated_with_sequential_multi_instance', {
+      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+      label: 'Not instantiated Receive Task With Sequential Multi-instance',
+      marker: ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL,
+    });
 
     expectModelContainsShape('receiveTask_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Instantiated Receive Task' });
     expectModelContainsShape('receiveTask_instantiated_with_loop', {
       kind: ShapeBpmnElementKind.TASK_RECEIVE,
       label: 'Instantiated Receive Task With Loop',
       marker: ShapeBpmnMarkerKind.LOOP,
+    });
+    expectModelContainsShape('receiveTask_instantiated_with_sequential_multi_instance', {
+      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+      label: 'Instantiated Receive Task With Sequential Multi-instance',
+      marker: ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL,
     });
 
     // text annotation
