@@ -280,6 +280,7 @@ export default class StyleConfigurator {
     const styles: string[] = [bpmnCell.bpmnElement?.kind as string];
     if (bpmnCell instanceof Shape) {
       const bpmnElement: ShapeBpmnElement = bpmnCell.bpmnElement;
+      const activityMarkers: string[] = [];
       if (bpmnElement instanceof ShapeBpmnEvent) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
 
@@ -289,11 +290,21 @@ export default class StyleConfigurator {
       } else if (bpmnElement instanceof ShapeBpmnSubProcess) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
         styleValues.set(StyleIdentifier.BPMN_STYLE_IS_EXPANDED, String(bpmnCell.isExpanded));
+        if (!bpmnCell.isExpanded) {
+          activityMarkers.push('expand'); // TODO no hard coded value
+        }
       }
 
-      if (ShapeUtil.isActivity(bpmnElement.kind)) {
-        styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, bpmnElement.marker);
+      if (bpmnElement.marker) {
+        activityMarkers.push(bpmnElement.marker);
       }
+      if (activityMarkers.length > 0) {
+        styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, activityMarkers.join(','));
+      }
+
+      // if (ShapeUtil.isActivity(bpmnElement.kind)) {
+      //   styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, bpmnElement.marker);
+      // }
     } else {
       const bpmnElement: Flow = bpmnCell.bpmnElement;
       if (bpmnElement instanceof SequenceFlow) {
