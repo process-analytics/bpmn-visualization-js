@@ -605,6 +605,28 @@ export default class IconPainter {
     canvas.roundrect(0, 0, w, h, 2, 2);
     canvas.stroke();
   }
+
+  paintParallelMultiInstanceIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
+    const originalIconSize = { width: 16, height: 16 };
+    const canvas = new BpmnCanvas({
+      mxCanvas: c,
+      shapeConfiguration: shape,
+      iconConfiguration: {
+        originalSize: originalIconSize,
+        style: icon,
+        ratioFromShape: ratioFromParent,
+      },
+    });
+    canvas.setIconOriginToShapeBottomLeft();
+
+    const w = originalIconSize.width;
+    const h = originalIconSize.height;
+
+    // Temporary render
+    c.setStrokeColor('Pink');
+    canvas.roundrect(0, 0, w, h, 2, 2);
+    canvas.stroke();
+  }
 }
 
 export class IconPainterProvider {

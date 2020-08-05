@@ -276,12 +276,15 @@ describe('mxgraph renderer', () => {
     //[ShapeBpmnElementKind.AD_HOC_SUB_PROCESS],
     //[ShapeBpmnElementKind.TRANSACTION],
   ])('compute style - markers for %s', (bpmnKind: ShapeBpmnElementKind) => {
-    describe.each([[ShapeBpmnMarkerKind.LOOP], [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL]])(`compute style - %s marker for ${bpmnKind}`, (markerKind: ShapeBpmnMarkerKind) => {
-      it(`${bpmnKind} with ${markerKind} marker`, () => {
-        const shape = newShape(newShapeBpmnElement(bpmnKind, markerKind), newLabel({ name: 'Arial' }));
-        expect(computeStyle(shape)).toEqual(`${bpmnKind};bpmn.markers=${markerKind};fontFamily=Arial`);
-      });
-    });
+    describe.each([[ShapeBpmnMarkerKind.LOOP], [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL], [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL]])(
+      `compute style - %s marker for ${bpmnKind}`,
+      (markerKind: ShapeBpmnMarkerKind) => {
+        it(`${bpmnKind} with ${markerKind} marker`, () => {
+          const shape = newShape(newShapeBpmnElement(bpmnKind, markerKind), newLabel({ name: 'Arial' }));
+          expect(computeStyle(shape)).toEqual(`${bpmnKind};bpmn.markers=${markerKind};fontFamily=Arial`);
+        });
+      },
+    );
 
     // TODO same test when supporting CALL_ACTIVITY isExpanded
     if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
