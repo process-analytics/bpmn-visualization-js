@@ -34,31 +34,32 @@ import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape/ShapeBpmnMarke
 import { TEventBasedGateway } from '../../xml/bpmn-json-model/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/task';
 
-const convertedFlowNodeBpmnElements: ShapeBpmnElement[] = [];
-const convertedLaneBpmnElements: ShapeBpmnElement[] = [];
-const convertedProcessBpmnElements: ShapeBpmnElement[] = [];
-const convertedSequenceFlows: SequenceFlow[] = [];
-const convertedAssociationFlows: AssociationFlow[] = [];
+const convertedFlowNodeBpmnElements: Map<string, ShapeBpmnElement> = new Map();
+const convertedLaneBpmnElements: Map<string, ShapeBpmnElement> = new Map();
+const convertedProcessBpmnElements: Map<string, ShapeBpmnElement> = new Map();
+const convertedSequenceFlows: Map<string, SequenceFlow> = new Map();
+const convertedAssociationFlows: Map<string, AssociationFlow> = new Map();
+
 const defaultSequenceFlowIds: string[] = [];
 
 export function findFlowNodeBpmnElement(id: string): ShapeBpmnElement {
-  return convertedFlowNodeBpmnElements.find(i => i.id === id);
+  return convertedFlowNodeBpmnElements.get(id);
 }
 
 export function findLaneBpmnElement(id: string): ShapeBpmnElement {
-  return convertedLaneBpmnElements.find(i => i.id === id);
+  return convertedLaneBpmnElements.get(id);
 }
 
 export function findProcessBpmnElement(id: string): ShapeBpmnElement {
-  return convertedProcessBpmnElements.find(i => i.id === id);
+  return convertedProcessBpmnElements.get(id);
 }
 
 export function findSequenceFlow(id: string): SequenceFlow {
-  return convertedSequenceFlows.find(i => i.id === id);
+  return convertedSequenceFlows.get(id);
 }
 
 export function findAssociationFlow(id: string): AssociationFlow {
-  return convertedAssociationFlows.find(i => i.id === id);
+  return convertedAssociationFlows.get(id);
 }
 
 interface EventDefinition {
@@ -71,12 +72,13 @@ type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTex
 export default class ProcessConverter {
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     try {
+      convertedFlowNodeBpmnElements.clear();
+      convertedLaneBpmnElements.clear();
+      convertedProcessBpmnElements.clear();
+      convertedSequenceFlows.clear();
+      convertedAssociationFlows.clear();
+
       // Deletes everything in the array, which does hit other references. For better performance.
-      convertedFlowNodeBpmnElements.length = 0;
-      convertedLaneBpmnElements.length = 0;
-      convertedProcessBpmnElements.length = 0;
-      convertedSequenceFlows.length = 0;
-      convertedAssociationFlows.length = 0;
       defaultSequenceFlowIds.length = 0;
 
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
@@ -88,7 +90,7 @@ export default class ProcessConverter {
 
   parseProcess(process: TProcess): void {
     const processId = process.id;
-    convertedProcessBpmnElements.push(new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
+    convertedProcessBpmnElements.set(processId, new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
 
     // flow nodes
     ShapeUtil.flowNodeKinds()
@@ -133,7 +135,7 @@ export default class ProcessConverter {
       }
 
       if (shapeBpmnElement) {
-        convertedFlowNodeBpmnElements.push(shapeBpmnElement);
+        convertedFlowNodeBpmnElements.set(shapeBpmnElement.id, shapeBpmnElement);
       }
     });
   }
@@ -214,7 +216,7 @@ export default class ProcessConverter {
   private buildLaneBpmnElements(processId: string, lanes: Array<TLane> | TLane): void {
     ensureIsArray(lanes).forEach(lane => {
       const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, processId);
-      convertedLaneBpmnElements.push(laneShape);
+      convertedLaneBpmnElements.set(lane.id, laneShape);
       this.assignParentOfLaneFlowNodes(lane);
     });
   }
@@ -238,7 +240,7 @@ export default class ProcessConverter {
     ensureIsArray(bpmnElements).forEach(sequenceFlow => {
       const kind = this.getSequenceFlowKind(sequenceFlow);
       const convertedSequenceFlow = new SequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.sourceRef, sequenceFlow.targetRef, kind);
-      convertedSequenceFlows.push(convertedSequenceFlow);
+      convertedSequenceFlows.set(sequenceFlow.id, convertedSequenceFlow);
     });
   }
 
@@ -247,7 +249,7 @@ export default class ProcessConverter {
       // TODO Remove associationDirection conversion type when we merge/simplify internal model with BPMN json model
       const direction = (association.associationDirection as unknown) as AssociationDirectionKind;
       const convertedAssociationFlow = new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction);
-      convertedAssociationFlows.push(convertedAssociationFlow);
+      convertedAssociationFlows.set(association.id, convertedAssociationFlow);
     });
   }
 

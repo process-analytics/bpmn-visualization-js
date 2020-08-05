@@ -15,33 +15,33 @@
  */
 import { Participant } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { MessageFlow } from '../../../../model/bpmn/edge/Flow';
-import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
 import { TCollaboration } from '../../xml/bpmn-json-model/baseElement/rootElement/collaboration';
 import { TParticipant } from '../../xml/bpmn-json-model/baseElement/participant';
 import { TMessageFlow } from '../../xml/bpmn-json-model/baseElement/baseElement';
 import { ensureIsArray } from './ConverterUtil';
 
-const convertedProcessRefParticipants: Participant[] = [];
-const convertedMessageFlows: MessageFlow[] = [];
+const convertedParticipantsById: Map<string, Participant> = new Map();
+const convertedParticipantsByProcessRef: Map<string, Participant> = new Map();
+const convertedMessageFlows: Map<string, MessageFlow> = new Map();
 
 export function findProcessRefParticipant(id: string): Participant {
-  return convertedProcessRefParticipants.find(i => i.id === id);
+  return convertedParticipantsById.get(id);
 }
 
 export function findProcessRefParticipantByProcessRef(processRef: string): Participant {
-  return convertedProcessRefParticipants.find(i => i.processRef === processRef);
+  return convertedParticipantsByProcessRef.get(processRef);
 }
 
 export function findMessageFlow(id: string): MessageFlow {
-  return convertedMessageFlows.find(i => i.id === id);
+  return convertedMessageFlows.get(id);
 }
 
 export default class CollaborationConverter {
   deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): void {
     try {
-      // Deletes everything in the array, which does hit other references. For better performance.
-      convertedProcessRefParticipants.length = 0;
-      convertedMessageFlows.length = 0;
+      convertedParticipantsById.clear();
+      convertedParticipantsByProcessRef.clear();
+      convertedMessageFlows.clear();
 
       ensureIsArray(collaborations).forEach(collaboration => this.parseCollaboration(collaboration));
     } catch (e) {
@@ -51,14 +51,16 @@ export default class CollaborationConverter {
   }
 
   private parseCollaboration(collaboration: TCollaboration): void {
-    this.buildParticipant(collaboration['participant']);
-    this.buildMessageFlows(collaboration[FlowKind.MESSAGE_FLOW]);
+    this.buildParticipant(collaboration.participant);
+    this.buildMessageFlows(collaboration.messageFlow);
   }
 
   private buildParticipant(bpmnElements: Array<TParticipant> | TParticipant): void {
     ensureIsArray(bpmnElements).forEach(participant => {
       if (participant.processRef) {
-        convertedProcessRefParticipants.push(new Participant(participant.id, participant.name, participant.processRef));
+        const convertedParticipant = new Participant(participant.id, participant.name, participant.processRef);
+        convertedParticipantsById.set(participant.id, convertedParticipant);
+        convertedParticipantsByProcessRef.set(participant.processRef, convertedParticipant);
       }
     });
   }
@@ -66,7 +68,7 @@ export default class CollaborationConverter {
   private buildMessageFlows(bpmnElements: Array<TMessageFlow> | TMessageFlow): void {
     ensureIsArray(bpmnElements).forEach(messageFlow => {
       const convertedMessageFlow = new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef);
-      convertedMessageFlows.push(convertedMessageFlow);
+      convertedMessageFlows.set(messageFlow.id, convertedMessageFlow);
     });
   }
 }
