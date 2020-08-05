@@ -290,7 +290,7 @@ export default class StyleConfigurator {
       } else if (bpmnElement instanceof ShapeBpmnSubProcess) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
         if (!bpmnCell.isExpanded) {
-          markers.push('expand'); // TODO no hard coded value
+          markers.push('expand');
         }
       }
 

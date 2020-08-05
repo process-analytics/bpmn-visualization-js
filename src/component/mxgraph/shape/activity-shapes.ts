@@ -52,7 +52,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
             // this.configureCanvas(c, x, y, w, h);
             paintParameter.c.setStrokeColor(StyleUtils.getStrokeColor(this.style));
             break;
-          case 'expand': // TODO remove hard coded value
+          case 'expand':
             this.iconPainter.paintExpandIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
             break;
         }
