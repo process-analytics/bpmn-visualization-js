@@ -57,6 +57,22 @@ function handleFileSelect(evt: any): void {
 document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
 document.getElementById('file-selector').classList.remove('hidden');
 
+document.getElementById('btn-clean').onclick = function() {
+  log('btn-clean click');
+  // hack: clean the graph by loading an empty BPMN file
+  loadBpmn(`<definitions
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  targetNamespace="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  id="Definitions_1"
+  exporter="bpmn-visualization" exporterVersion="N/A">
+  <process id="Process_1" isExecutable="false"/>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1"/>
+  </bpmndi:BPMNDiagram>
+</definitions>`);
+};
+
 // =====================================================================================================================
 // BPMN from remote url
 // =====================================================================================================================
