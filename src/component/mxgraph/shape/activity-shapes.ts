@@ -45,17 +45,15 @@ export abstract class BaseActivityShape extends mxRectangleShape {
           case ShapeBpmnMarkerKind.LOOP:
             const paintParameter = buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5);
             this.iconPainter.paintLoopIcon(paintParameter);
-            // TODO remove as this is to avoid side effects if the iconPainter has changed colors. So this should be managed in the iconPainter implementation
-            // currently, we don't provide any way to do it (we could pass the original style)
-            // Restore original configuration
-            // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
-            // this.configureCanvas(c, x, y, w, h);
-            paintParameter.c.setStrokeColor(StyleUtils.getStrokeColor(this.style));
             break;
           case 'expand':
             this.iconPainter.paintExpandIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
             break;
         }
+        // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
+        // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
+        // this.configureCanvas(c, x, y, w, h);
+        c.setStrokeColor(StyleUtils.getStrokeColor(this.style));
       });
     }
   }
