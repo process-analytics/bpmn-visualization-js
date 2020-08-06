@@ -93,18 +93,21 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 |Loop Marker
 |icon:check-circle-o[]
-|The icon position is currently not centered but absolute, but this will be managed later. +
-The size of the icon will be changed later to be consistent between shapes. +
-The icon is derived from https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L543[loop] of draw.io
+|The icon is derived from the https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L543[loop] of draw.io
 
 |Sequential Multi-Instance Marker
+|icon:check-circle-o[]
 |
-|The icon position is currently not centered but absolute, but this will be managed later.
 
 |Parallel Multi-Instance Marker
+|icon:check-circle-o[]
 |
-|The icon position is currently not centered but absolute, but this will be managed later.
 |===
+
+*Notes*
+
+- The icon position is currently not centered but absolute, but this will be managed later
+- The size of the icon will be changed later to be consistent between shapes
 
 
 === Events

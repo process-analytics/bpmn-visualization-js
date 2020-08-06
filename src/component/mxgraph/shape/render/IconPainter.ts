@@ -597,13 +597,16 @@ export default class IconPainter {
     });
     canvas.setIconOriginToShapeBottomLeft();
 
-    const w = originalIconSize.width;
-    const h = originalIconSize.height;
-
-    // Temporary render
-    c.setStrokeColor('Chartreuse');
-    canvas.roundrect(0, 0, w, h, 2, 2);
-    canvas.stroke();
+    c.setFillColor(icon.strokeColor);
+    const barWidth = originalIconSize.width;
+    const barHeight = originalIconSize.height / 5; // 3 bars + 2 interspaces
+    canvas.rect(0, 0, barWidth, barHeight);
+    canvas.fillAndStroke();
+    canvas.rect(0, 2 * barHeight, barWidth, barHeight);
+    canvas.fillAndStroke();
+    canvas.rect(0, 4 * barHeight, barWidth, barHeight);
+    canvas.close();
+    canvas.fillAndStroke();
   }
 
   paintParallelMultiInstanceIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
@@ -619,13 +622,17 @@ export default class IconPainter {
     });
     canvas.setIconOriginToShapeBottomLeft();
 
-    const w = originalIconSize.width;
-    const h = originalIconSize.height;
-
-    // Temporary render
-    c.setStrokeColor('Pink');
-    canvas.roundrect(0, 0, w, h, 2, 2);
-    canvas.stroke();
+    c.setFillColor(icon.strokeColor);
+    const barWidth = originalIconSize.width / 5; // 3 bars + 2 interspaces
+    const barHeight = originalIconSize.height;
+    canvas.begin();
+    canvas.rect(0, 0, barWidth, barHeight);
+    canvas.fillAndStroke();
+    canvas.rect(2 * barWidth, 0, barWidth, barHeight);
+    canvas.fillAndStroke();
+    canvas.rect(4 * barWidth, 0, barWidth, barHeight);
+    canvas.close();
+    canvas.fillAndStroke();
   }
 }
 
