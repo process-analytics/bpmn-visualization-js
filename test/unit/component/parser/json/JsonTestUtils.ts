@@ -19,7 +19,7 @@ import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/
 import Edge from '../../../../../src/model/bpmn/edge/Edge';
 import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
-import { ShapeBpmnActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
+import { ShapeBpmnActivity, ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import Label from '../../../../../src/model/bpmn/Label';
@@ -29,6 +29,7 @@ import { FlowKind } from '../../../../../src/model/bpmn/edge/FlowKind';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
 import { BpmnJsonModel } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMN20';
 import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
+import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnCallActivityKind';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -41,6 +42,10 @@ export interface ExpectedShape {
 
 export interface ExpectedActivityShape extends ExpectedShape {
   bpmnElementMarkers?: ShapeBpmnMarkerKind[];
+}
+
+export interface ExpectedCallActivityShape extends ExpectedActivityShape {
+  bpmnElementCallActivityKind?: ShapeBpmnCallActivityKind;
 }
 
 interface ExpectedEdge {
@@ -120,7 +125,7 @@ export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: BpmnJsonModel, num
   return parseJsonAndExpect(json, 0, 0, numberOfExpectedFlowNodes, numberOfExpectedEdges);
 }
 
-export function verifyShape(shape: Shape, expectedShape: ExpectedShape | ExpectedActivityShape): void {
+export function verifyShape(shape: Shape, expectedShape: ExpectedShape | ExpectedActivityShape | ExpectedCallActivityShape): void {
   expect(shape.id).toEqual(expectedShape.shapeId);
 
   const bpmnElement = shape.bpmnElement;
@@ -135,6 +140,10 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape | Expecte
       expect(bpmnElement.markers).toEqual(expectedActivityShape.bpmnElementMarkers);
     } else {
       expect(bpmnElement.markers).toHaveLength(0);
+    }
+
+    if (bpmnElement instanceof ShapeBpmnCallActivity) {
+      expect(bpmnElement.callActivityKind).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementCallActivityKind);
     }
   }
 
