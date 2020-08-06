@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { TBaseElement } from './baseElement';
+import { TText } from '../Semantic';
 
 // abstract="true"
 export type TArtifact = TBaseElement;
@@ -29,7 +30,7 @@ export interface TGroup extends TArtifact {
 }
 
 export interface TTextAnnotation extends TArtifact {
-  text?: string | Text;
+  text?: string | TText;
   textFormat?: string; // default="text/plain"
 }
 

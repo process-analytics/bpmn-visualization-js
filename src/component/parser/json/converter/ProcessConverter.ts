@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 /**
  * Copyright 2020 Bonitasoft S.A.
  *
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/edge/Flow';
@@ -24,13 +24,16 @@ import { ShapeBpmnSubProcessKind } from '../../../../model/bpmn/shape/ShapeBpmnS
 import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
 import { TProcess } from '../../xml/bpmn-json-model/baseElement/rootElement/rootElement';
 import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../xml/bpmn-json-model/baseElement/flowNode/event';
-import { TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
+import { TActivity, TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
 import { TLane, TLaneSet } from '../../xml/bpmn-json-model/baseElement/baseElement';
-import { TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement';
-import { TAssociation } from '../../xml/bpmn-json-model/baseElement/artifact';
+import { TFlowNode, TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement';
+import { TAssociation, TTextAnnotation } from '../../xml/bpmn-json-model/baseElement/artifact';
 import { AssociationDirectionKind } from '../../../../model/bpmn/edge/AssociationDirectionKind';
 import { bpmnEventKinds, findEventDefinitionOfDefinitions } from './EventDefinitionConverter';
+import { ensureIsArray } from './ConverterUtil';
 import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape/ShapeBpmnMarkerKind';
+import { TEventBasedGateway } from '../../xml/bpmn-json-model/baseElement/flowNode/gateway';
+import { TReceiveTask } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/task';
 
 const convertedFlowNodeBpmnElements: Map<string, ShapeBpmnElement> = new Map();
 const convertedLaneBpmnElements: Map<string, ShapeBpmnElement> = new Map();
@@ -65,8 +68,9 @@ interface EventDefinition {
   counter: number;
 }
 
-export default class ProcessConverter extends AbstractConverter<void> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTextAnnotation;
+
+export default class ProcessConverter {
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     try {
       convertedFlowNodeBpmnElements.clear();
@@ -85,7 +89,6 @@ export default class ProcessConverter extends AbstractConverter<void> {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parseProcess(process: TProcess): void {
     const processId = process.id;
     convertedProcessBpmnElements.set(processId, new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
@@ -106,8 +109,7 @@ export default class ProcessConverter extends AbstractConverter<void> {
     this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW]);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<any> | any, kind: ShapeBpmnElementKind): void {
+  private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<FlowNode> | FlowNode, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
       let shapeBpmnElement;
 
@@ -116,17 +118,22 @@ export default class ProcessConverter extends AbstractConverter<void> {
       } else if (ShapeUtil.isSubProcess(kind)) {
         shapeBpmnElement = this.buildShapeBpmnSubProcess(bpmnElement, processId);
       } else {
+        // @ts-ignore We know that the text & name fields are not on all types, but it's already tested
         const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
+        // @ts-ignore We know that the instantiate field is not on all types, but it's already tested
         shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, processId, bpmnElement.instantiate);
       }
 
+      // @ts-ignore We know that the standardLoopCharacteristics field is not on all types, but it's already tested
       const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
       if (ShapeUtil.isActivity(kind) && (standardLoopCharacteristics || standardLoopCharacteristics === '')) {
         shapeBpmnElement.marker = ShapeBpmnMarkerKind.LOOP;
       }
 
-      if (ShapeUtil.isWithDefaultSequenceFlow(kind) && bpmnElement.default) {
-        defaultSequenceFlowIds.push(bpmnElement.default);
+      // @ts-ignore We know that the default field is not on all types, but it's already tested
+      const defaultFlow = bpmnElement.default;
+      if (ShapeUtil.isWithDefaultSequenceFlow(kind) && defaultFlow) {
+        defaultSequenceFlowIds.push(defaultFlow);
       }
 
       if (shapeBpmnElement) {

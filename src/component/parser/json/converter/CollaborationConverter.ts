@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import { Participant } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { MessageFlow } from '../../../../model/bpmn/edge/Flow';
 import { TCollaboration } from '../../xml/bpmn-json-model/baseElement/rootElement/collaboration';
 import { TParticipant } from '../../xml/bpmn-json-model/baseElement/participant';
 import { TMessageFlow } from '../../xml/bpmn-json-model/baseElement/baseElement';
+import { ensureIsArray } from './ConverterUtil';
 
 const convertedParticipantsById: Map<string, Participant> = new Map();
 const convertedParticipantsByProcessRef: Map<string, Participant> = new Map();
@@ -36,7 +36,7 @@ export function findMessageFlow(id: string): MessageFlow {
   return convertedMessageFlows.get(id);
 }
 
-export default class CollaborationConverter extends AbstractConverter<void> {
+export default class CollaborationConverter {
   deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): void {
     try {
       convertedParticipantsById.clear();
