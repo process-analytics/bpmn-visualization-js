@@ -43,8 +43,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
       markers.split(',').forEach(marker => {
         switch (marker) {
           case ShapeBpmnMarkerKind.LOOP:
-            const paintParameter = buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5);
-            this.iconPainter.paintLoopIcon(paintParameter);
+            this.iconPainter.paintLoopIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
             break;
           case 'expand':
             this.iconPainter.paintExpandIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
