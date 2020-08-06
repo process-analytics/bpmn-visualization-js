@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import Shape from '../../../../model/bpmn/shape/Shape';
 import Bounds from '../../../../model/bpmn/Bounds';
 import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
@@ -26,6 +25,7 @@ import Label, { Font } from '../../../../model/bpmn/Label';
 import { MessageVisibleKind } from '../../../../model/bpmn/edge/MessageVisibleKind';
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../xml/bpmn-json-model/BPMNDI';
 import { Point } from '../../xml/bpmn-json-model/DC';
+import { ensureIsArray } from './ConverterUtil';
 
 function findProcessElement(participantId: string): ShapeBpmnElement {
   const participant = findProcessRefParticipant(participantId);
@@ -36,7 +36,7 @@ function findProcessElement(participantId: string): ShapeBpmnElement {
   }
 }
 
-export default class DiagramConverter extends AbstractConverter<BpmnModel> {
+export default class DiagramConverter {
   private convertedFonts: Map<string, Font> = new Map();
 
   deserialize(bpmnDiagrams: Array<BPMNDiagram> | BPMNDiagram): BpmnModel {

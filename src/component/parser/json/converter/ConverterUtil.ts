@@ -33,8 +33,3 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
   }
   return returnedArray.filter(value => value);
 }
-
-export abstract class AbstractConverter<T> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  abstract deserialize(data: any): T;
-}

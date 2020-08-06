@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AbstractConverter, ensureIsArray } from './AbstractConverter';
 import { TDefinitions } from '../../xml/bpmn-json-model/BPMN20';
 import { ShapeBpmnEventKind } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
 import { TEventDefinition } from '../../xml/bpmn-json-model/baseElement/rootElement/eventDefinition';
+import { ensureIsArray } from './ConverterUtil';
 
 export const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
   return kind != ShapeBpmnEventKind.NONE;
@@ -28,7 +28,7 @@ export function findEventDefinitionOfDefinitions(id: string): ShapeBpmnEventKind
   return eventDefinitionsOfDefinitions.get(id);
 }
 
-export default class EventDefinitionConverter extends AbstractConverter<void> {
+export default class EventDefinitionConverter {
   deserialize(definitions: TDefinitions): void {
     try {
       eventDefinitionsOfDefinitions.clear();
