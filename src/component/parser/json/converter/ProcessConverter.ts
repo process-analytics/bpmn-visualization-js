@@ -124,10 +124,16 @@ export default class ProcessConverter {
         shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, processId, bpmnElement.instantiate);
       }
 
-      // @ts-ignore We know that the standardLoopCharacteristics field is not on all types, but it's already tested
-      const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
-      if (ShapeUtil.isActivity(kind) && (standardLoopCharacteristics || standardLoopCharacteristics === '')) {
-        shapeBpmnElement.marker = ShapeBpmnMarkerKind.LOOP;
+      if (ShapeUtil.isActivity(kind)) {
+        // @ts-ignore We know that the standardLoopCharacteristics field is not on all types, but it's already tested
+        const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
+        // @ts-ignore We know that the multiInstanceLoopCharacteristics field is not on all types, but it's already tested
+        const multiInstanceLoopCharacteristics = ensureIsArray(bpmnElement.multiInstanceLoopCharacteristics, true)[0];
+        if (standardLoopCharacteristics || standardLoopCharacteristics === '') {
+          shapeBpmnElement.marker = ShapeBpmnMarkerKind.LOOP;
+        } else if (multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.isSequential) {
+          shapeBpmnElement.marker = ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL;
+        }
       }
 
       // @ts-ignore We know that the default field is not on all types, but it's already tested
