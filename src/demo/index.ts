@@ -86,8 +86,32 @@ document.getElementById('btn-clean').onclick = function() {
 // BPMN from remote url
 // =====================================================================================================================
 
+function getStatusElement(): HTMLElement {
+  return document.getElementById('fetch-status');
+}
+
+function statusFetching(url: string): void {
+  const statusElt = getStatusElement();
+  statusElt.innerText = 'Fetching ' + url;
+  statusElt.className = 'status-fetching';
+}
+
+function statusFetched(url: string, duration: number): void {
+  const statusElt = getStatusElement();
+  statusElt.innerText = `Fetch OK (${duration} ms): ${url}`;
+  statusElt.className = 'status-ok';
+}
+
+function statusFetchKO(url: string, error: unknown): void {
+  const statusElt = getStatusElement();
+  statusElt.innerText = `Unable to fetch ${url}. ${error}`;
+  statusElt.className = 'status-ko';
+}
+
 function fetchBpmnContent(url: string): Promise<string> {
   log('Fetching BPMN content from url <%s>', url);
+  const startTime = performance.now();
+  statusFetching(url);
   return fetch(url)
     .then(response => {
       // log(response);
@@ -99,10 +123,20 @@ function fetchBpmnContent(url: string): Promise<string> {
     .then(responseBody => {
       // log('retrieved content: %s', responseBody);
       log('BPMN content fetched');
+      const duration = performance.now() - startTime;
+      statusFetched(url, duration);
       return responseBody;
     })
     .catch(error => {
+      statusFetchKO(url, error);
       throw new Error(`Unable to fetch ${url}. ${error}`);
+    })
+    .finally(() => {
+      // clean status area after a few seconds
+      setTimeout(function() {
+        const statusElt = getStatusElement();
+        statusElt.innerText = '';
+      }, 3000);
     });
 }
 
