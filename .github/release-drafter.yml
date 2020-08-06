@@ -11,6 +11,12 @@ categories:
   - title: 🐛 Bug Fixes
     labels:
       - bug
+  - title: Library Integration
+    labels:
+      - 'lib integration'
+  - title: Library Extensibility
+    labels:
+      - 'lib extensibility'
   - title: 📝 Documentation
     label: documentation
   - title: 📦 Dependency updates
