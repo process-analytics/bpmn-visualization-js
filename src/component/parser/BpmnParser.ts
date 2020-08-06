@@ -16,13 +16,37 @@
 import BpmnModel from '../../model/bpmn/BpmnModel';
 import BpmnXmlParser from './xml/BpmnXmlParser';
 import BpmnJsonParser, { defaultBpmnJsonParser } from './json/BpmnJsonParser';
+import Logger from '../Logger';
 
 class BpmnParser {
+  private log: Logger = new Logger('BpmnParser');
+
   constructor(readonly jsonParser: BpmnJsonParser, readonly xmlParser: BpmnXmlParser) {}
 
   parse(bpmnAsXml: string): BpmnModel {
+    const initialStartTime = performance.now();
+    this.log.info(`start xml parsing, string length ${bpmnAsXml.length}`);
+
     const json = this.xmlParser.parse(bpmnAsXml);
-    return this.jsonParser.parse(json);
+    this.log.info(`xml parsing done in ${performance.now() - initialStartTime} ms`);
+
+    const jsonStartTime = performance.now();
+    const bpmnModel = this.jsonParser.parse(json);
+    this.log.info(`json parsing done in ${performance.now() - jsonStartTime} ms`);
+
+    this.log.info(`full parsing done in ${performance.now() - initialStartTime} ms`);
+    this.logModelStats(bpmnModel);
+    return bpmnModel;
+  }
+
+  logModelStats(bpmnModel: BpmnModel): void {
+    const msg = `Created BpmnModel:
+  Pools: ${bpmnModel.pools.length}
+  Lanes: ${bpmnModel.lanes.length}
+  FlowNodes: ${bpmnModel.flowNodes.length}
+  Edges: ${bpmnModel.edges.length}
+`;
+    this.log.info(msg);
   }
 }
 
