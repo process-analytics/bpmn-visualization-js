@@ -15,7 +15,6 @@
  */
 import { ShapeBpmnEventKind } from '../../model/bpmn/shape/ShapeBpmnEventKind';
 import { ShapeBpmnSubProcessKind } from '../../model/bpmn/shape/ShapeBpmnSubProcessKind';
-import { ShapeBpmnMarkerKind } from '../../model/bpmn/shape/ShapeBpmnMarkerKind';
 
 export enum MarkerIdentifier {
   ARROW_DASH = 'bpmn.dash',
@@ -41,8 +40,7 @@ export enum StyleIdentifier {
   BPMN_STYLE_EVENT_KIND = 'bpmn.eventKind',
   BPMN_STYLE_SUB_PROCESS_KIND = 'bpmn.subProcessKind',
   BPMN_STYLE_IS_INTERRUPTING = 'bpmn.isInterrupting',
-  BPMN_STYLE_IS_EXPANDED = 'bpmn.isExpanded',
-  BPMN_STYLE_MARKER = 'bpmn.marker',
+  BPMN_STYLE_MARKERS = 'bpmn.markers',
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -87,11 +85,7 @@ export default class StyleUtils {
     return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, undefined);
   }
 
-  public static getBpmnIsExpanded(style: any): string {
-    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_EXPANDED, 'false');
-  }
-
-  public static getBpmnMarker(style: any): ShapeBpmnMarkerKind {
-    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_MARKER, undefined);
+  public static getBpmnMarkers(style: any): string {
+    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_MARKERS, undefined);
   }
 }
