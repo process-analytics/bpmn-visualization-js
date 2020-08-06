@@ -81,14 +81,12 @@
         <input type="button" class="btn-common btn-help" id="btn-help" title="Getting Help"/>
     </div>
     <div id="btn-group-open">
+        <!-- TODO restore drag&drop support -->
         <div id="file-selector" class="hidden">
             <input type="file" id="bpmn-file" name="file"/>
             <label for="bpmn-file" class="btn"><span>open BPMN file</span></label>
         </div>
 
-        <input type="text" id="input-open-url" placeholder="path to diagram" /><button id="btn-open-url">Open URL</button>
-        <strong>Example:</strong> <i>https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/A.2.1.bpmn</i></strong>
-        <p/>
         <select name="select-open-migw" id="select-open-migw">
             <option value="A.2.0.bpmn">A.2.0</option>
             <option value="B.1.0.bpmn">B.1.0</option>
@@ -99,9 +97,12 @@
         <select name="select-open-bpmn-visualization-example" id="select-open-bpmn-visualization-example">
             <option value="all_event_boundaries.bpmn">boundary events</option>
             <option value="all_event_types.bpmn">events</option>
-            <option value="all_task_types.bpmn">tasks</option>
+            <option value="all_task_types.bpmn">tasks</option> <!-- WARN: doesn't exist. TODO create fetch status area to display error -->
         </select>
         <button id="btn-open-bpmn-visualization-example">Open bpmn-visualization example</button>
+        <p/>
+        <input type="text" id="input-open-url" placeholder="path to diagram" /><button id="btn-open-url">Open URL</button>
+        <strong>Example:</strong> <i>https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/A.2.1.bpmn</i></strong>
     </div>
     <div id="btn-group-export" class="btn-group btn-group-export">
         <input type="button" class="btn-common btn-download-svg" id="btn-export-svg" title="Download as SVG image"/>
