@@ -278,15 +278,21 @@ describe('mxgraph renderer', () => {
           const shape = newShape(newShapeBpmnActivity(bpmnKind, [markerKind]), newLabel({ name: 'Arial' }));
           expect(computeStyle(shape)).toEqual(`${bpmnKind};bpmn.markers=${markerKind};fontFamily=Arial`);
         });
+
+        if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
+          it(`${bpmnKind} with Loop & Expand (collapsed) markers`, () => {
+            const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, [markerKind, ShapeBpmnMarkerKind.EXPAND]));
+            expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded;bpmn.markers=${markerKind},expand`);
+          });
+        }
+
+        if (bpmnKind == ShapeBpmnElementKind.CALL_ACTIVITY) {
+          it(`${bpmnKind} with Loop & Expand (collapsed) markers`, () => {
+            const shape = newShape(newShapeBpmnActivity(bpmnKind, [markerKind, ShapeBpmnMarkerKind.EXPAND]));
+            expect(computeStyle(shape)).toEqual(`callActivity;bpmn.markers=${markerKind},expand`);
+          });
+        }
       },
     );
-
-    // TODO same test when supporting CALL_ACTIVITY isExpanded
-    if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
-      it(`${bpmnKind} with Loop marker and isExpanded=false (collapsed)`, () => {
-        const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND]));
-        expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded;bpmn.markers=loop,expand`);
-      });
-    }
   });
 });
