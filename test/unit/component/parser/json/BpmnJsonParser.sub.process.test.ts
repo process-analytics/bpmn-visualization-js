@@ -18,6 +18,7 @@ import { parseJsonAndExpectOnlySubProcess, verifyShape } from './JsonTestUtils';
 import each from 'jest-each';
 import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
+import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
 
 describe('parse bpmn as json for sub-process', () => {
   each([
@@ -25,9 +26,9 @@ describe('parse bpmn as json for sub-process', () => {
     ['event', true, ShapeBpmnSubProcessKind.EVENT],
   ]).describe('parse bpmn as json for %s sub-process', (bpmnSubProcessKind: string, triggeredByEvent: boolean, expectedShapeBpmnSubProcessKind: ShapeBpmnSubProcessKind) => {
     each([
-      ['expanded', true],
-      ['collapsed', false],
-    ]).describe(`parse bpmn as json for %s ${bpmnSubProcessKind} sub-process`, (expandedKind: string, isExpanded: boolean) => {
+      ['expanded', true, []],
+      ['collapsed', false, [ShapeBpmnMarkerKind.EXPAND]],
+    ]).describe(`parse bpmn as json for %s ${bpmnSubProcessKind} sub-process`, (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: ShapeBpmnMarkerKind[]) => {
       const processWithSubProcessAsObject = {} as TProcess;
       processWithSubProcessAsObject['subProcess'] = {
         id: `sub-process_id_0`,
@@ -66,13 +67,13 @@ describe('parse bpmn as json for sub-process', () => {
             bpmnElementId: 'sub-process_id_0',
             bpmnElementName: 'sub-process name',
             bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+            bpmnElementMarkers: expectedBpmnElementMarkers,
             bounds: {
               x: 362,
               y: 232,
               width: 36,
               height: 45,
             },
-            isExpanded: isExpanded,
           });
         },
       );
@@ -129,7 +130,7 @@ describe('parse bpmn as json for sub-process', () => {
           width: 36,
           height: 45,
         },
-        isExpanded: false,
+        bpmnElementMarkers: [ShapeBpmnMarkerKind.EXPAND],
       });
       verifyShape(model.flowNodes[1], {
         shapeId: 'shape_sub-process_id_1',
@@ -142,7 +143,7 @@ describe('parse bpmn as json for sub-process', () => {
           width: 35,
           height: 46,
         },
-        isExpanded: false,
+        bpmnElementMarkers: [ShapeBpmnMarkerKind.EXPAND],
       });
     });
 
@@ -182,7 +183,7 @@ describe('parse bpmn as json for sub-process', () => {
             width: 35,
             height: 46,
           },
-          isExpanded: false,
+          bpmnElementMarkers: [ShapeBpmnMarkerKind.EXPAND],
         });
       });
     }
