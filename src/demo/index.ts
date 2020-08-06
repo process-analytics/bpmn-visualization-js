@@ -22,6 +22,7 @@ import { downloadAsPng, downloadAsSvg } from './component/download';
 // TODO make this an option that can be updated at runtime + configure which kind of fit
 let fitOnLoad = false;
 export const bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'), { activatePanning: true });
+
 function loadBpmn(bpmn: string): void {
   log('Loading bpmn....');
   bpmnVisualization.load(bpmn);
@@ -58,19 +59,23 @@ document.getElementById('bpmn-file').addEventListener('change', handleFileSelect
 document.getElementById('file-selector').classList.remove('hidden');
 
 document.getElementById('btn-clean').onclick = function() {
-  log('btn-clean click');
-  // hack: clean the graph by loading an empty BPMN file
-  loadBpmn(`<definitions
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
-  targetNamespace="http://www.omg.org/spec/BPMN/20100524/MODEL"
-  id="Definitions_1"
-  exporter="bpmn-visualization" exporterVersion="N/A">
-  <process id="Process_1" isExecutable="false"/>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1"/>
-  </bpmndi:BPMNDiagram>
-</definitions>`);
+  log('clearing mxgraph model');
+  const model = bpmnVisualization.graph.getModel();
+  model.clear();
+  log('mxgraph model cleared');
+
+  // hacky way: clean the graph by loading an empty BPMN file
+  //   loadBpmn(`<definitions
+  //   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  //   xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  //   targetNamespace="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  //   id="Definitions_1"
+  //   exporter="bpmn-visualization" exporterVersion="N/A">
+  //   <process id="Process_1" isExecutable="false"/>
+  //   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+  //     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1"/>
+  //   </bpmndi:BPMNDiagram>
+  // </definitions>`);
 };
 
 // =====================================================================================================================

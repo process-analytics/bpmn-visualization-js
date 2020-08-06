@@ -22,8 +22,11 @@ import Bounds from '../../model/bpmn/Bounds';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
+import Logger from '../Logger';
 
 export default class MxGraphRenderer {
+  private logger: Logger = new Logger('Renderer');
+
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
 
   public render(bpmnModel: BpmnModel): void {
