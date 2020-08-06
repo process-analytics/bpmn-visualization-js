@@ -14,7 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import ShapeBpmnElement, { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, {
+  ShapeBpmnActivity,
+  ShapeBpmnBoundaryEvent,
+  ShapeBpmnCallActivity,
+  ShapeBpmnEvent,
+  ShapeBpmnSubProcess,
+} from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/edge/Flow';
 import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
@@ -24,7 +30,7 @@ import { ShapeBpmnSubProcessKind } from '../../../../model/bpmn/shape/ShapeBpmnS
 import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
 import { TProcess } from '../../xml/bpmn-json-model/baseElement/rootElement/rootElement';
 import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../xml/bpmn-json-model/baseElement/flowNode/event';
-import { TActivity, TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
+import { TActivity, TCallActivity, TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
 import { TLane, TLaneSet } from '../../xml/bpmn-json-model/baseElement/baseElement';
 import { TFlowNode, TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement';
 import { TAssociation, TTextAnnotation } from '../../xml/bpmn-json-model/baseElement/artifact';
@@ -34,7 +40,7 @@ import { ensureIsArray } from './ConverterUtil';
 import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 import { TEventBasedGateway } from '../../xml/bpmn-json-model/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/task';
-import { ShapeBpmnSubProcess } from '../../../../model/bpmn/shape/ShapeBpmnElement';
+import { ShapeBpmnCallActivityKind } from '../../../../model/bpmn/shape/ShapeBpmnCallActivityKind';
 
 const convertedFlowNodeBpmnElements: Map<string, ShapeBpmnElement> = new Map();
 const convertedLaneBpmnElements: Map<string, ShapeBpmnElement> = new Map();
@@ -42,6 +48,7 @@ const convertedProcessBpmnElements: Map<string, ShapeBpmnElement> = new Map();
 const convertedSequenceFlows: Map<string, SequenceFlow> = new Map();
 const convertedAssociationFlows: Map<string, AssociationFlow> = new Map();
 
+const calledElementIdsByCallActivityId: Map<string, string> = new Map();
 const defaultSequenceFlowIds: string[] = [];
 
 export function findFlowNodeBpmnElement(id: string): ShapeBpmnElement {
@@ -79,11 +86,13 @@ export default class ProcessConverter {
       convertedProcessBpmnElements.clear();
       convertedSequenceFlows.clear();
       convertedAssociationFlows.clear();
+      calledElementIdsByCallActivityId.clear();
 
       // Deletes everything in the array, which does hit other references. For better performance.
       defaultSequenceFlowIds.length = 0;
 
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
+      this.setCallActivityKind();
     } catch (e) {
       // TODO error management
       console.error(e as Error);
@@ -144,8 +153,28 @@ export default class ProcessConverter {
       return this.buildShapeBpmnSubProcess(bpmnElement, processId, markers);
     }
 
+    if (ShapeUtil.isCallActivity(kind)) {
+      calledElementIdsByCallActivityId.set(bpmnElement.id, (bpmnElement as TCallActivity).calledElement);
+      return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, processId, markers);
+    }
+
     // @ts-ignore
     return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate, markers);
+  }
+
+  private setCallActivityKind(): void {
+    Array.from(calledElementIdsByCallActivityId.keys()).forEach(callActivityId => {
+      const calledElementId = calledElementIdsByCallActivityId.get(callActivityId);
+      if (convertedProcessBpmnElements.get(calledElementId)) {
+        const shapeBpmnElement = convertedFlowNodeBpmnElements.get(callActivityId) as ShapeBpmnCallActivity;
+        shapeBpmnElement.callActivityKind = ShapeBpmnCallActivityKind.CALLING_PROCESS;
+      } else {
+        convertedFlowNodeBpmnElements.delete(callActivityId);
+
+        // TODO error management
+        console.error('Not possible to find the called element %s of the call activity %s', calledElementId, callActivityId);
+      }
+    });
   }
 
   private buildMarkers(bpmnElement: TActivity): ShapeBpmnMarkerKind[] {

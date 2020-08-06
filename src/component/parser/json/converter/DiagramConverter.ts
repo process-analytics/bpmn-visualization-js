@@ -15,7 +15,7 @@
  */
 import Shape from '../../../../model/bpmn/shape/Shape';
 import Bounds from '../../../../model/bpmn/Bounds';
-import ShapeBpmnElement, { ShapeBpmnSubProcess } from '../../../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
 import { findAssociationFlow, findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, findSequenceFlow } from './ProcessConverter';
@@ -125,7 +125,7 @@ export default class DiagramConverter {
         }
       }
 
-      if (bpmnElement instanceof ShapeBpmnSubProcess && !shape.isExpanded) {
+      if ((bpmnElement instanceof ShapeBpmnSubProcess || bpmnElement instanceof ShapeBpmnCallActivity) && !shape.isExpanded) {
         bpmnElement.markers.push(ShapeBpmnMarkerKind.EXPAND);
       }
 

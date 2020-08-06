@@ -54,6 +54,10 @@ export default class ShapeUtil {
     return this.EVENT_KINDS.includes(kind);
   }
 
+  public static isCallActivity(kind: ShapeBpmnElementKind): boolean {
+    return ShapeBpmnElementKind.CALL_ACTIVITY === kind;
+  }
+
   public static isSubProcess(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.SUB_PROCESS === kind;
   }
