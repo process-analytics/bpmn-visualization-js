@@ -100,6 +100,10 @@ The icon is derived from https://github.com/jgraph/drawio/blob/9394fb0f1430d2c86
 |Sequential Multi-Instance Marker
 |
 |The icon position is currently not centered but absolute, but this will be managed later.
+
+|Parallel Multi-Instance Marker
+|
+|The icon position is currently not centered but absolute, but this will be managed later.
 |===
 
 
