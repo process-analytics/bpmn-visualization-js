@@ -59,6 +59,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
         // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
         // this.configureCanvas(c, x, y, w, h);
         paintParameter.c.setStrokeColor(StyleUtils.getStrokeColor(this.style));
+        paintParameter.c.setFillColor(StyleUtils.getFillColor(this.style));
       });
     }
   }
