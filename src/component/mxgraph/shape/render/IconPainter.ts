@@ -601,12 +601,11 @@ export default class IconPainter {
     const barWidth = originalIconSize.width;
     const barHeight = originalIconSize.height / 5; // 3 bars + 2 interspaces
     canvas.rect(0, 0, barWidth, barHeight);
-    canvas.fillAndStroke();
+    canvas.fill();
     canvas.rect(0, 2 * barHeight, barWidth, barHeight);
-    canvas.fillAndStroke();
+    canvas.fill();
     canvas.rect(0, 4 * barHeight, barWidth, barHeight);
-    canvas.close();
-    canvas.fillAndStroke();
+    canvas.fill();
   }
 
   paintParallelMultiInstanceIcon({ c, ratioFromParent, shape, icon }: PaintParameter): void {
@@ -627,12 +626,11 @@ export default class IconPainter {
     const barHeight = originalIconSize.height;
     canvas.begin();
     canvas.rect(0, 0, barWidth, barHeight);
-    canvas.fillAndStroke();
+    canvas.fill();
     canvas.rect(2 * barWidth, 0, barWidth, barHeight);
-    canvas.fillAndStroke();
+    canvas.fill();
     canvas.rect(4 * barWidth, 0, barWidth, barHeight);
-    canvas.close();
-    canvas.fillAndStroke();
+    canvas.fill();
   }
 }
 
