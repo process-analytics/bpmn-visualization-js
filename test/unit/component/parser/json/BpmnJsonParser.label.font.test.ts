@@ -32,7 +32,6 @@ describe('parse bpmn as json for label font', () => {
     ['userTask'],
     ['serviceTask'],
     ['receiveTask'],
-    ['callActivity'],
     ['subProcess'],
     ['textAnnotation'],
     // TODO: To uncomment when we support complex gateway
@@ -64,6 +63,7 @@ describe('parse bpmn as json for label font', () => {
                 Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 BPMNLabel: {
                   id: 'label_id',
+                  isExpanded: true,
                   labelStyle: 'style_id',
                 },
               },
@@ -85,6 +85,48 @@ describe('parse bpmn as json for label font', () => {
       verifyLabelFont(model.flowNodes[0].label, { name: 'Arial', size: 11.0 });
     },
   );
+
+  it("should convert as Shape with Font, when a BPMNShape (attached to callActivity & who references a BPMNLabelStyle with font) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: [
+          {
+            id: 'Process_1',
+            callActivity: { id: 'source_id_0', calledElement: 'Process_2' },
+          },
+          { id: 'Process_2' },
+        ],
+        BPMNDiagram: {
+          id: 'BpmnDiagram_1',
+          BPMNPlane: {
+            id: 'BpmnPlane_1',
+            BPMNShape: {
+              id: 'shape_source_id_0',
+              bpmnElement: 'source_id_0',
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              BPMNLabel: {
+                id: 'label_id',
+                isExpanded: true,
+                labelStyle: 'style_id',
+              },
+            },
+          },
+          BPMNLabelStyle: {
+            id: 'style_id',
+            Font: {
+              name: 'Arial',
+              size: 11.0,
+            },
+          },
+        },
+      },
+    };
+
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+    verifyLabelFont(model.flowNodes[0].label, { name: 'Arial', size: 11.0 });
+  });
 
   it("should convert as Edge with Font, when a BPMNEdge (who references a BPMNLabelStyle with font) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     const json = {

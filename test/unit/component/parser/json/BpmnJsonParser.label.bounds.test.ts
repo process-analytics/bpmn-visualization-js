@@ -26,7 +26,6 @@ describe('parse bpmn as json for label bounds', () => {
     ['userTask'],
     ['serviceTask'],
     ['receiveTask'],
-    ['callActivity'],
     ['subProcess'],
     ['textAnnotation'],
     // TODO: To uncomment when we support complex gateway
@@ -58,6 +57,7 @@ describe('parse bpmn as json for label bounds', () => {
                 BPMNLabel: {
                   id: 'label_id',
                   Bounds: { x: 25, y: 26, width: 27, height: 28 },
+                  isExpanded: true,
                 },
               },
             },
@@ -93,6 +93,82 @@ describe('parse bpmn as json for label bounds', () => {
         },
       };
       (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
+
+      const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+      expect(model.flowNodes[0].label).toBeUndefined();
+    });
+  });
+
+  each([
+    ['callActivity'],
+    // TODO: To uncomment when we support complex gateway
+    //['complexGateway'],
+    // TODO: To uncomment when we support manualTask
+    //['manualTask'],
+    // TODO: To uncomment when we support scriptTask
+    //['scriptTask'],
+    // TODO: To uncomment when we support sendTask
+    //['sendTask'],
+    // TODO: To uncomment when we support businessRuleTask
+    //['businessRuleTask'],
+  ]).describe('parse bpmn as json for label bounds on %s', sourceKind => {
+    it(`should convert as Shape, when a BPMNShape (attached to ${sourceKind} & with bounds with all attributes) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
+      const json = {
+        definitions: {
+          targetNamespace: '',
+          process: [
+            {
+              id: 'Process_1',
+              callActivity: { id: 'source_id_0', calledElement: 'Process_2' },
+            },
+            { id: 'Process_2' },
+          ],
+          BPMNDiagram: {
+            id: 'BpmnDiagram_1',
+            BPMNPlane: {
+              id: 'BpmnPlane_1',
+              BPMNShape: {
+                id: 'shape_source_id_0',
+                bpmnElement: 'source_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                BPMNLabel: {
+                  id: 'label_id',
+                  Bounds: { x: 25, y: 26, width: 27, height: 28 },
+                  isExpanded: true,
+                },
+              },
+            },
+          },
+        },
+      };
+
+      const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+      verifyLabelBounds(model.flowNodes[0].label, { x: 25, y: 26, width: 27, height: 28 });
+    });
+
+    it(`should convert as Shape, when a BPMNShape (attached to ${sourceKind} & without bounds) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
+      const json = {
+        definitions: {
+          targetNamespace: '',
+          process: [{ callActivity: { id: 'source_id_0', calledElement: 'Process_2' } }, { id: 'Process_2' }],
+          BPMNDiagram: {
+            id: 'BpmnDiagram_1',
+            BPMNPlane: {
+              id: 'BpmnPlane_1',
+              BPMNShape: {
+                id: 'BPMNShape_id_0',
+                bpmnElement: 'source_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                BPMNLabel: {
+                  id: 'label_id',
+                },
+              },
+            },
+          },
+        },
+      };
 
       const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 

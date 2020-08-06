@@ -18,7 +18,6 @@ import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 
 describe.each([
-  ['callActivity', ShapeBpmnElementKind.CALL_ACTIVITY],
   ['task', ShapeBpmnElementKind.TASK],
   ['serviceTask', ShapeBpmnElementKind.TASK_SERVICE],
   ['userTask', ShapeBpmnElementKind.TASK_USER],
@@ -132,7 +131,7 @@ describe.each([
     });
   });
 
-  if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.TASK_RECEIVE || expectedShapeBpmnElementKind === ShapeBpmnElementKind.CALL_ACTIVITY) {
+  if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.TASK_RECEIVE) {
     it(`should convert as Shape, when a ${bpmnKind} (with/without instantiate) is an attribute (as array) of 'process'`, () => {
       const json = {
         definitions: {

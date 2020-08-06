@@ -27,7 +27,6 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     ['task', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['userTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['serviceTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-    ['callActivity', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['receiveTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['subProcess', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support complex gateway
@@ -40,21 +39,78 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     //['sendTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-  ]).it(`should convert as Edge, when an sequence flow (defined as conditional) is an attribute (as object) of 'process' (as object)`, (sourceKind, expectedSequenceFlowKind) => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        process: {
-          id: 'Process_1',
-          sequenceFlow: {
-            id: 'sequenceFlow_id_0',
-            sourceRef: 'source_id_0',
-            targetRef: 'targetRef_RLk',
-            conditionExpression: {
-              evaluatesToTypeRef: 'java:java.lang.Boolean',
+  ]).it(
+    `should convert as Edge, when an sequence flow (defined as conditional in %s) is an attribute (as object) of 'process' (as object)`,
+    (sourceKind, expectedSequenceFlowKind) => {
+      const json = {
+        definitions: {
+          targetNamespace: '',
+          process: {
+            id: 'Process_1',
+            sequenceFlow: {
+              id: 'sequenceFlow_id_0',
+              sourceRef: 'source_id_0',
+              targetRef: 'targetRef_RLk',
+              conditionExpression: {
+                evaluatesToTypeRef: 'java:java.lang.Boolean',
+              },
+            },
+          },
+          BPMNDiagram: {
+            id: 'BpmnDiagram_1',
+            BPMNPlane: {
+              id: 'BpmnPlane_1',
+              BPMNShape: {
+                id: 'shape_source_id_0',
+                bpmnElement: 'source_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              },
+              BPMNEdge: {
+                id: 'edge_sequenceFlow_id_0',
+                bpmnElement: 'sequenceFlow_id_0',
+                waypoint: [{ x: 10, y: 10 }],
+              },
             },
           },
         },
+      };
+      const process = json.definitions.process as TProcess;
+      process[`${sourceKind}`] = { id: 'source_id_0' };
+      (process.sequenceFlow as TSequenceFlow).conditionExpression['#text'] = '&quot;Contract to be written&quot;.equals(loanRequested.status)';
+
+      const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+
+      verifyEdge(model.edges[0], {
+        edgeId: 'edge_sequenceFlow_id_0',
+        bpmnElementId: 'sequenceFlow_id_0',
+        bpmnElementName: undefined,
+        bpmnElementSourceRefId: 'source_id_0',
+        bpmnElementTargetRefId: 'targetRef_RLk',
+        bpmnElementSequenceFlowKind: expectedSequenceFlowKind,
+        waypoints: [new Waypoint(10, 10)],
+      });
+    },
+  );
+
+  it(`should convert as Edge, when an sequence flow (defined as conditional in callActivity) is an attribute (as object) of 'process' (as array)`, () => {
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: [
+          {
+            id: 'Process_1',
+            callActivity: { id: 'source_id_0', calledElement: 'Process_2' },
+            sequenceFlow: {
+              id: 'sequenceFlow_id_0',
+              sourceRef: 'source_id_0',
+              targetRef: 'targetRef_RLk',
+              conditionExpression: {
+                evaluatesToTypeRef: 'java:java.lang.Boolean',
+              },
+            },
+          },
+          { id: 'Process_2' },
+        ],
         BPMNDiagram: {
           id: 'BpmnDiagram_1',
           BPMNPlane: {
@@ -63,6 +119,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
               id: 'shape_source_id_0',
               bpmnElement: 'source_id_0',
               Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              isExpanded: true,
             },
             BPMNEdge: {
               id: 'edge_sequenceFlow_id_0',
@@ -73,9 +130,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
         },
       },
     };
-    const process = json.definitions.process as TProcess;
-    process[`${sourceKind}`] = { id: 'source_id_0' };
-    (process.sequenceFlow as TSequenceFlow).conditionExpression['#text'] = '&quot;Contract to be written&quot;.equals(loanRequested.status)';
+    (json.definitions.process[0].sequenceFlow as TSequenceFlow).conditionExpression['#text'] = '&quot;Contract to be written&quot;.equals(loanRequested.status)';
 
     const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
 
@@ -85,7 +140,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'source_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementSequenceFlowKind: expectedSequenceFlowKind,
+      bpmnElementSequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
       waypoints: [new Waypoint(10, 10)],
     });
   });
