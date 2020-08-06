@@ -18,5 +18,5 @@ import Bounds from '../Bounds';
 import Label from '../Label';
 
 export default class Shape {
-  constructor(readonly id?: string, readonly bpmnElement?: ShapeBpmnElement, readonly bounds?: Bounds, readonly label?: Label, readonly isExpanded: boolean = false) {}
+  constructor(readonly id?: string, readonly bpmnElement?: ShapeBpmnElement, readonly bounds?: Bounds, readonly label?: Label) {}
 }

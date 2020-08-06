@@ -15,7 +15,7 @@
  */
 import Shape from '../../../../model/bpmn/shape/Shape';
 import Bounds from '../../../../model/bpmn/Bounds';
-import ShapeBpmnElement from '../../../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnSubProcess } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
 import { findAssociationFlow, findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, findSequenceFlow } from './ProcessConverter';
@@ -26,6 +26,7 @@ import { MessageVisibleKind } from '../../../../model/bpmn/edge/MessageVisibleKi
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../xml/bpmn-json-model/BPMNDI';
 import { Point } from '../../xml/bpmn-json-model/DC';
 import { ensureIsArray } from './ConverterUtil';
+import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 
 function findProcessElement(participantId: string): ShapeBpmnElement {
   const participant = findProcessRefParticipant(participantId);
@@ -124,8 +125,12 @@ export default class DiagramConverter {
         }
       }
 
+      if (bpmnElement instanceof ShapeBpmnSubProcess && !shape.isExpanded) {
+        bpmnElement.markers.push(ShapeBpmnMarkerKind.EXPAND);
+      }
+
       const label = this.deserializeLabel(shape.BPMNLabel, shape.id);
-      return new Shape(shape.id, bpmnElement, bounds, label, shape.isExpanded);
+      return new Shape(shape.id, bpmnElement, bounds, label);
     }
   }
 

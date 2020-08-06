@@ -51,7 +51,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
           case ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL:
             this.iconPainter.paintParallelMultiInstanceIcon(paintParameter);
             break;
-          case 'expand':
+          case ShapeBpmnMarkerKind.EXPAND:
             this.iconPainter.paintExpandIcon(paintParameter);
             break;
         }

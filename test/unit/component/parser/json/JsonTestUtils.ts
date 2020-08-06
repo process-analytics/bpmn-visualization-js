@@ -19,7 +19,7 @@ import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/
 import Edge from '../../../../../src/model/bpmn/edge/Edge';
 import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
-import { ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
+import { ShapeBpmnActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import Label from '../../../../../src/model/bpmn/Label';
@@ -37,8 +37,10 @@ export interface ExpectedShape {
   bpmnElementKind: ShapeBpmnElementKind;
   parentId?: string;
   bounds?: ExpectedBounds;
-  isExpanded?: boolean;
-  bpmnElementMarker?: ShapeBpmnMarkerKind;
+}
+
+export interface ExpectedActivityShape extends ExpectedShape {
+  bpmnElementMarkers?: ShapeBpmnMarkerKind[];
 }
 
 interface ExpectedEdge {
@@ -118,21 +120,23 @@ export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: BpmnJsonModel, num
   return parseJsonAndExpect(json, 0, 0, numberOfExpectedFlowNodes, numberOfExpectedEdges);
 }
 
-export function verifyShape(shape: Shape, expectedShape: ExpectedShape): void {
+export function verifyShape(shape: Shape, expectedShape: ExpectedShape | ExpectedActivityShape): void {
   expect(shape.id).toEqual(expectedShape.shapeId);
-
-  if (shape.isExpanded) {
-    expect(shape.isExpanded).toEqual(expectedShape.isExpanded);
-  } else {
-    expect(shape.isExpanded).toBeFalsy();
-  }
 
   const bpmnElement = shape.bpmnElement;
   expect(bpmnElement.id).toEqual(expectedShape.bpmnElementId);
   expect(bpmnElement.name).toEqual(expectedShape.bpmnElementName);
   expect(bpmnElement.kind).toEqual(expectedShape.bpmnElementKind);
   expect(bpmnElement.parentId).toEqual(expectedShape.parentId);
-  expect(bpmnElement.marker).toEqual(expectedShape.bpmnElementMarker);
+
+  if (bpmnElement instanceof ShapeBpmnActivity) {
+    const expectedActivityShape = expectedShape as ExpectedActivityShape;
+    if (expectedActivityShape.bpmnElementMarkers) {
+      expect(bpmnElement.markers).toEqual(expectedActivityShape.bpmnElementMarkers);
+    } else {
+      expect(bpmnElement.markers).toHaveLength(0);
+    }
+  }
 
   const bounds = shape.bounds;
   const expectedBounds = expectedShape.bounds;

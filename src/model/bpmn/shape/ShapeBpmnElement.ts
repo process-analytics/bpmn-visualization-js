@@ -20,16 +20,18 @@ import { ShapeBpmnSubProcessKind } from './ShapeBpmnSubProcessKind';
 import { ShapeBpmnMarkerKind } from './ShapeBpmnMarkerKind';
 
 export default class ShapeBpmnElement {
-  private _marker?: ShapeBpmnMarkerKind;
-
   constructor(readonly id: string, readonly name: string, readonly kind: ShapeBpmnElementKind, public parentId?: string, readonly instantiate: boolean = false) {}
+}
 
-  get marker(): ShapeBpmnMarkerKind {
-    return this._marker;
+export class ShapeBpmnActivity extends ShapeBpmnElement {
+  constructor(id: string, name: string, kind: ShapeBpmnElementKind, parentId: string, instantiate?: boolean, readonly markers: ShapeBpmnMarkerKind[] = []) {
+    super(id, name, kind, parentId, instantiate);
   }
+}
 
-  set marker(value: ShapeBpmnMarkerKind) {
-    this._marker = value;
+export class ShapeBpmnSubProcess extends ShapeBpmnActivity {
+  constructor(id: string, name: string, readonly subProcessKind: ShapeBpmnSubProcessKind, parentId: string, markers?: ShapeBpmnMarkerKind[]) {
+    super(id, name, ShapeBpmnElementKind.SUB_PROCESS, parentId, undefined, markers);
   }
 }
 
@@ -42,12 +44,6 @@ export class ShapeBpmnEvent extends ShapeBpmnElement {
 export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
   constructor(id: string, name: string, eventKind: ShapeBpmnEventKind, parentId: string, readonly isInterrupting: boolean = true) {
     super(id, name, ShapeBpmnElementKind.EVENT_BOUNDARY, eventKind, parentId);
-  }
-}
-
-export class ShapeBpmnSubProcess extends ShapeBpmnElement {
-  constructor(id: string, name: string, readonly subProcessKind: ShapeBpmnSubProcessKind, parentId: string) {
-    super(id, name, ShapeBpmnElementKind.SUB_PROCESS, parentId);
   }
 }
 

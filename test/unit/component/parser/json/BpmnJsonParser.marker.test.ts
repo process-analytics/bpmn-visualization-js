@@ -44,7 +44,7 @@ describe.each([
       ['empty object', {}],
       ['array with empty string & object', ['', {}]],
     ])(
-      `should convert as Shape with ${expectedMarkerKind} marker, when '${bpmnLoopCharacteristicsKind}' is an attribute (as %s) of '${bpmnKind}'`,
+      `should convert as Shape with ${expectedMarkerKind} marker, when '${bpmnLoopCharacteristicsKind}' is an attribute (as %s) of '${bpmnKind}' and BPMNShape is expanded`,
       (
         title: string,
         loopCharacteristics:
@@ -64,6 +64,7 @@ describe.each([
                   id: `shape_${bpmnKind}_id_0`,
                   bpmnElement: `${bpmnKind}_id_0`,
                   Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  isExpanded: true,
                 },
               },
             },
@@ -82,7 +83,7 @@ describe.each([
           bpmnElementId: `${bpmnKind}_id_0`,
           bpmnElementName: `${bpmnKind} name`,
           bpmnElementKind: expectedShapeBpmnElementKind,
-          bpmnElementMarker: expectedMarkerKind,
+          bpmnElementMarkers: [expectedMarkerKind],
           bounds: {
             x: 362,
             y: 232,
@@ -92,6 +93,49 @@ describe.each([
         });
       },
     );
+
+    if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.SUB_PROCESS) {
+      it(`should convert as Shape with ${expectedMarkerKind} & expand markers, when '${bpmnLoopCharacteristicsKind}' is an attribute of '${bpmnKind}' and BPMNShape is NOT expanded`, () => {
+        const json = {
+          definitions: {
+            targetNamespace: '',
+            process: {},
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: {
+                  id: `shape_${bpmnKind}_id_0`,
+                  bpmnElement: `${bpmnKind}_id_0`,
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  isExpanded: false,
+                },
+              },
+            },
+          },
+        };
+        (json.definitions.process as TProcess)[bpmnKind] = {
+          id: `${bpmnKind}_id_0`,
+          name: `${bpmnKind} name`,
+        };
+        (json.definitions.process as TProcess)[bpmnKind][bpmnLoopCharacteristicsKind] = '';
+
+        const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+        verifyShape(model.flowNodes[0], {
+          shapeId: `shape_${bpmnKind}_id_0`,
+          bpmnElementId: `${bpmnKind}_id_0`,
+          bpmnElementName: `${bpmnKind} name`,
+          bpmnElementKind: expectedShapeBpmnElementKind,
+          bpmnElementMarkers: [expectedMarkerKind, ShapeBpmnMarkerKind.EXPAND],
+          bounds: {
+            x: 362,
+            y: 232,
+            width: 36,
+            height: 45,
+          },
+        });
+      });
+    }
   });
   describe.each([
     [true, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
@@ -101,7 +145,7 @@ describe.each([
       ['object', { isSequential }],
       ['array with object', [{ isSequential }]],
     ])(
-      `should convert as Shape with ${expectedMarkerKind} marker, when 'isSequential' is an attribute (as ${isSequential}) of 'multiInstanceLoopCharacteristics' (as %s) of '${bpmnKind}'`,
+      `should convert as Shape with ${expectedMarkerKind} marker, when 'isSequential' is an attribute (as ${isSequential}) of 'multiInstanceLoopCharacteristics' (as %s) of '${bpmnKind}'  and BPMNShape is expanded`,
       (title: string, loopCharacteristics: TMultiInstanceLoopCharacteristics | TMultiInstanceLoopCharacteristics[]) => {
         const json = {
           definitions: {
@@ -114,6 +158,7 @@ describe.each([
                   id: `shape_${bpmnKind}_id_0`,
                   bpmnElement: `${bpmnKind}_id_0`,
                   Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  isExpanded: true,
                 },
               },
             },
@@ -132,7 +177,7 @@ describe.each([
           bpmnElementId: `${bpmnKind}_id_0`,
           bpmnElementName: `${bpmnKind} name`,
           bpmnElementKind: expectedShapeBpmnElementKind,
-          bpmnElementMarker: expectedMarkerKind,
+          bpmnElementMarkers: [expectedMarkerKind],
           bounds: {
             x: 362,
             y: 232,
@@ -142,5 +187,48 @@ describe.each([
         });
       },
     );
+
+    if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.SUB_PROCESS) {
+      it(`should convert as Shape with ${expectedMarkerKind} & expand markers, when 'isSequential' is an attribute (as ${isSequential}) of 'multiInstanceLoopCharacteristics' of '${bpmnKind}' and BPMNShape is NOT expanded`, () => {
+        const json = {
+          definitions: {
+            targetNamespace: '',
+            process: {},
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: {
+                  id: `shape_${bpmnKind}_id_0`,
+                  bpmnElement: `${bpmnKind}_id_0`,
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  isExpanded: false,
+                },
+              },
+            },
+          },
+        };
+        (json.definitions.process as TProcess)[bpmnKind] = {
+          id: `${bpmnKind}_id_0`,
+          name: `${bpmnKind} name`,
+          multiInstanceLoopCharacteristics: { isSequential },
+        };
+
+        const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+        verifyShape(model.flowNodes[0], {
+          shapeId: `shape_${bpmnKind}_id_0`,
+          bpmnElementId: `${bpmnKind}_id_0`,
+          bpmnElementName: `${bpmnKind} name`,
+          bpmnElementKind: expectedShapeBpmnElementKind,
+          bpmnElementMarkers: [expectedMarkerKind, ShapeBpmnMarkerKind.EXPAND],
+          bounds: {
+            x: 362,
+            y: 232,
+            width: 36,
+            height: 45,
+          },
+        });
+      });
+    }
   });
 });
