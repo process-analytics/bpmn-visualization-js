@@ -7,6 +7,8 @@
     "target": "es6",
     "noImplicitAny": true,
     "strictBindCallApply": true,
+    "alwaysStrict": true,
+    "strictFunctionTypes": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
