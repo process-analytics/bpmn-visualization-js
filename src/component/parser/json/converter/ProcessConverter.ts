@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/edge/Flow';
 import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
@@ -34,6 +34,7 @@ import { ensureIsArray } from './ConverterUtil';
 import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 import { TEventBasedGateway } from '../../xml/bpmn-json-model/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/task';
+import { ShapeBpmnSubProcess } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 
 const convertedFlowNodeBpmnElements: Map<string, ShapeBpmnElement> = new Map();
 const convertedLaneBpmnElements: Map<string, ShapeBpmnElement> = new Map();
@@ -115,19 +116,13 @@ export default class ProcessConverter {
 
       if (ShapeUtil.isEvent(kind)) {
         shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, processId);
-      } else if (ShapeUtil.isSubProcess(kind)) {
-        shapeBpmnElement = this.buildShapeBpmnSubProcess(bpmnElement, processId);
+      } else if (ShapeUtil.isActivity(kind)) {
+        shapeBpmnElement = this.buildShapeBpmnActivity(bpmnElement, kind, processId);
       } else {
         // @ts-ignore We know that the text & name fields are not on all types, but it's already tested
         const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
         // @ts-ignore We know that the instantiate field is not on all types, but it's already tested
         shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, processId, bpmnElement.instantiate);
-      }
-
-      // @ts-ignore We know that the standardLoopCharacteristics field is not on all types, but it's already tested
-      const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
-      if (ShapeUtil.isActivity(kind) && (standardLoopCharacteristics || standardLoopCharacteristics === '')) {
-        shapeBpmnElement.marker = ShapeBpmnMarkerKind.LOOP;
       }
 
       // @ts-ignore We know that the default field is not on all types, but it's already tested
@@ -140,6 +135,33 @@ export default class ProcessConverter {
         convertedFlowNodeBpmnElements.set(shapeBpmnElement.id, shapeBpmnElement);
       }
     });
+  }
+
+  private buildShapeBpmnActivity(bpmnElement: TActivity, kind: ShapeBpmnElementKind, processId: string): ShapeBpmnActivity {
+    const markers = this.buildMarkers(bpmnElement);
+
+    if (ShapeUtil.isSubProcess(kind)) {
+      return this.buildShapeBpmnSubProcess(bpmnElement, processId, markers);
+    }
+
+    // @ts-ignore
+    return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate, markers);
+  }
+
+  private buildMarkers(bpmnElement: TActivity): ShapeBpmnMarkerKind[] {
+    const markers: ShapeBpmnMarkerKind[] = [];
+    // @ts-ignore We know that the standardLoopCharacteristics field is not on all types, but it's already tested
+    const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
+    // @ts-ignore We know that the multiInstanceLoopCharacteristics field is not on all types, but it's already tested
+    const multiInstanceLoopCharacteristics = ensureIsArray(bpmnElement.multiInstanceLoopCharacteristics, true)[0];
+    if (standardLoopCharacteristics || standardLoopCharacteristics === '') {
+      markers.push(ShapeBpmnMarkerKind.LOOP);
+    } else if (multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.isSequential) {
+      markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL);
+    } else if ((multiInstanceLoopCharacteristics && !multiInstanceLoopCharacteristics.isSequential) || multiInstanceLoopCharacteristics === '') {
+      markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL);
+    }
+    return markers;
   }
 
   private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventKind, processId: string): ShapeBpmnEvent {
@@ -202,11 +224,11 @@ export default class ProcessConverter {
       });
   }
 
-  private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string): ShapeBpmnSubProcess {
+  private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
     if (!bpmnElement.triggeredByEvent) {
-      return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, processId);
+      return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, processId, markers);
     }
-    return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EVENT, processId);
+    return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EVENT, processId, markers);
   }
 
   private buildLaneSetBpmnElements(processId: string, laneSets: Array<TLaneSet> | TLaneSet): void {

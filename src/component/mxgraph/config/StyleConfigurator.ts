@@ -21,12 +21,13 @@ import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
 import Shape from '../../../model/bpmn/shape/Shape';
 import Edge from '../../../model/bpmn/edge/Edge';
 import Bounds from '../../../model/bpmn/Bounds';
-import ShapeBpmnElement, { ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../model/bpmn/shape/ShapeBpmnElement';
+import { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../model/bpmn/shape/ShapeBpmnElement';
 import { Font } from '../../../model/bpmn/Label';
 import { FlowKind } from '../../../model/bpmn/edge/FlowKind';
-import Flow, { AssociationFlow, SequenceFlow } from '../../../model/bpmn/edge/Flow';
+import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/edge/Flow';
 import { MessageVisibleKind } from '../../../model/bpmn/edge/MessageVisibleKind';
 import { AssociationDirectionKind } from '../../../model/bpmn/edge/AssociationDirectionKind';
+import { ShapeBpmnMarkerKind } from '../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 
 // TODO 'clone' function is missing in mxgraph-type-definitions@1.0.2
 declare const mxUtils: typeof mxgraph.mxUtils;
@@ -276,32 +277,27 @@ export default class StyleConfigurator {
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
     const styleValues = new Map<string, string | number>();
-
     const styles: string[] = [bpmnCell.bpmnElement?.kind as string];
+
+    const bpmnElement = bpmnCell.bpmnElement;
     if (bpmnCell instanceof Shape) {
-      const bpmnElement: ShapeBpmnElement = bpmnCell.bpmnElement;
-      const markers: string[] = [];
       if (bpmnElement instanceof ShapeBpmnEvent) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
 
         if (bpmnElement instanceof ShapeBpmnBoundaryEvent) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
         }
-      } else if (bpmnElement instanceof ShapeBpmnSubProcess) {
-        styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
-        if (!bpmnCell.isExpanded) {
-          markers.push('expand');
+      } else if (bpmnElement instanceof ShapeBpmnActivity) {
+        if (bpmnElement instanceof ShapeBpmnSubProcess) {
+          styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
+        }
+
+        const markers: ShapeBpmnMarkerKind[] = bpmnElement.markers;
+        if (markers.length > 0) {
+          styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
         }
       }
-
-      if (bpmnElement.marker) {
-        markers.push(bpmnElement.marker);
-      }
-      if (markers.length > 0) {
-        styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
-      }
     } else {
-      const bpmnElement: Flow = bpmnCell.bpmnElement;
       if (bpmnElement instanceof SequenceFlow) {
         styles.push(bpmnElement.sequenceFlowKind);
       }
@@ -347,7 +343,7 @@ export default class StyleConfigurator {
       }
     }
     // when no label bounds, adjust the default style dynamically
-    else if (bpmnCell instanceof Shape && bpmnCell.isExpanded && bpmnCell.bpmnElement instanceof ShapeBpmnSubProcess) {
+    else if (bpmnCell instanceof Shape && bpmnElement instanceof ShapeBpmnSubProcess && !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)) {
       styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
     }
 

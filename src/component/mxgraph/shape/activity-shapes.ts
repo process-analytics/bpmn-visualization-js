@@ -34,25 +34,31 @@ export abstract class BaseActivityShape extends mxRectangleShape {
 
   public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
-    this.paintMarkerIcons(c, x, y, w, h);
+    this.paintMarkerIcons(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
   }
 
-  protected paintMarkerIcons(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  protected paintMarkerIcons(paintParameter: PaintParameter): void {
     const markers = StyleUtils.getBpmnMarkers(this.style);
     if (markers) {
       markers.split(',').forEach(marker => {
         switch (marker) {
           case ShapeBpmnMarkerKind.LOOP:
-            this.iconPainter.paintLoopIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
+            this.iconPainter.paintLoopIcon(paintParameter);
             break;
-          case 'expand':
-            this.iconPainter.paintExpandIcon(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
+          case ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL:
+            this.iconPainter.paintSequentialMultiInstanceIcon(paintParameter);
+            break;
+          case ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL:
+            this.iconPainter.paintParallelMultiInstanceIcon(paintParameter);
+            break;
+          case ShapeBpmnMarkerKind.EXPAND:
+            this.iconPainter.paintExpandIcon(paintParameter);
             break;
         }
         // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
         // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
         // this.configureCanvas(c, x, y, w, h);
-        c.setStrokeColor(StyleUtils.getStrokeColor(this.style));
+        paintParameter.c.setStrokeColor(StyleUtils.getStrokeColor(this.style));
       });
     }
   }
