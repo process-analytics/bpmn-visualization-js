@@ -50,7 +50,7 @@ function newShape(bpmnElement: ShapeBpmnElement, label?: Label, isExpanded = fal
 
 /**
  * Returns a new `ShapeBpmnElement` instance with arbitrary id and name.
- * @param kind the `ShapeBpmnElementKind` to set in the new `ShapeBpmnElement` instance
+ * `kind` is the `ShapeBpmnElementKind` to set in the new `ShapeBpmnElement` instance
  */
 function newShapeBpmnElement(kind: ShapeBpmnElementKind, marker?: ShapeBpmnMarkerKind): ShapeBpmnElement {
   const bpmnElement = new ShapeBpmnElement('id', 'name', kind);
@@ -68,8 +68,12 @@ function newShapeBpmnBoundaryEvent(eventKind: ShapeBpmnEventKind, isInterrupting
   return new ShapeBpmnBoundaryEvent('id', 'name', eventKind, null, isInterrupting);
 }
 
-function newShapeBpmnSubProcess(subPorcessKind: ShapeBpmnSubProcessKind): ShapeBpmnSubProcess {
-  return new ShapeBpmnSubProcess('id', 'name', subPorcessKind, null);
+function newShapeBpmnSubProcess(subProcessKind: ShapeBpmnSubProcessKind, marker?: ShapeBpmnMarkerKind): ShapeBpmnSubProcess {
+  const bpmnElement = new ShapeBpmnSubProcess('id', 'name', subProcessKind, null);
+  if (marker) {
+    bpmnElement.marker = marker;
+  }
+  return bpmnElement;
 }
 
 /**
@@ -230,8 +234,9 @@ describe('mxgraph renderer', () => {
       ['collapsed', false],
     ]).it('%s embedded sub-process without label bounds', (testName, isExpanded: boolean) => {
       const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED), newLabel({ name: 'Arial' }), isExpanded);
+      const additionalMarkerStyle = !isExpanded ? ';bpmn.markers=expand' : '';
       const additionalTerminalStyle = isExpanded ? ';verticalAlign=top' : '';
-      expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded;bpmn.isExpanded=${isExpanded};fontFamily=Arial${additionalTerminalStyle}`);
+      expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
     });
 
     each([
@@ -239,8 +244,9 @@ describe('mxgraph renderer', () => {
       ['collapsed', false],
     ]).it('%s embedded sub-process with label bounds', (testName, isExpanded: boolean) => {
       const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)), isExpanded);
+      const additionalMarkerStyle = !isExpanded ? ';bpmn.markers=expand' : '';
       expect(computeStyle(shape)).toEqual(
-        `subProcess;bpmn.subProcessKind=embedded;bpmn.isExpanded=${isExpanded};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
+        `subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
       );
     });
   });
@@ -272,7 +278,15 @@ describe('mxgraph renderer', () => {
   ])('compute style - markers for %s', (bpmnKind: ShapeBpmnElementKind) => {
     it(`${bpmnKind} with Loop marker`, () => {
       const shape = newShape(newShapeBpmnElement(bpmnKind, ShapeBpmnMarkerKind.LOOP), newLabel({ name: 'Arial' }));
-      expect(computeStyle(shape)).toEqual(`${bpmnKind};bpmn.marker=loop;fontFamily=Arial`);
+      expect(computeStyle(shape)).toEqual(`${bpmnKind};bpmn.markers=loop;fontFamily=Arial`);
     });
+
+    // TODO same test when supporting CALL_ACTIVITY isExpanded
+    if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
+      it(`${bpmnKind} with Loop marker and isExpanded=false (collapsed)`, () => {
+        const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, ShapeBpmnMarkerKind.LOOP), undefined, false);
+        expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded;bpmn.markers=expand,loop`);
+      });
+    }
   });
 });

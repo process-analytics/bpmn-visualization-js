@@ -119,11 +119,16 @@ describe('mxGraph model', () => {
   function expectModelContainsShape(cellId: string, modelElement: ExpectedShapeModelElement): mxCell {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(modelElement.kind);
-    if (modelElement.isExpanded !== undefined) {
-      expect(cell.style).toContain(`bpmn.isExpanded=${modelElement.isExpanded}`);
+
+    const expectedMarkers: string[] = [];
+    if (modelElement.isExpanded == false) {
+      expectedMarkers.push('expand');
     }
     if (modelElement.marker) {
-      expect(cell.style).toContain(`bpmn.marker=${modelElement.marker}`);
+      expectedMarkers.push(modelElement.marker);
+    }
+    if (expectedMarkers.length > 0) {
+      expect(cell.style).toContain(`bpmn.markers=${expectedMarkers.join(',')}`);
     }
 
     const state = bpmnVisualization.graph.getView().getState(cell);
@@ -183,7 +188,7 @@ describe('mxGraph model', () => {
     const cell = expectModelContainsShape(cellId, {
       ...subProcessModelElement,
       kind: ShapeBpmnElementKind.SUB_PROCESS,
-      isExpanded: subProcessModelElement.isExpanded ? true : false,
+      isExpanded: subProcessModelElement.isExpanded,
     });
     expect(cell.style).toContain(`bpmn.subProcessKind=${subProcessModelElement.subProcessKind}`);
     return cell;
