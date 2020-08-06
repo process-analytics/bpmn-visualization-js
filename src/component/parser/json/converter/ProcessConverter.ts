@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 /**
  * Copyright 2020 Bonitasoft S.A.
  *
@@ -117,21 +118,22 @@ export default class ProcessConverter {
       } else if (ShapeUtil.isSubProcess(kind)) {
         shapeBpmnElement = this.buildShapeBpmnSubProcess(bpmnElement, processId);
       } else if (kind === ShapeBpmnElementKind.TEXT_ANNOTATION) {
-        const name = 'text' in bpmnElement ? bpmnElement.text.toString() : undefined;
-        shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, processId);
-      } else {
-        const name = 'name' in bpmnElement ? bpmnElement.name : undefined;
-        const instantiate = 'instantiate' in bpmnElement ? bpmnElement.instantiate : undefined;
-        shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, processId, instantiate);
+        // @ts-ignore We know that the text & name fields are not on all types, but it's already tested
+        const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
+        // @ts-ignore We know that the instantiate field is not on all types, but it's already tested
+        shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, processId, bpmnElement.instantiate);
       }
 
-      const standardLoopCharacteristics = 'standardLoopCharacteristics' in bpmnElement ? bpmnElement.standardLoopCharacteristics : undefined;
+      // @ts-ignore We know that the standardLoopCharacteristics field is not on all types, but it's already tested
+      const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
       if (ShapeUtil.isActivity(kind) && (standardLoopCharacteristics || standardLoopCharacteristics === '')) {
         shapeBpmnElement.marker = ShapeBpmnMarkerKind.LOOP;
       }
 
-      if (ShapeUtil.isWithDefaultSequenceFlow(kind) && 'default' in bpmnElement && bpmnElement.default) {
-        defaultSequenceFlowIds.push(bpmnElement.default);
+      // @ts-ignore We know that the default field is not on all types, but it's already tested
+      const defaultFlow = bpmnElement.default;
+      if (ShapeUtil.isWithDefaultSequenceFlow(kind) && defaultFlow) {
+        defaultSequenceFlowIds.push(defaultFlow);
       }
 
       if (shapeBpmnElement) {
