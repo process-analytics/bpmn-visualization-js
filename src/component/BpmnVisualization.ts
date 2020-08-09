@@ -261,10 +261,11 @@ export default class BpmnVisualization {
       // TODO review carefully as this can impact performance
       outline.setZoomEnabled(false);
       //outline.graphRenderHint = 'fastest'; // have no effect on svg browser
-      outline.updateOnPan = true; // probably too much impact on rendering performance and not really usefull
+      outline.updateOnPan = false; // when true, probably too much impact on rendering performance and not really usefull
       outline.labelsVisible = true; // TODO see how we can make it work BUT do we need it?
 
-      // outline.suspended        = true;
+      // mark it suspended on creation, to make toggling work
+      outline.suspended = true;
 
       // TODO check if we need this
       // wnd.addListener(mxEvent.RESIZE_END, function () {
