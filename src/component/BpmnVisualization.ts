@@ -258,8 +258,10 @@ export default class BpmnVisualization {
       div.style.position = 'relative';
       div.style.width = '100%';
       div.style.height = '100%';
-      div.style.background = 'white';
+      div.style.setProperty('background-color', 'rgba(255, 255, 255, .8)'); // white with transparency
       div.style.cursor = 'move';
+      div.style.border = '2px solid #ccc';
+      div.style.setProperty('border-radius', '2px');
 
       // TODO window position is currently at the bottom of the page
       // the mxWindow api doc provides lot of example about how to manage and limit position
@@ -284,8 +286,8 @@ export default class BpmnVisualization {
       outline.setZoomEnabled(false);
       // TODO review carefully as this can impact performance
       //outline.graphRenderHint = 'fastest'; // have no effect on svg browser
-      outline.updateOnPan = true;
-      outline.labelsVisible = true; // TODO see how we can make it work
+      // outline.updateOnPan = true; // probably too much impact on rendering performance and not really usefull
+      outline.labelsVisible = true; // TODO see how we can make it work BUT do we need it?
       // outline.hilabelsVisible = true;
       wnd.setClosable(false);
       wnd.setResizable(false);
