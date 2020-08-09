@@ -237,9 +237,11 @@ export default class BpmnVisualization {
   private outlineLogger = new Logger('Outline');
   private outline: mxOutline;
   private isOutlineShown = false;
-  public toggleOutline(): void {
+
+  // TODO find a better way to pass the outline container (only needed for outline init)
+  public toggleOutline(container: HTMLElement): void {
     this.outlineLogger.info('toggle in progress');
-    this.ensureOutlineInstanceInitialized();
+    this.ensureOutlineInstanceInitialized(container);
 
     this.outline.suspended = !this.outline.suspended;
     if (!this.outline.suspended) {
@@ -249,18 +251,18 @@ export default class BpmnVisualization {
     this.outlineLogger.info('toggle completed');
   }
 
-  private ensureOutlineInstanceInitialized(): void {
+  private ensureOutlineInstanceInitialized(container: HTMLElement): void {
     if (this.outline == null) {
       this.outlineLogger.info('initializing outline');
 
       mxConstants.OUTLINE_COLOR = 'Orange'; // TODO restore the previous color after creating the instance
       // TODO no hard code 'html element id' for outline
-      const outline = new mxOutline(this.graph, document.getElementById('outline-container'));
+      const outline = new mxOutline(this.graph, container);
       // TODO review carefully as this can impact performance
-      outline.setZoomEnabled(false);
+      outline.setZoomEnabled(false); // TODO this function only hidde the square (aka handle), but zooming is still available
       //outline.graphRenderHint = 'fastest'; // have no effect on svg browser
       outline.updateOnPan = false; // when true, probably too much impact on rendering performance and not really usefull
-      outline.labelsVisible = true; // TODO see how we can make it work BUT do we need it?
+      outline.labelsVisible = false; // TODO see how we can make it work (may not work when isHtmlLabel is true in the main graph) BUT do we need it?
 
       // mark it suspended on creation, to make toggling work
       outline.suspended = true;
