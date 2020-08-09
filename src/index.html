@@ -67,6 +67,11 @@
             /*https://icons.getbootstrap.com/icons/trash-fill/*/
           background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' class='bi bi-trash-fill' fill='currentColor' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z'/></svg>");
         }
+        .btn-outline {
+          /* https://www.flaticon.com/free-icon/map_1010816
+          Icons made by <a href="https://www.flaticon.com/authors/vitaly-gorbachev" title="Vitaly Gorbachev">Vitaly Gorbachev</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
+          background-image: url("data:image/svg+xml,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384.528 384.528' style='enable-background:new 0 0 384.528 384.528;'><path d='M256.664,7.024l-128,48L0.264,0v144v46.936v131.88l127.6,54.688l128-48l128.4,55.024v-153.56v-46.704V61.712 L256.664,7.024z M112.264,336l-80-34.288V192.528l80,34.288V336z M112.264,192l-80-34.288V48.528l80,34.288V192z M240.264,301.176 l-96,36V227.352l96-36V301.176z M240.264,157.176l-96,36V83.352l96-36V157.176z M352.264,336l-80-34.288V190.968l80,28.568V336z M352.264,184.264v1.296l-80-28.576V48.528l80,34.288V184.264z'/></svg>");
+        }
         .btn-download-svg {
             /* https://icons.getbootstrap.com/icons/download/ */
             background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8z'/><path fill-rule='evenodd' d='M5 7.5a.5.5 0 0 1 .707 0L8 9.793 10.293 7.5a.5.5 0 1 1 .707.707l-2.646 2.647a.5.5 0 0 1-.708 0L5 8.207A.5.5 0 0 1 5 7.5z'/><path fill-rule='evenodd' d='M8 1a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0v-8A.5.5 0 0 1 8 1z'/></svg>");
@@ -125,7 +130,10 @@
     </div>
     <div id="fetch-status"></div>
     <div id="btn-group-export" class="btn-group btn-group-export">
+<!--      TODO move to a dedicated group-->
         <input type="button" class="btn-common btn-clean" id="btn-clean" title="Clean the BPMN Diagram"/>
+        <input type="button" class="btn-common btn-outline" id="btn-outline" title="Display outline/minimap"/>
+<!--      END OF - TODO move to a dedicated group-->
         <input type="button" class="btn-common btn-download-svg" id="btn-export-svg" title="Download as SVG image"/>
         <input type="button" class="btn-common btn-download-png" id="btn-export-png" title="Download as PNG image"/>
         <input type="button" class="btn-common btn-print" id="btn-export-preview" title="Print Preview">
@@ -165,10 +173,10 @@
         </button>
     </div>
     <div id="btn-group-others">
-        <div>
-            <input type="checkbox" id="btn-outline" name="btn-outline">
-            <label for="btn-outline">Outline</label>
-        </div>
+<!--        <div>-->
+<!--            <input type="checkbox" id="btn-outline" name="btn-outline">-->
+<!--            <label for="btn-outline">Outline</label>-->
+<!--        </div>-->
         <!--        <div>-->
         <!--            <input type="checkbox" id="btn-panning" name="btn-panning" checked>-->
         <!--            <label for="btn-panning">Panning</label>-->
