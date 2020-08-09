@@ -258,8 +258,10 @@ export default class BpmnVisualization {
       // TODO restore outline settings defaults after creating the instance
       mxConstants.OUTLINE_COLOR = 'Orange';
       mxConstants.OUTLINE_STROKEWIDTH = 2;
+
       // TODO this seems requesting expanded.gif images from mxgraph assets
-      const outline = new mxOutline(this.graph, container);
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      const outline = new CustomOutline(this.graph, container);
       // outline.showViewport = false;
       // TODO review carefully as this can impact performance
       outline.setZoomEnabled(false); // TODO this function only hidde the square (aka handle), but zooming is still available
@@ -273,5 +275,23 @@ export default class BpmnVisualization {
       this.outline = outline;
       this.outlineLogger.info('outline init completed');
     }
+  }
+}
+
+// TODO attempt to have labels, they not show even when htmlLabels is false in the source graph
+class CustomOutline extends mxOutline {
+  constructor(source: mxGraph, container: HTMLElement) {
+    super(source, container);
+  }
+
+  createGraph(container: HTMLElement): mxGraph {
+    const graph = super.createGraph(container);
+
+    const htmlLabels = this.source.htmlLabels;
+    console.warn('CustomOutline - source graph htmllabels?', htmlLabels);
+    console.warn('CustomOutline - outline graph htmllabels?', graph.htmlLabels);
+    graph.htmlLabels = htmlLabels;
+
+    return graph;
   }
 }
