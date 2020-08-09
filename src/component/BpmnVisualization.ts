@@ -255,9 +255,12 @@ export default class BpmnVisualization {
     if (this.outline == null) {
       this.outlineLogger.info('initializing outline');
 
-      mxConstants.OUTLINE_COLOR = 'Orange'; // TODO restore the previous color after creating the instance
-      // TODO no hard code 'html element id' for outline
+      // TODO restore outline settings defaults after creating the instance
+      mxConstants.OUTLINE_COLOR = 'Orange';
+      mxConstants.OUTLINE_STROKEWIDTH = 2;
+      // TODO this seems requesting expanded.gif images from mxgraph assets
       const outline = new mxOutline(this.graph, container);
+      // outline.showViewport = false;
       // TODO review carefully as this can impact performance
       outline.setZoomEnabled(false); // TODO this function only hidde the square (aka handle), but zooming is still available
       //outline.graphRenderHint = 'fastest'; // have no effect on svg browser
