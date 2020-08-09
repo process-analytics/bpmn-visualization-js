@@ -208,6 +208,16 @@ document.getElementById('btn-pan-right').onclick = function() {
 // General
 // =====================================================================================================================
 
+document.getElementById('btn-help').onclick = function() {
+  log('click btn-help');
+  // TODO implement a more convenient popup/modal
+  window.alert('Keyboard Shortcuts\nPanning: use arrow');
+};
+
+// =====================================================================================================================
+// General graph
+// =====================================================================================================================
+
 const outlineElement = document.getElementById('outline');
 document.getElementById('btn-outline').onclick = function() {
   outlineElement.classList.toggle('hidden');

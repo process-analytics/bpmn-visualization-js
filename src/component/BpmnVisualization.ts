@@ -120,11 +120,33 @@ export default class BpmnVisualization {
       }, null);
 
       this.graph = configurator.configure(options);
+      this.configureKeyHandler();
     } catch (e) {
       // TODO error handling
       mxUtils.alert('Cannot start application: ' + e.message);
       throw e;
     }
+  }
+
+  private keyHandlerLogger = new Logger('KeyHandler');
+  private configureKeyHandler(): void {
+    console.info('configuring key handler');
+    const keyHandler = new mxKeyHandler(this.graph);
+
+    // TODO for panning with arrow, configure shift + key for smaller or larger panning
+    const panningKeys = new Map<number, PanType>([
+      [37, PanType.HorizontalLeft], // left arrow
+      [38, PanType.VerticalUp], // up arrow
+      [39, PanType.HorizontalRight], // right arrow
+      [40, PanType.VerticalDown], // down arrow
+    ]);
+    panningKeys.forEach((panType: PanType, code: number) => {
+      keyHandler.bindKey(code, (event: KeyboardEvent): void => {
+        this.keyHandlerLogger.info('key pressed: ' + event.code);
+        this.pan(panType);
+        this.keyHandlerLogger.info('End of key management: ' + event.code);
+      });
+    });
   }
 
   public load(xml: string): void {
