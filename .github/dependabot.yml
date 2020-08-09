@@ -1,0 +1,13 @@
+version: 2
+update_configs:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "[INFRA]"
+      prefix-development: "[INFRA] dev -"
+    reviewers:
+      - "aibcmars"
+      - "csouchet"
+      - "tbouffard"
