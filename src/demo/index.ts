@@ -207,7 +207,10 @@ document.getElementById('btn-pan-right').onclick = function() {
 // =====================================================================================================================
 // General
 // =====================================================================================================================
+
+const outlineElement = document.getElementById('outline');
 document.getElementById('btn-outline').onclick = function() {
+  outlineElement.classList.toggle('hidden');
   bpmnVisualization.toggleOutline();
 };
 
