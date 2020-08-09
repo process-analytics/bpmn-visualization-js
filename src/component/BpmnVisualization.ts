@@ -255,6 +255,9 @@ export default class BpmnVisualization {
       const div = document.createElement('div');
 
       div.style.overflow = 'hidden';
+      // div.style.position = 'absolute';
+      // div.style.width = '320px';
+      // div.style.height = '180px';
       div.style.position = 'relative';
       div.style.width = '100%';
       div.style.height = '100%';
