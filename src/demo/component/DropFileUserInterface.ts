@@ -122,21 +122,21 @@ export class DropFileUserInterface {
   }
 
   private getAddClassCallback(containerToBeFaded: HTMLElement, isDocument: boolean, outerContainerId?: string) {
-    return function(): void {
+    return function (): void {
       isDocument ? this.querySelector('#' + outerContainerId).classList.add('dragging') : this.classList.add('dragging');
       containerToBeFaded.classList.add('faded');
     };
   }
 
   private getRemoveClassCallback(containerToBeFaded: HTMLElement, isDocument: boolean, outerContainerId?: string) {
-    return function(): void {
+    return function (): void {
       isDocument ? this.querySelector('#' + outerContainerId).classList.remove('dragging') : this.classList.remove('dragging');
       containerToBeFaded.classList.remove('faded');
     };
   }
 
   private getDropCallbackForElement(containerToBeFaded: HTMLElement, isDocument: boolean, dropCallback: (file: File) => void, outerContainerId?: string) {
-    return function(event: DragEvent): void {
+    return function (event: DragEvent): void {
       try {
         const dt = event.dataTransfer;
         const files = dt.files;

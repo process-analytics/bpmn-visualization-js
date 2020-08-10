@@ -38,7 +38,7 @@ export default class MarkerConfigurator {
       const nx = unitX * (size + strokewidth + 4);
       const ny = unitY * (size + strokewidth + 4);
 
-      return function() {
+      return function () {
         c.begin();
         c.moveTo(pe.x - nx / 2 - ny / 2, pe.y - ny / 2 + nx / 2);
         c.lineTo(pe.x + ny / 2 - (3 * nx) / 2, pe.y - (3 * ny) / 2 - nx / 2);

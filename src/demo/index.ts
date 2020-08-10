@@ -44,7 +44,7 @@ document.getElementById('file-selector').classList.remove('hidden');
 ////////////////////////////////////////////////////////////////////////////////
 // if bpmn passed as request parameter, try to load it directly
 ////////////////////////////////////////////////////////////////////////////////
-documentReady(function() {
+documentReady(function () {
   const log = logStartup;
   log("Checking if 'BPMN auto loading from url parameter' is requested");
   const parameters = new URLSearchParams(window.location.search);
