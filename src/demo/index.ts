@@ -152,11 +152,14 @@ document.getElementById('btn-open-url').onclick = function() {
   openFromUrl(url);
 };
 
-document.getElementById('btn-open-migw').onclick = function() {
+document.getElementById('select-open-migw').onchange = function() {
+  log('change on select');
   const fileName = (document.getElementById('select-open-migw') as HTMLSelectElement).value;
-  log('Start opening MIGW file %s', fileName);
-  const url = `https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/${fileName}`;
-  openFromUrl(url);
+  if (fileName) {
+    log('Start opening MIGW file %s', fileName);
+    const url = `https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/${fileName}`;
+    openFromUrl(url);
+  }
 };
 
 document.getElementById('btn-open-bpmn-visualization-example').onclick = function() {
