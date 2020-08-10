@@ -121,15 +121,8 @@ export class ReceiveTaskShape extends BaseTaskShape {
 }
 
 export class CallActivityShape extends BaseActivityShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
-  }
-
-  public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    c.setStrokeColor('#2C6DA3');
-    c.setStrokeWidth(4);
-
-    super.paintVertexShape(c, x, y, w, h);
   }
 }
 
