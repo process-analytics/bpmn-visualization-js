@@ -70,9 +70,9 @@ export default class IconPainter {
         originalSize: originalIconSize,
         style: icon,
         ratioFromShape: ratioFromParent,
+        setIconOrigin,
       },
     });
-    setIconOrigin(canvas);
 
     const w = originalIconSize.width;
     const h = originalIconSize.height;
@@ -115,9 +115,9 @@ export default class IconPainter {
         originalSize: originalIconSize,
         style: icon,
         ratioFromShape: ratioFromParent,
+        setIconOrigin,
       },
     });
-    setIconOrigin(canvas);
 
     const w = originalIconSize.width;
     const h = originalIconSize.height;
@@ -140,10 +140,10 @@ export default class IconPainter {
       iconConfiguration: {
         originalSize: { height: 152, width: 152 },
         ratioFromShape: ratioFromParent,
+        setIconOrigin,
         style: icon,
       },
     });
-    setIconOrigin(canvas);
 
     canvas.begin();
     canvas.moveTo(184, 60);
@@ -243,10 +243,10 @@ export default class IconPainter {
       iconConfiguration: {
         originalSize: { height: 735, width: 849 },
         ratioFromShape: ratioFromParent,
+        setIconOrigin,
         style: icon,
       },
     });
-    setIconOrigin(canvas);
 
     canvas.begin();
     canvas.moveTo(497, 55);
@@ -269,9 +269,9 @@ export default class IconPainter {
         originalSize: { height: 0.5, width: 0.5 },
         ratioFromShape: ratioFromParent,
         style: { ...icon, isFilled: true },
+        setIconOrigin,
       },
     });
-    setIconOrigin(canvas);
 
     IconPainter.drawCrossIcon(canvas);
     const rotationCenterX = shape.w / 4;
@@ -288,9 +288,9 @@ export default class IconPainter {
         originalSize: { height: 0.5, width: 0.5 },
         ratioFromShape: ratioFromParent,
         style: { ...icon, isFilled: true },
+        setIconOrigin,
       },
     });
-    setIconOrigin(canvas);
 
     IconPainter.drawCrossIcon(canvas);
     canvas.fillAndStroke();
@@ -322,10 +322,10 @@ export default class IconPainter {
       iconConfiguration: {
         originalSize: { height: 239.68, width: 143.61 },
         ratioFromShape: ratioFromParent,
+        setIconOrigin,
         style: { ...icon, isFilled: true },
       },
     });
-    setIconOrigin(canvas);
 
     canvas.begin();
     canvas.moveTo(124.31, 150.29);
@@ -416,10 +416,10 @@ export default class IconPainter {
         // icon coordinates fill a 100x100 rectangle (approximately: 90x90 + foreground translation)
         originalSize: { height: 100, width: 100 },
         ratioFromShape: ratioFromParent,
+        setIconOrigin,
         style: icon,
       },
     });
-    setIconOrigin(canvas);
 
     // background
     IconPainter.paintGearIconBackground(canvas);
@@ -533,9 +533,9 @@ export default class IconPainter {
         originalSize: originalIconSize,
         style: icon,
         ratioFromShape: ratioFromParent,
+        setIconOrigin,
       },
     });
-    setIconOrigin(canvas);
 
     const w = originalIconSize.width;
     const h = originalIconSize.height;
@@ -567,9 +567,9 @@ export default class IconPainter {
         originalSize: originalIconSize,
         style: icon,
         ratioFromShape: ratioFromParent,
+        setIconOrigin,
       },
     });
-    setIconOrigin(canvas);
 
     // Loop
     canvas.begin();
@@ -595,9 +595,9 @@ export default class IconPainter {
         originalSize: originalIconSize,
         style: icon,
         ratioFromShape: ratioFromParent,
+        setIconOrigin,
       },
     });
-    setIconOrigin(canvas);
 
     c.setFillColor(icon.strokeColor);
     const barWidth = originalIconSize.width;
@@ -619,9 +619,9 @@ export default class IconPainter {
         originalSize: originalIconSize,
         style: icon,
         ratioFromShape: ratioFromParent,
+        setIconOrigin,
       },
     });
-    setIconOrigin(canvas);
 
     c.setFillColor(icon.strokeColor);
     const barWidth = originalIconSize.width / 5; // 3 bars + 2 interspaces
