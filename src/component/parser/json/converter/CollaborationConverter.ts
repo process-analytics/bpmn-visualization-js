@@ -43,7 +43,7 @@ export default class CollaborationConverter {
       convertedParticipantsByProcessRef.clear();
       convertedMessageFlows.clear();
 
-      ensureIsArray(collaborations).forEach((collaboration) => this.parseCollaboration(collaboration));
+      ensureIsArray(collaborations).forEach(collaboration => this.parseCollaboration(collaboration));
     } catch (e) {
       // TODO error management
       console.error(e as Error);
@@ -56,7 +56,7 @@ export default class CollaborationConverter {
   }
 
   private buildParticipant(bpmnElements: Array<TParticipant> | TParticipant): void {
-    ensureIsArray(bpmnElements).forEach((participant) => {
+    ensureIsArray(bpmnElements).forEach(participant => {
       if (participant.processRef) {
         const convertedParticipant = new Participant(participant.id, participant.name, participant.processRef);
         convertedParticipantsById.set(participant.id, convertedParticipant);
@@ -66,7 +66,7 @@ export default class CollaborationConverter {
   }
 
   private buildMessageFlows(bpmnElements: Array<TMessageFlow> | TMessageFlow): void {
-    ensureIsArray(bpmnElements).forEach((messageFlow) => {
+    ensureIsArray(bpmnElements).forEach(messageFlow => {
       const convertedMessageFlow = new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef);
       convertedMessageFlows.set(messageFlow.id, convertedMessageFlow);
     });

@@ -42,7 +42,7 @@ export default class ShapeUtil {
   ];
 
   private static filterKind(suffix: string, ignoreCase = false): ShapeBpmnElementKind[] {
-    return Object.values(ShapeBpmnElementKind).filter((kind) => {
+    return Object.values(ShapeBpmnElementKind).filter(kind => {
       if (ignoreCase) {
         return kind.endsWith(suffix) || kind.toLowerCase().endsWith(suffix.toLowerCase());
       }
@@ -93,7 +93,7 @@ export default class ShapeUtil {
   }
 
   public static flowNodeKinds(): ShapeBpmnElementKind[] {
-    return Object.values(ShapeBpmnElementKind).filter((kind) => {
+    return Object.values(ShapeBpmnElementKind).filter(kind => {
       return kind != ShapeBpmnElementKind.LANE;
     });
   }

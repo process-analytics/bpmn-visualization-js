@@ -23,31 +23,31 @@ async function expectLabel(cellId: string, expectedText?: string): Promise<void>
   }
   const svgElementHandle = await page.waitForSelector(`#${graphContainerId} svg g g[data-cell-id="${cellId}"] g foreignObject`);
   // contains 3 div
-  expect(await svgElementHandle.evaluate((node) => (node.firstChild.firstChild.firstChild as HTMLElement).innerHTML)).toBe(expectedText);
+  expect(await svgElementHandle.evaluate(node => (node.firstChild.firstChild.firstChild as HTMLElement).innerHTML)).toBe(expectedText);
 }
 
 async function expectEvent(cellId: string, expectedText: string): Promise<void> {
   const svgElementHandle = await page.waitForSelector(`#${graphContainerId} svg g g[data-cell-id="${cellId}"]`);
   // TODO do we test class?
-  expect(await svgElementHandle.evaluate((node) => node.firstChild.nodeName)).toBe('ellipse');
-  expect(await svgElementHandle.evaluate((node) => (node.firstChild as SVGGElement).getAttribute('rx'))).toBe('18');
-  expect(await svgElementHandle.evaluate((node) => (node.firstChild as SVGGElement).getAttribute('ry'))).toBe('18');
+  expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('ellipse');
+  expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('rx'))).toBe('18');
+  expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('ry'))).toBe('18');
   await expectLabel(cellId, expectedText);
 }
 
 async function expectTask(cellId: string, expectedText: string): Promise<void> {
   const svgElementHandle = await page.waitForSelector(`#${graphContainerId} svg g g[data-cell-id="${cellId}"]`);
-  expect(await svgElementHandle.evaluate((node) => node.getAttribute('class'))).toBe('class-state-cell-style-task');
-  expect(await svgElementHandle.evaluate((node) => node.firstChild.nodeName)).toBe('rect');
-  expect(await svgElementHandle.evaluate((node) => (node.firstChild as SVGGElement).getAttribute('width'))).toBe('100');
-  expect(await svgElementHandle.evaluate((node) => (node.firstChild as SVGGElement).getAttribute('height'))).toBe('80');
+  expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-task');
+  expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('rect');
+  expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('width'))).toBe('100');
+  expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('height'))).toBe('80');
   await expectLabel(cellId, expectedText);
 }
 
 async function expectSequenceFlow(cellId: string, expectedText?: string): Promise<void> {
   const svgElementHandle = await page.waitForSelector(`#${graphContainerId} svg g g[data-cell-id="${cellId}"]`);
-  expect(await svgElementHandle.evaluate((node) => node.getAttribute('class'))).toBe('class-state-cell-style-sequenceFlow-normal');
-  expect(await svgElementHandle.evaluate((node) => node.firstChild.nodeName)).toBe('path');
+  expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-sequenceFlow-normal');
+  expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('path');
   await expectLabel(cellId, expectedText);
 }
 

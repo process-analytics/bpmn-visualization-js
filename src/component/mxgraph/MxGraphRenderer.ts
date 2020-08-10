@@ -33,8 +33,8 @@ export default class MxGraphRenderer {
     try {
       this.insertShapes(bpmnModel.pools);
       this.insertShapes(bpmnModel.lanes);
-      this.insertShapes(bpmnModel.flowNodes.filter((shape) => !ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind)));
-      this.insertShapes(bpmnModel.flowNodes.filter((shape) => ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind)));
+      this.insertShapes(bpmnModel.flowNodes.filter(shape => !ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind)));
+      this.insertShapes(bpmnModel.flowNodes.filter(shape => ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind)));
       this.insertEdges(bpmnModel.edges);
     } finally {
       model.endUpdate();
@@ -42,7 +42,7 @@ export default class MxGraphRenderer {
   }
 
   private insertShapes(shapes: Shape[]): void {
-    shapes.forEach((shape) => {
+    shapes.forEach(shape => {
       this.insertShape(shape);
     });
   }
@@ -78,7 +78,7 @@ export default class MxGraphRenderer {
   }
 
   private insertEdges(edges: Edge[]): void {
-    edges.forEach((edge) => {
+    edges.forEach(edge => {
       const bpmnElement = edge.bpmnElement;
       if (bpmnElement) {
         const parent = this.graph.getDefaultParent();
@@ -109,7 +109,7 @@ export default class MxGraphRenderer {
 
   private insertWaypoints(waypoints: Waypoint[], mxEdge: mxCell): void {
     if (waypoints) {
-      mxEdge.geometry.points = waypoints.map((waypoint) => {
+      mxEdge.geometry.points = waypoints.map(waypoint => {
         return this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(waypoint.x, waypoint.y));
       });
     }

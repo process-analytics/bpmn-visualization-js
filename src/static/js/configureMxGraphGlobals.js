@@ -30,6 +30,6 @@ const optionKeys = [
   'mxLoadStylesheets',
   'mxResourceExtension',
 ];
-optionKeys.forEach((key) => {
+optionKeys.forEach(key => {
   window[key] = options[key];
 });

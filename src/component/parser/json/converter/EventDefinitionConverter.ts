@@ -18,7 +18,7 @@ import { ShapeBpmnEventKind } from '../../../../model/bpmn/shape/ShapeBpmnEventK
 import { TEventDefinition } from '../../xml/bpmn-json-model/baseElement/rootElement/eventDefinition';
 import { ensureIsArray } from './ConverterUtil';
 
-export const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter((kind) => {
+export const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
   return kind != ShapeBpmnEventKind.NONE;
 });
 
@@ -33,10 +33,10 @@ export default class EventDefinitionConverter {
     try {
       eventDefinitionsOfDefinitions.clear();
 
-      bpmnEventKinds.forEach((eventKind) => {
+      bpmnEventKinds.forEach(eventKind => {
         // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
         const eventDefinitions: string | TEventDefinition | (string | TEventDefinition)[] = definitions[eventKind + 'EventDefinition'];
-        ensureIsArray<TEventDefinition>(eventDefinitions, true).forEach((eventDefinition) => {
+        ensureIsArray<TEventDefinition>(eventDefinitions, true).forEach(eventDefinition => {
           eventDefinitionsOfDefinitions.set(eventDefinition.id, eventKind);
         });
       });
