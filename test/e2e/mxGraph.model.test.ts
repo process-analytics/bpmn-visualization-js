@@ -490,6 +490,43 @@ describe('mxGraph model', () => {
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
     });
 
+    // Call Activity calling process
+    // Expanded
+    expectModelContainsShape('expanded_callActivity_1', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, label: 'Expanded Call Activity' });
+    expectModelContainsShape('expanded_callActivity_with_loop', {
+      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+      label: 'Expanded Call Activity With Loop',
+      markers: [ShapeBpmnMarkerKind.LOOP],
+    });
+    expectModelContainsShape('expanded_callActivity_with_sequential_multi_instance', {
+      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+      label: 'Expanded Call Activity With Sequential Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+    });
+    expectModelContainsShape('expanded_callActivity_with_parallel_multi_instance', {
+      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+      label: 'Expanded Call Activity With Parallel Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+    });
+
+    // Collapsed
+    expectModelContainsShape('collapsed_callActivity_1', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, label: 'Collapsed Call Activity' });
+    expectModelContainsShape('collapsed_callActivity_with_loop', {
+      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+      label: 'Collapsed Call Activity With Loop',
+      markers: [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
+    });
+    expectModelContainsShape('collapsed_callActivity_with_sequential_multi_instance', {
+      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+      label: 'Collapsed Call Activity With Sequential Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND],
+    });
+    expectModelContainsShape('collapsed_callActivity_with_parallel_multi_instance', {
+      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+      label: 'Collapsed Call Activity With Parallel Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
+    });
+
     // activity
     expectModelContainsShape('task_1', {
       kind: ShapeBpmnElementKind.TASK,
@@ -580,23 +617,6 @@ describe('mxGraph model', () => {
       kind: ShapeBpmnElementKind.TASK_USER,
       font: expectedBoldFont,
       label: 'User Task With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
-    });
-
-    expectModelContainsShape('callActivity_1', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, label: 'Call Activity Collapsed' });
-    expectModelContainsShape('callActivity_with_loop', {
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
-      label: 'Call Activity Collapsed With Loop',
-      markers: [ShapeBpmnMarkerKind.LOOP],
-    });
-    expectModelContainsShape('callActivity_with_sequential_multi_instance', {
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
-      label: 'Call Activity Collapsed With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
-    });
-    expectModelContainsShape('callActivity_with_parallel_multi_instance', {
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
-      label: 'Call Activity Collapsed With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
 

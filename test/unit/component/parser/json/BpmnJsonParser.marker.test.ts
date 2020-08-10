@@ -18,6 +18,7 @@ import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 import { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/loopCharacteristics';
 import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
+import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnCallActivityKind';
 
 describe.each([
   ['callActivity', ShapeBpmnElementKind.CALL_ACTIVITY],
@@ -84,6 +85,7 @@ describe.each([
           bpmnElementName: `${bpmnKind} name`,
           bpmnElementKind: expectedShapeBpmnElementKind,
           bpmnElementMarkers: [expectedMarkerKind],
+          bpmnElementCallActivityKind: expectedShapeBpmnElementKind === ShapeBpmnElementKind.CALL_ACTIVITY ? ShapeBpmnCallActivityKind.CALLING_PROCESS : undefined,
           bounds: {
             x: 362,
             y: 232,
@@ -178,6 +180,7 @@ describe.each([
           bpmnElementName: `${bpmnKind} name`,
           bpmnElementKind: expectedShapeBpmnElementKind,
           bpmnElementMarkers: [expectedMarkerKind],
+          bpmnElementCallActivityKind: expectedShapeBpmnElementKind === ShapeBpmnElementKind.CALL_ACTIVITY ? ShapeBpmnCallActivityKind.CALLING_PROCESS : undefined,
           bounds: {
             x: 362,
             y: 232,
@@ -188,7 +191,7 @@ describe.each([
       },
     );
 
-    if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.SUB_PROCESS) {
+    if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.SUB_PROCESS || expectedShapeBpmnElementKind === ShapeBpmnElementKind.CALL_ACTIVITY) {
       it(`should convert as Shape with ${expectedMarkerKind} & expand markers, when 'isSequential' is an attribute (as ${isSequential}) of 'multiInstanceLoopCharacteristics' of '${bpmnKind}' and BPMNShape is NOT expanded`, () => {
         const json = {
           definitions: {
@@ -221,6 +224,7 @@ describe.each([
           bpmnElementName: `${bpmnKind} name`,
           bpmnElementKind: expectedShapeBpmnElementKind,
           bpmnElementMarkers: [expectedMarkerKind, ShapeBpmnMarkerKind.EXPAND],
+          bpmnElementCallActivityKind: expectedShapeBpmnElementKind === ShapeBpmnElementKind.CALL_ACTIVITY ? ShapeBpmnCallActivityKind.CALLING_PROCESS : undefined,
           bounds: {
             x: 362,
             y: 232,

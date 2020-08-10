@@ -68,9 +68,10 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |
 |
 
-|Call Activity
+|Call Activity calling a Process
 |
-|
+|Collapsed call activity : + 
+- Plus icon may be subject to change
 
 |Embedded Sub-Process
 |icon:check-circle-o[]

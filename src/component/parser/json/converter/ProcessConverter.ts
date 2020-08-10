@@ -14,7 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import ShapeBpmnElement, { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnEvent } from '../../../../model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, {
+  ShapeBpmnActivity,
+  ShapeBpmnBoundaryEvent,
+  ShapeBpmnCallActivity,
+  ShapeBpmnEvent,
+  ShapeBpmnSubProcess,
+} from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/edge/Flow';
 import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
@@ -24,7 +30,7 @@ import { ShapeBpmnSubProcessKind } from '../../../../model/bpmn/shape/ShapeBpmnS
 import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
 import { TProcess } from '../../xml/bpmn-json-model/baseElement/rootElement/rootElement';
 import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../xml/bpmn-json-model/baseElement/flowNode/event';
-import { TActivity, TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
+import { TActivity, TCallActivity, TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
 import { TLane, TLaneSet } from '../../xml/bpmn-json-model/baseElement/baseElement';
 import { TFlowNode, TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement';
 import { TAssociation, TTextAnnotation } from '../../xml/bpmn-json-model/baseElement/artifact';
@@ -34,7 +40,8 @@ import { ensureIsArray } from './ConverterUtil';
 import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 import { TEventBasedGateway } from '../../xml/bpmn-json-model/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/task';
-import { ShapeBpmnSubProcess } from '../../../../model/bpmn/shape/ShapeBpmnElement';
+import { ShapeBpmnCallActivityKind } from '../../../../model/bpmn/shape/ShapeBpmnCallActivityKind';
+import { isGlobalTask } from './GlobalTaskConverter';
 
 const convertedFlowNodeBpmnElements: Map<string, ShapeBpmnElement> = new Map();
 const convertedLaneBpmnElements: Map<string, ShapeBpmnElement> = new Map();
@@ -144,8 +151,14 @@ export default class ProcessConverter {
       return this.buildShapeBpmnSubProcess(bpmnElement, processId, markers);
     }
 
-    // @ts-ignore
-    return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate, markers);
+    if (!ShapeUtil.isCallActivity(kind)) {
+      // @ts-ignore
+      return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate, markers);
+    }
+
+    if (!isGlobalTask((bpmnElement as TCallActivity).calledElement)) {
+      return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, processId, markers);
+    }
   }
 
   private buildMarkers(bpmnElement: TActivity): ShapeBpmnMarkerKind[] {
