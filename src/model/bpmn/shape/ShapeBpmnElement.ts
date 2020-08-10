@@ -31,7 +31,7 @@ export class ShapeBpmnActivity extends ShapeBpmnElement {
 }
 
 export class ShapeBpmnCallActivity extends ShapeBpmnActivity {
-  constructor(id: string, name: string, parentId: string, markers?: ShapeBpmnMarkerKind[], public callActivityKind?: ShapeBpmnCallActivityKind) {
+  constructor(id: string, name: string, readonly callActivityKind: ShapeBpmnCallActivityKind, parentId: string, markers?: ShapeBpmnMarkerKind[]) {
     super(id, name, ShapeBpmnElementKind.CALL_ACTIVITY, parentId, undefined, markers);
   }
 }

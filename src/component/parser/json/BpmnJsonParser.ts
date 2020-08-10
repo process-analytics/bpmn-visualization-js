@@ -19,11 +19,13 @@ import CollaborationConverter from './converter/CollaborationConverter';
 import ProcessConverter from './converter/ProcessConverter';
 import DiagramConverter from './converter/DiagramConverter';
 import EventDefinitionConverter from './converter/EventDefinitionConverter';
+import GlobalTaskConverter from './converter/GlobalTaskConverter';
 
 export default class BpmnJsonParser {
   constructor(
     readonly collaborationConverter: CollaborationConverter,
     readonly eventDefinitionConverter: EventDefinitionConverter,
+    readonly globalTaskConverter: GlobalTaskConverter,
     readonly processConverter: ProcessConverter,
     readonly diagramConverter: DiagramConverter,
   ) {}
@@ -33,6 +35,7 @@ export default class BpmnJsonParser {
 
     this.collaborationConverter.deserialize(definitions.collaboration);
     this.eventDefinitionConverter.deserialize(definitions);
+    this.globalTaskConverter.deserialize(definitions);
     this.processConverter.deserialize(definitions.process);
     return this.diagramConverter.deserialize(definitions.BPMNDiagram);
   }
@@ -40,5 +43,5 @@ export default class BpmnJsonParser {
 
 export function defaultBpmnJsonParser(): BpmnJsonParser {
   // TODO replace the function by dependency injection, see #110
-  return new BpmnJsonParser(new CollaborationConverter(), new EventDefinitionConverter(), new ProcessConverter(), new DiagramConverter());
+  return new BpmnJsonParser(new CollaborationConverter(), new EventDefinitionConverter(), new GlobalTaskConverter(), new ProcessConverter(), new DiagramConverter());
 }

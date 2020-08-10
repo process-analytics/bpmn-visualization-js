@@ -41,6 +41,7 @@ import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape/ShapeBpmnMarke
 import { TEventBasedGateway } from '../../xml/bpmn-json-model/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/task';
 import { ShapeBpmnCallActivityKind } from '../../../../model/bpmn/shape/ShapeBpmnCallActivityKind';
+import { isGlobalTask } from './GlobalTaskConverter';
 
 const convertedFlowNodeBpmnElements: Map<string, ShapeBpmnElement> = new Map();
 const convertedLaneBpmnElements: Map<string, ShapeBpmnElement> = new Map();
@@ -48,7 +49,6 @@ const convertedProcessBpmnElements: Map<string, ShapeBpmnElement> = new Map();
 const convertedSequenceFlows: Map<string, SequenceFlow> = new Map();
 const convertedAssociationFlows: Map<string, AssociationFlow> = new Map();
 
-const calledElementIdsByCallActivityId: Map<string, string> = new Map();
 const defaultSequenceFlowIds: string[] = [];
 
 export function findFlowNodeBpmnElement(id: string): ShapeBpmnElement {
@@ -86,13 +86,11 @@ export default class ProcessConverter {
       convertedProcessBpmnElements.clear();
       convertedSequenceFlows.clear();
       convertedAssociationFlows.clear();
-      calledElementIdsByCallActivityId.clear();
 
       // Deletes everything in the array, which does hit other references. For better performance.
       defaultSequenceFlowIds.length = 0;
 
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
-      this.setCallActivityKind();
     } catch (e) {
       // TODO error management
       console.error(e as Error);
@@ -153,28 +151,14 @@ export default class ProcessConverter {
       return this.buildShapeBpmnSubProcess(bpmnElement, processId, markers);
     }
 
-    if (ShapeUtil.isCallActivity(kind)) {
-      calledElementIdsByCallActivityId.set(bpmnElement.id, (bpmnElement as TCallActivity).calledElement);
-      return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, processId, markers);
+    if (!ShapeUtil.isCallActivity(kind)) {
+      // @ts-ignore
+      return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate, markers);
     }
 
-    // @ts-ignore
-    return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate, markers);
-  }
-
-  private setCallActivityKind(): void {
-    Array.from(calledElementIdsByCallActivityId.keys()).forEach(callActivityId => {
-      const calledElementId = calledElementIdsByCallActivityId.get(callActivityId);
-      if (convertedProcessBpmnElements.get(calledElementId)) {
-        const shapeBpmnElement = convertedFlowNodeBpmnElements.get(callActivityId) as ShapeBpmnCallActivity;
-        shapeBpmnElement.callActivityKind = ShapeBpmnCallActivityKind.CALLING_PROCESS;
-      } else {
-        convertedFlowNodeBpmnElements.delete(callActivityId);
-
-        // TODO error management
-        console.error('Not possible to find the called element %s of the call activity %s', calledElementId, callActivityId);
-      }
-    });
+    if (!isGlobalTask((bpmnElement as TCallActivity).calledElement)) {
+      return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, processId, markers);
+    }
   }
 
   private buildMarkers(bpmnElement: TActivity): ShapeBpmnMarkerKind[] {

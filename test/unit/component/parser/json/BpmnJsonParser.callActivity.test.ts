@@ -153,13 +153,13 @@ describe('parse bpmn as json for callActivity', () => {
       });
     });
 
-    it(`should NOT convert, when a ${expandedKind} call activity (calling anything than a process) is an attribute of 'process'`, () => {
+    it(`should NOT convert, when a ${expandedKind} call activity (calling global task) is an attribute of 'process'`, () => {
       const json = {
         definitions: {
           targetNamespace: '',
+          globalUserTask: { id: 'task_id' },
           process: {
             id: 'process 1',
-            task: { id: 'task_id' },
             callActivity: {
               id: `call_activity_id_0`,
               name: `call activity name`,
@@ -175,43 +175,6 @@ describe('parse bpmn as json for callActivity', () => {
                 Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 isExpanded: true,
               },
-            },
-          },
-        },
-      };
-
-      parseJsonAndExpectOnlyFlowNodes(json, 0);
-    });
-
-    it(`should NOT convert, when a ${expandedKind} call activity (calling non-existing process) is an attribute of 'process'`, () => {
-      const json = {
-        definitions: {
-          targetNamespace: '',
-          process: {
-            id: 'process 1',
-            callActivity: {
-              id: `call_activity_id_0`,
-              name: `call activity name`,
-              calledElement: 'non-existing_process_id',
-            },
-          },
-          BPMNDiagram: {
-            name: 'process 0',
-            BPMNPlane: {
-              BPMNShape: [
-                {
-                  id: `shape_call_activity_id_0`,
-                  bpmnElement: `call_activity_id_0`,
-                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                  isExpanded: true,
-                },
-                {
-                  id: `shape_call_activity_id_1`,
-                  bpmnElement: `call_activity_id_1`,
-                  Bounds: { x: 365, y: 235, width: 35, height: 46 },
-                  isExpanded: true,
-                },
-              ],
             },
           },
         },
