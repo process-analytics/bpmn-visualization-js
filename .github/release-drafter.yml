@@ -11,7 +11,7 @@ categories:
   - title: 🐛 Bug Fixes
     labels:
       - bug
-  - title: 🦾 Robutness
+  - title: 🦾 Robustness
     labels:
       - 'robustness'
   - title: ⤵️ Library Integration
