@@ -22,11 +22,11 @@ describe('parse bpmn as json for label bounds', () => {
     ['exclusiveGateway'],
     ['inclusiveGateway'],
     ['parallelGateway'],
-    ['callActivity'],
     ['task'],
     ['userTask'],
     ['serviceTask'],
     ['receiveTask'],
+    ['callActivity'],
     ['subProcess'],
     ['textAnnotation'],
     // TODO: To uncomment when we support complex gateway

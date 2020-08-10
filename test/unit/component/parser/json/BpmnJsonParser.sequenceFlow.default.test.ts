@@ -23,11 +23,11 @@ describe('parse bpmn as json for default sequence flow', () => {
   each([
     ['exclusiveGateway'],
     ['inclusiveGateway'],
-    ['callActivity'],
     ['task'],
     ['userTask'],
     ['serviceTask'],
     ['receiveTask'],
+    ['callActivity'],
     ['subProcess'],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway'],
