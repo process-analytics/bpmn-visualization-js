@@ -64,7 +64,6 @@ describe('parse bpmn as json for label font', () => {
                 Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 BPMNLabel: {
                   id: 'label_id',
-                  isExpanded: true,
                   labelStyle: 'style_id',
                 },
               },

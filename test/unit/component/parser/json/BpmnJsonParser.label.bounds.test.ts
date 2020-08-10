@@ -58,7 +58,6 @@ describe('parse bpmn as json for label bounds', () => {
                 BPMNLabel: {
                   id: 'label_id',
                   Bounds: { x: 25, y: 26, width: 27, height: 28 },
-                  isExpanded: true,
                 },
               },
             },
