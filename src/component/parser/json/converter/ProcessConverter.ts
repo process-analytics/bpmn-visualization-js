@@ -83,7 +83,7 @@ export default class ProcessConverter {
       // Deletes everything in the array, which does hit other references. For better performance.
       defaultSequenceFlowIds.length = 0;
 
-      ensureIsArray(processes).forEach(process => this.parseProcess(process));
+      ensureIsArray(processes).forEach((process) => this.parseProcess(process));
     } catch (e) {
       // TODO error management
       console.error(e as Error);
@@ -96,8 +96,8 @@ export default class ProcessConverter {
 
     // flow nodes
     ShapeUtil.flowNodeKinds()
-      .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
-      .forEach(kind => this.buildFlowNodeBpmnElements(processId, process[kind], kind));
+      .filter((kind) => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
+      .forEach((kind) => this.buildFlowNodeBpmnElements(processId, process[kind], kind));
     // process boundary events afterwards as we need its parent activity to be available when building it
     this.buildFlowNodeBpmnElements(processId, process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY);
 
@@ -111,7 +111,7 @@ export default class ProcessConverter {
   }
 
   private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<FlowNode> | FlowNode, kind: ShapeBpmnElementKind): void {
-    ensureIsArray(bpmnElements).forEach(bpmnElement => {
+    ensureIsArray(bpmnElements).forEach((bpmnElement) => {
       let shapeBpmnElement;
 
       if (ShapeUtil.isEvent(kind)) {
@@ -166,7 +166,7 @@ export default class ProcessConverter {
 
   private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventKind, processId: string): ShapeBpmnEvent {
     const eventDefinitions = this.getEventDefinitions(bpmnElement);
-    const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
+    const numberOfEventDefinitions = eventDefinitions.map((eventDefinition) => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
 
     // do we have a None Event?
     if (numberOfEventDefinitions == 0 && ShapeUtil.canHaveNoneEvent(elementKind)) {
@@ -203,23 +203,23 @@ export default class ProcessConverter {
   private getEventDefinitions(bpmnElement: TCatchEvent | TThrowEvent): EventDefinition[] {
     const eventDefinitions = new Map<ShapeBpmnEventKind, number>();
 
-    bpmnEventKinds.forEach(eventKind => {
+    bpmnEventKinds.forEach((eventKind) => {
       // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
       const eventDefinition = bpmnElement[eventKind + 'EventDefinition'];
       const counter = ensureIsArray(eventDefinition, true).length;
       eventDefinitions.set(eventKind, counter);
     });
 
-    ensureIsArray<string>(bpmnElement.eventDefinitionRef).forEach(eventDefinitionRef => {
+    ensureIsArray<string>(bpmnElement.eventDefinitionRef).forEach((eventDefinitionRef) => {
       const kind = findEventDefinitionOfDefinitions(eventDefinitionRef);
       eventDefinitions.set(kind, eventDefinitions.get(kind) + 1);
     });
 
     return Array.from(eventDefinitions.keys())
-      .map(kind => {
+      .map((kind) => {
         return { kind, counter: eventDefinitions.get(kind) };
       })
-      .filter(eventDefinition => {
+      .filter((eventDefinition) => {
         return eventDefinition.counter > 0;
       });
   }
@@ -232,13 +232,13 @@ export default class ProcessConverter {
   }
 
   private buildLaneSetBpmnElements(processId: string, laneSets: Array<TLaneSet> | TLaneSet): void {
-    ensureIsArray(laneSets).forEach(laneSet => {
+    ensureIsArray(laneSets).forEach((laneSet) => {
       this.buildLaneBpmnElements(processId, laneSet.lane);
     });
   }
 
   private buildLaneBpmnElements(processId: string, lanes: Array<TLane> | TLane): void {
-    ensureIsArray(lanes).forEach(lane => {
+    ensureIsArray(lanes).forEach((lane) => {
       const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, processId);
       convertedLaneBpmnElements.set(lane.id, laneShape);
       this.assignParentOfLaneFlowNodes(lane);
@@ -246,7 +246,7 @@ export default class ProcessConverter {
   }
 
   private assignParentOfLaneFlowNodes(lane: TLane): void {
-    ensureIsArray<string>(lane.flowNodeRef).forEach(flowNodeRef => {
+    ensureIsArray<string>(lane.flowNodeRef).forEach((flowNodeRef) => {
       const shapeBpmnElement = findFlowNodeBpmnElement(flowNodeRef);
       const laneId = lane.id;
       if (shapeBpmnElement) {
@@ -261,7 +261,7 @@ export default class ProcessConverter {
   }
 
   private buildSequenceFlows(bpmnElements: Array<TSequenceFlow> | TSequenceFlow): void {
-    ensureIsArray(bpmnElements).forEach(sequenceFlow => {
+    ensureIsArray(bpmnElements).forEach((sequenceFlow) => {
       const kind = this.getSequenceFlowKind(sequenceFlow);
       const convertedSequenceFlow = new SequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.sourceRef, sequenceFlow.targetRef, kind);
       convertedSequenceFlows.set(sequenceFlow.id, convertedSequenceFlow);
@@ -269,7 +269,7 @@ export default class ProcessConverter {
   }
 
   private buildAssociationFlows(bpmnElements: Array<TAssociation> | TAssociation): void {
-    ensureIsArray(bpmnElements).forEach(association => {
+    ensureIsArray(bpmnElements).forEach((association) => {
       // TODO Remove associationDirection conversion type when we merge/simplify internal model with BPMN json model
       const direction = (association.associationDirection as unknown) as AssociationDirectionKind;
       const convertedAssociationFlow = new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction);

@@ -47,7 +47,7 @@ describe('parse bpmn as json for label font', () => {
     //['businessRuleTask'],
   ]).it(
     "should convert as Shape with Font, when a BPMNShape (attached to %s & who references a BPMNLabelStyle with font) is an attribute (as object) of 'BPMNPlane' (as object)",
-    sourceKind => {
+    (sourceKind) => {
       const json = {
         definitions: {
           targetNamespace: '',

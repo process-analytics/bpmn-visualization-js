@@ -174,7 +174,7 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge | ExpectedSeq
 }
 
 export function verifySubProcess(model: BpmnModel, kind: ShapeBpmnSubProcessKind, expectedNumber: number): void {
-  const events = model.flowNodes.filter(shape => {
+  const events = model.flowNodes.filter((shape) => {
     const bpmnElement = shape.bpmnElement;
     return bpmnElement instanceof ShapeBpmnSubProcess && (bpmnElement as ShapeBpmnSubProcess).subProcessKind === kind;
   });
@@ -218,7 +218,7 @@ export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventKind: ShapeBpm
   expect(model.pools).toHaveLength(0);
   expect(model.edges).toHaveLength(0);
 
-  const events = model.flowNodes.filter(shape => {
+  const events = model.flowNodes.filter((shape) => {
     const bpmnElement = shape.bpmnElement;
     return bpmnElement instanceof ShapeBpmnEvent && (bpmnElement as ShapeBpmnEvent).eventKind === eventKind;
   });

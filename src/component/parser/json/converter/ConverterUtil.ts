@@ -29,7 +29,7 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
   if (!Array.isArray(elements)) {
     returnedArray = [convertEmptyStringAndObject(elements, acceptEmptyString)];
   } else {
-    returnedArray = elements.map(element => convertEmptyStringAndObject(element, acceptEmptyString));
+    returnedArray = elements.map((element) => convertEmptyStringAndObject(element, acceptEmptyString));
   }
-  return returnedArray.filter(value => value);
+  return returnedArray.filter((value) => value);
 }

@@ -39,7 +39,7 @@ describe('parse bpmn as json for label bounds', () => {
     //['sendTask'],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask'],
-  ]).describe('parse bpmn as json for label bounds on %s', sourceKind => {
+  ]).describe('parse bpmn as json for label bounds on %s', (sourceKind) => {
     it(`should convert as Shape, when a BPMNShape (attached to ${sourceKind} & with bounds with all attributes) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
       const json = {
         definitions: {

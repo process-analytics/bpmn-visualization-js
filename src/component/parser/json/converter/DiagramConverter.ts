@@ -46,7 +46,7 @@ export default class DiagramConverter {
     const pools: Shape[] = [];
     const edges: Edge[] = [];
 
-    ensureIsArray(bpmnDiagrams).map(bpmnDiagram => {
+    ensureIsArray(bpmnDiagrams).map((bpmnDiagram) => {
       try {
         // Need to be done before deserialization of Shape and Edge, to link the converted fonts to them
         this.deserializeFonts(bpmnDiagram.BPMNLabelStyle);
@@ -70,8 +70,8 @@ export default class DiagramConverter {
   private deserializeFonts(bpmnLabelStyle: Array<BPMNLabelStyle> | BPMNLabelStyle): void {
     this.convertedFonts = new Map();
 
-    ensureIsArray(bpmnLabelStyle).forEach(labelStyle => {
-      ensureIsArray(labelStyle.Font).forEach(font => {
+    ensureIsArray(bpmnLabelStyle).forEach((labelStyle) => {
+      ensureIsArray(labelStyle.Font).forEach((font) => {
         this.convertedFonts.set(labelStyle.id, new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough));
       });
     });
@@ -142,7 +142,7 @@ export default class DiagramConverter {
   }
 
   private deserializeEdges(edges: BPMNEdge | BPMNEdge[]): Edge[] {
-    return ensureIsArray(edges).map(edge => {
+    return ensureIsArray(edges).map((edge) => {
       const flow = findSequenceFlow(edge.bpmnElement) || findMessageFlow(edge.bpmnElement) || findAssociationFlow(edge.bpmnElement);
       const waypoints = this.deserializeWaypoints(edge.waypoint);
       const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
@@ -155,7 +155,7 @@ export default class DiagramConverter {
   }
 
   private deserializeWaypoints(waypoints: Point[]): Waypoint[] {
-    return ensureIsArray(waypoints).map(waypoint => new Waypoint(waypoint.x, waypoint.y));
+    return ensureIsArray(waypoints).map((waypoint) => new Waypoint(waypoint.x, waypoint.y));
   }
 
   private deserializeLabel(bpmnLabel: string | BPMNLabel, id: string): Label {

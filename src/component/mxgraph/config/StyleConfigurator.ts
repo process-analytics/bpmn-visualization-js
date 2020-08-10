@@ -180,7 +180,7 @@ export default class StyleConfigurator {
   }
 
   private configureEventStyles(): void {
-    ShapeUtil.topLevelBpmnEventKinds().forEach(kind => {
+    ShapeUtil.topLevelBpmnEventKinds().forEach((kind) => {
       const style = this.cloneDefaultVertexStyle();
       style[mxConstants.STYLE_SHAPE] = kind;
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.EllipsePerimeter;
@@ -199,7 +199,7 @@ export default class StyleConfigurator {
   }
 
   private configureActivityStyles(): void {
-    ShapeUtil.activityKinds().forEach(kind => {
+    ShapeUtil.activityKinds().forEach((kind) => {
       const style = this.cloneDefaultVertexStyle();
       style[mxConstants.STYLE_SHAPE] = kind;
       style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
@@ -208,7 +208,7 @@ export default class StyleConfigurator {
   }
 
   private configureGatewayStyles(): void {
-    ShapeUtil.gatewayKinds().forEach(kind => {
+    ShapeUtil.gatewayKinds().forEach((kind) => {
       const style = this.cloneDefaultVertexStyle();
       style[mxConstants.STYLE_SHAPE] = kind;
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
@@ -249,7 +249,7 @@ export default class StyleConfigurator {
   }
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: any) => void>): void {
-    styleKinds.forEach(kind => {
+    styleKinds.forEach((kind) => {
       const style = this.cloneDefaultEdgeStyle();
       const updateEdgeStyle =
         specificStyles.get(kind) ||

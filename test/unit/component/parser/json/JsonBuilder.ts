@@ -146,7 +146,7 @@ export function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildP
     }
     addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition });
     if (Array.isArray(eventDefinition)) {
-      event.eventDefinitionRef = eventDefinition.map(eventDefinition => (typeof eventDefinition === 'string' ? eventDefinition : eventDefinition.id));
+      event.eventDefinitionRef = eventDefinition.map((eventDefinition) => (typeof eventDefinition === 'string' ? eventDefinition : eventDefinition.id));
     } else {
       event.eventDefinitionRef = (eventDefinition as TEventDefinition).id;
     }

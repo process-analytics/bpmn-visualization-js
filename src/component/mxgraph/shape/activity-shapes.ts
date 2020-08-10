@@ -40,7 +40,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
     const markers = StyleUtils.getBpmnMarkers(this.style);
     if (markers) {
-      markers.split(',').forEach(marker => {
+      markers.split(',').forEach((marker) => {
         switch (marker) {
           case ShapeBpmnMarkerKind.LOOP:
             this.iconPainter.paintLoopIcon(paintParameter);
