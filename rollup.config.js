@@ -74,7 +74,13 @@ if (devMode) {
 }
 
 if (demoMode) {
-  plugins.push(terser());
+  plugins.push(
+    terser({
+      compress: false,
+      mangle: false,
+      ecma: 6,
+    }),
+  );
 }
 
 export default {
