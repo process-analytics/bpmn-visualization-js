@@ -16,7 +16,7 @@
 
 export default class MxClientConfigurator {
   public configureMxCodec(): void {
-    mxCodec.prototype.decode = function(node: Element, into: Element) {
+    mxCodec.prototype.decode = function (node: Element, into: Element) {
       // Check for the existence of global constructor, throw explicit Error if not
       if (node !== null && node.nodeType === mxConstants.NODETYPE_ELEMENT) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

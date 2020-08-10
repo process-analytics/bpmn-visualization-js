@@ -56,7 +56,7 @@ export default class ShapeConfigurator {
 
   private initMxShapePrototype(isFF: boolean): void {
     // this change is needed for adding the custom attributes that permits identification of the BPMN elements
-    mxShape.prototype.createSvgCanvas = function() {
+    mxShape.prototype.createSvgCanvas = function () {
       const canvas = new mxSvgCanvas2D(this.node, false);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
       canvas.pointerEventsValue = this.svgPointerEvents;
@@ -81,7 +81,7 @@ export default class ShapeConfigurator {
 
       if (!this.antiAlias) {
         // Rounds all numbers in the SVG output to integers
-        canvas.format = function(value: string) {
+        canvas.format = function (value: string) {
           return Math.round(parseFloat(value));
         };
       }
