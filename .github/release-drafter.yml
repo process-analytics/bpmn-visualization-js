@@ -11,13 +11,13 @@ categories:
   - title: 🐛 Bug Fixes
     labels:
       - bug
-  - title: Robutness
+  - title: 🦾 Robutness
     labels:
       - 'robustness'
   - title: Library Integration
     labels:
       - 'lib integration'
-  - title: Library Extensibility
+  - title: ↔️ Library Extensibility
     labels:
       - 'lib extensibility'
   - title: 📝 Documentation
