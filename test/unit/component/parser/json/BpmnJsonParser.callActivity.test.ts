@@ -153,34 +153,38 @@ describe('parse bpmn as json for callActivity', () => {
       });
     });
 
-    it(`should NOT convert, when a ${expandedKind} call activity (calling global task) is an attribute of 'process'`, () => {
-      const json = {
-        definitions: {
-          targetNamespace: '',
-          globalUserTask: { id: 'task_id' },
-          process: {
-            id: 'process 1',
-            callActivity: {
-              id: `call_activity_id_0`,
-              name: `call activity name`,
-              calledElement: 'task_id',
+    it.each([['globalTask'], ['globalBusinessRuleTask'], ['globalManualTask'], ['globalScriptTask'], ['globalUserTask']])(
+      `should NOT convert, when a ${expandedKind} call activity (calling %s) is an attribute of 'process'`,
+      (globalTaskKind: string) => {
+        const json = {
+          definitions: {
+            targetNamespace: '',
+            process: {
+              id: 'process 1',
+              callActivity: {
+                id: `call_activity_id_0`,
+                name: `call activity name`,
+                calledElement: 'task_id',
+              },
             },
-          },
-          BPMNDiagram: {
-            name: 'process 0',
-            BPMNPlane: {
-              BPMNShape: {
-                id: `shape_call_activity_id_0`,
-                bpmnElement: `call_activity_id_0`,
-                Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                isExpanded: true,
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: {
+                  id: `shape_call_activity_id_0`,
+                  bpmnElement: `call_activity_id_0`,
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                },
               },
             },
           },
-        },
-      };
+        };
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        json.definitions[globalTaskKind] = { id: 'task_id' };
 
-      parseJsonAndExpectOnlyFlowNodes(json, 0);
-    });
+        parseJsonAndExpectOnlyFlowNodes(json, 0);
+      },
+    );
   });
 });
