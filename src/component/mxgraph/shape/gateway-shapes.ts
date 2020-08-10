@@ -15,6 +15,7 @@
  */
 import { StyleDefault } from '../StyleUtils';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render/IconPainter';
+import BpmnCanvas from './render/BpmnCanvas';
 
 abstract class GatewayShape extends mxRhombus {
   protected iconPainter = IconPainterProvider.get();
@@ -42,7 +43,7 @@ export class ExclusiveGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    this.iconPainter.paintXCrossIcon(paintParameter);
+    this.iconPainter.paintXCrossIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginPosition(4) });
   }
 }
 
@@ -52,7 +53,7 @@ export class ParallelGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    this.iconPainter.paintPlusCrossIcon(paintParameter);
+    this.iconPainter.paintPlusCrossIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginPosition(4) });
   }
 }
 

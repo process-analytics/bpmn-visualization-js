@@ -17,6 +17,7 @@ import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render/IconPainter';
 import { ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { ShapeBpmnMarkerKind } from '../../../model/bpmn/shape/ShapeBpmnMarkerKind';
+import BpmnCanvas from './render/BpmnCanvas';
 
 export abstract class BaseActivityShape extends mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
@@ -40,6 +41,8 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
     const markers = StyleUtils.getBpmnMarkers(this.style);
     if (markers) {
+      paintParameter = { ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeBottomLeft() };
+
       markers.split(',').forEach(marker => {
         switch (marker) {
           case ShapeBpmnMarkerKind.LOOP:
@@ -52,7 +55,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
             this.iconPainter.paintParallelMultiInstanceIcon(paintParameter);
             break;
           case ShapeBpmnMarkerKind.EXPAND:
-            this.iconPainter.paintExpandIcon(paintParameter);
+            this.iconPainter.paintExpandIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeBottomCenter() });
             break;
         }
         // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
@@ -96,7 +99,7 @@ export class ServiceTaskShape extends BaseTaskShape {
   }
 
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    this.iconPainter.paintGearIcon(paintParameter);
+    this.iconPainter.paintGearIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginPosition(20) });
   }
 }
 
@@ -106,7 +109,7 @@ export class UserTaskShape extends BaseTaskShape {
   }
 
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    this.iconPainter.paintWomanIcon(paintParameter);
+    this.iconPainter.paintWomanIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginPosition(20) });
   }
 }
 
