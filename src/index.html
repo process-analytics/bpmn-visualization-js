@@ -130,23 +130,24 @@
 
         <label for="select-open-migw">Open remote BPMN diagram</label>
         <select name="select-open-migw" id="select-open-migw" title="Open MIGW Reference">
-          <option value="" selected>Open MIGW Reference</option>
-          <option value="A.1.0.bpmn" selected>A.1.0</option>
+          <option value="">Open MIGW Reference</option>
+          <option value="A.1.0.bpmn">A.1.0</option>
           <option value="A.2.0.bpmn" selected>A.2.0</option>
           <option value="A.2.1.bpmn">A.2.1</option>
           <option value="B.1.0.bpmn">B.1.0</option>
           <option value="B.2.0.bpmn">B.2.0</option>
+          <option value="D.3.0-unknown.bpmn">D.3.0</option>
         </select>
         <span />
-        <select name="select-open-bpmn-visualization-example" id="select-open-bpmn-visualization-example">
-            <option value="all_event_boundaries.bpmn">boundary events</option>
-            <option value="all_event_types.bpmn">events</option>
-            <option value="all_task_types.bpmn">tasks</option> <!-- WARN: doesn't exist. TODO create fetch status area to display error -->
+        <select name="select-open-bpmn-visualization-example" id="select-open-bpmn-visualization-example" title="Open bpmn-visualization example">
+          <option value="">Open bpmn-visualization example</option>
+          <option value="all_event_boundaries.bpmn">boundary events</option>
+          <option value="all_event_types.bpmn">events</option>
+          <option value="does-not-exist.bpmn">unknown</option>
         </select>
-        <button id="btn-open-bpmn-visualization-example">Open bpmn-visualization example</button>
         <p/>
         <input type="text" id="input-open-url" placeholder="path to diagram" /><button id="btn-open-url">Open URL</button>
-        <strong>Example:</strong> <i>https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/A.2.1.bpmn</i></strong>
+        <strong>Example:</strong> <i>https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/A.2.1.bpmn</i>
     </div>
     <div id="fetch-status"></div>
     <div id="btn-group-export" class="btn-group btn-group-export">

@@ -153,7 +153,6 @@ document.getElementById('btn-open-url').onclick = function() {
 };
 
 document.getElementById('select-open-migw').onchange = function() {
-  log('change on select');
   const fileName = (document.getElementById('select-open-migw') as HTMLSelectElement).value;
   if (fileName) {
     log('Start opening MIGW file %s', fileName);
@@ -162,11 +161,13 @@ document.getElementById('select-open-migw').onchange = function() {
   }
 };
 
-document.getElementById('btn-open-bpmn-visualization-example').onclick = function() {
+document.getElementById('select-open-bpmn-visualization-example').onchange = function() {
   const fileName = (document.getElementById('select-open-bpmn-visualization-example') as HTMLSelectElement).value;
-  log('Start opening bpmn-visualization-example file %s', fileName);
-  const url = `https://raw.githubusercontent.com/process-analytics/bpmn-visualization-examples/master/bpmn-files/${fileName}`;
-  openFromUrl(url);
+  if (fileName) {
+    log('Start opening bpmn-visualization-example file %s', fileName);
+    const url = `https://raw.githubusercontent.com/process-analytics/bpmn-visualization-examples/master/bpmn-files/${fileName}`;
+    openFromUrl(url);
+  }
 };
 
 // =====================================================================================================================
