@@ -11,8 +11,19 @@ categories:
   - title: 🐛 Bug Fixes
     labels:
       - bug
+  - title: 🦾 Robustness
+    labels:
+      - 'robustness'
+  - title: ⤵️ Library Integration
+    labels:
+      - 'lib integration'
+  - title: ↔️ Library Extensibility
+    labels:
+      - 'lib extensibility'
   - title: 📝 Documentation
     label: documentation
+  - title: 🎮 Demo and Examples
+    label: example
   - title: 📦 Dependency updates
     labels:
       # Default label used by dependabot
