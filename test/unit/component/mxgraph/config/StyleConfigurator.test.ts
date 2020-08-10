@@ -16,7 +16,13 @@
 
 import StyleConfigurator from '../../../../../src/component/mxgraph/config/StyleConfigurator';
 import Shape from '../../../../../src/model/bpmn/shape/Shape';
-import ShapeBpmnElement, { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
+import ShapeBpmnElement, {
+  ShapeBpmnActivity,
+  ShapeBpmnBoundaryEvent,
+  ShapeBpmnCallActivity,
+  ShapeBpmnEvent,
+  ShapeBpmnSubProcess,
+} from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import Label, { Font } from '../../../../../src/model/bpmn/Label';
 import { ExpectedFont } from '../../parser/json/JsonTestUtils';
@@ -31,6 +37,7 @@ import each from 'jest-each';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
 import { AssociationDirectionKind } from '../../../../../src/model/bpmn/edge/AssociationDirectionKind';
 import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
+import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnCallActivityKind';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
@@ -58,6 +65,10 @@ function newShapeBpmnElement(kind: ShapeBpmnElementKind): ShapeBpmnElement {
 
 function newShapeBpmnActivity(kind: ShapeBpmnElementKind, markers?: ShapeBpmnMarkerKind[]): ShapeBpmnElement {
   return new ShapeBpmnActivity('id', 'name', kind, undefined, undefined, markers);
+}
+
+function newShapeBpmnCallActivity(markers?: ShapeBpmnMarkerKind[]): ShapeBpmnElement {
+  return new ShapeBpmnCallActivity('id', 'name', ShapeBpmnCallActivityKind.CALLING_PROCESS, undefined, markers);
 }
 
 function newShapeBpmnEvent(bpmnElementKind: BpmnEventKind, eventKind: ShapeBpmnEventKind): ShapeBpmnEvent {
@@ -224,6 +235,7 @@ describe('mxgraph renderer', () => {
       expect(computeStyle(shape)).toEqual('boundaryEvent;bpmn.eventKind=cancel;bpmn.isInterrupting=true;fontStyle=8');
     });
   });
+
   describe('compute style - sub-processes', () => {
     describe.each([
       ['expanded', []],
@@ -245,6 +257,29 @@ describe('mxgraph renderer', () => {
       });
     });
   });
+
+  describe('compute style - call activities', () => {
+    describe.each([
+      ['expanded', []],
+      ['collapsed', [ShapeBpmnMarkerKind.EXPAND]],
+    ])(`compute style - %s call activities`, (expandKind, markers: ShapeBpmnMarkerKind[]) => {
+      it(`${expandKind} call activity without label bounds`, () => {
+        const shape = newShape(newShapeBpmnCallActivity(markers), newLabel({ name: 'Arial' }));
+        const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
+        const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
+        expect(computeStyle(shape)).toEqual(`callActivity${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
+      });
+
+      it(`${expandKind} call activity with label bounds`, () => {
+        const shape = newShape(newShapeBpmnCallActivity(markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
+        const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
+        expect(computeStyle(shape)).toEqual(
+          `callActivity${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
+        );
+      });
+    });
+  });
+
   describe('compute style - text annotation', () => {
     it('without label', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION));
@@ -255,6 +290,7 @@ describe('mxgraph renderer', () => {
       expect(computeStyle(shape)).toEqual('textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=top;verticalLabelPosition=left');
     });
   });
+
   describe.each([
     [ShapeBpmnElementKind.CALL_ACTIVITY],
     [ShapeBpmnElementKind.SUB_PROCESS],
@@ -278,15 +314,21 @@ describe('mxgraph renderer', () => {
           const shape = newShape(newShapeBpmnActivity(bpmnKind, [markerKind]), newLabel({ name: 'Arial' }));
           expect(computeStyle(shape)).toEqual(`${bpmnKind};bpmn.markers=${markerKind};fontFamily=Arial`);
         });
+
+        if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
+          it(`${bpmnKind} with Loop & Expand (collapsed) markers`, () => {
+            const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, [markerKind, ShapeBpmnMarkerKind.EXPAND]));
+            expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded;bpmn.markers=${markerKind},expand`);
+          });
+        }
+
+        if (bpmnKind == ShapeBpmnElementKind.CALL_ACTIVITY) {
+          it(`${bpmnKind} with Loop & Expand (collapsed) markers`, () => {
+            const shape = newShape(newShapeBpmnCallActivity([markerKind, ShapeBpmnMarkerKind.EXPAND]));
+            expect(computeStyle(shape)).toEqual(`callActivity;bpmn.markers=${markerKind},expand`);
+          });
+        }
       },
     );
-
-    // TODO same test when supporting CALL_ACTIVITY isExpanded
-    if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
-      it(`${bpmnKind} with Loop marker and isExpanded=false (collapsed)`, () => {
-        const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND]));
-        expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded;bpmn.markers=loop,expand`);
-      });
-    }
   });
 });

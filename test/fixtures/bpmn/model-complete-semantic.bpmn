@@ -12,15 +12,28 @@
   <semantic:terminateEventDefinition id="top_terminate_definition_id"/>
   <semantic:process isExecutable="false" id="WFP-6-">
     <!-- Activity -->
-    <!-- Call Activity -->
-    <semantic:callActivity calledElement="Process_unknown" name="Call Activity Collapsed" id="callActivity_1" />
-    <semantic:callActivity calledElement="Process_unknown" name="Call Activity Collapsed With Loop" id="callActivity_with_loop" >
+    <!-- Call Activity calling process-->
+    <!-- Expanded -->
+    <semantic:callActivity calledElement="process_2" name="Expanded Call Activity" id="expanded_callActivity_1" />
+    <semantic:callActivity calledElement="process_2" name="Expanded Call Activity With Loop" id="expanded_callActivity_with_loop" >
       <semantic:standardLoopCharacteristics />
     </semantic:callActivity>
-    <semantic:callActivity calledElement="Process_unknown" name="Call Activity Collapsed With Sequential Multi-instance" id="callActivity_with_sequential_multi_instance" >
+    <semantic:callActivity calledElement="process_2" name="Expanded Call Activity With Sequential Multi-instance" id="expanded_callActivity_with_sequential_multi_instance" >
       <semantic:multiInstanceLoopCharacteristics isSequential="true"/>
     </semantic:callActivity>
-    <semantic:callActivity calledElement="Process_unknown" name="Call Activity Collapsed With Parallel Multi-instance" id="callActivity_with_parallel_multi_instance" >
+    <semantic:callActivity calledElement="process_2" name="Expanded Call Activity With Parallel Multi-instance" id="expanded_callActivity_with_parallel_multi_instance" >
+      <semantic:multiInstanceLoopCharacteristics />
+    </semantic:callActivity>
+
+    <!-- Collapsed -->
+    <semantic:callActivity calledElement="process_2" name="Collapsed Call Activity" id="collapsed_callActivity_1" />
+    <semantic:callActivity calledElement="process_2" name="Collapsed Call Activity With Loop" id="collapsed_callActivity_with_loop" >
+      <semantic:standardLoopCharacteristics />
+    </semantic:callActivity>
+    <semantic:callActivity calledElement="process_2" name="Collapsed Call Activity With Sequential Multi-instance" id="collapsed_callActivity_with_sequential_multi_instance" >
+      <semantic:multiInstanceLoopCharacteristics isSequential="true"/>
+    </semantic:callActivity>
+    <semantic:callActivity calledElement="process_2" name="Collapsed Call Activity With Parallel Multi-instance" id="collapsed_callActivity_with_parallel_multi_instance" >
       <semantic:multiInstanceLoopCharacteristics />
     </semantic:callActivity>
 
@@ -307,26 +320,53 @@
   <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
     <bpmndi:BPMNPlane bpmnElement="WFP-6-">
       <!-- Activity -->
-      <!-- Call Activity -->
-      <bpmndi:BPMNShape bpmnElement="callActivity_1" isExpanded="false" id="shape_callActivity_1">
+      <!-- Call Activity calling process-->
+      <!-- Expanded -->
+      <bpmndi:BPMNShape bpmnElement="expanded_callActivity_1" isExpanded="true" id="shape_expanded_callActivity_1">
         <dc:Bounds height="68.0" width="83.0" x="455.0" y="419.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="25" width="72.5" x="460" y="440.18"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="callActivity_with_loop" isExpanded="false" id="shape_callActivity_with_loop">
+      <bpmndi:BPMNShape bpmnElement="expanded_callActivity_with_loop" isExpanded="true" id="shape_expanded_callActivity_with_loop">
         <dc:Bounds height="68.0" width="83.0" x="455.0" y="419.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="25" width="72.5" x="460" y="440.18"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="callActivity_with_sequential_multi_instance" isExpanded="false" id="shape_callActivity_with_sequential_multi_instance">
+      <bpmndi:BPMNShape bpmnElement="expanded_callActivity_with_sequential_multi_instance" isExpanded="true" id="shape_expanded_callActivity_with_sequential_multi_instance">
         <dc:Bounds height="68.0" width="83.0" x="455.0" y="419.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="25" width="72.5" x="460" y="440.18"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="callActivity_with_parallel_multi_instance" isExpanded="false" id="shape_callActivity_with_parallel_multi_instance">
+      <bpmndi:BPMNShape bpmnElement="expanded_callActivity_with_parallel_multi_instance" isExpanded="true" id="shape_expanded_callActivity_with_parallel_multi_instance">
+        <dc:Bounds height="68.0" width="83.0" x="455.0" y="419.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="25" width="72.5" x="460" y="440.18"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+
+      <!-- Collapsed -->
+      <bpmndi:BPMNShape bpmnElement="collapsed_callActivity_1" isExpanded="false" id="shape_collapsed_callActivity_1">
+        <dc:Bounds height="68.0" width="83.0" x="455.0" y="419.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="25" width="72.5" x="460" y="440.18"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="collapsed_callActivity_with_loop" isExpanded="false" id="shape_collapsed_callActivity_with_loop">
+        <dc:Bounds height="68.0" width="83.0" x="455.0" y="419.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="25" width="72.5" x="460" y="440.18"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="collapsed_callActivity_with_sequential_multi_instance" isExpanded="false" id="shape_collapsed_callActivity_with_sequential_multi_instance">
+        <dc:Bounds height="68.0" width="83.0" x="455.0" y="419.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="25" width="72.5" x="460" y="440.18"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="collapsed_callActivity_with_parallel_multi_instance" isExpanded="false" id="shape_collapsed_callActivity_with_parallel_multi_instance">
         <dc:Bounds height="68.0" width="83.0" x="455.0" y="419.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="25" width="72.5" x="460" y="440.18"/>

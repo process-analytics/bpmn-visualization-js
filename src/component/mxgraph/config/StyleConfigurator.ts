@@ -21,7 +21,7 @@ import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
 import Shape from '../../../model/bpmn/shape/Shape';
 import Edge from '../../../model/bpmn/edge/Edge';
 import Bounds from '../../../model/bpmn/Bounds';
-import { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../model/bpmn/shape/ShapeBpmnElement';
+import { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../model/bpmn/shape/ShapeBpmnElement';
 import { Font } from '../../../model/bpmn/Label';
 import { FlowKind } from '../../../model/bpmn/edge/FlowKind';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/edge/Flow';
@@ -343,7 +343,11 @@ export default class StyleConfigurator {
       }
     }
     // when no label bounds, adjust the default style dynamically
-    else if (bpmnCell instanceof Shape && bpmnElement instanceof ShapeBpmnSubProcess && !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)) {
+    else if (
+      bpmnCell instanceof Shape &&
+      (bpmnElement instanceof ShapeBpmnSubProcess || bpmnElement instanceof ShapeBpmnCallActivity) &&
+      !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)
+    ) {
       styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
     }
 
