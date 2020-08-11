@@ -123,6 +123,16 @@ export class ReceiveTaskShape extends BaseTaskShape {
   protected paintTaskIcon(paintParameter: PaintParameter): void {}
 }
 
+export class SendTaskShape extends BaseTaskShape {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+    super(bounds, fill, stroke, strokewidth);
+    this.gradient = 'Cyan';
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function
+  protected paintTaskIcon(paintParameter: PaintParameter): void {}
+}
+
 export class CallActivityShape extends BaseActivityShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
