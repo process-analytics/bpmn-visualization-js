@@ -107,19 +107,6 @@ document.getElementById('btn-open-bpmn-visualization-example').onclick = functio
   openFromUrl(url);
 };
 
-// TODO     auto open ?url=diagram-url
-//
-//     (function() {
-//       var str = window.location.search;
-//       var match = /(?:\&|\?)url=([^&]+)/.exec(str);
-//
-//       if (match) {
-//         var url = decodeURIComponent(match[1]);
-//         $('#input-open-url').val(url);
-//         openFromUrl(url);
-//       }
-//     })();
-
 // =====================================================================================================================
 // ZOOM
 // =====================================================================================================================
@@ -201,6 +188,20 @@ document.getElementById('btn-export-png').onclick = function() {
 ////////////////////////////////////////////////////////////////////////////////
 // if bpmn passed as request parameter, try to load it directly
 ////////////////////////////////////////////////////////////////////////////////
+
+// TODO     auto open ?url=diagram-url
+//
+//     (function() {
+//       var str = window.location.search;
+//       var match = /(?:\&|\?)url=([^&]+)/.exec(str);
+//
+//       if (match) {
+//         var url = decodeURIComponent(match[1]);
+//         $('#input-open-url').val(url);
+//         openFromUrl(url);
+//       }
+//     })();
+
 documentReady(function () {
   const log = logStartup;
   log("Checking if 'BPMN auto loading from url parameter' is requested");
