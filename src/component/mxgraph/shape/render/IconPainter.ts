@@ -572,7 +572,7 @@ export default class IconPainter {
     canvas.lineTo(53.12, 71.82);
     canvas.lineTo(22.5, 31.37);
     canvas.close();
-    canvas.stroke();
+    canvas.fillAndStroke();
   }
 }
 
