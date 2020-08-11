@@ -48,6 +48,7 @@ if (devMode || demoMode) {
   copyTargets.push({ src: 'src/index.html', dest: 'dist/' });
   copyTargets.push({ src: 'src/index-non-regression.html', dest: 'dist/' });
   copyTargets.push({ src: 'src/static/css/main.css', dest: 'dist/static/css/' });
+  copyTargets.push({ src: 'src/static/css/extended-demo.css', dest: 'dist/static/css/' });
   copyTargets.push({ src: 'src/static/img/favicon.ico', dest: 'dist/static/img/' });
   copyTargets.push({ src: 'src/static/js/configureMxGraphGlobals.js', dest: 'dist/static/js/' });
   copyTargets.push({ src: 'node_modules/mxgraph/javascript/mxClient.min.js', dest: 'dist/static/js/' });
