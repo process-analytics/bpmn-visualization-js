@@ -544,7 +544,7 @@ export default class IconPainter {
   paintRightArrowIcon({ setIconOrigin, c, shape, ratioFromParent, icon }: PaintParameter): void {
     const originalIconSize = { width: 512, height: 415.23 };
     const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, originalIconSize);
-    c.setLineJoin('round');
+    canvas.setRoundLineJoin();
 
     canvas.begin();
     canvas.moveTo(512, 207.61);
