@@ -98,6 +98,7 @@ export default class ShapeUtil {
 
   public static flowNodeKinds(): ShapeBpmnElementKind[] {
     return Object.values(ShapeBpmnElementKind).filter(kind => {
+      // TODO why not removing pool as well
       return kind != ShapeBpmnElementKind.LANE;
     });
   }
