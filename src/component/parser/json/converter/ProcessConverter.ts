@@ -245,11 +245,11 @@ export default class ProcessConverter {
     return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EVENT, processId, markers);
   }
 
-  // TODO duplicated with the process part
-  private buildSubprocessInnerElements(process: TSubProcess): void {
-    // TODO manage laneset?
+  private buildSubprocessInnerElements(subProcess: TSubProcess): void {
+    const process = subProcess;
     const processId = process.id;
 
+    // TODO duplicated with the process part
     // flow nodes
     ShapeUtil.flowNodeKinds()
       .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
@@ -257,7 +257,10 @@ export default class ProcessConverter {
     // process boundary events afterwards as we need its parent activity to be available when building it
     this.buildFlowNodeBpmnElements(processId, process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY);
 
-    // TODO duplicated with regular process
+    // containers
+    this.buildLaneBpmnElements(processId, process[ShapeBpmnElementKind.LANE]);
+    this.buildLaneSetBpmnElements(processId, process['laneSet']);
+
     // flows
     this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW]);
     this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW]);
