@@ -218,8 +218,8 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Error Interrupting Boundary Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -268,8 +268,8 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Error End Event
-|
-|
+|icon:check-circle-o[]
+|The icon width may be adjusted
 |===
 
 
