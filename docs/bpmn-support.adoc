@@ -216,6 +216,10 @@ The event definition can be defined on the event or on the definitions.
 |Signal Interrupting Boundary Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Error Interrupting Boundary Event
+|
+|
 |===
 
 
@@ -262,6 +266,10 @@ The event definition can be defined on the event or on the definitions.
 |Signal End Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Error End Event
+|
+|
 |===
 
 
