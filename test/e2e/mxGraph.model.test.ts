@@ -282,6 +282,16 @@ describe('mxGraph model', () => {
       eventKind: ShapeBpmnEventKind.SIGNAL,
       label: 'Throw Signal Intermediate Event On Top',
     });
+    expectModelContainsBpmnEvent('linkIntermediateThrowEvent', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
+      eventKind: ShapeBpmnEventKind.LINK,
+      label: 'Throw Link Intermediate Event',
+    });
+    expectModelContainsBpmnEvent('linkIntermediateThrowEvent_on_top', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
+      eventKind: ShapeBpmnEventKind.LINK,
+      label: 'Throw Link Intermediate Event On Top',
+    });
 
     // catch intermediate event
     expectModelContainsBpmnEvent('messageIntermediateCatchEvent', {
@@ -313,6 +323,16 @@ describe('mxGraph model', () => {
       kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
       eventKind: ShapeBpmnEventKind.SIGNAL,
       label: 'Catch Signal Intermediate Event On Top',
+    });
+    expectModelContainsBpmnEvent('linkIntermediateCatchEvent', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+      eventKind: ShapeBpmnEventKind.LINK,
+      label: 'Catch Link Intermediate Event',
+    });
+    expectModelContainsBpmnEvent('linkIntermediateCatchEvent_on_top', {
+      kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+      eventKind: ShapeBpmnEventKind.LINK,
+      label: 'Catch Link Intermediate Event On Top',
     });
 
     // boundary event: interrupting
