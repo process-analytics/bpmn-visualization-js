@@ -262,6 +262,7 @@ describe('parse bpmn as json for all events', () => {
       ['timer', ShapeBpmnEventKind.TIMER],
       ['terminate', ShapeBpmnEventKind.TERMINATE],
       ['signal', ShapeBpmnEventKind.SIGNAL],
+      ['link', ShapeBpmnEventKind.LINK],
 
       // TODO To uncomment when an element is supported
       // ['cancel', ShapeBpmnEventKind.CANCEL],
@@ -269,7 +270,6 @@ describe('parse bpmn as json for all events', () => {
       // ['conditional', ShapeBpmnEventKind.CONDITIONAL],
       // ['error', ShapeBpmnEventKind.ERROR],
       // ['escalation', ShapeBpmnEventKind.ESCALATION],
-      // ['link', ShapeBpmnEventKind.LINK],
     ])(`for %s ${bpmnKind}`, (eventDefinitionKind: string, expectedShapeBpmnEventKind: ShapeBpmnEventKind) => {
       if (
         (expectedShapeBpmnElementKind === ShapeBpmnElementKind.EVENT_START &&
