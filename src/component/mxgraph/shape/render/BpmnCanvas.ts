@@ -70,11 +70,10 @@ export default class BpmnCanvas {
 
   private readonly shapeConfiguration: ShapeConfiguration;
 
-  constructor(config: BpmnCanvasConfiguration) {
-    this.c = config.mxCanvas;
-    this.shapeConfiguration = config.shapeConfiguration; // TODO clone?
+  constructor({ mxCanvas, shapeConfiguration, iconConfiguration }: BpmnCanvasConfiguration) {
+    this.c = mxCanvas;
+    this.shapeConfiguration = shapeConfiguration; // TODO clone?
 
-    const iconConfiguration = config.iconConfiguration;
     this.iconOriginalSize = iconConfiguration.originalSize;
 
     const ratioFromShape = iconConfiguration.ratioFromShape;
@@ -87,7 +86,8 @@ export default class BpmnCanvas {
       this.scaleY = 1;
     }
 
-    this.updateCanvasStyle(config.iconConfiguration.style);
+    this.updateCanvasStyle(iconConfiguration.style);
+    iconConfiguration.setIconOrigin(this);
   }
 
   /**

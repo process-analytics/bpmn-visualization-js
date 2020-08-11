@@ -16,6 +16,7 @@
 import { ShapeBpmnEventKind } from '../../../model/bpmn/shape/ShapeBpmnEventKind';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render/IconPainter';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
+import BpmnCanvas from './render/BpmnCanvas';
 
 abstract class EventShape extends mxEllipse {
   protected iconPainter = IconPainterProvider.get();
@@ -24,11 +25,19 @@ abstract class EventShape extends mxEllipse {
   private iconPainters: Map<ShapeBpmnEventKind, (paintParameter: PaintParameter) => void> = new Map([
     [ShapeBpmnEventKind.MESSAGE, (paintParameter: PaintParameter) => this.iconPainter.paintEnvelopeIcon({ ...paintParameter, ratioFromParent: 0.5 })],
     [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => this.iconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
-    [ShapeBpmnEventKind.TIMER, (paintParameter: PaintParameter) => this.iconPainter.paintClockIcon(paintParameter)],
+    [
+      ShapeBpmnEventKind.TIMER,
+      (paintParameter: PaintParameter) => this.iconPainter.paintClockIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginPosition(5) }),
+    ],
     [
       ShapeBpmnEventKind.SIGNAL,
       (paintParameter: PaintParameter) =>
-        this.iconPainter.paintTriangleIcon({ ...paintParameter, ratioFromParent: 0.55, icon: { ...paintParameter.icon, strokeWidth: StyleDefault.STROKE_WIDTH_THIN.valueOf() } }),
+        this.iconPainter.paintTriangleIcon({
+          ...paintParameter,
+          ratioFromParent: 0.55,
+          icon: { ...paintParameter.icon, strokeWidth: StyleDefault.STROKE_WIDTH_THIN.valueOf() },
+          setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginPosition(4),
+        }),
     ],
   ]);
 

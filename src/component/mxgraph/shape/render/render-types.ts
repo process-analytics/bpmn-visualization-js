@@ -1,3 +1,5 @@
+import BpmnCanvas from './BpmnCanvas';
+
 /**
  * Copyright 2020 Bonitasoft S.A.
  *
@@ -40,4 +42,5 @@ export interface IconConfiguration {
   /** If `undefined`, no scaling will be done in {@link BpmnCanvas}. */
   ratioFromShape?: number;
   style: IconStyleConfiguration;
+  setIconOrigin: (canvas: BpmnCanvas) => void;
 }
