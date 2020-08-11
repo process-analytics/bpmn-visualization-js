@@ -165,6 +165,10 @@ The event definition can be defined on the event or on the definitions.
 |Signal Intermediate Catch Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Link Intermediate Catch Event
+|
+|
 |===
 
 
@@ -186,6 +190,10 @@ The event definition can be defined on the event or on the definitions.
 |Signal Intermediate Throw Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Link Intermediate Throw Event
+|
+|
 |===
 
 
