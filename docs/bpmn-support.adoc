@@ -69,8 +69,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |
 
 |Send Task
-|
-|
+|icon:check-circle-o[]
+|Icon may be subject to change
 
 |Call Activity calling a Process
 |
