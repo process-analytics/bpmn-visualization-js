@@ -14,6 +14,19 @@
         <input type="button" class="btn-common btn-settings" id="btn-settings" title="Configure"/>
         <input type="button" class="btn-common btn-help" id="btn-help" title="Getting Help"/>
     </div>
+    <!-- TODO rename the group id and css -->
+    <div id="btn-group-export" class="btn-group btn-group-export">
+      <!--        <input type="file" class="" id="btn-open2" title="Open a local BPMN Diagram"/><span></span>-->
+      <input type="button" class="btn-common btn-open" id="btn-open" title="Open a local BPMN Diagram"/>
+      <input type="button" class="btn-common btn-clean" id="btn-clean" title="Clean the BPMN Diagram"/>
+      <!--      TODO move to a dedicated group-->
+      <input type="button" class="btn-common btn-outline" id="btn-outline" title="Display outline/minimap"/>
+      <!--      END OF - TODO move to a dedicated group-->
+      <input type="button" class="btn-common btn-download-svg" id="btn-export-svg" title="Download as SVG image"/>
+      <input type="button" class="btn-common btn-download-png" id="btn-export-png" title="Download as PNG image"/>
+      <input type="button" class="btn-common btn-print" id="btn-export-preview" title="Print Preview">
+    </div>
+
     <div id="btn-group-open">
         <!-- TODO restore drag&drop support -->
         <div id="file-selector" class="hidden">
@@ -49,20 +62,13 @@
           <option value="text_annotations__bpmnio.bpmn">text annotations</option>
           <option value="does-not-exist.bpmn">unknown</option>
         </select>
-        <p/>
+        <br/>
         <input type="text" id="input-open-url" placeholder="path to diagram" /><button id="btn-open-url">Open URL</button>
         <strong>Example:</strong> <i>https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/A.2.1.bpmn</i>
     </div>
     <div id="fetch-status"></div>
-    <div id="btn-group-export" class="btn-group btn-group-export">
-<!--      TODO move to a dedicated group-->
-        <input type="button" class="btn-common btn-clean" id="btn-clean" title="Clean the BPMN Diagram"/>
-        <input type="button" class="btn-common btn-outline" id="btn-outline" title="Display outline/minimap"/>
-<!--      END OF - TODO move to a dedicated group-->
-        <input type="button" class="btn-common btn-download-svg" id="btn-export-svg" title="Download as SVG image"/>
-        <input type="button" class="btn-common btn-download-png" id="btn-export-png" title="Download as PNG image"/>
-        <input type="button" class="btn-common btn-print" id="btn-export-preview" title="Print Preview">
-    </div>
+    <p></p>
+<!--    <div id="btn-group-zoom" class="btn-group">-->
     <div id="btn-group-zoom">
         <button id="btn-zoom-in">+</button>
         <button id="btn-zoom-out">-</button>
@@ -71,6 +77,7 @@
         <button id="btn-zoom-fit-horizontal">Horizontal Fit</button>
         <button id="btn-zoom-fit-vertical">Vertical Fit</button>
     </div>
+    <br/>
     <div id="btn-group-pan">
         <button id="btn-pan-up" title="Pan/Scroll Up">
             Up
