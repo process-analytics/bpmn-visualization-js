@@ -192,6 +192,10 @@ export default class BpmnCanvas {
     this.c.setStrokeColor(color);
   }
 
+  setRoundLineJoin(): void {
+    this.c.setLineJoin('round');
+  }
+
   lineTo(x: number, y: number): void {
     this.c.lineTo(this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y));
   }

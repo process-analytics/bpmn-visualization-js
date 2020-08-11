@@ -539,6 +539,25 @@ export default class IconPainter {
     canvas.rect(4 * barWidth, 0, barWidth, barHeight);
     canvas.fill();
   }
+
+  // this implementation is adapted from https://www.flaticon.com/free-icon/right-arrow_222330
+  paintRightArrowIcon({ setIconOrigin, c, shape, ratioFromParent, icon }: PaintParameter): void {
+    const originalIconSize = { width: 512, height: 415.23 };
+    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, originalIconSize);
+    canvas.setRoundLineJoin();
+
+    canvas.begin();
+    canvas.moveTo(512, 207.61);
+    canvas.lineTo(304.38, 0);
+    canvas.lineTo(304.38, 135.39);
+    canvas.lineTo(0, 135.39);
+    canvas.lineTo(0, 279.84);
+    canvas.lineTo(304.38, 279.84);
+    canvas.lineTo(304.38, 415.23);
+    canvas.lineTo(512, 207.61);
+    canvas.close();
+    canvas.fillAndStroke();
+  }
 }
 
 export class IconPainterProvider {
