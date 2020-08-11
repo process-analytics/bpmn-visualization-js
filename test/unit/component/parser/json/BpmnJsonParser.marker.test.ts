@@ -27,9 +27,9 @@ describe.each([
   ['serviceTask', ShapeBpmnElementKind.TASK_SERVICE],
   ['userTask', ShapeBpmnElementKind.TASK_USER],
   ['receiveTask', ShapeBpmnElementKind.TASK_RECEIVE],
+  ['sendTask', ShapeBpmnElementKind.TASK_SEND],
 
   // TODO: To uncomment when it's supported
-  //['sendTask', ShapeBpmnElementKind.TASK_SEND],
   //['manualTask', ShapeBpmnElementKind.MANUAL_TASK],
   //['businessRuleTask', ShapeBpmnElementKind.BUSINESS_RULE_TASK],
   //['scriptTask', ShapeBpmnElementKind.SCRIPT_TASK],

@@ -26,6 +26,7 @@ describe('parse bpmn as json for label bounds', () => {
     ['userTask'],
     ['serviceTask'],
     ['receiveTask'],
+    ['sendTask'],
     ['callActivity'],
     ['subProcess'],
     ['textAnnotation'],
@@ -35,8 +36,6 @@ describe('parse bpmn as json for label bounds', () => {
     //['manualTask'],
     // TODO: To uncomment when we support scriptTask
     //['scriptTask'],
-    // TODO: To uncomment when we support sendTask
-    //['sendTask'],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask'],
   ]).describe('parse bpmn as json for label bounds on %s', sourceKind => {

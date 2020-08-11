@@ -25,6 +25,7 @@ export enum ShapeBpmnElementKind {
   TASK_USER = 'userTask',
   TASK_SERVICE = 'serviceTask',
   TASK_RECEIVE = 'receiveTask',
+  TASK_SEND = 'sendTask',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
@@ -43,15 +44,6 @@ export enum ShapeBpmnElementKind {
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.marker.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/mxgraph/config/StyleConfigurator.test.ts
   // TASK_SCRIPT = 'scriptTask',
-
-  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
-  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
-  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.bounds.test.ts
-  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
-  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.test.ts
-  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.marker.test.ts
-  // TODO: Uncomment corresponding test in test/unit/component/mxgraph/config/StyleConfigurator.test.ts
-  // TASK_SEND = 'sendTask',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
