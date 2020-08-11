@@ -97,9 +97,16 @@ export default class ProcessConverter {
     }
   }
 
-  parseProcess(process: TProcess): void {
+  private parseProcess(process: TProcess): void {
     const processId = process.id;
     convertedProcessBpmnElements.set(processId, new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
+
+    this.buildProcessInnerElements(process);
+  }
+
+  // TODO to fix: can be called by passing a TSubProcess!!!
+  private buildProcessInnerElements(process: TProcess): void {
+    const processId = process.id;
 
     // flow nodes
     ShapeUtil.flowNodeKinds()
@@ -238,32 +245,15 @@ export default class ProcessConverter {
   }
 
   private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
-    this.buildSubprocessInnerElements(bpmnElement);
+    this.buildSubProcessInnerElements(bpmnElement);
     if (!bpmnElement.triggeredByEvent) {
       return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, processId, markers);
     }
     return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EVENT, processId, markers);
   }
 
-  private buildSubprocessInnerElements(subProcess: TSubProcess): void {
-    const process = subProcess;
-    const processId = process.id;
-
-    // TODO duplicated with the process part
-    // flow nodes
-    ShapeUtil.flowNodeKinds()
-      .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
-      .forEach(kind => this.buildFlowNodeBpmnElements(processId, process[kind], kind));
-    // process boundary events afterwards as we need its parent activity to be available when building it
-    this.buildFlowNodeBpmnElements(processId, process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY);
-
-    // containers
-    this.buildLaneBpmnElements(processId, process[ShapeBpmnElementKind.LANE]);
-    this.buildLaneSetBpmnElements(processId, process['laneSet']);
-
-    // flows
-    this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW]);
-    this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW]);
+  private buildSubProcessInnerElements(subProcess: TSubProcess): void {
+    this.buildProcessInnerElements(subProcess);
   }
 
   private buildLaneSetBpmnElements(processId: string, laneSets: Array<TLaneSet> | TLaneSet): void {
