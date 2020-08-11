@@ -548,6 +548,7 @@ describe('mxGraph model', () => {
     });
 
     // activity
+    // Task
     expectModelContainsShape('task_1', {
       kind: ShapeBpmnElementKind.TASK,
       font: {
@@ -600,6 +601,7 @@ describe('mxGraph model', () => {
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
 
+    // Service Task
     expectModelContainsShape('serviceTask_2', { kind: ShapeBpmnElementKind.TASK_SERVICE, font: expectedBoldFont, label: 'Service Task 2' });
     expectModelContainsShape('serviceTask_with_loop', {
       kind: ShapeBpmnElementKind.TASK_SERVICE,
@@ -620,6 +622,7 @@ describe('mxGraph model', () => {
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
 
+    // User Task
     expectModelContainsShape('userTask_3', { kind: ShapeBpmnElementKind.TASK_USER, font: expectedBoldFont, label: 'User Task 3' });
     expectModelContainsShape('userTask_with_loop', {
       kind: ShapeBpmnElementKind.TASK_USER,
@@ -640,6 +643,7 @@ describe('mxGraph model', () => {
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
 
+    // Receive Task: Not instantiated
     expectModelContainsShape('receiveTask_not_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Not instantiated Receive Task' });
     expectModelContainsShape('receiveTask_not_instantiated_with_loop', {
       kind: ShapeBpmnElementKind.TASK_RECEIVE,
@@ -657,6 +661,7 @@ describe('mxGraph model', () => {
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
 
+    // Receive Task: Instantiated
     expectModelContainsShape('receiveTask_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Instantiated Receive Task' });
     expectModelContainsShape('receiveTask_instantiated_with_loop', {
       kind: ShapeBpmnElementKind.TASK_RECEIVE,
@@ -671,6 +676,27 @@ describe('mxGraph model', () => {
     expectModelContainsShape('receiveTask_instantiated_with_parallel_multi_instance', {
       kind: ShapeBpmnElementKind.TASK_RECEIVE,
       label: 'Instantiated Receive Task With Parallel Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+    });
+
+    // Send Task
+    expectModelContainsShape('sendTask', { kind: ShapeBpmnElementKind.TASK_SEND, font: expectedBoldFont, label: 'Send Task' });
+    expectModelContainsShape('sendTask_with_loop', {
+      kind: ShapeBpmnElementKind.TASK_SEND,
+      font: expectedBoldFont,
+      label: 'Send Task With Loop',
+      markers: [ShapeBpmnMarkerKind.LOOP],
+    });
+    expectModelContainsShape('sendTask_with_sequential_multi_instance', {
+      kind: ShapeBpmnElementKind.TASK_SEND,
+      font: expectedBoldFont,
+      label: 'Send Task With Sequential Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+    });
+    expectModelContainsShape('sendTask_with_parallel_multi_instance', {
+      kind: ShapeBpmnElementKind.TASK_SEND,
+      font: expectedBoldFont,
+      label: 'Send Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
 
