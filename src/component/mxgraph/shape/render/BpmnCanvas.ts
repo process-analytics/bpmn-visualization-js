@@ -192,7 +192,7 @@ export default class BpmnCanvas {
     this.c.setStrokeColor(color);
   }
 
-  setRoundLineJoin() {
+  setRoundLineJoin(): void {
     this.c.setLineJoin('round');
   }
 
