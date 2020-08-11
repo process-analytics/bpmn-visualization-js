@@ -82,3 +82,87 @@ export enum ShapeBpmnElementKind {
   EVENT_INTERMEDIATE_THROW = 'intermediateThrowEvent',
   EVENT_BOUNDARY = 'boundaryEvent',
 }
+
+// enum ContainerKind {
+//   LANE = 'lane',
+//   POOL = 'pool',
+// }
+//
+// export type MergeKind = ContainerKind | SubProcessShapeBpmnElementKind;
+
+// TODO temp implementation remove duplication with ShapeBpmnElementKind
+export enum SubProcessShapeBpmnElementKind {
+  // LANE = 'lane',
+  // POOL = 'pool',
+  CALL_ACTIVITY = 'callActivity',
+  SUB_PROCESS = 'subProcess',
+  TASK = 'task',
+  TASK_USER = 'userTask',
+  TASK_SERVICE = 'serviceTask',
+  TASK_RECEIVE = 'receiveTask',
+
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.bounds.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.marker.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/mxgraph/config/StyleConfigurator.test.ts
+  // TASK_MANUAL = 'manualTask',
+
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.bounds.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.marker.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/mxgraph/config/StyleConfigurator.test.ts
+  // TASK_SCRIPT = 'scriptTask',
+
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.bounds.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.marker.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/mxgraph/config/StyleConfigurator.test.ts
+  // TASK_SEND = 'sendTask',
+
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.bounds.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.marker.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/mxgraph/config/StyleConfigurator.test.ts
+  // TASK_BUSINESS_RULE = 'businessRuleTask',
+
+  TEXT_ANNOTATION = 'textAnnotation',
+
+  GATEWAY_PARALLEL = 'parallelGateway',
+  GATEWAY_EXCLUSIVE = 'exclusiveGateway',
+  GATEWAY_INCLUSIVE = 'inclusiveGateway',
+
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
+  // TODO : Uncomment corresponding line in src/model/bpmn/shape/ShapeUtil.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.bounds.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.test.ts
+  // GATEWAY_COMPLEX = 'complexGateway',
+
+  EVENT_START = 'startEvent',
+  EVENT_END = 'endEvent',
+  EVENT_INTERMEDIATE_CATCH = 'intermediateCatchEvent',
+  EVENT_INTERMEDIATE_THROW = 'intermediateThrowEvent',
+  EVENT_BOUNDARY = 'boundaryEvent',
+}
+
+// https://www.angularjswiki.com/angular/names-of-enums-typescript/
+// string enums
+export function toShapeBpmnElementKind(kind: SubProcessShapeBpmnElementKind): ShapeBpmnElementKind {
+  // ShapeBpmnElementKind[kind as string].
+  // return ShapeBpmnElementKind.TASK_USER;
+  // TODO ensure not a container
+  return (kind as unknown) as ShapeBpmnElementKind;
+}

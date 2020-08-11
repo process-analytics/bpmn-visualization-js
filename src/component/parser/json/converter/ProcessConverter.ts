@@ -21,7 +21,7 @@ import ShapeBpmnElement, {
   ShapeBpmnEvent,
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/shape/ShapeBpmnElement';
-import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementKind, SubProcessShapeBpmnElementKind, toShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/edge/Flow';
 import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
 import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/shape/ShapeUtil';
@@ -238,10 +238,35 @@ export default class ProcessConverter {
   }
 
   private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
+    this.buildSubprocessInnerElements(bpmnElement);
     if (!bpmnElement.triggeredByEvent) {
       return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, processId, markers);
     }
     return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EVENT, processId, markers);
+  }
+
+  // TODO duplicated with the process part
+  private buildSubprocessInnerElements(process: TSubProcess): void {
+    // TODO manage laneset?
+
+    // const process = bpmnElement;
+    const processId = process.id;
+
+    // MergeKind.
+
+    // type LogLevelStrings = SubProcessShapeBpmnElementKind.EVENT_START;
+    // flow nodes
+    // ShapeUtil.flowNodeKinds()
+    Object.values(SubProcessShapeBpmnElementKind)
+      .filter(kind => kind != SubProcessShapeBpmnElementKind.EVENT_BOUNDARY)
+      .forEach(kind => this.buildFlowNodeBpmnElements(processId, process[kind], toShapeBpmnElementKind(kind)));
+    // process boundary events afterwards as we need its parent activity to be available when building it
+    this.buildFlowNodeBpmnElements(processId, process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY);
+
+    // TODO duplicated with regular process
+    // flows
+    this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW]);
+    this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW]);
   }
 
   private buildLaneSetBpmnElements(processId: string, laneSets: Array<TLaneSet> | TLaneSet): void {
