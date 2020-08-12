@@ -46,7 +46,8 @@ export default class DiagramConverter {
     const pools: Shape[] = [];
     const edges: Edge[] = [];
 
-    ensureIsArray(bpmnDiagrams).map(bpmnDiagram => {
+    const bpmnDiagram = ensureIsArray(bpmnDiagrams)[0];
+    if (bpmnDiagram) {
       try {
         // Need to be done before deserialization of Shape and Edge, to link the converted fonts to them
         this.deserializeFonts(bpmnDiagram.BPMNLabelStyle);
@@ -63,7 +64,7 @@ export default class DiagramConverter {
         // TODO error management
         console.error(e as Error);
       }
-    });
+    }
     return { flowNodes, lanes, pools, edges };
   }
 
