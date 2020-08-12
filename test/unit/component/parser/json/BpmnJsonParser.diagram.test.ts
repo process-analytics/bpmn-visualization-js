@@ -15,88 +15,62 @@
  */
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
+import { BpmnJsonModel } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMN20';
 
 describe('parse bpmn as json for diagram', () => {
-  it(`no BPMNDiagram`, () => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        collaboration: {
-          participant: [
-            { id: 'Participant_1', processRef: 'Process_1' },
-            { id: 'Participant_2', processRef: 'Process_2' },
-          ],
-        },
-        process: [
-          {
-            id: 'Process_1',
-            name: 'Process 1',
-            isExecutable: false,
-            startEvent: {
-              id: 'Process_1_startEvent_1',
-            },
-          },
-          {
-            id: 'Process_2',
-            name: 'Process 2',
-            isExecutable: false,
-            startEvent: {
-              id: 'Process_2_startEvent_1',
-            },
-          },
+  const jsonModelWithoutBPMNDiagram: BpmnJsonModel = {
+    definitions: {
+      targetNamespace: '',
+      collaboration: {
+        participant: [
+          { id: 'Participant_1', processRef: 'Process_1' },
+          { id: 'Participant_2', processRef: 'Process_2' },
         ],
       },
-    };
+      process: [
+        {
+          id: 'Process_1',
+          name: 'Process 1',
+          isExecutable: false,
+          startEvent: {
+            id: 'Process_1_startEvent_1',
+            name: 'Start Event 1',
+          },
+        },
+        {
+          id: 'Process_2',
+          name: 'Process 2',
+          isExecutable: false,
+          startEvent: {
+            id: 'Process_2_startEvent_1',
+            name: 'Start Event 2',
+          },
+        },
+      ],
+    },
+  };
 
-    parseJsonAndExpectOnlyFlowNodes(json, 0);
+  it(`no BPMNDiagram`, () => {
+    parseJsonAndExpectOnlyFlowNodes(jsonModelWithoutBPMNDiagram, 0);
   });
 
-  it(`single BPMNDiagram, 2 processes/participants in the semantic, 1 is matching the BPMNDiagram`, () => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        collaboration: {
-          participant: [
-            { id: 'Participant_1', processRef: 'Process_1' },
-            { id: 'Participant_2', processRef: 'Process_2' },
-          ],
-        },
-        process: [
+  it(`single BPMNDiagram and 2 processes`, () => {
+    const jsonModel = { ...jsonModelWithoutBPMNDiagram };
+    jsonModel.definitions.BPMNDiagram = {
+      id: 'BPMNDiagram_1',
+      name: 'Pool process 1',
+      BPMNPlane: {
+        BPMNShape: [
           {
-            id: 'Process_1',
-            name: 'Process 1',
-            isExecutable: false,
-            startEvent: {
-              id: 'Process_1_startEvent_1',
-              name: 'Start Event 1',
-            },
-          },
-          {
-            id: 'Process_2',
-            name: 'Process 2',
-            isExecutable: false,
-            startEvent: {
-              id: 'Process_2_startEvent_1',
-            },
+            id: 'Shape_Process_1_startEvent_1',
+            bpmnElement: 'Process_1_startEvent_1',
+            Bounds: { x: 362, y: 232, width: 36, height: 45 },
           },
         ],
-        BPMNDiagram: {
-          id: 'BPMNDiagram_1',
-          name: 'Pool process 1',
-          BPMNPlane: {
-            BPMNShape: [
-              {
-                id: 'Shape_Process_1_startEvent_1',
-                bpmnElement: 'Process_1_startEvent_1',
-                Bounds: { x: 362, y: 232, width: 36, height: 45 },
-              },
-            ],
-          },
-        },
       },
     };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+    const model = parseJsonAndExpectOnlyFlowNodes(jsonModel, 1);
     verifyShape(model.flowNodes[0], {
       shapeId: 'Shape_Process_1_startEvent_1',
       parentId: 'Participant_1',
@@ -113,67 +87,37 @@ describe('parse bpmn as json for diagram', () => {
   });
 
   it(`several BPMNDiagrams and 2 processes, only retrieve the first BPMNDiagram`, () => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        collaboration: {
-          participant: [
-            { id: 'Participant_1', processRef: 'Process_1' },
-            { id: 'Participant_2', processRef: 'Process_2' },
+    const jsonModel = { ...jsonModelWithoutBPMNDiagram };
+    jsonModel.definitions.BPMNDiagram = [
+      {
+        id: 'BPMNDiagram_2',
+        name: 'Pool process 2',
+        BPMNPlane: {
+          BPMNShape: [
+            {
+              id: 'Shape_Process_2_startEvent_1',
+              bpmnElement: 'Process_2_startEvent_1',
+              Bounds: { x: 80, y: 80, width: 32, height: 32 },
+            },
           ],
         },
-        process: [
-          {
-            id: 'Process_1',
-            name: 'Process 1',
-            isExecutable: false,
-            startEvent: {
-              id: 'Process_1_startEvent_1',
-              name: 'Start Event 1',
-            },
-          },
-          {
-            id: 'Process_2',
-            name: 'Process 2',
-            isExecutable: false,
-            startEvent: {
-              id: 'Process_2_startEvent_1',
-              name: 'Start Event 2',
-            },
-          },
-        ],
-        BPMNDiagram: [
-          {
-            id: 'BPMNDiagram_2',
-            name: 'Pool process 2',
-            BPMNPlane: {
-              BPMNShape: [
-                {
-                  id: 'Shape_Process_2_startEvent_1',
-                  bpmnElement: 'Process_2_startEvent_1',
-                  Bounds: { x: 80, y: 80, width: 32, height: 32 },
-                },
-              ],
-            },
-          },
-          {
-            id: 'BPMNDiagram_1',
-            name: 'Pool process 1',
-            BPMNPlane: {
-              BPMNShape: [
-                {
-                  id: 'Shape_Process_1_startEvent_1',
-                  bpmnElement: 'Process_1_startEvent_1',
-                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                },
-              ],
-            },
-          },
-        ],
       },
-    };
+      {
+        id: 'BPMNDiagram_1',
+        name: 'Pool process 1',
+        BPMNPlane: {
+          BPMNShape: [
+            {
+              id: 'Shape_Process_1_startEvent_1',
+              bpmnElement: 'Process_1_startEvent_1',
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+            },
+          ],
+        },
+      },
+    ];
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+    const model = parseJsonAndExpectOnlyFlowNodes(jsonModel, 1);
     verifyShape(model.flowNodes[0], {
       shapeId: 'Shape_Process_2_startEvent_1',
       parentId: 'Participant_2',
