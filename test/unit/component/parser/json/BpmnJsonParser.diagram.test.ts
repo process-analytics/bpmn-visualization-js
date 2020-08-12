@@ -112,7 +112,7 @@ describe('parse bpmn as json for diagram', () => {
     });
   });
 
-  it(`several BPMNDiagrams, 2 processes/participants in the semantic, both are matching the BPMNDiagram elements`, () => {
+  it(`several BPMNDiagrams and 2 processes, only retrieve the first BPMNDiagram`, () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -138,23 +138,11 @@ describe('parse bpmn as json for diagram', () => {
             isExecutable: false,
             startEvent: {
               id: 'Process_2_startEvent_1',
+              name: 'Start Event 2',
             },
           },
         ],
         BPMNDiagram: [
-          {
-            id: 'BPMNDiagram_1',
-            name: 'Pool process 1',
-            BPMNPlane: {
-              BPMNShape: [
-                {
-                  id: 'Shape_Process_1_startEvent_1',
-                  bpmnElement: 'Process_1_startEvent_1',
-                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                },
-              ],
-            },
-          },
           {
             id: 'BPMNDiagram_2',
             name: 'Pool process 2',
@@ -168,22 +156,35 @@ describe('parse bpmn as json for diagram', () => {
               ],
             },
           },
+          {
+            id: 'BPMNDiagram_1',
+            name: 'Pool process 1',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'Shape_Process_1_startEvent_1',
+                  bpmnElement: 'Process_1_startEvent_1',
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                },
+              ],
+            },
+          },
         ],
       },
     };
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
     verifyShape(model.flowNodes[0], {
-      shapeId: 'Shape_Process_1_startEvent_1',
-      parentId: 'Participant_1',
-      bpmnElementId: 'Process_1_startEvent_1',
-      bpmnElementName: 'Start Event 1',
+      shapeId: 'Shape_Process_2_startEvent_1',
+      parentId: 'Participant_2',
+      bpmnElementId: 'Process_2_startEvent_1',
+      bpmnElementName: 'Start Event 2',
       bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
       bounds: {
-        x: 362,
-        y: 232,
-        width: 36,
-        height: 45,
+        x: 80,
+        y: 80,
+        width: 32,
+        height: 32,
       },
     });
   });
