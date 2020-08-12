@@ -247,6 +247,8 @@ describe('mxGraph model', () => {
     expectModelContainsBpmnEvent('messageEndEvent_on_top', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.MESSAGE, label: 'Message End Event On Top' });
     expectModelContainsBpmnEvent('signalEndEvent', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.SIGNAL, label: 'Signal End Event' });
     expectModelContainsBpmnEvent('signalEndEvent_on_top', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.SIGNAL, label: 'Signal End Event On Top' });
+    expectModelContainsBpmnEvent('errorEndEvent', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.ERROR, label: 'Error End Event' });
+    expectModelContainsBpmnEvent('errorEndEvent_on_top', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.ERROR, label: 'Error End Event On Top' });
 
     // throw intermediate event
     expectModelContainsBpmnEvent('noneIntermediateThrowEvent', {
@@ -371,6 +373,18 @@ describe('mxGraph model', () => {
       eventKind: ShapeBpmnEventKind.SIGNAL,
       isInterrupting: true,
       label: 'Boundary Intermediate Event Interrupting Signal On Top',
+    });
+    expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_error_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.ERROR,
+      isInterrupting: true,
+      label: 'Boundary Intermediate Event Interrupting Error',
+    });
+    expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_error_on_top_id', {
+      kind: null,
+      eventKind: ShapeBpmnEventKind.ERROR,
+      isInterrupting: true,
+      label: 'Boundary Intermediate Event Interrupting Error On Top',
     });
 
     // boundary event: non-interrupting

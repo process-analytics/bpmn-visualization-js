@@ -13,6 +13,7 @@
   <semantic:signalEventDefinition id="top_signal_definition_id"/>
   <semantic:terminateEventDefinition id="top_terminate_definition_id"/>
   <semantic:linkEventDefinition id="top_link_definition_id"/>
+  <semantic:errorEventDefinition id="top_error_definition_id"/>
 
   <semantic:process isExecutable="false" id="WFP-6-">
     <!-- Activity -->
@@ -233,6 +234,12 @@
     <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Signal On Top" id="boundary_event_interrupting_signal_on_top_id">
       <semantic:eventDefinitionRef>top_signal_definition_id</semantic:eventDefinitionRef>
     </semantic:boundaryEvent>
+    <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Error" id="boundary_event_interrupting_error_id">
+      <semantic:errorEventDefinition/>
+    </semantic:boundaryEvent>
+    <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="true" name="Boundary Intermediate Event Interrupting Error On Top" id="boundary_event_interrupting_error_on_top_id">
+      <semantic:eventDefinitionRef>top_error_definition_id</semantic:eventDefinitionRef>
+    </semantic:boundaryEvent>
 
     <!-- Non-interrupting Boundary Event -->
     <semantic:boundaryEvent attachedToRef="userTask_3" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Message" id="boundary_event_non_interrupting_message_id">
@@ -321,6 +328,12 @@
     </semantic:endEvent>
     <semantic:endEvent name="Signal End Event On Top" id="signalEndEvent_on_top">
       <semantic:eventDefinitionRef>top_signal_definition_id</semantic:eventDefinitionRef>
+    </semantic:endEvent>
+    <semantic:endEvent name="Error End Event" id="errorEndEvent">
+      <semantic:errorEventDefinition/>
+    </semantic:endEvent>
+    <semantic:endEvent name="Error End Event On Top" id="errorEndEvent_on_top">
+      <semantic:eventDefinitionRef>top_error_definition_id</semantic:eventDefinitionRef>
     </semantic:endEvent>
 
     <!-- Gateway -->
@@ -648,6 +661,12 @@
       <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_signal_on_top_id" id="S1373649849862_boundary_event_interrupting_signal_on_top_id">
         <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_error_id" id="S1373649849862_boundary_event_interrupting_error_id">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_error_on_top_id" id="S1373649849862_boundary_event_interrupting_error_on_top_id">
+        <dc:Bounds height="32.0" width="32.0" x="98.0" y="335.0" />
+      </bpmndi:BPMNShape>
 
       <!-- Non-interrupting Boundary Event -->
       <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_message_id" id="S1373649849862_boundary_event_non_interrupting_message_id">
@@ -750,6 +769,12 @@
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="signalEndEvent_on_top" id="S1373649849862_signalEndEvent_on_top">
+        <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="errorEndEvent" id="S1373649849862_errorEndEvent">
+        <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="errorEndEvent_on_top" id="S1373649849862_errorEndEvent_on_top">
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
       </bpmndi:BPMNShape>
 
