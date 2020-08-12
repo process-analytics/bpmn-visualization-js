@@ -101,7 +101,7 @@ export default class DiagramConverter {
         continue;
       }
 
-      const pool = this.deserializeShape(shape, (bpmnElement: string) => findProcessElement(bpmnElement));
+      const pool = this.deserializeShape(shape, (bpmnElement: string) => findProcessElement(bpmnElement), true);
       if (pool) {
         convertedShapes.pools.push(pool);
         continue;
@@ -114,7 +114,7 @@ export default class DiagramConverter {
     return convertedShapes;
   }
 
-  private deserializeShape(shape: BPMNShape, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
+  private deserializeShape(shape: BPMNShape, findShapeElement: (bpmnElement: string) => ShapeBpmnElement, defaultIsHorizontal?: boolean): Shape | undefined {
     const bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
       const bounds = this.deserializeBounds(shape);
@@ -131,7 +131,8 @@ export default class DiagramConverter {
       }
 
       const label = this.deserializeLabel(shape.BPMNLabel, shape.id);
-      return new Shape(shape.id, bpmnElement, bounds, label);
+      const isHorizontal = shape.isHorizontal !== undefined ? shape.isHorizontal : defaultIsHorizontal;
+      return new Shape(shape.id, bpmnElement, bounds, label, isHorizontal);
     }
   }
 
