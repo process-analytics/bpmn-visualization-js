@@ -290,6 +290,8 @@ export default class StyleConfigurator {
       } else if (bpmnElement instanceof ShapeBpmnActivity) {
         if (bpmnElement instanceof ShapeBpmnSubProcess) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
+        } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
+          styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, bpmnElement.instantiate.toString());
         }
 
         const markers: ShapeBpmnMarkerKind[] = bpmnElement.markers;
