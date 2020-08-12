@@ -558,6 +558,22 @@ export default class IconPainter {
     canvas.close();
     canvas.fillAndStroke();
   }
+
+  paintErrorIcon({ setIconOrigin, c, shape, ratioFromParent, icon }: PaintParameter): void {
+    const originalIconSize = { width: 72.44, height: 71.82 };
+    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, originalIconSize);
+
+    canvas.begin();
+    canvas.moveTo(0, 53.32);
+    canvas.lineTo(19.48, 0);
+    canvas.lineTo(19.48, 0);
+    canvas.lineTo(50.85, 40.07);
+    canvas.lineTo(72.44, 18.21);
+    canvas.lineTo(53.12, 71.82);
+    canvas.lineTo(22.5, 31.37);
+    canvas.close();
+    canvas.fillAndStroke();
+  }
 }
 
 export class IconPainterProvider {

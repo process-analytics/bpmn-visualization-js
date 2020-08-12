@@ -123,6 +123,21 @@ export class ReceiveTaskShape extends BaseTaskShape {
   protected paintTaskIcon(paintParameter: PaintParameter): void {}
 }
 
+export class SendTaskShape extends BaseTaskShape {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+
+  protected paintTaskIcon(paintParameter: PaintParameter): void {
+    this.iconPainter.paintEnvelopeIcon({
+      ...paintParameter,
+      setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(),
+      ratioFromParent: 0.2,
+      icon: { ...paintParameter.icon, isFilled: true },
+    });
+  }
+}
+
 export class CallActivityShape extends BaseActivityShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);

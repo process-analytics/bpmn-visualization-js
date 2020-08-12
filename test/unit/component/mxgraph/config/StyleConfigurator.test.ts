@@ -298,9 +298,9 @@ describe('mxgraph renderer', () => {
     [ShapeBpmnElementKind.TASK_SERVICE],
     [ShapeBpmnElementKind.TASK_USER],
     [ShapeBpmnElementKind.TASK_RECEIVE],
+    [ShapeBpmnElementKind.TASK_SEND],
 
     // TODO: To uncomment when it's supported
-    //[ShapeBpmnElementKind.TASK_SEND],
     //[ShapeBpmnElementKind.MANUAL_TASK],
     //[ShapeBpmnElementKind.BUSINESS_RULE_TASK],
     //[ShapeBpmnElementKind.SCRIPT_TASK],

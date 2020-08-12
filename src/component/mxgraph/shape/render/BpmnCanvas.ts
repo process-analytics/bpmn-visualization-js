@@ -122,6 +122,12 @@ export default class BpmnCanvas {
     this.iconPaintingOriginY = shape.y + (shape.h - this.iconOriginalSize.height * this.scaleY - bottomMargin);
   }
 
+  setIconOriginToShapeTopLeft(topMargin: number = StyleDefault.SHAPE_ACTIVITY_TOP_MARGIN, leftMargin: number = StyleDefault.SHAPE_ACTIVITY_LEFT_MARGIN): void {
+    const shape = this.shapeConfiguration;
+    this.iconPaintingOriginX = shape.x + leftMargin;
+    this.iconPaintingOriginY = shape.y + topMargin;
+  }
+
   /**
    * Translate the icon origin using the scale factor associated to the horizontal and vertical directions.
    *
