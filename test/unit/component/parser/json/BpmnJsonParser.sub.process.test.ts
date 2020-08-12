@@ -200,7 +200,7 @@ describe('parse bpmn as json for sub-process', () => {
         });
       });
 
-      it(`should convert event elements in sub-process`, () => {
+      it(`should convert events in sub-process`, () => {
         const json = {
           definitions: {
             targetNamespace: '',
