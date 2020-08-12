@@ -40,6 +40,7 @@ export interface ExpectedShapeModelElement {
   /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
   styleShape?: string;
   markers?: ShapeBpmnMarkerKind[];
+  isInstantiating?: boolean;
 }
 
 export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
@@ -121,6 +122,10 @@ describe('mxGraph model', () => {
 
     if (modelElement.markers?.length > 0) {
       expect(cell.style).toContain(`bpmn.markers=${modelElement.markers.join(',')}`);
+    }
+
+    if (modelElement.isInstantiating !== undefined) {
+      expect(cell.style).toContain(`bpmn.isInstantiating=${modelElement.isInstantiating}`);
     }
 
     const state = bpmnVisualization.graph.getView().getState(cell);
@@ -657,39 +662,45 @@ describe('mxGraph model', () => {
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
 
-    // Receive Task: Not instantiated
-    expectModelContainsShape('receiveTask_not_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Not instantiated Receive Task' });
-    expectModelContainsShape('receiveTask_not_instantiated_with_loop', {
+    // Receive Task: Non instantiating
+    expectModelContainsShape('receiveTask_non_instantiating', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Non-instantiating Receive Task', isInstantiating: false });
+    expectModelContainsShape('receiveTask_non_instantiating_with_loop', {
       kind: ShapeBpmnElementKind.TASK_RECEIVE,
-      label: 'Not instantiated Receive Task With Loop',
+      label: 'Non-instantiating Receive Task With Loop',
+      isInstantiating: false,
       markers: [ShapeBpmnMarkerKind.LOOP],
     });
-    expectModelContainsShape('receiveTask_not_instantiated_with_sequential_multi_instance', {
+    expectModelContainsShape('receiveTask_non_instantiating_with_sequential_multi_instance', {
       kind: ShapeBpmnElementKind.TASK_RECEIVE,
-      label: 'Not instantiated Receive Task With Sequential Multi-instance',
+      label: 'Non-instantiating Receive Task With Sequential Multi-instance',
+      isInstantiating: false,
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
     });
-    expectModelContainsShape('receiveTask_not_instantiated_with_parallel_multi_instance', {
+    expectModelContainsShape('receiveTask_non_instantiating_with_parallel_multi_instance', {
       kind: ShapeBpmnElementKind.TASK_RECEIVE,
-      label: 'Not instantiated Receive Task With Parallel Multi-instance',
+      label: 'Non-instantiating Receive Task With Parallel Multi-instance',
+      isInstantiating: false,
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
 
-    // Receive Task: Instantiated
-    expectModelContainsShape('receiveTask_instantiated', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Instantiated Receive Task' });
-    expectModelContainsShape('receiveTask_instantiated_with_loop', {
+    // Receive Task: Instantiating
+    expectModelContainsShape('receiveTask_instantiating', { kind: ShapeBpmnElementKind.TASK_RECEIVE, label: 'Instantiating Receive Task', isInstantiating: true });
+    expectModelContainsShape('receiveTask_instantiating_with_loop', {
       kind: ShapeBpmnElementKind.TASK_RECEIVE,
-      label: 'Instantiated Receive Task With Loop',
+      label: 'Instantiating Receive Task With Loop',
+      isInstantiating: true,
       markers: [ShapeBpmnMarkerKind.LOOP],
     });
-    expectModelContainsShape('receiveTask_instantiated_with_sequential_multi_instance', {
+    expectModelContainsShape('receiveTask_instantiating_with_sequential_multi_instance', {
       kind: ShapeBpmnElementKind.TASK_RECEIVE,
-      label: 'Instantiated Receive Task With Sequential Multi-instance',
+      label: 'Instantiating Receive Task With Sequential Multi-instance',
+      isInstantiating: true,
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
     });
-    expectModelContainsShape('receiveTask_instantiated_with_parallel_multi_instance', {
+    expectModelContainsShape('receiveTask_instantiating_with_parallel_multi_instance', {
       kind: ShapeBpmnElementKind.TASK_RECEIVE,
-      label: 'Instantiated Receive Task With Parallel Multi-instance',
+      label: 'Instantiating Receive Task With Parallel Multi-instance',
+      isInstantiating: true,
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
 

@@ -19,6 +19,15 @@ import { ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape/ShapeBpmnSubP
 import { ShapeBpmnMarkerKind } from '../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 import BpmnCanvas from './render/BpmnCanvas';
 
+function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
+  IconPainterProvider.get().paintEnvelopeIcon({
+    ...paintParameter,
+    setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(),
+    ratioFromParent: 0.2,
+    icon: { ...paintParameter.icon, isFilled: isFilled },
+  });
+}
+
 export abstract class BaseActivityShape extends mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
@@ -116,11 +125,26 @@ export class UserTaskShape extends BaseTaskShape {
 export class ReceiveTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
-    this.gradient = 'Salmon';
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function
-  protected paintTaskIcon(paintParameter: PaintParameter): void {}
+  // TODO To remove when the instantiating receive task render is implemented
+  public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+    const isInstantiating = StyleUtils.getBpmnIsInstantiating(this.style);
+
+    if (isInstantiating) {
+      c.setFillColor('Salmon');
+    }
+
+    super.paintVertexShape(c, x, y, w, h);
+  }
+
+  protected paintTaskIcon(paintParameter: PaintParameter): void {
+    const isInstantiating = StyleUtils.getBpmnIsInstantiating(this.style);
+
+    if (!isInstantiating) {
+      paintEnvelopeIcon(paintParameter, false);
+    }
+  }
 }
 
 export class SendTaskShape extends BaseTaskShape {
@@ -129,12 +153,7 @@ export class SendTaskShape extends BaseTaskShape {
   }
 
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    this.iconPainter.paintEnvelopeIcon({
-      ...paintParameter,
-      setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(),
-      ratioFromParent: 0.2,
-      icon: { ...paintParameter.icon, isFilled: true },
-    });
+    paintEnvelopeIcon(paintParameter, true);
   }
 }
 

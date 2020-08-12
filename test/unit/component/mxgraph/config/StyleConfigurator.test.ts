@@ -63,8 +63,8 @@ function newShapeBpmnElement(kind: ShapeBpmnElementKind): ShapeBpmnElement {
   return new ShapeBpmnElement('id', 'name', kind);
 }
 
-function newShapeBpmnActivity(kind: ShapeBpmnElementKind, markers?: ShapeBpmnMarkerKind[]): ShapeBpmnElement {
-  return new ShapeBpmnActivity('id', 'name', kind, undefined, undefined, markers);
+function newShapeBpmnActivity(kind: ShapeBpmnElementKind, markers?: ShapeBpmnMarkerKind[], instantiate?: boolean): ShapeBpmnElement {
+  return new ShapeBpmnActivity('id', 'name', kind, undefined, instantiate, markers);
 }
 
 function newShapeBpmnCallActivity(markers?: ShapeBpmnMarkerKind[]): ShapeBpmnElement {
@@ -280,6 +280,16 @@ describe('mxgraph renderer', () => {
     });
   });
 
+  describe('compute style - receive tasks', () => {
+    it.each([
+      ['non-instantiating', false],
+      ['instantiating', true],
+    ])('%s receive task', (instantiatingKind: string, instantiate: boolean) => {
+      const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK_RECEIVE, undefined, instantiate), newLabel({ name: 'Arial' }));
+      expect(computeStyle(shape)).toEqual(`receiveTask;bpmn.isInstantiating=${instantiate};fontFamily=Arial`);
+    });
+  });
+
   describe('compute style - text annotation', () => {
     it('without label', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION));
@@ -312,7 +322,8 @@ describe('mxgraph renderer', () => {
       (markerKind: ShapeBpmnMarkerKind) => {
         it(`${bpmnKind} with ${markerKind} marker`, () => {
           const shape = newShape(newShapeBpmnActivity(bpmnKind, [markerKind]), newLabel({ name: 'Arial' }));
-          expect(computeStyle(shape)).toEqual(`${bpmnKind};bpmn.markers=${markerKind};fontFamily=Arial`);
+          const additionalReceiveTaskStyle = bpmnKind === ShapeBpmnElementKind.TASK_RECEIVE ? ';bpmn.isInstantiating=false' : '';
+          expect(computeStyle(shape)).toEqual(`${bpmnKind}${additionalReceiveTaskStyle};bpmn.markers=${markerKind};fontFamily=Arial`);
         });
 
         if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
