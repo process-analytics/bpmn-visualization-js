@@ -238,8 +238,8 @@ export default class ProcessConverter {
   }
 
   private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
+    this.buildSubProcessInnerElements(bpmnElement);
     if (!bpmnElement.triggeredByEvent) {
-      this.buildSubProcessInnerElements(bpmnElement);
       return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, processId, markers);
     }
     return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EVENT, processId, markers);
@@ -250,7 +250,7 @@ export default class ProcessConverter {
     const process = subProcess;
 
     // flow nodes
-    ShapeUtil.topLevelBpmnEventKinds()
+    ShapeUtil.flowNodeKinds()
       .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
       .forEach(kind => this.buildFlowNodeBpmnElements(processId, process[kind], kind));
     // process boundary events afterwards as we need its parent activity to be available when building it

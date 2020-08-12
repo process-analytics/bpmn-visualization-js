@@ -282,5 +282,87 @@ describe('parse bpmn as json for sub-process', () => {
         });
       });
     }
+
+    it(`should convert activities and gateways in sub-process`, () => {
+      const json = {
+        definitions: {
+          targetNamespace: '',
+          process: {
+            subProcess: {
+              id: 'sub-process_id_1',
+              collapsed: false,
+              triggeredByEvent: triggeredByEvent,
+              userTask: {
+                id: 'sub-process_id_1_userTask_1',
+                name: 'SubProcess User Task',
+              },
+              exclusiveGateway: {
+                id: 'sub-process_id_1_exclusiveGateway_1',
+                name: 'SubProcess Exclusive Gateway',
+              },
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_sub-process_id_1',
+                  bpmnElement: 'sub-process_id_1',
+                  Bounds: { x: 365, y: 235, width: 300, height: 200 },
+                  isExpanded: true,
+                },
+                {
+                  id: 'shape_sub-process_id_1_userTask_1',
+                  bpmnElement: 'sub-process_id_1_userTask_1',
+                  Bounds: { x: 465, y: 335, width: 10, height: 10 },
+                },
+                {
+                  id: 'shape_sub-process_id_1_exclusiveGateway_1',
+                  bpmnElement: 'sub-process_id_1_exclusiveGateway_1',
+                  Bounds: { x: 565, y: 335, width: 20, height: 20 },
+                },
+              ],
+            },
+          },
+        },
+      };
+
+      const model = parseJson(json);
+      expectNoEdgePoolLane(model);
+
+      verifySubProcess(model, expectedShapeBpmnSubProcessKind, 1);
+      verifyShape(model.flowNodes[0], {
+        shapeId: 'shape_sub-process_id_1',
+        bpmnElementId: 'sub-process_id_1',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+        bounds: {
+          x: 365,
+          y: 235,
+          width: 300,
+          height: 200,
+        },
+      });
+
+      expect(model.flowNodes).toHaveLength(3);
+      verifyShape(model.flowNodes[1], {
+        shapeId: 'shape_sub-process_id_1_userTask_1',
+        parentId: 'sub-process_id_1',
+        bpmnElementId: 'sub-process_id_1_userTask_1',
+        bpmnElementName: 'SubProcess User Task',
+        bpmnElementKind: ShapeBpmnElementKind.TASK_USER,
+        bounds: { x: 465, y: 335, width: 10, height: 10 },
+      });
+
+      verifyShape(model.flowNodes[2], {
+        shapeId: 'shape_sub-process_id_1_exclusiveGateway_1',
+        parentId: 'sub-process_id_1',
+        bpmnElementId: 'sub-process_id_1_exclusiveGateway_1',
+        bpmnElementName: 'SubProcess Exclusive Gateway',
+        bpmnElementKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
+        bounds: { x: 565, y: 335, width: 20, height: 20 },
+      });
+    });
   });
 });
