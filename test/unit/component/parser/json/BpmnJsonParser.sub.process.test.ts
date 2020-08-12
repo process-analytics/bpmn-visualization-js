@@ -23,6 +23,16 @@ import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpm
 import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
 import { getEventShapes } from './BpmnJsonParser.event.test';
 
+function toEventDefinition(eventKind: ShapeBpmnEventKind): string {
+  return `${eventKind}EventDefinition`;
+}
+
+function expectNoEdgePoolLane(model: BpmnModel): void {
+  expect(model.lanes).toHaveLength(0);
+  expect(model.pools).toHaveLength(0);
+  expect(model.edges).toHaveLength(0);
+}
+
 describe('parse bpmn as json for sub-process', () => {
   each([
     ['embedded', false, ShapeBpmnSubProcessKind.EMBEDDED],
@@ -189,16 +199,6 @@ describe('parse bpmn as json for sub-process', () => {
           bpmnElementMarkers: [ShapeBpmnMarkerKind.EXPAND],
         });
       });
-
-      function toEventDefinition(eventKind: ShapeBpmnEventKind): string {
-        return `${eventKind}EventDefinition`;
-      }
-
-      function expectNoEdgePoolLane(model: BpmnModel): void {
-        expect(model.lanes).toHaveLength(0);
-        expect(model.pools).toHaveLength(0);
-        expect(model.edges).toHaveLength(0);
-      }
 
       it(`should convert event elements in sub-process`, () => {
         const json = {
