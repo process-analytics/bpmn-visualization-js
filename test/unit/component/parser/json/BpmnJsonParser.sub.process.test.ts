@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJsonAndExpectOnlySubProcess, verifyShape } from './JsonTestUtils';
+import { parseJson, parseJsonAndExpectOnlySubProcess, verifyShape, verifySubProcess } from './JsonTestUtils';
 import each from 'jest-each';
 import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
+import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
+import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
+import { getEventShapes } from './BpmnJsonParser.event.test';
 
 describe('parse bpmn as json for sub-process', () => {
   each([
@@ -184,6 +187,98 @@ describe('parse bpmn as json for sub-process', () => {
             height: 46,
           },
           bpmnElementMarkers: [ShapeBpmnMarkerKind.EXPAND],
+        });
+      });
+
+      function toEventDefinition(eventKind: ShapeBpmnEventKind): string {
+        return `${eventKind}EventDefinition`;
+      }
+
+      function expectNoEdgePoolLane(model: BpmnModel): void {
+        expect(model.lanes).toHaveLength(0);
+        expect(model.pools).toHaveLength(0);
+        expect(model.edges).toHaveLength(0);
+      }
+
+      it(`should convert event elements in sub-process`, () => {
+        const json = {
+          definitions: {
+            targetNamespace: '',
+            process: {
+              subProcess: {
+                id: 'sub-process_id_1',
+                collapsed: false,
+                startEvent: {
+                  id: 'sub-process_id_1_startEvent_1',
+                  name: 'SubProcess Start Event',
+                  eventDefinition: toEventDefinition(ShapeBpmnEventKind.TIMER),
+                },
+                endEvent: {
+                  id: 'sub-process_id_1_endEvent_1',
+                  name: 'SubProcess End Event',
+                  eventDefinition: toEventDefinition(ShapeBpmnEventKind.TERMINATE),
+                },
+              },
+            },
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: [
+                  {
+                    id: 'shape_sub-process_id_1',
+                    bpmnElement: 'sub-process_id_1',
+                    Bounds: { x: 365, y: 235, width: 300, height: 200 },
+                    isExpanded: true,
+                  },
+                  {
+                    id: 'shape_sub-process_id_1_startEvent_1',
+                    bpmnElement: 'sub-process_id_1_startEvent_1',
+                    Bounds: { x: 465, y: 335, width: 10, height: 10 },
+                  },
+                  {
+                    id: 'shape_sub-process_id_1_endEvent_1',
+                    bpmnElement: 'sub-process_id_1_endEvent_1',
+                    Bounds: { x: 565, y: 335, width: 20, height: 20 },
+                  },
+                ],
+              },
+            },
+          },
+        };
+
+        const model = parseJson(json);
+        expectNoEdgePoolLane(model);
+
+        verifySubProcess(model, expectedShapeBpmnSubProcessKind, 1);
+        verifyShape(model.flowNodes[0], {
+          shapeId: 'shape_sub-process_id_1',
+          bpmnElementId: 'sub-process_id_1',
+          bpmnElementName: undefined,
+          bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+          bounds: {
+            x: 365,
+            y: 235,
+            width: 300,
+            height: 200,
+          },
+        });
+        const eventShapes = getEventShapes(model);
+        expect(eventShapes).toHaveLength(2);
+        verifyShape(eventShapes[0], {
+          shapeId: 'shape_sub-process_id_1_startEvent_1',
+          parentId: 'sub-process_id_1',
+          bpmnElementId: 'sub-process_id_1_startEvent_1',
+          bpmnElementName: 'SubProcess Start Event',
+          bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+          bounds: { x: 465, y: 335, width: 10, height: 10 },
+        });
+        verifyShape(eventShapes[1], {
+          shapeId: 'shape_sub-process_id_1_endEvent_1',
+          parentId: 'sub-process_id_1',
+          bpmnElementId: 'sub-process_id_1_endEvent_1',
+          bpmnElementName: 'SubProcess End Event',
+          bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+          bounds: { x: 565, y: 335, width: 20, height: 20 },
         });
       });
     }
