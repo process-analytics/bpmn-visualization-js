@@ -65,8 +65,9 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 *icon*: the task icon is derived from the https://www.flaticon.com/free-icon/employees_554768[flaticon 'employees' icon] "Icons made by https://www.flaticon.com/authors/freepik[freepik] from https://www.flaticon.com"
 
 |Receive Task
-|
-|
+|icon:check-circle-o[]
+|Icon may be subject to change +
+⚠️ The render for the instantiating receive task is NOT done
 
 |Send Task
 |icon:check-circle-o[]
