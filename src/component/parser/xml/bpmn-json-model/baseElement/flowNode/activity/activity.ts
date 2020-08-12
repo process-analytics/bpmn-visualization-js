@@ -108,6 +108,9 @@ export interface TSubProcess extends TActivity {
   textAnnotation?: TTextAnnotation | TTextAnnotation[];
 
   triggeredByEvent?: boolean; // default="false"
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface TAdHocSubProcess extends TSubProcess {
