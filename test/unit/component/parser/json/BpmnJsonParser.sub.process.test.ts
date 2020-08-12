@@ -272,6 +272,14 @@ describe('parse bpmn as json for sub-process', () => {
           bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
           bounds: { x: 465, y: 335, width: 10, height: 10 },
         });
+        verifyShape(eventShapes[1], {
+          shapeId: 'shape_sub-process_id_1_endEvent_1',
+          parentId: 'sub-process_id_1',
+          bpmnElementId: 'sub-process_id_1_endEvent_1',
+          bpmnElementName: 'SubProcess End Event',
+          bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+          bounds: { x: 565, y: 335, width: 20, height: 20 },
+        });
       });
     }
   });
