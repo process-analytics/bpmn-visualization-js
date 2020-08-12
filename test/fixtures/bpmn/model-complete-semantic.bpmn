@@ -129,6 +129,18 @@
       <semantic:multiInstanceLoopCharacteristics/>
     </semantic:receiveTask>
 
+    <!-- Send Task -->
+    <semantic:sendTask name="Send Task" id="sendTask"/>
+    <semantic:sendTask name="Send Task With Loop" id="sendTask_with_loop">
+      <semantic:standardLoopCharacteristics />
+    </semantic:sendTask>
+    <semantic:sendTask name="Send Task With Sequential Multi-instance" id="sendTask_with_sequential_multi_instance">
+      <semantic:multiInstanceLoopCharacteristics isSequential="true"/>
+    </semantic:sendTask>
+    <semantic:sendTask name="Send Task With Parallel Multi-instance" id="sendTask_with_parallel_multi_instance">
+      <semantic:multiInstanceLoopCharacteristics isSequential="false"/>
+    </semantic:sendTask>
+
     <!-- Embedded Sub-Process -->
     <!-- Expanded -->
     <semantic:subProcess triggeredByEvent="false" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Expanded Embedded Sub-Process" id="expanded_embedded_sub_process_id"/>
@@ -517,6 +529,32 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="receiveTask_instantiated_with_parallel_multi_instance" id="S1373649849862_receiveTask_instantiated_with_parallel_multi_instance">
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+      </bpmndi:BPMNShape>
+
+      <!-- Send Task -->
+      <bpmndi:BPMNShape bpmnElement="sendTask" id="shape_sendTask">
+        <dc:Bounds height="68.0" width="83.0" x="522.0" y="317.0"/>
+        <bpmndi:BPMNLabel labelStyle="bold_font_id">
+          <dc:Bounds height="12.804751171875008" width="72.48293963254594" x="527.3333333333334" y="344.5818763825664"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendTask_with_loop" id="shape_sendTask_with_loop">
+        <dc:Bounds height="68.0" width="83.0" x="522.0" y="317.0"/>
+        <bpmndi:BPMNLabel labelStyle="bold_font_id">
+          <dc:Bounds height="12.804751171875008" width="72.48293963254594" x="527.3333333333334" y="344.5818763825664"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendTask_with_sequential_multi_instance" id="shape_sendTask_with_sequential_multi_instance">
+        <dc:Bounds height="68.0" width="83.0" x="522.0" y="317.0"/>
+        <bpmndi:BPMNLabel labelStyle="bold_font_id">
+          <dc:Bounds height="12.804751171875008" width="72.48293963254594" x="527.3333333333334" y="344.5818763825664"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendTask_with_parallel_multi_instance" id="shape_sendTask_with_parallel_multi_instance">
+        <dc:Bounds height="68.0" width="83.0" x="522.0" y="317.0"/>
+        <bpmndi:BPMNLabel labelStyle="bold_font_id">
+          <dc:Bounds height="12.804751171875008" width="72.48293963254594" x="527.3333333333334" y="344.5818763825664"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
       <!-- Embedded Sub-Process -->

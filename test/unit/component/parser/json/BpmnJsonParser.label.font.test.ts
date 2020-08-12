@@ -32,6 +32,7 @@ describe('parse bpmn as json for label font', () => {
     ['userTask'],
     ['serviceTask'],
     ['receiveTask'],
+    ['sendTask'],
     ['callActivity'],
     ['subProcess'],
     ['textAnnotation'],
@@ -41,8 +42,6 @@ describe('parse bpmn as json for label font', () => {
     //['manualTask'],
     // TODO: To uncomment when we support scriptTask
     //['scriptTask'],
-    // TODO: To uncomment when we support sendTask
-    //['sendTask'],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask'],
   ]).it(
