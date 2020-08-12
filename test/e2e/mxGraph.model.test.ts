@@ -37,6 +37,7 @@ export interface ExpectedShapeModelElement {
   label?: string;
   kind: ShapeBpmnElementKind;
   font?: ExpectedFont;
+  parentId?: string;
   /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
   styleShape?: string;
   markers?: ShapeBpmnMarkerKind[];
@@ -55,6 +56,7 @@ export interface ExpectedSubProcessModelElement extends ExpectedShapeModelElemen
 interface ExpectedEdgeModelElement {
   label?: string;
   kind?: FlowKind;
+  parentId?: string;
   font?: ExpectedFont;
   startArrow?: string;
   messageVisibleKind?: MessageVisibleKind;
@@ -118,6 +120,10 @@ describe('mxGraph model', () => {
 
   function expectModelContainsShape(cellId: string, modelElement: ExpectedShapeModelElement): mxCell {
     const cell = expectModelContainsCell(cellId);
+    const parentId = modelElement.parentId;
+    if (parentId) {
+      expect(cell.parent.id).toEqual(parentId);
+    }
     expect(cell.style).toContain(modelElement.kind);
 
     if (modelElement.markers?.length > 0) {
@@ -139,6 +145,10 @@ describe('mxGraph model', () => {
   function expectModelContainsEdge(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
     const cell = expectModelContainsCell(cellId);
     expect(cell.style).toContain(modelElement.kind);
+    const parentId = modelElement.parentId;
+    if (parentId) {
+      expect(cell.parent.id).toEqual(parentId);
+    }
 
     if (modelElement.messageVisibleKind === MessageVisibleKind.NON_INITIATING) {
       expect(cell.style).toContain('strokeColor=DeepSkyBlue');
@@ -527,6 +537,31 @@ describe('mxGraph model', () => {
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Collapsed Event Sub-Process With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
+    });
+
+    // Elements in subprocess
+    expectModelContainsShape('expanded_embedded_sub_process_id_startEvent_1', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      label: 'start event subprocess',
+      parentId: 'expanded_embedded_sub_process_id',
+    });
+    expectModelContainsShape('expanded_embedded_sub_process_id_task_1', {
+      kind: ShapeBpmnElementKind.TASK,
+      label: 'Task in suprocess',
+      parentId: 'expanded_embedded_sub_process_id',
+    });
+    expectModelContainsShape('expanded_embedded_sub_process_id_endEvent_1', {
+      kind: ShapeBpmnElementKind.EVENT_END,
+      label: 'end event subprocess',
+      parentId: 'expanded_embedded_sub_process_id',
+    });
+    expectModelContainsEdge('expanded_embedded_sub_process_id_SeqFlow_1', {
+      kind: FlowKind.SEQUENCE_FLOW,
+      parentId: 'expanded_embedded_sub_process_id',
+    });
+    expectModelContainsEdge('expanded_embedded_sub_process_id_SeqFlow_2', {
+      kind: FlowKind.SEQUENCE_FLOW,
+      parentId: 'expanded_embedded_sub_process_id',
     });
 
     // Call Activity calling process

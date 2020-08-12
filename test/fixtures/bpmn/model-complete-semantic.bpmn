@@ -143,7 +143,20 @@
 
     <!-- Embedded Sub-Process -->
     <!-- Expanded -->
-    <semantic:subProcess triggeredByEvent="false" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Expanded Embedded Sub-Process" id="expanded_embedded_sub_process_id"/>
+    <semantic:subProcess triggeredByEvent="false" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Expanded Embedded Sub-Process" id="expanded_embedded_sub_process_id">
+      <semantic:startEvent id="expanded_embedded_sub_process_id_startEvent_1" name="start event subprocess">
+        <semantic:outgoing>expanded_embedded_sub_process_id_SeqFlow_1</semantic:outgoing>
+      </semantic:startEvent>
+      <semantic:task id="expanded_embedded_sub_process_id_task_1" name="Task in suprocess">
+        <semantic:incoming>expanded_embedded_sub_process_id_SeqFlow_1</semantic:incoming>
+        <semantic:outgoing>expanded_embedded_sub_process_id_SeqFlow_2</semantic:outgoing>
+      </semantic:task>
+      <semantic:sequenceFlow id="expanded_embedded_sub_process_id_SeqFlow_1" sourceRef="expanded_embedded_sub_process_id_startEvent_1" targetRef="expanded_embedded_sub_process_id_task_1" />
+      <semantic:endEvent id="expanded_embedded_sub_process_id_endEvent_1" name="end event subprocess">
+        <semantic:incoming>expanded_embedded_sub_process_id_SeqFlow_2</semantic:incoming>
+      </semantic:endEvent>
+      <semantic:sequenceFlow id="expanded_embedded_sub_process_id_SeqFlow_2" sourceRef="expanded_embedded_sub_process_id_task_1" targetRef="expanded_embedded_sub_process_id_endEvent_1" />
+    </semantic:subProcess>
     <semantic:subProcess triggeredByEvent="false" completionQuantity="1" isForCompensation="false" startQuantity="1" name="Expanded Embedded Sub-Process With Loop" id="expanded_embedded_sub_process_with_loop_id">
       <semantic:standardLoopCharacteristics />
     </semantic:subProcess>
@@ -559,9 +572,34 @@
 
       <!-- Embedded Sub-Process -->
       <!-- Expanded -->
-      <bpmndi:BPMNShape isExpanded="true" bpmnElement="expanded_embedded_sub_process_id" id="S1373649849862_expanded_embedded_sub_process_id">
-        <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
+      <!-- Expanded with elements -->
+      <bpmndi:BPMNShape isExpanded="true" bpmnElement="expanded_embedded_sub_process_id" id="Shape_expanded_embedded_sub_process_id">
+        <dc:Bounds x="350" y="540" width="370" height="200" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_expanded_embedded_sub_process_id_SeqFlow_1" bpmnElement="expanded_embedded_sub_process_id_SeqFlow_1">
+        <di:waypoint x="426" y="640" />
+        <di:waypoint x="480" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_expanded_embedded_sub_process_id_SeqFlow_2" bpmnElement="expanded_embedded_sub_process_id_SeqFlow_2">
+        <di:waypoint x="580" y="640" />
+        <di:waypoint x="642" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Shape_expanded_embedded_sub_process_id_startEvent_1" bpmnElement="expanded_embedded_sub_process_id_startEvent_1">
+        <dc:Bounds x="390" y="622" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="380" y="665" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_expanded_embedded_sub_process_id_task_1" bpmnElement="expanded_embedded_sub_process_id_task_1">
+        <dc:Bounds x="480" y="600" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_expanded_embedded_sub_process_id_endEvent_1" bpmnElement="expanded_embedded_sub_process_id_endEvent_1">
+        <dc:Bounds x="642" y="622" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="632" y="665" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <!-- END OF "Expanded with elements" -->
       <bpmndi:BPMNShape isExpanded="true" bpmnElement="expanded_embedded_sub_process_with_loop_id" id="S1373649849862_expanded_embedded_sub_process_with_loop_id">
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
       </bpmndi:BPMNShape>
