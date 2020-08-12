@@ -105,27 +105,27 @@
       <semantic:multiInstanceLoopCharacteristics isSequential="false"/>
     </semantic:userTask>
 
-    <!-- Receive Task: Not instantiated -->
-    <semantic:receiveTask id="receiveTask_not_instantiated" name="Not instantiated Receive Task"/>
-    <semantic:receiveTask id="receiveTask_not_instantiated_with_loop" name="Not instantiated Receive Task With Loop" >
+    <!-- Receive Task: Non-instantiating -->
+    <semantic:receiveTask id="receiveTask_non_instantiating" name="Non-instantiating Receive Task"/>
+    <semantic:receiveTask id="receiveTask_non_instantiating_with_loop" name="Non-instantiating Receive Task With Loop" >
       <semantic:standardLoopCharacteristics id="1"/>
     </semantic:receiveTask>
-    <semantic:receiveTask id="receiveTask_not_instantiated_with_sequential_multi_instance" name="Not instantiated Receive Task With Sequential Multi-instance" >
+    <semantic:receiveTask id="receiveTask_non_instantiating_with_sequential_multi_instance" name="Non-instantiating Receive Task With Sequential Multi-instance" >
       <semantic:multiInstanceLoopCharacteristics isSequential="true"/>
     </semantic:receiveTask>
-    <semantic:receiveTask id="receiveTask_not_instantiated_with_parallel_multi_instance" name="Not instantiated Receive Task With Parallel Multi-instance" >
+    <semantic:receiveTask id="receiveTask_non_instantiating_with_parallel_multi_instance" name="Non-instantiating Receive Task With Parallel Multi-instance" >
       <semantic:multiInstanceLoopCharacteristics isSequential="false"/>
     </semantic:receiveTask>
 
-    <!-- Receive Task: Instantiated -->
-    <semantic:receiveTask id="receiveTask_instantiated" name="Instantiated Receive Task" instantiate="true"/>
-    <semantic:receiveTask id="receiveTask_instantiated_with_loop" name="Instantiated Receive Task With Loop" instantiate="true">
+    <!-- Receive Task: Instantiating -->
+    <semantic:receiveTask id="receiveTask_instantiating" name="Instantiating Receive Task" instantiate="true"/>
+    <semantic:receiveTask id="receiveTask_instantiating_with_loop" name="Instantiating Receive Task With Loop" instantiate="true">
       <semantic:standardLoopCharacteristics />
     </semantic:receiveTask>
-    <semantic:receiveTask id="receiveTask_instantiated_with_sequential_multi_instance" name="Instantiated Receive Task With Sequential Multi-instance" instantiate="true">
+    <semantic:receiveTask id="receiveTask_instantiating_with_sequential_multi_instance" name="Instantiating Receive Task With Sequential Multi-instance" instantiate="true">
       <semantic:multiInstanceLoopCharacteristics isSequential="true"/>
     </semantic:receiveTask>
-    <semantic:receiveTask id="receiveTask_instantiated_with_parallel_multi_instance" name="Instantiated Receive Task With Parallel Multi-instance" instantiate="true">
+    <semantic:receiveTask id="receiveTask_instantiating_with_parallel_multi_instance" name="Instantiating Receive Task With Parallel Multi-instance" instantiate="true">
       <semantic:multiInstanceLoopCharacteristics/>
     </semantic:receiveTask>
 
@@ -503,31 +503,31 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
-      <!-- Receive Task: Not instantiated -->
-      <bpmndi:BPMNShape bpmnElement="receiveTask_not_instantiated" id="S1373649849862_receiveTask_not_instantiated">
+      <!-- Receive Task: Non-instantiating -->
+      <bpmndi:BPMNShape bpmnElement="receiveTask_non_instantiating" id="S1373649849862_receiveTask_non_instantiating">
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="receiveTask_not_instantiated_with_loop" id="S1373649849862_receiveTask_not_instantiated_with_loop">
+      <bpmndi:BPMNShape bpmnElement="receiveTask_non_instantiating_with_loop" id="S1373649849862_receiveTask_non_instantiating_with_loop">
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="receiveTask_not_instantiated_with_sequential_multi_instance" id="S1373649849862_receiveTask_not_instantiated_with_sequential_multi_instance">
+      <bpmndi:BPMNShape bpmnElement="receiveTask_non_instantiating_with_sequential_multi_instance" id="S1373649849862_receiveTask_non_instantiating_with_sequential_multi_instance">
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="receiveTask_not_instantiated_with_parallel_multi_instance" id="S1373649849862_receiveTask_not_instantiated_with_parallel_multi_instance">
+      <bpmndi:BPMNShape bpmnElement="receiveTask_non_instantiating_with_parallel_multi_instance" id="S1373649849862_receiveTask_non_instantiating_with_parallel_multi_instance">
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
       </bpmndi:BPMNShape>
 
-      <!-- Receive Task: Instantiated -->
-      <bpmndi:BPMNShape bpmnElement="receiveTask_instantiated" id="S1373649849862_receiveTask_instantiated">
+      <!-- Receive Task: Instantiating -->
+      <bpmndi:BPMNShape bpmnElement="receiveTask_instantiating" id="S1373649849862_receiveTask_instantiating">
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="receiveTask_instantiated_with_loop" id="S1373649849862_receiveTask_instantiated_with_loop">
+      <bpmndi:BPMNShape bpmnElement="receiveTask_instantiating_with_loop" id="S1373649849862_receiveTask_instantiating_with_loop">
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="receiveTask_instantiated_with_sequential_multi_instance" id="S1373649849862_receiveTask_instantiated_with_sequential_multi_instance">
+      <bpmndi:BPMNShape bpmnElement="receiveTask_instantiating_with_sequential_multi_instance" id="S1373649849862_receiveTask_instantiating_with_sequential_multi_instance">
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="receiveTask_instantiated_with_parallel_multi_instance" id="S1373649849862_receiveTask_instantiated_with_parallel_multi_instance">
+      <bpmndi:BPMNShape bpmnElement="receiveTask_instantiating_with_parallel_multi_instance" id="S1373649849862_receiveTask_instantiating_with_parallel_multi_instance">
         <dc:Bounds height="32.0" width="32.0" x="87.0" y="335.0" />
       </bpmndi:BPMNShape>
 

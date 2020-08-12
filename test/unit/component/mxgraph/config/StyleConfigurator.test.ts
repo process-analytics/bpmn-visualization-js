@@ -63,8 +63,8 @@ function newShapeBpmnElement(kind: ShapeBpmnElementKind): ShapeBpmnElement {
   return new ShapeBpmnElement('id', 'name', kind);
 }
 
-function newShapeBpmnActivity(kind: ShapeBpmnElementKind, markers?: ShapeBpmnMarkerKind[]): ShapeBpmnElement {
-  return new ShapeBpmnActivity('id', 'name', kind, undefined, undefined, markers);
+function newShapeBpmnActivity(kind: ShapeBpmnElementKind, markers?: ShapeBpmnMarkerKind[], instantiate?: boolean): ShapeBpmnElement {
+  return new ShapeBpmnActivity('id', 'name', kind, undefined, instantiate, markers);
 }
 
 function newShapeBpmnCallActivity(markers?: ShapeBpmnMarkerKind[]): ShapeBpmnElement {
@@ -277,6 +277,16 @@ describe('mxgraph renderer', () => {
           `callActivity${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
         );
       });
+    });
+  });
+
+  describe('compute style - receive tasks', () => {
+    it.each([
+      ['non-instantiating', false],
+      ['instantiating', true],
+    ])('%s receive task', (instantiatingKind: string, instantiate: boolean) => {
+      const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK_RECEIVE, undefined, instantiate), newLabel({ name: 'Arial' }));
+      expect(computeStyle(shape)).toEqual(`receiveTask;bpmn.isInstantiating=${instantiate};fontFamily=Arial`);
     });
   });
 
