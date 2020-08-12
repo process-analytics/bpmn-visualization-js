@@ -18,6 +18,7 @@ import { buildPaintParameter, IconPainterProvider, PaintParameter } from './rend
 import { ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { ShapeBpmnMarkerKind } from '../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 import BpmnCanvas from './render/BpmnCanvas';
+
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
   IconPainterProvider.get().paintEnvelopeIcon({
     ...paintParameter,
