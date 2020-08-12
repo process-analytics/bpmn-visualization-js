@@ -55,7 +55,7 @@ describe('parse bpmn as json for diagram', () => {
   });
 
   it(`single BPMNDiagram and 2 processes`, () => {
-    const jsonModel = { ...jsonModelWithoutBPMNDiagram };
+    const jsonModel = jsonModelWithoutBPMNDiagram;
     jsonModel.definitions.BPMNDiagram = {
       id: 'BPMNDiagram_1',
       name: 'Pool process 1',
@@ -87,7 +87,7 @@ describe('parse bpmn as json for diagram', () => {
   });
 
   it(`several BPMNDiagrams and 2 processes, only retrieve the first BPMNDiagram`, () => {
-    const jsonModel = { ...jsonModelWithoutBPMNDiagram };
+    const jsonModel = jsonModelWithoutBPMNDiagram;
     jsonModel.definitions.BPMNDiagram = [
       {
         id: 'BPMNDiagram_2',
