@@ -255,6 +255,9 @@ export default class ProcessConverter {
       .forEach(kind => this.buildFlowNodeBpmnElements(processId, process[kind], kind));
     // process boundary events afterwards as we need its parent activity to be available when building it
     this.buildFlowNodeBpmnElements(processId, process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY);
+
+    // flows
+    this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW]);
   }
 
   private buildLaneSetBpmnElements(processId: string, laneSets: Array<TLaneSet> | TLaneSet): void {
