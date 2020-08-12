@@ -156,12 +156,12 @@ export default class StyleConfigurator {
   private configurePoolStyle(): void {
     const style = this.cloneDefaultVertexStyle();
     style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_SWIMLANE;
+
+    // TODO Remove when the bounds of the pool label is implemented
     style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
     style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
-    style[mxConstants.STYLE_HORIZONTAL] = false;
-    style[mxConstants.STYLE_FILLCOLOR] = '#d3d2d1';
 
-    // TODO manage pool text area rendering
+    // TODO manage pool text area rendering. Maybe we can calculate it from the label size/bounds
     // most of BPMN pool are ok when setting it to 30
     style[mxConstants.STYLE_STARTSIZE] = 30;
 
@@ -298,6 +298,10 @@ export default class StyleConfigurator {
         if (markers.length > 0) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
         }
+      } else if (bpmnElement.kind === ShapeBpmnElementKind.POOL) {
+        // mxConstants.STYLE_HORIZONTAL is for the label
+        // In BPMN, isHorizontal is for the Pool
+        styleValues.set(mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
       }
     } else {
       if (bpmnElement instanceof SequenceFlow) {
