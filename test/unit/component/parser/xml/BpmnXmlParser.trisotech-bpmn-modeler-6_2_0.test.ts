@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import arrayContaining = jasmine.arrayContaining;
-import anything = jasmine.anything;
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
-import { BPMNDiagram } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
 import { readFileSync } from '../../../../helpers/file-helper';
+import { TSubProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowNode/activity/activity';
+import { ensureIsArray } from '../../../../../src/component/parser/json/converter/ConverterUtil';
+import { TStartEvent } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowNode/event';
 
 describe('parse bpmn as xml for Trisotech BPMN Modeler 6.2.0', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
@@ -28,55 +28,16 @@ describe('parse bpmn as xml for Trisotech BPMN Modeler 6.2.0', () => {
 
     expect(json).toMatchObject({
       definitions: {
-        process: {
-          id: 'Process_1',
-          isExecutable: false,
-          startEvent: {
-            id: 'StartEvent_1',
-            name: 'Start Event',
-            outgoing: 'SequenceFlow_1',
-          },
-          endEvent: {
-            id: 'EndEvent_1',
-            name: 'End Event',
-            incoming: ['SequenceFlow_8', 'SequenceFlow_9'],
-          },
-          task: arrayContaining([anything()]),
-          exclusiveGateway: arrayContaining([anything()]),
-          sequenceFlow: arrayContaining([anything()]),
-        },
-        BPMNDiagram: {
-          BPMNPlane: {
-            BPMNShape: arrayContaining([anything()]),
-            BPMNEdge: arrayContaining([
-              {
-                id: 'BPMNEdge_SequenceFlow_7',
-                bpmnElement: 'SequenceFlow_7',
-                sourceElement: '_BPMNShape_Task_7',
-                targetElement: '_BPMNShape_ExclusiveGateway_3',
-                waypoint: [anything(), anything(), anything(), anything()],
-                BPMNLabel: {
-                  Bounds: {
-                    height: 6.0,
-                    width: 6.0,
-                    x: 696.0,
-                    y: 338.0,
-                  },
-                },
-              },
-            ]),
-          },
-        },
+        name: 'A.4.0-export',
       },
     });
 
-    const process: TProcess = json.definitions.process as TProcess;
-    expect(process.task).toHaveLength(4);
-    expect(process.exclusiveGateway).toHaveLength(2);
-    expect(process.sequenceFlow).toHaveLength(9);
-
-    const bpmnDiagram: BPMNDiagram = json.definitions.BPMNDiagram as BPMNDiagram;
-    expect(bpmnDiagram.BPMNPlane.BPMNShape).toHaveLength(8);
-    expect(bpmnDiagram.BPMNPlane.BPMNEdge).toHaveLength(9);
+    const process: TProcess = json.definitions.process as TProcess[];
+    expect(process).toHaveLength(2);
+    const subProcess1 = process[0] as TSubProcess;
+    expect(subProcess1.task).toHaveLength(2);
+    const subProcess1StartEvents: TStartEvent[] = ensureIsArray(subProcess1.startEvent);
+    expect(subProcess1StartEvents).toHaveLength(1);
+    expect(subProcess1StartEvents[0].name).toBe('Start Event 2');
   });
 });
