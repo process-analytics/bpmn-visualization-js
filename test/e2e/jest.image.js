@@ -13,17 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-module.exports = {
-  preset: 'jest-puppeteer',
-  roots: ['<rootDir>/test/e2e/'],
-  testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  testPathIgnorePatterns: ['/node_modules/', 'dist'],
-  testTimeout: 200000,
-  transform: {
-    '^.+\\.ts?$': 'ts-jest',
-  },
-  testEnvironment: 'jest-environment-puppeteer-jsdom',
-  globalSetup: 'jest-environment-puppeteer-jsdom/setup',
-  globalTeardown: 'jest-environment-puppeteer-jsdom/teardown',
-  setupFiles: ['<rootDir>/test/e2e/jest.globals.ts', '<rootDir>/test/e2e/jest.image.js'],
-};
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { toMatchImageSnapshot } = require('jest-image-snapshot');
+
+expect.extend({ toMatchImageSnapshot });
