@@ -8,3 +8,5 @@
 /.nyc_output/
 /coverage/
 build
+/differencify_snapshots/__current_output__
+/differencify_snapshots/__differencified_output__
