@@ -5,6 +5,27 @@
     <title>BPMN Visualization Demo</title>
     <link href="./static/css/main.css" rel="stylesheet">
     <link rel="shortcut icon" href="./static/img/favicon.ico">
+  <style>
+    .graph-container {
+      /*element*/
+      /*    margin: 20px 20px 40px 70px;*/
+      top: 60px;
+      bottom: 20px;
+      left: 40px;
+      right: 40px;
+      /*touch-action: none;*/
+      /*div.base#graph*/
+      border-style: solid;
+      border-color: #F2F2F2;
+      border-width: 1px;
+      /*background: url('images/grid.gif');*/
+      /*div.base*/
+      position: absolute;
+      overflow: hidden;
+      /*font-family: Arial;*/
+      /*font-size: 8pt;*/
+    }
+  </style>
 </head>
 <body>
     <div id="file-selector" class="hidden">
@@ -12,7 +33,7 @@
         <label for="bpmn-file" class="btn"><span>open BPMN file</span></label>
     </div>
     <div class="info-centered"><p>(either drop a file here)</p></div>
-    <div id="graph"></div>
+    <div id="graph" class="graph-container"></div>
 
     <!-- load global settings -->
     <script src="./static/js/configureMxGraphGlobals.js"></script>

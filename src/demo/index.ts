@@ -15,15 +15,25 @@
  */
 import BpmnVisualization from '../component/BpmnVisualization';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { documentReady, logStartup } from './helper';
+import { documentReady, log, logStartup } from './helper';
 
 export const bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'));
+
+function loadBpmn(bpmn: string): void {
+  bpmnVisualization.load(bpmn);
+
+  // TODO make this configurable via url parameter
+  log('Fitting....');
+  //graph.fit(0);
+  bpmnVisualization.graph.fit(0, false, 0, true, false, false);
+  log('Fit completed');
+}
 
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {
   const reader = new FileReader();
   reader.onload = () => {
-    bpmnVisualization.load(reader.result as string);
+    loadBpmn(reader.result as string);
   };
   reader.readAsText(f);
 }
@@ -52,7 +62,7 @@ documentReady(function () {
   if (bpmnParameterValue) {
     const bpmn = decodeURIComponent(bpmnParameterValue);
     log('BPMN auto loading');
-    bpmnVisualization.load(bpmn);
+    loadBpmn(bpmn);
     log('BPMN auto loading completed');
   } else {
     log('No BPMN auto loading');

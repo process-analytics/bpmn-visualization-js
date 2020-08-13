@@ -23,11 +23,14 @@ export function documentReady(callbackFunction: () => void): void {
   }
 }
 
-export function log(header: string, message: unknown, ...optionalParams: unknown[]): void {
+function _log(header: string, message: unknown, ...optionalParams: unknown[]): void {
   // eslint-disable-next-line no-console
   console.info(header + ' ' + message, ...optionalParams);
 }
 
 export function logStartup(message?: string, ...optionalParams: unknown[]): void {
-  log('[DEMO STARTUP]', message, ...optionalParams);
+  _log('[DEMO STARTUP]', message, ...optionalParams);
+}
+export function log(message?: string, ...optionalParams: unknown[]): void {
+  _log('[DEMO]', message, ...optionalParams);
 }

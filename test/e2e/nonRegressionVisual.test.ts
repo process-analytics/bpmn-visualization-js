@@ -37,6 +37,8 @@ describe('non regression visual tests', () => {
   //    store everything in an array
   // forEach --> run parametrized test
 
+  // TODO diff output: configure globally --> build/xxx/diff_outpout
+
   it.each(['gateways', 'labels', 'tasks'])(`%s`, async (fileName: string) => {
     // TODO we need to escape 'entities' in html to be able to pass the bpmn content in the url parameter
     // if a label contains a linefeed, the graph is blank (ex: the labels bpmn non regression file)
@@ -44,7 +46,7 @@ describe('non regression visual tests', () => {
     await page.waitForSelector(`#${graphContainerId}`);
     await expect(page.title()).resolves.toMatch('BPMN Visualization Demo');
 
-    const image = await page.screenshot();
+    const image = await page.screenshot({ fullPage: true });
 
     // TODO configure toMatchImageSnapshot
     // 'customDiffDir' if an environment variable is set (for CI)
@@ -53,9 +55,8 @@ describe('non regression visual tests', () => {
       dumpDiffToConsole: true, // useful on CI (no need to retrieve the diff image, copy/paste image content from logs)
       // SSIM configuration, try to avoid false positive
       comparisonMethod: 'ssim',
-      // failureThreshold: 0.0005,
-      // failureThreshold: 0.0000000000001,
-      // failureThresholdType: 'percent',
+      failureThreshold: 0.000000000000005,
+      failureThresholdType: 'percent',
     });
   });
 
