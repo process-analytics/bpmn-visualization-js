@@ -37,11 +37,7 @@ describe('non regression visual tests', () => {
   //    store everything in an array
   // forEach --> run parametrized test
 
-  const fileName = 'labels';
-
-  it(`${fileName}`, async () => {
-    // the original bpmn used to create the current png snapshot
-    // await page.goto(`http://localhost:10001/index-non-regression.html?bpmn=${readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
+  it.each(['labels', 'tasks'])(`%s`, async (fileName: string) => {
     await page.goto(`http://localhost:10001/index-non-regression.html?bpmn=${readFileSync(`../fixtures/bpmn/non-regression/${fileName}.bpmn`)}`);
     await page.waitForSelector(`#${graphContainerId}`);
     await expect(page.title()).resolves.toMatch('BPMN Visualization Demo');
