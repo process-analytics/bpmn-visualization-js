@@ -26,4 +26,19 @@ module.exports = {
   globalSetup: 'jest-environment-puppeteer-jsdom/setup',
   globalTeardown: 'jest-environment-puppeteer-jsdom/teardown',
   setupFiles: ['<rootDir>/test/e2e/jest.globals.ts'],
+
+  reporters: [
+    'default', // keep the default reporter
+    [
+      'differencify-jest-reporter',
+      {
+        debug: true,
+        reportPath: 'differencify_reports', // relative to root of project
+        reportTypes: {
+          html: 'index.html',
+          json: 'index.json',
+        },
+      },
+    ],
+  ],
 };
