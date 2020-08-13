@@ -124,7 +124,7 @@ export default class IconPainter {
   }
 
   /**
-   * This icon is used by `inclusive gateway`.
+   * This icon is used by `inclusive gateway` and `terminate event`.
    */
   public paintCircleIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
     // highly inspired from mxDoubleEllipse
