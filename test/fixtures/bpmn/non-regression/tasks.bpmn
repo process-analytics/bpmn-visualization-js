@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1uz6fwe" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="7.3.0">
+  <bpmn:process id="Process_047roat" isExecutable="false">
+    <bpmn:task id="Activity_1d44wkx" />
+    <bpmn:sendTask id="Activity_0vh41az" />
+    <bpmn:receiveTask id="Activity_1ku8gc8" instantiate="true" />
+    <bpmn:userTask id="Activity_0tim2tz" />
+    <bpmn:manualTask id="Activity_0a3q4sw" />
+    <bpmn:serviceTask id="Activity_070qpyo" />
+    <bpmn:businessRuleTask id="Activity_05jykwn" />
+    <bpmn:scriptTask id="Activity_04jhmwv" />
+    <bpmn:receiveTask id="Activity_067udom" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_047roat">
+      <bpmndi:BPMNShape id="Activity_1d44wkx_di" bpmnElement="Activity_1d44wkx">
+        <dc:Bounds x="170" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0cz1bjg_di" bpmnElement="Activity_0tim2tz">
+        <dc:Bounds x="490" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0qcbr36_di" bpmnElement="Activity_070qpyo">
+        <dc:Bounds x="170" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1qbsgwo_di" bpmnElement="Activity_05jykwn">
+        <dc:Bounds x="330" y="320" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1dyyypl_di" bpmnElement="Activity_04jhmwv">
+        <dc:Bounds x="170" y="320" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_00op9xb_di" bpmnElement="Activity_0a3q4sw">
+        <dc:Bounds x="490" y="320" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1pndjlz_di" bpmnElement="Activity_1ku8gc8">
+        <dc:Bounds x="490" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0k7c86s_di" bpmnElement="Activity_0vh41az">
+        <dc:Bounds x="330" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_067udom_di" bpmnElement="Activity_067udom">
+        <dc:Bounds x="330" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

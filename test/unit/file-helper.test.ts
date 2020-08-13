@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as fs from 'fs';
-import * as path from 'path';
+import { findFiles } from '../helpers/file-helper';
 
-export function readFileSync(relPathToSourceFile: string, encoding = 'utf8'): string {
-  return fs.readFileSync(path.join(__dirname, relPathToSourceFile), encoding);
-}
-
-/** Returns the files in the given directory. The function doesn't do any recursion in sub directories. */
-export function findFiles(relPathToSourceDirectory: string): string[] {
-  return fs.readdirSync(path.join(__dirname, relPathToSourceDirectory));
-}
+describe('files lookup', () => {
+  it('bpmn non-regression files', () => {
+    const files = findFiles('../fixtures/bpmn/non-regression/');
+    expect(files).toContain('events.bpmn');
+  });
+});
