@@ -33,8 +33,8 @@ const graphContainerId = 'graph';
 describe('non regression visual tests', () => {
   it('should display graph in page', async () => {
     // the original bpmn used to create the current png snapshot
-    //await page.goto(`http://localhost:10001?bpmn=${readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
-    await page.goto(`http://localhost:10001?bpmn=${readFileSync('../fixtures/bpmn/simple-start-task-end_failure-non-reg-visu-test.bpmn')}`);
+    // await page.goto(`http://localhost:10001/index-non-reg.html?bpmn=${readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
+    await page.goto(`http://localhost:10001/index-non-reg.html?bpmn=${readFileSync('../fixtures/bpmn/simple-start-task-end_failure-non-reg-visu-test.bpmn')}`);
     await page.waitForSelector(`#${graphContainerId}`);
     await expect(page.title()).resolves.toMatch('BPMN Visualization Demo');
 
