@@ -44,6 +44,7 @@ describe('non regression visual tests', () => {
 
     const image = await page.screenshot();
 
+    // TODO configure 'customDiffDir' if an environment variable is set (for CI)
     expect(image).toMatchImageSnapshot({
       diffDirection: 'vertical',
     });
