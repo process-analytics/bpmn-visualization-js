@@ -50,7 +50,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
     const markers = StyleUtils.getBpmnMarkers(this.style);
     if (markers) {
-      paintParameter = { ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeBottomLeft() };
+      paintParameter = { ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginForIconOnBottomLeft() };
 
       markers.split(',').forEach(marker => {
         switch (marker) {
@@ -64,7 +64,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
             this.iconPainter.paintParallelMultiInstanceIcon(paintParameter);
             break;
           case ShapeBpmnMarkerKind.EXPAND:
-            this.iconPainter.paintExpandIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeBottomCenter() });
+            this.iconPainter.paintExpandIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered() });
             break;
         }
         // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
@@ -108,7 +108,7 @@ export class ServiceTaskShape extends BaseTaskShape {
   }
 
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    this.iconPainter.paintGearIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginPosition(20) });
+    this.iconPainter.paintGearIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
   }
 }
 
@@ -118,7 +118,7 @@ export class UserTaskShape extends BaseTaskShape {
   }
 
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    this.iconPainter.paintWomanIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginPosition(20) });
+    this.iconPainter.paintUserIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
   }
 }
 
