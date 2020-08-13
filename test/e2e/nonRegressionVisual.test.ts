@@ -42,6 +42,25 @@ describe('non regression visual tests', () => {
   // forEach --> run parametrized test
 
   // TODO diff output: configure globally --> build/xxx/diff_outpout
+  // TODO 'customDiffDir' if an environment variable is set (for CI, if we want to be able to archive the folder)
+  const defaultImageSnapshotConfig = {
+    diffDirection: 'vertical',
+    dumpDiffToConsole: true, // useful on CI (no need to retrieve the diff image, copy/paste image content from logs)
+    // SSIM configuration, try to avoid false positive
+    // https://github.com/americanexpress/jest-image-snapshot#recommendations-when-using-ssim-comparison
+    comparisonMethod: 'ssim',
+  };
+
+  function getImageSnapshotConfig(fileName: string): jest.ImageSnapshotConfig {
+    // TODO probably only needed for the 'labels' diagrams as other doesn't contain text (pure svg drawing)
+    if (fileName == 'labels') {
+      const failureThreshold = 0.01;
+      // eslint-disable-next-line no-console
+      console.info(`Using failureThreshold: ${failureThreshold}`);
+      return { ...defaultImageSnapshotConfig, failureThreshold: failureThreshold, failureThresholdType: 'percent' };
+    }
+    return defaultImageSnapshotConfig;
+  }
 
   it.each(['events', 'gateways', 'labels', 'tasks'])(`%s`, async (fileName: string) => {
     // TODO we need to escape 'entities' in html to be able to pass the bpmn content in the url parameter
@@ -52,16 +71,6 @@ describe('non regression visual tests', () => {
 
     const image = await page.screenshot({ fullPage: true });
 
-    // TODO 'customDiffDir' if an environment variable is set (for CI)
-    expect(image).toMatchImageSnapshot({
-      diffDirection: 'vertical',
-      dumpDiffToConsole: true, // useful on CI (no need to retrieve the diff image, copy/paste image content from logs)
-      // SSIM configuration, try to avoid false positive
-      // https://github.com/americanexpress/jest-image-snapshot#recommendations-when-using-ssim-comparison
-      comparisonMethod: 'ssim',
-      // TODO probably only needed for the 'labels' diagrams as other are only svg (for labels, we use mxgraph htmlLabels for text wrapping)
-      failureThreshold: 0.01,
-      failureThresholdType: 'percent',
-    });
+    expect(image).toMatchImageSnapshot(getImageSnapshotConfig(fileName));
   });
 });
