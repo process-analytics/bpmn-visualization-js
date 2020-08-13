@@ -31,6 +31,12 @@ import { readFileSync } from '../helpers/file-helper';
 const graphContainerId = 'graph';
 
 describe('non regression visual tests', () => {
+  // TODO for generalization
+  // function that retrieve all files in a dedicated fixtures directory
+  //    get the relative path to the file
+  //    store everything in an array
+  // forEach --> run parametrized test
+
   it('should display graph in page', async () => {
     // the original bpmn used to create the current png snapshot
     // await page.goto(`http://localhost:10001/index-non-reg.html?bpmn=${readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
