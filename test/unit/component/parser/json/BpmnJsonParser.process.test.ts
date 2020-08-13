@@ -16,8 +16,101 @@
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
 import { findProcessRefParticipant } from '../../../../../src/component/parser/json/converter/CollaborationConverter';
+import { BpmnJsonModel } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMN20';
 
 describe('parse bpmn as json for process/pool', () => {
+  it.each([
+    ['vertical', false],
+    ['horizontal', true],
+  ])('json containing one %s participant referencing a process', (title: string, isHorizontal: boolean) => {
+    const json: BpmnJsonModel = {
+      definitions: {
+        targetNamespace: '',
+        collaboration: {
+          participant: { id: 'Participant_1', processRef: 'Process_1' },
+        },
+        process: {
+          id: 'Process_1',
+          isExecutable: false,
+        },
+        BPMNDiagram: {
+          BPMNPlane: {
+            BPMNShape: [
+              {
+                id: 'shape_Participant_1',
+                bpmnElement: 'Participant_1',
+                isHorizontal: isHorizontal,
+                Bounds: { x: 158, y: 50, width: 1620, height: 430 },
+              },
+            ],
+          },
+        },
+      },
+    };
+
+    const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 0);
+
+    const pool = model.pools[0];
+    verifyShape(pool, {
+      shapeId: 'shape_Participant_1',
+      bpmnElementId: 'Participant_1',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+      parentId: undefined,
+      bounds: {
+        x: 158,
+        y: 50,
+        width: 1620,
+        height: 430,
+      },
+      isHorizontal: isHorizontal,
+    });
+  });
+
+  it("json containing one participant referencing a process without 'isHorizontal' attribute", () => {
+    const json: BpmnJsonModel = {
+      definitions: {
+        targetNamespace: '',
+        collaboration: {
+          participant: { id: 'Participant_1', processRef: 'Process_1' },
+        },
+        process: {
+          id: 'Process_1',
+          isExecutable: false,
+        },
+        BPMNDiagram: {
+          BPMNPlane: {
+            BPMNShape: [
+              {
+                id: 'shape_Participant_1',
+                bpmnElement: 'Participant_1',
+                Bounds: { x: 158, y: 50, width: 1620, height: 430 },
+              },
+            ],
+          },
+        },
+      },
+    };
+
+    const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 0);
+
+    const pool = model.pools[0];
+    verifyShape(pool, {
+      shapeId: 'shape_Participant_1',
+      bpmnElementId: 'Participant_1',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+      parentId: undefined,
+      bounds: {
+        x: 158,
+        y: 50,
+        width: 1620,
+        height: 430,
+      },
+      isHorizontal: true,
+    });
+  });
+
   it('json containing one participant without name and the related process has a name', () => {
     const json = {
       definitions: {
@@ -54,6 +147,7 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementName: 'Process 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
       parentId: undefined,
+      isHorizontal: true,
       bounds: {
         x: 158,
         y: 50,
@@ -88,7 +182,6 @@ describe('parse bpmn as json for process/pool', () => {
               {
                 id: 'shape_Lane_1h5yeu4',
                 bpmnElement: 'Lane_12u5n6x',
-                isHorizontal: true,
                 Bounds: { x: 362, y: 232, width: 36, height: 45 },
               },
             ],
@@ -106,6 +199,7 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
       parentId: undefined,
+      isHorizontal: true,
       bounds: {
         x: 158,
         y: 50,
@@ -169,7 +263,6 @@ describe('parse bpmn as json for process/pool', () => {
               {
                 id: 'shape_Lane_1_1',
                 bpmnElement: 'Lane_1_1',
-                isHorizontal: true,
                 Bounds: { x: 362, y: 232, width: 36, height: 45 },
               },
               {
@@ -181,7 +274,6 @@ describe('parse bpmn as json for process/pool', () => {
               {
                 id: 'shape_Lane_2_1',
                 bpmnElement: 'Lane_2_1',
-                isHorizontal: true,
                 Bounds: { x: 362, y: 1232, width: 36, height: 45 },
               },
             ],
@@ -198,6 +290,7 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
       parentId: undefined,
+      isHorizontal: true,
       bounds: {
         x: 158,
         y: 50,
@@ -211,6 +304,7 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementName: 'Pool 2',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
       parentId: undefined,
+      isHorizontal: true,
       bounds: {
         x: 158,
         y: 1050,
@@ -286,6 +380,7 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
       parentId: undefined,
+      isHorizontal: true,
       bounds: {
         x: 158,
         y: 50,
@@ -343,6 +438,7 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
       parentId: undefined,
+      isHorizontal: true,
       bounds: {
         x: 158,
         y: 50,
