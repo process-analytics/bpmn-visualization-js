@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1niiwec" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="7.3.0">
+  <bpmn:process id="Process_0622ij6" isExecutable="false">
+    <bpmn:exclusiveGateway id="Gateway_1izqkfg" />
+    <bpmn:parallelGateway id="Gateway_1xv0reb" />
+    <bpmn:inclusiveGateway id="Gateway_1xb9nl5" />
+    <bpmn:complexGateway id="Gateway_1qm3uqe" />
+    <bpmn:eventBasedGateway id="Gateway_1n1md3j" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0622ij6">
+      <bpmndi:BPMNShape id="Gateway_1izqkfg_di" bpmnElement="Gateway_1izqkfg" isMarkerVisible="true">
+        <dc:Bounds x="195" y="115" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1xfovxd_di" bpmnElement="Gateway_1xv0reb">
+        <dc:Bounds x="295" y="115" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0zkuuvl_di" bpmnElement="Gateway_1xb9nl5">
+        <dc:Bounds x="195" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1ja3i8k_di" bpmnElement="Gateway_1qm3uqe">
+        <dc:Bounds x="295" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_038fht1_di" bpmnElement="Gateway_1n1md3j">
+        <dc:Bounds x="395" y="115" width="50" height="50" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

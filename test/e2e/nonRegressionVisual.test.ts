@@ -37,14 +37,16 @@ describe('non regression visual tests', () => {
   //    store everything in an array
   // forEach --> run parametrized test
 
-  it.each(['labels', 'tasks'])(`%s`, async (fileName: string) => {
+  it.each(['gateways', 'labels', 'tasks'])(`%s`, async (fileName: string) => {
     await page.goto(`http://localhost:10001/index-non-regression.html?bpmn=${readFileSync(`../fixtures/bpmn/non-regression/${fileName}.bpmn`)}`);
     await page.waitForSelector(`#${graphContainerId}`);
     await expect(page.title()).resolves.toMatch('BPMN Visualization Demo');
 
     const image = await page.screenshot();
 
-    // TODO configure 'customDiffDir' if an environment variable is set (for CI)
+    // TODO configure toMatchImageSnapshot
+    // 'customDiffDir' if an environment variable is set (for CI)
+    // 'dumpDiffToConsole' eventually for CI
     expect(image).toMatchImageSnapshot({
       diffDirection: 'vertical',
     });
