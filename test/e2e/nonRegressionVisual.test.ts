@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-// declare global {
-//   // eslint-disable-next-line @typescript-eslint/no-namespace
-//   namespace jest {
-//     interface Matchers<R> {
-//       toMatchImageSnapshot(): R;
-//     }
-//   }
-// }
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace jest {
+    interface Matchers<R> {
+      toMatchImageSnapshot(): R;
+    }
+  }
+}
 
 import { readFileSync } from '../helpers/file-helper';
 
@@ -40,6 +40,6 @@ describe('non regression visual tests', () => {
 
     const image = await page.screenshot();
 
-    // expect(image).toMatchImageSnapshot();
+    expect(image).toMatchImageSnapshot();
   });
 });
