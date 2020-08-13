@@ -19,6 +19,7 @@ import { readFileSync } from '../../../../helpers/file-helper';
 import { TSubProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowNode/activity/activity';
 import { ensureIsArray } from '../../../../../src/component/parser/json/converter/ConverterUtil';
 import { TStartEvent } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowNode/event';
+import { TTask } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowNode/activity/task';
 
 describe('parse bpmn as xml for Trisotech BPMN Modeler 6.2.0', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
@@ -32,12 +33,16 @@ describe('parse bpmn as xml for Trisotech BPMN Modeler 6.2.0', () => {
       },
     });
 
-    const process: TProcess = json.definitions.process as TProcess[];
+    const process = json.definitions.process as TProcess[];
     expect(process).toHaveLength(2);
     const subProcess1 = process[0] as TSubProcess;
-    expect(subProcess1.task).toHaveLength(2);
     const subProcess1StartEvents: TStartEvent[] = ensureIsArray(subProcess1.startEvent);
     expect(subProcess1StartEvents).toHaveLength(1);
     expect(subProcess1StartEvents[0].name).toBe('Start Event 2');
+
+    const subProcess1Tasks: TTask[] = ensureIsArray(subProcess1.task);
+    expect(subProcess1Tasks).toHaveLength(2);
+    expect(subProcess1Tasks[0].name).toBe('Task 3');
+    expect(subProcess1Tasks[1].name).toBe('Task 5');
   });
 });
