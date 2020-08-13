@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// inspired from https://medium.com/javascript-in-plain-english/jest-how-to-use-extend-with-typescript-4011582a2217
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
