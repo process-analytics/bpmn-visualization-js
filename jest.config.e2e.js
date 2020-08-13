@@ -25,5 +25,5 @@ module.exports = {
   testEnvironment: 'jest-environment-puppeteer-jsdom',
   globalSetup: 'jest-environment-puppeteer-jsdom/setup',
   globalTeardown: 'jest-environment-puppeteer-jsdom/teardown',
-  setupFiles: ['<rootDir>/test/e2e/jest.globals.ts', '<rootDir>/test/e2e/jest.image.js'],
+  setupFilesAfterEnv: ['<rootDir>/test/e2e/jest.globals.ts', '<rootDir>/test/e2e/jest.image.js'],
 };
