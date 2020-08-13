@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJson, parseJsonAndExpectOnlySubProcess, verifyShape, verifySubProcess } from './JsonTestUtils';
+import { parseJson, parseJsonAndExpectOnlySubProcess, verifyEdge, verifyShape, verifySubProcess } from './JsonTestUtils';
 import each from 'jest-each';
 import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
@@ -27,10 +27,9 @@ function toEventDefinition(eventKind: ShapeBpmnEventKind): string {
   return `${eventKind}EventDefinition`;
 }
 
-function expectNoEdgePoolLane(model: BpmnModel): void {
+function expectNoPoolLane(model: BpmnModel): void {
   expect(model.lanes).toHaveLength(0);
   expect(model.pools).toHaveLength(0);
-  expect(model.edges).toHaveLength(0);
 }
 
 describe('parse bpmn as json for sub-process', () => {
@@ -201,7 +200,7 @@ describe('parse bpmn as json for sub-process', () => {
       });
     }
 
-    it(`should convert activities, events and gateways in sub-process`, () => {
+    it(`should convert activities, events, gateways and sequence-flows in sub-process`, () => {
       const json = {
         definitions: {
           targetNamespace: '',
@@ -228,6 +227,18 @@ describe('parse bpmn as json for sub-process', () => {
                 id: 'sub-process_id_1_exclusiveGateway_1',
                 name: 'SubProcess Exclusive Gateway',
               },
+              sequenceFlow: [
+                {
+                  id: 'sub-process_id_1_sequenceFlow_1',
+                  sourceRef: 'sub-process_id_1_startEvent_1',
+                  targetRef: 'sub-process_id_1_userTask_1',
+                },
+                {
+                  id: 'sub-process_id_1_sequenceFlow_2',
+                  sourceRef: 'sub-process_id_1_exclusiveGateway_1',
+                  targetRef: 'sub-process_id_1_endEvent_1',
+                },
+              ],
             },
           },
           BPMNDiagram: {
@@ -261,13 +272,25 @@ describe('parse bpmn as json for sub-process', () => {
                   Bounds: { x: 565, y: 335, width: 20, height: 20 },
                 },
               ],
+              BPMNEdge: [
+                {
+                  id: 'edge_sub-process_id_1_sequenceFlow_1',
+                  bpmnElement: 'sub-process_id_1_sequenceFlow_1',
+                  waypoint: [{ x: 10, y: 10 }],
+                },
+                {
+                  id: 'edge_sub-process_id_1_sequenceFlow_2',
+                  bpmnElement: 'sub-process_id_1_sequenceFlow_2',
+                  waypoint: [{ x: 20, y: 20 }],
+                },
+              ],
             },
           },
         },
       };
 
       const model = parseJson(json);
-      expectNoEdgePoolLane(model);
+      expectNoPoolLane(model);
 
       verifySubProcess(model, expectedShapeBpmnSubProcessKind, 1);
       verifyShape(model.flowNodes[0], {
@@ -318,6 +341,16 @@ describe('parse bpmn as json for sub-process', () => {
         bpmnElementName: 'SubProcess Exclusive Gateway',
         bpmnElementKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
         bounds: { x: 565, y: 335, width: 20, height: 20 },
+      });
+
+      const edges = model.edges;
+      expect(edges).toHaveLength(2);
+      verifyEdge(edges[0], {
+        edgeId: 'edge_sub-process_id_1_sequenceFlow_1',
+        bpmnElementId: 'sub-process_id_1_sequenceFlow_1',
+        bpmnElementSourceRefId: 'sub-process_id_1_startEvent_1',
+        bpmnElementTargetRefId: 'sub-process_id_1_userTask_1',
+        waypoints: [{ x: 10, y: 10 }],
       });
     });
   });

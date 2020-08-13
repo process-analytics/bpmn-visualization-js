@@ -20,6 +20,7 @@ import { TSubProcess } from '../../../../../src/component/parser/xml/bpmn-json-m
 import { ensureIsArray } from '../../../../../src/component/parser/json/converter/ConverterUtil';
 import { TStartEvent } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowNode/event';
 import { TTask } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowNode/activity/task';
+import { TSequenceFlow } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowElement';
 
 describe('parse bpmn as xml for Trisotech BPMN Modeler 6.2.0', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
@@ -44,5 +45,13 @@ describe('parse bpmn as xml for Trisotech BPMN Modeler 6.2.0', () => {
     expect(subProcess1Tasks).toHaveLength(2);
     expect(subProcess1Tasks[0].name).toBe('Task 3');
     expect(subProcess1Tasks[1].name).toBe('Task 5');
+
+    const subProcess1SequenceFlows: TSequenceFlow[] = ensureIsArray(subProcess1.sequenceFlow);
+    expect(subProcess1SequenceFlows).toHaveLength(6);
+    expect(subProcess1SequenceFlows[0]).toEqual({
+      id: '_2cb09ba0-6d1a-40b9-959f-2c885400064c',
+      sourceRef: '_0db4187e-a1f6-4f1f-9089-607067907037',
+      targetRef: '_7f2b08f8-2042-434c-8181-4fbf1b03a97d',
+    });
   });
 });
