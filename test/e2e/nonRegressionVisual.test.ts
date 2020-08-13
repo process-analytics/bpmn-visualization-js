@@ -42,21 +42,20 @@ describe('non regression visual tests', () => {
   it.each(['gateways', 'labels', 'tasks'])(`%s`, async (fileName: string) => {
     // TODO we need to escape 'entities' in html to be able to pass the bpmn content in the url parameter
     // if a label contains a linefeed, the graph is blank (ex: the labels bpmn non regression file)
-    await page.goto(`http://localhost:10001/index-non-regression.html?bpmn=${readFileSync(`../fixtures/bpmn/non-regression/${fileName}.bpmn`)}`);
+    await page.goto(`http://localhost:10001/index-non-regression.html?fitOnLoad=true&bpmn=${readFileSync(`../fixtures/bpmn/non-regression/${fileName}.bpmn`)}`);
     await page.waitForSelector(`#${graphContainerId}`);
-    await expect(page.title()).resolves.toMatch('BPMN Visualization Demo');
+    await expect(page.title()).resolves.toMatch('BPMN Visualization Non Regression');
 
     const image = await page.screenshot({ fullPage: true });
 
-    // TODO configure toMatchImageSnapshot
-    // 'customDiffDir' if an environment variable is set (for CI)
+    // TODO 'customDiffDir' if an environment variable is set (for CI)
     expect(image).toMatchImageSnapshot({
       diffDirection: 'vertical',
       dumpDiffToConsole: true, // useful on CI (no need to retrieve the diff image, copy/paste image content from logs)
       // SSIM configuration, try to avoid false positive
       comparisonMethod: 'ssim',
-      failureThreshold: 0.000000000000005,
-      failureThresholdType: 'percent',
+      // failureThreshold: 0.000000000000005,
+      // failureThresholdType: 'percent',
     });
   });
 
