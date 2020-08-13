@@ -303,11 +303,11 @@ describe('mxgraph renderer', () => {
 
   describe('compute style - pool references a Process', () => {
     it.each([
-      ['vertical', false],
-      ['horizontal', true],
-    ])('%s pool references a Process', (title, isHorizontal: boolean) => {
+      ['vertical', false, '1'],
+      ['horizontal', true, '0'],
+    ])('%s pool references a Process', (title, isHorizontal: boolean, expected: string) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.POOL), undefined, isHorizontal);
-      expect(computeStyle(shape)).toEqual(`pool;horizontal=${isHorizontal}`);
+      expect(computeStyle(shape)).toEqual(`pool;horizontal=${expected}`);
     });
   });
 
