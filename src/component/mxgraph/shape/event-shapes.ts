@@ -27,7 +27,8 @@ abstract class EventShape extends mxEllipse {
     [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => this.iconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
     [
       ShapeBpmnEventKind.TIMER,
-      (paintParameter: PaintParameter) => this.iconPainter.paintClockIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginPosition(5) }),
+      (paintParameter: PaintParameter) =>
+        this.iconPainter.paintClockIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(5) }),
     ],
     [
       ShapeBpmnEventKind.SIGNAL,
@@ -36,7 +37,7 @@ abstract class EventShape extends mxEllipse {
           ...paintParameter,
           ratioFromParent: 0.55,
           icon: { ...paintParameter.icon, strokeWidth: StyleDefault.STROKE_WIDTH_THIN.valueOf() },
-          setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginPosition(4),
+          setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(4),
         }),
     ],
     [
