@@ -16,14 +16,26 @@ diagrams with
 **Supported Browsers**: Chrome, Firefox, Safari, Edge.
 
 
-# Demos
+# Demo and examples
+
+## Demo
 
 The [demo environment](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/index.html)
 let you load a BPMN file to see how the lib renders it. Various versions of the lib are available. 
 
-If you need BPMN examples, you can use resources of the [BPMN Model Interchange Working Group (BPMN MIWG)](http://www.omgwiki.org/bpmn-miwg)
-- https://github.com/bpmn-miwg/bpmn-miwg-test-suite
-- https://github.com/bpmn-miwg/bpmn-miwg-demos
+If you need BPMN examples, you can use resources from 
+- the [BPMN Model Interchange Working Group (BPMN MIWG)](http://www.omgwiki.org/bpmn-miwg)
+  - https://github.com/bpmn-miwg/bpmn-miwg-test-suite
+  - https://github.com/bpmn-miwg/bpmn-miwg-demos
+- [bpmn-visualization BPMN test diagrams](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/bpmn-files/README.md)
+
+
+## Examples
+
+If you need examples about `bpmn-visualization` usage and extensibility, go to the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/)
+repository.
+
+These examples are also available in the [examples live environment](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
 
 
 # Roadmap
