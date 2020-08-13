@@ -2,14 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BPMN Visualization Demo</title>
+    <title>BPMN Visualization Non Regression</title>
     <link rel="shortcut icon" href="./static/img/favicon.ico">
+    <style>
+      .graph-container {
+        top: 10px;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        /*border-style: solid;*/
+        /*border-color: #F2F2F2;*/
+        /*border-width: 1px;*/
+        position: absolute;
+        overflow: hidden;
+      }
+    </style>
 </head>
 <body>
     <!-- Needed by demo code -->
     <div id="file-selector"></div>
     <div id="bpmn-file"></div>
-    <div id="graph"></div>
+    <div id="graph" class="graph-container"></div>
     <!-- END OF 'Needed by demo code' -->
 
     <!-- load global settings -->

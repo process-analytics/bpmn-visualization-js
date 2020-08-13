@@ -19,14 +19,16 @@ import { documentReady, log, logStartup } from './helper';
 
 export const bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'));
 
+let fitOnLoad = false;
 function loadBpmn(bpmn: string): void {
   bpmnVisualization.load(bpmn);
 
   // TODO make this configurable via url parameter
-  log('Fitting....');
-  //graph.fit(0);
-  bpmnVisualization.graph.fit(0, false, 0, true, false, false);
-  log('Fit completed');
+  if (fitOnLoad) {
+    log('Fitting....');
+    bpmnVisualization.graph.fit(0);
+    log('Fit completed');
+  }
 }
 
 // callback function for opening | dropping the file to be loaded
@@ -58,6 +60,10 @@ documentReady(function () {
   const log = logStartup;
   log("Checking if 'BPMN auto loading from url parameter' is requested");
   const parameters = new URLSearchParams(window.location.search);
+
+  fitOnLoad = parameters.get('fitOnLoad') == 'true';
+  log(`Configure 'fit on load' to ${fitOnLoad}`);
+
   const bpmnParameterValue = parameters.get('bpmn');
   if (bpmnParameterValue) {
     const bpmn = decodeURIComponent(bpmnParameterValue);
