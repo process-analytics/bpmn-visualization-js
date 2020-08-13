@@ -13,7 +13,7 @@
       <bpmn:incoming>Flow_2</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_2" name="yes" sourceRef="Gateway_1yn3sb5" targetRef="EndEvent_1" />
-    <bpmn:exclusiveGateway id="Gateway_1yn3sb5" name="Exclu GW&#10;2nd line">
+    <bpmn:exclusiveGateway id="Gateway_1yn3sb5" name="Exclu GW 2nd line">
       <bpmn:incoming>Flow_167ihww</bpmn:incoming>
       <bpmn:outgoing>Flow_2</bpmn:outgoing>
       <bpmn:outgoing>Flow_1tqfwvu</bpmn:outgoing>
