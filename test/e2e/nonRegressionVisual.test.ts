@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// TODO use 'jest-image-snapshot' definition types when the lib will be updated
+// The type lib does not support setting config for ssim (4.2.0 released on july 2020)
+// typescript integration: https://github.com/americanexpress/jest-image-snapshot#usage-in-typescript
+//
 // inspired from https://medium.com/javascript-in-plain-english/jest-how-to-use-extend-with-typescript-4011582a2217
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
