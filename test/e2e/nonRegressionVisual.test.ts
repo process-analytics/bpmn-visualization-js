@@ -14,22 +14,11 @@
  * limitations under the License.
  */
 
-// inspired from https://medium.com/javascript-in-plain-english/jest-how-to-use-extend-with-typescript-4011582a2217
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace jest {
-    interface Matchers<R> {
-      toMatchImageSnapshot(imageSnapshotConfig?: ImageSnapshotConfig): R;
-    }
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface ImageSnapshotConfig {}
-  }
-}
-
 import { readFileSync } from '../helpers/file-helper';
 
 const graphContainerId = 'graph';
 
+// typescript integration: https://github.com/americanexpress/jest-image-snapshot#usage-in-typescript
 describe('non regression visual tests', () => {
   // TODO for generalization
   // function that retrieve all files in a dedicated fixtures directory
