@@ -28,15 +28,10 @@ import { readFileSync } from '../helpers/file-helper';
 const graphContainerId = 'graph';
 
 describe('non regression visual tests', () => {
-  it('should display page title', async () => {
-    await page.goto('http://localhost:10001');
-    await page.waitForSelector(`#${graphContainerId}`);
-    await expect(page.title()).resolves.toMatch('BPMN Visualization Demo');
-  });
-
   it('should display graph in page', async () => {
     await page.goto(`http://localhost:10001?bpmn=${readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
     await page.waitForSelector(`#${graphContainerId}`);
+    await expect(page.title()).resolves.toMatch('BPMN Visualization Demo');
 
     const image = await page.screenshot();
 
