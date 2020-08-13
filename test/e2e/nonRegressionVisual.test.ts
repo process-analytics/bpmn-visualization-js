@@ -51,6 +51,14 @@ describe('non regression visual tests', () => {
     expect(image).toMatchImageSnapshot({
       diffDirection: 'vertical',
       dumpDiffToConsole: true, // useful on CI (no need to retrieve the diff image, copy/paste image content from logs)
+      // SSIM configuration, try to avoid false positive
+      comparisonMethod: 'ssim',
+      // failureThreshold: 0.01,
+      // failureThresholdType: 'percent',
+      // no differences in process time --> don't use as it may be less accurate
+      // customDiffConfig: {
+      //   ssim: 'fast',
+      // },
     });
   });
 
