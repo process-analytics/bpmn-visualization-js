@@ -91,41 +91,54 @@ export default class BpmnCanvas {
   }
 
   /**
-   * Set the icon origin from the top left corner of the shape.
+   * Set the icon origin to the top left corner of the shape.
    *
-   * @param shapePositionIndex proportion of the width/height used to translate the icon origin from the shape origin.
+   * @param shapeDimensionProportion proportion of the width/height used to translate the icon origin from the shape origin.
+   * @internal
    */
-  setIconOriginPosition(shapePositionIndex: number): void {
+  setIconOriginToShapeTopLeftProportionally(shapeDimensionProportion: number): void {
     const shape = this.shapeConfiguration;
-    this.iconPaintingOriginX = shape.x + shape.w / shapePositionIndex;
-    this.iconPaintingOriginY = shape.y + shape.h / shapePositionIndex;
+    this.iconPaintingOriginX = shape.x + shape.w / shapeDimensionProportion;
+    this.iconPaintingOriginY = shape.y + shape.h / shapeDimensionProportion;
   }
 
-  setIconOriginToShapeCenter(): void {
+  /**
+   * Set the icon origin to the top left corner of the shape.
+   */
+  setIconOriginToShapeTopLeft(topMargin: number = StyleDefault.SHAPE_ACTIVITY_TOP_MARGIN, leftMargin: number = StyleDefault.SHAPE_ACTIVITY_LEFT_MARGIN): void {
+    const shape = this.shapeConfiguration;
+    this.iconPaintingOriginX = shape.x + leftMargin;
+    this.iconPaintingOriginY = shape.y + topMargin;
+  }
+
+  /**
+   * Set the icon origin to ensure that the icon is centered on the shape.
+   */
+  setIconOriginForIconCentered(): void {
     const shape = this.shapeConfiguration;
     this.iconPaintingOriginX = shape.x + (shape.w - this.iconOriginalSize.width * this.scaleX) / 2;
     this.iconPaintingOriginY = shape.y + (shape.h - this.iconOriginalSize.height * this.scaleY) / 2;
   }
 
-  setIconOriginToShapeBottomCenter(bottomMargin: number = StyleDefault.SHAPE_ACTIVITY_BOTTOM_MARGIN): void {
+  /**
+   * Set the icon origin to ensure that, on the shape, the icon is horizontally centered and vertically aligned to the bottom.
+   */
+  setIconOriginForIconBottomCentered(bottomMargin: number = StyleDefault.SHAPE_ACTIVITY_BOTTOM_MARGIN): void {
     const shape = this.shapeConfiguration;
     this.iconPaintingOriginX = shape.x + (shape.w - this.iconOriginalSize.width * this.scaleX) / 2;
     this.iconPaintingOriginY = shape.y + (shape.h - this.iconOriginalSize.height * this.scaleY - bottomMargin);
   }
 
-  setIconOriginToShapeBottomLeft(
+  /**
+   * Set the icon origin to ensure that, on the shape, the icon is vertically aligned to the bottom and translate to the left from the horizontal center.
+   */
+  setIconOriginForIconOnBottomLeft(
     bottomMargin: number = StyleDefault.SHAPE_ACTIVITY_BOTTOM_MARGIN,
     fromCenterMargin: number = StyleDefault.SHAPE_ACTIVITY_FROM_CENTER_MARGIN,
   ): void {
     const shape = this.shapeConfiguration;
     this.iconPaintingOriginX = shape.x + (shape.w - this.iconOriginalSize.width * this.scaleX) / 3 - fromCenterMargin;
     this.iconPaintingOriginY = shape.y + (shape.h - this.iconOriginalSize.height * this.scaleY - bottomMargin);
-  }
-
-  setIconOriginToShapeTopLeft(topMargin: number = StyleDefault.SHAPE_ACTIVITY_TOP_MARGIN, leftMargin: number = StyleDefault.SHAPE_ACTIVITY_LEFT_MARGIN): void {
-    const shape = this.shapeConfiguration;
-    this.iconPaintingOriginX = shape.x + leftMargin;
-    this.iconPaintingOriginY = shape.y + topMargin;
   }
 
   /**

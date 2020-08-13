@@ -43,7 +43,7 @@ export class ExclusiveGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    this.iconPainter.paintXCrossIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginPosition(4) });
+    this.iconPainter.paintXCrossIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(4) });
   }
 }
 
@@ -53,7 +53,7 @@ export class ParallelGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    this.iconPainter.paintPlusCrossIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginPosition(4) });
+    this.iconPainter.paintPlusCrossIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(4) });
   }
 }
 
