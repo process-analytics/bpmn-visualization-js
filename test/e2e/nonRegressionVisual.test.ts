@@ -60,8 +60,9 @@ describe('non regression visual tests', () => {
       // https://github.com/americanexpress/jest-image-snapshot#recommendations-when-using-ssim-comparison
       comparisonMethod: 'ssim',
       // TODO probably only needed for the 'labels' diagrams as other are only svg (for labels, we use mxgraph htmlLabels for text wrapping)
-      failureThreshold: 0.01,
-      failureThresholdType: 'percent',
+      // TODO to restore after testing the impact of 'svg label' (no mxgraph htmlLabels)
+      // failureThreshold: 0.01,
+      // failureThresholdType: 'percent',
     });
   });
 });
