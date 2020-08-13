@@ -57,9 +57,11 @@ describe('non regression visual tests', () => {
       diffDirection: 'vertical',
       dumpDiffToConsole: true, // useful on CI (no need to retrieve the diff image, copy/paste image content from logs)
       // SSIM configuration, try to avoid false positive
+      // https://github.com/americanexpress/jest-image-snapshot#recommendations-when-using-ssim-comparison
       comparisonMethod: 'ssim',
-      // failureThreshold: 0.000000000000005,
-      // failureThresholdType: 'percent',
+      // TODO probably only needed for the 'labels' diagrams as other are only svg (for labels, we use mxgraph htmlLabels for text wrapping)
+      failureThreshold: 0.01,
+      failureThresholdType: 'percent',
     });
   });
 });
