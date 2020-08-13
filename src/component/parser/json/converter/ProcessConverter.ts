@@ -100,6 +100,11 @@ export default class ProcessConverter {
   private parseProcess(process: TProcess): void {
     const processId = process.id;
     convertedProcessBpmnElements.set(processId, new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
+    this.buildProcessInnerElements(process);
+  }
+
+  private buildProcessInnerElements(process: TProcess | TSubProcess): void {
+    const processId = process.id;
 
     // flow nodes
     ShapeUtil.flowNodeKinds()
@@ -238,23 +243,15 @@ export default class ProcessConverter {
   }
 
   private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
+    this.buildSubProcessInnerElements(bpmnElement);
     if (!bpmnElement.triggeredByEvent) {
-      this.buildSubProcessInnerElements(bpmnElement);
       return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, processId, markers);
     }
     return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EVENT, processId, markers);
   }
 
   private buildSubProcessInnerElements(subProcess: TSubProcess): void {
-    const processId = subProcess.id;
-    const process = subProcess;
-
-    // flow nodes
-    ShapeUtil.topLevelBpmnEventKinds()
-      .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
-      .forEach(kind => this.buildFlowNodeBpmnElements(processId, process[kind], kind));
-    // process boundary events afterwards as we need its parent activity to be available when building it
-    this.buildFlowNodeBpmnElements(processId, process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY);
+    this.buildProcessInnerElements(subProcess);
   }
 
   private buildLaneSetBpmnElements(processId: string, laneSets: Array<TLaneSet> | TLaneSet): void {

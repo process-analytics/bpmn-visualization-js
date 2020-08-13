@@ -98,7 +98,7 @@ export default class ShapeUtil {
 
   public static flowNodeKinds(): ShapeBpmnElementKind[] {
     return Object.values(ShapeBpmnElementKind).filter(kind => {
-      return kind != ShapeBpmnElementKind.LANE;
+      return !ShapeUtil.isPoolOrLane(kind);
     });
   }
 
