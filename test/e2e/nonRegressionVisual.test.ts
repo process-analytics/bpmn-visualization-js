@@ -19,8 +19,10 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
     interface Matchers<R> {
-      toMatchImageSnapshot(): R;
+      toMatchImageSnapshot(imageSnapshotConfig?: ImageSnapshotConfig): R;
     }
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface ImageSnapshotConfig {}
   }
 }
 
@@ -30,12 +32,16 @@ const graphContainerId = 'graph';
 
 describe('non regression visual tests', () => {
   it('should display graph in page', async () => {
-    await page.goto(`http://localhost:10001?bpmn=${readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
+    // the original bpmn used to create the current png snapshot
+    //await page.goto(`http://localhost:10001?bpmn=${readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
+    await page.goto(`http://localhost:10001?bpmn=${readFileSync('../fixtures/bpmn/simple-start-task-end_failure-non-reg-visu-test.bpmn')}`);
     await page.waitForSelector(`#${graphContainerId}`);
     await expect(page.title()).resolves.toMatch('BPMN Visualization Demo');
 
     const image = await page.screenshot();
 
-    expect(image).toMatchImageSnapshot();
+    expect(image).toMatchImageSnapshot({
+      diffDirection: 'vertical',
+    });
   });
 });
