@@ -48,9 +48,9 @@ describe('non regression visual tests', () => {
 
     // TODO configure toMatchImageSnapshot
     // 'customDiffDir' if an environment variable is set (for CI)
-    // 'dumpDiffToConsole' eventually for CI
     expect(image).toMatchImageSnapshot({
       diffDirection: 'vertical',
+      dumpDiffToConsole: true, // useful on CI (no need to retrieve the diff image, copy/paste image content from logs)
     });
   });
 
