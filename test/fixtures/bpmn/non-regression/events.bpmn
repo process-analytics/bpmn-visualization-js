@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_0z2tz2k" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="7.3.0">
+  <bpmn:process id="Process_1bio6cg" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1jt7l7c" />
+    <bpmn:startEvent id="Event_0drw7qk">
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0dh01w9" />
+    </bpmn:startEvent>
+    <bpmn:startEvent id="Event_1kaeg0d">
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1t0ihvk" />
+    </bpmn:startEvent>
+    <bpmn:startEvent id="Event_0863b2n">
+      <bpmn:signalEventDefinition id="SignalEventDefinition_0t8c59j" />
+    </bpmn:startEvent>
+    <bpmn:startEvent id="Event_0pg6wiu">
+      <bpmn:conditionalEventDefinition id="ConditionalEventDefinition_1emah5g">
+        <bpmn:condition xsi:type="bpmn:tFormalExpression" />
+      </bpmn:conditionalEventDefinition>
+    </bpmn:startEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1bio6cg">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1jt7l7c">
+        <dc:Bounds x="156" y="81" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1oxz4bb_di" bpmnElement="Event_0drw7qk">
+        <dc:Bounds x="232" y="81" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_15eowon_di" bpmnElement="Event_1kaeg0d">
+        <dc:Bounds x="156" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1n4794h_di" bpmnElement="Event_0863b2n">
+        <dc:Bounds x="232" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_19dq26t_di" bpmnElement="Event_0pg6wiu">
+        <dc:Bounds x="156" y="242" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

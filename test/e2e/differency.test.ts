@@ -21,19 +21,16 @@ const Differencify = require('differencify');
 const differencify = new Differencify({ imageSnapshotPath: 'differencify_snapshots' });
 
 describe('tests differencify', () => {
-  it.each(['simple-start-task-end', 'model-complete-semantic', 'model-coordinates-relative-to-pool', 'model-coordinates-relative-to-pool-or-lane', 'parser-test'])(
-    'validate %s diagram appear correctly',
-    async diagramName => {
-      await differencify
-        .init()
-        // .launch({ headless: false })
-        .launch()
-        .newPage()
-        .goto(`http://localhost:10001?bpmn=${readFileSync(`../fixtures/bpmn/${diagramName}.bpmn`)}`)
-        .screenshot()
-        .toMatchSnapshot()
-        .close()
-        .end();
-    },
-  );
+  it.each(['events', 'gateways', 'labels', 'markers', 'tasks'])('validate %s diagram appear correctly', async diagramName => {
+    await differencify
+      .init()
+      // .launch({ headless: false })
+      .launch()
+      .newPage()
+      .goto(`http://localhost:10001?bpmn=${readFileSync(`../fixtures/bpmn/non-regression/${diagramName}.bpmn`)}`)
+      .screenshot()
+      .toMatchSnapshot()
+      .close()
+      .end();
+  });
 });

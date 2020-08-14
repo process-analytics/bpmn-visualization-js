@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1uz6fwe" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="7.3.0">
+  <bpmn:process id="Process_047roat" isExecutable="false">
+    <bpmn:task id="Activity_1d44wkx">
+      <bpmn:multiInstanceLoopCharacteristics />
+    </bpmn:task>
+    <bpmn:task id="Activity_0vh41az">
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" />
+    </bpmn:task>
+    <bpmn:task id="Activity_0a3q4sw">
+      <bpmn:standardLoopCharacteristics />
+    </bpmn:task>
+    <bpmn:callActivity id="Activity_070qpyo" />
+    <bpmn:callActivity id="Activity_1ku8gc8">
+      <bpmn:multiInstanceLoopCharacteristics />
+    </bpmn:callActivity>
+    <bpmn:callActivity id="Activity_0tim2tz">
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" />
+    </bpmn:callActivity>
+    <bpmn:callActivity id="Activity_1dlwlca">
+      <bpmn:standardLoopCharacteristics />
+    </bpmn:callActivity>
+    <bpmn:subProcess id="Activity_04jhmwv" />
+    <bpmn:subProcess id="Activity_05jykwn">
+      <bpmn:multiInstanceLoopCharacteristics />
+    </bpmn:subProcess>
+    <bpmn:subProcess id="Activity_0kr0ccf">
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" />
+    </bpmn:subProcess>
+    <bpmn:subProcess id="Activity_196x0py">
+      <bpmn:standardLoopCharacteristics />
+    </bpmn:subProcess>
+    <bpmn:adHocSubProcess id="Activity_0ub7tnf" />
+    <bpmn:callActivity id="Activity_137xamd" isForCompensation="true" />
+    <bpmn:callActivity id="Activity_0gz5whi" isForCompensation="true">
+      <bpmn:standardLoopCharacteristics />
+    </bpmn:callActivity>
+    <bpmn:adHocSubProcess id="Activity_1yc41mg">
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" />
+    </bpmn:adHocSubProcess>
+    <bpmn:adHocSubProcess id="Activity_1h7uk0j" />
+    <bpmn:adHocSubProcess id="Activity_1bzr525" isForCompensation="true" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_047roat">
+      <bpmndi:BPMNShape id="Activity_1d44wkx_di" bpmnElement="Activity_1d44wkx">
+        <dc:Bounds x="170" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1n5y3cd_di" bpmnElement="Activity_0vh41az">
+        <dc:Bounds x="330" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1vhsh4j_di" bpmnElement="Activity_0a3q4sw">
+        <dc:Bounds x="490" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_071vsmx_di" bpmnElement="Activity_070qpyo">
+        <dc:Bounds x="170" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1h7geg8_di" bpmnElement="Activity_1ku8gc8">
+        <dc:Bounds x="330" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1co1tnk_di" bpmnElement="Activity_0tim2tz">
+        <dc:Bounds x="490" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1dlwlca_di" bpmnElement="Activity_1dlwlca">
+        <dc:Bounds x="650" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_078muan_di" bpmnElement="Activity_04jhmwv">
+        <dc:Bounds x="170" y="320" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1x9sgmp_di" bpmnElement="Activity_05jykwn">
+        <dc:Bounds x="330" y="320" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0d7gooi_di" bpmnElement="Activity_0kr0ccf">
+        <dc:Bounds x="490" y="320" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0cwkyny_di" bpmnElement="Activity_196x0py">
+        <dc:Bounds x="650" y="320" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1q1ebfs_di" bpmnElement="Activity_0ub7tnf">
+        <dc:Bounds x="650" y="450" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_137xamd_di" bpmnElement="Activity_137xamd">
+        <dc:Bounds x="800" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0gz5whi_di" bpmnElement="Activity_0gz5whi">
+        <dc:Bounds x="800" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1yc41mg_di" bpmnElement="Activity_1yc41mg">
+        <dc:Bounds x="650" y="570" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_007svac_di" bpmnElement="Activity_1h7uk0j" isExpanded="true">
+        <dc:Bounds x="170" y="450" width="420" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bzr525_di" bpmnElement="Activity_1bzr525">
+        <dc:Bounds x="800" y="450" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
