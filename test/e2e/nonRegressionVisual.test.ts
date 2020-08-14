@@ -68,7 +68,7 @@ describe('non regression visual tests', () => {
     return defaultImageSnapshotConfig;
   }
 
-  it.each(['events', 'gateways', 'labels', 'tasks'])(`%s`, async (fileName: string) => {
+  it.each(['events', 'gateways', 'labels', 'markers', 'tasks'])(`%s`, async (fileName: string) => {
     // TODO we need to escape 'entities' in html to be able to pass the bpmn content in the url parameter
     // if a label contains a linefeed, the graph is blank (ex: the labels bpmn non regression file)
     await page.goto(`http://localhost:10001/index-non-regression.html?fitOnLoad=true&bpmn=${readFileSync(`../fixtures/bpmn/non-regression/${fileName}.bpmn`)}`);
