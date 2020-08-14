@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as fs from 'fs';
-import * as path from 'path';
+import { findFiles } from '../helpers/file-helper';
 
-export function readFileSync(relPathToSourceFile: string, encoding = 'utf8'): string {
-  return fs.readFileSync(path.join(__dirname, relPathToSourceFile), encoding);
-}
-
-// TODO option to recurse in folder
-export function findFiles(relPathToSourceFile: string): string[] {
-  return fs.readdirSync(path.join(__dirname, relPathToSourceFile));
-}
+describe('files lookup', () => {
+  it('bpmn non-regression files', () => {
+    // const files = findFiles('./test/fixtures/bpmn/non-regression/');
+    const files = findFiles('../fixtures/bpmn/non-regression/');
+    expect(files).toContain('gateways.bpmn');
+  });
+});

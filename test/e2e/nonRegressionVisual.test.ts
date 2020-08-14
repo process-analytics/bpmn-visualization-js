@@ -30,7 +30,7 @@ declare global {
   }
 }
 
-import { readFileSync } from '../helpers/file-helper';
+import { findFiles, readFileSync } from '../helpers/file-helper';
 
 // if this is kept, move to helper.ts
 // function readFileSyncAndUrlEncodeContent(relPathToSourceFile: string): string {
@@ -41,12 +41,6 @@ import { readFileSync } from '../helpers/file-helper';
 const graphContainerId = 'graph';
 
 describe('non regression visual tests', () => {
-  // TODO for generalization
-  // function that retrieve all files in a dedicated fixtures directory
-  //    get the relative path to the file
-  //    store everything in an array
-  // forEach --> run parametrized test
-
   // TODO diff output: configure globally --> build/xxx/diff_outpout
   // TODO 'customDiffDir' if an environment variable is set (for CI, if we want to be able to archive the folder)
   const defaultImageSnapshotConfig = {
@@ -68,7 +62,21 @@ describe('non regression visual tests', () => {
     return defaultImageSnapshotConfig;
   }
 
-  it.each(['events', 'gateways', 'labels', 'markers', 'tasks'])(`%s`, async (fileName: string) => {
+  const bpmnFiles = findFiles('../fixtures/bpmn/non-regression/');
+
+  it('check bpmn non-regression files availability', () => {
+    expect(bpmnFiles).toContain('gateways.bpmn');
+  });
+
+  const bpmnFileNames = bpmnFiles
+    // TODO add options in findFiles to do the filtering
+    .filter(filename => {
+      return filename.endsWith('.bpmn');
+    })
+    .map(filename => {
+      return filename.split('.').slice(0, -1).join('.');
+    });
+  it.each(bpmnFileNames)(`%s`, async (fileName: string) => {
     // TODO we need to escape 'entities' in the xml BPMN source to be able to pass the bpmn content in the url parameter
     // currently if a label contains a linefeed, the graph is blank
     // TODO add linefeed in the labels tests to demonstrate this is correctly managed at rendering time by the lib
