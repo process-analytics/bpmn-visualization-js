@@ -32,6 +32,12 @@ declare global {
 
 import { readFileSync } from '../helpers/file-helper';
 
+// TODO move to helper.ts
+function readFileSyncAndUrlEncodeContent(relPathToSourceFile: string): string {
+  const content = readFileSync(relPathToSourceFile);
+  return encodeURI(content);
+}
+
 const graphContainerId = 'graph';
 
 describe('non regression visual tests', () => {
