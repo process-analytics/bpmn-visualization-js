@@ -66,7 +66,7 @@ describe('non regression visual tests', () => {
     // TODO we need to escape 'entities' in html to be able to pass the bpmn content in the url parameter
     // if a label contains a linefeed, the graph is blank (ex: the labels bpmn non regression file)
     await page.goto(`http://localhost:10001/index-non-regression.html?fitOnLoad=true&bpmn=${readFileSync(`../fixtures/bpmn/non-regression/${fileName}.bpmn`)}`);
-    await page.waitForSelector(`#${graphContainerId}`);
+    await page.waitForSelector(`#${graphContainerId}`, { timeout: 5_000 });
     await expect(page.title()).resolves.toMatch('BPMN Visualization Non Regression');
 
     const image = await page.screenshot({ fullPage: true });
