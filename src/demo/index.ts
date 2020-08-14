@@ -23,7 +23,6 @@ let fitOnLoad = false;
 function loadBpmn(bpmn: string): void {
   bpmnVisualization.load(bpmn);
 
-  // TODO make this configurable via url parameter
   if (fitOnLoad) {
     log('Fitting....');
     bpmnVisualization.graph.fit(0);
