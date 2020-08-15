@@ -40,7 +40,7 @@ export default class BpmnVisualization {
       // TODO make activation/deactivation configurable
       // eslint-disable-next-line @typescript-eslint/no-this-alias
       const self = this; // TODO replace with array function to access to this directly
-      mxEvent.addMouseWheelListener(function(event: Event, up: boolean) {
+      mxEvent.addMouseWheelListener(function (event: Event, up: boolean) {
         if (!(event instanceof MouseEvent)) {
           console.info('[MouseWheelListener] event is not a MouseEvent', event);
           return;
@@ -149,15 +149,21 @@ export default class BpmnVisualization {
     });
   }
 
+  private loadLogger: Logger = new Logger('BpmnVisualization - load');
   public load(xml: string): void {
-    console.info('Start loading BPMN');
+    this.loadLogger.info('Start loading BPMN');
+    const initialStartTime = performance.now();
     try {
       // TODO the BpmnParser should be a field and injected (see #110)
+      let startTime = performance.now();
       const bpmnModel = defaultBpmnParser().parse(xml);
-      console.info('Parsing done');
+      let endTime = performance.now();
+      this.loadLogger.info(`Parsing done in ${endTime - startTime} ms`);
+      startTime = endTime;
       defaultMxGraphRenderer(this.graph).render(bpmnModel);
-      console.info('Rendering done');
-      console.info('BPMN loaded');
+      endTime = performance.now();
+      this.loadLogger.info(`Rendering done in ${endTime - startTime} ms`);
+      this.loadLogger.info(`BPMN loaded in ${endTime - initialStartTime} ms`);
     } catch (e) {
       // TODO error handling
       mxUtils.alert('Cannot load bpmn diagram: ' + e.message);
