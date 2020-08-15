@@ -23,6 +23,15 @@ import { downloadAsPng, downloadAsSvg } from './component/download';
 let fitOnLoad = false;
 export const bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'), { activatePanning: true });
 
+function loadStatusMsg(msg: string): void {
+  const loadStatusElement = document.getElementById('load-status');
+  loadStatusElement.innerText = msg;
+  // clean status area after a few seconds
+  // setTimeout(function() {
+  //   loadStatusElement.innerText = '';
+  // }, 3000);
+}
+
 function loadBpmn(bpmn: string): void {
   const initialStartTime = performance.now();
   log('Loading bpmn....');
@@ -40,12 +49,7 @@ function loadBpmn(bpmn: string): void {
     log(`Fit on load rendering done in ${performance.now() - startTime} ms`);
   }
 
-  const loadStatusElement = document.getElementById('load-status');
-  loadStatusElement.innerText = `BPMN loaded in ${performance.now() - initialStartTime} ms`;
-  // clean status area after a few seconds
-  // setTimeout(function() {
-  //   loadStatusElement.innerText = '';
-  // }, 3000);
+  loadStatusMsg(`BPMN loaded in ${performance.now() - initialStartTime} ms`);
 }
 
 // callback function for opening | dropping the file to be loaded
@@ -74,6 +78,11 @@ document.getElementById('bpmn-file').addEventListener('change', handleFileSelect
 document.getElementById('file-selector').classList.remove('hidden');
 
 document.getElementById('btn-clean').onclick = function () {
+  // clean status area
+  loadStatusMsg('');
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  statusFetchClean();
+
   log('clearing mxgraph model');
   const model = bpmnVisualization.graph.getModel();
   model.clear();
