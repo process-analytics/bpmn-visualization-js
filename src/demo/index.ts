@@ -171,10 +171,11 @@ function openFromUrl(url: string): void {
   });
 }
 
-document.getElementById('btn-open-url').onclick = function () {
-  const url = (document.getElementById('input-open-url') as HTMLInputElement).value;
-  openFromUrl(url);
-};
+// DISABLED
+// document.getElementById('btn-open-url').onclick = function () {
+//   const url = (document.getElementById('input-open-url') as HTMLInputElement).value;
+//   openFromUrl(url);
+// };
 
 document.getElementById('select-open-migw').onchange = function () {
   const fileName = (document.getElementById('select-open-migw') as HTMLSelectElement).value;
