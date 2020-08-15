@@ -133,10 +133,10 @@ function fetchBpmnContent(url: string): Promise<string> {
     })
     .finally(() => {
       // clean status area after a few seconds
-      setTimeout(function() {
-        const statusElt = getStatusElement();
-        statusElt.innerText = '';
-      }, 3000);
+      // setTimeout(function() {
+      //   const statusElt = getStatusElement();
+      //   statusElt.innerText = '';
+      // }, 3000);
     });
 }
 
