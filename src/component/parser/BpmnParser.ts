@@ -18,6 +18,37 @@ import BpmnXmlParser from './xml/BpmnXmlParser';
 import BpmnJsonParser, { defaultBpmnJsonParser } from './json/BpmnJsonParser';
 import Logger from '../Logger';
 
+class ModelStatistics {
+  private readonly pools: number;
+  private readonly lanes: number;
+  private readonly flowNodes: number;
+  private readonly edges: number;
+
+  constructor(bpmnModel: BpmnModel) {
+    this.pools = bpmnModel.pools.length;
+    this.lanes = bpmnModel.lanes.length;
+    this.flowNodes = bpmnModel.flowNodes.length;
+    this.edges = bpmnModel.edges.length;
+
+    this.computeFlowNodesStatistics(bpmnModel);
+  }
+
+  log(log: Logger): void {
+    const msg = `BpmnModel Statistics:
+  Pools: ${this.pools}
+  Lanes: ${this.lanes}
+  FlowNodes: ${this.flowNodes}
+  Edges: ${this.edges}
+`;
+    log.info(msg);
+  }
+
+  private computeFlowNodesStatistics(bpmnModel: BpmnModel): void {}
+}
+
+class FlowNodesStatistics {}
+class EdgesStatistics {}
+
 class BpmnParser {
   private log: Logger = new Logger('BpmnParser');
 
@@ -25,28 +56,18 @@ class BpmnParser {
 
   parse(bpmnAsXml: string): BpmnModel {
     const initialStartTime = performance.now();
-    this.log.info(`start xml parsing, string length ${bpmnAsXml.length}`);
+    this.log.info(`Start xml parsing, string length ${bpmnAsXml.length}`);
 
     const json = this.xmlParser.parse(bpmnAsXml);
-    this.log.info(`xml parsing done in ${performance.now() - initialStartTime} ms`);
+    this.log.info(`Xml parsing done in ${performance.now() - initialStartTime} ms`);
 
     const jsonStartTime = performance.now();
     const bpmnModel = this.jsonParser.parse(json);
-    this.log.info(`json parsing done in ${performance.now() - jsonStartTime} ms`);
+    this.log.info(`Json parsing done in ${performance.now() - jsonStartTime} ms`);
 
-    this.log.info(`full parsing done in ${performance.now() - initialStartTime} ms`);
-    this.logModelStats(bpmnModel);
+    this.log.info(`Full parsing done in ${performance.now() - initialStartTime} ms`);
+    new ModelStatistics(bpmnModel).log(this.log);
     return bpmnModel;
-  }
-
-  logModelStats(bpmnModel: BpmnModel): void {
-    const msg = `Created BpmnModel:
-  Pools: ${bpmnModel.pools.length}
-  Lanes: ${bpmnModel.lanes.length}
-  FlowNodes: ${bpmnModel.flowNodes.length}
-  Edges: ${bpmnModel.edges.length}
-`;
-    this.log.info(msg);
   }
 }
 
