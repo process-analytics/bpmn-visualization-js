@@ -41,8 +41,7 @@ function loadBpmn(bpmn: string): void {
   }
 
   const loadStatusElement = document.getElementById('load-status');
-  const loadMsg = `BPMN loaded in ${performance.now() - initialStartTime} ms`;
-  loadStatusElement.innerText = loadMsg;
+  loadStatusElement.innerText = `BPMN loaded in ${performance.now() - initialStartTime} ms`;
   // clean status area after a few seconds
   // setTimeout(function() {
   //   loadStatusElement.innerText = '';
