@@ -52,6 +52,8 @@ function loadBpmn(bpmn: string): void {
 function readAndLoadFile(f: File): void {
   const reader = new FileReader();
   reader.onload = () => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    statusFetchClean();
     loadBpmn(reader.result as string);
   };
   reader.readAsText(f);
@@ -115,6 +117,10 @@ function statusFetchKO(url: string, error: unknown): void {
   const statusElt = getStatusElement();
   statusElt.innerText = `Unable to fetch ${url}. ${error}`;
   statusElt.className = 'status-ko';
+}
+
+function statusFetchClean(): void {
+  getStatusElement().innerText = ``;
 }
 
 function fetchBpmnContent(url: string): Promise<string> {
