@@ -71,7 +71,7 @@ function handleFileSelect(evt: any): void {
 document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
 document.getElementById('file-selector').classList.remove('hidden');
 
-document.getElementById('btn-clean').onclick = function() {
+document.getElementById('btn-clean').onclick = function () {
   log('clearing mxgraph model');
   const model = bpmnVisualization.graph.getModel();
   model.clear();
@@ -156,12 +156,12 @@ function openFromUrl(url: string): void {
   });
 }
 
-document.getElementById('btn-open-url').onclick = function() {
+document.getElementById('btn-open-url').onclick = function () {
   const url = (document.getElementById('input-open-url') as HTMLInputElement).value;
   openFromUrl(url);
 };
 
-document.getElementById('select-open-migw').onchange = function() {
+document.getElementById('select-open-migw').onchange = function () {
   const fileName = (document.getElementById('select-open-migw') as HTMLSelectElement).value;
   if (fileName) {
     log('Start opening MIGW file %s', fileName);
@@ -170,7 +170,7 @@ document.getElementById('select-open-migw').onchange = function() {
   }
 };
 
-document.getElementById('select-open-bpmn-visualization-example').onchange = function() {
+document.getElementById('select-open-bpmn-visualization-example').onchange = function () {
   const fileName = (document.getElementById('select-open-bpmn-visualization-example') as HTMLSelectElement).value;
   if (fileName) {
     log('Start opening bpmn-visualization-example file %s', fileName);
@@ -182,38 +182,38 @@ document.getElementById('select-open-bpmn-visualization-example').onchange = fun
 // =====================================================================================================================
 // ZOOM
 // =====================================================================================================================
-document.getElementById('btn-zoom-in').onclick = function() {
+document.getElementById('btn-zoom-in').onclick = function () {
   bpmnVisualization.zoom(ZoomType.In);
 };
-document.getElementById('btn-zoom-out').onclick = function() {
+document.getElementById('btn-zoom-out').onclick = function () {
   bpmnVisualization.zoom(ZoomType.Out);
 };
-document.getElementById('btn-zoom-actual').onclick = function() {
+document.getElementById('btn-zoom-actual').onclick = function () {
   bpmnVisualization.zoom(ZoomType.Actual);
 };
-document.getElementById('btn-zoom-fit').onclick = function() {
+document.getElementById('btn-zoom-fit').onclick = function () {
   bpmnVisualization.zoom(ZoomType.Fit);
 };
-document.getElementById('btn-zoom-fit-horizontal').onclick = function() {
+document.getElementById('btn-zoom-fit-horizontal').onclick = function () {
   bpmnVisualization.zoom(ZoomType.FitHorizontal);
 };
-document.getElementById('btn-zoom-fit-vertical').onclick = function() {
+document.getElementById('btn-zoom-fit-vertical').onclick = function () {
   bpmnVisualization.zoom(ZoomType.FitVertical);
 };
 
 // =====================================================================================================================
 // PAN
 // =====================================================================================================================
-document.getElementById('btn-pan-up').onclick = function() {
+document.getElementById('btn-pan-up').onclick = function () {
   bpmnVisualization.pan(PanType.VerticalUp);
 };
-document.getElementById('btn-pan-down').onclick = function() {
+document.getElementById('btn-pan-down').onclick = function () {
   bpmnVisualization.pan(PanType.VerticalDown);
 };
-document.getElementById('btn-pan-left').onclick = function() {
+document.getElementById('btn-pan-left').onclick = function () {
   bpmnVisualization.pan(PanType.HorizontalLeft);
 };
-document.getElementById('btn-pan-right').onclick = function() {
+document.getElementById('btn-pan-right').onclick = function () {
   bpmnVisualization.pan(PanType.HorizontalRight);
 };
 
@@ -221,7 +221,7 @@ document.getElementById('btn-pan-right').onclick = function() {
 // General
 // =====================================================================================================================
 
-document.getElementById('btn-help').onclick = function() {
+document.getElementById('btn-help').onclick = function () {
   log('click btn-help');
   // TODO implement a more convenient popup/modal
   window.alert('Keyboard Shortcuts\nPanning: use arrow');
@@ -232,7 +232,7 @@ document.getElementById('btn-help').onclick = function() {
 // =====================================================================================================================
 
 const outlineElement = document.getElementById('outline');
-document.getElementById('btn-outline').onclick = function() {
+document.getElementById('btn-outline').onclick = function () {
   outlineElement.classList.toggle('hidden');
   bpmnVisualization.toggleOutline(outlineElement);
 };
@@ -240,14 +240,14 @@ document.getElementById('btn-outline').onclick = function() {
 // =====================================================================================================================
 // Export/Download
 // =====================================================================================================================
-document.getElementById('btn-export-preview').onclick = function() {
+document.getElementById('btn-export-preview').onclick = function () {
   bpmnVisualization.preview();
 };
-document.getElementById('btn-export-svg').onclick = function() {
+document.getElementById('btn-export-svg').onclick = function () {
   downloadAsSvg(bpmnVisualization.exportAsSvg());
 };
 
-document.getElementById('btn-export-png').onclick = function() {
+document.getElementById('btn-export-png').onclick = function () {
   downloadAsPng(bpmnVisualization.exportAsSvg());
 };
 
