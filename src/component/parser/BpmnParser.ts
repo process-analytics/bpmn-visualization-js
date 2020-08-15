@@ -17,7 +17,6 @@ import BpmnModel from '../../model/bpmn/BpmnModel';
 import BpmnXmlParser from './xml/BpmnXmlParser';
 import BpmnJsonParser, { defaultBpmnJsonParser } from './json/BpmnJsonParser';
 import Logger from '../Logger';
-import { ShapeBpmnElementKind } from '../../model/bpmn/shape/ShapeBpmnElementKind';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import ShapeBpmnElement from '../../model/bpmn/shape/ShapeBpmnElement';
 
@@ -42,39 +41,32 @@ class FlowNodesStatistics {
   addOther(element: ShapeBpmnElement): void {
     this.others++;
   }
-
-  log(log: Logger): void {
-    const msg = `FlowNodesStatistics Statistics: ${JSON.stringify(this, undefined, 2)}`;
-    log.info(msg);
-  }
 }
 // class EdgesStatistics {}
 
 class ModelStatistics {
-  private readonly pools: number;
-  private readonly lanes: number;
-  private readonly flowNodes: number;
-  private readonly edges: number;
-  private readonly flowNodesStatistics = new FlowNodesStatistics();
+  private readonly globals: {
+    pools: number;
+    lanes: number;
+    flowNodes: number;
+    edges: number;
+  };
+  private readonly flowNodes = new FlowNodesStatistics();
 
   constructor(bpmnModel: BpmnModel) {
-    this.pools = bpmnModel.pools.length;
-    this.lanes = bpmnModel.lanes.length;
-    this.flowNodes = bpmnModel.flowNodes.length;
-    this.edges = bpmnModel.edges.length;
+    this.globals = {
+      pools: bpmnModel.pools.length,
+      lanes: bpmnModel.lanes.length,
+      flowNodes: bpmnModel.flowNodes.length,
+      edges: bpmnModel.edges.length,
+    };
 
     this.computeFlowNodesStatistics(bpmnModel);
   }
 
   log(logger: Logger): void {
-    const msg = `BpmnModel Statistics:
-  Pools: ${this.pools}
-  Lanes: ${this.lanes}
-  FlowNodes: ${this.flowNodes}
-  Edges: ${this.edges}
-`;
+    const msg = `BpmnModel Statistics: ${JSON.stringify(this, undefined, 2)}`;
     logger.info(msg);
-    this.flowNodesStatistics.log(logger);
   }
 
   private computeFlowNodesStatistics(bpmnModel: BpmnModel): void {
@@ -85,13 +77,13 @@ class ModelStatistics {
       const bpmnElement = flowNode.bpmnElement;
       const kind = bpmnElement.kind;
       if (ShapeUtil.isActivity(kind)) {
-        this.flowNodesStatistics.addActivity(bpmnElement);
+        this.flowNodes.addActivity(bpmnElement);
       } else if (ShapeUtil.isEvent(kind)) {
-        this.flowNodesStatistics.addEvent(bpmnElement);
+        this.flowNodes.addEvent(bpmnElement);
       } else if (ShapeUtil.isGateway(kind)) {
-        this.flowNodesStatistics.addGateway(bpmnElement);
+        this.flowNodes.addGateway(bpmnElement);
       } else {
-        this.flowNodesStatistics.addOther(bpmnElement);
+        this.flowNodes.addOther(bpmnElement);
       }
     });
   }
