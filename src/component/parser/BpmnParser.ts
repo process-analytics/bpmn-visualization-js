@@ -19,6 +19,7 @@ import BpmnJsonParser, { defaultBpmnJsonParser } from './json/BpmnJsonParser';
 import Logger from '../Logger';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import ShapeBpmnElement from '../../model/bpmn/shape/ShapeBpmnElement';
+import { FlowKind } from '../../model/bpmn/edge/FlowKind';
 
 class FlowNodesStatistics {
   private activities = 0;
@@ -42,7 +43,12 @@ class FlowNodesStatistics {
     this.others++;
   }
 }
-// class EdgesStatistics {}
+class EdgesStatistics {
+  associations = 0;
+  messageFlows = 0;
+  sequenceFlows = 0;
+  undefined = 0;
+}
 
 class ModelStatistics {
   private readonly globals: {
@@ -52,6 +58,7 @@ class ModelStatistics {
     edges: number;
   };
   private readonly flowNodes = new FlowNodesStatistics();
+  private readonly edges = new EdgesStatistics();
 
   constructor(bpmnModel: BpmnModel) {
     this.globals = {
@@ -62,6 +69,7 @@ class ModelStatistics {
     };
 
     this.computeFlowNodesStatistics(bpmnModel);
+    this.computeEdgesStatistics(bpmnModel);
   }
 
   log(logger: Logger): void {
@@ -84,6 +92,27 @@ class ModelStatistics {
         this.flowNodes.addGateway(bpmnElement);
       } else {
         this.flowNodes.addOther(bpmnElement);
+      }
+    });
+  }
+
+  private computeEdgesStatistics(bpmnModel: BpmnModel): void {
+    bpmnModel.edges.forEach(edge => {
+      const bpmnElement = edge.bpmnElement;
+      if (!bpmnElement) {
+        this.edges.undefined++;
+        return;
+      }
+      switch (bpmnElement.kind) {
+        case FlowKind.ASSOCIATION_FLOW:
+          this.edges.associations++;
+          break;
+        case FlowKind.MESSAGE_FLOW:
+          this.edges.messageFlows++;
+          break;
+        case FlowKind.SEQUENCE_FLOW:
+          this.edges.sequenceFlows++;
+          break;
       }
     });
   }
