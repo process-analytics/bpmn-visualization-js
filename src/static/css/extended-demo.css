@@ -108,3 +108,10 @@
   border: 2px solid #ccc;
   border-radius: 2px;
 }
+.load-status {
+  position: absolute;
+  left: 120px !important;
+  top: 20px !important;
+  font-style: italic;
+  color: #2ecc71;
+}
