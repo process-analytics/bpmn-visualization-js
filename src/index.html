@@ -9,75 +9,70 @@
 </head>
 <body>
 <div id="load-status" class="load-status" style="font-weight: bold;"></div>
-<!--    <div class="info-centered"><p>(either drop a file here)</p></div>-->
+<!-- TODO currently manage via style attribute as all classes are removed when fetching -->
+<div id="fetch-status" style="position: absolute;
+  top: 60px !important;
+  left: 15px !important;" class="fetch-status"></div>
+
 <div id="btn-container">
     <div id="btn-group-general" class="btn-group btn-group-general">
         <input type="button" class="btn-common btn-settings" id="btn-settings" title="Configure"/>
         <input type="button" class="btn-common btn-help" id="btn-help" title="Getting Help"/>
     </div>
-    <!-- TODO rename the group id and css -->
-    <div id="btn-group-export" class="btn-group btn-group-export">
-      <!--        <input type="file" class="" id="btn-open2" title="Open a local BPMN Diagram"/><span></span>-->
-      <input type="button" class="btn-common btn-open" id="btn-open" title="Open a local BPMN Diagram"/>
+    <!-- TODO restore drag&drop support -->
+    <div id="btn-group-import" class="btn-group btn-group-import">
       <input type="button" class="btn-common btn-clean" id="btn-clean" title="Clean the BPMN Diagram"/>
+      <input type="file" id="btn-open-input-file" name="btn-open-input-file"/>
+      <input type="button" class="btn-common btn-open" id="btn-open" title="Open a local BPMN Diagram"/>
+      <select name="select-open-migw" id="select-open-migw" title="Open remote BPMN diagram MIGW Reference">
+        <option value="">...</option>
+        <option value="A.1.0.bpmn">A.1.0</option>
+        <option value="A.2.0.bpmn" selected>A.2.0</option>
+        <option value="A.2.1.bpmn">A.2.1</option>
+        <option value="A.3.0.bpmn">A.3.0</option>
+        <option value="A.4.0.bpmn">A.4.0</option>
+        <option value="A.4.1.bpmn">A.4.1</option>
+        <option value="B.1.0.bpmn">B.1.0</option>
+        <option value="B.2.0.bpmn">B.2.0</option>
+        <option value="C.1.0.bpmn">C.1.0</option>
+        <option value="C.1.1.bpmn">C.1.1</option>
+        <option value="C.2.0.bpmn">C.2.0</option>
+        <option value="C.3.0.bpmn">C.3.0</option>
+        <option value="C.3.0.bpmn">C.4.0</option>
+        <option value="C.3.0.bpmn">C.5.0</option>
+        <option value="C.6.0.bpmn">C.6.0</option>
+        <option value="D.3.0-unknown.bpmn">D.3.0</option>
+      </select>
+      <select name="select-open-bpmn-visualization-example" id="select-open-bpmn-visualization-example" title="Open remote BPMN diagram bpmn-visualization examples">
+        <option value="">...</option>
+        <option value="all_activity_types.bpmn">activities</option>
+        <option value="artifacts_and_data_reference.bpmn">artifacts and data reference</option>
+        <option value="all_event_boundaries.bpmn">boundary events</option>
+        <option value="all_event_types.bpmn" selected>events</option>
+        <option value="all_event_types_on_top.bpmn">events (top element)</option>
+        <option value="all_gateway_types.bpmn">gateways</option>
+        <option value="all_message_flow_types.bpmn">message flows</option>
+        <option value="all_sequence_flow_types.bpmn">sequence flows (various types)</option>
+        <option value="label_sequence_flows.bpmn">sequence flows (label)</option>
+        <option value="subprocesses.bpmn">subprocesses</option>
+        <option value="subprocesses_event_and_transaction.bpmn">subprocesses event and transaction</option>
+        <option value="does-not-exist.bpmn">unknown</option>
+      </select>
       <!--      TODO move to a dedicated group-->
       <input type="button" class="btn-common btn-outline" id="btn-outline" title="Display outline/minimap"/>
       <!--      END OF - TODO move to a dedicated group-->
+    </div>
+
+    <div id="btn-group-export" class="btn-group btn-group-export">
       <input type="button" class="btn-common btn-download-svg" id="btn-export-svg" title="Download as SVG image"/>
       <input type="button" class="btn-common btn-download-png" id="btn-export-png" title="Download as PNG image"/>
       <input type="button" class="btn-common btn-print" id="btn-export-preview" title="Print Preview">
     </div>
 
-    <div id="btn-group-open">
-        <!-- TODO restore drag&drop support -->
-        <div id="file-selector" class="hidden">
-            <input type="file" id="bpmn-file" name="file"/>
-            <label for="bpmn-file" class="btn"><span>open BPMN file</span></label>
-        </div>
-
-        <select name="select-open-migw" id="select-open-migw" title="Open remote BPMN diagram MIGW Reference">
-          <option value="">...</option>
-          <option value="A.1.0.bpmn">A.1.0</option>
-          <option value="A.2.0.bpmn" selected>A.2.0</option>
-          <option value="A.2.1.bpmn">A.2.1</option>
-          <option value="A.3.0.bpmn">A.3.0</option>
-          <option value="A.4.0.bpmn">A.4.0</option>
-          <option value="A.4.1.bpmn">A.4.1</option>
-          <option value="B.1.0.bpmn">B.1.0</option>
-          <option value="B.2.0.bpmn">B.2.0</option>
-          <option value="C.1.0.bpmn">C.1.0</option>
-          <option value="C.1.1.bpmn">C.1.1</option>
-          <option value="C.2.0.bpmn">C.2.0</option>
-          <option value="C.3.0.bpmn">C.3.0</option>
-          <option value="C.3.0.bpmn">C.4.0</option>
-          <option value="C.3.0.bpmn">C.5.0</option>
-          <option value="C.6.0.bpmn">C.6.0</option>
-          <option value="D.3.0-unknown.bpmn">D.3.0</option>
-        </select>
-        <select name="select-open-bpmn-visualization-example" id="select-open-bpmn-visualization-example" title="Open remote BPMN diagram bpmn-visualization examples">
-          <option value="">...</option>
-          <option value="all_activity_types.bpmn">activities</option>
-          <option value="artifacts_and_data_reference.bpmn">artifacts and data reference</option>
-          <option value="all_event_boundaries.bpmn">boundary events</option>
-          <option value="all_event_types.bpmn" selected>events</option>
-          <option value="all_event_types_on_top.bpmn">events (top element)</option>
-          <option value="all_gateway_types.bpmn">gateways</option>
-          <option value="all_message_flow_types.bpmn">message flows</option>
-          <option value="all_sequence_flow_types.bpmn">sequence flows (various types)</option>
-          <option value="label_sequence_flows.bpmn">sequence flows (label)</option>
-          <option value="subprocesses.bpmn">subprocesses</option>
-          <option value="subprocesses_event_and_transaction.bpmn">subprocesses event and transaction</option>
-          <option value="does-not-exist.bpmn">unknown</option>
-        </select>
-
-<!--        <br/>-->
-<!--        <input type="text" id="input-open-url" placeholder="path to diagram" /><button id="btn-open-url">Open URL</button>-->
-<!--        <strong>Example:</strong> <i>https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/A.2.1.bpmn</i>-->
-    </div>
-    <div id="fetch-status"></div>
-    <p></p>
 <!--    <div id="btn-group-zoom" class="btn-group">-->
-    <div id="btn-group-zoom">
+    <div id="btn-group-zoom" style="position: absolute;
+  top: 130px !important;
+  left: 15px !important;">
         <button id="btn-zoom-in">+</button>
         <button id="btn-zoom-out">-</button>
         <button id="btn-zoom-actual">Reset to Actual</button>
@@ -85,8 +80,9 @@
         <button id="btn-zoom-fit-horizontal">Horizontal Fit</button>
         <button id="btn-zoom-fit-vertical">Vertical Fit</button>
     </div>
-    <br/>
-    <div id="btn-group-pan">
+    <div id="btn-group-pan" style="position: absolute;
+  top: 170px !important;
+  left: 15px !important;">
         <button id="btn-pan-up" title="Pan/Scroll Up">
             Up
         </button>
@@ -111,16 +107,6 @@
                 <path fill-rule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
             </svg>
         </button>
-    </div>
-    <div id="btn-group-others">
-<!--        <div>-->
-<!--            <input type="checkbox" id="btn-outline" name="btn-outline">-->
-<!--            <label for="btn-outline">Outline</label>-->
-<!--        </div>-->
-        <!--        <div>-->
-        <!--            <input type="checkbox" id="btn-panning" name="btn-panning" checked>-->
-        <!--            <label for="btn-panning">Panning</label>-->
-        <!--        </div>-->
     </div>
 </div>
 <div id="graph" class="graph-container">

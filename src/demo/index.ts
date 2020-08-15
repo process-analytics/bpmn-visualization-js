@@ -78,8 +78,10 @@ function handleFileSelect(evt: any): void {
   readAndLoadFile(f);
 }
 
-document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
-document.getElementById('file-selector').classList.remove('hidden');
+document.getElementById('btn-open-input-file').addEventListener('change', handleFileSelect, false);
+document.getElementById('btn-open').addEventListener('click', () => {
+  document.getElementById('btn-open-input-file').click();
+});
 
 document.getElementById('btn-clean').onclick = function () {
   // clean status areas
