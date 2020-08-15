@@ -1,7 +1,7 @@
 .graph-container {
   /*element*/
   /*    margin: 20px 20px 40px 70px;*/
-  top: 310px;
+  top: 220px;
   bottom: 20px;
   left: 40px;
   right: 40px;
@@ -116,8 +116,8 @@
   cursor: crosshair;*/
   overflow: hidden;
   position: absolute;
-  /*top: 20px;*/
-  /*right: 20px;*/
+  top: 20px;
+  right: 40px;
   width: 320px;
   height: 180px;
   /*position: relative;*/
