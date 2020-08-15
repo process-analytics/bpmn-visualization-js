@@ -57,16 +57,20 @@
         <select name="select-open-bpmn-visualization-example" id="select-open-bpmn-visualization-example" title="bpmn-visualization examples">
           <option value="">...</option>
           <option value="all_activity_types.bpmn">activities</option>
+          <option value="artifacts_and_data_reference.bpmn">artifacts and data reference</option>
           <option value="all_event_boundaries.bpmn">boundary events</option>
           <option value="all_event_types.bpmn" selected>events</option>
           <option value="all_event_types_on_top.bpmn">events (top element)</option>
           <option value="all_gateway_types.bpmn">gateways</option>
           <option value="all_message_flow_types.bpmn">message flows</option>
           <option value="all_sequence_flow_types.bpmn">sequence flows (various types)</option>
-          <option value="label_sequence_flows.bpmn">sequence flows</option>
-          <option value="text_annotations__bpmnio.bpmn">text annotations</option>
+          <option value="label_sequence_flows.bpmn">sequence flows (label)</option>
+          <option value="subprocesses.bpmn">subprocesses</option>
+          <option value="subprocesses_event_and_transaction.bpmn">subprocesses event and transaction</option>
           <option value="does-not-exist.bpmn">unknown</option>
         </select>
+
+
         <br/>
         <input type="text" id="input-open-url" placeholder="path to diagram" /><button id="btn-open-url">Open URL</button>
         <strong>Example:</strong> <i>https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/A.2.1.bpmn</i>
