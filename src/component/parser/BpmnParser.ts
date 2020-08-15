@@ -90,7 +90,7 @@ class ModelStatistics {
 }
 
 class BpmnParser {
-  private log: Logger = new Logger('BpmnParser');
+  private log: Logger = new Logger('bpmn.parser');
 
   constructor(readonly jsonParser: BpmnJsonParser, readonly xmlParser: BpmnXmlParser) {}
 

@@ -149,7 +149,7 @@ export default class BpmnVisualization {
     });
   }
 
-  private loadLogger: Logger = new Logger('BpmnVisualization - load');
+  private loadLogger: Logger = new Logger('bpmn.main#load');
   public load(xml: string): void {
     this.loadLogger.info('Start loading BPMN');
     const initialStartTime = performance.now();
@@ -262,7 +262,7 @@ export default class BpmnVisualization {
 
   // adapted from https://github.com/jgraph/mxgraph2/blob/a15684d7c8b71074e4c73d89c9192459288e0bf4/javascript/src/js/editor/mxEditor.js#L2779-L2823
 
-  private outlineLogger = new Logger('Outline');
+  private outlineLogger = new Logger('bpmn.outline');
   private outline: mxOutline;
   private isOutlineShown = false;
 
