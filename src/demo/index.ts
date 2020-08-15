@@ -32,6 +32,10 @@ function loadStatusMsg(msg: string): void {
   // }, 3000);
 }
 
+function cleanLoadStatus(): void {
+  loadStatusMsg('');
+}
+
 function loadBpmn(bpmn: string): void {
   const initialStartTime = performance.now();
   log('Loading bpmn....');
@@ -78,8 +82,8 @@ document.getElementById('bpmn-file').addEventListener('change', handleFileSelect
 document.getElementById('file-selector').classList.remove('hidden');
 
 document.getElementById('btn-clean').onclick = function () {
-  // clean status area
-  loadStatusMsg('');
+  // clean status areas
+  cleanLoadStatus();
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   statusFetchClean();
 
@@ -165,6 +169,7 @@ function fetchBpmnContent(url: string): Promise<string> {
 }
 
 function openFromUrl(url: string): void {
+  cleanLoadStatus();
   fetchBpmnContent(url).then(bpmn => {
     loadBpmn(bpmn);
     log('Bpmn loaded from url <%s>', url);
