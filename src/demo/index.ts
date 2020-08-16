@@ -23,18 +23,59 @@ import { downloadAsPng, downloadAsSvg } from './component/download';
 let fitOnLoad = false;
 export const bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'), { activatePanning: true });
 
-function loadStatusMsg(msg: string): void {
-  const loadStatusElement = document.getElementById('load-status');
-  loadStatusElement.innerText = msg;
+// =====================================================================================================================
+// LOAD BPMN STATUS AREA
+// =====================================================================================================================
+
+function getStatusElement(): HTMLElement {
+  return document.getElementById('load-status');
+}
+
+function statusLoaded(msg: string): void {
+  const statusElt = getStatusElement();
+
+  let innerText = statusElt.innerText;
+  if (innerText) {
+    innerText += '<br>';
+  }
+  statusElt.innerHTML = innerText + msg;
+
+  statusElt.className = 'status-ok';
+
   // clean status area after a few seconds
   // setTimeout(function() {
-  //   loadStatusElement.innerText = '';
+  //   statusElt.innerText = '';
   // }, 3000);
 }
 
-function cleanLoadStatus(): void {
-  loadStatusMsg('');
+function cleanStatus(): void {
+  getStatusElement().innerText = ``;
 }
+
+function statusFetching(url: string): void {
+  const statusElt = getStatusElement();
+  statusElt.innerText = 'Fetching ' + url;
+  statusElt.className = 'status-fetching';
+}
+
+function statusFetched(url: string, duration: number): void {
+  const statusElt = getStatusElement();
+  // only display file name to keep the status content small
+  const urlParts = url.split('/');
+  const fileName = urlParts[urlParts.length -1];
+  statusElt.innerText = `Fetch OK (${duration} ms): ${fileName}`;
+  statusElt.className = 'status-ok';
+}
+
+function statusFetchKO(url: string, error: unknown): void {
+  const statusElt = getStatusElement();
+  statusElt.innerText = `Unable to fetch ${url}. ${error}`;
+  statusElt.className = 'status-ko';
+}
+
+// =====================================================================================================================
+// LOAD BPMN
+// =====================================================================================================================
 
 function loadBpmn(bpmn: string): void {
   const initialStartTime = performance.now();
@@ -53,15 +94,14 @@ function loadBpmn(bpmn: string): void {
     log(`Fit on load rendering done in ${performance.now() - startTime} ms`);
   }
 
-  loadStatusMsg(`BPMN loaded in ${performance.now() - initialStartTime} ms`);
+  statusLoaded(`BPMN loaded in ${performance.now() - initialStartTime} ms`);
 }
 
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {
   const reader = new FileReader();
   reader.onload = () => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    statusFetchClean();
+    cleanStatus();
     loadBpmn(reader.result as string);
   };
   reader.readAsText(f);
@@ -84,10 +124,7 @@ document.getElementById('btn-open').addEventListener('click', () => {
 });
 
 document.getElementById('btn-clean').onclick = function () {
-  // clean status areas
-  cleanLoadStatus();
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  statusFetchClean();
+  cleanStatus();
 
   log('clearing mxgraph model');
   const model = bpmnVisualization.graph.getModel();
@@ -111,32 +148,6 @@ document.getElementById('btn-clean').onclick = function () {
 // =====================================================================================================================
 // BPMN from remote url
 // =====================================================================================================================
-
-function getStatusElement(): HTMLElement {
-  return document.getElementById('fetch-status');
-}
-
-function statusFetching(url: string): void {
-  const statusElt = getStatusElement();
-  statusElt.innerText = 'Fetching ' + url;
-  statusElt.className = 'status-fetching';
-}
-
-function statusFetched(url: string, duration: number): void {
-  const statusElt = getStatusElement();
-  statusElt.innerText = `Fetch OK (${duration} ms): ${url}`;
-  statusElt.className = 'status-ok';
-}
-
-function statusFetchKO(url: string, error: unknown): void {
-  const statusElt = getStatusElement();
-  statusElt.innerText = `Unable to fetch ${url}. ${error}`;
-  statusElt.className = 'status-ko';
-}
-
-function statusFetchClean(): void {
-  getStatusElement().innerText = ``;
-}
 
 function fetchBpmnContent(url: string): Promise<string> {
   log('Fetching BPMN content from url <%s>', url);
@@ -171,7 +182,7 @@ function fetchBpmnContent(url: string): Promise<string> {
 }
 
 function openFromUrl(url: string): void {
-  cleanLoadStatus();
+  cleanStatus();
   fetchBpmnContent(url).then(bpmn => {
     loadBpmn(bpmn);
     log('Bpmn loaded from url <%s>', url);
