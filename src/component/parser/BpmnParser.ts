@@ -20,6 +20,7 @@ import Logger from '../Logger';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import ShapeBpmnElement from '../../model/bpmn/shape/ShapeBpmnElement';
 import { FlowKind } from '../../model/bpmn/edge/FlowKind';
+import Edge from '../../model/bpmn/edge/Edge';
 
 class FlowNodesStatistics {
   private activities = 0;
@@ -43,11 +44,46 @@ class FlowNodesStatistics {
     this.others++;
   }
 }
+
+class EdgeTypeStatistics {
+  elements = 0;
+  wayPoints = 0;
+}
+
 class EdgesStatistics {
-  associations = 0;
-  messageFlows = 0;
-  sequenceFlows = 0;
-  undefined = 0;
+  private associations = new EdgeTypeStatistics();
+  private messageFlows = new EdgeTypeStatistics();
+  private sequenceFlows = new EdgeTypeStatistics();
+  private undefined = 0;
+
+  addAssociation(edge: Edge): void {
+    this.associations.elements++;
+    this.associations.wayPoints += EdgesStatistics.getWayPointsNumber(edge);
+  }
+
+  addMessageFlow(edge: Edge): void {
+    this.messageFlows.elements++;
+    this.messageFlows.wayPoints += EdgesStatistics.getWayPointsNumber(edge);
+  }
+
+  addSequenceFlow(edge: Edge): void {
+    this.sequenceFlows.elements++;
+    this.sequenceFlows.wayPoints += EdgesStatistics.getWayPointsNumber(edge);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  addUndefined(edge: Edge): void {
+    this.undefined++;
+  }
+
+  private static getWayPointsNumber(edge: Edge): number {
+    if (!edge.waypoints) {
+      const length = edge?.waypoints?.length;
+      console.error('@@@@@undefined waypoints:', length);
+    }
+
+    return edge?.waypoints?.length; // || 0;
+  }
 }
 
 class ModelStatistics {
@@ -100,18 +136,18 @@ class ModelStatistics {
     bpmnModel.edges.forEach(edge => {
       const bpmnElement = edge.bpmnElement;
       if (!bpmnElement) {
-        this.edges.undefined++;
+        this.edges.addUndefined(edge);
         return;
       }
       switch (bpmnElement.kind) {
         case FlowKind.ASSOCIATION_FLOW:
-          this.edges.associations++;
+          this.edges.addAssociation(edge);
           break;
         case FlowKind.MESSAGE_FLOW:
-          this.edges.messageFlows++;
+          this.edges.addMessageFlow(edge);
           break;
         case FlowKind.SEQUENCE_FLOW:
-          this.edges.sequenceFlows++;
+          this.edges.addSequenceFlow(edge);
           break;
       }
     });
