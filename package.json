@@ -73,7 +73,7 @@
     "rollup-plugin-typescript2": "^0.26.0",
     "ts-jest": "^25.5.1",
     "ts-mxgraph": "git+https://github.com/process-analytics/ts-mxgraph.git#v1.0.1",
-    "typescript": "^3.8.2"
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "entities": "^2.0.0",
