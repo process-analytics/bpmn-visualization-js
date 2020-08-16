@@ -58,9 +58,6 @@
         <option value="subprocesses_event_and_transaction.bpmn">subprocesses event and transaction</option>
         <option value="does-not-exist.bpmn">unknown</option>
       </select>
-      <!--      TODO move to a dedicated group-->
-      <input type="button" class="btn-common btn-overview" id="btn-overview" title="Display the Diagram Overview"/>
-      <!--      END OF - TODO move to a dedicated group-->
     </div>
 
     <div id="btn-group-export" class="btn-group btn-group-export">
@@ -80,9 +77,10 @@
         <button id="btn-zoom-fit-horizontal">Horizontal Fit</button>
         <button id="btn-zoom-fit-vertical">Vertical Fit</button>
     </div>
-    <div id="btn-group-pan" style="position: absolute;
+    <div id="btn-group-navigation" style="position: absolute;
   top: 170px !important;
   left: 15px !important;">
+        <input type="button" class="btn-common btn-overview" id="btn-overview" title="Display the Diagram Overview"/>
         <button id="btn-pan-up" title="Pan/Scroll Up">
             Up
         </button>
