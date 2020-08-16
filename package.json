@@ -76,7 +76,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "entities": "^2.0.0",
+    "entities": "^2.0.3",
     "fast-xml-parser": "^3.17.4",
     "mxgraph": "4.1.0"
   }
