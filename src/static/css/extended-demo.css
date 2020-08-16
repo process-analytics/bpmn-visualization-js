@@ -67,7 +67,7 @@
   /* https://icons.getbootstrap.com/icons/file-earmark/ */
   background-image: url("data:image/svg+xml,<svg width='1em' height='1em' viewBox='0 0 16 16' class='bi bi-file-earmark' fill='currentColor' xmlns='http://www.w3.org/2000/svg'><path d='M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z'/><path d='M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z'/></svg>");
 }
-.btn-outline {
+.btn-overview {
   /* https://www.flaticon.com/free-icon/map_1010816
   Icons made by <a href="https://www.flaticon.com/authors/vitaly-gorbachev" title="Vitaly Gorbachev">Vitaly Gorbachev</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
   background-image: url("data:image/svg+xml,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384.528 384.528' style='enable-background:new 0 0 384.528 384.528;'><path d='M256.664,7.024l-128,48L0.264,0v144v46.936v131.88l127.6,54.688l128-48l128.4,55.024v-153.56v-46.704V61.712 L256.664,7.024z M112.264,336l-80-34.288V192.528l80,34.288V336z M112.264,192l-80-34.288V48.528l80,34.288V192z M240.264,301.176 l-96,36V227.352l96-36V301.176z M240.264,157.176l-96,36V83.352l96-36V157.176z M352.264,336l-80-34.288V190.968l80,28.568V336z M352.264,184.264v1.296l-80-28.576V48.528l80,34.288V184.264z'/></svg>");
@@ -111,8 +111,8 @@
 }
 
 
-.outline {
-  /* TODO activate when/if we implement setting the main graph center by clicking somewhere on the outline outside of the outline rectangle border
+.graph-overview {
+  /* TODO activate when/if we implement setting the main graph center by clicking somewhere on the overview outside of the overview rectangle border
   cursor: crosshair;*/
   overflow: hidden;
   position: absolute;

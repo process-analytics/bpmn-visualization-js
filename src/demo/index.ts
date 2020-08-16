@@ -254,10 +254,10 @@ document.getElementById('btn-help').onclick = function () {
 // General graph
 // =====================================================================================================================
 
-const outlineElement = document.getElementById('outline');
-document.getElementById('btn-outline').onclick = function () {
-  outlineElement.classList.toggle('hidden');
-  bpmnVisualization.toggleOutline(outlineElement);
+const overviewElement = document.getElementById('graph-overview');
+document.getElementById('btn-overview').onclick = function () {
+  overviewElement.classList.toggle('hidden');
+  bpmnVisualization.toggleOverview(overviewElement);
 };
 
 // =====================================================================================================================

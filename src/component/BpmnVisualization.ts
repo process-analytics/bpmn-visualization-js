@@ -257,39 +257,39 @@ export default class BpmnVisualization {
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////// OUTLINE ////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////// OVERVIEW ///////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // adapted from https://github.com/jgraph/mxgraph2/blob/a15684d7c8b71074e4c73d89c9192459288e0bf4/javascript/src/js/editor/mxEditor.js#L2779-L2823
 
-  private outlineLogger = new Logger('bpmn.outline');
-  private outline: mxOutline;
-  private isOutlineShown = false;
+  private overviewLogger = new Logger('bpmn.overview');
+  private overview: mxOutline;
+  private isOverviewShown = false;
 
-  // TODO find a better way to pass the outline container (only needed for outline init)
-  public toggleOutline(container: HTMLElement): void {
-    this.outlineLogger.info('toggle in progress');
-    this.ensureOutlineInstanceInitialized(container);
+  // TODO find a better way to pass the overview container (only needed for overview init)
+  public toggleOverview(container: HTMLElement): void {
+    this.overviewLogger.info('Toggle overview in progress');
+    this.ensureOverviewInstanceInitialized(container);
 
-    this.outline.suspended = !this.outline.suspended;
-    if (!this.outline.suspended) {
-      this.outline.update(true);
+    this.overview.suspended = !this.overview.suspended;
+    if (!this.overview.suspended) {
+      this.overview.update(true);
     }
 
-    this.outlineLogger.info('toggle completed');
+    this.overviewLogger.info('Toggle completed');
   }
 
-  private ensureOutlineInstanceInitialized(container: HTMLElement): void {
-    if (this.outline == null) {
-      this.outlineLogger.info('initializing outline');
+  private ensureOverviewInstanceInitialized(container: HTMLElement): void {
+    if (this.overview == null) {
+      this.overviewLogger.info('Initializing overview');
 
-      // TODO restore outline settings defaults after creating the instance
+      // TODO restore mxGraph outline settings defaults after creating the instance
       mxConstants.OUTLINE_COLOR = 'Orange';
       mxConstants.OUTLINE_STROKEWIDTH = 2;
 
       // TODO this seems requesting expanded.gif images from mxgraph assets
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      const outline = new CustomOutline(this.graph, container);
+      const outline = new CustomMxOutline(this.graph, container);
       // outline.showViewport = false;
       // TODO review carefully as this can impact performance
       outline.setZoomEnabled(false); // TODO this function only hidde the square (aka handle), but zooming is still available
@@ -300,14 +300,14 @@ export default class BpmnVisualization {
       // mark it suspended on creation, to make toggling work
       outline.suspended = true;
 
-      this.outline = outline;
-      this.outlineLogger.info('outline init completed');
+      this.overview = outline;
+      this.overviewLogger.info('Overview initialization completed');
     }
   }
 }
 
 // TODO attempt to have labels, they not show even when htmlLabels is false in the source graph
-class CustomOutline extends mxOutline {
+class CustomMxOutline extends mxOutline {
   constructor(source: mxGraph, container: HTMLElement) {
     super(source, container);
   }
