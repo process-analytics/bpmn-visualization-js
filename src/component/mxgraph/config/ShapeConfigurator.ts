@@ -103,7 +103,7 @@ export default class ShapeConfigurator {
   // private static newSvgCanvas(node: HTMLElement, style: { [key: string]: unknown }): mxSvgCanvas2D {
   private static newSvgCanvas(node: HTMLElement, shape: mxShape): mxSvgCanvas2D {
     if (ShapeConfigurator.isCustomizationRequiredForSketchStyle(shape)) {
-      console.error('Create SketchySvgCanvas');
+      // console.error('Create SketchySvgCanvas');
       return new SketchySvgCanvas(node, shape);
     }
     return new mxSvgCanvas2D(node, false);
@@ -135,6 +135,7 @@ export default class ShapeConfigurator {
       }
 
       if (events && c instanceof SketchySvgCanvas && !this.outline && (this.fill == null || this.fill == mxConstants.NONE || fillStyle != 'solid')) {
+        console.error('$$$$$ use specific shape.paint override!');
         // if (events && c.handJiggle != null && c.handJiggle.constructor == RoughCanvas &&
         //   !this.outline && (this.fill == null || this.fill == mxConstants.NONE ||
         //     fillStyle != 'solid'))

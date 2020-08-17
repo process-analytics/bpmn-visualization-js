@@ -138,80 +138,93 @@ export class SketchySvgCanvas extends mxSvgCanvas2D {
   //   }
   // }
 
-  // TODO check if needed, only difference with original implem: no scaling and
-  //     this.path.push(this.format((this.lastX + s.dx) * s.scale));
-  //     this.path.push(this.format((this.lastY + s.dy) * s.scale));
+  // internal method
+  private _addOp(actions: unknown[]): void {
+    if (this.path != null) {
+      // console.error('@@custom addOp - not null path');
+      this.path.push(actions[0] as string);
 
-  // TODO wrong method signature in mxgraph-type-definitions
-  // addOp(actions: string[]): void {
-  //   console.error('@@custom addOp');
-  //   if (this.path != null) {
-  //     this.path.push(actions[0]);
-  //
-  //     if (actions.length > 2) {
-  //       // const s = this.canvas.state;
-  //
-  //       for (let i = 2; i < actions.length; i += 2) {
-  //         this.lastX = (actions[i - 1] as unknown) as number;
-  //         this.lastY = (actions[i] as unknown) as number;
-  //
-  //         this.path.push(String(this.format(String(this.lastX))));
-  //         this.path.push(String(this.format(String(this.lastY))));
-  //       }
-  //     }
-  //   }
-  // }
+      if (actions.length > 2) {
+        // const s = this.canvas.state;
 
-  // lineTo(x: number, y: number): void {
-  //   if (this.passThrough) {
-  //     super.lineTo(x, y);
-  //   } else {
-  //     super.lineTo(x, y);
-  //     this.lastX = x;
-  //     this.lastY = y;
-  //   }
-  // }
+        for (let i = 2; i < actions.length; i += 2) {
+          // TODO simplify by casting into string
+          this.lastX = actions[i - 1] as number;
+          this.lastY = actions[i] as number;
 
-  // moveTo(x: number, y: number): void {
-  //   if (this.passThrough) {
-  //     super.moveTo(x, y);
-  //   } else {
-  //     super.moveTo(x, y);
-  //     this.lastX = x;
-  //     this.lastY = y;
-  //     // TODO is this really needed, never called later + don't exist in super class
-  //     // this.firstX = x;
-  //     // this.firstY = y;
-  //   }
-  // }
+          this.path.push(String(this.format(String(this.lastX))));
+          this.path.push(String(this.format(String(this.lastY))));
+          // TODO check if needed, only difference with original implem: no scaling and
+          //     this.path.push(this.format((this.lastX + s.dx) * s.scale));
+          //     this.path.push(this.format((this.lastY + s.dy) * s.scale));
+        }
+      }
+    }
+  }
 
-  // close(): void {
-  //   if (this.passThrough) {
-  //     super.close();
-  //   } else {
-  //     super.close();
-  //   }
-  // }
+  lineTo(x: number, y: number): void {
+    if (this.passThrough) {
+      // console.error('#### custom lineTo - passThrough');
+      super.lineTo(x, y);
+    } else {
+      // console.error('#### custom lineTo - manual');
+      this._addOp([this.lineOp, x, y]);
+      // console.error(`#### custom lineTo - after - this.lastX: ${this.lastX} / this.lastY: ${this.lastY} / x: ${x} / y: ${y}`);
+
+      // in original draw.io implem but managed by _addOp
+      // this.lastX = x;
+      // this.lastY = y;
+      // console.error(`#### custom lineTo - after extra 'last coordinates' set`);
+    }
+  }
+
+  moveTo(x: number, y: number): void {
+    if (this.passThrough) {
+      // console.error('#### custom moveTo - passThrough');
+      super.moveTo(x, y);
+    } else {
+      // console.error('#### custom moveTo - manual');
+      this._addOp([this.moveOp, x, y]);
+      // this.lastX = x;
+      // this.lastY = y;
+      // TODO is this really needed, never called later + don't exist in super class
+      // this.firstX = x;
+      // this.firstY = y;
+    }
+  }
+
+  close(): void {
+    if (this.passThrough) {
+      // console.error('#### custom close - passThrough');
+      super.close();
+    } else {
+      // console.error('#### custom close - manual');
+      // super.close();
+      this._addOp([this.closeOp]);
+    }
+  }
   //
-  // quadTo(x1: number, y1: number, x2: number, y2: number): void {
-  //   if (this.passThrough) {
-  //     super.quadTo(x1, y1, x2, y2);
-  //   } else {
-  //     super.quadTo(x1, y1, x2, y2);
-  //     this.lastX = x2;
-  //     this.lastY = y2;
-  //   }
-  // }
-  //
-  // curveTo(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): void {
-  //   if (this.passThrough) {
-  //     super.curveTo(x1, y1, x2, y2, x3, y3);
-  //   } else {
-  //     super.curveTo(x1, y1, x2, y2, x3, y3);
-  //     this.lastX = x3;
-  //     this.lastY = y3;
-  //   }
-  // }
+  quadTo(x1: number, y1: number, x2: number, y2: number): void {
+    if (this.passThrough) {
+      super.quadTo(x1, y1, x2, y2);
+    } else {
+      this._addOp([this.quadOp, x1, y1, x2, y2]);
+      // super.quadTo(x1, y1, x2, y2);
+      // this.lastX = x2;
+      // this.lastY = y2;
+    }
+  }
+
+  curveTo(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): void {
+    if (this.passThrough) {
+      super.curveTo(x1, y1, x2, y2, x3, y3);
+    } else {
+      this._addOp([this.curveOp, x1, y1, x2, y2, x3, y3]);
+      // super.curveTo(x1, y1, x2, y2, x3, y3);
+      // this.lastX = x3;
+      // this.lastY = y3;
+    }
+  }
 
   // arcTo(rx: number, ry: number, angle: number, largeArcFlag: number, sweepFlag: number, x: number, y: number): void {
   //   if (this.passThrough) {
@@ -235,12 +248,11 @@ export class SketchySvgCanvas extends mxSvgCanvas2D {
   // }
 
   rect(x: number, y: number, w: number, h: number): void {
-    console.error('####custom rect');
-
     if (this.passThrough) {
-      console.error('#### custom rect - passThrough');
+      // console.error('#### custom rect - passThrough');
       super.rect(x, y, w, h);
     } else {
+      // console.error('#### custom rect - manual');
       this.path = [];
       this.nextShape = this.roughJS.generator.rectangle(x, y, w, h, this.getStyle(true, true));
     }
@@ -248,21 +260,24 @@ export class SketchySvgCanvas extends mxSvgCanvas2D {
 
   ellipse(x: number, y: number, w: number, h: number): void {
     if (this.passThrough) {
+      // console.error('#### custom ellipse - passThrough');
       super.ellipse(x, y, w, h);
     } else {
+      // console.error('#### custom ellipse - manual');
       this.path = [];
       this.nextShape = this.roughJS.generator.ellipse(x + w / 2, y + h / 2, w, h, this.getStyle(true, true));
     }
   }
 
+  // Redefine the implementation because
+  // the original one applies scaling on dx/dy and scaling must be applied after roughjs processing
+  // we need that the rounded parts goes through roughjs
   roundrect(x: number, y: number, w: number, h: number, dx: number, dy: number): void {
-    console.error('####custom RoundRect');
     if (this.passThrough) {
-      console.error('#### custom RoundRect - passThrough');
+      // console.error('#### custom RoundRect - passThrough');
       super.roundrect(x, y, w, h, dx, dy);
     } else {
-      console.error('#### manual');
-      // TODO check why we redefine this
+      // console.error('#### custom RoundRect - manual');
       this.begin();
       this.moveTo(x + dx, y);
       this.lineTo(x + w - dx, y);

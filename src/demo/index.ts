@@ -308,21 +308,25 @@ btnSketch.onclick = function () {
 
     switch (kind) {
       case ShapeBpmnElementKind.TASK_USER:
-        style['roughness'] = String(1.5);
+        style['roughness'] = '1.5';
         style['fillStyle'] = 'zigzag';
         style[mxConstants.STYLE_FILLCOLOR] = 'purple';
         style[mxConstants.STYLE_FILL_OPACITY] = '20';
         break;
       case ShapeBpmnElementKind.TASK:
-        style['roughness'] = String(2);
+        style['roughness'] = '2';
         style['fillStyle'] = 'cross-hatch';
         style[mxConstants.STYLE_FILLCOLOR] = 'Orange';
         style[mxConstants.STYLE_FILL_OPACITY] = '40';
+        break;
+      case ShapeBpmnElementKind.TASK_SERVICE:
+        style[mxConstants.STYLE_FILLCOLOR] = mxConstants.NONE;
         break;
     }
 
     if (!sketchActivated) {
       style[mxConstants.STYLE_FILLCOLOR] = StyleDefault.DEFAULT_FILL_COLOR;
+      style[mxConstants.STYLE_FILL_OPACITY] = '100';
     }
   });
 
