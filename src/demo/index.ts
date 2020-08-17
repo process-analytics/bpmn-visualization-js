@@ -21,6 +21,7 @@ import { downloadAsPng, downloadAsSvg } from './component/download';
 import ShapeUtil from '../model/bpmn/shape/ShapeUtil';
 import { StyleDefault } from '../component/mxgraph/StyleUtils';
 import { ShapeBpmnElementKind } from '../model/bpmn/shape/ShapeBpmnElementKind';
+import { SequenceFlowKind } from '../model/bpmn/edge/SequenceFlowKind';
 
 // TODO make this an option that can be updated at runtime + configure which kind of fit
 let fitOnLoad = false;
@@ -308,7 +309,6 @@ btnSketch.onclick = function () {
 
     switch (kind) {
       case ShapeBpmnElementKind.TASK_USER:
-        style['roughness'] = '1.5';
         style['fillStyle'] = 'zigzag';
         style[mxConstants.STYLE_FILLCOLOR] = 'purple';
         style[mxConstants.STYLE_FILL_OPACITY] = '20';
@@ -320,6 +320,7 @@ btnSketch.onclick = function () {
         style[mxConstants.STYLE_FILL_OPACITY] = '40';
         break;
       case ShapeBpmnElementKind.TASK_SERVICE:
+        style['roughness'] = '1.5';
         style[mxConstants.STYLE_FILLCOLOR] = mxConstants.NONE;
         break;
     }
@@ -332,7 +333,8 @@ btnSketch.onclick = function () {
 
   const availableSketchFonts = ['Gloria Hallelujah, cursive', 'Permanent Marker, cursive'];
   // hack as we currently configured all properties in all styles, instead of only override what is defined in the default
-  Object.values(ShapeBpmnElementKind).forEach(kind => {
+  (Object.values(ShapeBpmnElementKind) as string[]).concat(Object.values(SequenceFlowKind) as string[]).forEach(kind => {
+    log(`changing style for ${kind}`);
     const style = styleSheet.styles[kind];
     if (!sketchActivated) {
       style[mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
