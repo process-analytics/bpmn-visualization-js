@@ -72,8 +72,14 @@ See `package.json` for extra available scripts
 - `npm run test`                *Run all tests*
 - `npm run test:unit`           *Run unit tests*
 - `npm run test:unit:coverage`  *Run unit tests with coverage*
-- `npm run test:e2e`            *Run end-to-end tests*. To see the web browser used by tests, disable the `headless` mode by
-                                setting the `HEADLESS` environment variable to `false`.
+- `npm run test:e2e`            *Run end-to-end tests*.
+
+#### Debugging end-to-end tests
+
+To see what is happening in the web browser used by the tests
+- disable the `headless` mode by setting the `HEADLESS` environment variable to `false`
+- set the `SLOWMO` environment variable to a positive millisecond value (between `200` and `500` should be enough). This
+slows Puppeteer down by milliseconds that we specify. So we will be able to observe what it actually does.
 
 ### Code style
 
