@@ -68,6 +68,7 @@
     "rollup-plugin-serve": "^1.0.3",
     "rollup-plugin-terser": "^7.0.0",
     "rollup-plugin-typescript2": "^0.26.0",
+    "rough": "^3.0.1",
     "ts-jest": "^25.5.1",
     "ts-mxgraph": "git+https://github.com/process-analytics/ts-mxgraph.git#v1.0.1",
     "typescript": "^3.9.7"
@@ -75,6 +76,7 @@
   "dependencies": {
     "entities": "^2.0.0",
     "fast-xml-parser": "^3.17.4",
-    "mxgraph": "4.1.0"
+    "mxgraph": "4.1.0",
+    "roughjs": "^4.3.1"
   }
 }

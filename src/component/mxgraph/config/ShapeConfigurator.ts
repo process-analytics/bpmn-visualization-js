@@ -19,6 +19,7 @@ import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchInter
 import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from '../shape/gateway-shapes';
 import { SubProcessShape, ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape, CallActivityShape, SendTaskShape } from '../shape/activity-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
+import { SketchySvgCanvas } from '../extension/SketchySvgCanvas';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -87,5 +88,65 @@ export default class ShapeConfigurator {
 
       return canvas;
     };
+
+    // TODO uggly stuff, to be improved
+    const createSvgCanvasMethodBeforeSketchSupportAdded = mxShape.prototype.createSvgCanvas;
+    mxShape.prototype.createSvgCanvas = function (): mxSvgCanvas2D {
+      const standardSvgCanvas2D = createSvgCanvasMethodBeforeSketchSupportAdded.apply(this, []);
+      if (mxUtils.getValue(this.style, 'sketch', 'false') == 'true') {
+        // TODO instantiate a SketchySvgCanvas
+        //return new SketchySvgCanvas(standardSvgCanvas2D, this);
+      }
+
+      return standardSvgCanvas2D;
+    };
+
+    // TODO see if we need this (need adatpation)
+    // Overrides for event handling on transparent background for sketch style
+    // var shapePaint = mxShape.prototype.paint;
+    // mxShape.prototype.paint = function(c)
+    // {
+    //   var fillStyle = null;
+    //   var events = true;
+    //
+    //   if (this.style != null)
+    //   {
+    //     events = mxUtils.getValue(this.style, mxConstants.STYLE_POINTER_EVENTS, '1') == '1';
+    //     fillStyle = mxUtils.getValue(this.style, 'fillStyle', 'auto');
+    //
+    //     if (this.state != null && fillStyle == 'auto')
+    //     {
+    //       var bg = this.state.view.graph.defaultPageBackgroundColor;
+    //
+    //       if (this.fill != null && (this.gradient != null || (bg != null &&
+    //         this.fill.toLowerCase() == bg.toLowerCase())))
+    //       {
+    //         fillStyle = 'solid';
+    //       }
+    //     }
+    //   }
+    //
+    //   if (events && c.handJiggle != null && c.handJiggle.constructor == RoughCanvas &&
+    //     !this.outline && (this.fill == null || this.fill == mxConstants.NONE ||
+    //       fillStyle != 'solid'))
+    //   {
+    //     // Save needed for possible transforms applied during paint
+    //     c.save();
+    //     var fill = this.fill;
+    //     var stroke = this.stroke;
+    //     this.fill = null;
+    //     this.stroke = null;
+    //     c.handJiggle.passThrough = true;
+    //
+    //     shapePaint.apply(this, arguments);
+    //
+    //     c.handJiggle.passThrough = false;
+    //     this.fill = fill;
+    //     this.stroke = stroke;
+    //     c.restore();
+    //   }
+    //
+    //   shapePaint.apply(this, arguments);
+    // };
   }
 }
