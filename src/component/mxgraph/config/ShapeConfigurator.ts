@@ -15,9 +15,9 @@
  */
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/shape/ShapeBpmnElementKind';
-import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape, BoundaryEventShape } from '../shape/event-shapes';
-import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from '../shape/gateway-shapes';
-import { SubProcessShape, ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape, CallActivityShape, SendTaskShape } from '../shape/activity-shapes';
+import { BoundaryEventShape, CatchIntermediateEventShape, EndEventShape, StartEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
+import { ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
+import { CallActivityShape, ReceiveTaskShape, SendTaskShape, ServiceTaskShape, SubProcessShape, TaskShape, UserTaskShape } from '../shape/activity-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { SketchySvgCanvas } from '../extension/SketchySvgCanvas';
 
@@ -57,7 +57,8 @@ export default class ShapeConfigurator {
   private initMxShapePrototype(isFF: boolean): void {
     // this change is needed for adding the custom attributes that permits identification of the BPMN elements
     mxShape.prototype.createSvgCanvas = function () {
-      const canvas = new mxSvgCanvas2D(this.node, false);
+      // const canvas = new mxSvgCanvas2D(this.node, false);
+      const canvas = ShapeConfigurator.newSvgCanvas(this.node, this);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
       canvas.pointerEventsValue = this.svgPointerEvents;
       // TODO existed in mxgraph-type-definitions@1.0.2, no more in mxgraph-type-definitions@1.0.3
@@ -89,19 +90,7 @@ export default class ShapeConfigurator {
       return canvas;
     };
 
-    // TODO uggly stuff, to be improved
-    const createSvgCanvasMethodBeforeSketchSupportAdded = mxShape.prototype.createSvgCanvas;
-    mxShape.prototype.createSvgCanvas = function (): mxSvgCanvas2D {
-      const standardSvgCanvas2D = createSvgCanvasMethodBeforeSketchSupportAdded.apply(this, []);
-      if (mxUtils.getValue(this.style, 'sketch', 'false') == 'true') {
-        // TODO instantiate a SketchySvgCanvas
-        //return new SketchySvgCanvas(standardSvgCanvas2D, this);
-      }
-
-      return standardSvgCanvas2D;
-    };
-
-    // TODO see if we need this (need adatpation)
+    // TODO see if we need this (need adaptation)
     // Overrides for event handling on transparent background for sketch style
     // var shapePaint = mxShape.prototype.paint;
     // mxShape.prototype.paint = function(c)
@@ -148,5 +137,13 @@ export default class ShapeConfigurator {
     //
     //   shapePaint.apply(this, arguments);
     // };
+  }
+
+  // private static newSvgCanvas(node: HTMLElement, style: { [key: string]: unknown }): mxSvgCanvas2D {
+  private static newSvgCanvas(node: HTMLElement, shape: mxShape): mxSvgCanvas2D {
+    if (mxUtils.getValue(shape.style, 'sketch', 'false') == 'true') {
+      return new SketchySvgCanvas(node, shape);
+    }
+    return new mxSvgCanvas2D(node, false);
   }
 }

@@ -15,23 +15,28 @@
  */
 import { Drawable, Options } from 'roughjs/bin/core';
 import { RoughCanvas } from 'roughjs/bin/canvas';
+import { RoughJsAdaptor } from './RoughJsAdaptor';
 
-export class SketchySvgCanvas extends mxAbstractCanvas2D {
+export class SketchySvgCanvas extends mxSvgCanvas2D {
+  //export class SketchySvgCanvas extends mxAbstractCanvas2D {
   private passThrough = false;
   private nextShape: Drawable;
   private readonly roughJS: RoughCanvas;
 
   // TODO see if we use RoughCanvas, RoughSvg, or Generator directly
-  constructor(readonly canvas: mxSvgCanvas2D, readonly shape: mxShape) {
-    super();
+  // TODO we mainly only need style info, mxShape only used to get the mxCell id
+  constructor(node: HTMLElement, readonly shape: mxShape) {
+    //constructor(readonly canvas: mxSvgCanvas2D, readonly shape: mxShape) {
+    super(node);
     // TODO build RoughJSAdaptor
+    this.roughJS = new RoughJsAdaptor(this);
 
     // Same as in the mxSvgCanvas2D
-    this.moveOp = 'M';
-    this.lineOp = 'L';
-    this.quadOp = 'Q';
-    this.curveOp = 'C';
-    this.closeOp = 'Z';
+    // this.moveOp = 'M';
+    // this.lineOp = 'L';
+    // this.quadOp = 'Q';
+    // this.curveOp = 'C';
+    // this.closeOp = 'Z';
 
     // TODO is this needed?
     // Avoids "spikes" in the output
@@ -61,12 +66,12 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
     // }
 
     // , seed: seed
-    const style: Options = { strokeWidth: this.canvas.state.strokeWidth };
+    const style: Options = { strokeWidth: this.state.strokeWidth };
     // TODO rename into roughDefaultOptions
     const defs = this.roughJS.getDefaultOptions();
 
     if (stroke) {
-      style.stroke = this.canvas.state.strokeColor === 'none' ? 'transparent' : this.canvas.state.strokeColor;
+      style.stroke = this.state.strokeColor === 'none' ? 'transparent' : this.state.strokeColor;
     } else {
       delete style.stroke;
     }
@@ -75,8 +80,8 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
     //style.fill = fill;
 
     if (fill) {
-      style.fill = this.canvas.state.fillColor === 'none' ? '' : this.canvas.state.fillColor;
-      gradient = this.canvas.state.gradientColor === 'none' ? null : this.canvas.state.gradientColor;
+      style.fill = this.state.fillColor === 'none' ? '' : this.state.fillColor;
+      gradient = this.state.gradientColor === 'none' ? null : this.state.gradientColor;
       // } else {
       //   style.fill == '';
     }
@@ -115,7 +120,7 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
 
   begin(): void {
     if (this.passThrough) {
-      this.canvas.begin();
+      super.begin();
     } else {
       this.path = [];
       // TODO in super, lastX and lastY set to 0
@@ -124,7 +129,7 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
 
   end(): void {
     if (this.passThrough) {
-      this.canvas.end();
+      super.end();
     } else {
       // do nothing
     }
@@ -157,7 +162,7 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
 
   lineTo(x: number, y: number): void {
     if (this.passThrough) {
-      this.canvas.lineTo(x, y);
+      super.lineTo(x, y);
     } else {
       super.lineTo(x, y);
       this.lastX = x;
@@ -167,7 +172,7 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
 
   moveTo(x: number, y: number): void {
     if (this.passThrough) {
-      this.canvas.moveTo(x, y);
+      super.moveTo(x, y);
     } else {
       super.moveTo(x, y);
       this.lastX = x;
@@ -180,7 +185,7 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
 
   close(): void {
     if (this.passThrough) {
-      this.canvas.close();
+      super.close();
     } else {
       super.close();
     }
@@ -188,7 +193,7 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
 
   quadTo(x1: number, y1: number, x2: number, y2: number): void {
     if (this.passThrough) {
-      this.canvas.quadTo(x1, y1, x2, y2);
+      super.quadTo(x1, y1, x2, y2);
     } else {
       super.quadTo(x1, y1, x2, y2);
       this.lastX = x2;
@@ -198,7 +203,7 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
 
   curveTo(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): void {
     if (this.passThrough) {
-      this.canvas.curveTo(x1, y1, x2, y2, x3, y3);
+      super.curveTo(x1, y1, x2, y2, x3, y3);
     } else {
       super.curveTo(x1, y1, x2, y2, x3, y3);
       this.lastX = x3;
@@ -208,7 +213,7 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
 
   arcTo(rx: number, ry: number, angle: number, largeArcFlag: number, sweepFlag: number, x: number, y: number): void {
     if (this.passThrough) {
-      this.canvas.arcTo(rx, ry, angle, largeArcFlag, sweepFlag, x, y);
+      super.arcTo(rx, ry, angle, largeArcFlag, sweepFlag, x, y);
     } else {
       // var curves = mxUtils.arcToCurves(this.lastX, this.lastY, rx, ry, angle, largeArcFlag, sweepFlag, x, y);
       //
@@ -229,7 +234,7 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
 
   rect(x: number, y: number, w: number, h: number): void {
     if (this.passThrough) {
-      this.canvas.rect(x, y, w, h);
+      super.rect(x, y, w, h);
     } else {
       this.path = [];
       this.nextShape = this.roughJS.generator.rectangle(x, y, w, h, this.getStyle(true, true));
@@ -238,7 +243,7 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
 
   ellipse(x: number, y: number, w: number, h: number): void {
     if (this.passThrough) {
-      this.canvas.ellipse(x, y, w, h);
+      super.ellipse(x, y, w, h);
     } else {
       this.path = [];
       this.nextShape = this.roughJS.generator.ellipse(x + w / 2, y + h / 2, w, h, this.getStyle(true, true));
@@ -247,7 +252,7 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
 
   roundrect(x: number, y: number, w: number, h: number, dx: number, dy: number): void {
     if (this.passThrough) {
-      this.canvas.roundrect(x, y, w, h, dx, dy);
+      super.roundrect(x, y, w, h, dx, dy);
     } else {
       // TODO check why we redefine this
       this.begin();
@@ -296,7 +301,7 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
 
   stroke(): void {
     if (this.passThrough) {
-      this.canvas.stroke();
+      super.stroke();
     } else {
       this.drawPath(this.getStyle(true, false));
     }
@@ -304,7 +309,7 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
 
   fill(): void {
     if (this.passThrough) {
-      this.canvas.fill();
+      super.fill();
     } else {
       this.drawPath(this.getStyle(false, true));
     }
@@ -312,7 +317,7 @@ export class SketchySvgCanvas extends mxAbstractCanvas2D {
 
   fillAndStroke(): void {
     if (this.passThrough) {
-      this.canvas.fillAndStroke();
+      super.fillAndStroke();
     } else {
       this.drawPath(this.getStyle(true, true));
     }
