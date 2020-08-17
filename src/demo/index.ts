@@ -289,7 +289,7 @@ document.getElementById('btn-export-png').onclick = function () {
 };
 
 // =====================================================================================================================
-// SKETCH
+// Global Rendering
 // =====================================================================================================================
 const btnSketch = document.getElementById('btn-sketch') as HTMLInputElement;
 btnSketch.onclick = function () {
@@ -328,6 +328,12 @@ btnSketch.onclick = function () {
   log('Refreshing the mxgraph.graph to consider style updates');
   graph.refresh();
   log(`mxgraph.graph refreshed in ${performance.now() - startTime} ms`);
+};
+
+const btnFitOnLoad = document.getElementById('btn-fit-on-load') as HTMLInputElement;
+btnFitOnLoad.onclick = function () {
+  fitOnLoad = btnFitOnLoad.checked;
+  log(`Fit On Load is now '${fitOnLoad}'`);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
