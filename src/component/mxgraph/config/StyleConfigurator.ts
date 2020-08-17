@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/shape/ShapeBpmnElementKind';
 import ShapeUtil from '../../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../model/bpmn/edge/SequenceFlowKind';
@@ -28,9 +27,6 @@ import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/edge/Flow';
 import { MessageVisibleKind } from '../../../model/bpmn/edge/MessageVisibleKind';
 import { AssociationDirectionKind } from '../../../model/bpmn/edge/AssociationDirectionKind';
 import { ShapeBpmnMarkerKind } from '../../../model/bpmn/shape/ShapeBpmnMarkerKind';
-
-// TODO 'clone' function is missing in mxgraph-type-definitions@1.0.2
-declare const mxUtils: typeof mxgraph.mxUtils;
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {

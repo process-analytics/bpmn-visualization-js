@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { mxgraph } from 'ts-mxgraph';
 import BpmnCanvas from './BpmnCanvas';
 import StyleUtils from '../../StyleUtils';
 import { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
@@ -38,12 +37,10 @@ export function buildPaintParameter(
   isFilled = false,
   iconStrokeWidth = 0,
 ): PaintParameter {
-  const _shape = (shape as unknown) as mxgraph.mxShape; // TODO use mxShape from mxgraph-type-definitions (missing fill and stroke properties)
-
-  const shapeStrokeWidth = _shape.strokewidth || StyleUtils.getStrokeWidth(_shape.style);
-  const fillColor = _shape.fill || StyleUtils.getFillColor(_shape.style);
-  const strokeColor = _shape.stroke || StyleUtils.getStrokeColor(_shape.style);
-  const margin = StyleUtils.getMargin(_shape.style);
+  const shapeStrokeWidth = shape.strokewidth || StyleUtils.getStrokeWidth(shape.style);
+  const fillColor = shape.fill || StyleUtils.getFillColor(shape.style);
+  const strokeColor = shape.stroke || StyleUtils.getStrokeColor(shape.style);
+  const margin = StyleUtils.getMargin(shape.style);
 
   return {
     c,
