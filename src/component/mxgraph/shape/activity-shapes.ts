@@ -127,22 +127,27 @@ export class ReceiveTaskShape extends BaseTaskShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  // TODO To remove when the instantiating receive task render is implemented
-  public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const isInstantiating = StyleUtils.getBpmnIsInstantiating(this.style);
-
-    if (isInstantiating) {
-      c.setFillColor('Salmon');
-    }
-
-    super.paintVertexShape(c, x, y, w, h);
-  }
-
   protected paintTaskIcon(paintParameter: PaintParameter): void {
     const isInstantiating = StyleUtils.getBpmnIsInstantiating(this.style);
 
     if (!isInstantiating) {
       paintEnvelopeIcon(paintParameter, false);
+    } else {
+      this.iconPainter.paintCircleIcon({
+        ...paintParameter,
+        shape: { ...paintParameter.shape, w: 80, h: 80 },
+        setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(),
+        // ratioFromParent: 0.2,
+        icon: { ...paintParameter.icon, isFilled: false },
+      });
+      // paintEnvelopeIcon(paintParameter, false);
+      const isFilled = false;
+      this.iconPainter.paintEnvelopeIcon({
+        ...paintParameter,
+        setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(11, 11),
+        ratioFromParent: 0.14,
+        icon: { ...paintParameter.icon, isFilled: isFilled },
+      });
     }
   }
 }
