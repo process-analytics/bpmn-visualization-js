@@ -38,6 +38,7 @@ export interface ExpectedShape {
   bpmnElementKind: ShapeBpmnElementKind;
   parentId?: string;
   bounds?: ExpectedBounds;
+  isHorizontal?: boolean;
 }
 
 export interface ExpectedActivityShape extends ExpectedShape {
@@ -127,6 +128,7 @@ export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: BpmnJsonModel, num
 
 export function verifyShape(shape: Shape, expectedShape: ExpectedShape | ExpectedActivityShape | ExpectedCallActivityShape): void {
   expect(shape.id).toEqual(expectedShape.shapeId);
+  expect(shape.isHorizontal).toEqual(expectedShape.isHorizontal);
 
   const bpmnElement = shape.bpmnElement;
   expect(bpmnElement.id).toEqual(expectedShape.bpmnElementId);

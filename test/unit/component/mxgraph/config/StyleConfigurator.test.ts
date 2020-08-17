@@ -51,8 +51,8 @@ function newLabel(font: ExpectedFont, bounds?: Bounds): Label {
  * Returns a new `Shape` instance with arbitrary id and `undefined` bounds.
  * @param kind the `ShapeBpmnElementKind` to set in the new `ShapeBpmnElement` instance
  */
-function newShape(bpmnElement: ShapeBpmnElement, label?: Label): Shape {
-  return new Shape('id', bpmnElement, undefined, label);
+function newShape(bpmnElement: ShapeBpmnElement, label?: Label, isHorizontal?: boolean): Shape {
+  return new Shape('id', bpmnElement, undefined, label, isHorizontal);
 }
 
 /**
@@ -298,6 +298,16 @@ describe('mxgraph renderer', () => {
     it('with label bounds', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION), newLabel({ name: 'Segoe UI' }, new Bounds(50, 50, 100, 100)));
       expect(computeStyle(shape)).toEqual('textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=top;verticalLabelPosition=left');
+    });
+  });
+
+  describe('compute style - pool references a Process', () => {
+    it.each([
+      ['vertical', false, '1'],
+      ['horizontal', true, '0'],
+    ])('%s pool references a Process', (title, isHorizontal: boolean, expected: string) => {
+      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.POOL), undefined, isHorizontal);
+      expect(computeStyle(shape)).toEqual(`pool;horizontal=${expected}`);
     });
   });
 
