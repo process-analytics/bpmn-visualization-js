@@ -311,16 +311,33 @@ btnSketch.onclick = function () {
         style['roughness'] = String(1.5);
         style['fillStyle'] = 'zigzag';
         style[mxConstants.STYLE_FILLCOLOR] = 'purple';
+        style[mxConstants.STYLE_FILL_OPACITY] = '20';
         break;
       case ShapeBpmnElementKind.TASK:
         style['roughness'] = String(2);
         style['fillStyle'] = 'cross-hatch';
         style[mxConstants.STYLE_FILLCOLOR] = 'Orange';
+        style[mxConstants.STYLE_FILL_OPACITY] = '40';
         break;
     }
 
     if (!sketchActivated) {
       style[mxConstants.STYLE_FILLCOLOR] = StyleDefault.DEFAULT_FILL_COLOR;
+    }
+  });
+
+  const availableSketchFonts = ['Gloria Hallelujah, cursive', 'Permanent Marker, cursive'];
+  // hack as we currently configured all properties in all styles, instead of only override what is defined in the default
+  Object.values(ShapeBpmnElementKind).forEach(kind => {
+    const style = styleSheet.styles[kind];
+    if (!sketchActivated) {
+      style[mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
+      style[mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
+    } else {
+      const font = availableSketchFonts[Math.floor(Math.random() * availableSketchFonts.length)];
+      // log(`Use custom font for ${kind}: ${font}`);
+      style[mxConstants.STYLE_FONTSIZE] = 12;
+      style[mxConstants.STYLE_FONTFAMILY] = font;
     }
   });
 
