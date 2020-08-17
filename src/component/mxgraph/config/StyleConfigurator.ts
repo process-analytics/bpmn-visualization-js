@@ -244,8 +244,6 @@ export default class StyleConfigurator {
     style[mxConstants.STYLE_STROKECOLOR] = StyleDefault.DEFAULT_STROKE_COLOR;
     style[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = mxConstants.NONE;
 
-    style['sketch'] = 'true';
-
     // only works with html labels (enabled by MxGraphConfigurator)
     style[mxConstants.STYLE_WHITE_SPACE] = 'wrap';
   }

@@ -91,7 +91,7 @@ export class SketchySvgCanvas extends mxSvgCanvas2D {
     style['bowing'] = mxUtils.getValue(this.shape.style, 'bowing', defs['bowing']);
     style['hachureAngle'] = mxUtils.getValue(this.shape.style, 'hachureAngle', defs['hachureAngle']);
     style['curveFitting'] = mxUtils.getValue(this.shape.style, 'curveFitting', defs['curveFitting']);
-    style['roughness'] = mxUtils.getValue(this.shape.style, 'jiggle', defs['roughness']);
+    style['roughness'] = mxUtils.getValue(this.shape.style, 'roughness', defs['roughness']);
     style['simplification'] = mxUtils.getValue(this.shape.style, 'simplification', defs['simplification']);
     style['disableMultiStroke'] = mxUtils.getValue(this.shape.style, 'disableMultiStroke', defs['disableMultiStroke']);
     style['disableMultiStrokeFill'] = mxUtils.getValue(this.shape.style, 'disableMultiStrokeFill', defs['disableMultiStrokeFill']);

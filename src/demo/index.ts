@@ -18,6 +18,9 @@ import BpmnVisualization from '../component/BpmnVisualization';
 import { PanType, ZoomType } from '../component/BpmnVisuOptions';
 import { documentReady, log, logStartup } from './helper';
 import { downloadAsPng, downloadAsSvg } from './component/download';
+import ShapeUtil from '../model/bpmn/shape/ShapeUtil';
+import { StyleDefault } from '../component/mxgraph/StyleUtils';
+import { ShapeBpmnElementKind } from '../model/bpmn/shape/ShapeBpmnElementKind';
 
 // TODO make this an option that can be updated at runtime + configure which kind of fit
 let fitOnLoad = false;
@@ -62,7 +65,7 @@ function statusFetched(url: string, duration: number): void {
   const statusElt = getStatusElement();
   // only display file name to keep the status content small
   const urlParts = url.split('/');
-  const fileName = urlParts[urlParts.length -1];
+  const fileName = urlParts[urlParts.length - 1];
   statusElt.innerText = `Fetch OK (${duration} ms): ${fileName}`;
   statusElt.className = 'status-ok';
 }
@@ -283,6 +286,48 @@ document.getElementById('btn-export-svg').onclick = function () {
 
 document.getElementById('btn-export-png').onclick = function () {
   downloadAsPng(bpmnVisualization.exportAsSvg());
+};
+
+// =====================================================================================================================
+// SKETCH
+// =====================================================================================================================
+const btnSketch = document.getElementById('btn-sketch') as HTMLInputElement;
+btnSketch.onclick = function () {
+  const graph = bpmnVisualization.graph;
+  const styleSheet = graph.getStylesheet();
+
+  const sketchActivated = btnSketch.checked;
+  log(`Sketch style management, sketch: ${sketchActivated}`);
+
+  styleSheet.getDefaultEdgeStyle()['sketch'] = String(sketchActivated);
+  styleSheet.getDefaultVertexStyle()['sketch'] = String(sketchActivated);
+
+  // only to demonstrate various fill capacity with rough.js
+  ShapeUtil.taskKinds().forEach(kind => {
+    const style = styleSheet.styles[kind];
+
+    switch (kind) {
+      case ShapeBpmnElementKind.TASK_USER:
+        style['roughness'] = String(1.5);
+        style['fillStyle'] = 'zigzag';
+        style[mxConstants.STYLE_FILLCOLOR] = 'purple';
+        break;
+      case ShapeBpmnElementKind.TASK:
+        style['roughness'] = String(2);
+        style['fillStyle'] = 'cross-hatch';
+        style[mxConstants.STYLE_FILLCOLOR] = 'Orange';
+        break;
+    }
+
+    if (!sketchActivated) {
+      style[mxConstants.STYLE_FILLCOLOR] = StyleDefault.DEFAULT_FILL_COLOR;
+    }
+  });
+
+  const startTime = performance.now();
+  log('Refreshing the mxgraph.graph to consider style updates');
+  graph.refresh();
+  log(`mxgraph.graph refreshed in ${performance.now() - startTime} ms`);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
