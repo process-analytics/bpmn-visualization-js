@@ -238,6 +238,7 @@ export class SketchySvgCanvas extends mxSvgCanvas2D {
     console.error('####custom rect');
 
     if (this.passThrough) {
+      console.error('#### custom rect - passThrough');
       super.rect(x, y, w, h);
     } else {
       this.path = [];
@@ -257,7 +258,7 @@ export class SketchySvgCanvas extends mxSvgCanvas2D {
   roundrect(x: number, y: number, w: number, h: number, dx: number, dy: number): void {
     console.error('####custom RoundRect');
     if (this.passThrough) {
-      console.error('#### passThrough');
+      console.error('#### custom RoundRect - passThrough');
       super.roundrect(x, y, w, h, dx, dy);
     } else {
       console.error('#### manual');
