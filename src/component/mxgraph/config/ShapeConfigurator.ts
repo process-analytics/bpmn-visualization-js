@@ -90,52 +90,48 @@ export default class ShapeConfigurator {
       return canvas;
     };
 
-    // TODO see if we need this (need adaptation)
+    // TODO see if we need this (already adapted to TS and our code)
     // Overrides for event handling on transparent background for sketch style
-    // var shapePaint = mxShape.prototype.paint;
-    // mxShape.prototype.paint = function(c)
-    // {
-    //   var fillStyle = null;
-    //   var events = true;
+    // const shapePaint = mxShape.prototype.paint;
+    // mxShape.prototype.paint = function (c): void {
+    //   let fillStyle = null;
+    //   let events = true;
     //
-    //   if (this.style != null)
-    //   {
+    //   if (this.style != null) {
     //     events = mxUtils.getValue(this.style, mxConstants.STYLE_POINTER_EVENTS, '1') == '1';
     //     fillStyle = mxUtils.getValue(this.style, 'fillStyle', 'auto');
     //
-    //     if (this.state != null && fillStyle == 'auto')
-    //     {
-    //       var bg = this.state.view.graph.defaultPageBackgroundColor;
+    //     if (this.state != null && fillStyle == 'auto') {
+    //       //var bg = this.state.view.graph.defaultPageBackgroundColor;
     //
-    //       if (this.fill != null && (this.gradient != null || (bg != null &&
-    //         this.fill.toLowerCase() == bg.toLowerCase())))
-    //       {
+    //       // if (this.fill != null && (this.gradient != null || (bg != null && this.fill.toLowerCase() == bg.toLowerCase()))) {
+    //       if (this.style.fill != null && this.gradient != null) {
     //         fillStyle = 'solid';
     //       }
     //     }
     //   }
     //
-    //   if (events && c.handJiggle != null && c.handJiggle.constructor == RoughCanvas &&
-    //     !this.outline && (this.fill == null || this.fill == mxConstants.NONE ||
-    //       fillStyle != 'solid'))
-    //   {
+    //   if (events && c instanceof SketchySvgCanvas && !this.outline && (this.fill == null || this.fill == mxConstants.NONE || fillStyle != 'solid')) {
+    //     // if (events && c.handJiggle != null && c.handJiggle.constructor == RoughCanvas &&
+    //     //   !this.outline && (this.fill == null || this.fill == mxConstants.NONE ||
+    //     //     fillStyle != 'solid'))
     //     // Save needed for possible transforms applied during paint
     //     c.save();
-    //     var fill = this.fill;
-    //     var stroke = this.stroke;
+    //     const fill = this.fill;
+    //     const stroke = this.stroke;
     //     this.fill = null;
     //     this.stroke = null;
-    //     c.handJiggle.passThrough = true;
+    //     c.passThrough = true;
     //
-    //     shapePaint.apply(this, arguments);
+    //     shapePaint.apply(this, [c]);
     //
-    //     c.handJiggle.passThrough = false;
+    //     c.passThrough = false;
     //     this.fill = fill;
     //     this.stroke = stroke;
     //     c.restore();
     //   }
     //
-    //   shapePaint.apply(this, arguments);
+    //   shapePaint.apply(this, [c]);
     // };
   }
 

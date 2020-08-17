@@ -18,7 +18,7 @@ import { RoughJsAdaptor } from './RoughJsAdaptor';
 
 export class SketchySvgCanvas extends mxSvgCanvas2D {
   //export class SketchySvgCanvas extends mxAbstractCanvas2D {
-  private passThrough = false;
+  passThrough = false;
   private nextShape: Drawable;
   private readonly roughJS: RoughJsAdaptor;
 
@@ -29,6 +29,8 @@ export class SketchySvgCanvas extends mxSvgCanvas2D {
     super(node);
     // TODO build RoughJSAdaptor
     this.roughJS = new RoughJsAdaptor(this);
+
+    // console.error('=====Constructor');
 
     // Same as in the mxSvgCanvas2D
     // this.moveOp = 'M';
@@ -122,7 +124,9 @@ export class SketchySvgCanvas extends mxSvgCanvas2D {
       super.begin();
     } else {
       this.path = [];
-      // TODO in super, lastX and lastY set to 0
+      // TODO in super, lastX and lastY set to 0: no changes when adding that
+      // this.lastX = 0;
+      // this.lastY = 0;
     }
   }
 
@@ -138,22 +142,21 @@ export class SketchySvgCanvas extends mxSvgCanvas2D {
   //     this.path.push(this.format((this.lastX + s.dx) * s.scale));
   //     this.path.push(this.format((this.lastY + s.dy) * s.scale));
 
-  // TODO wrong method signature
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  // @ts-ignore
-  // addOp(arguments: string[]): void {
+  // TODO wrong method signature in mxgraph-type-definitions
+  // addOp(actions: string[]): void {
+  //   console.error('@@custom addOp');
   //   if (this.path != null) {
-  //     this.path.push(arguments[0]);
+  //     this.path.push(actions[0]);
   //
-  //     if (arguments.length > 2) {
+  //     if (actions.length > 2) {
   //       // const s = this.canvas.state;
   //
-  //       for (let i = 2; i < arguments.length; i += 2) {
-  //         this.lastX = (arguments[i - 1] as unknown) as number;
-  //         this.lastY = (arguments[i] as unknown) as number;
+  //       for (let i = 2; i < actions.length; i += 2) {
+  //         this.lastX = (actions[i - 1] as unknown) as number;
+  //         this.lastY = (actions[i] as unknown) as number;
   //
-  //         this.path.push(String(this.canvas.format(String(this.lastX))));
-  //         this.path.push(String(this.canvas.format(String(this.lastY))));
+  //         this.path.push(String(this.format(String(this.lastX))));
+  //         this.path.push(String(this.format(String(this.lastY))));
   //       }
   //     }
   //   }
@@ -210,28 +213,30 @@ export class SketchySvgCanvas extends mxSvgCanvas2D {
   //   }
   // }
 
-  arcTo(rx: number, ry: number, angle: number, largeArcFlag: number, sweepFlag: number, x: number, y: number): void {
-    if (this.passThrough) {
-      super.arcTo(rx, ry, angle, largeArcFlag, sweepFlag, x, y);
-    } else {
-      // var curves = mxUtils.arcToCurves(this.lastX, this.lastY, rx, ry, angle, largeArcFlag, sweepFlag, x, y);
-      //
-      // if (curves != null)
-      // {
-      //   for (var i = 0; i < curves.length; i += 6)
-      //   {
-      //     this.curveTo(curves[i], curves[i + 1], curves[i + 2],
-      //       curves[i + 3], curves[i + 4], curves[i + 5]);
-      //   }
-      // }
-      super.arcTo(rx, ry, angle, largeArcFlag, sweepFlag, x, y);
-
-      this.lastX = x;
-      this.lastY = y;
-    }
-  }
+  // arcTo(rx: number, ry: number, angle: number, largeArcFlag: number, sweepFlag: number, x: number, y: number): void {
+  //   if (this.passThrough) {
+  //     super.arcTo(rx, ry, angle, largeArcFlag, sweepFlag, x, y);
+  //   } else {
+  //     // var curves = mxUtils.arcToCurves(this.lastX, this.lastY, rx, ry, angle, largeArcFlag, sweepFlag, x, y);
+  //     //
+  //     // if (curves != null)
+  //     // {
+  //     //   for (var i = 0; i < curves.length; i += 6)
+  //     //   {
+  //     //     this.curveTo(curves[i], curves[i + 1], curves[i + 2],
+  //     //       curves[i + 3], curves[i + 4], curves[i + 5]);
+  //     //   }
+  //     // }
+  //     super.arcTo(rx, ry, angle, largeArcFlag, sweepFlag, x, y);
+  //
+  //     this.lastX = x;
+  //     this.lastY = y;
+  //   }
+  // }
 
   rect(x: number, y: number, w: number, h: number): void {
+    console.error('####custom rect');
+
     if (this.passThrough) {
       super.rect(x, y, w, h);
     } else {
@@ -250,9 +255,12 @@ export class SketchySvgCanvas extends mxSvgCanvas2D {
   }
 
   roundrect(x: number, y: number, w: number, h: number, dx: number, dy: number): void {
+    console.error('####custom RoundRect');
     if (this.passThrough) {
+      console.error('#### passThrough');
       super.roundrect(x, y, w, h, dx, dy);
     } else {
+      console.error('#### manual');
       // TODO check why we redefine this
       this.begin();
       this.moveTo(x + dx, y);
