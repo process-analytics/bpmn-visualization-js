@@ -24,9 +24,9 @@ import Logger from './Logger';
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
 
-/* eslint-disable no-console */
 export default class BpmnVisualization {
   public readonly graph: mxGraph;
+  private mainConfigLogger = new Logger('bpmn.main#config');
 
   constructor(protected container: HTMLElement, options?: BpmnVisuOptions) {
     try {
@@ -50,6 +50,7 @@ export default class BpmnVisualization {
 
   // Changes the zoom / panning on mouseWheel events
   // TODO this should be done in another class
+  /* eslint-disable no-console */
   private configureMouseEvent(activated: boolean): void {
     if (!activated) {
       return;
@@ -137,9 +138,12 @@ export default class BpmnVisualization {
     }, null);
   }
 
+  /* eslint-enable no-console */
+
   private keyHandlerLogger = new Logger('KeyHandler');
+
   private configureKeyHandler(): void {
-    console.info('configuring key handler');
+    this.mainConfigLogger.info('Configuring key handler');
     const keyHandler = new mxKeyHandler(this.graph);
 
     // TODO for panning with arrow, configure shift + key for smaller or larger panning
@@ -156,9 +160,11 @@ export default class BpmnVisualization {
         this.keyHandlerLogger.info('End of key management: ' + event.code);
       });
     });
+    this.mainConfigLogger.info('Key handler configured');
   }
 
   private loadLogger: Logger = new Logger('bpmn.main#load');
+
   public load(xml: string): void {
     this.loadLogger.info('Start loading BPMN');
     const initialStartTime = performance.now();
@@ -180,9 +186,9 @@ export default class BpmnVisualization {
     }
   }
 
+  private zoomLogger: Logger = new Logger('bpmn.main#zoom');
+
   private fit(zoomType: ZoomType): void {
-    // TODO log the zoomType
-    console.info('Zooming to Fit');
     let ignoreWidth = false;
     let ignoreHeight = false;
     switch (zoomType) {
@@ -195,19 +201,19 @@ export default class BpmnVisualization {
     }
 
     this.graph.fit(0, false, 0, true, ignoreWidth, ignoreHeight);
-    console.info('Zoom to Fit completed');
   }
 
   // TODO zoom factor should be configurable (in global BpmnVisuOptions)
   // TODO see lazyZoom of draw.io
   public zoom(zoomType: ZoomType): void {
+    const startTime = performance.now();
+    this.zoomLogger.info(`Start Zooming, type: ${ZoomType[zoomType]}`);
+
     // TODO add an option to center without zooming
     //this.graph.center(true, true);
     switch (zoomType) {
       case ZoomType.Actual:
-        console.info('Zooming to actual');
         this.graph.zoomActual();
-        console.info('Zoom to actual completed');
         break;
       case ZoomType.Fit:
       case ZoomType.FitHorizontal:
@@ -223,10 +229,13 @@ export default class BpmnVisualization {
       default:
         throw new Error('Unsupported zoom option ' + zoomType);
     }
+    this.zoomLogger.info(`Zoom completed in ${performance.now() - startTime} ms`);
   }
+  private panLogger: Logger = new Logger('bpmn.main#pan');
 
   public pan(panType: PanType): void {
-    console.info('Panning %s', panType);
+    const startTime = performance.now();
+    this.panLogger.info(`Panning in direction ${PanType[panType]}`);
     const view = this.graph.getView();
     const panValue = 40 / view.scale;
 
@@ -249,7 +258,7 @@ export default class BpmnVisualization {
       default:
         throw new Error('Unsupported pan option ' + panType);
     }
-    console.info('panning done');
+    this.panLogger.info(`Panning done in ${performance.now() - startTime} ms`);
   }
 
   public preview(): void {
@@ -257,6 +266,7 @@ export default class BpmnVisualization {
     preview.open(undefined, undefined, undefined, undefined);
   }
 
+  /* eslint-disable no-console */
   public exportAsSvg(): string {
     console.info('Starting svg export');
     const svg = new SvgExporter(this.graph).exportSvg();
@@ -264,6 +274,7 @@ export default class BpmnVisualization {
     console.info(svg);
     return svg;
   }
+  /* eslint-enable no-console */
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////// OVERVIEW ///////////////////////////////////////////////////////////////////
