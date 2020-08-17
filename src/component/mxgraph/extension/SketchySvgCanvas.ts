@@ -126,13 +126,13 @@ export class SketchySvgCanvas extends mxSvgCanvas2D {
     }
   }
 
-  end(): void {
-    if (this.passThrough) {
-      super.end();
-    } else {
-      // do nothing
-    }
-  }
+  // end(): void {
+  //   if (this.passThrough) {
+  //     super.end();
+  //   } else {
+  //     // do nothing
+  //   }
+  // }
 
   // TODO check if needed, only difference with original implem: no scaling and
   //     this.path.push(this.format((this.lastX + s.dx) * s.scale));
@@ -159,56 +159,56 @@ export class SketchySvgCanvas extends mxSvgCanvas2D {
   //   }
   // }
 
-  lineTo(x: number, y: number): void {
-    if (this.passThrough) {
-      super.lineTo(x, y);
-    } else {
-      super.lineTo(x, y);
-      this.lastX = x;
-      this.lastY = y;
-    }
-  }
+  // lineTo(x: number, y: number): void {
+  //   if (this.passThrough) {
+  //     super.lineTo(x, y);
+  //   } else {
+  //     super.lineTo(x, y);
+  //     this.lastX = x;
+  //     this.lastY = y;
+  //   }
+  // }
 
-  moveTo(x: number, y: number): void {
-    if (this.passThrough) {
-      super.moveTo(x, y);
-    } else {
-      super.moveTo(x, y);
-      this.lastX = x;
-      this.lastY = y;
-      // TODO is this really needed, never called later + don't exist in super class
-      // this.firstX = x;
-      // this.firstY = y;
-    }
-  }
+  // moveTo(x: number, y: number): void {
+  //   if (this.passThrough) {
+  //     super.moveTo(x, y);
+  //   } else {
+  //     super.moveTo(x, y);
+  //     this.lastX = x;
+  //     this.lastY = y;
+  //     // TODO is this really needed, never called later + don't exist in super class
+  //     // this.firstX = x;
+  //     // this.firstY = y;
+  //   }
+  // }
 
-  close(): void {
-    if (this.passThrough) {
-      super.close();
-    } else {
-      super.close();
-    }
-  }
-
-  quadTo(x1: number, y1: number, x2: number, y2: number): void {
-    if (this.passThrough) {
-      super.quadTo(x1, y1, x2, y2);
-    } else {
-      super.quadTo(x1, y1, x2, y2);
-      this.lastX = x2;
-      this.lastY = y2;
-    }
-  }
-
-  curveTo(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): void {
-    if (this.passThrough) {
-      super.curveTo(x1, y1, x2, y2, x3, y3);
-    } else {
-      super.curveTo(x1, y1, x2, y2, x3, y3);
-      this.lastX = x3;
-      this.lastY = y3;
-    }
-  }
+  // close(): void {
+  //   if (this.passThrough) {
+  //     super.close();
+  //   } else {
+  //     super.close();
+  //   }
+  // }
+  //
+  // quadTo(x1: number, y1: number, x2: number, y2: number): void {
+  //   if (this.passThrough) {
+  //     super.quadTo(x1, y1, x2, y2);
+  //   } else {
+  //     super.quadTo(x1, y1, x2, y2);
+  //     this.lastX = x2;
+  //     this.lastY = y2;
+  //   }
+  // }
+  //
+  // curveTo(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): void {
+  //   if (this.passThrough) {
+  //     super.curveTo(x1, y1, x2, y2, x3, y3);
+  //   } else {
+  //     super.curveTo(x1, y1, x2, y2, x3, y3);
+  //     this.lastX = x3;
+  //     this.lastY = y3;
+  //   }
+  // }
 
   arcTo(rx: number, ry: number, angle: number, largeArcFlag: number, sweepFlag: number, x: number, y: number): void {
     if (this.passThrough) {
