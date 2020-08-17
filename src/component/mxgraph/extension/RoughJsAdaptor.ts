@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-import { RoughCanvas } from 'roughjs/bin/canvas';
-import { Config, Drawable, OpSet, ResolvedOptions } from 'roughjs/bin/core';
+import { Config, Drawable, OpSet, Options, ResolvedOptions } from 'roughjs/bin/core';
 import { SketchySvgCanvas } from './SketchySvgCanvas';
+import { RoughGenerator } from 'roughjs/bin/generator';
 
 // choose to use RoughCanvas to inherit from the general drawing method
 // + get access to Drawable object
-export class RoughJsAdaptor extends RoughCanvas {
+export class RoughJsAdaptor {
+  private gen: RoughGenerator;
+
   // constructor(readonly c: mxSvgCanvas2D, config?: Config) {
-  constructor(readonly c: SketchySvgCanvas, config?: Config) {
-    // pass null for HTMLCanvasElement, as we are going to override all methods that use it
-    super(null, config);
+  constructor(readonly c: SketchySvgCanvas, readonly config?: Config) {
+    this.gen = new RoughGenerator(config);
   }
 
   // implementation taken from the draw.io adaptation
@@ -38,21 +39,21 @@ export class RoughJsAdaptor extends RoughCanvas {
       switch (drawing.type) {
         case 'path':
           if (o.stroke != null) {
-            this.__drawToContext(drawing, o);
+            this._drawToContext(drawing, o);
           }
           break;
         case 'fillPath':
-          this.__drawToContext(drawing, o);
+          this._drawToContext(drawing, o);
           break;
         case 'fillSketch':
-          this.__fillSketch(drawing, o);
+          this._fillSketch(drawing, o);
           break;
       }
     }
   }
 
   // draw.io
-  private __fillSketch(drawing: OpSet, o: ResolvedOptions): void {
+  private _fillSketch(drawing: OpSet, o: ResolvedOptions): void {
     const strokeColor = this.c.state.strokeColor;
     const strokeWidth = this.c.state.strokeWidth;
     const strokeAlpha = this.c.state.strokeAlpha;
@@ -69,7 +70,7 @@ export class RoughJsAdaptor extends RoughCanvas {
     this.c.setStrokeWidth(fweight);
     this.c.setDashed(false, fixDash);
 
-    this.__drawToContext(drawing, o);
+    this._drawToContext(drawing, o);
     // this._drawToContext(ctx, drawing, o);
 
     this.c.setDashed(dashed, fixDash);
@@ -97,7 +98,7 @@ export class RoughJsAdaptor extends RoughCanvas {
   //   ctx.restore();
   // }
 
-  private __drawToContext(drawing: OpSet, o: ResolvedOptions): void {
+  private _drawToContext(drawing: OpSet, o: ResolvedOptions): void {
     this.c.begin();
 
     for (let i = 0; i < drawing.ops.length; i++) {
@@ -124,6 +125,70 @@ export class RoughJsAdaptor extends RoughCanvas {
     } else {
       this.c.stroke();
     }
+  }
+
+  // copied from RoughCanvas 4.X.X
+
+  get generator(): RoughGenerator {
+    return this.gen;
+  }
+
+  getDefaultOptions(): ResolvedOptions {
+    return this.gen.defaultOptions;
+  }
+
+  // line(x1: number, y1: number, x2: number, y2: number, options?: Options): Drawable {
+  //   const d = this.gen.line(x1, y1, x2, y2, options);
+  //   this.draw(d);
+  //   return d;
+  // }
+  //
+  // rectangle(x: number, y: number, width: number, height: number, options?: Options): Drawable {
+  //   const d = this.gen.rectangle(x, y, width, height, options);
+  //   this.draw(d);
+  //   return d;
+  // }
+  //
+  // ellipse(x: number, y: number, width: number, height: number, options?: Options): Drawable {
+  //   const d = this.gen.ellipse(x, y, width, height, options);
+  //   this.draw(d);
+  //   return d;
+  // }
+  //
+  // circle(x: number, y: number, diameter: number, options?: Options): Drawable {
+  //   const d = this.gen.circle(x, y, diameter, options);
+  //   this.draw(d);
+  //   return d;
+  // }
+  //
+  // linearPath(points: Point[], options?: Options): Drawable {
+  //   const d = this.gen.linearPath(points, options);
+  //   this.draw(d);
+  //   return d;
+  // }
+  //
+  // polygon(points: Point[], options?: Options): Drawable {
+  //   const d = this.gen.polygon(points, options);
+  //   this.draw(d);
+  //   return d;
+  // }
+  //
+  // arc(x: number, y: number, width: number, height: number, start: number, stop: number, closed: boolean = false, options?: Options): Drawable {
+  //   const d = this.gen.arc(x, y, width, height, start, stop, closed, options);
+  //   this.draw(d);
+  //   return d;
+  // }
+  //
+  // curve(points: Point[], options?: Options): Drawable {
+  //   const d = this.gen.curve(points, options);
+  //   this.draw(d);
+  //   return d;
+  // }
+  //
+  path(d: string, options?: Options): Drawable {
+    const drawing = this.gen.path(d, options);
+    this.draw(drawing);
+    return drawing;
   }
 }
 

@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 import { Drawable, Options } from 'roughjs/bin/core';
-import { RoughCanvas } from 'roughjs/bin/canvas';
 import { RoughJsAdaptor } from './RoughJsAdaptor';
 
 export class SketchySvgCanvas extends mxSvgCanvas2D {
   //export class SketchySvgCanvas extends mxAbstractCanvas2D {
   private passThrough = false;
   private nextShape: Drawable;
-  private readonly roughJS: RoughCanvas;
+  private readonly roughJS: RoughJsAdaptor;
 
   // TODO see if we use RoughCanvas, RoughSvg, or Generator directly
   // TODO we mainly only need style info, mxShape only used to get the mxCell id
