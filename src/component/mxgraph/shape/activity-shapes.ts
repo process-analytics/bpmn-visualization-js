@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import StyleUtils, { StyleDefault } from '../StyleUtils';
-import { buildPaintParameter, IconConstants, IconPainterProvider, PaintParameter } from './render/IconPainter';
+import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render/IconPainter';
 import { ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { ShapeBpmnMarkerKind } from '../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 import BpmnCanvas from './render/BpmnCanvas';

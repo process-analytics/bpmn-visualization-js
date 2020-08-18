@@ -19,11 +19,6 @@ import BpmnCanvas from './BpmnCanvas';
 import StyleUtils from '../../StyleUtils';
 import { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 
-export enum IconConstants {
-  MARKER_ICONS_MARGIN = 5,
-  MARKER_ICONS_SIZE = 20, //TODO: this may be adjusted once #465 will be implemented see @https://github.com/process-analytics/bpmn-visualization-js/issues/465
-}
-
 export interface PaintParameter {
   c: mxAbstractCanvas2D;
   shape: ShapeConfiguration;
