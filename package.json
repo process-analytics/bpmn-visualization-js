@@ -39,7 +39,7 @@
     }
   },
   "devDependencies": {
-    "@rollup/plugin-json": "^4.0.2",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^8.4.0",
     "@types/jest": "^26.0.9",
     "@types/jest-environment-puppeteer": "^4.3.2",
