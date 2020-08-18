@@ -139,24 +139,31 @@ export class SketchySvgCanvas extends mxSvgCanvas2D {
   // }
 
   // internal method
+  // TODO rename into addOp (signature is wrong in mxgraph-type-definitions 1.0.4)
+  // TODO remove custom implementation for action except the one that directly call roughjs
+  // They are not needed because the addOp will behave correctly regarding translation/scaling with the new implementation below
+  // that acts correctly whether we are in 'passthrough' or not
   private _addOp(actions: unknown[]): void {
     if (this.path != null) {
       // console.error('@@custom addOp - not null path');
       this.path.push(actions[0] as string);
 
       if (actions.length > 2) {
-        // const s = this.canvas.state;
+        const s = this.state;
 
         for (let i = 2; i < actions.length; i += 2) {
-          // TODO simplify by casting into string
           this.lastX = actions[i - 1] as number;
           this.lastY = actions[i] as number;
 
-          this.path.push(String(this.format(String(this.lastX))));
-          this.path.push(String(this.format(String(this.lastY))));
-          // TODO check if needed, only difference with original implem: no scaling and
-          //     this.path.push(this.format((this.lastX + s.dx) * s.scale));
-          //     this.path.push(this.format((this.lastY + s.dy) * s.scale));
+          // from the mxAbstractCanvas2D.prototype.addOp implementation
+          if (this.passThrough) {
+            // manage translation and scaling
+            this.path.push(String(this.format(String((this.lastX + s.dx) * s.scale))));
+            this.path.push(String(this.format(String((this.lastY + s.dy) * s.scale))));
+          } else {
+            this.path.push(String(this.format(String(this.lastX))));
+            this.path.push(String(this.format(String(this.lastY))));
+          }
         }
       }
     }
