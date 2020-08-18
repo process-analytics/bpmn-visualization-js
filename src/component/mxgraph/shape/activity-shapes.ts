@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import StyleUtils, { StyleDefault } from '../StyleUtils';
-import { buildPaintParameter, IconConstants, IconPainterProvider, PaintParameter } from './render/IconPainter';
+import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render/IconPainter';
 import { ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { ShapeBpmnMarkerKind } from '../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 import BpmnCanvas from './render/BpmnCanvas';
@@ -53,7 +53,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
       markers.split(',').forEach((marker, idx, allMarkers) => {
         paintParameter = {
           ...paintParameter,
-          setIconOrigin: this.getIconOriginForMarkerIcon(allMarkers, idx + 1),
+          setIconOrigin: this.getIconOriginForMarkerIcon(allMarkers.length, idx + 1),
         };
         switch (marker) {
           case ShapeBpmnMarkerKind.LOOP:
@@ -78,14 +78,14 @@ export abstract class BaseActivityShape extends mxRectangleShape {
     }
   }
 
-  private getIconOriginForMarkerIcon(allMarkers: string[], markerOrder: number): (canvas: BpmnCanvas) => void {
+  private getIconOriginForMarkerIcon(allMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
     let setIconOrigin: (canvas: BpmnCanvas) => void;
-    if (allMarkers.length === 1) {
+    if (allMarkers === 1) {
       setIconOrigin = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
-    } else if (allMarkers.length === 2) {
+    } else if (allMarkers === 2) {
       setIconOrigin = (canvas: BpmnCanvas) => {
         canvas.setIconOriginForIconBottomCentered();
-        const xTranslation = Math.pow(-1, markerOrder) * (IconConstants.MARKER_ICONS_SIZE / 2 + IconConstants.MARKER_ICONS_MARGIN);
+        const xTranslation = Math.pow(-1, markerOrder) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
         canvas.translateIconOrigin(xTranslation, 0);
       };
     } else {

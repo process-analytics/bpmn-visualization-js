@@ -27,6 +27,8 @@ export enum StyleDefault {
   SHAPE_ACTIVITY_TOP_MARGIN = 7,
   SHAPE_ACTIVITY_LEFT_MARGIN = 7,
   SHAPE_ACTIVITY_FROM_CENTER_MARGIN = 7,
+  SHAPE_ACTIVITY_MARKER_ICON_MARGIN = 5,
+  SHAPE_ACTIVITY_MARKER_ICON_SIZE = 20, //TODO: this may be adjusted once #465 will be implemented see @https://github.com/process-analytics/bpmn-visualization-js/issues/465
   DEFAULT_FILL_COLOR = 'White',
   DEFAULT_STROKE_COLOR = 'Black',
   DEFAULT_FONT_FAMILY = 'Arial, Helvetica, sans-serif', // define our own to not depend on eventual mxGraph default change
