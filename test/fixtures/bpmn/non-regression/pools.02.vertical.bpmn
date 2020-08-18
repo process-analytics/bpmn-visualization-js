@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_19801p0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="7.3.0">
+  <bpmn:collaboration id="Collaboration_01pfi2w">
+    <bpmn:participant id="Participant_09kxlbt" name="Vertical Pool" processRef="Process_1m47u99" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_1m47u99">
+    <bpmn:laneSet id="LaneSet_012cmfs">
+      <bpmn:lane id="Lane_0bpyqm2" name="Vertical Lane 2" />
+      <bpmn:lane id="Lane_14h9zcu" name="Vertical Lane 1" />
+    </bpmn:laneSet>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_01pfi2w">
+      <bpmndi:BPMNShape id="Participant_09kxlbt_di" bpmnElement="Participant_09kxlbt" isHorizontal="false">
+        <dc:Bounds x="160" y="80" width="600" height="250" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0bpyqm2_di" bpmnElement="Lane_0bpyqm2" isHorizontal="false">
+        <dc:Bounds x="460" y="110" width="300" height="220" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_14h9zcu_di" bpmnElement="Lane_14h9zcu" isHorizontal="false">
+        <dc:Bounds x="160" y="110" width="300" height="220" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

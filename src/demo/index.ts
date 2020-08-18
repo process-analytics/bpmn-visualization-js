@@ -21,7 +21,9 @@ export const bpmnVisualization = new BpmnVisualization(window.document.getElemen
 
 let fitOnLoad = false;
 function loadBpmn(bpmn: string): void {
+  log('Loading bpmn....');
   bpmnVisualization.load(bpmn);
+  log('BPMN loaded');
 
   if (fitOnLoad) {
     log('Fitting....');
@@ -66,6 +68,8 @@ documentReady(function () {
   const bpmnParameterValue = parameters.get('bpmn');
   if (bpmnParameterValue) {
     const bpmn = decodeURIComponent(bpmnParameterValue);
+    log(`Received bpmn length: ${bpmn.length}`);
+    log(`Received bpmn content: ${bpmn}`);
     log('BPMN auto loading');
     loadBpmn(bpmn);
     log('BPMN auto loading completed');
