@@ -122,23 +122,36 @@ export class ReceiveTaskShape extends BaseTaskShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  // TODO To remove when the instantiating receive task render is implemented
-  public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const isInstantiating = StyleUtils.getBpmnIsInstantiating(this.style);
-
-    if (isInstantiating) {
-      c.setFillColor('Salmon');
-    }
-
-    super.paintVertexShape(c, x, y, w, h);
-  }
-
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    const isInstantiating = StyleUtils.getBpmnIsInstantiating(this.style);
-
-    if (!isInstantiating) {
+    if (!StyleUtils.getBpmnIsInstantiating(this.style)) {
       paintEnvelopeIcon(paintParameter, false);
+      return;
     }
+
+    const leftMargin = 4;
+    const topMargin = 4;
+
+    // paint a fixed size circle
+    const circleShapeConfiguration = { ...paintParameter.shape, w: 20, h: 20 };
+    this.iconPainter.paintCircleIcon({
+      c: paintParameter.c,
+      shape: circleShapeConfiguration,
+      icon: { ...paintParameter.icon, isFilled: false },
+      ratioFromParent: undefined, // ensure we will paint the icon with its original size
+      setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(topMargin, leftMargin),
+    });
+
+    // paint an envelope centered inside the circle, with dimensions proportional to the circle dimensions
+    // set the actual origin of the circle icon: this is what 'setIconOriginToShapeTopLeft' has done prior painting the circle icon
+    circleShapeConfiguration.x += leftMargin;
+    circleShapeConfiguration.y += topMargin;
+
+    this.iconPainter.paintEnvelopeIcon({
+      ...paintParameter,
+      shape: circleShapeConfiguration,
+      ratioFromParent: 0.65,
+      setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginForIconCentered(),
+    });
   }
 }
 
