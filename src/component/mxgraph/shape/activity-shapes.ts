@@ -133,6 +133,9 @@ export class ReceiveTaskShape extends BaseTaskShape {
       return;
     }
 
+    const leftMargin = 4;
+    const topMargin = 4;
+
     // paint a fixed size circle
     const circleShapeConfiguration = { ...paintParameter.shape, w: 20, h: 20 };
     this.iconPainter.paintCircleIcon({
@@ -140,13 +143,13 @@ export class ReceiveTaskShape extends BaseTaskShape {
       shape: circleShapeConfiguration,
       icon: { ...paintParameter.icon, isFilled: false },
       ratioFromParent: undefined, // ensure we will paint the icon with its original size
-      setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(),
+      setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(topMargin, leftMargin),
     });
 
     // paint an envelope centered inside the circle, with dimensions proportional to the circle dimensions
-    // set the actual origin of the circle icon: this is what 'setIconOriginToShapeTopLeft' has done prior painting the cirle icon
-    circleShapeConfiguration.x += StyleDefault.SHAPE_ACTIVITY_LEFT_MARGIN;
-    circleShapeConfiguration.y += StyleDefault.SHAPE_ACTIVITY_TOP_MARGIN;
+    // set the actual origin of the circle icon: this is what 'setIconOriginToShapeTopLeft' has done prior painting the circle icon
+    circleShapeConfiguration.x += leftMargin;
+    circleShapeConfiguration.y += topMargin;
 
     this.iconPainter.paintEnvelopeIcon({
       ...paintParameter,
