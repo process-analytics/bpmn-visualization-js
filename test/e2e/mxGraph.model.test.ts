@@ -547,7 +547,7 @@ describe('mxGraph model', () => {
     });
     expectModelContainsShape('expanded_embedded_sub_process_id_task_1', {
       kind: ShapeBpmnElementKind.TASK,
-      label: 'Task in suprocess',
+      label: 'Task in subprocess',
       parentId: 'expanded_embedded_sub_process_id',
     });
     expectModelContainsShape('expanded_embedded_sub_process_id_endEvent_1', {

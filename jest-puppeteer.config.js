@@ -17,12 +17,13 @@ module.exports = {
   server: {
     command: `npm run start`,
     port: 10001,
-    launchTimeout: 10000,
+    launchTimeout: 30000, // high value mainly for GitHub Workflows running on macOS (slow machines)
     debug: true,
   },
   launch: {
     dumpio: true,
     headless: process.env.HEADLESS !== 'false',
+    slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
     args: ['--disable-infobars'],
     timeout: 120000,
   },
