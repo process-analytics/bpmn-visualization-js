@@ -44,7 +44,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
 
   public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
-    this.paintMarkerIcons(buildPaintParameter(c, x, y, w, h, this, 0.17, false, 1.5));
+    this.paintMarkerIcons(buildPaintParameter(c, x, y, w, h, this, 0, false, 1.5));
   }
 
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
