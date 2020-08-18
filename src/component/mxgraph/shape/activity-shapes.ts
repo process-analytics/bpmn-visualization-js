@@ -136,8 +136,9 @@ export class ReceiveTaskShape extends BaseTaskShape {
     // const circleIconSize: Size = { width: 80, height: 80 };
     // const circleShapeConfiguration = { x: paintParameter.shape.x, y: paintParameter.shape.y, w: circleIconSize.width, h: circleIconSize.height };
     // const circleShapeConfiguration = { x: paintParameter.shape.x, y: paintParameter.shape.y, w: 80, h: 80 };
-    const circleShapeConfiguration = { ...paintParameter.shape, w: 80, h: 80 };
-    const circleShapeRatioFromParent = 0.25; // TODO this is the default value
+    // const circleShapeConfiguration = { ...paintParameter.shape, w: 80, h: 80 };
+    const circleShapeConfiguration = { ...paintParameter.shape, w: 20, h: 20 };
+    // const circleShapeRatioFromParent = 0.25; // TODO this is the default value
 
     this.iconPainter.paintCircleIcon({
       ...paintParameter,
@@ -146,14 +147,15 @@ export class ReceiveTaskShape extends BaseTaskShape {
       setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(),
       icon: { ...paintParameter.icon, isFilled: false },
       // ratioFromParent: circleShapeRatioFromParent,
+      ratioFromParent: undefined, // ensure we will paint the icon with its original size
     });
 
     // paint an envelope centered inside the circle, dimensions: 80% of the circle dimensions
     // this is what 'setIconOriginToShapeTopLeft' does
     circleShapeConfiguration.x += StyleDefault.SHAPE_ACTIVITY_LEFT_MARGIN;
     circleShapeConfiguration.y += StyleDefault.SHAPE_ACTIVITY_TOP_MARGIN;
-    circleShapeConfiguration.w *= circleShapeRatioFromParent;
-    circleShapeConfiguration.h *= circleShapeRatioFromParent;
+    // circleShapeConfiguration.w *= circleShapeRatioFromParent;
+    // circleShapeConfiguration.h *= circleShapeRatioFromParent;
 
     this.iconPainter.paintEnvelopeIcon({
       ...paintParameter,
