@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, DropFileUserInterface, handleFileSelect, loadBpmn, logStartup, readAndLoadFile } from '../../index.es.js';
+import { documentReady, DropFileUserInterface, handleFileSelect, readAndLoadFile, startDemo } from '../../index.es.js';
 
 // TODO: move to UI initializer
 new DropFileUserInterface(window, 'drop-container', 'graph', readAndLoadFile);
@@ -24,17 +24,4 @@ document.getElementById('file-selector').classList.remove('hidden');
 ////////////////////////////////////////////////////////////////////////////////
 // if bpmn passed as request parameter, try to load it directly
 ////////////////////////////////////////////////////////////////////////////////
-documentReady(function () {
-  const log = logStartup;
-  log("Checking if 'BPMN auto loading from url parameter' is requested");
-  const parameters = new URLSearchParams(window.location.search);
-  const bpmnParameterValue = parameters.get('bpmn');
-  if (bpmnParameterValue) {
-    const bpmn = decodeURIComponent(bpmnParameterValue);
-    log('BPMN auto loading');
-    loadBpmn(bpmn);
-    log('BPMN auto loading completed');
-  } else {
-    log('No BPMN auto loading');
-  }
-});
+documentReady(startDemo);

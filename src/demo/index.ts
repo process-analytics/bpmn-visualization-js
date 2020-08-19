@@ -52,12 +52,12 @@ export function handleFileSelect(evt: any): void {
 
 export function startDemo(): void {
   const log = logStartup;
-  log("Checking if 'BPMN auto loading from url parameter' is requested");
   const parameters = new URLSearchParams(window.location.search);
 
   fitOnLoad = parameters.get('fitOnLoad') == 'true';
   log(`Configure 'fit on load' to ${fitOnLoad}`);
 
+  log("Checking if 'BPMN auto loading from url parameter' is requested");
   const bpmnParameterValue = parameters.get('bpmn');
   if (bpmnParameterValue) {
     const bpmn = decodeURIComponent(bpmnParameterValue);
