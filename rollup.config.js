@@ -45,11 +45,15 @@ const plugins = [
 // Copy static resources to dist
 if (devMode || demoMode) {
   const copyTargets = [];
+  // TODO configure with glob if possible to avoid listing all files manually (maintenance pain)
   copyTargets.push({ src: 'src/index.html', dest: 'dist/' });
   copyTargets.push({ src: 'src/index-non-regression.html', dest: 'dist/' });
+  copyTargets.push({ src: 'src/lib-integration.html', dest: 'dist/' });
   copyTargets.push({ src: 'src/static/css/main.css', dest: 'dist/static/css/' });
   copyTargets.push({ src: 'src/static/img/favicon.ico', dest: 'dist/static/img/' });
   copyTargets.push({ src: 'src/static/js/configureMxGraphGlobals.js', dest: 'dist/static/js/' });
+  copyTargets.push({ src: 'src/static/js/index.js', dest: 'dist/static/js/' });
+  copyTargets.push({ src: 'src/static/js/lib-integration.js', dest: 'dist/static/js/' });
   copyTargets.push({ src: 'node_modules/mxgraph/javascript/mxClient.min.js', dest: 'dist/static/js/' });
   let copyPlugin;
   if (devLiveReloadMode) {
@@ -77,8 +81,6 @@ if (devMode) {
 if (demoMode) {
   plugins.push(
     terser({
-      compress: false,
-      mangle: false,
       ecma: 6,
     }),
   );
