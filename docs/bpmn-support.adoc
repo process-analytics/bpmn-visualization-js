@@ -66,27 +66,23 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 |Receive Task
 |icon:check-circle-o[]
-|Icon may be subject to change +
-⚠️ The render for the instantiating receive task is NOT done
+|Icon may be subject to change
 
 |Send Task
 |icon:check-circle-o[]
 |Icon may be subject to change
 
 |Call Activity calling a Process
+|icon:check-circle-o[]
 |
-|Collapsed call activity : + 
-- Plus icon may be subject to change
 
 |Embedded Sub-Process
 |icon:check-circle-o[]
-|Collapsed sub-process : + 
-- Plus icon may be subject to change
+|
 
 |Event Sub-Process
 |icon:check-circle-o[]
 |Collapsed sub-process : + 
-- Plus icon may be subject to change + 
 - Missing start event icon
 |===
 
@@ -110,10 +106,10 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |
 |===
 
-*Notes*
+*Notes about markers*
 
-- The icon position is currently not centered but absolute, but this will be managed later
-- The size of the icon will be changed later to be consistent between shapes
+- The size of the marker icons will be set to a fixed size later
+- The marker icon of the collapsed activities may be subject to change
 
 
 === Events
