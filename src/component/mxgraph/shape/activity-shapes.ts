@@ -31,11 +31,6 @@ function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): v
 export abstract class BaseActivityShape extends mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
-  // TODO missing in mxgraph-type-definitions mxShape
-  isRounded: boolean;
-  // TODO missing in mxgraph-type-definitions mxShape
-  gradient: string;
-
   protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
     // enforced by BPMN
