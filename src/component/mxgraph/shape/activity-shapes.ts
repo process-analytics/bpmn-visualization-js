@@ -45,9 +45,11 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
     const markers = StyleUtils.getBpmnMarkers(this.style);
     if (markers) {
-      paintParameter = { ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginForIconOnBottomLeft() };
-
-      markers.split(',').forEach(marker => {
+      markers.split(',').forEach((marker, idx, allMarkers) => {
+        paintParameter = {
+          ...paintParameter,
+          setIconOrigin: this.getIconOriginForMarkerIcon(allMarkers.length, idx + 1),
+        };
         switch (marker) {
           case ShapeBpmnMarkerKind.LOOP:
             this.iconPainter.paintLoopIcon(paintParameter);
@@ -59,7 +61,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
             this.iconPainter.paintParallelMultiInstanceIcon(paintParameter);
             break;
           case ShapeBpmnMarkerKind.EXPAND:
-            this.iconPainter.paintExpandIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered() });
+            this.iconPainter.paintExpandIcon(paintParameter);
             break;
         }
         // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
@@ -69,6 +71,23 @@ export abstract class BaseActivityShape extends mxRectangleShape {
         paintParameter.c.setFillColor(StyleUtils.getFillColor(this.style));
       });
     }
+  }
+
+  private getIconOriginForMarkerIcon(allMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
+    let setIconOrigin: (canvas: BpmnCanvas) => void;
+    if (allMarkers === 1) {
+      setIconOrigin = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
+    } else if (allMarkers === 2) {
+      setIconOrigin = (canvas: BpmnCanvas) => {
+        canvas.setIconOriginForIconBottomCentered();
+        const xTranslation = Math.pow(-1, markerOrder) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
+        canvas.translateIconOrigin(xTranslation, 0);
+      };
+    } else {
+      // TODO: once we support 3 markers in a group
+      throw new Error('NOT_IMPLEMENTED - to have a group of >2 markers in a row, centered in the task, implement this piece of code');
+    }
+    return setIconOrigin;
   }
 }
 
