@@ -330,6 +330,16 @@ btnSketch.onclick = function () {
     }
   });
 
+  // ensure throw icon are fill more than with the default style
+  ShapeUtil.topLevelBpmnEventKinds().forEach(kind => {
+    const style = styleSheet.styles[kind];
+    // style['fillStyle'] = 'zigzag';
+    // style['zigzagOffset'] = '12';
+    style['hachureAngle'] = '60';
+    style['hachureGap'] = '3';
+    style['fillWeight'] = '2';
+  });
+
   const availableSketchFonts = ['Gloria Hallelujah, cursive', 'Permanent Marker, cursive'];
   // hack as we currently configured all properties in all styles, instead of only override what is defined in the default
   (Object.values(ShapeBpmnElementKind) as string[]).concat(Object.values(SequenceFlowKind) as string[]).forEach(kind => {
