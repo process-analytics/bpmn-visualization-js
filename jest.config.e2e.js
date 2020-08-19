@@ -26,4 +26,6 @@ module.exports = {
   globalSetup: 'jest-environment-puppeteer-jsdom/setup',
   globalTeardown: 'jest-environment-puppeteer-jsdom/teardown',
   setupFiles: ['<rootDir>/test/e2e/jest.globals.ts'],
+  // jest-image-snapshot configuration doesn't work with setupFiles, fix with setupFilesAfterEnv: see https://github.com/testing-library/jest-dom/issues/122#issuecomment-650520461
+  setupFilesAfterEnv: ['<rootDir>/test/e2e/jest.image.ts'],
 };

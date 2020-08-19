@@ -15,15 +15,26 @@
  */
 import BpmnVisualization from '../component/BpmnVisualization';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { documentReady, logStartup } from './helper';
+import { documentReady, log, logStartup } from './helper';
 
 export const bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'));
+
+let fitOnLoad = false;
+function loadBpmn(bpmn: string): void {
+  bpmnVisualization.load(bpmn);
+
+  if (fitOnLoad) {
+    log('Fitting....');
+    bpmnVisualization.graph.fit(0);
+    log('Fit completed');
+  }
+}
 
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {
   const reader = new FileReader();
   reader.onload = () => {
-    bpmnVisualization.load(reader.result as string);
+    loadBpmn(reader.result as string);
   };
   reader.readAsText(f);
 }
@@ -48,11 +59,15 @@ documentReady(function () {
   const log = logStartup;
   log("Checking if 'BPMN auto loading from url parameter' is requested");
   const parameters = new URLSearchParams(window.location.search);
+
+  fitOnLoad = parameters.get('fitOnLoad') == 'true';
+  log(`Configure 'fit on load' to ${fitOnLoad}`);
+
   const bpmnParameterValue = parameters.get('bpmn');
   if (bpmnParameterValue) {
     const bpmn = decodeURIComponent(bpmnParameterValue);
     log('BPMN auto loading');
-    bpmnVisualization.load(bpmn);
+    loadBpmn(bpmn);
     log('BPMN auto loading completed');
   } else {
     log('No BPMN auto loading');

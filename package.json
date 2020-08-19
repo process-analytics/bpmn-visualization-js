@@ -55,6 +55,7 @@
     "jest": "^26.3.0",
     "jest-each": "^26.3.0",
     "jest-environment-puppeteer-jsdom": "^4.3.1",
+    "jest-image-snapshot": "^4.1.0",
     "jest-puppeteer": "^4.4.0",
     "lint-staged": "^10.2.11",
     "minimist": "^1.2.3",
