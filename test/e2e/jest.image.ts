@@ -13,14 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as fs from 'fs';
-import * as path from 'path';
+// TODO give a try to import when we will use 'jest-image-snapshot' types
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { toMatchImageSnapshot } = require('jest-image-snapshot');
 
-export function readFileSync(relPathToSourceFile: string, encoding = 'utf8'): string {
-  return fs.readFileSync(path.join(__dirname, relPathToSourceFile), encoding);
-}
-
-/** Returns the files in the given directory. The function doesn't do any recursion in sub directories. */
-export function findFiles(relPathToSourceDirectory: string): string[] {
-  return fs.readdirSync(path.join(__dirname, relPathToSourceDirectory));
-}
+expect.extend({ toMatchImageSnapshot });
