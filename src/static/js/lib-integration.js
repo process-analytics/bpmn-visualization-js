@@ -15,6 +15,20 @@
  */
 import { BpmnVisualization } from '../../index.es.js';
 
+const parameters = new URLSearchParams(window.location.search);
+const bpmnParameterValue = parameters.get('bpmn');
+
+let bpmn;
+if (bpmnParameterValue) {
+  bpmn = decodeURIComponent(bpmnParameterValue);
+} else {
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  bpmn = bpmnDefaultContent();
+}
+//
+const bpmnVisualizationIntegration = new BpmnVisualization(window.document.getElementById('bpmn-visualization-viewport'));
+bpmnVisualizationIntegration.load(bpmn);
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function bpmnDefaultContent() {
   return `<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0x0opj6" targetNamespace="http://example.bpmn.com/schema/bpmn">
@@ -61,16 +75,3 @@ function bpmnDefaultContent() {
     </bpmndi:BPMNDiagram>
   </bpmn:definitions>`;
 }
-
-const parameters = new URLSearchParams(window.location.search);
-const bpmnParameterValue = parameters.get('bpmn');
-
-let bpmn;
-if (bpmnParameterValue) {
-  bpmn = decodeURIComponent(bpmnParameterValue);
-} else {
-  bpmn = bpmnDefaultContent();
-}
-//
-const bpmnVisualizationIntegration = new BpmnVisualization(window.document.getElementById('bpmn-visualization-viewport'));
-bpmnVisualizationIntegration.load(bpmn);
