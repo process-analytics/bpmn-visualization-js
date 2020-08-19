@@ -21,7 +21,4 @@ new DropFileUserInterface(window, 'drop-container', 'graph', readAndLoadFile);
 document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
 document.getElementById('file-selector').classList.remove('hidden');
 
-////////////////////////////////////////////////////////////////////////////////
-// if bpmn passed as request parameter, try to load it directly
-////////////////////////////////////////////////////////////////////////////////
 documentReady(startDemo);
