@@ -52,7 +52,7 @@ if (devMode || demoMode) {
   copyTargets.push({ src: 'src/static/css/main.css', dest: 'dist/static/css/' });
   copyTargets.push({ src: 'src/static/img/favicon.ico', dest: 'dist/static/img/' });
   copyTargets.push({ src: 'src/static/js/configureMxGraphGlobals.js', dest: 'dist/static/js/' });
-  copyTargets.push({ src: 'src/static/js/index.js', dest: 'dist/static/js/' });
+  copyTargets.push({ src: 'src/static/js/demo.js', dest: 'dist/static/js/' });
   copyTargets.push({ src: 'src/static/js/lib-integration.js', dest: 'dist/static/js/' });
   copyTargets.push({ src: 'node_modules/mxgraph/javascript/mxClient.min.js', dest: 'dist/static/js/' });
   let copyPlugin;
