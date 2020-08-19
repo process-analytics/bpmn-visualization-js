@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_0x0opj6" targetNamespace="http://example.bpmn.com/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="7.3.0">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:task id="Activity_1omool6" name="Task 1 with a very long label that should be wrapped.&#10; dui accumsan sit amet nulla facilisi morbi tempus iaculis urna id volutpat lacus&#10;&#10;&#10;laoreet non curabitur gravida arcu ac tortor dignissim convallis aenean et tortor at risus viverra adipiscing at in tellus integer feugiat scelerisque varius morbi enim nunc faucibus" />
+    <bpmn:task id="Activity_0z68329" name="Task 2 on bottom" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="Activity_1omool6_di" bpmnElement="Activity_1omool6">
+        <dc:Bounds x="155" y="80" width="250" height="160" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0z68329_di" bpmnElement="Activity_0z68329">
+        <dc:Bounds x="230" y="260" width="100" height="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="255" y="300" width="50" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

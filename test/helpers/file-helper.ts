@@ -24,3 +24,29 @@ export function readFileSync(relPathToSourceFile: string, encoding = 'utf8'): st
 export function findFiles(relPathToSourceDirectory: string): string[] {
   return fs.readdirSync(path.join(__dirname, relPathToSourceDirectory));
 }
+
+/**
+ * Very basic implementation, remove trailing spaces and tabs, line breaks
+ * @param xml the source to linearize
+ */
+export function linearizeXml(xml: string): string {
+  return (
+    xml
+      .split(/(\r\n|\n|\r)/g)
+      // trim
+      .map(line => {
+        return line.trim();
+      })
+      // remove extra spaces at the end of empty node
+      // <node1 attribute="value"                         />
+      .map(line => {
+        return line.replace(/"\s+\/>/g, '"/>');
+      })
+      // join without spaces
+      .join('')
+  );
+}
+
+export function encodeUriXml(xml: string): string {
+  return encodeURIComponent(xml);
+}

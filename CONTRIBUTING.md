@@ -80,6 +80,9 @@ To see what is happening in the web browser used by the tests
 - disable the `headless` mode by setting the `HEADLESS` environment variable to `false`
 - set the `SLOWMO` environment variable to a positive millisecond value (between `200` and `500` should be enough). This
 slows Puppeteer down by milliseconds that we specify. So we will be able to observe what it actually does.
+- set the `DEBUG` environment variable with `DEBUG=test` to activate debug logs. This is activated by default when
+running the npm task. Think about it when running tests in your IDE.
+
 
 ### Code style
 
