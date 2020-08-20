@@ -67,7 +67,6 @@ left: 15px !important;"></div>
       <input type="button" class="btn-common btn-print" id="btn-export-preview" title="Print Preview">
     </div>
 
-<!--    <div id="btn-group-zoom" class="btn-group">-->
     <div id="btn-group-zoom" style="position: absolute;
   top: 110px !important;
   left: 15px !important;">
@@ -77,8 +76,17 @@ left: 15px !important;"></div>
         <button id="btn-zoom-fit">Fit</button>
         <button id="btn-zoom-fit-horizontal">Horizontal Fit</button>
         <button id="btn-zoom-fit-vertical">Vertical Fit</button>
-        <label for="btn-sketch">Fit On Load</label><input type="checkbox" id="btn-fit-on-load" title="When activated, the BPMN diagram fits the whole viewport when loaded">
     </div>
+    <div id="btn-group-renderer" style="position: absolute; top: 110px; left: 650px;">
+      <label for="btn-sketch">Sketch</label><input type="checkbox" id="btn-sketch">
+      <div style="position: relative; float: right; left: 20px">
+        <input type="checkbox" id="btn-ignore-bpmn-label-styles" title="When activated, the Label styles in the BPMN Diagram are ignored and default font settings apply"><label for="btn-ignore-bpmn-label-styles">Ignore Label Styles</label>
+        <br>
+        <input type="checkbox" id="btn-fit-on-load" title="When activated, the BPMN diagram fits the whole viewport after load time"><label for="btn-fit-on-load">Fit On Load</label>
+      </div>
+    </div>
+
+
     <div id="btn-group-navigation" style="position: absolute;
   top: 150px !important;
   left: 15px !important;">
@@ -107,8 +115,6 @@ left: 15px !important;"></div>
                 <path fill-rule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
             </svg>
         </button>
-      <label for="btn-sketch">Sketch</label><input type="checkbox" id="btn-sketch">
-      <label for="btn-ignore-bpmn-label-styles">Ignore Label Styles</label><input type="checkbox" id="btn-ignore-bpmn-label-styles" title="When activated, the Label styles in the BPMN Diagram are ignored and default font settings apply">
     </div>
 </div>
 <div id="graph" class="graph-container">
