@@ -35,7 +35,7 @@ import { encodeUriXml, findFiles, linearizeXml, readFileSync } from '../helpers/
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const debug = require('debug')('test');
 
-const graphContainerId = 'graph';
+const graphContainerId = 'viewport';
 
 describe('no visual regression', () => {
   const defaultImageSnapshotConfig = {

@@ -15,7 +15,7 @@
  */
 import { readFileSync } from '../helpers/file-helper';
 
-const graphContainerId = 'graph';
+let graphContainerId = 'graph';
 
 async function expectLabel(cellId: string, expectedText?: string): Promise<void> {
   if (!expectedText) {
@@ -51,7 +51,7 @@ async function expectSequenceFlow(cellId: string, expectedText?: string): Promis
   await expectLabel(cellId, expectedText);
 }
 
-describe('BpmnVisu view', () => {
+describe('BpmnVisu view - index page', () => {
   it('should display page title', async () => {
     await page.goto('http://localhost:10001');
     await page.waitForSelector(`#${graphContainerId}`);
@@ -66,5 +66,16 @@ describe('BpmnVisu view', () => {
     await expectTask('Activity_1', 'Task 1');
     await expectSequenceFlow('Flow_2');
     await expectEvent('EndEvent_1', 'End Event 1');
+  });
+});
+
+describe('BpmnVisu view - lib-integration page', () => {
+  it('should display graph in page', async () => {
+    graphContainerId = 'bpmn-visualization-viewport';
+    await page.goto(`http://localhost:10001/lib-integration.html?bpmn=${readFileSync('../fixtures/bpmn/simple-start-only.bpmn')}`);
+    await expect(page.title()).resolves.toMatch('BPMN Visualization Lib Integration');
+    await page.waitForSelector(`#${graphContainerId}`);
+
+    await expectEvent('StartEvent_1', 'Start Event Only');
   });
 });

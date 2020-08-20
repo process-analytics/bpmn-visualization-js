@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../component/BpmnVisualization';
-import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { documentReady, log, logStartup } from './helper';
+import { log, logStartup } from './helper';
 
-export const bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'));
+let bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'));
 
 let fitOnLoad = false;
 function loadBpmn(bpmn: string): void {
@@ -32,8 +31,11 @@ function loadBpmn(bpmn: string): void {
   }
 }
 
+export * from './helper';
+export * from './component/DropFileUserInterface';
+
 // callback function for opening | dropping the file to be loaded
-function readAndLoadFile(f: File): void {
+export function readAndLoadFile(f: File): void {
   const reader = new FileReader();
   reader.onload = () => {
     loadBpmn(reader.result as string);
@@ -41,30 +43,26 @@ function readAndLoadFile(f: File): void {
   reader.readAsText(f);
 }
 
-// TODO: move to UI initializer
-new DropFileUserInterface(window, 'drop-container', 'graph', readAndLoadFile);
-
 // TODO: make File Open Button a self contained component
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function handleFileSelect(evt: any): void {
+export function handleFileSelect(evt: any): void {
   const f = evt.target.files[0];
   readAndLoadFile(f);
 }
 
-document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
-document.getElementById('file-selector').classList.remove('hidden');
-
-////////////////////////////////////////////////////////////////////////////////
-// if bpmn passed as request parameter, try to load it directly
-////////////////////////////////////////////////////////////////////////////////
-documentReady(function () {
+export function startBpmnVisualization(container: string): void {
   const log = logStartup;
-  log("Checking if 'BPMN auto loading from url parameter' is requested");
+
+  log(`Initializing BpmnVisualization with container '${container}'...`);
+  bpmnVisualization = new BpmnVisualization(window.document.getElementById(container));
+  log('Initialization completed');
+
   const parameters = new URLSearchParams(window.location.search);
 
   fitOnLoad = parameters.get('fitOnLoad') == 'true';
   log(`Configure 'fit on load' to ${fitOnLoad}`);
 
+  log("Checking if 'BPMN auto loading from url parameter' is requested");
   const bpmnParameterValue = parameters.get('bpmn');
   if (bpmnParameterValue) {
     const bpmn = decodeURIComponent(bpmnParameterValue);
@@ -76,4 +74,4 @@ documentReady(function () {
   } else {
     log('No BPMN auto loading');
   }
-});
+}

@@ -16,17 +16,13 @@
     </style>
 </head>
 <body>
-    <!-- Needed by demo code -->
-    <div id="file-selector"></div>
-    <div id="bpmn-file"></div>
-    <div id="graph" class="graph-container"></div>
-    <!-- END OF 'Needed by demo code' -->
+    <div id="viewport" class="graph-container"></div>
 
     <!-- load global settings -->
     <script src="./static/js/configureMxGraphGlobals.js"></script>
     <!-- load mxGraph client library -->
     <script src="./static/js/mxClient.min.js"></script>
-    <!-- load bpmn-visualization library -->
-    <script src="./index.es.js"></script>
+    <!-- load app -->
+    <script src="./static/js/non-regression.js" type="module"></script>
 </body>
 </html>
