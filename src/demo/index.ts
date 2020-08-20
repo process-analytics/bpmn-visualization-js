@@ -15,7 +15,7 @@
  */
 import BpmnVisualization from '../component/BpmnVisualization';
 // import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { PanType, ZoomType } from '../component/BpmnVisualizationOptions';
+import { PanType, RendererOptions, ZoomType } from '../component/BpmnVisualizationOptions';
 import { documentReady, log, logStartup } from './helper';
 import { downloadAsPng, downloadAsSvg } from './component/download';
 import ShapeUtil from '../model/bpmn/shape/ShapeUtil';
@@ -24,6 +24,7 @@ import { ShapeBpmnElementKind } from '../model/bpmn/shape/ShapeBpmnElementKind';
 import { SequenceFlowKind } from '../model/bpmn/edge/SequenceFlowKind';
 
 let fitOnLoad = false;
+let rendererOptions: RendererOptions;
 export const bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'), { activatePanning: true });
 
 // =====================================================================================================================
@@ -83,7 +84,7 @@ function statusFetchKO(url: string, error: unknown): void {
 function loadBpmn(bpmn: string): void {
   const initialStartTime = performance.now();
   log('Loading bpmn....');
-  bpmnVisualization.load(bpmn);
+  bpmnVisualization.load(bpmn, { rendererOptions: rendererOptions });
   log('BPMN loaded');
 
   // TODO this should be an option of the load function to improve rendering performance
@@ -365,6 +366,12 @@ const btnFitOnLoad = document.getElementById('btn-fit-on-load') as HTMLInputElem
 btnFitOnLoad.onclick = function () {
   fitOnLoad = btnFitOnLoad.checked;
   log(`Fit On Load is now '${fitOnLoad}'`);
+};
+
+const btnIgnoreBpmnLabelStyles = document.getElementById('btn-ignore-bpmn-label-styles') as HTMLInputElement;
+btnIgnoreBpmnLabelStyles.onclick = function () {
+  rendererOptions = { ...rendererOptions, ignoreLabelStyles: btnIgnoreBpmnLabelStyles.checked };
+  log(`RenderOptions 'ignoreLabelStyles' is now '${rendererOptions.ignoreLabelStyles}'`);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
