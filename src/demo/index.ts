@@ -16,10 +16,10 @@
 import BpmnVisualization from '../component/BpmnVisualization';
 import { log, logStartup } from './helper';
 
-const bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'));
+let bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'));
 
 let fitOnLoad = false;
-export function loadBpmn(bpmn: string): void {
+function loadBpmn(bpmn: string): void {
   log('Loading bpmn....');
   bpmnVisualization.load(bpmn);
   log('BPMN loaded');
@@ -50,8 +50,13 @@ export function handleFileSelect(evt: any): void {
   readAndLoadFile(f);
 }
 
-export function startDemo(): void {
+export function startBpmnVisualization(container: string): void {
   const log = logStartup;
+
+  log(`Initializing BpmnVisualization with container '${container}'...`);
+  bpmnVisualization = new BpmnVisualization(window.document.getElementById(container));
+  log('Initialization completed');
+
   const parameters = new URLSearchParams(window.location.search);
 
   fitOnLoad = parameters.get('fitOnLoad') == 'true';

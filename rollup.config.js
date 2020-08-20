@@ -54,6 +54,7 @@ if (devMode || demoMode) {
   copyTargets.push({ src: 'src/static/js/configureMxGraphGlobals.js', dest: 'dist/static/js/' });
   copyTargets.push({ src: 'src/static/js/demo.js', dest: 'dist/static/js/' });
   copyTargets.push({ src: 'src/static/js/lib-integration.js', dest: 'dist/static/js/' });
+  copyTargets.push({ src: 'src/static/js/non-regression.js', dest: 'dist/static/js/' });
   copyTargets.push({ src: 'node_modules/mxgraph/javascript/mxClient.min.js', dest: 'dist/static/js/' });
   let copyPlugin;
   if (devLiveReloadMode) {
