@@ -535,14 +535,14 @@ export default class IconPainter {
     // Loop
     canvas.begin();
     canvas.moveTo(5.5, 19.08);
-    canvas.arcTo(10, 10, 0, 1, 1, 10.5, 21.08);
+    canvas.arcTo(8, 8, 0, 1, 1, 10.5, 21.08);
     canvas.stroke();
 
     // Arrow
     canvas.begin();
-    canvas.moveTo(5.5, 14.08);
-    canvas.lineTo(5.5, 19.08);
-    canvas.lineTo(0, 17.58);
+    canvas.moveTo(7.5, 14.08);
+    canvas.lineTo(5.75, 19.08);
+    canvas.lineTo(0, 17.08);
     canvas.close();
     canvas.fillAndStroke();
   }
