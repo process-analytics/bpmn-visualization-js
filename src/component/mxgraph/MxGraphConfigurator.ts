@@ -17,7 +17,7 @@ import StyleConfigurator from './config/StyleConfigurator';
 import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import MxClientConfigurator from './config/MxClientConfigurator';
-import BpmnVisuOptions from '../BpmnVisuOptions';
+import BpmnVisualizationOptions from '../BpmnVisualizationOptions';
 
 /**
  * Configure the mxGraph graph that can be used by the lib
@@ -33,7 +33,7 @@ export default class MxGraphConfigurator {
     this.graph = new mxGraph(container);
   }
 
-  public configure(options?: BpmnVisuOptions): mxGraph {
+  public configure(options?: BpmnVisualizationOptions): mxGraph {
     this.configureGraph(options);
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
@@ -42,7 +42,7 @@ export default class MxGraphConfigurator {
     return this.graph;
   }
 
-  private configureGraph(options?: BpmnVisuOptions): void {
+  private configureGraph(options?: BpmnVisualizationOptions): void {
     this.graph.setEdgeLabelsMovable(false);
     this.graph.setVertexLabelsMovable(false);
     this.graph.setCellsLocked(false); // true value prevents panning to work

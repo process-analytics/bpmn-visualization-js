@@ -275,7 +275,7 @@ export default class StyleConfigurator {
     this.configureAssociationFlowStyles();
   }
 
-  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
+  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds, ignoreLabelFont = false): string {
     const styleValues = new Map<string, string | number>();
     const styles: string[] = [bpmnCell.bpmnElement?.kind as string];
 
@@ -327,11 +327,13 @@ export default class StyleConfigurator {
       }
     }
 
-    const font = bpmnCell.label?.font;
-    if (font) {
-      styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
-      styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
-      styleValues.set(mxConstants.STYLE_FONTSTYLE, StyleConfigurator.getFontStyleValue(font));
+    if (!ignoreLabelFont) {
+      const font = bpmnCell.label?.font;
+      if (font) {
+        styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
+        styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
+        styleValues.set(mxConstants.STYLE_FONTSTYLE, StyleConfigurator.getFontStyleValue(font));
+      }
     }
 
     if (labelBounds) {

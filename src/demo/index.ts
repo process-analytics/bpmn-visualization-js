@@ -15,7 +15,7 @@
  */
 import BpmnVisualization from '../component/BpmnVisualization';
 // import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { PanType, ZoomType } from '../component/BpmnVisuOptions';
+import { PanType, ZoomType } from '../component/BpmnVisualizationOptions';
 import { documentReady, log, logStartup } from './helper';
 import { downloadAsPng, downloadAsSvg } from './component/download';
 import ShapeUtil from '../model/bpmn/shape/ShapeUtil';

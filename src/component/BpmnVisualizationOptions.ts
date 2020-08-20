@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export default interface BpmnVisuOptions {
+export default interface BpmnVisualizationOptions {
   activatePanning?: boolean;
   activateOutline?: boolean;
   activateKeysHandler?: boolean;
@@ -33,4 +33,13 @@ export enum PanType {
   VerticalDown,
   HorizontalLeft,
   HorizontalRight,
+}
+
+export interface RendererOptions {
+  /** If set to `true`, ignore the label styles (font size, family, ...) defined in the BPMN source */
+  ignoreLabelStyles?: boolean;
+}
+
+export interface LoadOptions {
+  rendererOptions?: RendererOptions;
 }

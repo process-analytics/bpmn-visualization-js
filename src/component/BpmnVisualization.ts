@@ -17,7 +17,7 @@ import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
 import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { defaultBpmnParser } from './parser/BpmnParser';
-import BpmnVisuOptions, { PanType, ZoomType } from './BpmnVisuOptions';
+import BpmnVisualizationOptions, { LoadOptions, PanType, ZoomType } from './BpmnVisualizationOptions';
 import SvgExporter from './mxgraph/extension/SvgExporter';
 import Logger from './Logger';
 
@@ -28,7 +28,7 @@ export default class BpmnVisualization {
   public readonly graph: mxGraph;
   private mainConfigLogger = new Logger('bpmn.main#config');
 
-  constructor(protected container: HTMLElement, options?: BpmnVisuOptions) {
+  constructor(protected container: HTMLElement, options?: BpmnVisualizationOptions) {
     try {
       if (!mxClient.isBrowserSupported()) {
         mxUtils.error('Browser is not supported!', 200, false);
@@ -165,7 +165,7 @@ export default class BpmnVisualization {
 
   private loadLogger: Logger = new Logger('bpmn.main#load');
 
-  public load(xml: string): void {
+  public load(xml: string, options?: LoadOptions): void {
     this.loadLogger.info('Start loading BPMN');
     const initialStartTime = performance.now();
     try {
@@ -175,7 +175,7 @@ export default class BpmnVisualization {
       let endTime = performance.now();
       this.loadLogger.info(`Parsing done in ${endTime - startTime} ms`);
       startTime = endTime;
-      defaultMxGraphRenderer(this.graph).render(bpmnModel);
+      defaultMxGraphRenderer(this.graph).configure(options?.rendererOptions).render(bpmnModel);
       endTime = performance.now();
       this.loadLogger.info(`Rendering done in ${endTime - startTime} ms`);
       this.loadLogger.info(`BPMN loaded in ${endTime - initialStartTime} ms`);
@@ -203,7 +203,7 @@ export default class BpmnVisualization {
     this.graph.fit(0, false, 0, true, ignoreWidth, ignoreHeight);
   }
 
-  // TODO zoom factor should be configurable (in global BpmnVisuOptions)
+  // TODO zoom factor should be configurable (in global BpmnVisualizationOptions)
   // TODO see lazyZoom of draw.io
   public zoom(zoomType: ZoomType): void {
     const startTime = performance.now();
