@@ -32,7 +32,7 @@ export const bpmnVisualization = new BpmnVisualization(window.document.getElemen
 // =====================================================================================================================
 
 function getStatusElement(): HTMLElement {
-  return document.getElementById('load-status');
+  return document.getElementById('status');
 }
 
 function statusLoaded(msg: string): void {
@@ -59,7 +59,7 @@ function cleanStatus(): void {
 function statusFetching(url: string): void {
   const statusElt = getStatusElement();
   statusElt.innerText = 'Fetching ' + url;
-  statusElt.className = 'status-fetching';
+  statusElt.className = ' status-pending';
 }
 
 function statusFetched(url: string, duration: number): void {
@@ -75,6 +75,18 @@ function statusFetchKO(url: string, error: unknown): void {
   const statusElt = getStatusElement();
   statusElt.innerText = `Unable to fetch ${url}. ${error}`;
   statusElt.className = 'status-ko';
+}
+
+function statusRendering(msg: string): void {
+  const statusElt = getStatusElement();
+  statusElt.innerText = msg;
+  statusElt.className = ' status-pending';
+}
+
+function statusRendered(msg: string): void {
+  const statusElt = getStatusElement();
+  statusElt.innerText = msg;
+  statusElt.className = 'status-ok';
 }
 
 // =====================================================================================================================
@@ -294,11 +306,14 @@ document.getElementById('btn-export-png').onclick = function () {
 // =====================================================================================================================
 const btnSketch = document.getElementById('btn-sketch') as HTMLInputElement;
 btnSketch.onclick = function () {
+  const initialStartTime = performance.now();
+  const sketchActivated = btnSketch.checked;
+
+  log(`Sketch style management, sketch: ${sketchActivated}`);
+  statusRendering(`New rendering in progress, sketch mode: ${sketchActivated}`);
+
   const graph = bpmnVisualization.graph;
   const styleSheet = graph.getStylesheet();
-
-  const sketchActivated = btnSketch.checked;
-  log(`Sketch style management, sketch: ${sketchActivated}`);
 
   styleSheet.getDefaultEdgeStyle()['sketch'] = String(sketchActivated);
   styleSheet.getDefaultVertexStyle()['sketch'] = String(sketchActivated);
@@ -360,6 +375,7 @@ btnSketch.onclick = function () {
   log('Refreshing the mxgraph.graph to consider style updates');
   graph.refresh();
   log(`mxgraph.graph refreshed in ${performance.now() - startTime} ms`);
+  statusRendered(`Rendering completed in ${performance.now() - initialStartTime} ms, sketch mode: ${sketchActivated}`);
 };
 
 const btnFitOnLoad = document.getElementById('btn-fit-on-load') as HTMLInputElement;
