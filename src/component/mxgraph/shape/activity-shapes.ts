@@ -44,6 +44,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
 
   public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
+    // 0 is used for ratioParent as if we pass undefined to builder function the default 0.25 value will be used instead
     this.paintMarkerIcons(buildPaintParameter(c, x, y, w, h, this, 0, false, 1.5));
   }
 
