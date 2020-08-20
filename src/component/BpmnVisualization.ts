@@ -37,7 +37,7 @@ export default class BpmnVisualization {
       const configurator = new MxGraphConfigurator(this.container);
 
       // TODO make activation/deactivation configurable
-      this.configureMouseEvent(false);
+      this.configureMouseEvent(true);
 
       this.graph = configurator.configure(options);
       this.configureKeyHandler();
