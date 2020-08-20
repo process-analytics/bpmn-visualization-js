@@ -19,4 +19,11 @@ const visualizationContainer = 'viewport';
 // TODO: move to UI initializer
 new DropFileUserInterface(window, 'drop-container', visualizationContainer, readAndLoadFile);
 
-documentReady(startBpmnVisualization(visualizationContainer));
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function statusFetchKO(errorMsg) {
+  const statusElt = document.getElementById('fetch-status');
+  statusElt.innerText = errorMsg;
+  statusElt.className = 'status-ko';
+}
+
+documentReady(startBpmnVisualization({ container: visualizationContainer, statusFetchKoNotifier: statusFetchKO }));

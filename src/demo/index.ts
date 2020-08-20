@@ -50,8 +50,45 @@ export function handleFileSelect(evt: any): void {
   readAndLoadFile(f);
 }
 
-export function startBpmnVisualization(container: string): void {
+function fetchBpmnContent(url: string): Promise<string> {
+  log(`Fetching BPMN content from url ${url}`);
+  return fetch(url).then(response => {
+    if (!response.ok) {
+      throw Error(String(response.status));
+    }
+    return response.text();
+  });
+}
+
+function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) => void): void {
+  fetchBpmnContent(url)
+    .catch(error => {
+      const errorMessage = `Unable to fetch ${url}. ${error}`;
+      statusFetchKoNotifier(errorMessage);
+      throw new Error(errorMessage);
+    })
+    .then(responseBody => {
+      log('BPMN content fetched');
+      return responseBody;
+    })
+    .then(bpmn => {
+      loadBpmn(bpmn);
+      log(`Bpmn loaded from url ${url}`);
+    });
+}
+
+export interface BpmnVisualizationDemoConfiguration {
+  container: string;
+  statusFetchKoNotifier?: (errorMsg: string) => void;
+}
+
+function defaultStatusFetchKoNotifier(errorMsg: string): void {
+  console.error(errorMsg);
+}
+
+export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
+  const container = config.container;
 
   log(`Initializing BpmnVisualization with container '${container}'...`);
   bpmnVisualization = new BpmnVisualization(window.document.getElementById(container));
@@ -62,7 +99,7 @@ export function startBpmnVisualization(container: string): void {
   fitOnLoad = parameters.get('fitOnLoad') == 'true';
   log(`Configure 'fit on load' to ${fitOnLoad}`);
 
-  log("Checking if 'BPMN auto loading from url parameter' is requested");
+  log("Checking if 'BPMN content' is provided as query parameter");
   const bpmnParameterValue = parameters.get('bpmn');
   if (bpmnParameterValue) {
     const bpmn = decodeURIComponent(bpmnParameterValue);
@@ -70,8 +107,18 @@ export function startBpmnVisualization(container: string): void {
     log(`Received bpmn content: ${bpmn}`);
     log('BPMN auto loading');
     loadBpmn(bpmn);
-    log('BPMN auto loading completed');
-  } else {
-    log('No BPMN auto loading');
+    log('BPMN content loading completed');
+    return;
   }
+  log("No 'BPMN content' provided");
+
+  log("Checking if an 'url to fetch BPMN content' is provided as query parameter");
+  const urlParameterValue = parameters.get('url');
+  if (urlParameterValue) {
+    const url = decodeURIComponent(urlParameterValue);
+    const statusFetchKoNotifier = config.statusFetchKoNotifier || defaultStatusFetchKoNotifier;
+    loadBpmnFromUrl(url, statusFetchKoNotifier);
+    return;
+  }
+  log("No 'url to fetch BPMN content' provided");
 }

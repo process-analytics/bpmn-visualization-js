@@ -15,9 +15,19 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
+import debugLogger from 'debug';
+
+const debug = debugLogger('test');
 
 export function readFileSync(relPathToSourceFile: string, encoding = 'utf8'): string {
   return fs.readFileSync(path.join(__dirname, relPathToSourceFile), encoding);
+}
+
+export function copyFileSync(relPathToSourceFile: string, relPathToDestinationDirectory: string, destinationFileName: string): void {
+  const directoryPath = path.join(__dirname, relPathToDestinationDirectory);
+
+  fs.mkdirSync(directoryPath, { recursive: true });
+  fs.copyFileSync(path.join(__dirname, relPathToSourceFile), path.join(directoryPath, destinationFileName));
 }
 
 /** Returns the files in the given directory. The function doesn't do any recursion in sub directories. */
@@ -49,4 +59,17 @@ export function linearizeXml(xml: string): string {
 
 export function encodeUriXml(xml: string): string {
   return encodeURIComponent(xml);
+}
+
+export function loadBpmnContentForUrlQueryParam(relPathToSourceFile: string): string {
+  debug(`Preparing bpmn content for url query param, source: '${relPathToSourceFile}'`);
+  let rawBpmn = readFileSync(relPathToSourceFile);
+  debug(`Original bpmn length: ${rawBpmn.length}`);
+
+  rawBpmn = linearizeXml(rawBpmn);
+  debug(`Bpmn length after linearize: ${rawBpmn.length}`);
+
+  const uriEncodedBpmn = encodeUriXml(rawBpmn);
+  debug(`Bpmn length in URI encoded form: ${uriEncodedBpmn.length}`);
+  return uriEncodedBpmn;
 }

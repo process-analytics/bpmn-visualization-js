@@ -22,4 +22,4 @@ new DropFileUserInterface(window, 'drop-container', visualizationContainer, read
 document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
 document.getElementById('file-selector').classList.remove('hidden');
 
-documentReady(startBpmnVisualization(visualizationContainer));
+documentReady(startBpmnVisualization({ container: visualizationContainer }));

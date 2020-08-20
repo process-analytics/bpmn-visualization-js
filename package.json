@@ -41,6 +41,7 @@
   "devDependencies": {
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^8.4.0",
+    "@types/debug": "^4.1.5",
     "@types/jest": "^26.0.9",
     "@types/jest-environment-puppeteer": "^4.3.2",
     "@types/puppeteer": "^3.0.1",

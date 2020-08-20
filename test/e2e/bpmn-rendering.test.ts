@@ -30,11 +30,10 @@ declare global {
   }
 }
 
-import { encodeUriXml, findFiles, linearizeXml, readFileSync } from '../helpers/file-helper';
-// import debug from 'debug';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const debug = require('debug')('test');
+import { copyFileSync, findFiles, loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
+import debugLogger from 'debug';
 
+const log = debugLogger('test');
 const graphContainerId = 'viewport';
 
 describe('no visual regression', () => {
@@ -46,13 +45,9 @@ describe('no visual regression', () => {
     comparisonMethod: 'ssim',
   };
 
-  function log(msg: string): void {
-    debug(msg);
-  }
-
   function getSimplePlatformName(): string {
     const platform = process.platform;
-    debug(`This platform is ${platform}`);
+    log(`This platform is ${platform}`);
 
     if (platform.startsWith('win')) {
       return 'windows';
@@ -139,17 +134,43 @@ describe('no visual regression', () => {
     return defaultImageSnapshotConfig;
   }
 
-  function bpmnContentForTestPage(fileName: string): string {
-    log(`Preparing bpmn content for test '${fileName}'`);
-    let rawBpmn = readFileSync(`../fixtures/bpmn/non-regression/${fileName}.bpmn`);
-    log(`Original bpmn length: ${rawBpmn.length}`);
+  enum BpmnLoadMethod {
+    QueryParam = 'query param',
+    Url = 'url',
+  }
 
-    rawBpmn = linearizeXml(rawBpmn);
-    log(`bpmn length after linearize: ${rawBpmn.length}`);
+  /**
+   * Configure how the BPMN file is loaded by the test page.
+   *
+   * When introducing a new test, there is generally no need to add configuration here as the default is OK. You only need configuration when the file content becomes larger (in
+   * that case, the test server returns an HTTP 400 error).
+   *
+   * Prior adding a config here, review your file to check if it is not too large because it contains too much elements, in particular, some elements not related to what you want to
+   * test.
+   */
+  const bpmnLoadMethodConfig = new Map<string, BpmnLoadMethod>([['events', BpmnLoadMethod.Url]]);
 
-    const uriEncodedBpmn = encodeUriXml(rawBpmn);
-    log(`bpmn length in URI encoded form: ${uriEncodedBpmn.length}`);
-    return uriEncodedBpmn;
+  function getBpmnLoadMethod(fileName: string): BpmnLoadMethod {
+    return bpmnLoadMethodConfig.get(fileName) || BpmnLoadMethod.QueryParam;
+  }
+
+  function prepareTestResourcesAndGetPageUrl(fileName: string): string {
+    let url = 'http://localhost:10001/index-non-regression.html?fitOnLoad=true';
+
+    const bpmnLoadMethod = getBpmnLoadMethod(fileName);
+    log(`Use '${bpmnLoadMethod}' as BPMN Load Method for '${fileName}'`);
+    const relPathToBpmnFile = `../fixtures/bpmn/non-regression/${fileName}.bpmn`;
+    switch (bpmnLoadMethod) {
+      case BpmnLoadMethod.QueryParam:
+        const bpmnContent = loadBpmnContentForUrlQueryParam(relPathToBpmnFile);
+        url += `&bpmn=${bpmnContent}`;
+        break;
+      case BpmnLoadMethod.Url:
+        copyFileSync(relPathToBpmnFile, `../../dist/static/diagrams/`, `${fileName}.bpmn`);
+        url += `&url=./static/diagrams/${fileName}.bpmn`;
+        break;
+    }
+    return url;
   }
 
   const bpmnFiles = findFiles('../fixtures/bpmn/non-regression/');
@@ -166,9 +187,10 @@ describe('no visual regression', () => {
       return filename.split('.').slice(0, -1).join('.');
     });
   it.each(bpmnFileNames)(`%s`, async (fileName: string) => {
-    const url = `http://localhost:10001/index-non-regression.html?fitOnLoad=true&bpmn=${bpmnContentForTestPage(fileName)}`;
+    const url = prepareTestResourcesAndGetPageUrl(fileName);
+
     const response = await page.goto(url);
-    // Uncomment the following in case of http error 400
+    // Uncomment the following in case of http error 400 (probably because of a too large bpmn file)
     // eslint-disable-next-line no-console
     // await page.evaluate(() => console.log(`url is ${location.href}`));
     expect(response.status()).toBe(200);
