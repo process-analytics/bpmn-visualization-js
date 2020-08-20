@@ -155,7 +155,7 @@ describe('no visual regression', () => {
   }
 
   function prepareTestResourcesAndGetPageUrl(fileName: string): string {
-    let url = 'http://localhost:10001/index-non-regression.html?fitOnLoad=true';
+    let url = 'http://localhost:10001/non-regression.html?fitOnLoad=true';
 
     const bpmnLoadMethod = getBpmnLoadMethod(fileName);
     log(`Use '${bpmnLoadMethod}' as BPMN Load Method for '${fileName}'`);
@@ -173,19 +173,18 @@ describe('no visual regression', () => {
     return url;
   }
 
-  const bpmnFiles = findFiles('../fixtures/bpmn/non-regression/');
-
-  it('check bpmn non-regression files availability', () => {
-    expect(bpmnFiles).toContain('gateways.bpmn');
-  });
-
-  const bpmnFileNames = bpmnFiles
+  const bpmnFileNames = findFiles('../fixtures/bpmn/non-regression/')
     .filter(filename => {
       return filename.endsWith('.bpmn');
     })
     .map(filename => {
       return filename.split('.').slice(0, -1).join('.');
     });
+
+  it('check bpmn non-regression files availability', () => {
+    expect(bpmnFileNames).toContain('gateways');
+  });
+
   it.each(bpmnFileNames)(`%s`, async (fileName: string) => {
     const url = prepareTestResourcesAndGetPageUrl(fileName);
 
