@@ -5,16 +5,157 @@
     <title>BPMN Visualization Demo</title>
     <link href="./static/css/main.css" rel="stylesheet">
     <link rel="shortcut icon" href="./static/img/favicon.ico">
+    <style>
+        .graph-container {
+            /*element*/
+            /*    margin: 20px 20px 40px 70px;*/
+            top: 310px;
+            bottom: 20px;
+            left: 40px;
+            right: 40px;
+            /*touch-action: none;*/
+            /*div.base#graph*/
+            border-style: solid;
+            border-color: #F2F2F2;
+            border-width: 1px;
+            /*background: url('images/grid.gif');*/
+            /*div.base*/
+            position: absolute;
+            overflow: hidden;
+            /*font-family: Arial;*/
+            /*font-size: 8pt;*/
+        }
+        .btn-group {
+            background: #FAFAFA;
+            border: solid 1px black;
+            border-radius: 2px;
+
+            position: absolute;
+            box-sizing: border-box;
+            /*left: 20px;*/
+            /*top: 20px;*/
+            /*width: 48px;*/
+            /*height: 60px;*/
+        }
+        .btn-group-general {
+            left: 15px !important;
+            top: 15px !important;
+        }
+        .btn-group-export {
+            left: 15px !important;
+            top: 65px !important;
+        }
+        .btn-common {
+            z-index: 2;
+            display: inline-block;
+            content: "";
+            background-repeat: no-repeat;
+            background-size: 1rem 1rem;
+            /*height: 32px;*/
+            width: 32px;
+            margin: 5px;
+        }
+        .btn-help {
+            /* https://icons.getbootstrap.com/icons/question-circle/ */
+            background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/><path d='M5.25 6.033h1.32c0-.781.458-1.384 1.36-1.384.685 0 1.313.343 1.313 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.007.463h1.307v-.355c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.326 0-2.786.647-2.754 2.533zm1.562 5.516c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z'/></svg>");
+        }
+        .btn-settings {
+            /* https://icons.getbootstrap.com/icons/gear-fill/ */
+            background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'> <path fill-rule='evenodd' d='M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 0 0-5.86 2.929 2.929 0 0 0 0 5.858z'/>></svg>");
+        }
+        .btn-download-svg {
+            /* https://icons.getbootstrap.com/icons/download/ */
+            background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8z'/><path fill-rule='evenodd' d='M5 7.5a.5.5 0 0 1 .707 0L8 9.793 10.293 7.5a.5.5 0 1 1 .707.707l-2.646 2.647a.5.5 0 0 1-.708 0L5 8.207A.5.5 0 0 1 5 7.5z'/><path fill-rule='evenodd' d='M8 1a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0v-8A.5.5 0 0 1 8 1z'/></svg>");
+        }
+        .btn-download-png {
+            /* https://icons.getbootstrap.com/icons/image/ */
+            background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M14.002 2h-12a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zm-12-1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12z'/><path d='M10.648 7.646a.5.5 0 0 1 .577-.093L15.002 9.5V14h-14v-2l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71z'/><path fill-rule='evenodd' d='M4.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z'/> </svg>");
+        }
+    </style>
 </head>
 <body>
-    <div id="file-selector" class="hidden">
-        <input type="file" id="bpmn-file" name="file"/>
-        <label for="bpmn-file" class="btn"><span>open BPMN file</span></label>
+<!--    <div class="info-centered"><p>(either drop a file here)</p></div>-->
+<div id="btn-container">
+    <div id="btn-group-general" class="btn-group btn-group-general">
+        <input type="button" class="btn-common btn-settings" id="btn-settings" title="Configure"/>
+        <input type="button" class="btn-common btn-help" id="btn-help" title="Getting Help"/>
     </div>
-    <div class="info-centered"><p>(either drop a file here)</p></div>
-    <div id="graph"></div>
+    <div id="btn-group-open">
+        <div id="file-selector" class="hidden">
+            <input type="file" id="bpmn-file" name="file"/>
+            <label for="bpmn-file" class="btn"><span>open BPMN file</span></label>
+        </div>
 
-    <!-- load global settings -->
+        <input type="text" id="input-open-url" placeholder="path to diagram" /><button id="btn-open-url">Open URL</button>
+        <strong>Example:</strong> <i>https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/A.2.1.bpmn</i></strong>
+        <p/>
+        <select name="select-open-migw" id="select-open-migw">
+            <option value="A.2.0.bpmn">A.2.0</option>
+            <option value="B.1.0.bpmn">B.1.0</option>
+            <option value="B.2.0.bpmn">B.2.0</option>
+        </select>
+        <button id="btn-open-migw">Open MIGW Reference</button>
+        <span />
+        <select name="select-open-bpmn-visualization-example" id="select-open-bpmn-visualization-example">
+            <option value="all_event_boundaries.bpmn">boundary events</option>
+            <option value="all_event_types.bpmn">events</option>
+            <option value="all_task_types.bpmn">tasks</option>
+        </select>
+        <button id="btn-open-bpmn-visualization-example">Open bpmn-visualization example</button>
+    </div>
+    <div id="btn-group-export" class="btn-group btn-group-export">
+        <input type="button" class="btn-common btn-download-svg" id="btn-export-svg" title="Download as SVG image"/>
+        <input type="button" class="btn-common btn-download-png" id="btn-export-png" title="Download as PNG image"/>
+        <input type="button" class="btn-common" id="btn-export-preview" title="Print Preview" value="Print">
+    </div>
+    <div id="btn-group-zoom">
+        <button id="btn-zoom-in">+</button>
+        <button id="btn-zoom-out">-</button>
+        <button id="btn-zoom-actual">Reset to Actual</button>
+        <button id="btn-zoom-fit">Fit</button>
+        <button id="btn-zoom-fit-horizontal">Horizontal Fit</button>
+        <button id="btn-zoom-fit-vertical">Vertical Fit</button>
+    </div>
+    <div id="btn-group-pan">
+        <button id="btn-pan-up" title="Pan/Scroll Up">
+            Up
+        </button>
+        <button id="btn-pan-down" title="Pan/Scroll Down">
+            <!-- https://icons.getbootstrap.com/icons/arrow-down/ -->
+            <svg class="bi bi-arrow-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M4.646 9.646a.5.5 0 0 1 .708 0L8 12.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/>
+                <path fill-rule="evenodd" d="M8 2.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V3a.5.5 0 0 1 .5-.5z"/>
+            </svg>
+        </button>
+        <button id="btn-pan-left" title="Pan/Scroll Left">
+            <!-- https://icons.getbootstrap.com/icons/arrow-left-circle-fill/ -->
+            <svg class="bi bi-arrow-left-circle-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.646 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L6.207 7.5H11a.5.5 0 0 1 0 1H6.207l2.147 2.146z"/>
+            </svg>
+        </button>
+        <button id="btn-pan-right" title="Pan/Scroll Right">
+            <!-- https://icons.getbootstrap.com/icons/arrow-right-circle/ -->
+            <svg class="bi bi-arrow-right-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path fill-rule="evenodd" d="M7.646 11.354a.5.5 0 0 1 0-.708L10.293 8 7.646 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
+                <path fill-rule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+        </button>
+    </div>
+    <div id="btn-group-others">
+        <div>
+            <input type="checkbox" id="btn-outline" name="btn-outline">
+            <label for="btn-outline">Outline</label>
+        </div>
+        <!--        <div>-->
+        <!--            <input type="checkbox" id="btn-panning" name="btn-panning" checked>-->
+        <!--            <label for="btn-panning">Panning</label>-->
+        <!--        </div>-->
+    </div>
+</div>
+<div id="graph" class="graph-container"></div>
+
+<!-- load global settings -->
     <script src="./static/js/configureMxGraphGlobals.js"></script>
     <!-- load mxGraph client library -->
     <script src="./static/js/mxClient.min.js"></script>
