@@ -28,6 +28,10 @@ function loadBpmn(bpmn: string): void {
   bpmnVisualization.load(bpmn);
   log('BPMN loaded');
 
+  // TODO this should be an option of the load function to improve rendering performance
+  // the current solution, 1st render the using the actual size, then render it with fit
+  // mxgraph performs 2 rendering operations, the 1st one is useless
+  // on large file, the extra rendering can take more than 500ms
   if (fitOnLoad) {
     log('Request Fit after load');
     bpmnVisualization.zoom(ZoomType.Fit);
