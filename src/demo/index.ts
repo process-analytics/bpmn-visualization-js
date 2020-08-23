@@ -24,6 +24,7 @@ let fitOnLoad = false;
 export const bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'), { activatePanning: true });
 
 function loadBpmn(bpmn: string): void {
+  const startTime = performance.now();
   log('Loading bpmn....');
   bpmnVisualization.load(bpmn);
   log('BPMN loaded');
@@ -37,6 +38,14 @@ function loadBpmn(bpmn: string): void {
     bpmnVisualization.zoom(ZoomType.Fit);
     log('Fit on load rendering done');
   }
+
+  const loadStatusElement = document.getElementById('load-status');
+  const loadMsg = `BPMN loaded in ${performance.now() - startTime} ms`;
+  loadStatusElement.innerText = loadMsg;
+  // clean status area after a few seconds
+  // setTimeout(function() {
+  //   loadStatusElement.innerText = '';
+  // }, 3000);
 }
 
 // callback function for opening | dropping the file to be loaded
