@@ -24,7 +24,7 @@ let fitOnLoad = false;
 export const bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'), { activatePanning: true });
 
 function loadBpmn(bpmn: string): void {
-  const startTime = performance.now();
+  const initialStartTime = performance.now();
   log('Loading bpmn....');
   bpmnVisualization.load(bpmn);
   log('BPMN loaded');
@@ -34,13 +34,14 @@ function loadBpmn(bpmn: string): void {
   // mxgraph performs 2 rendering operations, the 1st one is useless
   // on large file, the extra rendering can take more than 500ms
   if (fitOnLoad) {
-    log('Request Fit after load');
+    log('Start performing Fit after load');
+    const startTime = performance.now();
     bpmnVisualization.zoom(ZoomType.Fit);
-    log('Fit on load rendering done');
+    log(`Fit on load rendering done in ${performance.now() - startTime} ms`);
   }
 
   const loadStatusElement = document.getElementById('load-status');
-  const loadMsg = `BPMN loaded in ${performance.now() - startTime} ms`;
+  const loadMsg = `BPMN loaded in ${performance.now() - initialStartTime} ms`;
   loadStatusElement.innerText = loadMsg;
   // clean status area after a few seconds
   // setTimeout(function() {
