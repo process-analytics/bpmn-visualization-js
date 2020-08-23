@@ -23,8 +23,6 @@ import Logger from './Logger';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
-// TODO missing in mxgraph-type-definitions@1.0.2
-declare const mxWindow: typeof mxgraph.mxWindow;
 
 /* eslint-disable no-console */
 export default class BpmnVisualization {
@@ -267,82 +265,8 @@ export default class BpmnVisualization {
       // mark it suspended on creation, to make toggling work
       outline.suspended = true;
 
-      // TODO check if we need this
-      // wnd.addListener(mxEvent.RESIZE_END, function () {
-      //   outline.update(false);
-      // });
-
-      // this.graph.addListener(mxEvent.RESIZE_END, function() {
-      //   outline.update(false);
-      // });
-
       this.outline = outline;
       this.outlineLogger.info('outline init completed');
     }
   }
-
-  // private outlineWindow: mxgraph.mxWindow;
-  // private outline: mxOutline;
-  // private showOutline(): void {
-  //   const create = this.outlineWindow == null;
-  //
-  //   if (create) {
-  //     const div = document.createElement('div');
-  //
-  //     div.style.overflow = 'hidden';
-  //     // div.style.position = 'absolute';
-  //     // div.style.width = '320px';
-  //     // div.style.height = '180px';
-  //     div.style.position = 'relative';
-  //     div.style.width = '100%';
-  //     div.style.height = '100%';
-  //     div.style.setProperty('background-color', 'rgba(255, 255, 255, .8)'); // white with transparency
-  //     div.style.cursor = 'move';
-  //     div.style.border = '2px solid #ccc';
-  //     div.style.setProperty('border-radius', '2px');
-  //
-  //     // TODO window position is currently at the bottom of the page
-  //     // the mxWindow api doc provides lot of example about how to manage and limit position
-  //     // title: any,
-  //     //     content: any,
-  //     //     x: any,
-  //     //     y: any,
-  //     //     width: any,
-  //     //     height?: any,
-  //     //     minimizable?: any,
-  //     //     movable?: any,
-  //     //     replaceNode?: any,
-  //     //     style?: any,
-  //     const wnd = new mxWindow('Outline', div, 600, 480, 200, 200, false);
-  //     // TODO default implementaton requires some images to be available, currently generates 404
-  //     // path to images can be overriden: see https://github.com/jgraph/mxgraph2/blame/5d407ab0e9d6103d1245d1ebe216dd46b5c7be5a/javascript/src/js/util/mxWindow.js#L228-L256
-  //     // for instance mxWindow.prototype.minimizeImage
-  //
-  //     // Creates the outline in the specified div
-  //     // and links it to the existing graph
-  //     const outline = new mxOutline(this.graph, div);
-  //     outline.setZoomEnabled(false);
-  //     // TODO review carefully as this can impact performance
-  //     //outline.graphRenderHint = 'fastest'; // have no effect on svg browser
-  //     // outline.updateOnPan = true; // probably too much impact on rendering performance and not really usefull
-  //     outline.labelsVisible = true; // TODO see how we can make it work BUT do we need it?
-  //     // outline.hilabelsVisible = true;
-  //     wnd.setClosable(false);
-  //     wnd.setResizable(false);
-  //     // TODO missing in types declaration
-  //     //wnd.destroyOnClose = false;
-  //
-  //     // TODO check if we need this
-  //     wnd.addListener(mxEvent.RESIZE_END, function() {
-  //       outline.update(false);
-  //     });
-  //
-  //     this.outlineWindow = wnd;
-  //     this.outline = outline;
-  //   }
-  //
-  //   // Finally shows the outline
-  //   this.outlineWindow.setVisible(true);
-  //   this.outline.update(true);
-  // }
 }
