@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { readFileSync } from '../helpers/file-helper';
+import { loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
 
 let graphContainerId = 'graph';
 
@@ -59,7 +59,7 @@ describe('BpmnVisu view - index page', () => {
   });
 
   it('should display graph in page', async () => {
-    await page.goto(`http://localhost:10001?bpmn=${readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
+    await page.goto(`http://localhost:10001?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
 
     await expectEvent('StartEvent_1', 'Start Event 1');
     await expectSequenceFlow('Flow_1', 'Sequence Flow 1');
@@ -72,7 +72,7 @@ describe('BpmnVisu view - index page', () => {
 describe('BpmnVisu view - lib-integration page', () => {
   it('should display graph in page', async () => {
     graphContainerId = 'bpmn-visualization-viewport';
-    await page.goto(`http://localhost:10001/lib-integration.html?bpmn=${readFileSync('../fixtures/bpmn/simple-start-only.bpmn')}`);
+    await page.goto(`http://localhost:10001/lib-integration.html?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-only.bpmn')}`);
     await expect(page.title()).resolves.toMatch('BPMN Visualization Lib Integration');
     await page.waitForSelector(`#${graphContainerId}`);
 
