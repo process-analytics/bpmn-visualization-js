@@ -43,7 +43,7 @@ export class ShapeBpmnSubProcess extends ShapeBpmnActivity {
 }
 
 export class ShapeBpmnEvent extends ShapeBpmnElement {
-  constructor(id: string, name: string, elementKind: BpmnEventKind, readonly eventKind: ShapeBpmnEventKind, parentId: string) {
+  constructor(id: string, name: string, elementKind: BpmnEventKind, readonly eventKind: ShapeBpmnEventKind, parentId: string, readonly isInterrupting?: boolean | undefined) {
     super(id, name, elementKind, parentId);
   }
 }

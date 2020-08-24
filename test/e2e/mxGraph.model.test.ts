@@ -571,6 +571,13 @@ describe('mxGraph model', () => {
       parentId: 'expanded_embedded_sub_process_id',
     });
 
+    // Start Event in Event Sub Process
+    expectModelContainsShape('expanded_event_sub_process_with_non_interrupting_start_event_id_startEvent_1', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      label: 'non-interrupting start event in subprocess',
+      parentId: 'expanded_event_sub_process_with_non_interrupting_start_event_id',
+    });
+
     // Call Activity calling process
     // Expanded
     expectModelContainsShape('expanded_callActivity_1', { kind: ShapeBpmnElementKind.CALL_ACTIVITY, label: 'Expanded Call Activity' });

@@ -148,6 +148,25 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 |===
 
+[cols="1,1,4", options="header"]
+.Non-interrupting Start Events
+|===
+|Name
+|Rendering
+|Comments
+
+|Timer Non-interrupting Start Event
+|icon:check-circle-o[]
+|The icon width may be adjusted
+
+|MessageNon-interrupting  Start Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+
+|Signal Non-interrupting Start Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+|===
 
 [cols="1,1,4", options="header"]
 .Intermediate Catch Events

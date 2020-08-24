@@ -183,6 +183,11 @@
     <semantic:subProcess id="expanded_event_sub_process_with_parallel_multi_instance_id" name="Expanded Event Sub-Process With Parallel Multi-instance" triggeredByEvent="true">
       <semantic:multiInstanceLoopCharacteristics />
     </semantic:subProcess>
+    <semantic:subProcess id="expanded_event_sub_process_with_non_interrupting_start_event_id" name="Expanded Event Sub-Process With Non-Interrupting StartEvent" triggeredByEvent="true">
+      <semantic:startEvent id="expanded_event_sub_process_with_non_interrupting_start_event_id_startEvent_1" name="non-interrupting start event in subprocess" isInterrupting="false">
+        <semantic:timerEventDefinition />
+      </semantic:startEvent>
+    </semantic:subProcess>
 
     <!-- Collapsed -->
     <semantic:subProcess id="collapsed_event_sub_process_id" name="Collapsed Event Sub-Process" triggeredByEvent="true" />
@@ -630,7 +635,16 @@
         <dc:Bounds x="3280" y="910" width="370" height="200" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="S1373649849862_expanded_event_sub_process_with_parallel_multi_instance_id" bpmnElement="expanded_event_sub_process_with_parallel_multi_instance_id" isExpanded="true">
-        <dc:Bounds x="3280" y="675" width="370" height="200" />
+        <dc:Bounds x="3280" y="675" width="175" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S1373649849862_expanded_event_sub_process_with_non_interrupting_start_event_id" bpmnElement="expanded_event_sub_process_with_non_interrupting_start_event_id" isExpanded="true">
+        <dc:Bounds x="3475" y="675" width="175" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S1373649849862_expanded_event_sub_process_with_non_interrupting_start_event_id_startEvent_1" bpmnElement="expanded_event_sub_process_with_non_interrupting_start_event_id_startEvent_1">
+        <dc:Bounds x="3542" y="775" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3532" y="820" width="57" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
       <!-- Collapsed -->

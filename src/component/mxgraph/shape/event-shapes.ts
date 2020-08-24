@@ -81,11 +81,33 @@ abstract class EventShape extends mxEllipse {
     const paintIcon = this.iconPainters.get(StyleUtils.getBpmnEventKind(this.style)) || (() => this.iconPainter.paintEmptyIcon());
     paintIcon(paintParameter);
   }
+
+  protected setDashedOuterShapePattern(paintParameter: PaintParameter, isInterrupting: string): void {
+    if (isInterrupting === 'false') {
+      paintParameter.c.setDashed(true, false);
+      paintParameter.c.setDashPattern('3 2');
+    }
+  }
+
+  protected restoreOriginalOuterShapePattern(paintParameter: PaintParameter): void {
+    // Restore original configuration
+    // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
+    // this.configureCanvas(c, x, y, w, h);
+    paintParameter.c.setDashed(StyleUtils.isDashed(this.style), StyleUtils.isFixDash(this.style));
+    paintParameter.c.setDashPattern(StyleUtils.getDashPattern(this.style));
+  }
 }
 
 export class StartEventShape extends EventShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
+  }
+
+  protected paintOuterShape(paintParameter: PaintParameter): void {
+    const isInterrupting = StyleUtils.getBpmnIsInterrupting(this.style);
+    super.setDashedOuterShapePattern(paintParameter, isInterrupting);
+    super.paintOuterShape(paintParameter);
+    super.restoreOriginalOuterShapePattern(paintParameter);
   }
 }
 
@@ -133,17 +155,8 @@ export class BoundaryEventShape extends IntermediateEventShape {
 
   protected paintOuterShape(paintParameter: PaintParameter): void {
     const isInterrupting = StyleUtils.getBpmnIsInterrupting(this.style);
-    if (isInterrupting === 'false') {
-      paintParameter.c.setDashed(true, false);
-      paintParameter.c.setDashPattern('3 2');
-    }
-
+    super.setDashedOuterShapePattern(paintParameter, isInterrupting);
     super.paintOuterShape(paintParameter);
-
-    // Restore original configuration
-    // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
-    // this.configureCanvas(c, x, y, w, h);
-    paintParameter.c.setDashed(StyleUtils.isDashed(this.style), StyleUtils.isFixDash(this.style));
-    paintParameter.c.setDashPattern(StyleUtils.getDashPattern(this.style));
+    super.restoreOriginalOuterShapePattern(paintParameter);
   }
 }
