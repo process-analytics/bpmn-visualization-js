@@ -80,6 +80,6 @@
   "dependencies": {
     "entities": "^2.0.0",
     "fast-xml-parser": "^3.17.4",
-    "mxgraph": "4.1.0"
+    "mxgraph": "4.1.1"
   }
 }
