@@ -57,9 +57,9 @@ export default class CollaborationConverter {
 
   private buildParticipant(bpmnElements: Array<TParticipant> | TParticipant): void {
     ensureIsArray(bpmnElements).forEach(participant => {
+      const convertedParticipant = new Participant(participant.id, participant.name, participant.processRef);
+      convertedParticipantsById.set(participant.id, convertedParticipant);
       if (participant.processRef) {
-        const convertedParticipant = new Participant(participant.id, participant.name, participant.processRef);
-        convertedParticipantsById.set(participant.id, convertedParticipant);
         convertedParticipantsByProcessRef.set(participant.processRef, convertedParticipant);
       }
     });
