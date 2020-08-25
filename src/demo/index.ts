@@ -19,7 +19,7 @@ import { DropFileUserInterface } from './component/DropFileUserInterface';
 
 export * from './helper';
 
-let bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'));
+let bpmnVisualization: BpmnVisualization;
 
 let fitOnLoad = false;
 function loadBpmn(bpmn: string): void {
