@@ -13,13 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, DropFileUserInterface, handleFileSelect, readAndLoadFile, startBpmnVisualization } from '../../index.es.js';
-
-const visualizationContainer = 'graph';
-// TODO: move to UI initializer
-new DropFileUserInterface(window, 'drop-container', visualizationContainer, readAndLoadFile);
+import { documentReady, handleFileSelect, startBpmnVisualization } from '../../index.es.js';
 
 document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
 document.getElementById('file-selector').classList.remove('hidden');
 
-documentReady(startBpmnVisualization({ container: visualizationContainer }));
+documentReady(startBpmnVisualization({ container: 'graph' }));

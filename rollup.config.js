@@ -47,7 +47,7 @@ if (devMode || demoMode) {
   const copyTargets = [];
   // TODO configure with glob if possible to avoid listing all files manually (maintenance pain)
   copyTargets.push({ src: 'src/index.html', dest: 'dist/' });
-  copyTargets.push({ src: 'src/index-non-regression.html', dest: 'dist/' });
+  copyTargets.push({ src: 'src/non-regression.html', dest: 'dist/' });
   copyTargets.push({ src: 'src/lib-integration.html', dest: 'dist/' });
   copyTargets.push({ src: 'src/static/css/main.css', dest: 'dist/static/css/' });
   copyTargets.push({ src: 'src/static/img/favicon.ico', dest: 'dist/static/img/' });

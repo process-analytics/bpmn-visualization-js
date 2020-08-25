@@ -15,6 +15,9 @@
  */
 import BpmnVisualization from '../component/BpmnVisualization';
 import { log, logStartup } from './helper';
+import { DropFileUserInterface } from './component/DropFileUserInterface';
+
+export * from './helper';
 
 let bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'));
 
@@ -31,11 +34,8 @@ function loadBpmn(bpmn: string): void {
   }
 }
 
-export * from './helper';
-export * from './component/DropFileUserInterface';
-
 // callback function for opening | dropping the file to be loaded
-export function readAndLoadFile(f: File): void {
+function readAndLoadFile(f: File): void {
   const reader = new FileReader();
   reader.onload = () => {
     loadBpmn(reader.result as string);
@@ -93,6 +93,8 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   log(`Initializing BpmnVisualization with container '${container}'...`);
   bpmnVisualization = new BpmnVisualization(window.document.getElementById(container));
   log('Initialization completed');
+  new DropFileUserInterface(window, 'drop-container', container, readAndLoadFile);
+  log('Drag&Drop support initialized');
 
   const parameters = new URLSearchParams(window.location.search);
 

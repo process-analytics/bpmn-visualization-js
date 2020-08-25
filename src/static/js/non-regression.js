@@ -13,11 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, DropFileUserInterface, readAndLoadFile, startBpmnVisualization } from '../../index.es.js';
-
-const visualizationContainer = 'viewport';
-// TODO: move to UI initializer
-new DropFileUserInterface(window, 'drop-container', visualizationContainer, readAndLoadFile);
+import { documentReady, startBpmnVisualization } from '../../index.es.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function statusFetchKO(errorMsg) {
@@ -26,4 +22,4 @@ function statusFetchKO(errorMsg) {
   statusElt.className = 'status-ko';
 }
 
-documentReady(startBpmnVisualization({ container: visualizationContainer, statusFetchKoNotifier: statusFetchKO }));
+documentReady(startBpmnVisualization({ container: 'viewport', statusFetchKoNotifier: statusFetchKO }));
