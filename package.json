@@ -53,7 +53,7 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-notice": "^0.9.10",
     "eslint-plugin-prettier": "^3.1.4",
-    "husky": "^4.2.3",
+    "husky": "^4.2.5",
     "jest": "^26.4.2",
     "jest-each": "^26.3.0",
     "jest-environment-puppeteer-jsdom": "^4.3.1",
