@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../component/BpmnVisualization';
-// import { DropFileUserInterface } from './component/DropFileUserInterface';
+import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { PanType, RendererOptions, ZoomType } from '../component/BpmnVisualizationOptions';
 import { documentReady, log, logStartup } from './helper';
 import { downloadAsPng, downloadAsSvg } from './component/download';
@@ -124,8 +124,7 @@ function readAndLoadFile(f: File): void {
 }
 
 // TODO: move to UI initializer
-// TODO disabled because prevent buttons usage
-//new DropFileUserInterface(window, 'drop-container', 'graph', readAndLoadFile);
+new DropFileUserInterface(window, 'drop-container', 'graph', readAndLoadFile);
 
 // TODO: make File Open Button a self contained component
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
