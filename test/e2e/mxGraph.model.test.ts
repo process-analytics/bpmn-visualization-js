@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { ShapeBpmnElementKind } from '../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { ShapeBpmnEventKind } from '../../src/model/bpmn/shape/ShapeBpmnEventKind';
+import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/shape';
 import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
-import { ShapeBpmnSubProcessKind } from '../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
-import { MarkerIdentifier } from '../../src/component/mxgraph/StyleUtils';
+import { MarkerIdentifier } from '../../src';
 import { FlowKind } from '../../src/model/bpmn/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/edge/MessageVisibleKind';
 import { readFileSync } from '../helpers/file-helper';
-import { ShapeBpmnMarkerKind } from '../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
 
 export interface ExpectedFont {
   name?: string;
@@ -200,6 +197,10 @@ describe('mxGraph model', () => {
     return cell;
   }
 
+  function expectModelContainsPool(cellId: string, modelElement: ExpectedShapeModelElement): void {
+    expectModelContainsShape(cellId, { ...modelElement, kind: ShapeBpmnElementKind.POOL, styleShape: mxConstants.SHAPE_SWIMLANE });
+  }
+
   it('bpmn elements should be available in the mxGraph model', async () => {
     // load BPMN
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
@@ -213,6 +214,12 @@ describe('mxGraph model', () => {
       name: 'Arial',
       size: 11.0,
     };
+
+    // pool
+    const minimalPoolModelElement: ExpectedShapeModelElement = { kind: null };
+    expectModelContainsPool('participant_1_id', { ...minimalPoolModelElement, label: 'Pool 1' });
+    expectModelContainsPool('participant_2_id', minimalPoolModelElement);
+    expectModelContainsPool('participant_3_id', { ...minimalPoolModelElement, label: 'Black Box Process' });
 
     // start event
     expectModelContainsBpmnEvent('startEvent_1', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.NONE, font: expectedBoldFont, label: 'Start Event' });

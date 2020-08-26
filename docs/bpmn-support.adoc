@@ -35,8 +35,8 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |
 
 |Pool
-|icon:flask[]
-|Currently, the title area is filled in `gray` and may be too large
+|icon:check-circle-o[]
+|
 |===
 
 
@@ -116,12 +116,12 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 The event definition can be defined on the event or on the definitions.
 
-*Note*: the following icons are derived from existing solutions
+*Note*: the following events use icons derived from existing solutions
 
+* link: https://www.flaticon.com/free-icon/right-arrow_222330[Right arrow] "Icons made by https://www.flaticon.com/authors/freepik[Freepik] from https://www.flaticon.com"
 * message: https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465[draw.io bpmn mxgraph stencil]
 * signal: https://thenounproject.com/term/triangle/2452089/[triangle] By https://thenounproject.com/imamdji99[Imam], ID from https://thenounproject.com 
 * timer: https://www.flaticon.com/free-icon/clock_223404[Timer Icon] "Icons made by https://www.flaticon.com/authors/kirill-kazachek[Kirill Kazachek] from https://www.flaticon.com"
-* right arrow: https://www.flaticon.com/free-icon/right-arrow_222330[Right arrow] "Icons made by https://www.flaticon.com/authors/freepik[Freepik] from https://www.flaticon.com"
 
 
 [cols="1,1,4", options="header"]

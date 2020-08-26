@@ -26,7 +26,7 @@ See https://jgraph.github.io/mxgraph/docs/manual.html#3.1.5[mxGraph Complexity M
 
 On `mxGraph` graph creation, the lib fills the following group of BPMN elements:
 
-* `pool` is the parent of `lanes` and `inter-lane elements` (for instance, `message flows`)
+* `pool` is the parent of `lanes` and `inter-lane elements` (for instance, `sequence flows`), or any BPMN elements when there is no `lane`
 * `lane` is the parent of elements it includes in the BPMN source
 
 The default mxGraph parent is the parent of

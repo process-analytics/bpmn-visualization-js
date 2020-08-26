@@ -115,6 +115,17 @@ describe('no visual regression', () => {
         windows: 0.002,
       },
     ],
+    // ubuntu: Expected image to match or be a close match to snapshot but was 0.00032007070301931506% different from snapshot
+    // macOS: Expected image to match or be a close match to snapshot but was 0.07646269456225152% different from snapshot
+    // windows: Expected image to match or be a close match to snapshot but was 0.11539494876845469% different from snapshot
+    [
+      'pools.03.black-box',
+      {
+        linux: 0.000004,
+        macos: 0.0008,
+        windows: 0.0012,
+      },
+    ],
   ]);
 
   function getImageSnapshotConfig(fileName: string): jest.ImageSnapshotConfig {
