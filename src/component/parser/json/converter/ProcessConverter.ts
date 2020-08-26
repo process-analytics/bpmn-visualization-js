@@ -19,6 +19,7 @@ import ShapeBpmnElement, {
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
   ShapeBpmnEvent,
+  ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
@@ -197,10 +198,8 @@ export default class ProcessConverter {
         if (ShapeUtil.isBoundaryEvent(elementKind)) {
           return this.buildShapeBpmnBoundaryEvent(bpmnElement as TBoundaryEvent, eventKind);
         }
-        if (elementKind === ShapeBpmnElementKind.EVENT_START && bpmnElement.isInterrupting === false) {
-          // in that case we deal with the non-interrupting event in Event Sub Process
-          // TODO: perhaps one day we will decide to introduce ShapeBpmnSubProcessEvent but at this moment simple solution is satisfying
-          return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventKind, processId, bpmnElement.isInterrupting);
+        if (ShapeUtil.isStartEvent(elementKind)) {
+          return new ShapeBpmnStartEvent(bpmnElement.id, bpmnElement.name, eventKind, processId, bpmnElement.isInterrupting);
         }
         return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventKind, processId);
       }

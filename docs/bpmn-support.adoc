@@ -149,7 +149,7 @@ The event definition can be defined on the event or on the definitions.
 |===
 
 [cols="1,1,4", options="header"]
-.Non-interrupting Start Events
+.Event Sub-Process Non-Interrupting Start Events
 |===
 |Name
 |Rendering

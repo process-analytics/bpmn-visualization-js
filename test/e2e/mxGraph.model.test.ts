@@ -67,6 +67,9 @@ export interface ExpectedSequenceFlowModelElement extends ExpectedEdgeModelEleme
 export interface ExpectedBoundaryEventModelElement extends ExpectedEventModelElement {
   isInterrupting?: boolean;
 }
+export interface ExpectedStartEventModelElement extends ExpectedEventModelElement {
+  isInterrupting?: boolean;
+}
 
 function expectGeometry(cell: mxCell, geometry: mxGeometry): void {
   const cellGeometry = cell.getGeometry();
@@ -186,6 +189,11 @@ describe('mxGraph model', () => {
   function expectModelContainsBpmnBoundaryEvent(cellId: string, boundaryEventModelElement: ExpectedBoundaryEventModelElement): void {
     const cell = expectModelContainsBpmnEvent(cellId, { ...boundaryEventModelElement, kind: ShapeBpmnElementKind.EVENT_BOUNDARY });
     expect(cell.style).toContain(`bpmn.isInterrupting=${boundaryEventModelElement.isInterrupting}`);
+  }
+
+  function expectModelContainsBpmnStartEvent(cellId: string, startEventModelElement: ExpectedStartEventModelElement): void {
+    const cell = expectModelContainsBpmnEvent(cellId, { ...startEventModelElement, kind: ShapeBpmnElementKind.EVENT_START });
+    expect(cell.style).toContain(`bpmn.isInterrupting=${startEventModelElement.isInterrupting}`);
   }
 
   function expectModelContainsSubProcess(cellId: string, subProcessModelElement: ExpectedSubProcessModelElement): mxCell {
@@ -572,10 +580,12 @@ describe('mxGraph model', () => {
     });
 
     // Start Event in Event Sub Process
-    expectModelContainsShape('expanded_event_sub_process_with_non_interrupting_start_event_id_startEvent_1', {
+    expectModelContainsBpmnStartEvent('expanded_event_sub_process_with_non_interrupting_start_event_id_startEvent_1', {
       kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.TIMER,
       label: 'non-interrupting start event in subprocess',
       parentId: 'expanded_event_sub_process_with_non_interrupting_start_event_id',
+      isInterrupting: false,
     });
 
     // Call Activity calling process

@@ -43,8 +43,14 @@ export class ShapeBpmnSubProcess extends ShapeBpmnActivity {
 }
 
 export class ShapeBpmnEvent extends ShapeBpmnElement {
-  constructor(id: string, name: string, elementKind: BpmnEventKind, readonly eventKind: ShapeBpmnEventKind, parentId: string, readonly isInterrupting?: boolean | undefined) {
+  constructor(id: string, name: string, elementKind: BpmnEventKind, readonly eventKind: ShapeBpmnEventKind, parentId: string) {
     super(id, name, elementKind, parentId);
+  }
+}
+
+export class ShapeBpmnStartEvent extends ShapeBpmnEvent {
+  constructor(id: string, name: string, eventKind: ShapeBpmnEventKind, parentId: string, readonly isInterrupting?: boolean) {
+    super(id, name, ShapeBpmnElementKind.EVENT_START, eventKind, parentId);
   }
 }
 

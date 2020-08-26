@@ -59,7 +59,11 @@ abstract class EventShape extends mxEllipse {
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     this.markNonFullyRenderedEvents(c);
     const paintParameter = buildPaintParameter(c, x, y, w, h, this, 0.25, this.withFilledIcon);
+
+    this.setDashedOuterShapePattern(paintParameter, StyleUtils.getBpmnIsInterrupting(this.style));
     this.paintOuterShape(paintParameter);
+    this.restoreOriginalOuterShapePattern(paintParameter);
+
     this.paintInnerShape(paintParameter);
   }
 
@@ -101,13 +105,6 @@ abstract class EventShape extends mxEllipse {
 export class StartEventShape extends EventShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
-  }
-
-  protected paintOuterShape(paintParameter: PaintParameter): void {
-    const isInterrupting = StyleUtils.getBpmnIsInterrupting(this.style);
-    super.setDashedOuterShapePattern(paintParameter, isInterrupting);
-    super.paintOuterShape(paintParameter);
-    super.restoreOriginalOuterShapePattern(paintParameter);
   }
 }
 
@@ -151,12 +148,5 @@ export class ThrowIntermediateEventShape extends IntermediateEventShape {
 export class BoundaryEventShape extends IntermediateEventShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
-  }
-
-  protected paintOuterShape(paintParameter: PaintParameter): void {
-    const isInterrupting = StyleUtils.getBpmnIsInterrupting(this.style);
-    super.setDashedOuterShapePattern(paintParameter, isInterrupting);
-    super.paintOuterShape(paintParameter);
-    super.restoreOriginalOuterShapePattern(paintParameter);
   }
 }
