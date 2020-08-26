@@ -241,7 +241,7 @@ describe('mxgraph renderer', () => {
     });
   });
 
-  describe('compute style - boundary events', () => {
+  describe('compute style - event sub-process start event', () => {
     it('interrupting message', () => {
       const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventKind.MESSAGE, true), newLabel({ name: 'Arial' }));
       expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventKind=message;bpmn.isInterrupting=true;fontFamily=Arial');
@@ -254,7 +254,7 @@ describe('mxgraph renderer', () => {
 
     it('cancel with undefined interrupting value', () => {
       const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventKind.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
-      expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventKind=cancel;bpmn.isInterrupting=undefined;fontStyle=8');
+      expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventKind=cancel;fontStyle=8');
     });
   });
 

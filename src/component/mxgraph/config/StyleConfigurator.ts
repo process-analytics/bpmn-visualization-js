@@ -287,7 +287,7 @@ export default class StyleConfigurator {
       if (bpmnElement instanceof ShapeBpmnEvent) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
 
-        if (bpmnElement instanceof ShapeBpmnBoundaryEvent || bpmnElement instanceof ShapeBpmnStartEvent) {
+        if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
         }
       } else if (bpmnElement instanceof ShapeBpmnActivity) {
