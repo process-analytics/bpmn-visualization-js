@@ -21,6 +21,7 @@ import ShapeBpmnElement, {
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
   ShapeBpmnEvent,
+  ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
@@ -77,6 +78,10 @@ function newShapeBpmnEvent(bpmnElementKind: BpmnEventKind, eventKind: ShapeBpmnE
 
 function newShapeBpmnBoundaryEvent(eventKind: ShapeBpmnEventKind, isInterrupting: boolean): ShapeBpmnBoundaryEvent {
   return new ShapeBpmnBoundaryEvent('id', 'name', eventKind, null, isInterrupting);
+}
+
+function newShapeBpmnStartEvent(eventKind: ShapeBpmnEventKind, isInterrupting: boolean): ShapeBpmnStartEvent {
+  return new ShapeBpmnStartEvent('id', 'name', eventKind, null, isInterrupting);
 }
 
 function newShapeBpmnSubProcess(subProcessKind: ShapeBpmnSubProcessKind, marker?: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
@@ -233,6 +238,23 @@ describe('mxgraph renderer', () => {
     it('cancel with undefined interrupting value', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventKind.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
       expect(computeStyle(shape)).toEqual('boundaryEvent;bpmn.eventKind=cancel;bpmn.isInterrupting=true;fontStyle=8');
+    });
+  });
+
+  describe('compute style - event sub-process start event', () => {
+    it('interrupting message', () => {
+      const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventKind.MESSAGE, true), newLabel({ name: 'Arial' }));
+      expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventKind=message;bpmn.isInterrupting=true;fontFamily=Arial');
+    });
+
+    it('non interrupting timer', () => {
+      const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventKind.TIMER, false), newLabel({ isItalic: true }));
+      expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventKind=timer;bpmn.isInterrupting=false;fontStyle=2');
+    });
+
+    it('cancel with undefined interrupting value', () => {
+      const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventKind.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
+      expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventKind=cancel;fontStyle=8');
     });
   });
 

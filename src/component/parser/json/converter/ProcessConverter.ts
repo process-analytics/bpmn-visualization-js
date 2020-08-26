@@ -19,6 +19,7 @@ import ShapeBpmnElement, {
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
   ShapeBpmnEvent,
+  ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
@@ -196,6 +197,9 @@ export default class ProcessConverter {
       if (supportedBpmnEventKinds.includes(eventKind)) {
         if (ShapeUtil.isBoundaryEvent(elementKind)) {
           return this.buildShapeBpmnBoundaryEvent(bpmnElement as TBoundaryEvent, eventKind);
+        }
+        if (ShapeUtil.isStartEvent(elementKind)) {
+          return new ShapeBpmnStartEvent(bpmnElement.id, bpmnElement.name, eventKind, processId, bpmnElement.isInterrupting);
         }
         return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventKind, processId);
       }

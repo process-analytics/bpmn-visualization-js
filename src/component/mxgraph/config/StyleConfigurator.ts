@@ -20,7 +20,14 @@ import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
 import Shape from '../../../model/bpmn/shape/Shape';
 import Edge from '../../../model/bpmn/edge/Edge';
 import Bounds from '../../../model/bpmn/Bounds';
-import { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../model/bpmn/shape/ShapeBpmnElement';
+import {
+  ShapeBpmnActivity,
+  ShapeBpmnBoundaryEvent,
+  ShapeBpmnCallActivity,
+  ShapeBpmnEvent,
+  ShapeBpmnStartEvent,
+  ShapeBpmnSubProcess,
+} from '../../../model/bpmn/shape/ShapeBpmnElement';
 import { Font } from '../../../model/bpmn/Label';
 import { FlowKind } from '../../../model/bpmn/edge/FlowKind';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/edge/Flow';
@@ -280,7 +287,7 @@ export default class StyleConfigurator {
       if (bpmnElement instanceof ShapeBpmnEvent) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
 
-        if (bpmnElement instanceof ShapeBpmnBoundaryEvent) {
+        if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
         }
       } else if (bpmnElement instanceof ShapeBpmnActivity) {

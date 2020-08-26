@@ -66,6 +66,10 @@ export default class ShapeUtil {
     return ShapeBpmnElementKind.EVENT_BOUNDARY === kind;
   }
 
+  public static isStartEvent(kind: ShapeBpmnElementKind): boolean {
+    return ShapeBpmnElementKind.EVENT_START === kind;
+  }
+
   public static canHaveNoneEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW === kind || ShapeBpmnElementKind.EVENT_END === kind || ShapeBpmnElementKind.EVENT_START === kind;
   }

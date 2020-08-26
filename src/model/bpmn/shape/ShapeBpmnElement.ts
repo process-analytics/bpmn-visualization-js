@@ -48,6 +48,12 @@ export class ShapeBpmnEvent extends ShapeBpmnElement {
   }
 }
 
+export class ShapeBpmnStartEvent extends ShapeBpmnEvent {
+  constructor(id: string, name: string, eventKind: ShapeBpmnEventKind, parentId: string, readonly isInterrupting?: boolean) {
+    super(id, name, ShapeBpmnElementKind.EVENT_START, eventKind, parentId);
+  }
+}
+
 export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
   constructor(id: string, name: string, eventKind: ShapeBpmnEventKind, parentId: string, readonly isInterrupting: boolean = true) {
     super(id, name, ShapeBpmnElementKind.EVENT_BOUNDARY, eventKind, parentId);
