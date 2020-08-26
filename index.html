@@ -611,10 +611,8 @@ the BPMN elements are rendered with their final shapes.</p>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Pool</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-flask"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p>Currently, the title area is filled in <code>gray</code> and may be too large</p>
-</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check-circle-o"></i></span></p></td>
+<td class="tableblock halign-left valign-top"><div class="content"></div></td>
 </tr>
 </tbody>
 </table>
@@ -733,10 +731,13 @@ the BPMN elements are rendered with their final shapes.</p>
 <p>The event definition can be defined on the event or on the definitions.</p>
 </div>
 <div class="paragraph">
-<p><strong>Note</strong>: the following icons are derived from existing solutions</p>
+<p><strong>Note</strong>: the following events use icons derived from existing solutions</p>
 </div>
 <div class="ulist">
 <ul>
+<li>
+<p>link: <a href="https://www.flaticon.com/free-icon/right-arrow_222330">Right arrow</a> "Icons made by <a href="https://www.flaticon.com/authors/freepik">Freepik</a> from <a href="https://www.flaticon.com"" class="bare">https://www.flaticon.com"</a></p>
+</li>
 <li>
 <p>message: <a href="https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465">draw.io bpmn mxgraph stencil</a></p>
 </li>
@@ -745,9 +746,6 @@ the BPMN elements are rendered with their final shapes.</p>
 </li>
 <li>
 <p>timer: <a href="https://www.flaticon.com/free-icon/clock_223404">Timer Icon</a> "Icons made by <a href="https://www.flaticon.com/authors/kirill-kazachek">Kirill Kazachek</a> from <a href="https://www.flaticon.com"" class="bare">https://www.flaticon.com"</a></p>
-</li>
-<li>
-<p>right arrow: <a href="https://www.flaticon.com/free-icon/right-arrow_222330">Right arrow</a> "Icons made by <a href="https://www.flaticon.com/authors/freepik">Freepik</a> from <a href="https://www.flaticon.com"" class="bare">https://www.flaticon.com"</a></p>
 </li>
 </ul>
 </div>
@@ -1274,7 +1272,7 @@ See <a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.5">mxGraph Co
 <div class="ulist">
 <ul>
 <li>
-<p><code>pool</code> is the parent of <code>lanes</code> and <code>inter-lane elements</code> (for instance, <code>message flows</code>)</p>
+<p><code>pool</code> is the parent of <code>lanes</code> and <code>inter-lane elements</code> (for instance, <code>sequence flows</code>), or any BPMN elements when there is no <code>lane</code></p>
 </li>
 <li>
 <p><code>lane</code> is the parent of elements it includes in the BPMN source</p>
@@ -1579,7 +1577,7 @@ tool can transform it. See <a href="https://github.com/process-analytics/bpmn-vi
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-08-19 10:54:02 UTC
+Last updated 2020-08-26 11:05:32 UTC
 </div>
 </div>
 </body>
