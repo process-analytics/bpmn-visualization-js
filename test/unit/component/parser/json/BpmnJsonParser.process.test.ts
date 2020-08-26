@@ -13,57 +13,100 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape';
 import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
 import { findProcessRefParticipant } from '../../../../../src/component/parser/json/converter/CollaborationConverter';
 import { BpmnJsonModel } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMN20';
 
 describe('parse bpmn as json for process/pool', () => {
-  it.each([
+  describe.each([
     ['vertical', false],
     ['horizontal', true],
-  ])('json containing one %s participant referencing a process', (title: string, isHorizontal: boolean) => {
-    const json: BpmnJsonModel = {
-      definitions: {
-        targetNamespace: '',
-        collaboration: {
-          participant: { id: 'Participant_1', processRef: 'Process_1' },
-        },
-        process: {
-          id: 'Process_1',
-          isExecutable: false,
-        },
-        BPMNDiagram: {
-          BPMNPlane: {
-            BPMNShape: [
-              {
-                id: 'shape_Participant_1',
-                bpmnElement: 'Participant_1',
-                isHorizontal: isHorizontal,
-                Bounds: { x: 158, y: 50, width: 1620, height: 430 },
-              },
-            ],
+  ])('Dedicated tests for %s orientation', (title: string, isHorizontal: boolean) => {
+    it(`json containing one ${title} participant referencing a process`, () => {
+      const json: BpmnJsonModel = {
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            participant: { id: 'Participant_1', processRef: 'Process_1' },
+          },
+          process: {
+            id: 'Process_1',
+            isExecutable: false,
+          },
+          BPMNDiagram: {
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_Participant_1',
+                  bpmnElement: 'Participant_1',
+                  isHorizontal: isHorizontal,
+                  Bounds: { x: 158, y: 50, width: 1620, height: 430 },
+                },
+              ],
+            },
           },
         },
-      },
-    };
+      };
 
-    const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 0);
+      const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 0);
 
-    const pool = model.pools[0];
-    verifyShape(pool, {
-      shapeId: 'shape_Participant_1',
-      bpmnElementId: 'Participant_1',
-      bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
-      bounds: {
-        x: 158,
-        y: 50,
-        width: 1620,
-        height: 430,
-      },
-      isHorizontal: isHorizontal,
+      const pool = model.pools[0];
+      verifyShape(pool, {
+        shapeId: 'shape_Participant_1',
+        bpmnElementId: 'Participant_1',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.POOL,
+        parentId: undefined,
+        bounds: {
+          x: 158,
+          y: 50,
+          width: 1620,
+          height: 430,
+        },
+        isHorizontal: isHorizontal,
+      });
+    });
+
+    it(`json containing one ${title} participant without related process`, () => {
+      const json = {
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            participant: { id: 'Participant_1', name: 'Participant without process ref' },
+          },
+          BPMNDiagram: {
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_Participant_1',
+                  bpmnElement: 'Participant_1',
+                  isHorizontal: isHorizontal,
+                  Bounds: { x: 158, y: 50, width: 1620, height: 430 },
+                },
+              ],
+            },
+          },
+        },
+      };
+
+      const model = parseJsonAndExpectOnlyPoolsAndLanes(json, 1, 0);
+
+      const pool = model.pools[0];
+      verifyShape(pool, {
+        shapeId: 'shape_Participant_1',
+        bpmnElementId: 'Participant_1',
+        bpmnElementName: 'Participant without process ref',
+        bpmnElementKind: ShapeBpmnElementKind.POOL,
+        parentId: undefined,
+        isHorizontal: isHorizontal,
+        bounds: {
+          x: 158,
+          y: 50,
+          width: 1620,
+          height: 430,
+        },
+      });
     });
   });
 
