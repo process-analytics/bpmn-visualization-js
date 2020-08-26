@@ -315,4 +315,15 @@ Tests that the examples work with the new lib version.
 
 #### Tagging
 When all updates have been completed, merge the Pull Request created above.
-Then tag the repository with the same tag as the lib.
+
+
+To create the tag, the easiest way is to create a new release by following the [GitHub help](https://help.github.com/en/github/administering-a-repository/managing-releases-in-a-repository#creating-a-release)
+- for `Tag version`, use a value that is the same as the lib. The tag will be created when the release will be published
+- for `Target`
+  - usually, keep the `master` branch except if new commits that you don't want to integrate for the release are already
+  available in the branch
+  - in that case, choose a dedicated commit 
+  - **important**: ensure that the build to pass on the chosen branch or commit used to create the release
+
+
+Alternatively, you can create the tag from your local machine and then push it.
