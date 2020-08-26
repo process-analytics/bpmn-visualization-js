@@ -15,6 +15,7 @@
  */
 import { documentReady, handleFileSelect, startBpmnVisualization } from '../../index.es.js';
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
   startBpmnVisualization({ container: 'graph' });
   document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
