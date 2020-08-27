@@ -19,7 +19,7 @@ import { DropFileUserInterface } from './component/DropFileUserInterface';
 
 export * from './helper';
 
-let bpmnVisualization = new BpmnVisualization(window.document.getElementById('graph'));
+let bpmnVisualization: BpmnVisualization;
 
 let fitOnLoad = false;
 function loadBpmn(bpmn: string): void {
@@ -43,6 +43,9 @@ function readAndLoadFile(f: File): void {
   reader.readAsText(f);
 }
 
+/**
+ * <b>IMPORTANT</b>: be sure to have call the `startBpmnVisualization` function prior calling this function as it relies on resources that must be initialized first.
+ */
 // TODO: make File Open Button a self contained component
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function handleFileSelect(evt: any): void {

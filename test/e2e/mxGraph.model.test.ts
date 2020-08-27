@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { ShapeBpmnElementKind } from '../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { ShapeBpmnEventKind } from '../../src/model/bpmn/shape/ShapeBpmnEventKind';
+import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/shape';
 import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
-import { ShapeBpmnSubProcessKind } from '../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
-import { MarkerIdentifier } from '../../src/component/mxgraph/StyleUtils';
+import { MarkerIdentifier } from '../../src';
 import { FlowKind } from '../../src/model/bpmn/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/edge/MessageVisibleKind';
 import { readFileSync } from '../helpers/file-helper';
-import { ShapeBpmnMarkerKind } from '../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
 
 export interface ExpectedFont {
   name?: string;
@@ -68,6 +65,9 @@ export interface ExpectedSequenceFlowModelElement extends ExpectedEdgeModelEleme
 
 // TODO find a way to not be forced to pass 'kind'
 export interface ExpectedBoundaryEventModelElement extends ExpectedEventModelElement {
+  isInterrupting?: boolean;
+}
+export interface ExpectedStartEventModelElement extends ExpectedEventModelElement {
   isInterrupting?: boolean;
 }
 
@@ -191,6 +191,11 @@ describe('mxGraph model', () => {
     expect(cell.style).toContain(`bpmn.isInterrupting=${boundaryEventModelElement.isInterrupting}`);
   }
 
+  function expectModelContainsBpmnStartEvent(cellId: string, startEventModelElement: ExpectedStartEventModelElement): void {
+    const cell = expectModelContainsBpmnEvent(cellId, { ...startEventModelElement, kind: ShapeBpmnElementKind.EVENT_START });
+    expect(cell.style).toContain(`bpmn.isInterrupting=${startEventModelElement.isInterrupting}`);
+  }
+
   function expectModelContainsSubProcess(cellId: string, subProcessModelElement: ExpectedSubProcessModelElement): mxCell {
     const cell = expectModelContainsShape(cellId, {
       ...subProcessModelElement,
@@ -198,6 +203,10 @@ describe('mxGraph model', () => {
     });
     expect(cell.style).toContain(`bpmn.subProcessKind=${subProcessModelElement.subProcessKind}`);
     return cell;
+  }
+
+  function expectModelContainsPool(cellId: string, modelElement: ExpectedShapeModelElement): void {
+    expectModelContainsShape(cellId, { ...modelElement, kind: ShapeBpmnElementKind.POOL, styleShape: mxConstants.SHAPE_SWIMLANE });
   }
 
   it('bpmn elements should be available in the mxGraph model', async () => {
@@ -213,6 +222,12 @@ describe('mxGraph model', () => {
       name: 'Arial',
       size: 11.0,
     };
+
+    // pool
+    const minimalPoolModelElement: ExpectedShapeModelElement = { kind: null };
+    expectModelContainsPool('participant_1_id', { ...minimalPoolModelElement, label: 'Pool 1' });
+    expectModelContainsPool('participant_2_id', minimalPoolModelElement);
+    expectModelContainsPool('participant_3_id', { ...minimalPoolModelElement, label: 'Black Box Process' });
 
     // start event
     expectModelContainsBpmnEvent('startEvent_1', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.NONE, font: expectedBoldFont, label: 'Start Event' });
@@ -562,6 +577,15 @@ describe('mxGraph model', () => {
     expectModelContainsEdge('expanded_embedded_sub_process_id_SeqFlow_2', {
       kind: FlowKind.SEQUENCE_FLOW,
       parentId: 'expanded_embedded_sub_process_id',
+    });
+
+    // Start Event in Event Sub Process
+    expectModelContainsBpmnStartEvent('expanded_event_sub_process_with_non_interrupting_start_event_id_startEvent_1', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.TIMER,
+      label: 'non-interrupting start event in subprocess',
+      parentId: 'expanded_event_sub_process_with_non_interrupting_start_event_id',
+      isInterrupting: false,
     });
 
     // Call Activity calling process

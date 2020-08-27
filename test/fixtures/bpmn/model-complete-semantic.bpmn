@@ -5,6 +5,7 @@
     <!-- Participant -->
     <semantic:participant id="participant_1_id" name="Pool 1" processRef="WFP-6-" />
     <semantic:participant id="participant_2_id" processRef="process_2" />
+    <semantic:participant id="participant_3_id" name="Black Box Process" />
 
     <!-- Message Flow -->
     <semantic:messageFlow id="message_flow_initiating_message_id" name="Message Flow with initiating message" sourceRef="startEvent_3_message" targetRef="startEvent_2_1_message" messageRef="Message_1" />
@@ -181,6 +182,11 @@
     </semantic:subProcess>
     <semantic:subProcess id="expanded_event_sub_process_with_parallel_multi_instance_id" name="Expanded Event Sub-Process With Parallel Multi-instance" triggeredByEvent="true">
       <semantic:multiInstanceLoopCharacteristics />
+    </semantic:subProcess>
+    <semantic:subProcess id="expanded_event_sub_process_with_non_interrupting_start_event_id" name="Expanded Event Sub-Process With Non-Interrupting StartEvent" triggeredByEvent="true">
+      <semantic:startEvent id="expanded_event_sub_process_with_non_interrupting_start_event_id_startEvent_1" name="non-interrupting start event in subprocess" isInterrupting="false">
+        <semantic:timerEventDefinition />
+      </semantic:startEvent>
     </semantic:subProcess>
 
     <!-- Collapsed -->
@@ -629,7 +635,16 @@
         <dc:Bounds x="3280" y="910" width="370" height="200" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="S1373649849862_expanded_event_sub_process_with_parallel_multi_instance_id" bpmnElement="expanded_event_sub_process_with_parallel_multi_instance_id" isExpanded="true">
-        <dc:Bounds x="3280" y="675" width="370" height="200" />
+        <dc:Bounds x="3280" y="675" width="175" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S1373649849862_expanded_event_sub_process_with_non_interrupting_start_event_id" bpmnElement="expanded_event_sub_process_with_non_interrupting_start_event_id" isExpanded="true">
+        <dc:Bounds x="3475" y="675" width="175" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S1373649849862_expanded_event_sub_process_with_non_interrupting_start_event_id_startEvent_1" bpmnElement="expanded_event_sub_process_with_non_interrupting_start_event_id_startEvent_1">
+        <dc:Bounds x="3542" y="775" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3532" y="820" width="57" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
       <!-- Collapsed -->
@@ -1011,7 +1026,14 @@
           <dc:Bounds x="475" y="205" width="71" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+
+      <!-- 3rd process -->
+      <bpmndi:BPMNShape id="shape_participant_3_id" bpmnElement="participant_3_id" isHorizontal="true">
+        <dc:Bounds x="1750" y="80" width="600" height="170" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
+
+    <!-- BPMN Label Styles -->
     <bpmndi:BPMNLabelStyle id="bold_font_id">
       <dc:Font name="Arial" size="11" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" />
     </bpmndi:BPMNLabelStyle>

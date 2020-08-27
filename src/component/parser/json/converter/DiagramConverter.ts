@@ -26,15 +26,18 @@ import { MessageVisibleKind } from '../../../../model/bpmn/edge/MessageVisibleKi
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../xml/bpmn-json-model/BPMNDI';
 import { Point } from '../../xml/bpmn-json-model/DC';
 import { ensureIsArray } from './ConverterUtil';
-import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape/ShapeBpmnMarkerKind';
-import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape';
 
-function findProcessElement(participantId: string): ShapeBpmnElement {
+function findProcessElement(participantId: string): ShapeBpmnElement | undefined {
   const participant = findProcessRefParticipant(participantId);
   if (participant) {
     const originalProcessBpmnElement = findProcessBpmnElement(participant.processRef);
-    const name = participant.name || originalProcessBpmnElement.name;
-    return new ShapeBpmnElement(participant.id, name, originalProcessBpmnElement.kind, originalProcessBpmnElement.parentId);
+    if (originalProcessBpmnElement) {
+      const name = participant.name || originalProcessBpmnElement.name;
+      return new ShapeBpmnElement(participant.id, name, originalProcessBpmnElement.kind, originalProcessBpmnElement.parentId);
+    }
+    // black box pool
+    return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
   }
 }
 
