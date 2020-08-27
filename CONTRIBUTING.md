@@ -296,17 +296,34 @@ You must create a Pull Request to integrate any changes to this repository.
 #### Demo environment update
 Make the new version available for demo
 
-- build it locally
+- the `Upload` GitHub workflow has built the demo for the new tag, so download the demo artifact directly from the
+Actions section on GitHub
+- alternatively, if the artifact is not available via GitHub Actions, you can build it locally
   - checkout the git tag related to the new version
   - run `npm run demo` which generates it in the `dist` folder
-- alternatively, as the GitHub workflow building the demo should have run on the tag, you can download the demo artifact
-associated to the run workflow
-- push the demo resources to the demo folder of the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/demo)
-repository (proceed how it has been done for prior versions).
+- create a new branch in the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/demo)
+ repository and add the new demo content (proceed how it has been done for prior versions). 
+- push to GitHub and create a new Pull Request
 
 #### Examples update
-If possible, make the examples use the latest version of the lib.
+**Note**: do this using the Pull Request you have just created for the demo update
+
+Make the examples use the latest version of the lib. A bash script is available to help you for this task in the `scripts`
+folder.
+Tests that the examples work with the new lib version.
 
 
 #### Tagging
-When all updates have been completed, tag the repository with the same tag as the lib.
+When all updates have been completed, merge the Pull Request created above.
+
+
+To create the tag, the easiest way is to create a new release by following the [GitHub help](https://help.github.com/en/github/administering-a-repository/managing-releases-in-a-repository#creating-a-release)
+- for `Tag version`, use a value that is the same as the lib. The tag will be created when the release will be published
+- for `Target`
+  - usually, keep the `master` branch except if new commits that you don't want to integrate for the release are already
+  available in the branch
+  - in that case, choose a dedicated commit 
+  - **important**: ensure that the build is passing on the chosen branch or commit used to create the release
+
+
+Alternatively, you can create the tag from your local machine and then push it.
