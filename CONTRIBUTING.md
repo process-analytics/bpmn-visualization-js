@@ -323,7 +323,7 @@ To create the tag, the easiest way is to create a new release by following the [
   - usually, keep the `master` branch except if new commits that you don't want to integrate for the release are already
   available in the branch
   - in that case, choose a dedicated commit 
-  - **important**: ensure that the build to pass on the chosen branch or commit used to create the release
+  - **important**: ensure that the build is passing on the chosen branch or commit used to create the release
 
 
 Alternatively, you can create the tag from your local machine and then push it.
