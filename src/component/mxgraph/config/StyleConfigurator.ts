@@ -309,10 +309,6 @@ export default class StyleConfigurator {
         // mxConstants.STYLE_HORIZONTAL is for the label
         // In BPMN, isHorizontal is for the Pool
         styleValues.set(mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
-      } else if (bpmnElement.kind === ShapeBpmnElementKind.LANE) {
-        // mxConstants.STYLE_HORIZONTAL is for the label
-        // In BPMN, isHorizontal is for the Pool
-        styleValues.set(mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
       }
     } else {
       if (bpmnElement instanceof SequenceFlow) {

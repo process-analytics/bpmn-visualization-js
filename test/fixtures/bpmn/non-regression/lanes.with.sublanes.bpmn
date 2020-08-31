@@ -2,7 +2,6 @@
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_01tf5pd" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="7.3.0">
   <bpmn:collaboration id="Collaboration_0um5kdl">
     <bpmn:participant id="Participant_0ga8234" processRef="Process_07bsa3h" />
-    <bpmn:participant id="Participant_1g4jz20" processRef="Process_1ewgjeh" />
   </bpmn:collaboration>
   <bpmn:process id="Process_07bsa3h" isExecutable="false">
     <bpmn:laneSet id="LaneSet_1rqtug0">
@@ -15,17 +14,6 @@
         </bpmn:childLaneSet>
       </bpmn:lane>
       <bpmn:lane id="Lane_1gdg64y" />
-    </bpmn:laneSet>
-  </bpmn:process>
-  <bpmn:process id="Process_1ewgjeh">
-    <bpmn:laneSet id="LaneSet_0g7dkob">
-      <bpmn:lane id="Lane_0ulf6ep" />
-      <bpmn:lane id="Lane_1cccy9t">
-        <bpmn:childLaneSet id="LaneSet_1clcw9n">
-          <bpmn:lane id="Lane_17brtvi" />
-          <bpmn:lane id="Lane_0a8ou6k" />
-        </bpmn:childLaneSet>
-      </bpmn:lane>
     </bpmn:laneSet>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -44,21 +32,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_06so1v5_di" bpmnElement="Lane_06so1v5" isHorizontal="true">
         <dc:Bounds x="216" y="80" width="554" height="134" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Participant_1g4jz20_di" bpmnElement="Participant_1g4jz20" isHorizontal="false">
-        <dc:Bounds x="840" y="80" width="300" height="460" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_1cccy9t_di" bpmnElement="Lane_1cccy9t" isHorizontal="true">
-        <dc:Bounds x="990" y="110" width="150" height="430" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_0a8ou6k_di" bpmnElement="Lane_0a8ou6k" isHorizontal="false">
-        <dc:Bounds x="990" y="140" width="75" height="400" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_17brtvi_di" bpmnElement="Lane_17brtvi" isHorizontal="false">
-        <dc:Bounds x="1065" y="140" width="75" height="400" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_0ulf6ep_di" bpmnElement="Lane_0ulf6ep" isHorizontal="false">
-        <dc:Bounds x="840" y="110" width="150" height="430" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

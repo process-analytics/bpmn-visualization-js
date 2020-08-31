@@ -27,7 +27,6 @@ import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../
 import { Point } from '../../xml/bpmn-json-model/DC';
 import { ensureIsArray } from './ConverterUtil';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape';
-import ShapeUtil from '../../../../model/bpmn/shape/ShapeUtil';
 
 function findProcessElement(participantId: string): ShapeBpmnElement | undefined {
   const participant = findProcessRefParticipant(participantId);
@@ -136,7 +135,7 @@ export default class DiagramConverter {
       }
 
       let isHorizontal;
-      if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
+      if (bpmnElement.kind === ShapeBpmnElementKind.POOL) {
         isHorizontal = shape.isHorizontal !== undefined ? shape.isHorizontal : true;
       }
 
