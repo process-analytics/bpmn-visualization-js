@@ -166,7 +166,7 @@ export default class StyleConfigurator {
 
     // TODO manage pool text area rendering. Maybe we can calculate it from the label size/bounds
     // most of BPMN pool are ok when setting it to 30
-    style[mxConstants.STYLE_STARTSIZE] = 30;
+    style[mxConstants.STYLE_STARTSIZE] = StyleDefault.POOL_LABEL_SIZE;
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.POOL, style);
   }
@@ -181,7 +181,7 @@ export default class StyleConfigurator {
 
     // TODO manage lane text area rendering. there is no Label neither the size available (we have only attribute name="Text of the Label")
     // perhaps it can be calculated as a difference of starting point (either x or y) between pool, lane, sub-lane ?
-    style[mxConstants.STYLE_STARTSIZE] = 30;
+    style[mxConstants.STYLE_STARTSIZE] = StyleDefault.LANE_LABEL_SIZE;
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.LANE, style);
   }
