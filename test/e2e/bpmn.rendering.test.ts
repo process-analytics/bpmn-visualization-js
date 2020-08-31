@@ -129,6 +129,8 @@ describe('no visual regression', () => {
   ]);
 
   function getImageSnapshotConfig(fileName: string): jest.ImageSnapshotConfig {
+    let failureThreshold = 0.000003151;
+
     const config = imageSnapshotThresholdConfig.get(fileName);
     if (config) {
       log(`Building dedicated image snapshot configuration for '${fileName}'`);
@@ -137,12 +139,11 @@ describe('no visual regression', () => {
       // we know here that we have property names related to the 'simple platform name' so ignoring TS complains.
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-      const failureThreshold = config[simplePlatformName];
-      log(`ImageSnapshot - using failureThreshold: ${failureThreshold}`);
-      return { ...defaultImageSnapshotConfig, failureThreshold: failureThreshold, failureThresholdType: 'percent' };
+      failureThreshold = config[simplePlatformName];
     }
 
-    return defaultImageSnapshotConfig;
+    log(`ImageSnapshot - using failureThreshold: ${failureThreshold}`);
+    return { ...defaultImageSnapshotConfig, failureThreshold: failureThreshold, failureThresholdType: 'percent' };
   }
 
   enum BpmnLoadMethod {
