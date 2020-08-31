@@ -137,11 +137,6 @@ export function handleFileSelect(evt: any): void {
   readAndLoadFile(f);
 }
 
-// document.getElementById('btn-open-input-file').addEventListener('change', handleFileSelect, false);
-// document.getElementById('btn-open').addEventListener('click', () => {
-//   document.getElementById('btn-open-input-file').click();
-// });
-
 document.getElementById('btn-clean').onclick = function () {
   cleanStatus();
 
@@ -208,30 +203,6 @@ export function openFromUrl(url: string): void {
   });
 }
 
-// // DISABLED
-// // document.getElementById('btn-open-url').onclick = function () {
-// //   const url = (document.getElementById('input-open-url') as HTMLInputElement).value;
-// //   openFromUrl(url);
-// // };
-//
-// document.getElementById('select-open-migw').onchange = function () {
-//   const fileName = (document.getElementById('select-open-migw') as HTMLSelectElement).value;
-//   if (fileName) {
-//     log('Start opening MIGW file %s', fileName);
-//     const url = `https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/${fileName}`;
-//     openFromUrl(url);
-//   }
-// };
-//
-// document.getElementById('select-open-bpmn-visualization-example').onchange = function () {
-//   const fileName = (document.getElementById('select-open-bpmn-visualization-example') as HTMLSelectElement).value;
-//   if (fileName) {
-//     log('Start opening bpmn-visualization-example file %s', fileName);
-//     const url = `https://raw.githubusercontent.com/process-analytics/bpmn-visualization-examples/master/bpmn-files/${fileName}`;
-//     openFromUrl(url);
-//   }
-// };
-//
 // =====================================================================================================================
 // ZOOM
 // =====================================================================================================================
@@ -275,18 +246,6 @@ export function configureNavigationButtons(): void {
     bpmnVisualization.pan(PanType.HorizontalRight);
   };
 }
-
-// // =====================================================================================================================
-// // General
-// // =====================================================================================================================
-//
-// export function configureGeneraButtons(): void {
-//   document.getElementById('btn-help').onclick = function () {
-//     log('click btn-help');
-//     // TODO implement a more convenient popup/modal
-//     window.alert('Keyboard Shortcuts\nPanning: use arrow');
-//   };
-// }
 
 // =====================================================================================================================
 // General graph
@@ -391,92 +350,6 @@ export function applySketchStyle(sketchActivated: boolean): void {
   log(`mxgraph.graph refreshed in ${performance.now() - startTime} ms`);
   statusRendered(`Rendering completed in ${performance.now() - initialStartTime} ms, sketch mode: ${sketchActivated}`);
 }
-
-// const btnSketch = document.getElementById('btn-sketch') as HTMLInputElement;
-// btnSketch.onclick = function () {
-//   const sketchActivated = btnSketch.checked;
-//   applySketchStyle(sketchActivated);
-//   // const initialStartTime = performance.now();
-//   // log(`Sketch style management, sketch: ${sketchActivated}`);
-//   // statusRendering(`New rendering in progress, sketch mode: ${sketchActivated}`);
-//   //
-//   // const graph = bpmnVisualization.graph;
-//   // const styleSheet = graph.getStylesheet();
-//   //
-//   // styleSheet.getDefaultEdgeStyle()['sketch'] = String(sketchActivated);
-//   // styleSheet.getDefaultVertexStyle()['sketch'] = String(sketchActivated);
-//   //
-//   // // only to demonstrate various fill capacity with rough.js
-//   // ShapeUtil.taskKinds().forEach(kind => {
-//   //   const style = styleSheet.styles[kind];
-//   //
-//   //   switch (kind) {
-//   //     case ShapeBpmnElementKind.TASK_USER:
-//   //       style['fillStyle'] = 'zigzag';
-//   //       style[mxConstants.STYLE_FILLCOLOR] = 'purple';
-//   //       style[mxConstants.STYLE_FILL_OPACITY] = '20';
-//   //       break;
-//   //     case ShapeBpmnElementKind.TASK:
-//   //       style['roughness'] = '2';
-//   //       style['fillStyle'] = 'cross-hatch';
-//   //       style[mxConstants.STYLE_FILLCOLOR] = 'Orange';
-//   //       style[mxConstants.STYLE_FILL_OPACITY] = '40';
-//   //       break;
-//   //     case ShapeBpmnElementKind.TASK_SERVICE:
-//   //       style['roughness'] = '1.5';
-//   //       style[mxConstants.STYLE_FILLCOLOR] = mxConstants.NONE;
-//   //       break;
-//   //   }
-//   //
-//   //   if (!sketchActivated) {
-//   //     style[mxConstants.STYLE_FILLCOLOR] = StyleDefault.DEFAULT_FILL_COLOR;
-//   //     style[mxConstants.STYLE_FILL_OPACITY] = '100';
-//   //   }
-//   // });
-//   //
-//   // // ensure throw icon are fill more than with the default style
-//   // ShapeUtil.topLevelBpmnEventKinds().forEach(kind => {
-//   //   const style = styleSheet.styles[kind];
-//   //   // style['fillStyle'] = 'zigzag';
-//   //   // style['zigzagOffset'] = '12';
-//   //   style['hachureAngle'] = '60';
-//   //   style['hachureGap'] = '3';
-//   //   style['fillWeight'] = '2';
-//   // });
-//   //
-//   // const availableSketchFonts = ['Gloria Hallelujah, cursive', 'Permanent Marker, cursive'];
-//   // // hack as we currently configured all properties in all styles, instead of only override what is defined in the default
-//   // (Object.values(ShapeBpmnElementKind) as string[]).concat(Object.values(SequenceFlowKind) as string[]).forEach(kind => {
-//   //   const style = styleSheet.styles[kind];
-//   //   if (!sketchActivated) {
-//   //     style[mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
-//   //     style[mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
-//   //   } else {
-//   //     const font = availableSketchFonts[Math.floor(Math.random() * availableSketchFonts.length)];
-//   //     // log(`Use custom font for ${kind}: ${font}`);
-//   //     style[mxConstants.STYLE_FONTSIZE] = 12;
-//   //     style[mxConstants.STYLE_FONTFAMILY] = font;
-//   //   }
-//   // });
-//   //
-//   // const startTime = performance.now();
-//   // log('Refreshing the mxgraph.graph to consider style updates');
-//   // graph.refresh();
-//   // log(`mxgraph.graph refreshed in ${performance.now() - startTime} ms`);
-//   // statusRendered(`Rendering completed in ${performance.now() - initialStartTime} ms, sketch mode: ${sketchActivated}`);
-// };
-
-// const btnFitOnLoad = document.getElementById('btn-fit-on-load') as HTMLInputElement;
-// btnFitOnLoad.onclick = function () {
-//   fitOnLoad = btnFitOnLoad.checked;
-//   log(`Fit On Load is now '${fitOnLoad}'`);
-// };
-//
-// const btnIgnoreBpmnLabelStyles = document.getElementById('btn-ignore-bpmn-label-styles') as HTMLInputElement;
-// btnIgnoreBpmnLabelStyles.onclick = function () {
-//   rendererOptions = { ...rendererOptions, ignoreLabelStyles: btnIgnoreBpmnLabelStyles.checked };
-//   log(`RenderOptions 'ignoreLabelStyles' is now '${rendererOptions.ignoreLabelStyles}'`);
-// };
 
 export function configureFitOnLoad(activate: boolean): void {
   fitOnLoad = activate;
