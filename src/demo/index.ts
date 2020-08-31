@@ -19,13 +19,14 @@ import { PanType, RendererOptions, ZoomType } from '../component/BpmnVisualizati
 import { log, logStartup } from './helper';
 import { downloadAsPng, downloadAsSvg } from './component/download';
 import ShapeUtil from '../model/bpmn/shape/ShapeUtil';
-import { StyleDefault } from '../component/mxgraph/StyleUtils';
-import { ShapeBpmnElementKind } from '../model/bpmn/shape/ShapeBpmnElementKind';
+import { StyleDefault } from '..';
+import { ShapeBpmnElementKind } from '../model/bpmn/shape';
 import { SequenceFlowKind } from '../model/bpmn/edge/SequenceFlowKind';
 
 export * from './helper';
 
-let bpmnVisualization: BpmnVisualization;
+// export for demo improvements
+export let bpmnVisualization: BpmnVisualization;
 
 let fitOnLoad = false;
 let rendererOptions: RendererOptions;
@@ -136,10 +137,10 @@ export function handleFileSelect(evt: any): void {
   readAndLoadFile(f);
 }
 
-document.getElementById('btn-open-input-file').addEventListener('change', handleFileSelect, false);
-document.getElementById('btn-open').addEventListener('click', () => {
-  document.getElementById('btn-open-input-file').click();
-});
+// document.getElementById('btn-open-input-file').addEventListener('change', handleFileSelect, false);
+// document.getElementById('btn-open').addEventListener('click', () => {
+//   document.getElementById('btn-open-input-file').click();
+// });
 
 document.getElementById('btn-clean').onclick = function () {
   cleanStatus();
@@ -199,7 +200,7 @@ function fetchBpmnContent(url: string): Promise<string> {
     });
 }
 
-function openFromUrl(url: string): void {
+export function openFromUrl(url: string): void {
   cleanStatus();
   fetchBpmnContent(url).then(bpmn => {
     loadBpmn(bpmn);
@@ -207,101 +208,114 @@ function openFromUrl(url: string): void {
   });
 }
 
-// DISABLED
-// document.getElementById('btn-open-url').onclick = function () {
-//   const url = (document.getElementById('input-open-url') as HTMLInputElement).value;
-//   openFromUrl(url);
+// // DISABLED
+// // document.getElementById('btn-open-url').onclick = function () {
+// //   const url = (document.getElementById('input-open-url') as HTMLInputElement).value;
+// //   openFromUrl(url);
+// // };
+//
+// document.getElementById('select-open-migw').onchange = function () {
+//   const fileName = (document.getElementById('select-open-migw') as HTMLSelectElement).value;
+//   if (fileName) {
+//     log('Start opening MIGW file %s', fileName);
+//     const url = `https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/${fileName}`;
+//     openFromUrl(url);
+//   }
 // };
-
-document.getElementById('select-open-migw').onchange = function () {
-  const fileName = (document.getElementById('select-open-migw') as HTMLSelectElement).value;
-  if (fileName) {
-    log('Start opening MIGW file %s', fileName);
-    const url = `https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/${fileName}`;
-    openFromUrl(url);
-  }
-};
-
-document.getElementById('select-open-bpmn-visualization-example').onchange = function () {
-  const fileName = (document.getElementById('select-open-bpmn-visualization-example') as HTMLSelectElement).value;
-  if (fileName) {
-    log('Start opening bpmn-visualization-example file %s', fileName);
-    const url = `https://raw.githubusercontent.com/process-analytics/bpmn-visualization-examples/master/bpmn-files/${fileName}`;
-    openFromUrl(url);
-  }
-};
-
+//
+// document.getElementById('select-open-bpmn-visualization-example').onchange = function () {
+//   const fileName = (document.getElementById('select-open-bpmn-visualization-example') as HTMLSelectElement).value;
+//   if (fileName) {
+//     log('Start opening bpmn-visualization-example file %s', fileName);
+//     const url = `https://raw.githubusercontent.com/process-analytics/bpmn-visualization-examples/master/bpmn-files/${fileName}`;
+//     openFromUrl(url);
+//   }
+// };
+//
 // =====================================================================================================================
 // ZOOM
 // =====================================================================================================================
-document.getElementById('btn-zoom-in').onclick = function () {
-  bpmnVisualization.zoom(ZoomType.In);
-};
-document.getElementById('btn-zoom-out').onclick = function () {
-  bpmnVisualization.zoom(ZoomType.Out);
-};
-document.getElementById('btn-zoom-actual').onclick = function () {
-  bpmnVisualization.zoom(ZoomType.Actual);
-};
-document.getElementById('btn-zoom-fit').onclick = function () {
-  bpmnVisualization.zoom(ZoomType.Fit);
-};
-document.getElementById('btn-zoom-fit-horizontal').onclick = function () {
-  bpmnVisualization.zoom(ZoomType.FitHorizontal);
-};
-document.getElementById('btn-zoom-fit-vertical').onclick = function () {
-  bpmnVisualization.zoom(ZoomType.FitVertical);
-};
+
+export function configureZoomButtons(): void {
+  document.getElementById('btn-zoom-in').onclick = function () {
+    bpmnVisualization.zoom(ZoomType.In);
+  };
+  document.getElementById('btn-zoom-out').onclick = function () {
+    bpmnVisualization.zoom(ZoomType.Out);
+  };
+  document.getElementById('btn-zoom-actual').onclick = function () {
+    bpmnVisualization.zoom(ZoomType.Actual);
+  };
+  document.getElementById('btn-zoom-fit').onclick = function () {
+    bpmnVisualization.zoom(ZoomType.Fit);
+  };
+  document.getElementById('btn-zoom-fit-horizontal').onclick = function () {
+    bpmnVisualization.zoom(ZoomType.FitHorizontal);
+  };
+  document.getElementById('btn-zoom-fit-vertical').onclick = function () {
+    bpmnVisualization.zoom(ZoomType.FitVertical);
+  };
+}
 
 // =====================================================================================================================
 // PAN
 // =====================================================================================================================
-document.getElementById('btn-pan-up').onclick = function () {
-  bpmnVisualization.pan(PanType.VerticalUp);
-};
-document.getElementById('btn-pan-down').onclick = function () {
-  bpmnVisualization.pan(PanType.VerticalDown);
-};
-document.getElementById('btn-pan-left').onclick = function () {
-  bpmnVisualization.pan(PanType.HorizontalLeft);
-};
-document.getElementById('btn-pan-right').onclick = function () {
-  bpmnVisualization.pan(PanType.HorizontalRight);
-};
 
-// =====================================================================================================================
-// General
-// =====================================================================================================================
+export function configureNavigationButtons(): void {
+  document.getElementById('btn-pan-up').onclick = function () {
+    bpmnVisualization.pan(PanType.VerticalUp);
+  };
+  document.getElementById('btn-pan-down').onclick = function () {
+    bpmnVisualization.pan(PanType.VerticalDown);
+  };
+  document.getElementById('btn-pan-left').onclick = function () {
+    bpmnVisualization.pan(PanType.HorizontalLeft);
+  };
+  document.getElementById('btn-pan-right').onclick = function () {
+    bpmnVisualization.pan(PanType.HorizontalRight);
+  };
+}
 
-document.getElementById('btn-help').onclick = function () {
-  log('click btn-help');
-  // TODO implement a more convenient popup/modal
-  window.alert('Keyboard Shortcuts\nPanning: use arrow');
-};
+// // =====================================================================================================================
+// // General
+// // =====================================================================================================================
+//
+// export function configureGeneraButtons(): void {
+//   document.getElementById('btn-help').onclick = function () {
+//     log('click btn-help');
+//     // TODO implement a more convenient popup/modal
+//     window.alert('Keyboard Shortcuts\nPanning: use arrow');
+//   };
+// }
 
 // =====================================================================================================================
 // General graph
 // =====================================================================================================================
 
-const overviewElement = document.getElementById('graph-overview');
-document.getElementById('btn-overview').onclick = function () {
-  overviewElement.classList.toggle('hidden');
-  bpmnVisualization.toggleOverview(overviewElement);
-};
+export function configureGeneralGraphButtons(): void {
+  const overviewElement = document.getElementById('graph-overview');
+  document.getElementById('btn-overview').onclick = function () {
+    overviewElement.classList.toggle('hidden');
+    bpmnVisualization.toggleOverview(overviewElement);
+  };
+}
 
 // =====================================================================================================================
 // Export/Download
 // =====================================================================================================================
-document.getElementById('btn-export-preview').onclick = function () {
-  bpmnVisualization.preview();
-};
-document.getElementById('btn-export-svg').onclick = function () {
-  downloadAsSvg(bpmnVisualization.exportAsSvg());
-};
 
-document.getElementById('btn-export-png').onclick = function () {
-  downloadAsPng(bpmnVisualization.exportAsSvg());
-};
+export function configureExportButtons(): void {
+  document.getElementById('btn-export-preview').onclick = function () {
+    bpmnVisualization.preview();
+  };
+  document.getElementById('btn-export-svg').onclick = function () {
+    downloadAsSvg(bpmnVisualization.exportAsSvg());
+  };
+
+  document.getElementById('btn-export-png').onclick = function () {
+    downloadAsPng(bpmnVisualization.exportAsSvg());
+  };
+}
 
 // =====================================================================================================================
 // Global Rendering

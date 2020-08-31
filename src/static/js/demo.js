@@ -13,13 +13,67 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization } from '../../index.es.js';
+import {
+  configureExportButtons,
+  configureGeneralGraphButtons,
+  configureNavigationButtons,
+  configureZoomButtons,
+  documentReady,
+  handleFileSelect,
+  log,
+  openFromUrl,
+  startBpmnVisualization,
+} from '../../index.es.js';
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureOpenButtons() {
+  document.getElementById('btn-open-input-file').addEventListener('change', handleFileSelect, false);
+  document.getElementById('btn-open').addEventListener('click', () => {
+    document.getElementById('btn-open-input-file').click();
+  });
+
+  // DISABLED
+  // document.getElementById('btn-open-url').onclick = function () {
+  //   const url = (document.getElementById('input-open-url') as HTMLInputElement).value;
+  //   openFromUrl(url);
+  // };
+
+  document.getElementById('select-open-migw').onchange = function () {
+    const fileName = document.getElementById('select-open-migw').value;
+    if (fileName) {
+      log('Start opening MIGW file %s', fileName);
+      const url = `https://raw.githubusercontent.com/bpmn-miwg/bpmn-miwg-test-suite/master/Reference/${fileName}`;
+      openFromUrl(url);
+    }
+  };
+
+  document.getElementById('select-open-bpmn-visualization-example').onchange = function () {
+    const fileName = document.getElementById('select-open-bpmn-visualization-example').value;
+    if (fileName) {
+      log('Start opening bpmn-visualization-example file %s', fileName);
+      const url = `https://raw.githubusercontent.com/process-analytics/bpmn-visualization-examples/master/bpmn-files/${fileName}`;
+      openFromUrl(url);
+    }
+  };
+}
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
   startBpmnVisualization({ container: 'graph' });
-  document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
-  document.getElementById('file-selector').classList.remove('hidden');
+
+  document.getElementById('btn-help').onclick = function () {
+    log('click btn-help');
+    // TODO implement a more convenient popup/modal
+    window.alert('Keyboard Shortcuts\nPanning: use arrow');
+  };
+
+  configureGeneralGraphButtons();
+
+  configureOpenButtons();
+
+  configureExportButtons();
+  configureNavigationButtons();
+  configureZoomButtons();
 }
 
 documentReady(startDemo());
