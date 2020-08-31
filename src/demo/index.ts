@@ -19,7 +19,7 @@ import { PanType, RendererOptions, ZoomType } from '../component/BpmnVisualizati
 import { log, logStartup } from './helper';
 import { downloadAsPng, downloadAsSvg } from './component/download';
 import ShapeUtil from '../model/bpmn/shape/ShapeUtil';
-import { StyleDefault } from '..';
+import { StyleDefault } from '../component/mxgraph/StyleUtils';
 import { ShapeBpmnElementKind } from '../model/bpmn/shape';
 import { SequenceFlowKind } from '../model/bpmn/edge/SequenceFlowKind';
 
