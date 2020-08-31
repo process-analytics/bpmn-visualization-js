@@ -22,6 +22,7 @@ import ShapeUtil from '../model/bpmn/shape/ShapeUtil';
 import { StyleDefault } from '../component/mxgraph/StyleUtils';
 import { ShapeBpmnElementKind } from '../model/bpmn/shape';
 import { SequenceFlowKind } from '../model/bpmn/edge/SequenceFlowKind';
+import { FlowKind } from '../model/bpmn/edge/FlowKind';
 
 export * from './helper';
 
@@ -331,18 +332,21 @@ export function applySketchStyle(sketchActivated: boolean): void {
 
   const availableSketchFonts = ['Gloria Hallelujah, cursive', 'Permanent Marker, cursive'];
   // hack as we currently configured all properties in all styles, instead of only override what is defined in the default
-  (Object.values(ShapeBpmnElementKind) as string[]).concat(Object.values(SequenceFlowKind) as string[]).forEach(kind => {
-    const style = styleSheet.styles[kind];
-    if (!sketchActivated) {
-      style[mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
-      style[mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
-    } else {
-      const font = availableSketchFonts[Math.floor(Math.random() * availableSketchFonts.length)];
-      // log(`Use custom font for ${kind}: ${font}`);
-      style[mxConstants.STYLE_FONTSIZE] = 12;
-      style[mxConstants.STYLE_FONTFAMILY] = font;
-    }
-  });
+  (Object.values(ShapeBpmnElementKind) as string[])
+    .concat(Object.values(FlowKind) as string[]) // message flows
+    .concat(Object.values(SequenceFlowKind) as string[]) // sequence flows
+    .forEach(kind => {
+      const style = styleSheet.styles[kind];
+      if (!sketchActivated) {
+        style[mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
+        style[mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
+      } else {
+        const font = availableSketchFonts[Math.floor(Math.random() * availableSketchFonts.length)];
+        // log(`Use custom font for ${kind}: ${font}`);
+        style[mxConstants.STYLE_FONTSIZE] = 12;
+        style[mxConstants.STYLE_FONTFAMILY] = font;
+      }
+    });
 
   const startTime = performance.now();
   log('Refreshing the mxgraph.graph to consider style updates');
