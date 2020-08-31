@@ -19,6 +19,7 @@ import { BpmnEventKind } from './ShapeUtil';
 import { ShapeBpmnSubProcessKind } from './ShapeBpmnSubProcessKind';
 import { ShapeBpmnMarkerKind } from './ShapeBpmnMarkerKind';
 import { ShapeBpmnCallActivityKind } from './ShapeBpmnCallActivityKind';
+import { TLaneSet } from '../../../component/parser/xml/bpmn-json-model/baseElement/baseElement';
 
 export default class ShapeBpmnElement {
   constructor(readonly id: string, readonly name: string, readonly kind: ShapeBpmnElementKind, public parentId?: string, readonly instantiate: boolean = false) {}
@@ -62,4 +63,10 @@ export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
 
 export class Participant {
   constructor(readonly id: string, readonly name?: string, public processRef?: string) {}
+}
+
+export class ShapeBpmnLane extends ShapeBpmnElement {
+  constructor(id: string, name: string, parentId: string, readonly childLaneSet: TLaneSet) {
+    super(id, name, ShapeBpmnElementKind.LANE, parentId);
+  }
 }

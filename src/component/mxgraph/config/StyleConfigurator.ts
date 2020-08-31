@@ -179,6 +179,10 @@ export default class StyleConfigurator {
     style[mxConstants.STYLE_HORIZONTAL] = false;
     style[mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
 
+    // TODO manage lane text area rendering. there is no Label neither the size available (we have only attribute name="Text of the Label")
+    // perhaps it can be calculated as a difference of starting point (either x or y) between pool, lane, sub-lane ?
+    style[mxConstants.STYLE_STARTSIZE] = 30;
+
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.LANE, style);
   }
 
@@ -302,6 +306,10 @@ export default class StyleConfigurator {
           styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
         }
       } else if (bpmnElement.kind === ShapeBpmnElementKind.POOL) {
+        // mxConstants.STYLE_HORIZONTAL is for the label
+        // In BPMN, isHorizontal is for the Pool
+        styleValues.set(mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
+      } else if (bpmnElement.kind === ShapeBpmnElementKind.LANE) {
         // mxConstants.STYLE_HORIZONTAL is for the label
         // In BPMN, isHorizontal is for the Pool
         styleValues.set(mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');

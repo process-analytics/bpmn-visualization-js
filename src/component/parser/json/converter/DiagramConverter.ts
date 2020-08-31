@@ -135,7 +135,7 @@ export default class DiagramConverter {
       }
 
       let isHorizontal;
-      if (bpmnElement.kind === ShapeBpmnElementKind.POOL) {
+      if (bpmnElement.kind === ShapeBpmnElementKind.POOL || bpmnElement.kind === ShapeBpmnElementKind.LANE) {
         isHorizontal = shape.isHorizontal !== undefined ? shape.isHorizontal : true;
       }
 

@@ -19,6 +19,7 @@ import ShapeBpmnElement, {
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
   ShapeBpmnEvent,
+  ShapeBpmnLane,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/shape/ShapeBpmnElement';
@@ -266,9 +267,12 @@ export default class ProcessConverter {
 
   private buildLaneBpmnElements(processId: string, lanes: Array<TLane> | TLane): void {
     ensureIsArray(lanes).forEach(lane => {
-      const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, processId);
+      const laneShape = new ShapeBpmnLane(lane.id, lane.name, processId, lane.childLaneSet);
       convertedLaneBpmnElements.set(lane.id, laneShape);
       this.assignParentOfLaneFlowNodes(lane);
+      if (laneShape.childLaneSet?.lane) {
+        this.buildLaneBpmnElements(lane.id, laneShape.childLaneSet.lane);
+      }
     });
   }
 

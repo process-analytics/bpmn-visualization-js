@@ -70,7 +70,7 @@ export default class MxGraphRenderer {
       const bounds = shape.bounds;
       let labelBounds = shape.label?.bounds;
       // pool/lane label bounds are not managed for now (use hard coded values)
-      labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
+      labelBounds = ShapeUtil.isPool(bpmnElement.kind) ? undefined : labelBounds;
       const style = this.styleConfigurator.computeStyle(shape, labelBounds);
 
       this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
