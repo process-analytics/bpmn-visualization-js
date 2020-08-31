@@ -109,8 +109,4 @@ export default class ShapeUtil {
   public static isPoolOrLane(kind: ShapeBpmnElementKind): boolean {
     return kind == ShapeBpmnElementKind.POOL || kind == ShapeBpmnElementKind.LANE;
   }
-
-  public static isPool(kind: ShapeBpmnElementKind): boolean {
-    return kind == ShapeBpmnElementKind.POOL;
-  }
 }
