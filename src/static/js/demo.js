@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 import {
+  applySketchStyle,
   configureExportButtons,
+  configureFitOnLoad,
   configureGeneralGraphButtons,
+  configureIgnoreBpmnLabelStyles,
   configureNavigationButtons,
   configureZoomButtons,
   documentReady,
@@ -58,6 +61,24 @@ function configureOpenButtons() {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureRenderingButtons() {
+  const btnSketch = document.getElementById('btn-sketch');
+  btnSketch.onclick = function () {
+    applySketchStyle(btnSketch.checked);
+  };
+
+  const btnFitOnLoad = document.getElementById('btn-fit-on-load');
+  btnFitOnLoad.onclick = function () {
+    configureFitOnLoad(btnFitOnLoad.checked);
+  };
+
+  const btnIgnoreBpmnLabelStyles = document.getElementById('btn-ignore-bpmn-label-styles');
+  btnIgnoreBpmnLabelStyles.onclick = function () {
+    configureIgnoreBpmnLabelStyles(btnIgnoreBpmnLabelStyles.checked);
+  };
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
   startBpmnVisualization({ container: 'graph' });
 
@@ -68,6 +89,7 @@ function startDemo() {
   };
 
   configureGeneralGraphButtons();
+  configureRenderingButtons();
 
   configureOpenButtons();
 
