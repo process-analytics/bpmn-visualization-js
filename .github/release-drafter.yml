@@ -56,3 +56,5 @@ template: |
 replacers:
   - search: '@dependabot-preview'
     replace: '@dependabot'
+  - search: '@dependabot[bot]'
+    replace: '@dependabot'
