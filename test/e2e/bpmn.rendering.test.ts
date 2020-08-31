@@ -139,7 +139,7 @@ describe('no visual regression', () => {
       const simplePlatformName = getSimplePlatformName();
       log(`Simple platform name: ${simplePlatformName}`);
       // we know here that we have property names related to the 'simple platform name' so ignoring TS complains.
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       failureThreshold = config[simplePlatformName];
     }

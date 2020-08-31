@@ -48,7 +48,7 @@ export enum StyleIdentifier {
   BPMN_STYLE_INSTANTIATING = 'bpmn.isInstantiating',
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
 export default class StyleUtils {
   public static getFillColor(style: any): string {
     return mxUtils.getValue(style, mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
@@ -98,3 +98,4 @@ export default class StyleUtils {
     return JSON.parse(mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_INSTANTIATING, false));
   }
 }
+/* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
