@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../component/BpmnVisualization';
-import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { PanType, RendererOptions, ZoomType } from '../component/BpmnVisualizationOptions';
-import { documentReady, log, logStartup } from './helper';
+import { log, logStartup } from './helper';
 import { downloadAsPng, downloadAsSvg } from './component/download';
 import ShapeUtil from '../model/bpmn/shape/ShapeUtil';
 import { StyleDefault } from '../component/mxgraph/StyleUtils';
@@ -169,7 +168,7 @@ document.getElementById('btn-clean').onclick = function () {
 // =====================================================================================================================
 
 function fetchBpmnContent(url: string): Promise<string> {
-  log('Fetching BPMN content from url <%s>', url);
+  log(`Fetching BPMN content from url ${url}`);
   const startTime = performance.now();
   statusFetching(url);
   return fetch(url)
@@ -392,15 +391,6 @@ btnIgnoreBpmnLabelStyles.onclick = function () {
   rendererOptions = { ...rendererOptions, ignoreLabelStyles: btnIgnoreBpmnLabelStyles.checked };
   log(`RenderOptions 'ignoreLabelStyles' is now '${rendererOptions.ignoreLabelStyles}'`);
 };
-function fetchBpmnContent(url: string): Promise<string> {
-  log(`Fetching BPMN content from url ${url}`);
-  return fetch(url).then(response => {
-    if (!response.ok) {
-      throw Error(String(response.status));
-    }
-    return response.text();
-  });
-}
 
 function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) => void): void {
   fetchBpmnContent(url)
@@ -429,24 +419,6 @@ function defaultStatusFetchKoNotifier(errorMsg: string): void {
 }
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
-////////////////////////////////////////////////////////////////////////////////
-// if bpmn passed as request parameter, try to load it directly
-////////////////////////////////////////////////////////////////////////////////
-
-// TODO     auto open ?url=diagram-url
-//
-//     (function() {
-//       var str = window.location.search;
-//       var match = /(?:\&|\?)url=([^&]+)/.exec(str);
-//
-//       if (match) {
-//         var url = decodeURIComponent(match[1]);
-//         $('#input-open-url').val(url);
-//         openFromUrl(url);
-//       }
-//     })();
-
-documentReady(function () {
   const log = logStartup;
   const container = config.container;
 
