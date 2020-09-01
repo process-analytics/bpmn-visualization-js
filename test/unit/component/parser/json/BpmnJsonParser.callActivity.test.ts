@@ -179,7 +179,7 @@ describe('parse bpmn as json for callActivity', () => {
             },
           },
         };
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         json.definitions[globalTaskKind] = { id: 'task_id' };
 
