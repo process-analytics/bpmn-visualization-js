@@ -14,6 +14,12 @@
       <bpmn:lane id="Lane_0h8gy68">
         <bpmn:flowNodeRef>Event_09mg2e0</bpmn:flowNodeRef>
       </bpmn:lane>
+      <bpmn:lane id="Lane_1bjvm3u" name="Lane with children">
+        <bpmn:childLaneSet id="LaneSet_1wbqn51">
+          <bpmn:lane id="Lane_187zf6v" />
+          <bpmn:lane id="Lane_1ymcyzv" name="Child Lane" />
+        </bpmn:childLaneSet>
+      </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:task id="Activity_12gni3i">
       <bpmn:incoming>Flow_0d7g7xq</bpmn:incoming>
@@ -31,7 +37,7 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_01pfi2w">
       <bpmndi:BPMNShape id="Participant_1gtbp0n_di" bpmnElement="Participant_1gtbp0n" isHorizontal="true">
-        <dc:Bounds x="156" y="40" width="600" height="290" />
+        <dc:Bounds x="156" y="40" width="600" height="430" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_0h8gy68_di" bpmnElement="Lane_0h8gy68" isHorizontal="true">
         <dc:Bounds x="186" y="250" width="570" height="80" />
@@ -41,6 +47,15 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_169i5ra_di" bpmnElement="Lane_169i5ra" isHorizontal="true">
         <dc:Bounds x="186" y="40" width="570" height="83" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1bjvm3u_di" bpmnElement="Lane_1bjvm3u" isHorizontal="true">
+        <dc:Bounds x="186" y="330" width="570" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_187zf6v_di" bpmnElement="Lane_187zf6v" isHorizontal="true">
+        <dc:Bounds x="216" y="330" width="540" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1ymcyzv_di" bpmnElement="Lane_1ymcyzv" isHorizontal="true">
+        <dc:Bounds x="216" y="390" width="540" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1os3eew_di" bpmnElement="Flow_1os3eew">
         <di:waypoint x="460" y="180" />

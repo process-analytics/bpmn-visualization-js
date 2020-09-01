@@ -29,6 +29,8 @@ export enum StyleDefault {
   SHAPE_ACTIVITY_FROM_CENTER_MARGIN = 7,
   SHAPE_ACTIVITY_MARKER_ICON_MARGIN = 5,
   SHAPE_ACTIVITY_MARKER_ICON_SIZE = 20, //TODO: this may be adjusted once #465 will be implemented see @https://github.com/process-analytics/bpmn-visualization-js/issues/465
+  POOL_LABEL_SIZE = 30,
+  LANE_LABEL_SIZE = 30,
   DEFAULT_FILL_COLOR = 'White',
   DEFAULT_STROKE_COLOR = 'Black',
   DEFAULT_FONT_FAMILY = 'Arial, Helvetica, sans-serif', // define our own to not depend on eventual mxGraph default change
@@ -48,7 +50,7 @@ export enum StyleIdentifier {
   BPMN_STYLE_INSTANTIATING = 'bpmn.isInstantiating',
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
 export default class StyleUtils {
   public static getFillColor(style: any): string {
     return mxUtils.getValue(style, mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
@@ -98,3 +100,4 @@ export default class StyleUtils {
     return JSON.parse(mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_INSTANTIATING, false));
   }
 }
+/* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
