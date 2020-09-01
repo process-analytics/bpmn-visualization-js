@@ -6,6 +6,7 @@
     <semantic:participant id="participant_1_id" name="Pool 1" processRef="WFP-6-" />
     <semantic:participant id="participant_2_id" processRef="process_2" />
     <semantic:participant id="participant_3_id" name="Black Box Process" />
+    <semantic:participant id="participant_4_id" name="Pool containing sublanes" processRef="process_4" />
 
     <!-- Message Flow -->
     <semantic:messageFlow id="message_flow_initiating_message_id" name="Message Flow with initiating message" sourceRef="startEvent_3_message" targetRef="startEvent_2_1_message" messageRef="Message_1" />
@@ -368,6 +369,17 @@
       <semantic:conditionExpression xsi:type="semantic:tFormalExpression" id="condition_2">"Contract to be written".equals(loanRequested.status)</semantic:conditionExpression>
     </semantic:sequenceFlow>
     <semantic:association id="association_id_1" associationDirection="None" sourceRef="task_with_flows" targetRef="text_annotation_id_1" />
+  </semantic:process>
+  <semantic:process id="process_4">
+    <semantic:laneSet id="LaneSet_0csasie">
+      <semantic:lane id="Lane_1jf55v8" name="Lane with child lanes">
+        <semantic:childLaneSet id="LaneSet_0yqmlme">
+          <semantic:lane id="Lane_1vk6vro" name="Child lane 2" />
+          <semantic:lane id="Lane_08b5s6x" name="Child Lane 1" />
+        </semantic:childLaneSet>
+      </semantic:lane>
+      <semantic:lane id="Lane_0hb85yg" name="Solo Lane" />
+    </semantic:laneSet>
   </semantic:process>
   <bpmndi:BPMNDiagram id="Trisotech_Visio-_6" name="A.1.0" documentation="" resolution="96.00000267028808">
     <bpmndi:BPMNPlane bpmnElement="Collaboration_0isd296">
@@ -1031,6 +1043,24 @@
       <bpmndi:BPMNShape id="shape_participant_3_id" bpmnElement="participant_3_id" isHorizontal="true">
         <dc:Bounds x="1750" y="80" width="600" height="170" />
       </bpmndi:BPMNShape>
+
+      <!-- 4th process -->
+      <bpmndi:BPMNShape id="participant_4_id_di" bpmnElement="participant_4_id" isHorizontal="true">
+        <dc:Bounds x="800" y="80" width="600" height="250" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1jf55v8_di" bpmnElement="Lane_1jf55v8" isHorizontal="true">
+        <dc:Bounds x="830" y="80" width="570" height="170" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1vk6vro_di" bpmnElement="Lane_1vk6vro" isHorizontal="true">
+        <dc:Bounds x="860" y="80" width="540" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_08b5s6x_di" bpmnElement="Lane_08b5s6x" isHorizontal="true">
+        <dc:Bounds x="860" y="170" width="540" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0hb85yg_di" bpmnElement="Lane_0hb85yg" isHorizontal="true">
+        <dc:Bounds x="830" y="250" width="570" height="80" />
+      </bpmndi:BPMNShape>
+
     </bpmndi:BPMNPlane>
 
     <!-- BPMN Label Styles -->
