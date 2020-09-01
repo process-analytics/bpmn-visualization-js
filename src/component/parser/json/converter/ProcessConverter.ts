@@ -269,6 +269,9 @@ export default class ProcessConverter {
       const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, processId);
       convertedLaneBpmnElements.set(lane.id, laneShape);
       this.assignParentOfLaneFlowNodes(lane);
+      if (lane.childLaneSet?.lane) {
+        this.buildLaneBpmnElements(lane.id, lane.childLaneSet.lane);
+      }
     });
   }
 

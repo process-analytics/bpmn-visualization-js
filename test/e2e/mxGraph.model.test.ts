@@ -209,6 +209,10 @@ describe('mxGraph model', () => {
     expectModelContainsShape(cellId, { ...modelElement, kind: ShapeBpmnElementKind.POOL, styleShape: mxConstants.SHAPE_SWIMLANE });
   }
 
+  function expectModelContainsLane(cellId: string, modelElement: ExpectedShapeModelElement): void {
+    expectModelContainsShape(cellId, { ...modelElement, kind: ShapeBpmnElementKind.LANE, styleShape: mxConstants.SHAPE_SWIMLANE });
+  }
+
   it('bpmn elements should be available in the mxGraph model', async () => {
     // load BPMN
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
@@ -228,6 +232,12 @@ describe('mxGraph model', () => {
     expectModelContainsPool('participant_1_id', { ...minimalPoolModelElement, label: 'Pool 1' });
     expectModelContainsPool('participant_2_id', minimalPoolModelElement);
     expectModelContainsPool('participant_3_id', { ...minimalPoolModelElement, label: 'Black Box Process' });
+    expectModelContainsPool('participant_4_id', { ...minimalPoolModelElement, label: 'Pool containing sublanes' });
+
+    // lane
+    expectModelContainsLane('Lane_1jf55v8', { ...minimalPoolModelElement, label: 'Lane with child lanes' });
+    expectModelContainsLane('Lane_08b5s6x', { ...minimalPoolModelElement, label: 'Child Lane 1' });
+    expectModelContainsLane('Lane_1vk6vro', { ...minimalPoolModelElement, label: 'Child lane 2' });
 
     // start event
     expectModelContainsBpmnEvent('startEvent_1', { kind: ShapeBpmnElementKind.EVENT_START, eventKind: ShapeBpmnEventKind.NONE, font: expectedBoldFont, label: 'Start Event' });
