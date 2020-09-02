@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJson, parseJsonAndExpectOnlyLanes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
-import { BpmnJsonModel } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMN20';
+import { parseJson, parseJsonAndExpectOnlyLanes, verifyShape } from './JsonTestUtils';
 
 describe('parse bpmn as json for lane', () => {
   it('json containing one process with a single lane without flowNodeRef', () => {
