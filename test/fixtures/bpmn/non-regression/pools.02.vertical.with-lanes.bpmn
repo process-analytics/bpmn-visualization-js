@@ -5,7 +5,12 @@
   </bpmn:collaboration>
   <bpmn:process id="Process_1m47u99">
     <bpmn:laneSet id="LaneSet_012cmfs">
-      <bpmn:lane id="Lane_0bpyqm2" name="Vertical Lane 2" />
+      <bpmn:lane id="Lane_0bpyqm2" name="Vertical Lane 2">
+        <bpmn:childLaneSet id="LaneSet_0c3xavp">
+          <bpmn:lane id="Lane_0oyiu99" name="sublane 2.1" />
+          <bpmn:lane id="Lane_0l0a48n" />
+        </bpmn:childLaneSet>
+      </bpmn:lane>
       <bpmn:lane id="Lane_14h9zcu" name="Vertical Lane 1" />
     </bpmn:laneSet>
   </bpmn:process>
@@ -19,6 +24,12 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_14h9zcu_di" bpmnElement="Lane_14h9zcu" isHorizontal="false">
         <dc:Bounds x="160" y="110" width="300" height="220" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0oyiu99_di" bpmnElement="Lane_0oyiu99" isHorizontal="false">
+        <dc:Bounds x="460" y="140" width="150" height="190" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0l0a48n_di" bpmnElement="Lane_0l0a48n" isHorizontal="false">
+        <dc:Bounds x="610" y="140" width="150" height="190" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

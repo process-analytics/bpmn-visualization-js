@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1bo1yrl" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="7.2.0">
+  <bpmn:collaboration id="Collaboration_0005yoe">
+    <bpmn:participant id="Participant_Vertical_With_Lanes" name="Vertical Pool With Lanes" processRef="Process_Vertical_With_Lanes" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Vertical_With_Lanes">
+    <bpmn:laneSet>
+      <bpmn:lane id="Lane_Vertical_3" />
+      <bpmn:lane id="Lane_Vertical_With_Sub_Lane" name="Lane with Sub-Lanes">
+        <bpmn:childLaneSet>
+          <bpmn:lane id="SubLane_Vertical_2" name="Sub-Lane 2" />
+          <bpmn:lane id="SubLane_Vertical_1" name="Sub-Lane 1" />
+        </bpmn:childLaneSet>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Vertical_1" name="Lane" />
+    </bpmn:laneSet>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0005yoe">
+      <bpmndi:BPMNShape id="Participant_Vertical_With_Lanes_di" bpmnElement="Participant_Vertical_With_Lanes" isHorizontal="false">
+        <dc:Bounds x="80" y="160" width="370" height="600" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Vertical_3_di" bpmnElement="Lane_Vertical_3" isHorizontal="false">
+        <dc:Bounds x="366" y="190" width="84" height="570" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Vertical_With_Sub_Lane_di" bpmnElement="Lane_Vertical_With_Sub_Lane" isHorizontal="false">
+        <dc:Bounds x="163" y="190" width="203" height="570" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubLane_Vertical_2_di" bpmnElement="SubLane_Vertical_2" isHorizontal="false">
+        <dc:Bounds x="246" y="220" width="120" height="540" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubLane_Vertical_1_di" bpmnElement="SubLane_Vertical_1" isHorizontal="false">
+        <dc:Bounds x="163" y="220" width="83" height="540" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Vertical_1_di" bpmnElement="Lane_Vertical_1" isHorizontal="false">
+        <dc:Bounds x="80" y="190" width="83" height="570" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

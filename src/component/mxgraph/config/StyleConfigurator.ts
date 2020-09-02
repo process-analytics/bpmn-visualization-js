@@ -20,7 +20,7 @@ import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
 import Shape from '../../../model/bpmn/shape/Shape';
 import Edge from '../../../model/bpmn/edge/Edge';
 import Bounds from '../../../model/bpmn/Bounds';
-import {
+import ShapeBpmnElement, {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
@@ -173,9 +173,11 @@ export default class StyleConfigurator {
   private configureLaneStyle(): void {
     const style = this.cloneDefaultVertexStyle();
     style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_SWIMLANE;
+
+    // TODO Remove when the bounds of the lane label is implemented
     style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
     style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
-    style[mxConstants.STYLE_HORIZONTAL] = false;
+
     style[mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
 
     // TODO manage lane text area rendering. there is no Label neither the size available (we have only attribute name="Text of the Label")
@@ -304,9 +306,9 @@ export default class StyleConfigurator {
         if (markers.length > 0) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
         }
-      } else if (bpmnElement.kind === ShapeBpmnElementKind.POOL) {
+      } else if (ShapeUtil.isPoolOrLane((bpmnElement as ShapeBpmnElement).kind)) {
         // mxConstants.STYLE_HORIZONTAL is for the label
-        // In BPMN, isHorizontal is for the Pool
+        // In BPMN, isHorizontal is for the Shape
         styleValues.set(mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
       }
     } else {

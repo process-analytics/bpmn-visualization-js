@@ -39,6 +39,7 @@ export interface ExpectedShapeModelElement {
   styleShape?: string;
   markers?: ShapeBpmnMarkerKind[];
   isInstantiating?: boolean;
+  isHorizontal?: boolean;
 }
 
 export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
@@ -205,11 +206,13 @@ describe('mxGraph model', () => {
   }
 
   function expectModelContainsPool(cellId: string, modelElement: ExpectedShapeModelElement): void {
-    expectModelContainsShape(cellId, { ...modelElement, kind: ShapeBpmnElementKind.POOL, styleShape: mxConstants.SHAPE_SWIMLANE });
+    const mxCell = expectModelContainsShape(cellId, { ...modelElement, kind: ShapeBpmnElementKind.POOL, styleShape: mxConstants.SHAPE_SWIMLANE });
+    expect(mxCell.style).toContain(`${mxConstants.STYLE_HORIZONTAL}=${modelElement.isHorizontal ? '0' : '1'}`);
   }
 
   function expectModelContainsLane(cellId: string, modelElement: ExpectedShapeModelElement): void {
-    expectModelContainsShape(cellId, { ...modelElement, kind: ShapeBpmnElementKind.LANE, styleShape: mxConstants.SHAPE_SWIMLANE });
+    const mxCell = expectModelContainsShape(cellId, { ...modelElement, kind: ShapeBpmnElementKind.LANE, styleShape: mxConstants.SHAPE_SWIMLANE });
+    expect(mxCell.style).toContain(`${mxConstants.STYLE_HORIZONTAL}=${modelElement.isHorizontal ? '0' : '1'}`);
   }
 
   it('bpmn elements should be available in the mxGraph model', async () => {
@@ -227,7 +230,7 @@ describe('mxGraph model', () => {
     };
 
     // pool
-    const minimalPoolModelElement: ExpectedShapeModelElement = { kind: null };
+    const minimalPoolModelElement: ExpectedShapeModelElement = { kind: null, isHorizontal: true };
     expectModelContainsPool('participant_1_id', { ...minimalPoolModelElement, label: 'Pool 1' });
     expectModelContainsPool('participant_2_id', minimalPoolModelElement);
     expectModelContainsPool('participant_3_id', { ...minimalPoolModelElement, label: 'Black Box Process' });
@@ -944,5 +947,20 @@ describe('mxGraph model', () => {
       new mxPoint(334, 632), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="632"
     ];
     expectModelContainsCellWithGeometry('MessageFlow_1', undefined, messageFlowMxGeometry);
+  });
+
+  it('vertical pool, with vertical lanes & sub-lanes', async () => {
+    bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-vertical-pool-lanes-sub_lanes.bpmn'));
+
+    // pool
+    const minimalPoolModelElement: ExpectedShapeModelElement = { kind: null, isHorizontal: false };
+    expectModelContainsPool('Participant_Vertical_With_Lanes', { ...minimalPoolModelElement, label: 'Vertical Pool With Lanes' });
+
+    // lane
+    expectModelContainsLane('Lane_Vertical_3', { ...minimalPoolModelElement });
+    expectModelContainsLane('Lane_Vertical_1', { ...minimalPoolModelElement, label: 'Lane' });
+    expectModelContainsLane('Lane_Vertical_With_Sub_Lane', { ...minimalPoolModelElement, label: 'Lane with Sub-Lanes' });
+    expectModelContainsLane('SubLane_Vertical_1', { ...minimalPoolModelElement, label: 'Sub-Lane 1', parentId: 'Lane_Vertical_With_Sub_Lane' });
+    expectModelContainsLane('SubLane_Vertical_2', { ...minimalPoolModelElement, label: 'Sub-Lane 2', parentId: 'Lane_Vertical_With_Sub_Lane' });
   });
 });
