@@ -22,6 +22,10 @@ import Bounds from '../../model/bpmn/Bounds';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
+import { MessageFlow } from '../../model/bpmn/edge/Flow';
+import { MessageVisibleKind } from '../../model/bpmn/edge/MessageVisibleKind';
+import { ShapeBpmnEventKind } from '../../model/bpmn/shape';
+import { StyleIdentifier } from './StyleUtils';
 
 export default class MxGraphRenderer {
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
@@ -93,7 +97,7 @@ export default class MxGraphRenderer {
           mxEdge.geometry.width = labelBounds.width;
           mxEdge.geometry.height = labelBounds.height;
 
-          const edgeCenterCoordinate = this.coordinatesTranslator.computeEgeCenter(mxEdge);
+          const edgeCenterCoordinate = this.coordinatesTranslator.computeEdgeCenter(mxEdge);
           if (edgeCenterCoordinate) {
             mxEdge.geometry.relative = false;
 
@@ -103,8 +107,27 @@ export default class MxGraphRenderer {
             mxEdge.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
           }
         }
+
+        this.insertMessage(edge, mxEdge);
       }
     });
+  }
+
+  private insertMessage(edge: Edge, mxEdge: mxCell): void {
+    if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
+      const mxCell = this.graph.insertVertex(
+        mxEdge,
+        '',
+        undefined,
+        0,
+        0,
+        20,
+        14,
+        `shape=${ShapeBpmnEventKind.MESSAGE};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${edge.messageVisibleKind}`,
+      );
+      mxCell.geometry.relative = true;
+      mxCell.geometry.offset = new mxPoint(-10, -7);
+    }
   }
 
   private insertWaypoints(waypoints: Waypoint[], mxEdge: mxCell): void {
