@@ -1,6 +1,6 @@
 {
   "name": "bpmn-visualization",
-  "version": "0.2.0",
+  "version": "0.3.0-0",
   "description": "A TypeScript library to visualize process execution data on BPMN diagrams",
   "repository": "https://github.com/process-analytics/bpmn-visualization-js",
   "license": "Apache-2.0",
