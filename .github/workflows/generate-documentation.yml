@@ -6,21 +6,29 @@ on:
       - master
     paths:
       - 'docs/**'
+      - 'scripts/docs.js'
       - '.github/workflows/generate-documentation.yml'
   pull_request:
     branches:
       - master
     paths:
       - 'docs/**'
+      - 'scripts/docs.js'
       - '.github/workflows/generate-documentation.yml'
 
 jobs:
   generate_doc:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Build
-        run: ./docs/build-doc.bash
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Install dependencies
+        run: npm ci
+      - name: Build docs
+        run: npm run docs
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
@@ -30,7 +38,7 @@ jobs:
   push_to_gh_pages:
     # only when 'on push to master'
     if: github.event_name == 'push' &&  github.event.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: generate_doc
     steps:
       - name: Download
