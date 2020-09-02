@@ -106,14 +106,14 @@ export default class MxGraphRenderer {
           }
         }
 
-        this.insertMessage(edge, mxEdge);
+        this.insertMessageFlowIconIfNeeded(edge, mxEdge);
       }
     });
   }
 
-  private insertMessage(edge: Edge, mxEdge: mxCell): void {
+  private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: mxCell): void {
     if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
-      const mxCell = this.graph.insertVertex(mxEdge, `message_${mxEdge.id}`, undefined, 0, 0, 20, 14, this.styleConfigurator.computeMessageStyle(edge));
+      const mxCell = this.graph.insertVertex(mxEdge, `messageFlowIcon_of_${mxEdge.id}`, undefined, 0, 0, 20, 14, this.styleConfigurator.computeMessageFlowIconStyle(edge));
       mxCell.geometry.relative = true;
       mxCell.geometry.offset = new mxPoint(-10, -7);
     }

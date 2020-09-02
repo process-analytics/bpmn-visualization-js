@@ -50,6 +50,7 @@ export enum StyleIdentifier {
   BPMN_STYLE_MARKERS = 'bpmn.markers',
   BPMN_STYLE_INSTANTIATING = 'bpmn.isInstantiating',
   BPMN_STYLE_IS_INITIATING = 'bpmn.isInitiating',
+  BPMN_STYLE_MESSAGE_FLOW_ICON = 'bpmn.messageFlowIcon',
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */

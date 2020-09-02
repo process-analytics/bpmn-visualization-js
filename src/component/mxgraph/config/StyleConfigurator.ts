@@ -33,7 +33,6 @@ import { FlowKind } from '../../../model/bpmn/edge/FlowKind';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/edge/Flow';
 import { AssociationDirectionKind } from '../../../model/bpmn/edge/AssociationDirectionKind';
 import { ShapeBpmnMarkerKind } from '../../../model/bpmn/shape/ShapeBpmnMarkerKind';
-import { ShapeBpmnEventKind } from '../../../model/bpmn/shape';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
@@ -355,8 +354,8 @@ export default class StyleConfigurator {
       .join(';');
   }
 
-  computeMessageStyle(edge: Edge): string {
-    return `shape=${ShapeBpmnEventKind.MESSAGE};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${edge.messageVisibleKind}`;
+  computeMessageFlowIconStyle(edge: Edge): string {
+    return `shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${edge.messageVisibleKind}`;
   }
 
   private static getFontStyleValue(font: Font): number {

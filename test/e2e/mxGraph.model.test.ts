@@ -151,8 +151,8 @@ describe('mxGraph model', () => {
     }
 
     if (modelElement.messageVisibleKind === MessageVisibleKind.NON_INITIATING || modelElement.messageVisibleKind === MessageVisibleKind.INITIATING) {
-      const messageCell = expectModelContainsCell(`message_${cellId}`);
-      expect(messageCell.style).toContain(`shape=${ShapeBpmnEventKind.MESSAGE};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${modelElement.messageVisibleKind}`);
+      const messageCell = expectModelContainsCell(`messageFlowIcon_of_${cellId}`);
+      expect(messageCell.style).toContain(`shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${modelElement.messageVisibleKind}`);
     }
 
     if (modelElement.startArrow || modelElement.font) {
