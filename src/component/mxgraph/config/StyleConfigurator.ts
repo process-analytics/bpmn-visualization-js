@@ -179,6 +179,10 @@ export default class StyleConfigurator {
     style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
 
     style[mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
+    // TODO check lane fill color (none or fill, relevant for image export)
+    // const fillColor = 'none'; // StyleConstant.DEFAULT_FILL_COLOR
+    style[mxConstants.STYLE_FILLCOLOR] = 'swimlane';
+    // style[this.mxConstants.STYLE_SWIMLANE_FILLCOLOR] = StyleConstant.DEFAULT_FILL_COLOR;
 
     // TODO manage lane text area rendering. there is no Label neither the size available (we have only attribute name="Text of the Label")
     // perhaps it can be calculated as a difference of starting point (either x or y) between pool, lane, sub-lane ?
@@ -283,7 +287,7 @@ export default class StyleConfigurator {
     this.configureAssociationFlowStyles();
   }
 
-  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
+  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds, ignoreLabelFont = false): string {
     const styleValues = new Map<string, string | number>();
     const styles: string[] = [bpmnCell.bpmnElement?.kind as string];
 
@@ -320,11 +324,13 @@ export default class StyleConfigurator {
       }
     }
 
-    const font = bpmnCell.label?.font;
-    if (font) {
-      styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
-      styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
-      styleValues.set(mxConstants.STYLE_FONTSTYLE, StyleConfigurator.getFontStyleValue(font));
+    if (!ignoreLabelFont) {
+      const font = bpmnCell.label?.font;
+      if (font) {
+        styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
+        styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
+        styleValues.set(mxConstants.STYLE_FONTSTYLE, StyleConfigurator.getFontStyleValue(font));
+      }
     }
 
     if (labelBounds) {

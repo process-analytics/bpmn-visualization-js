@@ -24,9 +24,20 @@ import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
 import { MessageFlow } from '../../model/bpmn/edge/Flow';
 import { MessageVisibleKind } from '../../model/bpmn/edge/MessageVisibleKind';
+import Logger from '../Logger';
+import { RendererOptions } from '../BpmnVisualizationOptions';
 
 export default class MxGraphRenderer {
+  private logger: Logger = new Logger('Renderer');
+  private config: RendererOptions;
+
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
+
+  configure(config: RendererOptions): this {
+    this.config = config;
+    this.logger.info(`Configured Renderer: ${JSON.stringify(this.config, undefined, 2)}`);
+    return this;
+  }
 
   public render(bpmnModel: BpmnModel): void {
     const model = this.graph.getModel();
@@ -60,6 +71,11 @@ export default class MxGraphRenderer {
     }
   }
 
+  private computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
+    const ignoreLabelFont = this.config?.ignoreLabelStyles;
+    return this.styleConfigurator.computeStyle(bpmnCell, labelBounds, ignoreLabelFont);
+  }
+
   private insertShape(shape: Shape): void {
     const bpmnElement = shape.bpmnElement;
     if (bpmnElement) {
@@ -73,7 +89,7 @@ export default class MxGraphRenderer {
       let labelBounds = shape.label?.bounds;
       // pool/lane label bounds are not managed for now (use hard coded values)
       labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
-      const style = this.styleConfigurator.computeStyle(shape, labelBounds);
+      const style = this.computeStyle(shape, labelBounds);
 
       this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
     }
@@ -87,7 +103,7 @@ export default class MxGraphRenderer {
         const source = this.getCell(bpmnElement.sourceRefId);
         const target = this.getCell(bpmnElement.targetRefId);
         const labelBounds = edge.label?.bounds;
-        const style = this.styleConfigurator.computeStyle(edge, labelBounds);
+        const style = this.computeStyle(edge, labelBounds);
         const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
         this.insertWaypoints(edge.waypoints, mxEdge);
 
