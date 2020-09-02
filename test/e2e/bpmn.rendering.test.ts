@@ -108,7 +108,7 @@ describe('no visual regression', () => {
     // macOS: Expected image to match or be a close match to snapshot but was 0.14776609441433664%
     // windows: Expected image to match or be a close match to snapshot but was 0.1182792778311903%
     [
-      'pools.02.vertical',
+      'pools.02.vertical.with-lanes',
       {
         linux: 0.0014,
         macos: 0.0015,
