@@ -263,10 +263,12 @@ of the `Done` column related to the milestone
 
 #### Git Tag
 
-- Ensures you’re on master and don’t have local, un-commited changes: `git checkout master && git pull --tags`
-- Bumps the version number in package.json based on major, minor or patch (see https://docs.npmjs.com/cli/version, type:
- [new-version | major | minor | patch]): `npm version [type] --message "[RELEASE] %s"`
-- Push to GitHub: `git push && git push --tags`
+- Open [github actions](https://github.com/process-analytics/bpmn-visualization-js/actions?query=workflow%3ARelease)
+- Click on the 'Run workflow' dropdown located on the right side of the page
+- Provide parameter value for New version type (default is patch, but you can choose one of the [new-version | major | minor | patch])
+- Click on the button 'Run workflow'
+- Make sure job execution was successful by checking the status
+- If everything went well you can see new tag created
 
 #### GitHub update
 

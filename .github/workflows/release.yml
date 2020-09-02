@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        description: 'New version type [new-version | major | minor | patch]'
+        required: true
+        default: 'patch'
+jobs:
+  bumpVersion:
+    runs-on: ubuntu-20.04
+    steps:
+      - run: |
+          echo "New version type: ${{ github.event.inputs.type }}"
+      - name: Branch Protection Bot - Temporarily disable "include administrators" branch protection
+        uses: benjefferies/branch-protection-bot@1.0.5
+        if: always()
+        with:
+          access-token: ${{ secrets.GH_RELEASE_TOKEN }}
+          enforce_admins: false
+          branch: master
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Setup checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_RELEASE_TOKEN }}
+      - name: Config git
+        run: |
+          git config --local user.email "62586190+process-analytics-bot@users.noreply.github.com"
+          git config --local user.name "process-analytics-bot"
+          git config pull.rebase true
+      - name: Checkout master
+        run: git checkout master && git pull --tags
+      - name: Bump Version
+        run: npm version ${{ github.event.inputs.type }} --message "[RELEASE] %s"
+      - name: Push Version
+        run: git push && git push --tags
+
+      - name: Branch Protection Bot - Reenable "include administrators" branch protection
+        uses: benjefferies/branch-protection-bot@1.0.5
+        if: always()  # Force to always run this step to ensure "include administrators" is always turned back on
+        with:
+          access-token: ${{ secrets.GH_RELEASE_TOKEN }}
+          enforce_admins: true
+          branch: master
