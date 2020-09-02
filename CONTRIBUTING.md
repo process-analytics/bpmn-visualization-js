@@ -107,11 +107,10 @@ ESLint configuration extends:
 - the documentation sources are in the AsciiDoctor format and are hosted in the [docs](./docs) folder. The display
 may not fully work (font-awesome icons and some links) depending on the rendering engine. This is the case when
 displayed directly on GitHub Web.
-- the generation currently relies on `Docker`. This will change in the future.
 
 From the root folder of the repository, run 
 ```bash
-./docs/build-doc.bash
+npm run docs
 ```
 
 The documentation is generated in the `build/docs` folder.
