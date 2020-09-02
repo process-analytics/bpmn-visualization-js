@@ -117,7 +117,7 @@ export default class MxGraphRenderer {
     if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
       const mxCell = this.graph.insertVertex(
         mxEdge,
-        '',
+        `message_${mxEdge.id}`,
         undefined,
         0,
         0,
