@@ -24,8 +24,6 @@ import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
 import { MessageFlow } from '../../model/bpmn/edge/Flow';
 import { MessageVisibleKind } from '../../model/bpmn/edge/MessageVisibleKind';
-import { ShapeBpmnEventKind } from '../../model/bpmn/shape';
-import { StyleIdentifier } from './StyleUtils';
 
 export default class MxGraphRenderer {
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
@@ -115,16 +113,7 @@ export default class MxGraphRenderer {
 
   private insertMessage(edge: Edge, mxEdge: mxCell): void {
     if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
-      const mxCell = this.graph.insertVertex(
-        mxEdge,
-        `message_${mxEdge.id}`,
-        undefined,
-        0,
-        0,
-        20,
-        14,
-        `shape=${ShapeBpmnEventKind.MESSAGE};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${edge.messageVisibleKind}`,
-      );
+      const mxCell = this.graph.insertVertex(mxEdge, `message_${mxEdge.id}`, undefined, 0, 0, 20, 14, this.styleConfigurator.computeMessageStyle(edge));
       mxCell.geometry.relative = true;
       mxCell.geometry.offset = new mxPoint(-10, -7);
     }
