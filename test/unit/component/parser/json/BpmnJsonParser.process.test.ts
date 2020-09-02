@@ -200,7 +200,7 @@ describe('parse bpmn as json for process/pool', () => {
     });
   });
 
-  it('json containing one process with a single lane without flowNodeRef', () => {
+  it('json containing one process with pool and a single lane without flowNodeRef', () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -258,6 +258,7 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
       parentId: 'Participant_0nuvj8r',
+      isHorizontal: true,
       bounds: {
         x: 362,
         y: 232,
@@ -362,6 +363,7 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
       parentId: 'Participant_1',
+      isHorizontal: true,
       bounds: {
         x: 362,
         y: 232,
@@ -375,6 +377,7 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
       parentId: 'Participant_2',
+      isHorizontal: true,
       bounds: {
         x: 362,
         y: 1232,
