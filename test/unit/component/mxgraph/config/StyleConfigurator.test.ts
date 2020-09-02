@@ -333,6 +333,16 @@ describe('mxgraph renderer', () => {
     });
   });
 
+  describe('compute style - lane', () => {
+    it.each([
+      ['vertical', false, '1'],
+      ['horizontal', true, '0'],
+    ])('%s lane', (title, isHorizontal: boolean, expected: string) => {
+      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.LANE), undefined, isHorizontal);
+      expect(computeStyle(shape)).toEqual(`lane;horizontal=${expected}`);
+    });
+  });
+
   describe.each([
     [ShapeBpmnElementKind.CALL_ACTIVITY],
     [ShapeBpmnElementKind.SUB_PROCESS],
