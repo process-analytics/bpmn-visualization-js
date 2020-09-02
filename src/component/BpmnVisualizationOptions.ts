@@ -36,8 +36,14 @@ export enum PanType {
 }
 
 export interface RendererOptions {
-  /** If set to `true`, ignore the label styles (font size, family, ...) defined in the BPMN source */
+  label?: LabelStyleOptions;
+}
+
+export interface LabelStyleOptions {
+  /** If set to `true`, ignore all label styles (font size, family, ...) defined in the BPMN source */
   ignoreLabelStyles?: boolean;
+  /** If set to `true`, ignore the label font family defined in the BPMN source */
+  ignoreLabelFontFamily?: boolean;
 }
 
 export interface LoadOptions {

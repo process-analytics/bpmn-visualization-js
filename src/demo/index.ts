@@ -30,7 +30,7 @@ export * from './helper';
 export let bpmnVisualization: BpmnVisualization;
 
 let fitOnLoad = false;
-let rendererOptions: RendererOptions;
+const rendererOptions: RendererOptions = { label: {} };
 
 // =====================================================================================================================
 // LOAD BPMN STATUS AREA
@@ -361,8 +361,13 @@ export function configureFitOnLoad(activate: boolean): void {
 }
 
 export function configureIgnoreBpmnLabelStyles(activate: boolean): void {
-  rendererOptions = { ...rendererOptions, ignoreLabelStyles: activate };
-  log(`RenderOptions 'ignoreLabelStyles' is now '${rendererOptions.ignoreLabelStyles}'`);
+  rendererOptions.label.ignoreLabelStyles = activate;
+  log(`RenderOptions 'ignoreLabelStyles' is now '${rendererOptions.label.ignoreLabelStyles}'`);
+}
+
+export function configureIgnoreBpmnLabelFont(activate: boolean): void {
+  rendererOptions.label.ignoreLabelFontFamily = activate;
+  log(`RenderOptions 'ignoreLabelFont' is now '${rendererOptions.label.ignoreLabelFontFamily}'`);
 }
 
 function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) => void): void {

@@ -72,8 +72,7 @@ export default class MxGraphRenderer {
   }
 
   private computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
-    const ignoreLabelFont = this.config?.ignoreLabelStyles;
-    return this.styleConfigurator.computeStyle(bpmnCell, labelBounds, ignoreLabelFont);
+    return this.styleConfigurator.computeStyle(bpmnCell, labelBounds, this.config?.label);
   }
 
   private insertShape(shape: Shape): void {

@@ -33,6 +33,7 @@ import { FlowKind } from '../../../model/bpmn/edge/FlowKind';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/edge/Flow';
 import { AssociationDirectionKind } from '../../../model/bpmn/edge/AssociationDirectionKind';
 import { ShapeBpmnMarkerKind } from '../../../model/bpmn/shape/ShapeBpmnMarkerKind';
+import { LabelStyleOptions } from '../../BpmnVisualizationOptions';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
@@ -287,7 +288,7 @@ export default class StyleConfigurator {
     this.configureAssociationFlowStyles();
   }
 
-  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds, ignoreLabelFont = false): string {
+  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds, labelStyleOptions: LabelStyleOptions): string {
     const styleValues = new Map<string, string | number>();
     const styles: string[] = [bpmnCell.bpmnElement?.kind as string];
 
@@ -324,10 +325,12 @@ export default class StyleConfigurator {
       }
     }
 
-    if (!ignoreLabelFont) {
+    if (!(labelStyleOptions.ignoreLabelStyles === true)) {
       const font = bpmnCell.label?.font;
       if (font) {
-        styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
+        if (!(labelStyleOptions.ignoreLabelFontFamily === true)) {
+          styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
+        }
         styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
         styleValues.set(mxConstants.STYLE_FONTSTYLE, StyleConfigurator.getFontStyleValue(font));
       }

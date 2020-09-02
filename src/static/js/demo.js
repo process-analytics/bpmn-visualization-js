@@ -18,6 +18,7 @@ import {
   configureExportButtons,
   configureFitOnLoad,
   configureGeneralGraphButtons,
+  configureIgnoreBpmnLabelFont,
   configureIgnoreBpmnLabelStyles,
   configureNavigationButtons,
   configureZoomButtons,
@@ -75,6 +76,11 @@ function configureRenderingButtons() {
   const btnIgnoreBpmnLabelStyles = document.getElementById('btn-ignore-bpmn-label-styles');
   btnIgnoreBpmnLabelStyles.onclick = function () {
     configureIgnoreBpmnLabelStyles(btnIgnoreBpmnLabelStyles.checked);
+  };
+
+  const btnIgnoreBpmnLabelFont = document.getElementById('btn-ignore-bpmn-label-font');
+  btnIgnoreBpmnLabelFont.onclick = function () {
+    configureIgnoreBpmnLabelFont(btnIgnoreBpmnLabelFont.checked);
   };
 }
 
