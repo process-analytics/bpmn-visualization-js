@@ -17,6 +17,11 @@ import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
 import * as bpmndi from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
+import { BpmnJsonModel } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMN20';
+import { BPMNDiagram, BPMNEdge, BPMNPlane } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
+import { TCollaboration } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/collaboration';
+import { TMessageFlow } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/baseElement';
+import Bounds from '../../../../../src/model/bpmn/Bounds';
 
 describe('parse bpmn as json for message flow', () => {
   it(`should convert as Edge, when an message flow is an attribute (as object) of 'collaboration' (as object)`, () => {
@@ -196,87 +201,68 @@ describe('parse bpmn as json for message flow', () => {
     });
   });
 
-  it(`should convert as Edge, when none/initiating/non-initiating message flows are an attribute (as array) of 'collaboration'`, () => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        collaboration: {
-          id: 'collaboration_id_0',
-          messageFlow: [
-            {
-              id: 'messageFlow_id_0',
+  it.each([
+    ['none message flow', undefined, undefined, MessageVisibleKind.NONE],
+    ['initiating message flow with message without bounds', bpmndi.MessageVisibleKind.initiating, false, MessageVisibleKind.INITIATING],
+    ['initiating message flow with message with bounds', bpmndi.MessageVisibleKind.initiating, true, MessageVisibleKind.INITIATING],
+    ['non-initiating message flow with message without bounds', bpmndi.MessageVisibleKind.nonInitiating, false, MessageVisibleKind.NON_INITIATING],
+    ['non-initiating message flow with message with bounds', bpmndi.MessageVisibleKind.nonInitiating, true, MessageVisibleKind.NON_INITIATING],
+  ])(
+    `should convert as Edge, when %s is an attribute (as object) of 'collaboration'`,
+    (title: string, messageVisibleKind: bpmndi.MessageVisibleKind, withBounds: boolean, expectedMessageVisibleKind: MessageVisibleKind) => {
+      const json: BpmnJsonModel = {
+        definitions: {
+          targetNamespace: '',
+          message: {
+            id: 'message_id',
+          },
+          collaboration: {
+            id: 'collaboration_id_0',
+            messageFlow: {
+              id: 'messageFlow_id',
               sourceRef: 'sourceRef_id',
               targetRef: 'targetRef_id',
             },
-            {
-              id: 'messageFlow_id_1',
-              sourceRef: 'sourceRef_id_1',
-              targetRef: 'targetRef_id_1',
+          },
+          process: '',
+          BPMNDiagram: {
+            id: 'BpmnDiagram_1',
+            BPMNPlane: {
+              id: 'BpmnPlane_1',
+              BPMNEdge: {
+                id: 'edge_messageFlow_id',
+                bpmnElement: 'messageFlow_id',
+                waypoint: [{ x: 10, y: 10 }],
+              },
             },
-            {
-              id: 'messageFlow_id_2',
-              sourceRef: 'sourceRef_id_2',
-              targetRef: 'targetRef_id_2',
-            },
-          ],
-        },
-        process: '',
-        BPMNDiagram: {
-          id: 'BpmnDiagram_1',
-          BPMNPlane: {
-            id: 'BpmnPlane_1',
-            BPMNEdge: [
-              {
-                id: 'edge_messageFlow_id_0',
-                bpmnElement: 'messageFlow_id_0',
-                waypoint: [{ x: 10, y: 10 }],
-              },
-              {
-                id: 'edge_messageFlow_id_1',
-                bpmnElement: 'messageFlow_id_1',
-                messageVisibleKind: bpmndi.MessageVisibleKind.nonInitiating,
-                waypoint: [{ x: 10, y: 10 }],
-              },
-              {
-                id: 'edge_messageFlow_id_2',
-                bpmnElement: 'messageFlow_id_2',
-                messageVisibleKind: bpmndi.MessageVisibleKind.initiating,
-                waypoint: [{ x: 10, y: 10 }],
-              },
-            ],
           },
         },
-      },
-    };
+      };
 
-    const model = parseJsonAndExpectOnlyEdges(json, 3);
+      if (messageVisibleKind) {
+        (((json.definitions.BPMNDiagram as BPMNDiagram).BPMNPlane as BPMNPlane).BPMNEdge as BPMNEdge).messageVisibleKind = messageVisibleKind;
+      }
 
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_messageFlow_id_0',
-      bpmnElementId: 'messageFlow_id_0',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'sourceRef_id',
-      bpmnElementTargetRefId: 'targetRef_id',
-      messageVisibleKind: MessageVisibleKind.NONE,
-      waypoints: [new Waypoint(10, 10)],
-    });
-    verifyEdge(model.edges[1], {
-      edgeId: 'edge_messageFlow_id_1',
-      bpmnElementId: 'messageFlow_id_1',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'sourceRef_id_1',
-      bpmnElementTargetRefId: 'targetRef_id_1',
-      messageVisibleKind: MessageVisibleKind.NON_INITIATING,
-      waypoints: [new Waypoint(10, 10)],
-    });
-    verifyEdge(model.edges[2], {
-      edgeId: 'edge_messageFlow_id_2',
-      bpmnElementId: 'messageFlow_id_2',
-      bpmnElementName: undefined,
-      bpmnElementSourceRefId: 'sourceRef_id_2',
-      bpmnElementTargetRefId: 'targetRef_id_2',
-      messageVisibleKind: MessageVisibleKind.INITIATING,
-      waypoints: [new Waypoint(10, 10)],
-    });
-  });
+      let expectedMessageBounds;
+      if (withBounds) {
+        ((json.definitions.collaboration as TCollaboration).messageFlow as TMessageFlow).messageRef = 'message_id';
+        ((json.definitions.BPMNDiagram as BPMNDiagram).BPMNPlane as BPMNPlane).BPMNShape = { bpmnElement: 'message_id', Bounds: { x: 15, y: 15, width: 20, height: 14 } };
+
+        expectedMessageBounds = new Bounds(15, 15, 20, 14);
+      }
+
+      const model = parseJsonAndExpectOnlyEdges(json, 1);
+
+      verifyEdge(model.edges[0], {
+        edgeId: 'edge_messageFlow_id',
+        bpmnElementId: 'messageFlow_id',
+        bpmnElementName: undefined,
+        bpmnElementSourceRefId: 'sourceRef_id',
+        bpmnElementTargetRefId: 'targetRef_id',
+        messageVisibleKind: expectedMessageVisibleKind,
+        messageBounds: withBounds ? expectedMessageBounds : undefined,
+        waypoints: [new Waypoint(10, 10)],
+      });
+    },
+  );
 });

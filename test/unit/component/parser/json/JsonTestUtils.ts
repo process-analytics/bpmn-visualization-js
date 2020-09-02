@@ -30,6 +30,7 @@ import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVi
 import { BpmnJsonModel } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMN20';
 import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
 import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnCallActivityKind';
+import Bounds from '../../../../../src/model/bpmn/Bounds';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -57,6 +58,7 @@ interface ExpectedEdge {
   bpmnElementTargetRefId: string;
   waypoints: Waypoint[];
   messageVisibleKind?: MessageVisibleKind;
+  messageBounds?: Bounds;
 }
 
 export interface ExpectedSequenceEdge extends ExpectedEdge {
@@ -163,6 +165,7 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge | ExpectedSeq
 
   if (expectedValue.messageVisibleKind) {
     expect(edge.messageVisibleKind).toEqual(expectedValue.messageVisibleKind);
+    expect(edge.messageBounds).toEqual(expectedValue.messageBounds);
   } else {
     expect(edge.messageVisibleKind).toEqual(MessageVisibleKind.NONE);
   }
