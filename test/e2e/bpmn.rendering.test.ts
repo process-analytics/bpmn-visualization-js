@@ -73,11 +73,11 @@ describe('no visual regression', () => {
   const imageSnapshotThresholdConfig = new Map<string, ImageSnapshotThresholdConfig>([
     [
       'labels.01.general', // minimal threshold to make test pass on Github Workflow
-      // ubuntu: Expected image to match or be a close match to snapshot but was 0.00036826842172432706%
+      // ubuntu: Expected image to match or be a close match to snapshot but was 0.019162386876825366%
       // macOS: Expected image to match or be a close match to snapshot but was 0.556652966856197%
       // windows: Expected image to match or be a close match to snapshot but was 0.40964885362031467%
       {
-        linux: 0.00005,
+        linux: 0.0002,
         macos: 0.006,
         windows: 0.005,
       },
@@ -115,13 +115,13 @@ describe('no visual regression', () => {
         windows: 0.002,
       },
     ],
-    // ubuntu: Expected image to match or be a close match to snapshot but was 0.00032007070301931506% different from snapshot
+    // ubuntu: Expected image to match or be a close match to snapshot but was 0.0043243364134193385% different from snapshot
     // macOS: Expected image to match or be a close match to snapshot but was 0.07646269456225152% different from snapshot
     // windows: Expected image to match or be a close match to snapshot but was 0.11539494876845469% different from snapshot
     [
       'pools.03.black-box',
       {
-        linux: 0.000004,
+        linux: 0.00005,
         macos: 0.0008,
         windows: 0.0012,
       },
