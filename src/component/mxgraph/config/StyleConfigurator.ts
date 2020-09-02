@@ -31,7 +31,6 @@ import ShapeBpmnElement, {
 import { Font } from '../../../model/bpmn/Label';
 import { FlowKind } from '../../../model/bpmn/edge/FlowKind';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/edge/Flow';
-import { MessageVisibleKind } from '../../../model/bpmn/edge/MessageVisibleKind';
 import { AssociationDirectionKind } from '../../../model/bpmn/edge/AssociationDirectionKind';
 import { ShapeBpmnMarkerKind } from '../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 
@@ -319,21 +318,6 @@ export default class StyleConfigurator {
       if (bpmnElement instanceof AssociationFlow) {
         styles.push(bpmnElement.associationDirectionKind);
       }
-
-      switch (bpmnCell.messageVisibleKind) {
-        case MessageVisibleKind.INITIATING: {
-          styleValues.set(mxConstants.STYLE_STROKECOLOR, 'Yellow');
-          break;
-        }
-        case MessageVisibleKind.NON_INITIATING: {
-          styleValues.set(mxConstants.STYLE_STROKECOLOR, 'DeepSkyBlue');
-          break;
-        }
-        default: {
-          // No specific style
-          break;
-        }
-      }
     }
 
     const font = bpmnCell.label?.font;
@@ -370,6 +354,10 @@ export default class StyleConfigurator {
       .concat([...styles])
       .concat([...styleValues].filter(([, v]) => v).map(([key, value]) => key + '=' + value))
       .join(';');
+  }
+
+  computeMessageFlowIconStyle(edge: Edge): string {
+    return `shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${edge.messageVisibleKind}`;
   }
 
   private static getFontStyleValue(font: Font): number {

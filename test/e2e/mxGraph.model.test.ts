@@ -16,7 +16,7 @@
 import BpmnVisualization from '../../src/component/BpmnVisualization';
 import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/shape';
 import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
-import { MarkerIdentifier } from '../../src';
+import { MarkerIdentifier, StyleIdentifier } from '../../src';
 import { FlowKind } from '../../src/model/bpmn/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/edge/MessageVisibleKind';
 import { readFileSync } from '../helpers/file-helper';
@@ -151,10 +151,9 @@ describe('mxGraph model', () => {
       expect(cell.parent.id).toEqual(parentId);
     }
 
-    if (modelElement.messageVisibleKind === MessageVisibleKind.NON_INITIATING) {
-      expect(cell.style).toContain('strokeColor=DeepSkyBlue');
-    } else if (modelElement.messageVisibleKind === MessageVisibleKind.INITIATING) {
-      expect(cell.style).toContain('strokeColor=Yellow');
+    if (modelElement.messageVisibleKind === MessageVisibleKind.NON_INITIATING || modelElement.messageVisibleKind === MessageVisibleKind.INITIATING) {
+      const messageCell = expectModelContainsCell(`messageFlowIcon_of_${cellId}`);
+      expect(messageCell.style).toContain(`shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${modelElement.messageVisibleKind}`);
     }
 
     if (modelElement.startArrow || modelElement.font) {

@@ -22,6 +22,8 @@ import Bounds from '../../model/bpmn/Bounds';
 import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
+import { MessageFlow } from '../../model/bpmn/edge/Flow';
+import { MessageVisibleKind } from '../../model/bpmn/edge/MessageVisibleKind';
 
 export default class MxGraphRenderer {
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
@@ -93,7 +95,7 @@ export default class MxGraphRenderer {
           mxEdge.geometry.width = labelBounds.width;
           mxEdge.geometry.height = labelBounds.height;
 
-          const edgeCenterCoordinate = this.coordinatesTranslator.computeEgeCenter(mxEdge);
+          const edgeCenterCoordinate = this.coordinatesTranslator.computeEdgeCenter(mxEdge);
           if (edgeCenterCoordinate) {
             mxEdge.geometry.relative = false;
 
@@ -103,8 +105,18 @@ export default class MxGraphRenderer {
             mxEdge.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
           }
         }
+
+        this.insertMessageFlowIconIfNeeded(edge, mxEdge);
       }
     });
+  }
+
+  private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: mxCell): void {
+    if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
+      const mxCell = this.graph.insertVertex(mxEdge, `messageFlowIcon_of_${mxEdge.id}`, undefined, 0, 0, 20, 14, this.styleConfigurator.computeMessageFlowIconStyle(edge));
+      mxCell.geometry.relative = true;
+      mxCell.geometry.offset = new mxPoint(-10, -7);
+    }
   }
 
   private insertWaypoints(waypoints: Waypoint[], mxEdge: mxCell): void {

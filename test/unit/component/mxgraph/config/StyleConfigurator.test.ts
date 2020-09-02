@@ -205,12 +205,11 @@ describe('mxgraph renderer', () => {
   });
 
   each([
-    [MessageVisibleKind.NON_INITIATING, ';strokeColor=DeepSkyBlue'],
-    [MessageVisibleKind.INITIATING, ';strokeColor=Yellow'],
-    [MessageVisibleKind.NONE, ''],
-  ]).it('compute style - message flows: %s', (messageVisibleKind, expected) => {
+    [MessageVisibleKind.NON_INITIATING, 'non_initiating'],
+    [MessageVisibleKind.INITIATING, 'initiating'],
+  ]).it('compute style - message flow icon: %s', (messageVisibleKind, expected) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
-    expect(computeStyle(edge)).toEqual(`messageFlow${expected}`);
+    expect(styleConfigurator.computeMessageFlowIconStyle(edge)).toEqual(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=${expected}`);
   });
 
   describe('compute style - events kind', () => {

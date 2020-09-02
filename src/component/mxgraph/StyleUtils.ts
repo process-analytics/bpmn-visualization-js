@@ -15,6 +15,7 @@
  */
 import { ShapeBpmnEventKind } from '../../model/bpmn/shape/ShapeBpmnEventKind';
 import { ShapeBpmnSubProcessKind } from '../../model/bpmn/shape/ShapeBpmnSubProcessKind';
+import { MessageVisibleKind } from '../../model/bpmn/edge/MessageVisibleKind';
 
 export enum MarkerIdentifier {
   ARROW_DASH = 'bpmn.dash',
@@ -48,6 +49,8 @@ export enum StyleIdentifier {
   BPMN_STYLE_IS_INTERRUPTING = 'bpmn.isInterrupting',
   BPMN_STYLE_MARKERS = 'bpmn.markers',
   BPMN_STYLE_INSTANTIATING = 'bpmn.isInstantiating',
+  BPMN_STYLE_IS_INITIATING = 'bpmn.isInitiating',
+  BPMN_STYLE_MESSAGE_FLOW_ICON = 'bpmn.messageFlowIcon',
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
@@ -98,6 +101,10 @@ export default class StyleUtils {
 
   public static getBpmnIsInstantiating(style: any): boolean {
     return JSON.parse(mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_INSTANTIATING, false));
+  }
+
+  public static getBpmnIsInitiating(style: any): MessageVisibleKind {
+    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_INITIATING, undefined);
   }
 }
 /* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
