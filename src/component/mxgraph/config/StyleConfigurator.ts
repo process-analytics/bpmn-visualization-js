@@ -309,7 +309,7 @@ export default class StyleConfigurator {
         }
       } else if (ShapeUtil.isPoolOrLane((bpmnElement as ShapeBpmnElement).kind)) {
         // mxConstants.STYLE_HORIZONTAL is for the label
-        // In BPMN, isHorizontal is for the Pool
+        // In BPMN, isHorizontal is for the Shape
         styleValues.set(mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
       }
     } else {
