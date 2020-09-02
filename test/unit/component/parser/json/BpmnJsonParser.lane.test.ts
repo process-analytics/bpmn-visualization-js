@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { parseJson, parseJsonAndExpectOnlyLanes, verifyShape } from './JsonTestUtils';
+import { parseJson, parseJsonAndExpectOnlyLanes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
+import { BpmnJsonModel } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMN20';
 
 describe('parse bpmn as json for lane', () => {
   it('json containing one process with a single lane without flowNodeRef', () => {
@@ -50,6 +51,7 @@ describe('parse bpmn as json for lane', () => {
         width: 36,
         height: 45,
       },
+      isHorizontal: true,
     });
   });
 
@@ -95,6 +97,7 @@ describe('parse bpmn as json for lane', () => {
         width: 36,
         height: 45,
       },
+      isHorizontal: true,
     });
 
     expect(model.flowNodes).toHaveLength(1);
@@ -134,6 +137,7 @@ describe('parse bpmn as json for lane', () => {
         width: 36,
         height: 45,
       },
+      isHorizontal: true,
     });
   });
 
@@ -171,6 +175,7 @@ describe('parse bpmn as json for lane', () => {
         width: 36,
         height: 45,
       },
+      isHorizontal: true,
     });
   });
 
@@ -216,6 +221,7 @@ describe('parse bpmn as json for lane', () => {
         width: 36,
         height: 45,
       },
+      isHorizontal: true,
     });
 
     expect(model.flowNodes).toHaveLength(1);
@@ -260,6 +266,7 @@ describe('parse bpmn as json for lane', () => {
         width: 36,
         height: 45,
       },
+      isHorizontal: true,
     });
   });
 
@@ -315,6 +322,7 @@ describe('parse bpmn as json for lane', () => {
         width: 36,
         height: 45,
       },
+      isHorizontal: true,
     });
     verifyShape(model.lanes[1], {
       shapeId: 'Lane_12u5n6x_di',
@@ -327,155 +335,240 @@ describe('parse bpmn as json for lane', () => {
         width: 22,
         height: 33,
       },
+      isHorizontal: true,
     });
   });
 
-  it('json containing one process declared as array with a laneSet with childLaneSet', () => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        process: [
-          {
-            id: 'Process_07bsa3h',
-            laneSet: {
-              id: 'LaneSet_1rqtug0',
-              lane: [
-                {
-                  id: 'Lane_040h8y5',
-                  childLaneSet: {
-                    id: 'LaneSet_1pyljtf',
-                    lane: [
-                      {
-                        id: 'Lane_06so1v5',
-                      },
-                      {
-                        id: 'Lane_0amyaod',
-                        childLaneSet: {
-                          id: 'LaneSet_0lzaj18',
+  describe.each([
+    ['vertical', false],
+    ['horizontal', true],
+  ])('parse bpmn as json for %s lane', (title: string, isHorizontal: boolean) => {
+    it(`json containing one process declared as array with a ${title} laneSet with childLaneSet`, () => {
+      const json = {
+        definitions: {
+          targetNamespace: '',
+          process: [
+            {
+              id: 'Process_07bsa3h',
+              laneSet: {
+                id: 'LaneSet_1rqtug0',
+                lane: [
+                  {
+                    id: 'Lane_040h8y5',
+                    childLaneSet: {
+                      id: 'LaneSet_1pyljtf',
+                      lane: [
+                        {
+                          id: 'Lane_06so1v5',
                         },
-                      },
-                    ],
+                        {
+                          id: 'Lane_0amyaod',
+                          childLaneSet: {
+                            id: 'LaneSet_0lzaj18',
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    id: 'Lane_1gdg64y',
+                  },
+                ],
+              },
+            },
+          ],
+          BPMNDiagram: {
+            id: 'BPMNDiagram_1',
+            BPMNPlane: {
+              id: 'BPMNPlane_1',
+              bpmnElement: 'Collaboration_0um5kdl',
+              BPMNShape: [
+                {
+                  id: 'Lane_1gdg64y_di',
+                  bpmnElement: 'Lane_1gdg64y',
+                  isHorizontal: isHorizontal,
+                  Bounds: {
+                    x: 186,
+                    y: 340,
+                    width: 584,
+                    height: 200,
                   },
                 },
                 {
-                  id: 'Lane_1gdg64y',
+                  id: 'Lane_040h8y5_di',
+                  bpmnElement: 'Lane_040h8y5',
+                  isHorizontal: isHorizontal,
+                  Bounds: {
+                    x: 186,
+                    y: 80,
+                    width: 584,
+                    height: 260,
+                  },
+                },
+                {
+                  id: 'Lane_0amyaod_di',
+                  bpmnElement: 'Lane_0amyaod',
+                  isHorizontal: isHorizontal,
+                  Bounds: {
+                    x: 216,
+                    y: 214,
+                    width: 554,
+                    height: 126,
+                  },
+                },
+                {
+                  id: 'Lane_06so1v5_di',
+                  bpmnElement: 'Lane_06so1v5',
+                  isHorizontal: isHorizontal,
+                  Bounds: {
+                    x: 216,
+                    y: 80,
+                    width: 554,
+                    height: 134,
+                  },
                 },
               ],
             },
           },
-        ],
+        },
+      };
+
+      const model = parseJsonAndExpectOnlyLanes(json, 4);
+
+      verifyShape(model.lanes[0], {
+        shapeId: 'Lane_1gdg64y_di',
+        bpmnElementId: 'Lane_1gdg64y',
+        bpmnElementName: undefined,
+        parentId: 'Process_07bsa3h',
+        bpmnElementKind: ShapeBpmnElementKind.LANE,
+        bounds: {
+          x: 186,
+          y: 340,
+          width: 584,
+          height: 200,
+        },
+        isHorizontal: isHorizontal,
+      });
+
+      verifyShape(model.lanes[1], {
+        shapeId: 'Lane_040h8y5_di',
+        bpmnElementId: 'Lane_040h8y5',
+        bpmnElementName: undefined,
+        parentId: 'Process_07bsa3h',
+        bpmnElementKind: ShapeBpmnElementKind.LANE,
+        bounds: {
+          x: 186,
+          y: 80,
+          width: 584,
+          height: 260,
+        },
+        isHorizontal: isHorizontal,
+      });
+
+      verifyShape(model.lanes[2], {
+        shapeId: 'Lane_0amyaod_di',
+        bpmnElementId: 'Lane_0amyaod',
+        bpmnElementName: undefined,
+        parentId: 'Lane_040h8y5',
+        bpmnElementKind: ShapeBpmnElementKind.LANE,
+        bounds: {
+          x: 216,
+          y: 214,
+          width: 554,
+          height: 126,
+        },
+        isHorizontal: isHorizontal,
+      });
+
+      verifyShape(model.lanes[3], {
+        shapeId: 'Lane_06so1v5_di',
+        bpmnElementId: 'Lane_06so1v5',
+        bpmnElementName: undefined,
+        parentId: 'Lane_040h8y5',
+        bpmnElementKind: ShapeBpmnElementKind.LANE,
+        bounds: {
+          x: 216,
+          y: 80,
+          width: 554,
+          height: 134,
+        },
+        isHorizontal: isHorizontal,
+      });
+    });
+
+    it(`json containing one process with a ${title} lane`, () => {
+      const json = {
+        definitions: {
+          targetNamespace: '',
+          process: {
+            lane: { id: 'Lane_12u5n6x' },
+          },
+          BPMNDiagram: {
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'Lane_1h5yeu4_di',
+                bpmnElement: 'Lane_12u5n6x',
+                isHorizontal: isHorizontal,
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              },
+            },
+          },
+        },
+      };
+
+      const model = parseJsonAndExpectOnlyLanes(json, 1);
+
+      verifyShape(model.lanes[0], {
+        shapeId: 'Lane_1h5yeu4_di',
+        bpmnElementId: 'Lane_12u5n6x',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.LANE,
+        parentId: undefined,
+        bounds: {
+          x: 362,
+          y: 232,
+          width: 36,
+          height: 45,
+        },
+        isHorizontal: isHorizontal,
+      });
+    });
+  });
+
+  it("json containing one process with a lane without 'isHorizontal' attribute", () => {
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        process: {
+          lane: { id: 'Lane_12u5n6x' },
+        },
         BPMNDiagram: {
-          id: 'BPMNDiagram_1',
           BPMNPlane: {
-            id: 'BPMNPlane_1',
-            bpmnElement: 'Collaboration_0um5kdl',
-            BPMNShape: [
-              {
-                id: 'Lane_1gdg64y_di',
-                bpmnElement: 'Lane_1gdg64y',
-                isHorizontal: true,
-                Bounds: {
-                  x: 186,
-                  y: 340,
-                  width: 584,
-                  height: 200,
-                },
-              },
-              {
-                id: 'Lane_040h8y5_di',
-                bpmnElement: 'Lane_040h8y5',
-                isHorizontal: true,
-                Bounds: {
-                  x: 186,
-                  y: 80,
-                  width: 584,
-                  height: 260,
-                },
-              },
-              {
-                id: 'Lane_0amyaod_di',
-                bpmnElement: 'Lane_0amyaod',
-                isHorizontal: true,
-                Bounds: {
-                  x: 216,
-                  y: 214,
-                  width: 554,
-                  height: 126,
-                },
-              },
-              {
-                id: 'Lane_06so1v5_di',
-                bpmnElement: 'Lane_06so1v5',
-                isHorizontal: true,
-                Bounds: {
-                  x: 216,
-                  y: 80,
-                  width: 554,
-                  height: 134,
-                },
-              },
-            ],
+            BPMNShape: {
+              id: 'Lane_1h5yeu4_di',
+              bpmnElement: 'Lane_12u5n6x',
+              Bounds: { x: 362, y: 232, width: 36, height: 45 },
+            },
           },
         },
       },
     };
 
-    const model = parseJsonAndExpectOnlyLanes(json, 4);
+    const model = parseJsonAndExpectOnlyLanes(json, 1);
 
     verifyShape(model.lanes[0], {
-      shapeId: 'Lane_1gdg64y_di',
-      bpmnElementId: 'Lane_1gdg64y',
+      shapeId: 'Lane_1h5yeu4_di',
+      bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
-      parentId: 'Process_07bsa3h',
       bpmnElementKind: ShapeBpmnElementKind.LANE,
+      parentId: undefined,
       bounds: {
-        x: 186,
-        y: 340,
-        width: 584,
-        height: 200,
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
       },
-    });
-
-    verifyShape(model.lanes[1], {
-      shapeId: 'Lane_040h8y5_di',
-      bpmnElementId: 'Lane_040h8y5',
-      bpmnElementName: undefined,
-      parentId: 'Process_07bsa3h',
-      bpmnElementKind: ShapeBpmnElementKind.LANE,
-      bounds: {
-        x: 186,
-        y: 80,
-        width: 584,
-        height: 260,
-      },
-    });
-
-    verifyShape(model.lanes[2], {
-      shapeId: 'Lane_0amyaod_di',
-      bpmnElementId: 'Lane_0amyaod',
-      bpmnElementName: undefined,
-      parentId: 'Lane_040h8y5',
-      bpmnElementKind: ShapeBpmnElementKind.LANE,
-      bounds: {
-        x: 216,
-        y: 214,
-        width: 554,
-        height: 126,
-      },
-    });
-
-    verifyShape(model.lanes[3], {
-      shapeId: 'Lane_06so1v5_di',
-      bpmnElementId: 'Lane_06so1v5',
-      bpmnElementName: undefined,
-      parentId: 'Lane_040h8y5',
-      bpmnElementKind: ShapeBpmnElementKind.LANE,
-      bounds: {
-        x: 216,
-        y: 80,
-        width: 554,
-        height: 134,
-      },
+      isHorizontal: true,
     });
   });
 });
