@@ -190,7 +190,6 @@ export class ManualTaskShape extends BaseTaskShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected paintTaskIcon(paintParameter: PaintParameter): void {
     this.iconPainter.paintHandIcon({ ...paintParameter, ratioFromParent: 0.18, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
   }
