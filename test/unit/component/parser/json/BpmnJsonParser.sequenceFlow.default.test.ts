@@ -29,12 +29,11 @@ describe('parse bpmn as json for default sequence flow', () => {
     ['receiveTask'],
     ['sendTask'],
     ['manualTask'],
+    ['scriptTask'],
     ['callActivity'],
     ['subProcess'],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway'],
-    // TODO: To uncomment when we support scriptTask
-    //['scriptTask'],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask'],
   ]).it(`should convert as Edge, when an sequence flow (defined as default in %s) is an attribute (as object) of 'process' (as object)`, sourceKind => {

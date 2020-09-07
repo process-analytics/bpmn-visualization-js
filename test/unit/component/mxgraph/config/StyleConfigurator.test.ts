@@ -351,10 +351,10 @@ describe('mxgraph renderer', () => {
     [ShapeBpmnElementKind.TASK_RECEIVE],
     [ShapeBpmnElementKind.TASK_SEND],
     [ShapeBpmnElementKind.TASK_MANUAL],
+    [ShapeBpmnElementKind.TASK_SCRIPT],
 
     // TODO: To uncomment when it's supported
     //[ShapeBpmnElementKind.TASK_BUSINESS_RULE],
-    //[ShapeBpmnElementKind.TASK_SCRIPT],
     //[ShapeBpmnElementKind.AD_HOC_SUB_PROCESS],
     //[ShapeBpmnElementKind.TRANSACTION],
   ])('compute style - markers for %s', (bpmnKind: ShapeBpmnElementKind) => {
