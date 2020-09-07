@@ -23,6 +23,7 @@ describe.each([
   ['userTask', ShapeBpmnElementKind.TASK_USER],
   ['receiveTask', ShapeBpmnElementKind.TASK_RECEIVE],
   ['sendTask', ShapeBpmnElementKind.TASK_SEND],
+  ['manualTask', ShapeBpmnElementKind.TASK_MANUAL],
   ['exclusiveGateway', ShapeBpmnElementKind.GATEWAY_EXCLUSIVE],
   ['inclusiveGateway', ShapeBpmnElementKind.GATEWAY_INCLUSIVE],
   ['parallelGateway', ShapeBpmnElementKind.GATEWAY_PARALLEL],
