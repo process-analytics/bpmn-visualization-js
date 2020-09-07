@@ -34,13 +34,12 @@ describe('parse bpmn as json for label font', () => {
     ['receiveTask'],
     ['sendTask'],
     ['manualTask'],
+    ['scriptTask'],
     ['callActivity'],
     ['subProcess'],
     ['textAnnotation'],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway'],
-    // TODO: To uncomment when we support scriptTask
-    //['scriptTask'],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask'],
   ]).it(

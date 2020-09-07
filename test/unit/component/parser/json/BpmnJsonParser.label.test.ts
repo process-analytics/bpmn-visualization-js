@@ -28,13 +28,12 @@ describe('parse bpmn as json for label font', () => {
     ['receiveTask'],
     ['sendTask'],
     ['manualTask'],
+    ['scriptTask'],
     ['callActivity'],
     ['subProcess'],
     ['textAnnotation'],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway'],
-    // TODO: To uncomment when we support scriptTask
-    //['scriptTask'],
     // TODO: To uncomment when we support businessRuleTask
     //['businessRuleTask'],
   ]).it("should convert as Shape without Label, when a BPMNShape (attached to %s & with empty BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)", sourceKind => {

@@ -197,6 +197,18 @@ export class ManualTaskShape extends BaseTaskShape {
   }
 }
 
+export class ScriptTaskShape extends BaseTaskShape {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+    super(bounds, fill, stroke, strokewidth);
+    this.gradient = 'Orange';
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
+  protected paintTaskIcon(paintParameter: PaintParameter): void {
+    // TODO To be implemented later
+  }
+}
+
 export class CallActivityShape extends BaseActivityShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);

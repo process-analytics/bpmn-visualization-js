@@ -817,6 +817,27 @@ describe('mxGraph model', () => {
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
 
+    // Script Task
+    expectModelContainsShape('scriptTask', { kind: ShapeBpmnElementKind.TASK_SCRIPT, font: expectedBoldFont, label: 'Script Task' });
+    expectModelContainsShape('scriptTask_with_loop', {
+      kind: ShapeBpmnElementKind.TASK_SCRIPT,
+      font: expectedBoldFont,
+      label: 'Script Task With Loop',
+      markers: [ShapeBpmnMarkerKind.LOOP],
+    });
+    expectModelContainsShape('scriptTask_with_sequential_multi_instance', {
+      kind: ShapeBpmnElementKind.TASK_SCRIPT,
+      font: expectedBoldFont,
+      label: 'Script Task With Sequential Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+    });
+    expectModelContainsShape('scriptTask_with_parallel_multi_instance', {
+      kind: ShapeBpmnElementKind.TASK_SCRIPT,
+      font: expectedBoldFont,
+      label: 'Script Task With Parallel Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+    });
+
     // text annotation
     expectModelContainsShape('text_annotation_id_1', { kind: ShapeBpmnElementKind.TEXT_ANNOTATION, label: 'Annotation' });
 
