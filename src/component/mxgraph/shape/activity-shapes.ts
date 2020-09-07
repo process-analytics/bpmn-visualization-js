@@ -188,12 +188,11 @@ export class SendTaskShape extends BaseTaskShape {
 export class ManualTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
-    this.gradient = 'Chartreuse';
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    // TODO To be implemented later
+    this.iconPainter.paintHandIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
   }
 }
 
