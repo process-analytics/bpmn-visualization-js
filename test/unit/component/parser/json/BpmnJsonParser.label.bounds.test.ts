@@ -27,13 +27,12 @@ describe('parse bpmn as json for label bounds', () => {
     ['serviceTask'],
     ['receiveTask'],
     ['sendTask'],
+    ['manualTask'],
     ['callActivity'],
     ['subProcess'],
     ['textAnnotation'],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway'],
-    // TODO: To uncomment when we support manualTask
-    //['manualTask'],
     // TODO: To uncomment when we support scriptTask
     //['scriptTask'],
     // TODO: To uncomment when we support businessRuleTask

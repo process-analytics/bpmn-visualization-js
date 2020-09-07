@@ -17,7 +17,7 @@ import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/shape/ShapeBpmnElementKind';
 import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape, BoundaryEventShape } from '../shape/event-shapes';
 import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from '../shape/gateway-shapes';
-import { SubProcessShape, ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape, CallActivityShape, SendTaskShape } from '../shape/activity-shapes';
+import { SubProcessShape, ReceiveTaskShape, ServiceTaskShape, TaskShape, UserTaskShape, CallActivityShape, SendTaskShape, ManualTaskShape } from '../shape/activity-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
@@ -51,6 +51,7 @@ export default class ShapeConfigurator {
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_USER, UserTaskShape);
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape);
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SEND, SendTaskShape);
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_MANUAL, ManualTaskShape);
     // artifacts
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
 

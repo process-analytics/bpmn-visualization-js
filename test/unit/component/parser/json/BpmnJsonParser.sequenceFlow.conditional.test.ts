@@ -29,12 +29,11 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     ['serviceTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['receiveTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['sendTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
+    ['manualTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['callActivity', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['subProcess', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
-    // TODO: To uncomment when we support manualTask
-    //['manualTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support scriptTask
     //['scriptTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support businessRuleTask
