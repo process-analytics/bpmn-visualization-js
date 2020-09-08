@@ -75,7 +75,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |Manual Task
 |icon:check-circle-o[]
 |Icon may be subject to change+
-*icon*: the task icon is derived from the https://thenounproject.com/term/hand/7660/[noun project 'hand' icon]
+*icon*: the task icon is derived from the https://thenounproject.com/term/hand/7660/[noun project 'hand' icon] by João Miranda, licensed as https://creativecommons.org/licenses/by/3.0/us/legalcode[Creative Commons CCBY 3.0]
 
 |Script Task
 |
