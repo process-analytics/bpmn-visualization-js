@@ -629,6 +629,9 @@ export default class IconPainter {
    * This icon is used by `manual task`.
    */
   paintHandIcon({ setIconOrigin, c, shape, ratioFromParent, icon }: PaintParameter): void {
+    // this implementation is adapted from the noun project 'hand' icon
+    // https://thenounproject.com/term/hand/7660/
+
     const originalIconSize = { width: 343.65, height: 354.12 };
     const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, originalIconSize);
 
