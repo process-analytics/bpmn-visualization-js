@@ -697,93 +697,77 @@ export default class IconPainter {
    * This icon is used by `script task`.
    */
   paintScriptIcon({ setIconOrigin, c, shape, ratioFromParent, icon }: PaintParameter): void {
-    // this implementation is adapted from the noun project 'script' icon
-    // https://thenounproject.com/term/script/2331578/
+    // this implementation is adapted from the icon fonts 'script' icon
+    // https://www.onlinewebfonts.com/icon/474065
     icon.fillColor = icon.strokeColor;
-    const originalIconSize = { width: 458.75, height: 461.64 };
+    const originalIconSize = { width: 10131.8, height: 8902.5 };
     const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, originalIconSize);
 
-    // Shape
     canvas.begin();
-    canvas.moveTo(67.85, 0.57);
-    canvas.curveTo(50.73, 0, 33.26, 8.86, 22.35, 18.84);
-    canvas.curveTo(8.11, 32.15, 0, 50.77, 0, 70.26);
-    canvas.curveTo(0, 73.15, 0, 87.59, 0, 113.6);
-    canvas.curveTo(55.4, 113.6, 86.18, 113.6, 92.33, 113.6);
-    canvas.curveTo(94.92, 150.46, 85.64, 180.4, 74.22, 211.27);
-    canvas.curveTo(40.16, 298.07, 30.77, 339.83, 55.56, 410.87);
-    canvas.curveTo(63.72, 438.26, 87.59, 457.85, 114.91, 461.09);
-    canvas.curveTo(216.96, 460.85, 294.9, 461.64, 388.41, 461.2);
-    canvas.curveTo(407.2, 461.09, 425.14, 453.55, 438.3, 440.13);
-    canvas.curveTo(451.46, 426.71, 458.75, 403.06, 458.46, 384.26);
-    canvas.curveTo(458.43, 382.23, 458.18, 365.93, 458.15, 363.89);
-    canvas.curveTo(432.12, 364.24, 406.09, 364.04, 380.06, 364.04);
-    canvas.curveTo(377.61, 347.52, 377.24, 337.58, 378.28, 324.48);
-    canvas.curveTo(380.5, 296.47, 389.08, 273.36, 398.59, 247.1);
-    canvas.curveTo(408.11, 220.83, 418.41, 191.47, 420.86, 154.24);
-    canvas.curveTo(422.11, 135.34, 421.4, 110.24, 417.77, 86.75);
-    canvas.curveTo(417.76, 86.71, 417.73, 86.54, 417.69, 86.22);
-    canvas.curveTo(417.64, 85.95, 417.61, 85.79, 417.6, 85.76);
-    canvas.curveTo(414.03, 68.13, 410.49, 48.84, 399.79, 31.47);
-    canvas.curveTo(389.09, 14.11, 366.95, 0.59, 341.75, 0.59);
-    canvas.curveTo(286.97, 0.59, 122.63, 0.57, 67.85, 0.57);
+    canvas.moveTo(2909.3, 8865.9);
+    canvas.curveTo(2840.3, 8850.6, 2713.9, 8802.7, 2629.7, 8760.6);
+    canvas.curveTo(2250.5, 8569.1, 2014.9, 8222.4, 1968.9, 7785.7);
+    canvas.curveTo(1959.3, 7695.7, 1951.7, 6450.7, 1951.7, 5021.9);
+    canvas.lineTo(1951.7, 2422.8);
+    canvas.lineTo(1507.3, 2417.1);
+    canvas.curveTo(1076.4, 2411.4, 1055.3, 2409.4, 917.4, 2359.6);
+    canvas.curveTo(337.1, 2147, 0, 1524.6, 151.3, 938.5);
+    canvas.curveTo(214.5, 691.4, 293, 555.4, 476.9, 371.6);
+    canvas.curveTo(660.8, 187.7, 796.8, 109.2, 1043.8, 46);
+    canvas.curveTo(1187.4, 7.7, 1262.1, 7.7, 4085.3, 7.7);
+    canvas.curveTo(7314.5, 7.7, 7117.2, 0, 7410.2, 143.7);
+    canvas.curveTo(7695.6, 285.4, 7925.4, 557.4, 8034.6, 888.8);
+    canvas.curveTo(8069.1, 988.4, 8071, 1132, 8076.7, 3736.8);
+    canvas.lineTo(8080.5, 6479.5);
+    canvas.lineTo(8526.8, 6485.3);
+    canvas.curveTo(8955.8, 6491, 8976.9, 6493, 9114.8, 6542.8);
+    canvas.curveTo(9829.2, 6803.3, 10131.8, 7646, 9746.9, 8303);
+    canvas.curveTo(9643.5, 8477.3, 9429, 8676.5, 9248.9, 8764.6);
+    canvas.curveTo(8963.5, 8902.5, 9157, 8894.8, 5931.6, 8892.9);
+    canvas.curveTo(3535.6, 8892.7, 3012.8, 8886.9, 2909.3, 8865.9);
     canvas.close();
-    canvas.moveTo(85.04, 72.68);
-    canvas.curveTo(80.63, 72.68, 45.33, 72.68, 40.92, 72.68);
-    canvas.curveTo(40.46, 58.4, 47.15, 51.87, 50.27, 48.75);
-    canvas.curveTo(55.8, 44.28, 59.84, 41, 73.82, 41);
-    canvas.curveTo(78.45, 52.13, 82.23, 62.71, 85.04, 72.68);
+    canvas.moveTo(7622.9, 8210.8);
+    canvas.curveTo(7509.9, 7982.9, 7517.6, 8233.8, 7506.1, 4518.1);
+    canvas.curveTo(7494.6, 628.2, 7513.8, 1001.6, 7329.9, 802.4);
+    canvas.curveTo(7149.9, 605.1, 6899, 541.9, 6644.2, 628.1);
+    canvas.curveTo(6496.7, 679.8, 6320.5, 857.9, 6268.8, 1003.5);
+    canvas.curveTo(6140.5, 1380.8, 6387.5, 1798.3, 6768.7, 1844.3);
+    canvas.lineTo(6864.5, 1855.8);
+    canvas.lineTo(6870.2, 2137.4);
+    canvas.lineTo(6875.9, 2420.9);
+    canvas.lineTo(4705.9, 2424.7);
+    canvas.lineTo(2535.9, 2430.4);
+    canvas.lineTo(2535.9, 5111.9);
+    canvas.curveTo(2535.9, 7655.4, 2537.8, 7799, 2570.4, 7892.9);
+    canvas.curveTo(2608.7, 8002.1, 2737, 8159.1, 2840.5, 8222.3);
+    canvas.curveTo(2995.6, 8320, 2947.8, 8318.1, 5395.5, 8318.1);
+    canvas.lineTo(7678.5, 8320);
+    canvas.lineTo(7622.9, 8210.8);
     canvas.close();
-    canvas.moveTo(364.94, 52.9);
-    canvas.curveTo(370, 61.11, 373.9, 76.44, 377.38, 93.51);
-    canvas.curveTo(380.35, 113.1, 381.01, 136.42, 380.02, 151.57);
-    canvas.curveTo(377.97, 182.76, 369.51, 207.12, 360.1, 233.1);
-    canvas.curveTo(350.69, 259.09, 340.27, 286.77, 337.53, 321.27);
-    canvas.curveTo(336.38, 335.86, 336.72, 346.69, 338.87, 364.01);
-    canvas.curveTo(326.35, 364.01, 263.75, 364.01, 151.06, 364.01);
-    canvas.curveTo(151.06, 382.2, 151.06, 392.31, 151.06, 394.33);
-    canvas.curveTo(147.77, 404.8, 138.9, 418.2, 127.43, 419.94);
-    canvas.curveTo(111.49, 422.35, 97.86, 411.8, 94.75, 399.19);
-    canvas.curveTo(65.14, 321.99, 94.93, 275.54, 112.57, 225.47);
-    canvas.curveTo(130.14, 177.95, 137.92, 117.41, 112.71, 42.09);
-    canvas.curveTo(192.88, 41.9, 274.33, 42.21, 342.89, 41.98);
-    canvas.curveTo(357.15, 42.03, 359.83, 44.61, 364.94, 52.9);
+    canvas.moveTo(8994.2, 8243.4);
+    canvas.curveTo(9124.4, 8178.3, 9222.1, 8078.7, 9291.1, 7938.9);
+    canvas.curveTo(9356.2, 7804.8, 9354.3, 7565.4, 9283.4, 7416);
+    canvas.curveTo(9224, 7289.6, 9109.1, 7170.8, 8984.6, 7109.6);
+    canvas.curveTo(8900.3, 7069.4, 8867.8, 7065.5, 8486.6, 7059.8);
+    canvas.lineTo(8078.6, 7054);
+    canvas.lineTo(8084.3, 7452.4);
+    canvas.curveTo(8090, 7808.6, 8093.9, 7860.3, 8130.3, 7938.9);
+    canvas.curveTo(8283.6, 8268.3, 8666.7, 8404.3, 8994.2, 8243.4);
     canvas.close();
-    canvas.moveTo(409.96, 399.48);
-    canvas.curveTo(409.96, 408.42, 398.54, 425.67, 392.02, 425.67);
-    canvas.curveTo(325.19, 425.79, 252.29, 425.67, 185.23, 425.67);
-    canvas.curveTo(189.88, 424.43, 194.66, 405.64, 194.66, 399.48);
-    canvas.curveTo(237.72, 399.48, 388.43, 399.48, 409.96, 399.48);
+    canvas.moveTo(5820.6, 1855.9);
+    canvas.curveTo(5820.6, 1854, 5795.7, 1796.5, 5765.1, 1727.6);
+    canvas.curveTo(5700, 1584, 5648.3, 1354.1, 5648.3, 1210.5);
+    canvas.curveTo(5648.3, 1064.9, 5696.2, 863.8, 5763.2, 720.2);
+    canvas.curveTo(5793.9, 653.2, 5820.7, 593.8, 5820.7, 590);
+    canvas.curveTo(5820.7, 584.2, 4775, 584.2, 3499.4, 586.2);
+    canvas.lineTo(1176.2, 591.9);
+    canvas.lineTo(1070.9, 641.7);
+    canvas.curveTo(919.4, 712.5, 831.3, 796.8, 764.2, 932.7);
+    canvas.curveTo(683.8, 1099.3, 672.3, 1233.4, 724, 1401.9);
+    canvas.curveTo(794.9, 1635.6, 999.8, 1813.7, 1231.5, 1844.3);
+    canvas.curveTo(1317.7, 1855.9, 5820.6, 1867.4, 5820.6, 1855.9);
     canvas.close();
-    canvas.fill();
-
-    // Lines
-    canvas.begin();
-    canvas.moveTo(182.1, 81.2);
-    canvas.lineTo(182.1, 101.68);
-    canvas.lineTo(321.89, 101.68);
-    canvas.lineTo(321.89, 81.2);
-    canvas.lineTo(182.1, 81.2);
-    canvas.close();
-    canvas.moveTo(182.16, 161);
-    canvas.lineTo(182.16, 181.45);
-    canvas.lineTo(321.9, 181.45);
-    canvas.lineTo(321.9, 161);
-    canvas.lineTo(182.16, 161);
-    canvas.close();
-    canvas.moveTo(162.25, 241.09);
-    canvas.lineTo(162.25, 261.49);
-    canvas.lineTo(301.96, 261.49);
-    canvas.lineTo(301.96, 241.09);
-    canvas.lineTo(162.25, 241.09);
-    canvas.close();
-    canvas.moveTo(142.15, 320.83);
-    canvas.lineTo(142.15, 341.28);
-    canvas.lineTo(282.05, 341.28);
-    canvas.lineTo(282.05, 320.83);
-    canvas.lineTo(142.15, 320.83);
-    canvas.close();
-    canvas.fill();
+    canvas.fillAndStroke();
   }
 }
 
