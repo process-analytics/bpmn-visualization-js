@@ -6,7 +6,7 @@
 - review issues list, in particular in the BPMN Rendering Improvements milestones which could be impacted or fixed by the
 - version bump
 - apply the version bump
-- ensure we have enough visualization tests to cover any regression or changes introduced
+- ensure we have enough visual tests to cover any regression or changes introduced
 - perform manual testing using BPMN diagrams from `bpmn-visualization-examples` or `miwg-test-suite`
 
 
