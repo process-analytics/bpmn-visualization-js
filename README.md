@@ -63,6 +63,7 @@ Some BPMN icons used by `bpmn-visualization` are derived from existing projects.
 for more details:
 - [draw.io](https://github.com/jgraph/drawio) (Apache-2.0)
 - [flaticon](https://www.flaticon.com) ([freepikcompany license](https://www.freepikcompany.com/legal#nav-flaticon))
+- [noun project](https://thenounproject.com/) (mainly Creative Commons CCBY)
 
 
 # Powered by
