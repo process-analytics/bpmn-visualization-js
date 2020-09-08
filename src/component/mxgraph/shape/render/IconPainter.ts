@@ -692,6 +692,87 @@ export default class IconPainter {
     canvas.curveTo(204.74, 346.69, 222.91, 354.12, 231.66, 336.39);
     canvas.fillAndStroke();
   }
+
+  /**
+   * This icon is used by `script task`.
+   */
+  paintScriptIcon({ setIconOrigin, c, shape, ratioFromParent, icon }: PaintParameter): void {
+    // this implementation is adapted from the noun project 'script' icon
+    // https://thenounproject.com/term/script/2331578/
+    icon.fillColor = icon.strokeColor;
+    const originalIconSize = { width: 458.75, height: 461.64 };
+    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, originalIconSize);
+
+    // Shape
+    canvas.begin();
+    canvas.moveTo(67.85, 0.57);
+    canvas.curveTo(50.73, 0, 33.26, 8.86, 22.35, 18.84);
+    canvas.curveTo(8.11, 32.15, 0, 50.77, 0, 70.26);
+    canvas.curveTo(0, 73.15, 0, 87.59, 0, 113.6);
+    canvas.curveTo(55.4, 113.6, 86.18, 113.6, 92.33, 113.6);
+    canvas.curveTo(94.92, 150.46, 85.64, 180.4, 74.22, 211.27);
+    canvas.curveTo(40.16, 298.07, 30.77, 339.83, 55.56, 410.87);
+    canvas.curveTo(63.72, 438.26, 87.59, 457.85, 114.91, 461.09);
+    canvas.curveTo(216.96, 460.85, 294.9, 461.64, 388.41, 461.2);
+    canvas.curveTo(407.2, 461.09, 425.14, 453.55, 438.3, 440.13);
+    canvas.curveTo(451.46, 426.71, 458.75, 403.06, 458.46, 384.26);
+    canvas.curveTo(458.43, 382.23, 458.18, 365.93, 458.15, 363.89);
+    canvas.curveTo(432.12, 364.24, 406.09, 364.04, 380.06, 364.04);
+    canvas.curveTo(377.61, 347.52, 377.24, 337.58, 378.28, 324.48);
+    canvas.curveTo(380.5, 296.47, 389.08, 273.36, 398.59, 247.1);
+    canvas.curveTo(408.11, 220.83, 418.41, 191.47, 420.86, 154.24);
+    canvas.curveTo(422.11, 135.34, 421.4, 110.24, 417.77, 86.75);
+    canvas.curveTo(417.76, 86.71, 417.73, 86.54, 417.69, 86.22);
+    canvas.curveTo(417.64, 85.95, 417.61, 85.79, 417.6, 85.76);
+    canvas.curveTo(414.03, 68.13, 410.49, 48.84, 399.79, 31.47);
+    canvas.curveTo(389.09, 14.11, 366.95, 0.59, 341.75, 0.59);
+    canvas.curveTo(286.97, 0.59, 122.63, 0.57, 67.85, 0.57);
+    canvas.close();
+    canvas.moveTo(85.04, 72.68);
+    canvas.curveTo(80.63, 72.68, 45.33, 72.68, 40.92, 72.68);
+    canvas.curveTo(40.46, 58.4, 47.15, 51.87, 50.27, 48.75);
+    canvas.curveTo(55.8, 44.28, 59.84, 41, 73.82, 41);
+    canvas.curveTo(78.45, 52.13, 82.23, 62.71, 85.04, 72.68);
+    canvas.close();
+    canvas.moveTo(364.94, 52.9);
+    canvas.curveTo(370, 61.11, 373.9, 76.44, 377.38, 93.51);
+    canvas.curveTo(380.35, 113.1, 381.01, 136.42, 380.02, 151.57);
+    canvas.curveTo(377.97, 182.76, 369.51, 207.12, 360.1, 233.1);
+    canvas.curveTo(350.69, 259.09, 340.27, 286.77, 337.53, 321.27);
+    canvas.curveTo(336.38, 335.86, 336.72, 346.69, 338.87, 364.01);
+    canvas.curveTo(326.35, 364.01, 263.75, 364.01, 151.06, 364.01);
+    canvas.curveTo(151.06, 382.2, 151.06, 392.31, 151.06, 394.33);
+    canvas.curveTo(147.77, 404.8, 138.9, 418.2, 127.43, 419.94);
+    canvas.curveTo(111.49, 422.35, 97.86, 411.8, 94.75, 399.19);
+    canvas.curveTo(65.14, 321.99, 94.93, 275.54, 112.57, 225.47);
+    canvas.curveTo(130.14, 177.95, 137.92, 117.41, 112.71, 42.09);
+    canvas.curveTo(192.88, 41.9, 274.33, 42.21, 342.89, 41.98);
+    canvas.curveTo(357.15, 42.03, 359.83, 44.61, 364.94, 52.9);
+    canvas.close();
+    canvas.moveTo(409.96, 399.48);
+    canvas.curveTo(409.96, 408.42, 398.54, 425.67, 392.02, 425.67);
+    canvas.curveTo(325.19, 425.79, 252.29, 425.67, 185.23, 425.67);
+    canvas.curveTo(189.88, 424.43, 194.66, 405.64, 194.66, 399.48);
+    canvas.curveTo(237.72, 399.48, 388.43, 399.48, 409.96, 399.48);
+    canvas.close();
+    canvas.fill();
+
+    // Lines
+    canvas.begin();
+    canvas.moveTo(182.1, 131.2);
+    canvas.lineTo(182.1, 151.68);
+    canvas.lineTo(321.89, 151.68);
+    canvas.lineTo(321.89, 131.2);
+    canvas.lineTo(182.1, 131.2);
+    canvas.close();
+    canvas.moveTo(162.25, 251.09);
+    canvas.lineTo(162.25, 271.49);
+    canvas.lineTo(301.96, 271.49);
+    canvas.lineTo(301.96, 251.09);
+    canvas.lineTo(162.25, 251.09);
+    canvas.close();
+    canvas.fill();
+  }
 }
 
 export class IconPainterProvider {
