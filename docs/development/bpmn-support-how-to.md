@@ -2,26 +2,25 @@
 
 ## Introduction
 
-We proceed using several steps
+We manage the BPMN Support very incrementally as we prefer small changes, because they are easier and faster to review
+and less risky.
 
-- `detection`: we first ensure that we are able to extract the BPMN elements from the BPMN source and that we are able to display it in a arbitrary form.
-This ensures that the whole infrastructure is put in place for the newly introduced elements support, from parsing to rendering,
-and that tests have been added or updated.
-- `rendering`: then we setup the BPMN shape, styles and icons
+So we proceed using several steps:
+- `detection`:
+  - first, being able to extract the BPMN elements from the BPMN source
+  - then, being able to display BPMN elements in an arbitrary form
+  - this ensures that the whole infrastructure is put in place for the newly introduced elements support, from parsing to rendering,
+  and that tests have been added or updated.
+- `rendering`: then we setup the BPMN shape, styles, icons and we polish the display
 
 On the development flow side, this means that there is at least one Pull Request for the `detection` and another one for the `rendering`.
 
-Remember that we prefer small changes because they are easier to review. So, `detection` can be splitted into several Pull Requests to cover
-various aspects of the BPMN elements. For instance, for a `Pool`, first detect horizontal elements, then vertical elements.
+Remember that we prefer small changes . So, `detection` can be splitted into several Pull Requests to cover
+various aspects of the BPMN elements.
+For instance:
+- for a `Pool`, first detect horizontal elements, then vertical elements.
+- for a given `BPMN Event` (let's say `Signal`), we have a detection issue for start, catch, throw, ...
 
-
-**TODO info from #433**
-```
-    our way of doing is 1st detect, then render. We do this very incrementally, for instance for a given event types, we have a detection issue for start, catch, throw, ...
-        detection is adding parsing tests, setting the glue in the mxGraph rendering, adding initial e2e tests to demonstrate we can see the element
-        render: dealing with shape/icon (size, position, font, ...), polishing the display
-    a arbitrary color should be used for the detection stage. Purpose: identify uniquely a BPMN element type on the diagram even if the rendering is not implemented. Explain how to easily do it or provide link to the class in charge of this (or look in the git history)
-```
 
 
 ## Elements detection
@@ -56,6 +55,9 @@ types requires changes in `ShapeBpmnEventKind` to add the newly supported BPMN E
 Overview
 * the work to do depends on the BPMN types (events and tasks)
 * add a new `mxGraph` shape for totally new elements (see architecture)
+* use an arbitrary color to fill the new BPMN element
+  * Purpose: uniquely identify a BPMN element on the BPMN diagram even if the rendering is not implemented.
+  * this is directly managed in the BPMN mxGraph shape class
 * refer to provided examples above for more details
 
 
@@ -77,10 +79,10 @@ flow` support (see `ShapeBpmnElementKind` for more details)
 
 * update model test, mainly to ensure that the new BPMN element is now stored in the `mxGraph model`, see `mxGraph.model.test.ts`.
 * fixtures bpmn diagrams used by model tests
-** name starts with `model-`
-** generally, update the `test/fixtures/model-complete-semantic.bpmn` file with the newly introduced file and update the model expectation accordingly.
-in this file, please adjust shape coordinates to ensure new elements can be easily shown with a viewer and don't overlap with existing elements
-** for special cases, a dedicated test using a specific file. Please communicate with the Core Development Team if you think you need a dedicated file.
+  * name starts with `model-`
+  * generally, update the `test/fixtures/model-complete-semantic.bpmn` file with the newly introduced file and update the model expectation accordingly.
+  in this file, please adjust shape coordinates to ensure new elements can be easily shown with a viewer and don't overlap with existing elements
+  * for special cases, a dedicated test using a specific file. Please communicate with the Core Development Team if you think you need a dedicated file.
 
 
 #### Visual testing
@@ -112,7 +114,7 @@ Please update the reference snapshot image accordingly.
 ### BPMN icon tips
 
 The icon of the BPMN elements must be defined in the mxGraph custom shapes and this currently must be done using `TypeScript`
-code.
+code. The `IconPainter` class manages all icons rendering/painting.  
 
 It is possible to adapt an SVG icon thanks to [mxgraph-svg2shape](https://github.com/process-analytics/mxgraph-svg2shape),
 a Java tool that will let you transform your SVG file into a set of `TypeScript` commands.
