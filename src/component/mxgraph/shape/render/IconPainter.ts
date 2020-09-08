@@ -759,23 +759,17 @@ export default class IconPainter {
 
     // Lines
     canvas.begin();
-    canvas.moveTo(182.1, 101.2);
-    canvas.lineTo(182.1, 121.68);
-    canvas.lineTo(321.89, 121.68);
-    canvas.lineTo(321.89, 101.2);
-    canvas.lineTo(182.1, 101.2);
+    canvas.moveTo(182.1, 131.2);
+    canvas.lineTo(182.1, 151.68);
+    canvas.lineTo(321.89, 151.68);
+    canvas.lineTo(321.89, 131.2);
+    canvas.lineTo(182.1, 131.2);
     canvas.close();
-    canvas.moveTo(182.16, 186);
-    canvas.lineTo(182.16, 206.45);
-    canvas.lineTo(321.9, 206.45);
-    canvas.lineTo(321.9, 186);
-    canvas.lineTo(182.16, 186);
-    canvas.close();
-    canvas.moveTo(162.25, 271.09);
-    canvas.lineTo(162.25, 291.49);
-    canvas.lineTo(301.96, 291.49);
-    canvas.lineTo(301.96, 271.09);
-    canvas.lineTo(162.25, 271.09);
+    canvas.moveTo(162.25, 251.09);
+    canvas.lineTo(162.25, 271.49);
+    canvas.lineTo(301.96, 271.49);
+    canvas.lineTo(301.96, 251.09);
+    canvas.lineTo(162.25, 251.09);
     canvas.close();
     canvas.fill();
   }
