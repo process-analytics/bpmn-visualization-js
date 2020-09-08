@@ -41,23 +41,51 @@ Tests change frequency:
 - The visual tests are updated each time the library supports a new BPMN element or when introducing the final BPMN element rendering.
 
 
+TODO info from #526
+
+
+    mxgraph model checks: ensure that given a BPMN diagram, the mxgraph model contains the related verticles and edges, with right coordinates, dimensions and mxgraph style
+    DOM content check: both with JSDom and by displaying a page in a real Chrome browser. Simple diagrams are loaded to check that svg nodes related to the BPMN elements rendering are present in the DOM
+
+
 
 ### Visual Testing
 
-**TODO: choose a name for that kind of tests and use it everywhere**
+#### What is this?
 
-- Add ref to resources about this kind of tests
-- see also
- - bpmn how to
-  - see also conclusion of the POC and elements for strategy for 'visual testing': https://github.com/process-analytics/bpmn-visualization-js/pull/523#issuecomment-674049031
-  - see also information in https://github.com/process-analytics/bpmn-visualization-js/issues/526
+Quote from [storybook.js](https://storybook.js.org/docs/react/workflows/visual-testing)
+> Visual tests, also called visual regression tests, catch bugs in UI appearance.
+> They work by taking screenshots of every story and comparing them commit-to-commit to identify changes.
+>
+> This is ideal for verifying what the user sees: layout, color, size, and contrast.
 
 
-Goals
-- tests the visual rendering of the BPMN Diagram
-- non regression tests
+Quote from [cypress.io](https://docs.cypress.io/guides/tooling/visual-testing.html#Functional-vs-visual-testing)
+> [These tests] take an image snapshot of the entire application under test or a specific element,
+> and then compare the image to a previously approved baseline image.
+>
+> If the images are the same (within a set pixel tolerance), it is determined that the web application looks the same
+> to the user. If there are differences, then there has been some change to the DOM layout, fonts, colors or other visual
+> properties that needs to be investigated.
+
+
+#### Goals for `bpmn-visualization`
+
+- tests the BPMN Diagram visual rendering 
+- visual non regression tests: keep consistent rendering across versions
 - useful to detect mxgraph behaviour changes (see [mxGraph version bump](./mxgraph-version-bump.md)) or unexpected changes introduced by refactoring in
 the rendering code of the lib
+- see [issue 526]( https://github.com/process-analytics/bpmn-visualization-js/issues/526) for more context
+
+
+#### Details
+
+We use [jest-image-snapshot](https://www.npmjs.com/package/jest-image-snapshot) for the test snapshot comparison.
+
+The following details are based on the [POC done to introduce visual tests](https://github.com/process-analytics/bpmn-visualization-js/pull/523#issuecomment-674049031).
+
+TODO
+
 
 
 #### Tips for visual testing
