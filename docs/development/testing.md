@@ -30,8 +30,9 @@ We use the [puppeteer library](https://github.com/puppeteer/puppeteer/) with the
 tests requiring a web browser (Chromium only for now).
 
 We have the following types of end to end tests:
-- model: check the library fills the `mxGraph` model with BPMN elements.
-- dom: jsdom base, no browser, check svg nodes as in view tests
+- model: check the library fills the `mxGraph` model with BPMN elements. The model must contain the related vertices and
+edges, with right coordinates, dimensions and style.
+- dom: `JSDOM` based, no browser, check SVG nodes as in view tests
 - view: ensure SVG elements are present on the web page (mainly non regression, to verify that the `mxGraph` integration uses SVG for rendering)
 - visual testing (see below)
 
@@ -39,14 +40,6 @@ Tests change frequency:
 - The `dom` and `view` tests are very rarely changed, as they are testing the `mxGraph` integration at very high level.
 - The model tests must be updated each time the library supports a new BPMN element. 
 - The visual tests are updated each time the library supports a new BPMN element or when introducing the final BPMN element rendering.
-
-
-TODO info from #526
-
-
-    mxgraph model checks: ensure that given a BPMN diagram, the mxgraph model contains the related verticles and edges, with right coordinates, dimensions and mxgraph style
-    DOM content check: both with JSDom and by displaying a page in a real Chrome browser. Simple diagrams are loaded to check that svg nodes related to the BPMN elements rendering are present in the DOM
-
 
 
 ### Visual Testing
@@ -85,7 +78,7 @@ We use [jest-image-snapshot](https://www.npmjs.com/package/jest-image-snapshot) 
 The following details are based on the [POC done to introduce visual tests](https://github.com/process-analytics/bpmn-visualization-js/pull/523#issuecomment-674049031).
 
 TODO
-
+`bpmn.rendering.test.ts` drives all visual tests
 
 
 #### Tips for visual testing
@@ -93,8 +86,8 @@ TODO
 **TODO guide lines**
 
     when and how to add tests
-    how and when to configure diff image threshold (some explanations are present in the code, but is this enough?)
     avoid labels in tests, avoid markers and icons on BPMN elements when not related to the test (more subject to changes, so tests will break whereas they are not testing this feature)
+    how and when to configure diff image threshold (some explanations are present in the code, but is this enough?)
     load method: explain when choosing a dedicated method and how to configure
         default: pass content via url
     larger file: via fetch
