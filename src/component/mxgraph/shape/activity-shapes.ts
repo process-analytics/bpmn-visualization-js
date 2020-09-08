@@ -201,7 +201,7 @@ export class ScriptTaskShape extends BaseTaskShape {
   }
 
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    this.iconPainter.paintScriptIcon({ ...paintParameter, ratioFromParent: 0.23, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
+    this.iconPainter.paintScriptIcon({ ...paintParameter, ratioFromParent: 0.22, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
   }
 }
 
