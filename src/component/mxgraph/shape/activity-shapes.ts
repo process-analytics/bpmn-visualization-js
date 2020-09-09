@@ -15,8 +15,7 @@
  */
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render';
-import { ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape';
-import { ShapeBpmnMarkerKind } from '../../../model/bpmn/shape';
+import { ShapeBpmnSubProcessKind, ShapeBpmnMarkerKind } from '../../../model/bpmn/shape';
 import BpmnCanvas from './render/BpmnCanvas';
 
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
