@@ -178,6 +178,12 @@ to this system to accept the agreement.
 
 You only need to sign the CLA once or when the CLA terms have changed.
 
+### Commit
+There is no convention for the commit message.
+The most important part is the title of the Pull Request, because:
+- Everyone must use Pull Request, no direct commit allowed on master branch
+- The commits of a Pull Request are almost always squashed
+- The title of the Pull Request is used as proposal for the maintainer merging the Pull Request
 
 ### Open a Pull Request
 
