@@ -165,6 +165,17 @@ We use [asciidoc](https://asciidoctor.org/docs/what-is-asciidoc/) to write the d
 
 An [AsciiDoc IntelliJ Plugin](https://plugins.jetbrains.com/plugin/7391-asciidoc) is a helpful plugin that permits visualizing .adoc files directly in IntelliJ
 
+##### VSCode
+
+###### [Jest tests](https://github.com/jest-community/vscode-jest#how-to-get-it)
+
+To be able to run tests from VSCode, you firstly install the Jest extension, then, go to the **Run** menu of VSCode.
+You can run 2 test configurations:
+  - unit tests: `test:unit`
+  - end to end tests: `test:e2e`
+
+If you want to use coverage, follow this tutorial: https://github.com/jest-community/vscode-jest#how-do-i-show-code-coverage
+
 
 ### Sign the Contributor License Agreement
 
