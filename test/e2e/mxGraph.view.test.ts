@@ -53,13 +53,13 @@ async function expectSequenceFlow(cellId: string, expectedText?: string): Promis
 
 describe('BpmnVisu view - index page', () => {
   it('should display page title', async () => {
-    await page.goto('http://localhost:10001');
+    await page.goto('http://localhost:10002');
     await page.waitForSelector(`#${graphContainerId}`);
     await expect(page.title()).resolves.toMatch('BPMN Visualization Demo');
   });
 
   it('should display graph in page', async () => {
-    await page.goto(`http://localhost:10001?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
+    await page.goto(`http://localhost:10002?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
 
     await expectEvent('StartEvent_1', 'Start Event 1');
     await expectSequenceFlow('Flow_1', 'Sequence Flow 1');
@@ -72,7 +72,7 @@ describe('BpmnVisu view - index page', () => {
 describe('BpmnVisu view - lib-integration page', () => {
   it('should display graph in page', async () => {
     graphContainerId = 'bpmn-visualization-viewport';
-    await page.goto(`http://localhost:10001/lib-integration.html?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-only.bpmn')}`);
+    await page.goto(`http://localhost:10002/lib-integration.html?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-only.bpmn')}`);
     await expect(page.title()).resolves.toMatch('BPMN Visualization Lib Integration');
     await page.waitForSelector(`#${graphContainerId}`);
 
