@@ -165,11 +165,11 @@ We use [asciidoc](https://asciidoctor.org/docs/what-is-asciidoc/) to write the d
 
 An [AsciiDoc IntelliJ Plugin](https://plugins.jetbrains.com/plugin/7391-asciidoc) is a helpful plugin that permits visualizing .adoc files directly in IntelliJ
 
-##### VSCode
+##### VS Code
 
 ###### [Jest tests](https://github.com/jest-community/vscode-jest#how-to-get-it)
 
-To be able to run tests from VSCode, you firstly install the Jest extension, then, go to the **Run** menu of VSCode.
+To be able to run tests from VS Code, you firstly install the Jest extension, then, go to the **Run** menu of VS Code.
 You can run 2 test configurations:
   - unit tests: `test:unit`
   - end to end tests: `test:e2e`
@@ -179,6 +179,9 @@ If you want to use coverage, follow this tutorial: https://github.com/jest-commu
 ###### [Debugging TypeScript code](https://code.visualstudio.com/docs/typescript/typescript-debugging)
 The `launch.json` file is already configured to execute unit & e2e tests.
 You can duplicate these configurations or create another, if you want/need.
+
+###### [Diagram](https://www.diagrams.net/blog/embed-diagrams-vscode)
+You can create/update diagrams directly in VS Code with the draw.io extension.
 
 ### Sign the Contributor License Agreement
 
