@@ -176,6 +176,9 @@ You can run 2 test configurations:
 
 If you want to use coverage, follow this tutorial: https://github.com/jest-community/vscode-jest#how-do-i-show-code-coverage
 
+###### [Debugging TypeScript code](https://code.visualstudio.com/docs/typescript/typescript-debugging)
+The `launch.json` file is already configured to execute unit & e2e tests.
+You can duplicate these configurations or create another, if you want/need.
 
 ### Sign the Contributor License Agreement
 
