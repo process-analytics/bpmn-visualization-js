@@ -22,12 +22,12 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/shape/ShapeBpmnElement';
-import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementKind } from '../../../../model/bpmn/shape';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/edge/Flow';
-import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape/ShapeBpmnEventKind';
+import { ShapeBpmnEventKind, supportedBpmnEventKinds } from '../../../../model/bpmn/shape';
 import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';
-import { ShapeBpmnSubProcessKind } from '../../../../model/bpmn/shape/ShapeBpmnSubProcessKind';
+import { ShapeBpmnSubProcessKind } from '../../../../model/bpmn/shape';
 import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
 import { TProcess } from '../../xml/bpmn-json-model/baseElement/rootElement/rootElement';
 import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../xml/bpmn-json-model/baseElement/flowNode/event';
@@ -38,10 +38,10 @@ import { TAssociation, TTextAnnotation } from '../../xml/bpmn-json-model/baseEle
 import { AssociationDirectionKind } from '../../../../model/bpmn/edge/AssociationDirectionKind';
 import { bpmnEventKinds, findEventDefinitionOfDefinitions } from './EventDefinitionConverter';
 import { ensureIsArray } from './ConverterUtil';
-import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape/ShapeBpmnMarkerKind';
+import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape';
 import { TEventBasedGateway } from '../../xml/bpmn-json-model/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/task';
-import { ShapeBpmnCallActivityKind } from '../../../../model/bpmn/shape/ShapeBpmnCallActivityKind';
+import { ShapeBpmnCallActivityKind } from '../../../../model/bpmn/shape';
 import { isGlobalTask } from './GlobalTaskConverter';
 
 const convertedFlowNodeBpmnElements: Map<string, ShapeBpmnElement> = new Map();

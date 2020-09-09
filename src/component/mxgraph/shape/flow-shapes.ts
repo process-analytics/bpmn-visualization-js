@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { buildPaintParameter, IconPainterProvider } from './render/IconPainter';
+import { buildPaintParameter, IconPainterProvider } from './render';
 import StyleUtils from '../StyleUtils';
 import { MessageVisibleKind } from '../../../model/bpmn/edge/MessageVisibleKind';
 
