@@ -3,7 +3,7 @@
 We use [jest](https://jestjs.io) as test framework, and for mocks, expectations, coverage, ...
 
 We advise you to use [TDD](https://fr.wikipedia.org/wiki/Test_Driven_Development) or at least a Test First approach to reduce unnecessary code, improve code design and ensure good
-coverage 
+coverage.
 
 ## Test types 
 
@@ -163,4 +163,3 @@ To see what is happening in your local web browser used by the tests
 slows Puppeteer down by milliseconds that we specify. So we will be able to observe what it actually does.
 - set the `DEBUG` environment variable with `DEBUG=test` to activate debug logs. This is activated by default when
 running the npm task. Think about it when running tests in your IDE.
-
