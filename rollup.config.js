@@ -32,8 +32,8 @@ const devMode = devLiveReloadMode ? true : process.env.devMode;
 const demoMode = process.env.demoMode;
 
 const argv = parseArgs(process.argv.slice(2)); // start with 'node rollup' so drop them
-const serverPortArg = argv['config-server-port']; // for the 'config-xxx' syntax, see https://github.com/rollup/rollup/issues/1662#issuecomment-395382741
-const serverPort = process.env.SERVER_PORT || serverPortArg || 10001;
+// for the 'config-xxx' syntax, see https://github.com/rollup/rollup/issues/1662#issuecomment-395382741
+const serverPort = process.env.SERVER_PORT || argv['config-server-port'] || 10001;
 
 const sourceMap = !demoMode;
 const tsconfigOverride = demoMode ? { compilerOptions: { declaration: false } } : {};
