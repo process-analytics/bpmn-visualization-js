@@ -26,7 +26,6 @@
     "test:unit:coverage": "jest --runInBand --config=jest.config.unit.js --coverage",
     "test:unit:watch": "jest --runInBand --config=jest.config.unit.js --coverage --watchAll",
     "test:e2e": "cross-env DEBUG=test JEST_IMAGE_SNAPSHOT_TRACK_OBSOLETE=1 jest --runInBand --detectOpenHandles --config=jest.config.e2e.js",
-    "start-e2e-server": "rollup -c --silent --environment devMode:true,SERVER_PORT:10002",
     "test:e2e:coverage": "cross-env JEST_IMAGE_SNAPSHOT_TRACK_OBSOLETE=1 jest --runInBand --detectOpenHandles --config=jest.config.e2e.js --coverage"
   },
   "lint-staged": {
