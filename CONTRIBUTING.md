@@ -44,10 +44,10 @@ test everything)
 
 [Fork bpmn-visualization](https://help.github.com/articles/fork-a-repo) and create a branch with a descriptive name. 
 
-A good branch name would be (where issue #25 is the ticket you're working on): **25_add-annotations-to-tasks**
+A good branch name would be (where issue #25 is the ticket you're working on): **25-annotations_to_tasks**
 
 ```sh
-git checkout -b 25_annotations-to-tasks
+git checkout -b 25-annotations_to_tasks
 ```
 
 ### Development
