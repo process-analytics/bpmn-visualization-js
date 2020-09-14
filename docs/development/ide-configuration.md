@@ -63,6 +63,11 @@ An [AsciiDoc IntelliJ Plugin](https://plugins.jetbrains.com/plugin/7391-asciidoc
 
 ### VS Code
 
+#### [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+
+Install the EditorConfig plugin.
+The configuration is already done.
+
 #### [Jest tests](https://github.com/jest-community/vscode-jest#how-to-get-it)
 
 To be able to run tests from VS Code, you firstly install the Jest extension, then, go to the **Run** menu of VS Code.
