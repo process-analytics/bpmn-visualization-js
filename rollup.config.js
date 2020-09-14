@@ -63,15 +63,17 @@ if (devMode || demoMode) {
 }
 
 if (devMode) {
+  let serverPort = 10002;
+
   if (devLiveReloadMode) {
-    // Create a server for dev live reload mode
-    plugins.push(serve({ contentBase: 'dist', port: 10001 }));
+    serverPort = 10001;
+
     // Allow to livereload on any update
     plugins.push(livereload({ watch: 'dist', verbose: true }));
-  } else {
-    // Create a server for dev mode
-    plugins.push(serve({ contentBase: 'dist', port: 10002 }));
   }
+
+  // Create a server for dev mode
+  plugins.push(serve({ contentBase: 'dist', port: serverPort }));
 }
 
 if (demoMode) {
