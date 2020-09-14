@@ -42,9 +42,9 @@ These examples are also available in the [examples live environment](https://cdn
 
 `bpmn-visualization` is in early development stages and is subject to changes prior to the `1.0.0` release.
 
-We are currently focusing on the [BPMN support](https://github.com/process-analytics/bpmn-visualization-js/milestone/6)
-to be able to render most of the BPMN elements. Notice that there is currently no plan to support `Conversation` and
-`Choreography`.
+For now, we render the most common BPMN elements. Notice that there is currently no plan to support `Conversation` and `Choreography`.
+
+We are currently focusing on the [packaging](https://github.com/process-analytics/bpmn-visualization-js/milestone/18) of the library.
 
 Then, we will work on BPMN extensions, library extension points, display options for execution data with interactive
 capacities.
