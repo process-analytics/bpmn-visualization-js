@@ -63,7 +63,8 @@ Overview
 
 ### Tests for elements detection 
 
-**IMPORTANT**: **__Please first refer to the [testing documentation](testing.md) documentation for a clear view of the all tests in place__** 
+**IMPORTANT**: **__Please first refer to the [testing documentation](testing.md) documentation for a clear view of the
+testing strategy__** 
 
 
 #### Unit tests
@@ -105,7 +106,7 @@ Refer to existing Pull Requests to have a better view about the work to do, for 
 
 ### Tests for elements rendering 
 
-all tests should have been introduced during the detection phase. Please review there is no missing tests.
+All tests should have been introduced during the detection phase. Please review there is no missing tests.
 
 Visual tests introduced when adding the detection support should fail for the BPMN Element after the rendering has changed.
 Please update the reference snapshot image accordingly.
