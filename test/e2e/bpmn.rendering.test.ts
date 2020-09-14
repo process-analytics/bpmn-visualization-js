@@ -169,7 +169,7 @@ describe('no visual regression', () => {
   }
 
   function prepareTestResourcesAndGetPageUrl(fileName: string): string {
-    let url = 'http://localhost:10001/non-regression.html?fitOnLoad=true';
+    let url = 'http://localhost:10002/non-regression.html?fitOnLoad=true';
 
     const bpmnLoadMethod = getBpmnLoadMethod(fileName);
     log(`Use '${bpmnLoadMethod}' as BPMN Load Method for '${fileName}'`);
