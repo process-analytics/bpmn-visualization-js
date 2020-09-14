@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../model/bpmn/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../model/bpmn/shape';
 import ShapeUtil from '../../../model/bpmn/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../model/bpmn/edge/SequenceFlowKind';
 import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
@@ -32,7 +32,6 @@ import { Font } from '../../../model/bpmn/Label';
 import { FlowKind } from '../../../model/bpmn/edge/FlowKind';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/edge/Flow';
 import { AssociationDirectionKind } from '../../../model/bpmn/edge/AssociationDirectionKind';
-import { ShapeBpmnMarkerKind } from '../../../model/bpmn/shape/ShapeBpmnMarkerKind';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {

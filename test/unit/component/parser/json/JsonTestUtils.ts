@@ -13,23 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape';
 import Shape from '../../../../../src/model/bpmn/shape/Shape';
 import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import Edge from '../../../../../src/model/bpmn/edge/Edge';
 import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
 import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
 import { ShapeBpmnActivity, ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
-import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
 import Label from '../../../../../src/model/bpmn/Label';
-import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnSubProcessKind';
 import { SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
 import { FlowKind } from '../../../../../src/model/bpmn/edge/FlowKind';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
 import { BpmnJsonModel } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMN20';
-import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
-import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnCallActivityKind';
 
 export interface ExpectedShape {
   shapeId: string;

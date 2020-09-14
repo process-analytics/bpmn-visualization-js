@@ -44,10 +44,10 @@ test everything)
 
 [Fork bpmn-visualization](https://help.github.com/articles/fork-a-repo) and create a branch with a descriptive name. 
 
-A good branch name would be (where issue #25 is the ticket you're working on): **25_add-annotations-to-tasks**
+A good branch name would be (where issue #25 is the ticket you're working on): **25-annotations_to_tasks**
 
 ```sh
-git checkout -b 25_annotations-to-tasks
+git checkout -b 25-annotations_to_tasks
 ```
 
 ### Development
@@ -153,7 +153,10 @@ Adjust following parameters:
 ###### [Debugging TypeScript code](https://www.jetbrains.com/help/idea/running-and-debugging-typescript.html#ws_ts_debug_client_side_on_external_dev_server)
 
 - create a new `JavaScript Debug` configuration as described in the [Intellij documentation](https://www.jetbrains.com/help/idea/running-and-debugging-typescript.html#ws_ts_debug_client_side_on_external_dev_server)
-  - the targeted url is: http://localhost:10001/
+  - the targeted url is: 
+    - For `npm run start` or `npm run watch`: http://localhost:10001/ \
+    It's possible to override the port value with the environment variable _SERVER_PORT_.
+    - For `npm run test:e2e`: http://localhost:10002/
   - use `Chrome` as browser
   - check `Ensure breakpoints are detected when loading scripts`  
 - start the application in development mode by running `npm run start` or `npm run watch`
@@ -202,9 +205,9 @@ git pull upstream master
 Then update your feature branch from your local copy of master, and push it!
 
 ```sh
-git checkout 25_annotations-to-tasks
+git checkout 25-annotations_to_tasks
 git rebase master
-git push --set-upstream origin 25_annotations-to-tasks
+git push --set-upstream origin 25-annotations_to_tasks
 ```
 
 Finally, go to GitHub and [make a Pull Request](https://help.github.com/articles/creating-a-pull-request) ​with labels :smile:
@@ -218,9 +221,9 @@ If a maintainer asks you to [rebase](http://git-scm.com/book/en/Git-Branching-Re
 Here's the suggested workflow:
 
 ```sh
-git checkout 25_annotations-to-tasks
+git checkout 25-annotations_to_tasks
 git pull --rebase upstream master
-git push --force-with-lease 25_annotations-to-tasks
+git push --force-with-lease 25-annotations_to_tasks
 ```
 
 
@@ -311,6 +314,7 @@ Actions section on GitHub
 
 Make the examples use the latest version of the lib. A bash script is available to help you for this task in the `scripts`
 folder.
+Do not forget to update file /demo/index.html with the Latest Release information.
 Tests that the examples work with the new lib version.
 
 

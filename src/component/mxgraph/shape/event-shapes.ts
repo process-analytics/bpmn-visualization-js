@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnEventKind } from '../../../model/bpmn/shape/ShapeBpmnEventKind';
-import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render/IconPainter';
+import { ShapeBpmnEventKind } from '../../../model/bpmn/shape';
+import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import BpmnCanvas from './render/BpmnCanvas';
 
