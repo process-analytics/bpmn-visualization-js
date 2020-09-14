@@ -28,6 +28,7 @@ import json from '@rollup/plugin-json';
 const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
 const demoMode = process.env.demoMode;
+const serverPort = process.env.SERVER_PORT ? process.env.SERVER_PORT : 10001;
 
 const sourceMap = !demoMode;
 const tsconfigOverride = demoMode ? { compilerOptions: { declaration: false } } : {};
@@ -63,17 +64,13 @@ if (devMode || demoMode) {
 }
 
 if (devMode) {
-  let serverPort = 10002;
+  // Create a server for dev mode
+  plugins.push(serve({ contentBase: 'dist', port: serverPort }));
 
   if (devLiveReloadMode) {
-    serverPort = 10001;
-
     // Allow to livereload on any update
     plugins.push(livereload({ watch: 'dist', verbose: true }));
   }
-
-  // Create a server for dev mode
-  plugins.push(serve({ contentBase: 'dist', port: serverPort }));
 }
 
 if (demoMode) {
