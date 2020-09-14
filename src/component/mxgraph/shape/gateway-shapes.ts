@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { StyleDefault } from '../StyleUtils';
-import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render/IconPainter';
+import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import BpmnCanvas from './render/BpmnCanvas';
 
 abstract class GatewayShape extends mxRhombus {

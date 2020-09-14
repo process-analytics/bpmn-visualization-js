@@ -15,7 +15,7 @@
  */
 
 import ShapeUtil from '../../../../../src/model/bpmn/shape/ShapeUtil';
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape';
 
 describe('ShapeUtil', () => {
   it('top level bpmn event kinds', () => {
