@@ -205,9 +205,9 @@ git pull upstream master
 Then update your feature branch from your local copy of master, and push it!
 
 ```sh
-git checkout 25_annotations-to-tasks
+git checkout 25-annotations_to_tasks
 git rebase master
-git push --set-upstream origin 25_annotations-to-tasks
+git push --set-upstream origin 25-annotations_to_tasks
 ```
 
 Finally, go to GitHub and [make a Pull Request](https://help.github.com/articles/creating-a-pull-request) ​with labels :smile:
@@ -221,9 +221,9 @@ If a maintainer asks you to [rebase](http://git-scm.com/book/en/Git-Branching-Re
 Here's the suggested workflow:
 
 ```sh
-git checkout 25_annotations-to-tasks
+git checkout 25-annotations_to_tasks
 git pull --rebase upstream master
-git push --force-with-lease 25_annotations-to-tasks
+git push --force-with-lease 25-annotations_to_tasks
 ```
 
 
