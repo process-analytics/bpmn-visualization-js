@@ -311,6 +311,7 @@ Actions section on GitHub
 
 Make the examples use the latest version of the lib. A bash script is available to help you for this task in the `scripts`
 folder.
+Do not forget to update file /demo/index.html with the Latest Release information.
 Tests that the examples work with the new lib version.
 
 
