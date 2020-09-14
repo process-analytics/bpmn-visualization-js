@@ -15,7 +15,7 @@
  */
 module.exports = {
   server: {
-    command: `cross-env SERVER_PORT=10002 npm run start`,
+    command: `npm run start-e2e-server`,
     port: 10002,
     launchTimeout: 30000, // high value mainly for GitHub Workflows running on macOS (slow machines)
     debug: true,
