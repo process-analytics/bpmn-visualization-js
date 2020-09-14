@@ -22,4 +22,4 @@ function startDemo() {
   document.getElementById('file-selector').classList.remove('hidden');
 }
 
-documentReady(startDemo());
+documentReady(startDemo);
