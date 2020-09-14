@@ -5,7 +5,7 @@
       <bpmn:outgoing>Flow_1</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_1" name="Seq Flow 1" sourceRef="StartEvent_1" targetRef="Activity_1" />
-    <bpmn:task id="Activity_1" name="Task 1 Fixed">
+    <bpmn:task id="Activity_1" name="Task 1 Fixed NO">
       <bpmn:incoming>Flow_1</bpmn:incoming>
       <bpmn:outgoing>Flow_1w8ldp8</bpmn:outgoing>
     </bpmn:task>
