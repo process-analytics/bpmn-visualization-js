@@ -77,21 +77,73 @@ We use [jest-image-snapshot](https://www.npmjs.com/package/jest-image-snapshot) 
 
 The following details are based on the [POC done to introduce visual tests](https://github.com/process-analytics/bpmn-visualization-js/pull/523#issuecomment-674049031).
 
-TODO
-`bpmn.rendering.test.ts` drives all visual tests
+#### General guidelines
+
+##### When and how to add tests
+
+You should add visual tests when supporting a new BPMN elements or when the rendering of the BPMN elements change (existing
+tests are supposed to fail in that case).
+
+`bpmn.rendering.test.ts` drives all visual tests. A visual test only requires a BPMN diagram as input, stored in the
+`test/fixtures/bpmn/non-regression` folder. It is automatically considered and use as test input.
+The reference image has to be stored in the `test/e2e/__image_snapshots__` folder.
+
+##### Tips
+
+##### Test scope
+
+As for any tests, keep visual tests small and focussed, first think about the use case you want to test and then create
+the BPMN diagram accordingly.
+
+This means that the input BPMN diagram should contain few different elements contain few elements and only elements
+related to the tested scenario.
+Otherwise, changes in non related elements would break the test whereas it has no relation with the changes.
+
+This particularly applies to BPMN elements with icons and markers which are more subject to changes
+
+For instance, don't add 
+- message event in the diagram if the scenario under test is task rendering
+- activity markers when testing the task rendering in a lane 
+
+##### Labels
+
+Avoid labels and create dedicated tests for labels.
+
+Labels involve font rendering and depending on the OS, the display result differs. 
+
+Label tests require to configure an [image diff threshold](#image-diff-threshold), so for simplicity, keep them in dedicated
+BPMN diagram.
 
 
-#### Tips for visual testing
+#### Special configuration
 
-**TODO guide lines**
+All configurations described here can be done in `bpmn.rendering.test.ts`.
 
-    when and how to add tests
-    avoid labels in tests, avoid markers and icons on BPMN elements when not related to the test (more subject to changes, so tests will break whereas they are not testing this feature)
-    how and when to configure diff image threshold (some explanations are present in the code, but is this enough?)
-    load method: explain when choosing a dedicated method and how to configure
-        default: pass content via url
-    larger file: via fetch
 
+<a name="image-diff-threshold"></a>
+##### Image diff threshold
+
+The ideal scenario generates SVG that does not involve font: SVG is supposed to be rendered in the same way on all OS, so
+in that case, the actual rendering exactly matches the reference image.
+
+As font rendering differs depending on the OS, BPMN diagram containing label won't be rendered exactly as the reference
+image on all OS. In that case, a diff threshold image must be configured: the test will fail if the diff is above the
+threshold.
+
+To be able to detect most of the unwanted changes, this threshold must be set as small as possible but large enough to
+manage small variations and not produce false positive errors.
+
+The threshold can be configured by test and by os, we generally find the threshold by
+- making the GitHub build workflow fails to get the detected diff
+- then using a threshold just above the value detected during the failing test   
+
+
+##### BPMN diagram load method
+
+The default load method only allows small diagrams, so in case of the diagram is too large, the test server responds with
+an `HTTP 400 error`.
+In that case, configure an alternate load method by referencing the name of the test BPMN diagram in the load configuration
+settings.
 
 
 ## Running tests 
@@ -105,7 +157,7 @@ See `package.json` for extra available scripts
 
 ### Debugging end-to-end tests
 
-To see what is happening in the web browser used by the tests
+To see what is happening in your local web browser used by the tests
 - disable the `headless` mode by setting the `HEADLESS` environment variable to `false`
 - set the `SLOWMO` environment variable to a positive millisecond value (between `200` and `500` should be enough). This
 slows Puppeteer down by milliseconds that we specify. So we will be able to observe what it actually does.
