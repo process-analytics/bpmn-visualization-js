@@ -25,10 +25,15 @@ import resolve from '@rollup/plugin-node-resolve';
 import pkg from './package.json';
 import json from '@rollup/plugin-json';
 
+import parseArgs from 'minimist';
+
 const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
 const demoMode = process.env.demoMode;
-const serverPort = process.env.SERVER_PORT ? process.env.SERVER_PORT : 10001;
+
+const argv = parseArgs(process.argv.slice(2)); // start with 'node rollup' so drop them
+// for the 'config-xxx' syntax, see https://github.com/rollup/rollup/issues/1662#issuecomment-395382741
+const serverPort = process.env.SERVER_PORT || argv['config-server-port'] || 10001;
 
 const sourceMap = !demoMode;
 const tsconfigOverride = demoMode ? { compilerOptions: { declaration: false } } : {};
