@@ -465,10 +465,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_architecture_and_development">4. Architecture and Development</a>
 <ul class="sectlevel2">
 <li><a href="#_architecture_overview">4.1. Architecture Overview</a></li>
-<li><a href="#_bpmn_internal_model">4.2. BPMN Internal Model</a></li>
+<li><a href="#bpmn-internal-model">4.2. BPMN Internal Model</a></li>
 <li><a href="#_bpmn_parsing">4.3. BPMN Parsing</a></li>
 <li><a href="#_mxgraph_integration">4.4. mxGraph Integration</a></li>
-<li><a href="#_bpmn_support_how_to">4.5. BPMN Support - How To</a></li>
+<li><a href="#_development">4.5. Development</a></li>
 </ul>
 </li>
 </ul>
@@ -1198,18 +1198,6 @@ the BPMN elements are rendered with their final shapes.</p>
 <div class="sect1">
 <h2 id="_architecture_and_development"><a class="anchor" href="#_architecture_and_development"></a><a class="link" href="#_architecture_and_development">4. Architecture and Development</a></h2>
 <div class="sectionbody">
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-To know how to build the project, please have a look at the <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/master/CONTRIBUTING.md">contributing guide</a>.
-</td>
-</tr>
-</table>
-</div>
 <div class="sect2">
 <h3 id="_architecture_overview"><a class="anchor" href="#_architecture_overview"></a><a class="link" href="#_architecture_overview">4.1. Architecture Overview</a></h3>
 <div class="paragraph">
@@ -1218,7 +1206,7 @@ To know how to build the project, please have a look at the <a href="https://git
 <div class="ulist">
 <ul>
 <li>
-<p>parsing: read a BPMN source (xml string) and convert it into its own <a href="bpmn-internal-model.adoc">internal Model</a></p>
+<p>parsing: read a BPMN source (xml string) and convert it into its own <a href="#bpmn-internal-model">internal Model</a>.</p>
 </li>
 <li>
 <p>rendering: display the BPMN diagrams represented by the internal Model, using the <a href="https://jgraph.github.io/mxgraph/">mxGraph library</a></p>
@@ -1232,7 +1220,7 @@ To know how to build the project, please have a look at the <a href="https://git
 </div>
 </div>
 <div class="sect2">
-<h3 id="_bpmn_internal_model"><a class="anchor" href="#_bpmn_internal_model"></a><a class="link" href="#_bpmn_internal_model">4.2. BPMN Internal Model</a></h3>
+<h3 id="bpmn-internal-model"><a class="anchor" href="#bpmn-internal-model"></a><a class="link" href="#bpmn-internal-model">4.2. BPMN Internal Model</a></h3>
 <div class="paragraph">
 <p>Our internal model is based on the <a href="https://www.omg.org/spec/BPMN/2.0.2/PDF">BPMN specification</a>.</p>
 </div>
@@ -1293,9 +1281,6 @@ are inserted into the <code>mxGraph</code> model:</p>
 <p>The main entry point for <code>mxGraph</code> rendering is <code>MxGraphRenderer</code>.</p>
 </div>
 <div class="paragraph">
-<p>For more technical details, see <a href="#bpmn-support-howto-elements-rendering">BPMN Elements rendering</a>.</p>
-</div>
-<div class="paragraph">
 <p>If you are new to <code>mxGraph</code> or want to know more about it, please have a look at the <a href="https://jgraph.github.io/mxgraph/docs/tutorial.html">mxGraph tutorial</a>
 and <a href="https://jgraph.github.io/mxgraph/docs/manual.html">mxGraph manual</a>.</p>
 </div>
@@ -1343,10 +1328,25 @@ See <a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.5">mxGraph Co
 As we define a parent-child relationship when inserting BPMN elements in the mxGraph model, a coordinate transformation
 layer is required. See <code>MxGraphRenderer</code> for more details.</p>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_bpmn_elements_rendering"><a class="anchor" href="#_bpmn_elements_rendering"></a><a class="link" href="#_bpmn_elements_rendering">4.4.3. BPMN elements rendering</a></h4>
+<div class="paragraph">
+<p>When inserting an element on the <code>mxGraph</code> graph, a style is passed to identify the way it will be rendered.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html">style</a> is defined and registered in
+<code>StyleConfigurator</code>. In particular, it refers to the name of a <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html">mxShape</a>
+used for the rendering.</p>
+</div>
+<div class="paragraph">
+<p>The <code>mxShape</code> can be a standard <code>mxGraph</code> class or a custom BPMN <code>mxShape</code> defined by the lib. The custom <code>mxShapes</code> are registered by <code>ShapeConfigurator</code>
+which associates the <code>mxShape</code> name (used in style definition) with the <code>mxShape</code> class to be used.</p>
+</div>
 <div class="sect4">
-<h5 id="_resources"><a class="anchor" href="#_resources"></a><a class="link" href="#_resources">4.4.2.1. Resources</a></h5>
+<h5 id="_resources"><a class="anchor" href="#_resources"></a><a class="link" href="#_resources">4.4.3.1. Resources</a></h5>
 <div class="sect5">
-<h6 id="_mxgraph"><a class="anchor" href="#_mxgraph"></a><a class="link" href="#_mxgraph">4.4.2.1.1. mxGraph</a></h6>
+<h6 id="_mxgraph"><a class="anchor" href="#_mxgraph"></a><a class="link" href="#_mxgraph">4.4.3.1.1. mxGraph</a></h6>
 <div class="quoteblock">
 <div class="title"><a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.2">mxgraph Geometry</a></div>
 <blockquote>
@@ -1365,7 +1365,7 @@ the absolute co-ordinates on the graph component.
 </div>
 </div>
 <div class="sect5">
-<h6 id="_bpmn_specification"><a class="anchor" href="#_bpmn_specification"></a><a class="link" href="#_bpmn_specification">4.4.2.1.2. BPMN specification</a></h6>
+<h6 id="_bpmn_specification"><a class="anchor" href="#_bpmn_specification"></a><a class="link" href="#_bpmn_specification">4.4.3.1.2. BPMN specification</a></h6>
 <div class="quoteblock">
 <div class="title">BPMNPlane (page 371)</div>
 <blockquote>
@@ -1402,7 +1402,7 @@ coordinates are the position of the upper left corner of the label (relative to 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_label_font_and_bounds"><a class="anchor" href="#_label_font_and_bounds"></a><a class="link" href="#_label_font_and_bounds">4.4.3. Label Font and Bounds</a></h4>
+<h4 id="_label_font_and_bounds"><a class="anchor" href="#_label_font_and_bounds"></a><a class="link" href="#_label_font_and_bounds">4.4.4. Label Font and Bounds</a></h4>
 <div class="paragraph">
 <p>The <code>mxGraph</code> integration renders labels based on the definition taken from the BPMN source. When the label style is not
 or only partially defined in BPMN, the following fallback takes place:</p>
@@ -1422,7 +1422,7 @@ the time.</p>
 </ul>
 </div>
 <div class="sect4">
-<h5 id="_shape"><a class="anchor" href="#_shape"></a><a class="link" href="#_shape">4.4.3.1. Shape</a></h5>
+<h5 id="_shape"><a class="anchor" href="#_shape"></a><a class="link" href="#_shape">4.4.4.1. Shape</a></h5>
 <div class="paragraph">
 <p>The <code>mxGraph</code> integration uses the following to set the label bounds</p>
 </div>
@@ -1449,9 +1449,9 @@ for more details</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_edge"><a class="anchor" href="#_edge"></a><a class="link" href="#_edge">4.4.3.2. Edge</a></h5>
+<h5 id="_edge"><a class="anchor" href="#_edge"></a><a class="link" href="#_edge">4.4.4.2. Edge</a></h5>
 <div class="sect5">
-<h6 id="_overview"><a class="anchor" href="#_overview"></a><a class="link" href="#_overview">4.4.3.2.1. Overview</a></h6>
+<h6 id="_overview"><a class="anchor" href="#_overview"></a><a class="link" href="#_overview">4.4.4.2.1. Overview</a></h6>
 <div class="paragraph">
 <p>The mxGraph integration uses the <code>edge mxCell</code> geometry to set the label bounds</p>
 </div>
@@ -1483,7 +1483,7 @@ for more details</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_mxgraph_details"><a class="anchor" href="#_mxgraph_details"></a><a class="link" href="#_mxgraph_details">4.4.3.2.2. mxGraph Details</a></h6>
+<h6 id="_mxgraph_details"><a class="anchor" href="#_mxgraph_details"></a><a class="link" href="#_mxgraph_details">4.4.4.2.2. mxGraph Details</a></h6>
 <div class="paragraph">
 <p>The label position is related to the 'center' of the edge, see <a href="https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/model/mxGeometry.js#L35">mxGeometry</a>
 for more details. The definition of 'center' differs whether the <code>mxGeometry</code> is <code>relative</code> or not:</p>
@@ -1520,96 +1520,27 @@ to see various positioning methods in action.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_bpmn_support_how_to"><a class="anchor" href="#_bpmn_support_how_to"></a><a class="link" href="#_bpmn_support_how_to">4.5. BPMN Support - How To</a></h3>
-<div class="sect3">
-<h4 id="_elements_detection"><a class="anchor" href="#_elements_detection"></a><a class="link" href="#_elements_detection">4.5.1. Elements detection</a></h4>
-<div class="paragraph">
-<p>Except for special container elements like <code>Pool</code>, <code>Lane</code> and <code>Subprocess</code>, detecting a new BPMN element only requires to
-add a new value in the <code>ShapeBpmnElementKind</code> enum.</p>
-</div>
-<div class="paragraph">
-<p>The <code>ProcessConverter</code> uses the <code>ShapeBpmnElementKind</code> values to detect elements in the BPMN source.</p>
-</div>
-<div class="sect4">
-<h5 id="_elements_requiring_special_attention"><a class="anchor" href="#_elements_requiring_special_attention"></a><a class="link" href="#_elements_requiring_special_attention">4.5.1.1. Elements requiring special attention</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p>For BPMN Events, the actual type in controlled by <code>EventDefinition</code> fields in the BPMN specification. Detecting new event
-types requires changes in <code>ShapeBpmnEventKind</code> to add the newly supported BPMN Event Definition.</p>
-</li>
-<li>
-<p>For BPMN SubProcesses, the actual type is controlled by <code>ShapeBpmnSubProcessKind</code> which is set accordingly during the BPMN parsing.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_tests_for_elements_detection"><a class="anchor" href="#_tests_for_elements_detection"></a><a class="link" href="#_tests_for_elements_detection">4.5.1.2. Tests for elements detection</a></h5>
-<div class="admonitionblock important">
+<h3 id="_development"><a class="anchor" href="#_development"></a><a class="link" href="#_development">4.5. Development</a></h3>
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-important" title="Important"></i>
+<i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Do not forget to add tests related to the new BPMN element to ensure everything works fine.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p><strong>Test guidelines:</strong></p>
-</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Add json parsing tests related to the new BPMN element to ensure that the parser is able to make it available to the
-<code>ProcessConverter</code>. The convention is to have a test file per BPMN element, please follow the existing file name scheme.</p>
+<p>To know how to build the project, please have a look at the <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/master/CONTRIBUTING.md">contributing guide</a>.</p>
 </li>
 <li>
-<p>Depending on the BPMN element, you may also have to add tests about <code>default sequence flow</code> and/or <code>conditional sequence
-flow</code> support (see <code>ShapeBpmnElementKind</code> for more details)</p>
-</li>
-<li>
-<p>Add end-to-end tests, mainly to ensure that the new BPMN element is now stored in the <code>mxGraph model</code>, see <code>mxGraph.model.test.ts</code>.</p>
-</li>
-<li>
-<p>No need to create specific XML tests, the XML parsing is tested globally using BPMN files for various BPMN vendors.</p>
+<p>For any development tips, see the <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/master/docs/development">development documentation</a>.</p>
 </li>
 </ul>
 </div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="bpmn-support-howto-elements-rendering"><a class="anchor" href="#bpmn-support-howto-elements-rendering"></a><a class="link" href="#bpmn-support-howto-elements-rendering">4.5.2. Elements rendering</a></h4>
-<div class="paragraph">
-<p>When inserting an element on the <code>mxGraph</code> graph, a style is passed to identify the way it will be rendered.</p>
-</div>
-<div class="paragraph">
-<p>The <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html">style</a> is defined and registered in
-<code>StyleConfigurator</code>. In particular, it refers to the name of a <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html">mxShape</a>
-used for the rendering.</p>
-</div>
-<div class="paragraph">
-<p>The <code>mxShape</code> can be a standard <code>mxGraph</code> class or a custom BPMN <code>mxShape</code> defined by the lib. The custom <code>mxShapes</code> are registered by <code>ShapeConfigurator</code>
-which associates the <code>mxShape</code> name (used in style definition) with the <code>mxShape</code> class to be used.</p>
-</div>
-<div class="sect4">
-<h5 id="_bpmn_icon_tips"><a class="anchor" href="#_bpmn_icon_tips"></a><a class="link" href="#_bpmn_icon_tips">4.5.2.1. BPMN icon tips</a></h5>
-<div class="paragraph">
-<p>The icon of the BPMN elements must be defined in the mxGraph custom shapes and this currently must be done using <code>TypeScript</code>
-code.</p>
-</div>
-<div class="paragraph">
-<p>It is possible to adapt an SVG icon thanks to <a href="https://github.com/process-analytics/mxgraph-svg2shape">mxgraph-svg2shape</a>,
-a Java tool that will let you transform your SVG file into a set of <code>TypeScript</code> commands.</p>
-</div>
-<div class="paragraph">
-<p>Please be aware that the tool is not able to support all SVG files, and you may need to adapt the SVG definition prior the
-tool can transform it. See <a href="https://github.com/process-analytics/bpmn-visualization-js/pull/210">PR #210</a> for instance.</p>
-</div>
-</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -1617,7 +1548,7 @@ tool can transform it. See <a href="https://github.com/process-analytics/bpmn-vi
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-09-08 13:13:14 UTC
+Last updated 2020-09-15 08:09:59 UTC
 </div>
 </div>
 </body>
