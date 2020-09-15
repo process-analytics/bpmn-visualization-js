@@ -8,13 +8,13 @@ All members of our community are expected to follow our [Code of Conduct](CODE_O
 
 There are many ways to contribute:
 
-- help people with the questions they ask on the [Github Issues](https://github.com/process-analytics/bpmn-visualization-js/issues )
-- submitting bug reports and feature requests in the [Github Issues](https://github.com/process-analytics/bpmn-visualization-js/issues/new )
+- help people with the questions they ask on the [Github Issues](https://github.com/process-analytics/bpmn-visualization-js/issues)
+- submitting bug reports and feature requests in the [Github Issues](https://github.com/process-analytics/bpmn-visualization-js/issues/new)
 - [writing code](CONTRIBUTING.md#code-and-documentation-changes) which can be incorporated into `bpmn-visualization` itself
 - [improving](CONTRIBUTING.md#code-and-documentation-changes) the documentation
 - improve the existing example applications to demonstrate features in `bpmn-visualization`
 
-## Code and documentation changes
+## Code and documentation changes guidelines
 
 For all contributions, please respect the following guidelines:
 
@@ -24,7 +24,7 @@ For all contributions, please respect the following guidelines:
 
 3. Do not commit changes to files that are irrelevant to your feature or bugfix (eg: `.gitignore`).
 
-4. Provide [tests](CONTRIBUTING.md#running-tests) and documentation whenever possible.
+4. Provide [tests](CONTRIBUTING.md#tests) and documentation whenever possible.
 
 5. Be sure you have followed the [code style](CONTRIBUTING.md#code-style) for the project.
 
@@ -52,7 +52,9 @@ git checkout -b 25-annotations_to_tasks
 
 ### Development
 
-Note: information about the library internals are available in the [documentation site](https://process-analytics.github.io/bpmn-visualization-js/#_architecture_and_development)
+**Note**:
+- information about the library internals are available in the [architecture folder](./docs/architecture) or in html form in the [documentation site](https://process-analytics.github.io/bpmn-visualization-js/#_architecture_and_development)
+- additional information related to development can also be found in the [development details page](./docs/development/README.md)
 
 #### Requirements
 
@@ -66,23 +68,9 @@ Note: information about the library internals are available in the [documentatio
 - `npm run watch`         *Watch files in bundle and rebuild on changes* <br>
                           You can now access the project on http://localhost:10001
 
-### Running tests 
+#### Tests
 
-See `package.json` for extra available scripts
-- `npm run test`                *Run all tests*
-- `npm run test:unit`           *Run unit tests*
-- `npm run test:unit:coverage`  *Run unit tests with coverage*
-- `npm run test:e2e`            *Run end-to-end tests*.
-
-#### Debugging end-to-end tests
-
-To see what is happening in the web browser used by the tests
-- disable the `headless` mode by setting the `HEADLESS` environment variable to `false`
-- set the `SLOWMO` environment variable to a positive millisecond value (between `200` and `500` should be enough). This
-slows Puppeteer down by milliseconds that we specify. So we will be able to observe what it actually does.
-- set the `DEBUG` environment variable with `DEBUG=test` to activate debug logs. This is activated by default when
-running the npm task. Think about it when running tests in your IDE.
-
+See the [testing page](./docs/development/testing.md)
 
 ### Code style
 
@@ -251,9 +239,8 @@ A PR can only be merged into master by a maintainer, if all of these conditions 
 
 ### Release (maintainers only)
 
-Maintainers need to do the manual following actions **in the order described here** to push out a release.
-
-For automation, see [#139](https://github.com/process-analytics/bpmn-visualization-js/issues/139).
+Maintainers need to do the manual following actions **in the order described here** to push out a release (the release
+automation is a work in progress).
 
 #### Issues and milestones update
 
