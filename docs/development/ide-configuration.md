@@ -61,12 +61,13 @@ We use [asciidoc](https://asciidoctor.org/docs/what-is-asciidoc/) to write the d
 
 An [AsciiDoc IntelliJ Plugin](https://plugins.jetbrains.com/plugin/7391-asciidoc) is a helpful plugin that permits visualizing .adoc files directly in IntelliJ
 
-### VS Code
+
+
+### Visual Studio Code
 
 #### [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
 
-Install the EditorConfig plugin.
-The configuration is already done.
+Install the EditorConfig extension. A configuration file already exists in the repository so it will apply right after the extension installation.
 
 #### [Jest tests](https://github.com/jest-community/vscode-jest#how-to-get-it)
 
@@ -81,5 +82,18 @@ If you want to use coverage, follow this tutorial: https://github.com/jest-commu
 The `launch.json` file is already configured to execute unit & e2e tests.
 You can duplicate these configurations or create another, if you want/need.
 
-#### [Diagram](https://www.diagrams.net/blog/embed-diagrams-vscode)
-You can create/update diagrams directly in VS Code with the draw.io extension.
+#### [Draw.io Diagram](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio)
+
+You can create/update draw.io diagrams directly in VS Code with the draw.io extension. See the [draw.io annoucement](https://www.diagrams.net/blog/embed-diagrams-vscode) for more details.
+
+#### [AsciiDoc](https://marketplace.visualstudio.com/items?itemName=asciidoctor.asciidoctor-vscode)
+
+We use [asciidoc](https://asciidoctor.org/docs/what-is-asciidoc/) to write the documentation.
+
+This extension permits visualizing .adoc files directly in VSCode.
+
+#### [SonarLint](https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode)
+
+Additionally, it is advised to install the SonarLint extension.
+
+It helps to avoid coding mistakes -> reduced technical debt.
