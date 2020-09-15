@@ -126,6 +126,17 @@ describe('no visual regression', () => {
         windows: 0.0012,
       },
     ],
+    // ubuntu: Expected image to match or be a close match to snapshot but was 0.11245151256542577% different from snapshot
+    // macOS: Expected image to match or be a close match to snapshot but was 0.32496260114049935% different from snapshot
+    // windows: so far so good - 0
+    [
+      'flows.sequence.kinds.and.labels',
+      {
+        linux: 0.0012,
+        macos: 0.0033,
+        windows: 0,
+      },
+    ],
   ]);
 
   function getImageSnapshotConfig(fileName: string): jest.ImageSnapshotConfig {
