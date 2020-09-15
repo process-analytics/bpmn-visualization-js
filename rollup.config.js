@@ -98,12 +98,3 @@ export default {
   external: [...Object.keys(pkg.peerDependencies || {})],
   plugins: plugins,
 };
-
-// export function commandLineArgs => {
-//   const port = commandLineArgs.port || 'N/A';
-//
-//   // eslint-disable-next-line no-console
-//   console.log(`port from CLI: ${port}`);
-//
-//   return {};
-// };
