@@ -126,17 +126,6 @@ describe('no visual regression', () => {
         windows: 0.0012,
       },
     ],
-    // ubuntu: Expected image to match or be a close match to snapshot but was 0.41102101305959815% different from snapshot
-    // macOS: Expected image to match or be a close match to snapshot but was 0.4176619648282198% different from snapshot
-    // windows: so far so good - 0
-    [
-      'associations.and.annotations',
-      {
-        linux: 0.0042,
-        macos: 0.0042,
-        windows: 0,
-      },
-    ],
   ]);
 
   function getImageSnapshotConfig(fileName: string): jest.ImageSnapshotConfig {
