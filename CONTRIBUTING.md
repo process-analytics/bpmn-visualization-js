@@ -178,8 +178,8 @@ to this system to accept the agreement.
 
 You only need to sign the CLA once or when the CLA terms have changed.
 
-### Commit
-There is no convention for the commit message.
+### Commit in the Pull Request
+There is no convention for the commit message in the Pull Request.
 The most important part is the title of the Pull Request, because:
 - Everyone must use Pull Request, no direct commit allowed on master branch
 - The commits of a Pull Request are almost always squashed
@@ -205,6 +205,7 @@ git push --set-upstream origin 25-annotations_to_tasks
 ```
 
 Finally, go to GitHub and [make a Pull Request](https://help.github.com/articles/creating-a-pull-request) ​with labels :smile:
+For the title, follow the directives of the Pull Request template.
 
 :warning: ​We care about quality. So your PR won't be merged until all tests pass.
 
