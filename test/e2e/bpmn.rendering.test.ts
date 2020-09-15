@@ -132,8 +132,8 @@ describe('no visual regression', () => {
     [
       'associations.and.annotations',
       {
-        linux: 0.00005,
-        macos: 0.00005,
+        linux: 0.0042,
+        macos: 0.0042,
         windows: 0,
       },
     ],
