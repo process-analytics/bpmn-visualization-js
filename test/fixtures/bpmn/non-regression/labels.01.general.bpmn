@@ -28,28 +28,28 @@
       <bpmn:outgoing>Flow_0p1kcz3</bpmn:outgoing>
     </bpmn:task>
     <bpmn:sequenceFlow id="Flow_1lal61z" name="Very long label the sun is shinning, the bird is in the kitchen for sequence flow 4" sourceRef="Activity_0wj6598" targetRef="Activity_0z68329" />
+    <bpmn:textAnnotation id="TextAnnotation_0l0wlgd">
+      <bpmn:text>Interesting fact about this task is described here</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0c28bez" sourceRef="Activity_0z68329" targetRef="TextAnnotation_0l0wlgd" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="TextAnnotation_0l0wlgd_di" bpmnElement="TextAnnotation_0l0wlgd">
+        <dc:Bounds x="200" y="140" width="100" height="68" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1lal61z_di" bpmnElement="Flow_1lal61z">
+        <di:waypoint x="530" y="280" />
+        <di:waypoint x="430" y="280" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="436" y="180" width="87" height="80" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0p1kcz3_di" bpmnElement="Flow_0p1kcz3">
         <di:waypoint x="330" y="280" />
         <di:waypoint x="268" y="280" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="248" y="323" width="85" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_Flow_1" bpmnElement="Flow_1">
-        <di:waypoint x="268" y="99" />
-        <di:waypoint x="330" y="99" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="255" y="63" width="56" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1w8ldp8_di" bpmnElement="Flow_1w8ldp8">
-        <di:waypoint x="430" y="99" />
-        <di:waypoint x="530" y="99" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="452" y="81" width="56" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1r3r6dm_di" bpmnElement="Flow_1r3r6dm">
@@ -59,11 +59,18 @@
           <dc:Bounds x="595" y="163" width="50" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1lal61z_di" bpmnElement="Flow_1lal61z">
-        <di:waypoint x="530" y="280" />
-        <di:waypoint x="430" y="280" />
+      <bpmndi:BPMNEdge id="Flow_1w8ldp8_di" bpmnElement="Flow_1w8ldp8">
+        <di:waypoint x="430" y="99" />
+        <di:waypoint x="530" y="99" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="436" y="180" width="87" height="80" />
+          <dc:Bounds x="452" y="81" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_Flow_1" bpmnElement="Flow_1">
+        <di:waypoint x="268" y="99" />
+        <di:waypoint x="330" y="99" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="255" y="63" width="56" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="StartEvent_1">
@@ -75,6 +82,12 @@
       <bpmndi:BPMNShape id="BPMNShape_Activity_1" bpmnElement="Activity_1">
         <dc:Bounds x="330" y="59" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0yq74a9_di" bpmnElement="Event_0yq74a9">
+        <dc:Bounds x="232" y="262" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="191" y="243" width="58" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_06zea2d_di" bpmnElement="Activity_1omool6">
         <dc:Bounds x="530" y="59" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -84,12 +97,10 @@
       <bpmndi:BPMNShape id="Activity_0z68329_di" bpmnElement="Activity_0z68329">
         <dc:Bounds x="330" y="240" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0yq74a9_di" bpmnElement="Event_0yq74a9">
-        <dc:Bounds x="232" y="262" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="191" y="243" width="58" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0c28bez_di" bpmnElement="Association_0c28bez">
+        <di:waypoint x="339" y="240" />
+        <di:waypoint x="300" y="203" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
