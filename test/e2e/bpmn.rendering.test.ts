@@ -72,6 +72,17 @@ describe('no visual regression', () => {
    */
   const imageSnapshotThresholdConfig = new Map<string, ImageSnapshotThresholdConfig>([
     [
+      'flows.message.02.labels-and-complex-paths', // minimal threshold to make test pass on Github Workflow
+      // ubuntu: Expected image to match or be a close match to snapshot but was 0.00018742700883533914%
+      // macOS: Expected image to match or be a close match to snapshot but was 0.10865713972554311%
+      // windows: Expected image to match or be a close match to snapshot but was 0.11321398812403904%
+      {
+        linux: 0.000002,
+        macos: 0.0011,
+        windows: 0.0012,
+      },
+    ],
+    [
       'labels.01.general', // minimal threshold to make test pass on Github Workflow
       // ubuntu: Expected image to match or be a close match to snapshot but was 0.46065520175824215%
       // macOS: Expected image to match or be a close match to snapshot but was 0.733363909363971%
