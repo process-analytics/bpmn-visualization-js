@@ -24,17 +24,17 @@ For all contributions, please respect the following guidelines:
 
 3. Do not commit changes to files that are irrelevant to your feature or bugfix (eg: `.gitignore`).
 
-4. Provide [tests](CONTRIBUTING.md#tests) and documentation whenever possible.
+4. Provide [tests](./docs/development/development.md#tests) and documentation whenever possible.
 
-5. Be sure you have followed the [code style](CONTRIBUTING.md#code-style) for the project.
+5. Be sure you have followed the [code style](./docs/development/development.md#code-style) for the project.
 
 6. Prior opening a Pull Request, ensure the build is fully working by locally running `npm run all` (build, check and
 test everything)
 
-7. Open a [GitHub Pull Request](CONTRIBUTING.md#open-a-pull-request) with your patches. (**1** pull request = **1** feature or bug)
+7. Open a [GitHub Pull Request](./docs/development/pull-request.md#open-a-pull-request) with your patches. (**1** pull request = **1** feature or bug)
    We will review your contribution and respond as quickly as possible. Keep in mind that this is an open source project, and it may take us some time to get back to you. Your patience is very much appreciated.
 
-8. If this is your 1st Pull Request, sign the [Contributor License Agreement](CONTRIBUTING.md#sign-the-contributor-license-agreement)
+8. If this is your 1st Pull Request, sign the [Contributor License Agreement](./docs/development/pull-request.md#sign-the-contributor-license-agreement)
 
 9. Be willing to accept criticism and work on improving your code. 
 
@@ -50,218 +50,26 @@ A good branch name would be (where issue #25 is the ticket you're working on): *
 git checkout -b 25-annotations_to_tasks
 ```
 
-### Development
-
-**Note**:
-- information about the library internals are available in the [architecture folder](./docs/architecture) or in html form in the [documentation site](https://process-analytics.github.io/bpmn-visualization-js/#_architecture_and_development)
-- additional information related to development can also be found in the [development details page](./docs/development/README.md)
-
-#### Requirements
-
-- `Node.js` 12.16.x and 14.11.x (may work with other versions but without any guarantee)
-- `Supported OS` (see the Github Build workflow for more details): Windows/Linux/MacOs
-
-#### Build
-
-- `npm install`           *Install the dependencies in the local node_modules folder*
-- `npm run watch`         *Watch files in bundle and rebuild on changes* <br>
-                          You can now access the project on http://localhost:10001
-
-#### Tests
-
-See the [testing page](./docs/development/testing.md)
-
-### Code style
-
-Your patch should follow the same conventions & pass the same code quality checks as the rest of the project.
-
-Project, in major line, follows the code style suggested by [airbnb](https://github.com/airbnb/javascript) which is explicit and well documented.
-
-Typescript have been chosen as it's strongly typed and we believe it adds some syntactical benefits to the JavaScript language
-More information here:  [Typescript](CONTRIBUTING.md#typescript) 
-
-To enforce best practices we use ESLint and husky.
-The later performs ```eslint --fix``` on pre-commit event to make sure that committed code meets standards.
-
-ESLint configuration extends:
-- plugin:@typescript-eslint/recommended
-- prettier/@typescript-eslint
-- plugin:prettier/recommended
-
-### Building the html documentation
-
-**DISCLAIMER**:
-- the documentation sources are in the AsciiDoctor format and are hosted in the [docs](./docs) folder. The display
-may not fully work (font-awesome icons and some links) depending on the rendering engine. This is the case when
-displayed directly on GitHub Web.
-
-From the root folder of the repository, run 
-```bash
-npm run docs
-```
-
-The documentation is generated in the `build/docs` folder.
-
 ### IDE configuration
 See [IDE configuration](./docs/development/ide-configuration.md)
 
-### Sign the Contributor License Agreement
+### Development
 
-By signing the CLA, we acknowledge that your contribution is accepted as it and that you cannot be held responsible for
-any impacts on its integration. You then grant us the right to modify and distribute your code without restrictions. We
-ask this of all contributors in order to assure our users of the origin and continuing existence of the code.
+See [Development](./docs/development/development.md)
 
-When you contribute to the project on GitHub with a new pull request, the [cla-assistant bot](https://cla-assistant.io/)
-will evaluate whether you have signed the CLA. If required, the bot will comment on the pull request, including a link
-to this system to accept the agreement.
-
-You only need to sign the CLA once or when the CLA terms have changed.
-
-### Commit in the Pull Request
-There is no convention for the commit message in the Pull Request.
+### Commit in your branch
+There is no convention for the commit message in your branch.
 The most important part is the title of the Pull Request, because:
 - Everyone must use Pull Request, no direct commit allowed on master branch
 - The commits of a Pull Request are almost always squashed
 - The title of the Pull Request is used as proposal for the maintainer merging the Pull Request
 
-### Open a Pull Request
+### Pull Request
 
-At this point, you should switch back to your master branch and make sure it's up to date with `bpmn-visualization`
-`master` branch:
-
-```sh
-git remote add upstream git@github.com:process-analytics/bpmn-visualization-js.git
-git checkout master
-git pull upstream master
-```
-
-Then update your feature branch from your local copy of master, and push it!
-
-```sh
-git checkout 25-annotations_to_tasks
-git rebase master
-git push --set-upstream origin 25-annotations_to_tasks
-```
-
-Finally, go to GitHub and [make a Pull Request](https://help.github.com/articles/creating-a-pull-request) ​with labels :smile:
-For the title, follow the directives of the Pull Request template.
-
-:warning: ​We care about quality. So your PR won't be merged until all tests pass.
-
-### Keeping your Pull Request updated
-
-If a maintainer asks you to [rebase](http://git-scm.com/book/en/Git-Branching-Rebasing) your PR, they're saying that a lot of code has changed, and that you need to update your branch so it's easier to merge.
-
-Here's the suggested workflow:
-
-```sh
-git checkout 25-annotations_to_tasks
-git pull --rebase upstream master
-git push --force-with-lease 25-annotations_to_tasks
-```
-
-
+See [Pull Request](./docs/development/pull-request.md)
 
 At this point, you're ready to make your changes! Feel free to ask for help. Everyone is a beginner at first :smile_cat:
 
-
-### Typescript
-Although Linting, Sonar and Tests keeps the code in a good shape
-We strongly recommend you to read following resources to be able to write code that is conform to the best practices:
-- [basics](https://www.typescriptlang.org/docs/handbook/basic-types.html)
-- [do's and don'ts](https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html)
-
-
 ## Maintainers
 
-### Merging a PR (maintainers only)
-
-A PR can only be merged into master by a maintainer, if all of these conditions are met:
-
-* It is passing CI.
-* It has been approved by at least two maintainers. If it was a maintainer who opened the PR, only one extra approval is needed.
-* It has no requested changes.
-* It is up to date with current master.
-
-### Release (maintainers only)
-
-Maintainers need to do the manual following actions **in the order described here** to push out a release (the release
-automation is a work in progress).
-
-#### Issues and milestones update
-
-Milestone names are based on the lib version
-- Clean the opened milestone if some issues are still opened (move them to a new one or discard milestone from them)
-- Close the milestone
-- Clean the [Day to Day Board](https://github.com/process-analytics/bpmn-visualization-js/projects/1): archive all cards
-of the `Done` column related to the milestone
-
-
-#### Git Tag
-
-- Open [github actions](https://github.com/process-analytics/bpmn-visualization-js/actions?query=workflow%3ARelease)
-- Click on the 'Run workflow' dropdown located on the right side of the page
-- Provide parameter value for New version type (default is patch, but you can choose one of the [new-version | major | minor | patch])
-- Click on the button 'Run workflow'
-- Make sure job execution was successful by checking the status
-- If everything went well you can see new tag created
-
-#### GitHub update
-
-- Ensure the latest closed milestone matches the name of the tag/version that has just been pushed. Renamed it if needed
-- GitHub release
-  - Open [github releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
-  - Create a new draft release and name it `Next` (the name is not relevant and will be replaced automatically later).
-  This ensures that development can continue without impacting the writing of the content of the in progress release. That way,
-  if a PR is merged, `release-drafter` will update the `Next` draft release keeping the in-progress release untouched.
-  - The draft release for the newly tagged version should already exist:
-    - [release-drafter](https://github.com/release-drafter/release-drafter) creates or updates draft release for the
-    next version each time a pull request is merged to the `master` branch.
-    - create a new release if it is missing or rename the existing one to match .
-  - Assign the new tag as release target and save the draft (this should have already been managed by `release-drafter`)
-  - Ensure that `This is a pre-release` is unchecked (except if we are releasing alpha, beta, rc, ...)
-  - In the release description (check previous releases as a source of inspiration)
-    - at least add/update a link to the related milestone
-    - put screenshots/gif of the new features
-  - Published the release **only when you are done** with the release content. At any time, you can save the draft
-
-
-### bpmn-visualization-examples repository update
-
-You must create a Pull Request to integrate any changes to this repository.
-
-#### Demo environment update
-Make the new version available for demo
-
-- the `Upload` GitHub workflow has built the demo for the new tag, so download the demo artifact directly from the
-Actions section on GitHub
-- alternatively, if the artifact is not available via GitHub Actions, you can build it locally
-  - checkout the git tag related to the new version
-  - run `npm run demo` which generates it in the `dist` folder
-- create a new branch in the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/demo)
- repository and add the new demo content (proceed how it has been done for prior versions). 
-- push to GitHub and create a new Pull Request
-
-#### Examples update
-**Note**: do this using the Pull Request you have just created for the demo update
-
-Make the examples use the latest version of the lib. A bash script is available to help you for this task in the `scripts`
-folder.
-Do not forget to update file /demo/index.html with the Latest Release information.
-Tests that the examples work with the new lib version.
-
-
-#### Tagging
-When all updates have been completed, merge the Pull Request created above.
-
-
-To create the tag, the easiest way is to create a new release by following the [GitHub help](https://help.github.com/en/github/administering-a-repository/managing-releases-in-a-repository#creating-a-release)
-- for `Tag version`, use a value that is the same as the lib. The tag will be created when the release will be published
-- for `Target`
-  - usually, keep the `master` branch except if new commits that you don't want to integrate for the release are already
-  available in the branch
-  - in that case, choose a dedicated commit 
-  - **important**: ensure that the build is passing on the chosen branch or commit used to create the release
-
-
-Alternatively, you can create the tag from your local machine and then push it.
+See [Maintainers](./docs/development/maintainers.md)
