@@ -6,6 +6,7 @@
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
+[![License](https://img.shields.io/github/license/process-analytics/bpmn-visualization-js?color=blue)](LICENSE)
 
 `bpmn-visualization` is a TypeScript library to visualize process execution data on [BPMN](https://www.omg.org/spec/BPMN/2.0.2/)
 diagrams with
@@ -20,8 +21,8 @@ diagrams with
 
 ## Demo
 
-The [demo environment](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/index.html)
-let you load a BPMN file to see how the lib renders it. Various versions of the lib are available. 
+Give a try to the [__:fast_forward: demo live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/index.html).
+The demo let you load a BPMN file to see how `bpmn-visualization` renders it. Various versions of the lib are available. 
 
 If you need BPMN examples, you can use resources from 
 - the [BPMN Model Interchange Working Group (BPMN MIWG)](http://www.omgwiki.org/bpmn-miwg)
@@ -32,10 +33,11 @@ If you need BPMN examples, you can use resources from
 
 ## Examples
 
-If you need examples about `bpmn-visualization` usage and extensibility, go to the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/)
-repository.
+Want to know more about `bpmn-visualization` usage and extensibility? Have a look at the
+[__:fast_forward: live examples site__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
 
-These examples are also available in the [examples live environment](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
+For more technical details and how-to, go to the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/)
+repository.
 
 
 # Roadmap
@@ -78,4 +80,4 @@ for more details:
 
 [![statically.io logo](https://statically.io/icons/icon-96x96.png "statically.io")](https://statically.io)
 
-**[statically.io](https://statically.io)** (demo environment)
+**[statically.io](https://statically.io)** (<kbd>demo</kbd> and <kbd>examples</kbd> live environments)
