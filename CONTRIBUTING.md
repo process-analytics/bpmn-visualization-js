@@ -12,7 +12,7 @@ There are many ways to contribute:
 - submitting bug reports and feature requests in the [Github Issues](https://github.com/process-analytics/bpmn-visualization-js/issues/new)
 - [writing code](CONTRIBUTING.md#code-and-documentation-changes) which can be incorporated into `bpmn-visualization` itself
 - [improving](CONTRIBUTING.md#code-and-documentation-changes) the documentation
-- improve the existing example applications to demonstrate features in `bpmn-visualization`
+- improve the existing [example applications](https://github.com/process-analytics/bpmn-visualization-examples) to demonstrate features in `bpmn-visualization`
 
 ## Code and documentation changes guidelines
 
@@ -58,8 +58,7 @@ git checkout -b 25-annotations_to_tasks
 
 #### Requirements
 
-- `Node.js` >= 12.x (may work with older versions but without any guarantee)
-- `Typescript` 3.x
+- `Node.js` 12.16.x and 14.11.x (may work with other versions but without any guarantee)
 - `Supported OS` (see the Github Build workflow for more details): Windows/Linux/MacOs
 
 #### Build
