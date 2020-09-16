@@ -13,6 +13,8 @@ Put the title like `[KIND OF CHANGE] SHORT DESCRIPTION`
 - REFACTOR
 ...
 
+_Note_: The title is used as proposal for the maintainer merging the Pull Request.
+
 **Details**
 
 Explain the **details** for making this change: What existing problem does the Pull Request solve? Why is this feature beneficial?
