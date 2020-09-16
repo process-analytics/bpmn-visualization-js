@@ -50,10 +50,18 @@ Then, we will work on BPMN extensions, library extension points, display options
 capacities.
 
 
-# Development
+# Contributing
 
-To build the project, see the [Contributing guide](CONTRIBUTING.md#Build) :slightly_smiling_face:
+To contribute to `bpmn-visualization`, fork and clone this repo locally and commit your code on a separate branch. \
+Please write tests for your code before opening a pull-request:
 
+```sh
+npm run test  # run all unit & e2e tests
+```
+
+You can find more detail in our [Contributing guide](CONTRIBUTING.md#Build). Participation in this open source project is subject to a [Code of Conduct](CODE_OF_CONDUCT.md).
+
+:sparkles: A BIG thanks to all our contributors :slightly_smiling_face:
 
 # License
 
