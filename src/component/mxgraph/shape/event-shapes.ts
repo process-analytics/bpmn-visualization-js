@@ -60,9 +60,9 @@ abstract class EventShape extends mxEllipse {
     this.markNonFullyRenderedEvents(c);
     const paintParameter = buildPaintParameter(c, x, y, w, h, this, 0.25, this.withFilledIcon);
 
-    this.setDashedOuterShapePattern(paintParameter, StyleUtils.getBpmnIsInterrupting(this.style));
+    EventShape.setDashedOuterShapePattern(paintParameter, StyleUtils.getBpmnIsInterrupting(this.style));
     this.paintOuterShape(paintParameter);
-    this.restoreOriginalOuterShapePattern(paintParameter);
+    EventShape.restoreOriginalOuterShapePattern(paintParameter);
 
     this.paintInnerShape(paintParameter);
   }
@@ -81,24 +81,21 @@ abstract class EventShape extends mxEllipse {
     super.paintVertexShape(c, x, y, w, h);
   }
 
-  protected paintInnerShape(paintParameter: PaintParameter): void {
+  private paintInnerShape(paintParameter: PaintParameter): void {
     const paintIcon = this.iconPainters.get(StyleUtils.getBpmnEventKind(this.style)) || (() => this.iconPainter.paintEmptyIcon());
     paintIcon(paintParameter);
   }
 
-  protected setDashedOuterShapePattern(paintParameter: PaintParameter, isInterrupting: string): void {
+  private static setDashedOuterShapePattern(paintParameter: PaintParameter, isInterrupting: string): void {
+    paintParameter.c.save(); // ensure we can later restore the configuration
     if (isInterrupting === 'false') {
       paintParameter.c.setDashed(true, false);
       paintParameter.c.setDashPattern('3 2');
     }
   }
 
-  protected restoreOriginalOuterShapePattern(paintParameter: PaintParameter): void {
-    // Restore original configuration
-    // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
-    // this.configureCanvas(c, x, y, w, h);
-    paintParameter.c.setDashed(StyleUtils.isDashed(this.style), StyleUtils.isFixDash(this.style));
-    paintParameter.c.setDashPattern(StyleUtils.getDashPattern(this.style));
+  private static restoreOriginalOuterShapePattern(paintParameter: PaintParameter): void {
+    paintParameter.c.restore();
   }
 }
 
