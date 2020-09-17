@@ -10,8 +10,8 @@ There are many ways to contribute:
 
 - help people with the questions they ask on the [Github Issues](https://github.com/process-analytics/bpmn-visualization-js/issues)
 - submitting bug reports and feature requests in the [Github Issues](https://github.com/process-analytics/bpmn-visualization-js/issues/new)
-- [writing code](CONTRIBUTING.md#code-and-documentation-changes) which can be incorporated into `bpmn-visualization` itself
-- [improving](CONTRIBUTING.md#code-and-documentation-changes) the documentation
+- [writing code](CONTRIBUTING.md#code-and-documentation-changes-guidelines) which can be incorporated into `bpmn-visualization` itself
+- [improving](CONTRIBUTING.md#code-and-documentation-changes-guidelines) the documentation
 - improve the existing [example applications](https://github.com/process-analytics/bpmn-visualization-examples) to demonstrate features in `bpmn-visualization`
 
 ## Code and documentation changes guidelines
@@ -55,7 +55,7 @@ To know how configurate your development environment, see [IDE configuration](./
 
 ### Development
 
-You'll find [here](./docs/development/development.md) the different information to build, test, lint your code, and some tips too. 
+You'll find [here](./docs/development/development.md) the necessary information to build, test, lint your code, and some tips too. 
 
 ### Commit in your branch
 There is no convention for the commit message in your branch.
@@ -67,6 +67,7 @@ The most important part is the title of the Pull Request, because:
 ### Pull Request
 
 After your development finished, you need to open a Pull Request. You'll find [here](./docs/development/pull-request.md) all the necessary information to open it and to keep it updated.
+
 
 At this point, you're ready to make your changes! Feel free to ask for help. Everyone is a beginner at first :smile_cat:
 
