@@ -19,6 +19,7 @@ import * as path from 'path';
 import { defaultBpmnJsonParser } from '../../src/component/parser/json/BpmnJsonParser';
 import { BpmnJsonModel } from '../../src/component/parser/xml/bpmn-json-model/BPMN20';
 import BpmnModel from '../../src/model/bpmn/BpmnModel';
+import clipboardy from 'clipboardy';
 
 const __dirname = path.resolve();
 const myArgs = process.argv.slice(2);
@@ -42,5 +43,8 @@ if (parsingType === 'json') {
 } else {
   result = prettyString(defaultBpmnJsonParser().parse(json));
 }
+
+// copy to clipboard
+clipboardy.writeSync(result);
 // eslint-disable-next-line no-console
 console.log(result);

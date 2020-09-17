@@ -1,4 +1,6 @@
 # Tool to facilitate tests writing to parsing .bpmn
+You should note that there is no need to copy the result from the console as it will be directly copied into system clipboard
+
 ##Building utils module
 run in the root of the project:
 
