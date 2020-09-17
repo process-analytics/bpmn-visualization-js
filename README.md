@@ -54,7 +54,7 @@ capacities.
 
 # Contributing
 
-To contribute to `bpmn-visualization`, fork and clone this repo locally and commit your code on a separate branch. \
+To contribute to `bpmn-visualization`, fork and clone this repository locally and commit your code on a separate branch. \
 Please write tests for your code before opening a pull-request:
 
 ```sh
