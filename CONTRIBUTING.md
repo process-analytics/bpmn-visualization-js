@@ -51,11 +51,11 @@ git checkout -b 25-annotations_to_tasks
 ```
 
 ### IDE configuration
-See [IDE configuration](./docs/development/ide-configuration.md)
+To know how configurate your development environment, see [IDE configuration](./docs/development/ide-configuration.md).
 
 ### Development
 
-See [Development](./docs/development/development.md)
+You'll find [here](./docs/development/development.md) the different information to build, test, lint your code, and some tips too. 
 
 ### Commit in your branch
 There is no convention for the commit message in your branch.
@@ -66,10 +66,10 @@ The most important part is the title of the Pull Request, because:
 
 ### Pull Request
 
-See [Pull Request](./docs/development/pull-request.md)
+After your development finished, you need to open a Pull Request. You'll find [here](./docs/development/pull-request.md) all the necessary information to open it and to keep it updated.
 
 At this point, you're ready to make your changes! Feel free to ask for help. Everyone is a beginner at first :smile_cat:
 
 ## Maintainers
 
-See [Maintainers](./docs/development/maintainers.md)
+See the necessary information for the [Maintainers](./docs/development/maintainers.md)
