@@ -18,6 +18,7 @@ import * as path from 'path';
 import debugLogger from 'debug';
 
 const debug = debugLogger('test');
+const __dirname = path.resolve();
 
 export function readFileSync(relPathToSourceFile: string, encoding = 'utf8'): string {
   return fs.readFileSync(path.join(__dirname, relPathToSourceFile), encoding);
