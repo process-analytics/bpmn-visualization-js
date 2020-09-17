@@ -173,7 +173,10 @@ describe('no visual regression', () => {
    * Prior adding a config here, review your file to check if it is not too large because it contains too much elements, in particular, some elements not related to what you want to
    * test.
    */
-  const bpmnLoadMethodConfig = new Map<string, BpmnLoadMethod>([['events', BpmnLoadMethod.Url]]);
+  const bpmnLoadMethodConfig = new Map<string, BpmnLoadMethod>([
+    ['events', BpmnLoadMethod.Url],
+    ['markers.01.positioning', BpmnLoadMethod.Url],
+  ]);
 
   function getBpmnLoadMethod(fileName: string): BpmnLoadMethod {
     return bpmnLoadMethodConfig.get(fileName) || BpmnLoadMethod.QueryParam;
