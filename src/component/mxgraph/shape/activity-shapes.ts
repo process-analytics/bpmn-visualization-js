@@ -15,7 +15,7 @@
  */
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render';
-import { ShapeBpmnSubProcessKind, ShapeBpmnMarkerKind } from '../../../model/bpmn/shape';
+import { ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape';
 import BpmnCanvas from './render/BpmnCanvas';
 
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
@@ -50,6 +50,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
           ...paintParameter,
           setIconOrigin: this.getIconOriginForMarkerIcon(allMarkers.length, idx + 1),
         };
+        paintParameter.c.save(); // ensure we can later restore the configuration
         switch (marker) {
           case ShapeBpmnMarkerKind.LOOP:
             this.iconPainter.paintLoopIcon(paintParameter);
@@ -65,10 +66,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
             break;
         }
         // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
-        // TODO missing mxShape.configureCanvas in mxgraph-type-definitions (this will replace explicit function calls)
-        // this.configureCanvas(c, x, y, w, h);
-        paintParameter.c.setStrokeColor(StyleUtils.getStrokeColor(this.style));
-        paintParameter.c.setFillColor(StyleUtils.getFillColor(this.style));
+        paintParameter.c.restore();
       });
     }
   }
@@ -217,6 +215,7 @@ export class SubProcessShape extends BaseActivityShape {
 
   public paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const subProcessKind = StyleUtils.getBpmnSubProcessKind(this.style);
+    c.save(); // ensure we can later restore the configuration
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
       c.setDashed(true, false);
       c.setDashPattern('1 2');
@@ -224,9 +223,7 @@ export class SubProcessShape extends BaseActivityShape {
 
     super.paintBackground(c, x, y, w, h);
 
-    // TODO temp. missing in mxgraph-type-definitions mxShape
-    // this.configureCanvas(c, x, y, w, h);
-    c.setDashed(StyleUtils.isDashed(this.style), StyleUtils.isFixDash(this.style));
-    c.setDashPattern(StyleUtils.getDashPattern(this.style));
+    // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
+    c.restore();
   }
 }
