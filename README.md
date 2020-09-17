@@ -67,7 +67,8 @@ You can find more detail in our [Contributing guide](CONTRIBUTING.md#Build). Par
 
 # License
 
-`bpmn-visualization` is released under the `Apache 2.0` license.
+`bpmn-visualization` is released under the [Apache 2.0](LICENSE) license. \
+Copyright &copy; 2020, Bonitasoft S.A.
 
 Some BPMN icons used by `bpmn-visualization` are derived from existing projects. See the [BPMN Support page](docs/bpmn-support.adoc)
 for more details:

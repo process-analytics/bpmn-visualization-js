@@ -38,8 +38,19 @@
     <bpmn:adHocSubProcess id="Activity_1yc41mg">
       <bpmn:multiInstanceLoopCharacteristics isSequential="true" />
     </bpmn:adHocSubProcess>
-    <bpmn:adHocSubProcess id="Activity_1h7uk0j" />
     <bpmn:adHocSubProcess id="Activity_1bzr525" isForCompensation="true" />
+    <bpmn:subProcess id="Activity_1c2i9by" triggeredByEvent="true" />
+    <bpmn:adHocSubProcess id="Activity_1h7uk0j" />
+    <bpmn:transaction id="Activity_01sv5lg">
+      <bpmn:standardLoopCharacteristics />
+    </bpmn:transaction>
+    <bpmn:transaction id="Activity_0nz77ru" />
+    <bpmn:transaction id="Activity_1o6pvv6">
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" />
+    </bpmn:transaction>
+    <bpmn:subProcess id="Activity_0n0b9rq" triggeredByEvent="true">
+      <bpmn:multiInstanceLoopCharacteristics />
+    </bpmn:subProcess>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_047roat">
@@ -76,23 +87,38 @@
       <bpmndi:BPMNShape id="Activity_0cwkyny_di" bpmnElement="Activity_196x0py">
         <dc:Bounds x="650" y="320" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1q1ebfs_di" bpmnElement="Activity_0ub7tnf">
-        <dc:Bounds x="650" y="450" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_137xamd_di" bpmnElement="Activity_137xamd">
         <dc:Bounds x="800" y="200" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0gz5whi_di" bpmnElement="Activity_0gz5whi">
         <dc:Bounds x="800" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1yc41mg_di" bpmnElement="Activity_1yc41mg">
-        <dc:Bounds x="650" y="570" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_03m9kym_di" bpmnElement="Activity_1c2i9by" isExpanded="false">
+        <dc:Bounds x="170" y="440" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0n0b9rq_di" bpmnElement="Activity_0n0b9rq">
+        <dc:Bounds x="330" y="440" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0nz77ru_di" bpmnElement="Activity_0nz77ru" isExpanded="false">
+        <dc:Bounds x="490" y="440" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1o6pvv6_di" bpmnElement="Activity_1o6pvv6" isExpanded="false">
+        <dc:Bounds x="650" y="440" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_01sv5lg_di" bpmnElement="Activity_01sv5lg" isExpanded="false">
+        <dc:Bounds x="800" y="440" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_007svac_di" bpmnElement="Activity_1h7uk0j" isExpanded="true">
-        <dc:Bounds x="170" y="450" width="420" height="200" />
+        <dc:Bounds x="170" y="560" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1q1ebfs_di" bpmnElement="Activity_0ub7tnf">
+        <dc:Bounds x="330" y="560" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1yc41mg_di" bpmnElement="Activity_1yc41mg">
+        <dc:Bounds x="490" y="560" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1bzr525_di" bpmnElement="Activity_1bzr525">
-        <dc:Bounds x="800" y="450" width="100" height="80" />
+        <dc:Bounds x="650" y="560" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
