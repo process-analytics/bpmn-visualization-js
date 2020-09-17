@@ -1,27 +1,31 @@
 # bpmn-visualization
 
-
-[![Build](https://github.com/process-analytics/bpmn-visualization-js/workflows/Build/badge.svg)](https://github.com/process-analytics/bpmn-visualization-js/actions)
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/process-analytics/bpmn-visualization-js?color=orange&include_prereleases)](https://github.com/process-analytics/bpmn-visualization-js/releases)
+[![Build](https://github.com/process-analytics/bpmn-visualization-js/workflows/Build/badge.svg)](https://github.com/process-analytics/bpmn-visualization-js/actions)
+[![Live Demo](https://img.shields.io/badge/demo-online-blueviolet.svg)][demo-live-environment]
 
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
+
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square)](CONTRIBUTING.md)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 [![License](https://img.shields.io/github/license/process-analytics/bpmn-visualization-js?color=blue)](LICENSE)
 
 `bpmn-visualization` is a TypeScript library to visualize process execution data on [BPMN](https://www.omg.org/spec/BPMN/2.0.2/)
-diagrams with
+diagrams with:
 - additional display options for execution data (highlight some transitions, counters, and more)
 - with interactive capacities (mouse hover, click)
 
-
 **Supported Browsers**: Chrome, Firefox, Safari, Edge.
 
+# Requirements
+
+- `Node.js`: 12.16.x and 14.11.x (may work with other versions but without any guarantee)
+- `Supported OS`: Windows/Linux/MacOs (see the Github Build workflow for more details)
 
 # Demo and examples
 
 ## Demo
 
-Give a try to the [__:fast_forward: demo live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/index.html).
+Give a try to the [__:fast_forward: demo live environment__][demo-live-environment].
 The demo let you load a BPMN file to see how `bpmn-visualization` renders it. Various versions of the lib are available. 
 
 If you need BPMN examples, you can use resources from 
@@ -82,3 +86,6 @@ for more details:
 [![statically.io logo](https://statically.io/icons/icon-96x96.png "statically.io")](https://statically.io)
 
 **[statically.io](https://statically.io)** (<kbd>demo</kbd> and <kbd>examples</kbd> live environments)
+
+
+[demo-live-environment]: https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/index.html
