@@ -69,17 +69,11 @@ An [AsciiDoc IntelliJ Plugin](https://plugins.jetbrains.com/plugin/7391-asciidoc
 
 Install the EditorConfig extension. A configuration file already exists in the repository so it will apply right after the extension installation.
 
-#### [Jest tests](https://github.com/jest-community/vscode-jest#how-to-get-it)
-
-To be able to run tests from VS Code, you firstly install the Jest extension, then, go to the **Run** menu of VS Code.
-You can run 2 test configurations:
+#### [Debugging TypeScript code](https://code.visualstudio.com/docs/typescript/typescript-debugging)
+The `launch.json` file is already configured to execute tests:
   - unit tests: `test:unit`
   - end to end tests: `test:e2e`
-
-If you want to use coverage, follow this tutorial: https://github.com/jest-community/vscode-jest#how-do-i-show-code-coverage
-
-#### [Debugging TypeScript code](https://code.visualstudio.com/docs/typescript/typescript-debugging)
-The `launch.json` file is already configured to execute unit & e2e tests.
+  
 You can duplicate these configurations or create another, if you want/need.
 
 #### [Draw.io Diagram](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio)
