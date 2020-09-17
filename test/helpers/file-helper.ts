@@ -18,10 +18,9 @@ import * as path from 'path';
 import debugLogger from 'debug';
 
 const debug = debugLogger('test');
-const __dirname = path.resolve();
 
-export function readFileSync(relPathToSourceFile: string, encoding = 'utf8'): string {
-  return fs.readFileSync(path.join(__dirname, relPathToSourceFile), encoding);
+export function readFileSync(relPathToSourceFile: string, encoding = 'utf8', dirName = __dirname): string {
+  return fs.readFileSync(path.join(dirName, relPathToSourceFile), encoding);
 }
 
 export function copyFileSync(relPathToSourceFile: string, relPathToDestinationDirectory: string, destinationFileName: string): void {
