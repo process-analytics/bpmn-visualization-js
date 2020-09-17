@@ -1,7 +1,3 @@
-import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
-import { readFileSync } from '../helpers/file-helper';
-import * as path from 'path';
-
 /**
  * Copyright 2020 Bonitasoft S.A.
  *
@@ -17,15 +13,34 @@ import * as path from 'path';
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
+import { readFileSync } from '../helpers/file-helper';
+import * as path from 'path';
+import { defaultBpmnJsonParser } from '../../src/component/parser/json/BpmnJsonParser';
+import { BpmnJsonModel } from '../../src/component/parser/xml/bpmn-json-model/BPMN20';
+import BpmnModel from '../../src/model/bpmn/BpmnModel';
+
 const __dirname = path.resolve();
 const myArgs = process.argv.slice(2);
 const bpmnFilePath = myArgs[0];
+const parsingType = myArgs[1] || 'json';
+
 if (!bpmnFilePath) {
-  throw new Error('you must provide file path as parameter');
+  throw new Error('you must provide file path as 1st parameter for example: test/fixtures/bpmn/parser-test.bpmn');
+}
+if (['json', 'bpmn'].indexOf(parsingType) == -1) {
+  throw new Error('2nd parameter must be one of: json | bpmn');
 }
 
 const xmlParser = new BpmnXmlParser();
 const json = xmlParser.parse(readFileSync(bpmnFilePath, 'utf-8', __dirname));
+const prettyString = (object: BpmnJsonModel | BpmnModel): string => JSON.stringify(object, null, 2);
 
+let result = '';
+if (parsingType === 'json') {
+  result = prettyString(json);
+} else {
+  result = prettyString(defaultBpmnJsonParser().parse(json));
+}
 // eslint-disable-next-line no-console
-console.log(JSON.stringify(json, null, 2));
+console.log(result);
