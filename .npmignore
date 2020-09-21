@@ -1,0 +1,8 @@
+#.cache
+#.DS_Store
+#node_modules
+#
+#src
+#tsconfig*
+#rollup.config.js
+#.gitignore
