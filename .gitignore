@@ -10,3 +10,6 @@
 build
 /test/e2e/__image_snapshots__/__diff_output__/
 *.jest-image-snapshot-touched-files
+
+# npm build
+*.tgz
