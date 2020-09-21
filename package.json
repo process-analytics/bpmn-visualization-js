@@ -2,12 +2,26 @@
   "name": "bpmn-visualization",
   "version": "0.3.0",
   "description": "A TypeScript library to visualize process execution data on BPMN diagrams",
-  "repository": "https://github.com/process-analytics/bpmn-visualization-js",
   "license": "Apache-2.0",
-  "module": "dist/bpmn-visualization.esm.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/process-analytics/bpmn-visualization-js.git"
+  },
+  "keywords": [
+    "analytics",
+    "bpmn",
+    "diagram",
+    "viewer",
+    "visualization"
+  ],
+  "bugs": {
+    "url": "https://github.com/process-analytics/bpmn-visualization-js/issues"
+  },
+  "homepage": "https://github.com/process-analytics/bpmn-visualization-js#readme",
   "files": [
     "dist"
   ],
+  "module": "dist/bpmn-visualization.esm.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "all": "run-s clean lint lint-check build test",
