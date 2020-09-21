@@ -169,7 +169,7 @@ For now, we don't put the released library on npm. So you need to clone the repo
 For more technical details and how-to, go to the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/)
 repository.
 
-## 🔧 Development
+## 🔧 Contributing
 
 To contribute to `bpmn-visualization`, fork and clone this repository locally and commit your code on a separate branch. \
 Please write tests for your code before opening a pull-request:
