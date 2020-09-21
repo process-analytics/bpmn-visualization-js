@@ -1,6 +1,6 @@
 <h1 align="center">BPMN Visualization</h1> <br>
 <p align="center">
-   <img title="BPMN Visualization" src="config/logo.png" width="812" height="170">
+   <img title="BPMN Visualization" src="docs/diagram-example.png" width="812" height="170">
 </p>
 
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/process-analytics/bpmn-visualization-js?color=orange&include_prereleases)](https://github.com/process-analytics/bpmn-visualization-js/releases)
