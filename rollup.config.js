@@ -44,8 +44,6 @@ let sourceMap = !demoMode;
 let tsDeclarationFiles = !demoMode;
 // TODO improve condition
 if (buildDistribution) {
-  // sourceMap = !buildProductionDistribution;
-  // tsDeclarationFiles = !buildProductionDistribution;
   sourceMap = true;
   tsDeclarationFiles = true;
 }
@@ -130,18 +128,30 @@ if (!buildDistribution) {
     },
   ];
 } else {
+  rollupConfigs = [
+    {
+      input: libInput,
+      output: [
+        {
+          file: `dist/bundled/esm/${pkg.module}`,
+          format: 'es',
+          sourcemap: sourceMap, // TODO always true?
+        },
+      ],
+      // external: [...Object.keys(pkg.peerDependencies || {})],
+      plugins: plugins,
+    },
+    {
+      input: libInput,
+      output: {
+        file: 'dist/bundled/iife/bpmn-visualization.js',
+        format: 'iife',
+        name: 'bpmnVisualization',
+        sourcemap: false,
+      },
+      plugins: plugins,
+    },
+  ];
 }
 
 export default rollupConfigs;
-// {
-//   input: 'src/index.ts',
-//   output: [
-//     {
-//       file: pkg.module,
-//       format: 'es',
-//       sourcemap: sourceMap,
-//     },
-//   ],
-//   external: [...Object.keys(pkg.peerDependencies || {})],
-//   plugins: plugins,
-// };

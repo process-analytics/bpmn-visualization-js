@@ -4,7 +4,7 @@
   "description": "A TypeScript library to visualize process execution data on BPMN diagrams",
   "repository": "https://github.com/process-analytics/bpmn-visualization-js",
   "license": "Apache-2.0",
-  "module": "dist/index.es.js",
+  "module": "dist/bpmn-visualization.esm.js",
   "files": [
     "dist"
   ],
