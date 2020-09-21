@@ -65,7 +65,7 @@ Future features:
 For now, we don't put the released library on npm. So you need to clone the repository in local, get the last tag, and build it.
 
 * Load necessary scripts 
-```
+```javascript
     <!-- load global settings -->
     <script src="./static/js/configureMxGraphGlobals.js"></script>
     <!-- load mxGraph client library -->
@@ -74,7 +74,7 @@ For now, we don't put the released library on npm. So you need to clone the repo
     <script src="../../demo/0.3.0/index.es.js"></script>
 ```
 * Define your bpmn content
-```
+```javascript
     const bpmnContent = 
         `<?xml version="1.0" encoding="UTF-8"?>
         <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -136,16 +136,16 @@ For now, we don't put the released library on npm. So you need to clone the repo
         </bpmn:definitions>`;
 ```
 * Define the mxGraph container
-```
+```html
     <div id="graph"></div>
 ```
 * Initialize BpmnVisualization from the container
-```
+```javascript
     console.log(`Initializing BpmnVisualization with container '${container}'...`);
     const bpmnVisualization = new BpmnVisualization(window.document.getElementById(container));  
 ```
 * Load the bpmn content from BpmnVisualization
-```
+```javascript
     console.log('Loading bpmn....');
     bpmnVisualization.load(bpmnContent);
     console.log('BPMN loaded');
