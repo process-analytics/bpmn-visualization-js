@@ -22,7 +22,7 @@ diagrams with:
 | :---------: | :---------: | :---------: | :---------: | :---------: |
 | Yes | Yes | Yes | Yes | No |
 
-## Requirements
+## 📋 Requirements
 
 - `Node.js`: 12.16.x and 14.11.x (may work with other versions but without any guarantee)
 - `Supported OS`: Windows/Linux/MacOs (see the Github Build workflow for more details)
@@ -43,7 +43,7 @@ Future features:
 - The library extension points
 - Display options for execution data with interactive capacities.
 
-## Usage
+## ♻️ Usage
 For now, we don't put the released library on npm. So you need to clone the repository in local, get the last tag, and build it.
 
 ```
@@ -77,7 +77,7 @@ bpmnFile
 ```
 
 
-## Demo and examples
+## 🎮 Demo and examples
 
 ### Demo
 
@@ -90,7 +90,7 @@ If you need BPMN examples, you can use resources from
   - https://github.com/bpmn-miwg/bpmn-miwg-demos
 - [bpmn-visualization BPMN test diagrams](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/bpmn-files/README.md)
 
-### 🐾 Examples
+### Examples
 
 Want to know more about `bpmn-visualization` usage and extensibility? Have a look at the
 [__:fast_forward: live examples site__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
@@ -125,7 +125,7 @@ for more details:
 - [noun project](https://thenounproject.com/) (mainly Creative Commons CCBY 3.0)
 
 
-## Powered by
+## ⚡ Powered by
 
 [![statically.io logo](https://statically.io/icons/icon-96x96.png "statically.io")](https://statically.io)
 
