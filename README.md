@@ -22,10 +22,18 @@ diagrams with:
 | :---------: | :---------: | :---------: | :---------: | :---------: |
 | Yes | Yes | Yes | Yes | No |
 
-## 📋 Requirements
 
-- `Node.js`: 12.16.x and 14.11.x (may work with other versions but without any guarantee)
-- `Supported OS`: Windows/Linux/MacOs (see the Github Build workflow for more details)
+## 🎮 Demo
+
+Give a try to the [__:fast_forward: demo live environment__][demo-live-environment].
+The demo let you load a BPMN file to see how `bpmn-visualization` renders it. Various versions of the lib are available. 
+
+If you need BPMN examples, you can use resources from 
+- the [BPMN Model Interchange Working Group (BPMN MIWG)](http://www.omgwiki.org/bpmn-miwg)
+  - https://github.com/bpmn-miwg/bpmn-miwg-test-suite
+  - https://github.com/bpmn-miwg/bpmn-miwg-demos
+- [bpmn-visualization BPMN test diagrams](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/bpmn-files/README.md)
+
 
 ## 🎨 Features
 
@@ -43,21 +51,28 @@ Future features:
 - The library extension points
 - Display options for execution data with interactive capacities.
 
+
+## 📋 Requirements
+
+- `Node.js`: 12.16.x and 14.11.x (may work with other versions but without any guarantee)
+- `Supported OS`: Windows/Linux/MacOs (see the Github Build workflow for more details)
+
+
 ## ♻️ Usage
 For now, we don't put the released library on npm. So you need to clone the repository in local, get the last tag, and build it.
 
+* Load necessary scripts 
 ```
-<!DOCTYPE html>
-<html lang="en">
-<body>
     <!-- load global settings -->
     <script src="./static/js/configureMxGraphGlobals.js"></script>
     <!-- load mxGraph client library -->
     <script src="./static/js/mxClient.min.js"></script>
-
     <!-- load BPMN Visualiztion library -->
-    <script>
-    const bpmnFile = `<?xml version="1.0" encoding="UTF-8"?>
+    <script src="../../demo/0.3.0/index.es.js"></script>
+```
+* Define your bpmn content
+```
+    const bpmnContent = `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_12nbmjq" targetNamespace="http://example.bpmn.com/schema/bpmn">
   <bpmn:collaboration id="Collaboration_1cajy2f">
     <bpmn:participant id="Participant_0zyusbn" name="Pool" processRef="Process_1duwsyj" />
@@ -131,43 +146,28 @@ For now, we don't put the released library on npm. So you need to clone the repo
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>`;
-
+```
+* Define the mxGraph container
+```
+    <div id="graph"></div>
+```
+* Initialize BpmnVisualization from the container
+```
       console.log(`Initializing BpmnVisualization with container '${container}'...`);
-      bpmnVisualization = new BpmnVisualization(window.document.getElementById(container));  
-
+      const bpmnVisualization = new BpmnVisualization(window.document.getElementById(container));  
+```
+* Load the bpmn content from BpmnVisualization
+```
       console.log('Loading bpmn....');
       bpmnVisualization.load(bpmnFile);
       console.log('BPMN loaded');
-    </script>
-
-
-    <div id="graph"></div>
-</body>
-</html>
 ```
 
-
-## 🎮 Demo and examples
-
-### Demo
-
-Give a try to the [__:fast_forward: demo live environment__][demo-live-environment].
-The demo let you load a BPMN file to see how `bpmn-visualization` renders it. Various versions of the lib are available. 
-
-If you need BPMN examples, you can use resources from 
-- the [BPMN Model Interchange Working Group (BPMN MIWG)](http://www.omgwiki.org/bpmn-miwg)
-  - https://github.com/bpmn-miwg/bpmn-miwg-test-suite
-  - https://github.com/bpmn-miwg/bpmn-miwg-demos
-- [bpmn-visualization BPMN test diagrams](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/bpmn-files/README.md)
-
-### Examples
-
-Want to know more about `bpmn-visualization` usage and extensibility? Have a look at the
+💡 Want to know more about `bpmn-visualization` usage and extensibility? Have a look at the
 [__:fast_forward: live examples site__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
 
 For more technical details and how-to, go to the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/)
 repository.
-
 
 ## 🔧 Development
 
