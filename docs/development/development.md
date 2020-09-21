@@ -7,7 +7,7 @@
 ## Requirements
 
 - `Node.js` 12.16.x and 14.11.x (may work with other versions but without any guarantee)
-- `Supported OS` (see the Github Build workflow for more details): Windows/Linux/MacOs
+- `Supported OS` Windows/Linux/MacOs (see the Github Build workflow for more details)
 
 ## Build
 

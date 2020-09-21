@@ -55,12 +55,6 @@ Future features:
 - Display options for execution data with interactive capacities.
 
 
-## 📋 Requirements
-
-- `Node.js`: 12.16.x and 14.11.x (may work with other versions but without any guarantee)
-- `Supported OS`: Windows/Linux/MacOs (see the Github Build workflow for more details)
-
-
 ## ♻️ Usage
 For now, we don't put the released library on npm. So you need to clone the repository in local, get the last tag, and build it.
 
