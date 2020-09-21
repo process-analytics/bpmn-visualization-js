@@ -66,7 +66,7 @@
     "minimist": "^1.2.3",
     "mxgraph-type-definitions": "^1.0.4",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.1.1",
+    "prettier": "^2.1.2",
     "puppeteer": "^5.2.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.26.11",
