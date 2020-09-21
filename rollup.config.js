@@ -31,12 +31,30 @@ const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
 const demoMode = process.env.demoMode;
 
+// parse command line arguments
 const argv = parseArgs(process.argv.slice(2)); // start with 'node rollup' so drop them
 // for the 'config-xxx' syntax, see https://github.com/rollup/rollup/issues/1662#issuecomment-395382741
 const serverPort = process.env.SERVER_PORT || argv['config-server-port'] || 10001;
+const buildDistribution = argv['config-build-distribution'] || false;
 
-const sourceMap = !demoMode;
-const tsconfigOverride = demoMode ? { compilerOptions: { declaration: false } } : {};
+// eslint-disable-next-line no-console
+console.info(`buildDistribution: ${buildDistribution}`);
+
+let sourceMap = !demoMode;
+let tsDeclarationFiles = !demoMode;
+// TODO improve condition
+if (buildDistribution) {
+  // sourceMap = !buildProductionDistribution;
+  // tsDeclarationFiles = !buildProductionDistribution;
+  sourceMap = true;
+  tsDeclarationFiles = true;
+}
+// eslint-disable-next-line no-console
+console.info(`sourceMap: ${sourceMap}`);
+// eslint-disable-next-line no-console
+console.info(`tsDeclarationFiles: ${tsDeclarationFiles}`);
+
+const tsconfigOverride = { compilerOptions: { declaration: tsDeclarationFiles } };
 
 const plugins = [
   typescript({
@@ -78,7 +96,9 @@ if (devMode) {
   }
 }
 
-if (demoMode) {
+const minify = buildDistribution || demoMode;
+
+if (minify) {
   plugins.push(
     terser({
       ecma: 6,
@@ -86,15 +106,42 @@ if (demoMode) {
   );
 }
 
-export default {
-  input: 'src/index.ts',
-  output: [
+// TODO file should not be named index-....
+// bpmn-visualization-production.esm.js
+// bpmn-visualization-production.umd.js
+
+const libInput = 'src/index.ts';
+let rollupConfigs;
+
+if (!buildDistribution) {
+  rollupConfigs = [
     {
-      file: pkg.module,
-      format: 'es',
-      sourcemap: sourceMap,
+      input: libInput,
+      output: [
+        {
+          file: 'index.es.js', // TODO rename
+          // file: pkg.module,
+          format: 'es',
+          sourcemap: sourceMap,
+        },
+      ],
+      external: [...Object.keys(pkg.peerDependencies || {})],
+      plugins: plugins,
     },
-  ],
-  external: [...Object.keys(pkg.peerDependencies || {})],
-  plugins: plugins,
-};
+  ];
+} else {
+}
+
+export default rollupConfigs;
+// {
+//   input: 'src/index.ts',
+//   output: [
+//     {
+//       file: pkg.module,
+//       format: 'es',
+//       sourcemap: sourceMap,
+//     },
+//   ],
+//   external: [...Object.keys(pkg.peerDependencies || {})],
+//   plugins: plugins,
+// };
