@@ -117,7 +117,7 @@ if (!buildDistribution) {
       input: libInput,
       output: [
         {
-          file: 'index.es.js', // TODO rename
+          file: 'dist/index.es.js', // TODO rename + impact on demo and test pages
           // file: pkg.module,
           format: 'es',
           sourcemap: sourceMap,
