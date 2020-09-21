@@ -75,68 +75,65 @@ For now, we don't put the released library on npm. So you need to clone the repo
 ```
 * Define your bpmn content
 ```
-    const bpmnContent = `<?xml version="1.0" encoding="UTF-8"?>
-                         <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-                           xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" 
-                           xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
-                           xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
-                           xmlns:di="http://www.omg.org/spec/DD/20100524/DI" 
-                           id="Definitions_12nbmjq" 
-                           targetNamespace="http://example.bpmn.com/schema/bpmn" 
-                           exporter="bpmn-js (https://demo.bpmn.io)" 
-                           exporterVersion="7.2.0">
+    const bpmnContent = 
+        `<?xml version="1.0" encoding="UTF-8"?>
+        <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+            xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+            xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
+            xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
+            xmlns:di="http://www.omg.org/spec/DD/20100524/DI">
 
-                           <bpmn:collaboration id="Collaboration_1cajy2f">
-                             <bpmn:participant id="Participant_0zyusbn" name="Pool" processRef="Process_1duwsyj" />
-                           </bpmn:collaboration>
+            <bpmn:collaboration id="collaboration_1">
+                <bpmn:participant id="participant_1" name="Pool" processRef="process_1" />
+            </bpmn:collaboration>
 
-                           <bpmn:process id="Process_1duwsyj" isExecutable="false">
-                             <bpmn:startEvent id="StartEvent_05jmofc" name="Start">
-                               <bpmn:outgoing>Flow_1bic2fy</bpmn:outgoing>
-                             </bpmn:startEvent>
-                             <bpmn:endEvent id="Event_1o095l8" name="End">
-                               <bpmn:incoming>Flow_12gqqr8</bpmn:incoming>
-                             </bpmn:endEvent>
-                             <bpmn:userTask id="Activity_13y9ou5" name="User Task 2">
-                               <bpmn:incoming>Flow_1bic2fy</bpmn:incoming>
-                               <bpmn:outgoing>Flow_12gqqr8</bpmn:outgoing>
-                             </bpmn:userTask>
-                             <bpmn:sequenceFlow id="Flow_1bic2fy" sourceRef="StartEvent_05jmofc" targetRef="Activity_13y9ou5" />
-                             <bpmn:sequenceFlow id="Flow_12gqqr8" sourceRef="Activity_13y9ou5" targetRef="Event_1o095l8" />
-                           </bpmn:process>
+            <bpmn:process id="process_1" isExecutable="false">
+                <bpmn:startEvent id="start_event_1" name="Start">
+                    <bpmn:outgoing>flow_1</bpmn:outgoing>
+                </bpmn:startEvent>
+                <bpmn:endEvent id="end_event_1" name="End">
+                    <bpmn:incoming>flow_2</bpmn:incoming>
+                </bpmn:endEvent>
+                <bpmn:userTask id="user_task_1" name="User Task">
+                    <bpmn:incoming>flow_1</bpmn:incoming>
+                    <bpmn:outgoing>flow_2</bpmn:outgoing>
+                </bpmn:userTask>
+                <bpmn:sequenceFlow id="flow_1" sourceRef="start_event_1" targetRef="user_task_1" />
+                <bpmn:sequenceFlow id="flow_2" sourceRef="user_task_1" targetRef="end_event_1" />
+            </bpmn:process>
 
-                           <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-                             <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1cajy2f">
-                               <bpmndi:BPMNShape id="Participant_0zyusbn_di" bpmnElement="Participant_0zyusbn" isHorizontal="true">
-                                 <dc:Bounds x="152" y="39" width="760" height="121" />
-                               </bpmndi:BPMNShape>
-                               <bpmndi:BPMNEdge id="Flow_12gqqr8_di" bpmnElement="Flow_12gqqr8">
-                                 <di:waypoint x="590" y="99" />
-                                 <di:waypoint x="852" y="99" />
-                               </bpmndi:BPMNEdge>
-                               <bpmndi:BPMNEdge id="Flow_1bic2fy_di" bpmnElement="Flow_1bic2fy">
-                                 <di:waypoint x="242" y="99" />
-                                 <di:waypoint x="490" y="99" />
-                               </bpmndi:BPMNEdge>
-                               <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_05jmofc">
-                                 <dc:Bounds x="206" y="81" width="36" height="36" />
-                                 <bpmndi:BPMNLabel>
-                                   <dc:Bounds x="210" y="124" width="28" height="14" />
-                                 </bpmndi:BPMNLabel>
-                               </bpmndi:BPMNShape>
-                               <bpmndi:BPMNShape id="Event_1o095l8_di" bpmnElement="Event_1o095l8">
-                                 <dc:Bounds x="852" y="81" width="36" height="36" />
-                                 <bpmndi:BPMNLabel>
-                                   <dc:Bounds x="864" y="124" width="12" height="14" />
-                                 </bpmndi:BPMNLabel>
-                               </bpmndi:BPMNShape>
-                               <bpmndi:BPMNShape id="Activity_0jp7sxr_di" bpmnElement="Activity_13y9ou5">
-                                 <dc:Bounds x="490" y="59" width="100" height="80" />
-                               </bpmndi:BPMNShape>
-                             </bpmndi:BPMNPlane>
-                           </bpmndi:BPMNDiagram>
-
-                         </bpmn:definitions>`;
+            <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+                <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="collaboration_1">
+                    <bpmndi:BPMNShape id="participant_1_di" bpmnElement="participant_1" isHorizontal="true">
+                        <dc:Bounds x="152" y="39" width="760" height="121" />
+                    </bpmndi:BPMNShape>
+                    <bpmndi:BPMNEdge id="edge_flow_2" bpmnElement="flow_2">
+                        <di:waypoint x="590" y="99" />
+                        <di:waypoint x="852" y="99" />
+                    </bpmndi:BPMNEdge>
+                    <bpmndi:BPMNEdge id="edge_flow_1" bpmnElement="flow_1">
+                        <di:waypoint x="242" y="99" />
+                        <di:waypoint x="490" y="99" />
+                    </bpmndi:BPMNEdge>
+                    <bpmndi:BPMNShape id="shape_start_event_1" bpmnElement="start_event_1">
+                        <dc:Bounds x="206" y="81" width="36" height="36" />
+                        <bpmndi:BPMNLabel>
+                            <dc:Bounds x="210" y="124" width="28" height="14" />
+                        </bpmndi:BPMNLabel>
+                    </bpmndi:BPMNShape>
+                    <bpmndi:BPMNShape id="shape_end_event_1" bpmnElement="end_event_1">
+                        <dc:Bounds x="852" y="81" width="36" height="36" />
+                        <bpmndi:BPMNLabel>
+                            <dc:Bounds x="864" y="124" width="12" height="14" />
+                        </bpmndi:BPMNLabel>
+                    </bpmndi:BPMNShape>
+                        <bpmndi:BPMNShape id="shape_user_task_1" bpmnElement="user_task_1">
+                        <dc:Bounds x="490" y="59" width="100" height="80" />
+                    </bpmndi:BPMNShape>
+                </bpmndi:BPMNPlane>
+            </bpmndi:BPMNDiagram>
+    
+        </bpmn:definitions>`;
 ```
 * Define the mxGraph container
 ```
