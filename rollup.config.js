@@ -40,15 +40,12 @@ const buildDistribution = argv['config-build-distribution'] || false;
 // eslint-disable-next-line no-console
 console.info(`buildDistribution: ${buildDistribution}`);
 
-let sourceMap = !demoMode;
+const sourceMap = !demoMode;
 let tsDeclarationFiles = !demoMode;
 // TODO improve condition
 if (buildDistribution) {
-  sourceMap = true;
   tsDeclarationFiles = true;
 }
-// eslint-disable-next-line no-console
-console.info(`sourceMap: ${sourceMap}`);
 // eslint-disable-next-line no-console
 console.info(`tsDeclarationFiles: ${tsDeclarationFiles}`);
 
@@ -118,7 +115,6 @@ if (!buildDistribution) {
       output: [
         {
           file: 'dist/index.es.js', // TODO rename + impact on demo and test pages
-          // file: pkg.module,
           format: 'es',
           sourcemap: sourceMap,
         },
@@ -135,19 +131,20 @@ if (!buildDistribution) {
         {
           file: `dist/bundled/esm/${pkg.module}`,
           format: 'es',
-          sourcemap: sourceMap, // TODO always true?
+          sourcemap: true,
         },
       ],
       // external: [...Object.keys(pkg.peerDependencies || {})],
       plugins: plugins,
     },
+    // TODO this generates declaration files again
     {
       input: libInput,
       output: {
-        file: 'dist/bundled/iife/bpmn-visualization.js',
-        format: 'iife',
+        file: `dist/bundled/iife/${pkg.main}`,
+        format: 'iife', // TODO probably umd
         name: 'bpmnVisualization',
-        sourcemap: false,
+        sourcemap: true,
       },
       plugins: plugins,
     },

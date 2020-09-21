@@ -21,6 +21,7 @@
   "files": [
     "dist"
   ],
+  "main": "dist/bpmn-visualization.js",
   "module": "dist/bpmn-visualization.esm.js",
   "types": "dist/index.d.ts",
   "scripts": {
