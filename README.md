@@ -61,7 +61,7 @@ Please write tests for your code before opening a pull-request:
 npm run test  # run all unit & e2e tests
 ```
 
-You can find more detail in our [Contributing guide](CONTRIBUTING.md#Build). Participation in this open source project is subject to a [Code of Conduct](CODE_OF_CONDUCT.md).
+You can find more detail in our [Contributing guide](CONTRIBUTING.md). Participation in this open source project is subject to a [Code of Conduct](CODE_OF_CONDUCT.md).
 
 :sparkles: A BIG thanks to all our contributors :slightly_smiling_face:
 
