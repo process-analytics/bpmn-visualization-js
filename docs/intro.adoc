@@ -51,10 +51,11 @@ The library may work with the other browsers, currently not list, if they suppor
 
 
 == ♻️ Usage
-For now, we don't put the released library on npm. So you need to clone the repository in local, get the last tag, and build it.
+For now, we don't put the released library on npm. So you need to clone the repository in local, get the last tag, and build it. +
+⚠️  WE ARE CURRENTLY WORKING ON THE PACKAGING ⚠️
 
 * Load necessary scripts
-```javascript
+```html
     <!-- load global settings -->
     <script src="./static/js/configureMxGraphGlobals.js"></script>
     <!-- load mxGraph client library -->
@@ -62,67 +63,12 @@ For now, we don't put the released library on npm. So you need to clone the repo
     <!-- load BPMN Visualization library -->
     <script src="../../demo/0.3.0/index.es.js"></script>
 ```
-* Define your bpmn content
+* Define your BPMN content using one of the following ways:
+** Copy/Paste directly the XML content in a variable
+** Load it from a url, like this https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/load-remote-bpmn-diagrams/index.html[example]
+** Load from your computer, like the https://github.com/process-analytics/bpmn-visualization-js/blob/master/src/demo/index.ts[demo example]
 ```javascript
-    const bpmnContent = 
-        `<?xml version="1.0" encoding="UTF-8"?>
-        <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-            xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" 
-            xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
-            xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
-            xmlns:di="http://www.omg.org/spec/DD/20100524/DI">
-
-            <bpmn:collaboration id="collaboration_1">
-                <bpmn:participant id="participant_1" name="Pool" processRef="process_1" />
-            </bpmn:collaboration>
-
-            <bpmn:process id="process_1" isExecutable="false">
-                <bpmn:startEvent id="start_event_1" name="Start">
-                    <bpmn:outgoing>flow_1</bpmn:outgoing>
-                </bpmn:startEvent>
-                <bpmn:endEvent id="end_event_1" name="End">
-                    <bpmn:incoming>flow_2</bpmn:incoming>
-                </bpmn:endEvent>
-                <bpmn:userTask id="user_task_1" name="User Task">
-                    <bpmn:incoming>flow_1</bpmn:incoming>
-                    <bpmn:outgoing>flow_2</bpmn:outgoing>
-                </bpmn:userTask>
-                <bpmn:sequenceFlow id="flow_1" sourceRef="start_event_1" targetRef="user_task_1" />
-                <bpmn:sequenceFlow id="flow_2" sourceRef="user_task_1" targetRef="end_event_1" />
-            </bpmn:process>
-
-            <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-                <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="collaboration_1">
-                    <bpmndi:BPMNShape id="participant_1_di" bpmnElement="participant_1" isHorizontal="true">
-                        <dc:Bounds x="152" y="39" width="760" height="121" />
-                    </bpmndi:BPMNShape>
-                    <bpmndi:BPMNEdge id="edge_flow_2" bpmnElement="flow_2">
-                        <di:waypoint x="590" y="99" />
-                        <di:waypoint x="852" y="99" />
-                    </bpmndi:BPMNEdge>
-                    <bpmndi:BPMNEdge id="edge_flow_1" bpmnElement="flow_1">
-                        <di:waypoint x="242" y="99" />
-                        <di:waypoint x="490" y="99" />
-                    </bpmndi:BPMNEdge>
-                    <bpmndi:BPMNShape id="shape_start_event_1" bpmnElement="start_event_1">
-                        <dc:Bounds x="206" y="81" width="36" height="36" />
-                        <bpmndi:BPMNLabel>
-                            <dc:Bounds x="210" y="124" width="28" height="14" />
-                        </bpmndi:BPMNLabel>
-                    </bpmndi:BPMNShape>
-                    <bpmndi:BPMNShape id="shape_end_event_1" bpmnElement="end_event_1">
-                        <dc:Bounds x="852" y="81" width="36" height="36" />
-                        <bpmndi:BPMNLabel>
-                            <dc:Bounds x="864" y="124" width="12" height="14" />
-                        </bpmndi:BPMNLabel>
-                    </bpmndi:BPMNShape>
-                        <bpmndi:BPMNShape id="shape_user_task_1" bpmnElement="user_task_1">
-                        <dc:Bounds x="490" y="59" width="100" height="80" />
-                    </bpmndi:BPMNShape>
-                </bpmndi:BPMNPlane>
-            </bpmndi:BPMNDiagram>
-    
-        </bpmn:definitions>`;
+    const bpmnContent = ``; // your BPMN 2.0 XML content
 ```
 * Define the mxGraph container
 ```html
