@@ -74,7 +74,7 @@ For now, we don't put the released library on npm. So you need to clone the repo
 :warning: WE ARE CURRENTLY WORKING ON THE PACKAGING :warning: 
 
 * Load necessary scripts 
-```javascript
+```html
     <!-- load global settings -->
     <script src="./static/js/configureMxGraphGlobals.js"></script>
     <!-- load mxGraph client library -->
