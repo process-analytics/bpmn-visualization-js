@@ -11,24 +11,23 @@
         <a href="https://github.com/process-analytics/bpmn-visualization-js/actions">
         <img alt="Build" src="https://github.com/process-analytics/bpmn-visualization-js/workflows/Build/badge.svg"> 
         </a> 
-        <br>
+    <br>
         <a href="CONTRIBUTING.md">
-          <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square"> 
+        <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square"> 
         </a> 
         <a href="CODE_OF_CONDUCT.md">
-          <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg"> 
+        <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg"> 
         </a> 
         <a href="LICENSE">
-          <img alt="License" src="https://img.shields.io/github/license/process-analytics/bpmn-visualization-js?color=blue"> 
+        <img alt="License" src="https://img.shields.io/github/license/process-analytics/bpmn-visualization-js?color=blue"> 
         </a> 
     </p>
-    <br>
     <p align="center"> 
         <code class="rich-diff-level-one">bpmn-visualization</code> is a TypeScript library to visualize process execution data on <a href="https://www.omg.org/spec/BPMN/2.0.2/">BPMN</a>
         diagrams with:
-        <ul style="width: 75%; margin: auto;">
-          <li>additional display options for execution data (highlight some transitions, counters, and more)</li>
-          <li>interactive capacities (mouse hover, click)</li>
+        <ul>
+        <li style="width: 70%; margin: auto;">additional display options for execution data (highlight some transitions, counters, and more)</li>
+        <li style="width: 70%; margin: auto;">interactive capacities (mouse hover, click)</li>
         </ul>
     </p>
 </p>    
