@@ -5,7 +5,6 @@
         additional display options for execution data (highlight some transitions, counters, and more) and interactive capacities (mouse hover, click).
         </ul>
     </p>
-    <br>
     <p align="center">
         <img title="BPMN Visualization" src="docs/diagram-example.png" width="812" height="170" alt="BPMN Visualization example ">
     </p>
