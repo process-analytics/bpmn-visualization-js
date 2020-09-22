@@ -70,7 +70,8 @@ Future features:
 
 
 ## ♻️ Usage
-For now, we don't put the released library on npm. So you need to clone the repository in local, get the last tag, and build it.
+For now, we don't put the released library on npm. So you need to clone the repository in local, get the last tag, and build it. \
+:warning: WE ARE CURRENTLY WORKING ON THE PACKAGING :warning: 
 
 * Load necessary scripts 
 ```javascript
