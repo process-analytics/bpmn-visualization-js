@@ -83,7 +83,7 @@ For now, we don't put the released library on npm. So you need to clone the repo
     <!-- load mxGraph client library -->
     <script src="./static/js/mxClient.min.js"></script>
     <!-- load BPMN Visualization library -->
-    <script src="../../demo/0.3.0/index.es.js"></script>
+    <script src="<YOUR_PATH>/bpmn-visualization-js/dist/index.es.js"></script>
 ```
 * Define your BPMN content using one of the following ways:
   * Copy/Paste directly the XML content in a variable
