@@ -109,6 +109,7 @@ const libInput = 'src/index.ts';
 let rollupConfigs;
 
 if (!buildDistribution) {
+  // internal lib development
   rollupConfigs = [
     {
       input: libInput,
@@ -119,11 +120,13 @@ if (!buildDistribution) {
           sourcemap: sourceMap,
         },
       ],
-      external: [...Object.keys(pkg.peerDependencies || {})],
+      external: [...Object.keys(pkg.peerDependencies || {})], // TODO review, we want all dependencies except mxGraph
       plugins: plugins,
     },
   ];
 } else {
+  const sourceMap = false; // TODO confirm, seems only relevant when sources are available ie dev package
+
   rollupConfigs = [
     {
       input: libInput,
@@ -131,21 +134,37 @@ if (!buildDistribution) {
         {
           file: `dist/bundled/esm/${pkg.module}`,
           format: 'es',
-          sourcemap: true,
+          sourcemap: sourceMap,
         },
       ],
-      // external: [...Object.keys(pkg.peerDependencies || {})],
+      external: [...Object.keys(pkg.dependencies)], // no dependencies in the bundle
       plugins: plugins,
     },
     // TODO this generates declaration files again
+    // {
+    //   input: libInput,
+    //   output: {
+    //     file: `dist/bundled/iife/${pkg.main}`,
+    //     format: 'iife', // TODO probably umd instead
+    //     name: 'bpmnVisualization', // TODO choose global var name: 'bpmn' only?
+    //     sourcemap: sourceMap,
+    //   },
+    // external: [...Object.keys(pkg.dependencies)], // no dependencies in the bundle
+    //   plugins: plugins,
+    // },
+
+    // TODO this generates declaration files again
+    // TODO add the full bundle for browser
     {
       input: libInput,
-      output: {
-        file: `dist/bundled/iife/${pkg.main}`,
-        format: 'iife', // TODO probably umd
-        name: 'bpmnVisualization',
-        sourcemap: true,
-      },
+      output: [
+        {
+          file: `dist/bundled/bundle-browser/bpmn-visualization.bundle.js`,
+          format: 'iife',
+          sourcemap: sourceMap,
+        },
+      ],
+      external: [], // TODO mxgraph is not in the bundle with this configuration, other dependencies are
       plugins: plugins,
     },
   ];
