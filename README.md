@@ -78,7 +78,7 @@ For now, we don't put the released library on npm. So you need to clone the repo
     <script src="./static/js/configureMxGraphGlobals.js"></script>
     <!-- load mxGraph client library -->
     <script src="./static/js/mxClient.min.js"></script>
-    <!-- load BPMN Visualiztion library -->
+    <!-- load BPMN Visualization library -->
     <script src="../../demo/0.3.0/index.es.js"></script>
 ```
 * Define your bpmn content
