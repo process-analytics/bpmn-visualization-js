@@ -1,7 +1,7 @@
-<h1 align="center">BPMN Visualization</h1> <br>
+<h1 align="center">BPMN Visualization</h1>
 <p align="center">
     <p align="center">
-        <img title="BPMN Visualization" src="docs/diagram-example.png" width="812" height="170">
+        <img title="BPMN Visualization" src="docs/diagram-example.png" width="812" height="170" alt="BPMN Visualization example ">
     </p>
     <p align="center">
         <a href="https://github.com/process-analytics/bpmn-visualization-js/releases">
@@ -24,11 +24,16 @@
             <img alt="License" src="https://img.shields.io/github/license/process-analytics/bpmn-visualization-js?color=blue"> 
         </a> 
     </p>
+    <p align="center">
+        <code>bpmn-visualization</code> is a TypeScript library to visualize process execution data on <a href="https://www.omg.org/spec/BPMN/2.0.2/" target="_blank">BPMN</a> diagrams with:
+        <ul style="width: 70%; margin: auto;">
+            <li>additional display options for execution data (highlight some transitions, counters, and more)</li>
+            <li>interactive capacities (mouse hover, click)</li>
+        </ul>
+    </p>
 </p>
 
-`bpmn-visualization` is a TypeScript library to visualize process execution data on [BPMN](https://www.omg.org/spec/BPMN/2.0.2/) diagrams with:
-- additional display options for execution data (highlight some transitions, counters, and more)
-- interactive capacities (mouse hover, click)
+<br>
 
 
 ## 🎮 Demo
