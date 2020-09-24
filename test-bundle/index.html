@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BPMN Visualization Demo</title>
+    <link href="../src/static/css/main.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../src/static/img/favicon.ico">
+</head>
+<body>
+    <div id="file-selector" class="hidden">
+        <input type="file" id="bpmn-file" name="file"/>
+        <label for="bpmn-file" class="btn"><span>open BPMN file</span></label>
+    </div>
+    <div class="info-centered"><p>(either drop a file here)</p></div>
+    <div id="graph"></div>
+
+    <!-- load bundle -->
+    <script src="../dist/bundled/bundle-browser/bpmn-visualization.bundle.js"></script>
+    <script>
+      bpmnVisual.startBpmnVisualization({ container: 'graph' });
+      document.getElementById('bpmn-file').addEventListener('change', bpmnVisual.handleFileSelect, false);
+      document.getElementById('file-selector').classList.remove('hidden');
+    </script>
+</body>
+</html>

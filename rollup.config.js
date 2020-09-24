@@ -27,6 +27,13 @@ import json from '@rollup/plugin-json';
 
 import parseArgs from 'minimist';
 
+import * as fs from 'fs';
+import path from 'path';
+
+function readFileSync(relPathToSourceFile, encoding = 'utf8') {
+  return fs.readFileSync(path.join(__dirname, relPathToSourceFile), encoding);
+}
+
 const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
 const demoMode = process.env.demoMode;
@@ -159,7 +166,9 @@ if (!buildDistribution) {
       input: libInput,
       output: [
         {
+          banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
           file: `dist/bundled/bundle-browser/bpmn-visualization.bundle.js`,
+          name: 'bpmnVisual',
           format: 'iife',
           sourcemap: sourceMap,
         },
