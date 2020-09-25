@@ -40,6 +40,7 @@ Asciidoctor().convert(fs.readFileSync('docs/index.adoc'), {
 // copy images
 fse.ensureDirSync(`${docsOutput}/images`);
 
+fse.copySync('docs/images', `${docsOutput}/images`);
 fse.copySync('docs/architecture/images', `${docsOutput}/images`);
 
 // eslint-disable-next-line no-console
