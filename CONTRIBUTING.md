@@ -19,7 +19,7 @@ There are many ways to contribute:
 For all contributions, please respect the following guidelines:
 
 1. If you've noticed a bug or have a feature request, let us know in the [GitHub Issue tracker](https://github.com/process-analytics/bpmn-visualization-js/issues/new )! So we can confirm the bug or approve your feature, and provide feedback, before starting to code :slightly_smiling_face:  
-If you start working on one of the existing issues please leave a comment below the issue so everyone knows that the issue is taken
+If you start working on one of the existing [issues](https://github.com/process-analytics/bpmn-visualization-js/issues), please leave a comment below the issue so everyone knows that the issue is taken.
 
 2. Do the changes in your own [fork](CONTRIBUTING.md#fork--create-a-branch) of the code
 
