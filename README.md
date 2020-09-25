@@ -1,6 +1,6 @@
 <h1 align="center">BPMN Visualization</h1>
 <p align="center">
-    <p align="center"> <img title="BPMN Visualization" src="docs/diagram-hacktoberfest-example.png"></p>
+    <p align="center"> <img title="BPMN Visualization" src="docs/images/diagram-hacktoberfest-example.png"></p>
     <p align="center"> 
         <a href="https://github.com/process-analytics/bpmn-visualization-js/releases">
           <img alt="GitHub release (latest by date including pre-releases" src="https://img.shields.io/github/v/release/process-analytics/bpmn-visualization-js?color=orange&include_prereleases"> 
