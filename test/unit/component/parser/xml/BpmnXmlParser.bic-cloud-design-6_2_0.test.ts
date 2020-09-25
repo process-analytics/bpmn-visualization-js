@@ -20,7 +20,7 @@ import { readFileSync } from '../../../../helpers/file-helper';
 
 describe('parse bpmn as xml for bic cloud design', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
-    const a300Process = readFileSync('../fixtures/bpmn/xml-parsing/bic-cloud-design-A.3.0.0-export.bpmn');
+    const a300Process = readFileSync('../fixtures/bpmn/xml-parsing/bic-cloud-design-6_2_0-A.3.0-export.bpmn');
 
     const json = new BpmnXmlParser().parse(a300Process);
     expect(json).toMatchObject({
