@@ -142,7 +142,7 @@ describe('no visual regression', () => {
   function getImageSnapshotConfig(fileName: string): jest.ImageSnapshotConfig {
     // minimal threshold to make tests for diagram renders pass on local
     // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
-    let failureThreshold = 0.000003151;
+    let failureThreshold = 0.000004;
 
     const config = imageSnapshotThresholdConfig.get(fileName);
     if (config) {
