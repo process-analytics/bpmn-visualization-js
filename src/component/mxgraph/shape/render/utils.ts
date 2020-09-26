@@ -15,7 +15,13 @@
  */
 import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape';
 
-const referenceOrderedMarkers = [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND];
+const referenceOrderedMarkers = [
+  ShapeBpmnMarkerKind.LOOP,
+  ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL,
+  ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL,
+  ShapeBpmnMarkerKind.COMPENSATION,
+  ShapeBpmnMarkerKind.EXPAND,
+];
 
 export function orderActivityMarkers(markers: string[]): string[] {
   const orderedMarkers: string[] = [];

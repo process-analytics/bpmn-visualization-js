@@ -25,6 +25,11 @@ describe('enforce activity markers order', () => {
     });
   });
 
+  // BPM rules: they cannot at the same time
+  const incompatibleElements = [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL];
+
+  // adhoc: only with expand and compensation
+
   describe('2 elements', () => {
     const input1: string[] = [ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.LOOP];
     it(`2 elements - order: ${input1}`, () => {
@@ -42,17 +47,34 @@ describe('enforce activity markers order', () => {
     it(`2 elements - order: ${input4}`, () => {
       expect(orderActivityMarkers(input4)).toEqual([ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND]);
     });
+    const input5: string[] = [ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.COMPENSATION];
+    it(`order: ${input5}`, () => {
+      expect(orderActivityMarkers(input5)).toEqual([ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND]);
+    });
+    const input6: string[] = [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL];
+    it(`order: ${input6}`, () => {
+      expect(orderActivityMarkers(input6)).toEqual([ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.COMPENSATION]);
+    });
   });
 
-  // describe('3 elements', () => {});
+  describe('3 elements', () => {
+    const input1: string[] = [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.LOOP];
+    it(`order: ${input1}`, () => {
+      expect(orderActivityMarkers(input1)).toEqual([ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND]);
+    });
+    const input2: string[] = [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND];
+    it(`order: ${input2}`, () => {
+      expect(orderActivityMarkers(input2)).toEqual([ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND]);
+    });
+  });
 
-  // describe('4 elements', () => {});
+  // adhoc can have compensation and expand only
 
   // To support extensions that add markers
   describe('extra elements', () => {
-    const input1: string[] = ['extraAtStart', ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.LOOP, 'extraAtEnd'];
-    it(`extra elements - order: ${input1}`, () => {
-      expect(orderActivityMarkers(input1)).toEqual([ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND, 'extraAtStart', 'extraAtEnd']);
+    const markers: string[] = ['extraAtStart', ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.LOOP, 'extraAtEnd'];
+    it(`extra elements - order: ${markers}`, () => {
+      expect(orderActivityMarkers(markers)).toEqual([ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND, 'extraAtStart', 'extraAtEnd']);
     });
   });
 });
