@@ -16,6 +16,7 @@
 
 import { orderActivityMarkers } from '../../../../../../src/component/mxgraph/shape/render/utils';
 import { ShapeBpmnMarkerKind } from '../../../../../../src/model/bpmn/shape';
+import { TProcess } from '../../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 
 describe('enforce activity markers order', () => {
   describe('1 element', () => {
@@ -70,25 +71,33 @@ describe('enforce activity markers order', () => {
 
   // adhoc can have compensation and expand only
   describe('adhoc marker', () => {
-    const markers1: string[] = [ShapeBpmnMarkerKind.ADHOC, ShapeBpmnMarkerKind.EXPAND];
-    it(`order: ${markers1}`, () => {
-      expect(orderActivityMarkers(markers1)).toEqual([ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC]);
-    });
-    const markers2: string[] = [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.ADHOC, ShapeBpmnMarkerKind.EXPAND];
-    it(`order: ${markers2}`, () => {
-      expect(orderActivityMarkers(markers2)).toEqual([ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC]);
+    it.each([
+      [
+        [ShapeBpmnMarkerKind.ADHOC, ShapeBpmnMarkerKind.EXPAND],
+        [ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC],
+      ],
+      [
+        [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.ADHOC, ShapeBpmnMarkerKind.EXPAND],
+        [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC],
+      ],
+    ])(`order: %s)`, (markers: string[], expectedOrderedMarkers: string[]) => {
+      expect(orderActivityMarkers(markers)).toEqual(expectedOrderedMarkers);
     });
   });
 
   // To support extensions that add markers
   describe('extra elements', () => {
-    const markers1: string[] = ['extraAtStart', ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.LOOP, 'extraAtEnd'];
-    it(`order: ${markers1}`, () => {
-      expect(orderActivityMarkers(markers1)).toEqual([ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND, 'extraAtStart', 'extraAtEnd']);
-    });
-    const markers2: string[] = ['extraAtStart', ShapeBpmnMarkerKind.ADHOC, ShapeBpmnMarkerKind.EXPAND, 'extraAtEnd'];
-    it(`order: ${markers2}`, () => {
-      expect(orderActivityMarkers(markers2)).toEqual([ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC, 'extraAtStart', 'extraAtEnd']);
+    it.each([
+      [
+        ['extraAtStart', ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.LOOP, 'extraAtEnd'],
+        [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND, 'extraAtStart', 'extraAtEnd'],
+      ],
+      [
+        ['extraAtStart', ShapeBpmnMarkerKind.ADHOC, ShapeBpmnMarkerKind.EXPAND, 'extraAtEnd'],
+        [ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC, 'extraAtStart', 'extraAtEnd'],
+      ],
+    ])(`order: %s)`, (markers: string[], expectedOrderedMarkers: string[]) => {
+      expect(orderActivityMarkers(markers)).toEqual(expectedOrderedMarkers);
     });
   });
 });
