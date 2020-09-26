@@ -21,6 +21,7 @@ const referenceOrderedMarkers = [
   ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL,
   ShapeBpmnMarkerKind.COMPENSATION,
   ShapeBpmnMarkerKind.EXPAND,
+  ShapeBpmnMarkerKind.ADHOC,
 ];
 
 export function orderActivityMarkers(markers: string[]): string[] {

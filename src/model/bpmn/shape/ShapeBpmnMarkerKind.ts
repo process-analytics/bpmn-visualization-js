@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 export enum ShapeBpmnMarkerKind {
+  ADHOC = 'adhoc',
   COMPENSATION = 'compensation',
   EXPAND = 'expand',
   LOOP = 'loop',
