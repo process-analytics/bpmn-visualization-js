@@ -59,13 +59,17 @@ describe('enforce activity markers order', () => {
   });
 
   describe('3 elements', () => {
-    const input1: string[] = [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.LOOP];
-    it(`order: ${input1}`, () => {
-      expect(orderActivityMarkers(input1)).toEqual([ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND]);
-    });
-    const input2: string[] = [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND];
-    it(`order: ${input2}`, () => {
-      expect(orderActivityMarkers(input2)).toEqual([ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND]);
+    it.each([
+      [
+        [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.LOOP],
+        [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND],
+      ],
+      [
+        [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND],
+        [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND],
+      ],
+    ])(`order: %s)`, (markers: string[], expectedOrderedMarkers: string[]) => {
+      expect(orderActivityMarkers(markers)).toEqual(expectedOrderedMarkers);
     });
   });
 
