@@ -30,11 +30,11 @@ import { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
-import Bounds from '../../../../../src/model/bpmn/internal/Bounds';
 import { BpmnEventKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import each from 'jest-each';
 import { AssociationDirectionKind } from '../../../../../src/model/bpmn/internal/edge/AssociationDirectionKind';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/json/BPMNDI';
+import { Bounds } from '../../../../../src/model/bpmn/json/DC';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
@@ -100,6 +100,10 @@ function newAssociationFlow(kind: AssociationDirectionKind): AssociationFlow {
   return new AssociationFlow('id', 'name', undefined, undefined, kind);
 }
 
+function newBounds(width: number): Bounds {
+  return { x: 20, y: 20, width, height: 200 };
+}
+
 describe('mxgraph renderer', () => {
   const styleConfigurator = new StyleConfigurator(null); // we don't care of mxgraph graph here
 
@@ -139,7 +143,7 @@ describe('mxgraph renderer', () => {
     });
 
     it('compute style of shape with label bounds', () => {
-      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.CALL_ACTIVITY), undefined, new Label(undefined, new Bounds(40, 200, 80, 140)));
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.CALL_ACTIVITY), undefined, new Label(undefined, newBounds(80)));
       expect(computeStyle(shape)).toEqual('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=top;verticalLabelPosition=left');
     });
   });
@@ -176,7 +180,7 @@ describe('mxgraph renderer', () => {
     });
 
     it('compute style of edge with label bounds', () => {
-      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), new Bounds(20, 20, 30, 120)));
+      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), newBounds(100)));
       expect(computeStyle(edge)).toEqual('sequenceFlow;normal;fontFamily=Helvetica;verticalAlign=top;align=center');
     });
   });
@@ -266,7 +270,7 @@ describe('mxgraph renderer', () => {
       });
 
       it(`${expandKind} embedded sub-process with label bounds`, () => {
-        const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
+        const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'sans-serif' }, newBounds(300)));
         const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
         expect(computeStyle(shape)).toEqual(
           `subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
@@ -288,7 +292,7 @@ describe('mxgraph renderer', () => {
       });
 
       it(`${expandKind} call activity with label bounds`, () => {
-        const shape = newShape(newShapeBpmnCallActivity(markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
+        const shape = newShape(newShapeBpmnCallActivity(markers), newLabel({ name: 'sans-serif' }, newBounds(300)));
         const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
         expect(computeStyle(shape)).toEqual(
           `callActivity${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
@@ -313,7 +317,7 @@ describe('mxgraph renderer', () => {
       expect(computeStyle(shape)).toEqual('textAnnotation');
     });
     it('with label bounds', () => {
-      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION), newLabel({ name: 'Segoe UI' }, new Bounds(50, 50, 100, 100)));
+      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION), newLabel({ name: 'Segoe UI' }, newBounds(100)));
       expect(computeStyle(shape)).toEqual('textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=top;verticalLabelPosition=left');
     });
   });

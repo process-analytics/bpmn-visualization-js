@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import ShapeBpmnElement from './ShapeBpmnElement';
-import Bounds from '../Bounds';
 import Label from '../Label';
+import { Bounds } from '../../json/DC';
 
 export default class Shape {
   constructor(readonly id?: string, readonly bpmnElement?: ShapeBpmnElement, readonly bounds?: Bounds, readonly label?: Label, readonly isHorizontal?: boolean) {}

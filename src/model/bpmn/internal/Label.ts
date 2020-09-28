@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Bounds from './Bounds';
+import { Bounds } from '../json/DC';
 
 export default class Label {
   constructor(readonly font?: Font, readonly bounds?: Bounds) {}

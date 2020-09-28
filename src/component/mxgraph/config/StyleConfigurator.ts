@@ -19,7 +19,6 @@ import { SequenceFlowKind } from '../../../model/bpmn/internal/edge/SequenceFlow
 import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import Edge from '../../../model/bpmn/internal/edge/Edge';
-import Bounds from '../../../model/bpmn/internal/Bounds';
 import ShapeBpmnElement, {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
@@ -32,6 +31,7 @@ import { Font } from '../../../model/bpmn/internal/Label';
 import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
 import { AssociationDirectionKind } from '../../../model/bpmn/internal/edge/AssociationDirectionKind';
+import { Bounds } from '../../../model/bpmn/json/DC';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
