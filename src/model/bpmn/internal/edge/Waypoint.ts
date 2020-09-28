@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export default class Waypoint {
+import { Point } from '../../json/DC';
+
+export default class Waypoint implements Point {
   constructor(readonly x: number, readonly y: number) {}
 }

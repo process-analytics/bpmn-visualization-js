@@ -22,7 +22,7 @@ import { findMessageFlow, findProcessRefParticipant, findProcessRefParticipantBy
 import Waypoint from '../../../../model/bpmn/internal/edge/Waypoint';
 import Label from '../../../../model/bpmn/internal/Label';
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
-import { Bounds, Font, Point } from '../../../../model/bpmn/json/DC';
+import { Font } from '../../../../model/bpmn/json/DC';
 import { ensureIsArray } from './ConverterUtil';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
@@ -144,14 +144,10 @@ export default class DiagramConverter {
   private deserializeEdges(edges: BPMNEdge | BPMNEdge[]): Edge[] {
     return ensureIsArray(edges).map(edge => {
       const flow = findSequenceFlow(edge.bpmnElement) || findMessageFlow(edge.bpmnElement) || findAssociationFlow(edge.bpmnElement);
-      const waypoints = this.deserializeWaypoints(edge.waypoint);
+      const waypoints = edge.waypoint as Waypoint[];
       const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
-      return new Edge(edge.id, flow, waypoints, label, edge.messageVisibleKind);
+      return new Edge(edge.id, flow, edge.waypoint, label, edge.messageVisibleKind);
     });
-  }
-
-  private deserializeWaypoints(waypoints: Point[]): Waypoint[] {
-    return ensureIsArray(waypoints).map(waypoint => new Waypoint(waypoint.x, waypoint.y));
   }
 
   private deserializeLabel(bpmnLabel: string | BPMNLabel, id: string): Label {
