@@ -25,7 +25,7 @@ import ShapeBpmnElement, {
   ShapeBpmnSubProcess,
 } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
-import Label, { Font } from '../../../../../src/model/bpmn/internal/Label';
+import Label from '../../../../../src/model/bpmn/internal/Label';
 import { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
@@ -34,10 +34,10 @@ import { BpmnEventKind } from '../../../../../src/model/bpmn/internal/shape/Shap
 import each from 'jest-each';
 import { AssociationDirectionKind } from '../../../../../src/model/bpmn/internal/edge/AssociationDirectionKind';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/json/BPMNDI';
-import { Bounds } from '../../../../../src/model/bpmn/json/DC';
+import { Bounds, Font } from '../../../../../src/model/bpmn/json/DC';
 
 function toFont(font: ExpectedFont): Font {
-  return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
+  return { name: font.name, size: font.size, isBold: font.isBold, isItalic: font.isItalic, isUnderline: font.isUnderline, isStrikeThrough: font.isStrikeThrough };
 }
 
 function newLabel(font: ExpectedFont, bounds?: Bounds): Label {

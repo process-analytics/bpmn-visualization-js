@@ -27,11 +27,10 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { Font } from '../../../model/bpmn/internal/Label';
 import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
 import { AssociationDirectionKind } from '../../../model/bpmn/internal/edge/AssociationDirectionKind';
-import { Bounds } from '../../../model/bpmn/json/DC';
+import { Bounds, Font } from '../../../model/bpmn/json/DC';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {

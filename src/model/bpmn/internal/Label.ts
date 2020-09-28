@@ -13,19 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Bounds } from '../json/DC';
+import { Bounds, Font } from '../json/DC';
 
 export default class Label {
   constructor(readonly font?: Font, readonly bounds?: Bounds) {}
-}
-
-export class Font {
-  constructor(
-    readonly name?: string,
-    readonly size?: number,
-    readonly isBold?: boolean,
-    readonly isItalic?: boolean,
-    readonly isUnderline?: boolean,
-    readonly isStrikeThrough?: boolean,
-  ) {}
 }
