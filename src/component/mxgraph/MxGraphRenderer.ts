@@ -17,12 +17,11 @@ import Shape from '../../model/bpmn/internal/shape/Shape';
 import Edge from '../../model/bpmn/internal/edge/Edge';
 import BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
-import Waypoint from '../../model/bpmn/internal/edge/Waypoint';
 import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
 import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';
-import { Bounds } from '../../model/bpmn/json/DC';
+import { Bounds, Point } from '../../model/bpmn/json/DC';
 
 export default class MxGraphRenderer {
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
@@ -118,7 +117,7 @@ export default class MxGraphRenderer {
     }
   }
 
-  private insertWaypoints(waypoints: Waypoint[], mxEdge: mxCell): void {
+  private insertWaypoints(waypoints: Point[], mxEdge: mxCell): void {
     if (waypoints) {
       mxEdge.geometry.points = waypoints.map(waypoint => {
         return this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(waypoint.x, waypoint.y));

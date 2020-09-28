@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Waypoint from './Waypoint';
 import Label from '../Label';
 import Flow from './Flow';
 import { MessageVisibleKind } from '../../json/BPMNDI';
+import { Point } from '../../json/DC';
 
 export default class Edge {
-  constructor(readonly id?: string, readonly bpmnElement?: Flow, readonly waypoints?: Waypoint[], readonly label?: Label, readonly messageVisibleKind?: MessageVisibleKind) {}
+  constructor(readonly id?: string, readonly bpmnElement?: Flow, readonly waypoints?: Point[], readonly label?: Label, readonly messageVisibleKind?: MessageVisibleKind) {}
 }

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
-import Waypoint from '../../../../../src/model/bpmn/internal/edge/Waypoint';
 import * as bpmndi from '../../../../../src/model/bpmn/json/BPMNDI';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/json/BPMNDI';
 
@@ -55,7 +54,7 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementName: 'Message Flow 0',
       bpmnElementSourceRefId: 'sourceRef_id',
       bpmnElementTargetRefId: 'targetRef_id',
-      waypoints: [new Waypoint(10, 10)],
+      waypoints: [{ x: 10, y: 10 }],
     });
   });
 
@@ -109,7 +108,7 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementName: 'Message Flow 0',
       bpmnElementSourceRefId: 'sourceRef_id',
       bpmnElementTargetRefId: 'targetRef_id',
-      waypoints: [new Waypoint(10, 10)],
+      waypoints: [{ x: 10, y: 10 }],
     });
     verifyEdge(model.edges[1], {
       edgeId: 'edge_messageFlow_id_1',
@@ -117,7 +116,7 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'messageFlow_id_1',
       bpmnElementTargetRefId: 'targetRef_id_1',
-      waypoints: [new Waypoint(10, 10)],
+      waypoints: [{ x: 10, y: 10 }],
     });
   });
 
@@ -149,25 +148,14 @@ describe('parse bpmn as json for message flow', () => {
               {
                 id: 'edge_messageFlow_id_0',
                 bpmnElement: 'messageFlow_id_0',
-                waypoint: [
-                  {
-                    x: 1,
-                    y: 1,
-                  },
-                ],
+                waypoint: [{ x: 1, y: 1 }],
               },
               {
                 id: 'edge_messageFlow_id_1',
                 bpmnElement: 'messageFlow_id_1',
                 waypoint: [
-                  {
-                    x: 2,
-                    y: 2,
-                  },
-                  {
-                    x: 3,
-                    y: 3,
-                  },
+                  { x: 2, y: 2 },
+                  { x: 3, y: 3 },
                 ],
               },
             ],
@@ -184,7 +172,7 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'sourceRef_id',
       bpmnElementTargetRefId: 'targetRef_id',
-      waypoints: [new Waypoint(1, 1)],
+      waypoints: [{ x: 1, y: 1 }],
     });
     verifyEdge(model.edges[1], {
       edgeId: 'edge_messageFlow_id_1',
@@ -192,7 +180,10 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'sourceRef_id_1',
       bpmnElementTargetRefId: 'targetRef_id_1',
-      waypoints: [new Waypoint(2, 2), new Waypoint(3, 3)],
+      waypoints: [
+        { x: 2, y: 2 },
+        { x: 3, y: 3 },
+      ],
     });
   });
 
@@ -258,7 +249,7 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementSourceRefId: 'sourceRef_id',
       bpmnElementTargetRefId: 'targetRef_id',
       messageVisibleKind: undefined,
-      waypoints: [new Waypoint(10, 10)],
+      waypoints: [{ x: 10, y: 10 }],
     });
     verifyEdge(model.edges[1], {
       edgeId: 'edge_messageFlow_id_1',
@@ -267,7 +258,7 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementSourceRefId: 'sourceRef_id_1',
       bpmnElementTargetRefId: 'targetRef_id_1',
       messageVisibleKind: MessageVisibleKind.nonInitiating,
-      waypoints: [new Waypoint(10, 10)],
+      waypoints: [{ x: 10, y: 10 }],
     });
     verifyEdge(model.edges[2], {
       edgeId: 'edge_messageFlow_id_2',
@@ -276,7 +267,7 @@ describe('parse bpmn as json for message flow', () => {
       bpmnElementSourceRefId: 'sourceRef_id_2',
       bpmnElementTargetRefId: 'targetRef_id_2',
       messageVisibleKind: MessageVisibleKind.initiating,
-      waypoints: [new Waypoint(10, 10)],
+      waypoints: [{ x: 10, y: 10 }],
     });
   });
 });

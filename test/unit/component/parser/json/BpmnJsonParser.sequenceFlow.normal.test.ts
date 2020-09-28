@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
-import Waypoint from '../../../../../src/model/bpmn/internal/edge/Waypoint';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for sequence flow', () => {
@@ -56,7 +55,7 @@ describe('parse bpmn as json for sequence flow', () => {
       bpmnElementName: 'label 1',
       bpmnElementSourceRefId: 'sourceRef_id_xsdas',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      waypoints: [new Waypoint(10, 10)],
+      waypoints: [{ x: 10, y: 10 }],
     });
   });
 
@@ -109,7 +108,7 @@ describe('parse bpmn as json for sequence flow', () => {
       bpmnElementName: 'label 1',
       bpmnElementSourceRefId: 'sourceRef_id_xsdas',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      waypoints: [new Waypoint(10, 10)],
+      waypoints: [{ x: 10, y: 10 }],
     });
     verifyEdge(model.edges[1], {
       edgeId: 'edge_sequenceFlow_id_1',
@@ -117,7 +116,7 @@ describe('parse bpmn as json for sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'sequenceFlow_id_1',
       bpmnElementTargetRefId: 'targetRef_1',
-      waypoints: [new Waypoint(10, 10)],
+      waypoints: [{ x: 10, y: 10 }],
     });
   });
 
@@ -176,7 +175,10 @@ describe('parse bpmn as json for sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'sourceRef_id_xsdas',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      waypoints: [new Waypoint(1, 1), new Waypoint(2, 2)],
+      waypoints: [
+        { x: 1, y: 1 },
+        { x: 2, y: 2 },
+      ],
     });
     verifyEdge(model.edges[1], {
       edgeId: 'edge_sequenceFlow_id_1',
@@ -184,7 +186,11 @@ describe('parse bpmn as json for sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'sequenceFlow_id_1',
       bpmnElementTargetRefId: 'targetRef_1',
-      waypoints: [new Waypoint(2, 2), new Waypoint(3, 3), new Waypoint(4, 4)],
+      waypoints: [
+        { x: 2, y: 2 },
+        { x: 3, y: 3 },
+        { x: 4, y: 4 },
+      ],
     });
   });
 });

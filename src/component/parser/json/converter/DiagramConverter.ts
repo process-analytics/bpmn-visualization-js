@@ -19,7 +19,6 @@ import Edge from '../../../../model/bpmn/internal/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
 import { findAssociationFlow, findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, findSequenceFlow } from './ProcessConverter';
 import { findMessageFlow, findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
-import Waypoint from '../../../../model/bpmn/internal/edge/Waypoint';
 import Label from '../../../../model/bpmn/internal/Label';
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
 import { Font } from '../../../../model/bpmn/json/DC';
@@ -144,7 +143,6 @@ export default class DiagramConverter {
   private deserializeEdges(edges: BPMNEdge | BPMNEdge[]): Edge[] {
     return ensureIsArray(edges).map(edge => {
       const flow = findSequenceFlow(edge.bpmnElement) || findMessageFlow(edge.bpmnElement) || findAssociationFlow(edge.bpmnElement);
-      const waypoints = edge.waypoint as Waypoint[];
       const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
       return new Edge(edge.id, flow, edge.waypoint, label, edge.messageVisibleKind);
     });

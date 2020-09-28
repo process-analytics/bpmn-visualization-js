@@ -16,7 +16,6 @@
 import { parseJsonAndExpectOnlyEdgesAndFlowNodes, verifyEdge } from './JsonTestUtils';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import each from 'jest-each';
-import Waypoint from '../../../../../src/model/bpmn/internal/edge/Waypoint';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for default sequence flow', () => {
@@ -76,7 +75,7 @@ describe('parse bpmn as json for default sequence flow', () => {
       bpmnElementSourceRefId: 'source_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
       bpmnElementSequenceFlowKind: SequenceFlowKind.DEFAULT,
-      waypoints: [new Waypoint(10, 10)],
+      waypoints: [{ x: 10, y: 10 }],
     });
   });
 
@@ -121,7 +120,7 @@ describe('parse bpmn as json for default sequence flow', () => {
       bpmnElementSourceRefId: 'gateway_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
       bpmnElementSequenceFlowKind: SequenceFlowKind.NORMAL,
-      waypoints: [new Waypoint(10, 10)],
+      waypoints: [{ x: 10, y: 10 }],
     });
   });
 });

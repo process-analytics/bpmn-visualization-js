@@ -18,7 +18,6 @@ import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/Se
 import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { TSequenceFlow } from '../../../../../src/model/bpmn/json/baseElement/flowElement';
-import Waypoint from '../../../../../src/model/bpmn/internal/edge/Waypoint';
 
 describe('parse bpmn as json for conditional sequence flow', () => {
   each([
@@ -84,7 +83,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
         bpmnElementSourceRefId: 'source_id_0',
         bpmnElementTargetRefId: 'targetRef_RLk',
         bpmnElementSequenceFlowKind: expectedSequenceFlowKind,
-        waypoints: [new Waypoint(10, 10)],
+        waypoints: [{ x: 10, y: 10 }],
       });
     },
   );
@@ -134,7 +133,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
       bpmnElementSourceRefId: 'gateway_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
       bpmnElementSequenceFlowKind: SequenceFlowKind.NORMAL,
-      waypoints: [new Waypoint(10, 10)],
+      waypoints: [{ x: 10, y: 10 }],
     });
   });
 });
