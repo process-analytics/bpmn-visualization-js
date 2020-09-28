@@ -16,6 +16,52 @@
 import { orderActivityMarkers } from '../../../../../../src/component/mxgraph/shape/render/utils';
 import { ShapeBpmnMarkerKind } from '../../../../../../src/model/bpmn/shape';
 
+function computeAllPermutations(array: string[]): string[][] {
+  // see https://stackoverflow.com/questions/9960908/permutations-in-javascript and https://code-boxx.com/javascript-permutations-combinations/
+
+  const permutation = [...array];
+
+  const length = permutation.length,
+    result = [permutation.slice()],
+    c = new Array(length).fill(0);
+  let i = 1,
+    k,
+    p;
+
+  while (i < length) {
+    if (c[i] < i) {
+      k = i % 2 && c[i];
+      p = permutation[i];
+      permutation[i] = permutation[k];
+      permutation[k] = p;
+      ++c[i];
+      i = 1;
+      result.push(permutation.slice());
+    } else {
+      c[i] = 0;
+      ++i;
+    }
+  }
+  return result;
+}
+
+describe('check permutations', () => {
+  it('3 elements', () => {
+    expect(computeAllPermutations(['1', '2', '3'])).toEqual([
+      ['1', '2', '3'],
+      ['2', '1', '3'],
+      ['3', '1', '2'],
+      ['1', '3', '2'],
+      ['2', '3', '1'],
+      ['3', '2', '1'],
+    ]);
+  });
+
+  it('4 elements', () => {
+    expect(computeAllPermutations(['1', '2', '3', '4'])).toHaveLength(24);
+  });
+});
+
 describe('enforce activity markers order', () => {
   describe('1 element', () => {
     it.each(Object.values(ShapeBpmnMarkerKind))(`1 element - %s`, (marker: string) => {
