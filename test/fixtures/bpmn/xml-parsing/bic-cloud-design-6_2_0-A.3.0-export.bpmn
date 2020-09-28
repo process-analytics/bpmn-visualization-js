@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:gbtec="http://www.gbtec.de/bpmn/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" targetNamespace="gbtc.diagram" id="Diagram--4fe6a07c-d4d4-4a73-b292-bb3716a99700">
+  <bpmn:process id="process_4fe6a07c-d4d4-4a73-b292-bb3716a99700">
+    <bpmn:extensionElements>
+      <gbtec:diagramData stereotype="DT_BPMN_COLLABORATION">
+        <gbtec:attribute stereotype="AT_NAME">
+          <gbtec:attributeValue locale="de" stereotype="AT_NAME" value="A.3.0" dataType="Text"/>
+        </gbtec:attribute>
+      </gbtec:diagramData>
+    </bpmn:extensionElements>
+    <bpmn:task isForCompensation="false" name="Task 1" id="UUID_c1090373-bb11-439e-8a86-61dcdeeb8e37">
+      <bpmn:documentation id="documentation_UUID_c1090373-bb11-439e-8a86-61dcdeeb8e37"/>
+      <bpmn:extensionElements>
+        <gbtec:entityData stereotype="ET_ACTIVITY">
+          <gbtec:attribute stereotype="AT_NAME">
+            <gbtec:attributeValue locale="de" stereotype="AT_NAME" value="Task 1" dataType="Text"/>
+          </gbtec:attribute>
+        </gbtec:entityData>
+        <gbtec:nodeData stereotype="NST_TASK"/>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Sequence_6210b841-c721-4f07-bb52-465bb1b18752</bpmn:incoming>
+      <bpmn:outgoing>Sequence_e26140e3-4363-41ba-8ad2-7e5aa9a83463</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task isForCompensation="false" name="Collapsed Sub-Process" id="UUID_9985eee1-a8a0-48ec-9f19-654bd6b9874f">
+      <bpmn:documentation id="documentation_UUID_9985eee1-a8a0-48ec-9f19-654bd6b9874f"/>
+      <bpmn:extensionElements>
+        <gbtec:entityData stereotype="ET_ACTIVITY">
+          <gbtec:attribute stereotype="AT_DECOMPOSITION">
+            <gbtec:attributeValue locale="all" stereotype="AT_DECOMPOSITION" value="{&quot;rel&quot;:&quot;http://cloud.gbtec.de/rels/diagram&quot;,&quot;uri&quot;:&quot;/api/tenants/00000000-0000-4000-a000-000000000000/repositories/4400b90e-6197-402f-9b6e-03268ce2a4b7/stages/common/diagrams/4c34544d-6452-4961-95fc-b4962557f809&quot;}" dataType="Assignment"/>
+          </gbtec:attribute>
+          <gbtec:attribute stereotype="AT_NAME">
+            <gbtec:attributeValue locale="de" stereotype="AT_NAME" value="Collapsed Sub-Process" dataType="Text"/>
+          </gbtec:attribute>
+        </gbtec:entityData>
+        <gbtec:nodeData stereotype="NST_TASK"/>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Sequence_e26140e3-4363-41ba-8ad2-7e5aa9a83463</bpmn:incoming>
+      <bpmn:outgoing>Sequence_d84cf868-9f83-40b6-b81e-6e7474e27f03</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task isForCompensation="false" name="Task 2" id="UUID_7b35f47c-a852-4371-9cd8-175a6031a51f">
+      <bpmn:documentation id="documentation_UUID_7b35f47c-a852-4371-9cd8-175a6031a51f"/>
+      <bpmn:extensionElements>
+        <gbtec:entityData stereotype="ET_ACTIVITY">
+          <gbtec:attribute stereotype="AT_NAME">
+            <gbtec:attributeValue locale="de" stereotype="AT_NAME" value="Task 2" dataType="Text"/>
+          </gbtec:attribute>
+        </gbtec:entityData>
+        <gbtec:nodeData stereotype="NST_TASK"/>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Sequence_d84cf868-9f83-40b6-b81e-6e7474e27f03</bpmn:incoming>
+      <bpmn:outgoing>Sequence_e5706950-3803-40d7-8221-7d3f732fde98</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task isForCompensation="false" name="Aktivität" id="UUID_5d585893-cb4c-440f-98c6-c725a91dc9c3">
+      <bpmn:documentation id="documentation_UUID_5d585893-cb4c-440f-98c6-c725a91dc9c3"/>
+      <bpmn:extensionElements>
+        <gbtec:entityData stereotype="ET_ACTIVITY">
+          <gbtec:attribute stereotype="AT_NAME">
+            <gbtec:attributeValue locale="de" stereotype="AT_NAME" value="Aktivität" dataType="Text"/>
+          </gbtec:attribute>
+        </gbtec:entityData>
+        <gbtec:nodeData stereotype="NST_TASK"/>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Sequence_ec21b991-9e77-4108-8e06-bc13d88ac44c</bpmn:incoming>
+      <bpmn:outgoing>Sequence_718285d0-70e9-4d51-80f1-1050c29b005c</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task isForCompensation="false" name="Task 4" id="UUID_c505b46c-2d1e-4500-816c-84f4ac77b56e">
+      <bpmn:documentation id="documentation_UUID_c505b46c-2d1e-4500-816c-84f4ac77b56e"/>
+      <bpmn:extensionElements>
+        <gbtec:entityData stereotype="ET_ACTIVITY">
+          <gbtec:attribute stereotype="AT_NAME">
+            <gbtec:attributeValue locale="de" stereotype="AT_NAME" value="Task 4" dataType="Text"/>
+          </gbtec:attribute>
+        </gbtec:entityData>
+        <gbtec:nodeData stereotype="NST_TASK"/>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Sequence_b2fad505-c101-46d3-8fee-48942c8ac57d</bpmn:incoming>
+      <bpmn:outgoing>Sequence_28381fd9-bec6-495b-ab71-1d0b3a8a7f29</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:startEvent parallelMultiple="false" name="Start Ereignis" id="UUID_2dfe06f0-9dab-4971-95bd-ff211afb45d3">
+      <bpmn:documentation id="documentation_UUID_2dfe06f0-9dab-4971-95bd-ff211afb45d3"/>
+      <bpmn:extensionElements>
+        <gbtec:entityData stereotype="ET_START_EVENT">
+          <gbtec:attribute stereotype="AT_NAME">
+            <gbtec:attributeValue locale="de" stereotype="AT_NAME" value="Start Ereignis" dataType="Text"/>
+          </gbtec:attribute>
+        </gbtec:entityData>
+        <gbtec:nodeData stereotype="NST_START_EVENT"/>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Sequence_6210b841-c721-4f07-bb52-465bb1b18752</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent name="End Event 1" id="UUID_36de0f16-ffd5-4206-b39a-3eb166e39541">
+      <bpmn:documentation id="documentation_UUID_36de0f16-ffd5-4206-b39a-3eb166e39541"/>
+      <bpmn:extensionElements>
+        <gbtec:entityData stereotype="ET_END_EVENT">
+          <gbtec:attribute stereotype="AT_NAME">
+            <gbtec:attributeValue locale="de" stereotype="AT_NAME" value="End Event 1" dataType="Text"/>
+          </gbtec:attribute>
+        </gbtec:entityData>
+        <gbtec:nodeData stereotype="NST_END_EVENT"/>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Sequence_718285d0-70e9-4d51-80f1-1050c29b005c</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent name="End Event 2" id="UUID_ce161e7b-e67a-4f82-87ff-031ee7a581ee">
+      <bpmn:documentation id="documentation_UUID_ce161e7b-e67a-4f82-87ff-031ee7a581ee"/>
+      <bpmn:extensionElements>
+        <gbtec:entityData stereotype="ET_END_EVENT">
+          <gbtec:attribute stereotype="AT_NAME">
+            <gbtec:attributeValue locale="de" stereotype="AT_NAME" value="End Event 2" dataType="Text"/>
+          </gbtec:attribute>
+        </gbtec:entityData>
+        <gbtec:nodeData stereotype="NST_END_EVENT"/>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Sequence_28381fd9-bec6-495b-ab71-1d0b3a8a7f29</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:boundaryEvent cancelActivity="false" attachedToRef="UUID_9985eee1-a8a0-48ec-9f19-654bd6b9874f" parallelMultiple="false" name="Boundary Intermediate Event Non-Interruplting Message&#xA;" id="UUID_9bb78095-59cf-4475-8b36-4e8cedee1d3c">
+      <bpmn:documentation id="documentation_UUID_9bb78095-59cf-4475-8b36-4e8cedee1d3c"/>
+      <bpmn:extensionElements>
+        <gbtec:entityData stereotype="ET_INTERMEDIATE_EVENT">
+          <gbtec:attribute stereotype="AT_NAME">
+            <gbtec:attributeValue locale="de" stereotype="AT_NAME" value="Boundary Intermediate Event Non-Interruplting Message&#xA;" dataType="Text"/>
+          </gbtec:attribute>
+        </gbtec:entityData>
+        <gbtec:nodeData stereotype="NST_INTERMEDIATE_EVENT">
+          <gbtec:attribute stereotype="AT_INTERMEDIATE_EVENT_TYPE">
+            <gbtec:attributeValue locale="all" stereotype="AT_INTERMEDIATE_EVENT_TYPE" value="1" dataType="Enum"/>
+          </gbtec:attribute>
+          <gbtec:attribute stereotype="AT_NON_INTERRUPTING">
+            <gbtec:attributeValue locale="all" stereotype="AT_NON_INTERRUPTING" value="true" dataType="Boolean"/>
+          </gbtec:attribute>
+        </gbtec:nodeData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Sequence_ec21b991-9e77-4108-8e06-bc13d88ac44c</bpmn:outgoing>
+      <bpmn:messageEventDefinition/>
+    </bpmn:boundaryEvent>
+    <bpmn:boundaryEvent cancelActivity="true" attachedToRef="UUID_9985eee1-a8a0-48ec-9f19-654bd6b9874f" parallelMultiple="false" name="Boundary Intermediate Event Interrupting Escalation" id="UUID_d681e2c5-376a-4819-b1d3-5ada529f5318">
+      <bpmn:documentation id="documentation_UUID_d681e2c5-376a-4819-b1d3-5ada529f5318"/>
+      <bpmn:extensionElements>
+        <gbtec:entityData stereotype="ET_INTERMEDIATE_EVENT">
+          <gbtec:attribute stereotype="AT_NAME">
+            <gbtec:attributeValue locale="de" stereotype="AT_NAME" value="Boundary Intermediate Event Interrupting Escalation" dataType="Text"/>
+          </gbtec:attribute>
+        </gbtec:entityData>
+        <gbtec:nodeData stereotype="NST_INTERMEDIATE_EVENT">
+          <gbtec:attribute stereotype="AT_INTERMEDIATE_EVENT_TYPE">
+            <gbtec:attributeValue locale="all" stereotype="AT_INTERMEDIATE_EVENT_TYPE" value="4" dataType="Enum"/>
+          </gbtec:attribute>
+          <gbtec:attribute stereotype="AT_NON_INTERRUPTING">
+            <gbtec:attributeValue locale="all" stereotype="AT_NON_INTERRUPTING" value="false" dataType="Boolean"/>
+          </gbtec:attribute>
+        </gbtec:nodeData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Sequence_b2fad505-c101-46d3-8fee-48942c8ac57d</bpmn:outgoing>
+      <bpmn:escalationEventDefinition/>
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow sourceRef="UUID_2dfe06f0-9dab-4971-95bd-ff211afb45d3" targetRef="UUID_c1090373-bb11-439e-8a86-61dcdeeb8e37" id="Sequence_6210b841-c721-4f07-bb52-465bb1b18752">
+      <bpmn:documentation id="documentation_Sequence_6210b841-c721-4f07-bb52-465bb1b18752"/>
+      <bpmn:extensionElements>
+        <gbtec:associationData stereotype="AST_SEQUENCE_FLOW"/>
+        <gbtec:edgeData stereotype="ST_1477950886063"/>
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow sourceRef="UUID_c1090373-bb11-439e-8a86-61dcdeeb8e37" targetRef="UUID_9985eee1-a8a0-48ec-9f19-654bd6b9874f" id="Sequence_e26140e3-4363-41ba-8ad2-7e5aa9a83463">
+      <bpmn:documentation id="documentation_Sequence_e26140e3-4363-41ba-8ad2-7e5aa9a83463"/>
+      <bpmn:extensionElements>
+        <gbtec:associationData stereotype="AST_SEQUENCE_FLOW"/>
+        <gbtec:edgeData stereotype="ST_1477950886063"/>
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow sourceRef="UUID_9985eee1-a8a0-48ec-9f19-654bd6b9874f" targetRef="UUID_7b35f47c-a852-4371-9cd8-175a6031a51f" id="Sequence_d84cf868-9f83-40b6-b81e-6e7474e27f03">
+      <bpmn:documentation id="documentation_Sequence_d84cf868-9f83-40b6-b81e-6e7474e27f03"/>
+      <bpmn:extensionElements>
+        <gbtec:associationData stereotype="AST_SEQUENCE_FLOW"/>
+        <gbtec:edgeData stereotype="ST_1477950886063"/>
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow sourceRef="UUID_7b35f47c-a852-4371-9cd8-175a6031a51f" targetRef="UUID_36de0f16-ffd5-4206-b39a-3eb166e39541" id="Sequence_e5706950-3803-40d7-8221-7d3f732fde98">
+      <bpmn:documentation id="documentation_Sequence_e5706950-3803-40d7-8221-7d3f732fde98"/>
+      <bpmn:extensionElements>
+        <gbtec:associationData stereotype="AST_SEQUENCE_FLOW"/>
+        <gbtec:edgeData stereotype="ST_1477950886063"/>
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow sourceRef="UUID_9bb78095-59cf-4475-8b36-4e8cedee1d3c" targetRef="UUID_5d585893-cb4c-440f-98c6-c725a91dc9c3" id="Sequence_ec21b991-9e77-4108-8e06-bc13d88ac44c">
+      <bpmn:documentation id="documentation_Sequence_ec21b991-9e77-4108-8e06-bc13d88ac44c"/>
+      <bpmn:extensionElements>
+        <gbtec:associationData stereotype="AST_SEQUENCE_FLOW"/>
+        <gbtec:edgeData stereotype="ST_1477950886063"/>
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow sourceRef="UUID_5d585893-cb4c-440f-98c6-c725a91dc9c3" targetRef="UUID_36de0f16-ffd5-4206-b39a-3eb166e39541" id="Sequence_718285d0-70e9-4d51-80f1-1050c29b005c">
+      <bpmn:documentation id="documentation_Sequence_718285d0-70e9-4d51-80f1-1050c29b005c"/>
+      <bpmn:extensionElements>
+        <gbtec:associationData stereotype="AST_SEQUENCE_FLOW"/>
+        <gbtec:edgeData stereotype="ST_1477950886063"/>
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow sourceRef="UUID_d681e2c5-376a-4819-b1d3-5ada529f5318" targetRef="UUID_c505b46c-2d1e-4500-816c-84f4ac77b56e" id="Sequence_b2fad505-c101-46d3-8fee-48942c8ac57d">
+      <bpmn:documentation id="documentation_Sequence_b2fad505-c101-46d3-8fee-48942c8ac57d"/>
+      <bpmn:extensionElements>
+        <gbtec:associationData stereotype="AST_SEQUENCE_FLOW"/>
+        <gbtec:edgeData stereotype="ST_1477950886063"/>
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow sourceRef="UUID_c505b46c-2d1e-4500-816c-84f4ac77b56e" targetRef="UUID_ce161e7b-e67a-4f82-87ff-031ee7a581ee" id="Sequence_28381fd9-bec6-495b-ab71-1d0b3a8a7f29">
+      <bpmn:documentation id="documentation_Sequence_28381fd9-bec6-495b-ab71-1d0b3a8a7f29"/>
+      <bpmn:extensionElements>
+        <gbtec:associationData stereotype="AST_SEQUENCE_FLOW"/>
+        <gbtec:edgeData stereotype="ST_1477950886063"/>
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="bpmnDiagram">
+    <bpmndi:BPMNPlane id="CollaborationID-Diagram" bpmnElement="process_4fe6a07c-d4d4-4a73-b292-bb3716a99700">
+      <bpmndi:BPMNShape id="node_UUID_2dfe06f0-9dab-4971-95bd-ff211afb45d3" bpmnElement="UUID_2dfe06f0-9dab-4971-95bd-ff211afb45d3">
+        <dc:Bounds x="19" y="93" width="31" height="31"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="node_UUID_c1090373-bb11-439e-8a86-61dcdeeb8e37" bpmnElement="UUID_c1090373-bb11-439e-8a86-61dcdeeb8e37">
+        <dc:Bounds x="103" y="86" width="92" height="47"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="node_UUID_9985eee1-a8a0-48ec-9f19-654bd6b9874f" bpmnElement="UUID_9985eee1-a8a0-48ec-9f19-654bd6b9874f">
+        <dc:Bounds x="248" y="86" width="92" height="47"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="node_UUID_9bb78095-59cf-4475-8b36-4e8cedee1d3c" bpmnElement="UUID_9bb78095-59cf-4475-8b36-4e8cedee1d3c">
+        <dc:Bounds x="291" y="70" width="31" height="31"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="node_UUID_d681e2c5-376a-4819-b1d3-5ada529f5318" bpmnElement="UUID_d681e2c5-376a-4819-b1d3-5ada529f5318">
+        <dc:Bounds x="298" y="117" width="31" height="31"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="node_UUID_7b35f47c-a852-4371-9cd8-175a6031a51f" bpmnElement="UUID_7b35f47c-a852-4371-9cd8-175a6031a51f">
+        <dc:Bounds x="392" y="86" width="92" height="47"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="node_UUID_36de0f16-ffd5-4206-b39a-3eb166e39541" bpmnElement="UUID_36de0f16-ffd5-4206-b39a-3eb166e39541">
+        <dc:Bounds x="537" y="93" width="31" height="31"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="node_UUID_5d585893-cb4c-440f-98c6-c725a91dc9c3" bpmnElement="UUID_5d585893-cb4c-440f-98c6-c725a91dc9c3">
+        <dc:Bounds x="392" y="6" width="92" height="47"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="node_UUID_c505b46c-2d1e-4500-816c-84f4ac77b56e" bpmnElement="UUID_c505b46c-2d1e-4500-816c-84f4ac77b56e">
+        <dc:Bounds x="369" y="174" width="92" height="47"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="node_UUID_ce161e7b-e67a-4f82-87ff-031ee7a581ee" bpmnElement="UUID_ce161e7b-e67a-4f82-87ff-031ee7a581ee">
+        <dc:Bounds x="506" y="182" width="31" height="31"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="edge_Sequence_6210b841-c721-4f07-bb52-465bb1b18752" bpmnElement="Sequence_6210b841-c721-4f07-bb52-465bb1b18752">
+        <di:waypoint x="50" y="108" xsi:type="dc:Point"/>
+        <di:waypoint x="76" y="109" xsi:type="dc:Point"/>
+        <di:waypoint x="76" y="110" xsi:type="dc:Point"/>
+        <di:waypoint x="103" y="109" xsi:type="dc:Point"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_Sequence_e26140e3-4363-41ba-8ad2-7e5aa9a83463" bpmnElement="Sequence_e26140e3-4363-41ba-8ad2-7e5aa9a83463">
+        <di:waypoint x="195" y="109" xsi:type="dc:Point"/>
+        <di:waypoint x="221" y="110" xsi:type="dc:Point"/>
+        <di:waypoint x="248" y="109" xsi:type="dc:Point"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_Sequence_d84cf868-9f83-40b6-b81e-6e7474e27f03" bpmnElement="Sequence_d84cf868-9f83-40b6-b81e-6e7474e27f03">
+        <di:waypoint x="340" y="109" xsi:type="dc:Point"/>
+        <di:waypoint x="366" y="110" xsi:type="dc:Point"/>
+        <di:waypoint x="392" y="109" xsi:type="dc:Point"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_Sequence_e5706950-3803-40d7-8221-7d3f732fde98" bpmnElement="Sequence_e5706950-3803-40d7-8221-7d3f732fde98">
+        <di:waypoint x="484" y="109" xsi:type="dc:Point"/>
+        <di:waypoint x="510" y="110" xsi:type="dc:Point"/>
+        <di:waypoint x="510" y="109" xsi:type="dc:Point"/>
+        <di:waypoint x="537" y="108" xsi:type="dc:Point"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_Sequence_ec21b991-9e77-4108-8e06-bc13d88ac44c" bpmnElement="Sequence_ec21b991-9e77-4108-8e06-bc13d88ac44c">
+        <di:waypoint x="322" y="85" xsi:type="dc:Point"/>
+        <di:waypoint x="357" y="86" xsi:type="dc:Point"/>
+        <di:waypoint x="357" y="30" xsi:type="dc:Point"/>
+        <di:waypoint x="392" y="29" xsi:type="dc:Point"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_Sequence_718285d0-70e9-4d51-80f1-1050c29b005c" bpmnElement="Sequence_718285d0-70e9-4d51-80f1-1050c29b005c">
+        <di:waypoint x="484" y="29" xsi:type="dc:Point"/>
+        <di:waypoint x="510" y="30" xsi:type="dc:Point"/>
+        <di:waypoint x="510" y="109" xsi:type="dc:Point"/>
+        <di:waypoint x="537" y="108" xsi:type="dc:Point"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_Sequence_b2fad505-c101-46d3-8fee-48942c8ac57d" bpmnElement="Sequence_b2fad505-c101-46d3-8fee-48942c8ac57d">
+        <di:waypoint x="329" y="132" xsi:type="dc:Point"/>
+        <di:waypoint x="415" y="133" xsi:type="dc:Point"/>
+        <di:waypoint x="415" y="174" xsi:type="dc:Point"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_Sequence_28381fd9-bec6-495b-ab71-1d0b3a8a7f29" bpmnElement="Sequence_28381fd9-bec6-495b-ab71-1d0b3a8a7f29">
+        <di:waypoint x="461" y="197" xsi:type="dc:Point"/>
+        <di:waypoint x="483" y="198" xsi:type="dc:Point"/>
+        <di:waypoint x="506" y="197" xsi:type="dc:Point"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
