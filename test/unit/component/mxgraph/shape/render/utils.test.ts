@@ -22,7 +22,7 @@ function computeAllPermutations(array: string[]): string[][][] {
   const permutation = [...array];
 
   const length = permutation.length,
-    result = [permutation.slice()],
+    result = [[permutation.slice()]],
     c = new Array(length).fill(0);
   let i = 1,
     k,
@@ -36,13 +36,13 @@ function computeAllPermutations(array: string[]): string[][][] {
       permutation[k] = p;
       ++c[i];
       i = 1;
-      result.push(permutation.slice());
+      result.push([permutation.slice()]);
     } else {
       c[i] = 0;
       ++i;
     }
   }
-  return [result];
+  return result;
 }
 
 describe('check permutations', () => {
@@ -51,29 +51,15 @@ describe('check permutations', () => {
   // The Compensation marker MAY be used in combination with any of the other markers.
 
   it('2 elements', () => {
-    expect(computeAllPermutations(['1', '2'])).toEqual([
-      [
-        ['1', '2'],
-        ['2', '1'],
-      ],
-    ]);
+    expect(computeAllPermutations(['1', '2'])).toEqual([[['1', '2']], [['2', '1']]]);
   });
 
   it('3 elements', () => {
-    expect(computeAllPermutations(['1', '2', '3'])).toEqual([
-      [
-        ['1', '2', '3'],
-        ['2', '1', '3'],
-        ['3', '1', '2'],
-        ['1', '3', '2'],
-        ['2', '3', '1'],
-        ['3', '2', '1'],
-      ],
-    ]);
+    expect(computeAllPermutations(['1', '2', '3'])).toEqual([[['1', '2', '3']], [['2', '1', '3']], [['3', '1', '2']], [['1', '3', '2']], [['2', '3', '1']], [['3', '2', '1']]]);
   });
 
   it('4 elements', () => {
-    expect(computeAllPermutations(['1', '2', '3', '4'])[0]).toHaveLength(24);
+    expect(computeAllPermutations(['1', '2', '3', '4'])).toHaveLength(24);
   });
 });
 
@@ -101,6 +87,7 @@ describe('enforce activity markers order', () => {
       [[ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.ADHOC]],
     ])(`markers: %s`, (expectedOrderedMarkers: string[]) => {
       it.each(computeAllPermutations(expectedOrderedMarkers))('permutation: %s', (permutedMarkers: string[]) => {
+        console.log(permutedMarkers);
         expect(orderActivityMarkers(permutedMarkers)).toEqual(expectedOrderedMarkers);
       });
     });
