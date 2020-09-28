@@ -46,6 +46,10 @@ function computeAllPermutations(array: string[]): string[][] {
 }
 
 describe('check permutations', () => {
+  // The loop marker MAY be used in combination with any of the other markers except the multi-instance marker.
+  // The ad-hoc marker MAY be used in combination with any of the other markers.
+  // The Compensation marker MAY be used in combination with any of the other markers.
+
   it('2 elements', () => {
     expect(computeAllPermutations(['1', '2'])).toEqual([
       ['1', '2'],
