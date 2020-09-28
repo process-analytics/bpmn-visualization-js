@@ -45,7 +45,7 @@
     "@types/debug": "^4.1.5",
     "@types/jest": "^26.0.14",
     "@types/jest-environment-puppeteer": "^4.3.2",
-    "@types/puppeteer": "^3.0.1",
+    "@types/puppeteer": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
     "asciidoctor": "^2.2.0",
