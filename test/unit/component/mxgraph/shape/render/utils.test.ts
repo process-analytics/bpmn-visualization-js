@@ -16,7 +16,7 @@
 import { orderActivityMarkers } from '../../../../../../src/component/mxgraph/shape/render/utils';
 import { ShapeBpmnMarkerKind } from '../../../../../../src/model/bpmn/shape';
 
-function computeAllPermutations(array: string[]): string[][] {
+function computeAllPermutations(array: string[]): string[][][] {
   // see https://stackoverflow.com/questions/9960908/permutations-in-javascript and https://code-boxx.com/javascript-permutations-combinations/
 
   const permutation = [...array];
@@ -42,7 +42,7 @@ function computeAllPermutations(array: string[]): string[][] {
       ++i;
     }
   }
-  return result;
+  return [result];
 }
 
 describe('check permutations', () => {
@@ -52,24 +52,28 @@ describe('check permutations', () => {
 
   it('2 elements', () => {
     expect(computeAllPermutations(['1', '2'])).toEqual([
-      ['1', '2'],
-      ['2', '1'],
+      [
+        ['1', '2'],
+        ['2', '1'],
+      ],
     ]);
   });
 
   it('3 elements', () => {
     expect(computeAllPermutations(['1', '2', '3'])).toEqual([
-      ['1', '2', '3'],
-      ['2', '1', '3'],
-      ['3', '1', '2'],
-      ['1', '3', '2'],
-      ['2', '3', '1'],
-      ['3', '2', '1'],
+      [
+        ['1', '2', '3'],
+        ['2', '1', '3'],
+        ['3', '1', '2'],
+        ['1', '3', '2'],
+        ['2', '3', '1'],
+        ['3', '2', '1'],
+      ],
     ]);
   });
 
   it('4 elements', () => {
-    expect(computeAllPermutations(['1', '2', '3', '4'])).toHaveLength(24);
+    expect(computeAllPermutations(['1', '2', '3', '4'])[0]).toHaveLength(24);
   });
 });
 
@@ -96,11 +100,8 @@ describe('enforce activity markers order', () => {
       [[ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.ADHOC]],
       [[ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.ADHOC]],
     ])(`markers: %s`, (expectedOrderedMarkers: string[]) => {
-      // TODO check if we can use jest each here
-      computeAllPermutations(expectedOrderedMarkers).forEach(permutedMarkers => {
-        it(`permutation: ${permutedMarkers}`, () => {
-          expect(orderActivityMarkers(permutedMarkers)).toEqual(expectedOrderedMarkers);
-        });
+      it.each(computeAllPermutations(expectedOrderedMarkers))('permutation: %s', (permutedMarkers: string[]) => {
+        expect(orderActivityMarkers(permutedMarkers)).toEqual(expectedOrderedMarkers);
       });
     });
   });
@@ -115,12 +116,8 @@ describe('enforce activity markers order', () => {
       [[ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC]],
       [[ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC]],
     ])(`markers: %s`, (expectedOrderedMarkers: string[]) => {
-      // TODO check if we can use jest each here
-      // TODO duplicated with the '2 elements' check
-      computeAllPermutations(expectedOrderedMarkers).forEach(permutedMarkers => {
-        it(`permutation: ${permutedMarkers}`, () => {
-          expect(orderActivityMarkers(permutedMarkers)).toEqual(expectedOrderedMarkers);
-        });
+      it.each(computeAllPermutations(expectedOrderedMarkers))('permutation: %s', (permutedMarkers: string[]) => {
+        expect(orderActivityMarkers(permutedMarkers)).toEqual(expectedOrderedMarkers);
       });
     });
   });
@@ -131,12 +128,8 @@ describe('enforce activity markers order', () => {
       [[ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC]],
       [[ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC]],
     ])(`markers: %s`, (expectedOrderedMarkers: string[]) => {
-      // TODO check if we can use jest each here
-      // TODO duplicated with the '2 elements' check
-      computeAllPermutations(expectedOrderedMarkers).forEach(permutedMarkers => {
-        it(`permutation: ${permutedMarkers}`, () => {
-          expect(orderActivityMarkers(permutedMarkers)).toEqual(expectedOrderedMarkers);
-        });
+      it.each(computeAllPermutations(expectedOrderedMarkers))('permutation: %s', (permutedMarkers: string[]) => {
+        expect(orderActivityMarkers(permutedMarkers)).toEqual(expectedOrderedMarkers);
       });
     });
   });
