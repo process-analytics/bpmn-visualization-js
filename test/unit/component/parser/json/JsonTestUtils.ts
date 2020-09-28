@@ -24,8 +24,8 @@ import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/Se
 import Label from '../../../../../src/model/bpmn/internal/Label';
 import { SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
 import { FlowKind } from '../../../../../src/model/bpmn/internal/edge/FlowKind';
-import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
+import { MessageVisibleKind } from '../../../../../src/model/bpmn/json/BPMNDI';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -160,7 +160,7 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge | ExpectedSeq
   if (expectedValue.messageVisibleKind) {
     expect(edge.messageVisibleKind).toEqual(expectedValue.messageVisibleKind);
   } else {
-    expect(edge.messageVisibleKind).toEqual(MessageVisibleKind.NONE);
+    expect(edge.messageVisibleKind).toBeUndefined();
   }
 
   const bpmnElement = edge.bpmnElement;

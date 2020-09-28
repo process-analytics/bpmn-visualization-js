@@ -15,7 +15,7 @@
  */
 import { buildPaintParameter, IconPainterProvider } from './render';
 import StyleUtils from '../StyleUtils';
-import { MessageVisibleKind } from '../../../model/bpmn/internal/edge/MessageVisibleKind';
+import { MessageVisibleKind } from '../../../model/bpmn/json/BPMNDI';
 
 export class MessageFlowIconShape extends mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
@@ -25,7 +25,7 @@ export class MessageFlowIconShape extends mxRectangleShape {
   }
 
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const withFilledIcon = StyleUtils.getBpmnIsInitiating(this.style) === MessageVisibleKind.NON_INITIATING;
+    const withFilledIcon = StyleUtils.getBpmnIsInitiating(this.style) === MessageVisibleKind.nonInitiating;
     const paintParameter = buildPaintParameter(c, x, y, w, h, this, 1, withFilledIcon);
 
     this.iconPainter.paintEnvelopeIcon(paintParameter);

@@ -16,14 +16,8 @@
 import Waypoint from './Waypoint';
 import Label from '../Label';
 import Flow from './Flow';
-import { MessageVisibleKind } from './MessageVisibleKind';
+import { MessageVisibleKind } from '../../json/BPMNDI';
 
 export default class Edge {
-  constructor(
-    readonly id?: string,
-    readonly bpmnElement?: Flow,
-    readonly waypoints?: Waypoint[],
-    readonly label?: Label,
-    readonly messageVisibleKind: MessageVisibleKind = MessageVisibleKind.NONE,
-  ) {}
+  constructor(readonly id?: string, readonly bpmnElement?: Flow, readonly waypoints?: Waypoint[], readonly label?: Label, readonly messageVisibleKind?: MessageVisibleKind) {}
 }

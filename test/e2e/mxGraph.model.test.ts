@@ -18,8 +18,8 @@ import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpm
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import { MarkerIdentifier, StyleIdentifier } from '../../src';
 import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
-import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { readFileSync } from '../helpers/file-helper';
+import { MessageVisibleKind } from '../../src/model/bpmn/json/BPMNDI';
 
 export interface ExpectedFont {
   name?: string;
@@ -151,9 +151,11 @@ describe('mxGraph model', () => {
       expect(cell.parent.id).toEqual(parentId);
     }
 
-    if (modelElement.messageVisibleKind === MessageVisibleKind.NON_INITIATING || modelElement.messageVisibleKind === MessageVisibleKind.INITIATING) {
+    if (modelElement.messageVisibleKind) {
       const messageCell = expectModelContainsCell(`messageFlowIcon_of_${cellId}`);
       expect(messageCell.style).toContain(`shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${modelElement.messageVisibleKind}`);
+    } else {
+      expectModelNotContainCell(`messageFlowIcon_of_${cellId}`);
     }
 
     if (modelElement.startArrow || modelElement.font) {
@@ -919,12 +921,12 @@ describe('mxGraph model', () => {
     expectModelContainsSequenceFlow('conditional_sequence_flow_from_gateway_id', { sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_GATEWAY, label: '' });
 
     // message flow
-    expectModelContainsMessageFlow('message_flow_initiating_message_id', { label: 'Message Flow with initiating message', messageVisibleKind: MessageVisibleKind.INITIATING });
+    expectModelContainsMessageFlow('message_flow_initiating_message_id', { label: 'Message Flow with initiating message', messageVisibleKind: MessageVisibleKind.initiating });
     expectModelContainsMessageFlow('message_flow_non_initiating_message_id', {
       label: 'Message Flow with non-initiating message',
-      messageVisibleKind: MessageVisibleKind.NON_INITIATING,
+      messageVisibleKind: MessageVisibleKind.nonInitiating,
     });
-    expectModelContainsMessageFlow('message_flow_no_visible_id', { label: 'Message Flow without message', messageVisibleKind: MessageVisibleKind.NONE });
+    expectModelContainsMessageFlow('message_flow_no_visible_id', { label: 'Message Flow without message', messageVisibleKind: undefined });
 
     // association
     expectModelContainsAssociationFlow('association_id_1', { kind: FlowKind.ASSOCIATION_FLOW });

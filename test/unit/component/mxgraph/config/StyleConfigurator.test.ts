@@ -33,8 +33,8 @@ import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/Se
 import Bounds from '../../../../../src/model/bpmn/internal/Bounds';
 import { BpmnEventKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import each from 'jest-each';
-import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { AssociationDirectionKind } from '../../../../../src/model/bpmn/internal/edge/AssociationDirectionKind';
+import { MessageVisibleKind } from '../../../../../src/model/bpmn/json/BPMNDI';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
@@ -201,8 +201,8 @@ describe('mxgraph renderer', () => {
   });
 
   each([
-    [MessageVisibleKind.NON_INITIATING, 'non_initiating'],
-    [MessageVisibleKind.INITIATING, 'initiating'],
+    [MessageVisibleKind.nonInitiating, 'non_initiating'],
+    [MessageVisibleKind.initiating, 'initiating'],
   ]).it('compute style - message flow icon: %s', (messageVisibleKind, expected) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
     expect(styleConfigurator.computeMessageFlowIconStyle(edge)).toEqual(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=${expected}`);

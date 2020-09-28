@@ -22,7 +22,6 @@ import { findAssociationFlow, findFlowNodeBpmnElement, findLaneBpmnElement, find
 import { findMessageFlow, findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
 import Waypoint from '../../../../model/bpmn/internal/edge/Waypoint';
 import Label, { Font } from '../../../../model/bpmn/internal/Label';
-import { MessageVisibleKind } from '../../../../model/bpmn/internal/edge/MessageVisibleKind';
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
 import { Point } from '../../../../model/bpmn/json/DC';
 import { ensureIsArray } from './ConverterUtil';
@@ -157,11 +156,7 @@ export default class DiagramConverter {
       const flow = findSequenceFlow(edge.bpmnElement) || findMessageFlow(edge.bpmnElement) || findAssociationFlow(edge.bpmnElement);
       const waypoints = this.deserializeWaypoints(edge.waypoint);
       const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
-
-      // TODO Remove messageVisibleKind conversion type when we merge/simplify internal model with BPMN json model
-      const messageVisibleKind = edge.messageVisibleKind ? ((edge.messageVisibleKind as unknown) as MessageVisibleKind) : MessageVisibleKind.NONE;
-
-      return new Edge(edge.id, flow, waypoints, label, messageVisibleKind);
+      return new Edge(edge.id, flow, waypoints, label, edge.messageVisibleKind);
     });
   }
 
