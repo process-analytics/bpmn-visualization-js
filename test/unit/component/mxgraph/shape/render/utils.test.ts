@@ -71,13 +71,9 @@ describe('enforce activity markers order', () => {
   });
 
   describe('2 elements', () => {
-    it.each([
+    describe.each([
       [
         [ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.LOOP],
-        [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
-      ],
-      [
-        [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
         [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
       ],
       [
@@ -96,13 +92,27 @@ describe('enforce activity markers order', () => {
         [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
         [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.COMPENSATION],
       ],
-    ])(`order: %s)`, (markers: string[], expectedOrderedMarkers: string[]) => {
-      expect(orderActivityMarkers(markers)).toEqual(expectedOrderedMarkers);
+      [
+        [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+        [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.COMPENSATION],
+      ],
+      [
+        [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.LOOP],
+        [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.COMPENSATION],
+      ],
+    ])(`markers: %s`, (markers: string[], expectedOrderedMarkers: string[]) => {
+      // TODO check if we can use jest each here
+      computeAllPermutations(markers).forEach(permutedMarkers => {
+        it(`permutation: ${permutedMarkers}`, () => {
+          expect(orderActivityMarkers(permutedMarkers)).toEqual(expectedOrderedMarkers);
+        });
+      });
     });
   });
 
+  // TODO missing cases
   describe('3 elements', () => {
-    it.each([
+    describe.each([
       [
         [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.LOOP],
         [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND],
@@ -111,14 +121,20 @@ describe('enforce activity markers order', () => {
         [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND],
         [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND],
       ],
-    ])(`order: %s)`, (markers: string[], expectedOrderedMarkers: string[]) => {
-      expect(orderActivityMarkers(markers)).toEqual(expectedOrderedMarkers);
+    ])(`markers: %s`, (markers: string[], expectedOrderedMarkers: string[]) => {
+      // TODO check if we can use jest each here
+      // TODO duplicated with the '2 elements' check
+      computeAllPermutations(markers).forEach(permutedMarkers => {
+        it(`permutation: ${permutedMarkers}`, () => {
+          expect(orderActivityMarkers(permutedMarkers)).toEqual(expectedOrderedMarkers);
+        });
+      });
     });
   });
 
   // adhoc can have compensation and expand only
   describe('adhoc marker', () => {
-    it.each([
+    describe.each([
       [
         [ShapeBpmnMarkerKind.ADHOC, ShapeBpmnMarkerKind.EXPAND],
         [ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC],
@@ -127,8 +143,14 @@ describe('enforce activity markers order', () => {
         [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.ADHOC, ShapeBpmnMarkerKind.EXPAND],
         [ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC],
       ],
-    ])(`order: %s)`, (markers: string[], expectedOrderedMarkers: string[]) => {
-      expect(orderActivityMarkers(markers)).toEqual(expectedOrderedMarkers);
+    ])(`markers: %s`, (markers: string[], expectedOrderedMarkers: string[]) => {
+      // TODO check if we can use jest each here
+      // TODO duplicated with the '2 elements' check
+      computeAllPermutations(markers).forEach(permutedMarkers => {
+        it(`permutation: ${permutedMarkers}`, () => {
+          expect(orderActivityMarkers(permutedMarkers)).toEqual(expectedOrderedMarkers);
+        });
+      });
     });
   });
 
