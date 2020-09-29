@@ -22,7 +22,8 @@ Used:
 Tips
 - Try to always add such tests, they are fast, they cover a lot of use cases as they run at low level 
 - They may be hard to apply to mxgraph integration code especially when interacting with the mxGraph API (prefer e2e tests in that case)
-
+- there is a CLI tool to generate json and/or internal model from bpmn file - please refer to [CLI parseBpmn](../../scripts/utils/README.md)
+- You can have a look at the existing tests for inspiration, the good example would be: /test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.normal.test.ts
 
 ### End to end tests
 
