@@ -30,9 +30,9 @@ const plugins = [
   json(),
 ];
 export default {
-  input: 'test/scripts/parseJson.ts',
+  input: 'scripts/utils/parseBpmn.ts',
   output: {
-    file: 'test/scripts/dist/utils.mjs',
+    file: 'scripts/utils/dist/utils.mjs',
     format: 'es',
   },
   plugins: plugins,

@@ -11,12 +11,12 @@ run in the root of the project:
 
 - to get BpmnJsonModel
 
-```node ./test/scripts/dist/utils.mjs RELATIVE_PATH_TO_BPMN_FILE```
+```node ./scripts/utils/dist/utils.mjs RELATIVE_PATH_TO_BPMN_FILE```
 
 - to get BpmnModel
 
-```node ./test/scripts/dist/utils.mjs RELATIVE_PATH_TO_BPMN_FILE bpmn```
+```node ./scripts/utils/dist/utils.mjs RELATIVE_PATH_TO_BPMN_FILE model```
 
 i.e:
 
-```node ./test/scripts/dist/utils.mjs test/fixtures/bpmn/parser-test.bpmn bpmn```
+```node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/parser-test.bpmn model```

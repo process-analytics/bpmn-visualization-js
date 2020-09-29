@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
-import { readFileSync } from '../helpers/file-helper';
+import { readFileSync } from '../../test/helpers/file-helper';
 import * as path from 'path';
 import { defaultBpmnJsonParser } from '../../src/component/parser/json/BpmnJsonParser';
 import { BpmnJsonModel } from '../../src/component/parser/xml/bpmn-json-model/BPMN20';
 import BpmnModel from '../../src/model/bpmn/BpmnModel';
 import clipboardy from 'clipboardy';
+import parseArgs from 'minimist';
 
 const __dirname = path.resolve();
-const myArgs = process.argv.slice(2);
-const bpmnFilePath = myArgs[0];
-const parsingType = myArgs[1] || 'json';
+const argv = parseArgs(process.argv.slice(2));
+const bpmnFilePath = argv._[0];
+const outputType = argv['output'] || 'json';
 
 if (!bpmnFilePath) {
   throw new Error('you must provide file path as 1st parameter for example: test/fixtures/bpmn/parser-test.bpmn');
 }
-if (['json', 'bpmn'].indexOf(parsingType) == -1) {
-  throw new Error('2nd parameter must be one of: json | bpmn');
+if (['json', 'model'].indexOf(outputType) == -1) {
+  throw new Error('--output parameter must be one of: json | model');
 }
 
 const xmlParser = new BpmnXmlParser();
@@ -38,7 +39,7 @@ const json = xmlParser.parse(readFileSync(bpmnFilePath, 'utf-8', __dirname));
 const prettyString = (object: BpmnJsonModel | BpmnModel): string => JSON.stringify(object, null, 2);
 
 let result = '';
-if (parsingType === 'json') {
+if (outputType === 'json') {
   result = prettyString(json);
 } else {
   result = prettyString(defaultBpmnJsonParser().parse(json));
