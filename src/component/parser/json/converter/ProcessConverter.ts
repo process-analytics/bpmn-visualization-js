@@ -32,7 +32,7 @@ import {
 } from '../../../../model/bpmn/internal/shape';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
 import ShapeUtil, { BpmnEventType } from '../../../../model/bpmn/internal/shape/ShapeUtil';
-import { SequenceFlowKind } from '../../../../model/bpmn/internal/edge/SequenceFlowKind';
+import { SequenceFlowType } from '../../../../model/bpmn/internal/edge/SequenceFlowType';
 import { FlowType } from '../../../../model/bpmn/internal/edge/FlowType';
 import { TProcess } from '../../../../model/bpmn/json-xsd/baseElement/rootElement/rootElement';
 import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../model/bpmn/json-xsd/baseElement/flowNode/event';
@@ -307,19 +307,19 @@ export default class ProcessConverter {
     });
   }
 
-  private getSequenceFlowKind(sequenceFlow: TSequenceFlow): SequenceFlowKind {
+  private getSequenceFlowKind(sequenceFlow: TSequenceFlow): SequenceFlowType {
     if (defaultSequenceFlowIds.includes(sequenceFlow.id)) {
-      return SequenceFlowKind.DEFAULT;
+      return SequenceFlowType.DEFAULT;
     } else {
       const sourceShapeBpmnElement = findFlowNodeBpmnElement(sequenceFlow.sourceRef);
       if (sourceShapeBpmnElement && ShapeUtil.isWithDefaultSequenceFlow(sourceShapeBpmnElement.type) && sequenceFlow.conditionExpression) {
         if (ShapeUtil.isActivity(sourceShapeBpmnElement.type)) {
-          return SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY;
+          return SequenceFlowType.CONDITIONAL_FROM_ACTIVITY;
         } else {
-          return SequenceFlowKind.CONDITIONAL_FROM_GATEWAY;
+          return SequenceFlowType.CONDITIONAL_FROM_GATEWAY;
         }
       }
     }
-    return SequenceFlowKind.NORMAL;
+    return SequenceFlowType.NORMAL;
   }
 }

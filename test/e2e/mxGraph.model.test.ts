@@ -15,7 +15,7 @@
  */
 import BpmnVisualization from '../../src/component/BpmnVisualization';
 import { ShapeBpmnElementType, ShapeBpmnEventType, ShapeBpmnMarkerType, ShapeBpmnSubProcessType } from '../../src/model/bpmn/internal/shape';
-import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
+import { SequenceFlowType } from '../../src/model/bpmn/internal/edge/SequenceFlowType';
 import { MarkerIdentifier, StyleIdentifier } from '../../src';
 import { FlowType } from '../../src/model/bpmn/internal/edge/FlowType';
 import { readFileSync } from '../helpers/file-helper';
@@ -61,7 +61,7 @@ interface ExpectedEdgeModelElement {
 }
 
 export interface ExpectedSequenceFlowModelElement extends ExpectedEdgeModelElement {
-  sequenceFlowKind?: SequenceFlowKind;
+  sequenceFlowKind?: SequenceFlowType;
 }
 
 // TODO find a way to not be forced to pass 'kind'
@@ -912,13 +912,13 @@ describe('mxGraph model', () => {
     expectModelContainsShape('exclusiveGateway', { kind: ShapeBpmnElementType.GATEWAY_EXCLUSIVE, label: 'Exclusive Gateway' });
 
     // sequence flow
-    expectModelContainsSequenceFlow('default_sequence_flow_id', { sequenceFlowKind: SequenceFlowKind.DEFAULT, startArrow: MarkerIdentifier.ARROW_DASH, font: expectedBoldFont });
-    expectModelContainsSequenceFlow('normal_sequence_flow_id', { sequenceFlowKind: SequenceFlowKind.NORMAL, label: "From 'start event 1' to 'task 1'" });
+    expectModelContainsSequenceFlow('default_sequence_flow_id', { sequenceFlowKind: SequenceFlowType.DEFAULT, startArrow: MarkerIdentifier.ARROW_DASH, font: expectedBoldFont });
+    expectModelContainsSequenceFlow('normal_sequence_flow_id', { sequenceFlowKind: SequenceFlowType.NORMAL, label: "From 'start event 1' to 'task 1'" });
     expectModelContainsSequenceFlow('conditional_sequence_flow_from_activity_id', {
-      sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
+      sequenceFlowKind: SequenceFlowType.CONDITIONAL_FROM_ACTIVITY,
       startArrow: mxConstants.ARROW_DIAMOND_THIN,
     });
-    expectModelContainsSequenceFlow('conditional_sequence_flow_from_gateway_id', { sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_GATEWAY, label: '' });
+    expectModelContainsSequenceFlow('conditional_sequence_flow_from_gateway_id', { sequenceFlowKind: SequenceFlowType.CONDITIONAL_FROM_GATEWAY, label: '' });
 
     // message flow
     expectModelContainsMessageFlow('message_flow_initiating_message_id', { label: 'Message Flow with initiating message', messageVisibleKind: MessageVisibleKind.initiating });

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { SequenceFlowKind } from './SequenceFlowKind';
+import { SequenceFlowType } from './SequenceFlowType';
 import { FlowType } from './FlowType';
 import { TAssociationDirection } from '../../json-xsd/baseElement/artifact';
 
@@ -22,7 +22,7 @@ export default abstract class Flow {
 }
 
 export class SequenceFlow extends Flow {
-  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly sequenceFlowKind = SequenceFlowKind.NORMAL) {
+  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly sequenceFlowType = SequenceFlowType.NORMAL) {
     super(id, name, FlowType.SEQUENCE_FLOW, sourceRefId, targetRefId);
   }
 }

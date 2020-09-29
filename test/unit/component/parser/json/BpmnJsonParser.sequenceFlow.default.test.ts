@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdgesAndFlowNodes, verifyEdge } from './JsonTestUtils';
-import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
+import { SequenceFlowType } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowType';
 import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
 
@@ -74,7 +74,7 @@ describe('parse bpmn as json for default sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'source_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementSequenceFlowKind: SequenceFlowKind.DEFAULT,
+      bpmnElementSequenceFlowType: SequenceFlowType.DEFAULT,
       waypoints: [{ x: 10, y: 10 }],
     });
   });
@@ -119,7 +119,7 @@ describe('parse bpmn as json for default sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'gateway_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementSequenceFlowKind: SequenceFlowKind.NORMAL,
+      bpmnElementSequenceFlowType: SequenceFlowType.NORMAL,
       waypoints: [{ x: 10, y: 10 }],
     });
   });

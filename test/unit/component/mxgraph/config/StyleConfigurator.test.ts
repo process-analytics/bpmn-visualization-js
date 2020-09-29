@@ -29,7 +29,7 @@ import Label from '../../../../../src/model/bpmn/internal/Label';
 import { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
-import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
+import { SequenceFlowType } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowType';
 import { BpmnEventType } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import each from 'jest-each';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/json-xsd/BPMNDI';
@@ -88,7 +88,7 @@ function newShapeBpmnSubProcess(subProcessKind: ShapeBpmnSubProcessType, marker?
  * Returns a new `SequenceFlow` instance with arbitrary id and name.
  * @param kind the `SequenceFlowKind` to set in the new `SequenceFlow` instance
  */
-function newSequenceFlow(kind: SequenceFlowKind): SequenceFlow {
+function newSequenceFlow(kind: SequenceFlowType): SequenceFlow {
   return new SequenceFlow('id', 'name', undefined, undefined, kind);
 }
 
@@ -150,29 +150,29 @@ describe('mxgraph renderer', () => {
 
   describe('compute style - edge label', () => {
     it('compute style of edge with no label', () => {
-      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_GATEWAY));
+      const edge = new Edge('id', newSequenceFlow(SequenceFlowType.CONDITIONAL_FROM_GATEWAY));
       expect(computeStyle(edge)).toEqual('sequenceFlow;conditional_from_gateway');
     });
 
     it('compute style of edge with a no font label', () => {
-      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(undefined, undefined));
+      const edge = new Edge('id', newSequenceFlow(SequenceFlowType.NORMAL), undefined, new Label(undefined, undefined));
       expect(computeStyle(edge)).toEqual('sequenceFlow;normal');
     });
 
     it('compute style of edge with label including strike-through font', () => {
-      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
+      const edge = new Edge('id', newSequenceFlow(SequenceFlowType.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
       expect(computeStyle(edge)).toEqual('sequenceFlow;conditional_from_activity;fontSize=14.2;fontStyle=8');
     });
 
     it('compute style of edge with label including underline font', () => {
-      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
+      const edge = new Edge('id', newSequenceFlow(SequenceFlowType.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
       expect(computeStyle(edge)).toEqual('sequenceFlow;default;fontStyle=4');
     });
 
     it('compute style of edge with label including bold/italic/strike-through/underline font', () => {
       const edge = new Edge(
         'id',
-        newSequenceFlow(SequenceFlowKind.NORMAL),
+        newSequenceFlow(SequenceFlowType.NORMAL),
         undefined,
         new Label(toFont({ isBold: true, isItalic: true, isStrikeThrough: true, isUnderline: true }), undefined),
       );
@@ -180,16 +180,16 @@ describe('mxgraph renderer', () => {
     });
 
     it('compute style of edge with label bounds', () => {
-      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), newBounds(100)));
+      const edge = new Edge('id', newSequenceFlow(SequenceFlowType.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), newBounds(100)));
       expect(computeStyle(edge)).toEqual('sequenceFlow;normal;fontFamily=Helvetica;verticalAlign=top;align=center');
     });
   });
 
   each([
-    [SequenceFlowKind.CONDITIONAL_FROM_GATEWAY, 'conditional_from_gateway'],
-    [SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY, 'conditional_from_activity'],
-    [SequenceFlowKind.DEFAULT, 'default'],
-    [SequenceFlowKind.NORMAL, 'normal'],
+    [SequenceFlowType.CONDITIONAL_FROM_GATEWAY, 'conditional_from_gateway'],
+    [SequenceFlowType.CONDITIONAL_FROM_ACTIVITY, 'conditional_from_activity'],
+    [SequenceFlowType.DEFAULT, 'default'],
+    [SequenceFlowType.NORMAL, 'normal'],
   ]).it('compute style - sequence flows: %s', (kind, expected) => {
     const edge = new Edge('id', newSequenceFlow(kind));
     expect(computeStyle(edge)).toEqual(`sequenceFlow;${expected}`);

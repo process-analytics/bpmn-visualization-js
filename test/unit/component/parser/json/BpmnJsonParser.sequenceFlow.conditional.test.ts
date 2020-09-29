@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdgesAndFlowNodes, verifyEdge } from './JsonTestUtils';
-import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
+import { SequenceFlowType } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowType';
 import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
 import { TSequenceFlow } from '../../../../../src/model/bpmn/json-xsd/baseElement/flowElement';
 
 describe('parse bpmn as json for conditional sequence flow', () => {
   each([
-    ['exclusiveGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
-    ['inclusiveGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
-    ['task', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-    ['userTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-    ['serviceTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-    ['receiveTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-    ['sendTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-    ['manualTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-    ['scriptTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-    ['callActivity', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-    ['subProcess', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
+    ['exclusiveGateway', SequenceFlowType.CONDITIONAL_FROM_GATEWAY],
+    ['inclusiveGateway', SequenceFlowType.CONDITIONAL_FROM_GATEWAY],
+    ['task', SequenceFlowType.CONDITIONAL_FROM_ACTIVITY],
+    ['userTask', SequenceFlowType.CONDITIONAL_FROM_ACTIVITY],
+    ['serviceTask', SequenceFlowType.CONDITIONAL_FROM_ACTIVITY],
+    ['receiveTask', SequenceFlowType.CONDITIONAL_FROM_ACTIVITY],
+    ['sendTask', SequenceFlowType.CONDITIONAL_FROM_ACTIVITY],
+    ['manualTask', SequenceFlowType.CONDITIONAL_FROM_ACTIVITY],
+    ['scriptTask', SequenceFlowType.CONDITIONAL_FROM_ACTIVITY],
+    ['callActivity', SequenceFlowType.CONDITIONAL_FROM_ACTIVITY],
+    ['subProcess', SequenceFlowType.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
     ['businessRuleTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
@@ -82,7 +82,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
         bpmnElementName: undefined,
         bpmnElementSourceRefId: 'source_id_0',
         bpmnElementTargetRefId: 'targetRef_RLk',
-        bpmnElementSequenceFlowKind: expectedSequenceFlowKind,
+        bpmnElementSequenceFlowType: expectedSequenceFlowKind,
         waypoints: [{ x: 10, y: 10 }],
       });
     },
@@ -132,7 +132,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
       bpmnElementName: undefined,
       bpmnElementSourceRefId: 'gateway_id_0',
       bpmnElementTargetRefId: 'targetRef_RLk',
-      bpmnElementSequenceFlowKind: SequenceFlowKind.NORMAL,
+      bpmnElementSequenceFlowType: SequenceFlowType.NORMAL,
       waypoints: [{ x: 10, y: 10 }],
     });
   });

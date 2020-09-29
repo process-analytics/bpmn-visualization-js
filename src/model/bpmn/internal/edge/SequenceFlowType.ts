@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export enum SequenceFlowKind {
+export enum SequenceFlowType {
   NORMAL = 'normal',
   DEFAULT = 'default',
   CONDITIONAL_FROM_ACTIVITY = 'conditional_from_activity',

@@ -19,7 +19,7 @@ import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
 import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import { ShapeBpmnActivity, ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
+import { SequenceFlowType } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowType';
 import Label from '../../../../../src/model/bpmn/internal/Label';
 import { SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
 import { FlowType } from '../../../../../src/model/bpmn/internal/edge/FlowType';
@@ -56,7 +56,7 @@ interface ExpectedEdge {
 }
 
 export interface ExpectedSequenceEdge extends ExpectedEdge {
-  bpmnElementSequenceFlowKind?: SequenceFlowKind;
+  bpmnElementSequenceFlowType?: SequenceFlowType;
 }
 
 export interface ExpectedFont {
@@ -172,10 +172,10 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge | ExpectedSeq
   if (bpmnElement instanceof SequenceFlow) {
     expect(edge.bpmnElement.type).toEqual(FlowType.SEQUENCE_FLOW);
     const sequenceEdge = expectedValue as ExpectedSequenceEdge;
-    if (sequenceEdge.bpmnElementSequenceFlowKind) {
-      expect(bpmnElement.sequenceFlowKind).toEqual(sequenceEdge.bpmnElementSequenceFlowKind);
+    if (sequenceEdge.bpmnElementSequenceFlowType) {
+      expect(bpmnElement.sequenceFlowType).toEqual(sequenceEdge.bpmnElementSequenceFlowType);
     } else {
-      expect(bpmnElement.sequenceFlowKind).toEqual(SequenceFlowKind.NORMAL);
+      expect(bpmnElement.sequenceFlowType).toEqual(SequenceFlowType.NORMAL);
     }
   }
 }

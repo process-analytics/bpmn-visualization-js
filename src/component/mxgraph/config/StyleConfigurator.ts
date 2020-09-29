@@ -15,7 +15,7 @@
  */
 import { ShapeBpmnElementType, ShapeBpmnMarkerType } from '../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../model/bpmn/internal/shape/ShapeUtil';
-import { SequenceFlowKind } from '../../../model/bpmn/internal/edge/SequenceFlowKind';
+import { SequenceFlowType } from '../../../model/bpmn/internal/edge/SequenceFlowType';
 import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import Edge from '../../../model/bpmn/internal/edge/Edge';
@@ -64,15 +64,15 @@ export default class StyleConfigurator {
       },
     ],
   ]);
-  private specificSequenceFlowStyles: Map<SequenceFlowKind, (style: any) => void> = new Map([
+  private specificSequenceFlowStyles: Map<SequenceFlowType, (style: any) => void> = new Map([
     [
-      SequenceFlowKind.DEFAULT,
+      SequenceFlowType.DEFAULT,
       (style: any) => {
         style[mxConstants.STYLE_STARTARROW] = MarkerIdentifier.ARROW_DASH;
       },
     ],
     [
-      SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
+      SequenceFlowType.CONDITIONAL_FROM_ACTIVITY,
       (style: any) => {
         style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_DIAMOND_THIN;
         style[mxConstants.STYLE_STARTSIZE] = 18;
@@ -268,7 +268,7 @@ export default class StyleConfigurator {
   }
 
   private configureSequenceFlowStyles(): void {
-    this.configureEdgeStyles<SequenceFlowKind>(Object.values(SequenceFlowKind), this.specificSequenceFlowStyles);
+    this.configureEdgeStyles<SequenceFlowType>(Object.values(SequenceFlowType), this.specificSequenceFlowStyles);
   }
 
   private configureAssociationFlowStyles(): void {
@@ -311,7 +311,7 @@ export default class StyleConfigurator {
       }
     } else {
       if (bpmnElement instanceof SequenceFlow) {
-        styles.push(bpmnElement.sequenceFlowKind);
+        styles.push(bpmnElement.sequenceFlowType);
       }
       if (bpmnElement instanceof AssociationFlow) {
         styles.push(bpmnElement.associationDirectionKind);
