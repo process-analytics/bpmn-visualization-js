@@ -19,12 +19,12 @@
 import BpmnVisualization from './component/BpmnVisualization';
 import IconPainter from './component/mxgraph/shape/render/IconPainter';
 import StyleConfigurator from './component/mxgraph/config/StyleConfigurator';
-import ShapeUtil from './model/bpmn/internal/shape/ShapeUtil';
+import InternalBPMNShapeUtil from './model/bpmn/internal/shape/InternalBPMNShapeUtil';
 
 export { BpmnVisualization };
 export { IconPainter };
 export { StyleConfigurator };
-export { ShapeUtil };
+export { InternalBPMNShapeUtil };
 // end of 'TO DO remove dedicated import/export'
 
 export * from './component/mxgraph/StyleUtils';

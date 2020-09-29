@@ -13,21 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import Label from '../Label';
+import Flow from './Flow';
+import { MessageVisibleKind } from '../../json-xsd/BPMNDI';
+import { Point } from '../../json-xsd/DC';
 
-import ShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
-import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape';
-
-describe('ShapeUtil', () => {
-  it('top level bpmn event types', () => {
-    const tasks = ShapeUtil.topLevelBpmnEventTypes();
-
-    expect(tasks).toContain(ShapeBpmnElementType.EVENT_END);
-  });
-
-  it('task types', () => {
-    const tasks = ShapeUtil.taskTypes();
-
-    expect(tasks).toContain(ShapeBpmnElementType.TASK);
-    expect(tasks).toContain(ShapeBpmnElementType.TASK_USER);
-  });
-});
+export default class InternalBPMNEdge {
+  constructor(readonly id?: string, readonly bpmnElement?: Flow, readonly waypoints?: Point[], readonly label?: Label, readonly messageVisibleKind?: MessageVisibleKind) {}
+}

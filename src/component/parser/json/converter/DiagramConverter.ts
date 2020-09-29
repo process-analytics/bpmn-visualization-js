@@ -13,40 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Shape from '../../../../model/bpmn/internal/shape/Shape';
-import ShapeBpmnElement, { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import Edge from '../../../../model/bpmn/internal/edge/Edge';
-import BpmnModel, { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
+import InternalBPMNShape from '../../../../model/bpmn/internal/shape/InternalBPMNShape';
+import ShapeBaseElement, { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBaseElement';
+import InternalBPMNEdge from '../../../../model/bpmn/internal/edge/InternalBPMNEdge';
+import InternalBPMNModel, { InternalBPMNShapes } from '../../../../model/bpmn/internal/InternalBPMNModel';
 import { findAssociationFlow, findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, findSequenceFlow } from './ProcessConverter';
 import { findMessageFlow, findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
 import Label from '../../../../model/bpmn/internal/Label';
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json-xsd/BPMNDI';
 import { Font } from '../../../../model/bpmn/json-xsd/DC';
 import { ensureIsArray } from './ConverterUtil';
-import { ShapeBpmnElementType, ShapeBpmnMarkerType } from '../../../../model/bpmn/internal/shape';
-import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
+import { ShapeBaseElementType, MarkerType } from '../../../../model/bpmn/internal/shape';
+import InternalBPMNShapeUtil from '../../../../model/bpmn/internal/shape/InternalBPMNShapeUtil';
 
-function findProcessElement(participantId: string): ShapeBpmnElement | undefined {
+function findProcessElement(participantId: string): ShapeBaseElement | undefined {
   const participant = findProcessRefParticipant(participantId);
   if (participant) {
     const originalProcessBpmnElement = findProcessBpmnElement(participant.processRef);
     if (originalProcessBpmnElement) {
       const name = participant.name || originalProcessBpmnElement.name;
-      return new ShapeBpmnElement(participant.id, name, originalProcessBpmnElement.type, originalProcessBpmnElement.parentId);
+      return new ShapeBaseElement(participant.id, name, originalProcessBpmnElement.type, originalProcessBpmnElement.parentId);
     }
     // black box pool
-    return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementType.POOL);
+    return new ShapeBaseElement(participant.id, participant.name, ShapeBaseElementType.POOL);
   }
 }
 
 export default class DiagramConverter {
   private convertedFonts: Map<string, Font> = new Map();
 
-  deserialize(bpmnDiagrams: Array<BPMNDiagram> | BPMNDiagram): BpmnModel {
-    const flowNodes: Shape[] = [];
-    const lanes: Shape[] = [];
-    const pools: Shape[] = [];
-    const edges: Edge[] = [];
+  deserialize(bpmnDiagrams: Array<BPMNDiagram> | BPMNDiagram): InternalBPMNModel {
+    const flowNodes: InternalBPMNShape[] = [];
+    const lanes: InternalBPMNShape[] = [];
+    const pools: InternalBPMNShape[] = [];
+    const edges: InternalBPMNEdge[] = [];
 
     const bpmnDiagram = ensureIsArray(bpmnDiagrams)[0];
     if (bpmnDiagram) {
@@ -80,12 +80,12 @@ export default class DiagramConverter {
     });
   }
 
-  private deserializeShapes(shapes: Array<BPMNShape> | BPMNShape): Shapes {
+  private deserializeShapes(shapes: Array<BPMNShape> | BPMNShape): InternalBPMNShapes {
     // TODO find a way to avoid shape management duplication
     // common pattern:
     //    deserialize  shape base on custom function to find a bpmn element
     //    if found push in an array and process next element
-    const convertedShapes: Shapes = { flowNodes: [], lanes: [], pools: [] };
+    const convertedShapes: InternalBPMNShapes = { flowNodes: [], lanes: [], pools: [] };
 
     shapes = ensureIsArray(shapes);
 
@@ -116,7 +116,7 @@ export default class DiagramConverter {
     return convertedShapes;
   }
 
-  private deserializeShape(shape: BPMNShape, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
+  private deserializeShape(shape: BPMNShape, findShapeElement: (bpmnElement: string) => ShapeBaseElement): InternalBPMNShape | undefined {
     const bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
       if (bpmnElement.parentId) {
@@ -127,24 +127,24 @@ export default class DiagramConverter {
       }
 
       if ((bpmnElement instanceof ShapeBpmnSubProcess || bpmnElement instanceof ShapeBpmnCallActivity) && !shape.isExpanded) {
-        bpmnElement.markers.push(ShapeBpmnMarkerType.EXPAND);
+        bpmnElement.markers.push(MarkerType.EXPAND);
       }
 
       let isHorizontal;
-      if (ShapeUtil.isPoolOrLane(bpmnElement.type)) {
+      if (InternalBPMNShapeUtil.isPoolOrLane(bpmnElement.type)) {
         isHorizontal = shape.isHorizontal !== undefined ? shape.isHorizontal : true;
       }
 
       const label = this.deserializeLabel(shape.BPMNLabel, shape.id);
-      return new Shape(shape.id, bpmnElement, shape.Bounds, label, isHorizontal);
+      return new InternalBPMNShape(shape.id, bpmnElement, shape.Bounds, label, isHorizontal);
     }
   }
 
-  private deserializeEdges(edges: BPMNEdge | BPMNEdge[]): Edge[] {
+  private deserializeEdges(edges: BPMNEdge | BPMNEdge[]): InternalBPMNEdge[] {
     return ensureIsArray(edges).map(edge => {
       const flow = findSequenceFlow(edge.bpmnElement) || findMessageFlow(edge.bpmnElement) || findAssociationFlow(edge.bpmnElement);
       const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
-      return new Edge(edge.id, flow, edge.waypoint, label, edge.messageVisibleKind);
+      return new InternalBPMNEdge(edge.id, flow, edge.waypoint, label, edge.messageVisibleKind);
     });
   }
 

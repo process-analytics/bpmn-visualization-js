@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementType, ShapeBpmnMarkerType } from '../../../model/bpmn/internal/shape';
-import ShapeUtil from '../../../model/bpmn/internal/shape/ShapeUtil';
+import { ShapeBaseElementType, MarkerType } from '../../../model/bpmn/internal/shape';
+import InternalBPMNShapeUtil from '../../../model/bpmn/internal/shape/InternalBPMNShapeUtil';
 import { SequenceFlowType } from '../../../model/bpmn/internal/edge/SequenceFlowType';
 import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
-import Shape from '../../../model/bpmn/internal/shape/Shape';
-import Edge from '../../../model/bpmn/internal/edge/Edge';
-import ShapeBpmnElement, {
+import InternalBPMNShape from '../../../model/bpmn/internal/shape/InternalBPMNShape';
+import InternalBPMNEdge from '../../../model/bpmn/internal/edge/InternalBPMNEdge';
+import ShapeBaseElement, {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
   ShapeBpmnEvent,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
-} from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
+} from '../../../model/bpmn/internal/shape/ShapeBaseElement';
 import { FlowType } from '../../../model/bpmn/internal/edge/FlowType';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
 import { Bounds, Font } from '../../../model/bpmn/json-xsd/DC';
@@ -144,7 +144,7 @@ export default class StyleConfigurator {
     return mxUtils.clone(defaultStyle);
   }
 
-  private putCellStyle(name: ShapeBpmnElementType, style: any): void {
+  private putCellStyle(name: ShapeBaseElementType, style: any): void {
     this.getStylesheet().putCellStyle(name, style);
   }
 
@@ -165,7 +165,7 @@ export default class StyleConfigurator {
     // most of BPMN pool are ok when setting it to 30
     style[mxConstants.STYLE_STARTSIZE] = StyleDefault.POOL_LABEL_SIZE;
 
-    this.graph.getStylesheet().putCellStyle(ShapeBpmnElementType.POOL, style);
+    this.graph.getStylesheet().putCellStyle(ShapeBaseElementType.POOL, style);
   }
 
   private configureLaneStyle(): void {
@@ -182,11 +182,11 @@ export default class StyleConfigurator {
     // perhaps it can be calculated as a difference of starting point (either x or y) between pool, lane, sub-lane ?
     style[mxConstants.STYLE_STARTSIZE] = StyleDefault.LANE_LABEL_SIZE;
 
-    this.graph.getStylesheet().putCellStyle(ShapeBpmnElementType.LANE, style);
+    this.graph.getStylesheet().putCellStyle(ShapeBaseElementType.LANE, style);
   }
 
   private configureEventStyles(): void {
-    ShapeUtil.topLevelBpmnEventTypes().forEach(type => {
+    InternalBPMNShapeUtil.topLevelBpmnEventTypes().forEach(type => {
       const style = this.cloneDefaultVertexStyle();
       style[mxConstants.STYLE_SHAPE] = type;
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.EllipsePerimeter;
@@ -197,15 +197,15 @@ export default class StyleConfigurator {
 
   private configureTextAnnotationStyle(): void {
     const style = this.cloneDefaultVertexStyle();
-    style[mxConstants.STYLE_SHAPE] = ShapeBpmnElementType.TEXT_ANNOTATION;
+    style[mxConstants.STYLE_SHAPE] = ShapeBaseElementType.TEXT_ANNOTATION;
     style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
     style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
     style[mxConstants.STYLE_SPACING_LEFT] = 5;
-    this.putCellStyle(ShapeBpmnElementType.TEXT_ANNOTATION, style);
+    this.putCellStyle(ShapeBaseElementType.TEXT_ANNOTATION, style);
   }
 
   private configureActivityStyles(): void {
-    ShapeUtil.activityTypes().forEach(type => {
+    InternalBPMNShapeUtil.activityTypes().forEach(type => {
       const style = this.cloneDefaultVertexStyle();
       style[mxConstants.STYLE_SHAPE] = type;
       style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
@@ -214,7 +214,7 @@ export default class StyleConfigurator {
   }
 
   private configureGatewayStyles(): void {
-    ShapeUtil.gatewayTypes().forEach(type => {
+    InternalBPMNShapeUtil.gatewayTypes().forEach(type => {
       const style = this.cloneDefaultVertexStyle();
       style[mxConstants.STYLE_SHAPE] = type;
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
@@ -281,12 +281,12 @@ export default class StyleConfigurator {
     this.configureAssociationFlowStyles();
   }
 
-  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
+  computeStyle(bpmnCell: InternalBPMNShape | InternalBPMNEdge, labelBounds: Bounds): string {
     const styleValues = new Map<string, string | number>();
     const styles: string[] = [bpmnCell.bpmnElement?.type as string];
 
     const bpmnElement = bpmnCell.bpmnElement;
-    if (bpmnCell instanceof Shape) {
+    if (bpmnCell instanceof InternalBPMNShape) {
       if (bpmnElement instanceof ShapeBpmnEvent) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
 
@@ -296,15 +296,15 @@ export default class StyleConfigurator {
       } else if (bpmnElement instanceof ShapeBpmnActivity) {
         if (bpmnElement instanceof ShapeBpmnSubProcess) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessType);
-        } else if (bpmnElement.type === ShapeBpmnElementType.TASK_RECEIVE) {
+        } else if (bpmnElement.type === ShapeBaseElementType.TASK_RECEIVE) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, bpmnElement.instantiate.toString());
         }
 
-        const markers: ShapeBpmnMarkerType[] = bpmnElement.markers;
+        const markers: MarkerType[] = bpmnElement.markers;
         if (markers.length > 0) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
         }
-      } else if (ShapeUtil.isPoolOrLane((bpmnElement as ShapeBpmnElement).type)) {
+      } else if (InternalBPMNShapeUtil.isPoolOrLane((bpmnElement as ShapeBaseElement).type)) {
         // mxConstants.STYLE_HORIZONTAL is for the label
         // In BPMN, isHorizontal is for the Shape
         styleValues.set(mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
@@ -327,11 +327,11 @@ export default class StyleConfigurator {
 
     if (labelBounds) {
       styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
-      if (bpmnCell.bpmnElement.type != ShapeBpmnElementType.TEXT_ANNOTATION) {
+      if (bpmnCell.bpmnElement.type != ShapeBaseElementType.TEXT_ANNOTATION) {
         styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
       }
 
-      if (bpmnCell instanceof Shape) {
+      if (bpmnCell instanceof InternalBPMNShape) {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
         styleValues.set(mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
         // align settings
@@ -341,9 +341,9 @@ export default class StyleConfigurator {
     }
     // when no label bounds, adjust the default style dynamically
     else if (
-      bpmnCell instanceof Shape &&
+      bpmnCell instanceof InternalBPMNShape &&
       (bpmnElement instanceof ShapeBpmnSubProcess || bpmnElement instanceof ShapeBpmnCallActivity) &&
-      !bpmnElement.markers.includes(ShapeBpmnMarkerType.EXPAND)
+      !bpmnElement.markers.includes(MarkerType.EXPAND)
     ) {
       styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
     }
@@ -354,7 +354,7 @@ export default class StyleConfigurator {
       .join(';');
   }
 
-  computeMessageFlowIconStyle(edge: Edge): string {
+  computeMessageFlowIconStyle(edge: InternalBPMNEdge): string {
     return `shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${edge.messageVisibleKind}`;
   }
 

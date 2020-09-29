@@ -13,15 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Shape from './shape/Shape';
-import Edge from './edge/Edge';
+import ShapeBaseElement from './ShapeBaseElement';
+import Label from '../Label';
+import { Bounds } from '../../json-xsd/DC';
 
-export default interface BpmnModel extends Shapes {
-  edges: Edge[];
-}
-
-export interface Shapes {
-  flowNodes: Shape[];
-  lanes: Shape[];
-  pools: Shape[];
+export default class InternalBPMNShape {
+  constructor(readonly id?: string, readonly bpmnElement?: ShapeBaseElement, readonly bounds?: Bounds, readonly label?: Label, readonly isHorizontal?: boolean) {}
 }

@@ -13,11 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Label from '../Label';
-import Flow from './Flow';
-import { MessageVisibleKind } from '../../json-xsd/BPMNDI';
-import { Point } from '../../json-xsd/DC';
+import InternalBPMNShape from './shape/InternalBPMNShape';
+import InternalBPMNEdge from './edge/InternalBPMNEdge';
 
-export default class Edge {
-  constructor(readonly id?: string, readonly bpmnElement?: Flow, readonly waypoints?: Point[], readonly label?: Label, readonly messageVisibleKind?: MessageVisibleKind) {}
+export default interface InternalBPMNModel extends InternalBPMNShapes {
+  edges: InternalBPMNEdge[];
+}
+
+export interface InternalBPMNShapes {
+  flowNodes: InternalBPMNShape[];
+  lanes: InternalBPMNShape[];
+  pools: InternalBPMNShape[];
 }
