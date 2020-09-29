@@ -87,7 +87,6 @@ describe('enforce activity markers order', () => {
       [[ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.ADHOC]],
     ])(`markers: %s`, (expectedOrderedMarkers: string[]) => {
       it.each(computeAllPermutations(expectedOrderedMarkers))('permutation: %s', (permutedMarkers: string[]) => {
-        console.log(permutedMarkers);
         expect(orderActivityMarkers(permutedMarkers)).toEqual(expectedOrderedMarkers);
       });
     });
