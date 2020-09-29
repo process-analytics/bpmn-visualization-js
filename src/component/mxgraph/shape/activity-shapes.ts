@@ -228,3 +228,15 @@ export class SubProcessShape extends BaseActivityShape {
     c.restore();
   }
 }
+
+export class BusinessRuleTaskShape extends BaseActivityShape {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+    super(bounds, fill, stroke, strokewidth);
+    this.gradient = 'Chartreuse';
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
+  protected paintTaskIcon(paintParameter: PaintParameter): void {
+    // TODO To be implemented later
+  }
+}

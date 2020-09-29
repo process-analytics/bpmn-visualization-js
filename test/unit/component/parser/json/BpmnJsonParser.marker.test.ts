@@ -32,7 +32,7 @@ describe.each([
   ['scriptTask', ShapeBpmnElementKind.TASK_SCRIPT],
 
   // TODO: To uncomment when it's supported
-  //['businessRuleTask', ShapeBpmnElementKind.TASK_BUSINESS_RULE],
+  ['businessRuleTask', ShapeBpmnElementKind.TASK_BUSINESS_RULE],
   //['adHocSubProcess', ShapeBpmnElementKind.AD_HOC_SUB_PROCESS],
   //['transaction', ShapeBpmnElementKind.TRANSACTION],
 ])(`parse bpmn as json for '%s'`, (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
