@@ -668,6 +668,32 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
+      <!-- Business Rule Task -->
+      <bpmndi:BPMNShape id="shape_businessRuleTask_with_sequential_multi_instance" bpmnElement="businessRuleTask_with_sequential_multi_instance">
+        <dc:Bounds x="1508" y="1020" width="100" height="80" />
+        <bpmndi:BPMNLabel labelStyle="bold_font_id">
+          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_businessRuleTask_with_parallel_multi_instance" bpmnElement="businessRuleTask_with_parallel_multi_instance">
+        <dc:Bounds x="1328" y="1020" width="100" height="80" />
+        <bpmndi:BPMNLabel labelStyle="bold_font_id">
+          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_businessRuleTask_with_loop" bpmnElement="businessRuleTask_with_loop">
+        <dc:Bounds x="1688" y="1020" width="100" height="80" />
+        <bpmndi:BPMNLabel labelStyle="bold_font_id">
+          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_businessRuleTask" bpmnElement="businessRuleTask">
+        <dc:Bounds x="1888" y="1020" width="100" height="80" />
+        <bpmndi:BPMNLabel labelStyle="bold_font_id">
+          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+
       <!-- Embedded Sub-Process -->
       <!-- Expanded -->
       <!-- Expanded with elements -->
