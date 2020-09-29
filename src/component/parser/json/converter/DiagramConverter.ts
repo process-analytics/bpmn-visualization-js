@@ -23,7 +23,7 @@ import Label from '../../../../model/bpmn/internal/Label';
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json-xsd/BPMNDI';
 import { Font } from '../../../../model/bpmn/json-xsd/DC';
 import { ensureIsArray } from './ConverterUtil';
-import { ShapeBpmnElementType, ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
+import { ShapeBpmnElementType, ShapeBpmnMarkerType } from '../../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
 
 function findProcessElement(participantId: string): ShapeBpmnElement | undefined {
@@ -127,7 +127,7 @@ export default class DiagramConverter {
       }
 
       if ((bpmnElement instanceof ShapeBpmnSubProcess || bpmnElement instanceof ShapeBpmnCallActivity) && !shape.isExpanded) {
-        bpmnElement.markers.push(ShapeBpmnMarkerKind.EXPAND);
+        bpmnElement.markers.push(ShapeBpmnMarkerType.EXPAND);
       }
 
       let isHorizontal;

@@ -15,15 +15,15 @@
  */
 import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
-import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerKind';
+import { ShapeBpmnMarkerType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerType';
 import { TCallActivity } from '../../../../../src/model/bpmn/json-xsd/baseElement/flowNode/activity/activity';
 import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnCallActivityKind';
 
 describe('parse bpmn as json for callActivity', () => {
   describe.each([
     ['expanded', true, []],
-    ['collapsed', false, [ShapeBpmnMarkerKind.EXPAND]],
-  ])('parse bpmn as json for %s callActivity', (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: ShapeBpmnMarkerKind[]) => {
+    ['collapsed', false, [ShapeBpmnMarkerType.EXPAND]],
+  ])('parse bpmn as json for %s callActivity', (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: ShapeBpmnMarkerType[]) => {
     const callActivityJson = {
       id: `call_activity_id_0`,
       name: `call activity name`,

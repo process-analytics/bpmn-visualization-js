@@ -25,7 +25,7 @@ import ShapeBpmnElement, {
 import {
   ShapeBpmnElementType,
   ShapeBpmnCallActivityKind,
-  ShapeBpmnMarkerKind,
+  ShapeBpmnMarkerType,
   ShapeBpmnSubProcessKind,
   ShapeBpmnEventType,
   supportedBpmnEventKinds,
@@ -169,18 +169,18 @@ export default class ProcessConverter {
     }
   }
 
-  private buildMarkers(bpmnElement: TActivity): ShapeBpmnMarkerKind[] {
-    const markers: ShapeBpmnMarkerKind[] = [];
+  private buildMarkers(bpmnElement: TActivity): ShapeBpmnMarkerType[] {
+    const markers: ShapeBpmnMarkerType[] = [];
     // @ts-ignore We know that the standardLoopCharacteristics field is not on all types, but it's already tested
     const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
     // @ts-ignore We know that the multiInstanceLoopCharacteristics field is not on all types, but it's already tested
     const multiInstanceLoopCharacteristics = ensureIsArray(bpmnElement.multiInstanceLoopCharacteristics, true)[0];
     if (standardLoopCharacteristics || standardLoopCharacteristics === '') {
-      markers.push(ShapeBpmnMarkerKind.LOOP);
+      markers.push(ShapeBpmnMarkerType.LOOP);
     } else if (multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.isSequential) {
-      markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL);
+      markers.push(ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL);
     } else if ((multiInstanceLoopCharacteristics && !multiInstanceLoopCharacteristics.isSequential) || multiInstanceLoopCharacteristics === '') {
-      markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL);
+      markers.push(ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL);
     }
     return markers;
   }
@@ -248,7 +248,7 @@ export default class ProcessConverter {
       });
   }
 
-  private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
+  private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string, markers: ShapeBpmnMarkerType[]): ShapeBpmnSubProcess {
     this.buildSubProcessInnerElements(bpmnElement);
     if (!bpmnElement.triggeredByEvent) {
       return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, processId, markers);

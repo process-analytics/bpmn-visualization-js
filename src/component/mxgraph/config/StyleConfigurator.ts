@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementType, ShapeBpmnMarkerKind } from '../../../model/bpmn/internal/shape';
+import { ShapeBpmnElementType, ShapeBpmnMarkerType } from '../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../model/bpmn/internal/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../model/bpmn/internal/edge/SequenceFlowKind';
 import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
@@ -300,7 +300,7 @@ export default class StyleConfigurator {
           styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, bpmnElement.instantiate.toString());
         }
 
-        const markers: ShapeBpmnMarkerKind[] = bpmnElement.markers;
+        const markers: ShapeBpmnMarkerType[] = bpmnElement.markers;
         if (markers.length > 0) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
         }
@@ -343,7 +343,7 @@ export default class StyleConfigurator {
     else if (
       bpmnCell instanceof Shape &&
       (bpmnElement instanceof ShapeBpmnSubProcess || bpmnElement instanceof ShapeBpmnCallActivity) &&
-      !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)
+      !bpmnElement.markers.includes(ShapeBpmnMarkerType.EXPAND)
     ) {
       styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
     }

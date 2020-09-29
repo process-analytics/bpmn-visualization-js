@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { orderActivityMarkers } from '../../../../../../src/component/mxgraph/shape/render/utils';
-import { ShapeBpmnMarkerKind } from '../../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnMarkerType } from '../../../../../../src/model/bpmn/internal/shape';
 
 function computeAllPermutations(array: string[]): string[][][] {
   // see https://stackoverflow.com/questions/9960908/permutations-in-javascript and https://code-boxx.com/javascript-permutations-combinations/
@@ -65,7 +65,7 @@ describe('check permutations', () => {
 
 describe('enforce activity markers order', () => {
   describe('1 element', () => {
-    it.each(Object.values(ShapeBpmnMarkerKind))(`1 element - %s`, (marker: string) => {
+    it.each(Object.values(ShapeBpmnMarkerType))(`1 element - %s`, (marker: string) => {
       const markers = [marker];
       expect(orderActivityMarkers(markers)).toEqual(markers);
     });
@@ -73,18 +73,18 @@ describe('enforce activity markers order', () => {
 
   describe('2 elements', () => {
     describe.each([
-      [[ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND]],
-      [[ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND]],
-      [[ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND]],
-      [[ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND]],
-      [[ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC]],
-      [[ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.COMPENSATION]],
-      [[ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.COMPENSATION]],
-      [[ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.COMPENSATION]],
-      [[ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.ADHOC]],
-      [[ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.ADHOC]],
-      [[ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.ADHOC]],
-      [[ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.ADHOC]],
+      [[ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.EXPAND]],
+      [[ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerType.EXPAND]],
+      [[ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerType.EXPAND]],
+      [[ShapeBpmnMarkerType.COMPENSATION, ShapeBpmnMarkerType.EXPAND]],
+      [[ShapeBpmnMarkerType.EXPAND, ShapeBpmnMarkerType.ADHOC]],
+      [[ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.COMPENSATION]],
+      [[ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerType.COMPENSATION]],
+      [[ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerType.COMPENSATION]],
+      [[ShapeBpmnMarkerType.COMPENSATION, ShapeBpmnMarkerType.ADHOC]],
+      [[ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.ADHOC]],
+      [[ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerType.ADHOC]],
+      [[ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerType.ADHOC]],
     ])(`markers: %s`, (expectedOrderedMarkers: string[]) => {
       it.each(computeAllPermutations(expectedOrderedMarkers))('permutation: %s', (permutedMarkers: string[]) => {
         expect(orderActivityMarkers(permutedMarkers)).toEqual(expectedOrderedMarkers);
@@ -94,13 +94,13 @@ describe('enforce activity markers order', () => {
 
   describe('3 elements', () => {
     describe.each([
-      [[ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND]],
-      [[ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND]],
-      [[ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND]],
-      [[ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC]],
-      [[ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC]],
-      [[ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC]],
-      [[ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC]],
+      [[ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.COMPENSATION, ShapeBpmnMarkerType.EXPAND]],
+      [[ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerType.COMPENSATION, ShapeBpmnMarkerType.EXPAND]],
+      [[ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerType.COMPENSATION, ShapeBpmnMarkerType.EXPAND]],
+      [[ShapeBpmnMarkerType.COMPENSATION, ShapeBpmnMarkerType.EXPAND, ShapeBpmnMarkerType.ADHOC]],
+      [[ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.EXPAND, ShapeBpmnMarkerType.ADHOC]],
+      [[ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerType.EXPAND, ShapeBpmnMarkerType.ADHOC]],
+      [[ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerType.EXPAND, ShapeBpmnMarkerType.ADHOC]],
     ])(`markers: %s`, (expectedOrderedMarkers: string[]) => {
       it.each(computeAllPermutations(expectedOrderedMarkers))('permutation: %s', (permutedMarkers: string[]) => {
         expect(orderActivityMarkers(permutedMarkers)).toEqual(expectedOrderedMarkers);
@@ -110,9 +110,9 @@ describe('enforce activity markers order', () => {
 
   describe('4 elements', () => {
     describe.each([
-      [[ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC]],
-      [[ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC]],
-      [[ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.COMPENSATION, ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC]],
+      [[ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.COMPENSATION, ShapeBpmnMarkerType.EXPAND, ShapeBpmnMarkerType.ADHOC]],
+      [[ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerType.COMPENSATION, ShapeBpmnMarkerType.EXPAND, ShapeBpmnMarkerType.ADHOC]],
+      [[ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerType.COMPENSATION, ShapeBpmnMarkerType.EXPAND, ShapeBpmnMarkerType.ADHOC]],
     ])(`markers: %s`, (expectedOrderedMarkers: string[]) => {
       it.each(computeAllPermutations(expectedOrderedMarkers))('permutation: %s', (permutedMarkers: string[]) => {
         expect(orderActivityMarkers(permutedMarkers)).toEqual(expectedOrderedMarkers);
@@ -124,12 +124,12 @@ describe('enforce activity markers order', () => {
   describe('extra elements', () => {
     it.each([
       [
-        ['extraAtStart', ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.LOOP, 'extraAtEnd'],
-        [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND, 'extraAtStart', 'extraAtEnd'],
+        ['extraAtStart', ShapeBpmnMarkerType.EXPAND, ShapeBpmnMarkerType.LOOP, 'extraAtEnd'],
+        [ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.EXPAND, 'extraAtStart', 'extraAtEnd'],
       ],
       [
-        ['extraAtStart', ShapeBpmnMarkerKind.ADHOC, ShapeBpmnMarkerKind.EXPAND, 'extraAtEnd'],
-        [ShapeBpmnMarkerKind.EXPAND, ShapeBpmnMarkerKind.ADHOC, 'extraAtStart', 'extraAtEnd'],
+        ['extraAtStart', ShapeBpmnMarkerType.ADHOC, ShapeBpmnMarkerType.EXPAND, 'extraAtEnd'],
+        [ShapeBpmnMarkerType.EXPAND, ShapeBpmnMarkerType.ADHOC, 'extraAtStart', 'extraAtEnd'],
       ],
     ])(`order: %s)`, (markers: string[], expectedOrderedMarkers: string[]) => {
       expect(orderActivityMarkers(markers)).toEqual(expectedOrderedMarkers);

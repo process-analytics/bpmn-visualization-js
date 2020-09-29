@@ -15,7 +15,7 @@
  */
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render';
-import { ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal/shape';
+import { ShapeBpmnMarkerType, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal/shape';
 import BpmnCanvas from './render/BpmnCanvas';
 import { orderActivityMarkers } from './render/utils';
 
@@ -53,16 +53,16 @@ export abstract class BaseActivityShape extends mxRectangleShape {
         };
         paintParameter.c.save(); // ensure we can later restore the configuration
         switch (marker) {
-          case ShapeBpmnMarkerKind.LOOP:
+          case ShapeBpmnMarkerType.LOOP:
             this.iconPainter.paintLoopIcon(paintParameter);
             break;
-          case ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL:
+          case ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL:
             this.iconPainter.paintSequentialMultiInstanceIcon(paintParameter);
             break;
-          case ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL:
+          case ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL:
             this.iconPainter.paintParallelMultiInstanceIcon(paintParameter);
             break;
-          case ShapeBpmnMarkerKind.EXPAND:
+          case ShapeBpmnMarkerType.EXPAND:
             this.iconPainter.paintExpandIcon(paintParameter);
             break;
         }

@@ -17,7 +17,7 @@ import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/sha
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
 import { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../../../../src/model/bpmn/json-xsd/baseElement/loopCharacteristics';
-import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerKind';
+import { ShapeBpmnMarkerType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerType';
 import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnCallActivityKind';
 
 describe.each([
@@ -37,9 +37,9 @@ describe.each([
   //['transaction', ShapeBpmnElementKind.TRANSACTION],
 ])(`parse bpmn as json for '%s'`, (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementType) => {
   describe.each([
-    ['standardLoopCharacteristics', ShapeBpmnMarkerKind.LOOP],
-    ['multiInstanceLoopCharacteristics', ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
-  ])(`parse bpmn as json for '${bpmnKind}' with '%s'`, (bpmnLoopCharacteristicsKind: string, expectedMarkerKind: ShapeBpmnMarkerKind) => {
+    ['standardLoopCharacteristics', ShapeBpmnMarkerType.LOOP],
+    ['multiInstanceLoopCharacteristics', ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+  ])(`parse bpmn as json for '${bpmnKind}' with '%s'`, (bpmnLoopCharacteristicsKind: string, expectedMarkerKind: ShapeBpmnMarkerType) => {
     it.each([
       ['empty string', ''],
       ['empty object', {}],
@@ -128,7 +128,7 @@ describe.each([
           bpmnElementId: `${bpmnKind}_id_0`,
           bpmnElementName: `${bpmnKind} name`,
           bpmnElementKind: expectedShapeBpmnElementKind,
-          bpmnElementMarkers: [expectedMarkerKind, ShapeBpmnMarkerKind.EXPAND],
+          bpmnElementMarkers: [expectedMarkerKind, ShapeBpmnMarkerType.EXPAND],
           bounds: {
             x: 362,
             y: 232,
@@ -140,9 +140,9 @@ describe.each([
     }
   });
   describe.each([
-    [true, ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
-    [false, ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
-  ])(`parse bpmn as json for '${bpmnKind}' with 'multiInstanceLoopCharacteristics'`, (isSequential: boolean, expectedMarkerKind: ShapeBpmnMarkerKind) => {
+    [true, ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
+    [false, ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+  ])(`parse bpmn as json for '${bpmnKind}' with 'multiInstanceLoopCharacteristics'`, (isSequential: boolean, expectedMarkerKind: ShapeBpmnMarkerType) => {
     it.each([
       ['object', { isSequential }],
       ['array with object', [{ isSequential }]],
@@ -223,7 +223,7 @@ describe.each([
           bpmnElementId: `${bpmnKind}_id_0`,
           bpmnElementName: `${bpmnKind} name`,
           bpmnElementKind: expectedShapeBpmnElementKind,
-          bpmnElementMarkers: [expectedMarkerKind, ShapeBpmnMarkerKind.EXPAND],
+          bpmnElementMarkers: [expectedMarkerKind, ShapeBpmnMarkerType.EXPAND],
           bpmnElementCallActivityKind: expectedShapeBpmnElementKind === ShapeBpmnElementType.CALL_ACTIVITY ? ShapeBpmnCallActivityKind.CALLING_PROCESS : undefined,
           bounds: {
             x: 362,

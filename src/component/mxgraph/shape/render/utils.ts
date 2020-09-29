@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
+import { ShapeBpmnMarkerType } from '../../../../model/bpmn/internal/shape';
 
 const referenceOrderedMarkers = [
-  ShapeBpmnMarkerKind.LOOP,
-  ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL,
-  ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL,
-  ShapeBpmnMarkerKind.COMPENSATION,
-  ShapeBpmnMarkerKind.EXPAND,
-  ShapeBpmnMarkerKind.ADHOC,
+  ShapeBpmnMarkerType.LOOP,
+  ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL,
+  ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL,
+  ShapeBpmnMarkerType.COMPENSATION,
+  ShapeBpmnMarkerType.EXPAND,
+  ShapeBpmnMarkerType.ADHOC,
 ];
 
 export function orderActivityMarkers(markers: string[]): string[] {

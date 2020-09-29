@@ -18,7 +18,7 @@ import { ExpectedShape, parseJson, parseJsonAndExpectOnlySubProcess, verifyEdge,
 import each from 'jest-each';
 import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnSubProcessKind';
 import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
-import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerKind';
+import { ShapeBpmnMarkerType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerType';
 import { ShapeBpmnEventType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnEventType';
 import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import { getEventShapes } from './BpmnJsonParser.event.test';
@@ -47,8 +47,8 @@ describe('parse bpmn as json for sub-process', () => {
   ]).describe('parse bpmn as json for %s sub-process', (bpmnSubProcessKind: string, triggeredByEvent: boolean, expectedShapeBpmnSubProcessKind: ShapeBpmnSubProcessKind) => {
     each([
       ['expanded', true, []],
-      ['collapsed', false, [ShapeBpmnMarkerKind.EXPAND]],
-    ]).describe(`parse bpmn as json for %s ${bpmnSubProcessKind} sub-process`, (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: ShapeBpmnMarkerKind[]) => {
+      ['collapsed', false, [ShapeBpmnMarkerType.EXPAND]],
+    ]).describe(`parse bpmn as json for %s ${bpmnSubProcessKind} sub-process`, (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: ShapeBpmnMarkerType[]) => {
       const processWithSubProcessAsObject = {} as TProcess;
       processWithSubProcessAsObject['subProcess'] = {
         id: `sub-process_id_0`,
@@ -150,7 +150,7 @@ describe('parse bpmn as json for sub-process', () => {
           width: 36,
           height: 45,
         },
-        bpmnElementMarkers: [ShapeBpmnMarkerKind.EXPAND],
+        bpmnElementMarkers: [ShapeBpmnMarkerType.EXPAND],
       });
       verifyShape(model.flowNodes[1], {
         shapeId: 'shape_sub-process_id_1',
@@ -163,7 +163,7 @@ describe('parse bpmn as json for sub-process', () => {
           width: 35,
           height: 46,
         },
-        bpmnElementMarkers: [ShapeBpmnMarkerKind.EXPAND],
+        bpmnElementMarkers: [ShapeBpmnMarkerType.EXPAND],
       });
     });
 
@@ -203,7 +203,7 @@ describe('parse bpmn as json for sub-process', () => {
             width: 35,
             height: 46,
           },
-          bpmnElementMarkers: [ShapeBpmnMarkerKind.EXPAND],
+          bpmnElementMarkers: [ShapeBpmnMarkerType.EXPAND],
         });
       });
     }

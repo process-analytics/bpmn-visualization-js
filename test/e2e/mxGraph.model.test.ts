@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { ShapeBpmnElementType, ShapeBpmnEventType, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementType, ShapeBpmnEventType, ShapeBpmnMarkerType, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/internal/shape';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import { MarkerIdentifier, StyleIdentifier } from '../../src';
 import { FlowType } from '../../src/model/bpmn/internal/edge/FlowType';
@@ -37,7 +37,7 @@ export interface ExpectedShapeModelElement {
   parentId?: string;
   /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
   styleShape?: string;
-  markers?: ShapeBpmnMarkerKind[];
+  markers?: ShapeBpmnMarkerType[];
   isInstantiating?: boolean;
   isHorizontal?: boolean;
 }
@@ -507,44 +507,44 @@ describe('mxGraph model', () => {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Expanded Embedded Sub-Process With Loop',
-      markers: [ShapeBpmnMarkerKind.LOOP],
+      markers: [ShapeBpmnMarkerType.LOOP],
     });
     expectModelContainsSubProcess('expanded_embedded_sub_process_with_sequential_multi_instance_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Expanded Embedded Sub-Process With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsSubProcess('expanded_embedded_sub_process_with_parallel_multi_instance_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Expanded Embedded Sub-Process With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     expectModelContainsSubProcess('collapsed_embedded_sub_process_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process',
-      markers: [ShapeBpmnMarkerKind.EXPAND],
+      markers: [ShapeBpmnMarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_embedded_sub_process_with_loop_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process With Loop',
-      markers: [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
+      markers: [ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_embedded_sub_process_with_sequential_multi_instance_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_embedded_sub_process_with_parallel_multi_instance_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerType.EXPAND],
     });
 
     expectModelContainsSubProcess('expanded_event_sub_process_id', {
@@ -556,44 +556,44 @@ describe('mxGraph model', () => {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Expanded Event Sub-Process With Loop',
-      markers: [ShapeBpmnMarkerKind.LOOP],
+      markers: [ShapeBpmnMarkerType.LOOP],
     });
     expectModelContainsSubProcess('expanded_event_sub_process_with_sequential_multi_instance_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Expanded Event Sub-Process With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsSubProcess('expanded_event_sub_process_with_parallel_multi_instance_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Expanded Event Sub-Process With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     expectModelContainsSubProcess('collapsed_event_sub_process_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Collapsed Event Sub-Process',
-      markers: [ShapeBpmnMarkerKind.EXPAND],
+      markers: [ShapeBpmnMarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_event_sub_process_with_loop_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Collapsed Event Sub-Process With Loop',
-      markers: [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
+      markers: [ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_event_sub_process_with_sequential_multi_instance_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Collapsed Event Sub-Process With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_event_sub_process_with_parallel_multi_instance_id', {
       kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Collapsed Event Sub-Process With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerType.EXPAND],
     });
 
     // Elements in subprocess
@@ -650,17 +650,17 @@ describe('mxGraph model', () => {
     expectModelContainsShape('expanded_callActivity_with_loop', {
       kind: ShapeBpmnElementType.CALL_ACTIVITY,
       label: 'Expanded Call Activity With Loop',
-      markers: [ShapeBpmnMarkerKind.LOOP],
+      markers: [ShapeBpmnMarkerType.LOOP],
     });
     expectModelContainsShape('expanded_callActivity_with_sequential_multi_instance', {
       kind: ShapeBpmnElementType.CALL_ACTIVITY,
       label: 'Expanded Call Activity With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('expanded_callActivity_with_parallel_multi_instance', {
       kind: ShapeBpmnElementType.CALL_ACTIVITY,
       label: 'Expanded Call Activity With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Collapsed
@@ -668,17 +668,17 @@ describe('mxGraph model', () => {
     expectModelContainsShape('collapsed_callActivity_with_loop', {
       kind: ShapeBpmnElementType.CALL_ACTIVITY,
       label: 'Collapsed Call Activity With Loop',
-      markers: [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
+      markers: [ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.EXPAND],
     });
     expectModelContainsShape('collapsed_callActivity_with_sequential_multi_instance', {
       kind: ShapeBpmnElementType.CALL_ACTIVITY,
       label: 'Collapsed Call Activity With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerType.EXPAND],
     });
     expectModelContainsShape('collapsed_callActivity_with_parallel_multi_instance', {
       kind: ShapeBpmnElementType.CALL_ACTIVITY,
       label: 'Collapsed Call Activity With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerType.EXPAND],
     });
 
     // activity
@@ -706,7 +706,7 @@ describe('mxGraph model', () => {
         size: 11.0,
       },
       label: 'Task With Loop',
-      markers: [ShapeBpmnMarkerKind.LOOP],
+      markers: [ShapeBpmnMarkerType.LOOP],
     });
     expectModelContainsShape('task_with_sequential_multi_instance', {
       kind: ShapeBpmnElementType.TASK,
@@ -719,7 +719,7 @@ describe('mxGraph model', () => {
         size: 11.0,
       },
       label: 'Task With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('task_with_parallel_multi_instance', {
       kind: ShapeBpmnElementType.TASK,
@@ -732,7 +732,7 @@ describe('mxGraph model', () => {
         size: 11.0,
       },
       label: 'Task With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Service Task
@@ -741,19 +741,19 @@ describe('mxGraph model', () => {
       kind: ShapeBpmnElementType.TASK_SERVICE,
       font: expectedBoldFont,
       label: 'Service Task With Loop',
-      markers: [ShapeBpmnMarkerKind.LOOP],
+      markers: [ShapeBpmnMarkerType.LOOP],
     });
     expectModelContainsShape('serviceTask_with_sequential_multi_instance', {
       kind: ShapeBpmnElementType.TASK_SERVICE,
       font: expectedBoldFont,
       label: 'Service Task With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('serviceTask_with_parallel_multi_instance', {
       kind: ShapeBpmnElementType.TASK_SERVICE,
       font: expectedBoldFont,
       label: 'Service Task With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // User Task
@@ -762,19 +762,19 @@ describe('mxGraph model', () => {
       kind: ShapeBpmnElementType.TASK_USER,
       font: expectedBoldFont,
       label: 'User Task With Loop',
-      markers: [ShapeBpmnMarkerKind.LOOP],
+      markers: [ShapeBpmnMarkerType.LOOP],
     });
     expectModelContainsShape('userTask_with_sequential_multi_instance', {
       kind: ShapeBpmnElementType.TASK_USER,
       font: expectedBoldFont,
       label: 'User Task With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('userTask_with_parallel_multi_instance', {
       kind: ShapeBpmnElementType.TASK_USER,
       font: expectedBoldFont,
       label: 'User Task With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Receive Task: Non instantiating
@@ -783,19 +783,19 @@ describe('mxGraph model', () => {
       kind: ShapeBpmnElementType.TASK_RECEIVE,
       label: 'Non-instantiating Receive Task With Loop',
       isInstantiating: false,
-      markers: [ShapeBpmnMarkerKind.LOOP],
+      markers: [ShapeBpmnMarkerType.LOOP],
     });
     expectModelContainsShape('receiveTask_non_instantiating_with_sequential_multi_instance', {
       kind: ShapeBpmnElementType.TASK_RECEIVE,
       label: 'Non-instantiating Receive Task With Sequential Multi-instance',
       isInstantiating: false,
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('receiveTask_non_instantiating_with_parallel_multi_instance', {
       kind: ShapeBpmnElementType.TASK_RECEIVE,
       label: 'Non-instantiating Receive Task With Parallel Multi-instance',
       isInstantiating: false,
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Receive Task: Instantiating
@@ -804,19 +804,19 @@ describe('mxGraph model', () => {
       kind: ShapeBpmnElementType.TASK_RECEIVE,
       label: 'Instantiating Receive Task With Loop',
       isInstantiating: true,
-      markers: [ShapeBpmnMarkerKind.LOOP],
+      markers: [ShapeBpmnMarkerType.LOOP],
     });
     expectModelContainsShape('receiveTask_instantiating_with_sequential_multi_instance', {
       kind: ShapeBpmnElementType.TASK_RECEIVE,
       label: 'Instantiating Receive Task With Sequential Multi-instance',
       isInstantiating: true,
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('receiveTask_instantiating_with_parallel_multi_instance', {
       kind: ShapeBpmnElementType.TASK_RECEIVE,
       label: 'Instantiating Receive Task With Parallel Multi-instance',
       isInstantiating: true,
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Send Task
@@ -825,19 +825,19 @@ describe('mxGraph model', () => {
       kind: ShapeBpmnElementType.TASK_SEND,
       font: expectedBoldFont,
       label: 'Send Task With Loop',
-      markers: [ShapeBpmnMarkerKind.LOOP],
+      markers: [ShapeBpmnMarkerType.LOOP],
     });
     expectModelContainsShape('sendTask_with_sequential_multi_instance', {
       kind: ShapeBpmnElementType.TASK_SEND,
       font: expectedBoldFont,
       label: 'Send Task With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('sendTask_with_parallel_multi_instance', {
       kind: ShapeBpmnElementType.TASK_SEND,
       font: expectedBoldFont,
       label: 'Send Task With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Manual Task
@@ -846,19 +846,19 @@ describe('mxGraph model', () => {
       kind: ShapeBpmnElementType.TASK_MANUAL,
       font: expectedBoldFont,
       label: 'Manual Task With Loop',
-      markers: [ShapeBpmnMarkerKind.LOOP],
+      markers: [ShapeBpmnMarkerType.LOOP],
     });
     expectModelContainsShape('manualTask_with_sequential_multi_instance', {
       kind: ShapeBpmnElementType.TASK_MANUAL,
       font: expectedBoldFont,
       label: 'Manual Task With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('manualTask_with_parallel_multi_instance', {
       kind: ShapeBpmnElementType.TASK_MANUAL,
       font: expectedBoldFont,
       label: 'Manual Task With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Script Task
@@ -867,19 +867,19 @@ describe('mxGraph model', () => {
       kind: ShapeBpmnElementType.TASK_SCRIPT,
       font: expectedBoldFont,
       label: 'Script Task With Loop',
-      markers: [ShapeBpmnMarkerKind.LOOP],
+      markers: [ShapeBpmnMarkerType.LOOP],
     });
     expectModelContainsShape('scriptTask_with_sequential_multi_instance', {
       kind: ShapeBpmnElementType.TASK_SCRIPT,
       font: expectedBoldFont,
       label: 'Script Task With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('scriptTask_with_parallel_multi_instance', {
       kind: ShapeBpmnElementType.TASK_SCRIPT,
       font: expectedBoldFont,
       label: 'Script Task With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Business Rule Task
