@@ -23,3 +23,5 @@ Explain the **details** for making this change: What existing problem does the P
 **On automatic closing of ISSUES**
 
 Put `closes #XXXX` (remove backticks to let GitHub create the link) in your comment to auto-close the issue that your PR fixes (if such).
+
+:warning: Don't forget to add a comment on the issue so that we can assign it to you.
