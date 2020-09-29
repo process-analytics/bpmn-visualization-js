@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
-import { readFileSync } from '../../test/helpers/file-helper';
 import * as path from 'path';
-import { defaultBpmnJsonParser } from '../../src/component/parser/json/BpmnJsonParser';
-import { BpmnJsonModel } from '../../src/component/parser/xml/bpmn-json-model/BPMN20';
-import BpmnModel from '../../src/model/bpmn/BpmnModel';
 import clipboardy from 'clipboardy';
 import parseArgs from 'minimist';
+import BpmnModel from '../../src/model/bpmn/BpmnModel';
+import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
+import { BpmnJsonModel } from '../../src/component/parser/xml/bpmn-json-model/BPMN20';
+import { defaultBpmnJsonParser } from '../../src/component/parser/json/BpmnJsonParser';
+import { readFileSync } from '../../test/helpers/file-helper';
 
 const __dirname = path.resolve();
 const argv = parseArgs(process.argv.slice(2));
