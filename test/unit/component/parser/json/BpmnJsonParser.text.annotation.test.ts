@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
 
@@ -51,7 +51,7 @@ describe('parse bpmn as json for text annotation', () => {
       shapeId: `shape_textAnnotation_id_0`,
       bpmnElementId: `textAnnotation_id_0`,
       bpmnElementName: `textAnnotation name`,
-      bpmnElementKind: ShapeBpmnElementKind.TEXT_ANNOTATION,
+      bpmnElementKind: ShapeBpmnElementType.TEXT_ANNOTATION,
       bounds: {
         x: 362,
         y: 232,
@@ -112,7 +112,7 @@ describe('parse bpmn as json for text annotation', () => {
       shapeId: 'TextAnnotation_01_di',
       bpmnElementId: 'TextAnnotation_01',
       bpmnElementName: 'Task Annotation',
-      bpmnElementKind: ShapeBpmnElementKind.TEXT_ANNOTATION,
+      bpmnElementKind: ShapeBpmnElementType.TEXT_ANNOTATION,
       bounds: {
         x: 430,
         y: 160,
@@ -124,7 +124,7 @@ describe('parse bpmn as json for text annotation', () => {
       shapeId: 'TextAnnotation_02_di',
       bpmnElementId: 'TextAnnotation_02',
       bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.TEXT_ANNOTATION,
+      bpmnElementKind: ShapeBpmnElementType.TEXT_ANNOTATION,
       bounds: {
         x: 180,
         y: 80,

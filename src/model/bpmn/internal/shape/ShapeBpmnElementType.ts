@@ -16,7 +16,7 @@
 /**
   The real name of the field in the BPMN XSD
  */
-export enum ShapeBpmnElementKind {
+export enum ShapeBpmnElementType {
   LANE = 'lane',
   POOL = 'pool',
   CALL_ACTIVITY = 'callActivity',

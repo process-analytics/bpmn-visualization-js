@@ -24,7 +24,7 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import { ShapeBpmnElementKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementType, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
 import Label from '../../../../../src/model/bpmn/internal/Label';
 import { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
@@ -56,11 +56,11 @@ function newShape(bpmnElement: ShapeBpmnElement, label?: Label, isHorizontal?: b
  * Returns a new `ShapeBpmnElement` instance with arbitrary id and name.
  * `kind` is the `ShapeBpmnElementKind` to set in the new `ShapeBpmnElement` instance
  */
-function newShapeBpmnElement(kind: ShapeBpmnElementKind): ShapeBpmnElement {
+function newShapeBpmnElement(kind: ShapeBpmnElementType): ShapeBpmnElement {
   return new ShapeBpmnElement('id', 'name', kind);
 }
 
-function newShapeBpmnActivity(kind: ShapeBpmnElementKind, markers?: ShapeBpmnMarkerKind[], instantiate?: boolean): ShapeBpmnElement {
+function newShapeBpmnActivity(kind: ShapeBpmnElementType, markers?: ShapeBpmnMarkerKind[], instantiate?: boolean): ShapeBpmnElement {
   return new ShapeBpmnActivity('id', 'name', kind, undefined, instantiate, markers);
 }
 
@@ -114,18 +114,18 @@ describe('mxgraph renderer', () => {
 
   describe('compute style - shape label', () => {
     it('compute style of shape with no label', () => {
-      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_USER));
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementType.TASK_USER));
       expect(computeStyle(shape)).toEqual('userTask');
     });
 
     it('compute style of shape with a no font label', () => {
-      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_END), undefined, new Label(undefined, undefined));
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementType.EVENT_END), undefined, new Label(undefined, undefined));
       expect(computeStyle(shape)).toEqual('endEvent');
     });
     it('compute style of shape with label including bold font', () => {
       const shape = new Shape(
         'id',
-        newShapeBpmnElement(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE),
+        newShapeBpmnElement(ShapeBpmnElementType.GATEWAY_EXCLUSIVE),
         undefined,
         new Label(toFont({ name: 'Courier', size: 9, isBold: true }), undefined),
       );
@@ -133,17 +133,17 @@ describe('mxgraph renderer', () => {
     });
 
     it('compute style of shape with label including italic font', () => {
-      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH), undefined, new Label(toFont({ name: 'Arial', isItalic: true }), undefined));
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH), undefined, new Label(toFont({ name: 'Arial', isItalic: true }), undefined));
       expect(computeStyle(shape)).toEqual('intermediateCatchEvent;fontFamily=Arial;fontStyle=2');
     });
 
     it('compute style of shape with label including bold/italic font', () => {
-      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW), undefined, new Label(toFont({ isBold: true, isItalic: true }), undefined));
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementType.EVENT_INTERMEDIATE_THROW), undefined, new Label(toFont({ isBold: true, isItalic: true }), undefined));
       expect(computeStyle(shape)).toEqual('intermediateThrowEvent;fontStyle=3');
     });
 
     it('compute style of shape with label bounds', () => {
-      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.CALL_ACTIVITY), undefined, new Label(undefined, newBounds(80)));
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementType.CALL_ACTIVITY), undefined, new Label(undefined, newBounds(80)));
       expect(computeStyle(shape)).toEqual('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=top;verticalLabelPosition=left');
     });
   });
@@ -214,12 +214,12 @@ describe('mxgraph renderer', () => {
 
   describe('compute style - events kind', () => {
     it('intermediate catch conditional', () => {
-      const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.CONDITIONAL), newLabel({ name: 'Ubuntu' }));
+      const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.CONDITIONAL), newLabel({ name: 'Ubuntu' }));
       expect(computeStyle(shape)).toEqual('intermediateCatchEvent;bpmn.eventKind=conditional;fontFamily=Ubuntu');
     });
 
     it('start signal', () => {
-      const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventKind.SIGNAL), newLabel({ isBold: true }));
+      const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementType.EVENT_START, ShapeBpmnEventKind.SIGNAL), newLabel({ isBold: true }));
       expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventKind=signal;fontStyle=1');
     });
   });
@@ -306,18 +306,18 @@ describe('mxgraph renderer', () => {
       ['non-instantiating', false],
       ['instantiating', true],
     ])('%s receive task', (instantiatingKind: string, instantiate: boolean) => {
-      const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK_RECEIVE, undefined, instantiate), newLabel({ name: 'Arial' }));
+      const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementType.TASK_RECEIVE, undefined, instantiate), newLabel({ name: 'Arial' }));
       expect(computeStyle(shape)).toEqual(`receiveTask;bpmn.isInstantiating=${instantiate};fontFamily=Arial`);
     });
   });
 
   describe('compute style - text annotation', () => {
     it('without label', () => {
-      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION));
+      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementType.TEXT_ANNOTATION));
       expect(computeStyle(shape)).toEqual('textAnnotation');
     });
     it('with label bounds', () => {
-      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION), newLabel({ name: 'Segoe UI' }, newBounds(100)));
+      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementType.TEXT_ANNOTATION), newLabel({ name: 'Segoe UI' }, newBounds(100)));
       expect(computeStyle(shape)).toEqual('textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=top;verticalLabelPosition=left');
     });
   });
@@ -327,7 +327,7 @@ describe('mxgraph renderer', () => {
       ['vertical', false, '1'],
       ['horizontal', true, '0'],
     ])('%s pool references a Process', (title, isHorizontal: boolean, expected: string) => {
-      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.POOL), undefined, isHorizontal);
+      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementType.POOL), undefined, isHorizontal);
       expect(computeStyle(shape)).toEqual(`pool;horizontal=${expected}`);
     });
   });
@@ -337,44 +337,44 @@ describe('mxgraph renderer', () => {
       ['vertical', false, '1'],
       ['horizontal', true, '0'],
     ])('%s lane', (title, isHorizontal: boolean, expected: string) => {
-      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.LANE), undefined, isHorizontal);
+      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementType.LANE), undefined, isHorizontal);
       expect(computeStyle(shape)).toEqual(`lane;horizontal=${expected}`);
     });
   });
 
   describe.each([
-    [ShapeBpmnElementKind.CALL_ACTIVITY],
-    [ShapeBpmnElementKind.SUB_PROCESS],
-    [ShapeBpmnElementKind.TASK],
-    [ShapeBpmnElementKind.TASK_SERVICE],
-    [ShapeBpmnElementKind.TASK_USER],
-    [ShapeBpmnElementKind.TASK_RECEIVE],
-    [ShapeBpmnElementKind.TASK_SEND],
-    [ShapeBpmnElementKind.TASK_MANUAL],
-    [ShapeBpmnElementKind.TASK_SCRIPT],
-    [ShapeBpmnElementKind.TASK_BUSINESS_RULE],
+    [ShapeBpmnElementType.CALL_ACTIVITY],
+    [ShapeBpmnElementType.SUB_PROCESS],
+    [ShapeBpmnElementType.TASK],
+    [ShapeBpmnElementType.TASK_SERVICE],
+    [ShapeBpmnElementType.TASK_USER],
+    [ShapeBpmnElementType.TASK_RECEIVE],
+    [ShapeBpmnElementType.TASK_SEND],
+    [ShapeBpmnElementType.TASK_MANUAL],
+    [ShapeBpmnElementType.TASK_SCRIPT],
+    [ShapeBpmnElementType.TASK_BUSINESS_RULE],
 
     // TODO: To uncomment when it's supported
-    //[ShapeBpmnElementKind.AD_HOC_SUB_PROCESS],
-    //[ShapeBpmnElementKind.TRANSACTION],
-  ])('compute style - markers for %s', (bpmnKind: ShapeBpmnElementKind) => {
+    //[ShapeBpmnElementType.AD_HOC_SUB_PROCESS],
+    //[ShapeBpmnElementType.TRANSACTION],
+  ])('compute style - markers for %s', (bpmnKind: ShapeBpmnElementType) => {
     describe.each([[ShapeBpmnMarkerKind.LOOP], [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL], [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL]])(
       `compute style - %s marker for ${bpmnKind}`,
       (markerKind: ShapeBpmnMarkerKind) => {
         it(`${bpmnKind} with ${markerKind} marker`, () => {
           const shape = newShape(newShapeBpmnActivity(bpmnKind, [markerKind]), newLabel({ name: 'Arial' }));
-          const additionalReceiveTaskStyle = bpmnKind === ShapeBpmnElementKind.TASK_RECEIVE ? ';bpmn.isInstantiating=false' : '';
+          const additionalReceiveTaskStyle = bpmnKind === ShapeBpmnElementType.TASK_RECEIVE ? ';bpmn.isInstantiating=false' : '';
           expect(computeStyle(shape)).toEqual(`${bpmnKind}${additionalReceiveTaskStyle};bpmn.markers=${markerKind};fontFamily=Arial`);
         });
 
-        if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
+        if (bpmnKind == ShapeBpmnElementType.SUB_PROCESS) {
           it(`${bpmnKind} with Loop & Expand (collapsed) markers`, () => {
             const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, [markerKind, ShapeBpmnMarkerKind.EXPAND]));
             expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded;bpmn.markers=${markerKind},expand`);
           });
         }
 
-        if (bpmnKind == ShapeBpmnElementKind.CALL_ACTIVITY) {
+        if (bpmnKind == ShapeBpmnElementType.CALL_ACTIVITY) {
           it(`${bpmnKind} with Loop & Expand (collapsed) markers`, () => {
             const shape = newShape(newShapeBpmnCallActivity([markerKind, ShapeBpmnMarkerKind.EXPAND]));
             expect(computeStyle(shape)).toEqual(`callActivity;bpmn.markers=${markerKind},expand`);

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementType, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
@@ -31,7 +31,7 @@ export interface ExpectedShape {
   shapeId: string;
   bpmnElementId: string;
   bpmnElementName: string;
-  bpmnElementKind: ShapeBpmnElementKind;
+  bpmnElementKind: ShapeBpmnElementType;
   parentId?: string;
   bounds?: ExpectedBounds;
   isHorizontal?: boolean;

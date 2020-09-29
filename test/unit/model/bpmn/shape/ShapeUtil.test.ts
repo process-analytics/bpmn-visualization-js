@@ -15,19 +15,19 @@
  */
 
 import ShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape';
 
 describe('ShapeUtil', () => {
   it('top level bpmn event kinds', () => {
     const tasks = ShapeUtil.topLevelBpmnEventKinds();
 
-    expect(tasks).toContain(ShapeBpmnElementKind.EVENT_END);
+    expect(tasks).toContain(ShapeBpmnElementType.EVENT_END);
   });
 
   it('task kinds', () => {
     const tasks = ShapeUtil.taskKinds();
 
-    expect(tasks).toContain(ShapeBpmnElementKind.TASK);
-    expect(tasks).toContain(ShapeBpmnElementKind.TASK_USER);
+    expect(tasks).toContain(ShapeBpmnElementType.TASK);
+    expect(tasks).toContain(ShapeBpmnElementType.TASK_USER);
   });
 });

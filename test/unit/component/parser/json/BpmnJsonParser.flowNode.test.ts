@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
 
 describe.each([
-  ['task', ShapeBpmnElementKind.TASK],
-  ['serviceTask', ShapeBpmnElementKind.TASK_SERVICE],
-  ['userTask', ShapeBpmnElementKind.TASK_USER],
-  ['receiveTask', ShapeBpmnElementKind.TASK_RECEIVE],
-  ['sendTask', ShapeBpmnElementKind.TASK_SEND],
-  ['manualTask', ShapeBpmnElementKind.TASK_MANUAL],
-  ['businessRuleTask', ShapeBpmnElementKind.TASK_BUSINESS_RULE],
-  ['scriptTask', ShapeBpmnElementKind.TASK_SCRIPT],
-  ['exclusiveGateway', ShapeBpmnElementKind.GATEWAY_EXCLUSIVE],
-  ['inclusiveGateway', ShapeBpmnElementKind.GATEWAY_INCLUSIVE],
-  ['parallelGateway', ShapeBpmnElementKind.GATEWAY_PARALLEL],
-])('parse bpmn as json for %s', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
+  ['task', ShapeBpmnElementType.TASK],
+  ['serviceTask', ShapeBpmnElementType.TASK_SERVICE],
+  ['userTask', ShapeBpmnElementType.TASK_USER],
+  ['receiveTask', ShapeBpmnElementType.TASK_RECEIVE],
+  ['sendTask', ShapeBpmnElementType.TASK_SEND],
+  ['manualTask', ShapeBpmnElementType.TASK_MANUAL],
+  ['businessRuleTask', ShapeBpmnElementType.TASK_BUSINESS_RULE],
+  ['scriptTask', ShapeBpmnElementType.TASK_SCRIPT],
+  ['exclusiveGateway', ShapeBpmnElementType.GATEWAY_EXCLUSIVE],
+  ['inclusiveGateway', ShapeBpmnElementType.GATEWAY_INCLUSIVE],
+  ['parallelGateway', ShapeBpmnElementType.GATEWAY_PARALLEL],
+])('parse bpmn as json for %s', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementType) => {
   const processWithFlowNodeAsObject = {} as TProcess;
   processWithFlowNodeAsObject[`${bpmnKind}`] = {
     id: `${bpmnKind}_id_0`,
@@ -135,7 +135,7 @@ describe.each([
     });
   });
 
-  if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.TASK_RECEIVE) {
+  if (expectedShapeBpmnElementKind === ShapeBpmnElementType.TASK_RECEIVE) {
     it(`should convert as Shape, when a ${bpmnKind} (with/without instantiate) is an attribute (as array) of 'process'`, () => {
       const json = {
         definitions: {

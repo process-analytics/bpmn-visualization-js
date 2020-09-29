@@ -23,7 +23,7 @@ import Label from '../../../../model/bpmn/internal/Label';
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json-xsd/BPMNDI';
 import { Font } from '../../../../model/bpmn/json-xsd/DC';
 import { ensureIsArray } from './ConverterUtil';
-import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
+import { ShapeBpmnElementType, ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
 
 function findProcessElement(participantId: string): ShapeBpmnElement | undefined {
@@ -35,7 +35,7 @@ function findProcessElement(participantId: string): ShapeBpmnElement | undefined
       return new ShapeBpmnElement(participant.id, name, originalProcessBpmnElement.type, originalProcessBpmnElement.parentId);
     }
     // black box pool
-    return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
+    return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementType.POOL);
   }
 }
 

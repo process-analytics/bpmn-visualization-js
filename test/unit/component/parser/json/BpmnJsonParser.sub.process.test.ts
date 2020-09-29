@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
 import { ExpectedShape, parseJson, parseJsonAndExpectOnlySubProcess, verifyEdge, verifyShape, verifySubProcess } from './JsonTestUtils';
 import each from 'jest-each';
 import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnSubProcessKind';
@@ -86,7 +86,7 @@ describe('parse bpmn as json for sub-process', () => {
             shapeId: 'shape_sub-process_id_0',
             bpmnElementId: 'sub-process_id_0',
             bpmnElementName: 'sub-process name',
-            bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+            bpmnElementKind: ShapeBpmnElementType.SUB_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
             bounds: {
               x: 362,
@@ -143,7 +143,7 @@ describe('parse bpmn as json for sub-process', () => {
         shapeId: 'shape_sub-process_id_0',
         bpmnElementId: 'sub-process_id_0',
         bpmnElementName: 'sub-process name',
-        bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+        bpmnElementKind: ShapeBpmnElementType.SUB_PROCESS,
         bounds: {
           x: 362,
           y: 232,
@@ -156,7 +156,7 @@ describe('parse bpmn as json for sub-process', () => {
         shapeId: 'shape_sub-process_id_1',
         bpmnElementId: 'sub-process_id_1',
         bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+        bpmnElementKind: ShapeBpmnElementType.SUB_PROCESS,
         bounds: {
           x: 365,
           y: 235,
@@ -196,7 +196,7 @@ describe('parse bpmn as json for sub-process', () => {
           shapeId: 'shape_sub-process_id_1',
           bpmnElementId: 'sub-process_id_1',
           bpmnElementName: undefined,
-          bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+          bpmnElementKind: ShapeBpmnElementType.SUB_PROCESS,
           bounds: {
             x: 365,
             y: 235,
@@ -305,7 +305,7 @@ describe('parse bpmn as json for sub-process', () => {
         shapeId: 'shape_sub-process_id_1',
         bpmnElementId: 'sub-process_id_1',
         bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+        bpmnElementKind: ShapeBpmnElementType.SUB_PROCESS,
         bounds: {
           x: 365,
           y: 235,
@@ -323,7 +323,7 @@ describe('parse bpmn as json for sub-process', () => {
           parentId: 'sub-process_id_1',
           bpmnElementId: 'sub-process_id_1_startEvent_1',
           bpmnElementName: 'SubProcess Start Event',
-          bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+          bpmnElementKind: ShapeBpmnElementType.EVENT_START,
           bounds: { x: 465, y: 335, width: 10, height: 10 },
         },
         ShapeBpmnEventKind.TIMER,
@@ -335,7 +335,7 @@ describe('parse bpmn as json for sub-process', () => {
           parentId: 'sub-process_id_1',
           bpmnElementId: 'sub-process_id_1_endEvent_1',
           bpmnElementName: 'SubProcess End Event',
-          bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
+          bpmnElementKind: ShapeBpmnElementType.EVENT_END,
           bounds: { x: 565, y: 335, width: 20, height: 20 },
         },
         ShapeBpmnEventKind.TERMINATE,
@@ -346,7 +346,7 @@ describe('parse bpmn as json for sub-process', () => {
         parentId: 'sub-process_id_1',
         bpmnElementId: 'sub-process_id_1_userTask_1',
         bpmnElementName: 'SubProcess User Task',
-        bpmnElementKind: ShapeBpmnElementKind.TASK_USER,
+        bpmnElementKind: ShapeBpmnElementType.TASK_USER,
         bounds: { x: 465, y: 335, width: 10, height: 10 },
       });
 
@@ -355,7 +355,7 @@ describe('parse bpmn as json for sub-process', () => {
         parentId: 'sub-process_id_1',
         bpmnElementId: 'sub-process_id_1_exclusiveGateway_1',
         bpmnElementName: 'SubProcess Exclusive Gateway',
-        bpmnElementKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
+        bpmnElementKind: ShapeBpmnElementType.GATEWAY_EXCLUSIVE,
         bounds: { x: 565, y: 335, width: 20, height: 20 },
       });
 
@@ -424,7 +424,7 @@ describe('parse bpmn as json for sub-process', () => {
             parentId: 'sub-process_id_1',
             bpmnElementId: 'sub-process_id_1_errorStartEvent_1',
             bpmnElementName: errorStartEventName,
-            bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+            bpmnElementKind: ShapeBpmnElementType.EVENT_START,
             bounds: { x: 465, y: 335, width: 10, height: 10 },
           },
           ShapeBpmnEventKind.ERROR,

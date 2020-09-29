@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../model/bpmn/internal/shape';
+import { ShapeBpmnElementType, ShapeBpmnMarkerKind } from '../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../model/bpmn/internal/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../model/bpmn/internal/edge/SequenceFlowKind';
 import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
@@ -144,7 +144,7 @@ export default class StyleConfigurator {
     return mxUtils.clone(defaultStyle);
   }
 
-  private putCellStyle(name: ShapeBpmnElementKind, style: any): void {
+  private putCellStyle(name: ShapeBpmnElementType, style: any): void {
     this.getStylesheet().putCellStyle(name, style);
   }
 
@@ -165,7 +165,7 @@ export default class StyleConfigurator {
     // most of BPMN pool are ok when setting it to 30
     style[mxConstants.STYLE_STARTSIZE] = StyleDefault.POOL_LABEL_SIZE;
 
-    this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.POOL, style);
+    this.graph.getStylesheet().putCellStyle(ShapeBpmnElementType.POOL, style);
   }
 
   private configureLaneStyle(): void {
@@ -182,7 +182,7 @@ export default class StyleConfigurator {
     // perhaps it can be calculated as a difference of starting point (either x or y) between pool, lane, sub-lane ?
     style[mxConstants.STYLE_STARTSIZE] = StyleDefault.LANE_LABEL_SIZE;
 
-    this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.LANE, style);
+    this.graph.getStylesheet().putCellStyle(ShapeBpmnElementType.LANE, style);
   }
 
   private configureEventStyles(): void {
@@ -197,11 +197,11 @@ export default class StyleConfigurator {
 
   private configureTextAnnotationStyle(): void {
     const style = this.cloneDefaultVertexStyle();
-    style[mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TEXT_ANNOTATION;
+    style[mxConstants.STYLE_SHAPE] = ShapeBpmnElementType.TEXT_ANNOTATION;
     style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
     style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
     style[mxConstants.STYLE_SPACING_LEFT] = 5;
-    this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
+    this.putCellStyle(ShapeBpmnElementType.TEXT_ANNOTATION, style);
   }
 
   private configureActivityStyles(): void {
@@ -296,7 +296,7 @@ export default class StyleConfigurator {
       } else if (bpmnElement instanceof ShapeBpmnActivity) {
         if (bpmnElement instanceof ShapeBpmnSubProcess) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
-        } else if (bpmnElement.type === ShapeBpmnElementKind.TASK_RECEIVE) {
+        } else if (bpmnElement.type === ShapeBpmnElementType.TASK_RECEIVE) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, bpmnElement.instantiate.toString());
         }
 
@@ -327,7 +327,7 @@ export default class StyleConfigurator {
 
     if (labelBounds) {
       styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
-      if (bpmnCell.bpmnElement.type != ShapeBpmnElementKind.TEXT_ANNOTATION) {
+      if (bpmnCell.bpmnElement.type != ShapeBpmnElementType.TEXT_ANNOTATION) {
         styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
       }
 

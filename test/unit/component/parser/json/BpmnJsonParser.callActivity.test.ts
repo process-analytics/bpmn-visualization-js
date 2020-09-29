@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerKind';
 import { TCallActivity } from '../../../../../src/model/bpmn/json-xsd/baseElement/flowNode/activity/activity';
@@ -65,7 +65,7 @@ describe('parse bpmn as json for callActivity', () => {
           parentId: 'process 1',
           bpmnElementId: 'call_activity_id_0',
           bpmnElementName: 'call activity name',
-          bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+          bpmnElementKind: ShapeBpmnElementType.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
           bounds: {
@@ -128,7 +128,7 @@ describe('parse bpmn as json for callActivity', () => {
         parentId: 'process 1',
         bpmnElementId: `call_activity_id_0`,
         bpmnElementName: `call activity name`,
-        bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+        bpmnElementKind: ShapeBpmnElementType.CALL_ACTIVITY,
         bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
         bounds: {
           x: 362,
@@ -142,7 +142,7 @@ describe('parse bpmn as json for callActivity', () => {
         parentId: 'process 1',
         bpmnElementId: `call_activity_id_1`,
         bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+        bpmnElementKind: ShapeBpmnElementType.CALL_ACTIVITY,
         bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
         bounds: {
           x: 365,
