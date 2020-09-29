@@ -15,7 +15,7 @@
  */
 import { ShapeBpmnElementType } from './ShapeBpmnElementType';
 import { ShapeBpmnEventKind } from './ShapeBpmnEventKind';
-import { BpmnEventKind } from './ShapeUtil';
+import { BpmnEventType } from './ShapeUtil';
 import { ShapeBpmnSubProcessKind } from './ShapeBpmnSubProcessKind';
 import { ShapeBpmnMarkerKind } from './ShapeBpmnMarkerKind';
 import { ShapeBpmnCallActivityKind } from './ShapeBpmnCallActivityKind';
@@ -43,8 +43,8 @@ export class ShapeBpmnSubProcess extends ShapeBpmnActivity {
 }
 
 export class ShapeBpmnEvent extends ShapeBpmnElement {
-  constructor(id: string, name: string, elementKind: BpmnEventKind, readonly eventKind: ShapeBpmnEventKind, parentId: string) {
-    super(id, name, elementKind, parentId);
+  constructor(id: string, name: string, elementType: BpmnEventType, readonly eventKind: ShapeBpmnEventKind, parentId: string) {
+    super(id, name, elementType, parentId);
   }
 }
 

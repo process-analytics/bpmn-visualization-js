@@ -15,7 +15,7 @@
  */
 import { ShapeBpmnElementType } from './ShapeBpmnElementType';
 
-export type BpmnEventKind =
+export type BpmnEventType =
   | ShapeBpmnElementType.EVENT_BOUNDARY
   | ShapeBpmnElementType.EVENT_START
   | ShapeBpmnElementType.EVENT_END

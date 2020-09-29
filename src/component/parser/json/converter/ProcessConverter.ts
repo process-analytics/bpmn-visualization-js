@@ -31,7 +31,7 @@ import {
   supportedBpmnEventKinds,
 } from '../../../../model/bpmn/internal/shape';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
-import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
+import ShapeUtil, { BpmnEventType } from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../../model/bpmn/internal/edge/SequenceFlowKind';
 import { FlowType } from '../../../../model/bpmn/internal/edge/FlowType';
 import { TProcess } from '../../../../model/bpmn/json-xsd/baseElement/rootElement/rootElement';
@@ -130,7 +130,7 @@ export default class ProcessConverter {
       let shapeBpmnElement;
 
       if (ShapeUtil.isEvent(kind)) {
-        shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, processId);
+        shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventType, processId);
       } else if (ShapeUtil.isActivity(kind)) {
         shapeBpmnElement = this.buildShapeBpmnActivity(bpmnElement, kind, processId);
       } else {
@@ -185,7 +185,7 @@ export default class ProcessConverter {
     return markers;
   }
 
-  private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventKind, processId: string): ShapeBpmnEvent {
+  private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventType, processId: string): ShapeBpmnEvent {
     const eventDefinitions = this.getEventDefinitions(bpmnElement);
     const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
 

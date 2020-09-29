@@ -30,7 +30,7 @@ import { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
-import { BpmnEventKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
+import { BpmnEventType } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import each from 'jest-each';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/json-xsd/BPMNDI';
 import { Bounds, Font } from '../../../../../src/model/bpmn/json-xsd/DC';
@@ -68,7 +68,7 @@ function newShapeBpmnCallActivity(markers?: ShapeBpmnMarkerKind[]): ShapeBpmnEle
   return new ShapeBpmnCallActivity('id', 'name', ShapeBpmnCallActivityKind.CALLING_PROCESS, undefined, markers);
 }
 
-function newShapeBpmnEvent(bpmnElementKind: BpmnEventKind, eventKind: ShapeBpmnEventKind): ShapeBpmnEvent {
+function newShapeBpmnEvent(bpmnElementKind: BpmnEventType, eventKind: ShapeBpmnEventKind): ShapeBpmnEvent {
   return new ShapeBpmnEvent('id', 'name', bpmnElementKind, eventKind, null);
 }
 
