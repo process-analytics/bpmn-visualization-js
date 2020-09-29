@@ -19,6 +19,7 @@ _Note_: The title is used as proposal for the maintainer merging the Pull Reques
 
 Explain the **details** for making this change: What existing problem does the Pull Request solve? Why is this feature beneficial?
 
+If you changed the rendering of the BPMN file, add a screenshot.
 
 **On automatic closing of ISSUES**
 
