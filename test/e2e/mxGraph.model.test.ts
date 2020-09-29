@@ -838,6 +838,27 @@ describe('mxGraph model', () => {
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
 
+    // Business Rule Task
+    expectModelContainsShape('businessRuleTask', { kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE, font: expectedBoldFont, label: 'Business Rule Task' });
+    expectModelContainsShape('businessRuleTask_with_loop', {
+      kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE,
+      font: expectedBoldFont,
+      label: 'Business Rule Task With Loop',
+      markers: [ShapeBpmnMarkerKind.LOOP],
+    });
+    expectModelContainsShape('businessRuleTask_with_sequential_multi_instance', {
+      kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE,
+      font: expectedBoldFont,
+      label: 'Business Rule Task With Sequential Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+    });
+    expectModelContainsShape('businessRuleTask_with_parallel_multi_instance', {
+      kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE,
+      font: expectedBoldFont,
+      label: 'Business Rule Task With Parallel Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+    });
+
     // text annotation
     expectModelContainsShape('text_annotation_id_1', { kind: ShapeBpmnElementKind.TEXT_ANNOTATION, label: 'Annotation' });
 
