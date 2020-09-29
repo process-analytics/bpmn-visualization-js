@@ -16,7 +16,7 @@
 /**
  * Base name of the BPMN specification.
  */
-export enum ShapeBpmnSubProcessKind {
+export enum ShapeBpmnSubProcessType {
   EMBEDDED = 'embedded',
   EVENT = 'event',
   // TRANSACTION = 'transaction',

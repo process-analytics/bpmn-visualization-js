@@ -26,7 +26,7 @@ import {
   ShapeBpmnElementType,
   ShapeBpmnCallActivityType,
   ShapeBpmnMarkerType,
-  ShapeBpmnSubProcessKind,
+  ShapeBpmnSubProcessType,
   ShapeBpmnEventType,
   supportedBpmnEventKinds,
 } from '../../../../model/bpmn/internal/shape';
@@ -251,9 +251,9 @@ export default class ProcessConverter {
   private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string, markers: ShapeBpmnMarkerType[]): ShapeBpmnSubProcess {
     this.buildSubProcessInnerElements(bpmnElement);
     if (!bpmnElement.triggeredByEvent) {
-      return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, processId, markers);
+      return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessType.EMBEDDED, processId, markers);
     }
-    return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EVENT, processId, markers);
+    return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessType.EVENT, processId, markers);
   }
 
   private buildSubProcessInnerElements(subProcess: TSubProcess): void {

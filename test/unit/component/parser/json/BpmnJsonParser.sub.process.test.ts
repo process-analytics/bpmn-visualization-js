@@ -16,7 +16,7 @@
 import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
 import { ExpectedShape, parseJson, parseJsonAndExpectOnlySubProcess, verifyEdge, verifyShape, verifySubProcess } from './JsonTestUtils';
 import each from 'jest-each';
-import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnSubProcessKind';
+import { ShapeBpmnSubProcessType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnSubProcessType';
 import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
 import { ShapeBpmnMarkerType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerType';
 import { ShapeBpmnEventType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnEventType';
@@ -42,9 +42,9 @@ function verifyEventShape(shape: Shape, expectedShape: ExpectedShape, expectedEv
 
 describe('parse bpmn as json for sub-process', () => {
   each([
-    ['embedded', false, ShapeBpmnSubProcessKind.EMBEDDED],
-    ['event', true, ShapeBpmnSubProcessKind.EVENT],
-  ]).describe('parse bpmn as json for %s sub-process', (bpmnSubProcessKind: string, triggeredByEvent: boolean, expectedShapeBpmnSubProcessKind: ShapeBpmnSubProcessKind) => {
+    ['embedded', false, ShapeBpmnSubProcessType.EMBEDDED],
+    ['event', true, ShapeBpmnSubProcessType.EVENT],
+  ]).describe('parse bpmn as json for %s sub-process', (bpmnSubProcessKind: string, triggeredByEvent: boolean, expectedShapeBpmnSubProcessKind: ShapeBpmnSubProcessType) => {
     each([
       ['expanded', true, []],
       ['collapsed', false, [ShapeBpmnMarkerType.EXPAND]],
@@ -167,7 +167,7 @@ describe('parse bpmn as json for sub-process', () => {
       });
     });
 
-    if (expectedShapeBpmnSubProcessKind === ShapeBpmnSubProcessKind.EMBEDDED) {
+    if (expectedShapeBpmnSubProcessKind === ShapeBpmnSubProcessType.EMBEDDED) {
       it(`should convert as Shape, when a embedded sub-process (with/without triggeredByEvent) is an attribute (as object) of 'process'`, () => {
         const json = {
           definitions: {
@@ -370,7 +370,7 @@ describe('parse bpmn as json for sub-process', () => {
       });
     });
 
-    if (expectedShapeBpmnSubProcessKind === ShapeBpmnSubProcessKind.EVENT) {
+    if (expectedShapeBpmnSubProcessKind === ShapeBpmnSubProcessType.EVENT) {
       it(`should convert error start event in '${expectedShapeBpmnSubProcessKind} sub-process'`, () => {
         const errorStartEventName = `${expectedShapeBpmnSubProcessKind} SubProcess Error Event`;
         const json = {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { ShapeBpmnElementType, ShapeBpmnEventType, ShapeBpmnMarkerType, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementType, ShapeBpmnEventType, ShapeBpmnMarkerType, ShapeBpmnSubProcessType } from '../../src/model/bpmn/internal/shape';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import { MarkerIdentifier, StyleIdentifier } from '../../src';
 import { FlowType } from '../../src/model/bpmn/internal/edge/FlowType';
@@ -48,7 +48,7 @@ export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
 
 // TODO find a way to not be forced to pass 'kind'
 export interface ExpectedSubProcessModelElement extends ExpectedShapeModelElement {
-  subProcessKind: ShapeBpmnSubProcessKind;
+  subProcessKind: ShapeBpmnSubProcessType;
 }
 
 interface ExpectedEdgeModelElement {
@@ -500,98 +500,98 @@ describe('mxGraph model', () => {
     // Sub-process
     expectModelContainsSubProcess('expanded_embedded_sub_process_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      subProcessKind: ShapeBpmnSubProcessType.EMBEDDED,
       label: 'Expanded Embedded Sub-Process',
     });
     expectModelContainsSubProcess('expanded_embedded_sub_process_with_loop_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      subProcessKind: ShapeBpmnSubProcessType.EMBEDDED,
       label: 'Expanded Embedded Sub-Process With Loop',
       markers: [ShapeBpmnMarkerType.LOOP],
     });
     expectModelContainsSubProcess('expanded_embedded_sub_process_with_sequential_multi_instance_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      subProcessKind: ShapeBpmnSubProcessType.EMBEDDED,
       label: 'Expanded Embedded Sub-Process With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsSubProcess('expanded_embedded_sub_process_with_parallel_multi_instance_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      subProcessKind: ShapeBpmnSubProcessType.EMBEDDED,
       label: 'Expanded Embedded Sub-Process With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     expectModelContainsSubProcess('collapsed_embedded_sub_process_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      subProcessKind: ShapeBpmnSubProcessType.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process',
       markers: [ShapeBpmnMarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_embedded_sub_process_with_loop_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      subProcessKind: ShapeBpmnSubProcessType.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process With Loop',
       markers: [ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_embedded_sub_process_with_sequential_multi_instance_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      subProcessKind: ShapeBpmnSubProcessType.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_embedded_sub_process_with_parallel_multi_instance_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      subProcessKind: ShapeBpmnSubProcessType.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerType.EXPAND],
     });
 
     expectModelContainsSubProcess('expanded_event_sub_process_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      subProcessKind: ShapeBpmnSubProcessType.EVENT,
       label: 'Expanded Event Sub-Process',
     });
     expectModelContainsSubProcess('expanded_event_sub_process_with_loop_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      subProcessKind: ShapeBpmnSubProcessType.EVENT,
       label: 'Expanded Event Sub-Process With Loop',
       markers: [ShapeBpmnMarkerType.LOOP],
     });
     expectModelContainsSubProcess('expanded_event_sub_process_with_sequential_multi_instance_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      subProcessKind: ShapeBpmnSubProcessType.EVENT,
       label: 'Expanded Event Sub-Process With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsSubProcess('expanded_event_sub_process_with_parallel_multi_instance_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      subProcessKind: ShapeBpmnSubProcessType.EVENT,
       label: 'Expanded Event Sub-Process With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     expectModelContainsSubProcess('collapsed_event_sub_process_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      subProcessKind: ShapeBpmnSubProcessType.EVENT,
       label: 'Collapsed Event Sub-Process',
       markers: [ShapeBpmnMarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_event_sub_process_with_loop_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      subProcessKind: ShapeBpmnSubProcessType.EVENT,
       label: 'Collapsed Event Sub-Process With Loop',
       markers: [ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_event_sub_process_with_sequential_multi_instance_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      subProcessKind: ShapeBpmnSubProcessType.EVENT,
       label: 'Collapsed Event Sub-Process With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_event_sub_process_with_parallel_multi_instance_id', {
       kind: null,
-      subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      subProcessKind: ShapeBpmnSubProcessType.EVENT,
       label: 'Collapsed Event Sub-Process With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerType.EXPAND],
     });

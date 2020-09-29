@@ -295,7 +295,7 @@ export default class StyleConfigurator {
         }
       } else if (bpmnElement instanceof ShapeBpmnActivity) {
         if (bpmnElement instanceof ShapeBpmnSubProcess) {
-          styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
+          styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessType);
         } else if (bpmnElement.type === ShapeBpmnElementType.TASK_RECEIVE) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, bpmnElement.instantiate.toString());
         }

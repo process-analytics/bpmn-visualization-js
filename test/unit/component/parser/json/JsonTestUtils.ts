@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementType, ShapeBpmnCallActivityType, ShapeBpmnMarkerType, ShapeBpmnSubProcessKind, ShapeBpmnEventType } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementType, ShapeBpmnCallActivityType, ShapeBpmnMarkerType, ShapeBpmnSubProcessType, ShapeBpmnEventType } from '../../../../../src/model/bpmn/internal/shape';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
@@ -180,10 +180,10 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge | ExpectedSeq
   }
 }
 
-export function verifySubProcess(model: BpmnModel, kind: ShapeBpmnSubProcessKind, expectedNumber: number): void {
+export function verifySubProcess(model: BpmnModel, kind: ShapeBpmnSubProcessType, expectedNumber: number): void {
   const events = model.flowNodes.filter(shape => {
     const bpmnElement = shape.bpmnElement;
-    return bpmnElement instanceof ShapeBpmnSubProcess && (bpmnElement as ShapeBpmnSubProcess).subProcessKind === kind;
+    return bpmnElement instanceof ShapeBpmnSubProcess && (bpmnElement as ShapeBpmnSubProcess).subProcessType === kind;
   });
   expect(events).toHaveLength(expectedNumber);
 }
@@ -234,7 +234,7 @@ export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventKind: ShapeBpm
   return model;
 }
 
-export function parseJsonAndExpectOnlySubProcess(json: BpmnJsonModel, kind: ShapeBpmnSubProcessKind, expectedNumber: number): BpmnModel {
+export function parseJsonAndExpectOnlySubProcess(json: BpmnJsonModel, kind: ShapeBpmnSubProcessType, expectedNumber: number): BpmnModel {
   const model = parseJson(json);
 
   expect(model.lanes).toHaveLength(0);
