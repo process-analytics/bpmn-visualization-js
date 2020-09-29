@@ -1,6 +1,7 @@
 # IDE
 /.idea/
 *.iml
+*.project
 
 # Build directories
 /node_modules/

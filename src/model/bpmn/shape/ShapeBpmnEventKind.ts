@@ -46,4 +46,5 @@ export const supportedBpmnEventKinds = [
   ShapeBpmnEventKind.SIGNAL,
   ShapeBpmnEventKind.LINK,
   ShapeBpmnEventKind.ERROR,
+  ShapeBpmnEventKind.COMPENSATION,
 ];
