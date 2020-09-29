@@ -19,13 +19,13 @@ import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/sha
 
 describe('ShapeUtil', () => {
   it('top level bpmn event kinds', () => {
-    const tasks = ShapeUtil.topLevelBpmnEventKinds();
+    const tasks = ShapeUtil.topLevelBpmnEventTypes();
 
     expect(tasks).toContain(ShapeBpmnElementType.EVENT_END);
   });
 
   it('task kinds', () => {
-    const tasks = ShapeUtil.taskKinds();
+    const tasks = ShapeUtil.taskTypes();
 
     expect(tasks).toContain(ShapeBpmnElementType.TASK);
     expect(tasks).toContain(ShapeBpmnElementType.TASK_USER);

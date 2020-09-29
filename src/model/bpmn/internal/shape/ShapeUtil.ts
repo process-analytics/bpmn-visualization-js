@@ -25,15 +25,15 @@ export type BpmnEventType =
 // TODO move to ShapeBpmnElementKind? and rename into ShapeBpmnElementKindUtil?
 // TODO bpmnEventKinds currently hosted in ProcessConverter may be hosted here
 export default class ShapeUtil {
-  private static readonly EVENT_KINDS = ShapeUtil.filterKind('Event');
-  private static readonly GATEWAY_KINDS = ShapeUtil.filterKind('Gateway');
+  private static readonly EVENT_TYPES = ShapeUtil.filterType('Event');
+  private static readonly GATEWAY_TYPES = ShapeUtil.filterType('Gateway');
 
   // TODO : To modify when we will support globalTask (They are not considered as Task in the BPMN Semantic)
-  private static TASK_KINDS = ShapeUtil.filterKind('Task', true);
+  private static TASK_TYPES = ShapeUtil.filterType('Task', true);
 
-  private static ACTIVITY_KINDS = [...ShapeUtil.TASK_KINDS, ShapeBpmnElementType.CALL_ACTIVITY, ShapeBpmnElementType.SUB_PROCESS];
-  private static FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = [
-    ...ShapeUtil.ACTIVITY_KINDS,
+  private static ACTIVITY_TYPES = [...ShapeUtil.TASK_TYPES, ShapeBpmnElementType.CALL_ACTIVITY, ShapeBpmnElementType.SUB_PROCESS];
+  private static FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_TYPES = [
+    ...ShapeUtil.ACTIVITY_TYPES,
     ShapeBpmnElementType.GATEWAY_EXCLUSIVE,
     ShapeBpmnElementType.GATEWAY_INCLUSIVE,
 
@@ -41,72 +41,72 @@ export default class ShapeUtil {
     // ShapeBpmnElementKind.GATEWAY_COMPLEX,
   ];
 
-  private static filterKind(suffix: string, ignoreCase = false): ShapeBpmnElementType[] {
-    return Object.values(ShapeBpmnElementType).filter(kind => {
+  private static filterType(suffix: string, ignoreCase = false): ShapeBpmnElementType[] {
+    return Object.values(ShapeBpmnElementType).filter(type => {
       if (ignoreCase) {
-        return kind.endsWith(suffix) || kind.toLowerCase().endsWith(suffix.toLowerCase());
+        return type.endsWith(suffix) || type.toLowerCase().endsWith(suffix.toLowerCase());
       }
-      return kind.endsWith(suffix);
+      return type.endsWith(suffix);
     });
   }
 
-  public static isEvent(kind: ShapeBpmnElementType): boolean {
-    return this.EVENT_KINDS.includes(kind);
+  public static isEvent(type: ShapeBpmnElementType): boolean {
+    return this.EVENT_TYPES.includes(type);
   }
 
-  public static isCallActivity(kind: ShapeBpmnElementType): boolean {
-    return ShapeBpmnElementType.CALL_ACTIVITY === kind;
+  public static isCallActivity(type: ShapeBpmnElementType): boolean {
+    return ShapeBpmnElementType.CALL_ACTIVITY === type;
   }
 
-  public static isSubProcess(kind: ShapeBpmnElementType): boolean {
-    return ShapeBpmnElementType.SUB_PROCESS === kind;
+  public static isSubProcess(type: ShapeBpmnElementType): boolean {
+    return ShapeBpmnElementType.SUB_PROCESS === type;
   }
 
-  public static isBoundaryEvent(kind: ShapeBpmnElementType): boolean {
-    return ShapeBpmnElementType.EVENT_BOUNDARY === kind;
+  public static isBoundaryEvent(type: ShapeBpmnElementType): boolean {
+    return ShapeBpmnElementType.EVENT_BOUNDARY === type;
   }
 
-  public static isStartEvent(kind: ShapeBpmnElementType): boolean {
-    return ShapeBpmnElementType.EVENT_START === kind;
+  public static isStartEvent(type: ShapeBpmnElementType): boolean {
+    return ShapeBpmnElementType.EVENT_START === type;
   }
 
-  public static canHaveNoneEvent(kind: ShapeBpmnElementType): boolean {
-    return ShapeBpmnElementType.EVENT_INTERMEDIATE_THROW === kind || ShapeBpmnElementType.EVENT_END === kind || ShapeBpmnElementType.EVENT_START === kind;
+  public static canHaveNoneEvent(type: ShapeBpmnElementType): boolean {
+    return ShapeBpmnElementType.EVENT_INTERMEDIATE_THROW === type || ShapeBpmnElementType.EVENT_END === type || ShapeBpmnElementType.EVENT_START === type;
   }
 
-  public static isActivity(kind: ShapeBpmnElementType): boolean {
-    return this.ACTIVITY_KINDS.includes(kind);
+  public static isActivity(type: ShapeBpmnElementType): boolean {
+    return this.ACTIVITY_TYPES.includes(type);
   }
 
-  public static isWithDefaultSequenceFlow(kind: ShapeBpmnElementType): boolean {
-    return this.FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS.includes(kind);
+  public static isWithDefaultSequenceFlow(type: ShapeBpmnElementType): boolean {
+    return this.FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_TYPES.includes(type);
   }
 
   // TODO should we clone the array to avoid modifications of this ref array by client code?
   // topLevelBpmnEventKinds to not mixed with the bpmnEventKinds that currently are the list of non None event subtypes
-  public static topLevelBpmnEventKinds(): ShapeBpmnElementType[] {
-    return this.EVENT_KINDS;
+  public static topLevelBpmnEventTypes(): ShapeBpmnElementType[] {
+    return this.EVENT_TYPES;
   }
 
-  public static activityKinds(): ShapeBpmnElementType[] {
-    return this.ACTIVITY_KINDS;
+  public static activityTypes(): ShapeBpmnElementType[] {
+    return this.ACTIVITY_TYPES;
   }
 
-  public static taskKinds(): ShapeBpmnElementType[] {
-    return this.TASK_KINDS;
+  public static taskTypes(): ShapeBpmnElementType[] {
+    return this.TASK_TYPES;
   }
 
-  public static gatewayKinds(): ShapeBpmnElementType[] {
-    return this.GATEWAY_KINDS;
+  public static gatewayTypes(): ShapeBpmnElementType[] {
+    return this.GATEWAY_TYPES;
   }
 
-  public static flowNodeKinds(): ShapeBpmnElementType[] {
-    return Object.values(ShapeBpmnElementType).filter(kind => {
-      return !ShapeUtil.isPoolOrLane(kind);
+  public static flowNodeTypes(): ShapeBpmnElementType[] {
+    return Object.values(ShapeBpmnElementType).filter(type => {
+      return !ShapeUtil.isPoolOrLane(type);
     });
   }
 
-  public static isPoolOrLane(kind: ShapeBpmnElementType): boolean {
-    return kind == ShapeBpmnElementType.POOL || kind == ShapeBpmnElementType.LANE;
+  public static isPoolOrLane(type: ShapeBpmnElementType): boolean {
+    return type == ShapeBpmnElementType.POOL || type == ShapeBpmnElementType.LANE;
   }
 }

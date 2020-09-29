@@ -110,7 +110,7 @@ export default class ProcessConverter {
     const processId = process.id;
 
     // flow nodes
-    ShapeUtil.flowNodeKinds()
+    ShapeUtil.flowNodeTypes()
       .filter(kind => kind != ShapeBpmnElementType.EVENT_BOUNDARY)
       .forEach(kind => this.buildFlowNodeBpmnElements(processId, process[kind], kind));
     // process boundary events afterwards as we need its parent activity to be available when building it

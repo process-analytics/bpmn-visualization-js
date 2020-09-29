@@ -186,7 +186,7 @@ export default class StyleConfigurator {
   }
 
   private configureEventStyles(): void {
-    ShapeUtil.topLevelBpmnEventKinds().forEach(kind => {
+    ShapeUtil.topLevelBpmnEventTypes().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
       style[mxConstants.STYLE_SHAPE] = kind;
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.EllipsePerimeter;
@@ -205,7 +205,7 @@ export default class StyleConfigurator {
   }
 
   private configureActivityStyles(): void {
-    ShapeUtil.activityKinds().forEach(kind => {
+    ShapeUtil.activityTypes().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
       style[mxConstants.STYLE_SHAPE] = kind;
       style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
@@ -214,7 +214,7 @@ export default class StyleConfigurator {
   }
 
   private configureGatewayStyles(): void {
-    ShapeUtil.gatewayKinds().forEach(kind => {
+    ShapeUtil.gatewayTypes().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
       style[mxConstants.STYLE_SHAPE] = kind;
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
