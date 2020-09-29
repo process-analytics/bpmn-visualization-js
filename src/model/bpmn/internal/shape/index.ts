@@ -16,6 +16,6 @@
 
 export * from './ShapeBpmnCallActivityKind';
 export * from './ShapeBpmnElementType';
-export * from './ShapeBpmnEventKind'; // TODO no need for internal function
+export * from './ShapeBpmnEventType'; // TODO no need for internal function
 export * from './ShapeBpmnMarkerKind';
 export * from './ShapeBpmnSubProcessKind';

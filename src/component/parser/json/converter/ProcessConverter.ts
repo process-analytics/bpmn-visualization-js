@@ -27,7 +27,7 @@ import {
   ShapeBpmnCallActivityKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
-  ShapeBpmnEventKind,
+  ShapeBpmnEventType,
   supportedBpmnEventKinds,
 } from '../../../../model/bpmn/internal/shape';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
@@ -75,7 +75,7 @@ export function findAssociationFlow(id: string): AssociationFlow {
 }
 
 interface EventDefinition {
-  kind: ShapeBpmnEventKind;
+  kind: ShapeBpmnEventType;
   counter: number;
 }
 
@@ -191,7 +191,7 @@ export default class ProcessConverter {
 
     // do we have a None Event?
     if (numberOfEventDefinitions == 0 && ShapeUtil.canHaveNoneEvent(elementKind)) {
-      return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, ShapeBpmnEventKind.NONE, processId);
+      return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, ShapeBpmnEventType.NONE, processId);
     }
 
     if (numberOfEventDefinitions == 1) {
@@ -208,7 +208,7 @@ export default class ProcessConverter {
     }
   }
 
-  private buildShapeBpmnBoundaryEvent(bpmnElement: TBoundaryEvent, eventKind: ShapeBpmnEventKind): ShapeBpmnBoundaryEvent {
+  private buildShapeBpmnBoundaryEvent(bpmnElement: TBoundaryEvent, eventKind: ShapeBpmnEventType): ShapeBpmnBoundaryEvent {
     const parent = findFlowNodeBpmnElement(bpmnElement.attachedToRef);
 
     if (ShapeUtil.isActivity(parent?.type)) {
@@ -225,7 +225,7 @@ export default class ProcessConverter {
    * @param bpmnElement The BPMN element from the XML data which represents a BPMN Event
    */
   private getEventDefinitions(bpmnElement: TCatchEvent | TThrowEvent): EventDefinition[] {
-    const eventDefinitions = new Map<ShapeBpmnEventKind, number>();
+    const eventDefinitions = new Map<ShapeBpmnEventType, number>();
 
     bpmnEventKinds.forEach(eventKind => {
       // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementType, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementType, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventType } from '../../../../../src/model/bpmn/internal/shape';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
@@ -218,7 +218,7 @@ export function verifyLabelBounds(label: Label, expectedBounds?: ExpectedBounds)
   }
 }
 
-export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventKind: ShapeBpmnEventKind, expectedNumber: number): BpmnModel {
+export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventKind: ShapeBpmnEventType, expectedNumber: number): BpmnModel {
   const model = parseJson(json);
 
   expect(model.lanes).toHaveLength(0);

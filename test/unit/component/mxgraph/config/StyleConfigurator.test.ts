@@ -24,7 +24,7 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import { ShapeBpmnElementType, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementType, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventType } from '../../../../../src/model/bpmn/internal/shape';
 import Label from '../../../../../src/model/bpmn/internal/Label';
 import { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
@@ -68,15 +68,15 @@ function newShapeBpmnCallActivity(markers?: ShapeBpmnMarkerKind[]): ShapeBpmnEle
   return new ShapeBpmnCallActivity('id', 'name', ShapeBpmnCallActivityKind.CALLING_PROCESS, undefined, markers);
 }
 
-function newShapeBpmnEvent(bpmnElementKind: BpmnEventType, eventKind: ShapeBpmnEventKind): ShapeBpmnEvent {
+function newShapeBpmnEvent(bpmnElementKind: BpmnEventType, eventKind: ShapeBpmnEventType): ShapeBpmnEvent {
   return new ShapeBpmnEvent('id', 'name', bpmnElementKind, eventKind, null);
 }
 
-function newShapeBpmnBoundaryEvent(eventKind: ShapeBpmnEventKind, isInterrupting: boolean): ShapeBpmnBoundaryEvent {
+function newShapeBpmnBoundaryEvent(eventKind: ShapeBpmnEventType, isInterrupting: boolean): ShapeBpmnBoundaryEvent {
   return new ShapeBpmnBoundaryEvent('id', 'name', eventKind, null, isInterrupting);
 }
 
-function newShapeBpmnStartEvent(eventKind: ShapeBpmnEventKind, isInterrupting: boolean): ShapeBpmnStartEvent {
+function newShapeBpmnStartEvent(eventKind: ShapeBpmnEventType, isInterrupting: boolean): ShapeBpmnStartEvent {
   return new ShapeBpmnStartEvent('id', 'name', eventKind, null, isInterrupting);
 }
 
@@ -214,45 +214,45 @@ describe('mxgraph renderer', () => {
 
   describe('compute style - events kind', () => {
     it('intermediate catch conditional', () => {
-      const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventKind.CONDITIONAL), newLabel({ name: 'Ubuntu' }));
+      const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventType.CONDITIONAL), newLabel({ name: 'Ubuntu' }));
       expect(computeStyle(shape)).toEqual('intermediateCatchEvent;bpmn.eventKind=conditional;fontFamily=Ubuntu');
     });
 
     it('start signal', () => {
-      const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementType.EVENT_START, ShapeBpmnEventKind.SIGNAL), newLabel({ isBold: true }));
+      const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementType.EVENT_START, ShapeBpmnEventType.SIGNAL), newLabel({ isBold: true }));
       expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventKind=signal;fontStyle=1');
     });
   });
   describe('compute style - boundary events', () => {
     it('interrupting message', () => {
-      const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventKind.MESSAGE, true), newLabel({ name: 'Arial' }));
+      const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventType.MESSAGE, true), newLabel({ name: 'Arial' }));
       expect(computeStyle(shape)).toEqual('boundaryEvent;bpmn.eventKind=message;bpmn.isInterrupting=true;fontFamily=Arial');
     });
 
     it('non interrupting timer', () => {
-      const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventKind.TIMER, false), newLabel({ isItalic: true }));
+      const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventType.TIMER, false), newLabel({ isItalic: true }));
       expect(computeStyle(shape)).toEqual('boundaryEvent;bpmn.eventKind=timer;bpmn.isInterrupting=false;fontStyle=2');
     });
 
     it('cancel with undefined interrupting value', () => {
-      const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventKind.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
+      const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventType.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
       expect(computeStyle(shape)).toEqual('boundaryEvent;bpmn.eventKind=cancel;bpmn.isInterrupting=true;fontStyle=8');
     });
   });
 
   describe('compute style - event sub-process start event', () => {
     it('interrupting message', () => {
-      const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventKind.MESSAGE, true), newLabel({ name: 'Arial' }));
+      const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventType.MESSAGE, true), newLabel({ name: 'Arial' }));
       expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventKind=message;bpmn.isInterrupting=true;fontFamily=Arial');
     });
 
     it('non interrupting timer', () => {
-      const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventKind.TIMER, false), newLabel({ isItalic: true }));
+      const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventType.TIMER, false), newLabel({ isItalic: true }));
       expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventKind=timer;bpmn.isInterrupting=false;fontStyle=2');
     });
 
     it('cancel with undefined interrupting value', () => {
-      const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventKind.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
+      const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventType.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
       expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventKind=cancel;fontStyle=8');
     });
   });

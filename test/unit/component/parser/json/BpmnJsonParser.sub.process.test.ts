@@ -19,7 +19,7 @@ import each from 'jest-each';
 import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnSubProcessKind';
 import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
 import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerKind';
-import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnEventKind';
+import { ShapeBpmnEventType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnEventType';
 import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import { getEventShapes } from './BpmnJsonParser.event.test';
 import { ShapeBpmnEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
@@ -35,7 +35,7 @@ function expectNoEdgePoolLane(model: BpmnModel): void {
   expect(model.edges).toHaveLength(0);
 }
 
-function verifyEventShape(shape: Shape, expectedShape: ExpectedShape, expectedEventKind: ShapeBpmnEventKind): void {
+function verifyEventShape(shape: Shape, expectedShape: ExpectedShape, expectedEventKind: ShapeBpmnEventType): void {
   verifyShape(shape, expectedShape);
   expect((shape.bpmnElement as ShapeBpmnEvent).eventKind).toEqual(expectedEventKind);
 }
@@ -326,7 +326,7 @@ describe('parse bpmn as json for sub-process', () => {
           bpmnElementKind: ShapeBpmnElementType.EVENT_START,
           bounds: { x: 465, y: 335, width: 10, height: 10 },
         },
-        ShapeBpmnEventKind.TIMER,
+        ShapeBpmnEventType.TIMER,
       );
       verifyEventShape(
         eventShapes[1],
@@ -338,7 +338,7 @@ describe('parse bpmn as json for sub-process', () => {
           bpmnElementKind: ShapeBpmnElementType.EVENT_END,
           bounds: { x: 565, y: 335, width: 20, height: 20 },
         },
-        ShapeBpmnEventKind.TERMINATE,
+        ShapeBpmnEventType.TERMINATE,
       );
 
       verifyShape(model.flowNodes[2], {
@@ -427,7 +427,7 @@ describe('parse bpmn as json for sub-process', () => {
             bpmnElementKind: ShapeBpmnElementType.EVENT_START,
             bounds: { x: 465, y: 335, width: 10, height: 10 },
           },
-          ShapeBpmnEventKind.ERROR,
+          ShapeBpmnEventType.ERROR,
         );
       });
     }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementType } from './ShapeBpmnElementType';
-import { ShapeBpmnEventKind } from './ShapeBpmnEventKind';
+import { ShapeBpmnEventType } from './ShapeBpmnEventType';
 import { BpmnEventType } from './ShapeUtil';
 import { ShapeBpmnSubProcessKind } from './ShapeBpmnSubProcessKind';
 import { ShapeBpmnMarkerKind } from './ShapeBpmnMarkerKind';
@@ -43,20 +43,20 @@ export class ShapeBpmnSubProcess extends ShapeBpmnActivity {
 }
 
 export class ShapeBpmnEvent extends ShapeBpmnElement {
-  constructor(id: string, name: string, elementType: BpmnEventType, readonly eventKind: ShapeBpmnEventKind, parentId: string) {
+  constructor(id: string, name: string, elementType: BpmnEventType, readonly eventKind: ShapeBpmnEventType, parentId: string) {
     super(id, name, elementType, parentId);
   }
 }
 
 export class ShapeBpmnStartEvent extends ShapeBpmnEvent {
-  constructor(id: string, name: string, eventKind: ShapeBpmnEventKind, parentId: string, readonly isInterrupting?: boolean) {
-    super(id, name, ShapeBpmnElementType.EVENT_START, eventKind, parentId);
+  constructor(id: string, name: string, eventType: ShapeBpmnEventType, parentId: string, readonly isInterrupting?: boolean) {
+    super(id, name, ShapeBpmnElementType.EVENT_START, eventType, parentId);
   }
 }
 
 export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
-  constructor(id: string, name: string, eventKind: ShapeBpmnEventKind, parentId: string, readonly isInterrupting: boolean = true) {
-    super(id, name, ShapeBpmnElementType.EVENT_BOUNDARY, eventKind, parentId);
+  constructor(id: string, name: string, eventType: ShapeBpmnEventType, parentId: string, readonly isInterrupting: boolean = true) {
+    super(id, name, ShapeBpmnElementType.EVENT_BOUNDARY, eventType, parentId);
   }
 }
 

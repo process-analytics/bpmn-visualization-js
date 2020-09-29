@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnEventKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal/shape';
+import { ShapeBpmnEventType, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal/shape';
 import { MessageVisibleKind } from '../../model/bpmn/json-xsd/BPMNDI';
 
 export enum MarkerIdentifier {
@@ -82,8 +82,8 @@ export default class StyleUtils {
     return mxUtils.getValue(style, mxConstants.STYLE_DASH_PATTERN, StyleDefault.DEFAULT_DASH_PATTERN);
   }
 
-  public static getBpmnEventKind(style: any): ShapeBpmnEventKind {
-    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
+  public static getBpmnEventKind(style: any): ShapeBpmnEventType {
+    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventType.NONE);
   }
 
   public static getBpmnSubProcessKind(style: any): ShapeBpmnSubProcessKind {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnEventKind } from '../../../model/bpmn/internal/shape';
+import { ShapeBpmnEventType } from '../../../model/bpmn/internal/shape';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import BpmnCanvas from './render/BpmnCanvas';
@@ -22,16 +22,16 @@ abstract class EventShape extends mxEllipse {
   protected iconPainter = IconPainterProvider.get();
 
   // TODO: when all/more event types will be supported, we could move to a Record/MappedType
-  private iconPainters: Map<ShapeBpmnEventKind, (paintParameter: PaintParameter) => void> = new Map([
-    [ShapeBpmnEventKind.MESSAGE, (paintParameter: PaintParameter) => this.iconPainter.paintEnvelopeIcon({ ...paintParameter, ratioFromParent: 0.5 })],
-    [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => this.iconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
+  private iconPainters: Map<ShapeBpmnEventType, (paintParameter: PaintParameter) => void> = new Map([
+    [ShapeBpmnEventType.MESSAGE, (paintParameter: PaintParameter) => this.iconPainter.paintEnvelopeIcon({ ...paintParameter, ratioFromParent: 0.5 })],
+    [ShapeBpmnEventType.TERMINATE, (paintParameter: PaintParameter) => this.iconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
     [
-      ShapeBpmnEventKind.TIMER,
+      ShapeBpmnEventType.TIMER,
       (paintParameter: PaintParameter) =>
         this.iconPainter.paintClockIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(5) }),
     ],
     [
-      ShapeBpmnEventKind.SIGNAL,
+      ShapeBpmnEventType.SIGNAL,
       (paintParameter: PaintParameter) =>
         this.iconPainter.paintTriangleIcon({
           ...paintParameter,
@@ -41,11 +41,11 @@ abstract class EventShape extends mxEllipse {
         }),
     ],
     [
-      ShapeBpmnEventKind.LINK,
+      ShapeBpmnEventType.LINK,
       (paintParameter: PaintParameter) => this.iconPainter.paintRightArrowIcon({ ...paintParameter, ratioFromParent: 0.55, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
     ],
     [
-      ShapeBpmnEventKind.ERROR,
+      ShapeBpmnEventType.ERROR,
       (paintParameter: PaintParameter) => this.iconPainter.paintErrorIcon({ ...paintParameter, ratioFromParent: 0.55, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
     ],
   ]);
