@@ -18,7 +18,7 @@ import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
 import { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../../../../src/model/bpmn/json-xsd/baseElement/loopCharacteristics';
 import { ShapeBpmnMarkerType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerType';
-import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnCallActivityKind';
+import { ShapeBpmnCallActivityType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnCallActivityType';
 
 describe.each([
   ['callActivity', ShapeBpmnElementType.CALL_ACTIVITY],
@@ -85,7 +85,7 @@ describe.each([
           bpmnElementName: `${bpmnKind} name`,
           bpmnElementKind: expectedShapeBpmnElementKind,
           bpmnElementMarkers: [expectedMarkerKind],
-          bpmnElementCallActivityKind: expectedShapeBpmnElementKind === ShapeBpmnElementType.CALL_ACTIVITY ? ShapeBpmnCallActivityKind.CALLING_PROCESS : undefined,
+          bpmnElementCallActivityKind: expectedShapeBpmnElementKind === ShapeBpmnElementType.CALL_ACTIVITY ? ShapeBpmnCallActivityType.CALLING_PROCESS : undefined,
           bounds: {
             x: 362,
             y: 232,
@@ -180,7 +180,7 @@ describe.each([
           bpmnElementName: `${bpmnKind} name`,
           bpmnElementKind: expectedShapeBpmnElementKind,
           bpmnElementMarkers: [expectedMarkerKind],
-          bpmnElementCallActivityKind: expectedShapeBpmnElementKind === ShapeBpmnElementType.CALL_ACTIVITY ? ShapeBpmnCallActivityKind.CALLING_PROCESS : undefined,
+          bpmnElementCallActivityKind: expectedShapeBpmnElementKind === ShapeBpmnElementType.CALL_ACTIVITY ? ShapeBpmnCallActivityType.CALLING_PROCESS : undefined,
           bounds: {
             x: 362,
             y: 232,
@@ -224,7 +224,7 @@ describe.each([
           bpmnElementName: `${bpmnKind} name`,
           bpmnElementKind: expectedShapeBpmnElementKind,
           bpmnElementMarkers: [expectedMarkerKind, ShapeBpmnMarkerType.EXPAND],
-          bpmnElementCallActivityKind: expectedShapeBpmnElementKind === ShapeBpmnElementType.CALL_ACTIVITY ? ShapeBpmnCallActivityKind.CALLING_PROCESS : undefined,
+          bpmnElementCallActivityKind: expectedShapeBpmnElementKind === ShapeBpmnElementType.CALL_ACTIVITY ? ShapeBpmnCallActivityType.CALLING_PROCESS : undefined,
           bounds: {
             x: 362,
             y: 232,

@@ -17,7 +17,7 @@ import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/sha
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnMarkerType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerType';
 import { TCallActivity } from '../../../../../src/model/bpmn/json-xsd/baseElement/flowNode/activity/activity';
-import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnCallActivityKind';
+import { ShapeBpmnCallActivityType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnCallActivityType';
 
 describe('parse bpmn as json for callActivity', () => {
   describe.each([
@@ -66,7 +66,7 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementId: 'call_activity_id_0',
           bpmnElementName: 'call activity name',
           bpmnElementKind: ShapeBpmnElementType.CALL_ACTIVITY,
-          bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
+          bpmnElementCallActivityKind: ShapeBpmnCallActivityType.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
           bounds: {
             x: 362,
@@ -129,7 +129,7 @@ describe('parse bpmn as json for callActivity', () => {
         bpmnElementId: `call_activity_id_0`,
         bpmnElementName: `call activity name`,
         bpmnElementKind: ShapeBpmnElementType.CALL_ACTIVITY,
-        bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
+        bpmnElementCallActivityKind: ShapeBpmnCallActivityType.CALLING_PROCESS,
         bounds: {
           x: 362,
           y: 232,
@@ -143,7 +143,7 @@ describe('parse bpmn as json for callActivity', () => {
         bpmnElementId: `call_activity_id_1`,
         bpmnElementName: undefined,
         bpmnElementKind: ShapeBpmnElementType.CALL_ACTIVITY,
-        bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
+        bpmnElementCallActivityKind: ShapeBpmnCallActivityType.CALLING_PROCESS,
         bounds: {
           x: 365,
           y: 235,

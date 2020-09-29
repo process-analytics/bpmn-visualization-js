@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export enum ShapeBpmnCallActivityKind {
+export enum ShapeBpmnCallActivityType {
   CALLING_PROCESS = 'process',
   // CALLING_GLOBAL_TASK = 'global task',
 }

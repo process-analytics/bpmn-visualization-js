@@ -24,7 +24,7 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import { ShapeBpmnElementType, ShapeBpmnCallActivityKind, ShapeBpmnMarkerType, ShapeBpmnSubProcessKind, ShapeBpmnEventType } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementType, ShapeBpmnCallActivityType, ShapeBpmnMarkerType, ShapeBpmnSubProcessKind, ShapeBpmnEventType } from '../../../../../src/model/bpmn/internal/shape';
 import Label from '../../../../../src/model/bpmn/internal/Label';
 import { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
@@ -65,7 +65,7 @@ function newShapeBpmnActivity(kind: ShapeBpmnElementType, markers?: ShapeBpmnMar
 }
 
 function newShapeBpmnCallActivity(markers?: ShapeBpmnMarkerType[]): ShapeBpmnElement {
-  return new ShapeBpmnCallActivity('id', 'name', ShapeBpmnCallActivityKind.CALLING_PROCESS, undefined, markers);
+  return new ShapeBpmnCallActivity('id', 'name', ShapeBpmnCallActivityType.CALLING_PROCESS, undefined, markers);
 }
 
 function newShapeBpmnEvent(bpmnElementKind: BpmnEventType, eventKind: ShapeBpmnEventType): ShapeBpmnEvent {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export * from './ShapeBpmnCallActivityKind';
+export * from './ShapeBpmnCallActivityType';
 export * from './ShapeBpmnElementType';
 export * from './ShapeBpmnEventType'; // TODO no need for internal function
 export * from './ShapeBpmnMarkerType';

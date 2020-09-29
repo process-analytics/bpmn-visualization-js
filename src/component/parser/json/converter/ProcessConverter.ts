@@ -24,7 +24,7 @@ import ShapeBpmnElement, {
 } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import {
   ShapeBpmnElementType,
-  ShapeBpmnCallActivityKind,
+  ShapeBpmnCallActivityType,
   ShapeBpmnMarkerType,
   ShapeBpmnSubProcessKind,
   ShapeBpmnEventType,
@@ -165,7 +165,7 @@ export default class ProcessConverter {
     }
 
     if (!isGlobalTask((bpmnElement as TCallActivity).calledElement)) {
-      return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, processId, markers);
+      return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityType.CALLING_PROCESS, processId, markers);
     }
   }
 

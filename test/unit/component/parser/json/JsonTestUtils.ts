@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementType, ShapeBpmnCallActivityKind, ShapeBpmnMarkerType, ShapeBpmnSubProcessKind, ShapeBpmnEventType } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementType, ShapeBpmnCallActivityType, ShapeBpmnMarkerType, ShapeBpmnSubProcessKind, ShapeBpmnEventType } from '../../../../../src/model/bpmn/internal/shape';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
@@ -42,7 +42,7 @@ export interface ExpectedActivityShape extends ExpectedShape {
 }
 
 export interface ExpectedCallActivityShape extends ExpectedActivityShape {
-  bpmnElementCallActivityKind?: ShapeBpmnCallActivityKind;
+  bpmnElementCallActivityKind?: ShapeBpmnCallActivityType;
 }
 
 interface ExpectedEdge {
@@ -141,7 +141,7 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape | Expecte
     }
 
     if (bpmnElement instanceof ShapeBpmnCallActivity) {
-      expect(bpmnElement.callActivityKind).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementCallActivityKind);
+      expect(bpmnElement.callActivityType).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementCallActivityKind);
     }
   }
 
