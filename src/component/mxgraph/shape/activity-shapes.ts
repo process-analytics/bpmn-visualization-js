@@ -17,6 +17,7 @@ import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render';
 import { ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape';
 import BpmnCanvas from './render/BpmnCanvas';
+import { orderActivityMarkers } from './render/utils';
 
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
   IconPainterProvider.get().paintEnvelopeIcon({
@@ -45,7 +46,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
     const markers = StyleUtils.getBpmnMarkers(this.style);
     if (markers) {
-      markers.split(',').forEach((marker, idx, allMarkers) => {
+      orderActivityMarkers(markers.split(',')).forEach((marker, idx, allMarkers) => {
         paintParameter = {
           ...paintParameter,
           setIconOrigin: this.getIconOriginForMarkerIcon(allMarkers.length, idx + 1),
