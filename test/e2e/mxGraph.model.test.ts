@@ -19,7 +19,7 @@ import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlo
 import { MarkerIdentifier, StyleIdentifier } from '../../src';
 import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { readFileSync } from '../helpers/file-helper';
-import { MessageVisibleKind } from '../../src/model/bpmn/json/BPMNDI';
+import { MessageVisibleKind } from '../../src/model/bpmn/json-xsd/BPMNDI';
 
 export interface ExpectedFont {
   name?: string;

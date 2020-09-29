@@ -23,9 +23,9 @@ import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/Se
 import Label from '../../../../../src/model/bpmn/internal/Label';
 import { SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
 import { FlowKind } from '../../../../../src/model/bpmn/internal/edge/FlowKind';
-import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
-import { MessageVisibleKind } from '../../../../../src/model/bpmn/json/BPMNDI';
-import { Point } from '../../../../../src/model/bpmn/json/DC';
+import { BpmnJsonModel } from '../../../../../src/model/bpmn/json-xsd/BPMN20';
+import { MessageVisibleKind } from '../../../../../src/model/bpmn/json-xsd/BPMNDI';
+import { Point } from '../../../../../src/model/bpmn/json-xsd/DC';
 
 export interface ExpectedShape {
   shapeId: string;

@@ -15,7 +15,7 @@
  */
 import ShapeBpmnElement from './ShapeBpmnElement';
 import Label from '../Label';
-import { Bounds } from '../../json/DC';
+import { Bounds } from '../../json-xsd/DC';
 
 export default class Shape {
   constructor(readonly id?: string, readonly bpmnElement?: ShapeBpmnElement, readonly bounds?: Bounds, readonly label?: Label, readonly isHorizontal?: boolean) {}

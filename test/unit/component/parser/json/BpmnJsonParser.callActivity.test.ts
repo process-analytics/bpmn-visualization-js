@@ -16,7 +16,7 @@
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerKind';
-import { TCallActivity } from '../../../../../src/model/bpmn/json/baseElement/flowNode/activity/activity';
+import { TCallActivity } from '../../../../../src/model/bpmn/json-xsd/baseElement/flowNode/activity/activity';
 import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnCallActivityKind';
 
 describe('parse bpmn as json for callActivity', () => {

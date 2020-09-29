@@ -32,9 +32,9 @@ import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/m
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import { BpmnEventKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import each from 'jest-each';
-import { MessageVisibleKind } from '../../../../../src/model/bpmn/json/BPMNDI';
-import { Bounds, Font } from '../../../../../src/model/bpmn/json/DC';
-import { TAssociationDirection } from '../../../../../src/model/bpmn/json/baseElement/artifact';
+import { MessageVisibleKind } from '../../../../../src/model/bpmn/json-xsd/BPMNDI';
+import { Bounds, Font } from '../../../../../src/model/bpmn/json-xsd/DC';
+import { TAssociationDirection } from '../../../../../src/model/bpmn/json-xsd/baseElement/artifact';
 
 function toFont(font: ExpectedFont): Font {
   return { name: font.name, size: font.size, isBold: font.isBold, isItalic: font.isItalic, isUnderline: font.isUnderline, isStrikeThrough: font.isStrikeThrough };

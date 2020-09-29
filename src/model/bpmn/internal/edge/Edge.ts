@@ -15,8 +15,8 @@
  */
 import Label from '../Label';
 import Flow from './Flow';
-import { MessageVisibleKind } from '../../json/BPMNDI';
-import { Point } from '../../json/DC';
+import { MessageVisibleKind } from '../../json-xsd/BPMNDI';
+import { Point } from '../../json-xsd/DC';
 
 export default class Edge {
   constructor(readonly id?: string, readonly bpmnElement?: Flow, readonly waypoints?: Point[], readonly label?: Label, readonly messageVisibleKind?: MessageVisibleKind) {}

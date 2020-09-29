@@ -16,7 +16,7 @@
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
 import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
 import { findProcessRefParticipant } from '../../../../../src/component/parser/json/converter/CollaborationConverter';
-import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
+import { BpmnJsonModel } from '../../../../../src/model/bpmn/json-xsd/BPMN20';
 
 describe('parse bpmn as json for process/pool', () => {
   describe.each([

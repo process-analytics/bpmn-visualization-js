@@ -29,8 +29,8 @@ import ShapeBpmnElement, {
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
-import { Bounds, Font } from '../../../model/bpmn/json/DC';
-import { TAssociationDirection } from '../../../model/bpmn/json/baseElement/artifact';
+import { Bounds, Font } from '../../../model/bpmn/json-xsd/DC';
+import { TAssociationDirection } from '../../../model/bpmn/json-xsd/baseElement/artifact';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
