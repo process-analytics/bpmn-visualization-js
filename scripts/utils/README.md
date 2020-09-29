@@ -1,4 +1,4 @@
-# Tool to facilitate tests writing to parsing .bpmn
+# The CLI tool to generate json and/or internal model from bpmn file
 You should note that there is no need to copy the result from the console as it will be directly copied into system clipboard
 
 ##Building utils module
