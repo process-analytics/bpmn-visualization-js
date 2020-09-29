@@ -186,12 +186,12 @@ export default class StyleConfigurator {
   }
 
   private configureEventStyles(): void {
-    ShapeUtil.topLevelBpmnEventTypes().forEach(kind => {
+    ShapeUtil.topLevelBpmnEventTypes().forEach(type => {
       const style = this.cloneDefaultVertexStyle();
-      style[mxConstants.STYLE_SHAPE] = kind;
+      style[mxConstants.STYLE_SHAPE] = type;
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.EllipsePerimeter;
       style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_BOTTOM;
-      this.putCellStyle(kind, style);
+      this.putCellStyle(type, style);
     });
   }
 
@@ -205,18 +205,18 @@ export default class StyleConfigurator {
   }
 
   private configureActivityStyles(): void {
-    ShapeUtil.activityTypes().forEach(kind => {
+    ShapeUtil.activityTypes().forEach(type => {
       const style = this.cloneDefaultVertexStyle();
-      style[mxConstants.STYLE_SHAPE] = kind;
+      style[mxConstants.STYLE_SHAPE] = type;
       style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
-      this.putCellStyle(kind, style);
+      this.putCellStyle(type, style);
     });
   }
 
   private configureGatewayStyles(): void {
-    ShapeUtil.gatewayTypes().forEach(kind => {
+    ShapeUtil.gatewayTypes().forEach(type => {
       const style = this.cloneDefaultVertexStyle();
-      style[mxConstants.STYLE_SHAPE] = kind;
+      style[mxConstants.STYLE_SHAPE] = type;
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
       style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
 
@@ -224,7 +224,7 @@ export default class StyleConfigurator {
       style[mxConstants.STYLE_LABEL_POSITION] = mxConstants.ALIGN_LEFT;
       style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_TOP;
 
-      this.putCellStyle(kind, style);
+      this.putCellStyle(type, style);
     });
   }
 
@@ -255,15 +255,15 @@ export default class StyleConfigurator {
   }
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: any) => void>): void {
-    styleKinds.forEach(kind => {
+    styleKinds.forEach(type => {
       const style = this.cloneDefaultEdgeStyle();
       const updateEdgeStyle =
-        specificStyles.get(kind) ||
+        specificStyles.get(type) ||
         (() => {
           // Do nothing
         });
       updateEdgeStyle(style);
-      this.graph.getStylesheet().putCellStyle(kind.toString(), style);
+      this.graph.getStylesheet().putCellStyle(type.toString(), style);
     });
   }
 

@@ -18,8 +18,8 @@ import { ShapeBpmnEventType } from '../../../../model/bpmn/internal/shape';
 import { TEventDefinition } from '../../../../model/bpmn/json-xsd/baseElement/rootElement/eventDefinition';
 import { ensureIsArray } from './ConverterUtil';
 
-export const bpmnEventKinds = Object.values(ShapeBpmnEventType).filter(kind => {
-  return kind != ShapeBpmnEventType.NONE;
+export const bpmnEventTypes = Object.values(ShapeBpmnEventType).filter(type => {
+  return type != ShapeBpmnEventType.NONE;
 });
 
 const eventDefinitionsOfDefinitions: Map<string, ShapeBpmnEventType> = new Map();
@@ -33,11 +33,11 @@ export default class EventDefinitionConverter {
     try {
       eventDefinitionsOfDefinitions.clear();
 
-      bpmnEventKinds.forEach(eventKind => {
+      bpmnEventTypes.forEach(eventType => {
         // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
-        const eventDefinitions: string | TEventDefinition | (string | TEventDefinition)[] = definitions[eventKind + 'EventDefinition'];
+        const eventDefinitions: string | TEventDefinition | (string | TEventDefinition)[] = definitions[eventType + 'EventDefinition'];
         ensureIsArray<TEventDefinition>(eventDefinitions, true).forEach(eventDefinition => {
-          eventDefinitionsOfDefinitions.set(eventDefinition.id, eventKind);
+          eventDefinitionsOfDefinitions.set(eventDefinition.id, eventType);
         });
       });
     } catch (e) {

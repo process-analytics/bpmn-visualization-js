@@ -46,7 +46,6 @@ function newLabel(font: ExpectedFont, bounds?: Bounds): Label {
 
 /**
  * Returns a new `Shape` instance with arbitrary id and `undefined` bounds.
- * @param kind the `ShapeBpmnElementKind` to set in the new `ShapeBpmnElement` instance
  */
 function newShape(bpmnElement: ShapeBpmnElement, label?: Label, isHorizontal?: boolean): Shape {
   return new Shape('id', bpmnElement, undefined, label, isHorizontal);
@@ -54,42 +53,42 @@ function newShape(bpmnElement: ShapeBpmnElement, label?: Label, isHorizontal?: b
 
 /**
  * Returns a new `ShapeBpmnElement` instance with arbitrary id and name.
- * `kind` is the `ShapeBpmnElementKind` to set in the new `ShapeBpmnElement` instance
+ * `type` is the `ShapeBpmnElementType` to set in the new `ShapeBpmnElement` instance
  */
-function newShapeBpmnElement(kind: ShapeBpmnElementType): ShapeBpmnElement {
-  return new ShapeBpmnElement('id', 'name', kind);
+function newShapeBpmnElement(type: ShapeBpmnElementType): ShapeBpmnElement {
+  return new ShapeBpmnElement('id', 'name', type);
 }
 
-function newShapeBpmnActivity(kind: ShapeBpmnElementType, markers?: ShapeBpmnMarkerType[], instantiate?: boolean): ShapeBpmnElement {
-  return new ShapeBpmnActivity('id', 'name', kind, undefined, instantiate, markers);
+function newShapeBpmnActivity(type: ShapeBpmnElementType, markers?: ShapeBpmnMarkerType[], instantiate?: boolean): ShapeBpmnElement {
+  return new ShapeBpmnActivity('id', 'name', type, undefined, instantiate, markers);
 }
 
 function newShapeBpmnCallActivity(markers?: ShapeBpmnMarkerType[]): ShapeBpmnElement {
   return new ShapeBpmnCallActivity('id', 'name', ShapeBpmnCallActivityType.CALLING_PROCESS, undefined, markers);
 }
 
-function newShapeBpmnEvent(bpmnElementKind: BpmnEventType, eventKind: ShapeBpmnEventType): ShapeBpmnEvent {
-  return new ShapeBpmnEvent('id', 'name', bpmnElementKind, eventKind, null);
+function newShapeBpmnEvent(bpmnElementType: BpmnEventType, eventType: ShapeBpmnEventType): ShapeBpmnEvent {
+  return new ShapeBpmnEvent('id', 'name', bpmnElementType, eventType, null);
 }
 
-function newShapeBpmnBoundaryEvent(eventKind: ShapeBpmnEventType, isInterrupting: boolean): ShapeBpmnBoundaryEvent {
-  return new ShapeBpmnBoundaryEvent('id', 'name', eventKind, null, isInterrupting);
+function newShapeBpmnBoundaryEvent(eventType: ShapeBpmnEventType, isInterrupting: boolean): ShapeBpmnBoundaryEvent {
+  return new ShapeBpmnBoundaryEvent('id', 'name', eventType, null, isInterrupting);
 }
 
 function newShapeBpmnStartEvent(eventKind: ShapeBpmnEventType, isInterrupting: boolean): ShapeBpmnStartEvent {
   return new ShapeBpmnStartEvent('id', 'name', eventKind, null, isInterrupting);
 }
 
-function newShapeBpmnSubProcess(subProcessKind: ShapeBpmnSubProcessType, marker?: ShapeBpmnMarkerType[]): ShapeBpmnSubProcess {
-  return new ShapeBpmnSubProcess('id', 'name', subProcessKind, null, marker);
+function newShapeBpmnSubProcess(subProcessType: ShapeBpmnSubProcessType, marker?: ShapeBpmnMarkerType[]): ShapeBpmnSubProcess {
+  return new ShapeBpmnSubProcess('id', 'name', subProcessType, null, marker);
 }
 
 /**
  * Returns a new `SequenceFlow` instance with arbitrary id and name.
- * @param kind the `SequenceFlowKind` to set in the new `SequenceFlow` instance
+ * @param type the `SequenceFlowType` to set in the new `SequenceFlow` instance
  */
-function newSequenceFlow(kind: SequenceFlowType): SequenceFlow {
-  return new SequenceFlow('id', 'name', undefined, undefined, kind);
+function newSequenceFlow(type: SequenceFlowType): SequenceFlow {
+  return new SequenceFlow('id', 'name', undefined, undefined, type);
 }
 
 function newMessageFlow(): MessageFlow {
@@ -190,8 +189,8 @@ describe('mxgraph renderer', () => {
     [SequenceFlowType.CONDITIONAL_FROM_ACTIVITY, 'conditional_from_activity'],
     [SequenceFlowType.DEFAULT, 'default'],
     [SequenceFlowType.NORMAL, 'normal'],
-  ]).it('compute style - sequence flows: %s', (kind, expected) => {
-    const edge = new Edge('id', newSequenceFlow(kind));
+  ]).it('compute style - sequence flows: %s', (type, expected) => {
+    const edge = new Edge('id', newSequenceFlow(type));
     expect(computeStyle(edge)).toEqual(`sequenceFlow;${expected}`);
   });
 
@@ -212,7 +211,7 @@ describe('mxgraph renderer', () => {
     expect(styleConfigurator.computeMessageFlowIconStyle(edge)).toEqual(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=${expected}`);
   });
 
-  describe('compute style - events kind', () => {
+  describe('compute style - events type', () => {
     it('intermediate catch conditional', () => {
       const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventType.CONDITIONAL), newLabel({ name: 'Ubuntu' }));
       expect(computeStyle(shape)).toEqual('intermediateCatchEvent;bpmn.eventKind=conditional;fontFamily=Ubuntu');

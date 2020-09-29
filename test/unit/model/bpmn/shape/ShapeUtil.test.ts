@@ -18,13 +18,13 @@ import ShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape';
 
 describe('ShapeUtil', () => {
-  it('top level bpmn event kinds', () => {
+  it('top level bpmn event types', () => {
     const tasks = ShapeUtil.topLevelBpmnEventTypes();
 
     expect(tasks).toContain(ShapeBpmnElementType.EVENT_END);
   });
 
-  it('task kinds', () => {
+  it('task types', () => {
     const tasks = ShapeUtil.taskTypes();
 
     expect(tasks).toContain(ShapeBpmnElementType.TASK);

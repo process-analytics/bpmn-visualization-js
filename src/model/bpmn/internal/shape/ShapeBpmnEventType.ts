@@ -38,7 +38,7 @@ export enum ShapeBpmnEventType {
  *
  * Temporarily used until we support all events
  */
-// TODO When a new kind is supported, uncomment the corresponding line in test/unit/component/parser/json/BpmnJsonParser.event.test.ts
+// TODO When a new type is supported, uncomment the corresponding line in test/unit/component/parser/json/BpmnJsonParser.event.test.ts
 export const supportedBpmnEventKinds = [
   ShapeBpmnEventType.TERMINATE,
   ShapeBpmnEventType.TIMER,

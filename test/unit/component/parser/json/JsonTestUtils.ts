@@ -180,10 +180,10 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge | ExpectedSeq
   }
 }
 
-export function verifySubProcess(model: BpmnModel, kind: ShapeBpmnSubProcessType, expectedNumber: number): void {
+export function verifySubProcess(model: BpmnModel, type: ShapeBpmnSubProcessType, expectedNumber: number): void {
   const events = model.flowNodes.filter(shape => {
     const bpmnElement = shape.bpmnElement;
-    return bpmnElement instanceof ShapeBpmnSubProcess && (bpmnElement as ShapeBpmnSubProcess).subProcessType === kind;
+    return bpmnElement instanceof ShapeBpmnSubProcess && (bpmnElement as ShapeBpmnSubProcess).subProcessType === type;
   });
   expect(events).toHaveLength(expectedNumber);
 }
@@ -218,7 +218,7 @@ export function verifyLabelBounds(label: Label, expectedBounds?: ExpectedBounds)
   }
 }
 
-export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventKind: ShapeBpmnEventType, expectedNumber: number): BpmnModel {
+export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventType: ShapeBpmnEventType, expectedNumber: number): BpmnModel {
   const model = parseJson(json);
 
   expect(model.lanes).toHaveLength(0);
@@ -227,21 +227,21 @@ export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventKind: ShapeBpm
 
   const events = model.flowNodes.filter(shape => {
     const bpmnElement = shape.bpmnElement;
-    return bpmnElement instanceof ShapeBpmnEvent && (bpmnElement as ShapeBpmnEvent).eventKind === eventKind;
+    return bpmnElement instanceof ShapeBpmnEvent && (bpmnElement as ShapeBpmnEvent).eventKind === eventType;
   });
   expect(events).toHaveLength(expectedNumber);
 
   return model;
 }
 
-export function parseJsonAndExpectOnlySubProcess(json: BpmnJsonModel, kind: ShapeBpmnSubProcessType, expectedNumber: number): BpmnModel {
+export function parseJsonAndExpectOnlySubProcess(json: BpmnJsonModel, type: ShapeBpmnSubProcessType, expectedNumber: number): BpmnModel {
   const model = parseJson(json);
 
   expect(model.lanes).toHaveLength(0);
   expect(model.pools).toHaveLength(0);
   expect(model.edges).toHaveLength(0);
 
-  verifySubProcess(model, kind, expectedNumber);
+  verifySubProcess(model, type, expectedNumber);
 
   return model;
 }
