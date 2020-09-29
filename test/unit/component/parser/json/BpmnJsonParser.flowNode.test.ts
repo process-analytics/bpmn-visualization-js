@@ -63,7 +63,7 @@ describe.each([
       shapeId: `shape_${bpmnKind}_id_0`,
       bpmnElementId: `${bpmnKind}_id_0`,
       bpmnElementName: `${bpmnKind} name`,
-      bpmnElementKind: expectedShapeBpmnElementKind,
+      bpmnElementType: expectedShapeBpmnElementKind,
       bounds: {
         x: 362,
         y: 232,
@@ -113,7 +113,7 @@ describe.each([
       shapeId: `shape_${bpmnKind}_id_0`,
       bpmnElementId: `${bpmnKind}_id_0`,
       bpmnElementName: `${bpmnKind} name`,
-      bpmnElementKind: expectedShapeBpmnElementKind,
+      bpmnElementType: expectedShapeBpmnElementKind,
       bounds: {
         x: 362,
         y: 232,
@@ -125,7 +125,7 @@ describe.each([
       shapeId: `shape_${bpmnKind}_id_1`,
       bpmnElementId: `${bpmnKind}_id_1`,
       bpmnElementName: undefined,
-      bpmnElementKind: expectedShapeBpmnElementKind,
+      bpmnElementType: expectedShapeBpmnElementKind,
       bounds: {
         x: 365,
         y: 235,
@@ -176,7 +176,7 @@ describe.each([
         shapeId: `shape_${bpmnKind}_id_0`,
         bpmnElementId: `${bpmnKind}_id_0`,
         bpmnElementName: undefined,
-        bpmnElementKind: expectedShapeBpmnElementKind,
+        bpmnElementType: expectedShapeBpmnElementKind,
         bounds: {
           x: 362,
           y: 232,
@@ -190,7 +190,7 @@ describe.each([
         shapeId: `shape_${bpmnKind}_id_1`,
         bpmnElementId: `${bpmnKind}_id_1`,
         bpmnElementName: undefined,
-        bpmnElementKind: expectedShapeBpmnElementKind,
+        bpmnElementType: expectedShapeBpmnElementKind,
         bounds: {
           x: 365,
           y: 235,

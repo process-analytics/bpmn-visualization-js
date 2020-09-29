@@ -43,7 +43,7 @@ describe('parse bpmn as json for lane', () => {
       shapeId: 'Lane_1h5yeu4_di',
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementType.LANE,
+      bpmnElementType: ShapeBpmnElementType.LANE,
       bounds: {
         x: 362,
         y: 232,
@@ -89,7 +89,7 @@ describe('parse bpmn as json for lane', () => {
       shapeId: 'Lane_1h5yeu4_di',
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementType.LANE,
+      bpmnElementType: ShapeBpmnElementType.LANE,
       bounds: {
         x: 362,
         y: 232,
@@ -129,7 +129,7 @@ describe('parse bpmn as json for lane', () => {
       shapeId: 'Lane_1h5yeu4_di',
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementType.LANE,
+      bpmnElementType: ShapeBpmnElementType.LANE,
       bounds: {
         x: 362,
         y: 232,
@@ -167,7 +167,7 @@ describe('parse bpmn as json for lane', () => {
       shapeId: 'Lane_1h5yeu4_di',
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementType.LANE,
+      bpmnElementType: ShapeBpmnElementType.LANE,
       bounds: {
         x: 362,
         y: 232,
@@ -213,7 +213,7 @@ describe('parse bpmn as json for lane', () => {
       shapeId: 'Lane_1h5yeu4_di',
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementType.LANE,
+      bpmnElementType: ShapeBpmnElementType.LANE,
       bounds: {
         x: 362,
         y: 232,
@@ -258,7 +258,7 @@ describe('parse bpmn as json for lane', () => {
       shapeId: 'Lane_1h5yeu4_di',
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementType.LANE,
+      bpmnElementType: ShapeBpmnElementType.LANE,
       bounds: {
         x: 362,
         y: 232,
@@ -314,7 +314,7 @@ describe('parse bpmn as json for lane', () => {
       shapeId: 'Lane_164yevk_di',
       bpmnElementId: 'Lane_164yevk',
       bpmnElementName: 'Customer',
-      bpmnElementKind: ShapeBpmnElementType.LANE,
+      bpmnElementType: ShapeBpmnElementType.LANE,
       bounds: {
         x: 362,
         y: 232,
@@ -327,7 +327,7 @@ describe('parse bpmn as json for lane', () => {
       shapeId: 'Lane_12u5n6x_di',
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementType.LANE,
+      bpmnElementType: ShapeBpmnElementType.LANE,
       bounds: {
         x: 666,
         y: 222,
@@ -439,7 +439,7 @@ describe('parse bpmn as json for lane', () => {
         bpmnElementId: 'Lane_1gdg64y',
         bpmnElementName: undefined,
         parentId: 'Process_07bsa3h',
-        bpmnElementKind: ShapeBpmnElementType.LANE,
+        bpmnElementType: ShapeBpmnElementType.LANE,
         bounds: {
           x: 186,
           y: 340,
@@ -454,7 +454,7 @@ describe('parse bpmn as json for lane', () => {
         bpmnElementId: 'Lane_040h8y5',
         bpmnElementName: undefined,
         parentId: 'Process_07bsa3h',
-        bpmnElementKind: ShapeBpmnElementType.LANE,
+        bpmnElementType: ShapeBpmnElementType.LANE,
         bounds: {
           x: 186,
           y: 80,
@@ -469,7 +469,7 @@ describe('parse bpmn as json for lane', () => {
         bpmnElementId: 'Lane_0amyaod',
         bpmnElementName: undefined,
         parentId: 'Lane_040h8y5',
-        bpmnElementKind: ShapeBpmnElementType.LANE,
+        bpmnElementType: ShapeBpmnElementType.LANE,
         bounds: {
           x: 216,
           y: 214,
@@ -484,7 +484,7 @@ describe('parse bpmn as json for lane', () => {
         bpmnElementId: 'Lane_06so1v5',
         bpmnElementName: undefined,
         parentId: 'Lane_040h8y5',
-        bpmnElementKind: ShapeBpmnElementType.LANE,
+        bpmnElementType: ShapeBpmnElementType.LANE,
         bounds: {
           x: 216,
           y: 80,
@@ -521,7 +521,7 @@ describe('parse bpmn as json for lane', () => {
         shapeId: 'Lane_1h5yeu4_di',
         bpmnElementId: 'Lane_12u5n6x',
         bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementType.LANE,
+        bpmnElementType: ShapeBpmnElementType.LANE,
         parentId: undefined,
         bounds: {
           x: 362,
@@ -559,7 +559,7 @@ describe('parse bpmn as json for lane', () => {
       shapeId: 'Lane_1h5yeu4_di',
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementType.LANE,
+      bpmnElementType: ShapeBpmnElementType.LANE,
       parentId: undefined,
       bounds: {
         x: 362,

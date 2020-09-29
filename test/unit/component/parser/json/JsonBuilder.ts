@@ -38,7 +38,7 @@ export interface BuildEventParameter {
 }
 
 export interface BuildEventDefinitionParameter {
-  eventDefinitionKind: string;
+  eventDefinitionType: string;
   eventDefinitionOn: EventDefinitionOn;
   eventDefinition?: BPMNEventDefinition;
   withDifferentDefinition?: boolean;
@@ -66,9 +66,9 @@ export function updateBpmnElement<T>(parentElement: T | T[], childElement: T, se
   }
 }
 
-export function addFlownode(jsonModel: BpmnJsonModel, bpmnKind: string, flowNode: TFlowNode): void {
+export function addFlownode(jsonModel: BpmnJsonModel, bpmnType: string, flowNode: TFlowNode): void {
   const process: TProcess = getFirstElementOfArray(jsonModel.definitions.process);
-  updateBpmnElement(process[bpmnKind], flowNode, (value: TFlowNode | TFlowNode[]) => (process[bpmnKind] = value));
+  updateBpmnElement(process[bpmnType], flowNode, (value: TFlowNode | TFlowNode[]) => (process[bpmnType] = value));
 }
 
 export function addShape(jsonModel: BpmnJsonModel, taskShape: BPMNShape): void {
@@ -106,30 +106,30 @@ export function buildDefinitionsAndProcessWithTask(process: TProcess | TProcess[
   return json;
 }
 
-export function addEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, eventDefinition: BPMNEventDefinition = ''): TProcess | BPMNTEvent {
-  if (eventDefinitionKind !== 'none') {
-    bpmnElement[`${eventDefinitionKind}EventDefinition`] = eventDefinition;
+export function addEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionType: string, eventDefinition: BPMNEventDefinition = ''): TProcess | BPMNTEvent {
+  if (eventDefinitionType !== 'none') {
+    bpmnElement[`${eventDefinitionType}EventDefinition`] = eventDefinition;
   }
   return bpmnElement;
 }
 
 export function addDifferentEventDefinition(
   bpmnElement: TDefinitions | BPMNTEvent,
-  eventDefinitionKind: string,
+  eventDefinitionType: string,
   differentEventDefinition?: TEventDefinition,
 ): TProcess | BPMNTEvent {
-  const otherEventDefinition = eventDefinitionKind === 'signal' ? 'message' : 'signal';
+  const otherEventDefinition = eventDefinitionType === 'signal' ? 'message' : 'signal';
   return addEventDefinition(bpmnElement, otherEventDefinition, differentEventDefinition);
 }
 
 export function addEventDefinitions(
   event: BPMNTEvent,
-  { eventDefinitionKind, eventDefinition, withDifferentDefinition = false }: BuildEventDefinitionParameter,
+  { eventDefinitionType, eventDefinition, withDifferentDefinition = false }: BuildEventDefinitionParameter,
   differentEventDefinition?: TEventDefinition,
 ): void {
-  addEventDefinition(event, eventDefinitionKind, eventDefinition);
+  addEventDefinition(event, eventDefinitionType, eventDefinition);
   if (withDifferentDefinition) {
-    addDifferentEventDefinition(event, eventDefinitionKind, differentEventDefinition);
+    addDifferentEventDefinition(event, eventDefinitionType, differentEventDefinition);
   }
 }
 
@@ -177,7 +177,7 @@ export function buildEvent({ index = 0, name, isInterrupting, attachedToRef }: B
   return event;
 }
 
-export function addEvent(jsonModel: BpmnJsonModel, bpmnKind: string, eventDefinitionParameter: BuildEventDefinitionParameter, eventParameter: BuildEventParameter): void {
+export function addEvent(jsonModel: BpmnJsonModel, bpmnType: string, eventDefinitionParameter: BuildEventDefinitionParameter, eventParameter: BuildEventParameter): void {
   const event = buildEvent(eventParameter);
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH:
@@ -193,7 +193,7 @@ export function addEvent(jsonModel: BpmnJsonModel, bpmnKind: string, eventDefini
     case EventDefinitionOn.NONE:
       break;
   }
-  addFlownode(jsonModel, bpmnKind, event);
+  addFlownode(jsonModel, bpmnType, event);
 
   const index = eventParameter.index ? eventParameter.index : 0;
   const eventShape = {

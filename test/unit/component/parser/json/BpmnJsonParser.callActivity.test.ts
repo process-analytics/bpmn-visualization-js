@@ -65,8 +65,8 @@ describe('parse bpmn as json for callActivity', () => {
           parentId: 'process 1',
           bpmnElementId: 'call_activity_id_0',
           bpmnElementName: 'call activity name',
-          bpmnElementKind: ShapeBpmnElementType.CALL_ACTIVITY,
-          bpmnElementCallActivityKind: ShapeBpmnCallActivityType.CALLING_PROCESS,
+          bpmnElementType: ShapeBpmnElementType.CALL_ACTIVITY,
+          bpmnElementCallActivityType: ShapeBpmnCallActivityType.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
           bounds: {
             x: 362,
@@ -128,8 +128,8 @@ describe('parse bpmn as json for callActivity', () => {
         parentId: 'process 1',
         bpmnElementId: `call_activity_id_0`,
         bpmnElementName: `call activity name`,
-        bpmnElementKind: ShapeBpmnElementType.CALL_ACTIVITY,
-        bpmnElementCallActivityKind: ShapeBpmnCallActivityType.CALLING_PROCESS,
+        bpmnElementType: ShapeBpmnElementType.CALL_ACTIVITY,
+        bpmnElementCallActivityType: ShapeBpmnCallActivityType.CALLING_PROCESS,
         bounds: {
           x: 362,
           y: 232,
@@ -142,8 +142,8 @@ describe('parse bpmn as json for callActivity', () => {
         parentId: 'process 1',
         bpmnElementId: `call_activity_id_1`,
         bpmnElementName: undefined,
-        bpmnElementKind: ShapeBpmnElementType.CALL_ACTIVITY,
-        bpmnElementCallActivityKind: ShapeBpmnCallActivityType.CALLING_PROCESS,
+        bpmnElementType: ShapeBpmnElementType.CALL_ACTIVITY,
+        bpmnElementCallActivityType: ShapeBpmnCallActivityType.CALLING_PROCESS,
         bounds: {
           x: 365,
           y: 235,

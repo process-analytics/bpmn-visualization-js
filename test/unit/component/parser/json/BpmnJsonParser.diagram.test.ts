@@ -76,7 +76,7 @@ describe('parse bpmn as json for diagram', () => {
       parentId: 'Participant_1',
       bpmnElementId: 'Process_1_startEvent_1',
       bpmnElementName: 'Start Event 1',
-      bpmnElementKind: ShapeBpmnElementType.EVENT_START,
+      bpmnElementType: ShapeBpmnElementType.EVENT_START,
       bounds: {
         x: 362,
         y: 232,
@@ -123,7 +123,7 @@ describe('parse bpmn as json for diagram', () => {
       parentId: 'Participant_2',
       bpmnElementId: 'Process_2_startEvent_1',
       bpmnElementName: 'Start Event 2',
-      bpmnElementKind: ShapeBpmnElementType.EVENT_START,
+      bpmnElementType: ShapeBpmnElementType.EVENT_START,
       bounds: {
         x: 80,
         y: 80,

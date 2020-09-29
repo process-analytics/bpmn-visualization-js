@@ -31,7 +31,7 @@ export interface ExpectedShape {
   shapeId: string;
   bpmnElementId: string;
   bpmnElementName: string;
-  bpmnElementKind: ShapeBpmnElementType;
+  bpmnElementType: ShapeBpmnElementType;
   parentId?: string;
   bounds?: ExpectedBounds;
   isHorizontal?: boolean;
@@ -42,7 +42,7 @@ export interface ExpectedActivityShape extends ExpectedShape {
 }
 
 export interface ExpectedCallActivityShape extends ExpectedActivityShape {
-  bpmnElementCallActivityKind?: ShapeBpmnCallActivityType;
+  bpmnElementCallActivityType?: ShapeBpmnCallActivityType;
 }
 
 interface ExpectedEdge {
@@ -129,7 +129,7 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape | Expecte
   const bpmnElement = shape.bpmnElement;
   expect(bpmnElement.id).toEqual(expectedShape.bpmnElementId);
   expect(bpmnElement.name).toEqual(expectedShape.bpmnElementName);
-  expect(bpmnElement.type).toEqual(expectedShape.bpmnElementKind);
+  expect(bpmnElement.type).toEqual(expectedShape.bpmnElementType);
   expect(bpmnElement.parentId).toEqual(expectedShape.parentId);
 
   if (bpmnElement instanceof ShapeBpmnActivity) {
@@ -141,7 +141,7 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape | Expecte
     }
 
     if (bpmnElement instanceof ShapeBpmnCallActivity) {
-      expect(bpmnElement.callActivityType).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementCallActivityKind);
+      expect(bpmnElement.callActivityType).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementCallActivityType);
     }
   }
 
