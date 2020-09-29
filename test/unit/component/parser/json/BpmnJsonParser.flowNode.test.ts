@@ -24,6 +24,7 @@ describe.each([
   ['receiveTask', ShapeBpmnElementKind.TASK_RECEIVE],
   ['sendTask', ShapeBpmnElementKind.TASK_SEND],
   ['manualTask', ShapeBpmnElementKind.TASK_MANUAL],
+  ['businessRuleTask', ShapeBpmnElementKind.TASK_BUSINESS_RULE],
   ['scriptTask', ShapeBpmnElementKind.TASK_SCRIPT],
   ['exclusiveGateway', ShapeBpmnElementKind.GATEWAY_EXCLUSIVE],
   ['inclusiveGateway', ShapeBpmnElementKind.GATEWAY_INCLUSIVE],

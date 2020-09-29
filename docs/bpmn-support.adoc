@@ -86,6 +86,11 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |icon:check-circle-o[]
 |
 
+
+|Business Rule Task
+|
+|
+
 |Embedded Sub-Process
 |icon:check-circle-o[]
 |

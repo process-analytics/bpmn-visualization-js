@@ -35,8 +35,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     ['subProcess', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
-    // TODO: To uncomment when we support businessRuleTask
-    //['businessRuleTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
+    ['businessRuleTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
   ]).it(
     `should convert as Edge, when an sequence flow (defined as conditional in %s) is an attribute (as object) of 'process' (as object)`,
     (sourceKind, expectedSequenceFlowKind) => {
