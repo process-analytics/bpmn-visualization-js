@@ -32,7 +32,7 @@ function findProcessElement(participantId: string): ShapeBpmnElement | undefined
     const originalProcessBpmnElement = findProcessBpmnElement(participant.processRef);
     if (originalProcessBpmnElement) {
       const name = participant.name || originalProcessBpmnElement.name;
-      return new ShapeBpmnElement(participant.id, name, originalProcessBpmnElement.kind, originalProcessBpmnElement.parentId);
+      return new ShapeBpmnElement(participant.id, name, originalProcessBpmnElement.type, originalProcessBpmnElement.parentId);
     }
     // black box pool
     return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
@@ -131,7 +131,7 @@ export default class DiagramConverter {
       }
 
       let isHorizontal;
-      if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
+      if (ShapeUtil.isPoolOrLane(bpmnElement.type)) {
         isHorizontal = shape.isHorizontal !== undefined ? shape.isHorizontal : true;
       }
 

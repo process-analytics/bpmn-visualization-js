@@ -33,8 +33,8 @@ export default class MxGraphRenderer {
     try {
       this.insertShapes(bpmnModel.pools);
       this.insertShapes(bpmnModel.lanes);
-      this.insertShapes(bpmnModel.flowNodes.filter(shape => !ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind)));
-      this.insertShapes(bpmnModel.flowNodes.filter(shape => ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind)));
+      this.insertShapes(bpmnModel.flowNodes.filter(shape => !ShapeUtil.isBoundaryEvent(shape.bpmnElement?.type)));
+      this.insertShapes(bpmnModel.flowNodes.filter(shape => ShapeUtil.isBoundaryEvent(shape.bpmnElement?.type)));
       this.insertEdges(bpmnModel.edges);
     } finally {
       model.endUpdate();
@@ -53,7 +53,7 @@ export default class MxGraphRenderer {
       return bpmnElementParent;
     }
 
-    if (!ShapeUtil.isBoundaryEvent(bpmnElement.kind)) {
+    if (!ShapeUtil.isBoundaryEvent(bpmnElement.type)) {
       return this.graph.getDefaultParent();
     }
   }
@@ -70,7 +70,7 @@ export default class MxGraphRenderer {
       const bounds = shape.bounds;
       let labelBounds = shape.label?.bounds;
       // pool/lane label bounds are not managed for now (use hard coded values)
-      labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
+      labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.type) ? undefined : labelBounds;
       const style = this.styleConfigurator.computeStyle(shape, labelBounds);
 
       this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);

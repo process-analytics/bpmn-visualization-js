@@ -33,7 +33,7 @@ import {
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
 import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../../model/bpmn/internal/edge/SequenceFlowKind';
-import { FlowKind } from '../../../../model/bpmn/internal/edge/FlowKind';
+import { FlowType } from '../../../../model/bpmn/internal/edge/FlowType';
 import { TProcess } from '../../../../model/bpmn/json-xsd/baseElement/rootElement/rootElement';
 import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../model/bpmn/json-xsd/baseElement/flowNode/event';
 import { TActivity, TCallActivity, TSubProcess } from '../../../../model/bpmn/json-xsd/baseElement/flowNode/activity/activity';
@@ -121,8 +121,8 @@ export default class ProcessConverter {
     this.buildLaneSetBpmnElements(processId, process['laneSet']);
 
     // flows
-    this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW]);
-    this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW]);
+    this.buildSequenceFlows(process[FlowType.SEQUENCE_FLOW]);
+    this.buildAssociationFlows(process[FlowType.ASSOCIATION_FLOW]);
   }
 
   private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<FlowNode> | FlowNode, kind: ShapeBpmnElementKind): void {
@@ -211,11 +211,11 @@ export default class ProcessConverter {
   private buildShapeBpmnBoundaryEvent(bpmnElement: TBoundaryEvent, eventKind: ShapeBpmnEventKind): ShapeBpmnBoundaryEvent {
     const parent = findFlowNodeBpmnElement(bpmnElement.attachedToRef);
 
-    if (ShapeUtil.isActivity(parent?.kind)) {
+    if (ShapeUtil.isActivity(parent?.type)) {
       return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity);
     } else {
       // TODO error management
-      console.warn('The boundary event %s must be attach to an activity, and not to %s', bpmnElement.id, parent?.kind);
+      console.warn('The boundary event %s must be attach to an activity, and not to %s', bpmnElement.id, parent?.type);
     }
   }
 
@@ -282,7 +282,7 @@ export default class ProcessConverter {
       const shapeBpmnElement = findFlowNodeBpmnElement(flowNodeRef);
       const laneId = lane.id;
       if (shapeBpmnElement) {
-        if (!ShapeUtil.isBoundaryEvent(shapeBpmnElement.kind)) {
+        if (!ShapeUtil.isBoundaryEvent(shapeBpmnElement.type)) {
           shapeBpmnElement.parentId = laneId;
         }
       } else {
@@ -312,8 +312,8 @@ export default class ProcessConverter {
       return SequenceFlowKind.DEFAULT;
     } else {
       const sourceShapeBpmnElement = findFlowNodeBpmnElement(sequenceFlow.sourceRef);
-      if (sourceShapeBpmnElement && ShapeUtil.isWithDefaultSequenceFlow(sourceShapeBpmnElement.kind) && sequenceFlow.conditionExpression) {
-        if (ShapeUtil.isActivity(sourceShapeBpmnElement.kind)) {
+      if (sourceShapeBpmnElement && ShapeUtil.isWithDefaultSequenceFlow(sourceShapeBpmnElement.type) && sequenceFlow.conditionExpression) {
+        if (ShapeUtil.isActivity(sourceShapeBpmnElement.type)) {
           return SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY;
         } else {
           return SequenceFlowKind.CONDITIONAL_FROM_GATEWAY;

@@ -27,22 +27,22 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
+import { FlowType } from '../../../model/bpmn/internal/edge/FlowType';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
 import { Bounds, Font } from '../../../model/bpmn/json-xsd/DC';
 import { TAssociationDirection } from '../../../model/bpmn/json-xsd/baseElement/artifact';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
-  private specificFlowStyles: Map<FlowKind, (style: any) => void> = new Map([
+  private specificFlowStyles: Map<FlowType, (style: any) => void> = new Map([
     [
-      FlowKind.SEQUENCE_FLOW,
+      FlowType.SEQUENCE_FLOW,
       (style: any) => {
         style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
       },
     ],
     [
-      FlowKind.MESSAGE_FLOW,
+      FlowType.MESSAGE_FLOW,
       (style: any) => {
         style[mxConstants.STYLE_DASHED] = true;
         style[mxConstants.STYLE_DASH_PATTERN] = '8 5';
@@ -54,7 +54,7 @@ export default class StyleConfigurator {
       },
     ],
     [
-      FlowKind.ASSOCIATION_FLOW,
+      FlowType.ASSOCIATION_FLOW,
       (style: any) => {
         style[mxConstants.STYLE_DASHED] = true;
         style[mxConstants.STYLE_DASH_PATTERN] = '1 2';
@@ -276,14 +276,14 @@ export default class StyleConfigurator {
   }
 
   private configureFlowStyles(): void {
-    this.configureEdgeStyles<FlowKind>(Object.values(FlowKind), this.specificFlowStyles);
+    this.configureEdgeStyles<FlowType>(Object.values(FlowType), this.specificFlowStyles);
     this.configureSequenceFlowStyles();
     this.configureAssociationFlowStyles();
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
     const styleValues = new Map<string, string | number>();
-    const styles: string[] = [bpmnCell.bpmnElement?.kind as string];
+    const styles: string[] = [bpmnCell.bpmnElement?.type as string];
 
     const bpmnElement = bpmnCell.bpmnElement;
     if (bpmnCell instanceof Shape) {
@@ -296,7 +296,7 @@ export default class StyleConfigurator {
       } else if (bpmnElement instanceof ShapeBpmnActivity) {
         if (bpmnElement instanceof ShapeBpmnSubProcess) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
-        } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
+        } else if (bpmnElement.type === ShapeBpmnElementKind.TASK_RECEIVE) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, bpmnElement.instantiate.toString());
         }
 
@@ -304,7 +304,7 @@ export default class StyleConfigurator {
         if (markers.length > 0) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
         }
-      } else if (ShapeUtil.isPoolOrLane((bpmnElement as ShapeBpmnElement).kind)) {
+      } else if (ShapeUtil.isPoolOrLane((bpmnElement as ShapeBpmnElement).type)) {
         // mxConstants.STYLE_HORIZONTAL is for the label
         // In BPMN, isHorizontal is for the Shape
         styleValues.set(mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
@@ -327,7 +327,7 @@ export default class StyleConfigurator {
 
     if (labelBounds) {
       styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
-      if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
+      if (bpmnCell.bpmnElement.type != ShapeBpmnElementKind.TEXT_ANNOTATION) {
         styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
       }
 

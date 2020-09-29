@@ -22,7 +22,7 @@ import { ShapeBpmnActivity, ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubP
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import Label from '../../../../../src/model/bpmn/internal/Label';
 import { SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
-import { FlowKind } from '../../../../../src/model/bpmn/internal/edge/FlowKind';
+import { FlowType } from '../../../../../src/model/bpmn/internal/edge/FlowType';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json-xsd/BPMN20';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/json-xsd/BPMNDI';
 import { Point } from '../../../../../src/model/bpmn/json-xsd/DC';
@@ -129,7 +129,7 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape | Expecte
   const bpmnElement = shape.bpmnElement;
   expect(bpmnElement.id).toEqual(expectedShape.bpmnElementId);
   expect(bpmnElement.name).toEqual(expectedShape.bpmnElementName);
-  expect(bpmnElement.kind).toEqual(expectedShape.bpmnElementKind);
+  expect(bpmnElement.type).toEqual(expectedShape.bpmnElementKind);
   expect(bpmnElement.parentId).toEqual(expectedShape.parentId);
 
   if (bpmnElement instanceof ShapeBpmnActivity) {
@@ -170,7 +170,7 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge | ExpectedSeq
   expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
 
   if (bpmnElement instanceof SequenceFlow) {
-    expect(edge.bpmnElement.kind).toEqual(FlowKind.SEQUENCE_FLOW);
+    expect(edge.bpmnElement.type).toEqual(FlowType.SEQUENCE_FLOW);
     const sequenceEdge = expectedValue as ExpectedSequenceEdge;
     if (sequenceEdge.bpmnElementSequenceFlowKind) {
       expect(bpmnElement.sequenceFlowKind).toEqual(sequenceEdge.bpmnElementSequenceFlowKind);

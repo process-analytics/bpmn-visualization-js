@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 import { SequenceFlowKind } from './SequenceFlowKind';
-import { FlowKind } from './FlowKind';
+import { FlowType } from './FlowType';
 import { TAssociationDirection } from '../../json-xsd/baseElement/artifact';
 
 export default abstract class Flow {
-  constructor(readonly id: string, readonly name: string, readonly kind: FlowKind, readonly sourceRefId?: string, readonly targetRefId?: string) {}
+  constructor(readonly id: string, readonly name: string, readonly type: FlowType, readonly sourceRefId?: string, readonly targetRefId?: string) {}
 }
 
 export class SequenceFlow extends Flow {
   constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly sequenceFlowKind = SequenceFlowKind.NORMAL) {
-    super(id, name, FlowKind.SEQUENCE_FLOW, sourceRefId, targetRefId);
+    super(id, name, FlowType.SEQUENCE_FLOW, sourceRefId, targetRefId);
   }
 }
 
 export class MessageFlow extends Flow {
   constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string) {
-    super(id, name, FlowKind.MESSAGE_FLOW, sourceRefId, targetRefId);
+    super(id, name, FlowType.MESSAGE_FLOW, sourceRefId, targetRefId);
   }
 }
 
 export class AssociationFlow extends Flow {
   constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly associationDirectionKind = TAssociationDirection.None) {
-    super(id, name, FlowKind.ASSOCIATION_FLOW, sourceRefId, targetRefId);
+    super(id, name, FlowType.ASSOCIATION_FLOW, sourceRefId, targetRefId);
   }
 }

@@ -36,7 +36,7 @@ interface TestParameter {
 }
 
 export function getEventShapes(model: BpmnModel): Shape[] {
-  return model.flowNodes.filter(shape => ShapeUtil.isEvent(shape.bpmnElement.kind));
+  return model.flowNodes.filter(shape => ShapeUtil.isEvent(shape.bpmnElement.type));
 }
 
 function verifyEventShape(

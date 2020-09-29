@@ -17,7 +17,7 @@ import BpmnVisualization from '../../src/component/BpmnVisualization';
 import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/internal/shape';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import { MarkerIdentifier, StyleIdentifier } from '../../src';
-import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
+import { FlowType } from '../../src/model/bpmn/internal/edge/FlowType';
 import { readFileSync } from '../helpers/file-helper';
 import { MessageVisibleKind } from '../../src/model/bpmn/json-xsd/BPMNDI';
 
@@ -53,7 +53,7 @@ export interface ExpectedSubProcessModelElement extends ExpectedShapeModelElemen
 
 interface ExpectedEdgeModelElement {
   label?: string;
-  kind?: FlowKind;
+  kind?: FlowType;
   parentId?: string;
   font?: ExpectedFont;
   startArrow?: string;
@@ -169,17 +169,17 @@ describe('mxGraph model', () => {
   }
 
   function expectModelContainsSequenceFlow(cellId: string, modelElement: ExpectedSequenceFlowModelElement): mxCell {
-    const cell = expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.SEQUENCE_FLOW });
+    const cell = expectModelContainsEdge(cellId, { ...modelElement, kind: FlowType.SEQUENCE_FLOW });
     expect(cell.style).toContain(modelElement.sequenceFlowKind);
     return cell;
   }
 
   function expectModelContainsMessageFlow(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
-    return expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.MESSAGE_FLOW });
+    return expectModelContainsEdge(cellId, { ...modelElement, kind: FlowType.MESSAGE_FLOW });
   }
 
   function expectModelContainsAssociationFlow(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
-    return expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.ASSOCIATION_FLOW });
+    return expectModelContainsEdge(cellId, { ...modelElement, kind: FlowType.ASSOCIATION_FLOW });
   }
 
   function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {
@@ -613,11 +613,11 @@ describe('mxGraph model', () => {
       parentId: 'expanded_embedded_sub_process_id',
     });
     expectModelContainsEdge('expanded_embedded_sub_process_id_SeqFlow_1', {
-      kind: FlowKind.SEQUENCE_FLOW,
+      kind: FlowType.SEQUENCE_FLOW,
       parentId: 'expanded_embedded_sub_process_id',
     });
     expectModelContainsEdge('expanded_embedded_sub_process_id_SeqFlow_2', {
-      kind: FlowKind.SEQUENCE_FLOW,
+      kind: FlowType.SEQUENCE_FLOW,
       parentId: 'expanded_embedded_sub_process_id',
     });
 
@@ -929,7 +929,7 @@ describe('mxGraph model', () => {
     expectModelContainsMessageFlow('message_flow_no_visible_id', { label: 'Message Flow without message', messageVisibleKind: undefined });
 
     // association
-    expectModelContainsAssociationFlow('association_id_1', { kind: FlowKind.ASSOCIATION_FLOW });
+    expectModelContainsAssociationFlow('association_id_1', { kind: FlowType.ASSOCIATION_FLOW });
   });
 
   it('bpmn elements should not be available in the mxGraph model, if they are attached to not existing elements', async () => {

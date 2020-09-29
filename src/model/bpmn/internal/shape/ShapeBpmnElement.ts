@@ -21,7 +21,7 @@ import { ShapeBpmnMarkerKind } from './ShapeBpmnMarkerKind';
 import { ShapeBpmnCallActivityKind } from './ShapeBpmnCallActivityKind';
 
 export default class ShapeBpmnElement {
-  constructor(readonly id: string, readonly name: string, readonly kind: ShapeBpmnElementKind, public parentId?: string, readonly instantiate: boolean = false) {}
+  constructor(readonly id: string, readonly name: string, readonly type: ShapeBpmnElementKind, public parentId?: string, readonly instantiate: boolean = false) {}
 }
 
 export class ShapeBpmnActivity extends ShapeBpmnElement {
