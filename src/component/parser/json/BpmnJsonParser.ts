@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnModel from '../../../model/bpmn/internal/BpmnModel';
+import InternalBPMNModel from '../../../model/bpmn/internal/InternalBPMNModel';
 import { BpmnJsonModel, TDefinitions } from '../../../model/bpmn/json-xsd/BPMN20';
 import CollaborationConverter from './converter/CollaborationConverter';
 import ProcessConverter from './converter/ProcessConverter';
@@ -30,7 +30,7 @@ export default class BpmnJsonParser {
     readonly diagramConverter: DiagramConverter,
   ) {}
 
-  public parse(json: BpmnJsonModel): BpmnModel {
+  public parse(json: BpmnJsonModel): InternalBPMNModel {
     const definitions: TDefinitions = json.definitions;
 
     this.collaborationConverter.deserialize(definitions.collaboration);

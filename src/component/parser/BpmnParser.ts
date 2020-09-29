@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnModel from '../../model/bpmn/internal/BpmnModel';
+import InternalBPMNModel from '../../model/bpmn/internal/InternalBPMNModel';
 import BpmnXmlParser from './xml/BpmnXmlParser';
 import BpmnJsonParser, { defaultBpmnJsonParser } from './json/BpmnJsonParser';
 
 class BpmnParser {
   constructor(readonly jsonParser: BpmnJsonParser, readonly xmlParser: BpmnXmlParser) {}
 
-  parse(bpmnAsXml: string): BpmnModel {
+  parse(bpmnAsXml: string): InternalBPMNModel {
     const json = this.xmlParser.parse(bpmnAsXml);
     return this.jsonParser.parse(json);
   }

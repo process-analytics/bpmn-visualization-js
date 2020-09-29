@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { ShapeBpmnElementType, ShapeBpmnEventType, ShapeBpmnMarkerType, ShapeBpmnSubProcessType } from '../../src/model/bpmn/internal/shape';
+import { ShapeBaseElementType, EventType, MarkerType, SubProcessType } from '../../src/model/bpmn/internal/shape';
 import { SequenceFlowType } from '../../src/model/bpmn/internal/edge/SequenceFlowType';
 import { MarkerIdentifier, StyleIdentifier } from '../../src';
 import { FlowType } from '../../src/model/bpmn/internal/edge/FlowType';
@@ -32,23 +32,23 @@ export interface ExpectedFont {
 
 export interface ExpectedShapeModelElement {
   label?: string;
-  type: ShapeBpmnElementType;
+  type: ShapeBaseElementType;
   font?: ExpectedFont;
   parentId?: string;
   /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
   styleShape?: string;
-  markers?: ShapeBpmnMarkerType[];
+  markers?: MarkerType[];
   isInstantiating?: boolean;
   isHorizontal?: boolean;
 }
 
 export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
-  eventType: ShapeBpmnEventType;
+  eventType: EventType;
 }
 
 // TODO find a way to not be forced to pass 'type'
 export interface ExpectedSubProcessModelElement extends ExpectedShapeModelElement {
-  subProcessType: ShapeBpmnSubProcessType;
+  subProcessType: SubProcessType;
 }
 
 interface ExpectedEdgeModelElement {
@@ -189,31 +189,31 @@ describe('mxGraph model', () => {
   }
 
   function expectModelContainsBpmnBoundaryEvent(cellId: string, boundaryEventModelElement: ExpectedBoundaryEventModelElement): void {
-    const cell = expectModelContainsBpmnEvent(cellId, { ...boundaryEventModelElement, type: ShapeBpmnElementType.EVENT_BOUNDARY });
+    const cell = expectModelContainsBpmnEvent(cellId, { ...boundaryEventModelElement, type: ShapeBaseElementType.EVENT_BOUNDARY });
     expect(cell.style).toContain(`bpmn.isInterrupting=${boundaryEventModelElement.isInterrupting}`);
   }
 
   function expectModelContainsBpmnStartEvent(cellId: string, startEventModelElement: ExpectedStartEventModelElement): void {
-    const cell = expectModelContainsBpmnEvent(cellId, { ...startEventModelElement, type: ShapeBpmnElementType.EVENT_START });
+    const cell = expectModelContainsBpmnEvent(cellId, { ...startEventModelElement, type: ShapeBaseElementType.EVENT_START });
     expect(cell.style).toContain(`bpmn.isInterrupting=${startEventModelElement.isInterrupting}`);
   }
 
   function expectModelContainsSubProcess(cellId: string, subProcessModelElement: ExpectedSubProcessModelElement): mxCell {
     const cell = expectModelContainsShape(cellId, {
       ...subProcessModelElement,
-      type: ShapeBpmnElementType.SUB_PROCESS,
+      type: ShapeBaseElementType.SUB_PROCESS,
     });
     expect(cell.style).toContain(`bpmn.subProcessKind=${subProcessModelElement.subProcessType}`);
     return cell;
   }
 
   function expectModelContainsPool(cellId: string, modelElement: ExpectedShapeModelElement): void {
-    const mxCell = expectModelContainsShape(cellId, { ...modelElement, type: ShapeBpmnElementType.POOL, styleShape: mxConstants.SHAPE_SWIMLANE });
+    const mxCell = expectModelContainsShape(cellId, { ...modelElement, type: ShapeBaseElementType.POOL, styleShape: mxConstants.SHAPE_SWIMLANE });
     expect(mxCell.style).toContain(`${mxConstants.STYLE_HORIZONTAL}=${modelElement.isHorizontal ? '0' : '1'}`);
   }
 
   function expectModelContainsLane(cellId: string, modelElement: ExpectedShapeModelElement): void {
-    const mxCell = expectModelContainsShape(cellId, { ...modelElement, type: ShapeBpmnElementType.LANE, styleShape: mxConstants.SHAPE_SWIMLANE });
+    const mxCell = expectModelContainsShape(cellId, { ...modelElement, type: ShapeBaseElementType.LANE, styleShape: mxConstants.SHAPE_SWIMLANE });
     expect(mxCell.style).toContain(`${mxConstants.STYLE_HORIZONTAL}=${modelElement.isHorizontal ? '0' : '1'}`);
   }
 
@@ -244,26 +244,26 @@ describe('mxGraph model', () => {
     expectModelContainsLane('Lane_1vk6vro', { ...minimalPoolModelElement, label: 'Child lane 2' });
 
     // start event
-    expectModelContainsBpmnEvent('startEvent_1', { type: ShapeBpmnElementType.EVENT_START, eventType: ShapeBpmnEventType.NONE, font: expectedBoldFont, label: 'Start Event' });
-    expectModelContainsBpmnEvent('startEvent_2_timer', { type: ShapeBpmnElementType.EVENT_START, eventType: ShapeBpmnEventType.TIMER, label: 'Timer Start Event' });
-    expectModelContainsBpmnEvent('startEvent_2_timer_on_top', { type: ShapeBpmnElementType.EVENT_START, eventType: ShapeBpmnEventType.TIMER, label: 'Timer Start Event On Top' });
-    expectModelContainsBpmnEvent('startEvent_3_message', { type: ShapeBpmnElementType.EVENT_START, eventType: ShapeBpmnEventType.MESSAGE, label: 'Message Start Event' });
+    expectModelContainsBpmnEvent('startEvent_1', { type: ShapeBaseElementType.EVENT_START, eventType: EventType.NONE, font: expectedBoldFont, label: 'Start Event' });
+    expectModelContainsBpmnEvent('startEvent_2_timer', { type: ShapeBaseElementType.EVENT_START, eventType: EventType.TIMER, label: 'Timer Start Event' });
+    expectModelContainsBpmnEvent('startEvent_2_timer_on_top', { type: ShapeBaseElementType.EVENT_START, eventType: EventType.TIMER, label: 'Timer Start Event On Top' });
+    expectModelContainsBpmnEvent('startEvent_3_message', { type: ShapeBaseElementType.EVENT_START, eventType: EventType.MESSAGE, label: 'Message Start Event' });
     expectModelContainsBpmnEvent('startEvent_3_message_on_top', {
-      type: ShapeBpmnElementType.EVENT_START,
-      eventType: ShapeBpmnEventType.MESSAGE,
+      type: ShapeBaseElementType.EVENT_START,
+      eventType: EventType.MESSAGE,
       label: 'Message Start Event On Top',
     });
-    expectModelContainsBpmnEvent('startEvent_4_signal', { type: ShapeBpmnElementType.EVENT_START, eventType: ShapeBpmnEventType.SIGNAL, label: 'Signal Start Event' });
+    expectModelContainsBpmnEvent('startEvent_4_signal', { type: ShapeBaseElementType.EVENT_START, eventType: EventType.SIGNAL, label: 'Signal Start Event' });
     expectModelContainsBpmnEvent('startEvent_4_signal_on_top', {
-      type: ShapeBpmnElementType.EVENT_START,
-      eventType: ShapeBpmnEventType.SIGNAL,
+      type: ShapeBaseElementType.EVENT_START,
+      eventType: EventType.SIGNAL,
       label: 'Signal Start Event On Top',
     });
 
     // end event
     expectModelContainsBpmnEvent('terminateEndEvent', {
-      type: ShapeBpmnElementType.EVENT_END,
-      eventType: ShapeBpmnEventType.TERMINATE,
+      type: ShapeBaseElementType.EVENT_END,
+      eventType: EventType.TERMINATE,
       font: {
         isBold: false,
         isItalic: true,
@@ -275,8 +275,8 @@ describe('mxGraph model', () => {
       label: 'Terminate End Event',
     });
     expectModelContainsBpmnEvent('terminateEndEvent_on_top', {
-      type: ShapeBpmnElementType.EVENT_END,
-      eventType: ShapeBpmnEventType.TERMINATE,
+      type: ShapeBaseElementType.EVENT_END,
+      eventType: EventType.TERMINATE,
       font: {
         isBold: false,
         isItalic: true,
@@ -287,23 +287,23 @@ describe('mxGraph model', () => {
       },
       label: 'Terminate End Event On Top',
     });
-    expectModelContainsBpmnEvent('messageEndEvent', { type: ShapeBpmnElementType.EVENT_END, eventType: ShapeBpmnEventType.MESSAGE, label: 'Message End Event' });
-    expectModelContainsBpmnEvent('messageEndEvent_on_top', { type: ShapeBpmnElementType.EVENT_END, eventType: ShapeBpmnEventType.MESSAGE, label: 'Message End Event On Top' });
-    expectModelContainsBpmnEvent('signalEndEvent', { type: ShapeBpmnElementType.EVENT_END, eventType: ShapeBpmnEventType.SIGNAL, label: 'Signal End Event' });
-    expectModelContainsBpmnEvent('signalEndEvent_on_top', { type: ShapeBpmnElementType.EVENT_END, eventType: ShapeBpmnEventType.SIGNAL, label: 'Signal End Event On Top' });
-    expectModelContainsBpmnEvent('errorEndEvent', { type: ShapeBpmnElementType.EVENT_END, eventType: ShapeBpmnEventType.ERROR, label: 'Error End Event' });
-    expectModelContainsBpmnEvent('errorEndEvent_on_top', { type: ShapeBpmnElementType.EVENT_END, eventType: ShapeBpmnEventType.ERROR, label: 'Error End Event On Top' });
-    expectModelContainsBpmnEvent('compensate_end_event', { type: ShapeBpmnElementType.EVENT_END, eventType: ShapeBpmnEventType.COMPENSATION, label: 'Compensate End Event' });
+    expectModelContainsBpmnEvent('messageEndEvent', { type: ShapeBaseElementType.EVENT_END, eventType: EventType.MESSAGE, label: 'Message End Event' });
+    expectModelContainsBpmnEvent('messageEndEvent_on_top', { type: ShapeBaseElementType.EVENT_END, eventType: EventType.MESSAGE, label: 'Message End Event On Top' });
+    expectModelContainsBpmnEvent('signalEndEvent', { type: ShapeBaseElementType.EVENT_END, eventType: EventType.SIGNAL, label: 'Signal End Event' });
+    expectModelContainsBpmnEvent('signalEndEvent_on_top', { type: ShapeBaseElementType.EVENT_END, eventType: EventType.SIGNAL, label: 'Signal End Event On Top' });
+    expectModelContainsBpmnEvent('errorEndEvent', { type: ShapeBaseElementType.EVENT_END, eventType: EventType.ERROR, label: 'Error End Event' });
+    expectModelContainsBpmnEvent('errorEndEvent_on_top', { type: ShapeBaseElementType.EVENT_END, eventType: EventType.ERROR, label: 'Error End Event On Top' });
+    expectModelContainsBpmnEvent('compensate_end_event', { type: ShapeBaseElementType.EVENT_END, eventType: ShapeBpmnEventType.COMPENSATION, label: 'Compensate End Event' });
     expectModelContainsBpmnEvent('compensate_end_event_on_top', {
-      type: ShapeBpmnElementType.EVENT_END,
+      type: ShapeBaseElementType.EVENT_END,
       eventType: ShapeBpmnEventType.COMPENSATION,
       label: 'Compensate End Event On Top',
     });
 
     // throw intermediate event
     expectModelContainsBpmnEvent('noneIntermediateThrowEvent', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_THROW,
-      eventType: ShapeBpmnEventType.NONE,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_THROW,
+      eventType: EventType.NONE,
       font: {
         isBold: false,
         isItalic: false,
@@ -315,33 +315,33 @@ describe('mxGraph model', () => {
       label: 'Throw None Intermediate Event',
     });
     expectModelContainsBpmnEvent('messageIntermediateThrowEvent', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_THROW,
-      eventType: ShapeBpmnEventType.MESSAGE,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_THROW,
+      eventType: EventType.MESSAGE,
       label: 'Throw Message Intermediate Event',
     });
     expectModelContainsBpmnEvent('messageIntermediateThrowEvent_on_top', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_THROW,
-      eventType: ShapeBpmnEventType.MESSAGE,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_THROW,
+      eventType: EventType.MESSAGE,
       label: 'Throw Message Intermediate Event On Top',
     });
     expectModelContainsBpmnEvent('signalIntermediateThrowEvent', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_THROW,
-      eventType: ShapeBpmnEventType.SIGNAL,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_THROW,
+      eventType: EventType.SIGNAL,
       label: 'Throw Signal Intermediate Event',
     });
     expectModelContainsBpmnEvent('signalIntermediateThrowEvent_on_top', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_THROW,
-      eventType: ShapeBpmnEventType.SIGNAL,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_THROW,
+      eventType: EventType.SIGNAL,
       label: 'Throw Signal Intermediate Event On Top',
     });
     expectModelContainsBpmnEvent('linkIntermediateThrowEvent', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_THROW,
-      eventType: ShapeBpmnEventType.LINK,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_THROW,
+      eventType: EventType.LINK,
       label: 'Throw Link Intermediate Event',
     });
     expectModelContainsBpmnEvent('linkIntermediateThrowEvent_on_top', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_THROW,
-      eventType: ShapeBpmnEventType.LINK,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_THROW,
+      eventType: EventType.LINK,
       label: 'Throw Link Intermediate Event On Top',
     });
     expectModelContainsBpmnEvent('compensateIntermediateThrowEvent', {
@@ -357,92 +357,92 @@ describe('mxGraph model', () => {
 
     // catch intermediate event
     expectModelContainsBpmnEvent('messageIntermediateCatchEvent', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH,
-      eventType: ShapeBpmnEventType.MESSAGE,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_CATCH,
+      eventType: EventType.MESSAGE,
       label: 'Catch Message Intermediate Event',
     });
     expectModelContainsBpmnEvent('messageIntermediateCatchEvent_on_top', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH,
-      eventType: ShapeBpmnEventType.MESSAGE,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_CATCH,
+      eventType: EventType.MESSAGE,
       label: 'Catch Message Intermediate Event On Top',
     });
     expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH,
-      eventType: ShapeBpmnEventType.TIMER,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_CATCH,
+      eventType: EventType.TIMER,
       label: 'Timer Intermediate Catch Event',
     });
     expectModelContainsBpmnEvent('IntermediateCatchEvent_Timer_01_on_top', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH,
-      eventType: ShapeBpmnEventType.TIMER,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_CATCH,
+      eventType: EventType.TIMER,
       label: 'Timer Intermediate Catch Event On Top',
     });
     expectModelContainsBpmnEvent('signalIntermediateCatchEvent', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH,
-      eventType: ShapeBpmnEventType.SIGNAL,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_CATCH,
+      eventType: EventType.SIGNAL,
       label: 'Catch Signal Intermediate Event',
     });
     expectModelContainsBpmnEvent('signalIntermediateCatchEvent_on_top', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH,
-      eventType: ShapeBpmnEventType.SIGNAL,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_CATCH,
+      eventType: EventType.SIGNAL,
       label: 'Catch Signal Intermediate Event On Top',
     });
     expectModelContainsBpmnEvent('linkIntermediateCatchEvent', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH,
-      eventType: ShapeBpmnEventType.LINK,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_CATCH,
+      eventType: EventType.LINK,
       label: 'Catch Link Intermediate Event',
     });
     expectModelContainsBpmnEvent('linkIntermediateCatchEvent_on_top', {
-      type: ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH,
-      eventType: ShapeBpmnEventType.LINK,
+      type: ShapeBaseElementType.EVENT_INTERMEDIATE_CATCH,
+      eventType: EventType.LINK,
       label: 'Catch Link Intermediate Event On Top',
     });
 
     // boundary event: interrupting
     expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_message_id', {
       type: null,
-      eventType: ShapeBpmnEventType.MESSAGE,
+      eventType: EventType.MESSAGE,
       isInterrupting: true,
       label: 'Boundary Intermediate Event Interrupting Message',
     });
     expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_message_on_top_id', {
       type: null,
-      eventType: ShapeBpmnEventType.MESSAGE,
+      eventType: EventType.MESSAGE,
       isInterrupting: true,
       label: 'Boundary Intermediate Event Interrupting Message On Top',
     });
     expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_timer_id', {
       type: null,
-      eventType: ShapeBpmnEventType.TIMER,
+      eventType: EventType.TIMER,
       isInterrupting: true,
       label: 'Boundary Intermediate Event Interrupting Timer',
     });
     expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_timer_on_top_id', {
       type: null,
-      eventType: ShapeBpmnEventType.TIMER,
+      eventType: EventType.TIMER,
       isInterrupting: true,
       label: 'Boundary Intermediate Event Interrupting Timer On Top',
     });
     expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_signal_id', {
       type: null,
-      eventType: ShapeBpmnEventType.SIGNAL,
+      eventType: EventType.SIGNAL,
       isInterrupting: true,
       label: 'Boundary Intermediate Event Interrupting Signal',
     });
     expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_signal_on_top_id', {
       type: null,
-      eventType: ShapeBpmnEventType.SIGNAL,
+      eventType: EventType.SIGNAL,
       isInterrupting: true,
       label: 'Boundary Intermediate Event Interrupting Signal On Top',
     });
     expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_error_id', {
       type: null,
-      eventType: ShapeBpmnEventType.ERROR,
+      eventType: EventType.ERROR,
       isInterrupting: true,
       label: 'Boundary Intermediate Event Interrupting Error',
     });
     expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_error_on_top_id', {
       type: null,
-      eventType: ShapeBpmnEventType.ERROR,
+      eventType: EventType.ERROR,
       isInterrupting: true,
       label: 'Boundary Intermediate Event Interrupting Error On Top',
     });
@@ -462,37 +462,37 @@ describe('mxGraph model', () => {
     // boundary event: non-interrupting
     expectModelContainsBpmnBoundaryEvent('boundary_event_non_interrupting_message_id', {
       type: null,
-      eventType: ShapeBpmnEventType.MESSAGE,
+      eventType: EventType.MESSAGE,
       isInterrupting: false,
       label: 'Boundary Intermediate Event Non-interrupting Message',
     });
     expectModelContainsBpmnBoundaryEvent('boundary_event_non_interrupting_message_on_top_id', {
       type: null,
-      eventType: ShapeBpmnEventType.MESSAGE,
+      eventType: EventType.MESSAGE,
       isInterrupting: false,
       label: 'Boundary Intermediate Event Non-interrupting Message On Top',
     });
     expectModelContainsBpmnBoundaryEvent('boundary_event_non_interrupting_timer_id', {
       type: null,
-      eventType: ShapeBpmnEventType.TIMER,
+      eventType: EventType.TIMER,
       isInterrupting: false,
       label: 'Boundary Intermediate Event Non-interrupting Timer',
     });
     expectModelContainsBpmnBoundaryEvent('boundary_event_non_interrupting_timer_on_top_id', {
       type: null,
-      eventType: ShapeBpmnEventType.TIMER,
+      eventType: EventType.TIMER,
       isInterrupting: false,
       label: 'Boundary Intermediate Event Non-interrupting Timer On Top',
     });
     expectModelContainsBpmnBoundaryEvent('boundary_event_non_interrupting_signal_id', {
       type: null,
-      eventType: ShapeBpmnEventType.SIGNAL,
+      eventType: EventType.SIGNAL,
       isInterrupting: false,
       label: 'Boundary Intermediate Event Non-interrupting Signal',
     });
     expectModelContainsBpmnBoundaryEvent('boundary_event_non_interrupting_signal_on_top_id', {
       type: null,
-      eventType: ShapeBpmnEventType.SIGNAL,
+      eventType: EventType.SIGNAL,
       isInterrupting: false,
       label: 'Boundary Intermediate Event Non-interrupting Signal On Top',
     });
@@ -500,115 +500,115 @@ describe('mxGraph model', () => {
     // Sub-process
     expectModelContainsSubProcess('expanded_embedded_sub_process_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EMBEDDED,
+      subProcessType: SubProcessType.EMBEDDED,
       label: 'Expanded Embedded Sub-Process',
     });
     expectModelContainsSubProcess('expanded_embedded_sub_process_with_loop_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EMBEDDED,
+      subProcessType: SubProcessType.EMBEDDED,
       label: 'Expanded Embedded Sub-Process With Loop',
-      markers: [ShapeBpmnMarkerType.LOOP],
+      markers: [MarkerType.LOOP],
     });
     expectModelContainsSubProcess('expanded_embedded_sub_process_with_sequential_multi_instance_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EMBEDDED,
+      subProcessType: SubProcessType.EMBEDDED,
       label: 'Expanded Embedded Sub-Process With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [MarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsSubProcess('expanded_embedded_sub_process_with_parallel_multi_instance_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EMBEDDED,
+      subProcessType: SubProcessType.EMBEDDED,
       label: 'Expanded Embedded Sub-Process With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+      markers: [MarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     expectModelContainsSubProcess('collapsed_embedded_sub_process_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EMBEDDED,
+      subProcessType: SubProcessType.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process',
-      markers: [ShapeBpmnMarkerType.EXPAND],
+      markers: [MarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_embedded_sub_process_with_loop_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EMBEDDED,
+      subProcessType: SubProcessType.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process With Loop',
-      markers: [ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.EXPAND],
+      markers: [MarkerType.LOOP, MarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_embedded_sub_process_with_sequential_multi_instance_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EMBEDDED,
+      subProcessType: SubProcessType.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerType.EXPAND],
+      markers: [MarkerType.MULTI_INSTANCE_SEQUENTIAL, MarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_embedded_sub_process_with_parallel_multi_instance_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EMBEDDED,
+      subProcessType: SubProcessType.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerType.EXPAND],
+      markers: [MarkerType.MULTI_INSTANCE_PARALLEL, MarkerType.EXPAND],
     });
 
     expectModelContainsSubProcess('expanded_event_sub_process_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EVENT,
+      subProcessType: SubProcessType.EVENT,
       label: 'Expanded Event Sub-Process',
     });
     expectModelContainsSubProcess('expanded_event_sub_process_with_loop_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EVENT,
+      subProcessType: SubProcessType.EVENT,
       label: 'Expanded Event Sub-Process With Loop',
-      markers: [ShapeBpmnMarkerType.LOOP],
+      markers: [MarkerType.LOOP],
     });
     expectModelContainsSubProcess('expanded_event_sub_process_with_sequential_multi_instance_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EVENT,
+      subProcessType: SubProcessType.EVENT,
       label: 'Expanded Event Sub-Process With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [MarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsSubProcess('expanded_event_sub_process_with_parallel_multi_instance_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EVENT,
+      subProcessType: SubProcessType.EVENT,
       label: 'Expanded Event Sub-Process With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+      markers: [MarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     expectModelContainsSubProcess('collapsed_event_sub_process_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EVENT,
+      subProcessType: SubProcessType.EVENT,
       label: 'Collapsed Event Sub-Process',
-      markers: [ShapeBpmnMarkerType.EXPAND],
+      markers: [MarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_event_sub_process_with_loop_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EVENT,
+      subProcessType: SubProcessType.EVENT,
       label: 'Collapsed Event Sub-Process With Loop',
-      markers: [ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.EXPAND],
+      markers: [MarkerType.LOOP, MarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_event_sub_process_with_sequential_multi_instance_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EVENT,
+      subProcessType: SubProcessType.EVENT,
       label: 'Collapsed Event Sub-Process With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerType.EXPAND],
+      markers: [MarkerType.MULTI_INSTANCE_SEQUENTIAL, MarkerType.EXPAND],
     });
     expectModelContainsSubProcess('collapsed_event_sub_process_with_parallel_multi_instance_id', {
       type: null,
-      subProcessType: ShapeBpmnSubProcessType.EVENT,
+      subProcessType: SubProcessType.EVENT,
       label: 'Collapsed Event Sub-Process With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerType.EXPAND],
+      markers: [MarkerType.MULTI_INSTANCE_PARALLEL, MarkerType.EXPAND],
     });
 
     // Elements in subprocess
     expectModelContainsShape('expanded_embedded_sub_process_id_startEvent_1', {
-      type: ShapeBpmnElementType.EVENT_START,
+      type: ShapeBaseElementType.EVENT_START,
       label: 'start event subprocess',
       parentId: 'expanded_embedded_sub_process_id',
     });
     expectModelContainsShape('expanded_embedded_sub_process_id_task_1', {
-      type: ShapeBpmnElementType.TASK,
+      type: ShapeBaseElementType.TASK,
       label: 'Task in subprocess',
       parentId: 'expanded_embedded_sub_process_id',
     });
     expectModelContainsShape('expanded_embedded_sub_process_id_endEvent_1', {
-      type: ShapeBpmnElementType.EVENT_END,
+      type: ShapeBaseElementType.EVENT_END,
       label: 'end event subprocess',
       parentId: 'expanded_embedded_sub_process_id',
     });
@@ -623,8 +623,8 @@ describe('mxGraph model', () => {
 
     // Start Event in Event Sub Process
     expectModelContainsBpmnStartEvent('expanded_event_sub_process_with_non_interrupting_start_event_id_startEvent_1', {
-      type: ShapeBpmnElementType.EVENT_START,
-      eventType: ShapeBpmnEventType.TIMER,
+      type: ShapeBaseElementType.EVENT_START,
+      eventType: EventType.TIMER,
       label: 'non-interrupting start event in subprocess',
       parentId: 'expanded_event_sub_process_with_non_interrupting_start_event_id',
       isInterrupting: false,
@@ -646,45 +646,45 @@ describe('mxGraph model', () => {
 
     // Call Activity calling process
     // Expanded
-    expectModelContainsShape('expanded_callActivity_1', { type: ShapeBpmnElementType.CALL_ACTIVITY, label: 'Expanded Call Activity' });
+    expectModelContainsShape('expanded_callActivity_1', { type: ShapeBaseElementType.CALL_ACTIVITY, label: 'Expanded Call Activity' });
     expectModelContainsShape('expanded_callActivity_with_loop', {
-      type: ShapeBpmnElementType.CALL_ACTIVITY,
+      type: ShapeBaseElementType.CALL_ACTIVITY,
       label: 'Expanded Call Activity With Loop',
-      markers: [ShapeBpmnMarkerType.LOOP],
+      markers: [MarkerType.LOOP],
     });
     expectModelContainsShape('expanded_callActivity_with_sequential_multi_instance', {
-      type: ShapeBpmnElementType.CALL_ACTIVITY,
+      type: ShapeBaseElementType.CALL_ACTIVITY,
       label: 'Expanded Call Activity With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [MarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('expanded_callActivity_with_parallel_multi_instance', {
-      type: ShapeBpmnElementType.CALL_ACTIVITY,
+      type: ShapeBaseElementType.CALL_ACTIVITY,
       label: 'Expanded Call Activity With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+      markers: [MarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Collapsed
-    expectModelContainsShape('collapsed_callActivity_1', { type: ShapeBpmnElementType.CALL_ACTIVITY, label: 'Collapsed Call Activity' });
+    expectModelContainsShape('collapsed_callActivity_1', { type: ShapeBaseElementType.CALL_ACTIVITY, label: 'Collapsed Call Activity' });
     expectModelContainsShape('collapsed_callActivity_with_loop', {
-      type: ShapeBpmnElementType.CALL_ACTIVITY,
+      type: ShapeBaseElementType.CALL_ACTIVITY,
       label: 'Collapsed Call Activity With Loop',
-      markers: [ShapeBpmnMarkerType.LOOP, ShapeBpmnMarkerType.EXPAND],
+      markers: [MarkerType.LOOP, MarkerType.EXPAND],
     });
     expectModelContainsShape('collapsed_callActivity_with_sequential_multi_instance', {
-      type: ShapeBpmnElementType.CALL_ACTIVITY,
+      type: ShapeBaseElementType.CALL_ACTIVITY,
       label: 'Collapsed Call Activity With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerType.EXPAND],
+      markers: [MarkerType.MULTI_INSTANCE_SEQUENTIAL, MarkerType.EXPAND],
     });
     expectModelContainsShape('collapsed_callActivity_with_parallel_multi_instance', {
-      type: ShapeBpmnElementType.CALL_ACTIVITY,
+      type: ShapeBaseElementType.CALL_ACTIVITY,
       label: 'Collapsed Call Activity With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerType.EXPAND],
+      markers: [MarkerType.MULTI_INSTANCE_PARALLEL, MarkerType.EXPAND],
     });
 
     // activity
     // Task
     expectModelContainsShape('task_1', {
-      type: ShapeBpmnElementType.TASK,
+      type: ShapeBaseElementType.TASK,
       font: {
         isBold: false,
         isItalic: false,
@@ -696,7 +696,7 @@ describe('mxGraph model', () => {
       label: 'Task 1',
     });
     expectModelContainsShape('task_with_loop', {
-      type: ShapeBpmnElementType.TASK,
+      type: ShapeBaseElementType.TASK,
       font: {
         isBold: false,
         isItalic: false,
@@ -706,10 +706,10 @@ describe('mxGraph model', () => {
         size: 11.0,
       },
       label: 'Task With Loop',
-      markers: [ShapeBpmnMarkerType.LOOP],
+      markers: [MarkerType.LOOP],
     });
     expectModelContainsShape('task_with_sequential_multi_instance', {
-      type: ShapeBpmnElementType.TASK,
+      type: ShapeBaseElementType.TASK,
       font: {
         isBold: false,
         isItalic: false,
@@ -719,10 +719,10 @@ describe('mxGraph model', () => {
         size: 11.0,
       },
       label: 'Task With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [MarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('task_with_parallel_multi_instance', {
-      type: ShapeBpmnElementType.TASK,
+      type: ShapeBaseElementType.TASK,
       font: {
         isBold: false,
         isItalic: false,
@@ -732,154 +732,154 @@ describe('mxGraph model', () => {
         size: 11.0,
       },
       label: 'Task With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+      markers: [MarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Service Task
-    expectModelContainsShape('serviceTask_2', { type: ShapeBpmnElementType.TASK_SERVICE, font: expectedBoldFont, label: 'Service Task 2' });
+    expectModelContainsShape('serviceTask_2', { type: ShapeBaseElementType.TASK_SERVICE, font: expectedBoldFont, label: 'Service Task 2' });
     expectModelContainsShape('serviceTask_with_loop', {
-      type: ShapeBpmnElementType.TASK_SERVICE,
+      type: ShapeBaseElementType.TASK_SERVICE,
       font: expectedBoldFont,
       label: 'Service Task With Loop',
-      markers: [ShapeBpmnMarkerType.LOOP],
+      markers: [MarkerType.LOOP],
     });
     expectModelContainsShape('serviceTask_with_sequential_multi_instance', {
-      type: ShapeBpmnElementType.TASK_SERVICE,
+      type: ShapeBaseElementType.TASK_SERVICE,
       font: expectedBoldFont,
       label: 'Service Task With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [MarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('serviceTask_with_parallel_multi_instance', {
-      type: ShapeBpmnElementType.TASK_SERVICE,
+      type: ShapeBaseElementType.TASK_SERVICE,
       font: expectedBoldFont,
       label: 'Service Task With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+      markers: [MarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // User Task
-    expectModelContainsShape('userTask_3', { type: ShapeBpmnElementType.TASK_USER, font: expectedBoldFont, label: 'User Task 3' });
+    expectModelContainsShape('userTask_3', { type: ShapeBaseElementType.TASK_USER, font: expectedBoldFont, label: 'User Task 3' });
     expectModelContainsShape('userTask_with_loop', {
-      type: ShapeBpmnElementType.TASK_USER,
+      type: ShapeBaseElementType.TASK_USER,
       font: expectedBoldFont,
       label: 'User Task With Loop',
-      markers: [ShapeBpmnMarkerType.LOOP],
+      markers: [MarkerType.LOOP],
     });
     expectModelContainsShape('userTask_with_sequential_multi_instance', {
-      type: ShapeBpmnElementType.TASK_USER,
+      type: ShapeBaseElementType.TASK_USER,
       font: expectedBoldFont,
       label: 'User Task With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [MarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('userTask_with_parallel_multi_instance', {
-      type: ShapeBpmnElementType.TASK_USER,
+      type: ShapeBaseElementType.TASK_USER,
       font: expectedBoldFont,
       label: 'User Task With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+      markers: [MarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Receive Task: Non instantiating
-    expectModelContainsShape('receiveTask_non_instantiating', { type: ShapeBpmnElementType.TASK_RECEIVE, label: 'Non-instantiating Receive Task', isInstantiating: false });
+    expectModelContainsShape('receiveTask_non_instantiating', { type: ShapeBaseElementType.TASK_RECEIVE, label: 'Non-instantiating Receive Task', isInstantiating: false });
     expectModelContainsShape('receiveTask_non_instantiating_with_loop', {
-      type: ShapeBpmnElementType.TASK_RECEIVE,
+      type: ShapeBaseElementType.TASK_RECEIVE,
       label: 'Non-instantiating Receive Task With Loop',
       isInstantiating: false,
-      markers: [ShapeBpmnMarkerType.LOOP],
+      markers: [MarkerType.LOOP],
     });
     expectModelContainsShape('receiveTask_non_instantiating_with_sequential_multi_instance', {
-      type: ShapeBpmnElementType.TASK_RECEIVE,
+      type: ShapeBaseElementType.TASK_RECEIVE,
       label: 'Non-instantiating Receive Task With Sequential Multi-instance',
       isInstantiating: false,
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [MarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('receiveTask_non_instantiating_with_parallel_multi_instance', {
-      type: ShapeBpmnElementType.TASK_RECEIVE,
+      type: ShapeBaseElementType.TASK_RECEIVE,
       label: 'Non-instantiating Receive Task With Parallel Multi-instance',
       isInstantiating: false,
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+      markers: [MarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Receive Task: Instantiating
-    expectModelContainsShape('receiveTask_instantiating', { type: ShapeBpmnElementType.TASK_RECEIVE, label: 'Instantiating Receive Task', isInstantiating: true });
+    expectModelContainsShape('receiveTask_instantiating', { type: ShapeBaseElementType.TASK_RECEIVE, label: 'Instantiating Receive Task', isInstantiating: true });
     expectModelContainsShape('receiveTask_instantiating_with_loop', {
-      type: ShapeBpmnElementType.TASK_RECEIVE,
+      type: ShapeBaseElementType.TASK_RECEIVE,
       label: 'Instantiating Receive Task With Loop',
       isInstantiating: true,
-      markers: [ShapeBpmnMarkerType.LOOP],
+      markers: [MarkerType.LOOP],
     });
     expectModelContainsShape('receiveTask_instantiating_with_sequential_multi_instance', {
-      type: ShapeBpmnElementType.TASK_RECEIVE,
+      type: ShapeBaseElementType.TASK_RECEIVE,
       label: 'Instantiating Receive Task With Sequential Multi-instance',
       isInstantiating: true,
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [MarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('receiveTask_instantiating_with_parallel_multi_instance', {
-      type: ShapeBpmnElementType.TASK_RECEIVE,
+      type: ShapeBaseElementType.TASK_RECEIVE,
       label: 'Instantiating Receive Task With Parallel Multi-instance',
       isInstantiating: true,
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+      markers: [MarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Send Task
-    expectModelContainsShape('sendTask', { type: ShapeBpmnElementType.TASK_SEND, font: expectedBoldFont, label: 'Send Task' });
+    expectModelContainsShape('sendTask', { type: ShapeBaseElementType.TASK_SEND, font: expectedBoldFont, label: 'Send Task' });
     expectModelContainsShape('sendTask_with_loop', {
-      type: ShapeBpmnElementType.TASK_SEND,
+      type: ShapeBaseElementType.TASK_SEND,
       font: expectedBoldFont,
       label: 'Send Task With Loop',
-      markers: [ShapeBpmnMarkerType.LOOP],
+      markers: [MarkerType.LOOP],
     });
     expectModelContainsShape('sendTask_with_sequential_multi_instance', {
-      type: ShapeBpmnElementType.TASK_SEND,
+      type: ShapeBaseElementType.TASK_SEND,
       font: expectedBoldFont,
       label: 'Send Task With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [MarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('sendTask_with_parallel_multi_instance', {
-      type: ShapeBpmnElementType.TASK_SEND,
+      type: ShapeBaseElementType.TASK_SEND,
       font: expectedBoldFont,
       label: 'Send Task With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+      markers: [MarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Manual Task
-    expectModelContainsShape('manualTask', { type: ShapeBpmnElementType.TASK_MANUAL, font: expectedBoldFont, label: 'Manual Task' });
+    expectModelContainsShape('manualTask', { type: ShapeBaseElementType.TASK_MANUAL, font: expectedBoldFont, label: 'Manual Task' });
     expectModelContainsShape('manualTask_with_loop', {
-      type: ShapeBpmnElementType.TASK_MANUAL,
+      type: ShapeBaseElementType.TASK_MANUAL,
       font: expectedBoldFont,
       label: 'Manual Task With Loop',
-      markers: [ShapeBpmnMarkerType.LOOP],
+      markers: [MarkerType.LOOP],
     });
     expectModelContainsShape('manualTask_with_sequential_multi_instance', {
-      type: ShapeBpmnElementType.TASK_MANUAL,
+      type: ShapeBaseElementType.TASK_MANUAL,
       font: expectedBoldFont,
       label: 'Manual Task With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [MarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('manualTask_with_parallel_multi_instance', {
-      type: ShapeBpmnElementType.TASK_MANUAL,
+      type: ShapeBaseElementType.TASK_MANUAL,
       font: expectedBoldFont,
       label: 'Manual Task With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+      markers: [MarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Script Task
-    expectModelContainsShape('scriptTask', { type: ShapeBpmnElementType.TASK_SCRIPT, font: expectedBoldFont, label: 'Script Task' });
+    expectModelContainsShape('scriptTask', { type: ShapeBaseElementType.TASK_SCRIPT, font: expectedBoldFont, label: 'Script Task' });
     expectModelContainsShape('scriptTask_with_loop', {
-      type: ShapeBpmnElementType.TASK_SCRIPT,
+      type: ShapeBaseElementType.TASK_SCRIPT,
       font: expectedBoldFont,
       label: 'Script Task With Loop',
-      markers: [ShapeBpmnMarkerType.LOOP],
+      markers: [MarkerType.LOOP],
     });
     expectModelContainsShape('scriptTask_with_sequential_multi_instance', {
-      type: ShapeBpmnElementType.TASK_SCRIPT,
+      type: ShapeBaseElementType.TASK_SCRIPT,
       font: expectedBoldFont,
       label: 'Script Task With Sequential Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
+      markers: [MarkerType.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('scriptTask_with_parallel_multi_instance', {
-      type: ShapeBpmnElementType.TASK_SCRIPT,
+      type: ShapeBaseElementType.TASK_SCRIPT,
       font: expectedBoldFont,
       label: 'Script Task With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+      markers: [MarkerType.MULTI_INSTANCE_PARALLEL],
     });
 
     // Business Rule Task
@@ -904,12 +904,12 @@ describe('mxGraph model', () => {
     });
 
     // text annotation
-    expectModelContainsShape('text_annotation_id_1', { type: ShapeBpmnElementType.TEXT_ANNOTATION, label: 'Annotation' });
+    expectModelContainsShape('text_annotation_id_1', { type: ShapeBaseElementType.TEXT_ANNOTATION, label: 'Annotation' });
 
     // gateways
-    expectModelContainsShape('inclusiveGateway_1', { type: ShapeBpmnElementType.GATEWAY_INCLUSIVE, label: 'Inclusive Gateway 1' });
-    expectModelContainsShape('parallelGateway', { type: ShapeBpmnElementType.GATEWAY_PARALLEL, label: 'Parallel Gateway' });
-    expectModelContainsShape('exclusiveGateway', { type: ShapeBpmnElementType.GATEWAY_EXCLUSIVE, label: 'Exclusive Gateway' });
+    expectModelContainsShape('inclusiveGateway_1', { type: ShapeBaseElementType.GATEWAY_INCLUSIVE, label: 'Inclusive Gateway 1' });
+    expectModelContainsShape('parallelGateway', { type: ShapeBaseElementType.GATEWAY_PARALLEL, label: 'Parallel Gateway' });
+    expectModelContainsShape('exclusiveGateway', { type: ShapeBaseElementType.GATEWAY_EXCLUSIVE, label: 'Exclusive Gateway' });
 
     // sequence flow
     expectModelContainsSequenceFlow('default_sequence_flow_id', { sequenceFlowType: SequenceFlowType.DEFAULT, startArrow: MarkerIdentifier.ARROW_DASH, font: expectedBoldFont });

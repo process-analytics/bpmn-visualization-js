@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
+import { ShapeBaseElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
-import { ShapeBpmnMarkerType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerType';
+import { BpmnMarkerType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerType';
 import { TCallActivity } from '../../../../../src/model/bpmn/json-xsd/baseElement/flowNode/activity/activity';
-import { ShapeBpmnCallActivityType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnCallActivityType';
+import { CallActivityType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnCallActivityType';
 
 describe('parse bpmn as json for callActivity', () => {
   describe.each([
     ['expanded', true, []],
-    ['collapsed', false, [ShapeBpmnMarkerType.EXPAND]],
-  ])('parse bpmn as json for %s callActivity', (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: ShapeBpmnMarkerType[]) => {
+    ['collapsed', false, [BpmnMarkerType.EXPAND]],
+  ])('parse bpmn as json for %s callActivity', (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: BpmnMarkerType[]) => {
     const callActivityJson = {
       id: `call_activity_id_0`,
       name: `call activity name`,
@@ -65,8 +65,8 @@ describe('parse bpmn as json for callActivity', () => {
           parentId: 'process 1',
           bpmnElementId: 'call_activity_id_0',
           bpmnElementName: 'call activity name',
-          bpmnElementType: ShapeBpmnElementType.CALL_ACTIVITY,
-          bpmnElementCallActivityType: ShapeBpmnCallActivityType.CALLING_PROCESS,
+          bpmnElementType: ShapeBaseElementType.CALL_ACTIVITY,
+          bpmnElementCallActivityType: CallActivityType.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
           bounds: {
             x: 362,
@@ -128,8 +128,8 @@ describe('parse bpmn as json for callActivity', () => {
         parentId: 'process 1',
         bpmnElementId: `call_activity_id_0`,
         bpmnElementName: `call activity name`,
-        bpmnElementType: ShapeBpmnElementType.CALL_ACTIVITY,
-        bpmnElementCallActivityType: ShapeBpmnCallActivityType.CALLING_PROCESS,
+        bpmnElementType: ShapeBaseElementType.CALL_ACTIVITY,
+        bpmnElementCallActivityType: CallActivityType.CALLING_PROCESS,
         bounds: {
           x: 362,
           y: 232,
@@ -142,8 +142,8 @@ describe('parse bpmn as json for callActivity', () => {
         parentId: 'process 1',
         bpmnElementId: `call_activity_id_1`,
         bpmnElementName: undefined,
-        bpmnElementType: ShapeBpmnElementType.CALL_ACTIVITY,
-        bpmnElementCallActivityType: ShapeBpmnCallActivityType.CALLING_PROCESS,
+        bpmnElementType: ShapeBaseElementType.CALL_ACTIVITY,
+        bpmnElementCallActivityType: CallActivityType.CALLING_PROCESS,
         bounds: {
           x: 365,
           y: 235,

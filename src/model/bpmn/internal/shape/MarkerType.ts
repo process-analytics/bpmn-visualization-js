@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export enum ShapeBpmnCallActivityType {
-  CALLING_PROCESS = 'process',
-  // CALLING_GLOBAL_TASK = 'global task',
+export enum MarkerType {
+  ADHOC = 'adhoc',
+  COMPENSATION = 'compensation',
+  EXPAND = 'expand',
+  LOOP = 'loop',
+  MULTI_INSTANCE_PARALLEL = 'parallel multi instance',
+  MULTI_INSTANCE_SEQUENTIAL = 'sequential multi instance',
 }

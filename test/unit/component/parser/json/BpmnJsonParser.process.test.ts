@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBaseElementType } from '../../../../../src/model/bpmn/internal/shape';
 import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
 import { findProcessRefParticipant } from '../../../../../src/component/parser/json/converter/CollaborationConverter';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json-xsd/BPMN20';
@@ -56,7 +56,7 @@ describe('parse bpmn as json for process/pool', () => {
         shapeId: 'shape_Participant_1',
         bpmnElementId: 'Participant_1',
         bpmnElementName: undefined,
-        bpmnElementType: ShapeBpmnElementType.POOL,
+        bpmnElementType: ShapeBaseElementType.POOL,
         parentId: undefined,
         bounds: {
           x: 158,
@@ -97,7 +97,7 @@ describe('parse bpmn as json for process/pool', () => {
         shapeId: 'shape_Participant_1',
         bpmnElementId: 'Participant_1',
         bpmnElementName: 'Participant without process ref',
-        bpmnElementType: ShapeBpmnElementType.POOL,
+        bpmnElementType: ShapeBaseElementType.POOL,
         parentId: undefined,
         isHorizontal: isHorizontal,
         bounds: {
@@ -142,7 +142,7 @@ describe('parse bpmn as json for process/pool', () => {
       shapeId: 'shape_Participant_1',
       bpmnElementId: 'Participant_1',
       bpmnElementName: undefined,
-      bpmnElementType: ShapeBpmnElementType.POOL,
+      bpmnElementType: ShapeBaseElementType.POOL,
       parentId: undefined,
       bounds: {
         x: 158,
@@ -188,7 +188,7 @@ describe('parse bpmn as json for process/pool', () => {
       shapeId: 'shape_Participant_1',
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Process 1',
-      bpmnElementType: ShapeBpmnElementType.POOL,
+      bpmnElementType: ShapeBaseElementType.POOL,
       parentId: undefined,
       isHorizontal: true,
       bounds: {
@@ -240,7 +240,7 @@ describe('parse bpmn as json for process/pool', () => {
       shapeId: 'shape_Participant_0nuvj8r',
       bpmnElementId: 'Participant_0nuvj8r',
       bpmnElementName: 'Pool 1',
-      bpmnElementType: ShapeBpmnElementType.POOL,
+      bpmnElementType: ShapeBaseElementType.POOL,
       parentId: undefined,
       isHorizontal: true,
       bounds: {
@@ -256,7 +256,7 @@ describe('parse bpmn as json for process/pool', () => {
       shapeId: 'shape_Lane_1h5yeu4',
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
-      bpmnElementType: ShapeBpmnElementType.LANE,
+      bpmnElementType: ShapeBaseElementType.LANE,
       parentId: 'Participant_0nuvj8r',
       isHorizontal: true,
       bounds: {
@@ -332,7 +332,7 @@ describe('parse bpmn as json for process/pool', () => {
       shapeId: 'shape_Participant_1',
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
-      bpmnElementType: ShapeBpmnElementType.POOL,
+      bpmnElementType: ShapeBaseElementType.POOL,
       parentId: undefined,
       isHorizontal: true,
       bounds: {
@@ -346,7 +346,7 @@ describe('parse bpmn as json for process/pool', () => {
       shapeId: 'Participant_2_di',
       bpmnElementId: 'Participant_2',
       bpmnElementName: 'Pool 2',
-      bpmnElementType: ShapeBpmnElementType.POOL,
+      bpmnElementType: ShapeBaseElementType.POOL,
       parentId: undefined,
       isHorizontal: true,
       bounds: {
@@ -361,7 +361,7 @@ describe('parse bpmn as json for process/pool', () => {
       shapeId: 'shape_Lane_1_1',
       bpmnElementId: 'Lane_1_1',
       bpmnElementName: undefined,
-      bpmnElementType: ShapeBpmnElementType.LANE,
+      bpmnElementType: ShapeBaseElementType.LANE,
       parentId: 'Participant_1',
       isHorizontal: true,
       bounds: {
@@ -375,7 +375,7 @@ describe('parse bpmn as json for process/pool', () => {
       shapeId: 'shape_Lane_2_1',
       bpmnElementId: 'Lane_2_1',
       bpmnElementName: undefined,
-      bpmnElementType: ShapeBpmnElementType.LANE,
+      bpmnElementType: ShapeBaseElementType.LANE,
       parentId: 'Participant_2',
       isHorizontal: true,
       bounds: {
@@ -424,7 +424,7 @@ describe('parse bpmn as json for process/pool', () => {
       shapeId: 'shape_Participant_1',
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
-      bpmnElementType: ShapeBpmnElementType.POOL,
+      bpmnElementType: ShapeBaseElementType.POOL,
       parentId: undefined,
       isHorizontal: true,
       bounds: {
@@ -482,7 +482,7 @@ describe('parse bpmn as json for process/pool', () => {
       shapeId: 'shape_Participant_1',
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
-      bpmnElementType: ShapeBpmnElementType.POOL,
+      bpmnElementType: ShapeBaseElementType.POOL,
       parentId: undefined,
       isHorizontal: true,
       bounds: {
@@ -498,7 +498,7 @@ describe('parse bpmn as json for process/pool', () => {
       shapeId: 'shape_startEvent_id_0',
       bpmnElementId: 'event_id_0',
       bpmnElementName: undefined,
-      bpmnElementType: ShapeBpmnElementType.EVENT_START,
+      bpmnElementType: ShapeBaseElementType.EVENT_START,
       parentId: 'Participant_1',
       bounds: {
         x: 362,

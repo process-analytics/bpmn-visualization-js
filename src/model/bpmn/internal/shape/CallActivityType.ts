@@ -13,12 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * Base name of the BPMN specification.
- */
-export enum ShapeBpmnSubProcessType {
-  EMBEDDED = 'embedded',
-  EVENT = 'event',
-  // TRANSACTION = 'transaction',
-  // AD_HOC = 'ad_hoc',
+export enum CallActivityType {
+  CALLING_PROCESS = 'process',
+  // CALLING_GLOBAL_TASK = 'global task',
 }

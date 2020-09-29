@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 import { TDefinitions } from '../../../../model/bpmn/json-xsd/BPMN20';
-import { ShapeBpmnEventType } from '../../../../model/bpmn/internal/shape';
+import { EventType } from '../../../../model/bpmn/internal/shape';
 import { TEventDefinition } from '../../../../model/bpmn/json-xsd/baseElement/rootElement/eventDefinition';
 import { ensureIsArray } from './ConverterUtil';
 
-export const bpmnEventTypes = Object.values(ShapeBpmnEventType).filter(type => {
-  return type != ShapeBpmnEventType.NONE;
+export const bpmnEventTypes = Object.values(EventType).filter(type => {
+  return type != EventType.NONE;
 });
 
-const eventDefinitionsOfDefinitions: Map<string, ShapeBpmnEventType> = new Map();
+const eventDefinitionsOfDefinitions: Map<string, EventType> = new Map();
 
-export function findEventDefinitionOfDefinitions(id: string): ShapeBpmnEventType {
+export function findEventDefinitionOfDefinitions(id: string): EventType {
   return eventDefinitionsOfDefinitions.get(id);
 }
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { mxgraph } from 'ts-mxgraph';
-import { ShapeBpmnElementType } from '../../../model/bpmn/internal/shape';
+import { ShapeBaseElementType } from '../../../model/bpmn/internal/shape';
 import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape, BoundaryEventShape } from '../shape/event-shapes';
 import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from '../shape/gateway-shapes';
 import {
@@ -44,29 +44,29 @@ export default class ShapeConfigurator {
 
   private registerShapes(): void {
     // events
-    mxCellRenderer.registerShape(ShapeBpmnElementType.EVENT_END, EndEventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementType.EVENT_START, StartEventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementType.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH, CatchIntermediateEventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementType.EVENT_BOUNDARY, BoundaryEventShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.EVENT_END, EndEventShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.EVENT_START, StartEventShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.EVENT_INTERMEDIATE_CATCH, CatchIntermediateEventShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.EVENT_BOUNDARY, BoundaryEventShape);
     // gateways
-    mxCellRenderer.registerShape(ShapeBpmnElementType.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementType.GATEWAY_INCLUSIVE, InclusiveGatewayShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementType.GATEWAY_PARALLEL, ParallelGatewayShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.GATEWAY_INCLUSIVE, InclusiveGatewayShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.GATEWAY_PARALLEL, ParallelGatewayShape);
     // activities
-    mxCellRenderer.registerShape(ShapeBpmnElementType.SUB_PROCESS, SubProcessShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementType.CALL_ACTIVITY, CallActivityShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.SUB_PROCESS, SubProcessShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.CALL_ACTIVITY, CallActivityShape);
     // tasks
-    mxCellRenderer.registerShape(ShapeBpmnElementType.TASK, TaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementType.TASK_SERVICE, ServiceTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementType.TASK_USER, UserTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementType.TASK_RECEIVE, ReceiveTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementType.TASK_SEND, SendTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementType.TASK_MANUAL, ManualTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementType.TASK_SCRIPT, ScriptTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementType.TASK_BUSINESS_RULE, BusinessRuleTaskShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.TASK, TaskShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.TASK_SERVICE, ServiceTaskShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.TASK_USER, UserTaskShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.TASK_RECEIVE, ReceiveTaskShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.TASK_SEND, SendTaskShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.TASK_MANUAL, ManualTaskShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.TASK_SCRIPT, ScriptTaskShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.TASK_BUSINESS_RULE, BusinessRuleTaskShape);
     // artifacts
-    mxCellRenderer.registerShape(ShapeBpmnElementType.TEXT_ANNOTATION, TextAnnotationShape);
+    mxCellRenderer.registerShape(ShapeBaseElementType.TEXT_ANNOTATION, TextAnnotationShape);
 
     // shapes for flows
     mxCellRenderer.registerShape(StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON, MessageFlowIconShape);

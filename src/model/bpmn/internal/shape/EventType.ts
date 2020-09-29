@@ -19,7 +19,7 @@
  *
  * For instance, TERMINATE --> terminateEventDefinition
  */
-export enum ShapeBpmnEventType {
+export enum EventType {
   NONE = 'none',
   TERMINATE = 'terminate',
   CANCEL = 'cancel',
@@ -40,11 +40,11 @@ export enum ShapeBpmnEventType {
  */
 // TODO When a new type is supported, uncomment the corresponding line in test/unit/component/parser/json/BpmnJsonParser.event.test.ts
 export const supportedBpmnEventKinds = [
-  ShapeBpmnEventType.TERMINATE,
-  ShapeBpmnEventType.TIMER,
-  ShapeBpmnEventType.MESSAGE,
-  ShapeBpmnEventType.SIGNAL,
-  ShapeBpmnEventType.LINK,
-  ShapeBpmnEventType.ERROR,
-  ShapeBpmnEventType.COMPENSATION,
+  EventType.TERMINATE,
+  EventType.TIMER,
+  EventType.MESSAGE,
+  EventType.SIGNAL,
+  EventType.LINK,
+  EventType.ERROR,
+  EventType.COMPENSATION,
 ];

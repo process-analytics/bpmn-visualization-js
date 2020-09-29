@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Shape from '../../model/bpmn/internal/shape/Shape';
-import Edge from '../../model/bpmn/internal/edge/Edge';
-import BpmnModel from '../../model/bpmn/internal/BpmnModel';
-import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
-import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
+import InternalBPMNShape from '../../model/bpmn/internal/shape/InternalBPMNShape';
+import InternalBPMNEdge from '../../model/bpmn/internal/edge/InternalBPMNEdge';
+import InternalBPMNModel from '../../model/bpmn/internal/InternalBPMNModel';
+import ShapeBaseElement from '../../model/bpmn/internal/shape/ShapeBaseElement';
+import InternalBPMNShapeUtil from '../../model/bpmn/internal/shape/InternalBPMNShapeUtil';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
 import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';
@@ -26,39 +26,39 @@ import { Bounds, Point } from '../../model/bpmn/json-xsd/DC';
 export default class MxGraphRenderer {
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
 
-  public render(bpmnModel: BpmnModel): void {
+  public render(bpmnModel: InternalBPMNModel): void {
     const model = this.graph.getModel();
     model.clear(); // ensure to remove manual changes or already loaded graphs
     model.beginUpdate();
     try {
       this.insertShapes(bpmnModel.pools);
       this.insertShapes(bpmnModel.lanes);
-      this.insertShapes(bpmnModel.flowNodes.filter(shape => !ShapeUtil.isBoundaryEvent(shape.bpmnElement?.type)));
-      this.insertShapes(bpmnModel.flowNodes.filter(shape => ShapeUtil.isBoundaryEvent(shape.bpmnElement?.type)));
+      this.insertShapes(bpmnModel.flowNodes.filter(shape => !InternalBPMNShapeUtil.isBoundaryEvent(shape.bpmnElement?.type)));
+      this.insertShapes(bpmnModel.flowNodes.filter(shape => InternalBPMNShapeUtil.isBoundaryEvent(shape.bpmnElement?.type)));
       this.insertEdges(bpmnModel.edges);
     } finally {
       model.endUpdate();
     }
   }
 
-  private insertShapes(shapes: Shape[]): void {
+  private insertShapes(shapes: InternalBPMNShape[]): void {
     shapes.forEach(shape => {
       this.insertShape(shape);
     });
   }
 
-  private getParent(bpmnElement: ShapeBpmnElement): mxCell {
+  private getParent(bpmnElement: ShapeBaseElement): mxCell {
     const bpmnElementParent = this.getCell(bpmnElement.parentId);
     if (bpmnElementParent) {
       return bpmnElementParent;
     }
 
-    if (!ShapeUtil.isBoundaryEvent(bpmnElement.type)) {
+    if (!InternalBPMNShapeUtil.isBoundaryEvent(bpmnElement.type)) {
       return this.graph.getDefaultParent();
     }
   }
 
-  private insertShape(shape: Shape): void {
+  private insertShape(shape: InternalBPMNShape): void {
     const bpmnElement = shape.bpmnElement;
     if (bpmnElement) {
       const parent = this.getParent(bpmnElement);
@@ -70,14 +70,14 @@ export default class MxGraphRenderer {
       const bounds = shape.bounds;
       let labelBounds = shape.label?.bounds;
       // pool/lane label bounds are not managed for now (use hard coded values)
-      labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.type) ? undefined : labelBounds;
+      labelBounds = InternalBPMNShapeUtil.isPoolOrLane(bpmnElement.type) ? undefined : labelBounds;
       const style = this.styleConfigurator.computeStyle(shape, labelBounds);
 
       this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
     }
   }
 
-  private insertEdges(edges: Edge[]): void {
+  private insertEdges(edges: InternalBPMNEdge[]): void {
     edges.forEach(edge => {
       const bpmnElement = edge.bpmnElement;
       if (bpmnElement) {
@@ -109,7 +109,7 @@ export default class MxGraphRenderer {
     });
   }
 
-  private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: mxCell): void {
+  private insertMessageFlowIconIfNeeded(edge: InternalBPMNEdge, mxEdge: mxCell): void {
     if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind) {
       const mxCell = this.graph.insertVertex(mxEdge, `messageFlowIcon_of_${mxEdge.id}`, undefined, 0, 0, 20, 14, this.styleConfigurator.computeMessageFlowIconStyle(edge));
       mxCell.geometry.relative = true;

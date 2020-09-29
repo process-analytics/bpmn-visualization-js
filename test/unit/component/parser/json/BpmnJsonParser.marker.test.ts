@@ -13,33 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
+import { ShapeBaseElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
 import { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../../../../src/model/bpmn/json-xsd/baseElement/loopCharacteristics';
-import { ShapeBpmnMarkerType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerType';
-import { ShapeBpmnCallActivityType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnCallActivityType';
+import { BpmnMarkerType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerType';
+import { CallActivityType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnCallActivityType';
 
 describe.each([
-  ['callActivity', ShapeBpmnElementType.CALL_ACTIVITY],
-  ['subProcess', ShapeBpmnElementType.SUB_PROCESS],
-  ['task', ShapeBpmnElementType.TASK],
-  ['serviceTask', ShapeBpmnElementType.TASK_SERVICE],
-  ['userTask', ShapeBpmnElementType.TASK_USER],
-  ['receiveTask', ShapeBpmnElementType.TASK_RECEIVE],
-  ['sendTask', ShapeBpmnElementType.TASK_SEND],
-  ['manualTask', ShapeBpmnElementType.TASK_MANUAL],
-  ['scriptTask', ShapeBpmnElementType.TASK_SCRIPT],
+  ['callActivity', ShapeBaseElementType.CALL_ACTIVITY],
+  ['subProcess', ShapeBaseElementType.SUB_PROCESS],
+  ['task', ShapeBaseElementType.TASK],
+  ['serviceTask', ShapeBaseElementType.TASK_SERVICE],
+  ['userTask', ShapeBaseElementType.TASK_USER],
+  ['receiveTask', ShapeBaseElementType.TASK_RECEIVE],
+  ['sendTask', ShapeBaseElementType.TASK_SEND],
+  ['manualTask', ShapeBaseElementType.TASK_MANUAL],
+  ['scriptTask', ShapeBaseElementType.TASK_SCRIPT],
 
   // TODO: To uncomment when it's supported
   ['businessRuleTask', ShapeBpmnElementKind.TASK_BUSINESS_RULE],
   //['adHocSubProcess', ShapeBpmnElementKind.AD_HOC_SUB_PROCESS],
   //['transaction', ShapeBpmnElementKind.TRANSACTION],
-])(`parse bpmn as json for '%s'`, (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementType) => {
+])(`parse bpmn as json for '%s'`, (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBaseElementType) => {
   describe.each([
-    ['standardLoopCharacteristics', ShapeBpmnMarkerType.LOOP],
-    ['multiInstanceLoopCharacteristics', ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
-  ])(`parse bpmn as json for '${bpmnKind}' with '%s'`, (bpmnLoopCharacteristicsKind: string, expectedMarkerKind: ShapeBpmnMarkerType) => {
+    ['standardLoopCharacteristics', BpmnMarkerType.LOOP],
+    ['multiInstanceLoopCharacteristics', BpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+  ])(`parse bpmn as json for '${bpmnKind}' with '%s'`, (bpmnLoopCharacteristicsKind: string, expectedMarkerKind: BpmnMarkerType) => {
     it.each([
       ['empty string', ''],
       ['empty object', {}],
@@ -85,7 +85,7 @@ describe.each([
           bpmnElementName: `${bpmnKind} name`,
           bpmnElementType: expectedShapeBpmnElementKind,
           bpmnElementMarkers: [expectedMarkerKind],
-          bpmnElementCallActivityType: expectedShapeBpmnElementKind === ShapeBpmnElementType.CALL_ACTIVITY ? ShapeBpmnCallActivityType.CALLING_PROCESS : undefined,
+          bpmnElementCallActivityType: expectedShapeBpmnElementKind === ShapeBaseElementType.CALL_ACTIVITY ? CallActivityType.CALLING_PROCESS : undefined,
           bounds: {
             x: 362,
             y: 232,
@@ -96,7 +96,7 @@ describe.each([
       },
     );
 
-    if (expectedShapeBpmnElementKind === ShapeBpmnElementType.SUB_PROCESS) {
+    if (expectedShapeBpmnElementKind === ShapeBaseElementType.SUB_PROCESS) {
       it(`should convert as Shape with ${expectedMarkerKind} & expand markers, when '${bpmnLoopCharacteristicsKind}' is an attribute of '${bpmnKind}' and BPMNShape is NOT expanded`, () => {
         const json = {
           definitions: {
@@ -128,7 +128,7 @@ describe.each([
           bpmnElementId: `${bpmnKind}_id_0`,
           bpmnElementName: `${bpmnKind} name`,
           bpmnElementType: expectedShapeBpmnElementKind,
-          bpmnElementMarkers: [expectedMarkerKind, ShapeBpmnMarkerType.EXPAND],
+          bpmnElementMarkers: [expectedMarkerKind, BpmnMarkerType.EXPAND],
           bounds: {
             x: 362,
             y: 232,
@@ -140,9 +140,9 @@ describe.each([
     }
   });
   describe.each([
-    [true, ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
-    [false, ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL],
-  ])(`parse bpmn as json for '${bpmnKind}' with 'multiInstanceLoopCharacteristics'`, (isSequential: boolean, expectedMarkerKind: ShapeBpmnMarkerType) => {
+    [true, BpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL],
+    [false, BpmnMarkerType.MULTI_INSTANCE_PARALLEL],
+  ])(`parse bpmn as json for '${bpmnKind}' with 'multiInstanceLoopCharacteristics'`, (isSequential: boolean, expectedMarkerKind: BpmnMarkerType) => {
     it.each([
       ['object', { isSequential }],
       ['array with object', [{ isSequential }]],
@@ -180,7 +180,7 @@ describe.each([
           bpmnElementName: `${bpmnKind} name`,
           bpmnElementType: expectedShapeBpmnElementKind,
           bpmnElementMarkers: [expectedMarkerKind],
-          bpmnElementCallActivityType: expectedShapeBpmnElementKind === ShapeBpmnElementType.CALL_ACTIVITY ? ShapeBpmnCallActivityType.CALLING_PROCESS : undefined,
+          bpmnElementCallActivityType: expectedShapeBpmnElementKind === ShapeBaseElementType.CALL_ACTIVITY ? CallActivityType.CALLING_PROCESS : undefined,
           bounds: {
             x: 362,
             y: 232,
@@ -191,7 +191,7 @@ describe.each([
       },
     );
 
-    if (expectedShapeBpmnElementKind === ShapeBpmnElementType.SUB_PROCESS || expectedShapeBpmnElementKind === ShapeBpmnElementType.CALL_ACTIVITY) {
+    if (expectedShapeBpmnElementKind === ShapeBaseElementType.SUB_PROCESS || expectedShapeBpmnElementKind === ShapeBaseElementType.CALL_ACTIVITY) {
       it(`should convert as Shape with ${expectedMarkerKind} & expand markers, when 'isSequential' is an attribute (as ${isSequential}) of 'multiInstanceLoopCharacteristics' of '${bpmnKind}' and BPMNShape is NOT expanded`, () => {
         const json = {
           definitions: {
@@ -223,8 +223,8 @@ describe.each([
           bpmnElementId: `${bpmnKind}_id_0`,
           bpmnElementName: `${bpmnKind} name`,
           bpmnElementType: expectedShapeBpmnElementKind,
-          bpmnElementMarkers: [expectedMarkerKind, ShapeBpmnMarkerType.EXPAND],
-          bpmnElementCallActivityType: expectedShapeBpmnElementKind === ShapeBpmnElementType.CALL_ACTIVITY ? ShapeBpmnCallActivityType.CALLING_PROCESS : undefined,
+          bpmnElementMarkers: [expectedMarkerKind, BpmnMarkerType.EXPAND],
+          bpmnElementCallActivityType: expectedShapeBpmnElementKind === ShapeBaseElementType.CALL_ACTIVITY ? CallActivityType.CALLING_PROCESS : undefined,
           bounds: {
             x: 362,
             y: 232,

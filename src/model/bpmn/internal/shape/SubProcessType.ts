@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export enum ShapeBpmnMarkerType {
-  ADHOC = 'adhoc',
-  COMPENSATION = 'compensation',
-  EXPAND = 'expand',
-  LOOP = 'loop',
-  MULTI_INSTANCE_PARALLEL = 'parallel multi instance',
-  MULTI_INSTANCE_SEQUENTIAL = 'sequential multi instance',
+/**
+ * Base name of the BPMN specification.
+ */
+export enum SubProcessType {
+  EMBEDDED = 'embedded',
+  EVENT = 'event',
+  // TRANSACTION = 'transaction',
+  // AD_HOC = 'ad_hoc',
 }

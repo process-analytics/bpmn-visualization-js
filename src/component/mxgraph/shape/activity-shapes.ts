@@ -15,7 +15,7 @@
  */
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render';
-import { ShapeBpmnMarkerType, ShapeBpmnSubProcessType } from '../../../model/bpmn/internal/shape';
+import { MarkerType, SubProcessType } from '../../../model/bpmn/internal/shape';
 import BpmnCanvas from './render/BpmnCanvas';
 import { orderActivityMarkers } from './render/utils';
 
@@ -53,16 +53,16 @@ export abstract class BaseActivityShape extends mxRectangleShape {
         };
         paintParameter.c.save(); // ensure we can later restore the configuration
         switch (marker) {
-          case ShapeBpmnMarkerType.LOOP:
+          case MarkerType.LOOP:
             this.iconPainter.paintLoopIcon(paintParameter);
             break;
-          case ShapeBpmnMarkerType.MULTI_INSTANCE_SEQUENTIAL:
+          case MarkerType.MULTI_INSTANCE_SEQUENTIAL:
             this.iconPainter.paintSequentialMultiInstanceIcon(paintParameter);
             break;
-          case ShapeBpmnMarkerType.MULTI_INSTANCE_PARALLEL:
+          case MarkerType.MULTI_INSTANCE_PARALLEL:
             this.iconPainter.paintParallelMultiInstanceIcon(paintParameter);
             break;
-          case ShapeBpmnMarkerType.EXPAND:
+          case MarkerType.EXPAND:
             this.iconPainter.paintExpandIcon(paintParameter);
             break;
         }
@@ -217,7 +217,7 @@ export class SubProcessShape extends BaseActivityShape {
   public paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const subProcessKind = StyleUtils.getBpmnSubProcessKind(this.style);
     c.save(); // ensure we can later restore the configuration
-    if (subProcessKind === ShapeBpmnSubProcessType.EVENT) {
+    if (subProcessKind === SubProcessType.EVENT) {
       c.setDashed(true, false);
       c.setDashPattern('1 2');
     }

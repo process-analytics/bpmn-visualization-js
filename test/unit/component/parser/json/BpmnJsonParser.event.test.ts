@@ -13,36 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
+import { ShapeBaseElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
 import { parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
-import { ShapeBpmnEventType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnEventType';
+import { BpmnEventType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnEventType';
 import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
 import { TEventDefinition } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/eventDefinition';
 import { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json-xsd/baseElement/flowNode/event';
 import { BPMNShape } from '../../../../../src/model/bpmn/json-xsd/BPMNDI';
 import { ShapeBpmnBoundaryEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
-import ShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
-import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
+import InternalBPMNModel from '../../../../../src/model/bpmn/internal/BpmnModel';
+import BPMNShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
+import BPMNShape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { addEvent, buildDefinitionsAndProcessWithTask, BuildEventDefinitionParameter, BuildEventParameter, EventDefinitionOn } from './JsonBuilder';
 
 interface TestParameter {
   bpmnType: string;
   buildEventDefinitionParameter: BuildEventDefinitionParameter;
   buildEventParameter: BuildEventParameter;
-  expectedShapeBpmnEventType: ShapeBpmnEventType;
-  expectedShapeBpmnElementType: ShapeBpmnElementType;
+  expectedShapeBpmnEventType: BpmnEventType;
+  expectedShapeBpmnElementType: ShapeBaseElementType;
   process?: TProcess | TProcess[];
 }
 
-export function getEventShapes(model: BpmnModel): Shape[] {
-  return model.flowNodes.filter(shape => ShapeUtil.isEvent(shape.bpmnElement.type));
+export function getEventShapes(model: InternalBPMNModel): BPMNShape[] {
+  return model.flowNodes.filter(shape => BPMNShapeUtil.isEvent(shape.bpmnElement.type));
 }
 
 function verifyEventShape(
-  shape: Shape,
+  shape: BPMNShape,
   buildEventParameter: BuildEventParameter,
-  expectedShapeBpmnElementType: ShapeBpmnElementType,
+  expectedShapeBpmnElementType: ShapeBaseElementType,
   expectedShapeId = `shape_event_id_0`,
   expectedBpmnElementId = 'event_id_0',
 ): void {
@@ -60,7 +60,7 @@ function verifyEventShape(
     },
   });
 
-  if (expectedShapeBpmnElementType === ShapeBpmnElementType.EVENT_BOUNDARY) {
+  if (expectedShapeBpmnElementType === ShapeBaseElementType.EVENT_BOUNDARY) {
     expect(shape.bpmnElement instanceof ShapeBpmnBoundaryEvent).toBeTruthy();
     expect((shape.bpmnElement as ShapeBpmnBoundaryEvent).isInterrupting).toEqual(buildEventParameter.isInterrupting);
   }
@@ -86,15 +86,15 @@ function testMustConvertOneShape({
 function executeEventCommonTests(
   bpmnType: string,
   eventDefinitionType: string,
-  expectedShapeBpmnElementType: ShapeBpmnElementType,
-  expectedShapeBpmnEventType: ShapeBpmnEventType,
+  expectedShapeBpmnElementType: ShapeBaseElementType,
+  expectedShapeBpmnEventType: BpmnEventType,
   boundaryEventType?: string,
   specificBuildEventParameter: BuildEventParameter = {},
   specificTitle = '',
 ): void {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let titlesForEventDefinitionIsAttributeOf: any[][];
-  if (expectedShapeBpmnEventType === ShapeBpmnEventType.NONE) {
+  if (expectedShapeBpmnEventType === BpmnEventType.NONE) {
     titlesForEventDefinitionIsAttributeOf = [[`'${bpmnType}' has no 'eventDefinition' & no 'eventDefinitionRef'`, EventDefinitionOn.NONE]];
   } else {
     titlesForEventDefinitionIsAttributeOf = [
@@ -149,7 +149,7 @@ function executeEventCommonTests(
       testMustConvertOneShape({ ...testParameter, buildEventParameter: { ...specificBuildEventParameter, name: eventName } });
     });
 
-    if (expectedShapeBpmnEventType !== ShapeBpmnEventType.NONE) {
+    if (expectedShapeBpmnEventType !== BpmnEventType.NONE) {
       it(`should NOT convert, when there are '${eventDefinitionType}EventDefinition' and another 'EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
         const json = buildDefinitionsAndProcessWithTask({ eventDefinitionType });
         addEvent(json, bpmnType, { ...buildEventDefinitionParameter, withDifferentDefinition: true }, specificBuildEventParameter);
@@ -166,7 +166,7 @@ function executeEventCommonTests(
         expect(getEventShapes(bpmnModel)).toHaveLength(0);
       });
 
-      if (expectedShapeBpmnElementType !== ShapeBpmnElementType.EVENT_BOUNDARY) {
+      if (expectedShapeBpmnElementType !== ShapeBaseElementType.EVENT_BOUNDARY) {
         it.each([
           ['empty string', ''],
           ['object', { id: `${buildEventDefinitionParameter.eventDefinitionType}EventDefinition_1` }],
@@ -236,7 +236,7 @@ function executeEventCommonTests(
       }
     }
 
-    if (expectedShapeBpmnEventType !== ShapeBpmnEventType.NONE) {
+    if (expectedShapeBpmnEventType !== BpmnEventType.NONE) {
       it(`should NOT convert, when 'definitions' has ${eventDefinitionType}EventDefinition and '${bpmnType}' has ${eventDefinitionType}EventDefinition & eventDefinitionRef${specificTitle}`, () => {
         const json = buildDefinitionsAndProcessWithTask();
         addEvent(json, bpmnType, { eventDefinitionType, eventDefinitionOn: EventDefinitionOn.BOTH }, specificBuildEventParameter);
@@ -250,58 +250,56 @@ function executeEventCommonTests(
 
 describe('parse bpmn as json for all events', () => {
   describe.each([
-    ['startEvent', ['message', 'timer', 'conditional', 'signal'], ShapeBpmnElementType.EVENT_START],
-    ['endEvent', ['message', 'error', 'escalation', 'cancel', 'compensate', 'signal', 'terminate'], ShapeBpmnElementType.EVENT_END],
-    ['intermediateCatchEvent', ['message', 'timer', 'conditional', 'link', 'signal'], ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH],
-    ['intermediateThrowEvent', ['message', 'escalation', 'compensate', 'link', 'signal'], ShapeBpmnElementType.EVENT_INTERMEDIATE_THROW],
-    ['boundaryEvent', undefined, ShapeBpmnElementType.EVENT_BOUNDARY],
-  ])('for %ss', (bpmnType: string, allDefinitionTypes: string[], expectedShapeBpmnElementType: ShapeBpmnElementType) => {
+    ['startEvent', ['message', 'timer', 'conditional', 'signal'], ShapeBaseElementType.EVENT_START],
+    ['endEvent', ['message', 'error', 'escalation', 'cancel', 'compensate', 'signal', 'terminate'], ShapeBaseElementType.EVENT_END],
+    ['intermediateCatchEvent', ['message', 'timer', 'conditional', 'link', 'signal'], ShapeBaseElementType.EVENT_INTERMEDIATE_CATCH],
+    ['intermediateThrowEvent', ['message', 'escalation', 'compensate', 'link', 'signal'], ShapeBaseElementType.EVENT_INTERMEDIATE_THROW],
+    ['boundaryEvent', undefined, ShapeBaseElementType.EVENT_BOUNDARY],
+  ])('for %ss', (bpmnType: string, allDefinitionTypes: string[], expectedShapeBpmnElementType: ShapeBaseElementType) => {
     describe.each([
-      ['none', ShapeBpmnEventType.NONE],
-      ['message', ShapeBpmnEventType.MESSAGE],
-      ['timer', ShapeBpmnEventType.TIMER],
-      ['terminate', ShapeBpmnEventType.TERMINATE],
-      ['signal', ShapeBpmnEventType.SIGNAL],
-      ['link', ShapeBpmnEventType.LINK],
-      ['error', ShapeBpmnEventType.ERROR],
-      ['compensate', ShapeBpmnEventType.COMPENSATION],
+      ['none', BpmnEventType.NONE],
+      ['message', BpmnEventType.MESSAGE],
+      ['timer', BpmnEventType.TIMER],
+      ['terminate', BpmnEventType.TERMINATE],
+      ['signal', BpmnEventType.SIGNAL],
+      ['link', BpmnEventType.LINK],
+      ['error', BpmnEventType.ERROR],
+      ['compensate', BpmnEventType.COMPENSATION],
 
       // TODO To uncomment when an element is supported
       // ['cancel', ShapeBpmnEventType.CANCEL],
       // ['conditional', ShapeBpmnEventType.CONDITIONAL],
       // ['escalation', ShapeBpmnEventType.ESCALATION],
-    ])(`for %s ${bpmnType}`, (eventDefinitionType: string, expectedShapeBpmnEventType: ShapeBpmnEventType) => {
+    ])(`for %s ${bpmnType}`, (eventDefinitionType: string, expectedShapeBpmnEventType: BpmnEventType) => {
       if (
-        (expectedShapeBpmnElementType === ShapeBpmnElementType.EVENT_START &&
-          (expectedShapeBpmnEventType === ShapeBpmnEventType.ERROR ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.ESCALATION ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.CANCEL ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.COMPENSATION ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.LINK ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.TERMINATE)) ||
-        (expectedShapeBpmnElementType === ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH &&
-          (expectedShapeBpmnEventType === ShapeBpmnEventType.NONE ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.ERROR ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.ESCALATION ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.CANCEL ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.COMPENSATION ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.TERMINATE)) ||
-        (expectedShapeBpmnElementType === ShapeBpmnElementType.EVENT_INTERMEDIATE_THROW &&
-          (expectedShapeBpmnEventType === ShapeBpmnEventType.TIMER ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.ERROR ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.CANCEL ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.CONDITIONAL ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.TERMINATE)) ||
-        (expectedShapeBpmnElementType === ShapeBpmnElementType.EVENT_END &&
-          (expectedShapeBpmnEventType === ShapeBpmnEventType.TIMER ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.CONDITIONAL ||
-            expectedShapeBpmnEventType === ShapeBpmnEventType.LINK))
+        (expectedShapeBpmnElementType === ShapeBaseElementType.EVENT_START &&
+          (expectedShapeBpmnEventType === BpmnEventType.ERROR ||
+            expectedShapeBpmnEventType === BpmnEventType.ESCALATION ||
+            expectedShapeBpmnEventType === BpmnEventType.CANCEL ||
+            expectedShapeBpmnEventType === BpmnEventType.COMPENSATION ||
+            expectedShapeBpmnEventType === BpmnEventType.LINK ||
+            expectedShapeBpmnEventType === BpmnEventType.TERMINATE)) ||
+        (expectedShapeBpmnElementType === ShapeBaseElementType.EVENT_INTERMEDIATE_CATCH &&
+          (expectedShapeBpmnEventType === BpmnEventType.NONE ||
+            expectedShapeBpmnEventType === BpmnEventType.ERROR ||
+            expectedShapeBpmnEventType === BpmnEventType.ESCALATION ||
+            expectedShapeBpmnEventType === BpmnEventType.CANCEL ||
+            expectedShapeBpmnEventType === BpmnEventType.COMPENSATION ||
+            expectedShapeBpmnEventType === BpmnEventType.TERMINATE)) ||
+        (expectedShapeBpmnElementType === ShapeBaseElementType.EVENT_INTERMEDIATE_THROW &&
+          (expectedShapeBpmnEventType === BpmnEventType.TIMER ||
+            expectedShapeBpmnEventType === BpmnEventType.ERROR ||
+            expectedShapeBpmnEventType === BpmnEventType.CANCEL ||
+            expectedShapeBpmnEventType === BpmnEventType.CONDITIONAL ||
+            expectedShapeBpmnEventType === BpmnEventType.TERMINATE)) ||
+        (expectedShapeBpmnElementType === ShapeBaseElementType.EVENT_END &&
+          (expectedShapeBpmnEventType === BpmnEventType.TIMER || expectedShapeBpmnEventType === BpmnEventType.CONDITIONAL || expectedShapeBpmnEventType === BpmnEventType.LINK))
       ) {
         // Not supported in BPMN specification
         return;
       }
 
-      if (expectedShapeBpmnElementType !== ShapeBpmnElementType.EVENT_BOUNDARY) {
+      if (expectedShapeBpmnElementType !== ShapeBaseElementType.EVENT_BOUNDARY) {
         executeEventCommonTests(bpmnType, eventDefinitionType, expectedShapeBpmnElementType, expectedShapeBpmnEventType);
       } else {
         describe.each([
@@ -310,16 +308,14 @@ describe('parse bpmn as json for all events', () => {
         ])(`for %s ${eventDefinitionType} intermediate boundary events`, (boundaryEventType: string, isInterrupting: boolean) => {
           if (
             (isInterrupting &&
-              (expectedShapeBpmnEventType === ShapeBpmnEventType.NONE ||
-                expectedShapeBpmnEventType === ShapeBpmnEventType.LINK ||
-                expectedShapeBpmnEventType === ShapeBpmnEventType.TERMINATE)) ||
+              (expectedShapeBpmnEventType === BpmnEventType.NONE || expectedShapeBpmnEventType === BpmnEventType.LINK || expectedShapeBpmnEventType === BpmnEventType.TERMINATE)) ||
             (!isInterrupting &&
-              (expectedShapeBpmnEventType === ShapeBpmnEventType.NONE ||
-                expectedShapeBpmnEventType === ShapeBpmnEventType.ERROR ||
-                expectedShapeBpmnEventType === ShapeBpmnEventType.CANCEL ||
-                expectedShapeBpmnEventType === ShapeBpmnEventType.COMPENSATION ||
-                expectedShapeBpmnEventType === ShapeBpmnEventType.LINK ||
-                expectedShapeBpmnEventType === ShapeBpmnEventType.TERMINATE))
+              (expectedShapeBpmnEventType === BpmnEventType.NONE ||
+                expectedShapeBpmnEventType === BpmnEventType.ERROR ||
+                expectedShapeBpmnEventType === BpmnEventType.CANCEL ||
+                expectedShapeBpmnEventType === BpmnEventType.COMPENSATION ||
+                expectedShapeBpmnEventType === BpmnEventType.LINK ||
+                expectedShapeBpmnEventType === BpmnEventType.TERMINATE))
           ) {
             // Not supported in BPMN specification
             return;
@@ -341,7 +337,7 @@ describe('parse bpmn as json for all events', () => {
     });
 
     //TODO We can delete it when all type of event definition are implemented
-    if (expectedShapeBpmnElementType !== ShapeBpmnElementType.EVENT_INTERMEDIATE_CATCH && expectedShapeBpmnElementType !== ShapeBpmnElementType.EVENT_BOUNDARY) {
+    if (expectedShapeBpmnElementType !== ShapeBaseElementType.EVENT_INTERMEDIATE_CATCH && expectedShapeBpmnElementType !== ShapeBaseElementType.EVENT_BOUNDARY) {
       it(`should convert as NONE Shape only the '${bpmnType}' without 'eventDefinition' & without 'eventDefinitionRef', when an array of '${bpmnType}' (without/with one or several event definition) is an attribute of 'process'`, () => {
         const json = {
           definitions: {
@@ -397,7 +393,7 @@ describe('parse bpmn as json for all events', () => {
           (json.definitions.BPMNDiagram.BPMNPlane.BPMNShape as BPMNShape[]).push(shape);
         });
 
-        const model = parseJsonAndExpectEvent(json, ShapeBpmnEventType.NONE, 1);
+        const model = parseJsonAndExpectEvent(json, BpmnEventType.NONE, 1);
 
         verifyShape(model.flowNodes[0], {
           shapeId: `shape_none_${bpmnType}_id`,

@@ -13,42 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
+import { ShapeBaseElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
 import { ExpectedShape, parseJson, parseJsonAndExpectOnlySubProcess, verifyEdge, verifyShape, verifySubProcess } from './JsonTestUtils';
 import each from 'jest-each';
-import { ShapeBpmnSubProcessType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnSubProcessType';
+import { SubProcessType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnSubProcessType';
 import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
-import { ShapeBpmnMarkerType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerType';
-import { ShapeBpmnEventType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnEventType';
-import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
+import { BpmnMarkerType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerType';
+import { BpmnEventType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnEventType';
+import InternalBPMNModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import { getEventShapes } from './BpmnJsonParser.event.test';
 import { ShapeBpmnEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
+import BPMNShape from '../../../../../src/model/bpmn/internal/shape/Shape';
 
-function expectNoPoolLane(model: BpmnModel): void {
+function expectNoPoolLane(model: InternalBPMNModel): void {
   expect(model.lanes).toHaveLength(0);
   expect(model.pools).toHaveLength(0);
 }
 
-function expectNoEdgePoolLane(model: BpmnModel): void {
+function expectNoEdgePoolLane(model: InternalBPMNModel): void {
   expectNoPoolLane(model);
   expect(model.edges).toHaveLength(0);
 }
 
-function verifyEventShape(shape: Shape, expectedShape: ExpectedShape, expectedEventKind: ShapeBpmnEventType): void {
+function verifyEventShape(shape: BPMNShape, expectedShape: ExpectedShape, expectedEventKind: BpmnEventType): void {
   verifyShape(shape, expectedShape);
   expect((shape.bpmnElement as ShapeBpmnEvent).eventKind).toEqual(expectedEventKind);
 }
 
 describe('parse bpmn as json for sub-process', () => {
   each([
-    ['embedded', false, ShapeBpmnSubProcessType.EMBEDDED],
-    ['event', true, ShapeBpmnSubProcessType.EVENT],
-  ]).describe('parse bpmn as json for %s sub-process', (bpmnSubProcessKind: string, triggeredByEvent: boolean, expectedShapeBpmnSubProcessKind: ShapeBpmnSubProcessType) => {
+    ['embedded', false, SubProcessType.EMBEDDED],
+    ['event', true, SubProcessType.EVENT],
+  ]).describe('parse bpmn as json for %s sub-process', (bpmnSubProcessKind: string, triggeredByEvent: boolean, expectedShapeBpmnSubProcessKind: SubProcessType) => {
     each([
       ['expanded', true, []],
-      ['collapsed', false, [ShapeBpmnMarkerType.EXPAND]],
-    ]).describe(`parse bpmn as json for %s ${bpmnSubProcessKind} sub-process`, (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: ShapeBpmnMarkerType[]) => {
+      ['collapsed', false, [BpmnMarkerType.EXPAND]],
+    ]).describe(`parse bpmn as json for %s ${bpmnSubProcessKind} sub-process`, (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: BpmnMarkerType[]) => {
       const processWithSubProcessAsObject = {} as TProcess;
       processWithSubProcessAsObject['subProcess'] = {
         id: `sub-process_id_0`,
@@ -86,7 +86,7 @@ describe('parse bpmn as json for sub-process', () => {
             shapeId: 'shape_sub-process_id_0',
             bpmnElementId: 'sub-process_id_0',
             bpmnElementName: 'sub-process name',
-            bpmnElementType: ShapeBpmnElementType.SUB_PROCESS,
+            bpmnElementType: ShapeBaseElementType.SUB_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
             bounds: {
               x: 362,
@@ -143,31 +143,31 @@ describe('parse bpmn as json for sub-process', () => {
         shapeId: 'shape_sub-process_id_0',
         bpmnElementId: 'sub-process_id_0',
         bpmnElementName: 'sub-process name',
-        bpmnElementType: ShapeBpmnElementType.SUB_PROCESS,
+        bpmnElementType: ShapeBaseElementType.SUB_PROCESS,
         bounds: {
           x: 362,
           y: 232,
           width: 36,
           height: 45,
         },
-        bpmnElementMarkers: [ShapeBpmnMarkerType.EXPAND],
+        bpmnElementMarkers: [BpmnMarkerType.EXPAND],
       });
       verifyShape(model.flowNodes[1], {
         shapeId: 'shape_sub-process_id_1',
         bpmnElementId: 'sub-process_id_1',
         bpmnElementName: undefined,
-        bpmnElementType: ShapeBpmnElementType.SUB_PROCESS,
+        bpmnElementType: ShapeBaseElementType.SUB_PROCESS,
         bounds: {
           x: 365,
           y: 235,
           width: 35,
           height: 46,
         },
-        bpmnElementMarkers: [ShapeBpmnMarkerType.EXPAND],
+        bpmnElementMarkers: [BpmnMarkerType.EXPAND],
       });
     });
 
-    if (expectedShapeBpmnSubProcessKind === ShapeBpmnSubProcessType.EMBEDDED) {
+    if (expectedShapeBpmnSubProcessKind === SubProcessType.EMBEDDED) {
       it(`should convert as Shape, when a embedded sub-process (with/without triggeredByEvent) is an attribute (as object) of 'process'`, () => {
         const json = {
           definitions: {
@@ -196,14 +196,14 @@ describe('parse bpmn as json for sub-process', () => {
           shapeId: 'shape_sub-process_id_1',
           bpmnElementId: 'sub-process_id_1',
           bpmnElementName: undefined,
-          bpmnElementType: ShapeBpmnElementType.SUB_PROCESS,
+          bpmnElementType: ShapeBaseElementType.SUB_PROCESS,
           bounds: {
             x: 365,
             y: 235,
             width: 35,
             height: 46,
           },
-          bpmnElementMarkers: [ShapeBpmnMarkerType.EXPAND],
+          bpmnElementMarkers: [BpmnMarkerType.EXPAND],
         });
       });
     }
@@ -305,7 +305,7 @@ describe('parse bpmn as json for sub-process', () => {
         shapeId: 'shape_sub-process_id_1',
         bpmnElementId: 'sub-process_id_1',
         bpmnElementName: undefined,
-        bpmnElementType: ShapeBpmnElementType.SUB_PROCESS,
+        bpmnElementType: ShapeBaseElementType.SUB_PROCESS,
         bounds: {
           x: 365,
           y: 235,
@@ -323,10 +323,10 @@ describe('parse bpmn as json for sub-process', () => {
           parentId: 'sub-process_id_1',
           bpmnElementId: 'sub-process_id_1_startEvent_1',
           bpmnElementName: 'SubProcess Start Event',
-          bpmnElementType: ShapeBpmnElementType.EVENT_START,
+          bpmnElementType: ShapeBaseElementType.EVENT_START,
           bounds: { x: 465, y: 335, width: 10, height: 10 },
         },
-        ShapeBpmnEventType.TIMER,
+        BpmnEventType.TIMER,
       );
       verifyEventShape(
         eventShapes[1],
@@ -335,10 +335,10 @@ describe('parse bpmn as json for sub-process', () => {
           parentId: 'sub-process_id_1',
           bpmnElementId: 'sub-process_id_1_endEvent_1',
           bpmnElementName: 'SubProcess End Event',
-          bpmnElementType: ShapeBpmnElementType.EVENT_END,
+          bpmnElementType: ShapeBaseElementType.EVENT_END,
           bounds: { x: 565, y: 335, width: 20, height: 20 },
         },
-        ShapeBpmnEventType.TERMINATE,
+        BpmnEventType.TERMINATE,
       );
 
       verifyShape(model.flowNodes[2], {
@@ -346,7 +346,7 @@ describe('parse bpmn as json for sub-process', () => {
         parentId: 'sub-process_id_1',
         bpmnElementId: 'sub-process_id_1_userTask_1',
         bpmnElementName: 'SubProcess User Task',
-        bpmnElementType: ShapeBpmnElementType.TASK_USER,
+        bpmnElementType: ShapeBaseElementType.TASK_USER,
         bounds: { x: 465, y: 335, width: 10, height: 10 },
       });
 
@@ -355,7 +355,7 @@ describe('parse bpmn as json for sub-process', () => {
         parentId: 'sub-process_id_1',
         bpmnElementId: 'sub-process_id_1_exclusiveGateway_1',
         bpmnElementName: 'SubProcess Exclusive Gateway',
-        bpmnElementType: ShapeBpmnElementType.GATEWAY_EXCLUSIVE,
+        bpmnElementType: ShapeBaseElementType.GATEWAY_EXCLUSIVE,
         bounds: { x: 565, y: 335, width: 20, height: 20 },
       });
 
@@ -370,7 +370,7 @@ describe('parse bpmn as json for sub-process', () => {
       });
     });
 
-    if (expectedShapeBpmnSubProcessKind === ShapeBpmnSubProcessType.EVENT) {
+    if (expectedShapeBpmnSubProcessKind === SubProcessType.EVENT) {
       it(`should convert error start event in '${expectedShapeBpmnSubProcessKind} sub-process'`, () => {
         const errorStartEventName = `${expectedShapeBpmnSubProcessKind} SubProcess Error Event`;
         const json = {
@@ -424,10 +424,10 @@ describe('parse bpmn as json for sub-process', () => {
             parentId: 'sub-process_id_1',
             bpmnElementId: 'sub-process_id_1_errorStartEvent_1',
             bpmnElementName: errorStartEventName,
-            bpmnElementType: ShapeBpmnElementType.EVENT_START,
+            bpmnElementType: ShapeBaseElementType.EVENT_START,
             bounds: { x: 465, y: 335, width: 10, height: 10 },
           },
-          ShapeBpmnEventType.ERROR,
+          BpmnEventType.ERROR,
         );
       });
     }

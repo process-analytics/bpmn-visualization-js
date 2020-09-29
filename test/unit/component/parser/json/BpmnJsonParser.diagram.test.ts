@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
-import { ShapeBpmnElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
+import { ShapeBaseElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json-xsd/BPMN20';
 
 describe('parse bpmn as json for diagram', () => {
@@ -76,7 +76,7 @@ describe('parse bpmn as json for diagram', () => {
       parentId: 'Participant_1',
       bpmnElementId: 'Process_1_startEvent_1',
       bpmnElementName: 'Start Event 1',
-      bpmnElementType: ShapeBpmnElementType.EVENT_START,
+      bpmnElementType: ShapeBaseElementType.EVENT_START,
       bounds: {
         x: 362,
         y: 232,
@@ -123,7 +123,7 @@ describe('parse bpmn as json for diagram', () => {
       parentId: 'Participant_2',
       bpmnElementId: 'Process_2_startEvent_1',
       bpmnElementName: 'Start Event 2',
-      bpmnElementType: ShapeBpmnElementType.EVENT_START,
+      bpmnElementType: ShapeBaseElementType.EVENT_START,
       bounds: {
         x: 80,
         y: 80,
