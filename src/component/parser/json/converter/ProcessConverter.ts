@@ -40,7 +40,6 @@ import { TActivity, TCallActivity, TSubProcess } from '../../../../model/bpmn/js
 import { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseElement';
 import { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
 import { TAssociation, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
-import { AssociationDirectionKind } from '../../../../model/bpmn/internal/edge/AssociationDirectionKind';
 import { bpmnEventKinds, findEventDefinitionOfDefinitions } from './EventDefinitionConverter';
 import { ensureIsArray } from './ConverterUtil';
 import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
@@ -303,9 +302,7 @@ export default class ProcessConverter {
 
   private buildAssociationFlows(bpmnElements: Array<TAssociation> | TAssociation): void {
     ensureIsArray(bpmnElements).forEach(association => {
-      // TODO Remove associationDirection conversion type when we merge/simplify internal model with BPMN json model
-      const direction = (association.associationDirection as unknown) as AssociationDirectionKind;
-      const convertedAssociationFlow = new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction);
+      const convertedAssociationFlow = new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, association.associationDirection);
       convertedAssociationFlows.set(association.id, convertedAssociationFlow);
     });
   }

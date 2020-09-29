@@ -32,9 +32,9 @@ import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/m
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import { BpmnEventKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import each from 'jest-each';
-import { AssociationDirectionKind } from '../../../../../src/model/bpmn/internal/edge/AssociationDirectionKind';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/json/BPMNDI';
 import { Bounds, Font } from '../../../../../src/model/bpmn/json/DC';
+import { TAssociationDirection } from '../../../../../src/model/bpmn/json/baseElement/artifact';
 
 function toFont(font: ExpectedFont): Font {
   return { name: font.name, size: font.size, isBold: font.isBold, isItalic: font.isItalic, isUnderline: font.isUnderline, isStrikeThrough: font.isStrikeThrough };
@@ -96,7 +96,7 @@ function newMessageFlow(): MessageFlow {
   return new MessageFlow('id', 'name', undefined, undefined);
 }
 
-function newAssociationFlow(kind: AssociationDirectionKind): AssociationFlow {
+function newAssociationFlow(kind: TAssociationDirection): AssociationFlow {
   return new AssociationFlow('id', 'name', undefined, undefined, kind);
 }
 
@@ -196,9 +196,9 @@ describe('mxgraph renderer', () => {
   });
 
   each([
-    [AssociationDirectionKind.NONE, 'None'],
-    [AssociationDirectionKind.ONE, 'One'],
-    [AssociationDirectionKind.BOTH, 'Both'],
+    [TAssociationDirection.None, 'None'],
+    [TAssociationDirection.One, 'One'],
+    [TAssociationDirection.Both, 'Both'],
   ]).it('compute style - association flows: %s', (kind, expected) => {
     const edge = new Edge('id', newAssociationFlow(kind));
     expect(computeStyle(edge)).toEqual(`association;${expected}`);

@@ -15,7 +15,7 @@
  */
 import { SequenceFlowKind } from './SequenceFlowKind';
 import { FlowKind } from './FlowKind';
-import { AssociationDirectionKind } from './AssociationDirectionKind';
+import { TAssociationDirection } from '../../json/baseElement/artifact';
 
 export default abstract class Flow {
   constructor(readonly id: string, readonly name: string, readonly kind: FlowKind, readonly sourceRefId?: string, readonly targetRefId?: string) {}
@@ -34,7 +34,7 @@ export class MessageFlow extends Flow {
 }
 
 export class AssociationFlow extends Flow {
-  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly associationDirectionKind = AssociationDirectionKind.NONE) {
+  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly associationDirectionKind = TAssociationDirection.None) {
     super(id, name, FlowKind.ASSOCIATION_FLOW, sourceRefId, targetRefId);
   }
 }

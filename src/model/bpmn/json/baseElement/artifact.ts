@@ -22,7 +22,7 @@ export type TArtifact = TBaseElement;
 export interface TAssociation extends TArtifact {
   sourceRef: string;
   targetRef: string;
-  associationDirection?: tAssociationDirection; // default="None"
+  associationDirection?: TAssociationDirection; // default="None"
 }
 
 export interface TGroup extends TArtifact {
@@ -34,7 +34,7 @@ export interface TTextAnnotation extends TArtifact {
   textFormat?: string; // default="text/plain"
 }
 
-export enum tAssociationDirection {
+export enum TAssociationDirection {
   None = 'None',
   One = 'One',
   Both = 'Both',
