@@ -158,6 +158,18 @@
       <semantic:multiInstanceLoopCharacteristics />
     </semantic:scriptTask>
 
+    <!-- Business Rule Task   -->
+    <semantic:businessRuleTask id="businessRuleTask" name="Business Rule Task"/>
+    <semantic:businessRuleTask id="businessRuleTask_with_loop" name="Business Rule Task With Loop">
+      <semantic:standardLoopCharacteristics />
+    </semantic:businessRuleTask>
+    <semantic:businessRuleTask id="businessRuleTask_with_sequential_multi_instance" name="Business Rule Task With Sequential Multi-instance">
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
+    </semantic:businessRuleTask>
+    <semantic:businessRuleTask id="businessRuleTask_with_parallel_multi_instance" name="Business Rule Task With Parallel Multi-instance">
+      <semantic:multiInstanceLoopCharacteristics />
+    </semantic:businessRuleTask>
+
     <!-- Embedded Sub-Process -->
     <!-- Expanded -->
     <semantic:subProcess id="expanded_embedded_sub_process_id" name="Expanded Embedded Sub-Process">

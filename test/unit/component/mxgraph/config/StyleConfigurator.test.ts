@@ -348,9 +348,9 @@ describe('mxgraph renderer', () => {
     [ShapeBpmnElementKind.TASK_SEND],
     [ShapeBpmnElementKind.TASK_MANUAL],
     [ShapeBpmnElementKind.TASK_SCRIPT],
+    [ShapeBpmnElementKind.TASK_BUSINESS_RULE],
 
     // TODO: To uncomment when it's supported
-    //[ShapeBpmnElementKind.TASK_BUSINESS_RULE],
     //[ShapeBpmnElementKind.AD_HOC_SUB_PROCESS],
     //[ShapeBpmnElementKind.TRANSACTION],
   ])('compute style - markers for %s', (bpmnKind: ShapeBpmnElementKind) => {
