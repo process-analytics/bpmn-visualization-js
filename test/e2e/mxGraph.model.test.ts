@@ -297,8 +297,8 @@ describe('mxGraph model', () => {
     expectModelContainsBpmnEvent('end_event_signal_on_top_id', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.SIGNAL, label: 'Signal End Event On Top' });
     expectModelContainsBpmnEvent('end_event_error_id', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.ERROR, label: 'Error End Event' });
     expectModelContainsBpmnEvent('end_event_error_on_top_id', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.ERROR, label: 'Error End Event On Top' });
-    expectModelContainsBpmnEvent('compensate_end_event', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.COMPENSATION, label: 'Compensate End Event' });
-    expectModelContainsBpmnEvent('compensate_end_event_on_top', {
+    expectModelContainsBpmnEvent('end_event_compensate_id', { kind: ShapeBpmnElementKind.EVENT_END, eventKind: ShapeBpmnEventKind.COMPENSATION, label: 'Compensate End Event' });
+    expectModelContainsBpmnEvent('end_event_compensate_on_top_id', {
       kind: ShapeBpmnElementKind.EVENT_END,
       eventKind: ShapeBpmnEventKind.COMPENSATION,
       label: 'Compensate End Event On Top',
@@ -348,12 +348,12 @@ describe('mxGraph model', () => {
       eventKind: ShapeBpmnEventKind.LINK,
       label: 'Throw Link Intermediate Event On Top',
     });
-    expectModelContainsBpmnEvent('compensateIntermediateThrowEvent', {
+    expectModelContainsBpmnEvent('intermediate_throw_event_compensate_id', {
       kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
       eventKind: ShapeBpmnEventKind.COMPENSATION,
       label: 'Throw Compensate Intermediate Event',
     });
-    expectModelContainsBpmnEvent('compensateIntermediateThrowEvent_on_top', {
+    expectModelContainsBpmnEvent('intermediate_throw_event_compensate_on_top_id', {
       kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
       eventKind: ShapeBpmnEventKind.COMPENSATION,
       label: 'Throw Compensate Intermediate Event On Top',
@@ -454,13 +454,13 @@ describe('mxGraph model', () => {
       kind: null,
       eventKind: ShapeBpmnEventKind.COMPENSATION,
       isInterrupting: true,
-      label: 'Boundary Intermediate Event Interrupting Compensate',
+      label: 'Interrupting Compensate Boundary Intermediate Event',
     });
     expectModelContainsBpmnBoundaryEvent('boundary_event_interrupting_compensate_on_top_id', {
       kind: null,
       eventKind: ShapeBpmnEventKind.COMPENSATION,
       isInterrupting: true,
-      label: 'Boundary Intermediate Event Interrupting Compensate On Top',
+      label: 'Interrupting Compensate Boundary Intermediate Event On Top',
     });
 
     // boundary event: non-interrupting
