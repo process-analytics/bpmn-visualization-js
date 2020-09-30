@@ -20,8 +20,8 @@ import InternalBPMNModel, { InternalBPMNShapes } from '../../../../model/bpmn/in
 import { findAssociationFlow, findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, findSequenceFlow } from './ProcessConverter';
 import { findMessageFlow, findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
 import Label from '../../../../model/bpmn/internal/Label';
-import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json-xsd/BPMNDI';
-import { Font } from '../../../../model/bpmn/json-xsd/DC';
+import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
+import { Font } from '../../../../model/bpmn/json/DC';
 import { ensureIsArray } from './ConverterUtil';
 import { ShapeBaseElementType, MarkerType } from '../../../../model/bpmn/internal/shape';
 import InternalBPMNShapeUtil from '../../../../model/bpmn/internal/shape/InternalBPMNShapeUtil';

@@ -17,7 +17,7 @@ import { ShapeBaseElementType } from '../../../../../src/model/bpmn/internal/sha
 import { ExpectedShape, parseJson, parseJsonAndExpectOnlySubProcess, verifyEdge, verifyShape, verifySubProcess } from './JsonTestUtils';
 import each from 'jest-each';
 import { SubProcessType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnSubProcessType';
-import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
+import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { BpmnMarkerType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerType';
 import { BpmnEventType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnEventType';
 import InternalBPMNModel from '../../../../../src/model/bpmn/internal/BpmnModel';

@@ -16,10 +16,10 @@
 import { ShapeBaseElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
 import { parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { BpmnEventType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnEventType';
-import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
-import { TEventDefinition } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/eventDefinition';
-import { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json-xsd/baseElement/flowNode/event';
-import { BPMNShape } from '../../../../../src/model/bpmn/json-xsd/BPMNDI';
+import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import { TEventDefinition } from '../../../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
+import { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
+import { BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
 import { ShapeBpmnBoundaryEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import InternalBPMNModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import BPMNShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';

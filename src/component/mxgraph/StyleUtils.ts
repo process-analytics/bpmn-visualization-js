@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { EventType, SubProcessType } from '../../model/bpmn/internal/shape';
-import { MessageVisibleKind } from '../../model/bpmn/json-xsd/BPMNDI';
+import { MessageVisibleKind } from '../../model/bpmn/json/BPMNDI';
 
 export enum MarkerIdentifier {
   ARROW_DASH = 'bpmn.dash',

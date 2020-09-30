@@ -15,7 +15,7 @@
  */
 import ShapeBaseElement from './ShapeBaseElement';
 import Label from '../Label';
-import { Bounds } from '../../json-xsd/DC';
+import { Bounds } from '../../json/DC';
 
 export default class InternalBPMNShape {
   constructor(readonly id?: string, readonly bpmnElement?: ShapeBaseElement, readonly bounds?: Bounds, readonly label?: Label, readonly isHorizontal?: boolean) {}

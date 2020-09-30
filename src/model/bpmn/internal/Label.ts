@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Bounds, Font } from '../json-xsd/DC';
+import { Bounds, Font } from '../json/DC';
 
 export default class Label {
   constructor(readonly font?: Font, readonly bounds?: Bounds) {}

@@ -15,7 +15,7 @@
  */
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { ShapeBaseElementType } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementType';
-import { BpmnJsonModel } from '../../../../../src/model/bpmn/json-xsd/BPMN20';
+import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 
 describe('parse bpmn as json for diagram', () => {
   const jsonModelWithoutBPMNDiagram: BpmnJsonModel = {

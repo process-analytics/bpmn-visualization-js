@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import InternalBPMNModel from '../../../model/bpmn/internal/InternalBPMNModel';
-import { BpmnJsonModel, TDefinitions } from '../../../model/bpmn/json-xsd/BPMN20';
+import { BpmnJsonModel, TDefinitions } from '../../../model/bpmn/json/BPMN20';
 import CollaborationConverter from './converter/CollaborationConverter';
 import ProcessConverter from './converter/ProcessConverter';
 import DiagramConverter from './converter/DiagramConverter';

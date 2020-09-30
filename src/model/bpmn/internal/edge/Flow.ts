@@ -15,7 +15,7 @@
  */
 import { SequenceFlowType } from './SequenceFlowType';
 import { FlowType } from './FlowType';
-import { TAssociationDirection } from '../../json-xsd/baseElement/artifact';
+import { TAssociationDirection } from '../../json/baseElement/artifact';
 
 export default abstract class Flow {
   constructor(readonly id: string, readonly name: string, readonly type: FlowType, readonly sourceRefId?: string, readonly targetRefId?: string) {}

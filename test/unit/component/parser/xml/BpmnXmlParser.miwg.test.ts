@@ -17,8 +17,8 @@ import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser
 import arrayContaining = jasmine.arrayContaining;
 import objectContaining = jasmine.objectContaining;
 import anything = jasmine.anything;
-import { BPMNDiagram } from '../../../../../src/model/bpmn/json-xsd/BPMNDI';
-import { TProcess } from '../../../../../src/model/bpmn/json-xsd/baseElement/rootElement/rootElement';
+import { BPMNDiagram } from '../../../../../src/model/bpmn/json/BPMNDI';
+import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { readFileSync } from '../../../../helpers/file-helper';
 
 describe('parse bpmn as xml for MIWG', () => {

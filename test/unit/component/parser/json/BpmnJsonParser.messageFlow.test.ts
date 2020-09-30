@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
-import * as bpmndi from '../../../../../src/model/bpmn/json-xsd/BPMNDI';
-import { MessageVisibleKind } from '../../../../../src/model/bpmn/json-xsd/BPMNDI';
+import * as bpmndi from '../../../../../src/model/bpmn/json/BPMNDI';
+import { MessageVisibleKind } from '../../../../../src/model/bpmn/json/BPMNDI';
 
 describe('parse bpmn as json for message flow', () => {
   it(`should convert as Edge, when an message flow is an attribute (as object) of 'collaboration' (as object)`, () => {

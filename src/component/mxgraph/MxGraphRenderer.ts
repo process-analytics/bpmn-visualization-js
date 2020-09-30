@@ -21,7 +21,7 @@ import InternalBPMNShapeUtil from '../../model/bpmn/internal/shape/InternalBPMNS
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
 import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';
-import { Bounds, Point } from '../../model/bpmn/json-xsd/DC';
+import { Bounds, Point } from '../../model/bpmn/json/DC';
 
 export default class MxGraphRenderer {
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
