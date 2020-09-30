@@ -57,7 +57,8 @@ jobs:
         run: npm run test:unit
       - name: Upload unit test results
 #        if: failure()
-        if: steps.test_unit.outcome == 'failure'
+#        if: steps.test_unit.outcome == 'failure'
+        if: ${{ steps.test_unit.outcome == 'failure' }}
         uses: actions/upload-artifact@v2
         with:
           name: unit-test-results-${{matrix.os.name}}-${{github.sha}}
@@ -66,7 +67,8 @@ jobs:
         id: test_e2e
         run: npm run test:e2e
       - name: Upload e2e test results
-        if: steps.test_e2e.outcome == 'failure'
+#        if: steps.test_e2e.outcome == 'failure'
+        if: ${{ steps.test_e2e.outcome == 'failure' }}
         uses: actions/upload-artifact@v2
         with:
           name: e2e-test-results-${{matrix.os.name}}-${{github.sha}}
