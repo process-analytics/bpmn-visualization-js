@@ -15,7 +15,7 @@
  */
 import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
 import Waypoint from '../../../../../src/model/bpmn/internal/edge/Waypoint';
-import { TProcess } from '../../../../../src/model/bpmn/xsd-json/baseElement/rootElement/rootElement';
+import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for association', () => {
   const processJsonAsObjectWithAssociationJsonAsObject = {

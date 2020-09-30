@@ -15,7 +15,7 @@
  */
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelFont } from './JsonTestUtils';
 import each from 'jest-each';
-import { TProcess } from '../../../../../src/model/bpmn/xsd-json/baseElement/rootElement/rootElement';
+import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for label font', () => {
   jest.spyOn(console, 'warn');

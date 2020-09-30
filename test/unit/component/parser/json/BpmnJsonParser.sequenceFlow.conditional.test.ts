@@ -16,8 +16,8 @@
 import { parseJsonAndExpectOnlyEdgesAndFlowNodes, verifyEdge } from './JsonTestUtils';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import each from 'jest-each';
-import { TProcess } from '../../../../../src/model/bpmn/xsd-json/baseElement/rootElement/rootElement';
-import { TSequenceFlow } from '../../../../../src/model/bpmn/xsd-json/baseElement/flowElement';
+import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import { TSequenceFlow } from '../../../../../src/model/bpmn/json/baseElement/flowElement';
 import Waypoint from '../../../../../src/model/bpmn/internal/edge/Waypoint';
 
 describe('parse bpmn as json for conditional sequence flow', () => {

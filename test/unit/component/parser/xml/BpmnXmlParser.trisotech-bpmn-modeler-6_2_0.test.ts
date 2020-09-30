@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import { TProcess } from '../../../../../src/model/bpmn/xsd-json/baseElement/rootElement/rootElement';
+import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { readFileSync } from '../../../../helpers/file-helper';
-import { TSubProcess } from '../../../../../src/model/bpmn/xsd-json/baseElement/flowNode/activity/activity';
+import { TSubProcess } from '../../../../../src/model/bpmn/json/baseElement/flowNode/activity/activity';
 import { ensureIsArray } from '../../../../../src/component/parser/json/converter/ConverterUtil';
-import { TStartEvent } from '../../../../../src/model/bpmn/xsd-json/baseElement/flowNode/event';
-import { TTask } from '../../../../../src/model/bpmn/xsd-json/baseElement/flowNode/activity/task';
-import { TSequenceFlow } from '../../../../../src/model/bpmn/xsd-json/baseElement/flowElement';
+import { TStartEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
+import { TTask } from '../../../../../src/model/bpmn/json/baseElement/flowNode/activity/task';
+import { TSequenceFlow } from '../../../../../src/model/bpmn/json/baseElement/flowElement';
 
 describe('parse bpmn as xml for Trisotech BPMN Modeler 6.2.0', () => {
   it('bpmn with process with extension, ensure elements are present', () => {

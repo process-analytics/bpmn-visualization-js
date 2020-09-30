@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TDefinitions } from '../../../../model/bpmn/xsd-json/BPMN20';
+import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
 import { ensureIsArray } from './ConverterUtil';
-import { TGlobalTask } from '../../../../model/bpmn/xsd-json/baseElement/rootElement/globalTask';
+import { TGlobalTask } from '../../../../model/bpmn/json/baseElement/rootElement/globalTask';
 
 const globalTaskIds: string[] = [];
 
