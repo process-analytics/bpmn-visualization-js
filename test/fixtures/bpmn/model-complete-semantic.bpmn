@@ -161,7 +161,7 @@
     </semantic:scriptTask>
 
     <!-- Business Rule Task   -->
-    <semantic:businessRuleTask id="business_rule_task_id" name="Business Rule Task"/>
+    <semantic:businessRuleTask id="business_rule_task_id" name="Business Rule Task" />
     <semantic:businessRuleTask id="business_rule_task_with_loop_id" name="Business Rule Task With Loop">
       <semantic:standardLoopCharacteristics />
     </semantic:businessRuleTask>
@@ -224,6 +224,12 @@
     </semantic:subProcess>
     <semantic:subProcess id="expanded_event_sub_process_with_start_events_id" name="Expanded Event Sub-Process With Start Events" triggeredByEvent="true">
       <!-- Interrupting Start Event -->
+      <semantic:startEvent id="start_event_interrupting_compensate_id" name="Event Subprocess Compensate Start Interrupting" isInterrupting="true">
+        <semantic:compensateEventDefinition />
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_interrupting_compensate_on_top_id" name="Event Subprocess Compensate Start Interrupting On Top" isInterrupting="true">
+        <semantic:eventDefinitionRef>top_compensate_definition_id</semantic:eventDefinitionRef>
+      </semantic:startEvent>
 
       <!-- Non-interrupting Start Event -->
       <semantic:startEvent id="start_event_non_interrupting_timer_id" name="Non-interrupting Timer Start Event In Sub-Process" isInterrupting="false">
@@ -299,10 +305,10 @@
     <semantic:boundaryEvent id="boundary_event_interrupting_error_on_top_id" name="Interrupting Error Boundary Intermediate Event On Top" attachedToRef="task_id">
       <semantic:eventDefinitionRef>top_error_definition_id</semantic:eventDefinitionRef>
     </semantic:boundaryEvent>
-    <semantic:boundaryEvent id="boundary_event_interrupting_compensate_id" name="Boundary Intermediate Event Interrupting Compensate" attachedToRef="task_1">
+    <semantic:boundaryEvent id="boundary_event_interrupting_compensate_id" name="Interrupting Compensate Boundary Intermediate Event" attachedToRef="business_rule_task_id">
       <semantic:compensateEventDefinition />
     </semantic:boundaryEvent>
-    <semantic:boundaryEvent id="boundary_event_interrupting_compensate_on_top_id" name="Boundary Intermediate Event Interrupting Compensate On Top" attachedToRef="task_1">
+    <semantic:boundaryEvent id="boundary_event_interrupting_compensate_on_top_id" name="Interrupting Compensate Boundary Intermediate Event On Top" attachedToRef="business_rule_task_id">
       <semantic:eventDefinitionRef>top_compensate_definition_id</semantic:eventDefinitionRef>
     </semantic:boundaryEvent>
 
@@ -346,10 +352,10 @@
     <semantic:intermediateThrowEvent id="intermediate_throw_event_link_on_top_id" name="Throw Link Intermediate Event On Top">
       <semantic:eventDefinitionRef>top_link_definition_id</semantic:eventDefinitionRef>
     </semantic:intermediateThrowEvent>
-    <semantic:intermediateThrowEvent id="compensateIntermediateThrowEvent" name="Throw Compensate Intermediate Event">
+    <semantic:intermediateThrowEvent id="intermediate_throw_event_compensate_id" name="Throw Compensate Intermediate Event">
       <semantic:compensateEventDefinition />
     </semantic:intermediateThrowEvent>
-    <semantic:intermediateThrowEvent id="compensateIntermediateThrowEvent_on_top" name="Throw Compensate Intermediate Event On Top">
+    <semantic:intermediateThrowEvent id="intermediate_throw_event_compensate_on_top_id" name="Throw Compensate Intermediate Event On Top">
       <semantic:eventDefinitionRef>top_compensate_definition_id</semantic:eventDefinitionRef>
     </semantic:intermediateThrowEvent>
 
@@ -404,10 +410,10 @@
     <semantic:endEvent id="end_event_error_on_top_id" name="Error End Event On Top">
       <semantic:eventDefinitionRef>top_error_definition_id</semantic:eventDefinitionRef>
     </semantic:endEvent>
-    <semantic:endEvent id="compensate_end_event" name="Compensate End Event">
+    <semantic:endEvent id="end_event_compensate_id" name="Compensate End Event">
       <semantic:compensateEventDefinition />
     </semantic:endEvent>
-    <semantic:endEvent id="compensate_end_event_on_top" name="Compensate End Event On Top">
+    <semantic:endEvent id="end_event_compensate_on_top_id" name="Compensate End Event On Top">
       <semantic:eventDefinitionRef>top_compensate_definition_id</semantic:eventDefinitionRef>
     </semantic:endEvent>
 
@@ -445,7 +451,7 @@
           <semantic:lane id="lane_4_1_1_id" name="Child Lane 1" />
           <semantic:lane id="lane_4_1_2_id" name="Child Lane 2" />
         </semantic:childLaneSet>
-      </semantic:lane>�
+      </semantic:lane>
       <semantic:lane id="lane_4_2_id" name="Solo Lane" />
     </semantic:laneSet>
   </semantic:process>
@@ -791,13 +797,13 @@
       </bpmndi:BPMNShape>
 
       <!-- Interrupting Start Event -->
-      <bpmndi:BPMNShape id="S1373649849862_event_subprocess_compensate_start_interrupting" bpmnElement="event_subprocess_compensate_start_interrupting">
+      <bpmndi:BPMNShape id="shape_start_event_interrupting_compensate_id" bpmnElement="start_event_interrupting_compensate_id">
         <dc:Bounds x="3542" y="775" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="3532" y="820" width="57" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="S1373649849862_event_subprocess_compensate_start_interrupting_on_top" bpmnElement="event_subprocess_compensate_start_interrupting_on_top">
+      <bpmndi:BPMNShape id="shape_start_event_interrupting_compensate_on_top_id" bpmnElement="start_event_interrupting_compensate_on_top_id">
         <dc:Bounds x="3542" y="775" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="3532" y="820" width="57" height="27" />
@@ -934,13 +940,13 @@
           <dc:Bounds x="757" y="1526" width="67" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="S1373649849862_compensateIntermediateThrowEvent" bpmnElement="compensateIntermediateThrowEvent">
+      <bpmndi:BPMNShape id="shape_intermediate_throw_event_compensate_id" bpmnElement="intermediate_throw_event_compensate_id">
         <dc:Bounds x="684" y="1494" width="32" height="32" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="669" y="1526" width="62" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="S1373649849862_compensateIntermediateThrowEvent_on_top" bpmnElement="compensateIntermediateThrowEvent_on_top">
+      <bpmndi:BPMNShape id="shape_intermediate_throw_event_compensate_on_top_id" bpmnElement="intermediate_throw_event_compensate_on_top_id">
         <dc:Bounds x="774" y="1494" width="32" height="32" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="757" y="1526" width="67" height="40" />
@@ -1046,13 +1052,13 @@
           <dc:Bounds x="551" y="2156" width="79" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="S1373649849862_compensate_end_event" bpmnElement="compensate_end_event">
+      <bpmndi:BPMNShape id="shape_end_event_compensate_id" bpmnElement="end_event_compensate_id">
         <dc:Bounds x="474" y="2124" width="32" height="32" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="451" y="2156" width="79" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="S1373649849862_compensate_end_event_on_top" bpmnElement="compensate_end_event_on_top">
+      <bpmndi:BPMNShape id="shape_end_event_compensate_on_top_id" bpmnElement="end_event_compensate_on_top_id">
         <dc:Bounds x="574" y="2124" width="32" height="32" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="551" y="2156" width="79" height="27" />
@@ -1108,16 +1114,16 @@
           <dc:Bounds x="1845" y="2022" width="87" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="S1373649849862_boundary_event_interrupting_compensate_id" bpmnElement="boundary_event_interrupting_compensate_id">
-        <dc:Bounds x="1972" y="1990" width="32" height="32" />
+      <bpmndi:BPMNShape id="shape_boundary_event_interrupting_compensate_on_top_id" bpmnElement="boundary_event_interrupting_compensate_on_top_id">
+        <dc:Bounds x="1872" y="1004" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1945" y="2022" width="87" height="53" />
+          <dc:Bounds x="1842" y="930" width="75" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="S1373649849862_boundary_event_interrupting_compensate_on_top_id" bpmnElement="boundary_event_interrupting_compensate_on_top_id">
-        <dc:Bounds x="1872" y="1990" width="32" height="32" />
+      <bpmndi:BPMNShape id="shape_boundary_event_interrupting_compensate_id" bpmnElement="boundary_event_interrupting_compensate_id">
+        <dc:Bounds x="1972" y="1004" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1845" y="2022" width="87" height="53" />
+          <dc:Bounds x="1947" y="930" width="84" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
