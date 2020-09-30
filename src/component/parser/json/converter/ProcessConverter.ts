@@ -34,17 +34,17 @@ import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/e
 import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../../model/bpmn/internal/edge/SequenceFlowKind';
 import { FlowKind } from '../../../../model/bpmn/internal/edge/FlowKind';
-import { TProcess } from '../../xml/bpmn-json-model/baseElement/rootElement/rootElement';
-import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../xml/bpmn-json-model/baseElement/flowNode/event';
-import { TActivity, TCallActivity, TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
-import { TLane, TLaneSet } from '../../xml/bpmn-json-model/baseElement/baseElement';
-import { TFlowNode, TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement';
-import { TAssociation, TTextAnnotation } from '../../xml/bpmn-json-model/baseElement/artifact';
+import { TProcess } from '../../../../model/bpmn/xsd-json/baseElement/rootElement/rootElement';
+import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../model/bpmn/xsd-json/baseElement/flowNode/event';
+import { TActivity, TCallActivity, TSubProcess } from '../../../../model/bpmn/xsd-json/baseElement/flowNode/activity/activity';
+import { TLane, TLaneSet } from '../../../../model/bpmn/xsd-json/baseElement/baseElement';
+import { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/xsd-json/baseElement/flowElement';
+import { TAssociation, TTextAnnotation } from '../../../../model/bpmn/xsd-json/baseElement/artifact';
 import { AssociationDirectionKind } from '../../../../model/bpmn/internal/edge/AssociationDirectionKind';
 import { bpmnEventKinds, findEventDefinitionOfDefinitions } from './EventDefinitionConverter';
 import { ensureIsArray } from './ConverterUtil';
-import { TEventBasedGateway } from '../../xml/bpmn-json-model/baseElement/flowNode/gateway';
-import { TReceiveTask } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/task';
+import { TEventBasedGateway } from '../../../../model/bpmn/xsd-json/baseElement/flowNode/gateway';
+import { TReceiveTask } from '../../../../model/bpmn/xsd-json/baseElement/flowNode/activity/task';
 import { isGlobalTask } from './GlobalTaskConverter';
 
 const convertedFlowNodeBpmnElements: Map<string, ShapeBpmnElement> = new Map();

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TDefinitions } from '../../xml/bpmn-json-model/BPMN20';
+import { TDefinitions } from '../../../../model/bpmn/xsd-json/BPMN20';
 import { ShapeBpmnEventKind } from '../../../../model/bpmn/internal/shape';
-import { TEventDefinition } from '../../xml/bpmn-json-model/baseElement/rootElement/eventDefinition';
+import { TEventDefinition } from '../../../../model/bpmn/xsd-json/baseElement/rootElement/eventDefinition';
 import { ensureIsArray } from './ConverterUtil';
 
 export const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {

@@ -23,8 +23,8 @@ import { findMessageFlow, findProcessRefParticipant, findProcessRefParticipantBy
 import Waypoint from '../../../../model/bpmn/internal/edge/Waypoint';
 import Label, { Font } from '../../../../model/bpmn/internal/Label';
 import { MessageVisibleKind } from '../../../../model/bpmn/internal/edge/MessageVisibleKind';
-import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../xml/bpmn-json-model/BPMNDI';
-import { Point } from '../../xml/bpmn-json-model/DC';
+import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/xsd-json/BPMNDI';
+import { Point } from '../../../../model/bpmn/xsd-json/DC';
 import { ensureIsArray } from './ConverterUtil';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';

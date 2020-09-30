@@ -16,8 +16,8 @@
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 import arrayContaining = jasmine.arrayContaining;
 import anything = jasmine.anything;
-import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
-import { BPMNDiagram } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
+import { TProcess } from '../../../../../src/model/bpmn/xsd-json/baseElement/rootElement/rootElement';
+import { BPMNDiagram } from '../../../../../src/model/bpmn/xsd-json/BPMNDI';
 import { readFileSync } from '../../../../helpers/file-helper';
 
 describe('parse bpmn as xml for Activiti Designer 5.14.1', () => {

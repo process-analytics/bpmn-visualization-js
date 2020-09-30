@@ -15,9 +15,9 @@
  */
 import { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { MessageFlow } from '../../../../model/bpmn/internal/edge/Flow';
-import { TCollaboration } from '../../xml/bpmn-json-model/baseElement/rootElement/collaboration';
-import { TParticipant } from '../../xml/bpmn-json-model/baseElement/participant';
-import { TMessageFlow } from '../../xml/bpmn-json-model/baseElement/baseElement';
+import { TCollaboration } from '../../../../model/bpmn/xsd-json/baseElement/rootElement/collaboration';
+import { TParticipant } from '../../../../model/bpmn/xsd-json/baseElement/participant';
+import { TMessageFlow } from '../../../../model/bpmn/xsd-json/baseElement/baseElement';
 import { ensureIsArray } from './ConverterUtil';
 
 const convertedParticipantsById: Map<string, Participant> = new Map();

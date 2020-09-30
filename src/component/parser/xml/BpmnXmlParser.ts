@@ -15,7 +15,7 @@
  */
 import { parse } from 'fast-xml-parser/src/parser';
 import * as entities from 'entities';
-import { BpmnJsonModel } from './bpmn-json-model/BPMN20';
+import { BpmnJsonModel } from '../../../model/bpmn/xsd-json/BPMN20';
 
 /**
  * Parse bpmn xml source

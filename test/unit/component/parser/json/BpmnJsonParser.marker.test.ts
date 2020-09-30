@@ -15,8 +15,8 @@
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
-import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
-import { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/loopCharacteristics';
+import { TProcess } from '../../../../../src/model/bpmn/xsd-json/baseElement/rootElement/rootElement';
+import { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../../../../src/model/bpmn/xsd-json/baseElement/loopCharacteristics';
 import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerKind';
 import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnCallActivityKind';
 
