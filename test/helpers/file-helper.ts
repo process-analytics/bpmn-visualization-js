@@ -13,26 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as fs from 'fs';
-import * as path from 'path';
+import { readFileSync as fsReadFileSync, mkdirSync, copyFileSync as fsCopyFileSync, readdirSync } from 'fs';
+import { join } from 'path';
 import debugLogger from 'debug';
 
 const debug = debugLogger('test');
 
 export function readFileSync(relPathToSourceFile: string, encoding = 'utf8', dirName = __dirname): string {
-  return fs.readFileSync(path.join(dirName, relPathToSourceFile), encoding);
+  return fsReadFileSync(join(dirName, relPathToSourceFile), encoding);
 }
 
 export function copyFileSync(relPathToSourceFile: string, relPathToDestinationDirectory: string, destinationFileName: string): void {
-  const directoryPath = path.join(__dirname, relPathToDestinationDirectory);
+  const directoryPath = join(__dirname, relPathToDestinationDirectory);
 
-  fs.mkdirSync(directoryPath, { recursive: true });
-  fs.copyFileSync(path.join(__dirname, relPathToSourceFile), path.join(directoryPath, destinationFileName));
+  mkdirSync(directoryPath, { recursive: true });
+  fsCopyFileSync(join(__dirname, relPathToSourceFile), join(directoryPath, destinationFileName));
 }
 
 /** Returns the files in the given directory. The function doesn't do any recursion in sub directories. */
 export function findFiles(relPathToSourceDirectory: string): string[] {
-  return fs.readdirSync(path.join(__dirname, relPathToSourceDirectory));
+  return readdirSync(join(__dirname, relPathToSourceDirectory));
 }
 
 /**
