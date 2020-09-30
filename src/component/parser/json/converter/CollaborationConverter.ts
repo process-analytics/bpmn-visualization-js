@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Participant } from '../../../../model/bpmn/shape/ShapeBpmnElement';
-import { MessageFlow } from '../../../../model/bpmn/edge/Flow';
+import { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import { MessageFlow } from '../../../../model/bpmn/internal/edge/Flow';
 import { TCollaboration } from '../../xml/bpmn-json-model/baseElement/rootElement/collaboration';
 import { TParticipant } from '../../xml/bpmn-json-model/baseElement/participant';
 import { TMessageFlow } from '../../xml/bpmn-json-model/baseElement/baseElement';

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
-import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
+import Waypoint from '../../../../../src/model/bpmn/internal/edge/Waypoint';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for association', () => {

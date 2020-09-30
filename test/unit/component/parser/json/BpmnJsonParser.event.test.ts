@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
-import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnEventKind';
+import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnEventKind';
 import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
 import { TEventDefinition } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/eventDefinition';
 import { TCatchEvent, TThrowEvent } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/flowNode/event';
 import { BPMNShape } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
-import { ShapeBpmnBoundaryEvent } from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
-import BpmnModel from '../../../../../src/model/bpmn/BpmnModel';
-import ShapeUtil from '../../../../../src/model/bpmn/shape/ShapeUtil';
-import Shape from '../../../../../src/model/bpmn/shape/Shape';
+import { ShapeBpmnBoundaryEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
+import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
+import ShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
+import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { addEvent, buildDefinitionsAndProcessWithTask, BuildEventDefinitionParameter, BuildEventParameter, EventDefinitionOn } from './JsonBuilder';
 
 interface TestParameter {

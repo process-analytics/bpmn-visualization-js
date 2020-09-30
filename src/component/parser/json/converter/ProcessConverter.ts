@@ -21,7 +21,7 @@ import ShapeBpmnElement, {
   ShapeBpmnEvent,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
-} from '../../../../model/bpmn/shape/ShapeBpmnElement';
+} from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import {
   ShapeBpmnElementKind,
   ShapeBpmnCallActivityKind,
@@ -29,18 +29,18 @@ import {
   ShapeBpmnSubProcessKind,
   ShapeBpmnEventKind,
   supportedBpmnEventKinds,
-} from '../../../../model/bpmn/shape';
-import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/edge/Flow';
-import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/shape/ShapeUtil';
-import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';
-import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
+} from '../../../../model/bpmn/internal/shape';
+import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
+import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
+import { SequenceFlowKind } from '../../../../model/bpmn/internal/edge/SequenceFlowKind';
+import { FlowKind } from '../../../../model/bpmn/internal/edge/FlowKind';
 import { TProcess } from '../../xml/bpmn-json-model/baseElement/rootElement/rootElement';
 import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../xml/bpmn-json-model/baseElement/flowNode/event';
 import { TActivity, TCallActivity, TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
 import { TLane, TLaneSet } from '../../xml/bpmn-json-model/baseElement/baseElement';
 import { TFlowNode, TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement';
 import { TAssociation, TTextAnnotation } from '../../xml/bpmn-json-model/baseElement/artifact';
-import { AssociationDirectionKind } from '../../../../model/bpmn/edge/AssociationDirectionKind';
+import { AssociationDirectionKind } from '../../../../model/bpmn/internal/edge/AssociationDirectionKind';
 import { bpmnEventKinds, findEventDefinitionOfDefinitions } from './EventDefinitionConverter';
 import { ensureIsArray } from './ConverterUtil';
 import { TEventBasedGateway } from '../../xml/bpmn-json-model/baseElement/flowNode/gateway';

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { TDefinitions } from '../../xml/bpmn-json-model/BPMN20';
-import { ShapeBpmnEventKind } from '../../../../model/bpmn/shape';
+import { ShapeBpmnEventKind } from '../../../../model/bpmn/internal/shape';
 import { TEventDefinition } from '../../xml/bpmn-json-model/baseElement/rootElement/eventDefinition';
 import { ensureIsArray } from './ConverterUtil';
 

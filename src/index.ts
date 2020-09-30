@@ -19,7 +19,7 @@
 import BpmnVisualization from './component/BpmnVisualization';
 import IconPainter from './component/mxgraph/shape/render/IconPainter';
 import StyleConfigurator from './component/mxgraph/config/StyleConfigurator';
-import ShapeUtil from './model/bpmn/shape/ShapeUtil';
+import ShapeUtil from './model/bpmn/internal/shape/ShapeUtil';
 
 export { BpmnVisualization };
 export { IconPainter };
@@ -35,4 +35,4 @@ export * from './component/mxgraph/shape/render';
 // enhancement: https://github.com/typescript-eslint/typescript-eslint/issues/1436
 // export * as bpmnVisualizationDemo from './demo';
 export * from './demo';
-export * from './model/bpmn/shape';
+export * from './model/bpmn/internal/shape';

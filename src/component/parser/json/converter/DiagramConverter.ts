@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Shape from '../../../../model/bpmn/shape/Shape';
-import Bounds from '../../../../model/bpmn/Bounds';
-import ShapeBpmnElement, { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/shape/ShapeBpmnElement';
-import Edge from '../../../../model/bpmn/edge/Edge';
-import BpmnModel, { Shapes } from '../../../../model/bpmn/BpmnModel';
+import Shape from '../../../../model/bpmn/internal/shape/Shape';
+import Bounds from '../../../../model/bpmn/internal/Bounds';
+import ShapeBpmnElement, { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import Edge from '../../../../model/bpmn/internal/edge/Edge';
+import BpmnModel, { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
 import { findAssociationFlow, findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, findSequenceFlow } from './ProcessConverter';
 import { findMessageFlow, findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
-import Waypoint from '../../../../model/bpmn/edge/Waypoint';
-import Label, { Font } from '../../../../model/bpmn/Label';
-import { MessageVisibleKind } from '../../../../model/bpmn/edge/MessageVisibleKind';
+import Waypoint from '../../../../model/bpmn/internal/edge/Waypoint';
+import Label, { Font } from '../../../../model/bpmn/internal/Label';
+import { MessageVisibleKind } from '../../../../model/bpmn/internal/edge/MessageVisibleKind';
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../xml/bpmn-json-model/BPMNDI';
 import { Point } from '../../xml/bpmn-json-model/DC';
 import { ensureIsArray } from './ConverterUtil';
-import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/shape';
-import ShapeUtil from '../../../../model/bpmn/shape/ShapeUtil';
+import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
+import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
 
 function findProcessElement(participantId: string): ShapeBpmnElement | undefined {
   const participant = findProcessRefParticipant(participantId);

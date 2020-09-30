@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnModel from '../../../model/bpmn/BpmnModel';
+import BpmnModel from '../../../model/bpmn/internal/BpmnModel';
 import { BpmnJsonModel, TDefinitions } from '../xml/bpmn-json-model/BPMN20';
 import CollaborationConverter from './converter/CollaborationConverter';
 import ProcessConverter from './converter/ProcessConverter';

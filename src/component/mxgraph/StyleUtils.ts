@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnEventKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/shape';
-import { MessageVisibleKind } from '../../model/bpmn/edge/MessageVisibleKind';
+import { ShapeBpmnEventKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal/shape';
+import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
 
 export enum MarkerIdentifier {
   ARROW_DASH = 'bpmn.dash',

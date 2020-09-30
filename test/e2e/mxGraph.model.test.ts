@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/shape';
-import { SequenceFlowKind } from '../../src/model/bpmn/edge/SequenceFlowKind';
+import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/internal/shape';
+import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import { MarkerIdentifier, StyleIdentifier } from '../../src';
-import { FlowKind } from '../../src/model/bpmn/edge/FlowKind';
-import { MessageVisibleKind } from '../../src/model/bpmn/edge/MessageVisibleKind';
+import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
+import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { readFileSync } from '../helpers/file-helper';
 
 export interface ExpectedFont {
