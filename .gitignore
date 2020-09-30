@@ -1,6 +1,7 @@
 # IDE
 /.idea/
 *.iml
+*.project
 
 # Build directories
 /node_modules/
@@ -10,3 +11,4 @@
 build
 /test/e2e/__image_snapshots__/__diff_output__/
 *.jest-image-snapshot-touched-files
+/scripts/utils/dist/
