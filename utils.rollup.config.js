@@ -1,9 +1,3 @@
-import typescript from 'rollup-plugin-typescript2';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import json from '@rollup/plugin-json';
-import externals from 'rollup-plugin-node-externals';
-
 /**
  * Copyright 2020 Bonitasoft S.A.
  *
@@ -19,11 +13,17 @@ import externals from 'rollup-plugin-node-externals';
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import typescript from 'rollup-plugin-typescript2';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import json from '@rollup/plugin-json';
+import externals from 'rollup-plugin-node-externals';
 
 const plugins = [
   typescript({
     typescript: require('typescript'),
   }),
+  // rollup-plugin-node-externals declares NodeJS built-in modules as external
   externals(),
   resolve(),
   commonjs(),
