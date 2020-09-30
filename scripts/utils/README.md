@@ -2,21 +2,27 @@
 You should note that there is no need to copy the result from the console as it will be directly copied into system clipboard
 
 ##Building utils module
-run in the root of the project:
+
+Run in the root of the project:
 
 ```npm run build-utils```
 
 ##Usage
-run in the root of the project:
 
-- to get BpmnJsonModel
+Run in the root of the project to get BPMN content as:
+
+-  JSON model
 
 ```node ./scripts/utils/dist/utils.mjs RELATIVE_PATH_TO_BPMN_FILE```
 
-- to get BpmnModel
+or (the default value for the `output` argument is `json`)
 
-```node ./scripts/utils/dist/utils.mjs RELATIVE_PATH_TO_BPMN_FILE model```
+```node ./scripts/utils/dist/utils.mjs --output json RELATIVE_PATH_TO_BPMN_FILE```
+
+- BpmnModel (internal model used by `bpmn-visualization`)
+
+```node ./scripts/utils/dist/utils.mjs RELATIVE_PATH_TO_BPMN_FILE --output model```
 
 i.e:
 
-```node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/parser-test.bpmn model```
+```node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/parser-test.bpmn --output model```
