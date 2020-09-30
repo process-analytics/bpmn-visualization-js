@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { parse } from 'fast-xml-parser/src/parser';
-import * as entities from 'entities';
+import { decodeXML } from 'entities/lib/decode';
 import { BpmnJsonModel } from './bpmn-json-model/BPMN20';
 
 /**
@@ -27,7 +27,7 @@ export default class BpmnXmlParser {
     ignoreAttributes: false,
     parseAttributeValue: true, // ensure numbers are parsed as number, not as string
     attrValueProcessor: (val: string) => {
-      return entities.decodeXML(val);
+      return decodeXML(val);
     },
   };
 
