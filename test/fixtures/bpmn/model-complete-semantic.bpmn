@@ -515,138 +515,90 @@
       <bpmndi:BPMNShape id="shape_expanded_call_activity_id" bpmnElement="expanded_call_activity_id" isExpanded="true">
         <dc:Bounds x="2855" y="1400" width="370" height="200"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="460" y="440.18" width="72.5" height="25"/>
+          <dc:Bounds x="2910" y="1410" width="200" height="50"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_expanded_call_activity_with_loop_id" bpmnElement="expanded_call_activity_with_loop_id" isExpanded="true">
         <dc:Bounds x="2855" y="1150" width="370" height="200"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="460" y="440.18" width="72.5" height="25"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_expanded_call_activity_with_sequential_multi_instance_id" bpmnElement="expanded_call_activity_with_sequential_multi_instance_id"
                         isExpanded="true">
         <dc:Bounds x="2855" y="910" width="370" height="200"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="460" y="440.18" width="72.5" height="25"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_expanded_call_activity_with_parallel_multi_instance_id" bpmnElement="expanded_call_activity_with_parallel_multi_instance_id" isExpanded="true">
         <dc:Bounds x="2855" y="660" width="370" height="200"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="460" y="440.18" width="72.5" height="25"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
       <!-- Collapsed -->
       <bpmndi:BPMNShape id="shape_collapsed_call_activity_id" bpmnElement="collapsed_call_activity_id" isExpanded="false">
         <dc:Bounds x="2970" y="2175" width="140" height="90"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="460" y="440.18" width="72.5" height="25"/>
+          <dc:Bounds x="3000" y="2200" width="100" height="70"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_collapsed_call_activity_with_loop_id" bpmnElement="collapsed_call_activity_with_loop_id" isExpanded="false">
         <dc:Bounds x="2970" y="2035" width="140" height="90"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="460" y="440.18" width="72.5" height="25"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_collapsed_call_activity_with_sequential_multi_instance_id" bpmnElement="collapsed_call_activity_with_sequential_multi_instance_id"
                         isExpanded="false">
         <dc:Bounds x="2970" y="1905" width="140" height="90"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="460" y="440.18" width="72.5" height="25"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_collapsed_call_activity_with_parallel_multi_instance_id" bpmnElement="collapsed_call_activity_with_parallel_multi_instance_id" isExpanded="false">
         <dc:Bounds x="2970" y="1768" width="140" height="90"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="460" y="440.18" width="72.5" height="25"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
       <!-- Task -->
       <bpmndi:BPMNShape id="shape_task_with_flows_id" bpmnElement="task_with_flows_id">
         <dc:Bounds x="1018" y="1026" width="100" height="80"/>
         <bpmndi:BPMNLabel labelStyle="font_underline_id">
-          <dc:Bounds x="263.3333333333333" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
+          <dc:Bounds x="1020" y="1040" width="72.48293963254594" height="12.804751171875008"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_task_id" bpmnElement="task_id">
         <dc:Bounds x="2328" y="1926" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_underline_id">
-          <dc:Bounds x="263.3333333333333" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_task_with_loop_id" bpmnElement="task_with_loop_id">
         <dc:Bounds x="2128" y="1926" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_underline_id">
-          <dc:Bounds x="263.3333333333333" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_task_with_sequential_multi_instance_id" bpmnElement="task_with_sequential_multi_instance_id">
         <dc:Bounds x="1948" y="1926" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_underline_id">
-          <dc:Bounds x="263.3333333333333" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_task_with_parallel_multi_instance_id" bpmnElement="task_with_parallel_multi_instance_id">
         <dc:Bounds x="1768" y="1926" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_underline_id">
-          <dc:Bounds x="263.3333333333333" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
       <!-- Service Task -->
       <bpmndi:BPMNShape id="shape_service_task_id" bpmnElement="service_task_id">
         <dc:Bounds x="2328" y="1746" width="100" height="80"/>
         <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="395.3333333333333" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
+          <dc:Bounds x="2340" y="1760" width="72.48293963254594" height="12.804751171875008"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_service_task_with_loop_id" bpmnElement="service_task_with_loop_id">
         <dc:Bounds x="2128" y="1746" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="395.3333333333333" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_service_task_with_sequential_multi_instance_id" bpmnElement="service_task_with_sequential_multi_instance_id">
         <dc:Bounds x="1948" y="1746" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="395.3333333333333" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_service_task_with_parallel_multi_instance_id" bpmnElement="service_task_with_parallel_multi_instance_id">
         <dc:Bounds x="1768" y="1746" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="395.3333333333333" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
       <!-- User Task -->
       <bpmndi:BPMNShape id="shape_user_task_id" bpmnElement="user_task_id">
         <dc:Bounds x="2328" y="1576" width="100" height="80"/>
         <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
+          <dc:Bounds x="2340" y="1590" width="72.48293963254594" height="12.804751171875008"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_user_task_with_loop_id" bpmnElement="user_task_with_loop_id">
         <dc:Bounds x="2128" y="1576" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_user_task_with_sequential_multi_instance_id" bpmnElement="user_task_with_sequential_multi_instance_id">
         <dc:Bounds x="1948" y="1576" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_user_task_with_parallel_multi_instance_id" bpmnElement="user_task_with_parallel_multi_instance_id">
         <dc:Bounds x="1768" y="1576" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
       <!-- Receive Task: Non-instantiating -->
@@ -681,104 +633,68 @@
       <bpmndi:BPMNShape id="shape_send_task_id" bpmnElement="send_task_id">
         <dc:Bounds x="2328" y="1476" width="100" height="80"/>
         <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
+          <dc:Bounds x="2340" y="1490" width="75" height="60"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_send_task_with_loop_id" bpmnElement="send_task_with_loop_id">
         <dc:Bounds x="2128" y="1476" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_send_task_with_sequential_multi_instance_id" bpmnElement="send_task_with_sequential_multi_instance_id">
         <dc:Bounds x="1948" y="1476" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_send_task_with_parallel_multi_instance_id" bpmnElement="send_task_with_parallel_multi_instance_id">
         <dc:Bounds x="1768" y="1476" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
       <!-- Manual Task -->
       <bpmndi:BPMNShape id="shape_manual_task_id" bpmnElement="manual_task_id">
         <dc:Bounds x="2328" y="1260" width="100" height="80"/>
         <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
+          <dc:Bounds x="2340" y="1275" width="75" height="65"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_manual_task_with_loop_id" bpmnElement="manual_task_with_loop_id">
         <dc:Bounds x="2128" y="1260" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_manual_task_with_sequential_multi_instance_id" bpmnElement="manual_task_with_sequential_multi_instance_id">
         <dc:Bounds x="1948" y="1260" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_manual_task_with_parallel_multi_instance_id" bpmnElement="manual_task_with_parallel_multi_instance_id">
         <dc:Bounds x="1768" y="1260" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
       <!-- Script Task -->
       <bpmndi:BPMNShape id="shape_script_task_id" bpmnElement="script_task_id">
         <dc:Bounds x="2328" y="1140" width="100" height="80"/>
         <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
+          <dc:Bounds x="2340" y="1155" width="75" height="65"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_script_task_with_loop_id" bpmnElement="script_task_with_loop_id">
         <dc:Bounds x="2128" y="1140" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_script_task_with_sequential_multi_instance_id" bpmnElement="script_task_with_sequential_multi_instance_id">
         <dc:Bounds x="1948" y="1140" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_script_task_with_parallel_multi_instance_id" bpmnElement="script_task_with_parallel_multi_instance_id">
         <dc:Bounds x="1768" y="1140" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
       <!-- Business Rule Task -->
       <bpmndi:BPMNShape id="shape_business_rule_task_id" bpmnElement="business_rule_task_id">
         <dc:Bounds x="2328" y="1020" width="100" height="80"/>
         <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
+          <dc:Bounds x="2340" y="1035" width="75" height="65"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_business_rule_task_with_loop_id" bpmnElement="business_rule_task_with_loop_id">
         <dc:Bounds x="2128" y="1020" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_business_rule_task_with_sequential_multi_instance_id" bpmnElement="business_rule_task_with_sequential_multi_instance_id">
         <dc:Bounds x="1948" y="1020" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_business_rule_task_with_parallel_multi_instance_id" bpmnElement="business_rule_task_with_parallel_multi_instance_id">
         <dc:Bounds x="1768" y="1020" width="100" height="80"/>
-        <bpmndi:BPMNLabel labelStyle="font_bold_id">
-          <dc:Bounds x="527.3333333333334" y="344.5818763825664" width="72.48293963254594" height="12.804751171875008"/>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
       <!-- Embedded Sub-Process -->
@@ -1402,7 +1318,6 @@
       <bpmndi:BPMNShape id="shape_lane_4_2_id_di" bpmnElement="lane_4_2_id" isHorizontal="true">
         <dc:Bounds x="1270" y="250" width="570" height="80"/>
       </bpmndi:BPMNShape>
-
     </bpmndi:BPMNPlane>
 
     <!-- BPMN Label Styles -->

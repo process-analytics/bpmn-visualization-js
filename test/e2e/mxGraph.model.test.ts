@@ -781,45 +781,23 @@ describe('mxGraph model', () => {
 
     // activity
     // Task
-    expectModelContainsShape('task_id', {
-      kind: ShapeBpmnElementKind.TASK,
-      font: {
-        isBold: false,
-        isItalic: false,
-        isStrikeThrough: false,
-        isUnderline: true,
-        name: 'Arial',
-        size: 11.0,
-      },
-      label: 'Task',
-    });
+    expectModelContainsShape('task_id', { kind: ShapeBpmnElementKind.TASK, label: 'Task' });
     expectModelContainsShape('task_with_loop_id', {
       kind: ShapeBpmnElementKind.TASK,
-      font: {
-        isBold: false,
-        isItalic: false,
-        isStrikeThrough: false,
-        isUnderline: true,
-        name: 'Arial',
-        size: 11.0,
-      },
       label: 'Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
     });
     expectModelContainsShape('task_with_sequential_multi_instance_id', {
       kind: ShapeBpmnElementKind.TASK,
-      font: {
-        isBold: false,
-        isItalic: false,
-        isStrikeThrough: false,
-        isUnderline: true,
-        name: 'Arial',
-        size: 11.0,
-      },
       label: 'Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('task_with_parallel_multi_instance_id', {
+      kind: ShapeBpmnElementKind.TASK,
+      label: 'Task With Parallel Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+    });
+    expectModelContainsShape('task_with_flows_id', {
       kind: ShapeBpmnElementKind.TASK,
       font: {
         isBold: false,
@@ -829,27 +807,23 @@ describe('mxGraph model', () => {
         name: 'Arial',
         size: 11.0,
       },
-      label: 'Task With Parallel Multi-instance',
-      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      label: 'Task with Flows',
     });
 
     // Service Task
     expectModelContainsShape('service_task_id', { kind: ShapeBpmnElementKind.TASK_SERVICE, font: expectedBoldFont, label: 'Service Task' });
     expectModelContainsShape('service_task_with_loop_id', {
       kind: ShapeBpmnElementKind.TASK_SERVICE,
-      font: expectedBoldFont,
       label: 'Service Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
     });
     expectModelContainsShape('service_task_with_sequential_multi_instance_id', {
       kind: ShapeBpmnElementKind.TASK_SERVICE,
-      font: expectedBoldFont,
       label: 'Service Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('service_task_with_parallel_multi_instance_id', {
       kind: ShapeBpmnElementKind.TASK_SERVICE,
-      font: expectedBoldFont,
       label: 'Service Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
@@ -858,19 +832,16 @@ describe('mxGraph model', () => {
     expectModelContainsShape('user_task_id', { kind: ShapeBpmnElementKind.TASK_USER, font: expectedBoldFont, label: 'User Task' });
     expectModelContainsShape('user_task_with_loop_id', {
       kind: ShapeBpmnElementKind.TASK_USER,
-      font: expectedBoldFont,
       label: 'User Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
     });
     expectModelContainsShape('user_task_with_sequential_multi_instance_id', {
       kind: ShapeBpmnElementKind.TASK_USER,
-      font: expectedBoldFont,
       label: 'User Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('user_task_with_parallel_multi_instance_id', {
       kind: ShapeBpmnElementKind.TASK_USER,
-      font: expectedBoldFont,
       label: 'User Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
@@ -921,19 +892,16 @@ describe('mxGraph model', () => {
     expectModelContainsShape('send_task_id', { kind: ShapeBpmnElementKind.TASK_SEND, font: expectedBoldFont, label: 'Send Task' });
     expectModelContainsShape('send_task_with_loop_id', {
       kind: ShapeBpmnElementKind.TASK_SEND,
-      font: expectedBoldFont,
       label: 'Send Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
     });
     expectModelContainsShape('send_task_with_sequential_multi_instance_id', {
       kind: ShapeBpmnElementKind.TASK_SEND,
-      font: expectedBoldFont,
       label: 'Send Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('send_task_with_parallel_multi_instance_id', {
       kind: ShapeBpmnElementKind.TASK_SEND,
-      font: expectedBoldFont,
       label: 'Send Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
@@ -942,19 +910,16 @@ describe('mxGraph model', () => {
     expectModelContainsShape('manual_task_id', { kind: ShapeBpmnElementKind.TASK_MANUAL, font: expectedBoldFont, label: 'Manual Task' });
     expectModelContainsShape('manual_task_with_loop_id', {
       kind: ShapeBpmnElementKind.TASK_MANUAL,
-      font: expectedBoldFont,
       label: 'Manual Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
     });
     expectModelContainsShape('manual_task_with_sequential_multi_instance_id', {
       kind: ShapeBpmnElementKind.TASK_MANUAL,
-      font: expectedBoldFont,
       label: 'Manual Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('manual_task_with_parallel_multi_instance_id', {
       kind: ShapeBpmnElementKind.TASK_MANUAL,
-      font: expectedBoldFont,
       label: 'Manual Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
@@ -963,19 +928,16 @@ describe('mxGraph model', () => {
     expectModelContainsShape('script_task_id', { kind: ShapeBpmnElementKind.TASK_SCRIPT, font: expectedBoldFont, label: 'Script Task' });
     expectModelContainsShape('script_task_with_loop_id', {
       kind: ShapeBpmnElementKind.TASK_SCRIPT,
-      font: expectedBoldFont,
       label: 'Script Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
     });
     expectModelContainsShape('script_task_with_sequential_multi_instance_id', {
       kind: ShapeBpmnElementKind.TASK_SCRIPT,
-      font: expectedBoldFont,
       label: 'Script Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('script_task_with_parallel_multi_instance_id', {
       kind: ShapeBpmnElementKind.TASK_SCRIPT,
-      font: expectedBoldFont,
       label: 'Script Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
@@ -984,19 +946,16 @@ describe('mxGraph model', () => {
     expectModelContainsShape('business_rule_task_id', { kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE, font: expectedBoldFont, label: 'Business Rule Task' });
     expectModelContainsShape('business_rule_task_with_loop_id', {
       kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE,
-      font: expectedBoldFont,
       label: 'Business Rule Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
     });
     expectModelContainsShape('business_rule_task_with_sequential_multi_instance_id', {
       kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE,
-      font: expectedBoldFont,
       label: 'Business Rule Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
     });
     expectModelContainsShape('business_rule_task_with_parallel_multi_instance_id', {
       kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE,
-      font: expectedBoldFont,
       label: 'Business Rule Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
     });
