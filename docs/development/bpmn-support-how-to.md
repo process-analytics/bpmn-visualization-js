@@ -33,7 +33,7 @@ Overview of tasks to be achieved:
 * update the BPMN support documentation
 
 Refer to existing Pull Requests to have a better view about the work to do, for instance:
-- [Signal Event Detection Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/399/files)
+- [Link Event Detection Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/501/files)
 - [Manual Task Detection Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/582/files)
 
 
@@ -63,8 +63,7 @@ Overview
 
 ### Tests for elements detection 
 
-**IMPORTANT**: **__Please first refer to the [testing documentation](testing.md) documentation for a clear view of the
-testing strategy__** 
+**IMPORTANT**: **_Please first refer to the [testing documentation](testing.md) for a clear view of the testing strategy_** 
 
 
 #### Unit tests
@@ -100,7 +99,7 @@ Overview of tasks to be achieved:
 - update the BPMN support documentation
 
 Refer to existing Pull Requests to have a better view about the work to do, for instance:
-- [Signal Event Rendering Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/408/files)
+- [Error Event Rendering Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/505/files)
 - [Message Flow with initiating & non-initiating message Rendering Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/569/files)
 
 
