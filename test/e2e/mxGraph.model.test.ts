@@ -683,14 +683,14 @@ describe('mxGraph model', () => {
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
-    expectModelContainsBpmnStartEvent('start_event_interrupting_signal_id', {
+    expectModelContainsBpmnStartEvent('start_event_interrupting_compensate_id', {
       kind: ShapeBpmnElementKind.EVENT_START,
       eventKind: ShapeBpmnEventKind.COMPENSATION,
       label: 'Interrupting Compensate Start Event In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
-    expectModelContainsBpmnStartEvent('start_event_interrupting_signal_on_top_id', {
+    expectModelContainsBpmnStartEvent('start_event_interrupting_compensate_on_top_id', {
       kind: ShapeBpmnElementKind.EVENT_START,
       eventKind: ShapeBpmnEventKind.COMPENSATION,
       label: 'Interrupting Compensate Start Event On Top In Sub-Process',
