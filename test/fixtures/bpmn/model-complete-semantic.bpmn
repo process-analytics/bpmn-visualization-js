@@ -224,6 +224,30 @@
     </semantic:subProcess>
     <semantic:subProcess id="expanded_event_sub_process_with_start_events_id" name="Expanded Event Sub-Process With Start Events" triggeredByEvent="true">
       <!-- Interrupting Start Event -->
+      <semantic:startEvent id="start_event_interrupting_message_id" name="Event Subprocess Message Start Interrupting" isInterrupting="true">
+        <semantic:messageEventDefinition />
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_interrupting_message_on_top_id" name="Event Subprocess Message Start Interrupting On Top" isInterrupting="true">
+        <semantic:eventDefinitionRef>top_message_definition_id</semantic:eventDefinitionRef>
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_interrupting_timer_id" name="Interrupting Timer Start Event In Sub-Process" isInterrupting="true">
+        <semantic:timerEventDefinition />
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_interrupting_timer_on_top_id" name="Interrupting Timer Start Event On Top In Sub-Process" isInterrupting="true">
+        <semantic:eventDefinitionRef>top_timer_definition_id</semantic:eventDefinitionRef>
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_interrupting_signal_id" name="Interrupting Signal Start Event In Sub-Process" isInterrupting="true">
+        <semantic:signalEventDefinition />
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_interrupting_signal_on_top_id" name="Interrupting Signal Start Event On Top In Sub-Process" isInterrupting="true">
+        <semantic:eventDefinitionRef>top_signal_definition_id</semantic:eventDefinitionRef>
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_interrupting_error_id" name="Event Subprocess Error Start Interrupting" isInterrupting="true">
+        <semantic:errorEventDefinition />
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_interrupting_error_on_top_id" name="Event Subprocess Error Start Interrupting On Top" isInterrupting="true">
+        <semantic:eventDefinitionRef>top_error_definition_id</semantic:eventDefinitionRef>
+      </semantic:startEvent>
       <semantic:startEvent id="start_event_interrupting_compensate_id" name="Event Subprocess Compensate Start Interrupting" isInterrupting="true">
         <semantic:compensateEventDefinition />
       </semantic:startEvent>
@@ -232,17 +256,23 @@
       </semantic:startEvent>
 
       <!-- Non-interrupting Start Event -->
+      <semantic:startEvent id="start_event_non_interrupting_message_id" name="Non-interrupting Message Start Event In Sub-Process" isInterrupting="false">
+        <semantic:messageEventDefinition />
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_non_interrupting_message_on_top_id" name="Non-interrupting Message Start Event On Top In Sub-Process" isInterrupting="false">
+        <semantic:eventDefinitionRef>top_message_definition_id</semantic:eventDefinitionRef>
+      </semantic:startEvent>
       <semantic:startEvent id="start_event_non_interrupting_timer_id" name="Non-interrupting Timer Start Event In Sub-Process" isInterrupting="false">
         <semantic:timerEventDefinition />
       </semantic:startEvent>
       <semantic:startEvent id="start_event_non_interrupting_timer_on_top_id" name="Non-interrupting Timer Start Event On Top In Sub-Process" isInterrupting="false">
         <semantic:eventDefinitionRef>top_timer_definition_id</semantic:eventDefinitionRef>
       </semantic:startEvent>
-      <semantic:startEvent id="event_subprocess_compensate_start_interrupting" name="Event Subprocess Compensate Start Interrupting" isInterrupting="true">
-        <semantic:compensateEventDefinition />
+      <semantic:startEvent id="start_event_non_interrupting_signal_id" name="Non-interrupting Signal Start Event In Sub-Process" isInterrupting="false">
+        <semantic:signalEventDefinition />
       </semantic:startEvent>
-      <semantic:startEvent id="event_subprocess_compensate_start_interrupting_on_top" name="Event Subprocess Compensate Start Interrupting On Top" isInterrupting="true">
-        <semantic:eventDefinitionRef>top_compensate_definition_id</semantic:eventDefinitionRef>
+      <semantic:startEvent id="start_event_non_interrupting_signal_on_top_id" name="Non-interrupting Signal Start Event On Top In Sub-Process" isInterrupting="false">
+        <semantic:eventDefinitionRef>top_signal_definition_id</semantic:eventDefinitionRef>
       </semantic:startEvent>
     </semantic:subProcess>
 
@@ -797,6 +827,54 @@
       </bpmndi:BPMNShape>
 
       <!-- Interrupting Start Event -->
+      <bpmndi:BPMNShape id="shape_start_event_interrupting_message_id" bpmnElement="start_event_interrupting_message_id">
+        <dc:Bounds x="3542" y="775" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3532" y="820" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_interrupting_message_on_top_id" bpmnElement="start_event_interrupting_message_on_top_id">
+        <dc:Bounds x="3542" y="775" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3532" y="820" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_interrupting_timer_id" bpmnElement="start_event_interrupting_timer_id">
+        <dc:Bounds x="3542" y="775" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3532" y="820" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_interrupting_timer_on_top_id" bpmnElement="start_event_interrupting_timer_on_top_id">
+        <dc:Bounds x="3542" y="775" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3532" y="820" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_interrupting_signal_id" bpmnElement="start_event_interrupting_signal_id">
+        <dc:Bounds x="3542" y="775" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3532" y="820" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_interrupting_signal_on_top_id" bpmnElement="start_event_interrupting_signal_on_top_id">
+        <dc:Bounds x="3542" y="775" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3532" y="820" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_interrupting_error_id" bpmnElement="start_event_interrupting_error_id">
+        <dc:Bounds x="3542" y="775" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3532" y="820" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_interrupting_error_on_top_id" bpmnElement="start_event_interrupting_error_on_top_id">
+        <dc:Bounds x="3542" y="775" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3532" y="820" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_start_event_interrupting_compensate_id" bpmnElement="start_event_interrupting_compensate_id">
         <dc:Bounds x="3542" y="775" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -811,6 +889,18 @@
       </bpmndi:BPMNShape>
 
       <!-- Non-interrupting Start Event -->
+      <bpmndi:BPMNShape id="shape_start_event_non_interrupting_message_id" bpmnElement="start_event_non_interrupting_message_id">
+        <dc:Bounds x="3542" y="775" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3532" y="820" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_non_interrupting_message_on_top_id" bpmnElement="start_event_non_interrupting_message_on_top_id">
+        <dc:Bounds x="3542" y="775" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3532" y="820" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_start_event_non_interrupting_timer_id" bpmnElement="start_event_non_interrupting_timer_id">
         <dc:Bounds x="3542" y="775" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -818,6 +908,18 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_start_event_non_interrupting_timer_on_top_id" bpmnElement="start_event_non_interrupting_timer_on_top_id">
+        <dc:Bounds x="3542" y="775" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3532" y="820" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_non_interrupting_signal_id" bpmnElement="start_event_non_interrupting_signal_id">
+        <dc:Bounds x="3542" y="775" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3532" y="820" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_non_interrupting_signal_on_top_id" bpmnElement="start_event_non_interrupting_signal_on_top_id">
         <dc:Bounds x="3542" y="775" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="3532" y="820" width="57" height="27" />

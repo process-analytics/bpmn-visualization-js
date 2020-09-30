@@ -627,8 +627,92 @@ describe('mxGraph model', () => {
 
     // Start Event in Event Sub Process
     // Interrupting Start Event
+    expectModelContainsBpmnStartEvent('start_event_interrupting_message_id', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      label: 'Interrupting Message Start Event In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: true,
+    });
+    expectModelContainsBpmnStartEvent('start_event_interrupting_message_on_top_id', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      label: 'Interrupting Message Start Event On Top In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: true,
+    });
+    expectModelContainsBpmnStartEvent('start_event_interrupting_timer_id', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.TIMER,
+      label: 'Interrupting Timer Start Event In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: true,
+    });
+    expectModelContainsBpmnStartEvent('start_event_interrupting_timer_on_top_id', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.TIMER,
+      label: 'Interrupting Timer Start Event On Top In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: true,
+    });
+    expectModelContainsBpmnStartEvent('start_event_interrupting_signal_id', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.SIGNAL,
+      label: 'Interrupting Signal Start Event In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: true,
+    });
+    expectModelContainsBpmnStartEvent('start_event_interrupting_signal_on_top_id', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.SIGNAL,
+      label: 'Interrupting Signal Start Event On Top In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: true,
+    });
+    expectModelContainsBpmnStartEvent('start_event_interrupting_error_id', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.ERROR,
+      label: 'Interrupting Error Start Event In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: true,
+    });
+    expectModelContainsBpmnStartEvent('start_event_interrupting_error_on_top_id', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.ERROR,
+      label: 'Interrupting Error Start Event On Top In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: true,
+    });
+    expectModelContainsBpmnStartEvent('start_event_interrupting_signal_id', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.COMPENSATION,
+      label: 'Interrupting Compensate Start Event In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: true,
+    });
+    expectModelContainsBpmnStartEvent('start_event_interrupting_signal_on_top_id', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.COMPENSATION,
+      label: 'Interrupting Compensate Start Event On Top In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: true,
+    });
 
     // Non-interrupting Start Event
+    expectModelContainsBpmnStartEvent('start_event_non_interrupting_message_id', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      label: 'Non-interrupting Message Start Event In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: false,
+    });
+    expectModelContainsBpmnStartEvent('start_event_non_interrupting_message_on_top_id', {
+      kind: ShapeBpmnElementKind.EVENT_START,
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      label: 'Non-interrupting Message Start Event On Top In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: false,
+    });
     expectModelContainsBpmnStartEvent('start_event_non_interrupting_timer_id', {
       kind: ShapeBpmnElementKind.EVENT_START,
       eventKind: ShapeBpmnEventKind.TIMER,
@@ -643,19 +727,19 @@ describe('mxGraph model', () => {
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: false,
     });
-    expectModelContainsBpmnStartEvent('event_subprocess_compensate_start_interrupting', {
+    expectModelContainsBpmnStartEvent('start_event_non_interrupting_signal_id', {
       kind: ShapeBpmnElementKind.EVENT_START,
-      eventKind: ShapeBpmnEventKind.COMPENSATION,
-      label: 'Event Subprocess Compensate Start Interrupting',
-      parentId: 'expanded_event_sub_process_with_non_interrupting_start_event_id',
-      isInterrupting: true,
+      eventKind: ShapeBpmnEventKind.SIGNAL,
+      label: 'Non-interrupting Signal Start Event In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: false,
     });
-    expectModelContainsBpmnStartEvent('event_subprocess_compensate_start_interrupting_on_top', {
+    expectModelContainsBpmnStartEvent('start_event_non_interrupting_signal_on_top_id', {
       kind: ShapeBpmnElementKind.EVENT_START,
-      eventKind: ShapeBpmnEventKind.COMPENSATION,
-      label: 'Event Subprocess Compensate Start Interrupting On Top',
-      parentId: 'expanded_event_sub_process_with_non_interrupting_start_event_id',
-      isInterrupting: true,
+      eventKind: ShapeBpmnEventKind.SIGNAL,
+      label: 'Non-interrupting Signal Start Event On Top In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: false,
     });
 
     // Call Activity calling process
