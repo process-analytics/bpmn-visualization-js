@@ -184,6 +184,18 @@ The event definition can be defined on the event or on the definitions.
 |===
 
 [cols="1,1,4", options="header"]
+.Event Sub-Process Interrupting Start Events
+|===
+|Name
+|Rendering
+|Comments
+
+|Compensation Interrupting Start Event
+|icon:check-circle-o[]
+|BPMN element detection only, with basic rendering
+|===
+
+[cols="1,1,4", options="header"]
 .Intermediate Catch Events
 |===
 |Name
@@ -230,6 +242,10 @@ The event definition can be defined on the event or on the definitions.
 |Link Intermediate Throw Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Compensation Intermediate Throw Event
+|icon:check-circle-o[]
+|BPMN element detection only, with basic rendering
 |===
 
 
@@ -255,6 +271,10 @@ The event definition can be defined on the event or on the definitions.
 |Error Interrupting Boundary Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Compensation Interrupting Boundary Event
+|icon:check-circle-o[]
+|BPMN element detection only, with basic rendering
 |===
 
 
@@ -305,7 +325,12 @@ The event definition can be defined on the event or on the definitions.
 |Error End Event
 |icon:check-circle-o[]
 |The icon width may be adjusted
+
+|Compensation End Event
+|icon:check-circle-o[]
+|BPMN element detection only, with basic rendering
 |===
+
 
 
 === Flows
