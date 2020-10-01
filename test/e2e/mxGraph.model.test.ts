@@ -21,6 +21,15 @@ import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { readFileSync } from '../helpers/file-helper';
 
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace jest {
+    interface Matchers<R> {
+      toBeCell(): R;
+    }
+  }
+}
+
 export interface ExpectedFont {
   name?: string;
   size?: number;
@@ -72,6 +81,25 @@ export interface ExpectedStartEventModelElement extends ExpectedEventModelElemen
   isInterrupting?: boolean;
 }
 
+const bpmnVisualization = new BpmnVisualization(null);
+
+expect.extend({
+  toBeCell(cellId) {
+    const cell = bpmnVisualization.graph.model.getCell(cellId);
+    if (cell) {
+      return {
+        message: () => `Expected cell with id '${cellId}' NOT to be defined`,
+        pass: true,
+      };
+    } else {
+      return {
+        message: () => `Expected cell with id '${cellId}' to be defined`,
+        pass: false,
+      };
+    }
+  },
+});
+
 function expectGeometry(cell: mxCell, geometry: mxGeometry): void {
   const cellGeometry = cell.getGeometry();
   expect(cellGeometry.x).toEqual(geometry.x);
@@ -82,8 +110,6 @@ function expectGeometry(cell: mxCell, geometry: mxGeometry): void {
 }
 
 describe('mxGraph model', () => {
-  const bpmnVisualization = new BpmnVisualization(null);
-
   function expectFont(state: mxCellState, expectedFont: ExpectedFont): void {
     if (expectedFont) {
       if (expectedFont.isBold) {
@@ -113,10 +139,8 @@ describe('mxGraph model', () => {
   }
 
   function expectModelContainsCell(cellId: string): mxCell {
-    const cell = bpmnVisualization.graph.model.getCell(cellId);
-    expect(cell).not.toBeUndefined();
-    expect(cell).not.toBeNull();
-    return cell;
+    expect(cellId).toBeCell();
+    return bpmnVisualization.graph.model.getCell(cellId);
   }
 
   function expectModelContainsShape(cellId: string, modelElement: ExpectedShapeModelElement): mxCell {
