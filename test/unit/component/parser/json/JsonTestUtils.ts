@@ -18,7 +18,7 @@ import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
 import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
-import Waypoint from '../../../../../src/model/bpmn/internal/edge/Waypoint';
+import { Point } from '../../../../../src/model/bpmn/json/DC';
 import { ShapeBpmnActivity, ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import Label from '../../../../../src/model/bpmn/internal/Label';
@@ -51,7 +51,7 @@ interface ExpectedEdge {
   bpmnElementName?: string;
   bpmnElementSourceRefId: string;
   bpmnElementTargetRefId: string;
-  waypoints: Waypoint[];
+  waypoints: Point[];
   messageVisibleKind?: MessageVisibleKind;
 }
 

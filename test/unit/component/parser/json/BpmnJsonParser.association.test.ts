@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
-import Waypoint from '../../../../../src/model/bpmn/internal/edge/Waypoint';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for association', () => {
@@ -54,7 +53,7 @@ describe('parse bpmn as json for association', () => {
       bpmnElementId: 'association_id_0',
       bpmnElementSourceRefId: 'Activity_01',
       bpmnElementTargetRefId: 'Annotation_01',
-      waypoints: [new Waypoint(362, 232)],
+      waypoints: [{ x: 362, y: 232 }],
     });
   });
 
@@ -104,7 +103,7 @@ describe('parse bpmn as json for association', () => {
       bpmnElementId: 'association_id_0',
       bpmnElementSourceRefId: 'Activity_01',
       bpmnElementTargetRefId: 'Annotation_01',
-      waypoints: [new Waypoint(362, 232)],
+      waypoints: [{ x: 362, y: 232 }],
     });
 
     verifyEdge(model.edges[1], {
@@ -112,7 +111,7 @@ describe('parse bpmn as json for association', () => {
       bpmnElementId: 'association_id_1',
       bpmnElementSourceRefId: 'Activity_02',
       bpmnElementTargetRefId: 'Annotation_02',
-      waypoints: [new Waypoint(362, 232)],
+      waypoints: [{ x: 362, y: 232 }],
     });
   });
 
@@ -143,7 +142,7 @@ describe('parse bpmn as json for association', () => {
       bpmnElementId: `association_id_0`,
       bpmnElementSourceRefId: 'Activity_01',
       bpmnElementTargetRefId: 'Annotation_01',
-      waypoints: [new Waypoint(362, 232)],
+      waypoints: [{ x: 362, y: 232 }],
     });
   });
 });

@@ -17,7 +17,7 @@ import Shape from '../../model/bpmn/internal/shape/Shape';
 import Edge from '../../model/bpmn/internal/edge/Edge';
 import BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
-import Waypoint from '../../model/bpmn/internal/edge/Waypoint';
+import { Point } from '../../model/bpmn/json/DC';
 import Bounds from '../../model/bpmn/internal/Bounds';
 import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
@@ -119,7 +119,7 @@ export default class MxGraphRenderer {
     }
   }
 
-  private insertWaypoints(waypoints: Waypoint[], mxEdge: mxCell): void {
+  private insertWaypoints(waypoints: Point[], mxEdge: mxCell): void {
     if (waypoints) {
       mxEdge.geometry.points = waypoints.map(waypoint => {
         return this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(waypoint.x, waypoint.y));

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Waypoint from './Waypoint';
+import { Point } from '../../json/DC';
 import Label from '../Label';
 import Flow from './Flow';
 import { MessageVisibleKind } from './MessageVisibleKind';
@@ -22,7 +22,7 @@ export default class Edge {
   constructor(
     readonly id?: string,
     readonly bpmnElement?: Flow,
-    readonly waypoints?: Waypoint[],
+    readonly waypoints?: Point[],
     readonly label?: Label,
     readonly messageVisibleKind: MessageVisibleKind = MessageVisibleKind.NONE,
   ) {}

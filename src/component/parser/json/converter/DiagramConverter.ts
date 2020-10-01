@@ -20,11 +20,9 @@ import Edge from '../../../../model/bpmn/internal/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
 import { findAssociationFlow, findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, findSequenceFlow } from './ProcessConverter';
 import { findMessageFlow, findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
-import Waypoint from '../../../../model/bpmn/internal/edge/Waypoint';
 import Label, { Font } from '../../../../model/bpmn/internal/Label';
 import { MessageVisibleKind } from '../../../../model/bpmn/internal/edge/MessageVisibleKind';
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
-import { Point } from '../../../../model/bpmn/json/DC';
 import { ensureIsArray } from './ConverterUtil';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
@@ -155,18 +153,13 @@ export default class DiagramConverter {
   private deserializeEdges(edges: BPMNEdge | BPMNEdge[]): Edge[] {
     return ensureIsArray(edges).map(edge => {
       const flow = findSequenceFlow(edge.bpmnElement) || findMessageFlow(edge.bpmnElement) || findAssociationFlow(edge.bpmnElement);
-      const waypoints = this.deserializeWaypoints(edge.waypoint);
       const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
 
       // TODO Remove messageVisibleKind conversion type when we merge/simplify internal model with BPMN json model
       const messageVisibleKind = edge.messageVisibleKind ? ((edge.messageVisibleKind as unknown) as MessageVisibleKind) : MessageVisibleKind.NONE;
 
-      return new Edge(edge.id, flow, waypoints, label, messageVisibleKind);
+      return new Edge(edge.id, flow, edge.waypoint, label, messageVisibleKind);
     });
-  }
-
-  private deserializeWaypoints(waypoints: Point[]): Waypoint[] {
-    return ensureIsArray(waypoints).map(waypoint => new Waypoint(waypoint.x, waypoint.y));
   }
 
   private deserializeLabel(bpmnLabel: string | BPMNLabel, id: string): Label {
