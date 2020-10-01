@@ -1,4 +1,5 @@
 == Introduction
+:favicon:
 
 image::images/diagram-example.png[]
 
