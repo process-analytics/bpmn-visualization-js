@@ -1,5 +1,10 @@
 FROM gitpod/workspace-full
 
+# Basing on the following:
+# https://github.com/jankeromnes/gitpodPuppeteerTest
+# https://stackoverflow.com/questions/62345581/node-js-puppeteer-on-docker-no-usable-sandbox
+# the new Dockerfile was created to permit the launch of the tests that requires 'puppeteer'
+
 RUN sudo apt-get update && \
     sudo apt-get install -y \
         ca-certificates \
