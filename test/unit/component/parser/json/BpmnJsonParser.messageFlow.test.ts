@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
-import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
-import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
-import * as bpmndi from '../../../../../src/component/parser/xml/bpmn-json-model/BPMNDI';
+import Waypoint from '../../../../../src/model/bpmn/internal/edge/Waypoint';
+import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
+import * as bpmndi from '../../../../../src/model/bpmn/json/BPMNDI';
 
 describe('parse bpmn as json for message flow', () => {
   it(`should convert as Edge, when an message flow is an attribute (as object) of 'collaboration' (as object)`, () => {

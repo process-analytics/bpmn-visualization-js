@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Shape from '../../model/bpmn/shape/Shape';
-import Edge from '../../model/bpmn/edge/Edge';
-import BpmnModel from '../../model/bpmn/BpmnModel';
-import ShapeBpmnElement from '../../model/bpmn/shape/ShapeBpmnElement';
-import Waypoint from '../../model/bpmn/edge/Waypoint';
-import Bounds from '../../model/bpmn/Bounds';
-import ShapeUtil from '../../model/bpmn/shape/ShapeUtil';
+import Shape from '../../model/bpmn/internal/shape/Shape';
+import Edge from '../../model/bpmn/internal/edge/Edge';
+import BpmnModel from '../../model/bpmn/internal/BpmnModel';
+import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import Waypoint from '../../model/bpmn/internal/edge/Waypoint';
+import Bounds from '../../model/bpmn/internal/Bounds';
+import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
-import { MessageFlow } from '../../model/bpmn/edge/Flow';
-import { MessageVisibleKind } from '../../model/bpmn/edge/MessageVisibleKind';
+import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';
+import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
 
 export default class MxGraphRenderer {
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}

@@ -15,7 +15,7 @@
  */
 
 import StyleConfigurator from '../../../../../src/component/mxgraph/config/StyleConfigurator';
-import Shape from '../../../../../src/model/bpmn/shape/Shape';
+import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
@@ -23,18 +23,18 @@ import ShapeBpmnElement, {
   ShapeBpmnEvent,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
-} from '../../../../../src/model/bpmn/shape/ShapeBpmnElement';
-import { ShapeBpmnElementKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/shape';
-import Label, { Font } from '../../../../../src/model/bpmn/Label';
+} from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
+import { ShapeBpmnElementKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
+import Label, { Font } from '../../../../../src/model/bpmn/internal/Label';
 import { ExpectedFont } from '../../parser/json/JsonTestUtils';
-import Edge from '../../../../../src/model/bpmn/edge/Edge';
-import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/edge/Flow';
-import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
-import Bounds from '../../../../../src/model/bpmn/Bounds';
-import { BpmnEventKind } from '../../../../../src/model/bpmn/shape/ShapeUtil';
+import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
+import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
+import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
+import Bounds from '../../../../../src/model/bpmn/internal/Bounds';
+import { BpmnEventKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import each from 'jest-each';
-import { MessageVisibleKind } from '../../../../../src/model/bpmn/edge/MessageVisibleKind';
-import { AssociationDirectionKind } from '../../../../../src/model/bpmn/edge/AssociationDirectionKind';
+import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
+import { AssociationDirectionKind } from '../../../../../src/model/bpmn/internal/edge/AssociationDirectionKind';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
