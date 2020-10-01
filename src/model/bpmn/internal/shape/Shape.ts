@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import ShapeBpmnElement from './ShapeBpmnElement';
-import Bounds from '../Bounds';
+import { Bounds } from '../../json/DC';
 import Label from '../Label';
 
 export default class Shape {

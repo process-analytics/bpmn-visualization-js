@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import Shape from '../../../../model/bpmn/internal/shape/Shape';
-import Bounds from '../../../../model/bpmn/internal/Bounds';
 import ShapeBpmnElement, { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/internal/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
@@ -122,7 +121,7 @@ export default class DiagramConverter {
   private deserializeShape(shape: BPMNShape, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
     const bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
-      const bounds = this.deserializeBounds(shape);
+      const bounds = shape.Bounds;
 
       if (bpmnElement.parentId) {
         const participant = findProcessRefParticipantByProcessRef(bpmnElement.parentId);
@@ -142,13 +141,6 @@ export default class DiagramConverter {
 
       const label = this.deserializeLabel(shape.BPMNLabel, shape.id);
       return new Shape(shape.id, bpmnElement, bounds, label, isHorizontal);
-    }
-  }
-
-  private deserializeBounds(boundedElement: BPMNShape | BPMNLabel): Bounds {
-    const bounds = boundedElement.Bounds;
-    if (bounds) {
-      return new Bounds(bounds.x, bounds.y, bounds.width, bounds.height);
     }
   }
 
@@ -172,7 +164,7 @@ export default class DiagramConverter {
   private deserializeLabel(bpmnLabel: string | BPMNLabel, id: string): Label {
     if (bpmnLabel && typeof bpmnLabel === 'object') {
       const font = this.findFont(bpmnLabel.labelStyle, id);
-      const bounds = this.deserializeBounds(bpmnLabel);
+      const bounds = bpmnLabel.Bounds;
 
       if (font || bounds) {
         return new Label(font, bounds);

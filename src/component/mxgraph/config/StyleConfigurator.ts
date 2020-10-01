@@ -19,7 +19,7 @@ import { SequenceFlowKind } from '../../../model/bpmn/internal/edge/SequenceFlow
 import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import Edge from '../../../model/bpmn/internal/edge/Edge';
-import Bounds from '../../../model/bpmn/internal/Bounds';
+import { Bounds } from '../../../model/bpmn/json/DC';
 import ShapeBpmnElement, {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,

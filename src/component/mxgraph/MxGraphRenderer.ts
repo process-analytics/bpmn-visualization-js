@@ -18,7 +18,7 @@ import Edge from '../../model/bpmn/internal/edge/Edge';
 import BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import Waypoint from '../../model/bpmn/internal/edge/Waypoint';
-import Bounds from '../../model/bpmn/internal/Bounds';
+import { Bounds } from '../../model/bpmn/json/DC';
 import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
