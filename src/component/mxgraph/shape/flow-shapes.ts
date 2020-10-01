@@ -15,7 +15,7 @@
  */
 import { buildPaintParameter, IconPainterProvider } from './render';
 import StyleUtils from '../StyleUtils';
-import { MessageVisibleKind } from '../../../model/bpmn/edge/MessageVisibleKind';
+import { MessageVisibleKind } from '../../../model/bpmn/internal/edge/MessageVisibleKind';
 
 export class MessageFlowIconShape extends mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();

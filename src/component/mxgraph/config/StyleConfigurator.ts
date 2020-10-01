@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../model/bpmn/shape';
-import ShapeUtil from '../../../model/bpmn/shape/ShapeUtil';
-import { SequenceFlowKind } from '../../../model/bpmn/edge/SequenceFlowKind';
+import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../model/bpmn/internal/shape';
+import ShapeUtil from '../../../model/bpmn/internal/shape/ShapeUtil';
+import { SequenceFlowKind } from '../../../model/bpmn/internal/edge/SequenceFlowKind';
 import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
-import Shape from '../../../model/bpmn/shape/Shape';
-import Edge from '../../../model/bpmn/edge/Edge';
-import Bounds from '../../../model/bpmn/Bounds';
+import Shape from '../../../model/bpmn/internal/shape/Shape';
+import Edge from '../../../model/bpmn/internal/edge/Edge';
+import Bounds from '../../../model/bpmn/internal/Bounds';
 import ShapeBpmnElement, {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
@@ -27,11 +27,11 @@ import ShapeBpmnElement, {
   ShapeBpmnEvent,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
-} from '../../../model/bpmn/shape/ShapeBpmnElement';
-import { Font } from '../../../model/bpmn/Label';
-import { FlowKind } from '../../../model/bpmn/edge/FlowKind';
-import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/edge/Flow';
-import { AssociationDirectionKind } from '../../../model/bpmn/edge/AssociationDirectionKind';
+} from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import { Font } from '../../../model/bpmn/internal/Label';
+import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
+import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
+import { AssociationDirectionKind } from '../../../model/bpmn/internal/edge/AssociationDirectionKind';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
