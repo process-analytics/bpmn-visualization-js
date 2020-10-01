@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 import Bounds from './Bounds';
+import { Font } from '../json/DC';
 
 export default class Label {
   constructor(readonly font?: Font, readonly bounds?: Bounds) {}
-}
-
-export class Font {
-  constructor(
-    readonly name?: string,
-    readonly size?: number,
-    readonly isBold?: boolean,
-    readonly isItalic?: boolean,
-    readonly isUnderline?: boolean,
-    readonly isStrikeThrough?: boolean,
-  ) {}
 }

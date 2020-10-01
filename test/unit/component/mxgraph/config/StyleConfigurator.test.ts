@@ -25,8 +25,8 @@ import ShapeBpmnElement, {
   ShapeBpmnSubProcess,
 } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
-import Label, { Font } from '../../../../../src/model/bpmn/internal/Label';
-import { ExpectedFont } from '../../parser/json/JsonTestUtils';
+import Label from '../../../../../src/model/bpmn/internal/Label';
+import { Font } from '../../../../../src/model/bpmn/json/DC';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
@@ -36,12 +36,8 @@ import each from 'jest-each';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { AssociationDirectionKind } from '../../../../../src/model/bpmn/internal/edge/AssociationDirectionKind';
 
-function toFont(font: ExpectedFont): Font {
-  return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
-}
-
-function newLabel(font: ExpectedFont, bounds?: Bounds): Label {
-  return new Label(toFont(font), bounds);
+function newLabel(font: Font, bounds?: Bounds): Label {
+  return new Label(font, bounds);
 }
 
 /**
@@ -119,22 +115,17 @@ describe('mxgraph renderer', () => {
       expect(computeStyle(shape)).toEqual('endEvent');
     });
     it('compute style of shape with label including bold font', () => {
-      const shape = new Shape(
-        'id',
-        newShapeBpmnElement(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE),
-        undefined,
-        new Label(toFont({ name: 'Courier', size: 9, isBold: true }), undefined),
-      );
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE), undefined, new Label({ name: 'Courier', size: 9, isBold: true }, undefined));
       expect(computeStyle(shape)).toEqual('exclusiveGateway;fontFamily=Courier;fontSize=9;fontStyle=1');
     });
 
     it('compute style of shape with label including italic font', () => {
-      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH), undefined, new Label(toFont({ name: 'Arial', isItalic: true }), undefined));
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH), undefined, new Label({ name: 'Arial', isItalic: true }, undefined));
       expect(computeStyle(shape)).toEqual('intermediateCatchEvent;fontFamily=Arial;fontStyle=2');
     });
 
     it('compute style of shape with label including bold/italic font', () => {
-      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW), undefined, new Label(toFont({ isBold: true, isItalic: true }), undefined));
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW), undefined, new Label({ isBold: true, isItalic: true }, undefined));
       expect(computeStyle(shape)).toEqual('intermediateThrowEvent;fontStyle=3');
     });
 
@@ -156,12 +147,12 @@ describe('mxgraph renderer', () => {
     });
 
     it('compute style of edge with label including strike-through font', () => {
-      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
+      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label({ size: 14.2, isStrikeThrough: true }, undefined));
       expect(computeStyle(edge)).toEqual('sequenceFlow;conditional_from_activity;fontSize=14.2;fontStyle=8');
     });
 
     it('compute style of edge with label including underline font', () => {
-      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
+      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label({ isUnderline: true }, undefined));
       expect(computeStyle(edge)).toEqual('sequenceFlow;default;fontStyle=4');
     });
 
@@ -170,13 +161,13 @@ describe('mxgraph renderer', () => {
         'id',
         newSequenceFlow(SequenceFlowKind.NORMAL),
         undefined,
-        new Label(toFont({ isBold: true, isItalic: true, isStrikeThrough: true, isUnderline: true }), undefined),
+        new Label({ isBold: true, isItalic: true, isStrikeThrough: true, isUnderline: true }, undefined),
       );
       expect(computeStyle(edge)).toEqual('sequenceFlow;normal;fontStyle=15');
     });
 
     it('compute style of edge with label bounds', () => {
-      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), new Bounds(20, 20, 30, 120)));
+      const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label({ name: 'Helvetica' }, new Bounds(20, 20, 30, 120)));
       expect(computeStyle(edge)).toEqual('sequenceFlow;normal;fontFamily=Helvetica;verticalAlign=top;align=center');
     });
   });

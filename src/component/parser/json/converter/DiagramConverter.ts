@@ -21,7 +21,8 @@ import BpmnModel, { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
 import { findAssociationFlow, findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, findSequenceFlow } from './ProcessConverter';
 import { findMessageFlow, findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
 import Waypoint from '../../../../model/bpmn/internal/edge/Waypoint';
-import Label, { Font } from '../../../../model/bpmn/internal/Label';
+import Label from '../../../../model/bpmn/internal/Label';
+import { Font } from '../../../../model/bpmn/json/DC';
 import { MessageVisibleKind } from '../../../../model/bpmn/internal/edge/MessageVisibleKind';
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
 import { Point } from '../../../../model/bpmn/json/DC';
@@ -78,7 +79,7 @@ export default class DiagramConverter {
 
     ensureIsArray(bpmnLabelStyle).forEach(labelStyle => {
       ensureIsArray(labelStyle.Font).forEach(font => {
-        this.convertedFonts.set(labelStyle.id, new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough));
+        this.convertedFonts.set(labelStyle.id, font);
       });
     });
   }
