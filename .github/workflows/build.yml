@@ -55,26 +55,17 @@ jobs:
       - name: Test Application
         id: 'test_unit'
         run: npm run test:unit
-      - name: test_unit status
-        if: always()
-        run: echo ${{ toJSON(steps.test_unit) }}
       - name: Upload unit test results
-#        if: failure()
-#        if: steps.test_unit.outcome == 'failure'
-        if: ${{ steps.test_unit.outcome == 'failure' }}
+        if: ${{ failure() && steps.test_unit.outcome == 'failure' }}
         uses: actions/upload-artifact@v2
         with:
           name: unit-test-results-${{matrix.os.name}}-${{github.sha}}
           path: build/test-report/unit
       - name: Test Application End to End
-        id: test_e2e
+        id: 'test_e2e'
         run: npm run test:e2e
-      - name: test_e2e status
-        if: always()
-        run: echo ${{ toJSON(steps.test_e2e) }}
       - name: Upload e2e test results
-#        if: steps.test_e2e.outcome == 'failure'
-        if: ${{ steps.test_e2e.outcome == 'failure' }}
+        if: ${{ failure() && steps.test_e2e.outcome == 'failure' }}
         uses: actions/upload-artifact@v2
         with:
           name: e2e-test-results-${{matrix.os.name}}-${{github.sha}}
