@@ -31,7 +31,7 @@ import ShapeBpmnElement, {
 import { Font } from '../../../model/bpmn/internal/Label';
 import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
-import { AssociationDirectionKind } from '../../../model/bpmn/internal/edge/AssociationDirectionKind';
+import { TAssociationDirection } from '../../../model/bpmn/json/baseElement/artifact';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
@@ -81,9 +81,9 @@ export default class StyleConfigurator {
       },
     ],
   ]);
-  private specificAssociationFlowStyles: Map<AssociationDirectionKind, (style: any) => void> = new Map([
+  private specificAssociationFlowStyles: Map<TAssociationDirection, (style: any) => void> = new Map([
     [
-      AssociationDirectionKind.NONE,
+      TAssociationDirection.None,
       (style: any) => {
         style[mxConstants.STYLE_STARTARROW] = null;
         style[mxConstants.STYLE_ENDARROW] = null;
@@ -91,14 +91,14 @@ export default class StyleConfigurator {
       },
     ],
     [
-      AssociationDirectionKind.ONE,
+      TAssociationDirection.One,
       (style: any) => {
         style[mxConstants.STYLE_STARTARROW] = null;
         style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
     [
-      AssociationDirectionKind.BOTH,
+      TAssociationDirection.Both,
       (style: any) => {
         style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
@@ -273,7 +273,7 @@ export default class StyleConfigurator {
   }
 
   private configureAssociationFlowStyles(): void {
-    this.configureEdgeStyles<AssociationDirectionKind>(Object.values(AssociationDirectionKind), this.specificAssociationFlowStyles);
+    this.configureEdgeStyles<TAssociationDirection>(Object.values(TAssociationDirection), this.specificAssociationFlowStyles);
   }
 
   private configureFlowStyles(): void {

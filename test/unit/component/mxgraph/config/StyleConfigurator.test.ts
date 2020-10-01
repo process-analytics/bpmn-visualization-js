@@ -34,7 +34,7 @@ import Bounds from '../../../../../src/model/bpmn/internal/Bounds';
 import { BpmnEventKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import each from 'jest-each';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/json/BPMNDI';
-import { AssociationDirectionKind } from '../../../../../src/model/bpmn/internal/edge/AssociationDirectionKind';
+import { TAssociationDirection } from '../../../../../src/model/bpmn/json/baseElement/artifact';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
@@ -96,7 +96,7 @@ function newMessageFlow(): MessageFlow {
   return new MessageFlow('id', 'name', undefined, undefined);
 }
 
-function newAssociationFlow(kind: AssociationDirectionKind): AssociationFlow {
+function newAssociationFlow(kind: TAssociationDirection): AssociationFlow {
   return new AssociationFlow('id', 'name', undefined, undefined, kind);
 }
 
@@ -192,9 +192,9 @@ describe('mxgraph renderer', () => {
   });
 
   each([
-    [AssociationDirectionKind.NONE, 'None'],
-    [AssociationDirectionKind.ONE, 'One'],
-    [AssociationDirectionKind.BOTH, 'Both'],
+    [TAssociationDirection.None, 'None'],
+    [TAssociationDirection.One, 'One'],
+    [TAssociationDirection.Both, 'Both'],
   ]).it('compute style - association flows: %s', (kind, expected) => {
     const edge = new Edge('id', newAssociationFlow(kind));
     expect(computeStyle(edge)).toEqual(`association;${expected}`);
