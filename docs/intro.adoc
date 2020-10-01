@@ -39,15 +39,15 @@ If you need BPMN examples, you can use resources from:
 |===
 | image:https://www.google.com/chrome/static/images/chrome-logo.svg[width=18] Chrome | image:https://user-media-prod-cdn.itsre-sumo.mozilla.net/uploads/products/2020-04-14-08-36-13-8dda6f.png[width=18] Firefox | image:https://developer.apple.com/assets/elements/icons/safari/safari-96x96.png[width=18] Safari | image:https://avatars0.githubusercontent.com/u/11354582?s=200&v=4[width=18] Edge
 
-|Yes
-|Yes
-|Yes
-|Yes
+| icon:check[]
+| icon:check[]
+| icon:check[]
+| icon:check[]
 
 |===
 
-**Note**: Internet Explorer won't never be supported. +
-The library may work with the other browsers, currently not list, if they support ES6.
+**Note**: Internet Explorer will never be supported. +
+The library may work with the other browsers, they must at least support ES6.
 
 
 == ♻️ Usage
