@@ -28,4 +28,16 @@ module.exports = {
   setupFiles: ['<rootDir>/test/e2e/config/jest.globals.ts'],
   // jest-image-snapshot configuration doesn't work with setupFiles, fix with setupFilesAfterEnv: see https://github.com/testing-library/jest-dom/issues/122#issuecomment-650520461
   setupFilesAfterEnv: ['<rootDir>/test/e2e/config/jest.image.ts'],
+  reporters: [
+    'default',
+    [
+      'jest-html-reporter',
+      {
+        pageTitle: 'bpmn-visualization E2E Test Report',
+        outputPath: 'build/test-report/e2e/index.html',
+        includeFailureMsg: true,
+        includeSuiteFailure: true,
+      },
+    ],
+  ],
 };
