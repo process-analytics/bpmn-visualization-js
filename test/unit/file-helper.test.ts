@@ -28,7 +28,7 @@ describe('linearize xml', () => {
     <node1>my value</node1>
 </root>
 `;
-    expect(linearizeXml(xml)).toEqual(`<root><node1>my value2</node1></root>`);
+    expect(linearizeXml(xml)).toEqual(`<root><node1>my value</node1></root>`);
   });
 
   it('line breaks and tabs', () => {

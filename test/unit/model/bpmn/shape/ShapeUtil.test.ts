@@ -29,6 +29,5 @@ describe('ShapeUtil', () => {
 
     expect(tasks).toContain(ShapeBpmnElementKind.TASK);
     expect(tasks).toContain(ShapeBpmnElementKind.TASK_USER);
-    expect(tasks).toContain('extra');
   });
 });
