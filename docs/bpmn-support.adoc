@@ -163,6 +163,7 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 |===
 
+
 [cols="1,1,4", options="header"]
 .Event Sub-Process Interrupting Start Events
 |===
@@ -170,11 +171,26 @@ The event definition can be defined on the event or on the definitions.
 |Rendering
 |Comments
 
+|Timer Interrupting Start Event
+|icon:check-circle-o[]
+|The icon width may be adjusted
+
+|Message Interrupting Start Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+
+|Error Interrupting Start Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+
+|Signal Interrupting Start Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+
 |Compensation Interrupting Start Event
 |
 |
 |===
-
 
 
 [cols="1,1,4", options="header"]
@@ -188,7 +204,7 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle-o[]
 |The icon width may be adjusted
 
-|MessageNon-interrupting  Start Event
+|Message Non-interrupting Start Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
@@ -196,6 +212,7 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 |===
+
 
 [cols="1,1,4", options="header"]
 .Intermediate Catch Events
