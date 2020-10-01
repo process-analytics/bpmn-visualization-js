@@ -51,7 +51,7 @@ If you need BPMN examples, you can use resources from
 | Yes | Yes | Yes | Yes |
 
 **Note**: Internet Explorer will never be supported. \
-The library may work with the other browsers, they must at least support ES6.
+The library may work with the other browsers. They must at least support ES6.
 
 ## 🎨 Features
 
