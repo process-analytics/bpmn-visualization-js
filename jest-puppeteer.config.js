@@ -24,7 +24,7 @@ module.exports = {
     dumpio: true,
     headless: process.env.HEADLESS !== 'false',
     slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
-    args: ['--disable-infobars'],
+    args: ['--disable-infobars', '--no-sandbox', '--disable-setuid-sandbox'],
     timeout: 120000,
   },
 };
