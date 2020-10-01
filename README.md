@@ -1,5 +1,5 @@
 <h1 align="center">BPMN Visualization</h1>
-<p align="center">
+<div align="center">
     <p align="center"> <img title="BPMN Visualization" src="docs/images/diagram-hacktoberfest-example.png"></p>
     <p align="center"> 
         <a href="https://github.com/process-analytics/bpmn-visualization-js/releases">
@@ -20,9 +20,12 @@
         </a> 
         <a href="LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/process-analytics/bpmn-visualization-js?color=blue"> 
+        </a>
+        <a href="https://gitpod.io/#https://github.com/process-analytics/bpmn-visualization-js" target="_blank">
+        <img alt="Gitpod" src="https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod"> 
         </a> 
     </p>
-</p>  
+</div>  
 <br>
 
 `bpmn-visualization` is a TypeScript library to visualize process execution data on [BPMN](https://www.omg.org/spec/BPMN/2.0.2/) diagrams with:
