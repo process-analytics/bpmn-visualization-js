@@ -23,7 +23,6 @@ import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
 import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';
-import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
 
 export default class MxGraphRenderer {
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
@@ -112,7 +111,7 @@ export default class MxGraphRenderer {
   }
 
   private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: mxCell): void {
-    if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
+    if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind) {
       const mxCell = this.graph.insertVertex(mxEdge, `messageFlowIcon_of_${mxEdge.id}`, undefined, 0, 0, 20, 14, this.styleConfigurator.computeMessageFlowIconStyle(edge));
       mxCell.geometry.relative = true;
       mxCell.geometry.offset = new mxPoint(-10, -7);
