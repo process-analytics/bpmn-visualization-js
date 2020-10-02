@@ -29,6 +29,8 @@ Once you have logged in to Gitpod do not forget to give it access to write in pu
 
 After that quick setup you are able to contribute
 
+When Gitpod IDE is started the `npm install` command is launched automatically, the workspace is ready to build and run dev server and tests
+
 
 ### Visual Studio Code
 
@@ -118,4 +120,3 @@ It helps to avoid coding mistakes -> reduced technical debt
 We use [asciidoc](https://asciidoctor.org/docs/what-is-asciidoc/) to write the documentation.
 
 An [AsciiDoc IntelliJ Plugin](https://plugins.jetbrains.com/plugin/7391-asciidoc) is a helpful plugin that permits visualizing .adoc files directly in IntelliJ
-
