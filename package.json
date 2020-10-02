@@ -15,6 +15,7 @@
     "clean": "rimraf build coverage dist",
     "build": "rollup -c",
     "build-bundles": "rollup -c --config-build-bundles true",
+    "prepare": "run-s clean build-bundles",
     "build-utils": "rollup --config utils.rollup.config.js",
     "demo": "run-s demo:*",
     "demo:clean": "rimraf dist",
