@@ -5,7 +5,7 @@
   "repository": "https://github.com/process-analytics/bpmn-visualization-js",
   "license": "Apache-2.0",
   "browser": "dist/bpmn-visualization.js",
-  "module": "dist/index.es.js",
+  "module": "dist/bpmn-visualization.esm.js",
   "files": [
     "dist"
   ],
