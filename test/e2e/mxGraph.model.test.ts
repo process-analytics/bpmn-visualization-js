@@ -88,12 +88,12 @@ expect.extend({
     const cell = bpmnVisualization.graph.model.getCell(cellId);
     if (cell) {
       return {
-        message: () => `Expected cell with id '${cellId}' NOT to be defined`,
+        message: () => `Expected the cell with id '${cellId}' not to be found in the mxGraph model`,
         pass: true,
       };
     } else {
       return {
-        message: () => `Expected cell with id '${cellId}' to be defined`,
+        message: () => `Expected the cell with id '${cellId}' to be found in the mxGraph model`,
         pass: false,
       };
     }
