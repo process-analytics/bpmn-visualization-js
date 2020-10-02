@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
-import { BpmnJsonModel } from '../../../../../src/component/parser/xml/bpmn-json-model/BPMN20';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
+import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 
 describe('parse bpmn as json for diagram', () => {
   const jsonModelWithoutBPMNDiagram: BpmnJsonModel = {

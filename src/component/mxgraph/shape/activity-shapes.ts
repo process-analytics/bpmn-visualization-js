@@ -15,8 +15,9 @@
  */
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render';
-import { ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/shape';
+import { ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal/shape';
 import BpmnCanvas from './render/BpmnCanvas';
+import { orderActivityMarkers } from './render/utils';
 
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
   IconPainterProvider.get().paintEnvelopeIcon({
@@ -45,7 +46,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
     const markers = StyleUtils.getBpmnMarkers(this.style);
     if (markers) {
-      markers.split(',').forEach((marker, idx, allMarkers) => {
+      orderActivityMarkers(markers.split(',')).forEach((marker, idx, allMarkers) => {
         paintParameter = {
           ...paintParameter,
           setIconOrigin: this.getIconOriginForMarkerIcon(allMarkers.length, idx + 1),
@@ -225,5 +226,17 @@ export class SubProcessShape extends BaseActivityShape {
 
     // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
     c.restore();
+  }
+}
+
+export class BusinessRuleTaskShape extends BaseActivityShape {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+    super(bounds, fill, stroke, strokewidth);
+    this.gradient = 'Chartreuse';
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
+  protected paintTaskIcon(paintParameter: PaintParameter): void {
+    // TODO To be implemented later
   }
 }

@@ -15,7 +15,7 @@
  */
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes } from './JsonTestUtils';
 import each from 'jest-each';
-import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
+import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for label font', () => {
   each([
@@ -34,8 +34,7 @@ describe('parse bpmn as json for label font', () => {
     ['textAnnotation'],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway'],
-    // TODO: To uncomment when we support businessRuleTask
-    //['businessRuleTask'],
+    ['businessRuleTask'],
   ]).it("should convert as Shape without Label, when a BPMNShape (attached to %s & with empty BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)", sourceKind => {
     const json = {
       definitions: {

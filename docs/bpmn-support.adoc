@@ -1,7 +1,13 @@
 [[supported-bpmn-elements]]
-
 == Supported BPMN Elements
 :icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
 NOTE: The BPMN support roadmap is available in https://github.com/process-analytics/bpmn-visualization-js/milestones[Github milestones]
 
@@ -86,6 +92,11 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |icon:check-circle-o[]
 |
 
+
+|Business Rule Task
+|
+|
+
 |Embedded Sub-Process
 |icon:check-circle-o[]
 |
@@ -158,6 +169,36 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 |===
 
+
+[cols="1,1,4", options="header"]
+.Event Sub-Process Interrupting Start Events
+|===
+|Name
+|Rendering
+|Comments
+
+|Timer Interrupting Start Event
+|icon:check-circle-o[]
+|The icon width may be adjusted
+
+|Message Interrupting Start Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+
+|Error Interrupting Start Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+
+|Signal Interrupting Start Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+
+|Compensation Interrupting Start Event
+|
+|
+|===
+
+
 [cols="1,1,4", options="header"]
 .Event Sub-Process Non-Interrupting Start Events
 |===
@@ -169,7 +210,7 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle-o[]
 |The icon width may be adjusted
 
-|MessageNon-interrupting  Start Event
+|Message Non-interrupting Start Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
@@ -177,6 +218,7 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 |===
+
 
 [cols="1,1,4", options="header"]
 .Intermediate Catch Events
@@ -225,6 +267,10 @@ The event definition can be defined on the event or on the definitions.
 |Link Intermediate Throw Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Compensation Intermediate Throw Event
+|
+|
 |===
 
 
@@ -250,6 +296,10 @@ The event definition can be defined on the event or on the definitions.
 |Error Interrupting Boundary Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Compensation Interrupting Boundary Event
+|
+|
 |===
 
 
@@ -300,7 +350,12 @@ The event definition can be defined on the event or on the definitions.
 |Error End Event
 |icon:check-circle-o[]
 |The icon width may be adjusted
+
+|Compensation End Event
+|
+|
 |===
+
 
 
 === Flows

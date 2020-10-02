@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Participant } from '../../../../model/bpmn/shape/ShapeBpmnElement';
-import { MessageFlow } from '../../../../model/bpmn/edge/Flow';
-import { TCollaboration } from '../../xml/bpmn-json-model/baseElement/rootElement/collaboration';
-import { TParticipant } from '../../xml/bpmn-json-model/baseElement/participant';
-import { TMessageFlow } from '../../xml/bpmn-json-model/baseElement/baseElement';
+import { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import { MessageFlow } from '../../../../model/bpmn/internal/edge/Flow';
+import { TCollaboration } from '../../../../model/bpmn/json/baseElement/rootElement/collaboration';
+import { TParticipant } from '../../../../model/bpmn/json/baseElement/participant';
+import { TMessageFlow } from '../../../../model/bpmn/json/baseElement/baseElement';
 import { ensureIsArray } from './ConverterUtil';
 
 const convertedParticipantsById: Map<string, Participant> = new Map();

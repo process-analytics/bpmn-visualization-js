@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { mxgraph } from 'ts-mxgraph';
-import { ShapeBpmnElementKind } from '../../../model/bpmn/shape';
+import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
 import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape, BoundaryEventShape } from '../shape/event-shapes';
 import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape } from '../shape/gateway-shapes';
 import {
@@ -27,6 +27,7 @@ import {
   SendTaskShape,
   ManualTaskShape,
   ScriptTaskShape,
+  BusinessRuleTaskShape,
 } from '../shape/activity-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
@@ -63,6 +64,7 @@ export default class ShapeConfigurator {
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SEND, SendTaskShape);
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_MANUAL, ManualTaskShape);
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SCRIPT, ScriptTaskShape);
+    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_BUSINESS_RULE, BusinessRuleTaskShape);
     // artifacts
     mxCellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
 

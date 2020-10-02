@@ -15,7 +15,7 @@
  */
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelBounds } from './JsonTestUtils';
 import each from 'jest-each';
-import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
+import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for label bounds', () => {
   each([
@@ -34,8 +34,7 @@ describe('parse bpmn as json for label bounds', () => {
     ['textAnnotation'],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway'],
-    // TODO: To uncomment when we support businessRuleTask
-    //['businessRuleTask'],
+    ['businessRuleTask'],
   ]).describe('parse bpmn as json for label bounds on %s', sourceKind => {
     it(`should convert as Shape, when a BPMNShape (attached to ${sourceKind} & with bounds with all attributes) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
       const json = {
