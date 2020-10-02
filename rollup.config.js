@@ -54,10 +54,14 @@ const plugins = [
     typescript: require('typescript'),
     tsconfigOverride: tsconfigOverride,
   }),
-  resolve(),
-  commonjs(),
-  json(),
 ];
+const pluginsNoDeps = [...plugins];
+
+plugins.push(resolve());
+plugins.push(commonjs());
+plugins.push(json());
+
+pluginsNoDeps.push(json());
 
 // Copy static resources to dist
 if (devMode || demoMode) {
@@ -90,15 +94,21 @@ if (devMode) {
 }
 
 const minify = demoMode || buildBundles;
+const pluginsNoDepsNoMin = [...pluginsNoDeps];
 if (minify) {
   plugins.push(
     terser({
       ecma: 6,
     }),
   );
+  pluginsNoDeps.push(
+    terser({
+      ecma: 6,
+    }),
+  );
 }
 
-const libInput = 'src/index.ts';
+const libInput = 'src/bpmn-visualization.ts';
 let rollupConfigs;
 
 if (!buildBundles) {
@@ -118,23 +128,31 @@ if (!buildBundles) {
     },
   ];
 } else {
-  rollupConfigs = [
-    {
-      input: libInput,
-      output: [
-        {
-          // hack to have the mxGraph configuration prior the load of the mxGraph lib
-          banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
-          file: pkg.browser,
-          name: 'bpmnvisu',
-          format: 'iife',
-        },
-      ],
-      // TODO we may use this plugin configuration instead resolve({browser: true})
-      // If true, instructs the plugin to use the "browser" property in package.json files to specify alternative files to load for bundling. This is useful when bundling for a browser environment.
-      plugins: plugins,
+  const configIife = {
+    input: libInput,
+    output: {
+      // hack to have the mxGraph configuration prior the load of the mxGraph lib
+      banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
+      file: pkg.browser,
+      name: 'bpmnvisu',
+      format: 'iife',
     },
-  ];
+    // TODO we may use this plugin configuration instead resolve({browser: true})
+    // If true, instructs the plugin to use the "browser" property in package.json files to specify alternative files to load for bundling. This is useful when bundling for a browser environment.
+    plugins: plugins,
+  };
+  const configEsmMin = {
+    input: libInput,
+    output: {
+      file: pkg.module.replace('.js', '.min.js'),
+      format: 'es',
+    },
+    // TODO check the possibility to use pkg.dependencies
+    external: ['entities/lib/decode', 'fast-xml-parser/src/parser'],
+    plugins: pluginsNoDeps,
+  };
+  const configEsm = { ...configEsmMin, plugins: pluginsNoDepsNoMin, output: { file: pkg.module, format: 'es' } };
+  rollupConfigs = [configIife, configEsm, configEsmMin];
 }
 
 export default rollupConfigs;
