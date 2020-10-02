@@ -42,7 +42,9 @@ const demoMode = process.env.demoMode;
 const argv = parseArgs(process.argv.slice(2)); // start with 'node rollup' so drop them
 // for the 'config-xxx' syntax, see https://github.com/rollup/rollup/issues/1662#issuecomment-395382741
 const serverPort = process.env.SERVER_PORT || argv['config-server-port'] || 10001;
-const buildBundles = argv['config-build-bundles'] || false;
+const buildBundleEs = argv['config-build-bundle-es'] || false;
+const buildBundleIife = argv['config-build-bundle-iife'] || false;
+const buildBundles = buildBundleIife || buildBundleEs;
 
 const sourceMap = !demoMode;
 const tsDeclarationFiles = !demoMode || buildBundles;
@@ -54,10 +56,13 @@ const plugins = [
     typescript: require('typescript'),
     tsconfigOverride: tsconfigOverride,
   }),
-  resolve(),
-  commonjs(),
-  json(),
 ];
+
+if (!buildBundleEs) {
+  plugins.push(resolve());
+  plugins.push(commonjs());
+}
+plugins.push(json());
 
 // Copy static resources to dist
 if (devMode || demoMode) {
@@ -90,6 +95,7 @@ if (devMode) {
 }
 
 const minify = demoMode || buildBundles;
+const pluginsWithoutMinify = [...plugins];
 if (minify) {
   plugins.push(
     terser({
@@ -118,23 +124,40 @@ if (!buildBundles) {
     },
   ];
 } else {
-  rollupConfigs = [
-    {
+  if (buildBundleIife) {
+    rollupConfigs = [
+      {
+        input: libInput,
+        output: [
+          {
+            // hack to have the mxGraph configuration prior the load of the mxGraph lib
+            banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
+            file: pkg.browser,
+            name: 'bpmnvisu',
+            format: 'iife',
+          },
+        ],
+        // TODO we may use this plugin configuration instead resolve({browser: true})
+        // If true, instructs the plugin to use the "browser" property in package.json files to specify alternative files to load for bundling. This is useful when bundling for a browser environment.
+        plugins: plugins,
+      },
+    ];
+  }
+  if (buildBundleEs) {
+    const config = {
       input: libInput,
       output: [
         {
-          // hack to have the mxGraph configuration prior the load of the mxGraph lib
-          banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
-          file: pkg.browser,
-          name: 'bpmnvisu',
-          format: 'iife',
+          file: pkg.module.replace('.js', '.min.js'),
+          format: 'es',
         },
       ],
-      // TODO we may use this plugin configuration instead resolve({browser: true})
-      // If true, instructs the plugin to use the "browser" property in package.json files to specify alternative files to load for bundling. This is useful when bundling for a browser environment.
+      external: ['entities/lib/decode', 'fast-xml-parser/src/parser'],
       plugins: plugins,
-    },
-  ];
+    };
+    const configsWithoutMinify = { ...config, plugins: pluginsWithoutMinify, output: { file: pkg.module, format: 'es' } };
+    rollupConfigs = [configsWithoutMinify, config];
+  }
 }
 
 export default rollupConfigs;
