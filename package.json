@@ -9,7 +9,7 @@
   "files": [
     "dist"
   ],
-  "types": "dist/index.d.ts",
+  "types": "dist/bpmn-visualization.d.ts",
   "scripts": {
     "all": "run-s clean lint lint-check build test",
     "clean": "rimraf build coverage dist",

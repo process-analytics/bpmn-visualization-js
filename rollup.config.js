@@ -108,7 +108,7 @@ if (minify) {
   );
 }
 
-const libInput = 'src/index.ts';
+const libInput = 'src/bpmn-visualization.ts';
 let rollupConfigs;
 
 if (!buildBundles) {
