@@ -135,7 +135,7 @@ describe('mxGraph model', () => {
 
   function expectModelNotContainCell(cellId: string): void {
     const cell = bpmnVisualization.graph.model.getCell(cellId);
-    expect(cell).toBeUndefined();
+    expect(cell).not.toBeCell();
   }
 
   function expectModelContainsCell(cellId: string): mxCell {
