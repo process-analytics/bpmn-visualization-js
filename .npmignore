@@ -1,0 +1,5 @@
+dist/demo/**
+dist/index**
+dist/lib-integration.html
+dist/non-regression.html
+dist/static/**
