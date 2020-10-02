@@ -968,8 +968,7 @@ describe('mxGraph model', () => {
   });
 
   function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxGeometry): void {
-    const cell = bpmnVisualization.graph.model.getCell(cellId);
-    expect(cell).not.toBeNull();
+    const cell = expectModelContainsCell(cellId);
 
     if (parentId) {
       expect(cell.parent.id).toEqual(parentId);
