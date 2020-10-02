@@ -70,3 +70,6 @@ jobs:
         with:
           name: e2e-test-results-${{matrix.os.name}}-${{github.sha}}
           path: build/test-report/e2e
+      # Ensure we don't break scripts
+      - name: Build utils
+        run: npm run build-utils
