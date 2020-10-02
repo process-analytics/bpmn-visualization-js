@@ -130,8 +130,8 @@ if (!buildBundles) {
           format: 'iife',
         },
       ],
-      // external: [],
-      //   resolve({browser: true}),
+      // TODO we may use this plugin configuration instead resolve({browser: true})
+      // If true, instructs the plugin to use the "browser" property in package.json files to specify alternative files to load for bundling. This is useful when bundling for a browser environment.
       plugins: plugins,
     },
   ];
