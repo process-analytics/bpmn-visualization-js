@@ -4,6 +4,7 @@
   "description": "A TypeScript library to visualize process execution data on BPMN diagrams",
   "repository": "https://github.com/process-analytics/bpmn-visualization-js",
   "license": "Apache-2.0",
+  "browser": "dist/bpmn-visualization.js",
   "module": "dist/index.es.js",
   "files": [
     "dist"
@@ -13,6 +14,7 @@
     "all": "run-s clean lint lint-check build test",
     "clean": "rimraf build coverage dist",
     "build": "rollup -c",
+    "build-bundles": "rollup -c --config-build-bundles true",
     "build-utils": "rollup --config utils.rollup.config.js",
     "demo": "run-s demo:*",
     "demo:clean": "rimraf dist",
