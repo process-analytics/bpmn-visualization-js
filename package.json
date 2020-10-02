@@ -2,14 +2,49 @@
   "name": "bpmn-visualization",
   "version": "0.3.1",
   "description": "A TypeScript library to visualize process execution data on BPMN diagrams",
-  "repository": "https://github.com/process-analytics/bpmn-visualization-js",
+  "keywords": [
+    "bpmn2",
+    "bpmn",
+    "javascript",
+    "typescript",
+    "ui-components",
+    "diagrams",
+    "visualization",
+    "process-analytics",
+    "view",
+    "bpmn-support",
+    "analytics",
+    "diagram",
+    "viewer"
+  ],
+  "homepage": "https://github.com/process-analytics/bpmn-visualization-js#readme",
+  "bugs": "https://github.com/process-analytics/bpmn-visualization-js/issues" ,
   "license": "Apache-2.0",
   "browser": "dist/bpmn-visualization.js",
   "module": "dist/bpmn-visualization.esm.js",
+  "contributors": [
+    {
+      "name" : "Thomas Bouffard",
+      "url" : "https://github.com/tbouffard"
+    },
+    {
+      "name" : "Céline Souchet",
+      "url" : "https://github.com/csouchet"
+    },
+    {
+      "name" : "Marcin Michniewicz",
+      "url" : "https://github.com/aibcmars"
+    }
+  ],
   "files": [
     "dist"
   ],
+  "main": "dist/bpmn-visualization.cjs.js",
   "types": "dist/bpmn-visualization.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/process-analytics/bpmn-visualization-js.git"
+  },
   "scripts": {
     "all": "run-s clean lint lint-check build test",
     "clean": "rimraf build coverage dist",
@@ -32,16 +67,10 @@
     "test:e2e": "cross-env DEBUG=test JEST_IMAGE_SNAPSHOT_TRACK_OBSOLETE=1 jest --runInBand --detectOpenHandles --config=jest.config.e2e.js",
     "test:e2e:coverage": "cross-env JEST_IMAGE_SNAPSHOT_TRACK_OBSOLETE=1 jest --runInBand --detectOpenHandles --config=jest.config.e2e.js --coverage"
   },
-  "lint-staged": {
-    "*.{js,ts,tsx}": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsc --noEmit && lint-staged"
-    }
+  "dependencies": {
+    "entities": "^2.0.0",
+    "fast-xml-parser": "^3.17.4",
+    "mxgraph": "4.1.0"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^4.1.0",
@@ -89,9 +118,15 @@
     "ts-mxgraph": "git+https://github.com/process-analytics/ts-mxgraph.git#v1.0.1",
     "typescript": "^3.9.7"
   },
-  "dependencies": {
-    "entities": "^2.0.0",
-    "fast-xml-parser": "^3.17.4",
-    "mxgraph": "4.1.0"
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsc --noEmit && lint-staged"
+    }
   }
 }
