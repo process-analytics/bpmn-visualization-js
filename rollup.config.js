@@ -130,27 +130,24 @@ if (!buildBundles) {
 } else {
   const configIife = {
     input: libInput,
-    output: [
-      {
-        // hack to have the mxGraph configuration prior the load of the mxGraph lib
-        banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
-        file: pkg.browser,
-        name: 'bpmnvisu',
-        format: 'iife',
-      },
-    ],
+    output: {
+      // hack to have the mxGraph configuration prior the load of the mxGraph lib
+      banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
+      file: pkg.browser,
+      name: 'bpmnvisu',
+      format: 'iife',
+    },
     // TODO we may use this plugin configuration instead resolve({browser: true})
     // If true, instructs the plugin to use the "browser" property in package.json files to specify alternative files to load for bundling. This is useful when bundling for a browser environment.
     plugins: plugins,
   };
   const configEsmMin = {
     input: libInput,
-    output: [
-      {
-        file: pkg.module.replace('.js', '.min.js'),
-        format: 'es',
-      },
-    ],
+    output: {
+      file: pkg.module.replace('.js', '.min.js'),
+      format: 'es',
+    },
+    // TODO check the possibility to use pkg.dependencies
     external: ['entities/lib/decode', 'fast-xml-parser/src/parser'],
     plugins: pluginsNoDeps,
   };
