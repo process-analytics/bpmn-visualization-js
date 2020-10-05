@@ -20,8 +20,6 @@
   "homepage": "https://github.com/process-analytics/bpmn-visualization-js#readme",
   "bugs": "https://github.com/process-analytics/bpmn-visualization-js/issues" ,
   "license": "Apache-2.0",
-  "browser": "dist/bpmn-visualization.js",
-  "module": "dist/bpmn-visualization.esm.js",
   "contributors": [
     {
       "name" : "Thomas Bouffard",
@@ -36,14 +34,16 @@
       "url" : "https://github.com/aibcmars"
     }
   ],
-  "files": [
-    "dist"
-  ],
-  "types": "dist/bpmn-visualization.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/process-analytics/bpmn-visualization-js.git"
   },
+  "browser": "dist/bpmn-visualization.js",
+  "module": "dist/bpmn-visualization.esm.js",
+  "types": "dist/bpmn-visualization.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "all": "run-s clean lint lint-check build test",
     "clean": "rimraf build coverage dist",
