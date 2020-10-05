@@ -1,5 +1,5 @@
 <h1 align="center">BPMN Visualization</h1>
-<p align="center">
+<div align="center">
     <p align="center"> <img title="BPMN Visualization" src="docs/images/diagram-hacktoberfest-example.png"></p>
     <p align="center"> 
         <a href="https://npmjs.org/package/bpmn-visualization">
@@ -14,6 +14,9 @@
         <a href="https://github.com/process-analytics/bpmn-visualization-js/actions">
         <img alt="Build" src="https://github.com/process-analytics/bpmn-visualization-js/workflows/Build/badge.svg"> 
         </a> 
+        <a href="https://gitpod.io/#https://github.com/process-analytics/bpmn-visualization-js" target="_blank">
+        <img alt="Gitpod" src="https://img.shields.io/badge/Gitpod-ready--to--code-chartreuse?logo=gitpod"> 
+        </a> 
         <br>
         <a href="CONTRIBUTING.md">
         <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square"> 
@@ -23,9 +26,9 @@
         </a> 
         <a href="LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/process-analytics/bpmn-visualization-js?color=blue"> 
-        </a> 
+        </a>
     </p>
-</p>  
+</div>  
 <br>
 
 `bpmn-visualization` is a TypeScript library to visualize process execution data on [BPMN](https://www.omg.org/spec/BPMN/2.0.2/) diagrams with:
