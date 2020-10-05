@@ -86,19 +86,13 @@ export interface ExpectedStartEventModelElement extends ExpectedEventModelElemen
 
 export const bpmnVisualization = new BpmnVisualization(null);
 
-function toBeCell(this: MatcherContext, cellId: string): CustomMatcherResult {
-  const cell = bpmnVisualization.graph.model.getCell(cellId);
-  if (cell) {
-    return {
-      message: () => `Expected the cell with id '${cellId}' not to be found in the mxGraph model`,
-      pass: true,
-    };
-  } else {
-    return {
-      message: () => `Expected the cell with id '${cellId}' to be found in the mxGraph model`,
-      pass: false,
-    };
-  }
+function toBeCell(this: MatcherContext, received: string): CustomMatcherResult {
+  const cell = bpmnVisualization.graph.model.getCell(received);
+  const pass = cell ? true : false;
+  return {
+    message: () => this.utils.matcherHint(`.${pass ? 'not.' : ''}toBeCell`) + '\n\n' + `Expected cell with id '${received}' ${pass ? 'not ' : ''}to be found in the mxGraph model`,
+    pass,
+  };
 }
 
 function withGeometry(this: MatcherContext, received: mxCell, expected: mxGeometry): CustomMatcherResult {
