@@ -35,7 +35,6 @@ import {
   expectModelNotContainCell,
   expectModelContainsCellWithGeometry,
   getDefaultParentId,
-  expectModelContainsEdge,
 } from './ExpectModelUtils';
 
 describe('mxGraph model', () => {
@@ -440,11 +439,11 @@ describe('mxGraph model', () => {
       label: 'End Event In Sub-Process',
       parentId: 'expanded_embedded_sub_process_id',
     });
-    expectModelContainsEdge('sequence_flow_in_sub_process_1_id', {
+    expect('sequence_flow_in_sub_process_1_id').toBeEdge({
       kind: FlowKind.SEQUENCE_FLOW,
       parentId: 'expanded_embedded_sub_process_id',
     });
-    expectModelContainsEdge('sequence_flow_in_sub_process_2_id', {
+    expect('sequence_flow_in_sub_process_2_id').toBeEdge({
       kind: FlowKind.SEQUENCE_FLOW,
       parentId: 'expanded_embedded_sub_process_id',
     });

@@ -29,8 +29,20 @@ declare global {
       toBeCell(): R;
       withGeometry(geometry: mxGeometry): R;
       withFont(font: ExpectedFont): R;
+      toBeEdge(modelElement: ExpectedEdgeModelElement): R;
     }
   }
+}
+
+export interface ExpectedCell {
+  value?: string;
+  geometry?: mxGeometry | mxGeometry[];
+  style?: string;
+  id?: string;
+  edge?: boolean;
+  vertex?: boolean;
+  parent?: ExpectedCell;
+  children?: ExpectedCell | ExpectedCell[];
 }
 
 export interface ExpectedFont {
@@ -86,13 +98,20 @@ export interface ExpectedStartEventModelElement extends ExpectedEventModelElemen
 
 export const bpmnVisualization = new BpmnVisualization(null);
 
-function toBeCell(this: MatcherContext, received: string): CustomMatcherResult {
-  const cell = bpmnVisualization.graph.model.getCell(received);
-  const pass = cell ? true : false;
+function getCellMatcherResult(pass: boolean, received: string): CustomMatcherResult {
   return {
     message: () => this.utils.matcherHint(`.${pass ? 'not.' : ''}toBeCell`) + '\n\n' + `Expected cell with id '${received}' ${pass ? 'not ' : ''}to be found in the mxGraph model`,
     pass,
   };
+}
+
+function getCell(received: string): mxCell {
+  return bpmnVisualization.graph.model.getCell(received);
+}
+
+function toBeCell(this: MatcherContext, received: string): CustomMatcherResult {
+  const pass = getCell(received) ? true : false;
+  return getCellMatcherResult(pass, received);
 }
 
 function withGeometry(this: MatcherContext, received: mxCell, expected: mxGeometry): CustomMatcherResult {
@@ -190,10 +209,271 @@ function getFontStyleValue(expectedFont: ExpectedFont): number {
   return value;
 }
 
+function toBeEdge(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
+  const cell = getCell(received);
+  if (!cell) {
+    return getCellMatcherResult(false, received);
+  }
+
+  const receivedCell: ExpectedCell = {
+    value: cell.label,
+    style: cell.style,
+    id: cell.id,
+    edge: cell.edge,
+    parent: { id: cell.parent.id },
+  };
+
+  if (cell.children && cell.children[0]) {
+    const receivedChild: ExpectedCell = {
+      value: cell.children[0].label,
+      geometry: cell.children[0].geometry,
+      style: cell.children[0].style,
+      id: cell.children[0].id,
+      edge: cell.children[0].edge,
+      parent: { id: cell.children[0].parent.id },
+    };
+
+    receivedCell.children = receivedChild;
+  }
+
+  if (cell.geometry) {
+    const geometry = new mxGeometry(cell.geometry.x, cell.geometry.y, cell.geometry.width, cell.geometry.height);
+    geometry.points = cell.geometry.points;
+    geometry.offset = cell.geometry.offset;
+
+    receivedCell.geometry = geometry;
+  }
+
+  const geometry = new mxGeometry(0, 0, 0, 0);
+  geometry.points = [new mxPoint(76, 100), new mxPoint(130, 100)];
+  geometry.offset = null;
+  const expectedCell: ExpectedCell = {
+    value: expected.label,
+    geometry: geometry,
+    style: expect.stringContaining(expected.kind),
+    id: received,
+    edge: true,
+    parent: {
+      id: getDefaultParentId(),
+    },
+  };
+
+  const parentId = expected.parentId;
+  if (parentId) {
+    expectedCell.parent.id = parentId;
+  }
+
+  if (expected.messageVisibleKind && expected.messageVisibleKind !== MessageVisibleKind.NONE) {
+    expectedCell.children = [
+      {
+        value: undefined,
+        geometry: new mxGeometry(0, 0, 0, 0),
+        style: `shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${expected.messageVisibleKind}`,
+        id: `messageFlowIcon_of_${received}`,
+        vertex: true,
+      },
+    ];
+  }
+
+  let pass = this.equals(receivedCell, expectedCell, [this.utils.iterableEquality, this.utils.subsetEquality]);
+
+  if (expected.startArrow || expected.font) {
+    const receivedState = bpmnVisualization.graph.getView().getState(cell);
+    const expectedState = {
+      style: {
+        shape: 'connector',
+        verticalAlign: 'top',
+        align: 'center',
+        strokeColor: 'Black',
+        fontColor: 'Black',
+        edgeStyle: 'segmentEdgeStyle',
+        endSize: 12,
+        strokeWidth: 1.5,
+        rounded: 1,
+        arcSize: 5,
+        fontFamily: 'Arial',
+        fontSize: 11,
+        fillColor: 'White',
+        labelBackgroundColor: 'none',
+        whiteSpace: 'wrap',
+        endArrow: 'blockThin',
+        startArrow: expected.startArrow,
+        fontStyle: 1,
+      },
+    };
+    //  pass = pass && withFont(receivedCell, expected.font).pass;
+
+    pass = pass && this.equals(receivedState, expectedState, [this.utils.iterableEquality, this.utils.subsetEquality]);
+  }
+
+  const matcherName = 'toBeEdge';
+  const options = {
+    isNot: this.isNot,
+    promise: this.promise,
+  };
+
+  //   Error: expect(received).toBeEdge(expected)
+  //
+  //   Expected geometry of the cell with id 'sequence_flow_in_sub_process_2_id' to be equals to:
+  //   {"edge": true, "geometry": {"height": 0, "offset": null, "points": [{"x": 76, "y": 100}, {"x": 130, "y": 100}], "width": 0, "x": 0, "y": 0}, "id": "sequence_flow_in_sub_process_2_id", "parent": {"id": "expanded_embedded_sub_process_id"}, "style": StringContaining "sequenceFlow", "value": undefined}
+  //   Received:
+  //   {"edge": true, "geometry": {"height": 0, "offset": null, "points": [{"x": 230, "y": 100}, {"x": 292, "y": 100}], "width": 0, "x": 0, "y": 0}, "id": "sequence_flow_in_sub_process_2_id", "parent": {"id": "expanded_embedded_sub_process_id"}, "style": "sequenceFlow;normal", "value": undefined}
+  //
+  //   Difference:
+  //
+  //     - Expected
+  //     + Received
+  //
+  // @@ -3,15 +3,15 @@
+  //   "geometry": mxGeometry {
+  //     "height": 0,
+  //       "offset": null,
+  //       "points": Array [
+  //       mxPoint {
+  //       -         "x": 76,
+  //         +         "x": 230,
+  //         "y": 100,
+  //     },
+  //     mxPoint {
+  //       -         "x": 130,
+  //         +         "x": 292,
+  //         "y": 100,
+  //     },
+  //   ],
+  //     "width": 0,
+  //       "x": 0,
+  //     @@ -19,8 +19,8 @@
+  //   },
+  //   "id": "sequence_flow_in_sub_process_2_id",
+  //     "parent": Object {
+  //     "id": "expanded_embedded_sub_process_id",
+  //   },
+  //   -   "style": StringContaining "sequenceFlow",
+  //     +   "style": "sequenceFlow;normal",
+  //     "value": undefined,
+  // }
+
+  // return {
+  //   message: pass
+  //     ? () =>
+  //         this.utils.matcherHint(matcherName, undefined, undefined, options) +
+  //         '\n\n' +
+  //         `Expected geometry of the cell with id '${receivedCell.id}' not to be equals to:\n` +
+  //         `  ${this.utils.printExpected(expectedCell)}\n` +
+  //         `Received:\n` +
+  //         `  ${this.utils.printReceived(receivedCell)}`
+  //     : () => {
+  //         const diffString = this.utils.diff(expectedCell, receivedCell, {
+  //           expand: this.expand,
+  //         });
+  //         return (
+  //           this.utils.matcherHint(matcherName, undefined, undefined, options) +
+  //           '\n\n' +
+  //           `Expected geometry of the cell with id '${receivedCell.id}' to be equals to:\n` +
+  //           `  ${this.utils.printExpected(expectedCell)}\n` +
+  //           `Received:\n` +
+  //           `  ${this.utils.printReceived(receivedCell)}` +
+  //           (diffString ? `\n\nDifference:\n\n${diffString}` : '')
+  //         );
+  //       },
+  //   pass,
+  // };
+
+  //   Error: expect(received).toBeEdge(expected)
+  //
+  //   - Expected  - 2
+  //   + Received  + 2
+  //
+  // @@ -3,15 +3,15 @@
+  //   "geometry": mxGeometry {
+  //     "height": 0,
+  //       "offset": null,
+  //       "points": Array [
+  //       mxPoint {
+  //       -         "x": 76,
+  //         +         "x": 230,
+  //         "y": 100,
+  //     },
+  //     mxPoint {
+  //       -         "x": 130,
+  //         +         "x": 292,
+  //         "y": 100,
+  //     },
+  //   ],
+  //     "width": 0,
+  //       "x": 0,
+
+  const message = pass
+    ? () =>
+        this.utils.matcherHint(matcherName, undefined, undefined, options) +
+        '\n\n' +
+        `Expected: Edge with id '${received}' not to be found in the mxGraph model` +
+        `Expected: not ${this.utils.printExpected(expectedCell)}` +
+        (this.utils.stringify(expectedCell) !== this.utils.stringify(receivedCell) ? `\nReceived: ${this.utils.printReceived(receivedCell)}` : '')
+    : () =>
+        this.utils.matcherHint(matcherName, undefined, undefined, options) +
+        '\n\n' +
+        this.utils.printDiffOrStringify(expectedCell, receivedCell, EXPECTED_LABEL, RECEIVED_LABEL, isExpand(this.expand));
+  return {
+    message,
+    pass,
+  };
+}
+
+function toMatchObject(this: MatcherContext, received: any, expected: any): CustomMatcherResult {
+  const matcherName = 'toMatchObject';
+  const options = {
+    isNot: this.isNot,
+    promise: this.promise,
+  };
+
+  if (typeof received !== 'object' || received === null) {
+    throw new Error(
+      this.utils.matcherErrorMessage(
+        this.utils.matcherHint(matcherName, undefined, undefined, options),
+        `${this.utils.RECEIVED_COLOR('received')} value must be a non-null object`,
+        this.utils.printWithType('Received', received, this.utils.printReceived),
+      ),
+    );
+  }
+
+  if (typeof expected !== 'object' || expected === null) {
+    throw new Error(
+      this.utils.matcherErrorMessage(
+        this.utils.matcherHint(matcherName, undefined, undefined, options),
+        `${this.utils.EXPECTED_COLOR('expected')} value must be a non-null object`,
+        this.utils.printWithType('Expected', expected, this.utils.printExpected),
+      ),
+    );
+  }
+
+  const pass = this.equals(received, expected, [this.utils.iterableEquality, this.utils.subsetEquality]);
+  const message = pass
+    ? () =>
+        this.utils.matcherHint(matcherName, undefined, undefined, options) +
+        '\n\n' +
+        `Expected: not ${this.utils.printExpected(expected)}` +
+        (this.utils.stringify(expected) !== this.utils.stringify(received) ? `\nReceived:     ${this.utils.printReceived(received)}` : '')
+    : () =>
+        this.utils.matcherHint(matcherName, undefined, undefined, options) +
+        '\n\n' +
+        this.utils.printDiffOrStringify(expected, received, EXPECTED_LABEL, RECEIVED_LABEL, isExpand(this.expand));
+  return {
+    message,
+    pass,
+  };
+}
+
+const EXPECTED_LABEL = 'Expected';
+const RECEIVED_LABEL = 'Received';
+
+const isExpand = (expand: any) => expand !== false;
+
 expect.extend({
   toBeCell,
   withGeometry,
   withFont,
+  toBeEdge,
 });
 
 export function expectModelNotContainCell(cellId: string): void {
@@ -229,41 +509,17 @@ export function expectModelContainsShape(cellId: string, modelElement: ExpectedS
   return cell;
 }
 
-export function expectModelContainsEdge(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
-  const cell = expectModelContainsCell(cellId);
-  expect(cell.style).toContain(modelElement.kind);
-  const parentId = modelElement.parentId;
-  if (parentId) {
-    expect(cell.parent.id).toEqual(parentId);
-  }
-
-  if (modelElement.messageVisibleKind === MessageVisibleKind.NON_INITIATING || modelElement.messageVisibleKind === MessageVisibleKind.INITIATING) {
-    const messageCell = expectModelContainsCell(`messageFlowIcon_of_${cellId}`);
-    expect(messageCell.style).toContain(`shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${modelElement.messageVisibleKind}`);
-  }
-
-  if (modelElement.startArrow || modelElement.font) {
-    const state = bpmnVisualization.graph.getView().getState(cell);
-    expect(state.style[mxConstants.STYLE_STARTARROW]).toEqual(modelElement.startArrow);
-    expect(cell).withFont(modelElement.font);
-  }
-
-  expect(cell.value).toEqual(modelElement.label);
-  return cell;
+export function expectModelContainsSequenceFlow(cellId: string, modelElement: ExpectedSequenceFlowModelElement): void {
+  expect(cellId).toBeEdge({ ...modelElement, kind: FlowKind.SEQUENCE_FLOW });
+  expect(getCell(cellId).style).toContain(modelElement.sequenceFlowKind);
 }
 
-export function expectModelContainsSequenceFlow(cellId: string, modelElement: ExpectedSequenceFlowModelElement): mxCell {
-  const cell = expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.SEQUENCE_FLOW });
-  expect(cell.style).toContain(modelElement.sequenceFlowKind);
-  return cell;
+export function expectModelContainsMessageFlow(cellId: string, modelElement: ExpectedEdgeModelElement): void {
+  expect(cellId).toBeEdge({ ...modelElement, kind: FlowKind.MESSAGE_FLOW });
 }
 
-export function expectModelContainsMessageFlow(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
-  return expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.MESSAGE_FLOW });
-}
-
-export function expectModelContainsAssociationFlow(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
-  return expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.ASSOCIATION_FLOW });
+export function expectModelContainsAssociationFlow(cellId: string, modelElement: ExpectedEdgeModelElement): void {
+  expect(cellId).toBeEdge({ ...modelElement, kind: FlowKind.ASSOCIATION_FLOW });
 }
 
 export function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {
