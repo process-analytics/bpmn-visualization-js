@@ -39,7 +39,6 @@
   "files": [
     "dist"
   ],
-  "main": "dist/bpmn-visualization.cjs.js",
   "types": "dist/bpmn-visualization.d.ts",
   "repository": {
     "type": "git",
