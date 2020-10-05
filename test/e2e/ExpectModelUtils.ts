@@ -19,12 +19,16 @@ import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVi
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import BpmnVisualization from '../../src/component/BpmnVisualization';
 import { StyleIdentifier } from '../../src/bpmn-visualization';
+import { printReceived } from 'jest-matcher-utils';
+import MatcherContext = jest.MatcherContext;
+import CustomMatcherResult = jest.CustomMatcherResult;
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
     interface Matchers<R> {
       toBeCell(): R;
+      withGeometry(geometry: mxGeometry): R;
     }
   }
 }
@@ -82,21 +86,62 @@ export interface ExpectedStartEventModelElement extends ExpectedEventModelElemen
 
 export const bpmnVisualization = new BpmnVisualization(null);
 
+function toBeCell(this: MatcherContext, cellId: string): CustomMatcherResult {
+  const cell = bpmnVisualization.graph.model.getCell(cellId);
+  if (cell) {
+    return {
+      message: () => `Expected the cell with id '${cellId}' not to be found in the mxGraph model`,
+      pass: true,
+    };
+  } else {
+    return {
+      message: () => `Expected the cell with id '${cellId}' to be found in the mxGraph model`,
+      pass: false,
+    };
+  }
+}
+
+function withGeometry(this: MatcherContext, received: mxCell, expected: mxGeometry): CustomMatcherResult {
+  const cellGeometry = received.getGeometry();
+
+  const pass =
+    cellGeometry.x === expected.x &&
+    cellGeometry.y === expected.y &&
+    cellGeometry.width === expected.width &&
+    cellGeometry.height === expected.height &&
+    JSON.stringify(cellGeometry.points) === JSON.stringify(expected.points);
+
+  const receivedGeometry = { x: cellGeometry.x, y: cellGeometry.y, width: cellGeometry.width, height: cellGeometry.height, points: cellGeometry.points };
+  return {
+    message: pass
+      ? () =>
+          this.utils.matcherHint('.not.withGeometry') +
+          '\n\n' +
+          `Expected geometry of the cell with id '${received.id}' not to be equals to:\n` +
+          `  ${this.utils.printExpected(expected)}\n` +
+          `Received:\n` +
+          `  ${this.utils.printReceived(receivedGeometry)}`
+      : () => {
+          const diffString = this.utils.diff(expected, receivedGeometry, {
+            expand: this.expand,
+          });
+          return (
+            this.utils.matcherHint('.withGeometry') +
+            '\n\n' +
+            `Expected geometry of the cell with id '${received.id}' to be equals to:\n` +
+            `  ${this.utils.printExpected(expected)}\n` +
+            `Received:\n` +
+            `  ${this.utils.printReceived(receivedGeometry)}` +
+            (diffString ? `\n\nDifference:\n\n${diffString}` : '')
+          );
+        },
+    pass,
+  };
+}
+
 expect.extend({
-  toBeCell(cellId) {
-    const cell = bpmnVisualization.graph.model.getCell(cellId);
-    if (cell) {
-      return {
-        message: () => `Expected the cell with id '${cellId}' not to be found in the mxGraph model`,
-        pass: true,
-      };
-    } else {
-      return {
-        message: () => `Expected the cell with id '${cellId}' to be found in the mxGraph model`,
-        pass: false,
-      };
-    }
-  },
+  toBeCell,
+  withGeometry,
 });
 
 export function expectGeometry(cell: mxCell, geometry: mxGeometry): void {
@@ -132,8 +177,7 @@ export function expectFont(state: mxCellState, expectedFont: ExpectedFont): void
 }
 
 export function expectModelNotContainCell(cellId: string): void {
-  const cell = bpmnVisualization.graph.model.getCell(cellId);
-  expect(cell).not.toBeCell();
+  expect(cellId).not.toBeCell();
 }
 
 export function expectModelContainsCell(cellId: string): mxCell {
@@ -246,7 +290,7 @@ export function expectModelContainsCellWithGeometry(cellId: string, parentId: st
     expect(cell.parent).toEqual(bpmnVisualization.graph.getDefaultParent());
   }
 
-  expectGeometry(cell, geometry);
+  expect(cell).withGeometry(geometry);
 }
 
 export function getDefaultParentId(): string {
