@@ -2,8 +2,11 @@
 <div align="center">
     <p align="center"> <img title="BPMN Visualization" src="docs/images/diagram-hacktoberfest-example.png"></p>
     <p align="center"> 
+        <a href="https://npmjs.org/package/bpmn-visualization">
+          <img alt="npm package" src="https://img.shields.io/npm/v/bpmn-visualization.svg?color=orange"> 
+        </a> 
         <a href="https://github.com/process-analytics/bpmn-visualization-js/releases">
-          <img alt="GitHub release (latest by date including pre-releases" src="https://img.shields.io/github/v/release/process-analytics/bpmn-visualization-js?color=orange&include_prereleases"> 
+          <img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/process-analytics/bpmn-visualization-js?color=orange&include_prereleases"> 
         </a> 
         <a href="https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/index.html">
           <img alt="Live Demo" src="https://img.shields.io/badge/demo-online-blueviolet.svg"> 
