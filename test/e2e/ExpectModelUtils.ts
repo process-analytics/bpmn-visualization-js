@@ -18,7 +18,7 @@ import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { StyleIdentifier } from '../../src';
+import { StyleIdentifier } from '../../src/bpmn-visualization';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
