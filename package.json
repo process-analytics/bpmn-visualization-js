@@ -52,7 +52,7 @@
     "@types/minimist": "^1.2.0",
     "@types/puppeteer": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^4.2.0",
-    "@typescript-eslint/parser": "^4.2.0",
+    "@typescript-eslint/parser": "^4.3.0",
     "asciidoctor": "^2.2.0",
     "clipboardy": "^2.3.0",
     "cross-env": "^7.0.2",
