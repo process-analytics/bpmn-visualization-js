@@ -47,7 +47,7 @@ test everything)
 
 A good branch name would be (where issue #25 is the ticket you're working on): **25-annotations_to_tasks**  
 
-ℹ️ please don't forget to leave a comment under the issue to let other contributors know that this issue is under the development \[i.e "in progress", "i am on it"\]
+ℹ️ Please don't forget to leave a comment under the issue to let other contributors know that this issue is under the development \[i.e "in progress", "i am on it"\]
 
 ```sh
 git checkout -b 25-annotations_to_tasks
