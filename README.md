@@ -11,6 +11,9 @@
         <a href="https://github.com/process-analytics/bpmn-visualization-js/actions">
         <img alt="Build" src="https://github.com/process-analytics/bpmn-visualization-js/workflows/Build/badge.svg"> 
         </a> 
+        <a href="https://gitpod.io/#https://github.com/process-analytics/bpmn-visualization-js" target="_blank">
+        <img alt="Gitpod" src="https://img.shields.io/badge/Gitpod-ready--to--code-chartreuse?logo=gitpod"> 
+        </a> 
         <br>
         <a href="CONTRIBUTING.md">
         <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square"> 
@@ -21,9 +24,6 @@
         <a href="LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/process-analytics/bpmn-visualization-js?color=blue"> 
         </a>
-        <a href="https://gitpod.io/#https://github.com/process-analytics/bpmn-visualization-js" target="_blank">
-        <img alt="Gitpod" src="https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod"> 
-        </a> 
     </p>
 </div>  
 <br>
