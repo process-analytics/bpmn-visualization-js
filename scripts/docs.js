@@ -42,6 +42,7 @@ fse.ensureDirSync(`${docsOutput}/images`);
 
 fse.copySync('docs/images', `${docsOutput}/images`);
 fse.copySync('docs/architecture/images', `${docsOutput}/images`);
+fse.copySync('src/static/img/favicon.ico', `${docsOutput}/favicon.ico`);
 
 // eslint-disable-next-line no-console
 console.info(`Documentation is now available in ${docsOutput}`);
