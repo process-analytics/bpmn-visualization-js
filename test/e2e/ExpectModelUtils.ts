@@ -18,7 +18,7 @@ import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { StyleIdentifier } from '../../src/bpmn-visualization';
+import { StyleDefault, StyleIdentifier } from '../../src/bpmn-visualization';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
@@ -28,6 +28,7 @@ declare global {
     interface Matchers<R> {
       toBeCell(): R;
       withGeometry(geometry: mxGeometry): R;
+      withFont(font: ExpectedFont): R;
     }
   }
 }
@@ -134,40 +135,42 @@ function withGeometry(this: MatcherContext, received: mxCell, expected: mxGeomet
 }
 
 function withFont(this: MatcherContext, received: mxCell, expected: ExpectedFont): CustomMatcherResult {
+  const style = bpmnVisualization.graph.getView().getState(received).style;
+  const receivedFont = { fontStyle: style[mxConstants.STYLE_FONTSTYLE], fontFamily: style[mxConstants.STYLE_FONTFAMILY], fontSize: style[mxConstants.STYLE_FONTSIZE] };
+
+  let expectedFont: any;
   if (expected) {
-    const style = bpmnVisualization.graph.getView().getState(received).style;
+    expectedFont = { fontStyle: getFontStyleValue(expected), fontFamily: expected.name, fontSize: expected.size };
+  } else {
+    expectedFont = { fontStyle: undefined, fontFamily: StyleDefault.DEFAULT_FONT_FAMILY, fontSize: StyleDefault.DEFAULT_FONT_SIZE };
+  }
 
-    const receivedFont = { fontStyle: style[mxConstants.STYLE_FONTSTYLE], fontFamily: style[mxConstants.STYLE_FONTFAMILY], fontSize: style[mxConstants.STYLE_FONTSIZE] };
-    const expectedFont = { fontStyle: getFontStyleValue(expected), fontFamily: expected.name, fontSize: expected.size };
-
-    const pass = receivedFont === expectedFont;
-
-    return {
-      message: pass
-        ? () =>
-            this.utils.matcherHint('.not.withFont') +
+  const pass = JSON.stringify(receivedFont) === JSON.stringify(expectedFont);
+  return {
+    message: pass
+      ? () =>
+          this.utils.matcherHint('.not.withFont') +
+          '\n\n' +
+          `Expected font of the cell with id '${received.id}' not to be equals to:\n` +
+          `  ${this.utils.printExpected(expectedFont)}\n` +
+          `Received:\n` +
+          `  ${this.utils.printReceived(receivedFont)}`
+      : () => {
+          const diffString = this.utils.diff(expectedFont, receivedFont, {
+            expand: this.expand,
+          });
+          return (
+            this.utils.matcherHint('.withFont') +
             '\n\n' +
-            `Expected font of the cell with id '${received.cell.id}' not to be equals to:\n` +
+            `Expected font of the cell with id '${received.id}' to be equals to:\n` +
             `  ${this.utils.printExpected(expectedFont)}\n` +
             `Received:\n` +
-            `  ${this.utils.printReceived(receivedFont)}`
-        : () => {
-            const diffString = this.utils.diff(expectedFont, receivedFont, {
-              expand: this.expand,
-            });
-            return (
-              this.utils.matcherHint('.withFont') +
-              '\n\n' +
-              `Expected font of the cell with id '${received.cell.id}' to be equals to:\n` +
-              `  ${this.utils.printExpected(expectedFont)}\n` +
-              `Received:\n` +
-              `  ${this.utils.printReceived(receivedFont)}` +
-              (diffString ? `\n\nDifference:\n\n${diffString}` : '')
-            );
-          },
-      pass,
-    };
-  }
+            `  ${this.utils.printReceived(receivedFont)}` +
+            (diffString ? `\n\nDifference:\n\n${diffString}` : '')
+          );
+        },
+    pass,
+  };
 }
 
 function getFontStyleValue(expectedFont: ExpectedFont): number {
@@ -185,17 +188,6 @@ function getFontStyleValue(expectedFont: ExpectedFont): number {
     value += mxConstants.FONT_UNDERLINE;
   }
   return value;
-}
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace jest {
-    interface Matchers<R> {
-      toBeCell(): R;
-      withGeometry(geometry: mxGeometry): R;
-      withFont(font: ExpectedFont): R;
-    }
-  }
 }
 
 expect.extend({
