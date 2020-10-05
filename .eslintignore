@@ -6,3 +6,4 @@ config/*
 coverage/*
 dist/*
 node_modules/*
+script/utils/dist/*
