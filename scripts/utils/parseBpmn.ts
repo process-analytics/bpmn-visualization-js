@@ -16,9 +16,9 @@
 import * as path from 'path';
 import clipboardy from 'clipboardy';
 import parseArgs from 'minimist';
-import BpmnModel from '../../src/model/bpmn/BpmnModel';
+import BpmnModel from '../../src/model/bpmn/internal/BpmnModel';
 import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
-import { BpmnJsonModel } from '../../src/component/parser/xml/bpmn-json-model/BPMN20';
+import { BpmnJsonModel } from '../../src/model/bpmn/json/BPMN20';
 import { defaultBpmnJsonParser } from '../../src/component/parser/json/BpmnJsonParser';
 import { readFileSync } from '../../test/helpers/file-helper';
 
