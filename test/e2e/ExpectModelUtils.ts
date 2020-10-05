@@ -19,7 +19,6 @@ import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVi
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import BpmnVisualization from '../../src/component/BpmnVisualization';
 import { StyleIdentifier } from '../../src/bpmn-visualization';
-import { printReceived } from 'jest-matcher-utils';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
