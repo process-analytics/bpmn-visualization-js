@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnModel from '../../model/bpmn/BpmnModel';
+import BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import BpmnXmlParser from './xml/BpmnXmlParser';
 import BpmnJsonParser, { defaultBpmnJsonParser } from './json/BpmnJsonParser';
 

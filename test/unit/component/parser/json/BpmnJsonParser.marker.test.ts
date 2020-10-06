@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
-import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
-import { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/loopCharacteristics';
-import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnMarkerKind';
-import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/shape/ShapeBpmnCallActivityKind';
+import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../../../../src/model/bpmn/json/baseElement/loopCharacteristics';
+import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerKind';
+import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnCallActivityKind';
 
 describe.each([
   ['callActivity', ShapeBpmnElementKind.CALL_ACTIVITY],
@@ -32,7 +32,7 @@ describe.each([
   ['scriptTask', ShapeBpmnElementKind.TASK_SCRIPT],
 
   // TODO: To uncomment when it's supported
-  //['businessRuleTask', ShapeBpmnElementKind.TASK_BUSINESS_RULE],
+  ['businessRuleTask', ShapeBpmnElementKind.TASK_BUSINESS_RULE],
   //['adHocSubProcess', ShapeBpmnElementKind.AD_HOC_SUB_PROCESS],
   //['transaction', ShapeBpmnElementKind.TRANSACTION],
 ])(`parse bpmn as json for '%s'`, (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdgesAndFlowNodes, verifyEdge } from './JsonTestUtils';
-import { SequenceFlowKind } from '../../../../../src/model/bpmn/edge/SequenceFlowKind';
+import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import each from 'jest-each';
-import Waypoint from '../../../../../src/model/bpmn/edge/Waypoint';
-import { TProcess } from '../../../../../src/component/parser/xml/bpmn-json-model/baseElement/rootElement/rootElement';
+import Waypoint from '../../../../../src/model/bpmn/internal/edge/Waypoint';
+import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for default sequence flow', () => {
   each([
@@ -34,8 +34,7 @@ describe('parse bpmn as json for default sequence flow', () => {
     ['subProcess'],
     // TODO: To uncomment when we support complex gateway
     //['complexGateway'],
-    // TODO: To uncomment when we support businessRuleTask
-    //['businessRuleTask'],
+    ['businessRuleTask'],
   ]).it(`should convert as Edge, when an sequence flow (defined as default in %s) is an attribute (as object) of 'process' (as object)`, sourceKind => {
     const json = {
       definitions: {

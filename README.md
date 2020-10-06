@@ -1,15 +1,21 @@
 <h1 align="center">BPMN Visualization</h1>
-<p align="center">
+<div align="center">
     <p align="center"> <img title="BPMN Visualization" src="docs/images/diagram-hacktoberfest-example.png"></p>
     <p align="center"> 
+        <a href="https://npmjs.org/package/bpmn-visualization">
+          <img alt="npm package" src="https://img.shields.io/npm/v/bpmn-visualization.svg?color=orange"> 
+        </a> 
         <a href="https://github.com/process-analytics/bpmn-visualization-js/releases">
-          <img alt="GitHub release (latest by date including pre-releases" src="https://img.shields.io/github/v/release/process-analytics/bpmn-visualization-js?color=orange&include_prereleases"> 
+          <img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/process-analytics/bpmn-visualization-js?color=orange&include_prereleases"> 
         </a> 
         <a href="https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/index.html">
           <img alt="Live Demo" src="https://img.shields.io/badge/demo-online-blueviolet.svg"> 
         </a> 
         <a href="https://github.com/process-analytics/bpmn-visualization-js/actions">
         <img alt="Build" src="https://github.com/process-analytics/bpmn-visualization-js/workflows/Build/badge.svg"> 
+        </a> 
+        <a href="https://gitpod.io/#https://github.com/process-analytics/bpmn-visualization-js" target="_blank">
+        <img alt="Gitpod" src="https://img.shields.io/badge/Gitpod-ready--to--code-chartreuse?logo=gitpod"> 
         </a> 
         <br>
         <a href="CONTRIBUTING.md">
@@ -20,9 +26,9 @@
         </a> 
         <a href="LICENSE">
         <img alt="License" src="https://img.shields.io/github/license/process-analytics/bpmn-visualization-js?color=blue"> 
-        </a> 
+        </a>
     </p>
-</p>  
+</div>  
 <br>
 
 `bpmn-visualization` is a TypeScript library to visualize process execution data on [BPMN](https://www.omg.org/spec/BPMN/2.0.2/) diagrams with:
@@ -48,10 +54,10 @@ If you need BPMN examples, you can use resources from
 
 | <img src="https://www.google.com/chrome/static/images/chrome-logo.svg" alt="Chrome" width="18px" height="18px" /> Chrome | <img src="https://user-media-prod-cdn.itsre-sumo.mozilla.net/uploads/products/2020-04-14-08-36-13-8dda6f.png" alt="Firefox" width="18px" height="18px" /> Firefox | <img src="https://developer.apple.com/assets/elements/icons/safari/safari-96x96.png" alt="Safari" width="18px" height="18px" /> Safari | <img src="https://avatars0.githubusercontent.com/u/11354582?s=200&v=4" alt="Edge" width="18px" height="18px" /> Edge |
 | :---------: | :---------: | :---------: | :---------: |
-| Yes | Yes | Yes | Yes |
+|  :heavy_check_mark: |  :heavy_check_mark: |  :heavy_check_mark: |  :heavy_check_mark: |
 
 **Note**: Internet Explorer will never be supported. \
-The library may work with the other browsers, currently not list, if they support ES6.
+The library may work with the other browsers. They must at least support ES6.
 
 ## 🎨 Features
 

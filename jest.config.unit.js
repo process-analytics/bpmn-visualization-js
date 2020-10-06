@@ -37,4 +37,16 @@ module.exports = {
   },
   coverageReporters: ['json', 'json-summary', 'lcov', 'text', 'text-summary', 'clover'],
   setupFiles: ['<rootDir>/test/unit/jest.globals.ts'],
+  reporters: [
+    'default',
+    [
+      'jest-html-reporter',
+      {
+        pageTitle: 'bpmn-visualization Unit Test Report',
+        outputPath: 'build/test-report/unit/index.html',
+        includeFailureMsg: true,
+        includeSuiteFailure: true,
+      },
+    ],
+  ],
 };

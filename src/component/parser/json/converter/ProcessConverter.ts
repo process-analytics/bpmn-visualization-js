@@ -21,7 +21,7 @@ import ShapeBpmnElement, {
   ShapeBpmnEvent,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
-} from '../../../../model/bpmn/shape/ShapeBpmnElement';
+} from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import {
   ShapeBpmnElementKind,
   ShapeBpmnCallActivityKind,
@@ -29,22 +29,22 @@ import {
   ShapeBpmnSubProcessKind,
   ShapeBpmnEventKind,
   supportedBpmnEventKinds,
-} from '../../../../model/bpmn/shape';
-import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/edge/Flow';
-import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/shape/ShapeUtil';
-import { SequenceFlowKind } from '../../../../model/bpmn/edge/SequenceFlowKind';
-import { FlowKind } from '../../../../model/bpmn/edge/FlowKind';
-import { TProcess } from '../../xml/bpmn-json-model/baseElement/rootElement/rootElement';
-import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../xml/bpmn-json-model/baseElement/flowNode/event';
-import { TActivity, TCallActivity, TSubProcess } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/activity';
-import { TLane, TLaneSet } from '../../xml/bpmn-json-model/baseElement/baseElement';
-import { TFlowNode, TSequenceFlow } from '../../xml/bpmn-json-model/baseElement/flowElement';
-import { TAssociation, TTextAnnotation } from '../../xml/bpmn-json-model/baseElement/artifact';
-import { AssociationDirectionKind } from '../../../../model/bpmn/edge/AssociationDirectionKind';
+} from '../../../../model/bpmn/internal/shape';
+import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
+import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
+import { SequenceFlowKind } from '../../../../model/bpmn/internal/edge/SequenceFlowKind';
+import { FlowKind } from '../../../../model/bpmn/internal/edge/FlowKind';
+import { TProcess } from '../../../../model/bpmn/json/baseElement/rootElement/rootElement';
+import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../model/bpmn/json/baseElement/flowNode/event';
+import { TActivity, TCallActivity, TSubProcess } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';
+import { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseElement';
+import { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
+import { TAssociation, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
+import { AssociationDirectionKind } from '../../../../model/bpmn/internal/edge/AssociationDirectionKind';
 import { bpmnEventKinds, findEventDefinitionOfDefinitions } from './EventDefinitionConverter';
 import { ensureIsArray } from './ConverterUtil';
-import { TEventBasedGateway } from '../../xml/bpmn-json-model/baseElement/flowNode/gateway';
-import { TReceiveTask } from '../../xml/bpmn-json-model/baseElement/flowNode/activity/task';
+import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
+import { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
 import { isGlobalTask } from './GlobalTaskConverter';
 
 const convertedFlowNodeBpmnElements: Map<string, ShapeBpmnElement> = new Map();

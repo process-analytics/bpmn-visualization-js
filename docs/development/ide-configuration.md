@@ -2,7 +2,67 @@
 
 To fully benefit the ESLint and Jest testing frameworks, you must properly set up your IDE.
 
-### Intellij
+This document describes how to directly integrate in your IDE some tools the npm build is relying on. For the IDE not
+mentioned here, the following should help you to know which extensions or plugins to add to your development environment. 
+
+* [Gitpod](#Gitpod) 
+* [Visual Studio Code](#visual-studio-code)
+* [IntelliJ](#intellij)
+
+
+### Gitpod
+
+It is advised to read the information written below.
+If you are however familiar with Gitpod, you can jump there and start coding right away by one click: [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/process-analytics/bpmn-visualization-js)
+
+#### Git integration
+
+The best way to learn is to read official [Gitpod doc git](https://www.gitpod.io/docs/git/).
+
+You can easily create Pull Requests directly from Gitpod [Gitpod doc pull requests](https://www.gitpod.io/docs/pull-requests/).
+
+Once you have logged into Gitpod, do not forget to give it access to write in public repositories:
+
+1. Visit: [https://gitpod.io/access-control/](https://gitpod.io/access-control/)
+2. Check the box titled: **Write public repos**
+3. Click on **Update** button
+
+After that quick setup, you are able to contribute.
+
+When Gitpod IDE is started, the `npm install` command is launched automatically. The workspace is ready to build and run dev server and tests.
+
+
+### Visual Studio Code
+
+#### [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+
+Install the EditorConfig extension. A configuration file already exists in the repository, so it will apply right after the extension installation.
+
+#### [Debugging TypeScript code](https://code.visualstudio.com/docs/typescript/typescript-debugging)
+The `launch.json` file is already configured to execute tests:
+  - unit tests: `test:unit`
+  - end to end tests: `test:e2e`
+  
+You can duplicate these configurations or create another, if you want/need.
+
+#### [Draw.io Diagram](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio)
+
+You can create/update draw.io diagrams directly in VS Code with the draw.io extension. See the [draw.io annoucement](https://www.diagrams.net/blog/embed-diagrams-vscode) for more details.
+
+#### [AsciiDoc](https://marketplace.visualstudio.com/items?itemName=asciidoctor.asciidoctor-vscode)
+
+We use [asciidoc](https://asciidoctor.org/docs/what-is-asciidoc/) to write the documentation.
+
+This extension permits visualizing .adoc files directly in VSCode.
+
+#### [SonarLint](https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode)
+
+Additionally, it is advised to install the SonarLint extension.
+
+It helps to avoid coding mistakes -> reduced technical debt.
+
+
+### IntelliJ
 
 #### [EditorConfig](https://www.jetbrains.com/help/idea/configuring-code-style.html#editorconfig)
 
@@ -60,34 +120,3 @@ It helps to avoid coding mistakes -> reduced technical debt
 We use [asciidoc](https://asciidoctor.org/docs/what-is-asciidoc/) to write the documentation.
 
 An [AsciiDoc IntelliJ Plugin](https://plugins.jetbrains.com/plugin/7391-asciidoc) is a helpful plugin that permits visualizing .adoc files directly in IntelliJ
-
-
-
-### Visual Studio Code
-
-#### [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
-
-Install the EditorConfig extension. A configuration file already exists in the repository so it will apply right after the extension installation.
-
-#### [Debugging TypeScript code](https://code.visualstudio.com/docs/typescript/typescript-debugging)
-The `launch.json` file is already configured to execute tests:
-  - unit tests: `test:unit`
-  - end to end tests: `test:e2e`
-  
-You can duplicate these configurations or create another, if you want/need.
-
-#### [Draw.io Diagram](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio)
-
-You can create/update draw.io diagrams directly in VS Code with the draw.io extension. See the [draw.io annoucement](https://www.diagrams.net/blog/embed-diagrams-vscode) for more details.
-
-#### [AsciiDoc](https://marketplace.visualstudio.com/items?itemName=asciidoctor.asciidoctor-vscode)
-
-We use [asciidoc](https://asciidoctor.org/docs/what-is-asciidoc/) to write the documentation.
-
-This extension permits visualizing .adoc files directly in VSCode.
-
-#### [SonarLint](https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode)
-
-Additionally, it is advised to install the SonarLint extension.
-
-It helps to avoid coding mistakes -> reduced technical debt.

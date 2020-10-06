@@ -27,26 +27,41 @@ import json from '@rollup/plugin-json';
 
 import parseArgs from 'minimist';
 
+import * as fs from 'fs';
+import path from 'path';
+
+function readFileSync(relPathToSourceFile, encoding = 'utf8') {
+  return fs.readFileSync(path.join(__dirname, relPathToSourceFile), encoding);
+}
+
 const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
 const demoMode = process.env.demoMode;
 
+// parse command line arguments
 const argv = parseArgs(process.argv.slice(2)); // start with 'node rollup' so drop them
 // for the 'config-xxx' syntax, see https://github.com/rollup/rollup/issues/1662#issuecomment-395382741
 const serverPort = process.env.SERVER_PORT || argv['config-server-port'] || 10001;
+const buildBundles = argv['config-build-bundles'] || false;
 
 const sourceMap = !demoMode;
-const tsconfigOverride = demoMode ? { compilerOptions: { declaration: false } } : {};
+const tsDeclarationFiles = !demoMode || buildBundles;
+
+const tsconfigOverride = { compilerOptions: { declaration: tsDeclarationFiles } };
 
 const plugins = [
   typescript({
     typescript: require('typescript'),
     tsconfigOverride: tsconfigOverride,
   }),
-  resolve(),
-  commonjs(),
-  json(),
 ];
+const pluginsNoDeps = [...plugins];
+
+plugins.push(resolve());
+plugins.push(commonjs());
+plugins.push(json());
+
+pluginsNoDeps.push(json());
 
 // Copy static resources to dist
 if (devMode || demoMode) {
@@ -78,23 +93,66 @@ if (devMode) {
   }
 }
 
-if (demoMode) {
+const minify = demoMode || buildBundles;
+const pluginsNoDepsNoMin = [...pluginsNoDeps];
+if (minify) {
   plugins.push(
+    terser({
+      ecma: 6,
+    }),
+  );
+  pluginsNoDeps.push(
     terser({
       ecma: 6,
     }),
   );
 }
 
-export default {
-  input: 'src/index.ts',
-  output: [
+const libInput = 'src/bpmn-visualization.ts';
+let rollupConfigs;
+
+if (!buildBundles) {
+  // internal lib development
+  rollupConfigs = [
     {
-      file: pkg.module,
-      format: 'es',
-      sourcemap: sourceMap,
+      input: libInput,
+      output: [
+        {
+          file: 'dist/index.es.js',
+          format: 'es',
+          sourcemap: sourceMap,
+        },
+      ],
+      external: [...Object.keys(pkg.peerDependencies || {})],
+      plugins: plugins,
     },
-  ],
-  external: [...Object.keys(pkg.peerDependencies || {})],
-  plugins: plugins,
-};
+  ];
+} else {
+  const configIife = {
+    input: libInput,
+    output: {
+      // hack to have the mxGraph configuration prior the load of the mxGraph lib
+      banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
+      file: pkg.browser,
+      name: 'bpmnvisu',
+      format: 'iife',
+    },
+    // TODO we may use this plugin configuration instead resolve({browser: true})
+    // If true, instructs the plugin to use the "browser" property in package.json files to specify alternative files to load for bundling. This is useful when bundling for a browser environment.
+    plugins: plugins,
+  };
+  const configEsmMin = {
+    input: libInput,
+    output: {
+      file: pkg.module.replace('.js', '.min.js'),
+      format: 'es',
+    },
+    // TODO check the possibility to use pkg.dependencies
+    external: ['entities/lib/decode', 'fast-xml-parser/src/parser'],
+    plugins: pluginsNoDeps,
+  };
+  const configEsm = { ...configEsmMin, plugins: pluginsNoDepsNoMin, output: { file: pkg.module, format: 'es' } };
+  rollupConfigs = [configIife, configEsm, configEsmMin];
+}
+
+export default rollupConfigs;

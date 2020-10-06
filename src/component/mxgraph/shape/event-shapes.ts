@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnEventKind } from '../../../model/bpmn/shape';
+import { ShapeBpmnEventKind } from '../../../model/bpmn/internal/shape';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import BpmnCanvas from './render/BpmnCanvas';
@@ -70,11 +70,11 @@ abstract class EventShape extends mxEllipse {
   // This will be removed after implementation of all supported events
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private markNonFullyRenderedEvents(c: mxAbstractCanvas2D): void {
-    // const eventKind = StyleUtils.getBpmnEventKind(this.style);
-    // if (eventKind == ShapeBpmnEventKind.ERROR) {
-    //   c.setFillColor('deeppink');
-    //   c.setFillAlpha(0.3);
-    // }
+    const eventKind = StyleUtils.getBpmnEventKind(this.style);
+    if (eventKind == ShapeBpmnEventKind.COMPENSATION) {
+      c.setFillColor('deeppink');
+      c.setFillAlpha(0.3);
+    }
   }
 
   protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {

@@ -33,7 +33,7 @@ Overview of tasks to be achieved:
 * update the BPMN support documentation
 
 Refer to existing Pull Requests to have a better view about the work to do, for instance:
-- [Signal Event Detection Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/399/files)
+- [Link Event Detection Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/501/files)
 - [Manual Task Detection Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/582/files)
 
 
@@ -63,8 +63,7 @@ Overview
 
 ### Tests for elements detection 
 
-**IMPORTANT**: **__Please first refer to the [testing documentation](testing.md) documentation for a clear view of the
-testing strategy__** 
+**IMPORTANT**: **_Please first refer to the [testing documentation](testing.md) for a clear view of the testing strategy_** 
 
 
 #### Unit tests
@@ -97,10 +96,10 @@ flow` support (see `ShapeBpmnElementKind` for more details)
 Overview of tasks to be achieved:
 - use the final icon chosen for the BPMN Elements.
 - add/update visual tests
-- update the BPMN support documentation
+- update the BPMN support documentation (see also [icons license](#icons-license))
 
 Refer to existing Pull Requests to have a better view about the work to do, for instance:
-- [Signal Event Rendering Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/408/files)
+- [Error Event Rendering Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/505/files)
 - [Message Flow with initiating & non-initiating message Rendering Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/569/files)
 
 
@@ -122,3 +121,14 @@ a Java tool that will let you transform your SVG file into a set of `TypeScript`
 
 Please be aware that the tool is not able to support all SVG files, and you may need to adapt the SVG definition prior the
 tool can transform it. See [PR #210](https://github.com/process-analytics/bpmn-visualization-js/pull/210) for instance.
+
+
+#### <a name="icons-license"></a> Reusing existing icons
+
+If you integrate icons that you have not designed by yourself, please don't forget to credit its author and reproduction
+conditions. Please try to use materials covered by a Free License to avoid any license compliance issues.
+
+In that case, you must add credit in the following docs: 
+- in the source code
+- in the BPMN support documentation: at the same place or close to the BPMN supported element 
+- in the main README: we don't list all icons there, but we reference projects where the icons come from
