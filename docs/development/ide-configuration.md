@@ -47,7 +47,7 @@ After the installation, you need to explicitly tell to the ESLint extension to w
 
   ```JSON
     {
-      "eslint.validate": ["typescript", "typescriptreact"]
+      "eslint.validate": ["typescript"]
     }
   ```
   - Open the Command Palette again
