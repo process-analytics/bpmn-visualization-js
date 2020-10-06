@@ -18,7 +18,7 @@ There are many ways to contribute:
 
 For all contributions, please respect the following guidelines:
 
-1. If you've noticed a bug or have a feature request, let us know in the [GitHub Issue tracker](https://github.com/process-analytics/bpmn-visualization-js/issues/new )! So we can confirm the bug or approve your feature, and provide feedback, before starting to code :slightly_smiling_face:  
+1. If you've noticed a bug or have a feature request, let us know in the [GitHub Issue tracker](https://github.com/process-analytics/bpmn-visualization-js/issues/new )! So we can confirm the bug or approve your feature, and provide feedback, before starting to code 🙂  
 If you start working on one of the existing [issues](https://github.com/process-analytics/bpmn-visualization-js/issues), please leave a comment below the issue so everyone knows that the issue is taken.
 
 2. Do the changes in your own [fork](CONTRIBUTING.md#fork--create-a-branch) of the code
@@ -47,7 +47,7 @@ test everything)
 
 A good branch name would be (where issue #25 is the ticket you're working on): **25-annotations_to_tasks**  
 
-:information_source: please don't forget to leave a comment under the issue to let other contributors know that this issue is under the development \[i.e "in progress", "i am on it"\]
+ℹ️ Please don't forget to leave a comment under the issue to let other contributors know that this issue is under the development \[i.e "in progress", "i am on it"\]
 
 ```sh
 git checkout -b 25-annotations_to_tasks
@@ -72,7 +72,7 @@ The most important part is the title of the Pull Request, because:
 After your development finished, you need to open a Pull Request. You'll find [here](./docs/development/pull-request.md) all the necessary information to open it and to keep it updated.
 
 
-At this point, you're ready to make your changes! Feel free to ask for help. Everyone is a beginner at first :smile_cat:
+At this point, you're ready to make your changes! Feel free to ask for help. Everyone is a beginner at first 😸
 
 ## Maintainers
 
