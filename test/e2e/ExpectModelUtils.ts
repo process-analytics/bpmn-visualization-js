@@ -96,15 +96,16 @@ function toBeCell(this: MatcherContext, received: string): CustomMatcherResult {
 
 function withGeometry(this: MatcherContext, received: mxCell, expected: mxGeometry): CustomMatcherResult {
   const cellGeometry = received.getGeometry();
+  const receivedGeometry = { x: cellGeometry.x, y: cellGeometry.y, width: cellGeometry.width, height: cellGeometry.height, points: cellGeometry.points };
 
   const pass =
-    cellGeometry.x === expected.x &&
-    cellGeometry.y === expected.y &&
-    cellGeometry.width === expected.width &&
-    cellGeometry.height === expected.height &&
-    JSON.stringify(cellGeometry.points) === JSON.stringify(expected.points);
+    receivedGeometry.x === expected.x &&
+    receivedGeometry.y === expected.y &&
+    receivedGeometry.width === expected.width &&
+    receivedGeometry.height === expected.height &&
+    // Need to do this, because the most time, there is no 'points' variable in 'expected', but 'points' is equals to 'null' in 'receivedGeometry'
+    JSON.stringify(receivedGeometry.points) === JSON.stringify(expected.points);
 
-  const receivedGeometry = { x: cellGeometry.x, y: cellGeometry.y, width: cellGeometry.width, height: cellGeometry.height, points: cellGeometry.points };
   return {
     message: pass
       ? () =>
