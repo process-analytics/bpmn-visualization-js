@@ -49,7 +49,7 @@ export default class MxGraphRenderer {
     });
   }
 
-  private getParent(bpmnElement: ShapeBpmnElement): mxCell {
+  private getParent(bpmnElement: ShapeBpmnElement): mxCell | undefined {
     const bpmnElementParent = this.getCell(bpmnElement.parentId);
     if (bpmnElementParent) {
       return bpmnElementParent;
@@ -58,6 +58,8 @@ export default class MxGraphRenderer {
     if (!ShapeUtil.isBoundaryEvent(bpmnElement.kind)) {
       return this.graph.getDefaultParent();
     }
+
+    return undefined;
   }
 
   private insertShape(shape: Shape): void {

@@ -153,7 +153,7 @@ export default class ProcessConverter {
     });
   }
 
-  private buildShapeBpmnActivity(bpmnElement: TActivity, kind: ShapeBpmnElementKind, processId: string): ShapeBpmnActivity {
+  private buildShapeBpmnActivity(bpmnElement: TActivity, kind: ShapeBpmnElementKind, processId: string): ShapeBpmnActivity | undefined {
     const markers = this.buildMarkers(bpmnElement);
 
     if (ShapeUtil.isSubProcess(kind)) {
@@ -168,6 +168,8 @@ export default class ProcessConverter {
     if (!isGlobalTask((bpmnElement as TCallActivity).calledElement)) {
       return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, processId, markers);
     }
+
+    return undefined;
   }
 
   private buildMarkers(bpmnElement: TActivity): ShapeBpmnMarkerKind[] {
@@ -186,7 +188,7 @@ export default class ProcessConverter {
     return markers;
   }
 
-  private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventKind, processId: string): ShapeBpmnEvent {
+  private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventKind, processId: string): ShapeBpmnEvent | undefined {
     const eventDefinitions = this.getEventDefinitions(bpmnElement);
     const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
 
@@ -207,17 +209,19 @@ export default class ProcessConverter {
         return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventKind, processId);
       }
     }
+
+    return undefined;
   }
 
-  private buildShapeBpmnBoundaryEvent(bpmnElement: TBoundaryEvent, eventKind: ShapeBpmnEventKind): ShapeBpmnBoundaryEvent {
+  private buildShapeBpmnBoundaryEvent(bpmnElement: TBoundaryEvent, eventKind: ShapeBpmnEventKind): ShapeBpmnBoundaryEvent | undefined {
     const parent = findFlowNodeBpmnElement(bpmnElement.attachedToRef);
 
     if (ShapeUtil.isActivity(parent?.kind)) {
       return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity);
-    } else {
-      // TODO error management
-      console.warn('The boundary event %s must be attach to an activity, and not to %s', bpmnElement.id, parent?.kind);
     }
+    // TODO error management
+    console.warn('The boundary event %s must be attach to an activity, and not to %s', bpmnElement.id, parent?.kind);
+    return undefined;
   }
 
   /**

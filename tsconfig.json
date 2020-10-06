@@ -6,6 +6,7 @@
     "module": "es6",
     "target": "es6",
     "noImplicitAny": true,
+    "noImplicitReturns": true,
     "strictBindCallApply": true,
     "alwaysStrict": true,
     "strictFunctionTypes": true,

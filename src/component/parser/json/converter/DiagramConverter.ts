@@ -40,6 +40,7 @@ function findProcessElement(participantId: string): ShapeBpmnElement | undefined
     // black box pool
     return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
   }
+  return undefined;
 }
 
 export default class DiagramConverter {
@@ -143,13 +144,15 @@ export default class DiagramConverter {
       const label = this.deserializeLabel(shape.BPMNLabel, shape.id);
       return new Shape(shape.id, bpmnElement, bounds, label, isHorizontal);
     }
+    return undefined;
   }
 
-  private deserializeBounds(boundedElement: BPMNShape | BPMNLabel): Bounds {
+  private deserializeBounds(boundedElement: BPMNShape | BPMNLabel): Bounds | undefined {
     const bounds = boundedElement.Bounds;
     if (bounds) {
       return new Bounds(bounds.x, bounds.y, bounds.width, bounds.height);
     }
+    return undefined;
   }
 
   private deserializeEdges(edges: BPMNEdge | BPMNEdge[]): Edge[] {
@@ -169,7 +172,7 @@ export default class DiagramConverter {
     return ensureIsArray(waypoints).map(waypoint => new Waypoint(waypoint.x, waypoint.y));
   }
 
-  private deserializeLabel(bpmnLabel: string | BPMNLabel, id: string): Label {
+  private deserializeLabel(bpmnLabel: string | BPMNLabel, id: string): Label | undefined {
     if (bpmnLabel && typeof bpmnLabel === 'object') {
       const font = this.findFont(bpmnLabel.labelStyle, id);
       const bounds = this.deserializeBounds(bpmnLabel);
@@ -178,6 +181,7 @@ export default class DiagramConverter {
         return new Label(font, bounds);
       }
     }
+    return undefined;
   }
 
   private findFont(labelStyle: string, id: string): Font {
