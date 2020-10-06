@@ -773,6 +773,55 @@ export default class IconPainter {
     canvas.close();
     canvas.fill();
   }
+
+  /**
+   * This icon is used by `business rule task`.
+   */
+  paintBusinessRuleIcon({ setIconOrigin, c, shape, ratioFromParent, icon }: PaintParameter): void {
+    const originalIconSize = { width: 640, height: 640 };
+    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, originalIconSize);
+
+    // Shape
+    canvas.begin();
+    canvas.moveTo(0.19, 0.1);
+    canvas.lineTo(298.78, 0.1);
+    canvas.lineTo(298.78, 198.88);
+    canvas.lineTo(0.19, 198.88);
+    canvas.lineTo(0.19, 0.1);
+    canvas.close();
+    canvas.fillAndStroke();
+    canvas.begin();
+    canvas.moveTo(0, 0);
+    canvas.lineTo(298.78, 0);
+    canvas.lineTo(298.78, 48.88);
+    canvas.lineTo(0, 48.88);
+    canvas.lineTo(0, 0);
+    canvas.close();
+    canvas.fillAndStroke();
+    canvas.begin();
+    canvas.moveTo(0, 48.88);
+    canvas.lineTo(98.78, 48.88);
+    canvas.lineTo(98.78, 198.88);
+    canvas.lineTo(0, 198.88);
+    canvas.lineTo(0, 48.88);
+    canvas.close();
+    canvas.fillAndStroke();
+    canvas.begin();
+    canvas.moveTo(1.09, 122.69);
+    canvas.lineTo(298.78, 122.69);
+    canvas.close();
+    canvas.fillAndStroke();
+
+    canvas.setFillColor(icon.strokeColor);
+    canvas.begin();
+    canvas.moveTo(0, 0);
+    canvas.lineTo(298.78, 0);
+    canvas.lineTo(298.78, 48.88);
+    canvas.lineTo(0, 48.88);
+    canvas.lineTo(0, 0);
+    canvas.close();
+    canvas.fillAndStroke();
+  }
 }
 
 export class IconPainterProvider {

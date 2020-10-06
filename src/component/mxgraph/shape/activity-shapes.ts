@@ -229,14 +229,16 @@ export class SubProcessShape extends BaseActivityShape {
   }
 }
 
-export class BusinessRuleTaskShape extends BaseActivityShape {
+export class BusinessRuleTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
-    this.gradient = 'Chartreuse';
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    // TODO To be implemented later
+    this.iconPainter.paintBusinessRuleIcon({
+      ...paintParameter,
+      ratioFromParent: 0.6,
+      setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(15),
+    });
   }
 }
