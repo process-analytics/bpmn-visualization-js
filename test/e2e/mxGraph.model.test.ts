@@ -13,232 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnVisualization from '../../src/component/BpmnVisualization';
 import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/internal/shape';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
-import { MarkerIdentifier, StyleIdentifier } from '../../src/bpmn-visualization';
+import { MarkerIdentifier } from '../../src/bpmn-visualization';
 import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { readFileSync } from '../helpers/file-helper';
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace jest {
-    interface Matchers<R> {
-      toBeCell(): R;
-    }
-  }
-}
-
-export interface ExpectedFont {
-  name?: string;
-  size?: number;
-  isBold?: boolean;
-  isItalic?: boolean;
-  isUnderline?: boolean;
-  isStrikeThrough?: boolean;
-}
-
-export interface ExpectedShapeModelElement {
-  label?: string;
-  kind: ShapeBpmnElementKind;
-  font?: ExpectedFont;
-  parentId?: string;
-  /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
-  styleShape?: string;
-  markers?: ShapeBpmnMarkerKind[];
-  isInstantiating?: boolean;
-  isHorizontal?: boolean;
-}
-
-export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
-  eventKind: ShapeBpmnEventKind;
-}
-
-// TODO find a way to not be forced to pass 'kind'
-export interface ExpectedSubProcessModelElement extends ExpectedShapeModelElement {
-  subProcessKind: ShapeBpmnSubProcessKind;
-}
-
-interface ExpectedEdgeModelElement {
-  label?: string;
-  kind?: FlowKind;
-  parentId?: string;
-  font?: ExpectedFont;
-  startArrow?: string;
-  messageVisibleKind?: MessageVisibleKind;
-}
-
-export interface ExpectedSequenceFlowModelElement extends ExpectedEdgeModelElement {
-  sequenceFlowKind?: SequenceFlowKind;
-}
-
-// TODO find a way to not be forced to pass 'kind'
-export interface ExpectedBoundaryEventModelElement extends ExpectedEventModelElement {
-  isInterrupting?: boolean;
-}
-export interface ExpectedStartEventModelElement extends ExpectedEventModelElement {
-  isInterrupting?: boolean;
-}
-
-const bpmnVisualization = new BpmnVisualization(null);
-
-expect.extend({
-  toBeCell(cellId) {
-    const cell = bpmnVisualization.graph.model.getCell(cellId);
-    if (cell) {
-      return {
-        message: () => `Expected the cell with id '${cellId}' not to be found in the mxGraph model`,
-        pass: true,
-      };
-    } else {
-      return {
-        message: () => `Expected the cell with id '${cellId}' to be found in the mxGraph model`,
-        pass: false,
-      };
-    }
-  },
-});
-
-function expectGeometry(cell: mxCell, geometry: mxGeometry): void {
-  const cellGeometry = cell.getGeometry();
-  expect(cellGeometry.x).toEqual(geometry.x);
-  expect(cellGeometry.y).toEqual(geometry.y);
-  expect(cellGeometry.width).toEqual(geometry.width);
-  expect(cellGeometry.height).toEqual(geometry.height);
-  expect(cellGeometry.points).toEqual(geometry.points);
-}
+import {
+  bpmnVisualization,
+  ExpectedShapeModelElement,
+  expectModelContainsAssociationFlow,
+  expectModelContainsBpmnBoundaryEvent,
+  expectModelContainsBpmnEvent,
+  expectModelContainsBpmnStartEvent,
+  expectModelContainsLane,
+  expectModelContainsPool,
+  expectModelContainsSequenceFlow,
+  expectModelContainsShape,
+  expectModelContainsSubProcess,
+  expectModelContainsMessageFlow,
+  expectModelNotContainCell,
+  expectModelContainsCellWithGeometry,
+  getDefaultParentId,
+  expectModelContainsEdge,
+} from './ExpectModelUtils';
 
 describe('mxGraph model', () => {
-  function expectFont(state: mxCellState, expectedFont: ExpectedFont): void {
-    if (expectedFont) {
-      if (expectedFont.isBold) {
-        expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_BOLD);
-      }
-
-      if (expectedFont.isItalic) {
-        expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_ITALIC);
-      }
-
-      if (expectedFont.isUnderline) {
-        expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_UNDERLINE);
-      }
-
-      if (expectedFont.isStrikeThrough) {
-        expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_STRIKETHROUGH);
-      }
-
-      expect(state.style[mxConstants.STYLE_FONTFAMILY]).toEqual(expectedFont.name);
-      expect(state.style[mxConstants.STYLE_FONTSIZE]).toEqual(expectedFont.size);
-    }
-  }
-
-  function expectModelNotContainCell(cellId: string): void {
-    const cell = bpmnVisualization.graph.model.getCell(cellId);
-    expect(cell).not.toBeCell();
-  }
-
-  function expectModelContainsCell(cellId: string): mxCell {
-    expect(cellId).toBeCell();
-    return bpmnVisualization.graph.model.getCell(cellId);
-  }
-
-  function expectModelContainsShape(cellId: string, modelElement: ExpectedShapeModelElement): mxCell {
-    const cell = expectModelContainsCell(cellId);
-    const parentId = modelElement.parentId;
-    if (parentId) {
-      expect(cell.parent.id).toEqual(parentId);
-    }
-    expect(cell.style).toContain(modelElement.kind);
-
-    if (modelElement.markers?.length > 0) {
-      expect(cell.style).toContain(`bpmn.markers=${modelElement.markers.join(',')}`);
-    }
-
-    if (modelElement.isInstantiating !== undefined) {
-      expect(cell.style).toContain(`bpmn.isInstantiating=${modelElement.isInstantiating}`);
-    }
-
-    const state = bpmnVisualization.graph.getView().getState(cell);
-    const styleShape = !modelElement.styleShape ? modelElement.kind : modelElement.styleShape;
-    expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(styleShape);
-    expect(cell.value).toEqual(modelElement.label);
-    expectFont(state, modelElement.font);
-    return cell;
-  }
-
-  function expectModelContainsEdge(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
-    const cell = expectModelContainsCell(cellId);
-    expect(cell.style).toContain(modelElement.kind);
-    const parentId = modelElement.parentId;
-    if (parentId) {
-      expect(cell.parent.id).toEqual(parentId);
-    }
-
-    if (modelElement.messageVisibleKind === MessageVisibleKind.NON_INITIATING || modelElement.messageVisibleKind === MessageVisibleKind.INITIATING) {
-      const messageCell = expectModelContainsCell(`messageFlowIcon_of_${cellId}`);
-      expect(messageCell.style).toContain(`shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${modelElement.messageVisibleKind}`);
-    }
-
-    if (modelElement.startArrow || modelElement.font) {
-      const state = bpmnVisualization.graph.getView().getState(cell);
-      expect(state.style[mxConstants.STYLE_STARTARROW]).toEqual(modelElement.startArrow);
-      expectFont(state, modelElement.font);
-    }
-
-    expect(cell.value).toEqual(modelElement.label);
-    return cell;
-  }
-
-  function expectModelContainsSequenceFlow(cellId: string, modelElement: ExpectedSequenceFlowModelElement): mxCell {
-    const cell = expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.SEQUENCE_FLOW });
-    expect(cell.style).toContain(modelElement.sequenceFlowKind);
-    return cell;
-  }
-
-  function expectModelContainsMessageFlow(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
-    return expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.MESSAGE_FLOW });
-  }
-
-  function expectModelContainsAssociationFlow(cellId: string, modelElement: ExpectedEdgeModelElement): mxCell {
-    return expectModelContainsEdge(cellId, { ...modelElement, kind: FlowKind.ASSOCIATION_FLOW });
-  }
-
-  function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {
-    const cell = expectModelContainsShape(cellId, eventModelElement);
-    expect(cell.style).toContain(`bpmn.eventKind=${eventModelElement.eventKind}`);
-    return cell;
-  }
-
-  function expectModelContainsBpmnBoundaryEvent(cellId: string, boundaryEventModelElement: ExpectedBoundaryEventModelElement): void {
-    const cell = expectModelContainsBpmnEvent(cellId, { ...boundaryEventModelElement, kind: ShapeBpmnElementKind.EVENT_BOUNDARY });
-    expect(cell.style).toContain(`bpmn.isInterrupting=${boundaryEventModelElement.isInterrupting}`);
-  }
-
-  function expectModelContainsBpmnStartEvent(cellId: string, startEventModelElement: ExpectedStartEventModelElement): void {
-    const cell = expectModelContainsBpmnEvent(cellId, { ...startEventModelElement, kind: ShapeBpmnElementKind.EVENT_START });
-    expect(cell.style).toContain(`bpmn.isInterrupting=${startEventModelElement.isInterrupting}`);
-  }
-
-  function expectModelContainsSubProcess(cellId: string, subProcessModelElement: ExpectedSubProcessModelElement): mxCell {
-    const cell = expectModelContainsShape(cellId, {
-      ...subProcessModelElement,
-      kind: ShapeBpmnElementKind.SUB_PROCESS,
-    });
-    expect(cell.style).toContain(`bpmn.subProcessKind=${subProcessModelElement.subProcessKind}`);
-    return cell;
-  }
-
-  function expectModelContainsPool(cellId: string, modelElement: ExpectedShapeModelElement): void {
-    const mxCell = expectModelContainsShape(cellId, { ...modelElement, kind: ShapeBpmnElementKind.POOL, styleShape: mxConstants.SHAPE_SWIMLANE });
-    expect(mxCell.style).toContain(`${mxConstants.STYLE_HORIZONTAL}=${modelElement.isHorizontal ? '0' : '1'}`);
-  }
-
-  function expectModelContainsLane(cellId: string, modelElement: ExpectedShapeModelElement): void {
-    const mxCell = expectModelContainsShape(cellId, { ...modelElement, kind: ShapeBpmnElementKind.LANE, styleShape: mxConstants.SHAPE_SWIMLANE });
-    expect(mxCell.style).toContain(`${mxConstants.STYLE_HORIZONTAL}=${modelElement.isHorizontal ? '0' : '1'}`);
-  }
-
   it('bpmn elements should be available in the mxGraph model', async () => {
     // load BPMN
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
@@ -1025,22 +825,6 @@ describe('mxGraph model', () => {
     expectModelNotContainCell('boundary_event_non_interrupting_message_id');
     expectModelNotContainCell('boundary_event_non_interrupting_timer_id');
   });
-
-  function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxGeometry): void {
-    const cell = expectModelContainsCell(cellId);
-
-    if (parentId) {
-      expect(cell.parent.id).toEqual(parentId);
-    } else {
-      expect(cell.parent).toEqual(bpmnVisualization.graph.getDefaultParent());
-    }
-
-    expectGeometry(cell, geometry);
-  }
-
-  function getDefaultParentId(): string {
-    return bpmnVisualization.graph.getDefaultParent().id;
-  }
 
   it('bpmn element shape should have coordinates relative to the pool when no lane', async () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-coordinates-relative-to-pool.bpmn'));
