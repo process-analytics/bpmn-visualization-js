@@ -138,7 +138,7 @@ function withFont(this: MatcherContext, received: mxCell, expected: ExpectedFont
   const style = bpmnVisualization.graph.getView().getState(received).style;
   const receivedFont = { fontStyle: style[mxConstants.STYLE_FONTSTYLE], fontFamily: style[mxConstants.STYLE_FONTFAMILY], fontSize: style[mxConstants.STYLE_FONTSIZE] };
 
-  let expectedFont: any;
+  let expectedFont: unknown;
   if (expected) {
     expectedFont = { fontStyle: getFontStyleValue(expected), fontFamily: expected.name, fontSize: expected.size };
   } else {
