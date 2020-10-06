@@ -38,6 +38,29 @@ When Gitpod IDE is started, the `npm install` command is launched automatically.
 
 Install the EditorConfig extension. A configuration file already exists in the repository, so it will apply right after the extension installation.
 
+#### [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
+After the installation, you need to explicitly tell to the ESLint extension to watch typscript files for linting errors.
+  - Open the Command Palette (*`View -> Command Palette`* or *`Ctrl+Shift+P`* or *`Shift+Cmd+P`*)
+  - Type `Open Settings (JSON)` and select the option `Preferences: Open Settings (JSON)`
+  - Paste this code inside the opened JSON file
+
+  ```JSON
+    {
+      "eslint.validate": ["typescript"]
+    }
+  ```
+  - Open the extensions panel (Button `Extensions` on the left toolbar or `Ctrl+Shift+X` or `Shift+Cmd+X`) 
+  - Open the extensions settings of the ESLint extension (using the wheel on the bottom right corner of the extension)
+  - Ensure that the following properties are checked: 
+    - `ESLint: Enable`
+    - `ESLint > Format: Enable`
+    - `ESLint > Lint Task: Enable`
+
+Visual Studio Code is now configured correctly to use ESLint on typescript files.
+
+*Note: make sure that ESLint is installed and [configured correctly to work with typescript](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/README.md) on your machine.*
+
 #### [Debugging TypeScript code](https://code.visualstudio.com/docs/typescript/typescript-debugging)
 The `launch.json` file is already configured to execute tests:
   - unit tests: `test:unit`
@@ -57,9 +80,7 @@ This extension permits visualizing .adoc files directly in VSCode.
 
 #### [SonarLint](https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode)
 
-Additionally, it is advised to install the SonarLint extension.
-
-It helps to avoid coding mistakes -> reduced technical debt.
+SonarLint highlights Bugs and Security Vulnerabilities as you write code, with clear remediation guidance so you can fix them before the code is even committed.
 
 
 ### IntelliJ

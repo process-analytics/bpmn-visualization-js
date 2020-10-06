@@ -19,10 +19,10 @@ git rebase master
 git push --set-upstream origin 25-annotations_to_tasks
 ```
 
-Finally, go to GitHub and [make a Pull Request](https://help.github.com/articles/creating-a-pull-request) ​with labels :smile:
+Finally, go to GitHub and [make a Pull Request](https://help.github.com/articles/creating-a-pull-request) ​with labels 😄 \
 For the title, follow the directives of the Pull Request template.
 
-:warning: ​We care about quality. So your PR won't be merged until all tests pass.
+⚠️ We care about quality. So your PR won't be merged until all tests pass.
 
 ## Sign the Contributor License Agreement
 

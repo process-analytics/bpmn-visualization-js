@@ -94,7 +94,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 
 
 |Business Rule Task
-|
+|icon:check-circle-o[]
 |
 
 |Embedded Sub-Process
@@ -139,6 +139,7 @@ The event definition can be defined on the event or on the definitions.
 
 *Note*: the following events use icons derived from existing solutions
 
+* compensation: https://thenounproject.com/vityavorobyev/icon/443401/[Rewind Button ] "Icons made by https://thenounproject.com/vityavorobyev/[Viktor Vorobyev] from https://thenounproject.com/"
 * link: https://www.flaticon.com/free-icon/right-arrow_222330[Right arrow] "Icons made by https://www.flaticon.com/authors/freepik[Freepik] from https://www.flaticon.com"
 * message: https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465[draw.io bpmn mxgraph stencil]
 * signal: https://thenounproject.com/term/triangle/2452089/[triangle] By https://thenounproject.com/imamdji99[Imam], ID from https://thenounproject.com 
@@ -194,8 +195,8 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Compensation Interrupting Start Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -269,8 +270,8 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Compensation Intermediate Throw Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -298,8 +299,8 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Compensation Interrupting Boundary Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -352,8 +353,8 @@ The event definition can be defined on the event or on the definitions.
 |The icon width may be adjusted
 
 |Compensation End Event
-|
-|
+|icon:check-circle-o[]
+|The icon width may be adjusted
 |===
 
 

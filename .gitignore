@@ -2,6 +2,7 @@
 /.idea/
 *.iml
 *.project
+*.DS_Store
 
 # Build directories
 /node_modules/
