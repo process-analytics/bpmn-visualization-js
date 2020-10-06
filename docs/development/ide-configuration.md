@@ -40,7 +40,7 @@ Install the EditorConfig extension. A configuration file already exists in the r
 
 #### [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
-After the installation, you need to explicitly tell eslin extension to watch typscript files for linting errors.
+After the installation, you need to explicitly tell to the ESLint extension to watch typscript files for linting errors.
   - Open the Command Palette (*`View -> Command Palette`* or *`Ctrl+Shift+P`* or *`Shift+Cmd+P`*)
   - Type `Open Settings (JSON)` and select the option `Preferences: Open Settings (JSON)`
   - Paste this code inside the opened JSON file
