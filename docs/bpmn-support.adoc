@@ -143,6 +143,7 @@ The event definition can be defined on the event or on the definitions.
 * message: https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465[draw.io bpmn mxgraph stencil]
 * signal: https://thenounproject.com/term/triangle/2452089/[triangle] By https://thenounproject.com/imamdji99[Imam], ID from https://thenounproject.com 
 * timer: https://www.flaticon.com/free-icon/clock_223404[Timer Icon] "Icons made by https://www.flaticon.com/authors/kirill-kazachek[Kirill Kazachek] from https://www.flaticon.com"
+* compensation: https://thenounproject.com/vityavorobyev/icon/443401/[Rewind Button ] "Icons made by https://thenounproject.com/vityavorobyev/[Viktor Vorobyev] from https://thenounproject.com/"
 
 
 [cols="1,1,4", options="header"]

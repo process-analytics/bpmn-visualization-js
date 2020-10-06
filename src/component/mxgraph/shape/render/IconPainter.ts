@@ -258,7 +258,11 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
+  /**
+   * This icon is used by `compensation event`.
+   */
   public paintCompensationIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
+    // implementation adapted from https://thenounproject.com/vityavorobyev/icon/443401/
     const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, { height: 55, width: 100 });
 
     canvas.begin();
