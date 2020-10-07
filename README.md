@@ -40,7 +40,7 @@
 
 ## 🎮 Demo
 
-Give a try to the [__:fast_forward: demo live environment__][demo-live-environment].
+Give a try to the [__⏩ demo live environment__][demo-live-environment].
 The demo let you load a BPMN file to see how `bpmn-visualization` renders it. Various versions of the lib are available. 
 
 If you need BPMN examples, you can use resources from 
@@ -54,7 +54,7 @@ If you need BPMN examples, you can use resources from
 
 | <img src="https://www.google.com/chrome/static/images/chrome-logo.svg" alt="Chrome" width="18px" height="18px" /> Chrome | <img src="https://user-media-prod-cdn.itsre-sumo.mozilla.net/uploads/products/2020-04-14-08-36-13-8dda6f.png" alt="Firefox" width="18px" height="18px" /> Firefox | <img src="https://developer.apple.com/assets/elements/icons/safari/safari-96x96.png" alt="Safari" width="18px" height="18px" /> Safari | <img src="https://avatars0.githubusercontent.com/u/11354582?s=200&v=4" alt="Edge" width="18px" height="18px" /> Edge |
 | :---------: | :---------: | :---------: | :---------: |
-|  :heavy_check_mark: |  :heavy_check_mark: |  :heavy_check_mark: |  :heavy_check_mark: |
+|  ✔️ |  ✔️ |  ✔️ |  ✔️ |
 
 **Note**: Internet Explorer will never be supported. \
 The library may work with the other browsers. They must at least support ES6.
@@ -78,7 +78,7 @@ Future features:
 
 ## ♻️ Usage
 For now, we don't put the released library on npm. So you need to clone the repository in local, get the last tag, and build it. \
-:warning: WE ARE CURRENTLY WORKING ON THE PACKAGING :warning: 
+⚠️ WE ARE CURRENTLY WORKING ON THE PACKAGING ⚠️
 
 * Load necessary scripts 
 ```html
@@ -113,7 +113,7 @@ For now, we don't put the released library on npm. So you need to clone the repo
 ```
 
 💡 Want to know more about `bpmn-visualization` usage and extensibility? Have a look at the
-[__:fast_forward: live examples site__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
+[__⏩ live examples site__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
 
 For more technical details and how-to, go to the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/)
 repository.
@@ -129,7 +129,7 @@ npm run test  # run all unit & e2e tests
 
 You can find more detail in our [Contributing guide](CONTRIBUTING.md). Participation in this open source project is subject to a [Code of Conduct](CODE_OF_CONDUCT.md).
 
-:sparkles: A BIG thanks to all our contributors :slightly_smiling_face:
+✨ A BIG thanks to all our contributors 🙂
 
 
 ## 📃 License
