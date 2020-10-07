@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/node_modules/jest/bin/jest",
             "args": [
-                "--runInBand", "--config=./test/unit/jest.config.unit.js"
+                "--runInBand", "--config=./test/unit/jest.config.js"
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
@@ -23,13 +23,15 @@
             "request": "launch",
             "program": "${workspaceFolder}/node_modules/jest/bin/jest",
             "args": [
-                "--runInBand", "--detectOpenHandles", "--config=./test/e2e/jest.config.e2e.js"
+                "--runInBand", "--detectOpenHandles", "--config=./test/e2e/jest.config.js"
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
-            "disableOptimisticBPs": true
-
+            "disableOptimisticBPs": true,
+            "env": {
+                "JEST_PUPPETEER_CONFIG": "./test/e2e/jest-puppeteer.config.js",
+            }
         }
     ]
 }
