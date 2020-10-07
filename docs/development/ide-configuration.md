@@ -50,9 +50,12 @@ After the installation, you need to explicitly tell to the ESLint extension to w
       "eslint.validate": ["typescript"]
     }
   ```
-  - Open the Command Palette again
-  - Type `eslint`
-  - Select `ESLint: Enable ESLint`
+  - Open the extensions panel (Button `Extensions` on the left toolbar or `Ctrl+Shift+X` or `Shift+Cmd+X`) 
+  - Open the extensions settings of the ESLint extension (using the wheel on the bottom right corner of the extension)
+  - Ensure that the following properties are checked: 
+    - `ESLint: Enable`
+    - `ESLint > Format: Enable`
+    - `ESLint > Lint Task: Enable`
 
 Visual Studio Code is now configured correctly to use ESLint on typescript files.
 
