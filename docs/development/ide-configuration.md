@@ -111,8 +111,8 @@ To be able to run tests from IntelliJ, you must set up the default Jest template
 
 Adjust following parameters:
 - Configuration files: it depends on the type of tests you want to run 
-  - unit tests: `<project_dir>/jest.config.unit.js`
-  - end to end tests: `<project_dir>/jest.config.e2e.js`
+  - unit tests: `<project_dir>/test/unit/jest.config.js`
+  - end to end tests: `<project_dir>/test/e2e/jest.config.js`
 
 
 #### [Debugging TypeScript code](https://www.jetbrains.com/help/idea/running-and-debugging-typescript.html#ws_ts_debug_client_side_on_external_dev_server)
