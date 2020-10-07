@@ -48,6 +48,10 @@ abstract class EventShape extends mxEllipse {
       ShapeBpmnEventKind.ERROR,
       (paintParameter: PaintParameter) => this.iconPainter.paintErrorIcon({ ...paintParameter, ratioFromParent: 0.55, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
     ],
+    [
+      ShapeBpmnEventKind.COMPENSATION,
+      (paintParameter: PaintParameter) => this.iconPainter.paintCompensationIcon({ ...paintParameter, ratioFromParent: 0.7, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
+    ],
   ]);
 
   protected withFilledIcon = false;
@@ -70,11 +74,11 @@ abstract class EventShape extends mxEllipse {
   // This will be removed after implementation of all supported events
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private markNonFullyRenderedEvents(c: mxAbstractCanvas2D): void {
-    const eventKind = StyleUtils.getBpmnEventKind(this.style);
-    if (eventKind == ShapeBpmnEventKind.COMPENSATION) {
-      c.setFillColor('deeppink');
-      c.setFillAlpha(0.3);
-    }
+    // const eventKind = StyleUtils.getBpmnEventKind(this.style);
+    // if (eventKind == ShapeBpmnEventKind.COMPENSATION) {
+    //   c.setFillColor('deeppink');
+    //   c.setFillAlpha(0.3);
+    // }
   }
 
   protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {
