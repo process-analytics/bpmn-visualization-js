@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import { MessageFlow } from '../../../../model/bpmn/internal/edge/Flow';
+
 function convertEmptyStringAndObject<T>(element: string | T, acceptEmptyString: boolean): T {
   if (element === '') {
     return acceptEmptyString ? ({} as T) : undefined;
@@ -32,4 +35,22 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
     returnedArray = elements.map(element => convertEmptyStringAndObject(element, acceptEmptyString));
   }
   return returnedArray.filter(value => value);
+}
+
+export class ConvertedElements {
+  private convertedParticipantsById: Map<string, Participant> = new Map();
+  private convertedParticipantsByProcessRef: Map<string, Participant> = new Map();
+  private convertedMessageFlows: Map<string, MessageFlow> = new Map();
+
+  findProcessRefParticipant(id: string): Participant {
+    return this.convertedParticipantsById.get(id);
+  }
+
+  findProcessRefParticipantByProcessRef(processRef: string): Participant {
+    return this.convertedParticipantsByProcessRef.get(processRef);
+  }
+
+  findMessageFlow(id: string): MessageFlow {
+    return this.convertedMessageFlows.get(id);
+  }
 }
