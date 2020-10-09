@@ -57,17 +57,17 @@ export class ConvertedElements {
   }
 
   private processes: Map<string, ShapeBpmnElement> = new Map();
-  private findProcess(id: string): ShapeBpmnElement {
+  private _findProcess(id: string): ShapeBpmnElement {
     return this.processes.get(id);
   }
   registerProcess(process: ShapeBpmnElement): void {
     this.processes.set(process.id, process);
   }
 
-  findProcessElement(participantId: string): ShapeBpmnElement | undefined {
+  findProcess(participantId: string): ShapeBpmnElement | undefined {
     const participant = this.findParticipantById(participantId);
     if (participant) {
-      const process = this.findProcess(participant.processRef);
+      const process = this._findProcess(participant.processRef);
       if (process) {
         const name = participant.name || process.name;
         return new ShapeBpmnElement(participant.id, name, process.kind, process.parentId);
@@ -86,7 +86,7 @@ export class ConvertedElements {
   }
 
   private flowNodes: Map<string, ShapeBpmnElement> = new Map();
-  findFlowNodeBpmnElement(id: string): ShapeBpmnElement {
+  findFlowNode(id: string): ShapeBpmnElement {
     return this.flowNodes.get(id);
   }
   registerFlowNode(flowNode: ShapeBpmnElement): void {
@@ -94,7 +94,7 @@ export class ConvertedElements {
   }
 
   private lanes: Map<string, ShapeBpmnElement> = new Map();
-  findLaneBpmnElement(id: string): ShapeBpmnElement {
+  findLane(id: string): ShapeBpmnElement {
     return this.lanes.get(id);
   }
   registerLane(lane: ShapeBpmnElement): void {

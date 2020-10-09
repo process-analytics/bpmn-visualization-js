@@ -81,19 +81,19 @@ export default class DiagramConverter {
 
     for (let i = 0; i < shapes.length; i++) {
       const shape = shapes[i];
-      const flowNode = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findFlowNodeBpmnElement(bpmnElement));
+      const flowNode = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findFlowNode(bpmnElement));
       if (flowNode) {
         convertedShapes.flowNodes.push(flowNode);
         continue;
       }
 
-      const lane = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findLaneBpmnElement(bpmnElement));
+      const lane = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findLane(bpmnElement));
       if (lane) {
         convertedShapes.lanes.push(lane);
         continue;
       }
 
-      const pool = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findProcessElement(bpmnElement));
+      const pool = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findProcess(bpmnElement));
       if (pool) {
         convertedShapes.pools.push(pool);
         continue;

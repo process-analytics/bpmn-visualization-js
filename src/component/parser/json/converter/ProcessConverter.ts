@@ -175,7 +175,7 @@ export default class ProcessConverter {
   }
 
   private buildShapeBpmnBoundaryEvent(bpmnElement: TBoundaryEvent, eventKind: ShapeBpmnEventKind): ShapeBpmnBoundaryEvent {
-    const parent = this.convertedElements.findFlowNodeBpmnElement(bpmnElement.attachedToRef);
+    const parent = this.convertedElements.findFlowNode(bpmnElement.attachedToRef);
 
     if (ShapeUtil.isActivity(parent?.kind)) {
       return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity);
@@ -244,7 +244,7 @@ export default class ProcessConverter {
 
   private assignParentOfLaneFlowNodes(lane: TLane): void {
     ensureIsArray<string>(lane.flowNodeRef).forEach(flowNodeRef => {
-      const shapeBpmnElement = this.convertedElements.findFlowNodeBpmnElement(flowNodeRef);
+      const shapeBpmnElement = this.convertedElements.findFlowNode(flowNodeRef);
       const laneId = lane.id;
       if (shapeBpmnElement) {
         if (!ShapeUtil.isBoundaryEvent(shapeBpmnElement.kind)) {
@@ -276,7 +276,7 @@ export default class ProcessConverter {
     if (this.defaultSequenceFlowIds.includes(sequenceFlow.id)) {
       return SequenceFlowKind.DEFAULT;
     } else {
-      const sourceShapeBpmnElement = this.convertedElements.findFlowNodeBpmnElement(sequenceFlow.sourceRef);
+      const sourceShapeBpmnElement = this.convertedElements.findFlowNode(sequenceFlow.sourceRef);
       if (sourceShapeBpmnElement && ShapeUtil.isWithDefaultSequenceFlow(sourceShapeBpmnElement.kind) && sequenceFlow.conditionExpression) {
         if (ShapeUtil.isActivity(sourceShapeBpmnElement.kind)) {
           return SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY;
