@@ -40,8 +40,29 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
 
 export class ConvertedElements {
   private convertedParticipantsById: Map<string, Participant> = new Map();
+  private findProcessRefParticipant(id: string): Participant {
+    return this.convertedParticipantsById.get(id);
+  }
+
   private convertedParticipantsByProcessRef: Map<string, Participant> = new Map();
+  findProcessRefParticipantByProcessRef(processRef: string): Participant {
+    return this.convertedParticipantsByProcessRef.get(processRef);
+  }
+
+  registerParticipant(participant: Participant): void {
+    this.convertedParticipantsById.set(participant.id, participant);
+    if (participant.processRef) {
+      this.convertedParticipantsByProcessRef.set(participant.processRef, participant);
+    }
+  }
+
   private convertedMessageFlows: Map<string, MessageFlow> = new Map();
+  findMessageFlow(id: string): MessageFlow {
+    return this.convertedMessageFlows.get(id);
+  }
+  registerMessageFlow(messageFlow: MessageFlow): void {
+    this.convertedMessageFlows.set(messageFlow.id, messageFlow);
+  }
 
   private convertedFlowNodeBpmnElements: Map<string, ShapeBpmnElement> = new Map();
   private convertedLaneBpmnElements: Map<string, ShapeBpmnElement> = new Map();
@@ -59,7 +80,7 @@ export class ConvertedElements {
     return this.convertedLaneBpmnElements.get(id);
   }
 
-  private findProcessBpmnElement(id: string): ShapeBpmnElement {
+  findProcessBpmnElement(id: string): ShapeBpmnElement {
     return this.convertedProcessBpmnElements.get(id);
   }
 
@@ -83,14 +104,6 @@ export class ConvertedElements {
     return this.eventDefinitionsOfDefinitions.get(id);
   }
 
-  private findProcessRefParticipant(id: string): Participant {
-    return this.convertedParticipantsById.get(id);
-  }
-
-  findProcessRefParticipantByProcessRef(processRef: string): Participant {
-    return this.convertedParticipantsByProcessRef.get(processRef);
-  }
-
   findProcessElement(participantId: string): ShapeBpmnElement | undefined {
     const participant = this.findProcessRefParticipant(participantId);
     if (participant) {
@@ -102,9 +115,5 @@ export class ConvertedElements {
       // black box pool
       return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
     }
-  }
-
-  findMessageFlow(id: string): MessageFlow {
-    return this.convertedMessageFlows.get(id);
   }
 }

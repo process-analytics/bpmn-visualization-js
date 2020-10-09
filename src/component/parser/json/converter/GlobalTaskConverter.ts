@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
-import { ensureIsArray } from './utils';
+import { ConvertedElements, ensureIsArray } from './utils';
 import { TGlobalTask } from '../../../../model/bpmn/json/baseElement/rootElement/globalTask';
 
 const globalTaskIds: string[] = [];
@@ -24,6 +24,8 @@ export function isGlobalTask(id: string): boolean {
 }
 
 export default class GlobalTaskConverter {
+  constructor(readonly convertedElements: ConvertedElements) {}
+
   deserialize(definitions: TDefinitions): void {
     try {
       // Deletes everything in the array, which does hit other references. For better performance.

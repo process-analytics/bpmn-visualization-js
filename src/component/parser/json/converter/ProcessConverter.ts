@@ -42,7 +42,7 @@ import { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElemen
 import { TAssociation, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
 import { AssociationDirectionKind } from '../../../../model/bpmn/internal/edge/AssociationDirectionKind';
 import { bpmnEventKinds, findEventDefinitionOfDefinitions } from './EventDefinitionConverter';
-import { ensureIsArray } from './utils';
+import { ConvertedElements, ensureIsArray } from './utils';
 import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
 import { isGlobalTask } from './GlobalTaskConverter';
@@ -83,6 +83,8 @@ interface EventDefinition {
 type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTextAnnotation;
 
 export default class ProcessConverter {
+  constructor(readonly convertedElements: ConvertedElements) {}
+
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     try {
       convertedFlowNodeBpmnElements.clear();

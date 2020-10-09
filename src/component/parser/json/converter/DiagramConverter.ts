@@ -18,31 +18,32 @@ import Bounds from '../../../../model/bpmn/internal/Bounds';
 import ShapeBpmnElement, { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/internal/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
-import { findAssociationFlow, findFlowNodeBpmnElement, findLaneBpmnElement, findProcessBpmnElement, findSequenceFlow } from './ProcessConverter';
-import { findMessageFlow, findProcessRefParticipant, findProcessRefParticipantByProcessRef } from './CollaborationConverter';
+import { findAssociationFlow, findFlowNodeBpmnElement, findLaneBpmnElement, findSequenceFlow } from './ProcessConverter';
 import Waypoint from '../../../../model/bpmn/internal/edge/Waypoint';
 import Label, { Font } from '../../../../model/bpmn/internal/Label';
 import { MessageVisibleKind } from '../../../../model/bpmn/internal/edge/MessageVisibleKind';
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
 import { Point } from '../../../../model/bpmn/json/DC';
-import { ensureIsArray } from './utils';
-import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
+import { ConvertedElements, ensureIsArray } from './utils';
+import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
 
-function findProcessElement(participantId: string): ShapeBpmnElement | undefined {
-  const participant = findProcessRefParticipant(participantId);
-  if (participant) {
-    const originalProcessBpmnElement = findProcessBpmnElement(participant.processRef);
-    if (originalProcessBpmnElement) {
-      const name = participant.name || originalProcessBpmnElement.name;
-      return new ShapeBpmnElement(participant.id, name, originalProcessBpmnElement.kind, originalProcessBpmnElement.parentId);
-    }
-    // black box pool
-    return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
-  }
-}
+// function findProcessElement(participantId: string): ShapeBpmnElement | undefined {
+//   const participant = findProcessRefParticipant(participantId);
+//   if (participant) {
+//     const originalProcessBpmnElement = findProcessBpmnElement(participant.processRef);
+//     if (originalProcessBpmnElement) {
+//       const name = participant.name || originalProcessBpmnElement.name;
+//       return new ShapeBpmnElement(participant.id, name, originalProcessBpmnElement.kind, originalProcessBpmnElement.parentId);
+//     }
+//     // black box pool
+//     return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
+//   }
+// }
 
 export default class DiagramConverter {
+  constructor(readonly convertedElements: ConvertedElements) {}
+
   private convertedFonts: Map<string, Font> = new Map();
 
   deserialize(bpmnDiagrams: Array<BPMNDiagram> | BPMNDiagram): BpmnModel {
@@ -106,7 +107,7 @@ export default class DiagramConverter {
         continue;
       }
 
-      const pool = this.deserializeShape(shape, (bpmnElement: string) => findProcessElement(bpmnElement));
+      const pool = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findProcessElement(bpmnElement));
       if (pool) {
         convertedShapes.pools.push(pool);
         continue;
@@ -125,7 +126,7 @@ export default class DiagramConverter {
       const bounds = this.deserializeBounds(shape);
 
       if (bpmnElement.parentId) {
-        const participant = findProcessRefParticipantByProcessRef(bpmnElement.parentId);
+        const participant = this.convertedElements.findProcessRefParticipantByProcessRef(bpmnElement.parentId);
         if (participant) {
           bpmnElement.parentId = participant.id;
         }
@@ -154,7 +155,7 @@ export default class DiagramConverter {
 
   private deserializeEdges(edges: BPMNEdge | BPMNEdge[]): Edge[] {
     return ensureIsArray(edges).map(edge => {
-      const flow = findSequenceFlow(edge.bpmnElement) || findMessageFlow(edge.bpmnElement) || findAssociationFlow(edge.bpmnElement);
+      const flow = findSequenceFlow(edge.bpmnElement) || this.convertedElements.findMessageFlow(edge.bpmnElement) || findAssociationFlow(edge.bpmnElement);
       const waypoints = this.deserializeWaypoints(edge.waypoint);
       const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
 

@@ -16,7 +16,7 @@
 import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
 import { ShapeBpmnEventKind } from '../../../../model/bpmn/internal/shape';
 import { TEventDefinition } from '../../../../model/bpmn/json/baseElement/rootElement/eventDefinition';
-import { ensureIsArray } from './utils';
+import { ConvertedElements, ensureIsArray } from './utils';
 
 // TODO move to shape Utils?
 export const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
@@ -30,6 +30,8 @@ export function findEventDefinitionOfDefinitions(id: string): ShapeBpmnEventKind
 }
 
 export default class EventDefinitionConverter {
+  constructor(readonly convertedElements: ConvertedElements) {}
+
   deserialize(definitions: TDefinitions): void {
     try {
       eventDefinitionsOfDefinitions.clear();

@@ -15,7 +15,6 @@
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
 import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
-import { findProcessRefParticipant } from '../../../../../src/component/parser/json/converter/CollaborationConverter';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 
 describe('parse bpmn as json for process/pool', () => {
@@ -435,8 +434,9 @@ describe('parse bpmn as json for process/pool', () => {
       },
     });
 
+    // TODO see how we can check this in another way
     // Check detected participants during json parsing
-    expect(findProcessRefParticipant('Participant_2')).toBeUndefined;
+    // expect(findProcessRefParticipant('Participant_2')).toBeUndefined;
   });
 
   it('json containing one process and flownode without lane and related participant', () => {
