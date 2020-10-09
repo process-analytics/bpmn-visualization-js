@@ -18,7 +18,7 @@ import Bounds from '../../../../model/bpmn/internal/Bounds';
 import ShapeBpmnElement, { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/internal/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
-import { findAssociationFlow, findFlowNodeBpmnElement, findLaneBpmnElement, findSequenceFlow } from './ProcessConverter';
+import { findAssociationFlow, findLaneBpmnElement, findSequenceFlow } from './ProcessConverter';
 import Waypoint from '../../../../model/bpmn/internal/edge/Waypoint';
 import Label, { Font } from '../../../../model/bpmn/internal/Label';
 import { MessageVisibleKind } from '../../../../model/bpmn/internal/edge/MessageVisibleKind';
@@ -27,19 +27,6 @@ import { Point } from '../../../../model/bpmn/json/DC';
 import { ConvertedElements, ensureIsArray } from './utils';
 import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
-
-// function findProcessElement(participantId: string): ShapeBpmnElement | undefined {
-//   const participant = findProcessRefParticipant(participantId);
-//   if (participant) {
-//     const originalProcessBpmnElement = findProcessBpmnElement(participant.processRef);
-//     if (originalProcessBpmnElement) {
-//       const name = participant.name || originalProcessBpmnElement.name;
-//       return new ShapeBpmnElement(participant.id, name, originalProcessBpmnElement.kind, originalProcessBpmnElement.parentId);
-//     }
-//     // black box pool
-//     return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
-//   }
-// }
 
 export default class DiagramConverter {
   constructor(readonly convertedElements: ConvertedElements) {}
@@ -95,7 +82,7 @@ export default class DiagramConverter {
 
     for (let i = 0; i < shapes.length; i++) {
       const shape = shapes[i];
-      const flowNode = this.deserializeShape(shape, (bpmnElement: string) => findFlowNodeBpmnElement(bpmnElement));
+      const flowNode = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findFlowNodeBpmnElement(bpmnElement));
       if (flowNode) {
         convertedShapes.flowNodes.push(flowNode);
         continue;
