@@ -433,10 +433,6 @@ describe('parse bpmn as json for process/pool', () => {
         height: 430,
       },
     });
-
-    // TODO see how we can check this in another way
-    // Check detected participants during json parsing
-    // expect(findProcessRefParticipant('Participant_2')).toBeUndefined;
   });
 
   it('json containing one process and flownode without lane and related participant', () => {
