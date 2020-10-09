@@ -39,69 +39,69 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
 }
 
 export class ConvertedElements {
-  private convertedParticipantsById: Map<string, Participant> = new Map();
+  private participantsById: Map<string, Participant> = new Map();
   private findProcessRefParticipant(id: string): Participant {
-    return this.convertedParticipantsById.get(id);
+    return this.participantsById.get(id);
   }
 
-  private convertedParticipantsByProcessRef: Map<string, Participant> = new Map();
+  private participantsByProcessRef: Map<string, Participant> = new Map();
   findProcessRefParticipantByProcessRef(processRef: string): Participant {
-    return this.convertedParticipantsByProcessRef.get(processRef);
+    return this.participantsByProcessRef.get(processRef);
   }
 
   registerParticipant(participant: Participant): void {
-    this.convertedParticipantsById.set(participant.id, participant);
+    this.participantsById.set(participant.id, participant);
     if (participant.processRef) {
-      this.convertedParticipantsByProcessRef.set(participant.processRef, participant);
+      this.participantsByProcessRef.set(participant.processRef, participant);
     }
   }
 
-  private convertedMessageFlows: Map<string, MessageFlow> = new Map();
+  private messageFlows: Map<string, MessageFlow> = new Map();
   findMessageFlow(id: string): MessageFlow {
-    return this.convertedMessageFlows.get(id);
+    return this.messageFlows.get(id);
   }
   registerMessageFlow(messageFlow: MessageFlow): void {
-    this.convertedMessageFlows.set(messageFlow.id, messageFlow);
+    this.messageFlows.set(messageFlow.id, messageFlow);
   }
 
-  private convertedFlowNodeBpmnElements: Map<string, ShapeBpmnElement> = new Map();
+  private flowNodes: Map<string, ShapeBpmnElement> = new Map();
   findFlowNodeBpmnElement(id: string): ShapeBpmnElement {
-    return this.convertedFlowNodeBpmnElements.get(id);
+    return this.flowNodes.get(id);
   }
   registerFlowNode(flowNode: ShapeBpmnElement): void {
-    this.convertedFlowNodeBpmnElements.set(flowNode.id, flowNode);
+    this.flowNodes.set(flowNode.id, flowNode);
   }
 
-  private convertedLaneBpmnElements: Map<string, ShapeBpmnElement> = new Map();
+  private lanes: Map<string, ShapeBpmnElement> = new Map();
   findLaneBpmnElement(id: string): ShapeBpmnElement {
-    return this.convertedLaneBpmnElements.get(id);
+    return this.lanes.get(id);
   }
   registerLane(lane: ShapeBpmnElement): void {
-    this.convertedLaneBpmnElements.set(lane.id, lane);
+    this.lanes.set(lane.id, lane);
   }
 
-  private convertedProcessBpmnElements: Map<string, ShapeBpmnElement> = new Map();
+  private processes: Map<string, ShapeBpmnElement> = new Map();
   findProcessBpmnElement(id: string): ShapeBpmnElement {
-    return this.convertedProcessBpmnElements.get(id);
+    return this.processes.get(id);
   }
   registerProcess(process: ShapeBpmnElement): void {
-    this.convertedProcessBpmnElements.set(process.id, process);
+    this.processes.set(process.id, process);
   }
 
-  private convertedSequenceFlows: Map<string, SequenceFlow> = new Map();
+  private sequenceFlows: Map<string, SequenceFlow> = new Map();
   findSequenceFlow(id: string): SequenceFlow {
-    return this.convertedSequenceFlows.get(id);
+    return this.sequenceFlows.get(id);
   }
   registerSequenceFlow(sequenceFlow: SequenceFlow): void {
-    this.convertedSequenceFlows.set(sequenceFlow.id, sequenceFlow);
+    this.sequenceFlows.set(sequenceFlow.id, sequenceFlow);
   }
 
-  private convertedAssociationFlows: Map<string, AssociationFlow> = new Map();
+  private associationFlows: Map<string, AssociationFlow> = new Map();
   findAssociationFlow(id: string): AssociationFlow {
-    return this.convertedAssociationFlows.get(id);
+    return this.associationFlows.get(id);
   }
   registerSAssociationFlow(associationFlow: AssociationFlow): void {
-    this.convertedAssociationFlows.set(associationFlow.id, associationFlow);
+    this.associationFlows.set(associationFlow.id, associationFlow);
   }
 
   private eventDefinitionsOfDefinitions: Map<string, ShapeBpmnEventKind> = new Map();
