@@ -18,6 +18,7 @@ import { ShapeBpmnEventKind } from '../../../../model/bpmn/internal/shape';
 import { TEventDefinition } from '../../../../model/bpmn/json/baseElement/rootElement/eventDefinition';
 import { ensureIsArray } from './utils';
 
+// TODO move to shape Utils?
 export const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
   return kind != ShapeBpmnEventKind.NONE;
 });
