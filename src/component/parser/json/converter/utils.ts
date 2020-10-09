@@ -113,7 +113,7 @@ export class ConvertedElements {
   findAssociationFlow(id: string): AssociationFlow {
     return this.associationFlows.get(id);
   }
-  registerSAssociationFlow(associationFlow: AssociationFlow): void {
+  registerAssociationFlow(associationFlow: AssociationFlow): void {
     this.associationFlows.set(associationFlow.id, associationFlow);
   }
 
