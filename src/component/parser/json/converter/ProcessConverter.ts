@@ -42,7 +42,7 @@ import { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElemen
 import { TAssociation, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
 import { AssociationDirectionKind } from '../../../../model/bpmn/internal/edge/AssociationDirectionKind';
 import { bpmnEventKinds, findEventDefinitionOfDefinitions } from './EventDefinitionConverter';
-import { ensureIsArray } from './ConverterUtil';
+import { ensureIsArray } from './utils';
 import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
 import { isGlobalTask } from './GlobalTaskConverter';

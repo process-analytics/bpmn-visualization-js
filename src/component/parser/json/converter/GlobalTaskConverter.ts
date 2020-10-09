@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
-import { ensureIsArray } from './ConverterUtil';
+import { ensureIsArray } from './utils';
 import { TGlobalTask } from '../../../../model/bpmn/json/baseElement/rootElement/globalTask';
 
 const globalTaskIds: string[] = [];

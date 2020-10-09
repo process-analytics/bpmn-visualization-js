@@ -18,7 +18,7 @@ import { MessageFlow } from '../../../../model/bpmn/internal/edge/Flow';
 import { TCollaboration } from '../../../../model/bpmn/json/baseElement/rootElement/collaboration';
 import { TParticipant } from '../../../../model/bpmn/json/baseElement/participant';
 import { TMessageFlow } from '../../../../model/bpmn/json/baseElement/baseElement';
-import { ensureIsArray } from './ConverterUtil';
+import { ensureIsArray } from './utils';
 
 const convertedParticipantsById: Map<string, Participant> = new Map();
 const convertedParticipantsByProcessRef: Map<string, Participant> = new Map();

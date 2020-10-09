@@ -17,7 +17,7 @@ import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { readFileSync } from '../../../../helpers/file-helper';
 import { TSubProcess } from '../../../../../src/model/bpmn/json/baseElement/flowNode/activity/activity';
-import { ensureIsArray } from '../../../../../src/component/parser/json/converter/ConverterUtil';
+import { ensureIsArray } from '../../../../../src/component/parser/json/converter/utils';
 import { TStartEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
 import { TTask } from '../../../../../src/model/bpmn/json/baseElement/flowNode/activity/task';
 import { TSequenceFlow } from '../../../../../src/model/bpmn/json/baseElement/flowElement';

@@ -16,7 +16,7 @@
 import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
 import { ShapeBpmnEventKind } from '../../../../model/bpmn/internal/shape';
 import { TEventDefinition } from '../../../../model/bpmn/json/baseElement/rootElement/eventDefinition';
-import { ensureIsArray } from './ConverterUtil';
+import { ensureIsArray } from './utils';
 
 export const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
   return kind != ShapeBpmnEventKind.NONE;

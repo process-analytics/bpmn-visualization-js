@@ -25,7 +25,7 @@ import Label, { Font } from '../../../../model/bpmn/internal/Label';
 import { MessageVisibleKind } from '../../../../model/bpmn/internal/edge/MessageVisibleKind';
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
 import { Point } from '../../../../model/bpmn/json/DC';
-import { ensureIsArray } from './ConverterUtil';
+import { ensureIsArray } from './utils';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
 
