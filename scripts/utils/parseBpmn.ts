@@ -19,7 +19,7 @@ import parseArgs from 'minimist';
 import BpmnModel from '../../src/model/bpmn/internal/BpmnModel';
 import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
 import { BpmnJsonModel } from '../../src/model/bpmn/json/BPMN20';
-import { defaultBpmnJsonParser } from '../../src/component/parser/json/BpmnJsonParser';
+import { newBpmnJsonParser } from '../../src/component/parser/json/BpmnJsonParser';
 import { readFileSync } from '../../test/helpers/file-helper';
 
 const __dirname = path.resolve();
@@ -42,7 +42,7 @@ let result = '';
 if (outputType === 'json') {
   result = prettyString(json);
 } else {
-  result = prettyString(defaultBpmnJsonParser().parse(json));
+  result = prettyString(newBpmnJsonParser().parse(json));
 }
 
 // copy to clipboard
