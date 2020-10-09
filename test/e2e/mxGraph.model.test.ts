@@ -442,10 +442,12 @@ describe('mxGraph model', () => {
     expect('sequence_flow_in_sub_process_1_id').toBeEdge({
       kind: FlowKind.SEQUENCE_FLOW,
       parentId: 'expanded_embedded_sub_process_id',
+      endArrow: 'blockThin',
     });
     expect('sequence_flow_in_sub_process_2_id').toBeEdge({
       kind: FlowKind.SEQUENCE_FLOW,
       parentId: 'expanded_embedded_sub_process_id',
+      endArrow: 'blockThin',
     });
 
     // Start Event in Event Sub Process
@@ -792,13 +794,27 @@ describe('mxGraph model', () => {
     expectModelContainsShape('exclusive_gateway_id', { kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, label: 'Exclusive Gateway' });
 
     // sequence flow
-    expectModelContainsSequenceFlow('default_sequence_flow_id', { sequenceFlowKind: SequenceFlowKind.DEFAULT, startArrow: MarkerIdentifier.ARROW_DASH, font: expectedBoldFont });
-    expectModelContainsSequenceFlow('normal_sequence_flow_id', { sequenceFlowKind: SequenceFlowKind.NORMAL, label: "From 'start event 1' to 'task 1'" });
+    expectModelContainsSequenceFlow('default_sequence_flow_id', {
+      sequenceFlowKind: SequenceFlowKind.DEFAULT,
+      startArrow: MarkerIdentifier.ARROW_DASH,
+      parentId: 'participant_1_id',
+      font: expectedBoldFont,
+    });
+    expectModelContainsSequenceFlow('normal_sequence_flow_id', {
+      sequenceFlowKind: SequenceFlowKind.NORMAL,
+      parentId: 'participant_1_id',
+      label: "From 'start event 1' to 'task 1'",
+    });
     expectModelContainsSequenceFlow('conditional_sequence_flow_from_activity_id', {
       sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
       startArrow: mxConstants.ARROW_DIAMOND_THIN,
+      parentId: 'participant_1_id',
     });
-    expectModelContainsSequenceFlow('conditional_sequence_flow_from_gateway_id', { sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_GATEWAY, label: '' });
+    expectModelContainsSequenceFlow('conditional_sequence_flow_from_gateway_id', {
+      sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_GATEWAY,
+      parentId: 'participant_1_id',
+      label: '',
+    });
 
     // message flow
     expectModelContainsMessageFlow('message_flow_initiating_message_id', { label: 'Message Flow with initiating message', messageVisibleKind: MessageVisibleKind.INITIATING });
@@ -809,7 +825,7 @@ describe('mxGraph model', () => {
     expectModelContainsMessageFlow('message_flow_no_visible_id', { label: 'Message Flow without message', messageVisibleKind: MessageVisibleKind.NONE });
 
     // association
-    expectModelContainsAssociationFlow('association_id', { kind: FlowKind.ASSOCIATION_FLOW });
+    expectModelContainsAssociationFlow('association_id', { kind: FlowKind.ASSOCIATION_FLOW, parentId: 'participant_1_id' });
   });
 
   it('bpmn elements should not be available in the mxGraph model, if they are attached to not existing elements', async () => {
