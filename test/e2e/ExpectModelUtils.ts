@@ -144,17 +144,6 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement):
   const expectedCell: ExpectedCell = {
     id,
     value: expectedModel.label,
-    // geometry: expect.objectContaining({
-    //   x: 0,
-    //   y: 0,
-    //   width: 0,
-    //   height: 0,
-    //   points: [
-    //     { x: 76, y: 100 },
-    //     { x: 130, y: 100 },
-    //   ],
-    //   offset: null,
-    // }),
     style: expect.stringContaining(expectedModel.kind),
     edge: true,
     parent: { id: parentId ? parentId : getDefaultParentId() },
@@ -167,17 +156,6 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement):
     expectedCell.children = [
       {
         value: undefined,
-        // geometry: expect.objectContaining({
-        //   x: 0,
-        //   y: 0,
-        //   width: 0,
-        //   height: 0,
-        //   points: [
-        //     { x: 76, y: 100 },
-        //     { x: 130, y: 100 },
-        //   ],
-        //   offset: null,
-        // }),
         style: `shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${expectedModel.messageVisibleKind}`,
         id: `messageFlowIcon_of_${id}`,
         vertex: true,
@@ -222,7 +200,6 @@ function buildReceivedCell(cell: mxCell): ExpectedCell {
     receivedCell.children = children.map((child: mxCell) => {
       return {
         value: child.value,
-        // geometry: child.geometry,
         style: child.style,
         id: child.id,
         edge: child.edge,
@@ -231,20 +208,13 @@ function buildReceivedCell(cell: mxCell): ExpectedCell {
     });
   }
 
-  // if (cell.geometry) {
-  //   const geometry = new mxGeometry(cell.geometry.x, cell.geometry.y, cell.geometry.width, cell.geometry.height);
-  //   geometry.points = cell.geometry.points;
-  //   geometry.offset = cell.geometry.offset;
-  //
-  //   receivedCell.geometry = geometry;
-  // }
   return receivedCell;
 }
 
 // --------------------------------- Matchers --------------------------------------
 
-const EXPECTED_LABEL = 'Expected in the mxGraph model:';
-const RECEIVED_LABEL = 'Received in the mxGraph model:';
+const EXPECTED_LABEL = 'Expected in the mxGraph model';
+const RECEIVED_LABEL = 'Received in the mxGraph model';
 
 function getCellMatcherResult(pass: boolean, received: string): CustomMatcherResult {
   return {
@@ -367,8 +337,13 @@ function toBeEdge(this: MatcherContext, received: string, expected: ExpectedEdge
 
   const cell = getCell(received);
   if (!cell) {
-    // TODO display expected
-    return getCellMatcherResult(false, received);
+    return {
+      message: () =>
+        this.utils.matcherHint(matcherName, undefined, undefined, options) +
+        '\n\n' +
+        this.utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: Edge with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, isExpand(this.expand)),
+      pass: false,
+    };
   }
 
   const receivedCell = buildReceivedCell(cell);
@@ -377,7 +352,7 @@ function toBeEdge(this: MatcherContext, received: string, expected: ExpectedEdge
     ? () =>
         this.utils.matcherHint(matcherName, undefined, undefined, options) +
         '\n\n' +
-        `${EXPECTED_LABEL} Edge with id '${received}' not to be found with the configuration:\n` +
+        `${EXPECTED_LABEL}: Edge with id '${received}' not to be found with the configuration:\n` +
         `${this.utils.printExpected(expectedCell)}`
     : () =>
         this.utils.matcherHint(matcherName, undefined, undefined, options) +
@@ -385,8 +360,8 @@ function toBeEdge(this: MatcherContext, received: string, expected: ExpectedEdge
         this.utils.printDiffOrStringify(
           expectedCell,
           receivedCell,
-          `${EXPECTED_LABEL} Edge with id '${expectedCell.id}'`,
-          `${RECEIVED_LABEL} Edge with id '${received}'`,
+          `${EXPECTED_LABEL}: Edge with id '${expectedCell.id}'`,
+          `${RECEIVED_LABEL}: Edge with id '${received}'`,
           isExpand(this.expand),
         );
   return {
