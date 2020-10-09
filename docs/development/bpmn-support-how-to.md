@@ -111,16 +111,54 @@ Visual tests introduced when adding the detection support should fail for the BP
 Please update the reference snapshot image accordingly.
 
 
-### BPMN icon tips
+### BPMN icon and marker tips
 
-The icon of the BPMN elements must be defined in the mxGraph custom shapes and this currently must be done using `TypeScript`
-code. The `IconPainter` class manages all icons rendering/painting.  
+The icon and markers of the BPMN elements must be defined in the mxGraph custom shapes and this currently must be done using
+`TypeScript` code. The `IconPainter` class manages all icons rendering/painting.  
 
 It is possible to adapt an SVG icon thanks to [mxgraph-svg2shape](https://github.com/process-analytics/mxgraph-svg2shape),
 a Java tool that will let you transform your SVG file into a set of `TypeScript` commands.
 
 Please be aware that the tool is not able to support all SVG files, and you may need to adapt the SVG definition prior the
 tool can transform it. See [PR #210](https://github.com/process-analytics/bpmn-visualization-js/pull/210) for instance.
+
+
+#### Integration Example
+
+Let's say we want to use this svg content as an icon or marker:
+
+![bpmn icon example](images/bpmn-icon-example.png)
+
+ ```xml
+<svg width="250" height="350" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20,230 Q40,205 50,230 T90,230" fill="none" stroke="blue" stroke-width="5"/>
+</svg>
+```
+
+Running the `Svg2Js` CLI, this will produce something like
+```typescript
+// shape: path-blue
+// width: 70
+// height: 50
+// foreground
+canvas.begin();
+canvas.moveTo(0, 25);
+canvas.quadTo(20, 0, 30, 25);
+canvas.quadTo(40, 50, 70, 25);
+canvas.stroke();
+```
+
+Then you can directly use the produced code in the `IconPainter` functions.
+
+The height and width in the comments should be used as original icon size when creating the `canvas` instance like in
+the following. The values may differ from the svg viewport as `Svg2Js` resize the SVG source.
+```typescript
+const originalIconSize = { width: 70, height: 50 };
+const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, originalIconSize);
+```
+
+**Note**: the canvas used in the `IconPainter` may not support all mxGraph drawing functions, in that case, please open
+a Pull Request or an Issue to add the missing functions. 
 
 
 #### <a name="icons-license"></a> Reusing existing icons
