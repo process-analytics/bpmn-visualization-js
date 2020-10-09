@@ -37,13 +37,13 @@ export default class StyleConfigurator {
   private specificFlowStyles: Map<FlowKind, (style: StyleMap) => void> = new Map([
     [
       FlowKind.SEQUENCE_FLOW,
-      (style: any) => {
+      (style: StyleMap) => {
         style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
       },
     ],
     [
       FlowKind.MESSAGE_FLOW,
-      (style: any) => {
+      (style: StyleMap) => {
         style[mxConstants.STYLE_DASHED] = true;
         style[mxConstants.STYLE_DASH_PATTERN] = '8 5';
         style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OVAL;
@@ -55,7 +55,7 @@ export default class StyleConfigurator {
     ],
     [
       FlowKind.ASSOCIATION_FLOW,
-      (style: any) => {
+      (style: StyleMap) => {
         style[mxConstants.STYLE_DASHED] = true;
         style[mxConstants.STYLE_DASH_PATTERN] = '1 2';
         style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_OPEN_THIN;
@@ -67,13 +67,13 @@ export default class StyleConfigurator {
   private specificSequenceFlowStyles: Map<SequenceFlowKind, (style: StyleMap) => void> = new Map([
     [
       SequenceFlowKind.DEFAULT,
-      (style: any) => {
+      (style: StyleMap) => {
         style[mxConstants.STYLE_STARTARROW] = MarkerIdentifier.ARROW_DASH;
       },
     ],
     [
       SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
-      (style: any) => {
+      (style: StyleMap) => {
         style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_DIAMOND_THIN;
         style[mxConstants.STYLE_STARTSIZE] = 18;
         style[mxConstants.STYLE_STARTFILL] = false;
@@ -83,7 +83,7 @@ export default class StyleConfigurator {
   private specificAssociationFlowStyles: Map<AssociationDirectionKind, (style: StyleMap) => void> = new Map([
     [
       AssociationDirectionKind.NONE,
-      (style: any) => {
+      (style: StyleMap) => {
         style[mxConstants.STYLE_STARTARROW] = null;
         style[mxConstants.STYLE_ENDARROW] = null;
         style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
@@ -91,14 +91,14 @@ export default class StyleConfigurator {
     ],
     [
       AssociationDirectionKind.ONE,
-      (style: any) => {
+      (style: StyleMap) => {
         style[mxConstants.STYLE_STARTARROW] = null;
         style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
     [
       AssociationDirectionKind.BOTH,
-      (style: any) => {
+      (style: StyleMap) => {
         style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
