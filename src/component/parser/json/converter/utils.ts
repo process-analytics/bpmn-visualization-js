@@ -89,11 +89,14 @@ export class ConvertedElements {
   }
 
   private convertedSequenceFlows: Map<string, SequenceFlow> = new Map();
-  private convertedAssociationFlows: Map<string, AssociationFlow> = new Map();
-
-  private findSequenceFlow(id: string): SequenceFlow {
+  findSequenceFlow(id: string): SequenceFlow {
     return this.convertedSequenceFlows.get(id);
   }
+  registerSequenceFlow(sequenceFlow: SequenceFlow): void {
+    this.convertedSequenceFlows.set(sequenceFlow.id, sequenceFlow);
+  }
+
+  private convertedAssociationFlows: Map<string, AssociationFlow> = new Map();
 
   private findAssociationFlow(id: string): AssociationFlow {
     return this.convertedAssociationFlows.get(id);

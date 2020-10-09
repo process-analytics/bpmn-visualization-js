@@ -47,12 +47,7 @@ import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flow
 import { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
 import { isGlobalTask } from './GlobalTaskConverter';
 
-const convertedSequenceFlows: Map<string, SequenceFlow> = new Map();
 const convertedAssociationFlows: Map<string, AssociationFlow> = new Map();
-
-export function findSequenceFlow(id: string): SequenceFlow {
-  return convertedSequenceFlows.get(id);
-}
 
 export function findAssociationFlow(id: string): AssociationFlow {
   return convertedAssociationFlows.get(id);
@@ -72,7 +67,6 @@ export default class ProcessConverter {
 
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     try {
-      convertedSequenceFlows.clear();
       convertedAssociationFlows.clear();
 
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
@@ -275,8 +269,7 @@ export default class ProcessConverter {
   private buildSequenceFlows(bpmnElements: Array<TSequenceFlow> | TSequenceFlow): void {
     ensureIsArray(bpmnElements).forEach(sequenceFlow => {
       const kind = this.getSequenceFlowKind(sequenceFlow);
-      const convertedSequenceFlow = new SequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.sourceRef, sequenceFlow.targetRef, kind);
-      convertedSequenceFlows.set(sequenceFlow.id, convertedSequenceFlow);
+      this.convertedElements.registerSequenceFlow(new SequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.sourceRef, sequenceFlow.targetRef, kind));
     });
   }
 
