@@ -20,31 +20,11 @@ import { TParticipant } from '../../../../model/bpmn/json/baseElement/participan
 import { TMessageFlow } from '../../../../model/bpmn/json/baseElement/baseElement';
 import { ConvertedElements, ensureIsArray } from './utils';
 
-// const convertedParticipantsById: Map<string, Participant> = new Map();
-// const convertedParticipantsByProcessRef: Map<string, Participant> = new Map();
-// const convertedMessageFlows: Map<string, MessageFlow> = new Map();
-
-// export function findProcessRefParticipant(id: string): Participant {
-//   return convertedParticipantsById.get(id);
-// }
-
-// export function findProcessRefParticipantByProcessRef(processRef: string): Participant {
-//   return convertedParticipantsByProcessRef.get(processRef);
-// }
-
-// export function findMessageFlow(id: string): MessageFlow {
-//   return convertedMessageFlows.get(id);
-// }
-
 export default class CollaborationConverter {
   constructor(readonly convertedElements: ConvertedElements) {}
 
   deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): void {
     try {
-      // convertedParticipantsById.clear();
-      // convertedParticipantsByProcessRef.clear();
-      // convertedMessageFlows.clear();
-
       ensureIsArray(collaborations).forEach(collaboration => this.parseCollaboration(collaboration));
     } catch (e) {
       // TODO error management
@@ -59,20 +39,13 @@ export default class CollaborationConverter {
 
   private buildParticipant(bpmnElements: Array<TParticipant> | TParticipant): void {
     ensureIsArray(bpmnElements).forEach(participant => {
-      const convertedParticipant = new Participant(participant.id, participant.name, participant.processRef);
-      // convertedParticipantsById.set(participant.id, convertedParticipant);
-      // if (participant.processRef) {
-      //   convertedParticipantsByProcessRef.set(participant.processRef, convertedParticipant);
-      // }
-      this.convertedElements.registerParticipant(convertedParticipant);
+      this.convertedElements.registerParticipant(new Participant(participant.id, participant.name, participant.processRef));
     });
   }
 
   private buildMessageFlows(bpmnElements: Array<TMessageFlow> | TMessageFlow): void {
     ensureIsArray(bpmnElements).forEach(messageFlow => {
-      const convertedMessageFlow = new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef);
-      // convertedMessageFlows.set(messageFlow.id, convertedMessageFlow);
-      this.convertedElements.registerMessageFlow(convertedMessageFlow);
+      this.convertedElements.registerMessageFlow(new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef));
     });
   }
 }
