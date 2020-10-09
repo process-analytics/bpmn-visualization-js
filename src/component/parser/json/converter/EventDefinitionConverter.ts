@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
-import { ShapeBpmnEventKind } from '../../../../model/bpmn/internal/shape';
+import { bpmnEventKinds } from '../../../../model/bpmn/internal/shape';
 import { TEventDefinition } from '../../../../model/bpmn/json/baseElement/rootElement/eventDefinition';
 import { ConvertedElements, ensureIsArray } from './utils';
-
-// TODO move to shape Utils?
-export const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
-  return kind != ShapeBpmnEventKind.NONE;
-});
 
 export default class EventDefinitionConverter {
   constructor(readonly convertedElements: ConvertedElements) {}

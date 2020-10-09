@@ -23,6 +23,7 @@ import ShapeBpmnElement, {
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import {
+  bpmnEventKinds,
   ShapeBpmnCallActivityKind,
   ShapeBpmnElementKind,
   ShapeBpmnEventKind,
@@ -41,7 +42,6 @@ import { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseEle
 import { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
 import { TAssociation, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
 import { AssociationDirectionKind } from '../../../../model/bpmn/internal/edge/AssociationDirectionKind';
-import { bpmnEventKinds } from './EventDefinitionConverter';
 import { ConvertedElements, ensureIsArray } from './utils';
 import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
