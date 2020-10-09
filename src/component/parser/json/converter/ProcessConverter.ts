@@ -47,12 +47,6 @@ import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flow
 import { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
 import { isGlobalTask } from './GlobalTaskConverter';
 
-const convertedAssociationFlows: Map<string, AssociationFlow> = new Map();
-
-export function findAssociationFlow(id: string): AssociationFlow {
-  return convertedAssociationFlows.get(id);
-}
-
 interface EventDefinition {
   kind: ShapeBpmnEventKind;
   counter: number;
@@ -67,8 +61,6 @@ export default class ProcessConverter {
 
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     try {
-      convertedAssociationFlows.clear();
-
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
     } catch (e) {
       // TODO error management
@@ -277,8 +269,7 @@ export default class ProcessConverter {
     ensureIsArray(bpmnElements).forEach(association => {
       // TODO Remove associationDirection conversion type when we merge/simplify internal model with BPMN json model
       const direction = (association.associationDirection as unknown) as AssociationDirectionKind;
-      const convertedAssociationFlow = new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction);
-      convertedAssociationFlows.set(association.id, convertedAssociationFlow);
+      this.convertedElements.registerSAssociationFlow(new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction));
     });
   }
 

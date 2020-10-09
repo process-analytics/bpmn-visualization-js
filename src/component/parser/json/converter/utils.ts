@@ -97,9 +97,11 @@ export class ConvertedElements {
   }
 
   private convertedAssociationFlows: Map<string, AssociationFlow> = new Map();
-
-  private findAssociationFlow(id: string): AssociationFlow {
+  findAssociationFlow(id: string): AssociationFlow {
     return this.convertedAssociationFlows.get(id);
+  }
+  registerSAssociationFlow(associationFlow: AssociationFlow): void {
+    this.convertedAssociationFlows.set(associationFlow.id, associationFlow);
   }
 
   private eventDefinitionsOfDefinitions: Map<string, ShapeBpmnEventKind> = new Map();
