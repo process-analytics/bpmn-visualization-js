@@ -73,6 +73,12 @@ export class ConvertedElements {
   }
 
   private convertedLaneBpmnElements: Map<string, ShapeBpmnElement> = new Map();
+  findLaneBpmnElement(id: string): ShapeBpmnElement {
+    return this.convertedLaneBpmnElements.get(id);
+  }
+  registerLane(lane: ShapeBpmnElement): void {
+    this.convertedLaneBpmnElements.set(lane.id, lane);
+  }
 
   private convertedProcessBpmnElements: Map<string, ShapeBpmnElement> = new Map();
   findProcessBpmnElement(id: string): ShapeBpmnElement {
@@ -84,10 +90,6 @@ export class ConvertedElements {
 
   private convertedSequenceFlows: Map<string, SequenceFlow> = new Map();
   private convertedAssociationFlows: Map<string, AssociationFlow> = new Map();
-
-  private findLaneBpmnElement(id: string): ShapeBpmnElement {
-    return this.convertedLaneBpmnElements.get(id);
-  }
 
   private findSequenceFlow(id: string): SequenceFlow {
     return this.convertedSequenceFlows.get(id);

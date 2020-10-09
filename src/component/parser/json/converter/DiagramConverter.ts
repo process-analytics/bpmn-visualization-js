@@ -18,7 +18,7 @@ import Bounds from '../../../../model/bpmn/internal/Bounds';
 import ShapeBpmnElement, { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import Edge from '../../../../model/bpmn/internal/edge/Edge';
 import BpmnModel, { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
-import { findAssociationFlow, findLaneBpmnElement, findSequenceFlow } from './ProcessConverter';
+import { findAssociationFlow, findSequenceFlow } from './ProcessConverter';
 import Waypoint from '../../../../model/bpmn/internal/edge/Waypoint';
 import Label, { Font } from '../../../../model/bpmn/internal/Label';
 import { MessageVisibleKind } from '../../../../model/bpmn/internal/edge/MessageVisibleKind';
@@ -88,7 +88,7 @@ export default class DiagramConverter {
         continue;
       }
 
-      const lane = this.deserializeShape(shape, (bpmnElement: string) => findLaneBpmnElement(bpmnElement));
+      const lane = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findLaneBpmnElement(bpmnElement));
       if (lane) {
         convertedShapes.lanes.push(lane);
         continue;

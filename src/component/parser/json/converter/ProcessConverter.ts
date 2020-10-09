@@ -23,11 +23,11 @@ import ShapeBpmnElement, {
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import {
-  ShapeBpmnElementKind,
   ShapeBpmnCallActivityKind,
+  ShapeBpmnElementKind,
+  ShapeBpmnEventKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
-  ShapeBpmnEventKind,
   supportedBpmnEventKinds,
 } from '../../../../model/bpmn/internal/shape';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
@@ -47,13 +47,8 @@ import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flow
 import { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
 import { isGlobalTask } from './GlobalTaskConverter';
 
-const convertedLaneBpmnElements: Map<string, ShapeBpmnElement> = new Map();
 const convertedSequenceFlows: Map<string, SequenceFlow> = new Map();
 const convertedAssociationFlows: Map<string, AssociationFlow> = new Map();
-
-export function findLaneBpmnElement(id: string): ShapeBpmnElement {
-  return convertedLaneBpmnElements.get(id);
-}
 
 export function findSequenceFlow(id: string): SequenceFlow {
   return convertedSequenceFlows.get(id);
@@ -77,7 +72,6 @@ export default class ProcessConverter {
 
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     try {
-      convertedLaneBpmnElements.clear();
       convertedSequenceFlows.clear();
       convertedAssociationFlows.clear();
 
@@ -255,8 +249,7 @@ export default class ProcessConverter {
 
   private buildLaneBpmnElements(processId: string, lanes: Array<TLane> | TLane): void {
     ensureIsArray(lanes).forEach(lane => {
-      const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, processId);
-      convertedLaneBpmnElements.set(lane.id, laneShape);
+      this.convertedElements.registerLane(new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, processId));
       this.assignParentOfLaneFlowNodes(lane);
       if (lane.childLaneSet?.lane) {
         this.buildLaneBpmnElements(lane.id, lane.childLaneSet.lane);
