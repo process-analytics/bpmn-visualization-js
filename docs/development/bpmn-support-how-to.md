@@ -135,7 +135,7 @@ Let's say we want to use this svg content as an icon or marker:
 </svg>
 ```
 
-Running the `Svg2Js` CLI, this will produce something like
+Running the `Svg2Js` CLI, this will produce something like:
 ```typescript
 // shape: path-blue
 // width: 70
@@ -157,7 +157,7 @@ const originalIconSize = { width: 70, height: 50 };
 const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, originalIconSize);
 ```
 
-**Note**: the canvas used in the `IconPainter` may not support all mxGraph drawing functions, in that case, please open
+**Note**: The canvas used in the `IconPainter` may not support all mxGraph drawing functions. In that case, please open
 a Pull Request or an Issue to add the missing functions. 
 
 
