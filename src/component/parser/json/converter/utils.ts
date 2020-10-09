@@ -107,9 +107,11 @@ export class ConvertedElements {
   private eventDefinitionsOfDefinitions: Map<string, ShapeBpmnEventKind> = new Map();
 
   private globalTaskIds: string[] = [];
-
-  private isGlobalTask(id: string): boolean {
+  isGlobalTask(id: string): boolean {
     return this.globalTaskIds.includes(id);
+  }
+  registerGlobalTask(id: string): void {
+    this.globalTaskIds.push(id);
   }
 
   private findEventDefinitionOfDefinitions(id: string): ShapeBpmnEventKind {

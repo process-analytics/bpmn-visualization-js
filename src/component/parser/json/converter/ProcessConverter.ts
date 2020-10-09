@@ -45,7 +45,6 @@ import { bpmnEventKinds, findEventDefinitionOfDefinitions } from './EventDefinit
 import { ConvertedElements, ensureIsArray } from './utils';
 import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
-import { isGlobalTask } from './GlobalTaskConverter';
 
 interface EventDefinition {
   kind: ShapeBpmnEventKind;
@@ -131,7 +130,7 @@ export default class ProcessConverter {
       return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate, markers);
     }
 
-    if (!isGlobalTask((bpmnElement as TCallActivity).calledElement)) {
+    if (!this.convertedElements.isGlobalTask((bpmnElement as TCallActivity).calledElement)) {
       return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, processId, markers);
     }
   }
