@@ -40,12 +40,12 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
 
 export class ConvertedElements {
   private participantsById: Map<string, Participant> = new Map();
-  private findProcessRefParticipant(id: string): Participant {
+  private findParticipantById(id: string): Participant {
     return this.participantsById.get(id);
   }
 
   private participantsByProcessRef: Map<string, Participant> = new Map();
-  findProcessRefParticipantByProcessRef(processRef: string): Participant {
+  findParticipantByProcessRef(processRef: string): Participant {
     return this.participantsByProcessRef.get(processRef);
   }
 
@@ -53,6 +53,27 @@ export class ConvertedElements {
     this.participantsById.set(participant.id, participant);
     if (participant.processRef) {
       this.participantsByProcessRef.set(participant.processRef, participant);
+    }
+  }
+
+  private processes: Map<string, ShapeBpmnElement> = new Map();
+  private findProcess(id: string): ShapeBpmnElement {
+    return this.processes.get(id);
+  }
+  registerProcess(process: ShapeBpmnElement): void {
+    this.processes.set(process.id, process);
+  }
+
+  findProcessElement(participantId: string): ShapeBpmnElement | undefined {
+    const participant = this.findParticipantById(participantId);
+    if (participant) {
+      const process = this.findProcess(participant.processRef);
+      if (process) {
+        const name = participant.name || process.name;
+        return new ShapeBpmnElement(participant.id, name, process.kind, process.parentId);
+      }
+      // black box pool
+      return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
     }
   }
 
@@ -78,14 +99,6 @@ export class ConvertedElements {
   }
   registerLane(lane: ShapeBpmnElement): void {
     this.lanes.set(lane.id, lane);
-  }
-
-  private processes: Map<string, ShapeBpmnElement> = new Map();
-  findProcessBpmnElement(id: string): ShapeBpmnElement {
-    return this.processes.get(id);
-  }
-  registerProcess(process: ShapeBpmnElement): void {
-    this.processes.set(process.id, process);
   }
 
   private sequenceFlows: Map<string, SequenceFlow> = new Map();
@@ -118,18 +131,5 @@ export class ConvertedElements {
   }
   registerGlobalTask(id: string): void {
     this.globalTaskIds.push(id);
-  }
-
-  findProcessElement(participantId: string): ShapeBpmnElement | undefined {
-    const participant = this.findProcessRefParticipant(participantId);
-    if (participant) {
-      const originalProcessBpmnElement = this.findProcessBpmnElement(participant.processRef);
-      if (originalProcessBpmnElement) {
-        const name = participant.name || originalProcessBpmnElement.name;
-        return new ShapeBpmnElement(participant.id, name, originalProcessBpmnElement.kind, originalProcessBpmnElement.parentId);
-      }
-      // black box pool
-      return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
-    }
   }
 }

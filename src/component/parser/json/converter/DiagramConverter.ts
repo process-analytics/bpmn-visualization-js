@@ -112,7 +112,7 @@ export default class DiagramConverter {
       const bounds = this.deserializeBounds(shape);
 
       if (bpmnElement.parentId) {
-        const participant = this.convertedElements.findProcessRefParticipantByProcessRef(bpmnElement.parentId);
+        const participant = this.convertedElements.findParticipantByProcessRef(bpmnElement.parentId);
         if (participant) {
           bpmnElement.parentId = participant.id;
         }
