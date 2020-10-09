@@ -41,7 +41,7 @@ import { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseEle
 import { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
 import { TAssociation, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
 import { AssociationDirectionKind } from '../../../../model/bpmn/internal/edge/AssociationDirectionKind';
-import { bpmnEventKinds, findEventDefinitionOfDefinitions } from './EventDefinitionConverter';
+import { bpmnEventKinds } from './EventDefinitionConverter';
 import { ConvertedElements, ensureIsArray } from './utils';
 import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
@@ -201,7 +201,7 @@ export default class ProcessConverter {
     });
 
     ensureIsArray<string>(bpmnElement.eventDefinitionRef).forEach(eventDefinitionRef => {
-      const kind = findEventDefinitionOfDefinitions(eventDefinitionRef);
+      const kind = this.convertedElements.findEventDefinitionOfDefinitions(eventDefinitionRef);
       eventDefinitions.set(kind, eventDefinitions.get(kind) + 1);
     });
 

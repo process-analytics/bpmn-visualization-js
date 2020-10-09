@@ -105,6 +105,12 @@ export class ConvertedElements {
   }
 
   private eventDefinitionsOfDefinitions: Map<string, ShapeBpmnEventKind> = new Map();
+  findEventDefinitionOfDefinitions(id: string): ShapeBpmnEventKind {
+    return this.eventDefinitionsOfDefinitions.get(id);
+  }
+  registerEventDefinitionsOfDefinitions(id: string, eventDefinition: ShapeBpmnEventKind): void {
+    this.eventDefinitionsOfDefinitions.set(id, eventDefinition);
+  }
 
   private globalTaskIds: string[] = [];
   isGlobalTask(id: string): boolean {
@@ -112,10 +118,6 @@ export class ConvertedElements {
   }
   registerGlobalTask(id: string): void {
     this.globalTaskIds.push(id);
-  }
-
-  private findEventDefinitionOfDefinitions(id: string): ShapeBpmnEventKind {
-    return this.eventDefinitionsOfDefinitions.get(id);
   }
 
   findProcessElement(participantId: string): ShapeBpmnElement | undefined {
