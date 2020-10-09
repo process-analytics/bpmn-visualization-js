@@ -49,7 +49,6 @@ import { isGlobalTask } from './GlobalTaskConverter';
 
 const convertedFlowNodeBpmnElements: Map<string, ShapeBpmnElement> = new Map();
 const convertedLaneBpmnElements: Map<string, ShapeBpmnElement> = new Map();
-const convertedProcessBpmnElements: Map<string, ShapeBpmnElement> = new Map();
 const convertedSequenceFlows: Map<string, SequenceFlow> = new Map();
 const convertedAssociationFlows: Map<string, AssociationFlow> = new Map();
 
@@ -61,10 +60,6 @@ export function findFlowNodeBpmnElement(id: string): ShapeBpmnElement {
 
 export function findLaneBpmnElement(id: string): ShapeBpmnElement {
   return convertedLaneBpmnElements.get(id);
-}
-
-export function findProcessBpmnElement(id: string): ShapeBpmnElement {
-  return convertedProcessBpmnElements.get(id);
 }
 
 export function findSequenceFlow(id: string): SequenceFlow {
@@ -89,7 +84,6 @@ export default class ProcessConverter {
     try {
       convertedFlowNodeBpmnElements.clear();
       convertedLaneBpmnElements.clear();
-      convertedProcessBpmnElements.clear();
       convertedSequenceFlows.clear();
       convertedAssociationFlows.clear();
 
@@ -104,8 +98,7 @@ export default class ProcessConverter {
   }
 
   private parseProcess(process: TProcess): void {
-    const processId = process.id;
-    convertedProcessBpmnElements.set(processId, new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
+    this.convertedElements.registerProcess(new ShapeBpmnElement(process.id, process.name, ShapeBpmnElementKind.POOL));
     this.buildProcessInnerElements(process);
   }
 
