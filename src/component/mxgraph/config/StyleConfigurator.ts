@@ -33,9 +33,8 @@ import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
 import { AssociationDirectionKind } from '../../../model/bpmn/internal/edge/AssociationDirectionKind';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export default class StyleConfigurator {
-  private specificFlowStyles: Map<FlowKind, (style: any) => void> = new Map([
+  private specificFlowStyles: Map<FlowKind, (style: StyleMap) => void> = new Map([
     [
       FlowKind.SEQUENCE_FLOW,
       (style: any) => {
@@ -65,7 +64,7 @@ export default class StyleConfigurator {
       },
     ],
   ]);
-  private specificSequenceFlowStyles: Map<SequenceFlowKind, (style: any) => void> = new Map([
+  private specificSequenceFlowStyles: Map<SequenceFlowKind, (style: StyleMap) => void> = new Map([
     [
       SequenceFlowKind.DEFAULT,
       (style: any) => {
@@ -81,7 +80,7 @@ export default class StyleConfigurator {
       },
     ],
   ]);
-  private specificAssociationFlowStyles: Map<AssociationDirectionKind, (style: any) => void> = new Map([
+  private specificAssociationFlowStyles: Map<AssociationDirectionKind, (style: StyleMap) => void> = new Map([
     [
       AssociationDirectionKind.NONE,
       (style: any) => {
@@ -123,29 +122,29 @@ export default class StyleConfigurator {
     this.configureFlowStyles();
   }
 
-  private getStylesheet(): any {
+  private getStylesheet(): mxStylesheet {
     return this.graph.getStylesheet();
   }
 
-  private getDefaultVertexStyle(): any {
+  private getDefaultVertexStyle(): StyleMap {
     return this.getStylesheet().getDefaultVertexStyle();
   }
 
-  private getDefaultEdgeStyle(): any {
+  private getDefaultEdgeStyle(): StyleMap {
     return this.getStylesheet().getDefaultEdgeStyle();
   }
 
-  private cloneDefaultVertexStyle(): any {
+  private cloneDefaultVertexStyle(): StyleMap {
     const defaultStyle = this.getDefaultVertexStyle();
     return mxUtils.clone(defaultStyle);
   }
 
-  private cloneDefaultEdgeStyle(): any {
+  private cloneDefaultEdgeStyle(): StyleMap {
     const defaultStyle = this.getDefaultEdgeStyle();
     return mxUtils.clone(defaultStyle);
   }
 
-  private putCellStyle(name: ShapeBpmnElementKind, style: any): void {
+  private putCellStyle(name: ShapeBpmnElementKind, style: StyleMap): void {
     this.getStylesheet().putCellStyle(name, style);
   }
 
@@ -243,7 +242,7 @@ export default class StyleConfigurator {
     this.configureCommonDefaultStyle(style);
   }
 
-  private configureCommonDefaultStyle(style: any): void {
+  private configureCommonDefaultStyle(style: StyleMap): void {
     style[mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
     style[mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
     style[mxConstants.STYLE_FONTCOLOR] = StyleDefault.DEFAULT_FONT_COLOR;
@@ -255,7 +254,7 @@ export default class StyleConfigurator {
     style[mxConstants.STYLE_WHITE_SPACE] = 'wrap';
   }
 
-  private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: any) => void>): void {
+  private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: StyleMap) => void>): void {
     styleKinds.forEach(kind => {
       const style = this.cloneDefaultEdgeStyle();
       const updateEdgeStyle =
