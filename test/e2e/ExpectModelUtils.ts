@@ -18,7 +18,7 @@ import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { StyleIdentifier } from '../../src/bpmn-visualization';
+import { StyleDefault, StyleIdentifier } from '../../src/bpmn-visualization';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
@@ -28,6 +28,7 @@ declare global {
     interface Matchers<R> {
       toBeCell(): R;
       withGeometry(geometry: mxGeometry): R;
+      withFont(font: ExpectedFont): R;
     }
   }
 }
@@ -133,42 +134,67 @@ function withGeometry(this: MatcherContext, received: mxCell, expected: mxGeomet
   };
 }
 
+function withFont(this: MatcherContext, received: mxCell, expected: ExpectedFont): CustomMatcherResult {
+  const style = bpmnVisualization.graph.getView().getState(received).style;
+  const receivedFont = { fontStyle: style[mxConstants.STYLE_FONTSTYLE], fontFamily: style[mxConstants.STYLE_FONTFAMILY], fontSize: style[mxConstants.STYLE_FONTSIZE] };
+
+  let expectedFont: unknown;
+  if (expected) {
+    expectedFont = { fontStyle: getFontStyleValue(expected), fontFamily: expected.name, fontSize: expected.size };
+  } else {
+    expectedFont = { fontStyle: undefined, fontFamily: StyleDefault.DEFAULT_FONT_FAMILY, fontSize: StyleDefault.DEFAULT_FONT_SIZE };
+  }
+
+  const pass = JSON.stringify(receivedFont) === JSON.stringify(expectedFont);
+  return {
+    message: pass
+      ? () =>
+          this.utils.matcherHint('.not.withFont') +
+          '\n\n' +
+          `Expected font of the cell with id '${received.id}' not to be equals to:\n` +
+          `  ${this.utils.printExpected(expectedFont)}\n` +
+          `Received:\n` +
+          `  ${this.utils.printReceived(receivedFont)}`
+      : () => {
+          const diffString = this.utils.diff(expectedFont, receivedFont, {
+            expand: this.expand,
+          });
+          return (
+            this.utils.matcherHint('.withFont') +
+            '\n\n' +
+            `Expected font of the cell with id '${received.id}' to be equals to:\n` +
+            `  ${this.utils.printExpected(expectedFont)}\n` +
+            `Received:\n` +
+            `  ${this.utils.printReceived(receivedFont)}` +
+            (diffString ? `\n\nDifference:\n\n${diffString}` : '')
+          );
+        },
+    pass,
+  };
+}
+
+function getFontStyleValue(expectedFont: ExpectedFont): number {
+  let value = 0;
+  if (expectedFont.isBold) {
+    value += mxConstants.FONT_BOLD;
+  }
+  if (expectedFont.isItalic) {
+    value += mxConstants.FONT_ITALIC;
+  }
+  if (expectedFont.isStrikeThrough) {
+    value += mxConstants.FONT_STRIKETHROUGH;
+  }
+  if (expectedFont.isUnderline) {
+    value += mxConstants.FONT_UNDERLINE;
+  }
+  return value;
+}
+
 expect.extend({
   toBeCell,
   withGeometry,
+  withFont,
 });
-
-export function expectGeometry(cell: mxCell, geometry: mxGeometry): void {
-  const cellGeometry = cell.getGeometry();
-  expect(cellGeometry.x).toEqual(geometry.x);
-  expect(cellGeometry.y).toEqual(geometry.y);
-  expect(cellGeometry.width).toEqual(geometry.width);
-  expect(cellGeometry.height).toEqual(geometry.height);
-  expect(cellGeometry.points).toEqual(geometry.points);
-}
-
-export function expectFont(state: mxCellState, expectedFont: ExpectedFont): void {
-  if (expectedFont) {
-    if (expectedFont.isBold) {
-      expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_BOLD);
-    }
-
-    if (expectedFont.isItalic) {
-      expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_ITALIC);
-    }
-
-    if (expectedFont.isUnderline) {
-      expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_UNDERLINE);
-    }
-
-    if (expectedFont.isStrikeThrough) {
-      expect(state.style[mxConstants.STYLE_FONTSTYLE]).toEqual(mxConstants.FONT_STRIKETHROUGH);
-    }
-
-    expect(state.style[mxConstants.STYLE_FONTFAMILY]).toEqual(expectedFont.name);
-    expect(state.style[mxConstants.STYLE_FONTSIZE]).toEqual(expectedFont.size);
-  }
-}
 
 export function expectModelNotContainCell(cellId: string): void {
   expect(cellId).not.toBeCell();
@@ -180,7 +206,7 @@ export function expectModelContainsCell(cellId: string): mxCell {
 }
 
 export function expectModelContainsShape(cellId: string, modelElement: ExpectedShapeModelElement): mxCell {
-  const cell = expectModelContainsCell(cellId);
+  const cell: mxCell = expectModelContainsCell(cellId);
   const parentId = modelElement.parentId;
   if (parentId) {
     expect(cell.parent.id).toEqual(parentId);
@@ -199,7 +225,7 @@ export function expectModelContainsShape(cellId: string, modelElement: ExpectedS
   const styleShape = !modelElement.styleShape ? modelElement.kind : modelElement.styleShape;
   expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(styleShape);
   expect(cell.value).toEqual(modelElement.label);
-  expectFont(state, modelElement.font);
+  expect(cell).withFont(modelElement.font);
   return cell;
 }
 
@@ -219,7 +245,7 @@ export function expectModelContainsEdge(cellId: string, modelElement: ExpectedEd
   if (modelElement.startArrow || modelElement.font) {
     const state = bpmnVisualization.graph.getView().getState(cell);
     expect(state.style[mxConstants.STYLE_STARTARROW]).toEqual(modelElement.startArrow);
-    expectFont(state, modelElement.font);
+    expect(cell).withFont(modelElement.font);
   }
 
   expect(cell.value).toEqual(modelElement.label);
