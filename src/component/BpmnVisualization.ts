@@ -24,14 +24,14 @@ declare const mxClient: typeof mxgraph.mxClient;
 export default class BpmnVisualization {
   public readonly graph: mxGraph;
 
-  constructor(protected container: HTMLElement) {
+  constructor(protected container: HTMLElement, options?: BpmnVisualizationOptions) {
     try {
       if (!mxClient.isBrowserSupported()) {
         mxUtils.error('Browser is not supported!', 200, false);
       }
       // Instantiate and configure Graph
       const configurator = new MxGraphConfigurator(this.container);
-      this.graph = configurator.configure();
+      this.graph = configurator.configure(options);
     } catch (e) {
       // TODO error handling
       mxUtils.alert('Cannot start application: ' + e.message);
@@ -50,4 +50,11 @@ export default class BpmnVisualization {
       throw e;
     }
   }
+}
+
+export interface BpmnVisualizationOptions {
+  /**
+   * If set to `true`, activate panning i.e. the BPMN diagram is draggable and can be moved using the mouse.
+   */
+  mouseNavigationSupport: boolean;
 }
