@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BPMN Visualization Non Regression</title>
+    <link rel="shortcut icon" href="./static/img/favicon.ico">
+    <style>
+      #bpmn-viewport {
+        top: 30px;
+        bottom: 30px;
+        left: 30px;
+        right: 30px;
+        border-style: solid;
+        border-color: #B0B0B0;
+        border-width: 1px;
+        position: absolute;
+        overflow: hidden;
+      }
+    </style>
+</head>
+<body>
+    <div id="bpmn-viewport"></div>
+
+    <!-- load global settings -->
+    <script src="./static/js/configureMxGraphGlobals.js"></script>
+    <!-- load mxGraph client library -->
+    <script src="./static/js/mxClient.min.js"></script>
+    <!-- load app -->
+    <script src="./static/js/navigation-diagram.js" type="module"></script>
+</body>
+</html>
