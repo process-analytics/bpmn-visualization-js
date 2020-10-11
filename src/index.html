@@ -7,11 +7,13 @@
     <link rel="shortcut icon" href="./static/img/favicon.ico">
 </head>
 <body>
-    <div id="file-selector" class="hidden">
-        <input type="file" id="bpmn-file" name="file"/>
-        <label for="bpmn-file" class="btn"><span>open BPMN file</span></label>
+    <div id="controls" class="hidden">
+      <div id="file-selector">
+          <input type="file" id="bpmn-file" name="file"/>
+          <label for="bpmn-file" class="btn"><span>open BPMN file</span></label>
+      </div>
+      <div class="info-centered"><p>(either drop a file here)</p></div>
     </div>
-    <div class="info-centered"><p>(either drop a file here)</p></div>
     <div id="graph"></div>
 
     <!-- load global settings -->
