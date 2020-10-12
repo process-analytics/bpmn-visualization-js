@@ -143,7 +143,7 @@ describe('mouse panning', () => {
 
     const waitForSelectorOptions = { timeout: 5_000 };
     const elementElementHandle = await page.waitForSelector(`#${graphContainerId}`, waitForSelectorOptions);
-    await expect(page.title()).resolves.toMatch('BPMN Visualization Non Regression');
+    await expect(page.title()).resolves.toMatch('BPMN Visualization - Diagram Navigation');
 
     // Prior loading a BPMN diagram, the DOM looks like
     // <div id="viewport" class="graph-container" style="touch-action: none;">
