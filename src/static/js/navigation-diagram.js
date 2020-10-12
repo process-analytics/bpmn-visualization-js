@@ -15,7 +15,8 @@
  */
 import { documentReady, startBpmnVisualization } from '../../index.es.js';
 
-function startNavigationDemo(): void {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function startNavigationDemo() {
   const parameters = new URLSearchParams(window.location.search);
   if (parameters.get('showMousePointer') === 'true') {
     showMousePointer();
@@ -28,7 +29,8 @@ documentReady(startNavigationDemo);
 // to show mouse pointer position - usefull for testing
 // @see https://github.com/puppeteer/puppeteer/issues/374
 // @see https://github.com/puppeteer/puppeteer/blob/4fdb1e3cab34310b4a1012c3024a94bc422b3b92/test/assets/input/mouse-helper.js
-function showMousePointer(): void {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function showMousePointer() {
   const box = document.createElement('div');
   box.classList.add('mouse-helper');
   const styleElement = document.createElement('style');
@@ -95,7 +97,8 @@ function showMousePointer(): void {
     },
     true,
   );
-  function updateButtons(buttons): void {
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  function updateButtons(buttons) {
     for (let i = 0; i < 5; i++) box.classList.toggle('button-' + i, buttons & (1 << i));
   }
 }
