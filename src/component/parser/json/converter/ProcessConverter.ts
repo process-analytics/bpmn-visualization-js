@@ -23,11 +23,12 @@ import ShapeBpmnElement, {
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import {
-  ShapeBpmnElementKind,
+  bpmnEventKinds,
   ShapeBpmnCallActivityKind,
+  ShapeBpmnElementKind,
+  ShapeBpmnEventKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
-  ShapeBpmnEventKind,
   supportedBpmnEventKinds,
 } from '../../../../model/bpmn/internal/shape';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
@@ -41,39 +42,9 @@ import { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseEle
 import { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
 import { TAssociation, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
 import { AssociationDirectionKind } from '../../../../model/bpmn/internal/edge/AssociationDirectionKind';
-import { bpmnEventKinds, findEventDefinitionOfDefinitions } from './EventDefinitionConverter';
-import { ensureIsArray } from './ConverterUtil';
+import { ConvertedElements, ensureIsArray } from './utils';
 import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
-import { isGlobalTask } from './GlobalTaskConverter';
-
-const convertedFlowNodeBpmnElements: Map<string, ShapeBpmnElement> = new Map();
-const convertedLaneBpmnElements: Map<string, ShapeBpmnElement> = new Map();
-const convertedProcessBpmnElements: Map<string, ShapeBpmnElement> = new Map();
-const convertedSequenceFlows: Map<string, SequenceFlow> = new Map();
-const convertedAssociationFlows: Map<string, AssociationFlow> = new Map();
-
-const defaultSequenceFlowIds: string[] = [];
-
-export function findFlowNodeBpmnElement(id: string): ShapeBpmnElement {
-  return convertedFlowNodeBpmnElements.get(id);
-}
-
-export function findLaneBpmnElement(id: string): ShapeBpmnElement {
-  return convertedLaneBpmnElements.get(id);
-}
-
-export function findProcessBpmnElement(id: string): ShapeBpmnElement {
-  return convertedProcessBpmnElements.get(id);
-}
-
-export function findSequenceFlow(id: string): SequenceFlow {
-  return convertedSequenceFlows.get(id);
-}
-
-export function findAssociationFlow(id: string): AssociationFlow {
-  return convertedAssociationFlows.get(id);
-}
 
 interface EventDefinition {
   kind: ShapeBpmnEventKind;
@@ -83,17 +54,12 @@ interface EventDefinition {
 type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTextAnnotation;
 
 export default class ProcessConverter {
+  private defaultSequenceFlowIds: string[] = [];
+
+  constructor(readonly convertedElements: ConvertedElements) {}
+
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     try {
-      convertedFlowNodeBpmnElements.clear();
-      convertedLaneBpmnElements.clear();
-      convertedProcessBpmnElements.clear();
-      convertedSequenceFlows.clear();
-      convertedAssociationFlows.clear();
-
-      // Deletes everything in the array, which does hit other references. For better performance.
-      defaultSequenceFlowIds.length = 0;
-
       ensureIsArray(processes).forEach(process => this.parseProcess(process));
     } catch (e) {
       // TODO error management
@@ -102,8 +68,7 @@ export default class ProcessConverter {
   }
 
   private parseProcess(process: TProcess): void {
-    const processId = process.id;
-    convertedProcessBpmnElements.set(processId, new ShapeBpmnElement(processId, process.name, ShapeBpmnElementKind.POOL));
+    this.convertedElements.registerProcess(new ShapeBpmnElement(process.id, process.name, ShapeBpmnElementKind.POOL));
     this.buildProcessInnerElements(process);
   }
 
@@ -144,11 +109,11 @@ export default class ProcessConverter {
       // @ts-ignore We know that the default field is not on all types, but it's already tested
       const defaultFlow = bpmnElement.default;
       if (ShapeUtil.isWithDefaultSequenceFlow(kind) && defaultFlow) {
-        defaultSequenceFlowIds.push(defaultFlow);
+        this.defaultSequenceFlowIds.push(defaultFlow);
       }
 
       if (shapeBpmnElement) {
-        convertedFlowNodeBpmnElements.set(shapeBpmnElement.id, shapeBpmnElement);
+        this.convertedElements.registerFlowNode(shapeBpmnElement);
       }
     });
   }
@@ -165,7 +130,7 @@ export default class ProcessConverter {
       return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate, markers);
     }
 
-    if (!isGlobalTask((bpmnElement as TCallActivity).calledElement)) {
+    if (!this.convertedElements.isGlobalTask((bpmnElement as TCallActivity).calledElement)) {
       return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, processId, markers);
     }
   }
@@ -210,7 +175,7 @@ export default class ProcessConverter {
   }
 
   private buildShapeBpmnBoundaryEvent(bpmnElement: TBoundaryEvent, eventKind: ShapeBpmnEventKind): ShapeBpmnBoundaryEvent {
-    const parent = findFlowNodeBpmnElement(bpmnElement.attachedToRef);
+    const parent = this.convertedElements.findFlowNode(bpmnElement.attachedToRef);
 
     if (ShapeUtil.isActivity(parent?.kind)) {
       return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity);
@@ -236,7 +201,7 @@ export default class ProcessConverter {
     });
 
     ensureIsArray<string>(bpmnElement.eventDefinitionRef).forEach(eventDefinitionRef => {
-      const kind = findEventDefinitionOfDefinitions(eventDefinitionRef);
+      const kind = this.convertedElements.findEventDefinitionOfDefinitions(eventDefinitionRef);
       eventDefinitions.set(kind, eventDefinitions.get(kind) + 1);
     });
 
@@ -269,8 +234,7 @@ export default class ProcessConverter {
 
   private buildLaneBpmnElements(processId: string, lanes: Array<TLane> | TLane): void {
     ensureIsArray(lanes).forEach(lane => {
-      const laneShape = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, processId);
-      convertedLaneBpmnElements.set(lane.id, laneShape);
+      this.convertedElements.registerLane(new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, processId));
       this.assignParentOfLaneFlowNodes(lane);
       if (lane.childLaneSet?.lane) {
         this.buildLaneBpmnElements(lane.id, lane.childLaneSet.lane);
@@ -280,7 +244,7 @@ export default class ProcessConverter {
 
   private assignParentOfLaneFlowNodes(lane: TLane): void {
     ensureIsArray<string>(lane.flowNodeRef).forEach(flowNodeRef => {
-      const shapeBpmnElement = findFlowNodeBpmnElement(flowNodeRef);
+      const shapeBpmnElement = this.convertedElements.findFlowNode(flowNodeRef);
       const laneId = lane.id;
       if (shapeBpmnElement) {
         if (!ShapeUtil.isBoundaryEvent(shapeBpmnElement.kind)) {
@@ -296,8 +260,7 @@ export default class ProcessConverter {
   private buildSequenceFlows(bpmnElements: Array<TSequenceFlow> | TSequenceFlow): void {
     ensureIsArray(bpmnElements).forEach(sequenceFlow => {
       const kind = this.getSequenceFlowKind(sequenceFlow);
-      const convertedSequenceFlow = new SequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.sourceRef, sequenceFlow.targetRef, kind);
-      convertedSequenceFlows.set(sequenceFlow.id, convertedSequenceFlow);
+      this.convertedElements.registerSequenceFlow(new SequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.sourceRef, sequenceFlow.targetRef, kind));
     });
   }
 
@@ -305,16 +268,15 @@ export default class ProcessConverter {
     ensureIsArray(bpmnElements).forEach(association => {
       // TODO Remove associationDirection conversion type when we merge/simplify internal model with BPMN json model
       const direction = (association.associationDirection as unknown) as AssociationDirectionKind;
-      const convertedAssociationFlow = new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction);
-      convertedAssociationFlows.set(association.id, convertedAssociationFlow);
+      this.convertedElements.registerAssociationFlow(new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction));
     });
   }
 
   private getSequenceFlowKind(sequenceFlow: TSequenceFlow): SequenceFlowKind {
-    if (defaultSequenceFlowIds.includes(sequenceFlow.id)) {
+    if (this.defaultSequenceFlowIds.includes(sequenceFlow.id)) {
       return SequenceFlowKind.DEFAULT;
     } else {
-      const sourceShapeBpmnElement = findFlowNodeBpmnElement(sequenceFlow.sourceRef);
+      const sourceShapeBpmnElement = this.convertedElements.findFlowNode(sequenceFlow.sourceRef);
       if (sourceShapeBpmnElement && ShapeUtil.isWithDefaultSequenceFlow(sourceShapeBpmnElement.kind) && sequenceFlow.conditionExpression) {
         if (ShapeUtil.isActivity(sourceShapeBpmnElement.kind)) {
           return SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY;
