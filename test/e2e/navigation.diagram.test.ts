@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu-utils';
+import { BpmnDiagramPreparation, ImageSnapshotConfigurator } from './helpers/visu-utils';
 
+// TODO duplicated with visu-utils
 // TODO use 'jest-image-snapshot' definition types when the lib will be updated
 // The type lib does not support setting config for ssim (4.2.0 released on july 2020)
 // typescript integration: https://github.com/americanexpress/jest-image-snapshot#usage-in-typescript
@@ -31,112 +32,13 @@ declare global {
   }
 }
 
-// import { copyFileSync, loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
-// import debugLogger from 'debug';
-
-// const log = debugLogger('test');
 const graphContainerId = 'bpmn-viewport';
 
 describe('mouse panning', () => {
-  // const defaultImageSnapshotConfig = {
-  //   diffDirection: 'vertical',
-  //   dumpDiffToConsole: true, // useful on CI (no need to retrieve the diff image, copy/paste image content from logs)
-  //   // use SSIM to limit false positive
-  //   // https://github.com/americanexpress/jest-image-snapshot#recommendations-when-using-ssim-comparison
-  //   comparisonMethod: 'ssim',
-  // };
-  //
-  // function getSimplePlatformName(): string {
-  //   const platform = process.platform;
-  //   log(`This platform is ${platform}`);
-  //
-  //   if (platform.startsWith('win')) {
-  //     return 'windows';
-  //   } else if (platform.startsWith('darwin')) {
-  //     return 'macos';
-  //   }
-  //   // we don't support other platform than linux, so hardcode it
-  //   return 'linux';
-  // }
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new Map());
 
-  // interface ImageSnapshotThresholdConfig {
-  //   linux: number;
-  //   macos: number;
-  //   windows: number;
-  // }
-
-  /**
-   * Configure threshold by bpmn files. When introducing a new test, please don't add threshold until you get failures when running
-   * on GitHub Workflow because of discrepancies depending of OS/machine (few pixels) and that are not visible by a human.
-   * This is generally only required for diagram containing labels. If you are not testing the labels (value, position, ...) as part of the use case you want to cover, remove labels
-   * from the BPMN diagram to avoid such discrepancies.
-   */
-  const imageSnapshotThresholdConfig = new Map<string, ImageSnapshotThresholdConfig>([]);
-
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholdConfig);
-
-  // function getImageSnapshotConfig(fileName: string): jest.ImageSnapshotConfig {
-  //   // minimal threshold to make tests for diagram renders pass on local
-  //   // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
-  //   let failureThreshold = 0.000004;
-  //
-  //   const config = imageSnapshotThresholdConfig.get(fileName);
-  //   if (config) {
-  //     log(`Building dedicated image snapshot configuration for '${fileName}'`);
-  //     const simplePlatformName = getSimplePlatformName();
-  //     log(`Simple platform name: ${simplePlatformName}`);
-  //     // we know here that we have property names related to the 'simple platform name' so ignoring TS complains.
-  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //     // @ts-ignore
-  //     failureThreshold = config[simplePlatformName];
-  //   }
-  //
-  //   log(`ImageSnapshot - using failureThreshold: ${failureThreshold}`);
-  //   return { ...defaultImageSnapshotConfig, failureThreshold: failureThreshold, failureThresholdType: 'percent' };
-  // }
-
-  // enum BpmnLoadMethod {
-  //   QueryParam = 'query param',
-  //   Url = 'url',
-  // }
-
-  // TODO move comment to utils class
-  /**
-   * Configure how the BPMN file is loaded by the test page.
-   *
-   * When introducing a new test, there is generally no need to add configuration here as the default is OK. You only need configuration when the file content becomes larger (in
-   * that case, the test server returns an HTTP 400 error).
-   *
-   * Prior adding a config here, review your file to check if it is not too large because it contains too much elements, in particular, some elements not related to what you want to
-   * test.
-   */
-  const bpmnLoadMethodConfig = new Map<string, BpmnLoadMethod>();
-
-  // function getBpmnLoadMethod(fileName: string): BpmnLoadMethod {
-  //   return bpmnLoadMethodConfig.get(fileName) || BpmnLoadMethod.QueryParam;
-  // }
-
-  const bpmnDiagramPreparation = new BpmnDiagramPreparation(bpmnLoadMethodConfig, { page: 'navigation-diagram' });
-
-  // function prepareTestResourcesAndGetPageUrl(fileName: string): string {
-  //   // to have mouse pointer visible during headless test - &showMousePointer=true
-  //   let url = 'http://localhost:10002/navigation-diagram.html?fitOnLoad=true';
-  //
-  //   const bpmnLoadMethod = getBpmnLoadMethod(fileName);
-  //   log(`Use '${bpmnLoadMethod}' as BPMN Load Method for '${fileName}'`);
-  //   const relPathToBpmnFile = `../fixtures/bpmn/non-regression/${fileName}.bpmn`;
-  //   switch (bpmnLoadMethod) {
-  //     case BpmnLoadMethod.QueryParam:
-  //       const bpmnContent = loadBpmnContentForUrlQueryParam(relPathToBpmnFile);
-  //       url += `&bpmn=${bpmnContent}`;
-  //       break;
-  //     case BpmnLoadMethod.Url:
-  //       copyFileSync(relPathToBpmnFile, `../../dist/static/diagrams/`, `${fileName}.bpmn`);
-  //       url += `&url=./static/diagrams/${fileName}.bpmn`;
-  //       break;
-  //   }
-  //   return url;
-  // }
+  // to have mouse pointer visible during headless test - add 'showMousePointer=true' in queryParams
+  const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map(), { page: 'navigation-diagram', queryParams: [] });
 
   it.each(['gateways'])(`%s`, async (fileName: string) => {
     const url = bpmnDiagramPreparation.prepareTestResourcesAndGetPageUrl(fileName);

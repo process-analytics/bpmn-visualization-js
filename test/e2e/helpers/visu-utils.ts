@@ -63,8 +63,15 @@ const defaultImageSnapshotConfig = {
 };
 
 export class ImageSnapshotConfigurator {
-  // TODO rename imageSnapshotThresholdConfig into thresholdConfig
-  constructor(readonly imageSnapshotThresholdConfig: Map<string, ImageSnapshotThresholdConfig>) {}
+  /**
+   * <b>About `thresholdConfig`</b>
+   *
+   * Configure threshold by bpmn files.When introducing a new test, please don't add threshold until you get failures when running
+   * on GitHub Workflow because of discrepancies depending of OS/machine (few pixels) and that are not visible by a human.
+   * This is generally only required for diagram containing labels. If you are not testing the labels (value, position, ...) as part of the use case you want to cover, remove labels
+   * from the BPMN diagram to avoid such discrepancies.
+   */
+  constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>) {}
 
   // TODO rename fileName into name
   getImageSnapshotConfig(fileName: string): jest.ImageSnapshotConfig {
@@ -72,7 +79,7 @@ export class ImageSnapshotConfigurator {
     // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
     let failureThreshold = 0.000004;
 
-    const config = this.imageSnapshotThresholdConfig.get(fileName);
+    const config = this.thresholdConfig.get(fileName);
     if (config) {
       log(`Building dedicated image snapshot configuration for '${fileName}'`);
       const simplePlatformName = getSimplePlatformName();
@@ -99,10 +106,24 @@ export interface TargetedPage {
 }
 
 export class BpmnDiagramPreparation {
+  /**
+   * Configure how the BPMN file is loaded by the test page.
+   *
+   * <b>About `bpmnLoadMethodConfig`</b>
+   *
+   * When introducing a new test, there is generally no need to add configuration here as the default is OK. You only need configuration when the file content becomes larger (in
+   * that case, the test server returns an HTTP 400 error).
+   *
+   * Prior adding a config here, review your file to check if it is not too large because it contains too much elements, in particular, some elements not related to what you want to
+   * test.
+   */
   constructor(readonly bpmnLoadMethodConfig: Map<string, BpmnLoadMethod>, readonly targetedPage: TargetedPage) {}
 
-  // fileName without extension
+  /**
+   * @param fileName the name of the BPMN file without extension
+   */
   prepareTestResourcesAndGetPageUrl(fileName: string): string {
+    // TODO add support for queryParams
     let url = `http://localhost:10002/${this.targetedPage.page}.html?fitOnLoad=true`;
 
     const bpmnLoadMethod = this.getBpmnLoadMethod(fileName);
