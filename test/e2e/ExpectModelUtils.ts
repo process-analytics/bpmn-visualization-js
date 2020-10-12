@@ -18,7 +18,7 @@ import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { toBeCell, withGeometry, withFont, toBeEdge, toBeSequenceFlow, toBeMessageFlow } from './matchers';
+import { toBeCell, withGeometry, withFont, toBeSequenceFlow, toBeMessageFlow, toBeAssociationFlow } from './matchers';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -27,9 +27,9 @@ declare global {
       toBeCell(): R;
       withGeometry(geometry: mxGeometry): R;
       withFont(font: ExpectedFont): R;
-      toBeEdge(modelElement: ExpectedEdgeModelElement): R;
       toBeSequenceFlow(modelElement: ExpectedSequenceFlowModelElement): R;
       toBeMessageFlow(modelElement: ExpectedEdgeModelElement): R;
+      toBeAssociationFlow(modelElement: ExpectedEdgeModelElement): R;
     }
   }
 }
@@ -38,9 +38,9 @@ expect.extend({
   toBeCell,
   withGeometry,
   withFont,
-  toBeEdge,
   toBeSequenceFlow,
   toBeMessageFlow,
+  toBeAssociationFlow,
 });
 
 export interface ExpectedFont {
@@ -131,10 +131,6 @@ export function expectModelContainsShape(cellId: string, modelElement: ExpectedS
   expect(cell.value).toEqual(modelElement.label);
   expect(cell).withFont(modelElement.font);
   return cell;
-}
-
-export function expectModelContainsAssociationFlow(cellId: string, modelElement: ExpectedEdgeModelElement): void {
-  expect(cellId).toBeEdge({ ...modelElement, kind: FlowKind.ASSOCIATION_FLOW });
 }
 
 export function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {

@@ -22,7 +22,6 @@ import { readFileSync } from '../helpers/file-helper';
 import {
   bpmnVisualization,
   ExpectedShapeModelElement,
-  expectModelContainsAssociationFlow,
   expectModelContainsBpmnBoundaryEvent,
   expectModelContainsBpmnEvent,
   expectModelContainsBpmnStartEvent,
@@ -828,7 +827,7 @@ describe('mxGraph model', () => {
     expect('message_flow_no_visible_id').toBeMessageFlow({ label: 'Message Flow without message', messageVisibleKind: MessageVisibleKind.NONE, verticalAlign: 'bottom' });
 
     // association
-    expectModelContainsAssociationFlow('association_id', { kind: FlowKind.ASSOCIATION_FLOW, parentId: 'participant_1_id', verticalAlign: 'bottom' });
+    expect('association_id').toBeAssociationFlow({ kind: FlowKind.ASSOCIATION_FLOW, parentId: 'participant_1_id', verticalAlign: 'bottom' });
   });
 
   it('bpmn elements should not be available in the mxGraph model, if they are attached to not existing elements', async () => {
