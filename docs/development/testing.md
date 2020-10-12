@@ -67,6 +67,7 @@ Quote from [cypress.io](https://docs.cypress.io/guides/tooling/visual-testing.ht
 
 - tests the BPMN Diagram visual rendering 
 - visual non regression tests: keep consistent rendering across versions
+- navigation non regression tests: checks on the interactions, i.e. consistency on how diagram looks after panning
 - useful to detect mxgraph behaviour changes (see [mxGraph version bump](./mxgraph-version-bump.md)) or unexpected changes introduced by refactoring in
 the rendering code of the lib
 - see [issue 526]( https://github.com/process-analytics/bpmn-visualization-js/issues/526) for more context
@@ -82,12 +83,19 @@ The following details are based on the [POC done to introduce visual tests](http
 
 ##### When and how to add tests
 
-You should add visual tests when supporting a new BPMN elements or when the rendering of the BPMN elements change (existing
-tests are supposed to fail in that case).
+You should add visual tests when:
 
-`bpmn.rendering.test.ts` drives all visual tests. A visual test only requires a BPMN diagram as input, stored in the
+* You aim supporting a new BPMN elements or when the rendering of the BPMN elements change (existing
+tests are supposed to fail in that case).
+<br/><br/>
+`bpmn.rendering.test.ts` drives all visual tests for this part. A visual test only requires a BPMN diagram as input, stored in the
 `test/fixtures/bpmn/non-regression` folder. It is automatically considered and use as test input.
-The reference image has to be stored in the `test/e2e/__image_snapshots__` folder.
+<br/><br/>
+* You have added an interface for handling interactions that manipulates the visible diagram.
+<br/><br/>
+`navigation.diagram.test.ts` drives all visual tests for that part. A visual test only requires a BPMN diagram as input.
+
+In both cases the reference images have to be stored in the `test/e2e/__image_snapshots__` folder.
 
 ##### Tips
 
