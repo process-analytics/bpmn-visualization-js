@@ -15,7 +15,7 @@
  */
 import { documentReady, startBpmnVisualization } from '../../index.es.js';
 
-function startNavigationDemo() {
+function startNavigationDemo(): void {
   const parameters = new URLSearchParams(window.location.search);
   if (parameters.get('showMousePointer') === 'true') {
     showMousePointer();
@@ -28,7 +28,7 @@ documentReady(startNavigationDemo);
 // to show mouse pointer position - usefull for testing
 // @see https://github.com/puppeteer/puppeteer/issues/374
 // @see https://github.com/puppeteer/puppeteer/blob/4fdb1e3cab34310b4a1012c3024a94bc422b3b92/test/assets/input/mouse-helper.js
-function showMousePointer() {
+function showMousePointer(): void {
   const box = document.createElement('div');
   box.classList.add('mouse-helper');
   const styleElement = document.createElement('style');
@@ -95,7 +95,7 @@ function showMousePointer() {
     },
     true,
   );
-  function updateButtons(buttons) {
+  function updateButtons(buttons): void {
     for (let i = 0; i < 5; i++) box.classList.toggle('button-' + i, buttons & (1 << i));
   }
 }
