@@ -28,7 +28,6 @@ import {
   expectModelContainsBpmnStartEvent,
   expectModelContainsLane,
   expectModelContainsPool,
-  expectModelContainsSequenceFlow,
   expectModelContainsShape,
   expectModelContainsSubProcess,
   expectModelContainsMessageFlow,
@@ -796,24 +795,24 @@ describe('mxGraph model', () => {
     expectModelContainsShape('exclusive_gateway_id', { kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, label: 'Exclusive Gateway' });
 
     // sequence flow
-    expectModelContainsSequenceFlow('default_sequence_flow_id', {
+    expect('default_sequence_flow_id').toBeSequenceFlow({
       sequenceFlowKind: SequenceFlowKind.DEFAULT,
       startArrow: MarkerIdentifier.ARROW_DASH,
       parentId: 'participant_1_id',
       font: expectedBoldFont,
     });
-    expectModelContainsSequenceFlow('normal_sequence_flow_id', {
+    expect('normal_sequence_flow_id').toBeSequenceFlow({
       sequenceFlowKind: SequenceFlowKind.NORMAL,
       parentId: 'participant_1_id',
       label: "From 'start event 1' to 'task 1'",
     });
-    expectModelContainsSequenceFlow('conditional_sequence_flow_from_activity_id', {
+    expect('conditional_sequence_flow_from_activity_id').toBeSequenceFlow({
       sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
       startArrow: mxConstants.ARROW_DIAMOND_THIN,
       parentId: 'participant_1_id',
       verticalAlign: 'bottom',
     });
-    expectModelContainsSequenceFlow('conditional_sequence_flow_from_gateway_id', {
+    expect('conditional_sequence_flow_from_gateway_id').toBeSequenceFlow({
       sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_GATEWAY,
       parentId: 'participant_1_id',
       label: '',

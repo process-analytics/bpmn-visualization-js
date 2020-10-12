@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ExpectedEdgeModelElement } from '../../ExpectModelUtils';
+import { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../ExpectModelUtils';
 import { buildExpectedCell, buildReceivedCell, getCell, EXPECTED_LABEL, RECEIVED_LABEL } from '../matcherUtils';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
+import { FlowKind } from '../../../../src/model/bpmn/internal/edge/FlowKind';
 
 function buildEdgeMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
   const options = {
@@ -59,4 +60,8 @@ function buildEdgeMatcher(matcherName: string, matcherContext: MatcherContext, r
 
 export function toBeEdge(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
   return buildEdgeMatcher('toBeEdge', this, received, expected);
+}
+
+export function toBeSequenceFlow(this: MatcherContext, received: string, expected: ExpectedSequenceFlowModelElement): CustomMatcherResult {
+  return buildEdgeMatcher('toBeSequenceFlow', this, received, { ...expected, kind: FlowKind.SEQUENCE_FLOW, endArrow: 'blockThin' });
 }
