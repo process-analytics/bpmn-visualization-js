@@ -20,6 +20,7 @@ import ProcessConverter from './converter/ProcessConverter';
 import DiagramConverter from './converter/DiagramConverter';
 import EventDefinitionConverter from './converter/EventDefinitionConverter';
 import GlobalTaskConverter from './converter/GlobalTaskConverter';
+import { ConvertedElements } from './converter/utils';
 
 export default class BpmnJsonParser {
   constructor(
@@ -42,6 +43,13 @@ export default class BpmnJsonParser {
 }
 
 export function defaultBpmnJsonParser(): BpmnJsonParser {
+  const convertedElements = new ConvertedElements();
   // TODO replace the function by dependency injection, see #110
-  return new BpmnJsonParser(new CollaborationConverter(), new EventDefinitionConverter(), new GlobalTaskConverter(), new ProcessConverter(), new DiagramConverter());
+  return new BpmnJsonParser(
+    new CollaborationConverter(convertedElements),
+    new EventDefinitionConverter(convertedElements),
+    new GlobalTaskConverter(convertedElements),
+    new ProcessConverter(convertedElements),
+    new DiagramConverter(convertedElements),
+  );
 }
