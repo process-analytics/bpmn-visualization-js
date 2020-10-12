@@ -341,7 +341,7 @@ function toBeEdge(this: MatcherContext, received: string, expected: ExpectedEdge
       message: () =>
         this.utils.matcherHint(matcherName, undefined, undefined, options) +
         '\n\n' +
-        this.utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: Edge with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, isExpand(this.expand)),
+        this.utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: Edge with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, this.expand),
       pass: false,
     };
   }
@@ -362,15 +362,13 @@ function toBeEdge(this: MatcherContext, received: string, expected: ExpectedEdge
           receivedCell,
           `${EXPECTED_LABEL}: Edge with id '${expectedCell.id}'`,
           `${RECEIVED_LABEL}: Edge with id '${received}'`,
-          isExpand(this.expand),
+          this.expand,
         );
   return {
     message,
     pass,
   };
 }
-
-const isExpand = (expand: any) => expand !== false;
 
 expect.extend({
   toBeCell,
