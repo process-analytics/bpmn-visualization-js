@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { MessageVisibleKind } from '../../../src/model/bpmn/internal/edge/MessageVisibleKind';
-import { StyleIdentifier } from '../../../src/component/mxgraph/StyleUtils';
-import { bpmnVisualization, ExpectedEdgeModelElement, ExpectedFont, ExpectedSequenceFlowModelElement, getDefaultParentId } from '../ExpectModelUtils';
+import { bpmnVisualization, ExpectedFont } from '../ExpectModelUtils';
 
 export interface ExpectedStateStyle extends StyleMap {
   verticalAlign: string;
@@ -28,9 +26,10 @@ export interface ExpectedStateStyle extends StyleMap {
   fontFamily: string;
   fontSize: number;
   fontStyle: number;
-  startArrow: string;
-  endArrow: string;
-  endSize: number;
+  startArrow?: string;
+  endArrow?: string;
+  endSize?: number;
+  shape?: string;
 }
 
 export interface ExpectedCell {
@@ -52,81 +51,26 @@ export const RECEIVED_LABEL = 'Received in the mxGraph model';
 
 export function getFontStyleValue(expectedFont: ExpectedFont): number {
   let value = 0;
-  if (expectedFont.isBold) {
-    value += mxConstants.FONT_BOLD;
+  if (expectedFont) {
+    if (expectedFont.isBold) {
+      value += mxConstants.FONT_BOLD;
+    }
+    if (expectedFont.isItalic) {
+      value += mxConstants.FONT_ITALIC;
+    }
+    if (expectedFont.isStrikeThrough) {
+      value += mxConstants.FONT_STRIKETHROUGH;
+    }
+    if (expectedFont.isUnderline) {
+      value += mxConstants.FONT_UNDERLINE;
+    }
   }
-  if (expectedFont.isItalic) {
-    value += mxConstants.FONT_ITALIC;
-  }
-  if (expectedFont.isStrikeThrough) {
-    value += mxConstants.FONT_STRIKETHROUGH;
-  }
-  if (expectedFont.isUnderline) {
-    value += mxConstants.FONT_UNDERLINE;
-  }
-  return value;
-}
-
-function buildExpectedStateStyle(expectedModel: ExpectedEdgeModelElement): ExpectedStateStyle {
-  const font = expectedModel.font;
-  const fontStyle = font && (font.isBold || font.isItalic || font.isStrikeThrough || font.isUnderline) ? getFontStyleValue(font) : undefined;
-  return {
-    verticalAlign: expectedModel.verticalAlign ? expectedModel.verticalAlign : 'top',
-    align: 'center',
-    strokeWidth: 1.5,
-    strokeColor: 'Black',
-    fillColor: 'White',
-    rounded: 1,
-    fontFamily: font?.name ? font.name : 'Arial, Helvetica, sans-serif',
-    fontSize: font?.size ? font.size : 11,
-    fontColor: 'Black',
-    fontStyle: fontStyle,
-    startArrow: expectedModel.startArrow,
-    endArrow: expectedModel.endArrow,
-    endSize: 12,
-  };
-}
-
-function buildExpectedStyle(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): string {
-  let expectedStyle: string = expectedModel.kind;
-  if ('sequenceFlowKind' in expectedModel) {
-    expectedStyle = expectedStyle + `;${(expectedModel as ExpectedSequenceFlowModelElement).sequenceFlowKind}`;
-  }
-  return expectedStyle + '.*';
-}
-
-export function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): ExpectedCell {
-  const parentId = expectedModel.parentId;
-  const styleRegexp = buildExpectedStyle(expectedModel);
-  const expectedCell: ExpectedCell = {
-    id,
-    value: expectedModel.label,
-    style: expect.stringMatching(styleRegexp),
-    edge: true,
-    parent: { id: parentId ? parentId : getDefaultParentId() },
-    state: {
-      style: buildExpectedStateStyle(expectedModel),
-    },
-  };
-
-  if (expectedModel.messageVisibleKind && expectedModel.messageVisibleKind !== MessageVisibleKind.NONE) {
-    expectedCell.children = [
-      {
-        value: undefined,
-        style: `shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${expectedModel.messageVisibleKind}`,
-        id: `messageFlowIcon_of_${id}`,
-        vertex: true,
-        edge: false,
-      },
-    ];
-  }
-
-  return expectedCell;
+  return value ? value : undefined;
 }
 
 function buildReceivedStateStyle(cell: mxCell): ExpectedStateStyle {
   const stateStyle = bpmnVisualization.graph.getCellStyle(cell);
-  return {
+  const expectedStateStyle: ExpectedStateStyle = {
     verticalAlign: stateStyle.verticalAlign,
     align: stateStyle.align,
     strokeWidth: stateStyle.strokeWidth,
@@ -137,10 +81,16 @@ function buildReceivedStateStyle(cell: mxCell): ExpectedStateStyle {
     fontSize: stateStyle.fontSize,
     fontColor: stateStyle.fontColor,
     fontStyle: stateStyle.fontStyle,
-    startArrow: stateStyle.startArrow,
-    endArrow: stateStyle.endArrow,
-    endSize: stateStyle.endSize,
   };
+
+  if (cell.edge) {
+    expectedStateStyle.startArrow = stateStyle.startArrow;
+    expectedStateStyle.endArrow = stateStyle.endArrow;
+    expectedStateStyle.endSize = stateStyle.endSize;
+  } else {
+    expectedStateStyle.shape = stateStyle.shape;
+  }
+  return expectedStateStyle;
 }
 
 export function buildReceivedCell(cell: mxCell): ExpectedCell {
@@ -149,21 +99,23 @@ export function buildReceivedCell(cell: mxCell): ExpectedCell {
     style: cell.style,
     id: cell.id,
     edge: cell.edge,
+    vertex: cell.vertex,
     parent: { id: cell.parent.id },
     state: { style: buildReceivedStateStyle(cell) },
   };
 
-  const children = cell.children;
-  if (children && children[0]) {
-    receivedCell.children = children.map((child: mxCell) => {
-      return {
-        value: child.value,
-        style: child.style,
-        id: child.id,
-        edge: child.edge,
-        vertex: child.vertex,
-      };
-    });
+  if (cell.edge) {
+    const children = cell.children;
+    if (children && children[0]) {
+      receivedCell.children = children.map((child: mxCell) => {
+        return {
+          value: child.value,
+          style: child.style,
+          id: child.id,
+          vertex: child.vertex,
+        };
+      });
+    }
   }
 
   return receivedCell;

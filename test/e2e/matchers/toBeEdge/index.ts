@@ -13,11 +13,69 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { buildExpectedCell, buildReceivedCell, getCell, EXPECTED_LABEL, RECEIVED_LABEL } from '../matcherUtils';
+import { buildReceivedCell, getCell, EXPECTED_LABEL, RECEIVED_LABEL, ExpectedStateStyle, getFontStyleValue, ExpectedCell } from '../matcherUtils';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import { FlowKind } from '../../../../src/model/bpmn/internal/edge/FlowKind';
-import { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../ExpectModelUtils';
+import { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement, getDefaultParentId } from '../../ExpectModelUtils';
+import { MessageVisibleKind } from '../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
+import { StyleIdentifier } from '../../../../src/component/mxgraph/StyleUtils';
+
+function buildExpectedStateStyle(expectedModel: ExpectedEdgeModelElement): ExpectedStateStyle {
+  const font = expectedModel.font;
+  return {
+    verticalAlign: 'top',
+    align: 'center',
+    strokeWidth: 1.5,
+    strokeColor: 'Black',
+    fillColor: 'White',
+    rounded: 1,
+    fontFamily: font?.name ? font.name : 'Arial, Helvetica, sans-serif',
+    fontSize: font?.size ? font.size : 11,
+    fontColor: 'Black',
+    fontStyle: getFontStyleValue(font),
+    startArrow: expectedModel.startArrow,
+    endArrow: expectedModel.endArrow,
+    endSize: 12,
+  };
+}
+
+function buildExpectedStyle(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): string {
+  let expectedStyle: string = expectedModel.kind;
+  if ('sequenceFlowKind' in expectedModel) {
+    expectedStyle = expectedStyle + `;${(expectedModel as ExpectedSequenceFlowModelElement).sequenceFlowKind}`;
+  }
+  return expectedStyle + '.*';
+}
+
+function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): ExpectedCell {
+  const parentId = expectedModel.parentId;
+  const styleRegexp = buildExpectedStyle(expectedModel);
+  const expectedCell: ExpectedCell = {
+    id,
+    value: expectedModel.label,
+    style: expect.stringMatching(styleRegexp),
+    edge: true,
+    vertex: false,
+    parent: { id: parentId ? parentId : getDefaultParentId() },
+    state: {
+      style: buildExpectedStateStyle(expectedModel),
+    },
+  };
+
+  if (expectedModel.messageVisibleKind && expectedModel.messageVisibleKind !== MessageVisibleKind.NONE) {
+    expectedCell.children = [
+      {
+        value: undefined,
+        style: `shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${expectedModel.messageVisibleKind}`,
+        id: `messageFlowIcon_of_${id}`,
+        vertex: true,
+      },
+    ];
+  }
+
+  return expectedCell;
+}
 
 function buildEdgeMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
   const options = {
