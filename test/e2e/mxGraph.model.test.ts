@@ -438,14 +438,12 @@ describe('mxGraph model', () => {
       label: 'End Event In Sub-Process',
       parentId: 'expanded_embedded_sub_process_id',
     });
-    expect('sequence_flow_in_sub_process_1_id').toBeEdge({
-      kind: FlowKind.SEQUENCE_FLOW,
+    expect('sequence_flow_in_sub_process_1_id').toBeSequenceFlow({
       parentId: 'expanded_embedded_sub_process_id',
       endArrow: 'blockThin',
       verticalAlign: 'bottom',
     });
-    expect('sequence_flow_in_sub_process_2_id').toBeEdge({
-      kind: FlowKind.SEQUENCE_FLOW,
+    expect('sequence_flow_in_sub_process_2_id').toBeSequenceFlow({
       parentId: 'expanded_embedded_sub_process_id',
       endArrow: 'blockThin',
       verticalAlign: 'bottom',
