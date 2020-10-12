@@ -107,12 +107,8 @@ It is as simple as doing `right-click` on the file `.eslintrc.js` and choosing o
 
 #### [Jest tests](https://www.jetbrains.com/help/idea/running-unit-tests-on-jest.html)
 
-To be able to run tests from IntelliJ, you must set up the default Jest template in `Run/Debug Configurations`
-
-Adjust following parameters:
-- Configuration files: it depends on the type of tests you want to run 
-  - unit tests: `<project_dir>/test/unit/jest.config.js`
-  - end to end tests: `<project_dir>/test/e2e/jest.config.js`
+You can run tests directly from IntelliJ - there is no need for any additional configuration.
+ℹ️ If something is not running well, make sure your `Run/Debug Configurations -> templates -> Jest` default is not overriding the parameter: `Configuration file`.
 
 
 #### [Debugging TypeScript code](https://www.jetbrains.com/help/idea/running-and-debugging-typescript.html#ws_ts_debug_client_side_on_external_dev_server)
