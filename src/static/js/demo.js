@@ -19,7 +19,11 @@ import { documentReady, handleFileSelect, startBpmnVisualization } from '../../i
 function startDemo() {
   startBpmnVisualization({ container: 'graph' });
   document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
-  document.getElementById('file-selector').classList.remove('hidden');
+
+  const parameters = new URLSearchParams(window.location.search);
+  if (!(parameters.get('hideControls') === 'true')) {
+    document.getElementById('controls').classList.remove('hidden');
+  }
 }
 
 documentReady(startDemo);
