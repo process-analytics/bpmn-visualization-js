@@ -8,6 +8,9 @@ categories:
   - title: 🚄 BPMN rendering
     labels:
       - BPMN rendering
+  - title: 🧲 BPMN diagram usability
+    labels:
+      - 'BPMN diagram usability'
   - title: 🐛 Bug Fixes
     labels:
       - bug
