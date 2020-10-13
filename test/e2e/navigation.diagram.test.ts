@@ -20,7 +20,7 @@ const graphContainerId = 'bpmn-viewport';
 describe('mouse panning', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new Map());
 
-  // to have mouse pointer visible during headless test - add 'showMousePointer=true' in queryParams
+  // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
   const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map(), { name: 'navigation-diagram', queryParams: [] });
 
   it.each(['gateways'])(`%s`, async (fileName: string) => {

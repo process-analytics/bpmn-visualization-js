@@ -106,6 +106,8 @@ export interface TargetedPage {
 }
 
 export class BpmnDiagramPreparation {
+  private readonly baseUrl: string;
+
   /**
    * Configure how the BPMN file is loaded by the test page.
    *
@@ -117,14 +119,16 @@ export class BpmnDiagramPreparation {
    * Prior adding a config here, review your file to check if it is not too large because it contains too much elements, in particular, some elements not related to what you want to
    * test.
    */
-  constructor(readonly bpmnLoadMethodConfig: Map<string, BpmnLoadMethod>, readonly targetedPage: TargetedPage) {}
+  constructor(readonly bpmnLoadMethodConfig: Map<string, BpmnLoadMethod>, targetedPage: TargetedPage) {
+    const params = targetedPage.queryParams?.join('&') ?? '';
+    this.baseUrl = `http://localhost:10002/${targetedPage.name}.html?fitOnLoad=true&${params}`;
+  }
 
   /**
    * @param fileName the name of the BPMN file without extension
    */
   prepareTestResourcesAndGetPageUrl(fileName: string): string {
-    // TODO add support for queryParams
-    let url = `http://localhost:10002/${this.targetedPage.name}.html?fitOnLoad=true`;
+    let url = this.baseUrl;
 
     const bpmnLoadMethod = this.getBpmnLoadMethod(fileName);
     log(`Use '${bpmnLoadMethod}' as BPMN Load Method for '${fileName}'`);
