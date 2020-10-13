@@ -682,28 +682,24 @@ describe('mxGraph model', () => {
 
     // Call Activity calling process
     // Expanded
-    expect('expanded_call_activity_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('expanded_call_activity_id').toBeCallActivity({
       label: 'Expanded Call Activity',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
     });
-    expect('expanded_call_activity_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('expanded_call_activity_with_loop_id').toBeCallActivity({
       label: 'Expanded Call Activity With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
       parentId: 'participant_1_id',
       verticalAlign: 'top',
     });
-    expect('expanded_call_activity_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('expanded_call_activity_with_sequential_multi_instance_id').toBeCallActivity({
       label: 'Expanded Call Activity With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
       parentId: 'participant_1_id',
       verticalAlign: 'top',
     });
-    expect('expanded_call_activity_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('expanded_call_activity_with_parallel_multi_instance_id').toBeCallActivity({
       label: 'Expanded Call Activity With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
       parentId: 'participant_1_id',
@@ -711,26 +707,22 @@ describe('mxGraph model', () => {
     });
 
     // Collapsed
-    expect('collapsed_call_activity_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('collapsed_call_activity_id').toBeCallActivity({
       label: 'Collapsed Call Activity',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
     });
-    expect('collapsed_call_activity_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('collapsed_call_activity_with_loop_id').toBeCallActivity({
       label: 'Collapsed Call Activity With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
       parentId: 'participant_1_id',
     });
-    expect('collapsed_call_activity_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('collapsed_call_activity_with_sequential_multi_instance_id').toBeCallActivity({
       label: 'Collapsed Call Activity With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND],
       parentId: 'participant_1_id',
     });
-    expect('collapsed_call_activity_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('collapsed_call_activity_with_parallel_multi_instance_id').toBeCallActivity({
       label: 'Collapsed Call Activity With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
       parentId: 'participant_1_id',
