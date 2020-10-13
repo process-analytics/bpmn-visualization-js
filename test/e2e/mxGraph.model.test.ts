@@ -440,12 +440,10 @@ describe('mxGraph model', () => {
     });
     expect('sequence_flow_in_sub_process_1_id').toBeSequenceFlow({
       parentId: 'expanded_embedded_sub_process_id',
-      endArrow: 'blockThin',
       verticalAlign: 'bottom',
     });
     expect('sequence_flow_in_sub_process_2_id').toBeSequenceFlow({
       parentId: 'expanded_embedded_sub_process_id',
-      endArrow: 'blockThin',
       verticalAlign: 'bottom',
     });
 
