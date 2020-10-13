@@ -214,7 +214,7 @@ describe('no visual regression', () => {
 
   const bpmnFileNames = findFiles('../fixtures/bpmn/non-regression/')
     .filter(filename => {
-      return filename.endsWith('labels.03.default.position.bpmn');
+      return filename.endsWith('.bpmn');
     })
     .map(filename => {
       return filename.split('.').slice(0, -1).join('.');
