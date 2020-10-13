@@ -87,9 +87,17 @@ function buildExpectedStateStyle(expectedModel: ExpectedEdgeModelElement): Expec
   };
 }
 
+function buildExpectedStyle(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): string {
+  let expectedStyle: string = expectedModel.kind;
+  if ('sequenceFlowKind' in expectedModel) {
+    expectedStyle = expectedStyle + `;${(expectedModel as ExpectedSequenceFlowModelElement).sequenceFlowKind}`;
+  }
+  return expectedStyle + '.*';
+}
+
 export function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): ExpectedCell {
   const parentId = expectedModel.parentId;
-  const styleRegexp = expectedModel.kind + 'sequenceFlowKind' in expectedModel ? ` | ${(expectedModel as ExpectedSequenceFlowModelElement).sequenceFlowKind}` : '';
+  const styleRegexp = buildExpectedStyle(expectedModel);
   const expectedCell: ExpectedCell = {
     id,
     value: expectedModel.label,
