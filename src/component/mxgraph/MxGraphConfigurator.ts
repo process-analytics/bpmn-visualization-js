@@ -17,6 +17,7 @@ import StyleConfigurator from './config/StyleConfigurator';
 import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import MxClientConfigurator from './config/MxClientConfigurator';
+import { BpmnVisualizationOptions } from '../BpmnVisualization';
 
 /**
  * Configure the mxGraph graph that can be used by the lib
@@ -32,8 +33,8 @@ export default class MxGraphConfigurator {
     this.graph = new mxGraph(container);
   }
 
-  public configure(): mxGraph {
-    this.configureGraph();
+  public configure(options?: BpmnVisualizationOptions): mxGraph {
+    this.configureGraph(options);
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
     new MarkerConfigurator().configureMarkers();
@@ -41,7 +42,7 @@ export default class MxGraphConfigurator {
     return this.graph;
   }
 
-  private configureGraph(): void {
+  private configureGraph(options?: BpmnVisualizationOptions): void {
     this.graph.setCellsLocked(true);
     this.graph.setCellsSelectable(false);
     this.graph.setEdgeLabelsMovable(false);
@@ -55,5 +56,15 @@ export default class MxGraphConfigurator {
     // Disable folding for container mxCell (pool, lane, sub process, call activity) because we don't need it.
     // This also prevents requesting unavailable images (see #185) as we don't override mxGraph folding default images.
     this.graph.foldingEnabled = false;
+
+    // Pan configuration
+    if (options?.mouseNavigationSupport) {
+      this.graph.panningHandler.useLeftButtonForPanning = true;
+      this.graph.panningHandler.ignoreCell = true; // ok here as we cannot select cells
+      this.graph.setPanning(true);
+    } else {
+      this.graph.setPanning(false);
+      this.graph.panningHandler.setPinchEnabled(false); // ensure gesture support is disabled (pan and zoom)
+    }
   }
 }

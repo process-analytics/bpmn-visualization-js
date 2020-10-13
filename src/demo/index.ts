@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnVisualization from '../component/BpmnVisualization';
+import BpmnVisualization, { BpmnVisualizationOptions } from '../component/BpmnVisualization';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 
@@ -83,6 +83,7 @@ function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) 
 export interface BpmnVisualizationDemoConfiguration {
   container: string;
   statusFetchKoNotifier?: (errorMsg: string) => void;
+  options?: BpmnVisualizationOptions;
 }
 
 function defaultStatusFetchKoNotifier(errorMsg: string): void {
@@ -94,7 +95,7 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   const container = config.container;
 
   log(`Initializing BpmnVisualization with container '${container}'...`);
-  bpmnVisualization = new BpmnVisualization(window.document.getElementById(container));
+  bpmnVisualization = new BpmnVisualization(window.document.getElementById(container), config.options);
   log('Initialization completed');
   new DropFileUserInterface(window, 'drop-container', container, readAndLoadFile);
   log('Drag&Drop support initialized');
