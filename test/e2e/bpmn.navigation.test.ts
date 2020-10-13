@@ -19,7 +19,7 @@ describe('diagram navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new Map());
 
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
-  const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map(), { name: 'navigation-diagram', queryParams: [] });
+  const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map(), { name: 'navigation-diagram', queryParams: [] }, 'non-regression');
 
   const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-viewport', 'BPMN Visualization - Diagram Navigation');
 

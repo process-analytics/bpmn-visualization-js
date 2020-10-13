@@ -74,7 +74,6 @@ export class ImageSnapshotConfigurator {
    */
   constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>) {}
 
-  // TODO rename fileName into name
   getConfig(fileName: string): jest.ImageSnapshotConfig {
     // minimal threshold to make tests for diagram renders pass on local
     // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
@@ -120,7 +119,7 @@ export class BpmnDiagramPreparation {
    * Prior adding a config here, review your file to check if it is not too large because it contains too much elements, in particular, some elements not related to what you want to
    * test.
    */
-  constructor(readonly bpmnLoadMethodConfig: Map<string, BpmnLoadMethod>, targetedPage: TargetedPage) {
+  constructor(readonly bpmnLoadMethodConfig: Map<string, BpmnLoadMethod>, targetedPage: TargetedPage, readonly sourceBpmnFolderName: string) {
     const params = targetedPage.queryParams?.join('&') ?? '';
     this.baseUrl = `http://localhost:10002/${targetedPage.name}.html?fitOnLoad=true&${params}`;
   }
@@ -133,7 +132,7 @@ export class BpmnDiagramPreparation {
 
     const bpmnLoadMethod = this.getBpmnLoadMethod(fileName);
     log(`Use '${bpmnLoadMethod}' as BPMN Load Method for '${fileName}'`);
-    const relPathToBpmnFile = `../fixtures/bpmn/non-regression/${fileName}.bpmn`; // TODO path should be configurable
+    const relPathToBpmnFile = `../fixtures/bpmn/${this.sourceBpmnFolderName}/${fileName}.bpmn`;
     switch (bpmnLoadMethod) {
       case BpmnLoadMethod.QueryParam:
         const bpmnContent = loadBpmnContentForUrlQueryParam(relPathToBpmnFile);

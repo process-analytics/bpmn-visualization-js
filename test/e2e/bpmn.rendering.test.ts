@@ -94,6 +94,7 @@ describe('no visual regression', () => {
       ['markers.01.positioning', BpmnLoadMethod.Url],
     ]),
     { name: 'non-regression' },
+    'non-regression',
   );
 
   const pageTester = new PageTester(bpmnDiagramPreparation, 'viewport', 'BPMN Visualization Non Regression');
