@@ -30,6 +30,7 @@ import {
   toBeServiceTask,
   toBeUserTask,
   toBeReceiveTask,
+  toBeSendTask,
 } from './matchers';
 
 declare global {
@@ -47,6 +48,7 @@ declare global {
       toBeServiceTask(modelElement: ExpectedShapeModelElement): R;
       toBeUserTask(modelElement: ExpectedShapeModelElement): R;
       toBeReceiveTask(modelElement: ExpectedShapeModelElement): R;
+      toBeSendTask(modelElement: ExpectedShapeModelElement): R;
     }
   }
 }
@@ -63,6 +65,7 @@ expect.extend({
   toBeServiceTask,
   toBeUserTask,
   toBeReceiveTask,
+  toBeSendTask,
 });
 
 export interface ExpectedCellWithGeometry {
