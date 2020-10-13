@@ -868,27 +868,23 @@ describe('mxGraph model', () => {
     });
 
     // Manual Task
-    expect('manual_task_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_MANUAL,
+    expect('manual_task_id').toBeManualTask({
       font: expectedBoldFont,
       label: 'Manual Task',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
     });
-    expect('manual_task_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_MANUAL,
+    expect('manual_task_with_loop_id').toBeManualTask({
       label: 'Manual Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
       parentId: 'participant_1_id',
     });
-    expect('manual_task_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_MANUAL,
+    expect('manual_task_with_sequential_multi_instance_id').toBeManualTask({
       label: 'Manual Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
       parentId: 'participant_1_id',
     });
-    expect('manual_task_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_MANUAL,
+    expect('manual_task_with_parallel_multi_instance_id').toBeManualTask({
       label: 'Manual Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
       parentId: 'participant_1_id',
