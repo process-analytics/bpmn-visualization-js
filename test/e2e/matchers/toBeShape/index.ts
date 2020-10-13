@@ -13,29 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { buildReceivedCell, getCell, EXPECTED_LABEL, RECEIVED_LABEL, ExpectedStateStyle, getFontStyleValue, ExpectedCell } from '../matcherUtils';
+import { ExpectedStateStyle, ExpectedCell, buildCommonExpectedStateStyle } from '../matcherUtils';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import { ExpectedShapeModelElement, getDefaultParentId } from '../../ExpectModelUtils';
+import { buildCellMatcher } from '../toBeCell';
 
 function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): ExpectedStateStyle {
-  const font = expectedModel.font;
+  const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
+  expectedStateStyle.shape = !expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape;
+  expectedStateStyle.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'middle';
+  expectedStateStyle.align = expectedModel.align ? expectedModel.align : 'center';
+  expectedStateStyle.strokeWidth = undefined;
 
-  const styleShape = !expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape;
-
-  return {
-    shape: styleShape,
-    verticalAlign: expectedModel.verticalAlign ? expectedModel.verticalAlign : 'middle',
-    align: expectedModel.align ? expectedModel.align : 'center',
-    strokeWidth: undefined,
-    strokeColor: 'Black',
-    fillColor: 'White',
-    rounded: undefined,
-    fontFamily: font?.name ? font.name : 'Arial, Helvetica, sans-serif',
-    fontSize: font?.size ? font.size : 11,
-    fontColor: 'Black',
-    fontStyle: getFontStyleValue(font),
-  };
+  return expectedStateStyle;
 }
 
 function buildExpectedStyle(expectedModel: ExpectedShapeModelElement): string {
@@ -66,45 +57,6 @@ function buildExpectedCell(id: string, expectedModel: ExpectedShapeModelElement)
   };
 }
 
-function buildShapeMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  const options = {
-    isNot: matcherContext.isNot,
-    promise: matcherContext.promise,
-  };
-  const utils = matcherContext.utils;
-  const expand = matcherContext.expand;
-
-  const expectedCell = buildExpectedCell(received, expected);
-
-  const cell = getCell(received);
-  if (!cell) {
-    return {
-      message: () =>
-        utils.matcherHint(matcherName, undefined, undefined, options) +
-        '\n\n' +
-        utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: Shape with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, expand),
-      pass: false,
-    };
-  }
-
-  const receivedCell = buildReceivedCell(cell);
-  const pass = matcherContext.equals(receivedCell, expectedCell, [utils.iterableEquality, utils.subsetEquality]);
-  const message = pass
-    ? () =>
-        utils.matcherHint(matcherName, undefined, undefined, options) +
-        '\n\n' +
-        `${EXPECTED_LABEL}: Shape with id '${received}' not to be found with the configuration:\n` +
-        `${utils.printExpected(expectedCell)}`
-    : () =>
-        utils.matcherHint(matcherName, undefined, undefined, options) +
-        '\n\n' +
-        utils.printDiffOrStringify(expectedCell, receivedCell, `${EXPECTED_LABEL}: Shape with id '${expectedCell.id}'`, `${RECEIVED_LABEL}: Shape with id '${received}'`, expand);
-  return {
-    message,
-    pass,
-  };
-}
-
 export function toBeShape(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildShapeMatcher('toBeShape', this, received, expected);
+  return buildCellMatcher('toBeShape', this, received, expected, 'Shape', buildExpectedCell);
 }

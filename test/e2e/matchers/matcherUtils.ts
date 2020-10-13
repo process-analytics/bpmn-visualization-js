@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { bpmnVisualization, ExpectedFont } from '../ExpectModelUtils';
+import { bpmnVisualization, ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../ExpectModelUtils';
 
 export interface ExpectedStateStyle extends StyleMap {
-  verticalAlign: string;
-  align: string;
-  strokeWidth: number;
+  verticalAlign?: string;
+  align?: string;
+  strokeWidth?: number;
   strokeColor: string;
   fillColor: string;
-  rounded: number;
   fontColor: string;
   fontFamily: string;
   fontSize: number;
@@ -68,6 +67,19 @@ export function getFontStyleValue(expectedFont: ExpectedFont): number {
   return value ? value : undefined;
 }
 
+export function buildCommonExpectedStateStyle(expectedModel: ExpectedEdgeModelElement | ExpectedShapeModelElement): ExpectedStateStyle {
+  const font = expectedModel.font;
+
+  return {
+    strokeColor: 'Black',
+    fillColor: 'White',
+    fontFamily: font?.name ? font.name : 'Arial, Helvetica, sans-serif',
+    fontSize: font?.size ? font.size : 11,
+    fontColor: 'Black',
+    fontStyle: getFontStyleValue(font),
+  };
+}
+
 function buildReceivedStateStyle(cell: mxCell): ExpectedStateStyle {
   const stateStyle = bpmnVisualization.graph.getCellStyle(cell);
   const expectedStateStyle: ExpectedStateStyle = {
@@ -76,7 +88,6 @@ function buildReceivedStateStyle(cell: mxCell): ExpectedStateStyle {
     strokeWidth: stateStyle.strokeWidth,
     strokeColor: stateStyle.strokeColor,
     fillColor: stateStyle.fillColor,
-    rounded: stateStyle.rounded,
     fontFamily: stateStyle.fontFamily,
     fontSize: stateStyle.fontSize,
     fontColor: stateStyle.fontColor,

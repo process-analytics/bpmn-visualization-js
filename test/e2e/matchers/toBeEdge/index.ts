@@ -13,31 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { buildReceivedCell, getCell, EXPECTED_LABEL, RECEIVED_LABEL, ExpectedStateStyle, getFontStyleValue, ExpectedCell } from '../matcherUtils';
+import { ExpectedStateStyle, ExpectedCell, buildCommonExpectedStateStyle } from '../matcherUtils';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import { FlowKind } from '../../../../src/model/bpmn/internal/edge/FlowKind';
 import { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement, getDefaultParentId } from '../../ExpectModelUtils';
 import { MessageVisibleKind } from '../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { StyleIdentifier } from '../../../../src/component/mxgraph/StyleUtils';
+import { buildCellMatcher } from '../toBeCell';
 
 function buildExpectedStateStyle(expectedModel: ExpectedEdgeModelElement): ExpectedStateStyle {
-  const font = expectedModel.font;
-  return {
-    verticalAlign: 'top',
-    align: 'center',
-    strokeWidth: 1.5,
-    strokeColor: 'Black',
-    fillColor: 'White',
-    rounded: 1,
-    fontFamily: font?.name ? font.name : 'Arial, Helvetica, sans-serif',
-    fontSize: font?.size ? font.size : 11,
-    fontColor: 'Black',
-    fontStyle: getFontStyleValue(font),
-    startArrow: expectedModel.startArrow,
-    endArrow: expectedModel.endArrow,
-    endSize: 12,
-  };
+  const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
+  expectedStateStyle.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'top';
+  expectedStateStyle.align = 'center';
+  expectedStateStyle.strokeWidth = 1.5;
+  expectedStateStyle.startArrow = expectedModel.startArrow;
+  expectedStateStyle.endArrow = expectedModel.endArrow;
+  expectedStateStyle.endSize = 12;
+
+  return expectedStateStyle;
 }
 
 function buildExpectedStyle(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): string {
@@ -78,42 +72,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
 }
 
 function buildEdgeMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
-  const options = {
-    isNot: matcherContext.isNot,
-    promise: matcherContext.promise,
-  };
-  const utils = matcherContext.utils;
-  const expand = matcherContext.expand;
-
-  const expectedCell = buildExpectedCell(received, expected);
-
-  const cell = getCell(received);
-  if (!cell) {
-    return {
-      message: () =>
-        utils.matcherHint(matcherName, undefined, undefined, options) +
-        '\n\n' +
-        utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: Edge with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, expand),
-      pass: false,
-    };
-  }
-
-  const receivedCell = buildReceivedCell(cell);
-  const pass = matcherContext.equals(receivedCell, expectedCell, [utils.iterableEquality, utils.subsetEquality]);
-  const message = pass
-    ? () =>
-        utils.matcherHint(matcherName, undefined, undefined, options) +
-        '\n\n' +
-        `${EXPECTED_LABEL}: Edge with id '${received}' not to be found with the configuration:\n` +
-        `${utils.printExpected(expectedCell)}`
-    : () =>
-        utils.matcherHint(matcherName, undefined, undefined, options) +
-        '\n\n' +
-        utils.printDiffOrStringify(expectedCell, receivedCell, `${EXPECTED_LABEL}: Edge with id '${expectedCell.id}'`, `${RECEIVED_LABEL}: Edge with id '${received}'`, expand);
-  return {
-    message,
-    pass,
-  };
+  return buildCellMatcher(matcherName, matcherContext, received, expected, 'Edge', buildExpectedCell);
 }
 
 export function toBeSequenceFlow(this: MatcherContext, received: string, expected: ExpectedSequenceFlowModelElement): CustomMatcherResult {
