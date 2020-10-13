@@ -914,27 +914,23 @@ describe('mxGraph model', () => {
     });
 
     // Business Rule Task
-    expect('business_rule_task_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE,
+    expect('business_rule_task_id').toBeBusinessRuleTask({
       font: expectedBoldFont,
       label: 'Business Rule Task',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
     });
-    expect('business_rule_task_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE,
+    expect('business_rule_task_with_loop_id').toBeBusinessRuleTask({
       label: 'Business Rule Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
       parentId: 'participant_1_id',
     });
-    expect('business_rule_task_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE,
+    expect('business_rule_task_with_sequential_multi_instance_id').toBeBusinessRuleTask({
       label: 'Business Rule Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
       parentId: 'participant_1_id',
     });
-    expect('business_rule_task_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE,
+    expect('business_rule_task_with_parallel_multi_instance_id').toBeBusinessRuleTask({
       label: 'Business Rule Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
       parentId: 'participant_1_id',
