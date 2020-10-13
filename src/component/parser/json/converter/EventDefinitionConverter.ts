@@ -14,30 +14,20 @@
  * limitations under the License.
  */
 import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
-import { ShapeBpmnEventKind } from '../../../../model/bpmn/internal/shape';
+import { bpmnEventKinds } from '../../../../model/bpmn/internal/shape';
 import { TEventDefinition } from '../../../../model/bpmn/json/baseElement/rootElement/eventDefinition';
-import { ensureIsArray } from './ConverterUtil';
-
-export const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
-  return kind != ShapeBpmnEventKind.NONE;
-});
-
-const eventDefinitionsOfDefinitions: Map<string, ShapeBpmnEventKind> = new Map();
-
-export function findEventDefinitionOfDefinitions(id: string): ShapeBpmnEventKind {
-  return eventDefinitionsOfDefinitions.get(id);
-}
+import { ConvertedElements, ensureIsArray } from './utils';
 
 export default class EventDefinitionConverter {
+  constructor(readonly convertedElements: ConvertedElements) {}
+
   deserialize(definitions: TDefinitions): void {
     try {
-      eventDefinitionsOfDefinitions.clear();
-
       bpmnEventKinds.forEach(eventKind => {
         // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
         const eventDefinitions: string | TEventDefinition | (string | TEventDefinition)[] = definitions[eventKind + 'EventDefinition'];
         ensureIsArray<TEventDefinition>(eventDefinitions, true).forEach(eventDefinition => {
-          eventDefinitionsOfDefinitions.set(eventDefinition.id, eventKind);
+          this.convertedElements.registerEventDefinitionsOfDefinitions(eventDefinition.id, eventKind);
         });
       });
     } catch (e) {
