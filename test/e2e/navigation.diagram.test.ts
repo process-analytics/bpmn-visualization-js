@@ -75,6 +75,6 @@ describe('mouse panning', () => {
 
     const image = await page.screenshot({ fullPage: true });
 
-    expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getImageSnapshotConfig(fileName));
+    expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
   });
 });
