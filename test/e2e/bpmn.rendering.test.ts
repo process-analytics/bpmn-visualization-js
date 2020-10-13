@@ -109,7 +109,7 @@ describe('no visual regression', () => {
     ['markers.01.positioning', BpmnLoadMethod.Url],
   ]);
 
-  const bpmnDiagramPreparation = new BpmnDiagramPreparation(bpmnLoadMethodConfig, { page: 'non-regression' });
+  const bpmnDiagramPreparation = new BpmnDiagramPreparation(bpmnLoadMethodConfig, { name: 'non-regression' });
 
   const bpmnFileNames = findFiles('../fixtures/bpmn/non-regression/')
     .filter(filename => {

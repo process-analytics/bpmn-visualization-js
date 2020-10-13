@@ -101,7 +101,7 @@ export enum BpmnLoadMethod {
 }
 
 export interface TargetedPage {
-  page: string; // TODO rename into 'name'
+  name: string;
   queryParams?: string[];
 }
 
@@ -124,7 +124,7 @@ export class BpmnDiagramPreparation {
    */
   prepareTestResourcesAndGetPageUrl(fileName: string): string {
     // TODO add support for queryParams
-    let url = `http://localhost:10002/${this.targetedPage.page}.html?fitOnLoad=true`;
+    let url = `http://localhost:10002/${this.targetedPage.name}.html?fitOnLoad=true`;
 
     const bpmnLoadMethod = this.getBpmnLoadMethod(fileName);
     log(`Use '${bpmnLoadMethod}' as BPMN Load Method for '${fileName}'`);

@@ -21,7 +21,7 @@ describe('mouse panning', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new Map());
 
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' in queryParams
-  const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map(), { page: 'navigation-diagram', queryParams: [] });
+  const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map(), { name: 'navigation-diagram', queryParams: [] });
 
   it.each(['gateways'])(`%s`, async (fileName: string) => {
     const url = bpmnDiagramPreparation.prepareTestResourcesAndGetPageUrl(fileName);
