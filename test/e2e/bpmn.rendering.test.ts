@@ -19,97 +19,84 @@ import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, Imag
 const graphContainerId = 'viewport';
 
 describe('no visual regression', () => {
-  /**
-   * Configure threshold by bpmn files. When introducing a new test, please don't add threshold until you get failures when running
-   * on GitHub Workflow because of discrepancies depending of OS/machine (few pixels) and that are not visible by a human.
-   * This is generally only required for diagram containing labels. If you are not testing the labels (value, position, ...) as part of the use case you want to cover, remove labels
-   * from the BPMN diagram to avoid such discrepancies.
-   */
-  const imageSnapshotThresholdConfig = new Map<string, ImageSnapshotThresholdConfig>([
-    [
-      'flows.message.02.labels-and-complex-paths', // minimal threshold to make test pass on Github Workflow
-      // ubuntu: Expected image to match or be a close match to snapshot but was 0.00018742700883533914%
-      // macOS: Expected image to match or be a close match to snapshot but was 0.10865713972554311%
-      // windows: Expected image to match or be a close match to snapshot but was 0.11321398812403904%
-      {
-        linux: 0.000002,
-        macos: 0.0011,
-        windows: 0.0012,
-      },
-    ],
-    [
-      'labels.01.general', // minimal threshold to make test pass on Github Workflow
-      // ubuntu: Expected image to match or be a close match to snapshot but was 0.46065520175824215%
-      // macOS: Expected image to match or be a close match to snapshot but was 0.733363909363971%
-      // windows: Expected image to match or be a close match to snapshot but was 0.40964885362031467%
-      {
-        linux: 0.0047,
-        macos: 0.0074,
-        windows: 0.005,
-      },
-    ],
-    [
-      'labels.02.position-and-line-breaks',
-      // ubuntu:  1 character change: 0.09528559852869378%
-      // macOS: Expected image to match or be a close match to snapshot but was 0.766651632718518%
-      // windows: Expected image to match or be a close match to snapshot but was 0.6363888273688278%
-      {
-        linux: 0.0009,
-        macos: 0.008,
-        windows: 0.007,
-      },
-    ],
-    // ubuntu: Expected image to match or be a close match to snapshot but was 0.19665548561466073%
-    // macOS: Expected image to match or be a close match to snapshot but was 0.15006201878846603%
-    // windows: Expected image to match or be a close match to snapshot but was 0.12200021675353723%
-    [
-      'pools.01.labels-and-lanes',
-      {
-        linux: 0.002,
-        macos: 0.0016,
-        windows: 0.002,
-      },
-    ],
-    // ubuntu: Expected image to match or be a close match to snapshot but was 0.13132100299135807%
-    // macOS: Expected image to match or be a close match to snapshot but was 0.14776609441433664%
-    // windows: Expected image to match or be a close match to snapshot but was 0.1182792778311903%
-    [
-      'pools.02.vertical.with-lanes',
-      {
-        linux: 0.0014,
-        macos: 0.0015,
-        windows: 0.002,
-      },
-    ],
-    // ubuntu: Expected image to match or be a close match to snapshot but was 0.0043243364134193385% different from snapshot
-    // macOS: Expected image to match or be a close match to snapshot but was 0.07646269456225152% different from snapshot
-    // windows: Expected image to match or be a close match to snapshot but was 0.11539494876845469% different from snapshot
-    [
-      'pools.03.black-box',
-      {
-        linux: 0.00005,
-        macos: 0.0008,
-        windows: 0.0012,
-      },
-    ],
-  ]);
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholdConfig);
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
+    new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'flows.message.02.labels-and-complex-paths', // minimal threshold to make test pass on Github Workflow
+        // ubuntu: Expected image to match or be a close match to snapshot but was 0.00018742700883533914%
+        // macOS: Expected image to match or be a close match to snapshot but was 0.10865713972554311%
+        // windows: Expected image to match or be a close match to snapshot but was 0.11321398812403904%
+        {
+          linux: 0.000002,
+          macos: 0.0011,
+          windows: 0.0012,
+        },
+      ],
+      [
+        'labels.01.general', // minimal threshold to make test pass on Github Workflow
+        // ubuntu: Expected image to match or be a close match to snapshot but was 0.46065520175824215%
+        // macOS: Expected image to match or be a close match to snapshot but was 0.733363909363971%
+        // windows: Expected image to match or be a close match to snapshot but was 0.40964885362031467%
+        {
+          linux: 0.0047,
+          macos: 0.0074,
+          windows: 0.005,
+        },
+      ],
+      [
+        'labels.02.position-and-line-breaks',
+        // ubuntu:  1 character change: 0.09528559852869378%
+        // macOS: Expected image to match or be a close match to snapshot but was 0.766651632718518%
+        // windows: Expected image to match or be a close match to snapshot but was 0.6363888273688278%
+        {
+          linux: 0.0009,
+          macos: 0.008,
+          windows: 0.007,
+        },
+      ],
+      // ubuntu: Expected image to match or be a close match to snapshot but was 0.19665548561466073%
+      // macOS: Expected image to match or be a close match to snapshot but was 0.15006201878846603%
+      // windows: Expected image to match or be a close match to snapshot but was 0.12200021675353723%
+      [
+        'pools.01.labels-and-lanes',
+        {
+          linux: 0.002,
+          macos: 0.0016,
+          windows: 0.002,
+        },
+      ],
+      // ubuntu: Expected image to match or be a close match to snapshot but was 0.13132100299135807%
+      // macOS: Expected image to match or be a close match to snapshot but was 0.14776609441433664%
+      // windows: Expected image to match or be a close match to snapshot but was 0.1182792778311903%
+      [
+        'pools.02.vertical.with-lanes',
+        {
+          linux: 0.0014,
+          macos: 0.0015,
+          windows: 0.002,
+        },
+      ],
+      // ubuntu: Expected image to match or be a close match to snapshot but was 0.0043243364134193385% different from snapshot
+      // macOS: Expected image to match or be a close match to snapshot but was 0.07646269456225152% different from snapshot
+      // windows: Expected image to match or be a close match to snapshot but was 0.11539494876845469% different from snapshot
+      [
+        'pools.03.black-box',
+        {
+          linux: 0.00005,
+          macos: 0.0008,
+          windows: 0.0012,
+        },
+      ],
+    ]),
+  );
 
-  /**
-   * Configure how the BPMN file is loaded by the test page.
-   *
-   * When introducing a new test, there is generally no need to add configuration here as the default is OK. You only need configuration when the file content becomes larger (in
-   * that case, the test server returns an HTTP 400 error).
-   *
-   * Prior adding a config here, review your file to check if it is not too large because it contains too much elements, in particular, some elements not related to what you want to
-   * test.
-   */
-  const bpmnLoadMethodConfig = new Map<string, BpmnLoadMethod>([
-    ['events', BpmnLoadMethod.Url],
-    ['markers.01.positioning', BpmnLoadMethod.Url],
-  ]);
-
-  const bpmnDiagramPreparation = new BpmnDiagramPreparation(bpmnLoadMethodConfig, { name: 'non-regression' });
+  const bpmnDiagramPreparation = new BpmnDiagramPreparation(
+    new Map<string, BpmnLoadMethod>([
+      ['events', BpmnLoadMethod.Url],
+      ['markers.01.positioning', BpmnLoadMethod.Url],
+    ]),
+    { name: 'non-regression' },
+  );
 
   const bpmnFileNames = findFiles('../fixtures/bpmn/non-regression/')
     .filter(filename => {
