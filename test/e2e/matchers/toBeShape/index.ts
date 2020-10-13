@@ -92,3 +92,15 @@ export function toBeServiceTask(this: MatcherContext, received: string, expected
 export function toBeUserTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   return buildCellMatcher('toBeUserTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_USER }, 'Shape', buildExpectedCell, buildReceivedCellWithCommonAttributes);
 }
+
+export function toBeReceiveTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  return buildCellMatcher(
+    'toBeReceiveTask',
+    this,
+    received,
+    { ...expected, kind: ShapeBpmnElementKind.TASK_RECEIVE },
+    'Shape',
+    buildExpectedCell,
+    buildReceivedCellWithCommonAttributes,
+  );
+}
