@@ -5,6 +5,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    versioning-strategy: increase
     commit-message:
       prefix: "[INFRA]"
       prefix-development: "[INFRA] dev -"
