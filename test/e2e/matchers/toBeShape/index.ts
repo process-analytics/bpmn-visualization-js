@@ -65,3 +65,7 @@ export function toBeShape(this: MatcherContext, received: string, expected: Expe
 export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   return buildCellMatcher('toBeCallActivity', this, received, { ...expected, kind: ShapeBpmnElementKind.CALL_ACTIVITY }, 'Shape', buildExpectedCell);
 }
+
+export function toBeTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  return buildCellMatcher('toBeTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK }, 'Shape', buildExpectedCell);
+}

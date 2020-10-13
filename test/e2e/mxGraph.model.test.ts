@@ -730,27 +730,23 @@ describe('mxGraph model', () => {
 
     // activity
     // Task
-    expect('task_id').toBeShape({ kind: ShapeBpmnElementKind.TASK, label: 'Task', parentId: 'participant_1_id' });
-    expect('task_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK,
+    expect('task_id').toBeTask({ label: 'Task', parentId: 'participant_1_id' });
+    expect('task_with_loop_id').toBeTask({
       label: 'Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
       parentId: 'participant_1_id',
     });
-    expect('task_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK,
+    expect('task_with_sequential_multi_instance_id').toBeTask({
       label: 'Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
       parentId: 'participant_1_id',
     });
-    expect('task_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK,
+    expect('task_with_parallel_multi_instance_id').toBeTask({
       label: 'Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
       parentId: 'participant_1_id',
     });
-    expect('task_with_flows_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK,
+    expect('task_with_flows_id').toBeTask({
       font: {
         isBold: false,
         isItalic: false,
