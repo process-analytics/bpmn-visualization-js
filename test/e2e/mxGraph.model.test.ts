@@ -28,7 +28,6 @@ import {
   expectModelContainsPool,
   expectModelContainsShape,
   expectModelContainsSubProcess,
-  expectModelNotContainCell,
   expectModelContainsCellWithGeometry,
   getDefaultParentId,
 } from './ExpectModelUtils';
@@ -834,12 +833,12 @@ describe('mxGraph model', () => {
 
     // model is OK
     // boundary event: interrupting
-    expectModelNotContainCell('boundary_event_interrupting_message_id');
-    expectModelNotContainCell('boundary_event_interrupting_timer_id');
+    expect('boundary_event_interrupting_message_id').not.toBeCell();
+    expect('boundary_event_interrupting_timer_id').not.toBeCell();
 
     // boundary event: non-interrupting
-    expectModelNotContainCell('boundary_event_non_interrupting_message_id');
-    expectModelNotContainCell('boundary_event_non_interrupting_timer_id');
+    expect('boundary_event_non_interrupting_message_id').not.toBeCell();
+    expect('boundary_event_non_interrupting_timer_id').not.toBeCell();
   });
 
   it('bpmn element shape should have coordinates relative to the pool when no lane', async () => {
