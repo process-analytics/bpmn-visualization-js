@@ -101,6 +101,7 @@ export interface ExpectedEdgeModelElement {
   font?: ExpectedFont;
   startArrow?: string;
   endArrow?: string;
+  verticalAlign?: string;
   messageVisibleKind?: MessageVisibleKind;
 }
 
@@ -123,7 +124,7 @@ function buildExpectedStateStyle(expectedModel: ExpectedEdgeModelElement): Expec
   const font = expectedModel.font;
   const fontStyle = font && (font.isBold || font.isItalic || font.isStrikeThrough || font.isUnderline) ? getFontStyleValue(font) : undefined;
   return {
-    verticalAlign: 'top',
+    verticalAlign: expectedModel.verticalAlign ? expectedModel.verticalAlign : 'top',
     align: 'center',
     strokeWidth: 1.5,
     strokeColor: 'Black',
@@ -159,6 +160,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement):
         style: `shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${expectedModel.messageVisibleKind}`,
         id: `messageFlowIcon_of_${id}`,
         vertex: true,
+        edge: false,
       },
     ];
   }

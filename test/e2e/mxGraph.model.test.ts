@@ -443,11 +443,13 @@ describe('mxGraph model', () => {
       kind: FlowKind.SEQUENCE_FLOW,
       parentId: 'expanded_embedded_sub_process_id',
       endArrow: 'blockThin',
+      verticalAlign: 'bottom',
     });
     expect('sequence_flow_in_sub_process_2_id').toBeEdge({
       kind: FlowKind.SEQUENCE_FLOW,
       parentId: 'expanded_embedded_sub_process_id',
       endArrow: 'blockThin',
+      verticalAlign: 'bottom',
     });
 
     // Start Event in Event Sub Process
@@ -809,23 +811,30 @@ describe('mxGraph model', () => {
       sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
       startArrow: mxConstants.ARROW_DIAMOND_THIN,
       parentId: 'participant_1_id',
+      verticalAlign: 'bottom',
     });
     expectModelContainsSequenceFlow('conditional_sequence_flow_from_gateway_id', {
       sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_GATEWAY,
       parentId: 'participant_1_id',
       label: '',
+      verticalAlign: 'bottom',
     });
 
     // message flow
-    expectModelContainsMessageFlow('message_flow_initiating_message_id', { label: 'Message Flow with initiating message', messageVisibleKind: MessageVisibleKind.INITIATING });
+    expectModelContainsMessageFlow('message_flow_initiating_message_id', {
+      label: 'Message Flow with initiating message',
+      messageVisibleKind: MessageVisibleKind.INITIATING,
+      verticalAlign: 'bottom',
+    });
     expectModelContainsMessageFlow('message_flow_non_initiating_message_id', {
       label: 'Message Flow with non-initiating message',
       messageVisibleKind: MessageVisibleKind.NON_INITIATING,
+      verticalAlign: 'bottom',
     });
-    expectModelContainsMessageFlow('message_flow_no_visible_id', { label: 'Message Flow without message', messageVisibleKind: MessageVisibleKind.NONE });
+    expectModelContainsMessageFlow('message_flow_no_visible_id', { label: 'Message Flow without message', messageVisibleKind: MessageVisibleKind.NONE, verticalAlign: 'bottom' });
 
     // association
-    expectModelContainsAssociationFlow('association_id', { kind: FlowKind.ASSOCIATION_FLOW, parentId: 'participant_1_id' });
+    expectModelContainsAssociationFlow('association_id', { kind: FlowKind.ASSOCIATION_FLOW, parentId: 'participant_1_id', verticalAlign: 'bottom' });
   });
 
   it('bpmn elements should not be available in the mxGraph model, if they are attached to not existing elements', async () => {
