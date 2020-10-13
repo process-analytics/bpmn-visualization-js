@@ -107,7 +107,7 @@ It is as simple as doing `right-click` on the file `.eslintrc.js` and choosing o
 
 #### [Jest tests](https://www.jetbrains.com/help/idea/running-unit-tests-on-jest.html)
 
-You can run tests directly from IntelliJ - there is no need for any additional configuration.
+You can run tests directly from IntelliJ - there is no need for any additional configuration.  
 ℹ️ If something is not running well, make sure your `Run/Debug Configurations -> templates -> Jest` default is not overriding the parameter: `Configuration file`.
 
 
