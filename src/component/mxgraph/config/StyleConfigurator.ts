@@ -235,7 +235,7 @@ export default class StyleConfigurator {
     style[mxConstants.STYLE_STROKEWIDTH] = 1.5;
     style[mxConstants.STYLE_ROUNDED] = 1;
     style[mxConstants.STYLE_ARCSIZE] = 5;
-    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_BOTTOM;
 
     delete style[mxConstants.STYLE_ENDARROW];
 
