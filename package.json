@@ -91,7 +91,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "fs-extra": "^9.0.1",
     "husky": "^4.3.0",
-    "jest": "^26.4.2",
+    "jest": "^26.5.3",
     "jest-each": "^26.5.2",
     "jest-environment-puppeteer-jsdom": "^4.3.1",
     "jest-html-reporter": "^3.2.0",
