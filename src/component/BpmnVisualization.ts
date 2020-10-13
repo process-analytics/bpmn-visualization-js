@@ -31,8 +31,8 @@ export default class BpmnVisualization {
       }
       // Instantiate and configure Graph
       const configurator = new MxGraphConfigurator(this.container);
-      this.graph = configurator.configure(options);
-      this.configureMouseEvent(options?.mouseNavigationSupport);
+      this.graph = configurator.configure();
+      configurator.configureMouseNavigationSupport(options);
     } catch (e) {
       // TODO error handling
       mxUtils.alert('Cannot start application: ' + e.message);
@@ -48,34 +48,6 @@ export default class BpmnVisualization {
       // TODO error handling
       mxUtils.alert('Cannot load bpmn diagram: ' + e.message);
       throw e;
-    }
-  }
-
-  private configureMouseEvent(activated = false): void {
-    if (!activated) {
-      return;
-    }
-
-    mxEvent.addMouseWheelListener((event: Event, up: boolean) => {
-      // TODO review type: this hack is due to the introduction of mxgraph-type-definitions
-      const evt = (event as unknown) as MouseEvent;
-      if (mxEvent.isConsumed((evt as unknown) as mxMouseEvent)) {
-        return;
-      }
-      // only the ctrl key or the meta key on mac
-      const isZoomWheelEvent = (evt.ctrlKey || (mxClient.IS_MAC && evt.metaKey)) && !evt.altKey && !evt.shiftKey;
-      if (isZoomWheelEvent) {
-        this.zoom(up);
-        mxEvent.consume(evt);
-      }
-    }, this.container);
-  }
-
-  private zoom(zoomIn: boolean): void {
-    if (zoomIn) {
-      this.graph.zoomIn();
-    } else {
-      this.graph.zoomOut();
     }
   }
 }
