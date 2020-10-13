@@ -25,5 +25,10 @@ export {
   toBeManualTask,
   toBeScriptTask,
   toBeBusinessRuleTask,
+  toBeStartEvent,
+  toBeEndEvent,
+  toBeIntermediateThrowEvent,
+  toBeIntermediateCatchEvent,
+  toBeBoundaryEvent,
 } from './toBeShape';
 export { toBeCell, toBeCellWithParentAndGeometry } from './toBeCell';
