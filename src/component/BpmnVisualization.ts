@@ -16,7 +16,7 @@
 import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
 import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
-import { defaultBpmnParser } from './parser/BpmnParser';
+import { newBpmnParser } from './parser/BpmnParser';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -41,8 +41,7 @@ export default class BpmnVisualization {
 
   public load(xml: string): void {
     try {
-      // TODO the BpmnParser should be a field and injected (see #110)
-      const bpmnModel = defaultBpmnParser().parse(xml);
+      const bpmnModel = newBpmnParser().parse(xml);
       defaultMxGraphRenderer(this.graph).render(bpmnModel);
     } catch (e) {
       // TODO error handling
