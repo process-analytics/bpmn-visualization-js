@@ -17,13 +17,14 @@ import { BpmnDiagramPreparation, ImageSnapshotConfigurator } from './helpers/vis
 
 const graphContainerId = 'bpmn-viewport';
 
-describe('mouse panning', () => {
+describe('diagram navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new Map());
 
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
   const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map(), { name: 'navigation-diagram', queryParams: [] });
 
-  it.each(['gateways'])(`%s`, async (fileName: string) => {
+  it('mouse panning', async () => {
+    const fileName = 'gateways';
     const url = bpmnDiagramPreparation.prepareTestResourcesAndGetPageUrl(fileName);
 
     const response = await page.goto(url);
