@@ -52,6 +52,17 @@ describe('no visual regression', () => {
           windows: 0.007,
         },
       ],
+      [
+        'labels.03.default.position',
+        {
+          // Expected image to match or be a close match to snapshot but was 0.0008459985669673209%
+          linux: 0.000009,
+          // Expected image to match or be a close match to snapshot but was 0.4666976128188338%
+          macos: 0.005,
+          // Expected image to match or be a close match to snapshot but was 0.2970500950379207%
+          windows: 0.003,
+        },
+      ],
       // ubuntu: Expected image to match or be a close match to snapshot but was 0.19665548561466073%
       // macOS: Expected image to match or be a close match to snapshot but was 0.15006201878846603%
       // windows: Expected image to match or be a close match to snapshot but was 0.12200021675353723%
