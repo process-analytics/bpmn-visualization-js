@@ -42,9 +42,8 @@ export default class BpmnJsonParser {
   }
 }
 
-export function defaultBpmnJsonParser(): BpmnJsonParser {
+export function newBpmnJsonParser(): BpmnJsonParser {
   const convertedElements = new ConvertedElements();
-  // TODO replace the function by dependency injection, see #110
   return new BpmnJsonParser(
     new CollaborationConverter(convertedElements),
     new EventDefinitionConverter(convertedElements),
