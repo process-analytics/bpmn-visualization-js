@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu-utils';
 
 // TODO use 'jest-image-snapshot' definition types when the lib will be updated
 // The type lib does not support setting config for ssim (4.2.0 released on july 2020)
@@ -30,39 +31,39 @@ declare global {
   }
 }
 
-import { copyFileSync, findFiles, loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
-import debugLogger from 'debug';
+import { findFiles } from '../helpers/file-helper';
+// import debugLogger from 'debug';
 
-const log = debugLogger('test');
+// const log = debugLogger('test');
 const graphContainerId = 'viewport';
 
 describe('no visual regression', () => {
-  const defaultImageSnapshotConfig = {
-    diffDirection: 'vertical',
-    dumpDiffToConsole: true, // useful on CI (no need to retrieve the diff image, copy/paste image content from logs)
-    // use SSIM to limit false positive
-    // https://github.com/americanexpress/jest-image-snapshot#recommendations-when-using-ssim-comparison
-    comparisonMethod: 'ssim',
-  };
+  // const defaultImageSnapshotConfig = {
+  //   diffDirection: 'vertical',
+  //   dumpDiffToConsole: true, // useful on CI (no need to retrieve the diff image, copy/paste image content from logs)
+  //   // use SSIM to limit false positive
+  //   // https://github.com/americanexpress/jest-image-snapshot#recommendations-when-using-ssim-comparison
+  //   comparisonMethod: 'ssim',
+  // };
 
-  function getSimplePlatformName(): string {
-    const platform = process.platform;
-    log(`This platform is ${platform}`);
+  // function getSimplePlatformName(): string {
+  //   const platform = process.platform;
+  //   log(`This platform is ${platform}`);
+  //
+  //   if (platform.startsWith('win')) {
+  //     return 'windows';
+  //   } else if (platform.startsWith('darwin')) {
+  //     return 'macos';
+  //   }
+  //   // we don't support other platform than linux, so hardcode it
+  //   return 'linux';
+  // }
 
-    if (platform.startsWith('win')) {
-      return 'windows';
-    } else if (platform.startsWith('darwin')) {
-      return 'macos';
-    }
-    // we don't support other platform than linux, so hardcode it
-    return 'linux';
-  }
-
-  interface ImageSnapshotThresholdConfig {
-    linux: number;
-    macos: number;
-    windows: number;
-  }
+  // interface ImageSnapshotThresholdConfig {
+  //   linux: number;
+  //   macos: number;
+  //   windows: number;
+  // }
 
   /**
    * Configure threshold by bpmn files. When introducing a new test, please don't add threshold until you get failures when running
@@ -138,31 +139,32 @@ describe('no visual regression', () => {
       },
     ],
   ]);
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholdConfig);
 
-  function getImageSnapshotConfig(fileName: string): jest.ImageSnapshotConfig {
-    // minimal threshold to make tests for diagram renders pass on local
-    // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
-    let failureThreshold = 0.000004;
+  // function getImageSnapshotConfig(fileName: string): jest.ImageSnapshotConfig {
+  //   // minimal threshold to make tests for diagram renders pass on local
+  //   // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
+  //   let failureThreshold = 0.000004;
+  //
+  //   const config = imageSnapshotThresholdConfig.get(fileName);
+  //   if (config) {
+  //     log(`Building dedicated image snapshot configuration for '${fileName}'`);
+  //     const simplePlatformName = getSimplePlatformName();
+  //     log(`Simple platform name: ${simplePlatformName}`);
+  //     // we know here that we have property names related to the 'simple platform name' so ignoring TS complains.
+  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //     // @ts-ignore
+  //     failureThreshold = config[simplePlatformName];
+  //   }
+  //
+  //   log(`ImageSnapshot - using failureThreshold: ${failureThreshold}`);
+  //   return { ...defaultImageSnapshotConfig, failureThreshold: failureThreshold, failureThresholdType: 'percent' };
+  // }
 
-    const config = imageSnapshotThresholdConfig.get(fileName);
-    if (config) {
-      log(`Building dedicated image snapshot configuration for '${fileName}'`);
-      const simplePlatformName = getSimplePlatformName();
-      log(`Simple platform name: ${simplePlatformName}`);
-      // we know here that we have property names related to the 'simple platform name' so ignoring TS complains.
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      failureThreshold = config[simplePlatformName];
-    }
-
-    log(`ImageSnapshot - using failureThreshold: ${failureThreshold}`);
-    return { ...defaultImageSnapshotConfig, failureThreshold: failureThreshold, failureThresholdType: 'percent' };
-  }
-
-  enum BpmnLoadMethod {
-    QueryParam = 'query param',
-    Url = 'url',
-  }
+  // enum BpmnLoadMethod {
+  //   QueryParam = 'query param',
+  //   Url = 'url',
+  // }
 
   /**
    * Configure how the BPMN file is loaded by the test page.
@@ -178,28 +180,30 @@ describe('no visual regression', () => {
     ['markers.01.positioning', BpmnLoadMethod.Url],
   ]);
 
-  function getBpmnLoadMethod(fileName: string): BpmnLoadMethod {
-    return bpmnLoadMethodConfig.get(fileName) || BpmnLoadMethod.QueryParam;
-  }
+  // function getBpmnLoadMethod(fileName: string): BpmnLoadMethod {
+  //   return bpmnLoadMethodConfig.get(fileName) || BpmnLoadMethod.QueryParam;
+  // }
 
-  function prepareTestResourcesAndGetPageUrl(fileName: string): string {
-    let url = 'http://localhost:10002/non-regression.html?fitOnLoad=true';
+  // function prepareTestResourcesAndGetPageUrl(fileName: string): string {
+  //   let url = 'http://localhost:10002/non-regression.html?fitOnLoad=true';
+  //
+  //   const bpmnLoadMethod = getBpmnLoadMethod(fileName);
+  //   log(`Use '${bpmnLoadMethod}' as BPMN Load Method for '${fileName}'`);
+  //   const relPathToBpmnFile = `../fixtures/bpmn/non-regression/${fileName}.bpmn`;
+  //   switch (bpmnLoadMethod) {
+  //     case BpmnLoadMethod.QueryParam:
+  //       const bpmnContent = loadBpmnContentForUrlQueryParam(relPathToBpmnFile);
+  //       url += `&bpmn=${bpmnContent}`;
+  //       break;
+  //     case BpmnLoadMethod.Url:
+  //       copyFileSync(relPathToBpmnFile, `../../dist/static/diagrams/`, `${fileName}.bpmn`);
+  //       url += `&url=./static/diagrams/${fileName}.bpmn`;
+  //       break;
+  //   }
+  //   return url;
+  // }
 
-    const bpmnLoadMethod = getBpmnLoadMethod(fileName);
-    log(`Use '${bpmnLoadMethod}' as BPMN Load Method for '${fileName}'`);
-    const relPathToBpmnFile = `../fixtures/bpmn/non-regression/${fileName}.bpmn`;
-    switch (bpmnLoadMethod) {
-      case BpmnLoadMethod.QueryParam:
-        const bpmnContent = loadBpmnContentForUrlQueryParam(relPathToBpmnFile);
-        url += `&bpmn=${bpmnContent}`;
-        break;
-      case BpmnLoadMethod.Url:
-        copyFileSync(relPathToBpmnFile, `../../dist/static/diagrams/`, `${fileName}.bpmn`);
-        url += `&url=./static/diagrams/${fileName}.bpmn`;
-        break;
-    }
-    return url;
-  }
+  const bpmnDiagramPreparation = new BpmnDiagramPreparation(bpmnLoadMethodConfig, { page: 'non-regression' });
 
   const bpmnFileNames = findFiles('../fixtures/bpmn/non-regression/')
     .filter(filename => {
@@ -214,7 +218,7 @@ describe('no visual regression', () => {
   });
 
   it.each(bpmnFileNames)(`%s`, async (fileName: string) => {
-    const url = prepareTestResourcesAndGetPageUrl(fileName);
+    const url = bpmnDiagramPreparation.prepareTestResourcesAndGetPageUrl(fileName);
 
     const response = await page.goto(url);
     // Uncomment the following in case of http error 400 (probably because of a too large bpmn file)
@@ -257,6 +261,6 @@ describe('no visual regression', () => {
 
     const image = await page.screenshot({ fullPage: true });
 
-    expect(image).toMatchImageSnapshot(getImageSnapshotConfig(fileName));
+    expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getImageSnapshotConfig(fileName));
   });
 });
