@@ -21,6 +21,7 @@ import {
   ExpectedEventModelElement,
   ExpectedShapeModelElement,
   ExpectedStartEventModelElement,
+  ExpectedSubProcessModelElement,
   getDefaultParentId,
 } from '../../ExpectModelUtils';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal/shape';
@@ -35,10 +36,15 @@ function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): Expe
   return expectedStateStyle;
 }
 
-function buildExpectedStyle(expectedModel: ExpectedShapeModelElement | ExpectedEventModelElement | ExpectedStartEventModelElement | ExpectedBoundaryEventModelElement): string {
+function buildExpectedStyle(
+  expectedModel: ExpectedShapeModelElement | ExpectedSubProcessModelElement | ExpectedEventModelElement | ExpectedStartEventModelElement | ExpectedBoundaryEventModelElement,
+): string {
   let expectedStyle: string = expectedModel.kind;
   if ('eventKind' in expectedModel) {
     expectedStyle = expectedStyle + `.*bpmn.eventKind=${expectedModel.eventKind}`;
+  }
+  if ('subProcessKind' in expectedModel) {
+    expectedStyle = expectedStyle + `.*bpmn.subProcessKind=${expectedModel.subProcessKind}`;
   }
   if (expectedModel.isInstantiating !== undefined) {
     expectedStyle = expectedStyle + `.*bpmn.isInstantiating=${expectedModel.isInstantiating}`;
@@ -87,6 +93,10 @@ export function toBeCallActivity(this: MatcherContext, received: string, expecte
     buildExpectedCell,
     buildReceivedCellWithCommonAttributes,
   );
+}
+
+export function toBeSubProcess(this: MatcherContext, received: string, expected: ExpectedSubProcessModelElement): CustomMatcherResult {
+  return buildShapeMatcher('toBeSubProcess', this, received, { ...expected, kind: ShapeBpmnElementKind.SUB_PROCESS });
 }
 
 export function toBeTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {

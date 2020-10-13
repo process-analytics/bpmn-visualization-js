@@ -39,6 +39,7 @@ import {
   toBeIntermediateThrowEvent,
   toBeIntermediateCatchEvent,
   toBeBoundaryEvent,
+  toBeSubProcess,
 } from './matchers';
 
 declare global {
@@ -65,6 +66,7 @@ declare global {
       toBeIntermediateThrowEvent(modelElement: ExpectedEventModelElement): R;
       toBeIntermediateCatchEvent(modelElement: ExpectedEventModelElement): R;
       toBeBoundaryEvent(modelElement: ExpectedBoundaryEventModelElement): R;
+      toBeSubProcess(modelElement: ExpectedSubProcessModelElement): R;
     }
   }
 }
@@ -90,6 +92,7 @@ expect.extend({
   toBeIntermediateThrowEvent,
   toBeIntermediateCatchEvent,
   toBeBoundaryEvent,
+  toBeSubProcess,
 });
 
 export interface ExpectedCellWithGeometry {
@@ -156,18 +159,6 @@ export const bpmnVisualization = new BpmnVisualization(null);
 
 export function getDefaultParentId(): string {
   return bpmnVisualization.graph.getDefaultParent().id;
-}
-
-export function expectModelContainsSubProcess(cellId: string, subProcessModelElement: ExpectedSubProcessModelElement): mxCell {
-  expect(cellId).toBeShape({
-    ...subProcessModelElement,
-    kind: ShapeBpmnElementKind.SUB_PROCESS,
-    verticalAlign: subProcessModelElement.verticalAlign ? subProcessModelElement.verticalAlign : 'middle',
-  });
-
-  const cell = bpmnVisualization.graph.model.getCell(cellId);
-  expect(cell.style).toContain(`bpmn.subProcessKind=${subProcessModelElement.subProcessKind}`);
-  return cell;
 }
 
 export function expectModelContainsPool(cellId: string, modelElement: ExpectedShapeModelElement): void {
