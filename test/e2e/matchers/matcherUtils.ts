@@ -65,21 +65,20 @@ export function buildCellMatcher<R>(
   };
   const utils = matcherContext.utils;
   const expand = matcherContext.expand;
+  const messagePrefix = utils.matcherHint(matcherName, undefined, undefined, options) + '\n\n';
 
   const expectedCell: ExpectedCell = buildExpectedCell(received, expected);
 
   const cell = getCell(received);
   if (!cell) {
     const message = (): string =>
-      utils.matcherHint(matcherName, undefined, undefined, options) +
-      '\n\n' +
-      utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: ${cellKind} with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, expand);
+      messagePrefix + utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: ${cellKind} with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, expand);
     return { message, pass: false };
   }
 
   const receivedCell: ExpectedCell = buildReceivedCell(cell);
   const pass = matcherContext.equals(receivedCell, expectedCell, [utils.iterableEquality, utils.subsetEquality]);
-  const messageEnd = pass
+  const messageSuffix = pass
     ? `${EXPECTED_LABEL}: ${cellKind} with id '${received}' not to be found with the configuration:\n` + `${utils.printExpected(expectedCell)}`
     : utils.printDiffOrStringify(
         expectedCell,
@@ -88,7 +87,7 @@ export function buildCellMatcher<R>(
         `${RECEIVED_LABEL}: ${cellKind} with id '${received}'`,
         expand,
       );
-  return { message: () => utils.matcherHint(matcherName, undefined, undefined, options) + '\n\n' + messageEnd, pass };
+  return { message: (): string => messagePrefix + messageSuffix, pass };
 }
 
 export function getFontStyleValue(expectedFont: ExpectedFont): number {
