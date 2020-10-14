@@ -761,27 +761,23 @@ describe('mxGraph model', () => {
     });
 
     // Service Task
-    expect('service_task_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_SERVICE,
+    expect('service_task_id').toBeServiceTask({
       font: expectedBoldFont,
       label: 'Service Task',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
     });
-    expect('service_task_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_SERVICE,
+    expect('service_task_with_loop_id').toBeServiceTask({
       label: 'Service Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
       parentId: 'participant_1_id',
     });
-    expect('service_task_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_SERVICE,
+    expect('service_task_with_sequential_multi_instance_id').toBeServiceTask({
       label: 'Service Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
       parentId: 'participant_1_id',
     });
-    expect('service_task_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_SERVICE,
+    expect('service_task_with_parallel_multi_instance_id').toBeServiceTask({
       label: 'Service Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
       parentId: 'participant_1_id',

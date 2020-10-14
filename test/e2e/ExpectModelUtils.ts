@@ -18,7 +18,7 @@ import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { toBeCell, withGeometry, withFont, toBeSequenceFlow, toBeMessageFlow, toBeAssociationFlow, toBeShape, toBeCallActivity, toBeTask } from './matchers';
+import { toBeCell, withGeometry, withFont, toBeSequenceFlow, toBeMessageFlow, toBeAssociationFlow, toBeShape, toBeCallActivity, toBeTask, toBeServiceTask } from './matchers';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -33,6 +33,7 @@ declare global {
       toBeShape(modelElement: ExpectedShapeModelElement): R;
       toBeCallActivity(modelElement: ExpectedShapeModelElement): R;
       toBeTask(modelElement: ExpectedShapeModelElement): R;
+      toBeServiceTask(modelElement: ExpectedShapeModelElement): R;
     }
   }
 }
@@ -47,6 +48,7 @@ expect.extend({
   toBeShape,
   toBeCallActivity,
   toBeTask,
+  toBeServiceTask,
 });
 
 export interface ExpectedFont {
