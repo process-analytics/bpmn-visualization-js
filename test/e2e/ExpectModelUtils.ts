@@ -100,15 +100,6 @@ export const bpmnVisualization = new BpmnVisualization(null);
 
 // ---------------------------- To convert to Jest extension ------------------------------------
 
-export function expectModelNotContainCell(cellId: string): void {
-  expect(cellId).not.toBeCell();
-}
-
-export function expectModelContainsCell(cellId: string): mxCell {
-  expect(cellId).toBeCell();
-  return bpmnVisualization.graph.model.getCell(cellId);
-}
-
 export function expectModelContainsShape(cellId: string, modelElement: ExpectedShapeModelElement): mxCell {
   const cell: mxCell = expectModelContainsCell(cellId);
   const parentId = modelElement.parentId;
@@ -166,6 +157,11 @@ export function expectModelContainsPool(cellId: string, modelElement: ExpectedSh
 export function expectModelContainsLane(cellId: string, modelElement: ExpectedShapeModelElement): void {
   const mxCell = expectModelContainsShape(cellId, { ...modelElement, kind: ShapeBpmnElementKind.LANE, styleShape: mxConstants.SHAPE_SWIMLANE });
   expect(mxCell.style).toContain(`${mxConstants.STYLE_HORIZONTAL}=${modelElement.isHorizontal ? '0' : '1'}`);
+}
+
+function expectModelContainsCell(cellId: string): mxCell {
+  expect(cellId).toBeCell();
+  return bpmnVisualization.graph.model.getCell(cellId);
 }
 
 export function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxGeometry): void {
