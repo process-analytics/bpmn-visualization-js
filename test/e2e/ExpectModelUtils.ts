@@ -18,7 +18,18 @@ import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { toBeCell, toBeCellWithParentAndGeometry, withFont, toBeSequenceFlow, toBeMessageFlow, toBeAssociationFlow, toBeShape, toBeCallActivity, toBeTask, toBeServiceTask } from './matchers';
+import {
+  toBeCell,
+  toBeCellWithParentAndGeometry,
+  withFont,
+  toBeSequenceFlow,
+  toBeMessageFlow,
+  toBeAssociationFlow,
+  toBeShape,
+  toBeCallActivity,
+  toBeTask,
+  toBeServiceTask,
+} from './matchers';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
