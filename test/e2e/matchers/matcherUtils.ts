@@ -31,6 +31,7 @@ export interface ExpectedStateStyle extends StyleMap {
   endArrow?: string;
   endSize?: number;
   shape?: string;
+  horizontal?: number;
 }
 
 export interface ExpectedCell {
@@ -142,6 +143,7 @@ function buildReceivedStateStyle(cell: mxCell): ExpectedStateStyle {
     expectedStateStyle.endSize = stateStyle.endSize;
   } else {
     expectedStateStyle.shape = stateStyle.shape;
+    expectedStateStyle.horizontal = stateStyle.horizontal;
   }
   return expectedStateStyle;
 }
