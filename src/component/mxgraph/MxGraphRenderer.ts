@@ -30,34 +30,20 @@ export default class MxGraphRenderer {
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
 
   public render(bpmnModel: BpmnModel): void {
+    const displayedModel = toDisplayedModel(bpmnModel);
+
     const model = this.graph.getModel();
     model.clear(); // ensure to remove manual changes or already loaded graphs
     model.beginUpdate();
-
-    const collapsedSubProcessIds: string[] = bpmnModel.flowNodes
-      .filter(shape => {
-        const bpmnElement = shape.bpmnElement;
-        return ShapeUtil.isSubProcess(bpmnElement?.kind) && (bpmnElement as ShapeBpmnSubProcess)?.markers.includes(ShapeBpmnMarkerKind.EXPAND);
-      })
-      .map(shape => shape.bpmnElement?.id);
-
     try {
-      this.insertShapes(bpmnModel.pools);
-      this.insertShapes(bpmnModel.lanes);
-      this.insertShapes(bpmnModel.flowNodes.filter(shape => ShapeUtil.isSubProcess(shape.bpmnElement?.kind)));
-      this.insertShapes(
-        bpmnModel.flowNodes.filter(shape => {
-          const kind = shape.bpmnElement?.kind;
-          return !ShapeUtil.isBoundaryEvent(kind) && !ShapeUtil.isSubProcess(kind) && !collapsedSubProcessIds.includes(shape.bpmnElement?.parentId);
-        }),
-      );
-      this.insertShapes(
-        bpmnModel.flowNodes.filter(shape => {
-          const kind = shape.bpmnElement?.kind;
-          return ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind) && !ShapeUtil.isSubProcess(kind) && !collapsedSubProcessIds.includes(shape.bpmnElement?.parentId);
-        }),
-      );
-      this.insertEdges(bpmnModel.edges);
+      this.insertShapes(displayedModel.pools);
+      this.insertShapes(displayedModel.lanes);
+      this.insertShapes(displayedModel.subprocesses);
+      this.insertShapes(displayedModel.otherFlowNodes);
+      // last shape as the boundary event parent must be in the model (subprocess or activity)
+      this.insertShapes(displayedModel.boundaryEvents);
+      // at last as edge source and target must be present in the model prior insertion, otherwise they are not rendered
+      this.insertEdges(displayedModel.edges);
     } finally {
       model.endUpdate();
     }
@@ -167,4 +153,36 @@ export default class MxGraphRenderer {
 
 export function defaultMxGraphRenderer(graph: mxGraph): MxGraphRenderer {
   return new MxGraphRenderer(graph, new CoordinatesTranslator(graph), new StyleConfigurator(graph));
+}
+
+function toDisplayedModel(bpmnModel: BpmnModel): DisplayedModel {
+  const collapsedSubProcessIds: string[] = bpmnModel.flowNodes
+    .filter(shape => {
+      const bpmnElement = shape.bpmnElement;
+      return ShapeUtil.isSubProcess(bpmnElement?.kind) && (bpmnElement as ShapeBpmnSubProcess)?.markers.includes(ShapeBpmnMarkerKind.EXPAND);
+    })
+    .map(shape => shape.bpmnElement?.id);
+
+  const subprocesses = bpmnModel.flowNodes.filter(shape => ShapeUtil.isSubProcess(shape.bpmnElement?.kind));
+
+  const boundaryEvents = bpmnModel.flowNodes.filter(shape => {
+    const kind = shape.bpmnElement?.kind;
+    return ShapeUtil.isBoundaryEvent(kind) && !ShapeUtil.isSubProcess(kind) && !collapsedSubProcessIds.includes(shape.bpmnElement?.parentId);
+  });
+
+  const otherFlowNodes = bpmnModel.flowNodes.filter(shape => {
+    const kind = shape.bpmnElement?.kind;
+    return !ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind) && !ShapeUtil.isSubProcess(kind) && !collapsedSubProcessIds.includes(shape.bpmnElement?.parentId);
+  });
+
+  return { boundaryEvents: boundaryEvents, edges: bpmnModel.edges, lanes: bpmnModel.lanes, otherFlowNodes: otherFlowNodes, pools: bpmnModel.pools, subprocesses: subprocesses };
+}
+
+interface DisplayedModel {
+  edges: Edge[];
+  boundaryEvents: Shape[];
+  otherFlowNodes: Shape[];
+  lanes: Shape[];
+  pools: Shape[];
+  subprocesses: Shape[];
 }
