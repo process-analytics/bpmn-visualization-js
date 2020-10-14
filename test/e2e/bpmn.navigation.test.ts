@@ -39,7 +39,7 @@ interface MouseWithWheel extends Mouse {
   wheel(options?: MouseWheelOptions): Promise<void>;
 }
 
-describe('diagram navigation', async () => {
+describe('diagram navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new Map());
 
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
@@ -48,10 +48,14 @@ describe('diagram navigation', async () => {
   const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-viewport', 'BPMN Visualization - Diagram Navigation');
 
   const fileName = 'simple-2_start_events-1_task';
-  const bpmnViewportElementHandle = await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
-  const bounding_box = await bpmnViewportElementHandle.boundingBox();
-  const viewportCenterX = bounding_box.x + bounding_box.width / 2;
-  const viewportCenterY = bounding_box.y + bounding_box.height / 2;
+  let viewportCenterX: number;
+  let viewportCenterY: number;
+  beforeEach(async () => {
+    const bpmnViewportElementHandle = await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
+    const bounding_box = await bpmnViewportElementHandle.boundingBox();
+    viewportCenterX = bounding_box.x + bounding_box.width / 2;
+    viewportCenterY = bounding_box.y + bounding_box.height / 2;
+  });
 
   it('mouse panning', async () => {
     // simulate mouse panning
