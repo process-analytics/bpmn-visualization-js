@@ -86,6 +86,9 @@ flow` support (see `ShapeBpmnElementKind` for more details)
   In this file, please adjust shape coordinates to ensure new elements can be easily shown with a viewer and don't overlap with existing elements.
   * For special cases, a dedicated test using a specific file. Please communicate with the Core Development Team if you think you need a dedicated file.
 
+💡 If you have a format problem with the BPMN file of the test, the easier way to find the error & fix it is to load the file in your favorite BPMN editor. \
+But be carefull, all the BPMN vendors don't support all the BPMN elements and not the same. \
+So before commit the modification, verify that some elements/configuration are not deleted.
 
 #### Visual testing
 
