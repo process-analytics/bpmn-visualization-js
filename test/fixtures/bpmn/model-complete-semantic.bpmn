@@ -204,7 +204,9 @@
     </semantic:subProcess>
 
     <!-- Collapsed -->
-    <semantic:subProcess id="collapsed_embedded_sub_process_id" name="Collapsed Embedded Sub-Process" />
+    <semantic:subProcess id="collapsed_embedded_sub_process_id" name="Collapsed Embedded Sub-Process" >
+      <semantic:task id="task_in_collapsed_sub_process_id" name="Task In Collapsed Sub-Process"/>
+    </semantic:subProcess>
     <semantic:subProcess id="collapsed_embedded_sub_process_with_loop_id" name="Collapsed Embedded Sub-Process With Loop">
       <semantic:standardLoopCharacteristics />
     </semantic:subProcess>
@@ -741,9 +743,15 @@
       </bpmndi:BPMNShape>
 
       <!-- Collapsed -->
+      <!-- Expanded with elements -->
       <bpmndi:BPMNShape id="shape_collapsed_embedded_sub_process_id" bpmnElement="collapsed_embedded_sub_process_id" isExpanded="false">
         <dc:Bounds x="3415" y="2175" width="140" height="90" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_task_in_collapsed_sub_process_id" bpmnElement="task_in_collapsed_sub_process_id">
+        <dc:Bounds x="3435" y="2180" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <!-- END OF "Expanded with elements" -->
+
       <bpmndi:BPMNShape id="shape_collapsed_embedded_sub_process_with_loop_id" bpmnElement="collapsed_embedded_sub_process_with_loop_id" isExpanded="false">
         <dc:Bounds x="3415" y="2035" width="140" height="90" />
       </bpmndi:BPMNShape>

@@ -16,7 +16,7 @@
 import Shape from '../../model/bpmn/internal/shape/Shape';
 import Edge from '../../model/bpmn/internal/edge/Edge';
 import BpmnModel from '../../model/bpmn/internal/BpmnModel';
-import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import Waypoint from '../../model/bpmn/internal/edge/Waypoint';
 import Bounds from '../../model/bpmn/internal/Bounds';
 import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
@@ -24,6 +24,7 @@ import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
 import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
+import { ShapeBpmnMarkerKind } from '../../model/bpmn/internal/shape';
 
 export default class MxGraphRenderer {
   constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
@@ -32,11 +33,30 @@ export default class MxGraphRenderer {
     const model = this.graph.getModel();
     model.clear(); // ensure to remove manual changes or already loaded graphs
     model.beginUpdate();
+
+    const collapsedSubProcessIds: string[] = bpmnModel.flowNodes
+      .filter(shape => {
+        const bpmnElement = shape.bpmnElement;
+        return ShapeUtil.isSubProcess(bpmnElement?.kind) && (bpmnElement as ShapeBpmnSubProcess)?.markers.includes(ShapeBpmnMarkerKind.EXPAND);
+      })
+      .map(shape => shape.bpmnElement?.id);
+
     try {
       this.insertShapes(bpmnModel.pools);
       this.insertShapes(bpmnModel.lanes);
-      this.insertShapes(bpmnModel.flowNodes.filter(shape => !ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind)));
-      this.insertShapes(bpmnModel.flowNodes.filter(shape => ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind)));
+      this.insertShapes(bpmnModel.flowNodes.filter(shape => ShapeUtil.isSubProcess(shape.bpmnElement?.kind)));
+      this.insertShapes(
+        bpmnModel.flowNodes.filter(shape => {
+          const kind = shape.bpmnElement?.kind;
+          return !ShapeUtil.isBoundaryEvent(kind) && !ShapeUtil.isSubProcess(kind) && !collapsedSubProcessIds.includes(shape.bpmnElement?.parentId);
+        }),
+      );
+      this.insertShapes(
+        bpmnModel.flowNodes.filter(shape => {
+          const kind = shape.bpmnElement?.kind;
+          return ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind) && !ShapeUtil.isSubProcess(kind) && !collapsedSubProcessIds.includes(shape.bpmnElement?.parentId);
+        }),
+      );
       this.insertEdges(bpmnModel.edges);
     } finally {
       model.endUpdate();
