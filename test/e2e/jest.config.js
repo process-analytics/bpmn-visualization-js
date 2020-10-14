@@ -14,36 +14,27 @@
  * limitations under the License.
  */
 module.exports = {
-  roots: ['<rootDir>/test/unit/'],
-  moduleNameMapper: {
-    // mock files that jest doesn't support like CSS and SVG files
-    '\\.css$': '<rootDir>/test/module-mock.js',
-    '\\.svg$': '<rootDir>/test/module-mock.js',
-  },
+  preset: 'jest-puppeteer',
+  roots: ['./'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testPathIgnorePatterns: ['/node_modules/', 'dist'],
+  testTimeout: 200000,
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
-  collectCoverageFrom: ['**/*.{ts,js}'],
-  coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test'],
-  coverageThreshold: {
-    global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
-    },
-  },
-  coverageReporters: ['json', 'json-summary', 'lcov', 'text', 'text-summary', 'clover'],
-  setupFiles: ['<rootDir>/test/unit/jest.globals.ts'],
+  testEnvironment: 'jest-environment-puppeteer-jsdom',
+  globalSetup: 'jest-environment-puppeteer-jsdom/setup',
+  globalTeardown: 'jest-environment-puppeteer-jsdom/teardown',
+  setupFiles: ['./config/jest.globals.ts'],
+  // jest-image-snapshot configuration doesn't work with setupFiles, fix with setupFilesAfterEnv: see https://github.com/testing-library/jest-dom/issues/122#issuecomment-650520461
+  setupFilesAfterEnv: ['./config/jest.image.ts'],
   reporters: [
     'default',
     [
       'jest-html-reporter',
       {
-        pageTitle: 'bpmn-visualization Unit Test Report',
-        outputPath: 'build/test-report/unit/index.html',
+        pageTitle: 'bpmn-visualization E2E Test Report',
+        outputPath: 'build/test-report/e2e/index.html',
         includeFailureMsg: true,
         includeSuiteFailure: true,
       },

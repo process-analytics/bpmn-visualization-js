@@ -15,7 +15,7 @@
  */
 import { ShapeBpmnElementKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
-import { defaultBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
+import { newBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
 import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import Waypoint from '../../../../../src/model/bpmn/internal/edge/Waypoint';
@@ -76,7 +76,7 @@ export interface ExpectedBounds {
 }
 
 export function parseJson(json: BpmnJsonModel): BpmnModel {
-  return defaultBpmnJsonParser().parse(json);
+  return newBpmnJsonParser().parse(json);
 }
 
 export function parseJsonAndExpect(

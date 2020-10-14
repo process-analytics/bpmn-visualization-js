@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { defaultBpmnParser } from '../../../../src/component/parser/BpmnParser';
+import { newBpmnParser } from '../../../../src/component/parser/BpmnParser';
 import { readFileSync } from '../../../helpers/file-helper';
 
 describe('parse xml to model', () => {
   it('Single process with no participant', () => {
-    const parser = defaultBpmnParser();
+    const parser = newBpmnParser();
     const model = parser.parse(readFileSync('../fixtures/bpmn/parser-test.bpmn'));
 
     expect(model.flowNodes).toHaveLength(5);

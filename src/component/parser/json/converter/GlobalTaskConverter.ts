@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
-import { ensureIsArray } from './ConverterUtil';
+import { ConvertedElements, ensureIsArray } from './utils';
 import { TGlobalTask } from '../../../../model/bpmn/json/baseElement/rootElement/globalTask';
 
-const globalTaskIds: string[] = [];
-
-export function isGlobalTask(id: string): boolean {
-  return globalTaskIds.includes(id);
-}
-
 export default class GlobalTaskConverter {
+  constructor(readonly convertedElements: ConvertedElements) {}
+
   deserialize(definitions: TDefinitions): void {
     try {
-      // Deletes everything in the array, which does hit other references. For better performance.
-      globalTaskIds.length = 0;
-
       this.parseGlobalTasks(definitions.globalTask);
       this.parseGlobalTasks(definitions.globalBusinessRuleTask);
       this.parseGlobalTasks(definitions.globalManualTask);
@@ -42,7 +35,7 @@ export default class GlobalTaskConverter {
 
   private parseGlobalTasks<T extends TGlobalTask>(globalTasks: T | T[]): void {
     ensureIsArray<T>(globalTasks).forEach(globalTask => {
-      globalTaskIds.push(globalTask.id);
+      this.convertedElements.registerGlobalTask(globalTask.id);
     });
   }
 }

@@ -16,7 +16,7 @@
 import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
 import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
-import { defaultBpmnParser } from './parser/BpmnParser';
+import { newBpmnParser } from './parser/BpmnParser';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -24,14 +24,14 @@ declare const mxClient: typeof mxgraph.mxClient;
 export default class BpmnVisualization {
   public readonly graph: mxGraph;
 
-  constructor(protected container: HTMLElement) {
+  constructor(protected container: HTMLElement, options?: BpmnVisualizationOptions) {
     try {
       if (!mxClient.isBrowserSupported()) {
         mxUtils.error('Browser is not supported!', 200, false);
       }
       // Instantiate and configure Graph
       const configurator = new MxGraphConfigurator(this.container);
-      this.graph = configurator.configure();
+      this.graph = configurator.configure(options);
     } catch (e) {
       // TODO error handling
       mxUtils.alert('Cannot start application: ' + e.message);
@@ -41,8 +41,7 @@ export default class BpmnVisualization {
 
   public load(xml: string): void {
     try {
-      // TODO the BpmnParser should be a field and injected (see #110)
-      const bpmnModel = defaultBpmnParser().parse(xml);
+      const bpmnModel = newBpmnParser().parse(xml);
       defaultMxGraphRenderer(this.graph).render(bpmnModel);
     } catch (e) {
       // TODO error handling
@@ -50,4 +49,11 @@ export default class BpmnVisualization {
       throw e;
     }
   }
+}
+
+export interface BpmnVisualizationOptions {
+  /**
+   * If set to `true`, activate panning i.e. the BPMN diagram is draggable and can be moved using the mouse.
+   */
+  mouseNavigationSupport: boolean;
 }
