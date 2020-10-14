@@ -41,6 +41,7 @@ import {
   toBeBoundaryEvent,
   toBeSubProcess,
   toBePool,
+  toBeLane,
 } from './matchers';
 
 declare global {
@@ -69,6 +70,7 @@ declare global {
       toBeBoundaryEvent(modelElement: ExpectedBoundaryEventModelElement): R;
       toBeSubProcess(modelElement: ExpectedSubProcessModelElement): R;
       toBePool(modelElement: ExpectedShapeModelElement): R;
+      toBeLane(modelElement: ExpectedShapeModelElement): R;
     }
   }
 }
@@ -96,6 +98,7 @@ expect.extend({
   toBeBoundaryEvent,
   toBeSubProcess,
   toBePool,
+  toBeLane,
 });
 
 export interface ExpectedCellWithGeometry {
@@ -162,11 +165,4 @@ export const bpmnVisualization = new BpmnVisualization(null);
 
 export function getDefaultParentId(): string {
   return bpmnVisualization.graph.getDefaultParent().id;
-}
-
-export function expectModelContainsLane(cellId: string, modelElement: ExpectedShapeModelElement): void {
-  expect(cellId).toBeShape({ ...modelElement, kind: ShapeBpmnElementKind.LANE, styleShape: mxConstants.SHAPE_SWIMLANE, verticalAlign: 'middle' });
-
-  const mxCell = bpmnVisualization.graph.model.getCell(cellId);
-  expect(mxCell.style).toContain(`${mxConstants.STYLE_HORIZONTAL}=${modelElement.isHorizontal ? '0' : '1'}`);
 }

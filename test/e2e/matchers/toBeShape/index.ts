@@ -92,6 +92,11 @@ export function toBePool(this: MatcherContext, received: string, expected: Expec
   return buildShapeMatcher('toBePool', this, received, { ...expected, kind: ShapeBpmnElementKind.POOL, styleShape: mxConstants.SHAPE_SWIMLANE, isHorizontal });
 }
 
+export function toBeLane(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  const isHorizontal = 'isHorizontal' in expected ? expected.isHorizontal : true;
+  return buildShapeMatcher('toBeLane', this, received, { ...expected, kind: ShapeBpmnElementKind.LANE, styleShape: mxConstants.SHAPE_SWIMLANE, isHorizontal });
+}
+
 export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   return buildCellMatcher(
     'toBeCallActivity',
