@@ -163,16 +163,20 @@ function toDisplayedModel(bpmnModel: BpmnModel): DisplayedModel {
     })
     .map(shape => shape.bpmnElement?.id);
 
-  const subprocesses = bpmnModel.flowNodes.filter(shape => ShapeUtil.isSubProcess(shape.bpmnElement?.kind));
-
-  const boundaryEvents = bpmnModel.flowNodes.filter(shape => {
+  const subprocesses: Shape[] = [];
+  const boundaryEvents: Shape[] = [];
+  const otherFlowNodes: Shape[] = [];
+  bpmnModel.flowNodes.forEach(shape => {
     const kind = shape.bpmnElement?.kind;
-    return ShapeUtil.isBoundaryEvent(kind) && !ShapeUtil.isSubProcess(kind) && !collapsedSubProcessIds.includes(shape.bpmnElement?.parentId);
-  });
-
-  const otherFlowNodes = bpmnModel.flowNodes.filter(shape => {
-    const kind = shape.bpmnElement?.kind;
-    return !ShapeUtil.isBoundaryEvent(shape.bpmnElement?.kind) && !ShapeUtil.isSubProcess(kind) && !collapsedSubProcessIds.includes(shape.bpmnElement?.parentId);
+    if (ShapeUtil.isSubProcess(kind)) {
+      subprocesses.push(shape);
+    } else if (!collapsedSubProcessIds.includes(shape.bpmnElement?.parentId)) {
+      if (ShapeUtil.isBoundaryEvent(kind)) {
+        boundaryEvents.push(shape);
+      } else {
+        otherFlowNodes.push(shape);
+      }
+    }
   });
 
   return { boundaryEvents: boundaryEvents, edges: bpmnModel.edges, lanes: bpmnModel.lanes, otherFlowNodes: otherFlowNodes, pools: bpmnModel.pools, subprocesses: subprocesses };
