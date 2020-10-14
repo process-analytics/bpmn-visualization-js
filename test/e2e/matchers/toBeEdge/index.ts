@@ -13,49 +13,66 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { buildExpectedCell, buildReceivedCell, getCell, EXPECTED_LABEL, RECEIVED_LABEL } from '../matcherUtils';
+import { ExpectedStateStyle, ExpectedCell, buildCommonExpectedStateStyle } from '../matcherUtils';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import { FlowKind } from '../../../../src/model/bpmn/internal/edge/FlowKind';
-import { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../ExpectModelUtils';
+import { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement, getDefaultParentId } from '../../ExpectModelUtils';
+import { MessageVisibleKind } from '../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
+import { StyleIdentifier } from '../../../../src/component/mxgraph/StyleUtils';
+import { buildCellMatcher } from '../toBeCell';
 
-function buildEdgeMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
-  const options = {
-    isNot: matcherContext.isNot,
-    promise: matcherContext.promise,
+function buildExpectedStateStyle(expectedModel: ExpectedEdgeModelElement): ExpectedStateStyle {
+  const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
+  expectedStateStyle.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'top';
+  expectedStateStyle.align = 'center';
+  expectedStateStyle.strokeWidth = 1.5;
+  expectedStateStyle.startArrow = expectedModel.startArrow;
+  expectedStateStyle.endArrow = expectedModel.endArrow;
+  expectedStateStyle.endSize = 12;
+
+  return expectedStateStyle;
+}
+
+function buildExpectedStyle(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): string {
+  let expectedStyle: string = expectedModel.kind;
+  if ('sequenceFlowKind' in expectedModel) {
+    expectedStyle = expectedStyle + `;${(expectedModel as ExpectedSequenceFlowModelElement).sequenceFlowKind}`;
+  }
+  return expectedStyle + '.*';
+}
+
+function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): ExpectedCell {
+  const parentId = expectedModel.parentId;
+  const styleRegexp = buildExpectedStyle(expectedModel);
+  const expectedCell: ExpectedCell = {
+    id,
+    value: expectedModel.label,
+    style: expect.stringMatching(styleRegexp),
+    edge: true,
+    vertex: false,
+    parent: { id: parentId ? parentId : getDefaultParentId() },
+    state: {
+      style: buildExpectedStateStyle(expectedModel),
+    },
   };
-  const utils = matcherContext.utils;
-  const expand = matcherContext.expand;
 
-  const expectedCell = buildExpectedCell(received, expected);
-
-  const cell = getCell(received);
-  if (!cell) {
-    return {
-      message: () =>
-        utils.matcherHint(matcherName, undefined, undefined, options) +
-        '\n\n' +
-        utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: Edge with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, expand),
-      pass: false,
-    };
+  if (expectedModel.messageVisibleKind && expectedModel.messageVisibleKind !== MessageVisibleKind.NONE) {
+    expectedCell.children = [
+      {
+        value: undefined,
+        style: `shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${expectedModel.messageVisibleKind}`,
+        id: `messageFlowIcon_of_${id}`,
+        vertex: true,
+      },
+    ];
   }
 
-  const receivedCell = buildReceivedCell(cell);
-  const pass = matcherContext.equals(receivedCell, expectedCell, [utils.iterableEquality, utils.subsetEquality]);
-  const message = pass
-    ? () =>
-        utils.matcherHint(matcherName, undefined, undefined, options) +
-        '\n\n' +
-        `${EXPECTED_LABEL}: Edge with id '${received}' not to be found with the configuration:\n` +
-        `${utils.printExpected(expectedCell)}`
-    : () =>
-        utils.matcherHint(matcherName, undefined, undefined, options) +
-        '\n\n' +
-        utils.printDiffOrStringify(expectedCell, receivedCell, `${EXPECTED_LABEL}: Edge with id '${expectedCell.id}'`, `${RECEIVED_LABEL}: Edge with id '${received}'`, expand);
-  return {
-    message,
-    pass,
-  };
+  return expectedCell;
+}
+
+function buildEdgeMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
+  return buildCellMatcher(matcherName, matcherContext, received, expected, 'Edge', buildExpectedCell);
 }
 
 export function toBeSequenceFlow(this: MatcherContext, received: string, expected: ExpectedSequenceFlowModelElement): CustomMatcherResult {

@@ -18,7 +18,7 @@ import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { toBeCell, withGeometry, withFont, toBeSequenceFlow, toBeMessageFlow, toBeAssociationFlow } from './matchers';
+import { toBeCell, withGeometry, withFont, toBeSequenceFlow, toBeMessageFlow, toBeAssociationFlow, toBeShape } from './matchers';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -30,6 +30,7 @@ declare global {
       toBeSequenceFlow(modelElement: ExpectedSequenceFlowModelElement): R;
       toBeMessageFlow(modelElement: ExpectedEdgeModelElement): R;
       toBeAssociationFlow(modelElement: ExpectedEdgeModelElement): R;
+      toBeShape(modelElement: ExpectedShapeModelElement): R;
     }
   }
 }
@@ -41,6 +42,7 @@ expect.extend({
   toBeSequenceFlow,
   toBeMessageFlow,
   toBeAssociationFlow,
+  toBeShape,
 });
 
 export interface ExpectedFont {
@@ -59,6 +61,8 @@ export interface ExpectedShapeModelElement {
   parentId?: string;
   /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
   styleShape?: string;
+  verticalAlign?: string;
+  align?: string;
   markers?: ShapeBpmnMarkerKind[];
   isInstantiating?: boolean;
   isHorizontal?: boolean;
@@ -100,32 +104,10 @@ export const bpmnVisualization = new BpmnVisualization(null);
 
 // ---------------------------- To convert to Jest extension ------------------------------------
 
-export function expectModelContainsShape(cellId: string, modelElement: ExpectedShapeModelElement): mxCell {
-  const cell: mxCell = expectModelContainsCell(cellId);
-  const parentId = modelElement.parentId;
-  if (parentId) {
-    expect(cell.parent.id).toEqual(parentId);
-  }
-  expect(cell.style).toContain(modelElement.kind);
-
-  if (modelElement.markers?.length > 0) {
-    expect(cell.style).toContain(`bpmn.markers=${modelElement.markers.join(',')}`);
-  }
-
-  if (modelElement.isInstantiating !== undefined) {
-    expect(cell.style).toContain(`bpmn.isInstantiating=${modelElement.isInstantiating}`);
-  }
-
-  const state = bpmnVisualization.graph.getView().getState(cell);
-  const styleShape = !modelElement.styleShape ? modelElement.kind : modelElement.styleShape;
-  expect(state.style[mxConstants.STYLE_SHAPE]).toEqual(styleShape);
-  expect(cell.value).toEqual(modelElement.label);
-  expect(cell).withFont(modelElement.font);
-  return cell;
-}
-
 export function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {
-  const cell = expectModelContainsShape(cellId, eventModelElement);
+  expect(cellId).toBeShape({ ...eventModelElement, verticalAlign: 'top' });
+
+  const cell = bpmnVisualization.graph.model.getCell(cellId);
   expect(cell.style).toContain(`bpmn.eventKind=${eventModelElement.eventKind}`);
   return cell;
 }
@@ -141,21 +123,28 @@ export function expectModelContainsBpmnStartEvent(cellId: string, startEventMode
 }
 
 export function expectModelContainsSubProcess(cellId: string, subProcessModelElement: ExpectedSubProcessModelElement): mxCell {
-  const cell = expectModelContainsShape(cellId, {
+  expect(cellId).toBeShape({
     ...subProcessModelElement,
     kind: ShapeBpmnElementKind.SUB_PROCESS,
+    verticalAlign: subProcessModelElement.verticalAlign ? subProcessModelElement.verticalAlign : 'middle',
   });
+
+  const cell = bpmnVisualization.graph.model.getCell(cellId);
   expect(cell.style).toContain(`bpmn.subProcessKind=${subProcessModelElement.subProcessKind}`);
   return cell;
 }
 
 export function expectModelContainsPool(cellId: string, modelElement: ExpectedShapeModelElement): void {
-  const mxCell = expectModelContainsShape(cellId, { ...modelElement, kind: ShapeBpmnElementKind.POOL, styleShape: mxConstants.SHAPE_SWIMLANE });
+  expect(cellId).toBeShape({ ...modelElement, kind: ShapeBpmnElementKind.POOL, styleShape: mxConstants.SHAPE_SWIMLANE, verticalAlign: 'middle' });
+
+  const mxCell = bpmnVisualization.graph.model.getCell(cellId);
   expect(mxCell.style).toContain(`${mxConstants.STYLE_HORIZONTAL}=${modelElement.isHorizontal ? '0' : '1'}`);
 }
 
 export function expectModelContainsLane(cellId: string, modelElement: ExpectedShapeModelElement): void {
-  const mxCell = expectModelContainsShape(cellId, { ...modelElement, kind: ShapeBpmnElementKind.LANE, styleShape: mxConstants.SHAPE_SWIMLANE });
+  expect(cellId).toBeShape({ ...modelElement, kind: ShapeBpmnElementKind.LANE, styleShape: mxConstants.SHAPE_SWIMLANE, verticalAlign: 'middle' });
+
+  const mxCell = bpmnVisualization.graph.model.getCell(cellId);
   expect(mxCell.style).toContain(`${mxConstants.STYLE_HORIZONTAL}=${modelElement.isHorizontal ? '0' : '1'}`);
 }
 

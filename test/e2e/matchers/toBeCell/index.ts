@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { getCell } from '../matcherUtils';
+import { buildReceivedCell, EXPECTED_LABEL, ExpectedCell, getCell, RECEIVED_LABEL } from '../matcherUtils';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
@@ -23,4 +23,47 @@ export function toBeCell(this: MatcherContext, received: string): CustomMatcherR
     message: () => this.utils.matcherHint(`.${pass ? 'not.' : ''}toBeCell`) + '\n\n' + `Expected cell with id '${received}' ${pass ? 'not ' : ''}to be found in the mxGraph model`,
     pass,
   };
+}
+
+export function buildCellMatcher<R>(
+  matcherName: string,
+  matcherContext: MatcherContext,
+  received: string,
+  expected: R,
+  cellKind: string,
+  buildExpectedCell: (received: string, expected: R) => ExpectedCell,
+): CustomMatcherResult {
+  const options = {
+    isNot: matcherContext.isNot,
+    promise: matcherContext.promise,
+  };
+  const utils = matcherContext.utils;
+  const expand = matcherContext.expand;
+
+  const expectedCell: ExpectedCell = buildExpectedCell(received, expected);
+
+  const cell = getCell(received);
+  if (!cell) {
+    const pass = !matcherContext.isNot;
+    const message =
+      utils.matcherHint(matcherName, undefined, undefined, options) + '\n\n' + pass
+        ? () => `${EXPECTED_LABEL}: ${cellKind} with id '${received}' not to be found`
+        : () => utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: ${cellKind} with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, expand);
+    return { message, pass };
+  }
+
+  const receivedCell: ExpectedCell = buildReceivedCell(cell);
+  const pass = matcherContext.equals(receivedCell, expectedCell, [utils.iterableEquality, utils.subsetEquality]);
+  const message =
+    utils.matcherHint(matcherName, undefined, undefined, options) + '\n\n' + pass
+      ? () => `${EXPECTED_LABEL}: ${cellKind} with id '${received}' not to be found with the configuration:\n` + `${utils.printExpected(expectedCell)}`
+      : () =>
+          utils.printDiffOrStringify(
+            expectedCell,
+            receivedCell,
+            `${EXPECTED_LABEL}: ${cellKind} with id '${expectedCell.id}'`,
+            `${RECEIVED_LABEL}: ${cellKind} with id '${received}'`,
+            expand,
+          );
+  return { message, pass };
 }
