@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { toBeEdge, toBeSequenceFlow } from './toBeEdge';
+export { toBeEdge, toBeSequenceFlow, toBeMessageFlow } from './toBeEdge';
 export { toBeCell } from './toBeCell';
 export { withGeometry } from './withGeometry';
 export { withFont } from './withFont';
