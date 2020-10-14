@@ -84,22 +84,22 @@ export default class StyleConfigurator {
     [
       AssociationDirectionKind.NONE,
       (style: StyleMap) => {
-        style[mxConstants.STYLE_STARTARROW] = null;
-        style[mxConstants.STYLE_ENDARROW] = null;
-        style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
+        style[mxConstants.STYLE_STARTARROW] = undefined;
+        style[mxConstants.STYLE_ENDARROW] = undefined;
+        style[mxConstants.STYLE_EDGE] = undefined; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
     [
       AssociationDirectionKind.ONE,
       (style: StyleMap) => {
-        style[mxConstants.STYLE_STARTARROW] = null;
-        style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
+        style[mxConstants.STYLE_STARTARROW] = undefined;
+        style[mxConstants.STYLE_EDGE] = undefined; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
     [
       AssociationDirectionKind.BOTH,
       (style: StyleMap) => {
-        style[mxConstants.STYLE_EDGE] = null; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
+        style[mxConstants.STYLE_EDGE] = undefined; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
   ]);
