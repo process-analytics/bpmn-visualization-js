@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 import { bpmnVisualization, ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../ExpectModelUtils';
+import MatcherContext = jest.MatcherContext;
+import CustomMatcherResult = jest.CustomMatcherResult;
 
 export interface ExpectedStateStyle extends StyleMap {
   verticalAlign?: string;
@@ -33,7 +35,7 @@ export interface ExpectedStateStyle extends StyleMap {
 
 export interface ExpectedCell {
   value?: string;
-  geometry?: mxGeometry | mxGeometry[];
+  geometry?: mxGeometry;
   style?: string;
   id?: string;
   edge?: boolean;
@@ -47,6 +49,47 @@ export interface ExpectedCell {
 
 export const EXPECTED_LABEL = 'Expected in the mxGraph model';
 export const RECEIVED_LABEL = 'Received in the mxGraph model';
+
+export function buildCellMatcher<R>(
+  matcherName: string,
+  matcherContext: MatcherContext,
+  received: string,
+  expected: R,
+  cellKind: string,
+  buildExpectedCell: (received: string, expected: R) => ExpectedCell,
+  buildReceivedCell: (cell: mxCell) => ExpectedCell,
+): CustomMatcherResult {
+  const options = {
+    isNot: matcherContext.isNot,
+    promise: matcherContext.promise,
+  };
+  const utils = matcherContext.utils;
+  const expand = matcherContext.expand;
+
+  const expectedCell: ExpectedCell = buildExpectedCell(received, expected);
+
+  const cell = getCell(received);
+  if (!cell) {
+    const message = (): string =>
+      utils.matcherHint(matcherName, undefined, undefined, options) +
+      '\n\n' +
+      utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: ${cellKind} with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, expand);
+    return { message, pass: false };
+  }
+
+  const receivedCell: ExpectedCell = buildReceivedCell(cell);
+  const pass = matcherContext.equals(receivedCell, expectedCell, [utils.iterableEquality, utils.subsetEquality]);
+  const messageEnd = pass
+    ? `${EXPECTED_LABEL}: ${cellKind} with id '${received}' not to be found with the configuration:\n` + `${utils.printExpected(expectedCell)}`
+    : utils.printDiffOrStringify(
+        expectedCell,
+        receivedCell,
+        `${EXPECTED_LABEL}: ${cellKind} with id '${expectedCell.id}'`,
+        `${RECEIVED_LABEL}: ${cellKind} with id '${received}'`,
+        expand,
+      );
+  return { message: () => utils.matcherHint(matcherName, undefined, undefined, options) + '\n\n' + messageEnd, pass };
+}
 
 export function getFontStyleValue(expectedFont: ExpectedFont): number {
   let value = 0;
@@ -104,7 +147,7 @@ function buildReceivedStateStyle(cell: mxCell): ExpectedStateStyle {
   return expectedStateStyle;
 }
 
-export function buildReceivedCell(cell: mxCell): ExpectedCell {
+export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCell {
   const receivedCell: ExpectedCell = {
     value: cell.value,
     style: cell.style,

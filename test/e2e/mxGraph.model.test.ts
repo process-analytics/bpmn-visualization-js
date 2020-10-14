@@ -27,8 +27,6 @@ import {
   expectModelContainsLane,
   expectModelContainsPool,
   expectModelContainsSubProcess,
-  expectModelContainsCellWithGeometry,
-  getDefaultParentId,
 } from './ExpectModelUtils';
 
 describe('mxGraph model', () => {
@@ -1035,95 +1033,97 @@ describe('mxGraph model', () => {
   it('bpmn element shape should have coordinates relative to the pool when no lane', async () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-coordinates-relative-to-pool.bpmn'));
 
-    expectModelContainsCellWithGeometry(
-      'Participant_1',
-      getDefaultParentId(),
+    expect('Participant_1').toBeCellWithParentAndGeometry({
       // unchanged as this is a pool, coordinates are the ones from the bpmn source
-      new mxGeometry(160, 80, 900, 180),
-    );
+      geometry: new mxGeometry(160, 80, 900, 180),
+    });
 
-    expectModelContainsCellWithGeometry(
-      'StartEvent_1',
-      'Participant_1',
-      new mxGeometry(
+    expect('StartEvent_1').toBeCellWithParentAndGeometry({
+      parentId: 'Participant_1',
+      geometry: new mxGeometry(
         150, // absolute coordinates: parent 160, cell 310
         80, // absolute coordinates: parent 80, cell 160
         40, // unchanged as no transformation on size
         40, // unchanged as no transformation on size
       ),
-    );
+    });
 
     const sequenceFlowMxGeometry = new mxGeometry(0, 0, 0, 0);
     sequenceFlowMxGeometry.points = [
       new mxPoint(190, 100), // absolute coordinates: parent x="160" y="80", cell x="350" y="180"
       new mxPoint(350, 100), // absolute coordinates: parent x="160" y="80", cell x="510" y="180"
     ];
-    expectModelContainsCellWithGeometry('SequenceFlow_id', 'Participant_1', sequenceFlowMxGeometry);
+    expect('SequenceFlow_id').toBeCellWithParentAndGeometry({
+      parentId: 'Participant_1',
+      geometry: sequenceFlowMxGeometry,
+    });
 
     const messageFlowMxGeometry = new mxGeometry(0, 0, 0, 0);
     messageFlowMxGeometry.points = [
       new mxPoint(334, 260), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="260"
       new mxPoint(334, 342), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="342"
     ];
-    expectModelContainsCellWithGeometry('MessageFlow_1', undefined, messageFlowMxGeometry);
+    expect('MessageFlow_1').toBeCellWithParentAndGeometry({
+      geometry: messageFlowMxGeometry,
+    });
   });
 
   it('lanes and bpmn element shapes should have coordinates relative to the pool or the lane', async () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-coordinates-relative-to-pool-or-lane.bpmn'));
 
-    expectModelContainsCellWithGeometry(
-      'Participant_1',
-      getDefaultParentId(),
+    expect('Participant_1').toBeCellWithParentAndGeometry({
       // unchanged as this is a pool, coordinates are the ones from the bpmn source
-      new mxGeometry(160, 80, 900, 400),
-    );
+      geometry: new mxGeometry(160, 80, 900, 400),
+    });
 
-    expectModelContainsCellWithGeometry(
-      'Lane_1_1',
-      'Participant_1',
-      new mxGeometry(
+    expect('Lane_1_1').toBeCellWithParentAndGeometry({
+      parentId: 'Participant_1',
+      geometry: new mxGeometry(
         30, // absolute coordinates: parent 160, cell 190
         0, // absolute coordinates: parent 80, cell 80
         870, // unchanged as no transformation on size
         200, // unchanged as no transformation on size
       ),
-    );
+    });
 
-    expectModelContainsCellWithGeometry(
-      'StartEvent_1',
-      'Lane_1_1',
-      new mxGeometry(
+    expect('StartEvent_1').toBeCellWithParentAndGeometry({
+      parentId: 'Lane_1_1',
+      geometry: new mxGeometry(
         120, // absolute coordinates: parent 190, cell 310
         80, // absolute coordinates: parent 80, cell 160
         40, // unchanged as no transformation on size
         40, // unchanged as no transformation on size
       ),
-    );
+    });
 
-    expectModelContainsCellWithGeometry(
-      'Lane_1_2',
-      'Participant_1',
-      new mxGeometry(
+    expect('Lane_1_847987').not.toBeCellWithParentAndGeometry({
+      parentId: 'Participant_1',
+      geometry: new mxGeometry(
         30, // absolute coordinates: parent 160, cell 190
         200, // absolute coordinates: parent 80, cell 280
         870, // unchanged as no transformation on size
         200, // unchanged as no transformation on size
       ),
-    );
+    });
 
     const sequenceFlowMxGeometry = new mxGeometry(0, 0, 0, 0);
     sequenceFlowMxGeometry.points = [
       new mxPoint(160, 100), // absolute coordinates: parent x="190" y="80", cell x="350" y="180"
       new mxPoint(320, 100), // absolute coordinates: parent x="190" y="80", cell x="510" y="180"
     ];
-    expectModelContainsCellWithGeometry('SequenceFlow_id', 'Lane_1_1', sequenceFlowMxGeometry);
+    expect('SequenceFlow_id').toBeCellWithParentAndGeometry({
+      parentId: 'Lane_1_1',
+      geometry: sequenceFlowMxGeometry,
+    });
 
     const messageFlowMxGeometry = new mxGeometry(0, 0, 0, 0);
     messageFlowMxGeometry.points = [
       new mxPoint(334, 480), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="480"
       new mxPoint(334, 632), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="632"
     ];
-    expectModelContainsCellWithGeometry('MessageFlow_1', undefined, messageFlowMxGeometry);
+    expect('MessageFlow_1').toBeCellWithParentAndGeometry({
+      geometry: messageFlowMxGeometry,
+    });
   });
 
   it('vertical pool, with vertical lanes & sub-lanes', async () => {

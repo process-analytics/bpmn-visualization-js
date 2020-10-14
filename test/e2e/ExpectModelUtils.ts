@@ -18,14 +18,14 @@ import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { toBeCell, withGeometry, withFont, toBeSequenceFlow, toBeMessageFlow, toBeAssociationFlow, toBeShape, toBeCallActivity, toBeTask, toBeServiceTask } from './matchers';
+import { toBeCell, toBeCellWithParentAndGeometry, withFont, toBeSequenceFlow, toBeMessageFlow, toBeAssociationFlow, toBeShape, toBeCallActivity, toBeTask, toBeServiceTask } from './matchers';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
     interface Matchers<R> {
       toBeCell(): R;
-      withGeometry(geometry: mxGeometry): R;
+      toBeCellWithParentAndGeometry(modelElement: ExpectedCellWithGeometry): R;
       withFont(font: ExpectedFont): R;
       toBeSequenceFlow(modelElement: ExpectedSequenceFlowModelElement): R;
       toBeMessageFlow(modelElement: ExpectedEdgeModelElement): R;
@@ -40,7 +40,7 @@ declare global {
 
 expect.extend({
   toBeCell,
-  withGeometry,
+  toBeCellWithParentAndGeometry,
   withFont,
   toBeSequenceFlow,
   toBeMessageFlow,
@@ -50,6 +50,11 @@ expect.extend({
   toBeTask,
   toBeServiceTask,
 });
+
+export interface ExpectedCellWithGeometry {
+  parentId?: string;
+  geometry: mxGeometry;
+}
 
 export interface ExpectedFont {
   name?: string;
@@ -108,7 +113,9 @@ export interface ExpectedStartEventModelElement extends ExpectedEventModelElemen
 
 export const bpmnVisualization = new BpmnVisualization(null);
 
-// ---------------------------- To convert to Jest extension ------------------------------------
+export function getDefaultParentId(): string {
+  return bpmnVisualization.graph.getDefaultParent().id;
+}
 
 export function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {
   expect(cellId).toBeShape({ ...eventModelElement, verticalAlign: 'top' });
@@ -152,25 +159,4 @@ export function expectModelContainsLane(cellId: string, modelElement: ExpectedSh
 
   const mxCell = bpmnVisualization.graph.model.getCell(cellId);
   expect(mxCell.style).toContain(`${mxConstants.STYLE_HORIZONTAL}=${modelElement.isHorizontal ? '0' : '1'}`);
-}
-
-function expectModelContainsCell(cellId: string): mxCell {
-  expect(cellId).toBeCell();
-  return bpmnVisualization.graph.model.getCell(cellId);
-}
-
-export function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxGeometry): void {
-  const cell = expectModelContainsCell(cellId);
-
-  if (parentId) {
-    expect(cell.parent.id).toEqual(parentId);
-  } else {
-    expect(cell.parent).toEqual(bpmnVisualization.graph.getDefaultParent());
-  }
-
-  expect(cell).withGeometry(geometry);
-}
-
-export function getDefaultParentId(): string {
-  return bpmnVisualization.graph.getDefaultParent().id;
 }

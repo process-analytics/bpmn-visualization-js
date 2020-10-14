@@ -15,6 +15,5 @@
  */
 export { toBeSequenceFlow, toBeMessageFlow, toBeAssociationFlow } from './toBeEdge';
 export { toBeShape, toBeCallActivity, toBeTask, toBeServiceTask } from './toBeShape';
-export { toBeCell } from './toBeCell';
-export { withGeometry } from './withGeometry';
+export { toBeCell, toBeCellWithParentAndGeometry } from './toBeCell';
 export { withFont } from './withFont';
