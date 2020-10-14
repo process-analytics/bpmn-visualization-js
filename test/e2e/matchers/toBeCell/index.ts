@@ -44,26 +44,23 @@ export function buildCellMatcher<R>(
 
   const cell = getCell(received);
   if (!cell) {
-    const pass = !matcherContext.isNot;
-    const message =
-      utils.matcherHint(matcherName, undefined, undefined, options) + '\n\n' + pass
-        ? () => `${EXPECTED_LABEL}: ${cellKind} with id '${received}' not to be found`
-        : () => utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: ${cellKind} with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, expand);
-    return { message, pass };
+    const message = (): string =>
+      utils.matcherHint(matcherName, undefined, undefined, options) +
+      '\n\n' +
+      utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: ${cellKind} with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, expand);
+    return { message, pass: false };
   }
 
   const receivedCell: ExpectedCell = buildReceivedCell(cell);
   const pass = matcherContext.equals(receivedCell, expectedCell, [utils.iterableEquality, utils.subsetEquality]);
-  const message =
-    utils.matcherHint(matcherName, undefined, undefined, options) + '\n\n' + pass
-      ? () => `${EXPECTED_LABEL}: ${cellKind} with id '${received}' not to be found with the configuration:\n` + `${utils.printExpected(expectedCell)}`
-      : () =>
-          utils.printDiffOrStringify(
-            expectedCell,
-            receivedCell,
-            `${EXPECTED_LABEL}: ${cellKind} with id '${expectedCell.id}'`,
-            `${RECEIVED_LABEL}: ${cellKind} with id '${received}'`,
-            expand,
-          );
-  return { message, pass };
+  const messageEnd = pass
+    ? `${EXPECTED_LABEL}: ${cellKind} with id '${received}' not to be found with the configuration:\n` + `${utils.printExpected(expectedCell)}`
+    : utils.printDiffOrStringify(
+        expectedCell,
+        receivedCell,
+        `${EXPECTED_LABEL}: ${cellKind} with id '${expectedCell.id}'`,
+        `${RECEIVED_LABEL}: ${cellKind} with id '${received}'`,
+        expand,
+      );
+  return { message: () => utils.matcherHint(matcherName, undefined, undefined, options) + '\n\n' + messageEnd, pass };
 }

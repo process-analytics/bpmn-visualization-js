@@ -18,6 +18,7 @@ import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import { ExpectedShapeModelElement, getDefaultParentId } from '../../ExpectModelUtils';
 import { buildCellMatcher } from '../toBeCell';
+import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal/shape';
 
 function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): ExpectedStateStyle {
   const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
@@ -59,4 +60,8 @@ function buildExpectedCell(id: string, expectedModel: ExpectedShapeModelElement)
 
 export function toBeShape(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   return buildCellMatcher('toBeShape', this, received, expected, 'Shape', buildExpectedCell);
+}
+
+export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  return buildCellMatcher('toBeCallActivity', this, received, { ...expected, kind: ShapeBpmnElementKind.CALL_ACTIVITY }, 'Shape', buildExpectedCell);
 }
