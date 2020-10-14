@@ -2,7 +2,7 @@
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_08ie96i" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="7.3.0">
   <bpmn:globalTask id="Activity_0xpd4f7" name="Called Global Task" implementation="##WebService" />
   <bpmn:process id="Process_083f5uf" isExecutable="false">
-    <bpmn:subProcess id="Expanded_event_sub_process" name="Collapsed Event Sub Process" triggeredByEvent="true">
+    <bpmn:subProcess id="Expanded_event_sub_process" triggeredByEvent="true">
       <bpmn:task id="Activity_0x447u4">
         <bpmn:incoming>Flow_0cjf31m</bpmn:incoming>
         <bpmn:outgoing>Flow_06jg95n</bpmn:outgoing>
