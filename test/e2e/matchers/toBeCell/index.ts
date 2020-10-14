@@ -44,10 +44,11 @@ export function buildCellMatcher<R>(
 
   const cell = getCell(received);
   if (!cell) {
-    const messageEnd = !matcherContext.isNot
-      ? `${EXPECTED_LABEL}: ${cellKind} with id '${received}' not to be found`
-      : utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: ${cellKind} with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, expand);
-    return { message: () => utils.matcherHint(matcherName, undefined, undefined, options) + '\n\n' + messageEnd, pass: false };
+    const message = (): string =>
+      utils.matcherHint(matcherName, undefined, undefined, options) +
+      '\n\n' +
+      utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: ${cellKind} with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, expand);
+    return { message, pass: false };
   }
 
   const receivedCell: ExpectedCell = buildReceivedCell(cell);
