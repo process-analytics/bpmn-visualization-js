@@ -28,7 +28,6 @@ import {
   expectModelContainsBpmnStartEvent,
   expectModelContainsLane,
   expectModelContainsPool,
-  expectModelContainsSequenceFlow,
   expectModelContainsShape,
   expectModelContainsSubProcess,
   expectModelContainsMessageFlow,
@@ -439,16 +438,12 @@ describe('mxGraph model', () => {
       label: 'End Event In Sub-Process',
       parentId: 'expanded_embedded_sub_process_id',
     });
-    expect('sequence_flow_in_sub_process_1_id').toBeEdge({
-      kind: FlowKind.SEQUENCE_FLOW,
+    expect('sequence_flow_in_sub_process_1_id').toBeSequenceFlow({
       parentId: 'expanded_embedded_sub_process_id',
-      endArrow: 'blockThin',
       verticalAlign: 'bottom',
     });
-    expect('sequence_flow_in_sub_process_2_id').toBeEdge({
-      kind: FlowKind.SEQUENCE_FLOW,
+    expect('sequence_flow_in_sub_process_2_id').toBeSequenceFlow({
       parentId: 'expanded_embedded_sub_process_id',
-      endArrow: 'blockThin',
       verticalAlign: 'bottom',
     });
 
@@ -796,24 +791,24 @@ describe('mxGraph model', () => {
     expectModelContainsShape('exclusive_gateway_id', { kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, label: 'Exclusive Gateway' });
 
     // sequence flow
-    expectModelContainsSequenceFlow('default_sequence_flow_id', {
+    expect('default_sequence_flow_id').toBeSequenceFlow({
       sequenceFlowKind: SequenceFlowKind.DEFAULT,
       startArrow: MarkerIdentifier.ARROW_DASH,
       parentId: 'participant_1_id',
       font: expectedBoldFont,
     });
-    expectModelContainsSequenceFlow('normal_sequence_flow_id', {
+    expect('normal_sequence_flow_id').toBeSequenceFlow({
       sequenceFlowKind: SequenceFlowKind.NORMAL,
       parentId: 'participant_1_id',
       label: "From 'start event 1' to 'task 1'",
     });
-    expectModelContainsSequenceFlow('conditional_sequence_flow_from_activity_id', {
+    expect('conditional_sequence_flow_from_activity_id').toBeSequenceFlow({
       sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
       startArrow: mxConstants.ARROW_DIAMOND_THIN,
       parentId: 'participant_1_id',
       verticalAlign: 'bottom',
     });
-    expectModelContainsSequenceFlow('conditional_sequence_flow_from_gateway_id', {
+    expect('conditional_sequence_flow_from_gateway_id').toBeSequenceFlow({
       sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_GATEWAY,
       parentId: 'participant_1_id',
       label: '',
