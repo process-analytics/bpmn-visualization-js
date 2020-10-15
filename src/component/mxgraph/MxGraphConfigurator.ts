@@ -105,6 +105,13 @@ class BpmnMxGraph extends mxGraph {
     super(container);
   }
 
+  // override fit to set initial cumulativeZoomFactor
+  fit(order: number, keepOrigin?: boolean, margin?: number, enabled?: boolean, ignoreWidth?: boolean, ignoreHeight?: boolean, maxHeight?: number): number {
+    const scale = super.fit(order, keepOrigin, margin, enabled, ignoreWidth, ignoreHeight, maxHeight);
+    this.cumulativeZoomFactor = scale;
+    return scale;
+  }
+
   // solution inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
   public performZoom(up: boolean, evt: MouseEvent): void {
     const rect = this.container.getBoundingClientRect();
