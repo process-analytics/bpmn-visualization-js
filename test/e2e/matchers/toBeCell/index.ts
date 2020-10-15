@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { buildReceivedCell, EXPECTED_LABEL, ExpectedCell, getCell, RECEIVED_LABEL } from '../matcherUtils';
+import { buildCellMatcher, ExpectedCell, getCell } from '../matcherUtils';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
+import { ExpectedCellWithGeometry, getDefaultParentId } from '../../ExpectModelUtils';
 
 export function toBeCell(this: MatcherContext, received: string): CustomMatcherResult {
   const pass = getCell(received) ? true : false;
@@ -25,42 +26,30 @@ export function toBeCell(this: MatcherContext, received: string): CustomMatcherR
   };
 }
 
-export function buildCellMatcher<R>(
-  matcherName: string,
-  matcherContext: MatcherContext,
-  received: string,
-  expected: R,
-  cellKind: string,
-  buildExpectedCell: (received: string, expected: R) => ExpectedCell,
-): CustomMatcherResult {
-  const options = {
-    isNot: matcherContext.isNot,
-    promise: matcherContext.promise,
+function buildReceivedCell(cell: mxCell): ExpectedCell {
+  return {
+    id: cell.id,
+    parent: { id: cell.parent.id },
+    geometry: cell.geometry,
   };
-  const utils = matcherContext.utils;
-  const expand = matcherContext.expand;
+}
 
-  const expectedCell: ExpectedCell = buildExpectedCell(received, expected);
+function buildExpectedCell(id: string, expected: ExpectedCellWithGeometry): ExpectedCell {
+  const parentId = expected.parentId;
+  const geometry = expected.geometry;
+  return {
+    id,
+    parent: { id: parentId ? parentId : getDefaultParentId() },
+    geometry: expect.objectContaining({
+      x: geometry.x,
+      y: geometry.y,
+      width: geometry.width,
+      height: geometry.height,
+      points: geometry.points,
+    }),
+  };
+}
 
-  const cell = getCell(received);
-  if (!cell) {
-    const message = (): string =>
-      utils.matcherHint(matcherName, undefined, undefined, options) +
-      '\n\n' +
-      utils.printDiffOrStringify(expectedCell, undefined, `${EXPECTED_LABEL}: ${cellKind} with id '${expectedCell.id}'`, `${RECEIVED_LABEL}`, expand);
-    return { message, pass: false };
-  }
-
-  const receivedCell: ExpectedCell = buildReceivedCell(cell);
-  const pass = matcherContext.equals(receivedCell, expectedCell, [utils.iterableEquality, utils.subsetEquality]);
-  const messageEnd = pass
-    ? `${EXPECTED_LABEL}: ${cellKind} with id '${received}' not to be found with the configuration:\n` + `${utils.printExpected(expectedCell)}`
-    : utils.printDiffOrStringify(
-        expectedCell,
-        receivedCell,
-        `${EXPECTED_LABEL}: ${cellKind} with id '${expectedCell.id}'`,
-        `${RECEIVED_LABEL}: ${cellKind} with id '${received}'`,
-        expand,
-      );
-  return { message: () => utils.matcherHint(matcherName, undefined, undefined, options) + '\n\n' + messageEnd, pass };
+export function toBeCellWithParentAndGeometry(this: MatcherContext, received: string, expected: ExpectedCellWithGeometry): CustomMatcherResult {
+  return buildCellMatcher('toBeCellWithParentAndGeometry', this, received, expected, 'Cell', buildExpectedCell, buildReceivedCell);
 }

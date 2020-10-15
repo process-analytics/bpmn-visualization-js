@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ExpectedStateStyle, ExpectedCell, buildCommonExpectedStateStyle } from '../matcherUtils';
+import { ExpectedStateStyle, ExpectedCell, buildCommonExpectedStateStyle, buildCellMatcher, buildReceivedCellWithCommonAttributes } from '../matcherUtils';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import { ExpectedShapeModelElement, getDefaultParentId } from '../../ExpectModelUtils';
-import { buildCellMatcher } from '../toBeCell';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal/shape';
 
 function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): ExpectedStateStyle {
@@ -59,16 +58,32 @@ function buildExpectedCell(id: string, expectedModel: ExpectedShapeModelElement)
 }
 
 export function toBeShape(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildCellMatcher('toBeShape', this, received, expected, 'Shape', buildExpectedCell);
+  return buildCellMatcher('toBeShape', this, received, expected, 'Shape', buildExpectedCell, buildReceivedCellWithCommonAttributes);
 }
 
 export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildCellMatcher('toBeCallActivity', this, received, { ...expected, kind: ShapeBpmnElementKind.CALL_ACTIVITY }, 'Shape', buildExpectedCell);
+  return buildCellMatcher(
+    'toBeCallActivity',
+    this,
+    received,
+    { ...expected, kind: ShapeBpmnElementKind.CALL_ACTIVITY },
+    'Shape',
+    buildExpectedCell,
+    buildReceivedCellWithCommonAttributes,
+  );
 }
 
 export function toBeTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildCellMatcher('toBeTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK }, 'Shape', buildExpectedCell);
+  return buildCellMatcher('toBeTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK }, 'Shape', buildExpectedCell, buildReceivedCellWithCommonAttributes);
 }
 export function toBeServiceTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildCellMatcher('toBeServiceTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SERVICE }, 'Shape', buildExpectedCell);
+  return buildCellMatcher(
+    'toBeServiceTask',
+    this,
+    received,
+    { ...expected, kind: ShapeBpmnElementKind.TASK_SERVICE },
+    'Shape',
+    buildExpectedCell,
+    buildReceivedCellWithCommonAttributes,
+  );
 }
