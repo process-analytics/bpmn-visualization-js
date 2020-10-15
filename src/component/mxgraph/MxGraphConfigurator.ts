@@ -105,6 +105,7 @@ class BpmnMxGraph extends mxGraph {
     super(container);
   }
 
+  // solution inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
   public performZoom(up: boolean, evt: MouseEvent): void {
     const rect = this.container.getBoundingClientRect();
     const x = evt.clientX - rect.left;
