@@ -850,21 +850,18 @@ describe('mxGraph model', () => {
     });
 
     // Send Task
-    expect('send_task_id').toBeShape({ kind: ShapeBpmnElementKind.TASK_SEND, font: expectedBoldFont, label: 'Send Task', parentId: 'participant_1_id', verticalAlign: 'top' });
-    expect('send_task_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_SEND,
+    expect('send_task_id').toBeSendTask({ font: expectedBoldFont, label: 'Send Task', parentId: 'participant_1_id', verticalAlign: 'top' });
+    expect('send_task_with_loop_id').toBeSendTask({
       label: 'Send Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
       parentId: 'participant_1_id',
     });
-    expect('send_task_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_SEND,
+    expect('send_task_with_sequential_multi_instance_id').toBeSendTask({
       label: 'Send Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
       parentId: 'participant_1_id',
     });
-    expect('send_task_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_SEND,
+    expect('send_task_with_parallel_multi_instance_id').toBeSendTask({
       label: 'Send Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
       parentId: 'participant_1_id',
