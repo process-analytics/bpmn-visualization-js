@@ -36,8 +36,9 @@ export default class MxGraphConfigurator {
     this.graph = new mxGraph(container);
   }
 
-  public configure(): mxGraph {
+  public configure(options?: BpmnVisualizationOptions): mxGraph {
     this.configureGraph();
+    this.configureMouseNavigationSupport(options);
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
     new MarkerConfigurator().configureMarkers();
@@ -61,7 +62,7 @@ export default class MxGraphConfigurator {
     this.graph.foldingEnabled = false;
   }
 
-  configureMouseNavigationSupport(options?: BpmnVisualizationOptions): void {
+  private configureMouseNavigationSupport(options?: BpmnVisualizationOptions): void {
     const mouseNavigationSupport = options?.mouseNavigationSupport;
     // Pan configuration
     if (mouseNavigationSupport) {

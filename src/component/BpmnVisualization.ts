@@ -31,8 +31,7 @@ export default class BpmnVisualization {
       }
       // Instantiate and configure Graph
       const configurator = new MxGraphConfigurator(this.container);
-      this.graph = configurator.configure();
-      configurator.configureMouseNavigationSupport(options);
+      this.graph = configurator.configure(options);
     } catch (e) {
       // TODO error handling
       mxUtils.alert('Cannot start application: ' + e.message);
