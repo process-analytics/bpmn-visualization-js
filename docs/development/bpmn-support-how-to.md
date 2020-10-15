@@ -7,30 +7,32 @@ and less risky.
 
 So we proceed using several steps:
 - `detection`:
-  - first, being able to extract the BPMN elements from the BPMN source
-  - then, being able to display BPMN elements in an arbitrary form
-  - this ensures that the whole infrastructure is put in place for the newly introduced elements support, from parsing to rendering,
+  - First, being able to extract the BPMN elements from the BPMN source
+  - Then, being able to display BPMN elements in an arbitrary form
+  - This ensures that the whole infrastructure is put in place for the newly introduced elements support, from parsing to rendering,
   and that tests have been added or updated.
-- `rendering`: then we setup the BPMN shape, styles, icons and we polish the display
+- `rendering`: 
+  - We setup the BPMN shape, styles, icons 
+  - We polish the display
 
 On the development flow side, this means that there is at least one Pull Request for the `detection` and another one for the `rendering`.
 
 Remember that we prefer small changes . So, `detection` can be splitted into several Pull Requests to cover
-various aspects of the BPMN elements.
+various aspects of the BPMN elements. \
 For instance:
-- for a `Pool`, first detect horizontal elements, then vertical elements.
-- for a given `BPMN Event` (let's say `Signal`), we have a detection issue for start, catch, throw, ...
+- For a `Pool`, first detect horizontal elements, then vertical elements.
+- For a given `BPMN Event` (let's say `Signal`), we have a detection issue for start, catch, throw, ...
 
 
 
 ## Elements detection
 
 Overview of tasks to be achieved:
-* update the BPMN model if the BPMN element is not already defined
-* update the json parsing to store the new element in the BPMN model
-* add arbitrary rendering
-* add/update tests
-* update the BPMN support documentation
+* Update the BPMN model if the BPMN element is not already defined
+* Update the json parsing to store the new element in the BPMN model
+* Add arbitrary rendering
+* Add/Update tests
+* Update the BPMN support documentation
 
 Refer to existing Pull Requests to have a better view about the work to do, for instance:
 - [Link Event Detection Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/501/files)
@@ -52,13 +54,13 @@ types requires changes in `ShapeBpmnEventKind` to add the newly supported BPMN E
 
 ### Initial Shape Rendering
 
-Overview
-* the work to do depends on the BPMN types (events and tasks)
-* add a new `mxGraph` shape for totally new elements (see architecture)
-* use an arbitrary color to fill the new BPMN element
+Overview:
+* The work to do depends on the BPMN types (events and tasks)
+* Add a new `mxGraph` shape for totally new elements (see architecture)
+* Use an arbitrary color to fill the new BPMN element
   * Purpose: uniquely identify a BPMN element on the BPMN diagram even if the rendering is not implemented.
-  * this is directly managed in the BPMN mxGraph shape class
-* refer to provided examples above for more details
+  * This is directly managed in the BPMN mxGraph shape class
+* Refer to provided examples above for more details
 
 
 ### Tests for elements detection 
@@ -73,30 +75,36 @@ Overview
 * Depending on the BPMN element, you may also have to add tests about `default sequence flow` and/or `conditional sequence
 flow` support (see `ShapeBpmnElementKind` for more details)
 * No need to create specific XML tests, the XML parsing is tested globally using BPMN files for various BPMN vendors.
-* the `mxGraph` style for the shape must be tested as well, see `StyleConfigurator`
+* The `mxGraph` style for the shape must be tested as well, see `StyleConfigurator`
 
 #### End To End tests
 
-* update model test, mainly to ensure that the new BPMN element is now stored in the `mxGraph model`, see `mxGraph.model.test.ts`.
-* fixtures bpmn diagrams used by model tests
-  * name starts with `model-`
-  * generally, update the `test/fixtures/model-complete-semantic.bpmn` file with the newly introduced file and update the model expectation accordingly.
-  in this file, please adjust shape coordinates to ensure new elements can be easily shown with a viewer and don't overlap with existing elements
-  * for special cases, a dedicated test using a specific file. Please communicate with the Core Development Team if you think you need a dedicated file.
+* Update model test, mainly to ensure that the new BPMN element is now stored in the `mxGraph model`, see `mxGraph.model.test.ts`.
+* Fixtures bpmn diagrams used by model tests:
+  * Name starts with `model-`
+  * Generally, update the `test/fixtures/model-complete-semantic.bpmn` file with the newly introduced file and update the model expectation accordingly. \
+    See this Pull Request as example: [[FEAT] Detect Business rule task](https://github.com/process-analytics/bpmn-visualization-js/pull/669/files#diff-ba360f5636b87293c740da307c4ec30c3aa5e8824ffa02e549a78dc8e0113320)
+    * Add corresponding **Semantic** section
+    * Add corresponding **Diagram** section 
+    * Please, adjust shape coordinates to ensure new elements can be easily shown with a viewer and don't overlap with existing elements
+  * For special cases, a dedicated test using a specific file. Please communicate with the Core Development Team if you think you need a dedicated file.
 
+💡 If you have a format problem with the BPMN file of the test, the easier way to find the error & fix it is to load the file in your favorite BPMN editor. \
+But be carefull, all the BPMN vendors don't support all the BPMN elements and not the same. \
+So before commit the modification, verify that some elements/configuration are not deleted.
 
 #### Visual testing
 
-* sometimes the new BPMN element already exists in the test BPMN diagram, so it will be rendered and test will fail. In that case, update the reference snapshot
-* otherwise, add the new element (follow practices described in the [./testing.md](testing) documentation)
+* Sometimes the new BPMN element already exists in the test BPMN diagram, so it will be rendered and test will fail. In that case, update the reference snapshot.
+* Otherwise, add the new element (follow practices described in the [./testing.md](testing) documentation)
 
 
 ## Elements rendering
 
 Overview of tasks to be achieved:
-- use the final icon chosen for the BPMN Elements.
-- add/update visual tests
-- update the BPMN support documentation (see also [icons license](#icons-license))
+- Use the final icon chosen for the BPMN Elements.
+- Add/Update visual tests
+- Update the BPMN support documentation (see also [icons license](#icons-license))
 
 Refer to existing Pull Requests to have a better view about the work to do, for instance:
 - [Error Event Rendering Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/505/files)
@@ -107,7 +115,7 @@ Refer to existing Pull Requests to have a better view about the work to do, for 
 
 All tests should have been introduced during the detection phase. Please review there is no missing tests.
 
-Visual tests introduced when adding the detection support should fail for the BPMN Element after the rendering has changed.
+Visual tests introduced when adding the detection support should fail for the BPMN Element after the rendering has changed. \
 Please update the reference snapshot image accordingly.
 
 
@@ -167,6 +175,6 @@ If you integrate icons that you have not designed by yourself, please don't forg
 conditions. Please try to use materials covered by a Free License to avoid any license compliance issues.
 
 In that case, you must add credit in the following docs: 
-- in the source code
-- in the BPMN support documentation: at the same place or close to the BPMN supported element 
-- in the main README: we don't list all icons there, but we reference projects where the icons come from
+- In the source code
+- In the BPMN support documentation: at the same place or close to the BPMN supported element 
+- In the main README: we don't list all icons there, but we reference projects where the icons come from
