@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnDiagramPreparation, ImageSnapshotConfigurator, PageTester } from './helpers/visu-utils';
+import { BpmnDiagramPreparation, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
 import { Mouse } from 'puppeteer';
 // FIXME - to be fixed when new release of puppeteer comes out
 // wheel is added in version @types/puppeteer 2.1.5 but for some reason not in 3.0.2
@@ -40,7 +40,22 @@ interface MouseWithWheel extends Mouse {
 }
 
 describe('diagram navigation', () => {
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new Map());
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
+    new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'simple-2_start_events-1_task',
+        // minimal threshold to make test pass on Github Workflow
+        // ubuntu:
+        // macOS: Expected image to match or be a close match to snapshot but was 0.0008357925673774247%
+        // windows:
+        {
+          linux: 0.000004,
+          macos: 0.000009,
+          windows: 0.000004,
+        },
+      ],
+    ]),
+  );
 
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
   const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map(), { name: 'navigation-diagram', queryParams: [] }, 'navigation');

@@ -27,8 +27,6 @@ import {
   expectModelContainsLane,
   expectModelContainsPool,
   expectModelContainsSubProcess,
-  expectModelContainsCellWithGeometry,
-  getDefaultParentId,
 } from './ExpectModelUtils';
 
 describe('mxGraph model', () => {
@@ -682,28 +680,24 @@ describe('mxGraph model', () => {
 
     // Call Activity calling process
     // Expanded
-    expect('expanded_call_activity_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('expanded_call_activity_id').toBeCallActivity({
       label: 'Expanded Call Activity',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
     });
-    expect('expanded_call_activity_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('expanded_call_activity_with_loop_id').toBeCallActivity({
       label: 'Expanded Call Activity With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
       parentId: 'participant_1_id',
       verticalAlign: 'top',
     });
-    expect('expanded_call_activity_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('expanded_call_activity_with_sequential_multi_instance_id').toBeCallActivity({
       label: 'Expanded Call Activity With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
       parentId: 'participant_1_id',
       verticalAlign: 'top',
     });
-    expect('expanded_call_activity_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('expanded_call_activity_with_parallel_multi_instance_id').toBeCallActivity({
       label: 'Expanded Call Activity With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
       parentId: 'participant_1_id',
@@ -711,26 +705,22 @@ describe('mxGraph model', () => {
     });
 
     // Collapsed
-    expect('collapsed_call_activity_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('collapsed_call_activity_id').toBeCallActivity({
       label: 'Collapsed Call Activity',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
     });
-    expect('collapsed_call_activity_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('collapsed_call_activity_with_loop_id').toBeCallActivity({
       label: 'Collapsed Call Activity With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
       parentId: 'participant_1_id',
     });
-    expect('collapsed_call_activity_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('collapsed_call_activity_with_sequential_multi_instance_id').toBeCallActivity({
       label: 'Collapsed Call Activity With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND],
       parentId: 'participant_1_id',
     });
-    expect('collapsed_call_activity_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+    expect('collapsed_call_activity_with_parallel_multi_instance_id').toBeCallActivity({
       label: 'Collapsed Call Activity With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
       parentId: 'participant_1_id',
@@ -738,27 +728,23 @@ describe('mxGraph model', () => {
 
     // activity
     // Task
-    expect('task_id').toBeShape({ kind: ShapeBpmnElementKind.TASK, label: 'Task', parentId: 'participant_1_id' });
-    expect('task_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK,
+    expect('task_id').toBeTask({ label: 'Task', parentId: 'participant_1_id' });
+    expect('task_with_loop_id').toBeTask({
       label: 'Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
       parentId: 'participant_1_id',
     });
-    expect('task_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK,
+    expect('task_with_sequential_multi_instance_id').toBeTask({
       label: 'Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
       parentId: 'participant_1_id',
     });
-    expect('task_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK,
+    expect('task_with_parallel_multi_instance_id').toBeTask({
       label: 'Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
       parentId: 'participant_1_id',
     });
-    expect('task_with_flows_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK,
+    expect('task_with_flows_id').toBeTask({
       font: {
         isBold: false,
         isItalic: false,
@@ -773,76 +759,65 @@ describe('mxGraph model', () => {
     });
 
     // Service Task
-    expect('service_task_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_SERVICE,
+    expect('service_task_id').toBeServiceTask({
       font: expectedBoldFont,
       label: 'Service Task',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
     });
-    expect('service_task_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_SERVICE,
+    expect('service_task_with_loop_id').toBeServiceTask({
       label: 'Service Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
       parentId: 'participant_1_id',
     });
-    expect('service_task_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_SERVICE,
+    expect('service_task_with_sequential_multi_instance_id').toBeServiceTask({
       label: 'Service Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
       parentId: 'participant_1_id',
     });
-    expect('service_task_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_SERVICE,
+    expect('service_task_with_parallel_multi_instance_id').toBeServiceTask({
       label: 'Service Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
       parentId: 'participant_1_id',
     });
 
     // User Task
-    expect('user_task_id').toBeShape({ kind: ShapeBpmnElementKind.TASK_USER, font: expectedBoldFont, label: 'User Task', parentId: 'participant_1_id', verticalAlign: 'top' });
-    expect('user_task_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_USER,
+    expect('user_task_id').toBeUserTask({ font: expectedBoldFont, label: 'User Task', parentId: 'participant_1_id', verticalAlign: 'top' });
+    expect('user_task_with_loop_id').toBeUserTask({
       label: 'User Task With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
       parentId: 'participant_1_id',
     });
-    expect('user_task_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_USER,
+    expect('user_task_with_sequential_multi_instance_id').toBeUserTask({
       label: 'User Task With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
       parentId: 'participant_1_id',
     });
-    expect('user_task_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_USER,
+    expect('user_task_with_parallel_multi_instance_id').toBeUserTask({
       label: 'User Task With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
       parentId: 'participant_1_id',
     });
 
     // Receive Task: Non instantiating
-    expect('receive_task_non_instantiating_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_non_instantiating_id').toBeReceiveTask({
       label: 'Non-instantiating Receive Task',
       isInstantiating: false,
       parentId: 'participant_1_id',
     });
-    expect('receive_task_non_instantiating_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_non_instantiating_with_loop_id').toBeReceiveTask({
       label: 'Non-instantiating Receive Task With Loop',
       isInstantiating: false,
       markers: [ShapeBpmnMarkerKind.LOOP],
       parentId: 'participant_1_id',
     });
-    expect('receive_task_non_instantiating_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_non_instantiating_with_sequential_multi_instance_id').toBeReceiveTask({
       label: 'Non-instantiating Receive Task With Sequential Multi-instance',
       isInstantiating: false,
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
       parentId: 'participant_1_id',
     });
-    expect('receive_task_non_instantiating_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_non_instantiating_with_parallel_multi_instance_id').toBeReceiveTask({
       label: 'Non-instantiating Receive Task With Parallel Multi-instance',
       isInstantiating: false,
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
@@ -850,28 +825,24 @@ describe('mxGraph model', () => {
     });
 
     // Receive Task: Instantiating
-    expect('receive_task_instantiating_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_instantiating_id').toBeReceiveTask({
       label: 'Instantiating Receive Task',
       isInstantiating: true,
       parentId: 'participant_1_id',
     });
-    expect('receive_task_instantiating_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_instantiating_with_loop_id').toBeReceiveTask({
       label: 'Instantiating Receive Task With Loop',
       isInstantiating: true,
       markers: [ShapeBpmnMarkerKind.LOOP],
       parentId: 'participant_1_id',
     });
-    expect('receive_task_instantiating_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_instantiating_with_sequential_multi_instance_id').toBeReceiveTask({
       label: 'Instantiating Receive Task With Sequential Multi-instance',
       isInstantiating: true,
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
       parentId: 'participant_1_id',
     });
-    expect('receive_task_instantiating_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_instantiating_with_parallel_multi_instance_id').toBeReceiveTask({
       label: 'Instantiating Receive Task With Parallel Multi-instance',
       isInstantiating: true,
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
@@ -1051,95 +1022,97 @@ describe('mxGraph model', () => {
   it('bpmn element shape should have coordinates relative to the pool when no lane', async () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-coordinates-relative-to-pool.bpmn'));
 
-    expectModelContainsCellWithGeometry(
-      'Participant_1',
-      getDefaultParentId(),
+    expect('Participant_1').toBeCellWithParentAndGeometry({
       // unchanged as this is a pool, coordinates are the ones from the bpmn source
-      new mxGeometry(160, 80, 900, 180),
-    );
+      geometry: new mxGeometry(160, 80, 900, 180),
+    });
 
-    expectModelContainsCellWithGeometry(
-      'StartEvent_1',
-      'Participant_1',
-      new mxGeometry(
+    expect('StartEvent_1').toBeCellWithParentAndGeometry({
+      parentId: 'Participant_1',
+      geometry: new mxGeometry(
         150, // absolute coordinates: parent 160, cell 310
         80, // absolute coordinates: parent 80, cell 160
         40, // unchanged as no transformation on size
         40, // unchanged as no transformation on size
       ),
-    );
+    });
 
     const sequenceFlowMxGeometry = new mxGeometry(0, 0, 0, 0);
     sequenceFlowMxGeometry.points = [
       new mxPoint(190, 100), // absolute coordinates: parent x="160" y="80", cell x="350" y="180"
       new mxPoint(350, 100), // absolute coordinates: parent x="160" y="80", cell x="510" y="180"
     ];
-    expectModelContainsCellWithGeometry('SequenceFlow_id', 'Participant_1', sequenceFlowMxGeometry);
+    expect('SequenceFlow_id').toBeCellWithParentAndGeometry({
+      parentId: 'Participant_1',
+      geometry: sequenceFlowMxGeometry,
+    });
 
     const messageFlowMxGeometry = new mxGeometry(0, 0, 0, 0);
     messageFlowMxGeometry.points = [
       new mxPoint(334, 260), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="260"
       new mxPoint(334, 342), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="342"
     ];
-    expectModelContainsCellWithGeometry('MessageFlow_1', undefined, messageFlowMxGeometry);
+    expect('MessageFlow_1').toBeCellWithParentAndGeometry({
+      geometry: messageFlowMxGeometry,
+    });
   });
 
   it('lanes and bpmn element shapes should have coordinates relative to the pool or the lane', async () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-coordinates-relative-to-pool-or-lane.bpmn'));
 
-    expectModelContainsCellWithGeometry(
-      'Participant_1',
-      getDefaultParentId(),
+    expect('Participant_1').toBeCellWithParentAndGeometry({
       // unchanged as this is a pool, coordinates are the ones from the bpmn source
-      new mxGeometry(160, 80, 900, 400),
-    );
+      geometry: new mxGeometry(160, 80, 900, 400),
+    });
 
-    expectModelContainsCellWithGeometry(
-      'Lane_1_1',
-      'Participant_1',
-      new mxGeometry(
+    expect('Lane_1_1').toBeCellWithParentAndGeometry({
+      parentId: 'Participant_1',
+      geometry: new mxGeometry(
         30, // absolute coordinates: parent 160, cell 190
         0, // absolute coordinates: parent 80, cell 80
         870, // unchanged as no transformation on size
         200, // unchanged as no transformation on size
       ),
-    );
+    });
 
-    expectModelContainsCellWithGeometry(
-      'StartEvent_1',
-      'Lane_1_1',
-      new mxGeometry(
+    expect('StartEvent_1').toBeCellWithParentAndGeometry({
+      parentId: 'Lane_1_1',
+      geometry: new mxGeometry(
         120, // absolute coordinates: parent 190, cell 310
         80, // absolute coordinates: parent 80, cell 160
         40, // unchanged as no transformation on size
         40, // unchanged as no transformation on size
       ),
-    );
+    });
 
-    expectModelContainsCellWithGeometry(
-      'Lane_1_2',
-      'Participant_1',
-      new mxGeometry(
+    expect('Lane_1_847987').not.toBeCellWithParentAndGeometry({
+      parentId: 'Participant_1',
+      geometry: new mxGeometry(
         30, // absolute coordinates: parent 160, cell 190
         200, // absolute coordinates: parent 80, cell 280
         870, // unchanged as no transformation on size
         200, // unchanged as no transformation on size
       ),
-    );
+    });
 
     const sequenceFlowMxGeometry = new mxGeometry(0, 0, 0, 0);
     sequenceFlowMxGeometry.points = [
       new mxPoint(160, 100), // absolute coordinates: parent x="190" y="80", cell x="350" y="180"
       new mxPoint(320, 100), // absolute coordinates: parent x="190" y="80", cell x="510" y="180"
     ];
-    expectModelContainsCellWithGeometry('SequenceFlow_id', 'Lane_1_1', sequenceFlowMxGeometry);
+    expect('SequenceFlow_id').toBeCellWithParentAndGeometry({
+      parentId: 'Lane_1_1',
+      geometry: sequenceFlowMxGeometry,
+    });
 
     const messageFlowMxGeometry = new mxGeometry(0, 0, 0, 0);
     messageFlowMxGeometry.points = [
       new mxPoint(334, 480), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="480"
       new mxPoint(334, 632), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="632"
     ];
-    expectModelContainsCellWithGeometry('MessageFlow_1', undefined, messageFlowMxGeometry);
+    expect('MessageFlow_1').toBeCellWithParentAndGeometry({
+      geometry: messageFlowMxGeometry,
+    });
   });
 
   it('vertical pool, with vertical lanes & sub-lanes', async () => {

@@ -18,32 +18,57 @@ import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { toBeCell, withGeometry, withFont, toBeSequenceFlow, toBeMessageFlow, toBeAssociationFlow, toBeShape } from './matchers';
+import {
+  toBeCell,
+  toBeCellWithParentAndGeometry,
+  toBeSequenceFlow,
+  toBeMessageFlow,
+  toBeAssociationFlow,
+  toBeShape,
+  toBeCallActivity,
+  toBeTask,
+  toBeServiceTask,
+  toBeUserTask,
+  toBeReceiveTask,
+} from './matchers';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
     interface Matchers<R> {
       toBeCell(): R;
-      withGeometry(geometry: mxGeometry): R;
-      withFont(font: ExpectedFont): R;
+      toBeCellWithParentAndGeometry(modelElement: ExpectedCellWithGeometry): R;
       toBeSequenceFlow(modelElement: ExpectedSequenceFlowModelElement): R;
       toBeMessageFlow(modelElement: ExpectedEdgeModelElement): R;
       toBeAssociationFlow(modelElement: ExpectedEdgeModelElement): R;
       toBeShape(modelElement: ExpectedShapeModelElement): R;
+      toBeCallActivity(modelElement: ExpectedShapeModelElement): R;
+      toBeTask(modelElement: ExpectedShapeModelElement): R;
+      toBeServiceTask(modelElement: ExpectedShapeModelElement): R;
+      toBeUserTask(modelElement: ExpectedShapeModelElement): R;
+      toBeReceiveTask(modelElement: ExpectedShapeModelElement): R;
     }
   }
 }
 
 expect.extend({
   toBeCell,
-  withGeometry,
-  withFont,
+  toBeCellWithParentAndGeometry,
   toBeSequenceFlow,
   toBeMessageFlow,
   toBeAssociationFlow,
   toBeShape,
+  toBeCallActivity,
+  toBeTask,
+  toBeServiceTask,
+  toBeUserTask,
+  toBeReceiveTask,
 });
+
+export interface ExpectedCellWithGeometry {
+  parentId?: string;
+  geometry: mxGeometry;
+}
 
 export interface ExpectedFont {
   name?: string;
@@ -56,7 +81,7 @@ export interface ExpectedFont {
 
 export interface ExpectedShapeModelElement {
   label?: string;
-  kind: ShapeBpmnElementKind;
+  kind?: ShapeBpmnElementKind;
   font?: ExpectedFont;
   parentId?: string;
   /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
@@ -102,7 +127,9 @@ export interface ExpectedStartEventModelElement extends ExpectedEventModelElemen
 
 export const bpmnVisualization = new BpmnVisualization(null);
 
-// ---------------------------- To convert to Jest extension ------------------------------------
+export function getDefaultParentId(): string {
+  return bpmnVisualization.graph.getDefaultParent().id;
+}
 
 export function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {
   expect(cellId).toBeShape({ ...eventModelElement, verticalAlign: 'top' });
@@ -146,25 +173,4 @@ export function expectModelContainsLane(cellId: string, modelElement: ExpectedSh
 
   const mxCell = bpmnVisualization.graph.model.getCell(cellId);
   expect(mxCell.style).toContain(`${mxConstants.STYLE_HORIZONTAL}=${modelElement.isHorizontal ? '0' : '1'}`);
-}
-
-function expectModelContainsCell(cellId: string): mxCell {
-  expect(cellId).toBeCell();
-  return bpmnVisualization.graph.model.getCell(cellId);
-}
-
-export function expectModelContainsCellWithGeometry(cellId: string, parentId: string, geometry: mxGeometry): void {
-  const cell = expectModelContainsCell(cellId);
-
-  if (parentId) {
-    expect(cell.parent.id).toEqual(parentId);
-  } else {
-    expect(cell.parent).toEqual(bpmnVisualization.graph.getDefaultParent());
-  }
-
-  expect(cell).withGeometry(geometry);
-}
-
-export function getDefaultParentId(): string {
-  return bpmnVisualization.graph.getDefaultParent().id;
 }
