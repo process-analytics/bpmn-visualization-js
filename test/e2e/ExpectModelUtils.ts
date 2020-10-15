@@ -21,7 +21,6 @@ import BpmnVisualization from '../../src/component/BpmnVisualization';
 import {
   toBeCell,
   toBeCellWithParentAndGeometry,
-  withFont,
   toBeSequenceFlow,
   toBeMessageFlow,
   toBeAssociationFlow,
@@ -39,7 +38,6 @@ declare global {
     interface Matchers<R> {
       toBeCell(): R;
       toBeCellWithParentAndGeometry(modelElement: ExpectedCellWithGeometry): R;
-      withFont(font: ExpectedFont): R;
       toBeSequenceFlow(modelElement: ExpectedSequenceFlowModelElement): R;
       toBeMessageFlow(modelElement: ExpectedEdgeModelElement): R;
       toBeAssociationFlow(modelElement: ExpectedEdgeModelElement): R;
@@ -56,7 +54,6 @@ declare global {
 expect.extend({
   toBeCell,
   toBeCellWithParentAndGeometry,
-  withFont,
   toBeSequenceFlow,
   toBeMessageFlow,
   toBeAssociationFlow,
