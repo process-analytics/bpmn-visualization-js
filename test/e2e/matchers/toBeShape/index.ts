@@ -132,3 +132,15 @@ export function toBeScriptTask(this: MatcherContext, received: string, expected:
     buildReceivedCellWithCommonAttributes,
   );
 }
+
+export function toBeBusinessRuleTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  return buildCellMatcher(
+    'toBeBusinessRuleTask',
+    this,
+    received,
+    { ...expected, kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE },
+    'Shape',
+    buildExpectedCell,
+    buildReceivedCellWithCommonAttributes,
+  );
+}

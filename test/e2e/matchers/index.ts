@@ -14,5 +14,16 @@
  * limitations under the License.
  */
 export { toBeSequenceFlow, toBeMessageFlow, toBeAssociationFlow } from './toBeEdge';
-export { toBeShape, toBeCallActivity, toBeTask, toBeServiceTask, toBeUserTask, toBeReceiveTask, toBeSendTask, toBeManualTask, toBeScriptTask } from './toBeShape';
+export {
+  toBeShape,
+  toBeCallActivity,
+  toBeTask,
+  toBeServiceTask,
+  toBeUserTask,
+  toBeReceiveTask,
+  toBeSendTask,
+  toBeManualTask,
+  toBeScriptTask,
+  toBeBusinessRuleTask,
+} from './toBeShape';
 export { toBeCell, toBeCellWithParentAndGeometry } from './toBeCell';
