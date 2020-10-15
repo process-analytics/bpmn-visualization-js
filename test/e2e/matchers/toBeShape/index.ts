@@ -120,3 +120,15 @@ export function toBeManualTask(this: MatcherContext, received: string, expected:
     buildReceivedCellWithCommonAttributes,
   );
 }
+
+export function toBeScriptTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  return buildCellMatcher(
+    'toBeScriptTask',
+    this,
+    received,
+    { ...expected, kind: ShapeBpmnElementKind.TASK_SCRIPT },
+    'Shape',
+    buildExpectedCell,
+    buildReceivedCellWithCommonAttributes,
+  );
+}
