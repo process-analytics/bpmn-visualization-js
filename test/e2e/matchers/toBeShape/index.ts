@@ -104,3 +104,43 @@ export function toBeReceiveTask(this: MatcherContext, received: string, expected
     buildReceivedCellWithCommonAttributes,
   );
 }
+
+export function toBeSendTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  return buildCellMatcher('toBeSendTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SEND }, 'Shape', buildExpectedCell, buildReceivedCellWithCommonAttributes);
+}
+
+export function toBeManualTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  return buildCellMatcher(
+    'toBeManualTask',
+    this,
+    received,
+    { ...expected, kind: ShapeBpmnElementKind.TASK_MANUAL },
+    'Shape',
+    buildExpectedCell,
+    buildReceivedCellWithCommonAttributes,
+  );
+}
+
+export function toBeScriptTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  return buildCellMatcher(
+    'toBeScriptTask',
+    this,
+    received,
+    { ...expected, kind: ShapeBpmnElementKind.TASK_SCRIPT },
+    'Shape',
+    buildExpectedCell,
+    buildReceivedCellWithCommonAttributes,
+  );
+}
+
+export function toBeBusinessRuleTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  return buildCellMatcher(
+    'toBeBusinessRuleTask',
+    this,
+    received,
+    { ...expected, kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE },
+    'Shape',
+    buildExpectedCell,
+    buildReceivedCellWithCommonAttributes,
+  );
+}
