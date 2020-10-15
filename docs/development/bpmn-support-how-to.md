@@ -83,7 +83,10 @@ flow` support (see `ShapeBpmnElementKind` for more details)
 * Fixtures bpmn diagrams used by model tests:
   * Name starts with `model-`
   * Generally, update the `test/fixtures/model-complete-semantic.bpmn` file with the newly introduced file and update the model expectation accordingly. \
-  In this file, please adjust shape coordinates to ensure new elements can be easily shown with a viewer and don't overlap with existing elements.
+    See this Pull Request as example: [[FEAT] Detect Business rule task](https://github.com/process-analytics/bpmn-visualization-js/pull/669/files#diff-ba360f5636b87293c740da307c4ec30c3aa5e8824ffa02e549a78dc8e0113320)
+    * Add corresponding **Semantic** section
+    * Add corresponding **Diagram** section 
+    * Please, adjust shape coordinates to ensure new elements can be easily shown with a viewer and don't overlap with existing elements
   * For special cases, a dedicated test using a specific file. Please communicate with the Core Development Team if you think you need a dedicated file.
 
 💡 If you have a format problem with the BPMN file of the test, the easier way to find the error & fix it is to load the file in your favorite BPMN editor. \
