@@ -802,28 +802,24 @@ describe('mxGraph model', () => {
     });
 
     // Receive Task: Non instantiating
-    expect('receive_task_non_instantiating_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_non_instantiating_id').toBeReceiveTask({
       label: 'Non-instantiating Receive Task',
       isInstantiating: false,
       parentId: 'participant_1_id',
     });
-    expect('receive_task_non_instantiating_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_non_instantiating_with_loop_id').toBeReceiveTask({
       label: 'Non-instantiating Receive Task With Loop',
       isInstantiating: false,
       markers: [ShapeBpmnMarkerKind.LOOP],
       parentId: 'participant_1_id',
     });
-    expect('receive_task_non_instantiating_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_non_instantiating_with_sequential_multi_instance_id').toBeReceiveTask({
       label: 'Non-instantiating Receive Task With Sequential Multi-instance',
       isInstantiating: false,
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
       parentId: 'participant_1_id',
     });
-    expect('receive_task_non_instantiating_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_non_instantiating_with_parallel_multi_instance_id').toBeReceiveTask({
       label: 'Non-instantiating Receive Task With Parallel Multi-instance',
       isInstantiating: false,
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
@@ -831,28 +827,24 @@ describe('mxGraph model', () => {
     });
 
     // Receive Task: Instantiating
-    expect('receive_task_instantiating_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_instantiating_id').toBeReceiveTask({
       label: 'Instantiating Receive Task',
       isInstantiating: true,
       parentId: 'participant_1_id',
     });
-    expect('receive_task_instantiating_with_loop_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_instantiating_with_loop_id').toBeReceiveTask({
       label: 'Instantiating Receive Task With Loop',
       isInstantiating: true,
       markers: [ShapeBpmnMarkerKind.LOOP],
       parentId: 'participant_1_id',
     });
-    expect('receive_task_instantiating_with_sequential_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_instantiating_with_sequential_multi_instance_id').toBeReceiveTask({
       label: 'Instantiating Receive Task With Sequential Multi-instance',
       isInstantiating: true,
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
       parentId: 'participant_1_id',
     });
-    expect('receive_task_instantiating_with_parallel_multi_instance_id').toBeShape({
-      kind: ShapeBpmnElementKind.TASK_RECEIVE,
+    expect('receive_task_instantiating_with_parallel_multi_instance_id').toBeReceiveTask({
       label: 'Instantiating Receive Task With Parallel Multi-instance',
       isInstantiating: true,
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
