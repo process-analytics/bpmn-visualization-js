@@ -70,7 +70,7 @@ export default class MxGraphConfigurator {
       this.graph.setPanning(true);
     } else {
       this.graph.setPanning(false);
-      this.graph.panningHandler.setPinchEnabled(false); // ensure gesture support is disabled (pan and zoom)
+      this.graph.panningHandler.setPinchEnabled(false); // ensure gesture support is disabled (zoom only for now!)
     }
 
     this.configureMouseEvent(mouseNavigationSupport);
