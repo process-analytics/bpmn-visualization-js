@@ -40,6 +40,8 @@ import {
   toBeIntermediateCatchEvent,
   toBeBoundaryEvent,
   toBeSubProcess,
+  toBePool,
+  toBeLane,
 } from './matchers';
 
 declare global {
@@ -67,6 +69,8 @@ declare global {
       toBeIntermediateCatchEvent(modelElement: ExpectedEventModelElement): R;
       toBeBoundaryEvent(modelElement: ExpectedBoundaryEventModelElement): R;
       toBeSubProcess(modelElement: ExpectedSubProcessModelElement): R;
+      toBePool(modelElement: ExpectedShapeModelElement): R;
+      toBeLane(modelElement: ExpectedShapeModelElement): R;
     }
   }
 }
@@ -93,6 +97,8 @@ expect.extend({
   toBeIntermediateCatchEvent,
   toBeBoundaryEvent,
   toBeSubProcess,
+  toBePool,
+  toBeLane,
 });
 
 export interface ExpectedCellWithGeometry {
@@ -159,18 +165,4 @@ export const bpmnVisualization = new BpmnVisualization(null);
 
 export function getDefaultParentId(): string {
   return bpmnVisualization.graph.getDefaultParent().id;
-}
-
-export function expectModelContainsPool(cellId: string, modelElement: ExpectedShapeModelElement): void {
-  expect(cellId).toBeShape({ ...modelElement, kind: ShapeBpmnElementKind.POOL, styleShape: mxConstants.SHAPE_SWIMLANE, verticalAlign: 'middle' });
-
-  const mxCell = bpmnVisualization.graph.model.getCell(cellId);
-  expect(mxCell.style).toContain(`${mxConstants.STYLE_HORIZONTAL}=${modelElement.isHorizontal ? '0' : '1'}`);
-}
-
-export function expectModelContainsLane(cellId: string, modelElement: ExpectedShapeModelElement): void {
-  expect(cellId).toBeShape({ ...modelElement, kind: ShapeBpmnElementKind.LANE, styleShape: mxConstants.SHAPE_SWIMLANE, verticalAlign: 'middle' });
-
-  const mxCell = bpmnVisualization.graph.model.getCell(cellId);
-  expect(mxCell.style).toContain(`${mxConstants.STYLE_HORIZONTAL}=${modelElement.isHorizontal ? '0' : '1'}`);
 }

@@ -33,6 +33,10 @@ function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): Expe
   expectedStateStyle.align = expectedModel.align ? expectedModel.align : 'center';
   expectedStateStyle.strokeWidth = undefined;
 
+  if ('isHorizontal' in expectedModel) {
+    expectedStateStyle.horizontal = expectedModel.isHorizontal ? 0 : 1;
+  }
+
   return expectedStateStyle;
 }
 
@@ -81,6 +85,16 @@ function buildShapeMatcher(matcherName: string, matcherContext: MatcherContext, 
 
 export function toBeShape(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   return buildShapeMatcher('toBeShape', this, received, expected);
+}
+
+export function toBePool(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  const isHorizontal = 'isHorizontal' in expected ? expected.isHorizontal : true;
+  return buildShapeMatcher('toBePool', this, received, { ...expected, kind: ShapeBpmnElementKind.POOL, styleShape: mxConstants.SHAPE_SWIMLANE, isHorizontal });
+}
+
+export function toBeLane(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  const isHorizontal = 'isHorizontal' in expected ? expected.isHorizontal : true;
+  return buildShapeMatcher('toBeLane', this, received, { ...expected, kind: ShapeBpmnElementKind.LANE, styleShape: mxConstants.SHAPE_SWIMLANE, isHorizontal });
 }
 
 export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {

@@ -18,7 +18,7 @@ import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlo
 import { MarkerIdentifier } from '../../src/bpmn-visualization';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { readFileSync } from '../helpers/file-helper';
-import { bpmnVisualization, ExpectedShapeModelElement, expectModelContainsLane, expectModelContainsPool } from './ExpectModelUtils';
+import { bpmnVisualization, ExpectedShapeModelElement } from './ExpectModelUtils';
 
 describe('mxGraph model', () => {
   it('bpmn elements should be available in the mxGraph model', async () => {
@@ -37,16 +37,16 @@ describe('mxGraph model', () => {
 
     // pool
     const minimalPoolModelElement: ExpectedShapeModelElement = { kind: null, isHorizontal: true };
-    expectModelContainsPool('participant_1_id', { ...minimalPoolModelElement, label: 'Pool 1' });
-    expectModelContainsPool('participant_2_id', minimalPoolModelElement);
-    expectModelContainsPool('participant_3_id', { ...minimalPoolModelElement, label: 'Black Box Process' });
-    expectModelContainsPool('participant_4_id', { ...minimalPoolModelElement, label: 'Pool containing sublanes' });
+    expect('participant_1_id').toBePool({ ...minimalPoolModelElement, label: 'Pool 1' });
+    expect('participant_2_id').toBePool(minimalPoolModelElement);
+    expect('participant_3_id').toBePool({ ...minimalPoolModelElement, label: 'Black Box Process' });
+    expect('participant_4_id').toBePool({ ...minimalPoolModelElement, label: 'Pool containing sublanes' });
 
     // lane
-    expectModelContainsLane('lane_4_1_id', { ...minimalPoolModelElement, label: 'Lane with child lanes', parentId: 'participant_4_id' });
-    expectModelContainsLane('lane_4_1_1_id', { ...minimalPoolModelElement, label: 'Child Lane 1', parentId: 'lane_4_1_id' });
-    expectModelContainsLane('lane_4_1_2_id', { ...minimalPoolModelElement, label: 'Child Lane 2', parentId: 'lane_4_1_id' });
-    expectModelContainsLane('lane_4_2_id', { ...minimalPoolModelElement, label: 'Solo Lane', parentId: 'participant_4_id' });
+    expect('lane_4_1_id').toBeLane({ ...minimalPoolModelElement, label: 'Lane with child lanes', parentId: 'participant_4_id' });
+    expect('lane_4_1_1_id').toBeLane({ ...minimalPoolModelElement, label: 'Child Lane 1', parentId: 'lane_4_1_id' });
+    expect('lane_4_1_2_id').toBeLane({ ...minimalPoolModelElement, label: 'Child Lane 2', parentId: 'lane_4_1_id' });
+    expect('lane_4_2_id').toBeLane({ ...minimalPoolModelElement, label: 'Solo Lane', parentId: 'participant_4_id' });
 
     // start event
     expect('start_event_none_id').toBeStartEvent({
@@ -1048,13 +1048,13 @@ describe('mxGraph model', () => {
 
     // pool
     const minimalPoolModelElement: ExpectedShapeModelElement = { kind: null, isHorizontal: false };
-    expectModelContainsPool('Participant_Vertical_With_Lanes', { ...minimalPoolModelElement, label: 'Vertical Pool With Lanes' });
+    expect('Participant_Vertical_With_Lanes').toBePool({ ...minimalPoolModelElement, label: 'Vertical Pool With Lanes' });
 
     // lane
-    expectModelContainsLane('Lane_Vertical_3', { ...minimalPoolModelElement, parentId: 'Participant_Vertical_With_Lanes' });
-    expectModelContainsLane('Lane_Vertical_1', { ...minimalPoolModelElement, label: 'Lane', parentId: 'Participant_Vertical_With_Lanes' });
-    expectModelContainsLane('Lane_Vertical_With_Sub_Lane', { ...minimalPoolModelElement, label: 'Lane with Sub-Lanes', parentId: 'Participant_Vertical_With_Lanes' });
-    expectModelContainsLane('SubLane_Vertical_1', { ...minimalPoolModelElement, label: 'Sub-Lane 1', parentId: 'Lane_Vertical_With_Sub_Lane' });
-    expectModelContainsLane('SubLane_Vertical_2', { ...minimalPoolModelElement, label: 'Sub-Lane 2', parentId: 'Lane_Vertical_With_Sub_Lane' });
+    expect('Lane_Vertical_3').toBeLane({ ...minimalPoolModelElement, parentId: 'Participant_Vertical_With_Lanes' });
+    expect('Lane_Vertical_1').toBeLane({ ...minimalPoolModelElement, label: 'Lane', parentId: 'Participant_Vertical_With_Lanes' });
+    expect('Lane_Vertical_With_Sub_Lane').toBeLane({ ...minimalPoolModelElement, label: 'Lane with Sub-Lanes', parentId: 'Participant_Vertical_With_Lanes' });
+    expect('SubLane_Vertical_1').toBeLane({ ...minimalPoolModelElement, label: 'Sub-Lane 1', parentId: 'Lane_Vertical_With_Sub_Lane' });
+    expect('SubLane_Vertical_2').toBeLane({ ...minimalPoolModelElement, label: 'Sub-Lane 2', parentId: 'Lane_Vertical_With_Sub_Lane' });
   });
 });
