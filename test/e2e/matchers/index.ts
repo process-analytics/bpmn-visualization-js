@@ -31,5 +31,6 @@ export {
   toBeIntermediateCatchEvent,
   toBeBoundaryEvent,
   toBeSubProcess,
+  toBePool,
 } from './toBeShape';
 export { toBeCell, toBeCellWithParentAndGeometry } from './toBeCell';
