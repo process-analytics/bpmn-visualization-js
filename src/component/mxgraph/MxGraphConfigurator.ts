@@ -125,7 +125,7 @@ class BpmnMxGraph extends mxGraph {
       const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(up, offsetX, offsetY);
       this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
     } else {
-      super.zoom(scale, center);
+      super.zoomTo(scale, center);
     }
   }
 
