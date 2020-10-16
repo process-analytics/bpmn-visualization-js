@@ -30,10 +30,10 @@ declare const mxClient: typeof mxgraph.mxClient;
  *     <li>markers
  */
 export default class MxGraphConfigurator {
-  private readonly graph: mxGraph;
+  private readonly graph: BpmnMxGraph;
 
   constructor(readonly container: HTMLElement) {
-    this.graph = new mxGraph(container);
+    this.graph = new BpmnMxGraph(container);
   }
 
   public configure(options?: BpmnVisualizationOptions): mxGraph {
@@ -91,17 +91,70 @@ export default class MxGraphConfigurator {
       // only the ctrl key or the meta key on mac
       const isZoomWheelEvent = (evt.ctrlKey || (mxClient.IS_MAC && evt.metaKey)) && !evt.altKey && !evt.shiftKey;
       if (isZoomWheelEvent) {
-        this.zoom(up);
+        this.graph.performZoom(up, evt);
         mxEvent.consume(evt);
       }
     }, this.container);
   }
+}
 
-  private zoom(zoomIn: boolean): void {
-    if (zoomIn) {
-      this.graph.zoomIn();
+class BpmnMxGraph extends mxGraph {
+  private cumulativeZoomFactor = 1;
+
+  constructor(readonly container: HTMLElement) {
+    super(container);
+  }
+
+  // override fit to set initial cumulativeZoomFactor
+  fit(order: number, keepOrigin?: boolean, margin?: number, enabled?: boolean, ignoreWidth?: boolean, ignoreHeight?: boolean, maxHeight?: number): number {
+    const scale = super.fit(order, keepOrigin, margin, enabled, ignoreWidth, ignoreHeight, maxHeight);
+    this.cumulativeZoomFactor = scale;
+    return scale;
+  }
+
+  // solution inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
+  public performZoom(up: boolean, evt: MouseEvent): void {
+    const rect = this.container.getBoundingClientRect();
+    const x = evt.clientX - rect.left;
+    const y = evt.clientY - rect.top;
+    this.zoomTo(null, null, up, x, y);
+  }
+
+  zoomTo(scale: number, center?: boolean, up?: boolean, offsetX?: number, offsetY?: number): void {
+    if (scale === null) {
+      const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(up, offsetX, offsetY);
+      this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
     } else {
-      this.graph.zoomOut();
+      super.zoomTo(scale, center);
     }
+  }
+
+  private getScaleAndTranslationDeltas(up: boolean, offsetX: number, offsetY: number): [number, number, number] {
+    let dx = offsetX * 2;
+    let dy = offsetY * 2;
+    const [factor, scale] = this.calculateFactorAndScale(up);
+    [dx, dy] = this.calculateTranslationDeltas(factor, scale, dx, dy);
+    return [scale, dx, dy];
+  }
+
+  private calculateTranslationDeltas(factor: number, scale: number, dx: number, dy: number): [number, number] {
+    if (factor > 1) {
+      const f = (factor - 1) / (scale * 2);
+      dx *= -f;
+      dy *= -f;
+    } else {
+      const f = (1 / factor - 1) / (this.view.scale * 2);
+      dx *= f;
+      dy *= f;
+    }
+    return [dx, dy];
+  }
+
+  private calculateFactorAndScale(up: boolean): [number, number] {
+    this.cumulativeZoomFactor *= up ? 1.2 : 0.8;
+    let factor = this.cumulativeZoomFactor / this.view.scale;
+    const scale = Math.round(this.view.scale * factor * 100) / 100;
+    factor = scale / this.view.scale;
+    return [factor, scale];
   }
 }
