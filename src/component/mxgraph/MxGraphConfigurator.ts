@@ -117,12 +117,16 @@ class BpmnMxGraph extends mxGraph {
     const rect = this.container.getBoundingClientRect();
     const x = evt.clientX - rect.left;
     const y = evt.clientY - rect.top;
-    this.zoomToMousePointer(up, x, y);
+    this.zoomTo(null, null, up, x, y);
   }
 
-  private zoomToMousePointer(up: boolean, offsetX: number, offsetY: number): void {
-    const [scale, dx, dy] = this.getScaleAndTranslationDeltas(up, offsetX, offsetY);
-    this.view.scaleAndTranslate(scale, this.view.translate.x + dx, this.view.translate.y + dy);
+private zoomTo(scale: number, center?: boolean, up?: boolean, offsetX?: number, offsetY?: number): void {
+    if (scale === null) {
+      const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(up, offsetX, offsetY);
+      this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
+    } else {
+      super.zoom(scale, center);
+    }
   }
 
   private getScaleAndTranslationDeltas(up: boolean, offsetX: number, offsetY: number): [number, number, number] {
