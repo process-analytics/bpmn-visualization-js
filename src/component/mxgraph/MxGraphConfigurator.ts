@@ -120,7 +120,7 @@ class BpmnMxGraph extends mxGraph {
     this.zoomTo(null, null, up, x, y);
   }
 
-zoomTo(scale: number, center?: boolean, up?: boolean, offsetX?: number, offsetY?: number): void {
+  zoomTo(scale: number, center?: boolean, up?: boolean, offsetX?: number, offsetY?: number): void {
     if (scale === null) {
       const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(up, offsetX, offsetY);
       this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
