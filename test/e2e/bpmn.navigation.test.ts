@@ -86,7 +86,7 @@ describe('diagram navigation', () => {
   it.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoom: string) => {
     const deltaX = zoom === 'zoom in' ? -100 : 100;
     // simulate mouse+ctrl zoom
-    await page.mouse.move(viewportCenterX, viewportCenterY);
+    await page.mouse.move(viewportCenterX + 200, viewportCenterY);
     await page.keyboard.down('Control');
     await (<MouseWithWheel>page.mouse).wheel({ deltaX: deltaX });
 
