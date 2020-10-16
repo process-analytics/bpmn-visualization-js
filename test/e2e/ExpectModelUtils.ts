@@ -33,6 +33,13 @@ import {
   toBeSendTask,
   toBeManualTask,
   toBeScriptTask,
+  toBeBusinessRuleTask,
+  toBeStartEvent,
+  toBeEndEvent,
+  toBeIntermediateThrowEvent,
+  toBeIntermediateCatchEvent,
+  toBeBoundaryEvent,
+  toBeSubProcess,
 } from './matchers';
 
 declare global {
@@ -53,6 +60,13 @@ declare global {
       toBeSendTask(modelElement: ExpectedShapeModelElement): R;
       toBeManualTask(modelElement: ExpectedShapeModelElement): R;
       toBeScriptTask(modelElement: ExpectedShapeModelElement): R;
+      toBeBusinessRuleTask(modelElement: ExpectedShapeModelElement): R;
+      toBeStartEvent(modelElement: ExpectedStartEventModelElement): R;
+      toBeEndEvent(modelElement: ExpectedEventModelElement): R;
+      toBeIntermediateThrowEvent(modelElement: ExpectedEventModelElement): R;
+      toBeIntermediateCatchEvent(modelElement: ExpectedEventModelElement): R;
+      toBeBoundaryEvent(modelElement: ExpectedBoundaryEventModelElement): R;
+      toBeSubProcess(modelElement: ExpectedSubProcessModelElement): R;
     }
   }
 }
@@ -72,6 +86,13 @@ expect.extend({
   toBeSendTask,
   toBeManualTask,
   toBeScriptTask,
+  toBeBusinessRuleTask,
+  toBeStartEvent,
+  toBeEndEvent,
+  toBeIntermediateThrowEvent,
+  toBeIntermediateCatchEvent,
+  toBeBoundaryEvent,
+  toBeSubProcess,
 });
 
 export interface ExpectedCellWithGeometry {
@@ -138,36 +159,6 @@ export const bpmnVisualization = new BpmnVisualization(null);
 
 export function getDefaultParentId(): string {
   return bpmnVisualization.graph.getDefaultParent().id;
-}
-
-export function expectModelContainsBpmnEvent(cellId: string, eventModelElement: ExpectedEventModelElement): mxCell {
-  expect(cellId).toBeShape({ ...eventModelElement, verticalAlign: 'top' });
-
-  const cell = bpmnVisualization.graph.model.getCell(cellId);
-  expect(cell.style).toContain(`bpmn.eventKind=${eventModelElement.eventKind}`);
-  return cell;
-}
-
-export function expectModelContainsBpmnBoundaryEvent(cellId: string, boundaryEventModelElement: ExpectedBoundaryEventModelElement): void {
-  const cell = expectModelContainsBpmnEvent(cellId, { ...boundaryEventModelElement, kind: ShapeBpmnElementKind.EVENT_BOUNDARY });
-  expect(cell.style).toContain(`bpmn.isInterrupting=${boundaryEventModelElement.isInterrupting}`);
-}
-
-export function expectModelContainsBpmnStartEvent(cellId: string, startEventModelElement: ExpectedStartEventModelElement): void {
-  const cell = expectModelContainsBpmnEvent(cellId, { ...startEventModelElement, kind: ShapeBpmnElementKind.EVENT_START });
-  expect(cell.style).toContain(`bpmn.isInterrupting=${startEventModelElement.isInterrupting}`);
-}
-
-export function expectModelContainsSubProcess(cellId: string, subProcessModelElement: ExpectedSubProcessModelElement): mxCell {
-  expect(cellId).toBeShape({
-    ...subProcessModelElement,
-    kind: ShapeBpmnElementKind.SUB_PROCESS,
-    verticalAlign: subProcessModelElement.verticalAlign ? subProcessModelElement.verticalAlign : 'middle',
-  });
-
-  const cell = bpmnVisualization.graph.model.getCell(cellId);
-  expect(cell.style).toContain(`bpmn.subProcessKind=${subProcessModelElement.subProcessKind}`);
-  return cell;
 }
 
 export function expectModelContainsPool(cellId: string, modelElement: ExpectedShapeModelElement): void {

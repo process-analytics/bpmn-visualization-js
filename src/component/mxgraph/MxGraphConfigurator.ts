@@ -18,6 +18,9 @@ import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import MxClientConfigurator from './config/MxClientConfigurator';
 import { BpmnVisualizationOptions } from '../BpmnVisualization';
+import { mxgraph } from 'ts-mxgraph';
+// TODO unable to load mxClient from mxgraph-type-definitions@1.0.4
+declare const mxClient: typeof mxgraph.mxClient;
 
 /**
  * Configure the mxGraph graph that can be used by the lib
@@ -29,12 +32,13 @@ import { BpmnVisualizationOptions } from '../BpmnVisualization';
 export default class MxGraphConfigurator {
   private readonly graph: mxGraph;
 
-  constructor(container: HTMLElement) {
+  constructor(readonly container: HTMLElement) {
     this.graph = new mxGraph(container);
   }
 
   public configure(options?: BpmnVisualizationOptions): mxGraph {
-    this.configureGraph(options);
+    this.configureGraph();
+    this.configureMouseNavigationSupport(options);
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
     new MarkerConfigurator().configureMarkers();
@@ -42,7 +46,7 @@ export default class MxGraphConfigurator {
     return this.graph;
   }
 
-  private configureGraph(options?: BpmnVisualizationOptions): void {
+  private configureGraph(): void {
     this.graph.setCellsLocked(true);
     this.graph.setCellsSelectable(false);
     this.graph.setEdgeLabelsMovable(false);
@@ -56,15 +60,48 @@ export default class MxGraphConfigurator {
     // Disable folding for container mxCell (pool, lane, sub process, call activity) because we don't need it.
     // This also prevents requesting unavailable images (see #185) as we don't override mxGraph folding default images.
     this.graph.foldingEnabled = false;
+  }
 
+  private configureMouseNavigationSupport(options?: BpmnVisualizationOptions): void {
+    const mouseNavigationSupport = options?.mouseNavigationSupport;
     // Pan configuration
-    if (options?.mouseNavigationSupport) {
+    if (mouseNavigationSupport) {
       this.graph.panningHandler.useLeftButtonForPanning = true;
       this.graph.panningHandler.ignoreCell = true; // ok here as we cannot select cells
       this.graph.setPanning(true);
     } else {
       this.graph.setPanning(false);
-      this.graph.panningHandler.setPinchEnabled(false); // ensure gesture support is disabled (pan and zoom)
+      this.graph.panningHandler.setPinchEnabled(false); // ensure gesture support is disabled (zoom only for now!)
+    }
+
+    this.configureMouseEvent(mouseNavigationSupport);
+  }
+
+  private configureMouseEvent(activated = false): void {
+    if (!activated) {
+      return;
+    }
+
+    mxEvent.addMouseWheelListener((event: Event, up: boolean) => {
+      // TODO review type: this hack is due to the introduction of mxgraph-type-definitions
+      const evt = (event as unknown) as MouseEvent;
+      if (mxEvent.isConsumed((evt as unknown) as mxMouseEvent)) {
+        return;
+      }
+      // only the ctrl key or the meta key on mac
+      const isZoomWheelEvent = (evt.ctrlKey || (mxClient.IS_MAC && evt.metaKey)) && !evt.altKey && !evt.shiftKey;
+      if (isZoomWheelEvent) {
+        this.zoom(up);
+        mxEvent.consume(evt);
+      }
+    }, this.container);
+  }
+
+  private zoom(zoomIn: boolean): void {
+    if (zoomIn) {
+      this.graph.zoomIn();
+    } else {
+      this.graph.zoomOut();
     }
   }
 }
