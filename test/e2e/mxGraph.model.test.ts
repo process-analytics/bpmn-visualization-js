@@ -518,6 +518,8 @@ describe('mxGraph model', () => {
       verticalAlign: 'bottom',
     });
 
+    expect('task_in_collapsed_sub_process_id').not.toBeCell();
+
     // Start Event in Event Sub Process
     // Interrupting Start Event
     expect('start_event_interrupting_message_id').toBeStartEvent({
