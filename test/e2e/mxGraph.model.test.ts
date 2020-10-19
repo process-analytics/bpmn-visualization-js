@@ -344,7 +344,7 @@ describe('mxGraph model', () => {
       eventKind: ShapeBpmnEventKind.CANCEL,
       isInterrupting: true,
       label: 'Interrupting Cancel Boundary Intermediate Event On Top',
-      parentId: 'business_rule_task_id',
+      parentId: 'receive_task_non_instantiating_id',
     });
 
     // boundary event: non-interrupting
