@@ -50,7 +50,7 @@ describe('diagram navigation', () => {
         // windows:
         {
           linux: 0.000004,
-          macos: 0.000009,
+          macos: 0.00001,
           windows: 0.000004,
         },
       ],
