@@ -36,7 +36,7 @@ describe('mxGraph model', () => {
     };
 
     // pool
-    const minimalPoolModelElement: ExpectedShapeModelElement = { kind: null, isHorizontal: true };
+    const minimalPoolModelElement: ExpectedShapeModelElement = { isHorizontal: true };
     expect('participant_1_id').toBePool({ ...minimalPoolModelElement, label: 'Pool 1' });
     expect('participant_2_id').toBePool(minimalPoolModelElement);
     expect('participant_3_id').toBePool({ ...minimalPoolModelElement, label: 'Black Box Process' });
@@ -253,70 +253,60 @@ describe('mxGraph model', () => {
 
     // boundary event: interrupting
     expect('boundary_event_interrupting_message_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.MESSAGE,
       isInterrupting: true,
       label: 'Interrupting Message Boundary Intermediate Event',
       parentId: 'user_task_id',
     });
     expect('boundary_event_interrupting_message_on_top_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.MESSAGE,
       isInterrupting: true,
       label: 'Interrupting Message Boundary Intermediate Event On Top',
       parentId: 'user_task_id',
     });
     expect('boundary_event_interrupting_timer_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.TIMER,
       isInterrupting: true,
       label: 'Interrupting Timer Boundary Intermediate Event',
       parentId: 'send_task_id',
     });
     expect('boundary_event_interrupting_timer_on_top_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.TIMER,
       isInterrupting: true,
       label: 'Interrupting Timer Boundary Intermediate Event On Top',
       parentId: 'send_task_id',
     });
     expect('boundary_event_interrupting_signal_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.SIGNAL,
       isInterrupting: true,
       label: 'Interrupting Signal Boundary Intermediate Event',
       parentId: 'service_task_id',
     });
     expect('boundary_event_interrupting_signal_on_top_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.SIGNAL,
       isInterrupting: true,
       label: 'Interrupting Signal Boundary Intermediate Event On Top',
       parentId: 'service_task_id',
     });
     expect('boundary_event_interrupting_error_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.ERROR,
       isInterrupting: true,
       label: 'Interrupting Error Boundary Intermediate Event',
       parentId: 'task_id',
     });
     expect('boundary_event_interrupting_error_on_top_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.ERROR,
       isInterrupting: true,
       label: 'Interrupting Error Boundary Intermediate Event On Top',
       parentId: 'task_id',
     });
     expect('boundary_event_interrupting_compensate_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.COMPENSATION,
       isInterrupting: true,
       label: 'Interrupting Compensate Boundary Intermediate Event',
       parentId: 'business_rule_task_id',
     });
     expect('boundary_event_interrupting_compensate_on_top_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.COMPENSATION,
       isInterrupting: true,
       label: 'Interrupting Compensate Boundary Intermediate Event On Top',
@@ -325,42 +315,36 @@ describe('mxGraph model', () => {
 
     // boundary event: non-interrupting
     expect('boundary_event_non_interrupting_message_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.MESSAGE,
       isInterrupting: false,
       label: 'Non-interrupting Message Boundary Intermediate Event',
       parentId: 'expanded_embedded_sub_process_id',
     });
     expect('boundary_event_non_interrupting_message_on_top_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.MESSAGE,
       isInterrupting: false,
       label: 'Non-interrupting Message Boundary Intermediate Event On Top',
       parentId: 'expanded_embedded_sub_process_id',
     });
     expect('boundary_event_non_interrupting_timer_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.TIMER,
       isInterrupting: false,
       label: 'Non-interrupting Timer Boundary Intermediate Event',
       parentId: 'expanded_embedded_sub_process_id',
     });
     expect('boundary_event_non_interrupting_timer_on_top_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.TIMER,
       isInterrupting: false,
       label: 'Non-interrupting Timer Boundary Intermediate Event On Top',
       parentId: 'expanded_embedded_sub_process_id',
     });
     expect('boundary_event_non_interrupting_signal_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.SIGNAL,
       isInterrupting: false,
       label: 'Non-interrupting Signal Boundary Intermediate Event',
       parentId: 'collapsed_call_activity_id',
     });
     expect('boundary_event_non_interrupting_signal_on_top_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.SIGNAL,
       isInterrupting: false,
       label: 'Non-interrupting Signal Boundary Intermediate Event On Top',
@@ -369,14 +353,12 @@ describe('mxGraph model', () => {
 
     // Sub-process
     expect('expanded_embedded_sub_process_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Expanded Embedded Sub-Process',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
     });
     expect('expanded_embedded_sub_process_with_loop_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Expanded Embedded Sub-Process With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
@@ -384,7 +366,6 @@ describe('mxGraph model', () => {
       verticalAlign: 'top',
     });
     expect('expanded_embedded_sub_process_with_sequential_multi_instance_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Expanded Embedded Sub-Process With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
@@ -392,7 +373,6 @@ describe('mxGraph model', () => {
       verticalAlign: 'top',
     });
     expect('expanded_embedded_sub_process_with_parallel_multi_instance_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Expanded Embedded Sub-Process With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
@@ -401,28 +381,24 @@ describe('mxGraph model', () => {
     });
 
     expect('collapsed_embedded_sub_process_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process',
       markers: [ShapeBpmnMarkerKind.EXPAND],
       parentId: 'participant_1_id',
     });
     expect('collapsed_embedded_sub_process_with_loop_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
       parentId: 'participant_1_id',
     });
     expect('collapsed_embedded_sub_process_with_sequential_multi_instance_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND],
       parentId: 'participant_1_id',
     });
     expect('collapsed_embedded_sub_process_with_parallel_multi_instance_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       label: 'Collapsed Embedded Sub-Process With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
@@ -430,14 +406,12 @@ describe('mxGraph model', () => {
     });
 
     expect('expanded_event_sub_process_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Expanded Event Sub-Process',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
     });
     expect('expanded_event_sub_process_with_loop_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Expanded Event Sub-Process With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP],
@@ -445,7 +419,6 @@ describe('mxGraph model', () => {
       verticalAlign: 'top',
     });
     expect('expanded_event_sub_process_with_sequential_multi_instance_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Expanded Event Sub-Process With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
@@ -453,7 +426,6 @@ describe('mxGraph model', () => {
       verticalAlign: 'top',
     });
     expect('expanded_event_sub_process_with_parallel_multi_instance_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Expanded Event Sub-Process With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
@@ -462,28 +434,24 @@ describe('mxGraph model', () => {
     });
 
     expect('collapsed_event_sub_process_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Collapsed Event Sub-Process',
       markers: [ShapeBpmnMarkerKind.EXPAND],
       parentId: 'participant_1_id',
     });
     expect('collapsed_event_sub_process_with_loop_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Collapsed Event Sub-Process With Loop',
       markers: [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
       parentId: 'participant_1_id',
     });
     expect('collapsed_event_sub_process_with_sequential_multi_instance_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Collapsed Event Sub-Process With Sequential Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND],
       parentId: 'participant_1_id',
     });
     expect('collapsed_event_sub_process_with_parallel_multi_instance_id').toBeSubProcess({
-      kind: null,
       subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       label: 'Collapsed Event Sub-Process With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
@@ -1047,7 +1015,7 @@ describe('mxGraph model', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-vertical-pool-lanes-sub_lanes.bpmn'));
 
     // pool
-    const minimalPoolModelElement: ExpectedShapeModelElement = { kind: null, isHorizontal: false };
+    const minimalPoolModelElement: ExpectedShapeModelElement = { isHorizontal: false };
     expect('Participant_Vertical_With_Lanes').toBePool({ ...minimalPoolModelElement, label: 'Vertical Pool With Lanes' });
 
     // lane
