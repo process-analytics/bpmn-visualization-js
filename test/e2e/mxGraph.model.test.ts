@@ -323,14 +323,12 @@ describe('mxGraph model', () => {
       parentId: 'business_rule_task_id',
     });
     expect('boundary_event_interrupting_cancel_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.CANCEL,
       isInterrupting: true,
       label: 'Interrupting Cancel Boundary Intermediate Event',
       parentId: 'receive_task_non_instantiating_id',
     });
     expect('boundary_event_interrupting_cancel_on_top_id').toBeBoundaryEvent({
-      kind: null,
       eventKind: ShapeBpmnEventKind.CANCEL,
       isInterrupting: true,
       label: 'Interrupting Cancel Boundary Intermediate Event On Top',
