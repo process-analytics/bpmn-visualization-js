@@ -301,6 +301,10 @@ The event definition can be defined on the event or on the definitions.
 |Compensation Interrupting Boundary Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Cancel Interrupting Boundary Event
+|
+|
 |===
 
 
@@ -355,6 +359,10 @@ The event definition can be defined on the event or on the definitions.
 |Compensation End Event
 |icon:check-circle-o[]
 |The icon width may be adjusted
+
+|Cancel End Event
+|
+|
 |===
 
 

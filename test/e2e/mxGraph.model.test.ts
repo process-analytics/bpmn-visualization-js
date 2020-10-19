@@ -153,6 +153,16 @@ describe('mxGraph model', () => {
       label: 'Compensate End Event On Top',
       parentId: 'participant_1_id',
     });
+    expect('end_event_cancel_id').toBeEndEvent({
+      eventKind: ShapeBpmnEventKind.CANCEL,
+      label: 'Cancel End Event',
+      parentId: 'participant_1_id',
+    });
+    expect('end_event_cancel_on_top_id').toBeEndEvent({
+      eventKind: ShapeBpmnEventKind.CANCEL,
+      label: 'Cancel End Event On Top',
+      parentId: 'participant_1_id',
+    });
 
     // throw intermediate event
     expect('intermediate_throw_event_none_id').toBeIntermediateThrowEvent({
@@ -321,6 +331,20 @@ describe('mxGraph model', () => {
       isInterrupting: true,
       label: 'Interrupting Compensate Boundary Intermediate Event On Top',
       parentId: 'business_rule_task_id',
+    });
+    expect('boundary_event_interrupting_cancel_id').toBeBoundaryEvent({
+      kind: null,
+      eventKind: ShapeBpmnEventKind.CANCEL,
+      isInterrupting: true,
+      label: 'Interrupting Cancel Boundary Intermediate Event',
+      parentId: 'receive_task_non_instantiating_id',
+    });
+    expect('boundary_event_interrupting_cancel_on_top_id').toBeBoundaryEvent({
+      kind: null,
+      eventKind: ShapeBpmnEventKind.CANCEL,
+      isInterrupting: true,
+      label: 'Interrupting Cancel Boundary Intermediate Event On Top',
+      parentId: 'receive_task_non_instantiating_id',
     });
 
     // boundary event: non-interrupting

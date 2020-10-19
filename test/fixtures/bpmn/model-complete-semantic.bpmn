@@ -26,6 +26,7 @@
   <semantic:linkEventDefinition id="top_link_definition_id" />
   <semantic:errorEventDefinition id="top_error_definition_id" />
   <semantic:compensateEventDefinition id="top_compensate_definition_id" />
+  <semantic:cancelEventDefinition id="top_cancel_definition_id" />
 
   <!-- Process -->
   <semantic:process id="process_2_id" isExecutable="false">
@@ -351,6 +352,12 @@
                             attachedToRef="business_rule_task_id">
       <semantic:eventDefinitionRef>top_compensate_definition_id</semantic:eventDefinitionRef>
     </semantic:boundaryEvent>
+    <semantic:boundaryEvent id="boundary_event_interrupting_cancel_id" name="Interrupting Cancel Boundary Intermediate Event" attachedToRef="receive_task_non_instantiating_id">
+      <semantic:cancelEventDefinition />
+    </semantic:boundaryEvent>
+    <semantic:boundaryEvent id="boundary_event_interrupting_cancel_on_top_id" name="Interrupting Cancel Boundary Intermediate Event On Top" attachedToRef="receive_task_non_instantiating_id">
+      <semantic:eventDefinitionRef>top_cancel_definition_id</semantic:eventDefinitionRef>
+    </semantic:boundaryEvent>
 
     <!-- Non-interrupting Boundary Event -->
     <semantic:boundaryEvent id="boundary_event_non_interrupting_message_id" name="Non-interrupting Message Boundary Intermediate Event" cancelActivity="false"
@@ -461,6 +468,12 @@
     </semantic:endEvent>
     <semantic:endEvent id="end_event_compensate_on_top_id" name="Compensate End Event On Top">
       <semantic:eventDefinitionRef>top_compensate_definition_id</semantic:eventDefinitionRef>
+    </semantic:endEvent>
+    <semantic:endEvent id="end_event_cancel_id" name="Cancel End Event">
+      <semantic:cancelEventDefinition />
+    </semantic:endEvent>
+    <semantic:endEvent id="end_event_cancel_on_top_id" name="Cancel End Event On Top">
+      <semantic:eventDefinitionRef>top_cancel_definition_id</semantic:eventDefinitionRef>
     </semantic:endEvent>
 
     <!-- Gateway -->
@@ -1115,6 +1128,18 @@
           <dc:Bounds x="988" y="2156" width="85" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_end_event_cancel_id" bpmnElement="end_event_cancel_id">
+        <dc:Bounds x="914" y="2224" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="888" y="2260" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_end_event_cancel_on_top_id" bpmnElement="end_event_cancel_on_top_id">
+        <dc:Bounds x="1014" y="2224" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="988" y="2260" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
 
       <!-- Interrupting Boundary Event -->
       <bpmndi:BPMNShape id="shape_boundary_event_interrupting_message_id" bpmnElement="boundary_event_interrupting_message_id">
@@ -1175,6 +1200,18 @@
         <dc:Bounds x="2312" y="1004" width="32" height="32" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2286" y="930" width="67" height="66" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_boundary_event_interrupting_cancel_id" bpmnElement="boundary_event_interrupting_cancel_id">
+        <dc:Bounds x="2412" y="2340" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2398" y="2374" width="63" height="66" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_boundary_event_interrupting_cancel_on_top_id" bpmnElement="boundary_event_interrupting_cancel_on_top_id">
+        <dc:Bounds x="2312" y="2340" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2292" y="2374" width="67" height="66" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
