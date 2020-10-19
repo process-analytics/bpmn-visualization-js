@@ -133,7 +133,6 @@ export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
   eventKind: ShapeBpmnEventKind;
 }
 
-// TODO find a way to not be forced to pass 'kind'
 export interface ExpectedSubProcessModelElement extends ExpectedShapeModelElement {
   subProcessKind: ShapeBpmnSubProcessKind;
 }
@@ -153,7 +152,6 @@ export interface ExpectedSequenceFlowModelElement extends ExpectedEdgeModelEleme
   sequenceFlowKind?: SequenceFlowKind;
 }
 
-// TODO find a way to not be forced to pass 'kind'
 export interface ExpectedBoundaryEventModelElement extends ExpectedEventModelElement {
   isInterrupting?: boolean;
 }
