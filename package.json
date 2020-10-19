@@ -67,7 +67,7 @@
     "test:e2e:coverage": "cross-env JEST_IMAGE_SNAPSHOT_TRACK_OBSOLETE=1 jest --runInBand --detectOpenHandles --config=./test/e2e/jest.config.js --coverage"
   },
   "dependencies": {
-    "entities": "^2.0.0",
+    "entities": "^2.1.0",
     "fast-xml-parser": "^3.17.4",
     "mxgraph": "4.1.0"
   },
