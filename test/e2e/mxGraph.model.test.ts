@@ -372,6 +372,18 @@ describe('mxGraph model', () => {
       label: 'Non-interrupting Signal Boundary Intermediate Event On Top',
       parentId: 'collapsed_call_activity_id',
     });
+    expect('boundary_event_non_interrupting_conditional_id').toBeBoundaryEvent({
+      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      isInterrupting: false,
+      label: 'Non-interrupting Conditional Boundary Intermediate Event',
+      parentId: 'collapsed_call_activity_with_loop_id',
+    });
+    expect('boundary_event_non_interrupting_conditional_on_top_id').toBeBoundaryEvent({
+      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      isInterrupting: false,
+      label: 'Non-interrupting Conditional Boundary Intermediate Event On Top',
+      parentId: 'collapsed_call_activity_with_loop_id',
+    });
 
     // Sub-process
     expect('expanded_embedded_sub_process_id').toBeSubProcess({
@@ -935,6 +947,7 @@ describe('mxGraph model', () => {
     // boundary event: non-interrupting
     expect('boundary_event_non_interrupting_message_id').not.toBeCell();
     expect('boundary_event_non_interrupting_timer_id').not.toBeCell();
+    expect('boundary_event_non_interrupting_conditional_id').not.toBeCell();
   });
 
   it('bpmn element shape should have coordinates relative to the pool when no lane', async () => {

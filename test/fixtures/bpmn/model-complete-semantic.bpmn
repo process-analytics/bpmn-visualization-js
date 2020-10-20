@@ -27,6 +27,7 @@
   <semantic:errorEventDefinition id="top_error_definition_id" />
   <semantic:compensateEventDefinition id="top_compensate_definition_id" />
   <semantic:cancelEventDefinition id="top_cancel_definition_id" />
+  <semantic:conditionalEventDefinition id="top_conditional_definition_id" />
 
   <!-- Process -->
   <semantic:process id="process_2_id" isExecutable="false">
@@ -384,6 +385,14 @@
                             attachedToRef="collapsed_call_activity_id">
       <semantic:eventDefinitionRef>top_signal_definition_id</semantic:eventDefinitionRef>
     </semantic:boundaryEvent>
+    <semantic:boundaryEvent id="boundary_event_non_interrupting_conditional_id" name="Non-interrupting Conditional Boundary Intermediate Event" cancelActivity="false"
+                            attachedToRef="collapsed_call_activity_with_loop_id">
+      <semantic:conditionalEventDefinition />
+    </semantic:boundaryEvent>
+    <semantic:boundaryEvent id="boundary_event_non_interrupting_conditional_on_top_id" name="Non-interrupting Conditional Boundary Intermediate Event On Top" cancelActivity="false"
+                            attachedToRef="collapsed_call_activity_with_loop_id">
+      <semantic:eventDefinitionRef>top_conditional_definition_id</semantic:eventDefinitionRef>
+    </semantic:boundaryEvent>
 
     <!-- Throw Intermediate Event -->
     <semantic:intermediateThrowEvent id="intermediate_throw_event_none_id" name="Throw None Intermediate Event" />
@@ -546,13 +555,13 @@
 
       <!-- Collapsed -->
       <bpmndi:BPMNShape id="shape_collapsed_call_activity_id" bpmnElement="collapsed_call_activity_id" isExpanded="false">
-        <dc:Bounds x="2970" y="2175" width="140" height="90" />
+        <dc:Bounds x="2970" y="2275" width="140" height="90" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3000" y="2200" width="100" height="70" />
+          <dc:Bounds x="3000" y="2300" width="100" height="70" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_collapsed_call_activity_with_loop_id" bpmnElement="collapsed_call_activity_with_loop_id" isExpanded="false">
-        <dc:Bounds x="2970" y="2035" width="140" height="90" />
+        <dc:Bounds x="2970" y="2085" width="140" height="90" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_collapsed_call_activity_with_sequential_multi_instance_id" bpmnElement="collapsed_call_activity_with_sequential_multi_instance_id"
                         isExpanded="false">
@@ -1241,15 +1250,27 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_signal_id" bpmnElement="boundary_event_non_interrupting_signal_id">
-        <dc:Bounds x="3094" y="2249" width="32" height="32" />
+        <dc:Bounds x="3094" y="2349" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3070" y="2281" width="81" height="53" />
+          <dc:Bounds x="3070" y="2381" width="81" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_signal_on_top_id" bpmnElement="boundary_event_non_interrupting_signal_on_top_id">
-        <dc:Bounds x="2954" y="2249" width="32" height="32" />
+        <dc:Bounds x="2954" y="2349" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2930" y="2281" width="81" height="53" />
+          <dc:Bounds x="2930" y="2381" width="81" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_conditional_id" bpmnElement="boundary_event_non_interrupting_conditional_id">
+        <dc:Bounds x="3094" y="2159" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3070" y="2191" width="81" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_conditional_on_top_id" bpmnElement="boundary_event_non_interrupting_conditional_on_top_id">
+        <dc:Bounds x="2954" y="2159" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2930" y="2191" width="81" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 

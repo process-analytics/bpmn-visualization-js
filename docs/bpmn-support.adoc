@@ -326,6 +326,10 @@ The event definition can be defined on the event or on the definitions.
 |Signal Non-interrupting Boundary Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Conditional Non-interrupting Boundary Event
+|
+|
 |===
 
 
