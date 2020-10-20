@@ -91,22 +91,8 @@ export default class MxGraphConfigurator {
   }
 
   private configureMouseEvent(activated = false): void {
-    if (!activated) {
-      return;
+    if (activated) {
+      this.graph.createMouseWheelZoomExperience();
     }
-
-    mxEvent.addMouseWheelListener((event: Event, up: boolean) => {
-      // TODO review type: this hack is due to the introduction of mxgraph-type-definitions
-      const evt = (event as unknown) as MouseEvent;
-      if (mxEvent.isConsumed((evt as unknown) as mxMouseEvent)) {
-        return;
-      }
-      // only the ctrl key or the meta key on mac
-      const isZoomWheelEvent = (evt.ctrlKey || (mxClient.IS_MAC && evt.metaKey)) && !evt.altKey && !evt.shiftKey;
-      if (isZoomWheelEvent) {
-        this.graph.performZoom(up, evt);
-        mxEvent.consume(evt);
-      }
-    }, this.container);
   }
 }
