@@ -74,8 +74,11 @@ abstract class EventShape extends mxEllipse {
   // This will be removed after implementation of all supported events
   private markNonFullyRenderedEvents(c: mxAbstractCanvas2D): void {
     const eventKind = StyleUtils.getBpmnEventKind(this.style);
-    if (eventKind == ShapeBpmnEventKind.CONDITIONAL) {
+    if (eventKind == ShapeBpmnEventKind.CANCEL) {
       c.setFillColor('deeppink');
+      c.setFillAlpha(0.3);
+    } else if (eventKind == ShapeBpmnEventKind.CONDITIONAL) {
+      c.setFillColor('chartreuse');
       c.setFillAlpha(0.3);
     }
   }
