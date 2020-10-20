@@ -51,6 +51,13 @@ of the `Done` column related to the milestone
     - put screenshots/gif of the new features
   - Published the release **only when you are done** with the release content. At any time, you can save the draft
 
+### NPM publish new version
+- Ensure you are on the last tag locally: `git checkout vX.Y.Z`
+- Pull the new version created by the release workflow: `git pull origin`
+- Build bundles by running: `npm run build-bundles`
+- Check build locally by accessing `/bpmn-visu-js/test-bundle/lib-integration-iife.html` in your browser
+- If everything is OK run `npm publish` to make the new version available to the community (you can pass --dry-run to validate command prior publishing)
+
 
 ## bpmn-visualization-examples repository update
 
