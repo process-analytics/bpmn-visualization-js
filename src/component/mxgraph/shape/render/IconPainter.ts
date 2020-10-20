@@ -348,6 +348,34 @@ export default class IconPainter {
   }
 
   /**
+   * This icon is used by `conditional event`.
+   */
+  public paintConditionalIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
+    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, { height: 60, width: 60 });
+
+    canvas.begin();
+    canvas.moveTo(0, 0);
+    canvas.lineTo(60, 0);
+    canvas.lineTo(60, 60);
+    canvas.lineTo(0, 60);
+    canvas.lineTo(0, 0);
+    canvas.close();
+    canvas.moveTo(5, 5);
+    canvas.lineTo(55, 5);
+    canvas.close();
+    canvas.moveTo(5, 21.6);
+    canvas.lineTo(55, 21.6);
+    canvas.close();
+    canvas.moveTo(5, 38.3);
+    canvas.lineTo(55, 38.3);
+    canvas.close();
+    canvas.moveTo(5, 55);
+    canvas.lineTo(55, 55);
+    canvas.close();
+    canvas.fillAndStroke();
+  }
+
+  /**
    * This icon is used by `exclusive gateway`.
    */
   public paintXCrossIcon(paintParameter: PaintParameter): void {
