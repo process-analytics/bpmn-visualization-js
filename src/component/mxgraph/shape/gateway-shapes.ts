@@ -43,7 +43,11 @@ export class ExclusiveGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    this.iconPainter.paintXCrossIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(4) });
+    this.iconPainter.paintXCrossIcon({
+      ...paintParameter,
+      icon: { ...paintParameter.icon, isFilled: true },
+      setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(4),
+    });
   }
 }
 

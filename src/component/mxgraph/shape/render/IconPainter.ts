@@ -311,29 +311,6 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  /**
-   * This icon is used by `exclusive gateway`.
-   */
-  public paintXCrossIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
-    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon: { ...icon, isFilled: true } }, { height: 0.5, width: 0.5 });
-
-    IconPainter.drawCrossIcon(canvas);
-    const rotationCenterX = shape.w / 4;
-    const rotationCenterY = shape.h / 4;
-    canvas.rotate(45, false, false, rotationCenterX, rotationCenterY);
-    canvas.fillAndStroke();
-  }
-
-  /**
-   * This icon is used by `parallel gateway`.
-   */
-  public paintPlusCrossIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
-    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon: { ...icon, isFilled: true } }, { height: 0.5, width: 0.5 });
-
-    IconPainter.drawCrossIcon(canvas);
-    canvas.fillAndStroke();
-  }
-
   private static drawCrossIcon(canvas: BpmnCanvas): void {
     canvas.begin();
     canvas.moveTo(0.38, 0);
@@ -349,6 +326,29 @@ export default class IconPainter {
     canvas.lineTo(0, 0.38);
     canvas.lineTo(0.38, 0.38);
     canvas.close();
+  }
+
+  /**
+   * This icon is used by `exclusive gateway`.
+   */
+  public paintXCrossIcon(paintParameter: PaintParameter): void {
+    const canvas = this.newBpmnCanvas(paintParameter, { height: 0.5, width: 0.5 });
+
+    IconPainter.drawCrossIcon(canvas);
+    const rotationCenterX = paintParameter.shape.w * paintParameter.ratioFromParent;
+    const rotationCenterY = paintParameter.shape.h * paintParameter.ratioFromParent;
+    canvas.rotate(45, false, false, rotationCenterX, rotationCenterY);
+    canvas.fillAndStroke();
+  }
+
+  /**
+   * This icon is used by `parallel gateway`.
+   */
+  public paintPlusCrossIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
+    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon: { ...icon, isFilled: true } }, { height: 0.5, width: 0.5 });
+
+    IconPainter.drawCrossIcon(canvas);
+    canvas.fillAndStroke();
   }
 
   /**
