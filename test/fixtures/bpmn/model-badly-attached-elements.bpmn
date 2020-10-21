@@ -20,10 +20,10 @@
       <semantic:conditionalEventDefinition/>
     </semantic:boundaryEvent>
     <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="true" name="Boundary Intermediate Event Interrupting Escalation" id="boundary_event_interrupting_escalation_id">
-      <semantic:conditionalEventDefinition/>
+      <semantic:escalationEventDefinition/>
     </semantic:boundaryEvent>
     <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="false" name="Boundary Intermediate Event Non-nterrupting Escalation" id="boundary_event_non_interrupting_escalation_id">
-      <semantic:conditionalEventDefinition/>
+      <semantic:escalationEventDefinition/>
     </semantic:boundaryEvent>
   </semantic:process>
   <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
