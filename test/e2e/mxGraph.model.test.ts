@@ -173,6 +173,16 @@ describe('mxGraph model', () => {
       label: 'Cancel End Event On Top',
       parentId: 'participant_1_id',
     });
+    expect('end_event_escalation_id').toBeEndEvent({
+      eventKind: ShapeBpmnEventKind.ESCALATION,
+      label: 'Escalation End Event',
+      parentId: 'participant_1_id',
+    });
+    expect('end_event_escalation_on_top_id').toBeEndEvent({
+      eventKind: ShapeBpmnEventKind.ESCALATION,
+      label: 'Escalation End Event On Top',
+      parentId: 'participant_1_id',
+    });
 
     // throw intermediate event
     expect('intermediate_throw_event_none_id').toBeIntermediateThrowEvent({
@@ -226,6 +236,16 @@ describe('mxGraph model', () => {
     expect('intermediate_throw_event_compensate_on_top_id').toBeIntermediateThrowEvent({
       eventKind: ShapeBpmnEventKind.COMPENSATION,
       label: 'Throw Compensate Intermediate Event On Top',
+      parentId: 'participant_1_id',
+    });
+    expect('intermediate_throw_event_escalation_id').toBeIntermediateThrowEvent({
+      eventKind: ShapeBpmnEventKind.ESCALATION,
+      label: 'Throw Escalation Intermediate Event',
+      parentId: 'participant_1_id',
+    });
+    expect('intermediate_throw_event_escalation_on_top_id').toBeIntermediateThrowEvent({
+      eventKind: ShapeBpmnEventKind.ESCALATION,
+      label: 'Throw Escalation Intermediate Event On Top',
       parentId: 'participant_1_id',
     });
 
@@ -366,6 +386,18 @@ describe('mxGraph model', () => {
       label: 'Interrupting Conditional Boundary Intermediate Event On Top',
       parentId: 'receive_task_instantiating_id',
     });
+    expect('boundary_event_interrupting_escalation_id').toBeBoundaryEvent({
+      eventKind: ShapeBpmnEventKind.ESCALATION,
+      isInterrupting: true,
+      label: 'Interrupting Escalation Boundary Intermediate Event',
+      parentId: 'receive_task_non_instantiating_with_loop_id',
+    });
+    expect('boundary_event_interrupting_escalation_on_top_id').toBeBoundaryEvent({
+      eventKind: ShapeBpmnEventKind.ESCALATION,
+      isInterrupting: true,
+      label: 'Interrupting Escalation Boundary Intermediate Event On Top',
+      parentId: 'receive_task_non_instantiating_with_loop_id',
+    });
 
     // boundary event: non-interrupting
     expect('boundary_event_non_interrupting_message_id').toBeBoundaryEvent({
@@ -415,6 +447,18 @@ describe('mxGraph model', () => {
       isInterrupting: false,
       label: 'Non-interrupting Conditional Boundary Intermediate Event On Top',
       parentId: 'collapsed_call_activity_with_loop_id',
+    });
+    expect('boundary_event_non_interrupting_escalation_id').toBeBoundaryEvent({
+      eventKind: ShapeBpmnEventKind.ESCALATION,
+      isInterrupting: false,
+      label: 'Non-interrupting Escalation Boundary Intermediate Event',
+      parentId: 'collapsed_call_activity_with_sequential_multi_instance_id',
+    });
+    expect('boundary_event_non_interrupting_escalation_on_top_id').toBeBoundaryEvent({
+      eventKind: ShapeBpmnEventKind.ESCALATION,
+      isInterrupting: false,
+      label: 'Non-interrupting Escalation Boundary Intermediate Event On Top',
+      parentId: 'collapsed_call_activity_with_sequential_multi_instance_id',
     });
 
     // Sub-process
@@ -628,6 +672,18 @@ describe('mxGraph model', () => {
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
+    expect('start_event_interrupting_escalation_id').toBeStartEvent({
+      eventKind: ShapeBpmnEventKind.ESCALATION,
+      label: 'Interrupting Escalation Start Event In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: true,
+    });
+    expect('start_event_interrupting_escalation_on_top_id').toBeStartEvent({
+      eventKind: ShapeBpmnEventKind.ESCALATION,
+      label: 'Interrupting Escalation Start Event On Top In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: true,
+    });
 
     // Non-interrupting Start Event
     expect('start_event_non_interrupting_message_id').toBeStartEvent({
@@ -675,6 +731,18 @@ describe('mxGraph model', () => {
     expect('start_event_non_interrupting_conditional_on_top_id').toBeStartEvent({
       eventKind: ShapeBpmnEventKind.CONDITIONAL,
       label: 'Non-interrupting Conditional Start Event On Top In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: false,
+    });
+    expect('start_event_non_interrupting_escalation_id').toBeStartEvent({
+      eventKind: ShapeBpmnEventKind.ESCALATION,
+      label: 'Non-interrupting Escalation Start Event In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: false,
+    });
+    expect('start_event_non_interrupting_escalation_on_top_id').toBeStartEvent({
+      eventKind: ShapeBpmnEventKind.ESCALATION,
+      label: 'Non-interrupting Escalation Start Event On Top In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: false,
     });
@@ -1000,11 +1068,13 @@ describe('mxGraph model', () => {
     expect('boundary_event_interrupting_message_id').not.toBeCell();
     expect('boundary_event_interrupting_timer_id').not.toBeCell();
     expect('boundary_event_interrupting_conditional_id').not.toBeCell();
+    expect('boundary_event_interrupting_escalation_id').not.toBeCell();
 
     // boundary event: non-interrupting
     expect('boundary_event_non_interrupting_message_id').not.toBeCell();
     expect('boundary_event_non_interrupting_timer_id').not.toBeCell();
     expect('boundary_event_non_interrupting_conditional_id').not.toBeCell();
+    expect('boundary_event_non_interrupting_escalation_id').not.toBeCell();
   });
 
   it('bpmn element shape should have coordinates relative to the pool when no lane', async () => {
