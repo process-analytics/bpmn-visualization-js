@@ -35,10 +35,12 @@ export enum ShapeBpmnElementKind {
   GATEWAY_PARALLEL = 'parallelGateway',
   GATEWAY_EXCLUSIVE = 'exclusiveGateway',
   GATEWAY_INCLUSIVE = 'inclusiveGateway',
+  GATEWAY_EVENT_BASED = 'eventBasedGateway',
 
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
   // TODO : Uncomment corresponding line in src/model/bpmn/shape/ShapeUtil.ts
+  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.flowNode.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.bounds.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
   // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.test.ts

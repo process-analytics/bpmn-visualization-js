@@ -16,6 +16,7 @@
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import { ShapeBpmnEventBasedGateway } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 
 describe.each([
   ['task', ShapeBpmnElementKind.TASK],
@@ -29,6 +30,8 @@ describe.each([
   ['exclusiveGateway', ShapeBpmnElementKind.GATEWAY_EXCLUSIVE],
   ['inclusiveGateway', ShapeBpmnElementKind.GATEWAY_INCLUSIVE],
   ['parallelGateway', ShapeBpmnElementKind.GATEWAY_PARALLEL],
+  ['eventBasedGateway', ShapeBpmnElementKind.GATEWAY_EVENT_BASED],
+  // ['complexGateway', ShapeBpmnElementKind.GATEWAY_COMPLEX],
 ])('parse bpmn as json for %s', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
   const processWithFlowNodeAsObject = {} as TProcess;
   processWithFlowNodeAsObject[`${bpmnKind}`] = {
@@ -199,6 +202,99 @@ describe.each([
         },
       });
       expect(model.flowNodes[1].bpmnElement.instantiate).toBeTruthy();
+    });
+  }
+
+  if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.GATEWAY_EVENT_BASED) {
+    it(`should convert as Shape, when a ${bpmnKind} (with/without instantiate) is an attribute (as array) of 'process'`, () => {
+      const json = {
+        definitions: {
+          targetNamespace: '',
+          process: {},
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: `shape_${bpmnKind}_id_0`,
+                  bpmnElement: `${bpmnKind}_id_0`,
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                },
+                {
+                  id: `shape_${bpmnKind}_id_1`,
+                  bpmnElement: `${bpmnKind}_id_1`,
+                  Bounds: { x: 365, y: 235, width: 35, height: 46 },
+                },
+                {
+                  id: `shape_${bpmnKind}_id_2`,
+                  bpmnElement: `${bpmnKind}_id_2`,
+                  Bounds: { x: 375, y: 245, width: 34, height: 47 },
+                },
+              ],
+            },
+          },
+        },
+      };
+      (json.definitions.process as TProcess)[`${bpmnKind}`] = [
+        {
+          id: `${bpmnKind}_id_0`,
+        },
+        {
+          id: `${bpmnKind}_id_1`,
+          instantiate: true,
+        },
+        {
+          id: `${bpmnKind}_id_2`,
+          instantiate: true,
+          eventGatewayType: 'Parallel',
+        },
+      ];
+
+      const model = parseJsonAndExpectOnlyFlowNodes(json, 3);
+
+      verifyShape(model.flowNodes[0], {
+        shapeId: `shape_${bpmnKind}_id_0`,
+        bpmnElementId: `${bpmnKind}_id_0`,
+        bpmnElementName: undefined,
+        bpmnElementKind: expectedShapeBpmnElementKind,
+        bounds: {
+          x: 362,
+          y: 232,
+          width: 36,
+          height: 45,
+        },
+      });
+      expect(model.flowNodes[0].bpmnElement.instantiate).toBeFalsy();
+
+      verifyShape(model.flowNodes[1], {
+        shapeId: `shape_${bpmnKind}_id_1`,
+        bpmnElementId: `${bpmnKind}_id_1`,
+        bpmnElementName: undefined,
+        bpmnElementKind: expectedShapeBpmnElementKind,
+        bounds: {
+          x: 365,
+          y: 235,
+          width: 35,
+          height: 46,
+        },
+      });
+      expect(model.flowNodes[1].bpmnElement.instantiate).toBeTruthy();
+
+      verifyShape(model.flowNodes[2], {
+        shapeId: `shape_${bpmnKind}_id_2`,
+        bpmnElementId: `${bpmnKind}_id_2`,
+        bpmnElementName: undefined,
+        bpmnElementKind: expectedShapeBpmnElementKind,
+        bounds: {
+          x: 375,
+          y: 245,
+          width: 34,
+          height: 47,
+        },
+      });
+      const parallelInstantiatingEventBasedGateway: ShapeBpmnEventBasedGateway = model.flowNodes[2].bpmnElement;
+      expect(parallelInstantiatingEventBasedGateway.instantiate).toBeTruthy();
+      expect(parallelInstantiatingEventBasedGateway.type).toEqual('Parallel');
     });
   }
 });

@@ -60,6 +60,15 @@ export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
   }
 }
 
+export type EventGatewayType = 'Exclusive' | 'Parallel';
+// TODO require model image change!!!!
+export class ShapeBpmnEventBasedGateway extends ShapeBpmnElement {
+  // TODO rename type into gatewayEventType to better match bpmn spec
+  constructor(id: string, name: string, parentId: string, instantiate?: boolean, readonly type?: EventGatewayType) {
+    super(id, name, ShapeBpmnElementKind.GATEWAY_EVENT_BASED, parentId, instantiate);
+  }
+}
+
 export class Participant {
   constructor(readonly id: string, readonly name?: string, public processRef?: string) {}
 }

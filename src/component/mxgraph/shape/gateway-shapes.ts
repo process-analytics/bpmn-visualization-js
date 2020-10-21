@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { StyleDefault } from '../StyleUtils';
+import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import BpmnCanvas from './render/BpmnCanvas';
 
@@ -72,5 +72,24 @@ export class InclusiveGatewayShape extends GatewayShape {
       ratioFromParent: 0.62,
       icon: { ...paintParameter.icon, isFilled: false, strokeWidth: StyleDefault.STROKE_WIDTH_THICK.valueOf() },
     });
+  }
+}
+
+export class EventBasedGatewayShape extends GatewayShape {
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+
+  protected paintOuterShape(paintParameter: PaintParameter): void {
+    const isParallel = this.style['bpmn.eventGatewayType'] == 'Parallel';
+    const fillColor = StyleUtils.getBpmnIsInstantiating(this.style) ? (isParallel ? 'lightBlue' : 'purple') : 'orange';
+
+    paintParameter.c.setFillColor(fillColor);
+    paintParameter.c.setFillAlpha(0.6);
+    super.paintOuterShape(paintParameter);
+  }
+
+  protected paintInnerShape(paintParameter: PaintParameter): void {
+    // TODO rendering will be managed later
   }
 }

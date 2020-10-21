@@ -17,10 +17,12 @@
 import StyleConfigurator from '../../../../../src/component/mxgraph/config/StyleConfigurator';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, {
+  EventGatewayType,
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
   ShapeBpmnEvent,
+  ShapeBpmnEventBasedGateway,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
@@ -82,6 +84,10 @@ function newShapeBpmnStartEvent(eventKind: ShapeBpmnEventKind, isInterrupting: b
 
 function newShapeBpmnSubProcess(subProcessKind: ShapeBpmnSubProcessKind, marker?: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
   return new ShapeBpmnSubProcess('id', 'name', subProcessKind, null, marker);
+}
+
+function newShapeBpmnEventBasedGateway(instantiate: boolean, type: EventGatewayType): ShapeBpmnElement {
+  return new ShapeBpmnEventBasedGateway('id', 'name', null, instantiate, type);
 }
 
 /**
@@ -378,5 +384,19 @@ describe('mxgraph renderer', () => {
         }
       },
     );
+  });
+
+  describe('compute style - event-based gateway', () => {
+    it.each`
+      title                  | instantiate  | type
+      ${'default'}           | ${undefined} | ${undefined}
+      ${'non-instantiating'} | ${false}     | ${undefined}
+      ${'instantiating'}     | ${true}      | ${undefined}
+      ${'instantiating'}     | ${true}      | ${'Exclusive'}
+      ${'instantiating'}     | ${true}      | ${'Parallel'}
+    `('$title event-based gateway when instantiate: $instantiate for type: $type', ({ title, instantiate, type }) => {
+      const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, type), newLabel({ name: 'Arial' }));
+      expect(computeStyle(shape)).toEqual(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.eventGatewayType=${type};fontFamily=Arial`);
+    });
   });
 });

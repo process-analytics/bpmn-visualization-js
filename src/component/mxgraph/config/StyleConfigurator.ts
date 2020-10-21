@@ -25,6 +25,7 @@ import ShapeBpmnElement, {
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
   ShapeBpmnEvent,
+  ShapeBpmnEventBasedGateway,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
@@ -298,7 +299,7 @@ export default class StyleConfigurator {
         if (bpmnElement instanceof ShapeBpmnSubProcess) {
           styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
         } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
-          styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, bpmnElement.instantiate.toString());
+          styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, String(bpmnElement.instantiate));
         }
 
         const markers: ShapeBpmnMarkerKind[] = bpmnElement.markers;
@@ -309,6 +310,9 @@ export default class StyleConfigurator {
         // mxConstants.STYLE_HORIZONTAL is for the label
         // In BPMN, isHorizontal is for the Shape
         styleValues.set(mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
+      } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
+        styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, String(bpmnElement.instantiate));
+        styleValues.set('bpmn.eventGatewayType', String(bpmnElement.type)); // TODO use constant
       }
     } else {
       if (bpmnElement instanceof SequenceFlow) {
