@@ -55,15 +55,7 @@ abstract class EventShape extends mxEllipse {
     [
       ShapeBpmnEventKind.CANCEL,
       (paintParameter: PaintParameter) =>
-        this.iconPainter.paintCancelCrossIcon({
-          ...paintParameter,
-          setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(2, 8),
-          ratioFromParent: 0.445,
-          icon: {
-            ...paintParameter.icon,
-            strokeWidth: StyleDefault.STROKE_WIDTH_THIN.valueOf(),
-          },
-        }),
+        this.iconPainter.paintXCrossIcon({ ...paintParameter, ratioFromParent: 0.39, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(9) }),
     ],
   ]);
 

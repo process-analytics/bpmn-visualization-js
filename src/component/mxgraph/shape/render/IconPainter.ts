@@ -311,33 +311,20 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  /**
-   * This icon is used by `cancel events`.
-   */
-  public paintCancelCrossIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
-    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, { height: 0.5, width: 0.5 });
-
-    IconPainter.drawCrossIcon(canvas, 0.09, true);
-    const rotationCenterX = shape.w / 4;
-    const rotationCenterY = shape.h / 4;
-    canvas.rotate(45, false, false, rotationCenterX, rotationCenterY);
-    canvas.fillAndStroke();
-  }
-
-  private static drawCrossIcon(canvas: BpmnCanvas, thickness: number, roundedEdge: boolean): void {
+  private static drawCrossIcon(canvas: BpmnCanvas): void {
     canvas.begin();
-    canvas.moveTo(0.5 - thickness, 0);
-    roundedEdge ? canvas.arcTo(0.5, 0.5, 0, 0, 1, 0.5 + thickness, 0) : canvas.lineTo(0.5 + thickness, 0);
-    canvas.lineTo(0.5 + thickness, 0.5 - thickness);
-    canvas.lineTo(1, 0.5 - thickness);
-    roundedEdge ? canvas.arcTo(0.5, 0.5, 0, 0, 1, 1, 0.5 + thickness) : canvas.lineTo(1, 0.5 + thickness);
-    canvas.lineTo(0.5 + thickness, 0.5 + thickness);
-    canvas.lineTo(0.5 + thickness, 1);
-    roundedEdge ? canvas.arcTo(0.5, 0.5, 0, 0, 1, 0.5 - thickness, 1) : canvas.lineTo(0.5 - thickness, 1);
-    canvas.lineTo(0.5 - thickness, 0.5 + thickness);
-    canvas.lineTo(0, 0.5 + thickness);
-    roundedEdge ? canvas.arcTo(0.5, 0.5, 0, 0, 1, 0, 0.5 - thickness) : canvas.lineTo(0, 0.5 - thickness);
-    canvas.lineTo(0.5 - thickness, 0.5 - thickness);
+    canvas.moveTo(0.38, 0);
+    canvas.lineTo(0.62, 0);
+    canvas.lineTo(0.62, 0.38);
+    canvas.lineTo(1, 0.38);
+    canvas.lineTo(1, 0.62);
+    canvas.lineTo(0.62, 0.62);
+    canvas.lineTo(0.62, 1);
+    canvas.lineTo(0.38, 1);
+    canvas.lineTo(0.38, 0.62);
+    canvas.lineTo(0, 0.62);
+    canvas.lineTo(0, 0.38);
+    canvas.lineTo(0.38, 0.38);
     canvas.close();
   }
 
@@ -345,11 +332,11 @@ export default class IconPainter {
    * This icon is used by `exclusive gateway`.
    */
   public paintXCrossIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
-    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon: { ...icon, isFilled: true } }, { height: 0.5, width: 0.5 });
+    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon: { ...icon } }, { height: 0.5, width: 0.5 });
 
-    IconPainter.drawCrossIcon(canvas, 0.12, false);
-    const rotationCenterX = shape.w / 4;
-    const rotationCenterY = shape.h / 4;
+    IconPainter.drawCrossIcon(canvas);
+    const rotationCenterX = shape.w * ratioFromParent;
+    const rotationCenterY = shape.h * ratioFromParent;
     canvas.rotate(45, false, false, rotationCenterX, rotationCenterY);
     canvas.fillAndStroke();
   }
@@ -360,7 +347,7 @@ export default class IconPainter {
   public paintPlusCrossIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
     const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon: { ...icon, isFilled: true } }, { height: 0.5, width: 0.5 });
 
-    IconPainter.drawCrossIcon(canvas, 0.12, false);
+    IconPainter.drawCrossIcon(canvas);
     canvas.fillAndStroke();
   }
 
