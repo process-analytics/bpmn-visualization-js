@@ -32,17 +32,19 @@ export default class MxGraphRenderer {
   constructor(readonly graph: BpmnMxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
 
   public render(bpmnModel: BpmnModel, type: FitType = FitType.None): void {
-    // if (type != FitType.None) {
-    this.graph.view.rendering = false;
-    // }
+    if (type != FitType.None) {
+      this.graph.view.rendering = false;
+    }
 
     this.insertShapesAndEdges(bpmnModel);
 
-    // if (type != FitType.None) {
-    this.graph.customFit(type);
-    this.graph.view.rendering = true;
-    this.graph.refresh();
-    // }
+    if (type != FitType.None) {
+      this.graph.customFit(type);
+      this.graph.view.rendering = true;
+      this.graph.refresh();
+    }
+
+    // this.graph.fit(0, false, 0, true, false, false);
   }
 
   private insertShapesAndEdges(bpmnModel: BpmnModel): void {
