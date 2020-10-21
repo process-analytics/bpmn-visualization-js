@@ -50,7 +50,8 @@ abstract class EventShape extends mxEllipse {
     ],
     [
       ShapeBpmnEventKind.COMPENSATION,
-      (paintParameter: PaintParameter) => this.iconPainter.paintCompensationIcon({ ...paintParameter, ratioFromParent: 0.7, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
+      (paintParameter: PaintParameter) =>
+        this.iconPainter.paintDoubleLeftArrowheadsIcon({ ...paintParameter, ratioFromParent: 0.7, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
     ],
     [
       ShapeBpmnEventKind.CANCEL,
@@ -60,7 +61,7 @@ abstract class EventShape extends mxEllipse {
     [
       ShapeBpmnEventKind.ESCALATION,
       (paintParameter: PaintParameter) =>
-        this.iconPainter.paintEscalationIcon({
+        this.iconPainter.paintUpArrowheadIcon({
           ...paintParameter,
           ratioFromParent: 0.55,
           icon: { ...paintParameter.icon, strokeWidth: StyleDefault.STROKE_WIDTH_THIN.valueOf() },
@@ -68,7 +69,7 @@ abstract class EventShape extends mxEllipse {
     ],
     [
       ShapeBpmnEventKind.CONDITIONAL,
-      (paintParameter: PaintParameter) => this.iconPainter.paintConditionalIcon({ ...paintParameter, ratioFromParent: 0.6, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
+      (paintParameter: PaintParameter) => this.iconPainter.paintListIcon({ ...paintParameter, ratioFromParent: 0.6, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
     ],
   ]);
 
