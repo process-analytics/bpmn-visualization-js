@@ -39,6 +39,24 @@
       .info:hover .tooltip {
         visibility: visible;
       }
+      .zoom-config {
+        font-size: 0.7em;
+        width: 38px;
+        position: absolute;
+        left: -6px;
+      }
+      #zoom-max {
+        top: 40px;
+      }
+      #zoom-min {
+        top: 70px;
+      }
+      #zoom-throttle {
+        top: 100px;
+      }
+      #zoom-debounce {
+        top: 130px;
+      }
     </style>
 </head>
 <body>
@@ -47,7 +65,21 @@
     <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-info-square-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
       <path fill-rule="evenodd" d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
     </svg>
-    <span class="tooltip">Drag and Drop a BPMN file</span>
+    <span class="tooltip">Drag and Drop a BPMN file
+      <br/>
+      <br/>
+      first value is for max
+      <br/>
+      <br/>
+      second value is for min
+      <br/>
+      <br/>
+      to play with throttle and debounce pass them in url like this: http://localhost:10001/navigation-diagram.html?zoomDebounce=30&zoomThrottle=40
+    </span>
+    <input id="zoom-max" class="zoom-config" type="number" placeholder="max" value="10"/>
+    <input id="zoom-min" class="zoom-config" type="number" placeholder="min" value="0.1" step="0.01" min="0" max="1" />
+    <input id="zoom-throttle" class="zoom-config" type="number" placeholder="thr" value="40" disabled/>
+    <input id="zoom-debounce" class="zoom-config" type="number" placeholder="deb" value="30" disabled/>
   </div>
 
     <div id="bpmn-viewport"></div>

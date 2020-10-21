@@ -21,7 +21,37 @@ function startNavigationDemo() {
   if (parameters.get('showMousePointer') === 'true') {
     showMousePointer();
   }
-  startBpmnVisualization({ container: 'bpmn-viewport', options: { mouseNavigationSupport: true } });
+  const elZoomMax = document.getElementById('zoom-max'),
+    elZoomMin = document.getElementById('zoom-min'),
+    elZoomThrottle = document.getElementById('zoom-throttle'),
+    elZoomDebounce = document.getElementById('zoom-debounce');
+  if (parameters.get('zoomThrottle')) {
+    elZoomThrottle.value = parameters.get('zoomThrottle');
+  }
+  if (parameters.get('zoomDebounce')) {
+    elZoomDebounce.value = parameters.get('zoomDebounce');
+  }
+  const options = {
+    mouseNavigationSupport: true,
+    zoomConfiguration: {
+      throttleDelay: elZoomThrottle.value,
+      debounceDelay: elZoomDebounce.value,
+      constraints: {
+        maxZoom: elZoomMax.value,
+        minZoom: elZoomMin.value,
+      },
+    },
+  };
+
+  elZoomMin.onchange = function (event) {
+    bpmnVisualization.graph.setZoomConstraints({ maxZoom: elZoomMax.value, minZoom: event.target.value });
+  };
+
+  elZoomMax.onchange = function (event) {
+    bpmnVisualization.graph.setZoomConstraints({ maxZoom: event.target.value, minZoom: elZoomMin.value });
+  };
+
+  const bpmnVisualization = startBpmnVisualization({ container: 'bpmn-viewport', options: options });
 }
 
 documentReady(startNavigationDemo);

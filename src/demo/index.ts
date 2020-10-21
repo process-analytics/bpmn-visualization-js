@@ -90,7 +90,7 @@ function defaultStatusFetchKoNotifier(errorMsg: string): void {
   console.error(errorMsg);
 }
 
-export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
+export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): BpmnVisualization {
   const log = logStartup;
   const container = config.container;
 
@@ -127,4 +127,5 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
     return;
   }
   log("No 'url to fetch BPMN content' provided");
+  return bpmnVisualization;
 }
