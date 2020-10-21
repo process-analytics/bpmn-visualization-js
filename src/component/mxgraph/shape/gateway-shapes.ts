@@ -89,6 +89,7 @@ export class EventBasedGatewayShape extends GatewayShape {
     super.paintOuterShape(paintParameter);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected paintInnerShape(paintParameter: PaintParameter): void {
     // TODO rendering will be managed later
   }
