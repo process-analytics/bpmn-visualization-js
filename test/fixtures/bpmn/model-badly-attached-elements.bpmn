@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
 <semantic:definitions id="_1373649849716" name="A.1.0" targetNamespace="http://www.trisotech.com/definitions/_1373649849716" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <semantic:process isExecutable="false" id="WFP-6-">
-    <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="true" name="Boundary Intermediate Event Interrupting Message" id="boundary_event_interrupting_message_id">
+    <semantic:boundaryEvent id="boundary_event_interrupting_message_id" name="Boundary Intermediate Event Interrupting Message" attachedToRef="nothing" cancelActivity="true">
       <semantic:messageEventDefinition/>
     </semantic:boundaryEvent>
-    <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Message" id="boundary_event_non_interrupting_message_id">
+    <semantic:boundaryEvent id="boundary_event_non_interrupting_message_id" name="Boundary Intermediate Event Non-interrupting Message" attachedToRef="nothing" cancelActivity="false">
       <semantic:messageEventDefinition/>
     </semantic:boundaryEvent>
-    <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="true" name="Boundary Intermediate Event Interrupting Timer" id="boundary_event_interrupting_timer_id">
+    <semantic:boundaryEvent id="boundary_event_interrupting_timer_id" name="Boundary Intermediate Event Interrupting Timer" attachedToRef="nothing" cancelActivity="true">
       <semantic:timerEventDefinition/>
     </semantic:boundaryEvent>
-    <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Timer" id="boundary_event_non_interrupting_timer_id">
+    <semantic:boundaryEvent id="boundary_event_non_interrupting_timer_id" name="Boundary Intermediate Event Non-interrupting Timer" attachedToRef="nothing" cancelActivity="false">
       <semantic:timerEventDefinition/>
     </semantic:boundaryEvent>
-    <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="true" name="Boundary Intermediate Event Interrupting Conditional" id="boundary_event_interrupting_conditional_id">
+    <semantic:boundaryEvent id="boundary_event_interrupting_conditional_id" name="Boundary Intermediate Event Interrupting Conditional" attachedToRef="nothing" cancelActivity="true">
       <semantic:conditionalEventDefinition/>
     </semantic:boundaryEvent>
-    <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Conditional" id="boundary_event_non_interrupting_conditional_id">
+    <semantic:boundaryEvent id="boundary_event_non_interrupting_conditional_id" name="Boundary Intermediate Event Non-interrupting Conditional" attachedToRef="nothing" cancelActivity="false">
       <semantic:conditionalEventDefinition/>
     </semantic:boundaryEvent>
-    <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="true" name="Boundary Intermediate Event Interrupting Escalation" id="boundary_event_interrupting_escalation_id">
+    <semantic:boundaryEvent id="boundary_event_interrupting_escalation_id" name="Boundary Intermediate Event Interrupting Escalation" attachedToRef="nothing" cancelActivity="true">
       <semantic:conditionalEventDefinition/>
     </semantic:boundaryEvent>
-    <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="false" name="Boundary Intermediate Event Non-interrupting Escalation" id="boundary_event_non_interrupting_escalation_id">
+    <semantic:boundaryEvent id="boundary_event_non_interrupting_escalation_id" name="Boundary Intermediate Event Non-interrupting Escalation" attachedToRef="nothing" cancelActivity="false">
       <semantic:conditionalEventDefinition/>
     </semantic:boundaryEvent>
   </semantic:process>
   <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
     <bpmndi:BPMNPlane bpmnElement="WFP-6-">
-      <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_message_id" id="shape_boundary_event_interrupting_message_id">
-        <dc:Bounds height="32.0" width="32.0" x="10" y="10" />
+      <bpmndi:BPMNShape id="shape_boundary_event_interrupting_message_id" bpmnElement="boundary_event_interrupting_message_id">
+        <dc:Bounds x="10" y="10" height="32.0" width="32.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_message_id" id="shape_boundary_event_non_interrupting_message_id">
-        <dc:Bounds height="32.0" width="32.0" x="60" y="10" />
+      <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_message_id" bpmnElement="boundary_event_non_interrupting_message_id">
+        <dc:Bounds x="60" y="10" height="32.0" width="32.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_timer_id" id="shape_boundary_event_interrupting_timer_id">
-        <dc:Bounds height="32.0" width="32.0" x="10" y="60" />
+      <bpmndi:BPMNShape id="shape_boundary_event_interrupting_timer_id" bpmnElement="boundary_event_interrupting_timer_id">
+        <dc:Bounds x="10" y="60" height="32.0" width="32.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_timer_id" id="shape_boundary_event_non_interrupting_timer_id">
-        <dc:Bounds height="32.0" width="32.0" x="60" y="60" />
+      <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_timer_id" bpmnElement="boundary_event_non_interrupting_timer_id">
+        <dc:Bounds x="60" y="60" height="32.0" width="32.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundary_event_interrupting_conditional_id" id="shape_boundary_event_interrupting_conditional_id">
-        <dc:Bounds height="32.0" width="32.0" x="10" y="110" />
+      <bpmndi:BPMNShape id="shape_boundary_event_interrupting_conditional_id" bpmnElement="boundary_event_interrupting_conditional_id">
+        <dc:Bounds x="10" y="110" height="32.0" width="32.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundary_event_non_interrupting_conditional_id" id="shape_boundary_event_non_interrupting_conditional_id">
-        <dc:Bounds height="32.0" width="32.0" x="60" y="110" />
+      <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_conditional_id" bpmnElement="boundary_event_non_interrupting_conditional_id">
+        <dc:Bounds x="60" y="110" height="32.0" width="32.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_boundary_event_interrupting_escalation_id" bpmnElement="boundary_event_interrupting_escalation_id">
         <dc:Bounds x="10" y="160" height="32.0" width="32.0"/>
