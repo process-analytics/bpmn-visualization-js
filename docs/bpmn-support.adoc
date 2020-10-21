@@ -168,6 +168,10 @@ The event definition can be defined on the event or on the definitions.
 |Signal Start Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Conditional Start Event
+|
+|
 |===
 
 
@@ -197,6 +201,10 @@ The event definition can be defined on the event or on the definitions.
 |Compensation Interrupting Start Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Conditional Interrupting Start Event
+|
+|
 |===
 
 
@@ -218,6 +226,10 @@ The event definition can be defined on the event or on the definitions.
 |Signal Non-interrupting Start Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Conditional Non-interrupting Start Event
+|
+|
 |===
 
 
@@ -243,6 +255,10 @@ The event definition can be defined on the event or on the definitions.
 |Link Intermediate Catch Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Conditional Intermediate Catch Event
+|
+|
 |===
 
 
@@ -305,6 +321,10 @@ The event definition can be defined on the event or on the definitions.
 |Cancel Interrupting Boundary Event
 |
 |
+
+|Conditional Interrupting Boundary Event
+|
+|
 |===
 
 
@@ -326,6 +346,10 @@ The event definition can be defined on the event or on the definitions.
 |Signal Non-interrupting Boundary Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Conditional Non-interrupting Boundary Event
+|
+|
 |===
 
 

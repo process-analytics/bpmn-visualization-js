@@ -13,6 +13,12 @@
     <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="false" name="Boundary Intermediate Event Non-nterrupting Timer" id="boundary_event_non_interrupting_timer_id">
       <semantic:timerEventDefinition/>
     </semantic:boundaryEvent>
+    <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="true" name="Boundary Intermediate Event Interrupting Conditional" id="boundary_event_interrupting_conditional_id">
+      <semantic:conditionalEventDefinition/>
+    </semantic:boundaryEvent>
+    <semantic:boundaryEvent attachedToRef="nothing" cancelActivity="false" name="Boundary Intermediate Event Non-nterrupting Conditional" id="boundary_event_non_interrupting_conditional_id">
+      <semantic:conditionalEventDefinition/>
+    </semantic:boundaryEvent>
   </semantic:process>
   <bpmndi:BPMNDiagram documentation="" id="Trisotech_Visio-_6" name="A.1.0" resolution="96.00000267028808">
     <bpmndi:BPMNPlane bpmnElement="WFP-6-">

@@ -55,4 +55,5 @@ export const supportedBpmnEventKinds = [
   ShapeBpmnEventKind.ERROR,
   ShapeBpmnEventKind.COMPENSATION,
   ShapeBpmnEventKind.CANCEL,
+  ShapeBpmnEventKind.CONDITIONAL,
 ];

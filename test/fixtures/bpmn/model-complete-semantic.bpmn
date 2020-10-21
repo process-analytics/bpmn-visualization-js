@@ -27,6 +27,7 @@
   <semantic:errorEventDefinition id="top_error_definition_id" />
   <semantic:compensateEventDefinition id="top_compensate_definition_id" />
   <semantic:cancelEventDefinition id="top_cancel_definition_id" />
+  <semantic:conditionalEventDefinition id="top_conditional_definition_id" />
 
   <!-- Process -->
   <semantic:process id="process_2_id" isExecutable="false">
@@ -263,6 +264,12 @@
       <semantic:startEvent id="start_event_interrupting_compensate_on_top_id" name="Interrupting Compensate Start Event On Top In Sub-Process" isInterrupting="true">
         <semantic:eventDefinitionRef>top_compensate_definition_id</semantic:eventDefinitionRef>
       </semantic:startEvent>
+      <semantic:startEvent id="start_event_interrupting_conditional_id" name="Interrupting Conditional Start Event In Sub-Process" isInterrupting="true">
+        <semantic:conditionalEventDefinition />
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_interrupting_conditional_on_top_id" name="Interrupting Conditional Start Event On Top In Sub-Process" isInterrupting="true">
+        <semantic:eventDefinitionRef>top_conditional_definition_id</semantic:eventDefinitionRef>
+      </semantic:startEvent>
 
       <!-- Non-interrupting Start Event -->
       <semantic:startEvent id="start_event_non_interrupting_message_id" name="Non-interrupting Message Start Event In Sub-Process" isInterrupting="false">
@@ -282,6 +289,12 @@
       </semantic:startEvent>
       <semantic:startEvent id="start_event_non_interrupting_signal_on_top_id" name="Non-interrupting Signal Start Event On Top In Sub-Process" isInterrupting="false">
         <semantic:eventDefinitionRef>top_signal_definition_id</semantic:eventDefinitionRef>
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_non_interrupting_conditional_id" name="Non-interrupting Conditional Start Event In Sub-Process" isInterrupting="false">
+        <semantic:conditionalEventDefinition />
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_non_interrupting_conditional_on_top_id" name="Non-interrupting Conditional Start Event On Top In Sub-Process" isInterrupting="false">
+        <semantic:eventDefinitionRef>top_conditional_definition_id</semantic:eventDefinitionRef>
       </semantic:startEvent>
     </semantic:subProcess>
 
@@ -318,6 +331,12 @@
     </semantic:startEvent>
     <semantic:startEvent id="start_event_signal_on_top_id" name="Signal Start Event On Top">
       <semantic:eventDefinitionRef>top_signal_definition_id</semantic:eventDefinitionRef>
+    </semantic:startEvent>
+    <semantic:startEvent id="start_event_conditional_id" name="Conditional Start Event">
+      <semantic:conditionalEventDefinition />
+    </semantic:startEvent>
+    <semantic:startEvent id="start_event_conditional_on_top_id" name="Conditional Start Event On Top">
+      <semantic:eventDefinitionRef>top_conditional_definition_id</semantic:eventDefinitionRef>
     </semantic:startEvent>
 
     <!-- Interrupting Boundary Event -->
@@ -358,6 +377,12 @@
     <semantic:boundaryEvent id="boundary_event_interrupting_cancel_on_top_id" name="Interrupting Cancel Boundary Intermediate Event On Top" attachedToRef="receive_task_non_instantiating_id">
       <semantic:eventDefinitionRef>top_cancel_definition_id</semantic:eventDefinitionRef>
     </semantic:boundaryEvent>
+    <semantic:boundaryEvent id="boundary_event_interrupting_conditional_id" name="Interrupting Conditional Boundary Intermediate Event" attachedToRef="receive_task_instantiating_id">
+      <semantic:conditionalEventDefinition />
+    </semantic:boundaryEvent>
+    <semantic:boundaryEvent id="boundary_event_interrupting_conditional_on_top_id" name="Interrupting Conditional Boundary Intermediate Event On Top" attachedToRef="receive_task_instantiating_id">
+      <semantic:eventDefinitionRef>top_conditional_definition_id</semantic:eventDefinitionRef>
+    </semantic:boundaryEvent>
 
     <!-- Non-interrupting Boundary Event -->
     <semantic:boundaryEvent id="boundary_event_non_interrupting_message_id" name="Non-interrupting Message Boundary Intermediate Event" cancelActivity="false"
@@ -383,6 +408,14 @@
     <semantic:boundaryEvent id="boundary_event_non_interrupting_signal_on_top_id" name="Non-interrupting Signal Boundary Intermediate Event On Top" cancelActivity="false"
                             attachedToRef="collapsed_call_activity_id">
       <semantic:eventDefinitionRef>top_signal_definition_id</semantic:eventDefinitionRef>
+    </semantic:boundaryEvent>
+    <semantic:boundaryEvent id="boundary_event_non_interrupting_conditional_id" name="Non-interrupting Conditional Boundary Intermediate Event" cancelActivity="false"
+                            attachedToRef="collapsed_call_activity_with_loop_id">
+      <semantic:conditionalEventDefinition />
+    </semantic:boundaryEvent>
+    <semantic:boundaryEvent id="boundary_event_non_interrupting_conditional_on_top_id" name="Non-interrupting Conditional Boundary Intermediate Event On Top" cancelActivity="false"
+                            attachedToRef="collapsed_call_activity_with_loop_id">
+      <semantic:eventDefinitionRef>top_conditional_definition_id</semantic:eventDefinitionRef>
     </semantic:boundaryEvent>
 
     <!-- Throw Intermediate Event -->
@@ -419,10 +452,10 @@
     <semantic:intermediateCatchEvent id="intermediate_catch_event_message_on_top_id" name="Catch Message Intermediate Event On Top">
       <semantic:eventDefinitionRef>top_message_definition_id</semantic:eventDefinitionRef>
     </semantic:intermediateCatchEvent>
-    <semantic:intermediateCatchEvent id="intermediate_catch_event_timer_id" name="Timer Intermediate Catch Event">
+    <semantic:intermediateCatchEvent id="intermediate_catch_event_timer_id" name="Catch Timer Intermediate Event">
       <semantic:timerEventDefinition id="TimerEventDefinition_0t6k83a" />
     </semantic:intermediateCatchEvent>
-    <semantic:intermediateCatchEvent id="intermediate_catch_event_timer_on_top_id" name="Timer Intermediate Catch Event On Top">
+    <semantic:intermediateCatchEvent id="intermediate_catch_event_timer_on_top_id" name="Catch Timer Intermediate Event On Top">
       <semantic:eventDefinitionRef>top_timer_definition_id</semantic:eventDefinitionRef>
     </semantic:intermediateCatchEvent>
     <semantic:intermediateCatchEvent id="intermediate_catch_event_signal_id" name="Catch Signal Intermediate Event">
@@ -436,6 +469,12 @@
     </semantic:intermediateCatchEvent>
     <semantic:intermediateCatchEvent id="intermediate_catch_event_link_on_top_id" name="Catch Link Intermediate Event On Top">
       <semantic:eventDefinitionRef>top_link_definition_id</semantic:eventDefinitionRef>
+    </semantic:intermediateCatchEvent>
+    <semantic:intermediateCatchEvent id="intermediate_catch_event_conditional_id" name="Catch Conditional Intermediate Event">
+      <semantic:conditionalEventDefinition />
+    </semantic:intermediateCatchEvent>
+    <semantic:intermediateCatchEvent id="intermediate_catch_event_conditional_on_top_id" name="Catch Conditional Intermediate Event On Top">
+      <semantic:eventDefinitionRef>top_conditional_definition_id</semantic:eventDefinitionRef>
     </semantic:intermediateCatchEvent>
 
     <!-- End Event -->
@@ -546,13 +585,13 @@
 
       <!-- Collapsed -->
       <bpmndi:BPMNShape id="shape_collapsed_call_activity_id" bpmnElement="collapsed_call_activity_id" isExpanded="false">
-        <dc:Bounds x="2970" y="2175" width="140" height="90" />
+        <dc:Bounds x="2970" y="2275" width="140" height="90" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3000" y="2200" width="100" height="70" />
+          <dc:Bounds x="3000" y="2300" width="100" height="70" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_collapsed_call_activity_with_loop_id" bpmnElement="collapsed_call_activity_with_loop_id" isExpanded="false">
-        <dc:Bounds x="2970" y="2035" width="140" height="90" />
+        <dc:Bounds x="2970" y="2085" width="140" height="90" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_collapsed_call_activity_with_sequential_multi_instance_id" bpmnElement="collapsed_call_activity_with_sequential_multi_instance_id"
                         isExpanded="false">
@@ -632,16 +671,16 @@
 
       <!-- Receive Task: Instantiating -->
       <bpmndi:BPMNShape id="shape_receive_task_instantiating_id" bpmnElement="receive_task_instantiating_id">
-        <dc:Bounds x="2328" y="2136" width="100" height="80" />
+        <dc:Bounds x="2328" y="2086" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_receive_task_instantiating_with_loop_id" bpmnElement="receive_task_instantiating_with_loop_id">
-        <dc:Bounds x="2128" y="2136" width="100" height="80" />
+        <dc:Bounds x="2128" y="2086" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_receive_task_instantiating_with_sequential_multi_instance_id" bpmnElement="receive_task_instantiating_with_sequential_multi_instance_id">
-        <dc:Bounds x="1948" y="2136" width="100" height="80" />
+        <dc:Bounds x="1948" y="2086" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_receive_task_instantiating_with_parallel_multi_instance_id" bpmnElement="receive_task_instantiating_with_parallel_multi_instance_id">
-        <dc:Bounds x="1768" y="2136" width="100" height="80" />
+        <dc:Bounds x="1768" y="2086" width="100" height="80" />
       </bpmndi:BPMNShape>
 
       <!-- Send Task -->
@@ -845,6 +884,18 @@
           <dc:Bounds x="357" y="2167" width="89" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_interrupting_conditional_id" bpmnElement="start_event_interrupting_conditional_id">
+        <dc:Bounds x="282" y="2324" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="257" y="2360" width="89" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_interrupting_conditional_on_top_id" bpmnElement="start_event_interrupting_conditional_on_top_id">
+        <dc:Bounds x="382" y="2324" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="357" y="2360" width="89" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
 
       <!-- Non-interrupting Start Event -->
       <bpmndi:BPMNShape id="shape_start_event_non_interrupting_message_id" bpmnElement="start_event_non_interrupting_message_id">
@@ -881,6 +932,18 @@
         <dc:Bounds x="582" y="1572" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="561" y="1617" width="79" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_non_interrupting_conditional_id" bpmnElement="start_event_non_interrupting_conditional_id">
+        <dc:Bounds x="482" y="2324" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="461" y="2360" width="79" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_non_interrupting_conditional_on_top_id" bpmnElement="start_event_non_interrupting_conditional_on_top_id">
+        <dc:Bounds x="582" y="2324" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="561" y="2360" width="79" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <!-- END OF "Expanded with elements" -->
@@ -960,6 +1023,18 @@
           <dc:Bounds x="803" y="1599" width="67" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_conditional_id" bpmnElement="start_event_conditional_id">
+        <dc:Bounds x="725" y="2324" width="30" height="30" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="696" y="2360" width="89" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_conditional_on_top_id" bpmnElement="start_event_conditional_on_top_id">
+        <dc:Bounds x="821" y="2324" width="30" height="30" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="803" y="2360" width="67" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
 
       <!-- Throw Intermediate Event -->
       <bpmndi:BPMNShape id="shape_intermediate_throw_event_none_id" bpmnElement="intermediate_throw_event_none_id">
@@ -1031,15 +1106,15 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_intermediate_catch_event_timer_id" bpmnElement="intermediate_catch_event_timer_id">
-        <dc:Bounds x="1122" y="1882" width="36" height="36" />
+        <dc:Bounds x="1314" y="1882" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1109" y="1925" width="62" height="40" />
+          <dc:Bounds x="1292" y="1925" width="77" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_intermediate_catch_event_timer_on_top_id" bpmnElement="intermediate_catch_event_timer_on_top_id">
-        <dc:Bounds x="1212" y="1882" width="36" height="36" />
+        <dc:Bounds x="1404" y="1882" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1191" y="1925" width="78" height="53" />
+          <dc:Bounds x="1382" y="1925" width="77" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_intermediate_catch_event_signal_id" bpmnElement="intermediate_catch_event_signal_id">
@@ -1066,18 +1141,30 @@
           <dc:Bounds x="1387" y="1506" width="67" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_intermediate_catch_event_conditional_id" bpmnElement="intermediate_catch_event_conditional_id">
+        <dc:Bounds x="1314" y="2324" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1299" y="2360" width="62" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_intermediate_catch_event_conditional_on_top_id" bpmnElement="intermediate_catch_event_conditional_on_top_id">
+        <dc:Bounds x="1404" y="2324" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1387" y="2360" width="67" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
 
       <!-- End Event -->
       <bpmndi:BPMNShape id="shape_end_event_terminate_id" bpmnElement="end_event_terminate_id">
-        <dc:Bounds x="1124" y="1797" width="32" height="32" />
+        <dc:Bounds x="914" y="1797" width="32" height="32" />
         <bpmndi:BPMNLabel labelStyle="font_italic_id">
-          <dc:Bounds x="1105" y="1834" width="71" height="27" />
+          <dc:Bounds x="896" y="1834" width="71" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_end_event_terminate_on_top_id" bpmnElement="end_event_terminate_on_top_id">
-        <dc:Bounds x="1214" y="1797" width="32" height="32" />
+        <dc:Bounds x="1014" y="1797" width="32" height="32" />
         <bpmndi:BPMNLabel labelStyle="font_italic_id">
-          <dc:Bounds x="1195" y="1834" width="71" height="27" />
+          <dc:Bounds x="996" y="1834" width="71" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_end_event_message_id" bpmnElement="end_event_message_id">
@@ -1214,6 +1301,18 @@
           <dc:Bounds x="2292" y="2374" width="67" height="66" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_boundary_event_interrupting_conditional_id" bpmnElement="boundary_event_interrupting_conditional_id">
+        <dc:Bounds x="2412" y="2150" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2398" y="2184" width="63" height="66" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_boundary_event_interrupting_conditional_on_top_id" bpmnElement="boundary_event_interrupting_conditional_on_top_id">
+        <dc:Bounds x="2312" y="2150" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2292" y="2184" width="67" height="66" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
 
       <!-- Non-interrupting Boundary Event -->
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_message_id" bpmnElement="boundary_event_non_interrupting_message_id">
@@ -1241,15 +1340,27 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_signal_id" bpmnElement="boundary_event_non_interrupting_signal_id">
-        <dc:Bounds x="3094" y="2249" width="32" height="32" />
+        <dc:Bounds x="3094" y="2349" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3070" y="2281" width="81" height="53" />
+          <dc:Bounds x="3070" y="2381" width="81" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_signal_on_top_id" bpmnElement="boundary_event_non_interrupting_signal_on_top_id">
-        <dc:Bounds x="2954" y="2249" width="32" height="32" />
+        <dc:Bounds x="2954" y="2349" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2930" y="2281" width="81" height="53" />
+          <dc:Bounds x="2930" y="2381" width="81" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_conditional_id" bpmnElement="boundary_event_non_interrupting_conditional_id">
+        <dc:Bounds x="3094" y="2159" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3070" y="2191" width="81" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_conditional_on_top_id" bpmnElement="boundary_event_non_interrupting_conditional_on_top_id">
+        <dc:Bounds x="2954" y="2159" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2930" y="2191" width="81" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 

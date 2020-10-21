@@ -85,6 +85,16 @@ describe('mxGraph model', () => {
       label: 'Signal Start Event On Top',
       parentId: 'participant_1_id',
     });
+    expect('start_event_conditional_id').toBeStartEvent({
+      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      label: 'Conditional Start Event',
+      parentId: 'participant_1_id',
+    });
+    expect('start_event_conditional_on_top_id').toBeStartEvent({
+      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      label: 'Conditional Start Event On Top',
+      parentId: 'participant_1_id',
+    });
 
     // end event
     expect('end_event_terminate_id').toBeEndEvent({
@@ -232,12 +242,12 @@ describe('mxGraph model', () => {
     });
     expect('intermediate_catch_event_timer_id').toBeIntermediateCatchEvent({
       eventKind: ShapeBpmnEventKind.TIMER,
-      label: 'Timer Intermediate Catch Event',
+      label: 'Catch Timer Intermediate Event',
       parentId: 'participant_1_id',
     });
     expect('intermediate_catch_event_timer_on_top_id').toBeIntermediateCatchEvent({
       eventKind: ShapeBpmnEventKind.TIMER,
-      label: 'Timer Intermediate Catch Event On Top',
+      label: 'Catch Timer Intermediate Event On Top',
       parentId: 'participant_1_id',
     });
     expect('intermediate_catch_event_signal_id').toBeIntermediateCatchEvent({
@@ -258,6 +268,16 @@ describe('mxGraph model', () => {
     expect('intermediate_catch_event_link_on_top_id').toBeIntermediateCatchEvent({
       eventKind: ShapeBpmnEventKind.LINK,
       label: 'Catch Link Intermediate Event On Top',
+      parentId: 'participant_1_id',
+    });
+    expect('intermediate_catch_event_conditional_id').toBeIntermediateCatchEvent({
+      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      label: 'Catch Conditional Intermediate Event',
+      parentId: 'participant_1_id',
+    });
+    expect('intermediate_catch_event_conditional_on_top_id').toBeIntermediateCatchEvent({
+      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      label: 'Catch Conditional Intermediate Event On Top',
       parentId: 'participant_1_id',
     });
 
@@ -334,6 +354,18 @@ describe('mxGraph model', () => {
       label: 'Interrupting Cancel Boundary Intermediate Event On Top',
       parentId: 'receive_task_non_instantiating_id',
     });
+    expect('boundary_event_interrupting_conditional_id').toBeBoundaryEvent({
+      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      isInterrupting: true,
+      label: 'Interrupting Conditional Boundary Intermediate Event',
+      parentId: 'receive_task_instantiating_id',
+    });
+    expect('boundary_event_interrupting_conditional_on_top_id').toBeBoundaryEvent({
+      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      isInterrupting: true,
+      label: 'Interrupting Conditional Boundary Intermediate Event On Top',
+      parentId: 'receive_task_instantiating_id',
+    });
 
     // boundary event: non-interrupting
     expect('boundary_event_non_interrupting_message_id').toBeBoundaryEvent({
@@ -371,6 +403,18 @@ describe('mxGraph model', () => {
       isInterrupting: false,
       label: 'Non-interrupting Signal Boundary Intermediate Event On Top',
       parentId: 'collapsed_call_activity_id',
+    });
+    expect('boundary_event_non_interrupting_conditional_id').toBeBoundaryEvent({
+      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      isInterrupting: false,
+      label: 'Non-interrupting Conditional Boundary Intermediate Event',
+      parentId: 'collapsed_call_activity_with_loop_id',
+    });
+    expect('boundary_event_non_interrupting_conditional_on_top_id').toBeBoundaryEvent({
+      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      isInterrupting: false,
+      label: 'Non-interrupting Conditional Boundary Intermediate Event On Top',
+      parentId: 'collapsed_call_activity_with_loop_id',
     });
 
     // Sub-process
@@ -572,6 +616,18 @@ describe('mxGraph model', () => {
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
+    expect('start_event_interrupting_conditional_id').toBeStartEvent({
+      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      label: 'Interrupting Conditional Start Event In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: true,
+    });
+    expect('start_event_interrupting_conditional_on_top_id').toBeStartEvent({
+      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      label: 'Interrupting Conditional Start Event On Top In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: true,
+    });
 
     // Non-interrupting Start Event
     expect('start_event_non_interrupting_message_id').toBeStartEvent({
@@ -607,6 +663,18 @@ describe('mxGraph model', () => {
     expect('start_event_non_interrupting_signal_on_top_id').toBeStartEvent({
       eventKind: ShapeBpmnEventKind.SIGNAL,
       label: 'Non-interrupting Signal Start Event On Top In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: false,
+    });
+    expect('start_event_non_interrupting_conditional_id').toBeStartEvent({
+      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      label: 'Non-interrupting Conditional Start Event In Sub-Process',
+      parentId: 'expanded_event_sub_process_with_start_events_id',
+      isInterrupting: false,
+    });
+    expect('start_event_non_interrupting_conditional_on_top_id').toBeStartEvent({
+      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      label: 'Non-interrupting Conditional Start Event On Top In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: false,
     });
@@ -931,10 +999,12 @@ describe('mxGraph model', () => {
     // boundary event: interrupting
     expect('boundary_event_interrupting_message_id').not.toBeCell();
     expect('boundary_event_interrupting_timer_id').not.toBeCell();
+    expect('boundary_event_interrupting_conditional_id').not.toBeCell();
 
     // boundary event: non-interrupting
     expect('boundary_event_non_interrupting_message_id').not.toBeCell();
     expect('boundary_event_non_interrupting_timer_id').not.toBeCell();
+    expect('boundary_event_non_interrupting_conditional_id').not.toBeCell();
   });
 
   it('bpmn element shape should have coordinates relative to the pool when no lane', async () => {

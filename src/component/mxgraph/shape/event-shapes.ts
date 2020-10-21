@@ -77,6 +77,9 @@ abstract class EventShape extends mxEllipse {
     if (eventKind == ShapeBpmnEventKind.CANCEL) {
       c.setFillColor('deeppink');
       c.setFillAlpha(0.3);
+    } else if (eventKind == ShapeBpmnEventKind.CONDITIONAL) {
+      c.setFillColor('chartreuse');
+      c.setFillAlpha(0.3);
     }
   }
 
