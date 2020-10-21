@@ -331,12 +331,12 @@ export default class IconPainter {
   /**
    * This icon is used by `exclusive gateway`.
    */
-  public paintXCrossIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
-    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon: { ...icon } }, { height: 0.5, width: 0.5 });
+  public paintXCrossIcon(paintParameter: PaintParameter): void {
+    const canvas = this.newBpmnCanvas(paintParameter, { height: 0.5, width: 0.5 });
 
     IconPainter.drawCrossIcon(canvas);
-    const rotationCenterX = shape.w * ratioFromParent;
-    const rotationCenterY = shape.h * ratioFromParent;
+    const rotationCenterX = paintParameter.shape.w * paintParameter.ratioFromParent;
+    const rotationCenterY = paintParameter.shape.h * paintParameter.ratioFromParent;
     canvas.rotate(45, false, false, rotationCenterX, rotationCenterY);
     canvas.fillAndStroke();
   }
