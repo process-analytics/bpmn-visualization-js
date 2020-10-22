@@ -259,6 +259,25 @@ export default class IconPainter {
   }
 
   /**
+   * This icon is used by `escalation event`.
+   */
+  public paintEscalationIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
+    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, { height: 50, width: 40 });
+
+    canvas.begin();
+    canvas.moveTo(0, 49.5);
+    canvas.lineTo(19.5, 1);
+    canvas.curveTo(19.75, 0.25, 20, 0, 20.25, 0.25);
+    canvas.lineTo(40, 49.5);
+    canvas.curveTo(40, 49.5, 39.75, 50, 39.6, 49.75);
+    canvas.lineTo(20, 30);
+    canvas.lineTo(0.4, 49.75);
+    canvas.curveTo(0.4, 49.75, 0.25, 50, 0, 49.5);
+    canvas.close();
+    canvas.fillAndStroke();
+  }
+
+  /**
    * This icon is used by `compensation event`.
    */
   public paintCompensationIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
