@@ -31,6 +31,9 @@ function startNavigationDemo() {
   if (parameters.get('zoomDebounce')) {
     elZoomDebounce.value = parameters.get('zoomDebounce');
   }
+  if (parameters.get('zoomConfigControls') === 'true') {
+    document.getElementById('zoom-config-controls').style = 'visibility: visible';
+  }
   const options = {
     mouseNavigationSupport: true,
     zoomConfiguration: {
