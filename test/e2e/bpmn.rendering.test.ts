@@ -96,6 +96,17 @@ describe('no visual regression', () => {
           windows: 0.0012,
         },
       ],
+      // ubuntu:
+      // macOS: Expected image to match or be a close match to snapshot but was 0.000987831756826818% different from snapshot
+      // windows:
+      [
+        'events',
+        {
+          linux: 0.000004,
+          macos: 0.00001,
+          windows: 0.000004,
+        },
+      ],
     ]),
   );
 
