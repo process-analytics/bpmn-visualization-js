@@ -77,8 +77,25 @@ Future features:
 
 
 ## ♻️ Usage
-For now, we don't put the released library on npm. So you need to clone the repository in local, get the last tag, and build it. \
-⚠️ WE ARE CURRENTLY WORKING ON THE PACKAGING ⚠️
+Currently, we support 2 module formats on [NPM](https://npmjs.org/package/bpmn-visualization):
+- [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)
+- [ESM](https://dev.to/iggredible/what-the-heck-are-cjs-amd-umd-and-esm-ikm)
+  
+⚠️ CommonJS module should come [later](https://github.com/process-analytics/bpmn-visualization-js/issues/595) ⚠️
+
+
+### IIFE
+See how it's done in [this example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/01-getting-started).
+
+
+### ESM
+🚀 You can find an integration example of Vanilla Typescript with rollup, [here](https://github.com/process-analytics/bpmn-visualization-examples/tree/master/examples/projects/typescript-vanilla-with-rollup).
+
+⚒️ If you want to configure yourself:
+* Install the dependency in your **package.json** file:
+```shell script
+npm i bpmn-visualization
+```
 
 * Load necessary scripts 
 ```html
@@ -87,7 +104,7 @@ For now, we don't put the released library on npm. So you need to clone the repo
     <!-- load mxGraph client library -->
     <script src="./static/js/mxClient.min.js"></script>
     <!-- load BPMN Visualization library -->
-    <script src="<YOUR_PATH>/bpmn-visualization-js/dist/index.es.js"></script>
+    <script src="index.esm.js" type="module"></script>
 ```
 * Define your BPMN content using one of the following ways:
   * Copy/Paste directly the XML content in a variable
@@ -102,6 +119,7 @@ For now, we don't put the released library on npm. So you need to clone the repo
 ```
 * Initialize BpmnVisualization from the container
 ```javascript
+    const container = 'graph';
     console.log(`Initializing BpmnVisualization with container '${container}'...`);
     const bpmnVisualization = new BpmnVisualization(window.document.getElementById(container));  
 ```
