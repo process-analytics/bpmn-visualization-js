@@ -207,8 +207,8 @@ The event definition can be defined on the event or on the definitions.
 |
 
 |Escalation Interrupting Start Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -236,8 +236,8 @@ The event definition can be defined on the event or on the definitions.
 |
 
 |Escalation Non-interrupting Start Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -298,8 +298,8 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Escalation Intermediate Throw Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -339,8 +339,8 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Escalation Interrupting Boundary Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -368,8 +368,8 @@ The event definition can be defined on the event or on the definitions.
 |
 
 |Escalation Non-interrupting Boundary Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -409,8 +409,8 @@ The event definition can be defined on the event or on the definitions.
 |The icon width may be adjusted
 
 |Escalation End Event
-|
-|
+|icon:check-circle-o[]
+|The icon width may be adjusted
 |===
 
 

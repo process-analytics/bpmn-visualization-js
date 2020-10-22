@@ -57,6 +57,15 @@ abstract class EventShape extends mxEllipse {
       (paintParameter: PaintParameter) =>
         this.iconPainter.paintXCrossIcon({ ...paintParameter, ratioFromParent: 0.39, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(9) }),
     ],
+    [
+      ShapeBpmnEventKind.ESCALATION,
+      (paintParameter: PaintParameter) =>
+        this.iconPainter.paintEscalationIcon({
+          ...paintParameter,
+          ratioFromParent: 0.55,
+          icon: { ...paintParameter.icon, strokeWidth: StyleDefault.STROKE_WIDTH_THIN.valueOf() },
+        }),
+    ],
   ]);
 
   protected withFilledIcon = false;
@@ -81,9 +90,6 @@ abstract class EventShape extends mxEllipse {
     const eventKind = StyleUtils.getBpmnEventKind(this.style);
     if (eventKind == ShapeBpmnEventKind.CONDITIONAL) {
       c.setFillColor('chartreuse');
-      c.setFillAlpha(0.3);
-    } else if (eventKind == ShapeBpmnEventKind.ESCALATION) {
-      c.setFillColor('deeppink');
       c.setFillAlpha(0.3);
     }
   }

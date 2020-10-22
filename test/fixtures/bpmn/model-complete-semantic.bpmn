@@ -599,7 +599,7 @@
     <bpmndi:BPMNPlane bpmnElement="collaboration_id">
       <!-- 1rst Process -->
       <bpmndi:BPMNShape id="shape_participant_1_id" bpmnElement="participant_1_id" isHorizontal="true">
-        <dc:Bounds x="160" y="580" width="3954" height="1900" />
+        <dc:Bounds x="160" y="580" width="3954" height="2200" />
       </bpmndi:BPMNShape>
 
       <!-- Activity -->
@@ -859,7 +859,7 @@
       <!-- Expanded -->
       <!-- Expanded with elements -->
       <bpmndi:BPMNShape id="shape_expanded_event_sub_process_with_start_events_id" bpmnElement="expanded_event_sub_process_with_start_events_id" isExpanded="true">
-        <dc:Bounds x="240" y="1340" width="410" height="1120" />
+        <dc:Bounds x="240" y="1340" width="410" height="1420" />
       </bpmndi:BPMNShape>
 
       <!-- Interrupting Start Event -->
