@@ -68,6 +68,8 @@ export default class MxGraphConfigurator {
     if (mouseNavigationSupport) {
       this.graph.panningHandler.useLeftButtonForPanning = true;
       this.graph.panningHandler.ignoreCell = true; // ok here as we cannot select cells
+      this.graph.panningHandler.addListener(mxEvent.PAN_START, this.getPanningHandlerCallback('grab').bind(this.graph));
+      this.graph.panningHandler.addListener(mxEvent.PAN_END, this.getPanningHandlerCallback('default').bind(this.graph));
       this.graph.setPanning(true);
     } else {
       this.graph.setPanning(false);
@@ -75,6 +77,12 @@ export default class MxGraphConfigurator {
     }
 
     this.configureMouseEvent(mouseNavigationSupport);
+  }
+
+  private getPanningHandlerCallback(cursor: 'grab' | 'default'): () => void {
+    return function (this: mxGraph): void {
+      this.isEnabled() && (this.container.style.cursor = cursor);
+    };
   }
 
   private configureMouseEvent(activated = false): void {
