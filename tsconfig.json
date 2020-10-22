@@ -9,6 +9,7 @@
     "strictBindCallApply": true,
     "alwaysStrict": true,
     "strictFunctionTypes": true,
+    "noImplicitThis": true,
     "skipLibCheck": false,
     "experimentalDecorators": true,
     "moduleResolution": "node",
