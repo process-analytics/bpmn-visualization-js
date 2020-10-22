@@ -32,6 +32,7 @@ import { Font } from '../../../model/bpmn/internal/Label';
 import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
 import { AssociationDirectionKind } from '../../../model/bpmn/internal/edge/AssociationDirectionKind';
+import { BpmnMxGraph } from '../BpmnMxGraph';
 
 export default class StyleConfigurator {
   private specificFlowStyles: Map<FlowKind, (style: StyleMap) => void> = new Map([
@@ -104,7 +105,7 @@ export default class StyleConfigurator {
     ],
   ]);
 
-  constructor(private graph: mxGraph) {}
+  constructor(private graph: BpmnMxGraph) {}
 
   public configureStyles(): void {
     mxConstants.RECTANGLE_ROUNDING_FACTOR = 0.1;
