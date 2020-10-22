@@ -56,4 +56,5 @@ export const supportedBpmnEventKinds = [
   ShapeBpmnEventKind.COMPENSATION,
   ShapeBpmnEventKind.CANCEL,
   ShapeBpmnEventKind.CONDITIONAL,
+  ShapeBpmnEventKind.ESCALATION,
 ];

@@ -28,6 +28,7 @@
   <semantic:compensateEventDefinition id="top_compensate_definition_id" />
   <semantic:cancelEventDefinition id="top_cancel_definition_id" />
   <semantic:conditionalEventDefinition id="top_conditional_definition_id" />
+  <semantic:escalationEventDefinition id="top_escalation_definition_id" />
 
   <!-- Process -->
   <semantic:process id="process_2_id" isExecutable="false">
@@ -270,6 +271,12 @@
       <semantic:startEvent id="start_event_interrupting_conditional_on_top_id" name="Interrupting Conditional Start Event On Top In Sub-Process" isInterrupting="true">
         <semantic:eventDefinitionRef>top_conditional_definition_id</semantic:eventDefinitionRef>
       </semantic:startEvent>
+      <semantic:startEvent id="start_event_interrupting_escalation_id" name="Interrupting Escalation Start Event In Sub-Process" isInterrupting="true">
+        <semantic:escalationEventDefinition />
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_interrupting_escalation_on_top_id" name="Interrupting Escalation Start Event On Top In Sub-Process" isInterrupting="true">
+        <semantic:eventDefinitionRef>top_escalation_definition_id</semantic:eventDefinitionRef>
+      </semantic:startEvent>
 
       <!-- Non-interrupting Start Event -->
       <semantic:startEvent id="start_event_non_interrupting_message_id" name="Non-interrupting Message Start Event In Sub-Process" isInterrupting="false">
@@ -295,6 +302,12 @@
       </semantic:startEvent>
       <semantic:startEvent id="start_event_non_interrupting_conditional_on_top_id" name="Non-interrupting Conditional Start Event On Top In Sub-Process" isInterrupting="false">
         <semantic:eventDefinitionRef>top_conditional_definition_id</semantic:eventDefinitionRef>
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_non_interrupting_escalation_id" name="Non-interrupting Escalation Start Event In Sub-Process" isInterrupting="false">
+        <semantic:escalationEventDefinition />
+      </semantic:startEvent>
+      <semantic:startEvent id="start_event_non_interrupting_escalation_on_top_id" name="Non-interrupting Escalation Start Event On Top In Sub-Process" isInterrupting="false">
+        <semantic:eventDefinitionRef>top_escalation_definition_id</semantic:eventDefinitionRef>
       </semantic:startEvent>
     </semantic:subProcess>
 
@@ -383,6 +396,12 @@
     <semantic:boundaryEvent id="boundary_event_interrupting_conditional_on_top_id" name="Interrupting Conditional Boundary Intermediate Event On Top" attachedToRef="receive_task_instantiating_id">
       <semantic:eventDefinitionRef>top_conditional_definition_id</semantic:eventDefinitionRef>
     </semantic:boundaryEvent>
+    <semantic:boundaryEvent id="boundary_event_interrupting_escalation_id" name="Interrupting Escalation Boundary Intermediate Event" attachedToRef="receive_task_non_instantiating_with_loop_id">
+      <semantic:escalationEventDefinition />
+    </semantic:boundaryEvent>
+    <semantic:boundaryEvent id="boundary_event_interrupting_escalation_on_top_id" name="Interrupting Escalation Boundary Intermediate Event On Top" attachedToRef="receive_task_non_instantiating_with_loop_id">
+      <semantic:eventDefinitionRef>top_escalation_definition_id</semantic:eventDefinitionRef>
+    </semantic:boundaryEvent>
 
     <!-- Non-interrupting Boundary Event -->
     <semantic:boundaryEvent id="boundary_event_non_interrupting_message_id" name="Non-interrupting Message Boundary Intermediate Event" cancelActivity="false"
@@ -417,6 +436,14 @@
                             attachedToRef="collapsed_call_activity_with_loop_id">
       <semantic:eventDefinitionRef>top_conditional_definition_id</semantic:eventDefinitionRef>
     </semantic:boundaryEvent>
+    <semantic:boundaryEvent id="boundary_event_non_interrupting_escalation_id" name="Non-interrupting Escalation Boundary Intermediate Event" cancelActivity="false"
+                            attachedToRef="collapsed_call_activity_with_sequential_multi_instance_id">
+      <semantic:escalationEventDefinition />
+    </semantic:boundaryEvent>
+    <semantic:boundaryEvent id="boundary_event_non_interrupting_escalation_on_top_id" name="Non-interrupting Escalation Boundary Intermediate Event On Top" cancelActivity="false"
+                            attachedToRef="collapsed_call_activity_with_sequential_multi_instance_id">
+      <semantic:eventDefinitionRef>top_escalation_definition_id</semantic:eventDefinitionRef>
+    </semantic:boundaryEvent>
 
     <!-- Throw Intermediate Event -->
     <semantic:intermediateThrowEvent id="intermediate_throw_event_none_id" name="Throw None Intermediate Event" />
@@ -443,6 +470,12 @@
     </semantic:intermediateThrowEvent>
     <semantic:intermediateThrowEvent id="intermediate_throw_event_compensate_on_top_id" name="Throw Compensate Intermediate Event On Top">
       <semantic:eventDefinitionRef>top_compensate_definition_id</semantic:eventDefinitionRef>
+    </semantic:intermediateThrowEvent>
+    <semantic:intermediateThrowEvent id="intermediate_throw_event_escalation_id" name="Throw Escalation Intermediate Event">
+      <semantic:escalationEventDefinition />
+    </semantic:intermediateThrowEvent>
+    <semantic:intermediateThrowEvent id="intermediate_throw_event_escalation_on_top_id" name="Throw Escalation Intermediate Event On Top">
+      <semantic:eventDefinitionRef>top_escalation_definition_id</semantic:eventDefinitionRef>
     </semantic:intermediateThrowEvent>
 
     <!-- Catch Intermediate Event -->
@@ -513,6 +546,12 @@
     </semantic:endEvent>
     <semantic:endEvent id="end_event_cancel_on_top_id" name="Cancel End Event On Top">
       <semantic:eventDefinitionRef>top_cancel_definition_id</semantic:eventDefinitionRef>
+    </semantic:endEvent>
+    <semantic:endEvent id="end_event_escalation_id" name="Escalation End Event">
+      <semantic:escalationEventDefinition />
+    </semantic:endEvent>
+    <semantic:endEvent id="end_event_escalation_on_top_id" name="Escalation End Event On Top">
+      <semantic:eventDefinitionRef>top_escalation_definition_id</semantic:eventDefinitionRef>
     </semantic:endEvent>
 
     <!-- Gateway -->
@@ -896,6 +935,18 @@
           <dc:Bounds x="357" y="2360" width="89" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_interrupting_escalation_id" bpmnElement="start_event_interrupting_escalation_id">
+        <dc:Bounds x="282" y="2424" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="257" y="2460" width="89" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_interrupting_escalation_on_top_id" bpmnElement="start_event_interrupting_escalation_on_top_id">
+        <dc:Bounds x="382" y="2424" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="357" y="2460" width="89" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
 
       <!-- Non-interrupting Start Event -->
       <bpmndi:BPMNShape id="shape_start_event_non_interrupting_message_id" bpmnElement="start_event_non_interrupting_message_id">
@@ -944,6 +995,18 @@
         <dc:Bounds x="582" y="2324" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="561" y="2360" width="79" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_non_interrupting_escalation_id" bpmnElement="start_event_non_interrupting_escalation_id">
+        <dc:Bounds x="482" y="2424" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="461" y="2460" width="79" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_start_event_non_interrupting_escalation_on_top_id" bpmnElement="start_event_non_interrupting_escalation_on_top_id">
+        <dc:Bounds x="582" y="2424" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="561" y="2460" width="79" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <!-- END OF "Expanded with elements" -->
@@ -1091,6 +1154,18 @@
           <dc:Bounds x="1197" y="2156" width="67" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_intermediate_throw_event_escalation_id" bpmnElement="intermediate_throw_event_escalation_id">
+        <dc:Bounds x="1124" y="2424" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1109" y="2460" width="63" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_intermediate_throw_event_escalation_on_top_id" bpmnElement="intermediate_throw_event_escalation_on_top_id">
+        <dc:Bounds x="1214" y="2424" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1197" y="2460" width="67" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
 
       <!-- Catch Intermediate Event -->
       <bpmndi:BPMNShape id="shape_intermediate_catch_event_message_id" bpmnElement="intermediate_catch_event_message_id">
@@ -1227,6 +1302,18 @@
           <dc:Bounds x="988" y="2260" width="85" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_end_event_escalation_id" bpmnElement="end_event_escalation_id">
+        <dc:Bounds x="914" y="2424" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="888" y="2460" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_end_event_escalation_on_top_id" bpmnElement="end_event_escalation_on_top_id">
+        <dc:Bounds x="1014" y="2424" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="988" y="2460" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
 
       <!-- Interrupting Boundary Event -->
       <bpmndi:BPMNShape id="shape_boundary_event_interrupting_message_id" bpmnElement="boundary_event_interrupting_message_id">
@@ -1313,6 +1400,18 @@
           <dc:Bounds x="2292" y="2184" width="67" height="66" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_boundary_event_interrupting_escalation_id" bpmnElement="boundary_event_interrupting_escalation_id">
+        <dc:Bounds x="2212" y="2340" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2198" y="2374" width="63" height="66" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_boundary_event_interrupting_escalation_on_top_id" bpmnElement="boundary_event_interrupting_escalation_on_top_id">
+        <dc:Bounds x="2112" y="2340" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2092" y="2374" width="67" height="66" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
 
       <!-- Non-interrupting Boundary Event -->
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_message_id" bpmnElement="boundary_event_non_interrupting_message_id">
@@ -1361,6 +1460,18 @@
         <dc:Bounds x="2954" y="2159" width="32" height="32" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2930" y="2191" width="81" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_escalation_id" bpmnElement="boundary_event_non_interrupting_escalation_id">
+        <dc:Bounds x="3094" y="1979" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3070" y="2011" width="81" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_escalation_on_top_id" bpmnElement="boundary_event_non_interrupting_escalation_on_top_id">
+        <dc:Bounds x="2954" y="1979" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2930" y="2011" width="81" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
