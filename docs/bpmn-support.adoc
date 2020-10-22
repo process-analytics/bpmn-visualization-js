@@ -205,6 +205,10 @@ The event definition can be defined on the event or on the definitions.
 |Conditional Interrupting Start Event
 |
 |
+
+|Escalation Interrupting Start Event
+|
+|
 |===
 
 
@@ -228,6 +232,10 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Conditional Non-interrupting Start Event
+|
+|
+
+|Escalation Non-interrupting Start Event
 |
 |
 |===
@@ -288,6 +296,10 @@ The event definition can be defined on the event or on the definitions.
 |Compensation Intermediate Throw Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Escalation Intermediate Throw Event
+|
+|
 |===
 
 
@@ -325,6 +337,10 @@ The event definition can be defined on the event or on the definitions.
 |Cancel Interrupting Boundary Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Escalation Interrupting Boundary Event
+|
+|
 |===
 
 
@@ -348,6 +364,10 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Conditional Non-interrupting Boundary Event
+|
+|
+
+|Escalation Non-interrupting Boundary Event
 |
 |
 |===
@@ -387,6 +407,10 @@ The event definition can be defined on the event or on the definitions.
 |Cancel End Event
 |icon:check-circle-o[]
 |The icon width may be adjusted
+
+|Escalation End Event
+|
+|
 |===
 
 
