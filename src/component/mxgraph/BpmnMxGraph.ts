@@ -18,8 +18,6 @@ import { mxgraph } from 'ts-mxgraph';
 declare const mxClient: typeof mxgraph.mxClient;
 
 import { ZoomConfiguration } from '../BpmnVisualization';
-import debounce from 'lodash.debounce';
-import throttle from 'lodash.throttle';
 
 export class BpmnMxGraph extends mxGraph {
   private cumulativeZoomFactor = 1;
@@ -51,8 +49,8 @@ export class BpmnMxGraph extends mxGraph {
   }
 
   createMouseWheelZoomExperience(config: ZoomConfiguration = { throttleDelay: 50, debounceDelay: 50 }): void {
-    mxEvent.addMouseWheelListener(debounce(this.getZoomHandler(true), config.debounceDelay), this.container);
-    mxEvent.addMouseWheelListener(throttle(this.getZoomHandler(false), config.throttleDelay), this.container);
+    mxEvent.addMouseWheelListener(this.debounce(this.getZoomHandler(true), config.debounceDelay), this.container);
+    mxEvent.addMouseWheelListener(this.throttle(this.getZoomHandler(false), config.throttleDelay), this.container);
   }
 
   // solution inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
@@ -113,5 +111,30 @@ export class BpmnMxGraph extends mxGraph {
     const scale = Math.round(this.view.scale * factor * 100) / 100;
     factor = scale / this.view.scale;
     return [factor, scale];
+  }
+
+  // throttle and debounce function found here:
+  // @see https://stackoverflow.com/questions/27078285/simple-throttle-in-js
+  private throttle(callback: (event: Event, up: boolean) => void, delay: number): (event: Event, up: boolean) => void {
+    let timeoutHandler: ReturnType<typeof setTimeout> = null;
+    return function (event: Event, up: boolean) {
+      if (timeoutHandler == null) {
+        timeoutHandler = setTimeout(function () {
+          callback(event, up);
+          clearInterval(timeoutHandler);
+          timeoutHandler = null;
+        }, delay);
+      }
+    };
+  }
+
+  private debounce(callback: (event: Event, up: boolean) => void, delay: number): (event: Event, up: boolean) => void {
+    let timeoutHandler: ReturnType<typeof setTimeout> = null;
+    return function (event, up) {
+      clearTimeout(timeoutHandler);
+      timeoutHandler = setTimeout(function () {
+        callback(event, up);
+      }, delay);
+    };
   }
 }
