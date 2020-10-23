@@ -281,51 +281,24 @@ export default class IconPainter {
    * This icon is used by `compensation event`.
    */
   public paintDoubleLeftArrowheadsIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
-    // implementation adapted from https://thenounproject.com/vityavorobyev/icon/443401/
-    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, { height: 55, width: 100 });
+    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, { height: 53.5, width: 105 });
 
     canvas.begin();
-    canvas.moveTo(83.5, 0);
-    canvas.curveTo(82, 0, 80.6, 0.4, 79.2, 1.3);
-    canvas.lineTo(50, 20);
-    canvas.curveTo(47.9, 21.4, 46.7, 23.4, 46.4, 25.6);
-    canvas.lineTo(46.4, 8.1);
-    canvas.curveTo(46.4, 3.4, 42.5, 0.1, 38.4, 0.1);
-    canvas.curveTo(36.9, 0.1, 35.5, 0.5, 34.1, 1.4);
-    canvas.lineTo(4.9, 20);
-    canvas.curveTo(0, 23.2, 0, 30.3, 4.9, 33.5);
-    canvas.lineTo(34, 52.2);
-    canvas.curveTo(35.4, 53.1, 36.9, 53.5, 38.3, 53.5);
-    canvas.curveTo(42.5, 53.5, 46.3, 50.2, 46.3, 45.5);
-    canvas.lineTo(46.3, 27.9);
-    canvas.curveTo(46.6, 30.1, 47.8, 32.2, 49.9, 33.5);
-    canvas.lineTo(79, 52.2);
-    canvas.curveTo(80.4, 53.1, 81.9, 53.5, 83.3, 53.5);
-    canvas.curveTo(87.5, 53.5, 91.3, 50.2, 91.3, 45.5);
-    canvas.lineTo(91.3, 8.1);
-    canvas.curveTo(91.5, 3.4, 87.6, 0, 83.5, 0);
-    canvas.close();
-    canvas.moveTo(44.4, 45.5);
-    canvas.curveTo(44.4, 49.2, 41.3, 51.5, 38.4, 51.5);
-    canvas.curveTo(37.3, 51.5, 36.2, 51.2, 35.2, 50.5);
-    canvas.lineTo(6, 31.9);
-    canvas.curveTo(4.2, 30.8, 3.2, 28.9, 3.2, 26.8);
-    canvas.curveTo(3.2, 24.7, 4.2, 22.9, 6, 21.7);
-    canvas.lineTo(35.1, 3);
-    canvas.curveTo(36.1, 2.4, 37.2, 2, 38.3, 2);
-    canvas.curveTo(41.2, 2, 44.3, 4.3, 44.3, 8);
-    canvas.lineTo(44.3, 45.5);
-    canvas.close();
-    canvas.moveTo(89.5, 45.5);
-    canvas.curveTo(89.5, 49.2, 86.4, 51.5, 83.5, 51.5);
-    canvas.curveTo(82.4, 51.5, 81.3, 51.2, 80.3, 50.5);
-    canvas.lineTo(51.1, 31.9);
-    canvas.curveTo(49.3, 30.8, 48.3, 28.9, 48.3, 26.8);
-    canvas.curveTo(48.3, 24.7, 49.3, 22.9, 51.1, 21.7);
-    canvas.lineTo(80.2, 3);
-    canvas.curveTo(81.2, 2.4, 82.3, 2, 83.4, 2);
-    canvas.curveTo(86.3, 2, 89.4, 4.3, 89.4, 8);
-    canvas.lineTo(89.4, 45.5);
+    canvas.moveTo(91.4, 0);
+    canvas.curveTo(91.4, 0, 91.2, 0, 91, 0.2);
+    canvas.lineTo(50, 25);
+    canvas.curveTo(47.9, 25.8, 46.7, 26.6, 46.4, 27.3);
+    canvas.lineTo(46.4, 0);
+    canvas.curveTo(46.4, 0, 46.2, 0, 46, 0.2);
+    canvas.lineTo(4.9, 25);
+    canvas.curveTo(2, 26.2, 0, 27.3, 4.9, 28.5);
+    canvas.lineTo(45.8, 53);
+    canvas.curveTo(46, 53.3, 46.2, 53.5, 46.4, 53.5);
+    canvas.lineTo(46.4, 27);
+    canvas.curveTo(46.6, 27.3, 47.8, 28.1, 49.9, 29.9);
+    canvas.lineTo(90.8, 53.3);
+    canvas.curveTo(91, 53.3, 91.2, 53.5, 91.4, 53.5);
+    canvas.lineTo(91.4, 0);
     canvas.close();
     canvas.fillAndStroke();
   }
