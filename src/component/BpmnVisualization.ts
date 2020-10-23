@@ -17,12 +17,13 @@ import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
 import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
+import { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
 
 export default class BpmnVisualization {
-  public readonly graph: mxGraph;
+  public readonly graph: BpmnMxGraph;
 
   constructor(protected container: HTMLElement, options?: BpmnVisualizationOptions) {
     try {
