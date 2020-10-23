@@ -17,11 +17,8 @@ import StyleConfigurator from './config/StyleConfigurator';
 import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import MxClientConfigurator from './config/MxClientConfigurator';
-import { BpmnVisualizationOptions, ZoomConfiguration } from '../BpmnVisualization';
-import { mxgraph } from 'ts-mxgraph';
-import { BpmnMxGraph } from './BpmnMxGraph';
-// TODO unable to load mxClient from mxgraph-type-definitions@1.0.4
-declare const mxClient: typeof mxgraph.mxClient;
+import { BpmnVisualizationOptions } from '../BpmnVisualization';
+import BpmnMxGraph from './BpmnMxgraph';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib
