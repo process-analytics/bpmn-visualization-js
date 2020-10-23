@@ -131,7 +131,7 @@ export class UserTaskShape extends BaseTaskShape {
   }
 
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    this.iconPainter.paintUserIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
+    this.iconPainter.paintPersonIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
   }
 }
 
@@ -235,7 +235,7 @@ export class BusinessRuleTaskShape extends BaseTaskShape {
   }
 
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    this.iconPainter.paintBusinessRuleIcon({
+    this.iconPainter.paintTableIcon({
       ...paintParameter,
       ratioFromParent: 0.6,
       setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(15),
