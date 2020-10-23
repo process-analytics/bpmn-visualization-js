@@ -19,11 +19,12 @@ import MarkerConfigurator from './config/MarkerConfigurator';
 import MxClientConfigurator from './config/MxClientConfigurator';
 import { BpmnVisualizationOptions } from '../BpmnVisualization';
 import { mxgraph } from 'ts-mxgraph';
+import { BpmnMxGraph } from './BpmnMxGraph';
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.4
 declare const mxClient: typeof mxgraph.mxClient;
 
 /**
- * Configure the mxGraph graph that can be used by the lib
+ * Configure the BpmnMxGraph graph that can be used by the lib
  * <ul>
  *     <li>styles
  *     <li>shapes
@@ -36,7 +37,7 @@ export default class MxGraphConfigurator {
     this.graph = new BpmnMxGraph(container);
   }
 
-  public configure(options?: BpmnVisualizationOptions): mxGraph {
+  public configure(options?: BpmnVisualizationOptions): BpmnMxGraph {
     this.configureGraph();
     this.configureMouseNavigationSupport(options);
     new StyleConfigurator(this.graph).configureStyles();
@@ -58,7 +59,7 @@ export default class MxGraphConfigurator {
     this.graph.setExtendParents(false);
 
     // Disable folding for container mxCell (pool, lane, sub process, call activity) because we don't need it.
-    // This also prevents requesting unavailable images (see #185) as we don't override mxGraph folding default images.
+    // This also prevents requesting unavailable images (see #185) as we don't override BpmnMxGraph folding default images.
     this.graph.foldingEnabled = false;
   }
 
@@ -68,6 +69,8 @@ export default class MxGraphConfigurator {
     if (mouseNavigationSupport) {
       this.graph.panningHandler.useLeftButtonForPanning = true;
       this.graph.panningHandler.ignoreCell = true; // ok here as we cannot select cells
+      this.graph.panningHandler.addListener(mxEvent.PAN_START, this.getPanningHandler('grab'));
+      this.graph.panningHandler.addListener(mxEvent.PAN_END, this.getPanningHandler('default'));
       this.graph.setPanning(true);
     } else {
       this.graph.setPanning(false);
@@ -75,6 +78,16 @@ export default class MxGraphConfigurator {
     }
 
     this.configureMouseEvent(mouseNavigationSupport);
+  }
+
+  private getPanningHandler(cursor: 'grab' | 'default'): OmitThisParameter<(this: BpmnMxGraph) => void> {
+    return this.getPanningHandlerCallback(cursor).bind(this.graph);
+  }
+
+  private getPanningHandlerCallback(cursor: 'grab' | 'default'): () => void {
+    return function (this: BpmnMxGraph): void {
+      this.isEnabled() && (this.container.style.cursor = cursor);
+    };
   }
 
   private configureMouseEvent(activated = false): void {
@@ -95,66 +108,5 @@ export default class MxGraphConfigurator {
         mxEvent.consume(evt);
       }
     }, this.container);
-  }
-}
-
-class BpmnMxGraph extends mxGraph {
-  private cumulativeZoomFactor = 1;
-
-  constructor(readonly container: HTMLElement) {
-    super(container);
-  }
-
-  // override fit to set initial cumulativeZoomFactor
-  fit(order: number, keepOrigin?: boolean, margin?: number, enabled?: boolean, ignoreWidth?: boolean, ignoreHeight?: boolean, maxHeight?: number): number {
-    const scale = super.fit(order, keepOrigin, margin, enabled, ignoreWidth, ignoreHeight, maxHeight);
-    this.cumulativeZoomFactor = scale;
-    return scale;
-  }
-
-  // solution inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
-  public performZoom(up: boolean, evt: MouseEvent): void {
-    const rect = this.container.getBoundingClientRect();
-    const x = evt.clientX - rect.left;
-    const y = evt.clientY - rect.top;
-    this.zoomTo(null, null, up, x, y);
-  }
-
-  zoomTo(scale: number, center?: boolean, up?: boolean, offsetX?: number, offsetY?: number): void {
-    if (scale === null) {
-      const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(up, offsetX, offsetY);
-      this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
-    } else {
-      super.zoomTo(scale, center);
-    }
-  }
-
-  private getScaleAndTranslationDeltas(up: boolean, offsetX: number, offsetY: number): [number, number, number] {
-    let dx = offsetX * 2;
-    let dy = offsetY * 2;
-    const [factor, scale] = this.calculateFactorAndScale(up);
-    [dx, dy] = this.calculateTranslationDeltas(factor, scale, dx, dy);
-    return [scale, dx, dy];
-  }
-
-  private calculateTranslationDeltas(factor: number, scale: number, dx: number, dy: number): [number, number] {
-    if (factor > 1) {
-      const f = (factor - 1) / (scale * 2);
-      dx *= -f;
-      dy *= -f;
-    } else {
-      const f = (1 / factor - 1) / (this.view.scale * 2);
-      dx *= f;
-      dy *= f;
-    }
-    return [dx, dy];
-  }
-
-  private calculateFactorAndScale(up: boolean): [number, number] {
-    this.cumulativeZoomFactor *= up ? 1.2 : 0.8;
-    let factor = this.cumulativeZoomFactor / this.view.scale;
-    const scale = Math.round(this.view.scale * factor * 100) / 100;
-    factor = scale / this.view.scale;
-    return [factor, scale];
   }
 }

@@ -170,8 +170,8 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Conditional Start Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -203,8 +203,8 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Conditional Interrupting Start Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 
 |Escalation Interrupting Start Event
 |icon:check-circle-o[]
@@ -232,8 +232,8 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Conditional Non-interrupting Start Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 
 |Escalation Non-interrupting Start Event
 |icon:check-circle-o[]
@@ -265,8 +265,8 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Conditional Intermediate Catch Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 |===
 
 
@@ -331,8 +331,8 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Conditional Interrupting Boundary Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 
 |Cancel Interrupting Boundary Event
 |icon:check-circle-o[]
@@ -364,8 +364,8 @@ The event definition can be defined on the event or on the definitions.
 |The stroke & icon width may be adjusted
 
 |Conditional Non-interrupting Boundary Event
-|
-|
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 
 |Escalation Non-interrupting Boundary Event
 |icon:check-circle-o[]

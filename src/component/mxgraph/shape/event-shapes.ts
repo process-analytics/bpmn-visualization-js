@@ -50,7 +50,8 @@ abstract class EventShape extends mxEllipse {
     ],
     [
       ShapeBpmnEventKind.COMPENSATION,
-      (paintParameter: PaintParameter) => this.iconPainter.paintCompensationIcon({ ...paintParameter, ratioFromParent: 0.7, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
+      (paintParameter: PaintParameter) =>
+        this.iconPainter.paintDoubleLeftArrowheadsIcon({ ...paintParameter, ratioFromParent: 0.7, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
     ],
     [
       ShapeBpmnEventKind.CANCEL,
@@ -60,11 +61,15 @@ abstract class EventShape extends mxEllipse {
     [
       ShapeBpmnEventKind.ESCALATION,
       (paintParameter: PaintParameter) =>
-        this.iconPainter.paintEscalationIcon({
+        this.iconPainter.paintUpArrowheadIcon({
           ...paintParameter,
           ratioFromParent: 0.55,
           icon: { ...paintParameter.icon, strokeWidth: StyleDefault.STROKE_WIDTH_THIN.valueOf() },
         }),
+    ],
+    [
+      ShapeBpmnEventKind.CONDITIONAL,
+      (paintParameter: PaintParameter) => this.iconPainter.paintListIcon({ ...paintParameter, ratioFromParent: 0.6, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
     ],
   ]);
 
@@ -86,12 +91,13 @@ abstract class EventShape extends mxEllipse {
   }
 
   // This will be removed after implementation of all supported events
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private markNonFullyRenderedEvents(c: mxAbstractCanvas2D): void {
-    const eventKind = StyleUtils.getBpmnEventKind(this.style);
-    if (eventKind == ShapeBpmnEventKind.CONDITIONAL) {
-      c.setFillColor('chartreuse');
-      c.setFillAlpha(0.3);
-    }
+    // const eventKind = StyleUtils.getBpmnEventKind(this.style);
+    // if (eventKind == ShapeBpmnEventKind.CONDITIONAL) {
+    //   c.setFillColor('deeppink');
+    //   c.setFillAlpha(0.3);
+    // }
   }
 
   protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {

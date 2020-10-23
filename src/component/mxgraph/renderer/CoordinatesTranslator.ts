@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { BpmnMxGraph } from '../BpmnMxGraph';
 
 export default class CoordinatesTranslator {
-  constructor(readonly graph: mxGraph) {}
+  constructor(readonly graph: BpmnMxGraph) {}
 
   /**
    * Compute an absolute coordinate in relative coordinates in the parent cell referential.

@@ -261,7 +261,7 @@ export default class IconPainter {
   /**
    * This icon is used by `escalation event`.
    */
-  public paintEscalationIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
+  public paintUpArrowheadIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
     const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, { height: 50, width: 40 });
 
     canvas.begin();
@@ -280,7 +280,7 @@ export default class IconPainter {
   /**
    * This icon is used by `compensation event`.
    */
-  public paintCompensationIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
+  public paintDoubleLeftArrowheadsIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
     // implementation adapted from https://thenounproject.com/vityavorobyev/icon/443401/
     const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, { height: 55, width: 100 });
 
@@ -348,6 +348,34 @@ export default class IconPainter {
   }
 
   /**
+   * This icon is used by `conditional event`.
+   */
+  public paintListIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
+    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, { height: 60, width: 60 });
+
+    canvas.begin();
+    canvas.moveTo(0, 0);
+    canvas.lineTo(60, 0);
+    canvas.lineTo(60, 60);
+    canvas.lineTo(0, 60);
+    canvas.lineTo(0, 0);
+    canvas.close();
+    canvas.moveTo(5, 5);
+    canvas.lineTo(55, 5);
+    canvas.close();
+    canvas.moveTo(5, 21.6);
+    canvas.lineTo(55, 21.6);
+    canvas.close();
+    canvas.moveTo(5, 38.3);
+    canvas.lineTo(55, 38.3);
+    canvas.close();
+    canvas.moveTo(5, 55);
+    canvas.lineTo(55, 55);
+    canvas.close();
+    canvas.fillAndStroke();
+  }
+
+  /**
    * This icon is used by `exclusive gateway`.
    */
   public paintXCrossIcon(paintParameter: PaintParameter): void {
@@ -373,7 +401,7 @@ export default class IconPainter {
   /**
    * This icon is used by `user task`.
    */
-  public paintUserIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
+  public paintPersonIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
     // implementation adapted from https://www.flaticon.com/free-icon/employees_554768
     // use https://github.com/process-analytics/mxgraph-svg2shape to generate the xml stencil and port it to code
     const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon: { ...icon, isFilled: true } }, { height: 239.68, width: 143.61 });
@@ -849,7 +877,7 @@ export default class IconPainter {
   /**
    * This icon is used by `business rule task`.
    */
-  paintBusinessRuleIcon({ setIconOrigin, c, shape, ratioFromParent, icon }: PaintParameter): void {
+  paintTableIcon({ setIconOrigin, c, shape, ratioFromParent, icon }: PaintParameter): void {
     const originalIconSize = { width: 640, height: 640 };
     const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, originalIconSize);
 

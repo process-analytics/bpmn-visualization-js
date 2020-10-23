@@ -25,9 +25,10 @@ import StyleConfigurator from './config/StyleConfigurator';
 import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
 import { ShapeBpmnMarkerKind } from '../../model/bpmn/internal/shape';
+import { BpmnMxGraph } from './BpmnMxGraph';
 
 export default class MxGraphRenderer {
-  constructor(readonly graph: mxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
+  constructor(readonly graph: BpmnMxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
 
   public render(bpmnModel: BpmnModel): void {
     const displayedModel = toDisplayedModel(bpmnModel);
@@ -151,7 +152,7 @@ export default class MxGraphRenderer {
   }
 }
 
-export function defaultMxGraphRenderer(graph: mxGraph): MxGraphRenderer {
+export function defaultMxGraphRenderer(graph: BpmnMxGraph): MxGraphRenderer {
   return new MxGraphRenderer(graph, new CoordinatesTranslator(graph), new StyleConfigurator(graph));
 }
 
@@ -170,12 +171,10 @@ function toDisplayedModel(bpmnModel: BpmnModel): DisplayedModel {
     const kind = shape.bpmnElement?.kind;
     if (ShapeUtil.isSubProcess(kind)) {
       subprocesses.push(shape);
+    } else if (ShapeUtil.isBoundaryEvent(kind)) {
+      boundaryEvents.push(shape);
     } else if (!collapsedSubProcessIds.includes(shape.bpmnElement?.parentId)) {
-      if (ShapeUtil.isBoundaryEvent(kind)) {
-        boundaryEvents.push(shape);
-      } else {
-        otherFlowNodes.push(shape);
-      }
+      otherFlowNodes.push(shape);
     }
   });
 
