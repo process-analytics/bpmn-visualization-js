@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_08ie96i" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="7.3.0">
-  <bpmn:globalTask id="Activity_0xpd4f7" name="Called Global Task" implementation="##WebService" />
   <bpmn:process id="Process_083f5uf" isExecutable="false">
     <bpmn:subProcess id="Expanded_event_sub_process" triggeredByEvent="true">
       <bpmn:task id="Activity_0x447u4">
@@ -16,6 +15,24 @@
       <bpmn:sequenceFlow id="Flow_06jg95n" sourceRef="Activity_0x447u4" targetRef="Event_1g31fpy" />
       <bpmn:sequenceFlow id="Flow_0cjf31m" sourceRef="Event_12w0lsa" targetRef="Activity_0x447u4" />
     </bpmn:subProcess>
+    <bpmn:subProcess id="collapsed_sub_process">
+      <bpmn:startEvent id="Event_1meiwme" />
+    </bpmn:subProcess>
+    <bpmn:boundaryEvent id="Event_1gjqp6t" attachedToRef="collapsed_sub_process">
+      <bpmn:messageEventDefinition />
+    </bpmn:boundaryEvent>
+    <bpmn:transaction id="collapsed_transaction_sub_process">
+      <bpmn:startEvent id="Event_1ctgonp" />
+    </bpmn:transaction>
+    <bpmn:boundaryEvent id="Event_0dx6ev6" attachedToRef="collapsed_transaction_sub_process">
+      <bpmn:messageEventDefinition />
+    </bpmn:boundaryEvent>
+    <bpmn:adHocSubProcess id="collapsed_adhoc_sub_process">
+      <bpmn:startEvent id="Event_18dsqsv" />
+    </bpmn:adHocSubProcess>
+    <bpmn:boundaryEvent id="Event_0gnwc7y" attachedToRef="collapsed_adhoc_sub_process">
+      <bpmn:messageEventDefinition />
+    </bpmn:boundaryEvent>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_083f5uf">
@@ -38,6 +55,33 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1g31fpy_di" bpmnElement="Event_1g31fpy">
         <dc:Bounds x="442" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="collapsed_sub_process_di" bpmnElement="collapsed_sub_process" isExpanded="false">
+        <dc:Bounds x="160" y="340" width="345" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1meiwme_di" bpmnElement="Event_1meiwme">
+        <dc:Bounds x="325" y="362" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="collapsed_transaction_sub_process_di" bpmnElement="collapsed_transaction_sub_process">
+        <dc:Bounds x="580" y="340" width="345" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ctgonp_di" bpmnElement="Event_1ctgonp">
+        <dc:Bounds x="745" y="362" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="collapsed_adhoc_sub_process_di" bpmnElement="collapsed_adhoc_sub_process">
+        <dc:Bounds x="580" y="80" width="345" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_18dsqsv_di" bpmnElement="Event_18dsqsv">
+        <dc:Bounds x="745" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1gjqp6t_di" bpmnElement="Event_1gjqp6t">
+        <dc:Bounds x="492" y="402" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0dx6ev6_di" bpmnElement="Event_0dx6ev6">
+        <dc:Bounds x="912" y="402" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0gnwc7y_di" bpmnElement="Event_0gnwc7y">
+        <dc:Bounds x="912" y="142" width="36" height="36" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

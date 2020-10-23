@@ -596,6 +596,13 @@ describe('mxGraph model', () => {
       verticalAlign: 'bottom',
     });
 
+    // Elements of collapsed Sub Process
+    expect('message_boundary_event_attached_to_collapsed_embedded_sub_process_id').toBeBoundaryEvent({
+      eventKind: ShapeBpmnEventKind.MESSAGE,
+      label: 'Interrupting Message Boundary Event attached to collapsed Sub-Process',
+      parentId: 'collapsed_embedded_sub_process_id',
+      isInterrupting: true,
+    });
     expect('task_in_collapsed_sub_process_id').not.toBeCell();
 
     // Start Event in Event Sub Process

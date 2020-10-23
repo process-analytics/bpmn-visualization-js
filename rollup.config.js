@@ -18,6 +18,7 @@ import livereload from 'rollup-plugin-livereload';
 import copy from 'rollup-plugin-copy';
 import copyWatch from 'rollup-plugin-copy-watch';
 import { terser } from 'rollup-plugin-terser';
+import sizes from 'rollup-plugin-sizes';
 
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
@@ -81,6 +82,9 @@ if (devMode || demoMode) {
     });
   }
   plugins.push(copyPlugin);
+
+  // to have sizes of dependencies listed at the end of build log
+  plugins.push(sizes());
 }
 
 if (devMode) {
