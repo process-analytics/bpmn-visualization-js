@@ -18,7 +18,7 @@ import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import MxClientConfigurator from './config/MxClientConfigurator';
 import { BpmnVisualizationOptions } from '../BpmnVisualization';
-import BpmnMxGraph from './BpmnMxgraph';
+import { BpmnMxGraph } from './BpmnMxgraph';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib

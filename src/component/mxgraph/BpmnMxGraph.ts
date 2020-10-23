@@ -21,7 +21,7 @@ import { ZoomConfiguration } from '../BpmnVisualization';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 
-export default class BpmnMxGraph extends mxGraph {
+export class BpmnMxGraph extends mxGraph {
   private cumulativeZoomFactor = 1;
 
   constructor(readonly container: HTMLElement) {
