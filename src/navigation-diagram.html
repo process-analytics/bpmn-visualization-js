@@ -48,12 +48,6 @@
         position: absolute;
         left: -6px;
       }
-      #zoom-max {
-        top: 70px;
-      }
-      #zoom-min {
-        top: 130px;
-      }
       #zoom-throttle {
         top: 190px;
       }
@@ -65,12 +59,6 @@
         left: -5px;
         margin-top: 10px;
         font-size: 0.7em;
-      }
-      label[for="zoom-max"] {
-        top: 40px;
-      }
-      label[for="zoom-min"] {
-        top: 100px;
       }
       label[for="zoom-throttle"] {
         top: 160px;
@@ -91,8 +79,6 @@
       <p>to show zoom config controls add this to the url: .../navigation-diagram.html?zoom-config-controls=true</p>
     </div>
     <div id="zoom-config-controls">
-      <label for="zoom-max">max</label><input id="zoom-max" class="zoom-config" type="number" placeholder="max" value="10" step="1" min="2"/>
-      <label for="zoom-min">min</label><input id="zoom-min" class="zoom-config" type="number" placeholder="min" value="0.1" step="0.01" min="0" max="1"/>
       <label for="zoom-throttle">throttle</label><input id="zoom-throttle" class="zoom-config" type="number" placeholder="thr" value="40" disabled title="to play with throttle pass parameter in url like this: .../navigation-diagram.html?zoomConfigControls=true&zoomThrottle=40"/>
       <label for="zoom-debounce">debounce</label><input id="zoom-debounce" class="zoom-config" type="number" placeholder="deb" value="30" disabled title="to play with debounce pass parameter in url like this: .../navigation-diagram.html?zoomConfigControls=true&zoomDebounce=30"/>
     </div>
