@@ -280,7 +280,7 @@ export default class IconPainter {
   /**
    * This icon is used by `compensation event`.
    */
-  public paintCompensationIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
+  public paintDoubleLeftArrowheadsIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
     const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, { height: 53.5, width: 105 });
 
     canvas.begin();
