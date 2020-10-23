@@ -210,6 +210,10 @@
     <semantic:subProcess id="collapsed_embedded_sub_process_id" name="Collapsed Embedded Sub-Process" >
       <semantic:task id="task_in_collapsed_sub_process_id" name="Task In Collapsed Sub-Process"/>
     </semantic:subProcess>
+    <semantic:boundaryEvent id="message_boundary_event_attached_to_collapsed_embedded_sub_process_id" name="Interrupting Message Boundary Event attached to collapsed Sub-Process"
+                            attachedToRef="collapsed_embedded_sub_process_id">
+      <semantic:messageEventDefinition />
+    </semantic:boundaryEvent>
     <semantic:subProcess id="collapsed_embedded_sub_process_with_loop_id" name="Collapsed Embedded Sub-Process With Loop">
       <semantic:standardLoopCharacteristics />
     </semantic:subProcess>
@@ -840,6 +844,12 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_task_in_collapsed_sub_process_id" bpmnElement="task_in_collapsed_sub_process_id">
         <dc:Bounds x="3435" y="2180" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_message_boundary_event_attached_to_collapsed_embedded_sub_process_id" bpmnElement="message_boundary_event_attached_to_collapsed_embedded_sub_process_id">
+        <dc:Bounds x="3539" y="2230" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3580" y="2200" width="100" height="53" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <!-- END OF "Expanded with elements" -->
 

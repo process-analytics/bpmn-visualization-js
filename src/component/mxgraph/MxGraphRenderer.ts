@@ -171,12 +171,10 @@ function toDisplayedModel(bpmnModel: BpmnModel): DisplayedModel {
     const kind = shape.bpmnElement?.kind;
     if (ShapeUtil.isSubProcess(kind)) {
       subprocesses.push(shape);
+    } else if (ShapeUtil.isBoundaryEvent(kind)) {
+      boundaryEvents.push(shape);
     } else if (!collapsedSubProcessIds.includes(shape.bpmnElement?.parentId)) {
-      if (ShapeUtil.isBoundaryEvent(kind)) {
-        boundaryEvents.push(shape);
-      } else {
-        otherFlowNodes.push(shape);
-      }
+      otherFlowNodes.push(shape);
     }
   });
 
