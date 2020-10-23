@@ -63,8 +63,4 @@ export interface BpmnVisualizationOptions {
 export type ZoomConfiguration = {
   throttleDelay: number;
   debounceDelay: number;
-  constraints?: {
-    maxZoom: number;
-    minZoom: number;
-  };
 };
