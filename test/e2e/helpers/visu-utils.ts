@@ -14,25 +14,9 @@
  * limitations under the License.
  */
 import { ElementHandle } from 'puppeteer';
-
-// TODO use 'jest-image-snapshot' definition types when the lib will be updated
-// The type lib does not support setting config for ssim (4.2.0 released on july 2020)
-// typescript integration: https://github.com/americanexpress/jest-image-snapshot#usage-in-typescript
-//
-// inspired from https://medium.com/javascript-in-plain-english/jest-how-to-use-extend-with-typescript-4011582a2217
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace jest {
-    interface Matchers<R> {
-      toMatchImageSnapshot(imageSnapshotConfig?: ImageSnapshotConfig): R;
-    }
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface ImageSnapshotConfig {}
-  }
-}
-
 import debugLogger from 'debug';
 import { copyFileSync, loadBpmnContentForUrlQueryParam } from '../../helpers/file-helper';
+import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 
 const log = debugLogger('test');
 
@@ -55,7 +39,7 @@ export interface ImageSnapshotThresholdConfig {
   windows: number;
 }
 
-const defaultImageSnapshotConfig = {
+const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
   diffDirection: 'vertical',
   dumpDiffToConsole: true, // useful on CI (no need to retrieve the diff image, copy/paste image content from logs)
   // use SSIM to limit false positive
@@ -74,7 +58,7 @@ export class ImageSnapshotConfigurator {
    */
   constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>) {}
 
-  getConfig(fileName: string): jest.ImageSnapshotConfig {
+  getConfig(fileName: string): MatchImageSnapshotOptions {
     // minimal threshold to make tests for diagram renders pass on local
     // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
     let failureThreshold = 0.000004;
