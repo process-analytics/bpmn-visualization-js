@@ -17,6 +17,7 @@ import { ElementHandle } from 'puppeteer';
 import debugLogger from 'debug';
 import { copyFileSync, loadBpmnContentForUrlQueryParam } from '../../helpers/file-helper';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
+import { FitType, LoadOptions } from '../../../src/component/BpmnVisualization';
 
 const log = debugLogger('test');
 
@@ -103,9 +104,14 @@ export class BpmnDiagramPreparation {
    * Prior adding a config here, review your file to check if it is not too large because it contains too much elements, in particular, some elements not related to what you want to
    * test.
    */
-  constructor(readonly bpmnLoadMethodConfig: Map<string, BpmnLoadMethod>, targetedPage: TargetedPage, readonly sourceBpmnFolderName: string) {
+  constructor(
+    readonly bpmnLoadMethodConfig: Map<string, BpmnLoadMethod>,
+    targetedPage: TargetedPage,
+    readonly sourceBpmnFolderName: string,
+    loadOptions: LoadOptions = { fitType: FitType.HorizontalVertical },
+  ) {
     const params = targetedPage.queryParams?.join('&') ?? '';
-    this.baseUrl = `http://localhost:10002/${targetedPage.name}.html?fitOnLoad=true&${params}`;
+    this.baseUrl = `http://localhost:10002/${targetedPage.name}.html?fitType=${FitType[loadOptions.fitType]}&${params}`;
   }
 
   /**
