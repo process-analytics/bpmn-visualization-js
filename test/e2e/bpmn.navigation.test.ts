@@ -51,7 +51,7 @@ describe('diagram navigation', () => {
         {
           linux: 0.000004,
           macos: 0.00001,
-          windows: 0.000004,
+          windows: 0.00008,
         },
       ],
     ]),
@@ -90,6 +90,21 @@ describe('diagram navigation', () => {
     await page.keyboard.down('Control');
     await (<MouseWithWheel>page.mouse).wheel({ deltaX: deltaX });
 
+    const image = await page.screenshot({ fullPage: true });
+    expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
+  });
+
+  it.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
+    const deltaX = -100;
+    // simulate mouse+ctrl zoom
+    await page.mouse.move(viewportCenterX + 200, viewportCenterY);
+    await page.keyboard.down('Control');
+    for (let i = 0; i < xTimes; i++) {
+      await (<MouseWithWheel>page.mouse).wheel({ deltaX: deltaX });
+    }
+    for (let i = 0; i < xTimes; i++) {
+      await (<MouseWithWheel>page.mouse).wheel({ deltaX: -deltaX });
+    }
     const image = await page.screenshot({ fullPage: true });
     expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
   });
