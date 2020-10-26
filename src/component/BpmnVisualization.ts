@@ -40,10 +40,10 @@ export default class BpmnVisualization {
     }
   }
 
-  public load(xml: string): void {
+  public load(xml: string, options?: LoadOptions): void {
     try {
       const bpmnModel = newBpmnParser().parse(xml);
-      defaultMxGraphRenderer(this.graph).render(bpmnModel);
+      defaultMxGraphRenderer(this.graph).render(bpmnModel, options?.fitType);
     } catch (e) {
       // TODO error handling
       mxUtils.alert('Cannot load bpmn diagram: ' + e.message);
@@ -57,4 +57,13 @@ export interface BpmnVisualizationOptions {
    * If set to `true`, activate panning i.e. the BPMN diagram is draggable and can be moved using the mouse.
    */
   mouseNavigationSupport: boolean;
+}
+
+export interface LoadOptions {
+  fitType?: FitType;
+}
+
+export enum FitType {
+  Default,
+  HorizontalVertical,
 }
