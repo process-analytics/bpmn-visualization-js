@@ -8,11 +8,24 @@
 </head>
 <body>
     <div id="controls" class="hidden">
-      <div id="file-selector">
+      <div id="options-panel">
+        <div>
+          <h3>Options</h3>
+          <label>Fit:
+            <select name="fitTypes" id="fitType-selected">
+              <option value="Default" selected="yes">Default</option>
+              <option value="HorizontalVertical">Horizontal-Vertical</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div id="file-panel">
+        <div id="file-selector">
           <input type="file" id="bpmn-file" name="file"/>
           <label for="bpmn-file" class="btn"><span>open BPMN file</span></label>
+        </div>
+        <p class="info">(either drop a file here)</p>
       </div>
-      <div class="info-centered"><p>(either drop a file here)</p></div>
     </div>
     <div id="graph"></div>
 

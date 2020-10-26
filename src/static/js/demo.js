@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, updateFitType, FitType } from '../../index.es.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
-  startBpmnVisualization({ container: 'graph' });
+  startBpmnVisualization({ container: 'graph', loadOptions: { fitType: FitType[fitTypeSelected.value] } });
   document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
+  fitTypeSelected.addEventListener('change', updateFitType, false);
 
   const parameters = new URLSearchParams(window.location.search);
   if (!(parameters.get('hideControls') === 'true')) {
@@ -26,4 +27,14 @@ function startDemo() {
   }
 }
 
+// Update the selected option at the initialization
+const parameters = new URLSearchParams(window.location.search);
+const parameterFitType = parameters.get('fitType');
+
+const fitTypeSelected = document.getElementById('fitType-selected');
+if (parameterFitType) {
+  fitTypeSelected.value = parameterFitType;
+}
+
+// Start
 documentReady(startDemo);

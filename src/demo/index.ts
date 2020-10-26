@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnVisualization, { BpmnVisualizationOptions } from '../component/BpmnVisualization';
+import BpmnVisualization, { BpmnVisualizationOptions, FitType, LoadOptions } from '../component/BpmnVisualization';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 
@@ -21,17 +21,17 @@ export * from './helper';
 
 let bpmnVisualization: BpmnVisualization;
 
-let fitOnLoad = false;
+let loadOptions: LoadOptions = {};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types
+export function updateFitType(event: any): void {
+  loadOptions.fitType = FitType[event.target.value as keyof typeof FitType];
+}
+
 function loadBpmn(bpmn: string): void {
   log('Loading bpmn....');
-  bpmnVisualization.load(bpmn);
+  bpmnVisualization.load(bpmn, loadOptions);
   log('BPMN loaded');
-
-  if (fitOnLoad) {
-    log('Fitting....');
-    bpmnVisualization.graph.fit(0);
-    log('Fit completed');
-  }
 }
 
 // callback function for opening | dropping the file to be loaded
@@ -84,6 +84,7 @@ export interface BpmnVisualizationDemoConfiguration {
   container: string;
   statusFetchKoNotifier?: (errorMsg: string) => void;
   globalOptions?: BpmnVisualizationOptions;
+  loadOptions?: LoadOptions;
 }
 
 function defaultStatusFetchKoNotifier(errorMsg: string): void {
@@ -102,8 +103,12 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
 
   const parameters = new URLSearchParams(window.location.search);
 
-  fitOnLoad = parameters.get('fitOnLoad') == 'true';
-  log(`Configure 'fit on load' to ${fitOnLoad}`);
+  log('Configure load loadOptions');
+  loadOptions = config.loadOptions || {};
+  const parameterFitType = parameters.get('fitType');
+  if (parameterFitType) {
+    loadOptions.fitType = FitType[parameterFitType as keyof typeof FitType];
+  }
 
   log("Checking if 'BPMN content' is provided as query parameter");
   const bpmnParameterValue = parameters.get('bpmn');
