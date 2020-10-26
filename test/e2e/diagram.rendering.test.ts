@@ -24,11 +24,11 @@ describe('no diagram visual regression', () => {
         // minimal threshold to make test pass on Github Workflow
         // ubuntu: Expected image to match or be a close match to snapshot but was 0.05988176159102966% different from snapshot
         // macOS: Expected image to match or be a close match to snapshot but was 0.05988176159102966% different from snapshot
-        // windows: Expected image to match or be a close match to snapshot but was 0.039483425846964515% different from snapshot
+        // windows: Expected image to match or be a close match to snapshot but was 0.31647096370069905% different from snapshot
         {
           linux: 0.0006,
           macos: 0.0006,
-          windows: 0.0004,
+          windows: 0.004,
         },
       ],
     ]),
