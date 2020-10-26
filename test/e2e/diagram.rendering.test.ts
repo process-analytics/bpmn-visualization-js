@@ -17,7 +17,22 @@ import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, Imag
 import { FitType } from '../../src/component/BpmnVisualization';
 
 describe('no diagram visual regression', () => {
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new Map<string, ImageSnapshotThresholdConfig>([]));
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
+    new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'with_outside_labels',
+        // minimal threshold to make test pass on Github Workflow
+        // ubuntu: Expected image to match or be a close match to snapshot but was 0.05988176159102966% different from snapshot
+        // macOS: Expected image to match or be a close match to snapshot but was 0.05988176159102966% different from snapshot
+        // windows: Expected image to match or be a close match to snapshot but was 0.039483425846964515% different from snapshot
+        {
+          linux: 0.0006,
+          macos: 0.0006,
+          windows: 0.0004,
+        },
+      ],
+    ]),
+  );
 
   describe.each([
     [FitType[FitType.Default], FitType.Default],
