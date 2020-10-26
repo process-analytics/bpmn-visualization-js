@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC">
+  <bpmn:process id="process" isExecutable="false">
+    <bpmn:exclusiveGateway id="exclusive_gateway_1" />
+    <bpmn:parallelGateway id="parallel_gateway_1" />
+    <bpmn:inclusiveGateway id="inclusive_gateway_1" />
+    <bpmn:complexGateway id="complex_gateway_1" />
+    <bpmn:eventBasedGateway id="event_based_gateway_1" />
+    <bpmn:exclusiveGateway id="exclusive_gateway_2" />
+    <bpmn:parallelGateway id="parallel_gateway_2" />
+    <bpmn:inclusiveGateway id="inclusive_gateway_2" />
+    <bpmn:complexGateway id="complex_gateway_2" />
+    <bpmn:eventBasedGateway id="event_based_gateway_2" />
+    <bpmn:exclusiveGateway id="exclusive_gateway_3" />
+    <bpmn:parallelGateway id="parallel_gateway_3" />
+    <bpmn:inclusiveGateway id="inclusive_gateway_3" />
+    <bpmn:complexGateway id="complex_gateway_3" />
+    <bpmn:eventBasedGateway id="event_based_gateway_3" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process">
+      <bpmndi:BPMNShape id="shape_exclusive_gateway_1" bpmnElement="exclusive_gateway_1" isMarkerVisible="true">
+        <dc:Bounds x="500" y="100" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_parallel_gateway_1" bpmnElement="parallel_gateway_1">
+        <dc:Bounds x="500" y="200" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_inclusive_gateway_1" bpmnElement="inclusive_gateway_1">
+        <dc:Bounds x="500" y="300" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_complex_gateway_1" bpmnElement="complex_gateway_1">
+        <dc:Bounds x="500" y="400" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_event_based_gateway_1" bpmnElement="event_based_gateway_1">
+        <dc:Bounds x="500" y="500" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_exclusive_gateway_2" bpmnElement="exclusive_gateway_2" isMarkerVisible="true">
+        <dc:Bounds x="500" y="600" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_parallel_gateway_2" bpmnElement="parallel_gateway_2">
+        <dc:Bounds x="500" y="700" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_inclusive_gateway_2" bpmnElement="inclusive_gateway_2">
+        <dc:Bounds x="500" y="800" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_complex_gateway_2" bpmnElement="complex_gateway_2">
+        <dc:Bounds x="500" y="900" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_event_based_gateway_2" bpmnElement="event_based_gateway_2">
+        <dc:Bounds x="500" y="1000" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_exclusive_gateway_3" bpmnElement="exclusive_gateway_3" isMarkerVisible="true">
+        <dc:Bounds x="500" y="1100" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_parallel_gateway_3" bpmnElement="parallel_gateway_3">
+        <dc:Bounds x="500" y="1200" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_inclusive_gateway_3" bpmnElement="inclusive_gateway_3">
+        <dc:Bounds x="500" y="1300" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_complex_gateway_3" bpmnElement="complex_gateway_3">
+        <dc:Bounds x="500" y="1400" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_event_based_gateway_3" bpmnElement="event_based_gateway_3">
+        <dc:Bounds x="500" y="1500" width="50" height="50" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
