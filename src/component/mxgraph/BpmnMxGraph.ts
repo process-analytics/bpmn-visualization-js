@@ -30,18 +30,37 @@ export class BpmnMxGraph extends mxGraph {
   }
 
   public customFit(type: FitType): void {
-    let ignoreWidth = false;
-    let ignoreHeight = false;
-    switch (type) {
-      case FitType.Horizontal:
-        ignoreHeight = true;
-        break;
-      case FitType.Vertical:
-        ignoreWidth = true;
-        break;
-    }
+    if (type != FitType.Center) {
+      let ignoreWidth = false;
+      let ignoreHeight = false;
+      switch (type) {
+        case FitType.Horizontal:
+          ignoreHeight = true;
+          break;
+        case FitType.Vertical:
+          ignoreWidth = true;
+          break;
+      }
 
-    this.fit(this.border, false, 0, true, ignoreWidth, ignoreHeight);
+      this.fit(this.border, false, 0, true, ignoreWidth, ignoreHeight);
+    } else {
+      const margin = 2;
+      const max = 3;
+
+      const bounds = this.getGraphBounds();
+      const clientWidth = this.container.clientWidth - margin;
+      const clientHeight = this.container.clientHeight - margin;
+      const width = bounds.width / this.view.scale;
+      const height = bounds.height / this.view.scale;
+      const scale = Math.min(max, Math.min(clientWidth / width, clientHeight / height));
+      this.cumulativeZoomFactor = scale;
+
+      this.view.scaleAndTranslate(
+        scale,
+        (margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.view.scale,
+        (margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.view.scale,
+      );
+    }
   }
 
   // solution inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
