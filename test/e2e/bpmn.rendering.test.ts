@@ -16,7 +16,7 @@
 import { findFiles } from '../helpers/file-helper';
 import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
 
-describe('no visual regression', () => {
+describe('no BPMN elements visual regression', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
     new Map<string, ImageSnapshotThresholdConfig>([
       [
