@@ -37,4 +37,6 @@ export enum FitType {
   Horizontal,
   /** Fit only vertically. */
   Vertical,
+  /** Fit and center the graph. */
+  Center,
 }
