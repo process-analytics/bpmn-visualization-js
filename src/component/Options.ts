@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
+export interface BpmnVisualizationOptions {
+  /**
+   * If set to `true`, activate panning i.e. the BPMN diagram is draggable and can be moved using the mouse.
+   */
+  mouseNavigationSupport: boolean;
+}
+
+export interface LoadOptions {
+  fitType?: FitType;
+}
+
 /**
  * - None: No fitting
  * - HorizontalVertical: Fit the whole view

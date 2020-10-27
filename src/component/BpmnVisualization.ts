@@ -18,7 +18,7 @@ import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
 import { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
-import { FitType } from './mxgraph/Options';
+import { BpmnVisualizationOptions, LoadOptions } from './Options';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -51,15 +51,4 @@ export default class BpmnVisualization {
       throw e;
     }
   }
-}
-
-export interface BpmnVisualizationOptions {
-  /**
-   * If set to `true`, activate panning i.e. the BPMN diagram is draggable and can be moved using the mouse.
-   */
-  mouseNavigationSupport: boolean;
-}
-
-export interface LoadOptions {
-  fitType?: FitType;
 }

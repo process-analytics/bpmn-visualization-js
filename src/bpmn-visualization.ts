@@ -27,8 +27,7 @@ export { StyleConfigurator };
 export { ShapeUtil };
 // end of 'TO DO remove dedicated import/export'
 
-export { BpmnVisualizationOptions, LoadOptions } from './component/BpmnVisualization';
-export { FitType } from './component/mxgraph/Options';
+export { BpmnVisualizationOptions, LoadOptions, FitType } from './component/Options';
 export * from './component/mxgraph/StyleUtils';
 export * from './component/mxgraph/shape/render';
 
