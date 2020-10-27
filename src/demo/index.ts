@@ -108,6 +108,7 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   if (parameterFitType) {
     loadOptions.fitType = FitType[parameterFitType as keyof typeof FitType];
   }
+  log('Configured load options: ' + JSON.stringify(loadOptions));
 
   log("Checking if 'BPMN content' is provided as query parameter");
   const bpmnParameterValue = parameters.get('bpmn');
@@ -115,6 +116,7 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
     const bpmn = decodeURIComponent(bpmnParameterValue);
     log(`Received bpmn length: ${bpmn.length}`);
     log(`Received bpmn content: ${bpmn}`);
+
     log('BPMN auto loading');
     loadBpmn(bpmn);
     log('BPMN content loading completed');
