@@ -30,8 +30,18 @@ export class BpmnMxGraph extends mxGraph {
   }
 
   public customFit(type: FitType): void {
-    const ignoreHeight = type === FitType.Horizontal;
-    this.fit(this.border, false, 0, true, false, ignoreHeight);
+    let ignoreWidth = false;
+    let ignoreHeight = false;
+    switch (type) {
+      case FitType.Horizontal:
+        ignoreHeight = true;
+        break;
+      case FitType.Vertical:
+        ignoreWidth = true;
+        break;
+    }
+
+    this.fit(this.border, false, 0, true, ignoreWidth, ignoreHeight);
   }
 
   // solution inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
