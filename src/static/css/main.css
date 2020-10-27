@@ -2,6 +2,7 @@
     display: none;
 }
 
+
 #controls {
     display: flex;
 }
@@ -31,6 +32,15 @@
 }
 #options-panel > * {
     padding-left: 5%;
+}
+
+.fixed-size {
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  position: absolute;
+  overflow: hidden;
 }
 
 /* Buttons */

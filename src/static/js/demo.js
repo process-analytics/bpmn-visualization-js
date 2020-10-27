@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, updateFitType, FitType } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, updateFitType, FitType, setFixedSizeClass } from '../../index.es.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
@@ -34,6 +34,10 @@ const parameterFitType = parameters.get('fitType');
 const fitTypeSelected = document.getElementById('fitType-selected');
 if (parameterFitType) {
   fitTypeSelected.value = parameterFitType;
+}
+
+if (fitTypeSelected.value !== 'None') {
+  setFixedSizeClass('graph');
 }
 
 // Start

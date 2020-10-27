@@ -20,12 +20,29 @@ import { DropFileUserInterface } from './component/DropFileUserInterface';
 export * from './helper';
 
 let bpmnVisualization: BpmnVisualization;
-
 let loadOptions: LoadOptions = {};
+
+let container: string;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types
 export function updateFitType(event: any): void {
   loadOptions.fitType = FitType[event.target.value as keyof typeof FitType];
+
+  if (loadOptions.fitType === FitType.None) {
+    resetClass(container);
+  } else {
+    setFixedSizeClass(container);
+  }
+}
+
+export function setFixedSizeClass(htmlElementId: string): void {
+  const htmlElement = document.getElementById(htmlElementId);
+  htmlElement.className = 'fixed-size';
+}
+
+export function resetClass(htmlElementId: string): void {
+  const htmlElement = document.getElementById(htmlElementId);
+  htmlElement.className = null;
 }
 
 function loadBpmn(bpmn: string): void {
@@ -93,7 +110,7 @@ function defaultStatusFetchKoNotifier(errorMsg: string): void {
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
-  const container = config.container;
+  container = config.container;
 
   log(`Initializing BpmnVisualization with container '${container}'...`);
   bpmnVisualization = new BpmnVisualization(window.document.getElementById(container), config.globalOptions);

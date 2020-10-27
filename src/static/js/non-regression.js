@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, startBpmnVisualization } from '../../index.es.js';
+import { documentReady, startBpmnVisualization, setFixedSizeClass } from '../../index.es.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function statusFetchKO(errorMsg) {
@@ -22,4 +22,5 @@ function statusFetchKO(errorMsg) {
   statusElt.className = 'status-ko';
 }
 
+setFixedSizeClass('viewport');
 documentReady(() => startBpmnVisualization({ container: 'viewport', statusFetchKoNotifier: statusFetchKO }));
