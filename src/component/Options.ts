@@ -25,11 +25,9 @@ export interface LoadOptions {
   fitType?: FitType;
 }
 
-/**
- * - None: No fitting
- * - HorizontalVertical: Fit the whole view
- */
 export enum FitType {
+  /** Not fit, use dimensions and coordinates from the BPMN diagram. */
   None,
+  /** Fit the whole viewport. */
   HorizontalVertical,
 }
