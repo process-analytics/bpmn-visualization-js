@@ -42,7 +42,7 @@ export class BpmnMxGraph extends mxGraph {
           break;
       }
 
-      this.fit(this.border, false, 0, true, ignoreWidth, ignoreHeight);
+      this.fit(this.border, false, 10, true, ignoreWidth, ignoreHeight);
     } else {
       const margin = 2;
       const max = 3;
