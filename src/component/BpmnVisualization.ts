@@ -18,6 +18,7 @@ import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
 import { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
+import { FitType } from './mxgraph/Options';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -61,9 +62,4 @@ export interface BpmnVisualizationOptions {
 
 export interface LoadOptions {
   fitType?: FitType;
-}
-
-export enum FitType {
-  Default,
-  HorizontalVertical,
 }

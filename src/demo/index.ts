@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnVisualization, { BpmnVisualizationOptions, FitType, LoadOptions } from '../component/BpmnVisualization';
+import BpmnVisualization, { BpmnVisualizationOptions, LoadOptions } from '../component/BpmnVisualization';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
+import { FitType } from '../component/mxgraph/Options';
 
 export * from './helper';
 

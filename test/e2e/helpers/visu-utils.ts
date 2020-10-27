@@ -17,7 +17,8 @@ import { ElementHandle } from 'puppeteer';
 import debugLogger from 'debug';
 import { copyFileSync, loadBpmnContentForUrlQueryParam } from '../../helpers/file-helper';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
-import { FitType, LoadOptions } from '../../../src/component/BpmnVisualization';
+import { LoadOptions } from '../../../src/component/BpmnVisualization';
+import { FitType } from '../../../src/component/mxgraph/Options';
 
 const log = debugLogger('test');
 
