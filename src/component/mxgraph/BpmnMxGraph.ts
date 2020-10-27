@@ -30,7 +30,9 @@ export class BpmnMxGraph extends mxGraph {
   }
 
   public customFit(type: FitType): void {
-    if (type != FitType.Center) {
+    if (type === FitType.Default) {
+      this.refresh();
+    } else if (type != FitType.Center) {
       let ignoreWidth = false;
       let ignoreHeight = false;
       switch (type) {
@@ -43,6 +45,7 @@ export class BpmnMxGraph extends mxGraph {
       }
 
       this.fit(this.border, false, 10, true, ignoreWidth, ignoreHeight);
+      this.center(true, false);
     } else {
       const margin = 2;
       const max = 3;
