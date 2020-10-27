@@ -35,7 +35,7 @@ describe('no diagram visual regression', () => {
   );
 
   describe.each([
-    [FitType[FitType.Default], FitType.Default],
+    [FitType[FitType.None], FitType.None],
     [FitType[FitType.HorizontalVertical], FitType.HorizontalVertical],
   ])('load options: %s fit', async (fitTitle: string, fitType: FitType) => {
     const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', { fitType });

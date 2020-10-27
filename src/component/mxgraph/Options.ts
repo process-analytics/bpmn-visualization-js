@@ -13,7 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/**
+ * - None: No fitting
+ * - HorizontalVertical: Fit the whole view
+ */
 export enum FitType {
-  Default,
+  None,
   HorizontalVertical,
 }

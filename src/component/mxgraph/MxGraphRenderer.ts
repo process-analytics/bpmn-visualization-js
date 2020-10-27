@@ -31,10 +31,10 @@ import { FitType } from './Options';
 export default class MxGraphRenderer {
   constructor(readonly graph: BpmnMxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
 
-  public render(bpmnModel: BpmnModel, type: FitType = FitType.Default): void {
+  public render(bpmnModel: BpmnModel, type: FitType = FitType.None): void {
     this.insertShapesAndEdges(bpmnModel);
 
-    if (type != FitType.Default) {
+    if (type != FitType.None) {
       this.graph.customFit();
     }
   }
