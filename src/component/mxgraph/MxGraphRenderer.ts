@@ -35,7 +35,7 @@ export default class MxGraphRenderer {
     this.insertShapesAndEdges(bpmnModel);
 
     if (type != FitType.None) {
-      this.graph.customFit();
+      this.graph.customFit(type);
     }
   }
 
