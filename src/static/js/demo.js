@@ -13,17 +13,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, FitType, updateFitType } from '../../index.es.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function startDemo() {
-  startBpmnVisualization({ container: 'graph' });
-  document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
+function updateFitTypeSelection(event) {
+  updateFitType(event);
 
-  const parameters = new URLSearchParams(window.location.search);
-  if (!(parameters.get('hideControls') === 'true')) {
-    document.getElementById('controls').classList.remove('hidden');
+  if (event.target.value === 'None') {
+    resetClass(container);
+  } else {
+    setFixedSizeClass(container);
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function setFixedSizeClass(htmlElementId) {
+  const htmlElement = document.getElementById(htmlElementId);
+  htmlElement.classList.add('fixed-size');
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function resetClass(htmlElementId) {
+  const htmlElement = document.getElementById(htmlElementId);
+  htmlElement.classList.remove('fixed-size');
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function startDemo() {
+  const parameters = new URLSearchParams(window.location.search);
+
+  // Update the selected option at the initialization
+  const fitTypeSelected = document.getElementById('fitType-selected');
+  fitTypeSelected.addEventListener('change', updateFitTypeSelection, false);
+
+  const parameterFitType = parameters.get('fitType');
+  if (parameterFitType) {
+    fitTypeSelected.value = parameterFitType;
+  }
+
+  if (fitTypeSelected.value !== 'None') {
+    setFixedSizeClass('graph');
+  }
+
+  startBpmnVisualization({ container: 'graph', loadOptions: { fitType: FitType[fitTypeSelected.value] } });
+  document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
+
+  // Update control panel
+  if (parameters.get('hideControls') === 'true') {
+    const classList = document.getElementById('controls').classList;
+    classList.remove('controls');
+    classList.add('hidden');
+  }
+}
+
+// Start
 documentReady(startDemo);

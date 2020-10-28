@@ -1,15 +1,49 @@
 .hidden {
     display: none;
 }
-.info-centered p {
+
+
+.controls {
+    display: flex;
+}
+
+#file-panel {
+    flex: 75%;
+    padding-left: 25%;
+}
+.info {
     margin: 0 auto;
     width: 100%;
-    text-align: center;
 }
-#file-selector {
-    text-align: center;
+
+#options-panel {
+    flex: 25%;
+    position: relative;
 }
-/*Buttons*/
+#options-panel div {
+    border-radius: 10px;
+    border: 2px solid PowderBlue;
+    margin-top: 5%;
+    margin-left: 5%;
+    margin-right: 10%;
+    margin-bottom: 5%;
+    margin-top: 15px;
+    padding-bottom: 15px;
+}
+#options-panel > * {
+    padding-left: 5%;
+}
+
+.fixed-size {
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  position: absolute;
+  overflow: hidden;
+}
+
+/* Buttons */
 [type="file"] {
     border: 0;
     clip: rect(0, 0, 0, 0);

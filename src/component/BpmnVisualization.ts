@@ -18,6 +18,7 @@ import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
 import { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
+import { BpmnVisualizationOptions, LoadOptions } from './Options';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -40,21 +41,14 @@ export default class BpmnVisualization {
     }
   }
 
-  public load(xml: string): void {
+  public load(xml: string, options?: LoadOptions): void {
     try {
       const bpmnModel = newBpmnParser().parse(xml);
-      defaultMxGraphRenderer(this.graph).render(bpmnModel);
+      defaultMxGraphRenderer(this.graph).render(bpmnModel, options?.fitType);
     } catch (e) {
       // TODO error handling
       mxUtils.alert('Cannot load bpmn diagram: ' + e.message);
       throw e;
     }
   }
-}
-
-export interface BpmnVisualizationOptions {
-  /**
-   * If set to `true`, activate panning i.e. the BPMN diagram is draggable and can be moved using the mouse.
-   */
-  mouseNavigationSupport: boolean;
 }
