@@ -83,7 +83,7 @@ describe.each([1, 2, 3, 4, 5])('diagram navigation performance', run => {
     viewportCenterY = bounding_box.y + bounding_box.height / 2;
   });
 
-  it.each([30])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
+  it.each([30])(`ctrl + mouse: check performance while performing zoom in and zoom out [%s times]`, async (xTimes: number) => {
     const deltaX = -100;
     const metricsStart = await page.metrics();
 
