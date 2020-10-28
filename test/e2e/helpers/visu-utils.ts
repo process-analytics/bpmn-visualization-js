@@ -183,3 +183,9 @@ export class PageTester {
     return bpmnViewportElementHandle;
   }
 }
+
+export function delay(time: number): Promise<unknown> {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, time);
+  });
+}
