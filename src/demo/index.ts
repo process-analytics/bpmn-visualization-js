@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnVisualization, BpmnVisualizationOptions, LoadOptions, FitType } from '../bpmn-visualization';
+import BpmnVisualization from '../component/BpmnVisualization';
+import { BpmnVisualizationOptions, FitType, LoadOptions } from '../component/Options';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 
