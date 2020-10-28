@@ -13,18 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, updateFitType, FitType, setFixedSizeClass } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, FitType, updateFitType } from '../../index.es.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
   startBpmnVisualization({ container: 'graph', loadOptions: { fitType: FitType[fitTypeSelected.value] } });
   document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
-  fitTypeSelected.addEventListener('change', updateFitType, false);
+  fitTypeSelected.addEventListener('change', updateFitTypeSelection, false);
 
   const parameters = new URLSearchParams(window.location.search);
   if (!(parameters.get('hideControls') === 'true')) {
     document.getElementById('controls').classList.remove('hidden');
   }
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function updateFitTypeSelection(event) {
+  updateFitType(event);
+
+  if (event.target.value === 'None') {
+    resetClass(container);
+  } else {
+    setFixedSizeClass(container);
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function setFixedSizeClass(htmlElementId) {
+  const htmlElement = document.getElementById(htmlElementId);
+  htmlElement.classList.add('fixed-size');
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function resetClass(htmlElementId) {
+  const htmlElement = document.getElementById(htmlElementId);
+  htmlElement.classList.remove('fixed-size');
 }
 
 // Update the selected option at the initialization
