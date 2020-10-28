@@ -31,12 +31,25 @@ describe('no diagram visual regression', () => {
           windows: 0.0035,
         },
       ],
+      [
+        'vertical',
+        // minimal threshold to make test pass on Github Workflow
+        // ubuntu: Expected image to match or be a close match to snapshot but was 0.0019441198722769393% different from snapshot
+        // macOS: Expected image to match or be a close match to snapshot but was 0.0019441198722769393% different from snapshot
+        // windows: Expected image to match or be a close match to snapshot but was 0.0019441198722769393% different from snapshot
+        {
+          linux: 0.00002,
+          macos: 0.00002,
+          windows: 0.00002,
+        },
+      ],
     ]),
   );
 
   describe.each([
     [FitType[FitType.None], FitType.None],
     [FitType[FitType.HorizontalVertical], FitType.HorizontalVertical],
+    [FitType[FitType.Horizontal], FitType.Horizontal],
   ])('load options: %s fit', async (fitTitle: string, fitType: FitType) => {
     const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', { fitType });
     const pageTester = new PageTester(bpmnDiagramPreparation, 'viewport', 'BPMN Visualization Non Regression');

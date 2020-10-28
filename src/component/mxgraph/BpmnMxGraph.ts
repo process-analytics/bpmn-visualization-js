@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { FitType } from '../Options';
+
 export class BpmnMxGraph extends mxGraph {
   private cumulativeZoomFactor = 1;
 
@@ -27,8 +29,9 @@ export class BpmnMxGraph extends mxGraph {
     return scale;
   }
 
-  public customFit(): void {
-    this.fit(this.border, false, 0, true, false, false);
+  public customFit(type: FitType): void {
+    const ignoreHeight = type === FitType.Horizontal;
+    this.fit(this.border, false, 0, true, false, ignoreHeight);
   }
 
   // solution inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254

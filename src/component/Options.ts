@@ -33,4 +33,6 @@ export enum FitType {
   None,
   /** Fit the whole viewport. */
   HorizontalVertical,
+  /** Fit only horizontally. */
+  Horizontal,
 }
