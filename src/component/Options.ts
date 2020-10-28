@@ -35,4 +35,6 @@ export enum FitType {
   HorizontalVertical,
   /** Fit only horizontally. */
   Horizontal,
+  /** Fit only vertically. */
+  Vertical,
 }
