@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <title>BPMN Visualization Non Regression</title>
     <link rel="shortcut icon" href="./static/img/favicon.ico">
-  <link href="./static/css/main.css" rel="stylesheet">
     <style>
+      .graph-container {
+        top: 10px;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        position: absolute;
+        overflow: hidden;
+      }
       .status-ko {
         color: red;
         font-weight: bold;
@@ -14,7 +21,7 @@
 </head>
 <body>
     <div id="fetch-status"></div>
-    <div id="viewport"></div>
+    <div id="viewport" class="graph-container"></div>
 
     <!-- load global settings -->
     <script src="./static/js/configureMxGraphGlobals.js"></script>
