@@ -1,68 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC">
   <bpmn:process id="process" isExecutable="false">
-    <bpmn:exclusiveGateway id="exclusive_gateway_1" />
-    <bpmn:parallelGateway id="parallel_gateway_1" />
-    <bpmn:inclusiveGateway id="inclusive_gateway_1" />
-    <bpmn:complexGateway id="complex_gateway_1" />
-    <bpmn:eventBasedGateway id="event_based_gateway_1" />
-    <bpmn:exclusiveGateway id="exclusive_gateway_2" />
-    <bpmn:parallelGateway id="parallel_gateway_2" />
-    <bpmn:inclusiveGateway id="inclusive_gateway_2" />
-    <bpmn:complexGateway id="complex_gateway_2" />
-    <bpmn:eventBasedGateway id="event_based_gateway_2" />
-    <bpmn:exclusiveGateway id="exclusive_gateway_3" />
-    <bpmn:parallelGateway id="parallel_gateway_3" />
-    <bpmn:inclusiveGateway id="inclusive_gateway_3" />
-    <bpmn:complexGateway id="complex_gateway_3" />
-    <bpmn:eventBasedGateway id="event_based_gateway_3" />
+    <bpmn:task id="task_1"/>
+    <bpmn:task id="task_2" />
+    <bpmn:task id="task_3" />
+    <bpmn:task id="task_4" />
+    <bpmn:task id="task_5" />
+    <bpmn:task id="task_6" />
+    <bpmn:task id="task_7" />
+    <bpmn:task id="task_8" />
+    <bpmn:task id="task_9" />
+    <bpmn:task id="task_10" />
+    <bpmn:task id="task_11" />
+    <bpmn:task id="task_12" />
+    <bpmn:task id="task_13" />
+    <bpmn:task id="task_14" />
+    <bpmn:task id="task_15"/>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process">
-      <bpmndi:BPMNShape id="shape_exclusive_gateway_1" bpmnElement="exclusive_gateway_1" isMarkerVisible="true">
-        <dc:Bounds x="500" y="100" width="50" height="50" />
+      <bpmndi:BPMNShape id="shape_task_1" bpmnElement="task_1">
+        <dc:Bounds x="500" y="100" width="105" height="50" />
+      </bpmndi:BPMNShape>Ò
+      <bpmndi:BPMNShape id="shape_task_2" bpmnElement="task_2">
+        <dc:Bounds x="515" y="200" width="75" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_parallel_gateway_1" bpmnElement="parallel_gateway_1">
-        <dc:Bounds x="500" y="200" width="50" height="50" />
+      <bpmndi:BPMNShape id="shape_task_3" bpmnElement="task_3">
+        <dc:Bounds x="515" y="300" width="75" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_inclusive_gateway_1" bpmnElement="inclusive_gateway_1">
-        <dc:Bounds x="500" y="300" width="50" height="50" />
+      <bpmndi:BPMNShape id="shape_task_4" bpmnElement="task_4">
+        <dc:Bounds x="515" y="400" width="75" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_complex_gateway_1" bpmnElement="complex_gateway_1">
-        <dc:Bounds x="500" y="400" width="50" height="50" />
+      <bpmndi:BPMNShape id="shape_task_5" bpmnElement="task_5">
+        <dc:Bounds x="515" y="500" width="75" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_event_based_gateway_1" bpmnElement="event_based_gateway_1">
-        <dc:Bounds x="500" y="500" width="50" height="50" />
+      <bpmndi:BPMNShape id="shape_task_6" bpmnElement="task_6">
+        <dc:Bounds x="515" y="600" width="75" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_exclusive_gateway_2" bpmnElement="exclusive_gateway_2" isMarkerVisible="true">
-        <dc:Bounds x="500" y="600" width="50" height="50" />
+      <bpmndi:BPMNShape id="shape_task_7" bpmnElement="task_7">
+        <dc:Bounds x="515" y="700" width="75" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_parallel_gateway_2" bpmnElement="parallel_gateway_2">
-        <dc:Bounds x="500" y="700" width="50" height="50" />
+      <bpmndi:BPMNShape id="shape_task_8" bpmnElement="task_8">
+        <dc:Bounds x="515" y="800" width="75" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_inclusive_gateway_2" bpmnElement="inclusive_gateway_2">
-        <dc:Bounds x="500" y="800" width="50" height="50" />
+      <bpmndi:BPMNShape id="shape_task_9" bpmnElement="task_9">
+        <dc:Bounds x="515" y="900" width="75" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_complex_gateway_2" bpmnElement="complex_gateway_2">
-        <dc:Bounds x="500" y="900" width="50" height="50" />
+      <bpmndi:BPMNShape id="shape_task_10" bpmnElement="task_10">
+        <dc:Bounds x="515" y="1000" width="75" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_event_based_gateway_2" bpmnElement="event_based_gateway_2">
-        <dc:Bounds x="500" y="1000" width="50" height="50" />
+      <bpmndi:BPMNShape id="shape_task_11" bpmnElement="task_11">
+        <dc:Bounds x="515" y="1100" width="75" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_exclusive_gateway_3" bpmnElement="exclusive_gateway_3" isMarkerVisible="true">
-        <dc:Bounds x="500" y="1100" width="50" height="50" />
+      <bpmndi:BPMNShape id="shape_task_12" bpmnElement="task_12">
+        <dc:Bounds x="515" y="1200" width="75" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_parallel_gateway_3" bpmnElement="parallel_gateway_3">
-        <dc:Bounds x="500" y="1200" width="50" height="50" />
+      <bpmndi:BPMNShape id="shape_task_13" bpmnElement="task_13">
+        <dc:Bounds x="515" y="1300" width="75" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_inclusive_gateway_3" bpmnElement="inclusive_gateway_3">
-        <dc:Bounds x="500" y="1300" width="50" height="50" />
+      <bpmndi:BPMNShape id="shape_task_14" bpmnElement="task_14">
+        <dc:Bounds x="515" y="1400" width="75" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_complex_gateway_3" bpmnElement="complex_gateway_3">
-        <dc:Bounds x="500" y="1400" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_event_based_gateway_3" bpmnElement="event_based_gateway_3">
-        <dc:Bounds x="500" y="1500" width="50" height="50" />
+      <bpmndi:BPMNShape id="shape_task_15" bpmnElement="task_15">
+        <dc:Bounds x="500" y="1500" width="105" height="50" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
