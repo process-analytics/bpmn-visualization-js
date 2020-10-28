@@ -13,8 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// TODO give a try to import when we will use 'jest-image-snapshot' types
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { toMatchImageSnapshot } = require('jest-image-snapshot');
-
+import { toMatchImageSnapshot } from 'jest-image-snapshot';
 expect.extend({ toMatchImageSnapshot });

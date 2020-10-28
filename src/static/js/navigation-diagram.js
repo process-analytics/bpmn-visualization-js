@@ -21,7 +21,7 @@ function startNavigationDemo() {
   if (parameters.get('showMousePointer') === 'true') {
     showMousePointer();
   }
-  startBpmnVisualization({ container: 'bpmn-viewport', options: { mouseNavigationSupport: true } });
+  startBpmnVisualization({ container: 'bpmn-viewport', globalOptions: { mouseNavigationSupport: true } });
 }
 
 documentReady(startNavigationDemo);

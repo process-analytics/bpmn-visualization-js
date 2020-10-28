@@ -83,7 +83,7 @@ function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) 
 export interface BpmnVisualizationDemoConfiguration {
   container: string;
   statusFetchKoNotifier?: (errorMsg: string) => void;
-  options?: BpmnVisualizationOptions;
+  globalOptions?: BpmnVisualizationOptions;
 }
 
 function defaultStatusFetchKoNotifier(errorMsg: string): void {
@@ -95,7 +95,7 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   const container = config.container;
 
   log(`Initializing BpmnVisualization with container '${container}'...`);
-  bpmnVisualization = new BpmnVisualization(window.document.getElementById(container), config.options);
+  bpmnVisualization = new BpmnVisualization(window.document.getElementById(container), config.globalOptions);
   log('Initialization completed');
   new DropFileUserInterface(window, 'drop-container', container, readAndLoadFile);
   log('Drag&Drop support initialized');
