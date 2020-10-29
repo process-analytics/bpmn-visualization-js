@@ -27,7 +27,9 @@ export interface LoadOptions {
 
 export interface FitOptions {
   type?: FitType; // TODO mandatory?
-  /** @default 0 */
+  /**
+   * Negative values fallback to default.
+   * @default 0 */
   margin?: number;
 }
 

@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, FitType, updateFitType } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, getCurrentLoadOptions, updateFitConfig, FitType } from '../../index.es.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function updateFitTypeSelection(event) {
-  updateFitType(event);
+  const fitType = event.target.value;
+  updateFitConfig({ type: fitType });
 
-  if (event.target.value === 'None') {
+  if (fitType === 'None') {
     resetClass(container);
   } else {
     setFixedSizeClass(container);
@@ -40,25 +41,35 @@ function resetClass(htmlElementId) {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
-  const parameters = new URLSearchParams(window.location.search);
+  startBpmnVisualization({ container: 'graph' });
 
-  // Update the selected option at the initialization
-  const fitTypeSelected = document.getElementById('fitType-selected');
-  fitTypeSelected.addEventListener('change', updateFitTypeSelection, false);
+  // Configure custom html elements
+  document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
 
-  const parameterFitType = parameters.get('fitType');
-  if (parameterFitType) {
-    fitTypeSelected.value = parameterFitType;
+  const fitTypeSelectedElt = document.getElementById('fitType-selected');
+  fitTypeSelectedElt.addEventListener('change', updateFitTypeSelection, false);
+
+  const fitMarginElt = document.getElementById('fit-margin');
+  fitMarginElt.onchange = function (event) {
+    updateFitConfig({ margin: event.target.value });
+  };
+
+  // Update Fit Options based on configuration
+  const fitOptions = getCurrentLoadOptions().fit;
+
+  if (fitOptions.type) {
+    fitTypeSelectedElt.value = FitType[fitOptions.type];
   }
-
-  if (fitTypeSelected.value !== 'None') {
+  if (fitTypeSelectedElt.value !== 'None') {
     setFixedSizeClass('graph');
   }
 
-  startBpmnVisualization({ container: 'graph', loadOptions: { fitType: FitType[fitTypeSelected.value] } });
-  document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
+  if (fitOptions.margin) {
+    fitMarginElt.value = fitOptions.margin;
+  }
 
   // Update control panel
+  const parameters = new URLSearchParams(window.location.search);
   if (parameters.get('hideControls') === 'true') {
     const classList = document.getElementById('controls').classList;
     classList.remove('controls');

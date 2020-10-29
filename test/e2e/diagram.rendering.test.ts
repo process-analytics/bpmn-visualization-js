@@ -40,7 +40,7 @@ describe('no diagram visual regression', () => {
     [FitType[FitType.Horizontal], FitType.Horizontal],
     [FitType[FitType.Vertical], FitType.Vertical],
     [FitType[FitType.Center], FitType.Center],
-  ])('load options: %s fit', async (fitTitle: string, fitType: FitType) => {
+  ])('load options: %s fit', (fitTitle: string, fitType: FitType) => {
     const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', { fit: { type: fitType } });
     const pageTester = new PageTester(bpmnDiagramPreparation, 'viewport', 'BPMN Visualization Non Regression');
 
@@ -54,6 +54,35 @@ describe('no diagram visual regression', () => {
       // macOS: Expected image to match or be a close match to snapshot but was 0.0005056149089299744% different from snapshot
       // windows: Expected image to match or be a close match to snapshot but was 0.0005056149089299744% different from snapshot
       const config = imageSnapshotConfigurator.getConfig(fileName, 0.000006);
+      expect(image).toMatchImageSnapshot(config);
+    });
+  });
+
+  describe('load options - fit margin', () => {
+    it.each`
+      margin  | fitType                        | fileName
+      ${20}   | ${FitType[FitType.Center]}     | ${'with_outside_flows'}
+      ${20}   | ${FitType[FitType.Horizontal]} | ${'horizontal'}
+      ${20}   | ${FitType[FitType.Vertical]}   | ${'vertical'}
+      ${50}   | ${FitType[FitType.Center]}     | ${'with_outside_flows'}
+      ${50}   | ${FitType[FitType.Horizontal]} | ${'horizontal'}
+      ${50}   | ${FitType[FitType.Vertical]}   | ${'vertical'}
+      ${-100} | ${FitType[FitType.Center]}     | ${'with_outside_flows'}
+      ${-100} | ${FitType[FitType.Horizontal]} | ${'horizontal'}
+      ${-100} | ${FitType[FitType.Vertical]}   | ${'vertical'}
+      ${null} | ${FitType[FitType.Center]}     | ${'with_outside_flows'}
+      ${null} | ${FitType[FitType.Horizontal]} | ${'horizontal'}
+      ${null} | ${FitType[FitType.Vertical]}   | ${'vertical'}
+    `('margin $margin for fit type $fitType / $fileName diagram', async ({ margin, fitType, fileName }) => {
+      const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', {
+        fit: { type: fitType, margin: margin },
+      });
+      const pageTester = new PageTester(bpmnDiagramPreparation, 'viewport', 'BPMN Visualization Non Regression');
+
+      await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
+
+      const image = await page.screenshot({ fullPage: true });
+      const config = imageSnapshotConfigurator.getConfig(fileName, 0);
       expect(image).toMatchImageSnapshot(config);
     });
   });
