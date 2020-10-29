@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { FitType } from '../Options';
+import { FitOptions, FitType } from '../Options';
 
 export class BpmnMxGraph extends mxGraph {
   private cumulativeZoomFactor = 1;
@@ -29,7 +29,12 @@ export class BpmnMxGraph extends mxGraph {
     return scale;
   }
 
-  public customFit(type: FitType): void {
+  public customFit(fitOptions: FitOptions): void {
+    const type = fitOptions?.type;
+    if (type == undefined || type == FitType.None) {
+      return;
+    }
+
     if (type != FitType.Center) {
       let ignoreWidth = false;
       let ignoreHeight = false;

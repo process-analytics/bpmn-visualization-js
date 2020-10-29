@@ -22,11 +22,17 @@ export interface BpmnVisualizationOptions {
 }
 
 export interface LoadOptions {
-  fitType?: FitType;
+  fit?: FitOptions;
+}
+
+export interface FitOptions {
+  type?: FitType; // TODO mandatory?
+  /** @default 0 */
+  margin?: number;
 }
 
 /**
- * @default None
+ * @default {@link FitType.None}
  */
 export enum FitType {
   /** No fit, use dimensions and coordinates from the BPMN diagram. */

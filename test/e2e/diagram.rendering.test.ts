@@ -41,7 +41,7 @@ describe('no diagram visual regression', () => {
     [FitType[FitType.Vertical], FitType.Vertical],
     [FitType[FitType.Center], FitType.Center],
   ])('load options: %s fit', async (fitTitle: string, fitType: FitType) => {
-    const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', { fitType });
+    const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', { fit: { type: fitType } });
     const pageTester = new PageTester(bpmnDiagramPreparation, 'viewport', 'BPMN Visualization Non Regression');
 
     it.each([['horizontal'], ['vertical'], ['with_outside_flows'], ['with_outside_labels']])('%s diagram', async (fileName: string) => {
