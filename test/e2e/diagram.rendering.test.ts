@@ -39,6 +39,7 @@ describe('no diagram visual regression', () => {
     [FitType[FitType.HorizontalVertical], FitType.HorizontalVertical],
     [FitType[FitType.Horizontal], FitType.Horizontal],
     [FitType[FitType.Vertical], FitType.Vertical],
+    [FitType[FitType.Center], FitType.Center],
   ])('load options: %s fit', async (fitTitle: string, fitType: FitType) => {
     const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', { fitType });
     const pageTester = new PageTester(bpmnDiagramPreparation, 'viewport', 'BPMN Visualization Non Regression');
