@@ -44,15 +44,16 @@ export class BpmnMxGraph extends mxGraph {
 
       this.fit(this.border, false, 0, true, ignoreWidth, ignoreHeight);
     } else {
-      const margin = 2;
-      const max = 3;
+      // Inspired from https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.fit
+      const margin = 0;
+      const maxScale = 3;
 
       const bounds = this.getGraphBounds();
       const clientWidth = this.container.clientWidth - margin;
       const clientHeight = this.container.clientHeight - margin;
       const width = bounds.width / this.view.scale;
       const height = bounds.height / this.view.scale;
-      const scale = Math.min(max, Math.min(clientWidth / width, clientHeight / height));
+      const scale = Math.min(maxScale, Math.min(clientWidth / width, clientHeight / height));
       this.cumulativeZoomFactor = scale;
 
       this.view.scaleAndTranslate(
