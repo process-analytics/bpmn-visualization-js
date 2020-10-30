@@ -19,24 +19,19 @@ import { documentReady, handleFileSelect, startBpmnVisualization, getCurrentLoad
 function updateFitTypeSelection(event) {
   const fitType = event.target.value;
   updateFitConfig({ type: fitType });
+  configureBpmnViewport(fitType);
+}
 
-  if (fitType === 'None') {
-    resetClass(container);
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureBpmnViewport(fitType) {
+  const viewport = document.getElementById('graph');
+
+  const useFixedSize = !(fitType === 'None'); // !== 'None'
+  if (useFixedSize) {
+    viewport.classList.add('fixed-size');
   } else {
-    setFixedSizeClass(container);
+    viewport.classList.remove('fixed-size');
   }
-}
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function setFixedSizeClass(htmlElementId) {
-  const htmlElement = document.getElementById(htmlElementId);
-  htmlElement.classList.add('fixed-size');
-}
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function resetClass(htmlElementId) {
-  const htmlElement = document.getElementById(htmlElementId);
-  htmlElement.classList.remove('fixed-size');
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -60,9 +55,7 @@ function startDemo() {
   if (fitOptions.type) {
     fitTypeSelectedElt.value = FitType[fitOptions.type];
   }
-  if (fitTypeSelectedElt.value !== 'None') {
-    setFixedSizeClass('graph');
-  }
+  configureBpmnViewport(fitTypeSelectedElt.value);
 
   if (fitOptions.margin) {
     fitMarginElt.value = fitOptions.margin;
