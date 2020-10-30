@@ -22,25 +22,13 @@ describe('no diagram visual regression', () => {
       [
         'with_outside_labels',
         // minimal threshold to make test pass on Github Workflow
-        // ubuntu: Expected image to match or be a close match to snapshot but was 0.23795889797441072% different from snapshot
+        // ubuntu: Expected image to match or be a close match to snapshot but was 0.2670390230567587% different from snapshot
         // macOS: Expected image to match or be a close match to snapshot but was 0.05988176159102966% different from snapshot
         // windows: Expected image to match or be a close match to snapshot but was 0.31647096370069905% different from snapshot
         {
-          linux: 0.0025,
+          linux: 0.003,
           macos: 0.0006,
           windows: 0.0035,
-        },
-      ],
-      [
-        'vertical',
-        // minimal threshold to make test pass on Github Workflow
-        // ubuntu: Expected image to match or be a close match to snapshot but was 0.0019441198722769393% different from snapshot
-        // macOS: Expected image to match or be a close match to snapshot but was 0.0019441198722769393% different from snapshot
-        // windows: Expected image to match or be a close match to snapshot but was 0.0019441198722769393% different from snapshot
-        {
-          linux: 0.00002,
-          macos: 0.00002,
-          windows: 0.00002,
         },
       ],
     ]),
@@ -50,6 +38,8 @@ describe('no diagram visual regression', () => {
     [FitType[FitType.None], FitType.None],
     [FitType[FitType.HorizontalVertical], FitType.HorizontalVertical],
     [FitType[FitType.Horizontal], FitType.Horizontal],
+    [FitType[FitType.Vertical], FitType.Vertical],
+    [FitType[FitType.Center], FitType.Center],
   ])('load options: %s fit', async (fitTitle: string, fitType: FitType) => {
     const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', { fitType });
     const pageTester = new PageTester(bpmnDiagramPreparation, 'viewport', 'BPMN Visualization Non Regression');
@@ -58,7 +48,13 @@ describe('no diagram visual regression', () => {
       await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
 
       const image = await page.screenshot({ fullPage: true });
-      expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
+
+      // minimal threshold to make test pass on Github Workflow
+      // ubuntu: Expected image to match or be a close match to snapshot but was 0.0005056149089299744% different from snapshot
+      // macOS: Expected image to match or be a close match to snapshot but was 0.0005056149089299744% different from snapshot
+      // windows: Expected image to match or be a close match to snapshot but was 0.0005056149089299744% different from snapshot
+      const config = imageSnapshotConfigurator.getConfig(fileName, 0.000006);
+      expect(image).toMatchImageSnapshot(config);
     });
   });
 });

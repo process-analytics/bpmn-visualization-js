@@ -35,4 +35,8 @@ export enum FitType {
   HorizontalVertical,
   /** Fit only horizontally. */
   Horizontal,
+  /** Fit only vertically. */
+  Vertical,
+  /** Fit and center the BPMN Diagram. */
+  Center,
 }

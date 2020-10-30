@@ -59,11 +59,9 @@ export class ImageSnapshotConfigurator {
    */
   constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>) {}
 
-  getConfig(fileName: string): MatchImageSnapshotOptions {
-    // minimal threshold to make tests for diagram renders pass on local
-    // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
-    let failureThreshold = 0.000004;
-
+  // minimal threshold to make tests for diagram renders pass on local
+  // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
+  getConfig(fileName: string, failureThreshold = 0.000004): MatchImageSnapshotOptions {
     const config = this.thresholdConfig.get(fileName);
     if (config) {
       log(`Building dedicated image snapshot configuration for '${fileName}'`);
