@@ -469,6 +469,10 @@ The event definition can be defined on the event or on the definitions.
 |Parallel
 |icon:check-circle-o[]
 |Icon may be subject to change +
+
+|Event-Based
+|
+| Detect the `event gateway type` (Exclusive and Parallel) and the `instantiate` status
 |===
 
 
