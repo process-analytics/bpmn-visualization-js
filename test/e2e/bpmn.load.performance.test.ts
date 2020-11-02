@@ -13,32 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnDiagramPreparation, BpmnLoadMethod, delay, PageTester } from './helpers/visu-utils';
-import { Metrics, Mouse } from 'puppeteer';
+import { BpmnDiagramPreparation, BpmnLoadMethod, getSimplePlatformName, PageTester } from './helpers/visu-utils';
 import * as fs from 'fs';
-// FIXME - to be fixed when new release of puppeteer comes out
-// wheel is added in version @types/puppeteer 2.1.5 but for some reason not in 3.0.2
-// perhaps will be soon available in 3.0.3
-// @see https://github.com/puppeteer/puppeteer/pull/6141/files
-interface MouseWheelOptions {
-  /**
-   * X delta in CSS pixels for mouse wheel event (default: 0). Positive values emulate a scroll up and negative values a scroll down event.
-   * @default 0
-   */
-  deltaX?: number;
-  /**
-   *  Y delta in CSS pixels for mouse wheel event (default: 0). Positive values emulate a scroll right and negative values a scroll left event.
-   * @default 0
-   */
-  deltaY?: number;
-}
-interface MouseWithWheel extends Mouse {
-  /**
-   * Dispatches a `mousewheel` event.
-   * @param options The mouse wheel options.
-   */
-  wheel(options?: MouseWheelOptions): Promise<void>;
-}
+import { calculateMetrics, ChartData } from './helpers/perf-utils';
 
 interface PerformanceMetric {
   run: number;
@@ -48,30 +25,14 @@ interface PerformanceMetric {
   LayoutDuration: number;
 }
 
+const platform = getSimplePlatformName();
+const performanceDataFilePath = './performance/data/' + platform + '/data.js';
 const metricsArray: Array<PerformanceMetric> = [];
 
 describe.each([1, 2, 3, 4, 5])('diagram navigation performance', run => {
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
 
   const fileName = 'B.2.0';
-
-  function calculateMetrics(metricsStart: Metrics, metricsEnd: Metrics): Metrics {
-    return {
-      Timestamp: metricsEnd.Timestamp - metricsStart.Timestamp,
-      Documents: metricsEnd.Documents - metricsStart.Documents,
-      Frames: metricsEnd.Frames - metricsStart.Frames,
-      JSEventListeners: metricsEnd.JSEventListeners - metricsStart.JSEventListeners,
-      Nodes: metricsEnd.Nodes - metricsStart.Nodes,
-      LayoutCount: metricsEnd.LayoutCount - metricsStart.LayoutCount,
-      RecalcStyleCount: metricsEnd.RecalcStyleCount - metricsStart.RecalcStyleCount,
-      LayoutDuration: metricsEnd.LayoutDuration - metricsStart.LayoutDuration,
-      RecalcStyleDuration: metricsEnd.RecalcStyleDuration - metricsStart.RecalcStyleDuration,
-      ScriptDuration: metricsEnd.ScriptDuration - metricsStart.ScriptDuration,
-      TaskDuration: metricsEnd.TaskDuration - metricsStart.TaskDuration,
-      JSHeapUsedSize: metricsEnd.JSHeapUsedSize - metricsStart.JSHeapUsedSize,
-      JSHeapTotalSize: metricsEnd.JSHeapTotalSize - metricsStart.JSHeapTotalSize,
-    };
-  }
 
   it.each([1])(`ctrl + mouse: check performance while performing zoom in and zoom out [%s times]`, async (xTimes: number) => {
     const metricsStart = await page.metrics();
@@ -88,20 +49,14 @@ describe.each([1, 2, 3, 4, 5])('diagram navigation performance', run => {
   });
 });
 afterAll(() => {
-  for (let i = 0; i < metricsArray.length; i++) {
-    metricsArray[i].run = i + 1;
-    const metric = metricsArray[i];
-    // eslint-disable-next-line no-console
-    console.info(metric.run, metric.TaskDuration, metric.ScriptDuration, metric.RecalcStyleDuration, metric.LayoutDuration);
-  }
-  const performanceDataFilePath = './performance/load-data.js';
   try {
     const oldDataString = fs.readFileSync(performanceDataFilePath, 'utf8');
-    const oldData = JSON.parse(oldDataString.substring(17, oldDataString.length));
-    // eslint-disable-next-line no-console
-    console.log(oldData);
-    const data = JSON.stringify(oldData.concat(metricsArray));
-    fs.writeFileSync(performanceDataFilePath, 'const loadData = ' + data);
+    const oldData = JSON.parse(oldDataString.substring('const data = '.length, oldDataString.length)) as ChartData;
+    const data = {
+      zoom: oldData.zoom,
+      load: oldData.load.concat(metricsArray),
+    };
+    fs.writeFileSync(performanceDataFilePath, 'const data = ' + JSON.stringify(data));
   } catch (err) {
     console.error(err);
   }
