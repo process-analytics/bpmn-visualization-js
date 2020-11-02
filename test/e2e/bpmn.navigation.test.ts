@@ -14,30 +14,6 @@
  * limitations under the License.
  */
 import { BpmnDiagramPreparation, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
-import { Mouse } from 'puppeteer';
-// FIXME - to be fixed when new release of puppeteer comes out
-// wheel is added in version @types/puppeteer 2.1.5 but for some reason not in 3.0.2
-// perhaps will be soon available in 3.0.3
-// @see https://github.com/puppeteer/puppeteer/pull/6141/files
-interface MouseWheelOptions {
-  /**
-   * X delta in CSS pixels for mouse wheel event (default: 0). Positive values emulate a scroll up and negative values a scroll down event.
-   * @default 0
-   */
-  deltaX?: number;
-  /**
-   *  Y delta in CSS pixels for mouse wheel event (default: 0). Positive values emulate a scroll right and negative values a scroll left event.
-   * @default 0
-   */
-  deltaY?: number;
-}
-interface MouseWithWheel extends Mouse {
-  /**
-   * Dispatches a `mousewheel` event.
-   * @param options The mouse wheel options.
-   */
-  wheel(options?: MouseWheelOptions): Promise<void>;
-}
 
 describe('diagram navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
@@ -88,7 +64,7 @@ describe('diagram navigation', () => {
     // simulate mouse+ctrl zoom
     await page.mouse.move(viewportCenterX + 200, viewportCenterY);
     await page.keyboard.down('Control');
-    await (<MouseWithWheel>page.mouse).wheel({ deltaX: deltaX });
+    await page.mouse.wheel({ deltaX: deltaX });
 
     const image = await page.screenshot({ fullPage: true });
     expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
@@ -100,10 +76,10 @@ describe('diagram navigation', () => {
     await page.mouse.move(viewportCenterX + 200, viewportCenterY);
     await page.keyboard.down('Control');
     for (let i = 0; i < xTimes; i++) {
-      await (<MouseWithWheel>page.mouse).wheel({ deltaX: deltaX });
+      await page.mouse.wheel({ deltaX: deltaX });
     }
     for (let i = 0; i < xTimes; i++) {
-      await (<MouseWithWheel>page.mouse).wheel({ deltaX: -deltaX });
+      await page.mouse.wheel({ deltaX: -deltaX });
     }
     const image = await page.screenshot({ fullPage: true });
     expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
