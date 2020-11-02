@@ -21,7 +21,7 @@ import { FitType, LoadOptions } from '../../../src/component/Options';
 
 const log = debugLogger('test');
 
-function getSimplePlatformName(): string {
+export function getSimplePlatformName(): string {
   const platform = process.platform;
   log(`This platform is ${platform}`);
 
