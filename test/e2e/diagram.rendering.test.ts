@@ -82,7 +82,7 @@ describe('no diagram visual regression', () => {
       await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
 
       const image = await page.screenshot({ fullPage: true });
-      const config = imageSnapshotConfigurator.getConfig(fileName, 0);
+      const config = imageSnapshotConfigurator.getConfig(fileName);
       expect(image).toMatchImageSnapshot(config);
     });
   });
