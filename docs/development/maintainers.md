@@ -73,15 +73,16 @@ Actions section on GitHub
   - run `npm run demo` which generates it in the `dist` folder
 - create a new branch in the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/demo)
  repository and add the new demo content (proceed how it has been done for prior versions). 
+- do not forget to update file `demo/index.html` with the Latest Release information.
 - push to GitHub and create a new Pull Request
 
 ### Examples update
 **Note**: do this using the Pull Request you have just created for the demo update
 
-Make the examples use the latest version of the lib. A bash script is available to help you for this task in the `scripts`
+- Make the examples use the latest version of the lib. A bash script is available to help you for this task in the `scripts`
 folder.
-Do not forget to update file /demo/index.html with the Latest Release information.
-Tests that the examples work with the new lib version.
+- Tests that the examples work with the new lib version.
+- if temporar version of the lib has been commited (generally in the demo folder) to make examples use it prior availability on npmjs, delete the corresponding file and update the examples
 
 
 ### Tagging
