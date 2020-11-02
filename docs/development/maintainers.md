@@ -54,8 +54,8 @@ of the `Done` column related to the milestone
 ### NPM publish new version
 - Ensure you are on the last tag locally: `git checkout vX.Y.Z`
 - Pull the new version created by the release workflow: `git pull origin`
-- Build bundles by running: `npm run build-bundles`
-- Check build locally by accessing `/bpmn-visu-js/test-bundle/lib-integration-iife.html` in your browser
+- Build bundles by running: `npm pack`
+- Check build locally by accessing `./test-bundle/lib-integration-iife.html` in your browser
 - If everything is OK run `npm publish` to make the new version available to the community (you can pass --dry-run to validate command prior publishing)
 
 
@@ -98,3 +98,8 @@ To create the tag, the easiest way is to create a new release by following the [
 
 
 Alternatively, you can create the tag from your local machine and then push it.
+
+## Commicate about the release
+
+- twitter
+- ....
