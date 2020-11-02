@@ -52,13 +52,8 @@ const metricsArray: Array<PerformanceMetric> = [];
 
 describe.each([1, 2, 3, 4, 5])('diagram navigation performance', run => {
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
-  const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map([['B.2.0', BpmnLoadMethod.Url]]), { name: 'navigation-diagram', queryParams: [] }, 'performance');
-
-  const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-viewport', 'BPMN Visualization - Diagram Navigation');
 
   const fileName = 'B.2.0';
-  let viewportCenterX: number;
-  let viewportCenterY: number;
 
   function calculateMetrics(metricsStart: Metrics, metricsEnd: Metrics): Metrics {
     return {
@@ -77,34 +72,12 @@ describe.each([1, 2, 3, 4, 5])('diagram navigation performance', run => {
       JSHeapTotalSize: metricsEnd.JSHeapTotalSize - metricsStart.JSHeapTotalSize,
     };
   }
-  beforeEach(async () => {
-    const bpmnViewportElementHandle = await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
-    const bounding_box = await bpmnViewportElementHandle.boundingBox();
-    viewportCenterX = bounding_box.x + bounding_box.width / 2;
-    viewportCenterY = bounding_box.y + bounding_box.height / 2;
-  });
 
-  it.each([30])(`ctrl + mouse: check performance while performing zoom in and zoom out [%s times]`, async (xTimes: number) => {
-    const deltaX = -100;
+  it.each([1])(`ctrl + mouse: check performance while performing zoom in and zoom out [%s times]`, async (xTimes: number) => {
     const metricsStart = await page.metrics();
-
-    // simulate mouse+ctrl zoom
-    await page.mouse.move(viewportCenterX + 200, viewportCenterY);
-    await page.keyboard.down('Control');
-    for (let i = 0; i < xTimes; i++) {
-      await (<MouseWithWheel>page.mouse).wheel({ deltaX: deltaX });
-      if (i % 5 === 0) {
-        await delay(30);
-      }
-    }
-    await delay(100);
-    for (let i = 0; i < xTimes; i++) {
-      await (<MouseWithWheel>page.mouse).wheel({ deltaX: -deltaX });
-      if (i % 5 === 0) {
-        await delay(30);
-      }
-    }
-    await delay(100);
+    const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map([['B.2.0', BpmnLoadMethod.Url]]), { name: 'navigation-diagram', queryParams: [] }, 'performance');
+    const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-viewport', 'BPMN Visualization - Diagram Navigation');
+    await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
     const metricsEnd = await page.metrics();
 
     const metric = { ...calculateMetrics(metricsStart, metricsEnd), run: run };
@@ -121,14 +94,14 @@ afterAll(() => {
     // eslint-disable-next-line no-console
     console.info(metric.run, metric.TaskDuration, metric.ScriptDuration, metric.RecalcStyleDuration, metric.LayoutDuration);
   }
-  const performanceDataFilePath = './performance/zoom-data.js';
+  const performanceDataFilePath = './performance/load-data.js';
   try {
     const oldDataString = fs.readFileSync(performanceDataFilePath, 'utf8');
-    const oldData = JSON.parse(oldDataString.substring(13, oldDataString.length));
+    const oldData = JSON.parse(oldDataString.substring(17, oldDataString.length));
     // eslint-disable-next-line no-console
     console.log(oldData);
     const data = JSON.stringify(oldData.concat(metricsArray));
-    fs.writeFileSync(performanceDataFilePath, 'const data = ' + data);
+    fs.writeFileSync(performanceDataFilePath, 'const loadData = ' + data);
   } catch (err) {
     console.error(err);
   }

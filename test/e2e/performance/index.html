@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>combined | amCharts</title>
+  <meta name="description" content="chart created using amCharts live editor" />
+
+  <!-- amCharts javascript sources -->
+  <script type="text/javascript" src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+  <script type="text/javascript" src="https://www.amcharts.com/lib/3/serial.js"></script>
+  <script type="text/javascript" src="https://www.amcharts.com/lib/3/themes/dark.js"></script>
+
+  <script type="text/javascript" src="zoom-data.js"></script>
+  <script type="text/javascript" src="load-data.js"></script>
+
+  <!-- amCharts javascript code -->
+  <script type="text/javascript">
+    AmCharts.makeChart("chartZoomPerformance",
+      {
+        "type": "serial",
+        "categoryField": "1",
+        "sequencedAnimation": false,
+        "startDuration": 1,
+        "startEffect": "easeOutSine",
+        "backgroundAlpha": 0.8,
+        "theme": "dark",
+        "categoryAxis": {
+          "position": "top",
+          "startOnAxis": true,
+          "labelsEnabled": false,
+          "title": "",
+          "titleBold": false
+        },
+        "trendLines": [],
+        "graphs": [
+          {
+            "balloonText": "TaskDuration [[value]]",
+            "bullet": "triangleDown",
+            "id": "TaskDuration",
+            "lineThickness": 3,
+            "precision": 3,
+            "title": "TaskDuration",
+            "valueAxis": "Duration",
+            "valueField": "TaskDuration"
+          },
+          {
+            "balloonText": "ScriptDuration [[value]]",
+            "bullet": "triangleUp",
+            "id": "ScriptDuration",
+            "lineThickness": 2,
+            "precision": 3,
+            "title": "ScriptDuration",
+            "valueAxis": "Duration",
+            "valueField": "ScriptDuration"
+          },
+          {
+            "balloonText": "RecalcStyleDuration [[value]]",
+            "bullet": "diamond",
+            "id": "RecalcStyleDuration",
+            "lineThickness": 2,
+            "precision": 3,
+            "title": "RecalcStyleDuration",
+            "valueAxis": "Duration",
+            "valueField": "RecalcStyleDuration"
+          },
+          {
+            "balloonText": "LayoutDuration [[value]]",
+            "bullet": "square",
+            "id": "LayoutDuration",
+            "lineThickness": 2,
+            "precision": 3,
+            "title": "LayoutDuration",
+            "valueAxis": "Duration",
+            "valueField": "LayoutDuration"
+          }
+        ],
+        "guides": [],
+        "valueAxes": [
+          {
+            "id": "Duration",
+            "markPeriodChange": false,
+            "title": "Duration [s]"
+          }
+        ],
+        "allLabels": [],
+        "balloon": {},
+        "legend": {
+          "enabled": true,
+          "spacing": 8,
+          "useGraphSettings": true
+        },
+        "titles": [
+          {
+            "id": "Title-1",
+            "size": 15,
+            "text": "Zoom Performance"
+          }
+        ],
+        "dataProvider": data
+      }
+    );
+  </script><!-- amCharts javascript code -->
+  <script type="text/javascript">
+    AmCharts.makeChart("chartLoadPerformance",
+      {
+        "type": "serial",
+        "categoryField": "1",
+        "sequencedAnimation": false,
+        "startDuration": 1,
+        "startEffect": "easeOutSine",
+        "backgroundAlpha": 0.8,
+        "theme": "dark",
+        "categoryAxis": {
+          "position": "top",
+          "startOnAxis": true,
+          "labelsEnabled": false,
+          "title": "",
+          "titleBold": false
+        },
+        "trendLines": [],
+        "graphs": [
+          {
+            "balloonText": "TaskDuration [[value]]",
+            "bullet": "triangleDown",
+            "id": "TaskDuration",
+            "lineThickness": 3,
+            "precision": 3,
+            "title": "TaskDuration",
+            "valueAxis": "Duration",
+            "valueField": "TaskDuration"
+          },
+          {
+            "balloonText": "ScriptDuration [[value]]",
+            "bullet": "triangleUp",
+            "id": "ScriptDuration",
+            "lineThickness": 2,
+            "precision": 3,
+            "title": "ScriptDuration",
+            "valueAxis": "Duration",
+            "valueField": "ScriptDuration"
+          },
+          {
+            "balloonText": "RecalcStyleDuration [[value]]",
+            "bullet": "diamond",
+            "id": "RecalcStyleDuration",
+            "lineThickness": 2,
+            "precision": 3,
+            "title": "RecalcStyleDuration",
+            "valueAxis": "Duration",
+            "valueField": "RecalcStyleDuration"
+          },
+          {
+            "balloonText": "LayoutDuration [[value]]",
+            "bullet": "square",
+            "id": "LayoutDuration",
+            "lineThickness": 2,
+            "precision": 3,
+            "title": "LayoutDuration",
+            "valueAxis": "Duration",
+            "valueField": "LayoutDuration"
+          }
+        ],
+        "guides": [],
+        "valueAxes": [
+          {
+            "id": "Duration",
+            "markPeriodChange": false,
+            "title": "Duration [s]"
+          }
+        ],
+        "allLabels": [],
+        "balloon": {},
+        "legend": {
+          "enabled": true,
+          "spacing": 8,
+          "useGraphSettings": true
+        },
+        "titles": [
+          {
+            "id": "Title-1",
+            "size": 15,
+            "text": "Load Performance"
+          }
+        ],
+        "dataProvider": loadData
+      }
+    );
+  </script>
+</head>
+<body>
+<div id="chartZoomPerformance" style="width: 100%; height: 400px; background-color: #282828;" ></div>
+<div id="chartLoadPerformance" style="width: 100%; height: 400px; margin-top: 50px; background-color: #282828;" ></div>
+</body>
+</html>
