@@ -26,7 +26,7 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import { ShapeBpmnElementKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal/shape';
 import Label, { Font } from '../../../../../src/model/bpmn/internal/Label';
 import { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
@@ -396,7 +396,8 @@ describe('mxgraph renderer', () => {
       ${true}      | ${'Parallel'}
     `('event-based gateway when instantiate: $instantiate for type: $type', ({ instantiate, type }) => {
       const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, type), newLabel({ name: 'Arial' }));
-      expect(computeStyle(shape)).toEqual(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.eventGatewayType=${type};fontFamily=Arial`);
+      const optionalEventGatewayTypeStyle = type ? `;bpmn.eventGatewayType=${type}` : '';
+      expect(computeStyle(shape)).toEqual(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate}${optionalEventGatewayTypeStyle};fontFamily=Arial`);
     });
   });
 });

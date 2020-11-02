@@ -355,7 +355,7 @@ export default class StyleConfigurator {
 
     return [] //
       .concat([...styles])
-      .concat([...styleValues].filter(([, v]) => v).map(([key, value]) => key + '=' + value))
+      .concat([...styleValues].filter(([, v]) => v && v != 'undefined').map(([key, value]) => key + '=' + value))
       .join(';');
   }
 
