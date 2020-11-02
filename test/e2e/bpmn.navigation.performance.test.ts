@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnDiagramPreparation, BpmnLoadMethod, delay, PageTester } from './helpers/visu-utils';
-import { Metrics, Mouse } from 'puppeteer';
+import { BpmnDiagramPreparation, BpmnLoadMethod, delay, getSimplePlatformName, PageTester } from './helpers/visu-utils';
+import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
+import { Mouse } from 'puppeteer';
 import * as fs from 'fs';
 // FIXME - to be fixed when new release of puppeteer comes out
 // wheel is added in version @types/puppeteer 2.1.5 but for some reason not in 3.0.2
@@ -40,14 +41,8 @@ interface MouseWithWheel extends Mouse {
   wheel(options?: MouseWheelOptions): Promise<void>;
 }
 
-interface PerformanceMetric {
-  run: number;
-  TaskDuration: number;
-  ScriptDuration: number;
-  RecalcStyleDuration: number;
-  LayoutDuration: number;
-}
-
+const platform = getSimplePlatformName();
+const performanceDataFilePath = './performance/data/' + platform + '/data.js';
 const metricsArray: Array<PerformanceMetric> = [];
 
 describe.each([1, 2, 3, 4, 5])('diagram navigation performance', run => {
@@ -60,23 +55,6 @@ describe.each([1, 2, 3, 4, 5])('diagram navigation performance', run => {
   let viewportCenterX: number;
   let viewportCenterY: number;
 
-  function calculateMetrics(metricsStart: Metrics, metricsEnd: Metrics): Metrics {
-    return {
-      Timestamp: metricsEnd.Timestamp - metricsStart.Timestamp,
-      Documents: metricsEnd.Documents - metricsStart.Documents,
-      Frames: metricsEnd.Frames - metricsStart.Frames,
-      JSEventListeners: metricsEnd.JSEventListeners - metricsStart.JSEventListeners,
-      Nodes: metricsEnd.Nodes - metricsStart.Nodes,
-      LayoutCount: metricsEnd.LayoutCount - metricsStart.LayoutCount,
-      RecalcStyleCount: metricsEnd.RecalcStyleCount - metricsStart.RecalcStyleCount,
-      LayoutDuration: metricsEnd.LayoutDuration - metricsStart.LayoutDuration,
-      RecalcStyleDuration: metricsEnd.RecalcStyleDuration - metricsStart.RecalcStyleDuration,
-      ScriptDuration: metricsEnd.ScriptDuration - metricsStart.ScriptDuration,
-      TaskDuration: metricsEnd.TaskDuration - metricsStart.TaskDuration,
-      JSHeapUsedSize: metricsEnd.JSHeapUsedSize - metricsStart.JSHeapUsedSize,
-      JSHeapTotalSize: metricsEnd.JSHeapTotalSize - metricsStart.JSHeapTotalSize,
-    };
-  }
   beforeEach(async () => {
     const bpmnViewportElementHandle = await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
     const bounding_box = await bpmnViewportElementHandle.boundingBox();
@@ -115,20 +93,14 @@ describe.each([1, 2, 3, 4, 5])('diagram navigation performance', run => {
   });
 });
 afterAll(() => {
-  for (let i = 0; i < metricsArray.length; i++) {
-    metricsArray[i].run = i + 1;
-    const metric = metricsArray[i];
-    // eslint-disable-next-line no-console
-    console.info(metric.run, metric.TaskDuration, metric.ScriptDuration, metric.RecalcStyleDuration, metric.LayoutDuration);
-  }
-  const performanceDataFilePath = './performance/zoom-data.js';
   try {
     const oldDataString = fs.readFileSync(performanceDataFilePath, 'utf8');
-    const oldData = JSON.parse(oldDataString.substring(13, oldDataString.length));
-    // eslint-disable-next-line no-console
-    console.log(oldData);
-    const data = JSON.stringify(oldData.concat(metricsArray));
-    fs.writeFileSync(performanceDataFilePath, 'const data = ' + data);
+    const oldData = JSON.parse(oldDataString.substring('const data = '.length, oldDataString.length)) as ChartData;
+    const data = {
+      zoom: oldData.zoom.concat(metricsArray),
+      load: oldData.load,
+    };
+    fs.writeFileSync(performanceDataFilePath, 'const data = ' + JSON.stringify(data));
   } catch (err) {
     console.error(err);
   }
