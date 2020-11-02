@@ -24,11 +24,15 @@
     border-radius: 10px;
     border: 2px solid PowderBlue;
     margin: 15px 10% 5% 5%;
-    padding-bottom: 30px;
+    padding-bottom: 35px;
 }
 #options-panel > * {
     padding-left: 5%;
 }
+#options-panel div label {
+  padding-top: 5px;
+}
+
 #fit-margin {
   width: 30%;
 }
