@@ -60,11 +60,11 @@ export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
   }
 }
 
+// TODO switch to enum for consistency with other type/kind?
 export type EventGatewayType = 'Exclusive' | 'Parallel';
 // TODO require model image change!!!!
 export class ShapeBpmnEventBasedGateway extends ShapeBpmnElement {
-  // TODO rename type into gatewayEventType to better match bpmn spec
-  constructor(id: string, name: string, parentId: string, instantiate?: boolean, readonly type?: EventGatewayType) {
+  constructor(id: string, name: string, parentId: string, instantiate?: boolean, readonly gatewayEventType?: EventGatewayType) {
     super(id, name, ShapeBpmnElementKind.GATEWAY_EVENT_BASED, parentId, instantiate);
   }
 }

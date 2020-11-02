@@ -312,7 +312,7 @@ export default class StyleConfigurator {
         styleValues.set(mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
       } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, String(bpmnElement.instantiate));
-        styleValues.set('bpmn.eventGatewayType', String(bpmnElement.type)); // TODO use constant
+        styleValues.set('bpmn.eventGatewayType', String(bpmnElement.gatewayEventType)); // TODO use constant
       }
     } else {
       if (bpmnElement instanceof SequenceFlow) {
