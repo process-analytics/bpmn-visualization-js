@@ -54,8 +54,8 @@ of the `Done` column related to the milestone
 ### NPM publish new version
 - Ensure you are on the last tag locally: `git checkout vX.Y.Z`
 - Pull the new version created by the release workflow: `git pull origin`
-- Build bundles by running: `npm run build-bundles`
-- Check build locally by accessing `/bpmn-visu-js/test-bundle/lib-integration-iife.html` in your browser
+- Build bundles by running: `npm pack`
+- Check build locally by accessing `./test-bundle/lib-integration-iife.html` in your browser
 - If everything is OK run `npm publish` to make the new version available to the community (you can pass --dry-run to validate command prior publishing)
 
 
@@ -73,15 +73,16 @@ Actions section on GitHub
   - run `npm run demo` which generates it in the `dist` folder
 - create a new branch in the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/demo)
  repository and add the new demo content (proceed how it has been done for prior versions). 
+- do not forget to update file `demo/index.html` with the Latest Release information.
 - push to GitHub and create a new Pull Request
 
 ### Examples update
 **Note**: do this using the Pull Request you have just created for the demo update
 
-Make the examples use the latest version of the lib. A bash script is available to help you for this task in the `scripts`
+- Make the examples use the latest version of the lib. A bash script is available to help you for this task in the `scripts`
 folder.
-Do not forget to update file /demo/index.html with the Latest Release information.
-Tests that the examples work with the new lib version.
+- Tests that the examples work with the new lib version.
+- If temporary version of the lib has been commited (generally in the demo folder) to make examples use it prior availability on npmjs, delete the corresponding file and update the examples.
 
 
 ### Tagging
@@ -98,3 +99,8 @@ To create the tag, the easiest way is to create a new release by following the [
 
 
 Alternatively, you can create the tag from your local machine and then push it.
+
+## Communicate about the release
+
+- twitter
+- ....
