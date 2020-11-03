@@ -60,23 +60,23 @@ describe('no diagram visual regression', () => {
 
   describe('load options - fit margin', () => {
     it.each`
-      margin  | fitType                        | fileName
-      ${0}    | ${FitType[FitType.Center]}     | ${'with_outside_flows'}
-      ${0}    | ${FitType[FitType.Horizontal]} | ${'horizontal'}
-      ${0}    | ${FitType[FitType.Vertical]}   | ${'vertical'}
-      ${20}   | ${FitType[FitType.Center]}     | ${'with_outside_flows'}
-      ${20}   | ${FitType[FitType.Horizontal]} | ${'horizontal'}
-      ${20}   | ${FitType[FitType.Vertical]}   | ${'vertical'}
-      ${50}   | ${FitType[FitType.Center]}     | ${'with_outside_flows'}
-      ${50}   | ${FitType[FitType.Horizontal]} | ${'horizontal'}
-      ${50}   | ${FitType[FitType.Vertical]}   | ${'vertical'}
-      ${-100} | ${FitType[FitType.Center]}     | ${'with_outside_flows'}
-      ${-100} | ${FitType[FitType.Horizontal]} | ${'horizontal'}
-      ${-100} | ${FitType[FitType.Vertical]}   | ${'vertical'}
-      ${null} | ${FitType[FitType.Center]}     | ${'with_outside_flows'}
-      ${null} | ${FitType[FitType.Horizontal]} | ${'horizontal'}
-      ${null} | ${FitType[FitType.Vertical]}   | ${'vertical'}
-    `('margin $margin for fit type $fitType / $fileName diagram', async ({ margin, fitType, fileName }) => {
+      margin  | fitTitle                       | fileName                | fitType
+      ${0}    | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
+      ${0}    | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
+      ${0}    | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
+      ${20}   | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
+      ${20}   | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
+      ${20}   | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
+      ${50}   | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
+      ${50}   | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
+      ${50}   | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
+      ${-100} | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
+      ${-100} | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
+      ${-100} | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
+      ${null} | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
+      ${null} | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
+      ${null} | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
+    `('margin $margin for fit type $fitTitle / $fileName diagram', async ({ margin, fitTitle, fileName, fitType }) => {
       const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', {
         fit: { type: fitType, margin: margin },
       });
