@@ -31,7 +31,7 @@ export class BpmnMxGraph extends mxGraph {
 
   public customFit(fitOptions: FitOptions): void {
     const type = fitOptions?.type;
-    if (type == undefined || type == FitType.None) {
+    if (!type || type == FitType.None) {
       return;
     }
 
