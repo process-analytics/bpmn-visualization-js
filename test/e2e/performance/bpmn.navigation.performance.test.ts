@@ -17,29 +17,6 @@ import { BpmnDiagramPreparation, BpmnLoadMethod, delay, getSimplePlatformName, P
 import { calculateMetrics, ChartData, PerformanceMetric } from '../helpers/perf-utils';
 import { Mouse } from 'puppeteer';
 import * as fs from 'fs';
-// FIXME - to be fixed when new release of puppeteer comes out
-// wheel is added in version @types/puppeteer 2.1.5 but for some reason not in 3.0.2
-// perhaps will be soon available in 3.0.3
-// @see https://github.com/puppeteer/puppeteer/pull/6141/files
-interface MouseWheelOptions {
-  /**
-   * X delta in CSS pixels for mouse wheel event (default: 0). Positive values emulate a scroll up and negative values a scroll down event.
-   * @default 0
-   */
-  deltaX?: number;
-  /**
-   *  Y delta in CSS pixels for mouse wheel event (default: 0). Positive values emulate a scroll right and negative values a scroll left event.
-   * @default 0
-   */
-  deltaY?: number;
-}
-interface MouseWithWheel extends Mouse {
-  /**
-   * Dispatches a `mousewheel` event.
-   * @param options The mouse wheel options.
-   */
-  wheel(options?: MouseWheelOptions): Promise<void>;
-}
 
 const platform = getSimplePlatformName();
 const performanceDataFilePath = './performance/data/' + platform + '/data.js';
@@ -70,14 +47,14 @@ describe.each([1, 2, 3, 4, 5])('diagram navigation performance', run => {
     await page.mouse.move(viewportCenterX + 200, viewportCenterY);
     await page.keyboard.down('Control');
     for (let i = 0; i < xTimes; i++) {
-      await (<MouseWithWheel>page.mouse).wheel({ deltaX: deltaX });
+      await (<Mouse>page.mouse).wheel({ deltaX: deltaX });
       if (i % 5 === 0) {
         await delay(30);
       }
     }
     await delay(100);
     for (let i = 0; i < xTimes; i++) {
-      await (<MouseWithWheel>page.mouse).wheel({ deltaX: -deltaX });
+      await (<Mouse>page.mouse).wheel({ deltaX: -deltaX });
       if (i % 5 === 0) {
         await delay(30);
       }
