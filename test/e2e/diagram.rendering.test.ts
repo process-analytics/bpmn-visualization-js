@@ -61,6 +61,9 @@ describe('no diagram visual regression', () => {
   describe('load options - fit margin', () => {
     it.each`
       margin  | fitType                        | fileName
+      ${0}    | ${FitType[FitType.Center]}     | ${'with_outside_flows'}
+      ${0}    | ${FitType[FitType.Horizontal]} | ${'horizontal'}
+      ${0}    | ${FitType[FitType.Vertical]}   | ${'vertical'}
       ${20}   | ${FitType[FitType.Center]}     | ${'with_outside_flows'}
       ${20}   | ${FitType[FitType.Horizontal]} | ${'horizontal'}
       ${20}   | ${FitType[FitType.Vertical]}   | ${'vertical'}
