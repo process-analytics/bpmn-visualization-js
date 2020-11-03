@@ -82,7 +82,7 @@ Actions section on GitHub
 - Make the examples use the latest version of the lib. A bash script is available to help you for this task in the `scripts`
 folder.
 - Tests that the examples work with the new lib version.
-- if temporar version of the lib has been commited (generally in the demo folder) to make examples use it prior availability on npmjs, delete the corresponding file and update the examples
+- If temporary version of the lib has been commited (generally in the demo folder) to make examples use it prior availability on npmjs, delete the corresponding file and update the examples.
 
 
 ### Tagging
@@ -100,7 +100,7 @@ To create the tag, the easiest way is to create a new release by following the [
 
 Alternatively, you can create the tag from your local machine and then push it.
 
-## Commicate about the release
+## Communicate about the release
 
 - twitter
 - ....
