@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnDiagramPreparation, BpmnLoadMethod, getSimplePlatformName, PageTester } from './helpers/visu-utils';
+import { BpmnDiagramPreparation, BpmnLoadMethod, getSimplePlatformName, PageTester } from '../helpers/visu-utils';
 import * as fs from 'fs';
-import { calculateMetrics, ChartData } from './helpers/perf-utils';
+import { calculateMetrics, ChartData } from '../helpers/perf-utils';
 
 interface PerformanceMetric {
   run: number;

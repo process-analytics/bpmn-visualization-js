@@ -30,7 +30,7 @@ export interface ChartData {
 
 export function calculateMetrics(metricsStart: Metrics, metricsEnd: Metrics): PerformanceMetric {
   return {
-    run: 0,
+    run: new Date().getMilliseconds(),
     LayoutDuration: metricsEnd.LayoutDuration - metricsStart.LayoutDuration,
     RecalcStyleDuration: metricsEnd.RecalcStyleDuration - metricsStart.RecalcStyleDuration,
     ScriptDuration: metricsEnd.ScriptDuration - metricsStart.ScriptDuration,
