@@ -34,7 +34,7 @@ describe.each([1, 2, 3, 4, 5])('diagram navigation performance', run => {
 
   const fileName = 'B.2.0';
 
-  it.each([1])(`ctrl + mouse: check performance while performing zoom in and zoom out [%s times]`, async (xTimes: number) => {
+  it.each([1])(`ctrl + mouse: check performance while performing zoom in and zoom out [%s times]`, async () => {
     const metricsStart = await page.metrics();
     const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map([['B.2.0', BpmnLoadMethod.Url]]), { name: 'navigation-diagram', queryParams: [] }, 'performance');
     const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-viewport', 'BPMN Visualization - Diagram Navigation');

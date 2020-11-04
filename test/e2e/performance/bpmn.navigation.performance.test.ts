@@ -15,7 +15,6 @@
  */
 import { BpmnDiagramPreparation, BpmnLoadMethod, delay, getSimplePlatformName, PageTester } from '../helpers/visu-utils';
 import { calculateMetrics, ChartData, PerformanceMetric } from '../helpers/perf-utils';
-import { Mouse } from 'puppeteer';
 import * as fs from 'fs';
 
 const platform = getSimplePlatformName();
