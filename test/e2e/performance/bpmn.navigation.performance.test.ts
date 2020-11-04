@@ -47,14 +47,14 @@ describe.each([1, 2, 3, 4, 5])('diagram navigation performance', run => {
     await page.mouse.move(viewportCenterX + 200, viewportCenterY);
     await page.keyboard.down('Control');
     for (let i = 0; i < xTimes; i++) {
-      await (<Mouse>page.mouse).wheel({ deltaX: deltaX });
+      await page.mouse.wheel({ deltaX: deltaX });
       if (i % 5 === 0) {
         await delay(30);
       }
     }
     await delay(100);
     for (let i = 0; i < xTimes; i++) {
-      await (<Mouse>page.mouse).wheel({ deltaX: -deltaX });
+      await page.mouse.wheel({ deltaX: -deltaX });
       if (i % 5 === 0) {
         await delay(30);
       }
