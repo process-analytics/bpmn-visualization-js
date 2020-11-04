@@ -123,7 +123,7 @@ describe('no BPMN elements visual regression', () => {
 
   const bpmnFileNames = findFiles('../fixtures/bpmn/non-regression/')
     .filter(filename => {
-      return filename.endsWith('gateways.bpmn');
+      return filename.endsWith('.bpmn');
     })
     .map(filename => {
       return filename.split('.').slice(0, -1).join('.');
