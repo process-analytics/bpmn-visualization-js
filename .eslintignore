@@ -7,4 +7,4 @@ coverage/*
 dist/*
 node_modules/*
 script/utils/dist/*
-test/e2e/performance
+test/e2e/performance/data
