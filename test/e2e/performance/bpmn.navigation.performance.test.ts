@@ -64,8 +64,6 @@ describe.each([1, 2, 3, 4, 5])('diagram navigation performance', run => {
 
     const metric = { ...calculateMetrics(metricsStart, metricsEnd), run: run };
     metricsArray.push(metric);
-    // eslint-disable-next-line no-console
-    console.info(metric.run, metric.TaskDuration, metric.ScriptDuration, metric.RecalcStyleDuration, metric.LayoutDuration);
     expect(true).toBe(true);
   });
 });
