@@ -86,8 +86,8 @@ function newShapeBpmnSubProcess(subProcessKind: ShapeBpmnSubProcessKind, marker?
   return new ShapeBpmnSubProcess('id', 'name', subProcessKind, null, marker);
 }
 
-function newShapeBpmnEventBasedGateway(instantiate: boolean, type: EventGatewayType): ShapeBpmnElement {
-  return new ShapeBpmnEventBasedGateway('id', 'name', null, instantiate, type);
+function newShapeBpmnEventBasedGateway(instantiate: boolean, eventGatewayType: EventGatewayType): ShapeBpmnElement {
+  return new ShapeBpmnEventBasedGateway('id', 'name', null, instantiate, eventGatewayType);
 }
 
 /**
