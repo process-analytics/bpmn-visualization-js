@@ -388,15 +388,15 @@ describe('mxgraph renderer', () => {
 
   describe('compute style - event-based gateway', () => {
     it.each`
-      instantiate  | type
+      instantiate  | eventGatewayType
       ${undefined} | ${undefined}
       ${false}     | ${undefined}
       ${true}      | ${undefined}
       ${true}      | ${'Exclusive'}
       ${true}      | ${'Parallel'}
-    `('event-based gateway when instantiate: $instantiate for type: $type', ({ instantiate, type }) => {
-      const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, type), newLabel({ name: 'Arial' }));
-      const optionalEventGatewayTypeStyle = type ? `;bpmn.eventGatewayType=${type}` : '';
+    `('event-based gateway when instantiate: $instantiate for eventGatewayType: $eventGatewayType', ({ instantiate, eventGatewayType }) => {
+      const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, eventGatewayType), newLabel({ name: 'Arial' }));
+      const optionalEventGatewayTypeStyle = eventGatewayType ? `;bpmn.eventGatewayType=${eventGatewayType}` : '';
       expect(computeStyle(shape)).toEqual(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate}${optionalEventGatewayTypeStyle};fontFamily=Arial`);
     });
   });
