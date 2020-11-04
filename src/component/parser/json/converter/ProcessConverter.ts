@@ -101,13 +101,13 @@ export default class ProcessConverter {
       } else if (ShapeUtil.isActivity(kind)) {
         shapeBpmnElement = this.buildShapeBpmnActivity(bpmnElement, kind, processId);
       } else if (kind == ShapeBpmnElementKind.GATEWAY_EVENT_BASED) {
-        // TODO try something like 'else if (bpmnElement as TEventBasedGateway)' to simplify
+        const eventBasedGatewayBpmnElement = bpmnElement as TEventBasedGateway;
         shapeBpmnElement = new ShapeBpmnEventBasedGateway(
           bpmnElement.id,
-          (bpmnElement as TEventBasedGateway).name,
+          eventBasedGatewayBpmnElement.name,
           processId,
-          (bpmnElement as TEventBasedGateway).instantiate,
-          (bpmnElement as TEventBasedGateway).eventGatewayType,
+          eventBasedGatewayBpmnElement.instantiate,
+          eventBasedGatewayBpmnElement.eventGatewayType,
         );
       } else {
         // @ts-ignore We know that the text & name fields are not on all types, but it's already tested
