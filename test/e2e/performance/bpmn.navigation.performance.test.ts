@@ -21,7 +21,7 @@ const platform = getSimplePlatformName();
 const performanceDataFilePath = './performance/data/' + platform + '/data.js';
 const metricsArray: Array<PerformanceMetric> = [];
 
-describe.each([1, 2, 3, 4, 5])('diagram navigation performance', run => {
+describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
   const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map([['B.2.0', BpmnLoadMethod.Url]]), { name: 'navigation-diagram', queryParams: [] }, 'performance');
 

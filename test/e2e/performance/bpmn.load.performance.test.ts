@@ -29,7 +29,7 @@ const platform = getSimplePlatformName();
 const performanceDataFilePath = './performance/data/' + platform + '/data.js';
 const metricsArray: Array<PerformanceMetric> = [];
 
-describe.each([1, 2, 3, 4, 5])('diagram navigation performance', run => {
+describe.each([1, 2, 3, 4, 5])('load performance', run => {
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
 
   const fileName = 'B.2.0';
