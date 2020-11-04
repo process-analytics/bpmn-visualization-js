@@ -22,13 +22,8 @@
   <script type="text/javascript" src="https://www.amcharts.com/lib/3/serial.js"></script>
   <script type="text/javascript" src="https://www.amcharts.com/lib/3/themes/dark.js"></script>
 
-  <script type="text/javascript" src="data/windows/data.js"></script>
-
+  <!-- amCharts javascript code changed to a function -->
   <script type="text/javascript">
-    createChart(data.zoom, 'Zoom Performance', 'chartZoomPerformance');
-    createChart(data.load, 'Load Performance', 'chartLoadPerformance');
-
-    <!-- amCharts javascript code changed to a function -->
     function createChart(data, title, containerId) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -116,14 +111,47 @@
       });
     }
   </script>
+
+  <script type="text/javascript">
+    // OS detection inspired by: https://stackoverflow.com/questions/11219582/how-to-detect-my-browser-version-and-operating-system-using-javascript
+    let os ='Unknown OS';
+    const WINDOWS ='Windows', MAC ='MacOS', UNIX ='UNIX', LINUX ='Linux';
+    if (navigator.appVersion.indexOf('Win')!==-1) os = WINDOWS;
+    if (navigator.appVersion.indexOf('Mac')!==-1) os = MAC;
+    if (navigator.appVersion.indexOf('X11')!==-1) os = UNIX;
+    if (navigator.appVersion.indexOf('Linux')!==-1) os = LINUX;
+
+    // set data file path per OS
+    let dataFilePath = '';
+    if (os === WINDOWS) {
+      dataFilePath = 'data/windows/data.js';
+    } else if (os === MAC) {
+      dataFilePath = 'data/macos/data.js';
+    } else if (os === UNIX || os === LINUX) {
+      dataFilePath = 'data/linux/data.js';
+    } else {
+      throw new Error('OS unknown');
+    }
+
+    // load script with data and create charts when ready
+    let head = document.getElementsByTagName('head')[0];
+    let script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = dataFilePath;
+    script.onload = function() {
+      createChart(data.zoom, 'Zoom Performance', 'chartZoomPerformance');
+      createChart(data.load, 'Load Performance', 'chartLoadPerformance');
+    }
+    head.appendChild(script);
+  </script>
 </head>
 <body>
-<header>
-  <h1>Performance tests</h1>
-</header>
-<section>
-  <div id="chartZoomPerformance" style="width: 100%; height: 400px; background-color: #282828;" ></div>
-  <div id="chartLoadPerformance" style="width: 100%; height: 400px; margin-top: 10px; background-color: #282828;" ></div>
-</section>
+  <header>
+    <h1>Performance tests</h1>
+  </header>
+  <section>
+    <div id="chartZoomPerformance" style="width: 100%; height: 400px; background-color: #282828;" ></div>
+    <div id="chartLoadPerformance" style="width: 100%; height: 400px; margin-top: 10px; background-color: #282828;" ></div>
+  </section>
 </body>
 </html>
