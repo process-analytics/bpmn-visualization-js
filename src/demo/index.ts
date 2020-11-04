@@ -23,9 +23,21 @@ export * from './helper';
 let bpmnVisualization: BpmnVisualization;
 let loadOptions: LoadOptions = {};
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types
-export function updateFitType(event: any): void {
-  loadOptions.fitType = FitType[event.target.value as keyof typeof FitType];
+export function updateFitConfig(config: { type?: string; margin?: number }): void {
+  log('Updating fit config', config);
+
+  loadOptions.fit.margin = config.margin || loadOptions.fit.margin;
+  if (config.type) {
+    loadOptions.fit.type = FitType[config.type as keyof typeof FitType];
+  }
+  log('Fit config updated!', loadOptions.fit);
+}
+
+/**
+ * Returns a copy
+ */
+export function getCurrentLoadOptions(): LoadOptions {
+  return { ...loadOptions };
 }
 
 function loadBpmn(bpmn: string): void {
@@ -103,12 +115,18 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
 
   const parameters = new URLSearchParams(window.location.search);
 
-  log('Configure load loadOptions');
+  log('Configuring Load Options');
   loadOptions = config.loadOptions || {};
+  loadOptions.fit ??= {};
   const parameterFitType = parameters.get('fitType');
   if (parameterFitType) {
-    loadOptions.fitType = FitType[parameterFitType as keyof typeof FitType];
+    loadOptions.fit.type = FitType[parameterFitType as keyof typeof FitType];
   }
+  const parameterFitMargin = parameters.get('fitMargin');
+  if (parameterFitMargin) {
+    loadOptions.fit.margin = Number(parameterFitMargin);
+  }
+  log(`Load Options: ${JSON.stringify(loadOptions, undefined, 2)}`);
 
   log("Checking if 'BPMN content' is provided as query parameter");
   const bpmnParameterValue = parameters.get('bpmn');

@@ -11,7 +11,7 @@
       <div id="options-panel">
         <div>
           <h3>Options</h3>
-          <label>Fit on load:
+          <label>Fit on load
             <select name="fitTypes" id="fitType-selected">
               <option value="None" selected="yes">None</option>
               <option value="HorizontalVertical">Horizontal-Vertical</option>
@@ -19,6 +19,9 @@
               <option value="Vertical">Vertical</option>
               <option value="Center">Center</option>
             </select>
+          </label>
+          <label for="fit-margin">Fit margin
+            <input type="number" id="fit-margin" min="0" max="100" maxlength="3" oninput="validity.valid||(value='');">
           </label>
         </div>
       </div>

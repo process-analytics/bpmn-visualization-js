@@ -26,17 +26,14 @@ import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
 import { ShapeBpmnMarkerKind } from '../../model/bpmn/internal/shape';
 import { BpmnMxGraph } from './BpmnMxGraph';
-import { FitType } from '../Options';
+import { LoadOptions } from '../Options';
 
 export default class MxGraphRenderer {
   constructor(readonly graph: BpmnMxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
 
-  public render(bpmnModel: BpmnModel, type: FitType = FitType.None): void {
+  public render(bpmnModel: BpmnModel, loadOptions?: LoadOptions): void {
     this.insertShapesAndEdges(bpmnModel);
-
-    if (type != FitType.None) {
-      this.graph.customFit(type);
-    }
+    this.graph.customFit(loadOptions?.fit);
   }
 
   private insertShapesAndEdges(bpmnModel: BpmnModel): void {

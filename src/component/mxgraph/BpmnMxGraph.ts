@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { FitType } from '../Options';
+import { FitOptions, FitType } from '../Options';
 
 export class BpmnMxGraph extends mxGraph {
   private cumulativeZoomFactor = 1;
@@ -23,13 +23,20 @@ export class BpmnMxGraph extends mxGraph {
   }
 
   // override fit to set initial cumulativeZoomFactor
-  fit(order: number, keepOrigin?: boolean, margin?: number, enabled?: boolean, ignoreWidth?: boolean, ignoreHeight?: boolean, maxHeight?: number): number {
-    const scale = super.fit(order, keepOrigin, margin, enabled, ignoreWidth, ignoreHeight, maxHeight);
+  fit(border: number, keepOrigin?: boolean, margin?: number, enabled?: boolean, ignoreWidth?: boolean, ignoreHeight?: boolean, maxHeight?: number): number {
+    const scale = super.fit(border, keepOrigin, margin, enabled, ignoreWidth, ignoreHeight, maxHeight);
     this.cumulativeZoomFactor = scale;
     return scale;
   }
 
-  public customFit(type: FitType): void {
+  public customFit(fitOptions: FitOptions): void {
+    const type = fitOptions?.type;
+    if (type == undefined || type == FitType.None) {
+      return;
+    }
+
+    const margin = BpmnMxGraph.enforcePositiveValue(fitOptions?.margin);
+
     if (type != FitType.Center) {
       let ignoreWidth = false;
       let ignoreHeight = false;
@@ -42,10 +49,9 @@ export class BpmnMxGraph extends mxGraph {
           break;
       }
 
-      this.fit(this.border, false, 0, true, ignoreWidth, ignoreHeight);
+      this.fit(this.border, false, margin, true, ignoreWidth, ignoreHeight);
     } else {
       // Inspired from https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.fit
-      const margin = 0;
       const maxScale = 3;
 
       const bounds = this.getGraphBounds();
@@ -62,6 +68,10 @@ export class BpmnMxGraph extends mxGraph {
         (margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.view.scale,
       );
     }
+  }
+
+  private static enforcePositiveValue(input: number | undefined | null): number {
+    return Math.max(input || 0, 0);
   }
 
   // solution inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254

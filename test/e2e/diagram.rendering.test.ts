@@ -40,8 +40,8 @@ describe('no diagram visual regression', () => {
     [FitType[FitType.Horizontal], FitType.Horizontal],
     [FitType[FitType.Vertical], FitType.Vertical],
     [FitType[FitType.Center], FitType.Center],
-  ])('load options: %s fit', async (fitTitle: string, fitType: FitType) => {
-    const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', { fitType });
+  ])('load options: %s fit', (fitTitle: string, fitType: FitType) => {
+    const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', { fit: { type: fitType } });
     const pageTester = new PageTester(bpmnDiagramPreparation, 'viewport', 'BPMN Visualization Non Regression');
 
     it.each([['horizontal'], ['vertical'], ['with_outside_flows'], ['with_outside_labels']])('%s diagram', async (fileName: string) => {
@@ -56,5 +56,46 @@ describe('no diagram visual regression', () => {
       const config = imageSnapshotConfigurator.getConfig(fileName, 0.000006);
       expect(image).toMatchImageSnapshot(config);
     });
+  });
+
+  describe('load options - fit margin', () => {
+    it.each`
+      margin  | fitTitle                       | fileName                | fitType
+      ${0}    | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
+      ${0}    | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
+      ${0}    | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
+      ${20}   | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
+      ${20}   | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
+      ${20}   | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
+      ${50}   | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
+      ${50}   | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
+      ${50}   | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
+      ${-100} | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
+      ${-100} | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
+      ${-100} | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
+      ${null} | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
+      ${null} | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
+      ${null} | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
+    `(
+      'margin $margin for fit type $fitTitle / $fileName diagram',
+      async ({
+        margin,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        fitTitle, // only used by test title
+        fileName,
+        fitType,
+      }) => {
+        const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', {
+          fit: { type: fitType, margin: margin },
+        });
+        const pageTester = new PageTester(bpmnDiagramPreparation, 'viewport', 'BPMN Visualization Non Regression');
+
+        await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
+
+        const image = await page.screenshot({ fullPage: true });
+        const config = imageSnapshotConfigurator.getConfig(fileName);
+        expect(image).toMatchImageSnapshot(config);
+      },
+    );
   });
 });

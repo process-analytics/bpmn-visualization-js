@@ -13,52 +13,56 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, FitType, updateFitType } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, getCurrentLoadOptions, updateFitConfig, FitType } from '../../index.es.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function updateFitTypeSelection(event) {
-  updateFitType(event);
+  const fitType = event.target.value;
+  updateFitConfig({ type: fitType });
+  configureBpmnViewport(fitType);
+}
 
-  if (event.target.value === 'None') {
-    resetClass(container);
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureBpmnViewport(fitType) {
+  const viewport = document.getElementById('graph');
+
+  const useFixedSize = !(fitType === 'None'); // !== 'None'
+  if (useFixedSize) {
+    viewport.classList.add('fixed-size');
   } else {
-    setFixedSizeClass(container);
+    viewport.classList.remove('fixed-size');
   }
-}
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function setFixedSizeClass(htmlElementId) {
-  const htmlElement = document.getElementById(htmlElementId);
-  htmlElement.classList.add('fixed-size');
-}
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function resetClass(htmlElementId) {
-  const htmlElement = document.getElementById(htmlElementId);
-  htmlElement.classList.remove('fixed-size');
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
-  const parameters = new URLSearchParams(window.location.search);
+  startBpmnVisualization({ container: 'graph' });
 
-  // Update the selected option at the initialization
-  const fitTypeSelected = document.getElementById('fitType-selected');
-  fitTypeSelected.addEventListener('change', updateFitTypeSelection, false);
-
-  const parameterFitType = parameters.get('fitType');
-  if (parameterFitType) {
-    fitTypeSelected.value = parameterFitType;
-  }
-
-  if (fitTypeSelected.value !== 'None') {
-    setFixedSizeClass('graph');
-  }
-
-  startBpmnVisualization({ container: 'graph', loadOptions: { fitType: FitType[fitTypeSelected.value] } });
+  // Configure custom html elements
   document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
 
+  const fitTypeSelectedElt = document.getElementById('fitType-selected');
+  fitTypeSelectedElt.addEventListener('change', updateFitTypeSelection, false);
+
+  const fitMarginElt = document.getElementById('fit-margin');
+  fitMarginElt.onchange = function (event) {
+    updateFitConfig({ margin: event.target.value });
+  };
+
+  // Update Fit Options based on configuration
+  const fitOptions = getCurrentLoadOptions().fit;
+
+  if (fitOptions.type) {
+    fitTypeSelectedElt.value = FitType[fitOptions.type];
+  }
+  configureBpmnViewport(fitTypeSelectedElt.value);
+
+  if (fitOptions.margin) {
+    fitMarginElt.value = fitOptions.margin;
+  }
+
   // Update control panel
+  const parameters = new URLSearchParams(window.location.search);
   if (parameters.get('hideControls') === 'true') {
     const classList = document.getElementById('controls').classList;
     classList.remove('controls');

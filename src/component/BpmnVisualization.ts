@@ -44,7 +44,7 @@ export default class BpmnVisualization {
   public load(xml: string, options?: LoadOptions): void {
     try {
       const bpmnModel = newBpmnParser().parse(xml);
-      defaultMxGraphRenderer(this.graph).render(bpmnModel, options?.fitType);
+      defaultMxGraphRenderer(this.graph).render(bpmnModel, options);
     } catch (e) {
       // TODO error handling
       mxUtils.alert('Cannot load bpmn diagram: ' + e.message);

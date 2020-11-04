@@ -23,15 +23,21 @@
 #options-panel div {
     border-radius: 10px;
     border: 2px solid PowderBlue;
-    margin-top: 5%;
-    margin-left: 5%;
-    margin-right: 10%;
-    margin-bottom: 5%;
-    margin-top: 15px;
-    padding-bottom: 15px;
+    margin: 15px 10% 5% 5%;
+    padding-bottom: 35px;
 }
 #options-panel > * {
     padding-left: 5%;
+}
+#options-panel div label {
+  padding-top: 5px;
+}
+
+#fit-margin {
+  width: 30%;
+}
+label[for=fit-margin] {
+  float: left;
 }
 
 .fixed-size {
