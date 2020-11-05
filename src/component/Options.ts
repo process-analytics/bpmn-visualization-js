@@ -19,6 +19,11 @@ export interface BpmnVisualizationOptions {
    * If set to `true`, activate panning i.e. the BPMN diagram is draggable and can be moved using the mouse.
    */
   mouseNavigationSupport: boolean;
+  zoomConfiguration: ZoomConfiguration;
+}
+export interface ZoomConfiguration {
+  throttleDelay: number;
+  debounceDelay: number;
 }
 
 export interface LoadOptions {

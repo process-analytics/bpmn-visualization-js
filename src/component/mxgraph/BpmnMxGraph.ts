@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 import { FitOptions, FitType } from '../Options';
+import { mxgraph } from 'ts-mxgraph';
+// TODO unable to load mxClient from mxgraph-type-definitions@1.0.4
+declare const mxClient: typeof mxgraph.mxClient;
 
-import { ZoomConfiguration } from '../BpmnVisualization';
+import { ZoomConfiguration } from '../Options';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 
@@ -78,24 +81,12 @@ export class BpmnMxGraph extends mxGraph {
     return Math.max(input || 0, 0);
   }
 
-  // solution inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
-  public performZoom(up: boolean, evt: MouseEvent): void {
-    const rect = this.container.getBoundingClientRect();
-    const x = evt.clientX - rect.left;
-    const y = evt.clientY - rect.top;
-    this.zoomTo(null, null, up, x, y);
-  }
-
   zoomTo(scale: number, center?: boolean, up?: boolean, offsetX?: number, offsetY?: number, performScaling?: boolean): void {
     if (scale === null) {
       const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(up, offsetX, offsetY);
       if (performScaling) {
         this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
-        // eslint-disable-next-line no-console
-        console.log('___ SCALING IT ___', this.cumulativeZoomFactor);
       }
-      // eslint-disable-next-line no-console
-      console.log('___ JUST CALCULATING THE FACTOR ___', this.cumulativeZoomFactor);
     } else {
       super.zoomTo(scale, center);
     }
