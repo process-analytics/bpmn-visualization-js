@@ -165,7 +165,7 @@ To have visibility if new changes have impact on current performance
 #### Run the performance tests
 For the moment we have decided to run them manually, in the future they may be run automatically - this however, depends on received results
 To run these tests, follow next steps:
-1. cd `/test/e2e`
+1. `cd /test/e2e`
 2. run `jest --runInBand --detectOpenHandles --testNamePattern=^performance`
 
 #### Results
