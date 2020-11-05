@@ -160,15 +160,15 @@ For now these tests are defined under `/test/e2e/performance/` as the performanc
 - zoom in / zoom out loaded diagram
 
 #### Why?
-To have visibility if new changes have impact on current performance
+To have visibility if new changes have impact on current performance.
 
 #### Run the performance tests
-For the moment we have decided to run them only manually, in the future they may be run automatically - this however, depends on received results
+For the moment we have decided to run them only manually, in the future they may be run automatically - this however, depends on received results.
 How to run? Check the next [section](#Running tests).
 
 #### Results
-The results are under `/test/e2e/performance/data/`
-Preview is available in the browser, simply open file `/bpmn-visu-js/test/e2e/performance/index.html` in your favourite browser
+The results are under `/test/e2e/performance/data/`. \
+Preview is available in the browser, simply open file `/bpmn-visu-js/test/e2e/performance/index.html` in your favourite browser.
 
 ## Running tests 
 
