@@ -16,6 +16,7 @@
 import { BpmnDiagramPreparation, BpmnLoadMethod, getSimplePlatformName, PageTester } from '../helpers/visu-utils';
 import * as fs from 'fs';
 import { calculateMetrics, ChartData } from '../helpers/perf-utils';
+import { FitType } from '../../../src/component/Options';
 
 interface PerformanceMetric {
   run: number;
@@ -34,9 +35,11 @@ describe.each([1, 2, 3, 4, 5])('load performance', run => {
 
   const fileName = 'B.2.0';
 
-  it.each([1])(`ctrl + mouse: check performance while performing zoom in and zoom out [%s times]`, async () => {
+  it.each([1])('check performance for file loading and displaying diagram with FitType.Center', async () => {
     const metricsStart = await page.metrics();
-    const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map([['B.2.0', BpmnLoadMethod.Url]]), { name: 'navigation-diagram', queryParams: [] }, 'performance');
+    const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map([['B.2.0', BpmnLoadMethod.Url]]), { name: 'navigation-diagram', queryParams: [] }, 'performance', {
+      fit: { type: FitType.Center },
+    });
     const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-viewport', 'BPMN Visualization - Diagram Navigation');
     await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
     const metricsEnd = await page.metrics();
