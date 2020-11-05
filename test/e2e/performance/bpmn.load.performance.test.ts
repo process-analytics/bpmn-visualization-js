@@ -35,10 +35,10 @@ describe.each([1, 2, 3, 4, 5])('load performance', run => {
 
   const fileName = 'B.2.0';
 
-  it.each([1])('check performance for file loading and displaying diagram with FitType.Center', async () => {
+  it.each([1])('check performance for file loading and displaying diagram with FitType.HorizontalVertical', async () => {
     const metricsStart = await page.metrics();
     const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map([['B.2.0', BpmnLoadMethod.Url]]), { name: 'navigation-diagram', queryParams: [] }, 'performance', {
-      fit: { type: FitType.Center },
+      fit: { type: FitType.HorizontalVertical },
     });
     const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-viewport', 'BPMN Visualization - Diagram Navigation');
     await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
