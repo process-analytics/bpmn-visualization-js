@@ -74,8 +74,6 @@ export default class MxGraphConfigurator {
       this.graph.setPanning(true);
 
       this.graph.createMouseWheelZoomExperience(options.zoomConfiguration);
-      // eslint-disable-next-line no-console
-      console.log('___ ZOOM CONFIG ___', options.zoomConfiguration);
     } else {
       this.graph.setPanning(false);
       this.graph.panningHandler.setPinchEnabled(false); // ensure gesture support is disabled (zoom only for now!)
