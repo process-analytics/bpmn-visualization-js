@@ -163,10 +163,8 @@ For now these tests are defined under `/test/e2e/performance/` as the performanc
 To have visibility if new changes have impact on current performance
 
 #### Run the performance tests
-For the moment we have decided to run them manually, in the future they may be run automatically - this however, depends on received results
-To run these tests, follow next steps:
-1. `cd /test/e2e`
-2. run `jest --runInBand --detectOpenHandles --testNamePattern=^performance`
+For the moment we have decided to run them only manually, in the future they may be run automatically - this however, depends on received results
+How to run? Check the next [section](#Running tests).
 
 #### Results
 The results are under `/test/e2e/performance/data/`
@@ -180,6 +178,7 @@ See `package.json` for extra available scripts
 - `npm run test:unit:coverage`  *Run unit tests with coverage*
 - `npm run test:e2e`            *Run end-to-end tests*.
 - `npm run test:e2e:coverage`   *Run end-to-end tests with coverage*
+- `npm run test:perf`           *Run performance tests*
 
 ### Debugging end-to-end tests
 
