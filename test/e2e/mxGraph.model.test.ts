@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/internal/shape';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import { MarkerIdentifier } from '../../src/bpmn-visualization';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
@@ -1024,25 +1024,27 @@ describe('mxGraph model', () => {
     expect('inclusive_gateway_id').toBeShape({ kind: ShapeBpmnElementKind.GATEWAY_INCLUSIVE, label: 'Inclusive Gateway', parentId: 'participant_1_id', verticalAlign: 'top' });
     expect('parallel_gateway_id').toBeShape({ kind: ShapeBpmnElementKind.GATEWAY_PARALLEL, label: 'Parallel Gateway', parentId: 'participant_1_id', verticalAlign: 'top' });
     expect('exclusive_gateway_id').toBeShape({ kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, label: 'Exclusive Gateway', parentId: 'participant_1_id', verticalAlign: 'top' });
-    expect('gateway_event_based_id').toBeShape({
-      kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED,
+    expect('gateway_event_based_id').toBeEventBasedGateway({
       label: 'Event-Based Gateway',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
+      isInstantiating: false,
+      gatewayKind: ShapeBpmnEventBasedGatewayKind.Parallel,
     });
-    // TODO test instantiate
-    expect('gateway_event_based_instantiate_id').toBeShape({
-      kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED,
+    expect('gateway_event_based_instantiate_id').toBeEventBasedGateway({
       label: 'Event-Based Gateway Instantiate',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
+      isInstantiating: true,
+      gatewayKind: ShapeBpmnEventBasedGatewayKind.Exclusive,
     });
-    // TODO test instantiate + parallel
-    expect('gateway_event_based_instantiate_parallel_id').toBeShape({
-      kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED,
+    // TODO test parallel
+    expect('gateway_event_based_instantiate_parallel_id').toBeEventBasedGateway({
       label: 'Event-Based Gateway Instantiate Parallel',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
+      isInstantiating: true,
+      gatewayKind: ShapeBpmnEventBasedGatewayKind.Exclusive,
     });
 
     // sequence flow
