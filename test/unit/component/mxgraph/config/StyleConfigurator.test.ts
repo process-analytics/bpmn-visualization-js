@@ -17,7 +17,7 @@
 import StyleConfigurator from '../../../../../src/component/mxgraph/config/StyleConfigurator';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, {
-  EventGatewayType,
+  ShapeBpmnEventBasedGatewayKind,
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
@@ -86,7 +86,7 @@ function newShapeBpmnSubProcess(subProcessKind: ShapeBpmnSubProcessKind, marker?
   return new ShapeBpmnSubProcess('id', 'name', subProcessKind, null, marker);
 }
 
-function newShapeBpmnEventBasedGateway(instantiate: boolean, gatewayKind: EventGatewayType): ShapeBpmnElement {
+function newShapeBpmnEventBasedGateway(instantiate: boolean, gatewayKind: ShapeBpmnEventBasedGatewayKind): ShapeBpmnElement {
   return new ShapeBpmnEventBasedGateway('id', 'name', null, instantiate, gatewayKind);
 }
 
