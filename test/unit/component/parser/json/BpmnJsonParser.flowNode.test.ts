@@ -294,7 +294,7 @@ describe.each([
       });
       const parallelInstantiatingEventBasedGateway: ShapeBpmnEventBasedGateway = model.flowNodes[2].bpmnElement;
       expect(parallelInstantiatingEventBasedGateway.instantiate).toBeTruthy();
-      expect(parallelInstantiatingEventBasedGateway.eventGatewayType).toEqual('Parallel');
+      expect(parallelInstantiatingEventBasedGateway.gatewayKind).toEqual('Parallel');
     });
   }
 });
