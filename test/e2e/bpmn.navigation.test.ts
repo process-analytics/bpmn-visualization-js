@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnDiagramPreparation, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
+import { BpmnDiagramPreparation, delay, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
 
 describe('diagram navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
@@ -78,9 +78,11 @@ describe('diagram navigation', () => {
     for (let i = 0; i < xTimes; i++) {
       await page.mouse.wheel({ deltaX: deltaX });
     }
+    await delay(100);
     for (let i = 0; i < xTimes; i++) {
       await page.mouse.wheel({ deltaX: -deltaX });
     }
+    await delay(100);
     const image = await page.screenshot({ fullPage: true });
     expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
   });
