@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnEventKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal/shape';
+import { ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal/shape';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
 
 export enum MarkerIdentifier {
@@ -105,6 +105,10 @@ export default class StyleUtils {
 
   public static getBpmnIsInitiating(style: any): MessageVisibleKind {
     return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_INITIATING, undefined);
+  }
+
+  public static getBpmnIsParallelEventBasedGateway(style: any): boolean {
+    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_GATEWAY_TYPE, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel;
   }
 }
 /* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */

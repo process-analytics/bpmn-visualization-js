@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import StyleUtils, { StyleDefault, StyleIdentifier } from '../StyleUtils';
+import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import BpmnCanvas from './render/BpmnCanvas';
 
@@ -81,7 +81,7 @@ export class EventBasedGatewayShape extends GatewayShape {
   }
 
   protected paintOuterShape(paintParameter: PaintParameter): void {
-    const isParallel = this.style[StyleIdentifier.BPMN_STYLE_EVENT_GATEWAY_TYPE] == 'Parallel'; // TODO introduce styleUtils function for consistency
+    const isParallel = StyleUtils.getBpmnIsParallelEventBasedGateway(this.style);
     const fillColor = StyleUtils.getBpmnIsInstantiating(this.style) ? (isParallel ? 'lightBlue' : 'purple') : 'orange';
 
     paintParameter.c.setFillColor(fillColor);
