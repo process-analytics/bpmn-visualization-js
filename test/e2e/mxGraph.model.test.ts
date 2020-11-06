@@ -1024,6 +1024,26 @@ describe('mxGraph model', () => {
     expect('inclusive_gateway_id').toBeShape({ kind: ShapeBpmnElementKind.GATEWAY_INCLUSIVE, label: 'Inclusive Gateway', parentId: 'participant_1_id', verticalAlign: 'top' });
     expect('parallel_gateway_id').toBeShape({ kind: ShapeBpmnElementKind.GATEWAY_PARALLEL, label: 'Parallel Gateway', parentId: 'participant_1_id', verticalAlign: 'top' });
     expect('exclusive_gateway_id').toBeShape({ kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, label: 'Exclusive Gateway', parentId: 'participant_1_id', verticalAlign: 'top' });
+    expect('gateway_event_based_id').toBeShape({
+      kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED,
+      label: 'Event-Based Gateway',
+      parentId: 'participant_1_id',
+      verticalAlign: 'top',
+    });
+    // TODO test instantiate
+    expect('gateway_event_based_instantiate_id').toBeShape({
+      kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED,
+      label: 'Event-Based Gateway Instantiate',
+      parentId: 'participant_1_id',
+      verticalAlign: 'top',
+    });
+    // TODO test instantiate + parallel
+    expect('gateway_event_based_instantiate_parallel_id').toBeShape({
+      kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED,
+      label: 'Event-Based Gateway Instantiate Parallel',
+      parentId: 'participant_1_id',
+      verticalAlign: 'top',
+    });
 
     // sequence flow
     expect('default_sequence_flow_id').toBeSequenceFlow({
