@@ -86,8 +86,8 @@ function newShapeBpmnSubProcess(subProcessKind: ShapeBpmnSubProcessKind, marker?
   return new ShapeBpmnSubProcess('id', 'name', subProcessKind, null, marker);
 }
 
-function newShapeBpmnEventBasedGateway(instantiate: boolean, eventGatewayType: EventGatewayType): ShapeBpmnElement {
-  return new ShapeBpmnEventBasedGateway('id', 'name', null, instantiate, eventGatewayType);
+function newShapeBpmnEventBasedGateway(instantiate: boolean, gatewayKind: EventGatewayType): ShapeBpmnElement {
+  return new ShapeBpmnEventBasedGateway('id', 'name', null, instantiate, gatewayKind);
 }
 
 /**
@@ -388,16 +388,16 @@ describe('mxgraph renderer', () => {
 
   describe('compute style - event-based gateway', () => {
     it.each`
-      instantiate  | eventGatewayType
+      instantiate  | gatewayKind
       ${undefined} | ${undefined}
       ${false}     | ${undefined}
       ${true}      | ${undefined}
       ${true}      | ${'Exclusive'}
       ${true}      | ${'Parallel'}
-    `('event-based gateway when instantiate: $instantiate for eventGatewayType: $eventGatewayType', ({ instantiate, eventGatewayType }) => {
-      const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, eventGatewayType), newLabel({ name: 'Arial' }));
-      const optionalEventGatewayTypeStyle = eventGatewayType ? `;bpmn.eventGatewayType=${eventGatewayType}` : '';
-      expect(computeStyle(shape)).toEqual(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate}${optionalEventGatewayTypeStyle};fontFamily=Arial`);
+    `('event-based gateway when instantiate: $instantiate for gatewayKind: $gatewayKind', ({ instantiate, gatewayKind }) => {
+      const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, gatewayKind), newLabel({ name: 'Arial' }));
+      const optionalGatewayKindStyle = gatewayKind ? `;bpmn.gatewayKind=${gatewayKind}` : '';
+      expect(computeStyle(shape)).toEqual(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate}${optionalGatewayKindStyle};fontFamily=Arial`);
     });
   });
 });
