@@ -15,15 +15,29 @@
  */
 
 export interface BpmnVisualizationOptions {
-  /**
-   * If set to `true`, activate panning i.e. the BPMN diagram is draggable and can be moved using the mouse.
-   */
-  mouseNavigationSupport: boolean;
-  zoomConfiguration: ZoomConfiguration;
+  navigation: {
+    /**
+     * If set to `true`, activate panning i.e. the BPMN diagram is draggable and can be moved using the mouse.
+     */
+    mouseSupport: boolean;
+    /**
+     * If enabled is `true`: zoom is activated, the BPMN diagram can be zoomed in / out by pressing ctrl + scrolling with mouse wheel.
+     */
+    zoom?: ZoomConfiguration;
+  };
 }
+
 export interface ZoomConfiguration {
-  throttleDelay: number;
-  debounceDelay: number;
+  /**
+   * throttleDelay [ms] responsible for throttling the mouse scroll event (not every event is firing the function handler, only limited number can lunch handler)
+   * default value is 50 @see BpmnMxGraph.ensureValidZoomConfiguration, smaller value results in more events fired, bigger gain in zoom factor
+   */
+  throttleDelay?: number;
+  /**
+   * debounceDelay [ms] responsible for debouncing the zoom function - the actual scaling
+   * default value is 50 @see BpmnMxGraph.ensureValidZoomConfiguration, bigger value results in bigger gain in zoom factor before actual scaling takes place
+   */
+  debounceDelay?: number;
 }
 
 export interface LoadOptions {

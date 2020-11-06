@@ -61,22 +61,20 @@ export default class MxGraphConfigurator {
   }
 
   private configureMouseNavigationSupport(options?: BpmnVisualizationOptions): void {
-    const mouseNavigationSupport = options?.mouseNavigationSupport;
     // Pan configuration
-    if (mouseNavigationSupport) {
+    if (options?.navigation.mouseSupport) {
       this.graph.panningHandler.useLeftButtonForPanning = true;
       this.graph.panningHandler.ignoreCell = true; // ok here as we cannot select cells
       this.graph.panningHandler.addListener(mxEvent.PAN_START, this.getPanningHandler('grab'));
       this.graph.panningHandler.addListener(mxEvent.PAN_END, this.getPanningHandler('default'));
       this.graph.setPanning(true);
 
-      this.graph.createMouseWheelZoomExperience(options.zoomConfiguration);
+      // Zoom configuration
+      this.graph.createMouseWheelZoomExperience(options?.navigation.zoom);
     } else {
       this.graph.setPanning(false);
       this.graph.panningHandler.setPinchEnabled(false); // ensure gesture support is disabled (zoom only for now!)
     }
-
-    this.configureMouseEvent(mouseNavigationSupport);
   }
 
   private getPanningHandler(cursor: 'grab' | 'default'): OmitThisParameter<(this: BpmnMxGraph) => void> {
@@ -87,11 +85,5 @@ export default class MxGraphConfigurator {
     return function (this: BpmnMxGraph): void {
       this.isEnabled() && (this.container.style.cursor = cursor);
     };
-  }
-
-  private configureMouseEvent(activated = false): void {
-    if (activated) {
-      this.graph.createMouseWheelZoomExperience();
-    }
   }
 }
