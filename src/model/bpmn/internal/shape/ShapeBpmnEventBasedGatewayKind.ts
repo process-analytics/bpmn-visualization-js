@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-export * from './ShapeBpmnCallActivityKind';
-export * from './ShapeBpmnElementKind';
-export * from './ShapeBpmnEventBasedGatewayKind';
-export * from './ShapeBpmnEventKind'; // TODO no need for internal function
-export * from './ShapeBpmnMarkerKind';
-export * from './ShapeBpmnSubProcessKind';
+export enum ShapeBpmnEventBasedGatewayKind {
+  Exclusive = 'Exclusive',
+  Parallel = 'Parallel',
+}

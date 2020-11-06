@@ -20,7 +20,6 @@ import ShapeBpmnElement, {
   ShapeBpmnCallActivity,
   ShapeBpmnEvent,
   ShapeBpmnEventBasedGateway,
-  ShapeBpmnEventBasedGatewayKind,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
@@ -28,6 +27,7 @@ import {
   bpmnEventKinds,
   ShapeBpmnCallActivityKind,
   ShapeBpmnElementKind,
+  ShapeBpmnEventBasedGatewayKind,
   ShapeBpmnEventKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
