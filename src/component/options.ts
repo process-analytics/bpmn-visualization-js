@@ -24,9 +24,18 @@ export interface GlobalOptions {
   mouseNavigationSupport: boolean;
   zoomConfiguration: ZoomConfiguration;
 }
+
 export interface ZoomConfiguration {
-  throttleDelay: number;
-  debounceDelay: number;
+  /**
+   * throttleDelay [ms] responsible for throttling the mouse scroll event (not every event is firing the function handler, only limited number can lunch handler)
+   * default value is 50 @see BpmnMxGraph.ensureValidZoomConfiguration, smaller value results in more events fired, bigger gain in zoom factor
+   */
+  throttleDelay?: number;
+  /**
+   * debounceDelay [ms] responsible for debouncing the zoom function - the actual scaling
+   * default value is 50 @see BpmnMxGraph.ensureValidZoomConfiguration, bigger value results in bigger gain in zoom factor before actual scaling takes place
+   */
+  debounceDelay?: number;
 }
 
 /**
