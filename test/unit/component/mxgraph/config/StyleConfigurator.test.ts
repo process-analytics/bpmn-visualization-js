@@ -17,7 +17,6 @@
 import StyleConfigurator from '../../../../../src/component/mxgraph/config/StyleConfigurator';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, {
-  ShapeBpmnEventBasedGatewayKind,
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
@@ -26,7 +25,14 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal/shape';
+import {
+  ShapeBpmnCallActivityKind,
+  ShapeBpmnElementKind,
+  ShapeBpmnEventBasedGatewayKind,
+  ShapeBpmnEventKind,
+  ShapeBpmnMarkerKind,
+  ShapeBpmnSubProcessKind,
+} from '../../../../../src/model/bpmn/internal/shape';
 import Label, { Font } from '../../../../../src/model/bpmn/internal/Label';
 import { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
