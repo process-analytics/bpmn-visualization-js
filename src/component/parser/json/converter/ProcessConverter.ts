@@ -20,6 +20,7 @@ import ShapeBpmnElement, {
   ShapeBpmnCallActivity,
   ShapeBpmnEvent,
   ShapeBpmnEventBasedGateway,
+  ShapeBpmnEventBasedGatewayKind,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
@@ -107,7 +108,7 @@ export default class ProcessConverter {
           eventBasedGatewayBpmnElement.name,
           processId,
           eventBasedGatewayBpmnElement.instantiate,
-          eventBasedGatewayBpmnElement.eventGatewayType,
+          ShapeBpmnEventBasedGatewayKind[eventBasedGatewayBpmnElement.eventGatewayType],
         );
       } else {
         // @ts-ignore We know that the text & name fields are not on all types, but it's already tested

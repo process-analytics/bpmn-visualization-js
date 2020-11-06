@@ -60,12 +60,10 @@ export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
   }
 }
 
-// TODO switch to enum for consistency with other type/kind?
-// enum ShapeBpmnEventBasedGatewayKind {
-//   Exclusive = 'Exclusive',
-//   Parallel = 'Parallel',
-// }
-export type ShapeBpmnEventBasedGatewayKind = 'Exclusive' | 'Parallel';
+export enum ShapeBpmnEventBasedGatewayKind {
+  Exclusive = 'Exclusive',
+  Parallel = 'Parallel',
+}
 
 export class ShapeBpmnEventBasedGateway extends ShapeBpmnElement {
   constructor(id: string, name: string, parentId: string, instantiate?: boolean, readonly gatewayKind?: ShapeBpmnEventBasedGatewayKind) {
