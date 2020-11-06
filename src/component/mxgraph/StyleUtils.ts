@@ -50,7 +50,7 @@ export enum StyleIdentifier {
   BPMN_STYLE_INSTANTIATING = 'bpmn.isInstantiating',
   BPMN_STYLE_IS_INITIATING = 'bpmn.isInitiating',
   BPMN_STYLE_MESSAGE_FLOW_ICON = 'bpmn.messageFlowIcon',
-  BPMN_STYLE_EVENT_GATEWAY_TYPE = 'bpmn.gatewayKind',
+  BPMN_STYLE_EVENT_BASED_GATEWAY_KIND = 'bpmn.gatewayKind',
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
@@ -108,7 +108,7 @@ export default class StyleUtils {
   }
 
   public static getBpmnIsParallelEventBasedGateway(style: any): boolean {
-    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_GATEWAY_TYPE, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel;
+    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel;
   }
 }
 /* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
