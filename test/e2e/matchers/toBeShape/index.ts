@@ -42,7 +42,13 @@ function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): Expe
 }
 
 function buildExpectedStyle(
-  expectedModel: ExpectedShapeModelElement | ExpectedSubProcessModelElement | ExpectedEventModelElement | ExpectedStartEventModelElement | ExpectedBoundaryEventModelElement,
+  expectedModel:
+    | ExpectedShapeModelElement
+    | ExpectedSubProcessModelElement
+    | ExpectedEventModelElement
+    | ExpectedStartEventModelElement
+    | ExpectedBoundaryEventModelElement
+    | ExpectedEventBasedGatewayModelElement,
 ): string {
   let expectedStyle: string = expectedModel.kind;
   if ('eventKind' in expectedModel) {
@@ -61,7 +67,7 @@ function buildExpectedStyle(
     expectedStyle = expectedStyle + `.*bpmn.isInterrupting=${expectedModel.isInterrupting}`;
   }
   if ('gatewayKind' in expectedModel) {
-    // console.info('style exepect gatewayKind');
+    expectedStyle = expectedStyle + `.*bpmn.gatewayKind=${expectedModel.gatewayKind}`;
   }
   return expectedStyle + '.*';
 }

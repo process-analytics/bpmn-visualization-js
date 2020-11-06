@@ -1029,22 +1029,19 @@ describe('mxGraph model', () => {
       parentId: 'participant_1_id',
       verticalAlign: 'top',
       isInstantiating: false,
-      gatewayKind: ShapeBpmnEventBasedGatewayKind.Parallel,
     });
     expect('gateway_event_based_instantiate_id').toBeEventBasedGateway({
       label: 'Event-Based Gateway Instantiate',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
       isInstantiating: true,
-      gatewayKind: ShapeBpmnEventBasedGatewayKind.Exclusive,
     });
-    // TODO test parallel
     expect('gateway_event_based_instantiate_parallel_id').toBeEventBasedGateway({
       label: 'Event-Based Gateway Instantiate Parallel',
       parentId: 'participant_1_id',
       verticalAlign: 'top',
       isInstantiating: true,
-      gatewayKind: ShapeBpmnEventBasedGatewayKind.Exclusive,
+      gatewayKind: ShapeBpmnEventBasedGatewayKind.Parallel,
     });
 
     // sequence flow
