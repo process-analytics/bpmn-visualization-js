@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>combined | amCharts</title>
+  <meta name="description" content="chart created using amCharts live editor" />
+
+  <style>
+    body {
+      background:#ccc;
+    }
+    h1 {
+      font: bold 20px arial, sans-serif;
+      background-color: #565656;
+      color: transparent;
+      text-shadow: 2px 2px 3px rgba(255,255,255,0.5);
+      -webkit-background-clip: text;
+    }
+  </style>
+
+  <!-- amCharts javascript sources -->
+  <script type="text/javascript" src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+  <script type="text/javascript" src="https://www.amcharts.com/lib/3/serial.js"></script>
+  <script type="text/javascript" src="https://www.amcharts.com/lib/3/themes/dark.js"></script>
+
+  <!-- amCharts javascript code changed to a function -->
+  <script type="text/javascript">
+    function createChart(data, title, containerId) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      AmCharts.makeChart(containerId, {
+        type: 'serial',
+        categoryField: '1',
+        sequencedAnimation: false,
+        startDuration: 1,
+        startEffect: 'easeOutSine',
+        backgroundAlpha: 0.8,
+        theme: 'dark',
+        categoryAxis: {
+          position: 'top',
+          startOnAxis: true,
+          labelsEnabled: false,
+          title: '',
+          titleBold: false,
+        },
+        trendLines: [],
+        graphs: [
+          {
+            balloonText: 'TaskDuration [[value]]',
+            bullet: 'triangleDown',
+            id: 'TaskDuration',
+            lineThickness: 3,
+            precision: 3,
+            title: 'TaskDuration',
+            valueAxis: 'Duration',
+            valueField: 'TaskDuration',
+          },
+          {
+            balloonText: 'ScriptDuration [[value]]',
+            bullet: 'triangleUp',
+            id: 'ScriptDuration',
+            lineThickness: 2,
+            precision: 3,
+            title: 'ScriptDuration',
+            valueAxis: 'Duration',
+            valueField: 'ScriptDuration',
+          },
+          {
+            balloonText: 'RecalcStyleDuration [[value]]',
+            bullet: 'diamond',
+            id: 'RecalcStyleDuration',
+            lineThickness: 2,
+            precision: 3,
+            title: 'RecalcStyleDuration',
+            valueAxis: 'Duration',
+            valueField: 'RecalcStyleDuration',
+          },
+          {
+            balloonText: 'LayoutDuration [[value]]',
+            bullet: 'square',
+            id: 'LayoutDuration',
+            lineThickness: 2,
+            precision: 3,
+            title: 'LayoutDuration',
+            valueAxis: 'Duration',
+            valueField: 'LayoutDuration',
+          },
+        ],
+        guides: [],
+        valueAxes: [
+          {
+            id: 'Duration',
+            markPeriodChange: false,
+            title: 'Duration [s]',
+          },
+        ],
+        allLabels: [],
+        balloon: {},
+        legend: {
+          enabled: true,
+          spacing: 8,
+          useGraphSettings: true,
+        },
+        titles: [
+          {
+            id: 'Title-1',
+            size: 15,
+            text: title,
+          },
+        ],
+        dataProvider: data,
+      });
+    }
+  </script>
+
+  <script type="text/javascript">
+    // OS detection inspired by: https://stackoverflow.com/questions/11219582/how-to-detect-my-browser-version-and-operating-system-using-javascript
+    let os ='Unknown OS';
+    const WINDOWS ='Windows', MAC ='MacOS', UNIX ='UNIX', LINUX ='Linux';
+    if (navigator.appVersion.indexOf('Win')!==-1) os = WINDOWS;
+    if (navigator.appVersion.indexOf('Mac')!==-1) os = MAC;
+    if (navigator.appVersion.indexOf('X11')!==-1) os = UNIX;
+    if (navigator.appVersion.indexOf('Linux')!==-1) os = LINUX;
+
+    // set data file path per OS
+    let dataFilePath = '';
+    if (os === WINDOWS) {
+      dataFilePath = 'data/windows/data.js';
+    } else if (os === MAC) {
+      dataFilePath = 'data/macos/data.js';
+    } else if (os === UNIX || os === LINUX) {
+      dataFilePath = 'data/linux/data.js';
+    } else {
+      throw new Error('OS unknown');
+    }
+
+    // load script with data and create charts when ready
+    let head = document.getElementsByTagName('head')[0];
+    let script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = dataFilePath;
+    script.onload = function() {
+      createChart(data.zoom, 'Zoom Performance', 'chartZoomPerformance');
+      createChart(data.load, 'Load Performance', 'chartLoadPerformance');
+    }
+    head.appendChild(script);
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Performance tests</h1>
+  </header>
+  <section>
+    <div id="chartZoomPerformance" style="width: 100%; height: 400px; background-color: #282828;" ></div>
+    <div id="chartLoadPerformance" style="width: 100%; height: 400px; margin-top: 10px; background-color: #282828;" ></div>
+  </section>
+</body>
+</html>

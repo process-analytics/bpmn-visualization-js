@@ -21,7 +21,7 @@ import { FitType, LoadOptions } from '../../../src/component/Options';
 
 const log = debugLogger('test');
 
-function getSimplePlatformName(): string {
+export function getSimplePlatformName(): string {
   const platform = process.platform;
   log(`This platform is ${platform}`);
 
@@ -186,4 +186,10 @@ export class PageTester {
 
     return bpmnViewportElementHandle;
   }
+}
+
+export function delay(time: number): Promise<unknown> {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, time);
+  });
 }

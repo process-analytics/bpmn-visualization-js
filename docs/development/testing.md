@@ -154,6 +154,21 @@ an `HTTP 400 error`.
 In that case, configure an alternate load method by referencing the name of the test BPMN diagram in the load configuration
 settings.
 
+### Performance tests
+For now these tests are defined under `/test/e2e/performance/` as the performance is being measured for complex(e2e) tasks:
+- display diagram
+- zoom in / zoom out loaded diagram
+
+#### Why?
+To have visibility if new changes have impact on current performance.
+
+#### Run the performance tests
+For the moment we have decided to run them only manually, in the future they may be run automatically - this however, depends on received results.
+How to run? Check the next [section](#Running tests).
+
+#### Results
+The results are under `/test/e2e/performance/data/`. \
+Preview is available in the browser, simply open file `/bpmn-visu-js/test/e2e/performance/index.html` in your favourite browser.
 
 ## Running tests 
 
@@ -163,6 +178,7 @@ See `package.json` for extra available scripts
 - `npm run test:unit:coverage`  *Run unit tests with coverage*
 - `npm run test:e2e`            *Run end-to-end tests*.
 - `npm run test:e2e:coverage`   *Run end-to-end tests with coverage*
+- `npm run test:perf`           *Run performance tests*
 
 ### Debugging end-to-end tests
 
