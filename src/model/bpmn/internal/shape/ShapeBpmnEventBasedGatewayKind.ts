@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/**
+ * Values available for the `eventGatewayType` property in the BPMN specification.
+ */
 export enum ShapeBpmnEventBasedGatewayKind {
   Exclusive = 'Exclusive',
   Parallel = 'Parallel',
