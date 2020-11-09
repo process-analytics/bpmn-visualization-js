@@ -21,10 +21,18 @@ import ShapeBpmnElement, {
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
   ShapeBpmnEvent,
+  ShapeBpmnEventBasedGateway,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import { ShapeBpmnElementKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
+import {
+  ShapeBpmnCallActivityKind,
+  ShapeBpmnElementKind,
+  ShapeBpmnEventBasedGatewayKind,
+  ShapeBpmnEventKind,
+  ShapeBpmnMarkerKind,
+  ShapeBpmnSubProcessKind,
+} from '../../../../../src/model/bpmn/internal/shape';
 import Label, { Font } from '../../../../../src/model/bpmn/internal/Label';
 import { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
@@ -82,6 +90,10 @@ function newShapeBpmnStartEvent(eventKind: ShapeBpmnEventKind, isInterrupting: b
 
 function newShapeBpmnSubProcess(subProcessKind: ShapeBpmnSubProcessKind, marker?: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
   return new ShapeBpmnSubProcess('id', 'name', subProcessKind, null, marker);
+}
+
+function newShapeBpmnEventBasedGateway(instantiate: boolean, gatewayKind: ShapeBpmnEventBasedGatewayKind): ShapeBpmnElement {
+  return new ShapeBpmnEventBasedGateway('id', 'name', null, instantiate, gatewayKind);
 }
 
 /**
@@ -378,5 +390,20 @@ describe('mxgraph renderer', () => {
         }
       },
     );
+  });
+
+  describe('compute style - event-based gateway', () => {
+    it.each`
+      instantiate  | gatewayKind
+      ${undefined} | ${undefined}
+      ${false}     | ${undefined}
+      ${true}      | ${undefined}
+      ${true}      | ${'Exclusive'}
+      ${true}      | ${'Parallel'}
+    `('event-based gateway when instantiate: $instantiate for gatewayKind: $gatewayKind', ({ instantiate, gatewayKind }) => {
+      const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, gatewayKind), newLabel({ name: 'Arial' }));
+      gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
+      expect(computeStyle(shape)).toEqual(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.gatewayKind=${gatewayKind};fontFamily=Arial`);
+    });
   });
 });

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/internal/shape';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import { MarkerIdentifier } from '../../src/bpmn-visualization';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
@@ -1024,6 +1024,25 @@ describe('mxGraph model', () => {
     expect('inclusive_gateway_id').toBeShape({ kind: ShapeBpmnElementKind.GATEWAY_INCLUSIVE, label: 'Inclusive Gateway', parentId: 'participant_1_id', verticalAlign: 'top' });
     expect('parallel_gateway_id').toBeShape({ kind: ShapeBpmnElementKind.GATEWAY_PARALLEL, label: 'Parallel Gateway', parentId: 'participant_1_id', verticalAlign: 'top' });
     expect('exclusive_gateway_id').toBeShape({ kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, label: 'Exclusive Gateway', parentId: 'participant_1_id', verticalAlign: 'top' });
+    expect('gateway_event_based_id').toBeEventBasedGateway({
+      label: 'Event-Based Gateway',
+      parentId: 'participant_1_id',
+      verticalAlign: 'top',
+      isInstantiating: false,
+    });
+    expect('gateway_event_based_instantiate_id').toBeEventBasedGateway({
+      label: 'Event-Based Gateway Instantiate',
+      parentId: 'participant_1_id',
+      verticalAlign: 'top',
+      isInstantiating: true,
+    });
+    expect('gateway_event_based_instantiate_parallel_id').toBeEventBasedGateway({
+      label: 'Event-Based Gateway Instantiate Parallel',
+      parentId: 'participant_1_id',
+      verticalAlign: 'top',
+      isInstantiating: true,
+      gatewayKind: ShapeBpmnEventBasedGatewayKind.Parallel,
+    });
 
     // sequence flow
     expect('default_sequence_flow_id').toBeSequenceFlow({

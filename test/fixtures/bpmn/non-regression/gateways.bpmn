@@ -6,6 +6,8 @@
     <bpmn:inclusiveGateway id="Gateway_1xb9nl5" />
     <bpmn:complexGateway id="Gateway_1qm3uqe" />
     <bpmn:eventBasedGateway id="Gateway_1n1md3j" />
+    <bpmn:eventBasedGateway id="Gateway_1fcfrqc" instantiate="true" />
+    <bpmn:eventBasedGateway id="Gateway_0i6s6lx" instantiate="true" eventGatewayType="Parallel" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0622ij6">
@@ -22,7 +24,13 @@
         <dc:Bounds x="295" y="205" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_038fht1_di" bpmnElement="Gateway_1n1md3j">
-        <dc:Bounds x="395" y="115" width="50" height="50" />
+        <dc:Bounds x="195" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1fcfrqc_di" bpmnElement="Gateway_1fcfrqc">
+        <dc:Bounds x="295" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0i6s6lx_di" bpmnElement="Gateway_0i6s6lx">
+        <dc:Bounds x="385" y="285" width="50" height="50" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -13,26 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { toBeSequenceFlow, toBeMessageFlow, toBeAssociationFlow } from './toBeEdge';
-export {
-  toBeShape,
-  toBeCallActivity,
-  toBeTask,
-  toBeServiceTask,
-  toBeUserTask,
-  toBeReceiveTask,
-  toBeSendTask,
-  toBeManualTask,
-  toBeScriptTask,
-  toBeBusinessRuleTask,
-  toBeStartEvent,
-  toBeEndEvent,
-  toBeIntermediateThrowEvent,
-  toBeIntermediateCatchEvent,
-  toBeBoundaryEvent,
-  toBeEventBasedGateway,
-  toBeSubProcess,
-  toBePool,
-  toBeLane,
-} from './toBeShape';
-export { toBeCell, toBeCellWithParentAndGeometry } from './toBeCell';
+/**
+ * Values available for the `eventGatewayType` property in the BPMN specification.
+ */
+export enum ShapeBpmnEventBasedGatewayKind {
+  Exclusive = 'Exclusive',
+  /** When no type is provided in the BPMN source. */
+  None = 'None',
+  Parallel = 'Parallel',
+}

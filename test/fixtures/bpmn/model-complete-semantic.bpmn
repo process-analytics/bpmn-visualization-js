@@ -568,6 +568,9 @@
       <semantic:incoming>conditional_sequence_flow_from_activity_id</semantic:incoming>
       <semantic:outgoing>conditional_sequence_flow_from_gateway_id</semantic:outgoing>
     </semantic:inclusiveGateway>
+    <semantic:eventBasedGateway id="gateway_event_based_id" name="Event-Based Gateway" />
+    <semantic:eventBasedGateway id="gateway_event_based_instantiate_id" instantiate="true" name="Event-Based Gateway Instantiate" />
+    <semantic:eventBasedGateway id="gateway_event_based_instantiate_parallel_id" instantiate="true" eventGatewayType="Parallel" name="Event-Based Gateway Instantiate Parallel" />
 
     <!-- Artifact -->
     <semantic:textAnnotation id="text_annotation_id">
@@ -1508,6 +1511,24 @@
         <dc:Bounds x="1043" y="765" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="955" y="827" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_gateway_event_based_id" bpmnElement="gateway_event_based_id">
+        <dc:Bounds x="2545" y="970" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2525" y="1030" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_gateway_event_based_instantiate_id" bpmnElement="gateway_event_based_instantiate_id">
+        <dc:Bounds x="2545" y="1070" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2525" y="1130" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_gateway_event_based_instantiate_parallel_id" bpmnElement="gateway_event_based_instantiate_parallel_id">
+        <dc:Bounds x="2545" y="1190" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2525" y="1250" width="90" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 

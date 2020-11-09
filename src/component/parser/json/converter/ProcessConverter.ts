@@ -19,6 +19,7 @@ import ShapeBpmnElement, {
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
   ShapeBpmnEvent,
+  ShapeBpmnEventBasedGateway,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
@@ -26,6 +27,7 @@ import {
   bpmnEventKinds,
   ShapeBpmnCallActivityKind,
   ShapeBpmnElementKind,
+  ShapeBpmnEventBasedGatewayKind,
   ShapeBpmnEventKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
@@ -99,6 +101,15 @@ export default class ProcessConverter {
         shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, processId);
       } else if (ShapeUtil.isActivity(kind)) {
         shapeBpmnElement = this.buildShapeBpmnActivity(bpmnElement, kind, processId);
+      } else if (kind == ShapeBpmnElementKind.GATEWAY_EVENT_BASED) {
+        const eventBasedGatewayBpmnElement = bpmnElement as TEventBasedGateway;
+        shapeBpmnElement = new ShapeBpmnEventBasedGateway(
+          bpmnElement.id,
+          eventBasedGatewayBpmnElement.name,
+          processId,
+          eventBasedGatewayBpmnElement.instantiate,
+          ShapeBpmnEventBasedGatewayKind[eventBasedGatewayBpmnElement.eventGatewayType],
+        );
       } else {
         // @ts-ignore We know that the text & name fields are not on all types, but it's already tested
         const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;

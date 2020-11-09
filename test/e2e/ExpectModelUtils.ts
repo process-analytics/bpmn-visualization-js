@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/internal/shape';
 import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
@@ -39,6 +39,7 @@ import {
   toBeIntermediateThrowEvent,
   toBeIntermediateCatchEvent,
   toBeBoundaryEvent,
+  toBeEventBasedGateway,
   toBeSubProcess,
   toBePool,
   toBeLane,
@@ -68,6 +69,7 @@ declare global {
       toBeIntermediateThrowEvent(modelElement: ExpectedEventModelElement): R;
       toBeIntermediateCatchEvent(modelElement: ExpectedEventModelElement): R;
       toBeBoundaryEvent(modelElement: ExpectedBoundaryEventModelElement): R;
+      toBeEventBasedGateway(modelElement: ExpectedEventBasedGatewayModelElement): R;
       toBeSubProcess(modelElement: ExpectedSubProcessModelElement): R;
       toBePool(modelElement: ExpectedShapeModelElement): R;
       toBeLane(modelElement: ExpectedShapeModelElement): R;
@@ -96,6 +98,7 @@ expect.extend({
   toBeIntermediateThrowEvent,
   toBeIntermediateCatchEvent,
   toBeBoundaryEvent,
+  toBeEventBasedGateway,
   toBeSubProcess,
   toBePool,
   toBeLane,
@@ -157,6 +160,10 @@ export interface ExpectedBoundaryEventModelElement extends ExpectedEventModelEle
 }
 export interface ExpectedStartEventModelElement extends ExpectedEventModelElement {
   isInterrupting?: boolean;
+}
+
+export interface ExpectedEventBasedGatewayModelElement extends ExpectedShapeModelElement {
+  gatewayKind?: ShapeBpmnEventBasedGatewayKind;
 }
 
 export const bpmnVisualization = new BpmnVisualization(null);

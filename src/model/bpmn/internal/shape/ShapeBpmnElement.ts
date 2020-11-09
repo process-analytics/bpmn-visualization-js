@@ -19,6 +19,7 @@ import { BpmnEventKind } from './ShapeUtil';
 import { ShapeBpmnSubProcessKind } from './ShapeBpmnSubProcessKind';
 import { ShapeBpmnMarkerKind } from './ShapeBpmnMarkerKind';
 import { ShapeBpmnCallActivityKind } from './ShapeBpmnCallActivityKind';
+import { ShapeBpmnEventBasedGatewayKind } from './ShapeBpmnEventBasedGatewayKind';
 
 export default class ShapeBpmnElement {
   constructor(readonly id: string, readonly name: string, readonly kind: ShapeBpmnElementKind, public parentId?: string, readonly instantiate: boolean = false) {}
@@ -57,6 +58,12 @@ export class ShapeBpmnStartEvent extends ShapeBpmnEvent {
 export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
   constructor(id: string, name: string, eventKind: ShapeBpmnEventKind, parentId: string, readonly isInterrupting: boolean = true) {
     super(id, name, ShapeBpmnElementKind.EVENT_BOUNDARY, eventKind, parentId);
+  }
+}
+
+export class ShapeBpmnEventBasedGateway extends ShapeBpmnElement {
+  constructor(id: string, name: string, parentId: string, instantiate?: boolean, readonly gatewayKind = ShapeBpmnEventBasedGatewayKind.None) {
+    super(id, name, ShapeBpmnElementKind.GATEWAY_EVENT_BASED, parentId, instantiate);
   }
 }
 

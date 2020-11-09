@@ -18,6 +18,7 @@ import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import {
   ExpectedBoundaryEventModelElement,
+  ExpectedEventBasedGatewayModelElement,
   ExpectedEventModelElement,
   ExpectedShapeModelElement,
   ExpectedStartEventModelElement,
@@ -41,7 +42,13 @@ function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): Expe
 }
 
 function buildExpectedStyle(
-  expectedModel: ExpectedShapeModelElement | ExpectedSubProcessModelElement | ExpectedEventModelElement | ExpectedStartEventModelElement | ExpectedBoundaryEventModelElement,
+  expectedModel:
+    | ExpectedShapeModelElement
+    | ExpectedSubProcessModelElement
+    | ExpectedEventModelElement
+    | ExpectedStartEventModelElement
+    | ExpectedBoundaryEventModelElement
+    | ExpectedEventBasedGatewayModelElement,
 ): string {
   let expectedStyle: string = expectedModel.kind;
   if ('eventKind' in expectedModel) {
@@ -58,6 +65,9 @@ function buildExpectedStyle(
   }
   if ('isInterrupting' in expectedModel) {
     expectedStyle = expectedStyle + `.*bpmn.isInterrupting=${expectedModel.isInterrupting}`;
+  }
+  if ('gatewayKind' in expectedModel) {
+    expectedStyle = expectedStyle + `.*bpmn.gatewayKind=${expectedModel.gatewayKind}`;
   }
   return expectedStyle + '.*';
 }
@@ -167,4 +177,8 @@ export function toBeIntermediateCatchEvent(this: MatcherContext, received: strin
 
 export function toBeBoundaryEvent(this: MatcherContext, received: string, expected: ExpectedBoundaryEventModelElement): CustomMatcherResult {
   return buildEventMatcher('toBeBoundaryEvent', this, received, { ...expected, kind: ShapeBpmnElementKind.EVENT_BOUNDARY });
+}
+
+export function toBeEventBasedGateway(this: MatcherContext, received: string, expected: ExpectedEventBasedGatewayModelElement): CustomMatcherResult {
+  return buildShapeMatcher('toBeEventBasedGateway', this, received, { ...expected, kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED });
 }
