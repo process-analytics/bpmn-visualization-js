@@ -77,11 +77,13 @@ describe('diagram navigation', () => {
     await page.keyboard.down('Control');
     for (let i = 0; i < xTimes; i++) {
       await page.mouse.wheel({ deltaX: deltaX });
+      // delay here is needed to make the tests pass on MacOS, delay must be equal to debounce timing so it surely gets triggered
       await delay(50);
     }
     await delay(100);
     for (let i = 0; i < xTimes; i++) {
       await page.mouse.wheel({ deltaX: -deltaX });
+      // delay here is needed to make the tests pass on MacOS, delay must be equal to debounce timing so it surely gets triggered
       await delay(50);
     }
     await delay(100);
