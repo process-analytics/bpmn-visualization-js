@@ -25,6 +25,9 @@ export interface GlobalOptions {
   zoomConfiguration: ZoomConfiguration;
 }
 
+/**
+ * Zoom specific options.
+ */
 export interface ZoomConfiguration {
   /**
    * throttleDelay [ms] responsible for throttling the mouse scroll event (not every event is firing the function handler, only limited number can lunch handler). A smaller value
