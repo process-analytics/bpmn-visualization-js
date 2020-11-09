@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
+import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind } from '../../../../../src/model/bpmn/internal/shape';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { ShapeBpmnEventBasedGateway } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
@@ -216,18 +216,33 @@ describe.each([
             BPMNPlane: {
               BPMNShape: [
                 {
-                  id: `shape_${bpmnKind}_id_0`,
-                  bpmnElement: `${bpmnKind}_id_0`,
-                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                },
-                {
                   id: `shape_${bpmnKind}_id_1`,
                   bpmnElement: `${bpmnKind}_id_1`,
-                  Bounds: { x: 365, y: 235, width: 35, height: 46 },
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
                 {
                   id: `shape_${bpmnKind}_id_2`,
                   bpmnElement: `${bpmnKind}_id_2`,
+                  Bounds: { x: 462, y: 232, width: 36, height: 45 },
+                },
+                {
+                  id: `shape_${bpmnKind}_id_3`,
+                  bpmnElement: `${bpmnKind}_id_3`,
+                  Bounds: { x: 562, y: 232, width: 36, height: 45 },
+                },
+                {
+                  id: `shape_${bpmnKind}_id_11`,
+                  bpmnElement: `${bpmnKind}_id_11`,
+                  Bounds: { x: 365, y: 235, width: 35, height: 46 },
+                },
+                {
+                  id: `shape_${bpmnKind}_id_12`,
+                  bpmnElement: `${bpmnKind}_id_12`,
+                  Bounds: { x: 365, y: 335, width: 34, height: 47 },
+                },
+                {
+                  id: `shape_${bpmnKind}_id_13`,
+                  bpmnElement: `${bpmnKind}_id_13`,
                   Bounds: { x: 375, y: 245, width: 34, height: 47 },
                 },
               ],
@@ -237,24 +252,38 @@ describe.each([
       };
       (json.definitions.process as TProcess)[`${bpmnKind}`] = [
         {
-          id: `${bpmnKind}_id_0`,
-        },
-        {
           id: `${bpmnKind}_id_1`,
-          instantiate: true,
         },
         {
           id: `${bpmnKind}_id_2`,
+          eventGatewayType: 'Exclusive',
+        },
+        {
+          id: `${bpmnKind}_id_3`,
+          eventGatewayType: 'Parallel', // forbidden by the BPMN spec, only valid when 'instantiate: true'
+        },
+        {
+          id: `${bpmnKind}_id_11`,
+          instantiate: true,
+        },
+        {
+          id: `${bpmnKind}_id_12`,
+          instantiate: true,
+          eventGatewayType: 'Exclusive',
+        },
+        {
+          id: `${bpmnKind}_id_13`,
           instantiate: true,
           eventGatewayType: 'Parallel',
         },
       ];
 
-      const model = parseJsonAndExpectOnlyFlowNodes(json, 3);
+      const model = parseJsonAndExpectOnlyFlowNodes(json, 6);
 
+      // Non 'instantiate' elements
       verifyShape(model.flowNodes[0], {
-        shapeId: `shape_${bpmnKind}_id_0`,
-        bpmnElementId: `${bpmnKind}_id_0`,
+        shapeId: `shape_${bpmnKind}_id_1`,
+        bpmnElementId: `${bpmnKind}_id_1`,
         bpmnElementName: undefined,
         bpmnElementKind: expectedShapeBpmnElementKind,
         bounds: {
@@ -264,11 +293,46 @@ describe.each([
           height: 45,
         },
       });
-      expect(model.flowNodes[0].bpmnElement.instantiate).toBeFalsy();
+      let currentEventBasedGateway: ShapeBpmnEventBasedGateway = model.flowNodes[0].bpmnElement;
+      expect(currentEventBasedGateway.instantiate).toBeFalsy();
+      expect(currentEventBasedGateway.gatewayKind).toBeUndefined();
 
       verifyShape(model.flowNodes[1], {
-        shapeId: `shape_${bpmnKind}_id_1`,
-        bpmnElementId: `${bpmnKind}_id_1`,
+        shapeId: `shape_${bpmnKind}_id_2`,
+        bpmnElementId: `${bpmnKind}_id_2`,
+        bpmnElementName: undefined,
+        bpmnElementKind: expectedShapeBpmnElementKind,
+        bounds: {
+          x: 462,
+          y: 232,
+          width: 36,
+          height: 45,
+        },
+      });
+      currentEventBasedGateway = model.flowNodes[1].bpmnElement;
+      expect(currentEventBasedGateway.instantiate).toBeFalsy();
+      expect(currentEventBasedGateway.gatewayKind).toEqual(ShapeBpmnEventBasedGatewayKind.Exclusive);
+
+      verifyShape(model.flowNodes[2], {
+        shapeId: `shape_${bpmnKind}_id_3`,
+        bpmnElementId: `${bpmnKind}_id_3`,
+        bpmnElementName: undefined,
+        bpmnElementKind: expectedShapeBpmnElementKind,
+        bounds: {
+          x: 562,
+          y: 232,
+          width: 36,
+          height: 45,
+        },
+      });
+      currentEventBasedGateway = model.flowNodes[2].bpmnElement;
+      expect(currentEventBasedGateway.instantiate).toBeFalsy();
+      expect(currentEventBasedGateway.gatewayKind).toEqual(ShapeBpmnEventBasedGatewayKind.Parallel);
+
+      // 'instantiate' elements
+      verifyShape(model.flowNodes[3], {
+        shapeId: `shape_${bpmnKind}_id_11`,
+        bpmnElementId: `${bpmnKind}_id_11`,
         bpmnElementName: undefined,
         bpmnElementKind: expectedShapeBpmnElementKind,
         bounds: {
@@ -278,11 +342,29 @@ describe.each([
           height: 46,
         },
       });
-      expect(model.flowNodes[1].bpmnElement.instantiate).toBeTruthy();
+      currentEventBasedGateway = model.flowNodes[3].bpmnElement;
+      expect(currentEventBasedGateway.instantiate).toBeTruthy();
+      expect(currentEventBasedGateway.gatewayKind).toBeUndefined();
 
-      verifyShape(model.flowNodes[2], {
-        shapeId: `shape_${bpmnKind}_id_2`,
-        bpmnElementId: `${bpmnKind}_id_2`,
+      verifyShape(model.flowNodes[4], {
+        shapeId: `shape_${bpmnKind}_id_12`,
+        bpmnElementId: `${bpmnKind}_id_12`,
+        bpmnElementName: undefined,
+        bpmnElementKind: expectedShapeBpmnElementKind,
+        bounds: {
+          x: 365,
+          y: 335,
+          width: 34,
+          height: 47,
+        },
+      });
+      currentEventBasedGateway = model.flowNodes[4].bpmnElement;
+      expect(currentEventBasedGateway.instantiate).toBeTruthy();
+      expect(currentEventBasedGateway.gatewayKind).toEqual(ShapeBpmnEventBasedGatewayKind.Exclusive);
+
+      verifyShape(model.flowNodes[5], {
+        shapeId: `shape_${bpmnKind}_id_13`,
+        bpmnElementId: `${bpmnKind}_id_13`,
         bpmnElementName: undefined,
         bpmnElementKind: expectedShapeBpmnElementKind,
         bounds: {
@@ -292,9 +374,9 @@ describe.each([
           height: 47,
         },
       });
-      const parallelInstantiatingEventBasedGateway: ShapeBpmnEventBasedGateway = model.flowNodes[2].bpmnElement;
-      expect(parallelInstantiatingEventBasedGateway.instantiate).toBeTruthy();
-      expect(parallelInstantiatingEventBasedGateway.gatewayKind).toEqual('Parallel');
+      currentEventBasedGateway = model.flowNodes[5].bpmnElement;
+      expect(currentEventBasedGateway.instantiate).toBeTruthy();
+      expect(currentEventBasedGateway.gatewayKind).toEqual(ShapeBpmnEventBasedGatewayKind.Parallel);
     });
   }
 });
