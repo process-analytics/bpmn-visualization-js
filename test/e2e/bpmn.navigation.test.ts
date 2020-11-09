@@ -77,12 +77,14 @@ describe('diagram navigation', () => {
     await page.keyboard.down('Control');
     for (let i = 0; i < xTimes; i++) {
       await page.mouse.wheel({ deltaX: deltaX });
+      await delay(50);
     }
-    await delay(300);
+    await delay(100);
     for (let i = 0; i < xTimes; i++) {
       await page.mouse.wheel({ deltaX: -deltaX });
+      await delay(50);
     }
-    await delay(300);
+    await delay(100);
     const image = await page.screenshot({ fullPage: true });
     expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
   });
