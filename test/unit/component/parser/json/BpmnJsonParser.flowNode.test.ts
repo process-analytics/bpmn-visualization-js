@@ -293,9 +293,9 @@ describe.each([
           height: 45,
         },
       });
-      let currentEventBasedGateway: ShapeBpmnEventBasedGateway = model.flowNodes[0].bpmnElement;
+      let currentEventBasedGateway = model.flowNodes[0].bpmnElement as ShapeBpmnEventBasedGateway;
       expect(currentEventBasedGateway.instantiate).toBeFalsy();
-      expect(currentEventBasedGateway.gatewayKind).toBeUndefined();
+      expect(currentEventBasedGateway.gatewayKind).toEqual(ShapeBpmnEventBasedGatewayKind.None);
 
       verifyShape(model.flowNodes[1], {
         shapeId: `shape_${bpmnKind}_id_2`,
@@ -309,7 +309,7 @@ describe.each([
           height: 45,
         },
       });
-      currentEventBasedGateway = model.flowNodes[1].bpmnElement;
+      currentEventBasedGateway = model.flowNodes[1].bpmnElement as ShapeBpmnEventBasedGateway;
       expect(currentEventBasedGateway.instantiate).toBeFalsy();
       expect(currentEventBasedGateway.gatewayKind).toEqual(ShapeBpmnEventBasedGatewayKind.Exclusive);
 
@@ -325,7 +325,7 @@ describe.each([
           height: 45,
         },
       });
-      currentEventBasedGateway = model.flowNodes[2].bpmnElement;
+      currentEventBasedGateway = model.flowNodes[2].bpmnElement as ShapeBpmnEventBasedGateway;
       expect(currentEventBasedGateway.instantiate).toBeFalsy();
       expect(currentEventBasedGateway.gatewayKind).toEqual(ShapeBpmnEventBasedGatewayKind.Parallel);
 
@@ -342,9 +342,9 @@ describe.each([
           height: 46,
         },
       });
-      currentEventBasedGateway = model.flowNodes[3].bpmnElement;
+      currentEventBasedGateway = model.flowNodes[3].bpmnElement as ShapeBpmnEventBasedGateway;
       expect(currentEventBasedGateway.instantiate).toBeTruthy();
-      expect(currentEventBasedGateway.gatewayKind).toBeUndefined();
+      expect(currentEventBasedGateway.gatewayKind).toEqual(ShapeBpmnEventBasedGatewayKind.None);
 
       verifyShape(model.flowNodes[4], {
         shapeId: `shape_${bpmnKind}_id_12`,
@@ -358,7 +358,7 @@ describe.each([
           height: 47,
         },
       });
-      currentEventBasedGateway = model.flowNodes[4].bpmnElement;
+      currentEventBasedGateway = model.flowNodes[4].bpmnElement as ShapeBpmnEventBasedGateway;
       expect(currentEventBasedGateway.instantiate).toBeTruthy();
       expect(currentEventBasedGateway.gatewayKind).toEqual(ShapeBpmnEventBasedGatewayKind.Exclusive);
 
@@ -374,7 +374,7 @@ describe.each([
           height: 47,
         },
       });
-      currentEventBasedGateway = model.flowNodes[5].bpmnElement;
+      currentEventBasedGateway = model.flowNodes[5].bpmnElement as ShapeBpmnEventBasedGateway;
       expect(currentEventBasedGateway.instantiate).toBeTruthy();
       expect(currentEventBasedGateway.gatewayKind).toEqual(ShapeBpmnEventBasedGatewayKind.Parallel);
     });

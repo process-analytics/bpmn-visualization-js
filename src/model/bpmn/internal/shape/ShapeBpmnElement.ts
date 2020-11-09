@@ -62,7 +62,7 @@ export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
 }
 
 export class ShapeBpmnEventBasedGateway extends ShapeBpmnElement {
-  constructor(id: string, name: string, parentId: string, instantiate?: boolean, readonly gatewayKind?: ShapeBpmnEventBasedGatewayKind) {
+  constructor(id: string, name: string, parentId: string, instantiate?: boolean, readonly gatewayKind = ShapeBpmnEventBasedGatewayKind.None) {
     super(id, name, ShapeBpmnElementKind.GATEWAY_EVENT_BASED, parentId, instantiate);
   }
 }

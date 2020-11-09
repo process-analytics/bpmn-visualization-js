@@ -18,5 +18,7 @@
  */
 export enum ShapeBpmnEventBasedGatewayKind {
   Exclusive = 'Exclusive',
+  /** When no type is provided in the BPMN source. */
+  None = 'None',
   Parallel = 'Parallel',
 }

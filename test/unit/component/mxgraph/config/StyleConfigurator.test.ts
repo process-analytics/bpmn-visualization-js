@@ -402,8 +402,8 @@ describe('mxgraph renderer', () => {
       ${true}      | ${'Parallel'}
     `('event-based gateway when instantiate: $instantiate for gatewayKind: $gatewayKind', ({ instantiate, gatewayKind }) => {
       const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, gatewayKind), newLabel({ name: 'Arial' }));
-      const optionalGatewayKindStyle = gatewayKind ? `;bpmn.gatewayKind=${gatewayKind}` : '';
-      expect(computeStyle(shape)).toEqual(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate}${optionalGatewayKindStyle};fontFamily=Arial`);
+      gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
+      expect(computeStyle(shape)).toEqual(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.gatewayKind=${gatewayKind};fontFamily=Arial`);
     });
   });
 });
