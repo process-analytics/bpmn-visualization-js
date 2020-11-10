@@ -17,7 +17,7 @@ import StyleConfigurator from './config/StyleConfigurator';
 import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import MxClientConfigurator from './config/MxClientConfigurator';
-import { BpmnVisualizationOptions } from '../options';
+import { GlobalOptions } from '../options';
 import { mxgraph } from 'ts-mxgraph';
 import { BpmnMxGraph } from './BpmnMxGraph';
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.4
@@ -37,7 +37,7 @@ export default class MxGraphConfigurator {
     this.graph = new BpmnMxGraph(container);
   }
 
-  public configure(options?: BpmnVisualizationOptions): BpmnMxGraph {
+  public configure(options?: GlobalOptions): BpmnMxGraph {
     this.configureGraph();
     this.configureMouseNavigationSupport(options);
     new StyleConfigurator(this.graph).configureStyles();
@@ -63,7 +63,7 @@ export default class MxGraphConfigurator {
     this.graph.foldingEnabled = false;
   }
 
-  private configureMouseNavigationSupport(options?: BpmnVisualizationOptions): void {
+  private configureMouseNavigationSupport(options?: GlobalOptions): void {
     const mouseNavigationSupport = options?.mouseNavigationSupport;
     // Pan configuration
     if (mouseNavigationSupport) {
