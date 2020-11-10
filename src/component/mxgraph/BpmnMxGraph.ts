@@ -36,9 +36,16 @@ export class BpmnMxGraph extends mxGraph {
     return scale;
   }
 
+  // override fit to set initial cumulativeZoomFactor
+  zoomActual(): void {
+    super.zoomActual();
+    this.cumulativeZoomFactor = this.view.scale;
+  }
+
   public customFit(fitOptions: FitOptions): void {
     const type = fitOptions?.type;
     if (type == undefined || type == FitType.None) {
+      this.zoomActual();
       return;
     }
 
@@ -58,6 +65,11 @@ export class BpmnMxGraph extends mxGraph {
 
       this.fit(this.border, false, margin, true, ignoreWidth, ignoreHeight);
     } else {
+      // To avoid double rendering
+      this.view.rendering = false;
+      // To fix weird behaviour when the diagram is already fit
+      this.zoomActual();
+
       // Inspired from https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.fit
       const maxScale = 3;
 
@@ -74,6 +86,9 @@ export class BpmnMxGraph extends mxGraph {
         (margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.view.scale,
         (margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.view.scale,
       );
+
+      this.view.rendering = true;
+      this.refresh();
     }
   }
 
