@@ -43,9 +43,11 @@ export class BpmnMxGraph extends mxGraph {
   }
 
   public customFit(fitOptions: FitOptions): void {
+    // To fix weird behaviour when the diagram is already fit
+    this.zoomActual();
+
     const type = fitOptions?.type;
     if (type == undefined || type == FitType.None) {
-      this.zoomActual();
       return;
     }
 
@@ -65,9 +67,6 @@ export class BpmnMxGraph extends mxGraph {
 
       this.fit(this.border, false, margin, true, ignoreWidth, ignoreHeight);
     } else {
-      // To fix weird behaviour when the diagram is already fit
-      this.zoomActual();
-
       // Inspired from https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.fit
       const maxScale = 3;
 
