@@ -15,13 +15,13 @@
  */
 import { FitOptions, FitType } from '../options';
 import { mxgraph } from 'ts-mxgraph';
-// TODO unable to load mxClient from mxgraph-type-definitions@1.0.4
-declare const mxClient: typeof mxgraph.mxClient;
-
 import { ZoomConfiguration } from '../Options';
 import { ensureValidZoomConfiguration } from '../helpers/validators';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
+
+// TODO unable to load mxClient from mxgraph-type-definitions@1.0.4
+declare const mxClient: typeof mxgraph.mxClient;
 
 export class BpmnMxGraph extends mxGraph {
   private cumulativeZoomFactor = 1;
