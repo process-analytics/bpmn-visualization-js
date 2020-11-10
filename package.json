@@ -39,6 +39,7 @@
     "url": "git+https://github.com/process-analytics/bpmn-visualization-js.git"
   },
   "browser": "dist/bpmn-visualization.js",
+  "main": "dist/bpmn-visualization.cjs.js",
   "module": "dist/bpmn-visualization.esm.js",
   "types": "dist/bpmn-visualization.d.ts",
   "files": [

@@ -147,15 +147,28 @@ if (!buildBundles) {
   };
   const configEsmMin = {
     input: libInput,
-    output: {
-      file: pkg.module.replace('.js', '.min.js'),
-      format: 'es',
-    },
+    output: [
+      {
+        file: pkg.module.replace('.js', '.min.js'),
+        format: 'es',
+      },
+      {
+        file: pkg.main.replace('.js', '.min.js'),
+        format: 'cjs',
+      },
+    ],
     // TODO check the possibility to use pkg.dependencies
     external: ['entities/lib/decode', 'fast-xml-parser/src/parser'],
     plugins: pluginsNoDeps,
   };
-  const configEsm = { ...configEsmMin, plugins: pluginsNoDepsNoMin, output: { file: pkg.module, format: 'es' } };
+  const configEsm = {
+    ...configEsmMin,
+    plugins: pluginsNoDepsNoMin,
+    output: [
+      { file: pkg.module, format: 'es' },
+      { file: pkg.main, format: 'cjs' },
+    ],
+  };
   rollupConfigs = [configIife, configEsm, configEsmMin];
 }
 
