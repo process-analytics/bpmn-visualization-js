@@ -65,6 +65,7 @@ describe('diagram navigation', () => {
     await page.mouse.move(viewportCenterX + 200, viewportCenterY);
     await page.keyboard.down('Control');
     await page.mouse.wheel({ deltaX: deltaX });
+    await delay(100);
 
     const image = await page.screenshot({ fullPage: true });
     expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
