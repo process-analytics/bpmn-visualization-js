@@ -17,7 +17,7 @@ import StyleConfigurator from './config/StyleConfigurator';
 import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import MxClientConfigurator from './config/MxClientConfigurator';
-import { BpmnVisualizationOptions } from '../Options';
+import { BpmnVisualizationOptions } from '../options';
 import { mxgraph } from 'ts-mxgraph';
 import { BpmnMxGraph } from './BpmnMxGraph';
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.4

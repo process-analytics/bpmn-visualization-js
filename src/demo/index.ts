@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../component/BpmnVisualization';
-import { BpmnVisualizationOptions, FitType, LoadOptions } from '../component/Options';
+import { BpmnVisualizationOptions, FitType, LoadOptions } from '../component/options';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 
