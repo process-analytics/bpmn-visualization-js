@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ensureInRange } from '../../../../src/component/helpers/validators';
+import { ensureInRange, ensureValidZoomConfiguration } from '../../../../src/component/helpers/validators';
 
-describe('validate configuration', () => {
+describe('helper functions', () => {
   it.each`
     input        | min     | max    | expected
     ${undefined} | ${-12}  | ${45}  | ${20}
@@ -25,5 +25,17 @@ describe('validate configuration', () => {
     ${0}         | ${-100} | ${100} | ${0}
   `('Range number restriction: input ($input) min ($min) max ($max)', ({ input, min, max, expected }) => {
     expect(ensureInRange(input, min, max, 20)).toEqual(expected);
+  });
+});
+
+describe('validate configuration', () => {
+  it.each`
+    input                                         | expected
+    ${undefined}                                  | ${{ debounceDelay: 50, throttleDelay: 50 }}
+    ${{ throttleDelay: 12 }}                      | ${{ debounceDelay: 50, throttleDelay: 12 }}
+    ${{ debounceDelay: 72 }}                      | ${{ debounceDelay: 72, throttleDelay: 50 }}
+    ${{ debounceDelay: 172, throttleDelay: -50 }} | ${{ debounceDelay: 100, throttleDelay: 0 }}
+  `('zoom configuration: input ($input)', ({ input, expected }) => {
+    expect(ensureValidZoomConfiguration(input)).toEqual(expected);
   });
 });

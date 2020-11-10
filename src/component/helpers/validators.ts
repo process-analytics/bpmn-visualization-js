@@ -1,3 +1,5 @@
+import { ZoomConfiguration } from '../Options';
+
 /**
  * Copyright 2020 Bonitasoft S.A.
  *
@@ -17,4 +19,15 @@ export function ensureInRange(value: number, min: number, max: number, defaultVa
   let inRangeValue = value == undefined ? defaultValue : value;
   inRangeValue = Math.min(Math.max(inRangeValue, min), max);
   return inRangeValue;
+}
+
+/**
+ * Make sure the configuration parameters are defined and in range
+ * @param config the {@link ZoomConfiguration} to make valid
+ */
+export function ensureValidZoomConfiguration(config: ZoomConfiguration): ZoomConfiguration {
+  const validatedConfig = config ?? {};
+  validatedConfig.debounceDelay = ensureInRange(validatedConfig.debounceDelay, 0, 100, 50);
+  validatedConfig.throttleDelay = ensureInRange(validatedConfig.throttleDelay, 0, 100, 50);
+  return validatedConfig;
 }
