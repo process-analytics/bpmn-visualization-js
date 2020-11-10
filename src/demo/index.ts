@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../component/BpmnVisualization';
-import { BpmnVisualizationOptions, FitType, LoadOptions } from '../component/Options';
+import { BpmnVisualizationOptions, FitOptions, FitType, LoadOptions } from '../component/Options';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 
@@ -23,14 +23,10 @@ export * from './helper';
 let bpmnVisualization: BpmnVisualization;
 let loadOptions: LoadOptions = {};
 
-export function updateFitConfig(config: { type?: string; margin?: number }): void {
-  log('Updating fit config', config);
-
-  loadOptions.fit.margin = config.margin || loadOptions.fit.margin;
-  if (config.type) {
-    loadOptions.fit.type = FitType[config.type as keyof typeof FitType];
-  }
-  log('Fit config updated!', loadOptions.fit);
+export function updateLoadOptions(fitOptions: FitOptions): void {
+  log('Updating load options', fitOptions);
+  loadOptions.fit = fitOptions;
+  log('Load options updated!', loadOptions);
 }
 
 /**
@@ -43,7 +39,7 @@ export function getCurrentLoadOptions(): LoadOptions {
 function loadBpmn(bpmn: string): void {
   log('Loading bpmn....');
   bpmnVisualization.load(bpmn, loadOptions);
-  log('BPMN loaded');
+  log('BPMN loaded with configuration', JSON.stringify(loadOptions, undefined, 2));
 }
 
 // callback function for opening | dropping the file to be loaded
@@ -103,6 +99,19 @@ function defaultStatusFetchKoNotifier(errorMsg: string): void {
   console.error(errorMsg);
 }
 
+function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration, parameters: URLSearchParams): FitOptions {
+  const fitOptions = config.loadOptions?.fit || {};
+  const parameterFitType = parameters.get('fitTypeOnLoad');
+  if (parameterFitType) {
+    fitOptions.type = FitType[parameterFitType as keyof typeof FitType];
+  }
+  const parameterFitMargin = parameters.get('fitMargin');
+  if (parameterFitMargin) {
+    fitOptions.margin = Number(parameterFitMargin);
+  }
+  return fitOptions;
+}
+
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
   const container = config.container;
@@ -117,16 +126,7 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
 
   log('Configuring Load Options');
   loadOptions = config.loadOptions || {};
-  loadOptions.fit ??= {};
-  const parameterFitType = parameters.get('fitType');
-  if (parameterFitType) {
-    loadOptions.fit.type = FitType[parameterFitType as keyof typeof FitType];
-  }
-  const parameterFitMargin = parameters.get('fitMargin');
-  if (parameterFitMargin) {
-    loadOptions.fit.margin = Number(parameterFitMargin);
-  }
-  log(`Load Options: ${JSON.stringify(loadOptions, undefined, 2)}`);
+  loadOptions.fit = getFitOptionsFromParameters(config, parameters);
 
   log("Checking if 'BPMN content' is provided as query parameter");
   const bpmnParameterValue = parameters.get('bpmn');

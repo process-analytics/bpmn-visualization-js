@@ -109,7 +109,7 @@ export class BpmnDiagramPreparation {
     loadOptions: LoadOptions = { fit: { type: FitType.HorizontalVertical } },
   ) {
     const params = targetedPage.queryParams?.join('&') ?? '';
-    this.baseUrl = `http://localhost:10002/${targetedPage.name}.html?fitType=${FitType[loadOptions?.fit?.type]}&fitMargin=${loadOptions?.fit?.margin}&${params}`;
+    this.baseUrl = `http://localhost:10002/${targetedPage.name}.html?fitTypeOnLoad=${FitType[loadOptions?.fit?.type]}&fitMargin=${loadOptions?.fit?.margin}&${params}`;
   }
 
   /**
