@@ -19,6 +19,7 @@ import { mxgraph } from 'ts-mxgraph';
 declare const mxClient: typeof mxgraph.mxClient;
 
 import { ZoomConfiguration } from '../Options';
+import { ensureValidZoomConfiguration } from '../helpers/validators';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 
@@ -93,24 +94,9 @@ export class BpmnMxGraph extends mxGraph {
   }
 
   createMouseWheelZoomExperience(config: ZoomConfiguration): void {
-    config = this.ensureValidZoomConfiguration(config);
+    config = ensureValidZoomConfiguration(config);
     mxEvent.addMouseWheelListener(debounce(this.getZoomHandler(true), config.debounceDelay), this.container);
     mxEvent.addMouseWheelListener(throttle(this.getZoomHandler(false), config.throttleDelay), this.container);
-  }
-
-  /**
-   * Make sure the configuration parameters are defined and valid (range 0 .. 100), if not assign defaults
-   * @param config ZoomConfiguration
-   */
-  private ensureValidZoomConfiguration(config: ZoomConfiguration): ZoomConfiguration {
-    const validatedConfig = config || { debounceDelay: 50, throttleDelay: 50 };
-    if (!config.debounceDelay && (config.debounceDelay < 0 || config.debounceDelay > 100)) {
-      validatedConfig.debounceDelay = 50;
-    }
-    if (!config.throttleDelay && (config.throttleDelay < 0 || config.throttleDelay > 100)) {
-      validatedConfig.throttleDelay = 50;
-    }
-    return validatedConfig;
   }
 
   // solution inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
