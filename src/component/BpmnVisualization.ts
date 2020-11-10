@@ -54,6 +54,5 @@ export default class BpmnVisualization {
 
   public fit(options?: FitOptions): void {
     this.graph.customFit(options);
-    this.graph.refresh();
   }
 }
