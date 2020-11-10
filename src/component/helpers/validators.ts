@@ -21,6 +21,10 @@ export function ensureInRange(value: number, min: number, max: number, defaultVa
   return inRangeValue;
 }
 
+export function ensurePositiveValue(input: number | undefined | null): number {
+  return Math.max(input || 0, 0);
+}
+
 /**
  * Make sure the configuration parameters are defined and in range
  * @param config the {@link ZoomConfiguration} to make valid

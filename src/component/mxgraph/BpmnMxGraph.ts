@@ -15,7 +15,7 @@
  */
 import { FitOptions, FitType, ZoomConfiguration } from '../options';
 import { mxgraph } from 'ts-mxgraph';
-import { ensureValidZoomConfiguration } from '../helpers/validators';
+import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 
@@ -42,7 +42,7 @@ export class BpmnMxGraph extends mxGraph {
       return;
     }
 
-    const margin = BpmnMxGraph.enforcePositiveValue(fitOptions?.margin);
+    const margin = ensurePositiveValue(fitOptions?.margin);
 
     if (type != FitType.Center) {
       let ignoreWidth = false;
