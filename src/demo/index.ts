@@ -42,6 +42,12 @@ function loadBpmn(bpmn: string): void {
   log('BPMN loaded with configuration', JSON.stringify(loadOptions, undefined, 2));
 }
 
+export function fit(fitOptions: FitOptions): void {
+  log('Fitting....');
+  bpmnVisualization.fit(fitOptions);
+  log('Fit done with configuration', fitOptions);
+}
+
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {
   const reader = new FileReader();
