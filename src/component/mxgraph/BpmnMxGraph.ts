@@ -65,8 +65,6 @@ export class BpmnMxGraph extends mxGraph {
 
       this.fit(this.border, false, margin, true, ignoreWidth, ignoreHeight);
     } else {
-      // To avoid double rendering
-      this.view.rendering = false;
       // To fix weird behaviour when the diagram is already fit
       this.zoomActual();
 
@@ -86,9 +84,6 @@ export class BpmnMxGraph extends mxGraph {
         (margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.view.scale,
         (margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.view.scale,
       );
-
-      this.view.rendering = true;
-      this.refresh();
     }
   }
 
