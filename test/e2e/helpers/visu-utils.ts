@@ -17,7 +17,7 @@ import { ElementHandle } from 'puppeteer';
 import debugLogger from 'debug';
 import { copyFileSync, loadBpmnContentForUrlQueryParam } from '../../helpers/file-helper';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
-import { FitType, LoadOptions } from '../../../src/component/Options';
+import { FitType, LoadOptions } from '../../../src/component/options';
 
 const log = debugLogger('test');
 
@@ -109,7 +109,7 @@ export class BpmnDiagramPreparation {
     loadOptions: LoadOptions = { fit: { type: FitType.HorizontalVertical } },
   ) {
     const params = targetedPage.queryParams?.join('&') ?? '';
-    this.baseUrl = `http://localhost:10002/${targetedPage.name}.html?fitType=${FitType[loadOptions?.fit?.type]}&fitMargin=${loadOptions?.fit?.margin}&${params}`;
+    this.baseUrl = `http://localhost:10002/${targetedPage.name}.html?fitTypeOnLoad=${FitType[loadOptions?.fit?.type]}&fitMargin=${loadOptions?.fit?.margin}&${params}`;
   }
 
   /**

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
-import { FitType } from '../../src/component/Options';
+import { FitType } from '../../src/component/options';
 
 describe('no diagram visual regression', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(

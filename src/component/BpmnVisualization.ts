@@ -18,7 +18,7 @@ import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
 import { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
-import { BpmnVisualizationOptions, LoadOptions } from './Options';
+import { GlobalOptions, LoadOptions } from './options';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -26,7 +26,7 @@ declare const mxClient: typeof mxgraph.mxClient;
 export default class BpmnVisualization {
   public readonly graph: BpmnMxGraph;
 
-  constructor(protected container: HTMLElement, options?: BpmnVisualizationOptions) {
+  constructor(protected container: HTMLElement, options?: GlobalOptions) {
     try {
       if (!mxClient.isBrowserSupported()) {
         mxUtils.error('Browser is not supported!', 200, false);

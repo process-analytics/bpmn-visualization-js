@@ -13,24 +13,71 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, getCurrentLoadOptions, updateFitConfig, FitType } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, FitType, log, updateLoadOptions, getCurrentLoadOptions } from '../../index.es.js';
+
+let fitOptions = {};
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function updateFitTypeSelection(event) {
-  const fitType = event.target.value;
-  updateFitConfig({ type: fitType });
-  configureBpmnViewport(fitType);
-}
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function configureBpmnViewport(fitType) {
+function configureBpmnViewport() {
   const viewport = document.getElementById('graph');
 
-  const useFixedSize = !(fitType === 'None'); // !== 'None'
+  const useFixedSize = !(fitOptions.type && FitType[fitOptions.type] === 'None'); // !== 'None'
   if (useFixedSize) {
     viewport.classList.add('fixed-size');
   } else {
     viewport.classList.remove('fixed-size');
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function updateFitConfig(config) {
+  log('Updating fit config', config);
+
+  fitOptions.margin = config.margin || fitOptions.margin;
+  if (config.type) {
+    fitOptions.type = FitType[config.type];
+  }
+  log('Fit config updated!', fitOptions);
+
+  updateLoadOptions(fitOptions);
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureFitTypeSelect() {
+  const fitTypeSelectedElt = document.getElementById('fitType-selected');
+  fitTypeSelectedElt.onchange = event => {
+    updateFitConfig({ type: event.target.value });
+    configureBpmnViewport();
+  };
+
+  if (fitOptions.type) {
+    fitTypeSelectedElt.value = FitType[fitOptions.type];
+  } else {
+    updateFitConfig({ type: fitTypeSelectedElt.value });
+  }
+
+  configureBpmnViewport();
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureFitMarginInput() {
+  const fitMarginElt = document.getElementById('fit-margin');
+  fitMarginElt.onchange = event => updateFitConfig({ margin: event.target.value });
+
+  if (fitOptions.margin) {
+    fitMarginElt.value = fitOptions.margin;
+  } else {
+    updateFitConfig({ margin: fitMarginElt.value });
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureControlPanel() {
+  const parameters = new URLSearchParams(window.location.search);
+  if (parameters.get('hideControls') === 'true') {
+    const classList = document.getElementById('controls').classList;
+    classList.remove('controls');
+    classList.add('hidden');
   }
 }
 
@@ -41,33 +88,10 @@ function startDemo() {
   // Configure custom html elements
   document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
 
-  const fitTypeSelectedElt = document.getElementById('fitType-selected');
-  fitTypeSelectedElt.addEventListener('change', updateFitTypeSelection, false);
-
-  const fitMarginElt = document.getElementById('fit-margin');
-  fitMarginElt.onchange = function (event) {
-    updateFitConfig({ margin: event.target.value });
-  };
-
-  // Update Fit Options based on configuration
-  const fitOptions = getCurrentLoadOptions().fit;
-
-  if (fitOptions.type) {
-    fitTypeSelectedElt.value = FitType[fitOptions.type];
-  }
-  configureBpmnViewport(fitTypeSelectedElt.value);
-
-  if (fitOptions.margin) {
-    fitMarginElt.value = fitOptions.margin;
-  }
-
-  // Update control panel
-  const parameters = new URLSearchParams(window.location.search);
-  if (parameters.get('hideControls') === 'true') {
-    const classList = document.getElementById('controls').classList;
-    classList.remove('controls');
-    classList.add('hidden');
-  }
+  fitOptions = getCurrentLoadOptions().fit;
+  configureFitTypeSelect();
+  configureFitMarginInput();
+  configureControlPanel();
 }
 
 // Start
