@@ -16,7 +16,7 @@
 import { BpmnDiagramPreparation, BpmnLoadMethod, getSimplePlatformName, PageTester } from '../helpers/visu-utils';
 import * as fs from 'fs';
 import { calculateMetrics, ChartData } from '../helpers/perf-utils';
-import { FitType } from '../../../src/component/Options';
+import { FitType } from '../../../src/component/options';
 
 interface PerformanceMetric {
   run: number;

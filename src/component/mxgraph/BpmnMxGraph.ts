@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { FitOptions, FitType } from '../Options';
+import { FitOptions, FitType } from '../options';
 
 export class BpmnMxGraph extends mxGraph {
   private cumulativeZoomFactor = 1;
