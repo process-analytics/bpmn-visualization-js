@@ -15,6 +15,19 @@
  */
 import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
 import { FitType } from '../../src/component/options';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const path = require('path');
+
+function getCustomSnapshotIdentifier(fitType: string, fileName: string): string {
+  return `no-diagram-visual-regression-fit-type-${fitType}-diagram-${fileName}`;
+}
+
+function getDiffDir(loadFitTitle: string): string {
+  const snapshotsDir = path.join(path.dirname(expect.getState().testPath), '__image_snapshots__');
+  const diffDir = path.join(snapshotsDir, '__diff_output__');
+  const loadDir = path.join(diffDir, 'load');
+  return path.join(loadDir, `fit-type-${loadFitTitle}`);
+}
 
 describe('no diagram visual regression', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
@@ -22,39 +35,48 @@ describe('no diagram visual regression', () => {
       [
         'with_outside_labels',
         // minimal threshold to make test pass on Github Workflow
-        // ubuntu: Expected image to match or be a close match to snapshot but was 0.2670390230567587% different from snapshot
-        // macOS: Expected image to match or be a close match to snapshot but was 0.05988176159102966% different from snapshot
-        // windows: Expected image to match or be a close match to snapshot but was 0.31647096370069905% different from snapshot
+        // ubuntu: Expected image to match or be a close match to snapshot but was 0.21788401867753882% different from snapshot
+        // macOS:
+        // windows: Expected image to match or be a close match to snapshot but was 0.19527172107433044% different from snapshot
         {
-          linux: 0.003,
-          macos: 0.0006,
-          windows: 0.0035,
+          linux: 0.0025,
+          macos: 0.000004,
+          windows: 0.002,
         },
       ],
     ]),
   );
 
-  describe.each([
+  const fitTypes: [string, FitType][] = [
     [FitType[FitType.None], FitType.None],
     [FitType[FitType.HorizontalVertical], FitType.HorizontalVertical],
     [FitType[FitType.Horizontal], FitType.Horizontal],
     [FitType[FitType.Vertical], FitType.Vertical],
     [FitType[FitType.Center], FitType.Center],
-  ])('fit type: %s', (fitTitle: string, fitType: FitType) => {
-    describe.each([['horizontal'], ['vertical'], ['with_outside_flows'], ['with_outside_labels']])('diagram %s', (fileName: string) => {
-      it('load', async () => {
-        const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', { fit: { type: fitType } });
-        const pageTester = new PageTester(bpmnDiagramPreparation, 'viewport', 'BPMN Visualization Non Regression');
-        await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
+  ];
+  describe.each(fitTypes)('load options - fit %s', (loadFitTitle: string, loadFitType: FitType) => {
+    const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'rendering-diagram' }, 'diagram', { fit: { type: loadFitType } });
+    const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-container', 'BPMN Visualization - Diagram Rendering');
+    const diffDir = getDiffDir(loadFitTitle);
 
+    describe.each([['horizontal'], ['vertical'], ['with_outside_flows'], ['with_outside_labels']])('diagram %s', (fileName: string) => {
+      beforeEach(async () => {
+        await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
+      });
+
+      it('load', async () => {
         const image = await page.screenshot({ fullPage: true });
 
         // minimal threshold to make test pass on Github Workflow
-        // ubuntu: Expected image to match or be a close match to snapshot but was 0.0005056149089299744% different from snapshot
-        // macOS: Expected image to match or be a close match to snapshot but was 0.0005056149089299744% different from snapshot
-        // windows: Expected image to match or be a close match to snapshot but was 0.0005056149089299744% different from snapshot
-        const config = imageSnapshotConfigurator.getConfig(fileName, 0.000006);
-        expect(image).toMatchImageSnapshot(config);
+        // ubuntu: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
+        // macOS: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
+        // windows: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
+        const config = imageSnapshotConfigurator.getConfig(fileName, 0.00006);
+        expect(image).toMatchImageSnapshot({
+          ...config,
+          customSnapshotIdentifier: getCustomSnapshotIdentifier(loadFitTitle, fileName),
+          customDiffDir: diffDir,
+        });
       });
     });
   });
