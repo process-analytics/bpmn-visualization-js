@@ -33,12 +33,10 @@ function startNavigationDemo() {
     document.getElementById('zoom-config-controls').style = 'visibility: visible';
   }
   const options = {
-    navigation: {
-      mouseSupport: true,
-      zoom: {
-        throttleDelay: elZoomThrottle.value,
-        debounceDelay: elZoomDebounce.value,
-      },
+    mouseNavigationSupport: true,
+    zoomConfiguration: {
+      throttleDelay: elZoomThrottle.value,
+      debounceDelay: elZoomDebounce.value,
     },
   };
 

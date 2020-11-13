@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { FitOptions, FitType } from '../options';
+import { FitOptions, FitType, ZoomConfiguration } from '../options';
 import { mxgraph } from 'ts-mxgraph';
-import { ZoomConfiguration } from '../Options';
 import { ensureValidZoomConfiguration } from '../helpers/validators';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
