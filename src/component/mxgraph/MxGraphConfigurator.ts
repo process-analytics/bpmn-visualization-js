@@ -18,10 +18,7 @@ import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import MxClientConfigurator from './config/MxClientConfigurator';
 import { GlobalOptions } from '../options';
-import { mxgraph } from 'ts-mxgraph';
 import { BpmnMxGraph } from './BpmnMxGraph';
-// TODO unable to load mxClient from mxgraph-type-definitions@1.0.4
-declare const mxClient: typeof mxgraph.mxClient;
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib
@@ -72,12 +69,13 @@ export default class MxGraphConfigurator {
       this.graph.panningHandler.addListener(mxEvent.PAN_START, this.getPanningHandler('grab'));
       this.graph.panningHandler.addListener(mxEvent.PAN_END, this.getPanningHandler('default'));
       this.graph.setPanning(true);
+
+      // Zoom configuration
+      this.graph.createMouseWheelZoomExperience(options.zoomConfiguration);
     } else {
       this.graph.setPanning(false);
       this.graph.panningHandler.setPinchEnabled(false); // ensure gesture support is disabled (zoom only for now!)
     }
-
-    this.configureMouseEvent(mouseNavigationSupport);
   }
 
   private getPanningHandler(cursor: 'grab' | 'default'): OmitThisParameter<(this: BpmnMxGraph) => void> {
@@ -88,25 +86,5 @@ export default class MxGraphConfigurator {
     return function (this: BpmnMxGraph): void {
       this.isEnabled() && (this.container.style.cursor = cursor);
     };
-  }
-
-  private configureMouseEvent(activated = false): void {
-    if (!activated) {
-      return;
-    }
-
-    mxEvent.addMouseWheelListener((event: Event, up: boolean) => {
-      // TODO review type: this hack is due to the introduction of mxgraph-type-definitions
-      const evt = (event as unknown) as MouseEvent;
-      if (mxEvent.isConsumed((evt as unknown) as mxMouseEvent)) {
-        return;
-      }
-      // only the ctrl key or the meta key on mac
-      const isZoomWheelEvent = (evt.ctrlKey || (mxClient.IS_MAC && evt.metaKey)) && !evt.altKey && !evt.shiftKey;
-      if (isZoomWheelEvent) {
-        this.graph.performZoom(up, evt);
-        mxEvent.consume(evt);
-      }
-    }, this.container);
   }
 }

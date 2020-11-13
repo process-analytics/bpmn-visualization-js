@@ -19,6 +19,7 @@ import copy from 'rollup-plugin-copy';
 import copyWatch from 'rollup-plugin-copy-watch';
 import { terser } from 'rollup-plugin-terser';
 import sizes from 'rollup-plugin-sizes';
+import autoExternal from 'rollup-plugin-auto-external';
 
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
@@ -63,6 +64,7 @@ plugins.push(commonjs());
 plugins.push(json());
 
 pluginsNoDeps.push(json());
+pluginsNoDeps.push(autoExternal());
 
 // Copy static resources to dist
 if (devMode || demoMode) {
@@ -157,7 +159,7 @@ if (!buildBundles) {
         format: 'cjs',
       },
     ],
-    // TODO check the possibility to use pkg.dependencies
+    // except these 'custom specified' dependencies, rest of them is treated by the plugin: autoExternal
     external: ['entities/lib/decode', 'fast-xml-parser/src/parser'],
     plugins: pluginsNoDeps,
   };
