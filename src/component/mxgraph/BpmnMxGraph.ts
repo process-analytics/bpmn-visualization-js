@@ -13,7 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { FitOptions, FitType } from '../options';
+import { FitOptions, FitType, ZoomConfiguration } from '../options';
+import { mxgraph } from 'ts-mxgraph';
+import { ensureValidZoomConfiguration } from '../helpers/validators';
+import debounce from 'lodash.debounce';
+import throttle from 'lodash.throttle';
+
+// TODO unable to load mxClient from mxgraph-type-definitions@1.0.4
+declare const mxClient: typeof mxgraph.mxClient;
 
 export class BpmnMxGraph extends mxGraph {
   private cumulativeZoomFactor = 1;
@@ -74,21 +81,52 @@ export class BpmnMxGraph extends mxGraph {
     return Math.max(input || 0, 0);
   }
 
-  // solution inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
-  public performZoom(up: boolean, evt: MouseEvent): void {
-    const rect = this.container.getBoundingClientRect();
-    const x = evt.clientX - rect.left;
-    const y = evt.clientY - rect.top;
-    this.zoomTo(null, null, up, x, y);
-  }
-
-  zoomTo(scale: number, center?: boolean, up?: boolean, offsetX?: number, offsetY?: number): void {
+  zoomTo(scale: number, center?: boolean, up?: boolean, offsetX?: number, offsetY?: number, performScaling?: boolean): void {
     if (scale === null) {
       const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(up, offsetX, offsetY);
-      this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
+      if (performScaling) {
+        this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
+      }
     } else {
       super.zoomTo(scale, center);
     }
+  }
+
+  createMouseWheelZoomExperience(config: ZoomConfiguration): void {
+    config = ensureValidZoomConfiguration(config);
+    mxEvent.addMouseWheelListener(debounce(this.getZoomHandler(true), config.debounceDelay), this.container);
+    mxEvent.addMouseWheelListener(throttle(this.getZoomHandler(false), config.throttleDelay), this.container);
+  }
+
+  // solution inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
+  private performZoom(up: boolean, evt: MouseEvent, performScaling: boolean): void {
+    const [x, y] = this.getRelativeEventCoordinates(evt);
+    this.zoomTo(null, null, up, x, y, performScaling);
+    if (performScaling) {
+      mxEvent.consume(evt);
+    }
+  }
+
+  private getZoomHandler(calculateFactorOnly: boolean) {
+    return (event: Event, up: boolean) => {
+      // TODO review type: this hack is due to the introduction of mxgraph-type-definitions
+      const evt = (event as unknown) as MouseEvent;
+      if (mxEvent.isConsumed((evt as unknown) as mxMouseEvent)) {
+        return;
+      }
+      // only the ctrl key or the meta key on mac
+      const isZoomWheelEvent = (evt.ctrlKey || (mxClient.IS_MAC && evt.metaKey)) && !evt.altKey && !evt.shiftKey;
+      if (isZoomWheelEvent) {
+        this.performZoom(up, evt, calculateFactorOnly);
+      }
+    };
+  }
+
+  private getRelativeEventCoordinates(evt: MouseEvent): [number, number] {
+    const rect = this.container.getBoundingClientRect();
+    const x = evt.clientX - rect.left;
+    const y = evt.clientY - rect.top;
+    return [x, y];
   }
 
   private getScaleAndTranslationDeltas(up: boolean, offsetX: number, offsetY: number): [number, number, number] {
@@ -113,7 +151,8 @@ export class BpmnMxGraph extends mxGraph {
   }
 
   private calculateFactorAndScale(up: boolean): [number, number] {
-    this.cumulativeZoomFactor *= up ? 1.25 : 0.8;
+    // as with new zoom scaling is invoked 2x the factor's square root is taken
+    this.cumulativeZoomFactor *= up ? Math.sqrt(1.25) : Math.sqrt(0.8);
     let factor = this.cumulativeZoomFactor / this.view.scale;
     const scale = Math.round(this.view.scale * factor * 100) / 100;
     factor = scale / this.view.scale;

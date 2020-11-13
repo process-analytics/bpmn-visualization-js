@@ -21,7 +21,26 @@ function startNavigationDemo() {
   if (parameters.get('showMousePointer') === 'true') {
     showMousePointer();
   }
-  startBpmnVisualization({ container: 'bpmn-viewport', globalOptions: { mouseNavigationSupport: true } });
+  const elZoomThrottle = document.getElementById('zoom-throttle'),
+    elZoomDebounce = document.getElementById('zoom-debounce');
+  if (parameters.get('zoomThrottle')) {
+    elZoomThrottle.value = parameters.get('zoomThrottle');
+  }
+  if (parameters.get('zoomDebounce')) {
+    elZoomDebounce.value = parameters.get('zoomDebounce');
+  }
+  if (parameters.get('zoomConfigControls') === 'true') {
+    document.getElementById('zoom-config-controls').style = 'visibility: visible';
+  }
+  const options = {
+    mouseNavigationSupport: true,
+    zoomConfiguration: {
+      throttleDelay: elZoomThrottle.value,
+      debounceDelay: elZoomDebounce.value,
+    },
+  };
+
+  startBpmnVisualization({ container: 'bpmn-viewport', globalOptions: options });
 }
 
 documentReady(startNavigationDemo);

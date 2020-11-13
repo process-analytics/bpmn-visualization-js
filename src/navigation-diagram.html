@@ -23,7 +23,7 @@
       }
       .tooltip {
         visibility: hidden;
-        width: 160px;
+        width: 300px;
         background-color: black;
         color: #fff;
         fill: #B0B0B0;
@@ -39,6 +39,33 @@
       .info:hover .tooltip {
         visibility: visible;
       }
+      #zoom-config-controls {
+        visibility: hidden;
+      }
+      .zoom-config {
+        font-size: 0.7em;
+        width: 38px;
+        position: absolute;
+        left: -6px;
+      }
+      #zoom-throttle {
+        top: 70px;
+      }
+      #zoom-debounce {
+        top: 130px;
+      }
+      .info label {
+        position: absolute;
+        left: -5px;
+        margin-top: 10px;
+        font-size: 0.7em;
+      }
+      label[for="zoom-throttle"] {
+        top: 40px;
+      }
+      label[for="zoom-debounce"] {
+        top: 100px;
+      }
     </style>
 </head>
 <body>
@@ -47,7 +74,14 @@
     <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-info-square-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
       <path fill-rule="evenodd" d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
     </svg>
-    <span class="tooltip">Drag and Drop a BPMN file</span>
+    <div class="tooltip">
+      <p>Drag and Drop a BPMN file</p>
+      <p>To show zoom config controls add this to the url: .../navigation-diagram.html?zoomConfigControls=true</p>
+    </div>
+    <div id="zoom-config-controls">
+      <label for="zoom-throttle">throttle</label><input id="zoom-throttle" class="zoom-config" type="number" placeholder="thr" value="40" disabled title="to play with throttle pass parameter in url like this: .../navigation-diagram.html?zoomConfigControls=true&zoomThrottle=40"/>
+      <label for="zoom-debounce">debounce</label><input id="zoom-debounce" class="zoom-config" type="number" placeholder="deb" value="30" disabled title="to play with debounce pass parameter in url like this: .../navigation-diagram.html?zoomConfigControls=true&zoomDebounce=30"/>
+    </div>
   </div>
 
     <div id="bpmn-viewport"></div>

@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnDiagramPreparation, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
+import { BpmnDiagramPreparation, delay, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
 
 describe('diagram navigation', () => {
+  const delayToWaitUntilZoomIsDone = 100;
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
     new Map<string, ImageSnapshotThresholdConfig>([
       [
@@ -65,6 +66,7 @@ describe('diagram navigation', () => {
     await page.mouse.move(viewportCenterX + 200, viewportCenterY);
     await page.keyboard.down('Control');
     await page.mouse.wheel({ deltaX: deltaX });
+    await delay(delayToWaitUntilZoomIsDone);
 
     const image = await page.screenshot({ fullPage: true });
     expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
@@ -77,10 +79,16 @@ describe('diagram navigation', () => {
     await page.keyboard.down('Control');
     for (let i = 0; i < xTimes; i++) {
       await page.mouse.wheel({ deltaX: deltaX });
+      // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
+      await delay(delayToWaitUntilZoomIsDone);
     }
+    await delay(delayToWaitUntilZoomIsDone);
     for (let i = 0; i < xTimes; i++) {
       await page.mouse.wheel({ deltaX: -deltaX });
+      // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
+      await delay(delayToWaitUntilZoomIsDone);
     }
+    await delay(delayToWaitUntilZoomIsDone);
     const image = await page.screenshot({ fullPage: true });
     expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
   });
