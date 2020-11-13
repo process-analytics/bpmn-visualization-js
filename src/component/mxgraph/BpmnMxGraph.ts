@@ -152,7 +152,8 @@ export class BpmnMxGraph extends mxGraph {
   }
 
   private calculateFactorAndScale(up: boolean): [number, number] {
-    this.cumulativeZoomFactor *= up ? 1.25 : 0.8;
+    // as with new zoom scaling is invoked 2x the factor's square root is taken
+    this.cumulativeZoomFactor *= up ? Math.sqrt(1.25) : Math.sqrt(0.8);
     let factor = this.cumulativeZoomFactor / this.view.scale;
     const scale = Math.round(this.view.scale * factor * 100) / 100;
     factor = scale / this.view.scale;
