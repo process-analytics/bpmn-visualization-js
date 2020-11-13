@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../component/BpmnVisualization';
-import { BpmnVisualizationOptions, FitType, LoadOptions } from '../component/Options';
+import { GlobalOptions, FitType, LoadOptions } from '../component/options';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 
@@ -95,7 +95,7 @@ function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) 
 export interface BpmnVisualizationDemoConfiguration {
   container: string;
   statusFetchKoNotifier?: (errorMsg: string) => void;
-  globalOptions?: BpmnVisualizationOptions;
+  globalOptions?: GlobalOptions;
   loadOptions?: LoadOptions;
 }
 
