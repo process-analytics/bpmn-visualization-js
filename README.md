@@ -80,7 +80,7 @@ Future features:
 We support various module formats on [NPM](https://npmjs.org/package/bpmn-visualization):
 - [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)
 - [ESM](https://dev.to/iggredible/what-the-heck-are-cjs-amd-umd-and-esm-ikm)
-- CommonJS
+- [CommonJS](https://www.typescriptlang.org/docs/handbook/2/modules.html#commonjs)
   
 
 ### IIFE
