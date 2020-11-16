@@ -15,18 +15,17 @@
  */
 import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
 import { FitType } from '../../src/component/options';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const path = require('path');
+import { join, dirname } from 'path';
 
 function getCustomSnapshotIdentifier(fitType: string, fileName: string): string {
   return `no-diagram-visual-regression-fit-type-${fitType}-diagram-${fileName}`;
 }
 
 function getDiffDir(loadFitTitle: string): string {
-  const snapshotsDir = path.join(path.dirname(expect.getState().testPath), '__image_snapshots__');
-  const diffDir = path.join(snapshotsDir, '__diff_output__');
-  const loadDir = path.join(diffDir, 'load');
-  return path.join(loadDir, `fit-type-${loadFitTitle}`);
+  const snapshotsDir = join(dirname(expect.getState().testPath), '__image_snapshots__');
+  const diffDir = join(snapshotsDir, '__diff_output__');
+  const loadDir = join(diffDir, 'load');
+  return join(loadDir, `fit-type-${loadFitTitle}`);
 }
 
 describe('no diagram visual regression', () => {
