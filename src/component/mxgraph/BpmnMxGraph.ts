@@ -36,7 +36,17 @@ export class BpmnMxGraph extends mxGraph {
     return scale;
   }
 
+  // override fit to set initial cumulativeZoomFactor
+  zoomActual(): void {
+    super.zoomActual();
+    this.cumulativeZoomFactor = this.view.scale;
+  }
+
   public customFit(fitOptions: FitOptions): void {
+    // TODO avoid extra zoom/fit reset
+    // see https://github.com/process-analytics/bpmn-visualization-js/issues/888
+    this.zoomActual();
+
     const type = fitOptions?.type;
     if (type == undefined || type == FitType.None) {
       return;

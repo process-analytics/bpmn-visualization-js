@@ -13,11 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, startBpmnVisualization } from '../../index.es.js';
+import { documentReady, startBpmnVisualization, fit, FitType } from '../../index.es.js';
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function fitOnClick(fitType) {
+  document.getElementById(fitType).onclick = () => fit({ type: FitType[fitType] });
+}
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function start() {
   startBpmnVisualization({ container: 'bpmn-container' });
+  fitOnClick('None');
+  fitOnClick('HorizontalVertical');
+  fitOnClick('Horizontal');
+  fitOnClick('Vertical');
+  fitOnClick('Center');
 }
 
 documentReady(start);
