@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BPMN Visualization - Diagram Rendering</title>
+  <link rel="shortcut icon" href="./static/img/favicon.ico">
+
+  <link href='https://css.gg/close.css' rel='stylesheet'>
+  <link href='https://css.gg/code.css' rel='stylesheet'>
+  <link href='https://css.gg/select.css' rel='stylesheet'>
+  <link href='https://css.gg/minimize.css' rel='stylesheet'>
+  <link href='https://css.gg/maximize.css' rel='stylesheet'>
+
+  <style>
+    .flex-container{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .flex-container > div {
+      top: 20px;
+      bottom: 20px;
+      position: absolute;
+    }
+    .flex-sub-container{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      opacity: 0;
+    }
+    #bpmn-container {
+      left: 50px;
+      right: 20px;
+      border-style: solid;
+      border-color: #B0B0B0;
+      border-width: 1px;
+      overflow: hidden;
+    }
+    button {
+      border-radius: 4px;
+      padding: 0px;
+      width:28px;
+      height:28px;
+      background-color: #f9dfe8;
+    }
+  </style>
+</head>
+<body>
+  <div class="flex-container">
+    <div class="flex-sub-container" style="flex-grow: 1">
+      <button type="button" id="None">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6.2253 4.81108C5.83477 4.42056 5.20161 4.42056 4.81108 4.81108C4.42056 5.20161 4.42056 5.83477 4.81108 6.2253L10.5858 12L4.81114 17.7747C4.42062 18.1652 4.42062 18.7984 4.81114 19.1889C5.20167 19.5794 5.83483 19.5794 6.22535 19.1889L12 13.4142L17.7747 19.1889C18.1652 19.5794 18.7984 19.5794 19.1889 19.1889C19.5794 18.7984 19.5794 18.1652 19.1889 17.7747L13.4142 12L19.189 6.2253C19.5795 5.83477 19.5795 5.20161 19.189 4.81108C18.7985 4.42056 18.1653 4.42056 17.7748 4.81108L12 10.5858L6.2253 4.81108Z"
+            fill="currentColor"
+          />
+        </svg>
+      </button>
+      <button type="button" id="HorizontalVertical">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M3 3H9V5H5V9H3V3Z" fill="currentColor" />
+          <path d="M3 21H9V19H5V15H3V21Z" fill="currentColor" />
+          <path d="M15 21H21V15H19V19H15V21Z" fill="currentColor" />
+          <path d="M21 3H15V5H19V9H21V3Z" fill="currentColor" />
+        </svg>
+      </button>
+      <button type="button" id="Horizontal">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9.95263 16.9123L8.59323 18.3608L2.03082 12.2016L8.18994 5.63922L9.64826 7.00791L4.85783 12.112L9.95212 16.8932L9.95263 16.9123Z"
+            fill="currentColor"
+          />
+          <path
+            d="M14.0474 16.9123L15.4068 18.3608L21.9692 12.2016L15.8101 5.63922L14.3517 7.00791L19.1422 12.112L14.0479 16.8932L14.0474 16.9123Z"
+            fill="currentColor"
+          />
+        </svg>
+      </button>
+      <button type="button" id="Vertical">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6 9.65685L7.41421 11.0711L11.6569 6.82843L15.8995 11.0711L17.3137 9.65685L11.6569 4L6 9.65685Z"
+            fill="currentColor"
+          />
+          <path
+            d="M6 14.4433L7.41421 13.0291L11.6569 17.2717L15.8995 13.0291L17.3137 14.4433L11.6569 20.1001L6 14.4433Z"
+            fill="currentColor"
+          />
+        </svg>
+      </button>
+      <button type="button" id="Center">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M9 9H3V7H7V3H9V9Z" fill="currentColor" />
+          <path d="M9 15H3V17H7V21H9V15Z" fill="currentColor" />
+          <path d="M21 15H15V21H17V17H21V15Z" fill="currentColor" />
+          <path d="M15 9.00012H21V7.00012H17V3.00012H15V9.00012Z" fill="currentColor" />
+        </svg>
+      </button>
+    </div>
+
+    <div id="bpmn-container"></div>
+  </div>
+
+  <!-- load global settings -->
+  <script src="./static/js/configureMxGraphGlobals.js"></script>
+  <!-- load mxGraph client library -->
+  <script src="./static/js/mxClient.min.js"></script>
+  <!-- load app -->
+  <script src="./static/js/rendering-diagram.js" type="module"></script>
+</body>
+</html>
