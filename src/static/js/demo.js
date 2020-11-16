@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, FitType, log, updateLoadOptions, getCurrentLoadOptions } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, FitType, fit, log, updateLoadOptions, getCurrentLoadOptions } from '../../index.es.js';
 
+let fitOnLoad = true;
 let fitOptions = {};
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -30,6 +31,17 @@ function configureBpmnViewport() {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureFitOnLoadCheckBox() {
+  const fitOnLoadElt = document.getElementById('fitOnLoad');
+  fitOnLoadElt.onchange = event => {
+    fitOnLoad = event.target.checked;
+    log('Fit on load updated!', fitOnLoad);
+    updateLoadOptions(fitOnLoad ? fitOptions : {});
+  };
+  fitOnLoadElt.checked = fitOnLoad;
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function updateFitConfig(config) {
   log('Updating fit config', config);
 
@@ -39,7 +51,9 @@ function updateFitConfig(config) {
   }
   log('Fit config updated!', fitOptions);
 
-  updateLoadOptions(fitOptions);
+  if (fitOnLoad) {
+    updateLoadOptions(fitOptions);
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -48,6 +62,7 @@ function configureFitTypeSelect() {
   fitTypeSelectedElt.onchange = event => {
     updateFitConfig({ type: event.target.value });
     configureBpmnViewport();
+    fit(fitOptions);
   };
 
   if (fitOptions.type) {
@@ -91,6 +106,7 @@ function startDemo() {
   fitOptions = getCurrentLoadOptions().fit;
   configureFitTypeSelect();
   configureFitMarginInput();
+  configureFitOnLoadCheckBox();
   configureControlPanel();
 }
 
