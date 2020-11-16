@@ -43,7 +43,8 @@ export class BpmnMxGraph extends mxGraph {
   }
 
   public customFit(fitOptions: FitOptions): void {
-    // To fix weird behaviour when the diagram is already fit
+    // TODO avoid extra zoom/fit reset
+    // see https://github.com/process-analytics/bpmn-visualization-js/issues/888
     this.zoomActual();
 
     const type = fitOptions?.type;
