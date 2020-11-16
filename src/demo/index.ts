@@ -36,16 +36,20 @@ export function getCurrentLoadOptions(): LoadOptions {
   return { ...loadOptions };
 }
 
+function stringify(value: unknown): string {
+  return JSON.stringify(value, undefined, 2);
+}
+
 function loadBpmn(bpmn: string): void {
   log('Loading bpmn....');
   bpmnVisualization.load(bpmn, loadOptions);
-  log('BPMN loaded with configuration', JSON.stringify(loadOptions, undefined, 2));
+  log('BPMN loaded with configuration', stringify(loadOptions));
 }
 
 export function fit(fitOptions: FitOptions): void {
   log('Fitting....');
   bpmnVisualization.fit(fitOptions);
-  log('Fit done with configuration', fitOptions);
+  log('Fit done with configuration', stringify(fitOptions));
 }
 
 // callback function for opening | dropping the file to be loaded
