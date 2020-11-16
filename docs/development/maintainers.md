@@ -73,7 +73,6 @@ Actions section on GitHub
   - run `npm run demo` which generates it in the `dist` folder
 - create a new branch in the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/demo)
  repository and add the new demo content (proceed how it has been done for prior versions). 
-- do not forget to update file `demo/index.html` with the Latest Release information.
 - push to GitHub and create a new Pull Request
 
 ### Examples update
