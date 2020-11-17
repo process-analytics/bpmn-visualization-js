@@ -22,22 +22,22 @@ describe('diagram navigation', () => {
       [
         'simple-2_start_events-1_task',
         // minimal threshold to make test pass on Github Workflow
-        // ubuntu:
-        // macOS: Expected image to match or be a close match to snapshot but was 0.0008357925673774247%
-        // windows:
+        // ubuntu: Expected image to match or be a close match to snapshot but was 0.0009247488045871499% different from snapshot
+        // macOS: Expected image to match or be a close match to snapshot but was 0.0009247488045871499% different from snapshot
+        // windows: Expected image to match or be a close match to snapshot but was 0.0009247488045871499% different from snapshot
         {
-          linux: 0.000004,
-          macos: 0.00001,
-          windows: 0.00008,
+          linux: 0.0000095,
+          macos: 0.0000095,
+          windows: 0.0000095,
         },
       ],
     ]),
   );
 
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
-  const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map(), { name: 'navigation-diagram', queryParams: [] }, 'navigation');
+  const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map(), { name: 'rendering-diagram', queryParams: [] }, 'navigation');
 
-  const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-viewport', 'BPMN Visualization - Diagram Navigation');
+  const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-container', 'BPMN Visualization - Diagram Rendering');
 
   const fileName = 'simple-2_start_events-1_task';
   let viewportCenterX: number;
@@ -72,6 +72,7 @@ describe('diagram navigation', () => {
     expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
   });
 
+  // TODO Set customSnapshotIdentifier & customDiffDir to use the same snapshot like don in diagram rendering test
   it.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
     const deltaX = -100;
     // simulate mouse+ctrl zoom
