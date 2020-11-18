@@ -130,7 +130,7 @@ describe('no diagram visual regression', () => {
         const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', {
           fit: { type: fitType, margin: margin },
         });
-        const pageTester = new PageTester(bpmnDiagramPreparation, 'viewport', 'BPMN Visualization Non Regression');
+        const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-container', 'BPMN Visualization Non Regression');
 
         await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
 
