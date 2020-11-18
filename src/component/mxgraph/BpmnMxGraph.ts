@@ -15,7 +15,7 @@
  */
 import { FitOptions, FitType, ZoomConfiguration } from '../options';
 import { mxgraph } from 'ts-mxgraph';
-import { ensureValidZoomConfiguration } from '../helpers/validators';
+import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 
@@ -36,13 +36,23 @@ export class BpmnMxGraph extends mxGraph {
     return scale;
   }
 
+  // override fit to set initial cumulativeZoomFactor
+  zoomActual(): void {
+    super.zoomActual();
+    this.cumulativeZoomFactor = this.view.scale;
+  }
+
   public customFit(fitOptions: FitOptions): void {
+    // TODO avoid extra zoom/fit reset
+    // see https://github.com/process-analytics/bpmn-visualization-js/issues/888
+    this.zoomActual();
+
     const type = fitOptions?.type;
     if (type == undefined || type == FitType.None) {
       return;
     }
 
-    const margin = BpmnMxGraph.enforcePositiveValue(fitOptions?.margin);
+    const margin = ensurePositiveValue(fitOptions?.margin);
 
     if (type != FitType.Center) {
       let ignoreWidth = false;

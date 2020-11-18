@@ -45,13 +45,15 @@ exclude-labels:
   - reverted
   - wontfix
 template: |
+  **TODO: review the contributors list (remove our bot and avoid duplicates)**
   Thanks to all the contributors of this release 🌈: $CONTRIBUTORS
 
-  <!-- TODO: add milestone id when publishing -->
+  **TODO: add milestone id when publishing**
   See [milestone $NEXT_PATCH_VERSION](https://github.com/process-analytics/bpmn-visualization-js/milestone/x?closed=1) to get the list of issues covered by this release.
 
   # Highlights
-  <!-- TODO: add screenshots and user oriented info -->
+
+  **TODO: add screenshots and user oriented info**
 
   # What's Changed
   $CHANGES

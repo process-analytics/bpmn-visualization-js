@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ensureInRange, ensureValidZoomConfiguration } from '../../../../src/component/helpers/validators';
+import { ensureInRange, ensurePositiveValue, ensureValidZoomConfiguration } from '../../../../src/component/helpers/validators';
 
 describe('helper functions', () => {
   it.each`
@@ -25,6 +25,17 @@ describe('helper functions', () => {
     ${0}         | ${-100} | ${100} | ${0}
   `('Range number restriction: input ($input) min ($min) max ($max)', ({ input, min, max, expected }) => {
     expect(ensureInRange(input, min, max, 20)).toEqual(expected);
+  });
+
+  it.each`
+    input        | expected
+    ${undefined} | ${0}
+    ${null}      | ${0}
+    ${-30}       | ${0}
+    ${130}       | ${130}
+    ${0}         | ${0}
+  `('Ensure positive values: input ($input)', ({ input, expected }) => {
+    expect(ensurePositiveValue(input)).toEqual(expected);
   });
 });
 
