@@ -156,7 +156,7 @@ export class PageTester {
     await expect(page.title()).resolves.toMatch(this.expectedPageTitle);
 
     // Prior loading a BPMN diagram, the DOM looks like
-    // <div id="viewport" class="graph-container" style="touch-action: none;">
+    // <div id="bpmn-container" style="touch-action: none;">
     //   <svg style="left: 0px; top: 0px; width: 100%; height: 100%; display: block; min-width: 1px; min-height: 1px;">
     //     <g>
     //       <g></g>
@@ -168,7 +168,7 @@ export class PageTester {
     // </div>
     //
     // After loading, the DOM looks like
-    // <div id="viewport" class="graph-container" style="touch-action: none;">
+    // <div id="bpmn-container" style="touch-action: none;">
     //   <svg style="left: 0px; top: 0px; width: 100%; height: 100%; display: block; min-width: 900px; min-height: 181px;">
     //     <g>
     //       <g></g>
