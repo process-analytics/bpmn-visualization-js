@@ -71,7 +71,7 @@ describe('BpmnVisu view - index page', () => {
 
 describe('BpmnVisu view - lib-integration page', () => {
   it('should display graph in page', async () => {
-    graphContainerId = 'bpmn-visualization-viewport';
+    graphContainerId = 'bpmn-container-custom';
     await page.goto(`http://localhost:10002/lib-integration.html?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-only.bpmn')}`);
     await expect(page.title()).resolves.toMatch('BPMN Visualization Lib Integration');
     await page.waitForSelector(`#${graphContainerId}`);
