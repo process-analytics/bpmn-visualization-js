@@ -72,7 +72,7 @@ describe('diagram navigation', () => {
     expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
   });
 
-  // TODO Set customSnapshotIdentifier & customDiffDir to use the same snapshot like don in diagram rendering test
+  // TODO Set customSnapshotIdentifier & customDiffDir to use the same snapshot like it is done in diagram rendering test
   it.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
     const deltaX = -100;
     // simulate mouse+ctrl zoom
