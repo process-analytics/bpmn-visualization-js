@@ -98,7 +98,7 @@ function configureControlPanel() {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
-  startBpmnVisualization({ container: 'graph' });
+  startBpmnVisualization({ container: 'bpmn-container' });
 
   // Configure custom html elements
   document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
