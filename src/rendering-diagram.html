@@ -6,6 +6,10 @@
   <link rel="shortcut icon" href="./static/img/favicon.ico">
 
   <style>
+    .hidden {
+      opacity: 0;
+    }
+
     .flex-container{
       display: flex;
       justify-content: space-between;
@@ -20,7 +24,6 @@
       display: flex;
       flex-direction: column;
       justify-content: space-around;
-      opacity: 0;
     }
     #bpmn-container {
       left: 50px;
@@ -68,7 +71,7 @@
 </head>
 <body>
   <div class="flex-container">
-    <div class="flex-column-container" style="flex-grow: 1">
+    <div id="controls-panel" class="flex-column-container hidden" style="flex-grow: 1">
       <div class="info">
         <!-- https://icons.getbootstrap.com/icons/info-square-fill/ -->
         <svg width="28px" height="28px" viewBox="0 0 16 16" class="bi bi-info-square-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

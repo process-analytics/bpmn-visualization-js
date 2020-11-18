@@ -93,6 +93,21 @@ function showMousePointer() {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureMousePointer(parameters) {
+  if (parameters.get('showMousePointer') === 'true') {
+    showMousePointer();
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureControlsPanel(parameters) {
+  const elControlsPanel = document.getElementById('controls-panel');
+  if (parameters.get('showControlsPanel') === 'true') {
+    elControlsPanel.classList.remove('hidden');
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function fitOnClick(fitType) {
   document.getElementById(fitType).onclick = () => fit({ type: FitType[fitType] });
 }
@@ -118,9 +133,8 @@ function configureZoomDebounceInput(parameters) {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function start() {
   const parameters = new URLSearchParams(window.location.search);
-  if (parameters.get('showMousePointer') === 'true') {
-    showMousePointer();
-  }
+  configureMousePointer(parameters);
+  configureControlsPanel(parameters);
 
   const elZoomThrottle = configureZoomThrottleInput(parameters);
   const elZoomDebounce = configureZoomDebounceInput(parameters);
