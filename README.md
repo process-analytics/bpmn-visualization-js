@@ -40,24 +40,7 @@
 
 ## 🎮 Demo
 
-Give a try to the [__⏩ demo live environment__][demo-live-environment].
-The demo let you load a BPMN file to see how `bpmn-visualization` renders it. Various versions of the lib are available. 
-
-If you need BPMN examples, you can use resources from 
-- the [BPMN Model Interchange Working Group (BPMN MIWG)](http://www.omgwiki.org/bpmn-miwg)
-  - https://github.com/bpmn-miwg/bpmn-miwg-test-suite
-  - https://github.com/bpmn-miwg/bpmn-miwg-demos
-- [bpmn-visualization BPMN test diagrams](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/bpmn-files/README.md)
-
-
-## 🌏 Browser Support
-
-| <img src="https://www.google.com/chrome/static/images/chrome-logo.svg" alt="Chrome" width="18px" height="18px" /> Chrome | <img src="https://user-media-prod-cdn.itsre-sumo.mozilla.net/uploads/products/2020-04-14-08-36-13-8dda6f.png" alt="Firefox" width="18px" height="18px" /> Firefox | <img src="https://developer.apple.com/assets/elements/icons/safari/safari-96x96.png" alt="Safari" width="18px" height="18px" /> Safari | <img src="https://avatars0.githubusercontent.com/u/11354582?s=200&v=4" alt="Edge" width="18px" height="18px" /> Edge |
-| :---------: | :---------: | :---------: | :---------: |
-|  ✔️ |  ✔️ |  ✔️ |  ✔️ |
-
-**Note**: Internet Explorer will never be supported. \
-The library may work with the other browsers. They must at least support ES6.
+Give a try: [__⏩ demo live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
 
 ## 🎨 Features
 
