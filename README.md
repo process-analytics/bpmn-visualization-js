@@ -40,6 +40,8 @@
 
 ## 🎮 Demo
 
+**TODO more explanation (see examples repo)**
+
 Give a try: [__⏩ demo live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
 
 ## 🎨 Features
@@ -55,6 +57,17 @@ Planned features:
 - Display options for execution data with interactive capacities.
 - BPMN extensions
 - Library extension points
+
+## 🌏 Browser Support
+
+**TODO last 2 versions for FF and Chrome?**
+
+| <img src="https://www.google.com/chrome/static/images/chrome-logo.svg" alt="Chrome" width="18px" height="18px" /> Chrome | <img src="https://user-media-prod-cdn.itsre-sumo.mozilla.net/uploads/products/2020-04-14-08-36-13-8dda6f.png" alt="Firefox" width="18px" height="18px" /> Firefox | <img src="https://developer.apple.com/assets/elements/icons/safari/safari-96x96.png" alt="Safari" width="18px" height="18px" /> Safari | <img src="https://avatars0.githubusercontent.com/u/11354582?s=200&v=4" alt="Edge" width="18px" height="18px" /> Edge |
+| :---------: | :---------: | :---------: | :---------: |
+|  ✔️ |  ✔️ |  ✔️ |  ✔️ |
+
+**Note**: Internet Explorer will never be supported. \
+The library may work with the other browsers. They must at least support ES6.
 
 
 ## ♻️ Usage
