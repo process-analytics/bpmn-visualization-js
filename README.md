@@ -60,12 +60,11 @@ Future features:
 
 
 ## ♻️ Usage
-Currently, we support 2 module formats on [NPM](https://npmjs.org/package/bpmn-visualization):
+We support various module formats on [NPM](https://npmjs.org/package/bpmn-visualization):
 - [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)
 - [ESM](https://dev.to/iggredible/what-the-heck-are-cjs-amd-umd-and-esm-ikm)
+- [CommonJS](https://www.typescriptlang.org/docs/handbook/2/modules.html#commonjs)
   
-⚠️ CommonJS module should come [later](https://github.com/process-analytics/bpmn-visualization-js/issues/595) ⚠️
-
 
 ### IIFE
 See how it's done in [this example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/01-getting-started).

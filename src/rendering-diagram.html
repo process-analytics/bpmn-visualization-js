@@ -5,13 +5,11 @@
   <title>BPMN Visualization - Diagram Rendering</title>
   <link rel="shortcut icon" href="./static/img/favicon.ico">
 
-  <link href='https://css.gg/close.css' rel='stylesheet'>
-  <link href='https://css.gg/code.css' rel='stylesheet'>
-  <link href='https://css.gg/select.css' rel='stylesheet'>
-  <link href='https://css.gg/minimize.css' rel='stylesheet'>
-  <link href='https://css.gg/maximize.css' rel='stylesheet'>
-
   <style>
+    .hidden {
+      opacity: 0;
+    }
+
     .flex-container{
       display: flex;
       justify-content: space-between;
@@ -22,11 +20,10 @@
       bottom: 20px;
       position: absolute;
     }
-    .flex-sub-container{
+    .flex-column-container{
       display: flex;
       flex-direction: column;
       justify-content: space-around;
-      opacity: 0;
     }
     #bpmn-container {
       left: 50px;
@@ -43,12 +40,58 @@
       height:28px;
       background-color: #f9dfe8;
     }
+
+    .tooltip {
+      visibility: hidden;
+      width: 300px;
+      background-color: black;
+      color: #fff;
+      fill: #B0B0B0;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      top: -5px;
+      left: 110%;
+      font-family: monospace;
+    }
+    .info:hover .tooltip {
+      visibility: visible;
+    }
+
+    .zoom-config {
+      font-size: 0.7em;
+      width: 35px;
+    }
+    label {
+      font-size: 0.65em;
+    }
   </style>
 </head>
 <body>
   <div class="flex-container">
-    <div class="flex-sub-container" style="flex-grow: 1">
-      <button type="button" id="None">
+    <div id="controls-panel" class="flex-column-container hidden" style="flex-grow: 1">
+      <div class="info">
+        <!-- https://icons.getbootstrap.com/icons/info-square-fill/ -->
+        <svg width="28px" height="28px" viewBox="0 0 16 16" class="bi bi-info-square-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+        </svg>
+        <div class="tooltip">
+          <p>Drag and Drop a BPMN file</p>
+        </div>
+      </div>
+
+      <div class="flex-column-container">
+        <label for="zoom-throttle">throttle</label>
+        <input id="zoom-throttle" class="zoom-config" type="number" placeholder="thr" value="40" disabled title="to play with throttle pass parameter in url like this: .../rendering-diagram.html?zoomThrottle=40"/>
+      </div>
+      <div class="flex-column-container">
+        <label for="zoom-debounce">debounce</label>
+        <input id="zoom-debounce" class="zoom-config" type="number" placeholder="deb" value="30" disabled title="to play with debounce pass parameter in url like this: .../rendering-diagram.html?zoomDebounce=30"/>
+      </div>
+
+      <button type="button" id="None" title="Reset dimensions and positions (BPMN Diagram values)">
         <svg
           width="24"
           height="24"
@@ -62,7 +105,7 @@
           />
         </svg>
       </button>
-      <button type="button" id="HorizontalVertical">
+      <button type="button" id="HorizontalVertical" title="Fit">
         <svg
           width="24"
           height="24"
@@ -76,7 +119,7 @@
           <path d="M21 3H15V5H19V9H21V3Z" fill="currentColor" />
         </svg>
       </button>
-      <button type="button" id="Horizontal">
+      <button type="button" id="Horizontal" title="Fit horizontally">
         <svg
           width="24"
           height="24"
@@ -94,7 +137,7 @@
           />
         </svg>
       </button>
-      <button type="button" id="Vertical">
+      <button type="button" id="Vertical" title="Fit vertically">
         <svg
           width="24"
           height="24"
@@ -112,7 +155,7 @@
           />
         </svg>
       </button>
-      <button type="button" id="Center">
+      <button type="button" id="Center" title="Fit Center">
         <svg
           width="24"
           height="24"
