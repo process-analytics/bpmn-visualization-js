@@ -1,0 +1,43 @@
+== Overview
+:favicon:
+
+
+
+=== Examples Live Environment
+
+*_TODO write something like the intro we have in the examples repository_*
+
+
+Goal: Demonstrate `bpmn-visualization`
+see the lib in action, help evaulation
+
+Give a try to the https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html[**icon:forward[] examples live environment**].
+
+more explanations here....
+
+
+
+=== Usage
+
+*_TODO rewrite the following (only general information, no technical details)_*
+
+Integration: directly in an html page (probably more frequent use case is demonstration or evaluation) or in a JS/TS project/application
+
+API documentation: use TS declaration files
+For more technical details and how-to, go to the https://github.com/process-analytics/bpmn-visualization-examples/[bpmn-visualization-examples]
+repository.
+
+
+
+=== BPMN Diagrams
+
+TODO find better title
+
+Explain navigation terms (in a dedicated section)
+panning: drag the diagram and move/translate it
+zoom
+fit: reset/set the zoom level and eventually translate the diagram
+
+Provide a gif that show navigation in action
+
+
