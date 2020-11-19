@@ -22,7 +22,7 @@ https://jgraph.github.io/mxgraph/docs/manual.html#3.1.4[mxGraph Group Structure]
 that leverages various rendering features like collapsing/expanding, layering, drill down, group move/hide, ...
 See https://jgraph.github.io/mxgraph/docs/manual.html#3.1.5[mxGraph Complexity Management] for more details.
 
-On `mxGraph` graph creation, the lib fills the following group of BPMN elements:
+On `mxGraph` graph creation, the `bpmn-visualization` fills the following group of BPMN elements:
 
 * `pool` is the parent of `lanes` and `inter-lane elements` (for instance, `sequence flows`), or any BPMN elements when there is no `lane`
 * `lane` is the parent of elements it includes in the BPMN source
@@ -50,7 +50,7 @@ The https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html
 `StyleConfigurator`. In particular, it refers to the name of a https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html[mxShape]
 used for the rendering.
 
-The `mxShape` can be a standard `mxGraph` class or a custom BPMN `mxShape` defined by the lib. The custom `mxShapes` are registered by `ShapeConfigurator`
+The `mxShape` can be a standard `mxGraph` class or a custom BPMN `mxShape` defined by the `bpmn-visualization`. The custom `mxShapes` are registered by `ShapeConfigurator`
 which associates the `mxShape` name (used in style definition) with the `mxShape` class to be used.
 
 
@@ -105,9 +105,9 @@ The `mxGraph` integration renders labels based on the definition taken from the 
 or only partially defined in BPMN, the following fallback takes place:
 
 * for labels without a font, the rendering may not be accurate: the default font used by the original modeler may differ
-from the one the lib uses. As a result, the bounds set in the BPMN file may be too small or large for the lib font. So the
+from the one the `bpmn-visualization` uses. As a result, the bounds set in the BPMN file may be too small or large for the `bpmn-visualization` font. So the
 resulting text wrapping cannot be the same as with the original modeler.
-* for labels without bounds, the lib uses an arbitrary position which depends on the type of the BPMN element (for instance, middle
+* for labels without bounds, the `bpmn-visualization` uses an arbitrary position which depends on the type of the BPMN element (for instance, middle
 centred for tasks or on the bottom for start events). As for fonts, this does not cover all use cases, but works most of
 the time.
 

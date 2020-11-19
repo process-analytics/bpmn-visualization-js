@@ -9,8 +9,7 @@
 
 
 
-Goal: Demonstrate `bpmn-visualization`
-see the lib in action, help evaulation
+Goal: see `bpmn-visualization` in action, help evaluation
 
 
 Give a try to the https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html[**icon:forward[] examples live environment**] to quickly have
@@ -36,7 +35,7 @@ repository.
 
 TODO find better title
 
-displaying the diagrams is the fundation of the lib
+displaying the diagrams is the fundation of `bpmn-visualization`
 bpmn supported elements, see below (link)
 
 
