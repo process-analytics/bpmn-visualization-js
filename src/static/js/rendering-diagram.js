@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, startBpmnVisualization, fit, FitType } from '../../index.es.js';
+import { documentReady, startBpmnVisualization, fit } from '../../index.es.js';
 
 // to show mouse pointer position - usefull for testing
 // @see https://github.com/puppeteer/puppeteer/issues/374
@@ -109,7 +109,7 @@ function configureControlsPanel(parameters) {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function fitOnClick(fitType) {
-  document.getElementById(fitType).onclick = () => fit({ type: FitType[fitType] });
+  document.getElementById(fitType).onclick = () => fit({ type: fitType });
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

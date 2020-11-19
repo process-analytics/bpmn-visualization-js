@@ -47,7 +47,7 @@ function updateFitConfig(config) {
 
   fitOptions.margin = config.margin || fitOptions.margin;
   if (config.type) {
-    fitOptions.type = FitType[config.type];
+    fitOptions.type = config.type;
   }
   log('Fit config updated!', fitOptions);
 
@@ -66,7 +66,7 @@ function configureFitTypeSelect() {
   };
 
   if (fitOptions.type) {
-    fitTypeSelectedElt.value = FitType[fitOptions.type];
+    fitTypeSelectedElt.value = fitOptions.type;
   } else {
     updateFitConfig({ type: fitTypeSelectedElt.value });
   }
