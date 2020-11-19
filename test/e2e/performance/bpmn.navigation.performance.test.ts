@@ -32,8 +32,8 @@ describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
   let viewportCenterY: number;
 
   beforeEach(async () => {
-    const bpmnViewportElementHandle = await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
-    const bounding_box = await bpmnViewportElementHandle.boundingBox();
+    const bpmnContainerElementHandle = await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
+    const bounding_box = await bpmnContainerElementHandle.boundingBox();
     viewportCenterX = bounding_box.x + bounding_box.width / 2;
     viewportCenterY = bounding_box.y + bounding_box.height / 2;
   });
