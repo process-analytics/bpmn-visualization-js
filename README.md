@@ -40,7 +40,7 @@
 
 ## 🎮 Demo
 
-Please check [__⏩ demo live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
+Please check [__⏩ demo live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html). \
 You will find there basic usage as well as detailed examples showing possible rendering customizations.
 
 ## 🎨 Features
