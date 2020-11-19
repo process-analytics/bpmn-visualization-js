@@ -46,17 +46,15 @@ Give a try: [__⏩ demo live environment__](https://cdn.statically.io/gh/process
 
 `bpmn-visualization` is in early development stages and is subject to changes prior to the `1.0.0` release.\
 \
-Implemented features:
+Already available features:
 - Rendering of the most common BPMN elements.  
 Notice that there is currently no plan to support `Conversation` and `Choreography`.
+- Navigate withing the BPMN diagram: zoom, pan, fit (**TODO** add link to html documentation when available)
 
-Current implementation:
-- The [packaging](https://github.com/process-analytics/bpmn-visualization-js/milestone/18) of the library.
-
-Future features:
-- BPMN extensions
-- The library extension points
+Planned features:
 - Display options for execution data with interactive capacities.
+- BPMN extensions
+- Library extension points
 
 
 ## ♻️ Usage
