@@ -39,13 +39,19 @@ displaying the diagrams is the fundation of `bpmn-visualization`
 bpmn supported elements, see below (link)
 
 
-Explain navigation terms (in a dedicated section)
-panning: drag the diagram and move/translate it
-zoom
-fit: reset/set the zoom level and eventually translate the diagram
+
+==== Navigation
+
+*TODO improve see how diagraming lib explains that*
+
+In addition to BPMN diagram load, `bpmn-visualization` provides various way to let you discover and navigate the diagram 
+
+* zoom
+* fit: reset/set the zoom level and eventually translate the diagram (for instance, center the diagram). This can be done at load time or at any time.
+* panning: drag the diagram and move/translate it
 
 
 
 image::images/bpmn-diagram_navigation_C.2.0.gif[BPMN Diagram Navigation]
 
-Navigate the migw-test-suite C.2.0 diagram (todo add link to repo)
+_Navigation with the https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/cc75e467fd2b3009e67d4b24943591c66ce91a23/Reference/C.2.0.bpmn[migw-test-suite C.2.0] BPMN diagram_
