@@ -38,6 +38,8 @@ panning: drag the diagram and move/translate it
 zoom
 fit: reset/set the zoom level and eventually translate the diagram
 
-Provide a gif that show navigation in action
 
 
+image::images/bpmn-diagram_navigation_C.2.0.gif[BPMN Diagram Navigation]
+
+Navigate the migw-test-suite C.2.0 diagram (todo add link to repo)
