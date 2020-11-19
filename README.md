@@ -85,37 +85,27 @@ Here are examples per module: \
 npm i bpmn-visualization
 ```
 
-* Load necessary scripts 
+* Load necessary scripts (replace _X._Y._Z by the recent version)
 ```html
-    <!-- load global settings -->
-    <script src="./static/js/configureMxGraphGlobals.js"></script>
-    <!-- load mxGraph client library -->
-    <script src="./static/js/mxClient.min.js"></script>
-    <!-- load BPMN Visualization library -->
-    <script src="index.esm.js" type="module"></script>
+    <script src="https://unpkg.com/bpmn-visualization@_X._Y._Z/dist/bpmn-visualization.js"></script>
 ```
 * Define your BPMN content using one of the following ways:
   * Copy/Paste directly the XML content in a variable
   * Load it from a url, like this [example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/load-remote-bpmn-diagrams/index.html)
   * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-js/blob/master/src/demo/index.ts)
 ```javascript
-    const bpmnContent = ``; // your BPMN 2.0 XML content
+    function bpmnDiagram() {
+      return  ``; // your BPMN 2.0 XML content
+    }
 ```
 * Define the mxGraph container
 ```html
-    <div id="graph"></div>
+    <div id="bpmn-container"></div>
 ```
-* Initialize BpmnVisualization from the container
+* Initialize BpmnVisualization from the container and load the diagram
 ```javascript
-    const container = 'graph';
-    console.log(`Initializing BpmnVisualization with container '${container}'...`);
-    const bpmnVisualization = new BpmnVisualization(window.document.getElementById(container));  
-```
-* Load the bpmn content from BpmnVisualization
-```javascript
-    console.log('Loading bpmn....');
-    bpmnVisualization.load(bpmnContent);
-    console.log('BPMN loaded');
+    const bpmnVisualization = new bpmnvisu.BpmnVisualization(document.getElementById('bpmn-container'));
+    bpmnVisualization.load(bpmnDiagram());
 ```
 
 💡 Want to know more about `bpmn-visualization` usage and extensibility? Have a look at the
