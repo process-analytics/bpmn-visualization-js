@@ -31,35 +31,30 @@ The first goal of `bpmn-visualization` is to display BPMN diagram but this is up
 content.  +
 For instance, it can be retrieved from a local device, after pulling a REST API, it can be available after a push from websockets or SSE, ...
 
-Once the integration get the BPMN diagram input source (a xml string), it just has to pass it to `bpmn-visualization` which is then in charge of rendering the diagram.
+Once the integration get the BPMN diagram input source, it just has to pass it to `bpmn-visualization` which is then in charge of rendering the diagram.
 
 
 ==== Diagram Navigation
 
-*TODO improve see how diagraming lib explains that*
+In addition to rendering, `bpmn-visualization` provides various ways to let you discover and navigate through the BPMN diagrams.
+This is made available at load time or at runtime, through user interactions or API calls.
 
-bpmn-js
-Being able to efficiently navigate through bigger diagrams has always been an important concern for us. This release makes scrolling the default diagram interaction and exposes zooming via CTRL + wheel.
-we now mirror the navigation pattern known from most browsers and desktop applications. This allows even more intuitive diagram navigation, no matter where a diagram is embedded.
+The navigation features are:
 
-
-
-
-
+* zoom: change the diagram scale to show details or have an overview of the diagram
+* fit: reset/set the zoom level and eventually translate the diagram (for instance, center the diagram).
+* panning: drag the diagram and move/translate it, to hidden parts or change the position in the view
 
 
-In addition to BPMN diagram rendering, `bpmn-visualization` provides various way to let you discover and navigate the diagram 
+Navigation is particularly useful for large diagrams. In that case, fitting the view provides a good overview, but it can be hard to see some details. +
+You need to zoom to highlight specific parts, then panning helps you to view different diagram portions. +
+Finally, after navigating in various area, you may want to reset the zoom level and have a diagram overview. 
 
-* zoom
-* fit: reset/set the zoom level and eventually translate the diagram (for instance, center the diagram). This can be done at load time or at any time.
-* panning: drag the diagram and move/translate it
 
 
 
 ==== Diagram Display and Navigation in Action
 
-
-*TODO explain what we do here*
 
 image::images/bpmn-diagram_navigation_C.2.0.gif[BPMN Diagram Navigation]
 
