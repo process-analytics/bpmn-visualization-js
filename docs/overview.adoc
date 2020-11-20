@@ -33,6 +33,7 @@ For instance, it can be retrieved from a local file, by pulling a REST API, made
 Once the integration gets the BPMN diagram input source, it just has to pass it to `bpmn-visualization` which is then in charge of rendering the diagram.
 
 
+[[diagram-navigation]]
 ==== Diagram Navigation
 
 In addition to rendering, `bpmn-visualization` provides various ways to let you discover and navigate through the BPMN diagrams.
