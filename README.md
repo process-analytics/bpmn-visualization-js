@@ -85,7 +85,7 @@ Here are examples per module: \
 npm i bpmn-visualization
 ```
 
-* Load necessary scripts (replace _X._Y._Z by the recent version)
+* Load bpmn-visualization script (replace _X._Y._Z by the recent version)
 ```html
     <script src="https://unpkg.com/bpmn-visualization@_X._Y._Z/dist/bpmn-visualization.js"></script>
 ```
@@ -98,11 +98,11 @@ npm i bpmn-visualization
       return  ``; // your BPMN 2.0 XML content
     }
 ```
-* Define the mxGraph container
+* Define the bpmn diagram container
 ```html
     <div id="bpmn-container"></div>
 ```
-* Initialize BpmnVisualization from the container and load the diagram
+* Initialize BpmnVisualization and load the diagram
 ```javascript
     const bpmnVisualization = new bpmnvisu.BpmnVisualization(document.getElementById('bpmn-container'));
     bpmnVisualization.load(bpmnDiagram());
