@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, startBpmnVisualization, fit } from '../../index.es.js';
+import { documentReady, startBpmnVisualization, fit, FitType } from '../../index.es.js';
 
 // to show mouse pointer position - usefull for testing
 // @see https://github.com/puppeteer/puppeteer/issues/374
@@ -150,11 +150,9 @@ function start() {
     },
   });
 
-  fitOnClick('None');
-  fitOnClick('HorizontalVertical');
-  fitOnClick('Horizontal');
-  fitOnClick('Vertical');
-  fitOnClick('Center');
+  for (let fitTypeElement in FitType) {
+    fitOnClick(fitTypeElement);
+  }
 }
 
 documentReady(start);
