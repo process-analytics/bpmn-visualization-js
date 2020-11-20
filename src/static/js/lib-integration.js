@@ -26,7 +26,7 @@ if (bpmnParameterValue) {
   bpmn = bpmnDefaultContent();
 }
 //
-const bpmnVisualizationIntegration = new BpmnVisualization(window.document.getElementById('bpmn-visualization-viewport'));
+const bpmnVisualizationIntegration = new BpmnVisualization(window.document.getElementById('bpmn-container-custom'));
 bpmnVisualizationIntegration.load(bpmn);
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

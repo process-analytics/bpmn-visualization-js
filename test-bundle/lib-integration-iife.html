@@ -5,12 +5,12 @@
   <title>BPMN Visualization IIFE bundle</title>
 </head>
 <body>
-<div id="bpmn-viewport"></div>
+<div id="bpmn-container"></div>
 
 <!-- iife bundle -->
 <script src="../dist/bpmn-visualization.js"></script>
 <script>
-  const bpmnVisualization = new bpmnvisu.BpmnVisualization(document.getElementById('bpmn-viewport'))
+  const bpmnVisualization = new bpmnvisu.BpmnVisualization(document.getElementById('bpmn-container'))
   bpmnVisualization.load(bpmnContent());
 
   function bpmnContent() {

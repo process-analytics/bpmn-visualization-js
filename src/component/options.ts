@@ -65,7 +65,7 @@ export interface FitOptions {
 export enum FitType {
   /** No fit, use dimensions and coordinates from the BPMN diagram. */
   None,
-  /** Fit the whole viewport. */
+  /** Fit the whole html container available to render the BPMN diagram. */
   HorizontalVertical,
   /** Fit only horizontally. */
   Horizontal,

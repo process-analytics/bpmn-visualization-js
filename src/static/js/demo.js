@@ -19,14 +19,14 @@ let fitOnLoad = true;
 let fitOptions = {};
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function configureBpmnViewport() {
-  const viewport = document.getElementById('graph');
+function configureBpmnContainer() {
+  const container = document.getElementById('bpmn-container');
 
   const useFixedSize = !(fitOptions.type && FitType[fitOptions.type] === 'None'); // !== 'None'
   if (useFixedSize) {
-    viewport.classList.add('fixed-size');
+    container.classList.add('fixed-size');
   } else {
-    viewport.classList.remove('fixed-size');
+    container.classList.remove('fixed-size');
   }
 }
 
@@ -61,7 +61,7 @@ function configureFitTypeSelect() {
   const fitTypeSelectedElt = document.getElementById('fitType-selected');
   fitTypeSelectedElt.onchange = event => {
     updateFitConfig({ type: event.target.value });
-    configureBpmnViewport();
+    configureBpmnContainer();
     fit(fitOptions);
   };
 
@@ -71,7 +71,7 @@ function configureFitTypeSelect() {
     updateFitConfig({ type: fitTypeSelectedElt.value });
   }
 
-  configureBpmnViewport();
+  configureBpmnContainer();
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -98,7 +98,7 @@ function configureControlPanel() {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
-  startBpmnVisualization({ container: 'graph' });
+  startBpmnVisualization({ container: 'bpmn-container' });
 
   // Configure custom html elements
   document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);

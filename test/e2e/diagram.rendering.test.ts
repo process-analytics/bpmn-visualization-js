@@ -14,19 +14,27 @@
  * limitations under the License.
  */
 import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
-import { FitType } from '../../src/component/options';
+import { FitType, LoadOptions } from '../../src/component/options';
 import { join, dirname } from 'path';
 
-function getCustomSnapshotIdentifier(fitType: string, fileName: string): string {
-  return `no-diagram-visual-regression-fit-type-${fitType}-diagram-${fileName}`;
+function getCustomSnapshotIdentifier(fitType: string, fileName: string, margin = 0): string {
+  return `no-diagram-visual-regression-fit-type-${fitType}-margin-${margin == null || margin < 0 ? 0 : margin}-diagram-${fileName}`;
 }
 
-function getDiffDir(loadFitTitle: string): string {
+function getLoadDiffDir(): string {
   const snapshotsDir = join(dirname(expect.getState().testPath), '__image_snapshots__');
   const diffDir = join(snapshotsDir, '__diff_output__');
-  const loadDir = join(diffDir, 'load');
-  return join(loadDir, `fit-type-${loadFitTitle}`);
+  return join(diffDir, 'load');
 }
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+async function initializePage(loadOptions: LoadOptions, fileName: string): Promise<any> {
+  const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'rendering-diagram' }, 'diagram', loadOptions);
+  const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-container', 'BPMN Visualization - Diagram Rendering');
+  await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
+}
+
+const loadDiffDir = getLoadDiffDir();
 
 describe('no diagram visual regression', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
@@ -54,17 +62,13 @@ describe('no diagram visual regression', () => {
     [FitType[FitType.Center], FitType.Center],
   ];
   describe.each(fitTypes)('load options - fit %s', (loadFitTitle: string, loadFitType: FitType) => {
-    const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'rendering-diagram' }, 'diagram', { fit: { type: loadFitType } });
-    const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-container', 'BPMN Visualization - Diagram Rendering');
-    const diffDir = getDiffDir(loadFitTitle);
-    const fitDiffDir = join(diffDir, 'fit');
+    const loadFitDiffDir = join(loadDiffDir, `fit-type-${loadFitTitle}`);
+    const fitDiffDir = join(loadFitDiffDir, 'fit');
 
-    describe.each([['horizontal'], ['vertical'], ['with_outside_flows'], ['with_outside_labels']])('diagram %s', (fileName: string) => {
-      beforeEach(async () => {
-        await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
-      });
-
+    describe.each(['horizontal', 'vertical', 'with_outside_flows', 'with_outside_labels'])('diagram %s', (fileName: string) => {
       it('load', async () => {
+        await initializePage({ fit: { type: loadFitType } }, fileName);
+
         const image = await page.screenshot({ fullPage: true });
 
         // minimal threshold to make test pass on Github Workflow
@@ -75,11 +79,13 @@ describe('no diagram visual regression', () => {
         expect(image).toMatchImageSnapshot({
           ...config,
           customSnapshotIdentifier: getCustomSnapshotIdentifier(loadFitTitle, fileName),
-          customDiffDir: diffDir,
+          customDiffDir: loadFitDiffDir,
         });
       });
 
       it.each(fitTypes)(`load + fit %s`, async (fitTitle: string) => {
+        await initializePage({ fit: { type: loadFitType } }, fileName);
+
         await page.click(`#${fitTitle}`);
         // To unselect the button
         await page.mouse.click(0, 0);
@@ -97,47 +103,25 @@ describe('no diagram visual regression', () => {
           customDiffDir: join(fitDiffDir, `fit-type-${fitTitle}`),
         });
       });
-    });
-  });
 
-  describe('load options - fit margin', () => {
-    it.each`
-      margin  | fitTitle                       | fileName                | fitType
-      ${0}    | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
-      ${0}    | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
-      ${0}    | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
-      ${20}   | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
-      ${20}   | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
-      ${20}   | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
-      ${50}   | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
-      ${50}   | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
-      ${50}   | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
-      ${-100} | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
-      ${-100} | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
-      ${-100} | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
-      ${null} | ${FitType[FitType.Center]}     | ${'with_outside_flows'} | ${FitType.Center}
-      ${null} | ${FitType[FitType.Horizontal]} | ${'horizontal'}         | ${FitType.Horizontal}
-      ${null} | ${FitType[FitType.Vertical]}   | ${'vertical'}           | ${FitType.Vertical}
-    `(
-      'margin $margin for fit type $fitTitle / $fileName diagram',
-      async ({
-        margin,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        fitTitle, // only used by test title
-        fileName,
-        fitType,
-      }) => {
-        const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'non-regression' }, 'diagram', {
-          fit: { type: fitType, margin: margin },
+      if (
+        (loadFitType === FitType.Center && fileName === 'with_outside_flows') ||
+        (loadFitType === FitType.Horizontal && fileName === 'horizontal') ||
+        (loadFitType === FitType.Vertical && fileName === 'vertical')
+      ) {
+        it.each([-100, 0, 20, 50, null])('load with margin %s', async (margin: number) => {
+          await initializePage({ fit: { type: loadFitType, margin: margin } }, fileName);
+
+          const image = await page.screenshot({ fullPage: true });
+
+          const config = imageSnapshotConfigurator.getConfig(fileName);
+          expect(image).toMatchImageSnapshot({
+            ...config,
+            customSnapshotIdentifier: getCustomSnapshotIdentifier(loadFitTitle, fileName, margin),
+            customDiffDir: join(loadDiffDir, `fit-type-${loadFitTitle}-margin-${margin}`),
+          });
         });
-        const pageTester = new PageTester(bpmnDiagramPreparation, 'viewport', 'BPMN Visualization Non Regression');
-
-        await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
-
-        const image = await page.screenshot({ fullPage: true });
-        const config = imageSnapshotConfigurator.getConfig(fileName);
-        expect(image).toMatchImageSnapshot(config);
-      },
-    );
+      }
+    });
   });
 });

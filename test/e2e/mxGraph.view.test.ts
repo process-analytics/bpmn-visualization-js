@@ -15,19 +15,19 @@
  */
 import { loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
 
-let graphContainerId = 'graph';
+let bpmnContainerId = 'bpmn-container';
 
 async function expectLabel(cellId: string, expectedText?: string): Promise<void> {
   if (!expectedText) {
     return;
   }
-  const svgElementHandle = await page.waitForSelector(`#${graphContainerId} svg g g[data-cell-id="${cellId}"] g foreignObject`);
+  const svgElementHandle = await page.waitForSelector(`#${bpmnContainerId} svg g g[data-cell-id="${cellId}"] g foreignObject`);
   // contains 3 div
   expect(await svgElementHandle.evaluate(node => (node.firstChild.firstChild.firstChild as HTMLElement).innerHTML)).toBe(expectedText);
 }
 
 async function expectEvent(cellId: string, expectedText: string): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(`#${graphContainerId} svg g g[data-cell-id="${cellId}"]`);
+  const svgElementHandle = await page.waitForSelector(`#${bpmnContainerId} svg g g[data-cell-id="${cellId}"]`);
   // TODO do we test class?
   expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('ellipse');
   expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('rx'))).toBe('18');
@@ -36,7 +36,7 @@ async function expectEvent(cellId: string, expectedText: string): Promise<void> 
 }
 
 async function expectTask(cellId: string, expectedText: string): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(`#${graphContainerId} svg g g[data-cell-id="${cellId}"]`);
+  const svgElementHandle = await page.waitForSelector(`#${bpmnContainerId} svg g g[data-cell-id="${cellId}"]`);
   expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-task');
   expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('rect');
   expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('width'))).toBe('100');
@@ -45,20 +45,20 @@ async function expectTask(cellId: string, expectedText: string): Promise<void> {
 }
 
 async function expectSequenceFlow(cellId: string, expectedText?: string): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(`#${graphContainerId} svg g g[data-cell-id="${cellId}"]`);
+  const svgElementHandle = await page.waitForSelector(`#${bpmnContainerId} svg g g[data-cell-id="${cellId}"]`);
   expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-sequenceFlow-normal');
   expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('path');
   await expectLabel(cellId, expectedText);
 }
 
-describe('BpmnVisu view - index page', () => {
+describe('demo page', () => {
   it('should display page title', async () => {
     await page.goto('http://localhost:10002');
-    await page.waitForSelector(`#${graphContainerId}`);
+    await page.waitForSelector(`#${bpmnContainerId}`);
     await expect(page.title()).resolves.toMatch('BPMN Visualization Demo');
   });
 
-  it('should display graph in page', async () => {
+  it('should display diagram in page', async () => {
     await page.goto(`http://localhost:10002?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
 
     await expectEvent('StartEvent_1', 'Start Event 1');
@@ -69,12 +69,12 @@ describe('BpmnVisu view - index page', () => {
   });
 });
 
-describe('BpmnVisu view - lib-integration page', () => {
-  it('should display graph in page', async () => {
-    graphContainerId = 'bpmn-visualization-viewport';
+describe('lib-integration page', () => {
+  it('should display diagram in page', async () => {
+    bpmnContainerId = 'bpmn-container-custom';
     await page.goto(`http://localhost:10002/lib-integration.html?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-only.bpmn')}`);
     await expect(page.title()).resolves.toMatch('BPMN Visualization Lib Integration');
-    await page.waitForSelector(`#${graphContainerId}`);
+    await page.waitForSelector(`#${bpmnContainerId}`);
 
     await expectEvent('StartEvent_1', 'Start Event Only');
   });
