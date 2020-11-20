@@ -3,44 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <title>BPMN Visualization Demo</title>
-    <link href="./static/css/main.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <link href="./static/css/tailwind.css" rel="stylesheet">
     <link rel="shortcut icon" href="./static/img/favicon.ico">
 </head>
-<body>
-    <div id="controls" class="controls">
-      <div id="options-panel">
-        <div>
-          <h3>Options</h3>
-          <label for="fitOnLoad">Fit on load
-            <input type="checkbox" id="fitOnLoad" name="fitOnLoad" checked>
-          </label><br>
-          <label>Fit type
-            <select name="fitTypes" id="fitType-selected">
-              <option value="None" selected="yes">None</option>
-              <option value="HorizontalVertical">Horizontal-Vertical</option>
-              <option value="Horizontal">Horizontal</option>
-              <option value="Vertical">Vertical</option>
-              <option value="Center">Center</option>
-            </select>
-          </label>
-          <label for="fit-margin">Fit margin
-            <input type="number" id="fit-margin" min="0" max="100" maxlength="3" oninput="validity.valid||(value='');">
-          </label>
+<body class="overflow-hidden bg-gray-800 font-sans leading-normal tracking-normal mt-12">
+    <!--Nav-->
+    <nav class="bg-gray-800 pt-2 md:pt-1 pb-1 px-1 mt-0 h-auto fixed w-full z-20 top-0">
+      <div class="flex flex-wrap items-center">
+        <div class="flex flex-shrink md:w-1/3 justify-center md:justify-start text-white">
+          <img src="static/img/logo_64x64.ico" alt="logo" class="logo h-10 m-2">
+          <span class="h-10 m-2 py-2">BPMN Visualization</span>
         </div>
       </div>
-      <div id="file-panel">
-        <div id="file-selector">
-          <input type="file" id="bpmn-file" name="file"/>
-          <label for="bpmn-file" class="btn"><span>open BPMN file</span></label>
+    </nav>
+    <!-- Page section -->
+    <div class="flex flex-col md:flex-row">
+      <!-- Left Navigation Panel -->
+      <div class="bg-gray-800 shadow-xl h-16 fixed bottom-0 mt-12 md:relative md:h-screen z-10 w-full md:w-48">
+        <div class="md:mt-12 md:w-48 md:fixed md:left-0 md:top-0 content-center md:content-start text-left justify-between">
+          <ul class="list-reset flex flex-row md:flex-col py-0 md:py-3 px-1 md:px-2 text-center md:text-left">
+            <li class="mr-3 flex-1">
+              <div class="py-1 md:py-5 pl-1 align-middle border-b-2 border-gray-800">
+                <div class="bg-gradient-to-b from-red-200 to-red-100 border-b-4 border-red-600 rounded-lg shadow-xl hover:border-red-900">
+                  <div class="flex flex-row items-center cursor-pointer text-red-500 hover:text-red-900">
+                    <div class="flex-1 text-right md:text-center">
+                      <input type="file" id="bpmn-file" name="file" class="hidden"/>
+                      <label for="bpmn-file" class="font-bold text-3xl cursor-pointer"><span><i class="fas fa-file"></i>BPMN<i class="fas fa-upload"></i></span></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="mr-3 flex-1">
+              <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline border-b-2 border-gray-800 border-purple-500">
+                <label for="fitOnLoad">Fit on load
+                  <input type="checkbox" id="fitOnLoad" name="fitOnLoad" checked>
+                </label>
+              </a>
+            </li>
+            <li class="mr-3 flex-1">
+              <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline border-b-2 border-blue-600">
+                <label>Fit type
+                  <select name="fitTypes" id="fitType-selected" class="text-blue-900">
+                    <option value="None" selected="yes">None</option>
+                    <option value="HorizontalVertical">Horizontal-Vertical</option>
+                    <option value="Horizontal">Horizontal</option>
+                    <option value="Vertical">Vertical</option>
+                    <option value="Center">Center</option>
+                  </select>
+                </label>
+              </a>
+            </li>
+            <li class="mr-3 flex-1">
+              <a href="#" class="block py-1 md:py-3 pl-0 md:pl-1 align-middle text-white no-underline border-b-2 border-gray-800 border-red-500">
+                <label for="fit-margin">Fit margin
+                  <input type="number" id="fit-margin" min="0" max="100" maxlength="3" oninput="validity.valid||(value='');" class="text-red-900 pl-1">
+                </label>
+              </a>
+            </li>
+          </ul>
         </div>
-        <p class="info">(either drop a file here)</p>
+      </div>
+
+      <!-- Main section -->
+      <div class="main-content flex-1 bg-gray-100 mt-12 md:mt-2 pb-24 md:pb-5">
+        <div class="bg-gray-800 pt-3">
+          <div class="rounded-tl-3xl bg-gradient-to-r from-purple-900 to-gray-800 p-4 shadow text-2xl text-white">
+            <h3 class="font-bold pl-2">Diagram</h3>
+          </div>
+        </div>
+
+        <div class="flex flex-row flex-wrap flex-grow mt-2">
+          <div class="w-full p-6">
+            <!--Graph Space-->
+            <!-- TODO: check if possible to drop [style]-->
+            <div class="bg-white border-transparent rounded-lg shadow-xl overflow-hidden absolute" style="top: 158px; right: 20px; bottom: 20px; left: 215px;">
+              <div class="p-5">
+
+                  <div id="bpmn-container"></div>
+
+              </div>
+            </div>
+            <!--/Graph Space-->
+          </div>
+        </div>
       </div>
     </div>
-
-    <div style="position:relative; width:100%; height:800px">
-      <div id="bpmn-container"></div>
-    </div>
-
 
     <!-- load global settings -->
     <script src="./static/js/configureMxGraphGlobals.js"></script>

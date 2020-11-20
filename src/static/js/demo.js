@@ -98,7 +98,16 @@ function configureControlPanel() {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
-  startBpmnVisualization({ container: 'bpmn-container' });
+  startBpmnVisualization({
+    container: 'bpmn-container',
+    globalOptions: {
+      mouseNavigationSupport: true,
+      zoomConfiguration: {
+        throttleDelay: 30,
+        debounceDelay: 30,
+      },
+    },
+  });
 
   // Configure custom html elements
   document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
