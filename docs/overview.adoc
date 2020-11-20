@@ -1,31 +1,19 @@
 == Overview
 :favicon:
 
+=== Live Examples
 
-
-=== Examples Live Environment
-
-*_TODO write something like the intro we have in the examples repository_*
-
-
-
-Goal: see `bpmn-visualization` in action, help evaluation
-
-
-Give a try to the https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html[**icon:forward[] examples live environment**] to quickly have
-an overview of the `bpmn-visualization` capabilities.
-
-more explanations here....
-
+To see `bpmn-visualization` in action, give a try to the https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html[**icon:forward[] examples live environment**]
+you will quickly have an overview of the `bpmn-visualization` capabilities.
 
 
 === Usage
 
-*_TODO rewrite the following (only general information, no technical details)_*
+`bpmn-visualization` can be directly used in HTML pages or integrated in Javascript and TypeScript application. It is distributed as https://npmjs.org/package/bpmn-visualization:[npm package]
+through various bundle formats.
 
-Integration: directly in an html page (probably more frequent use case is demonstration or evaluation) or in a JS/TS project/application
+The API documentation is provided directly in the package thanks to the TypeScript declaration files that are used by IDE for code assist.
 
-API documentation: use TS declaration files
 For more technical details and how-to, go to the https://github.com/process-analytics/bpmn-visualization-examples/[bpmn-visualization-examples]
 repository.
 
@@ -33,24 +21,45 @@ repository.
 
 === BPMN Diagrams
 
-TODO find better title
+https://www.omg.org/spec/BPMN/2.0.2/[BPMN diagrams] are at the foundation of the `bpmn-visualization` capabilities.
 
-displaying the diagrams is the fundation of `bpmn-visualization`
-bpmn supported elements, see below (link)
+Go to <<supported-bpmn-elements, Supported BPMN Elements>> section to better now what is the current BPMN support.
+
+==== Diagram Display
+
+The first goal of `bpmn-visualization` is to display BPMN diagram but this is up to the integration (i.e. the application that uses it) to provide the BPMN diagram
+content.  +
+For instance, it can be retrieved from a local device, after pulling a REST API, it can be available after a push from websockets or SSE, ...
+
+Once the integration get the BPMN diagram input source (a xml string), it just has to pass it to `bpmn-visualization` which is then in charge of rendering the diagram.
 
 
-
-==== Navigation
+==== Diagram Navigation
 
 *TODO improve see how diagraming lib explains that*
 
-In addition to BPMN diagram load, `bpmn-visualization` provides various way to let you discover and navigate the diagram 
+bpmn-js
+Being able to efficiently navigate through bigger diagrams has always been an important concern for us. This release makes scrolling the default diagram interaction and exposes zooming via CTRL + wheel.
+we now mirror the navigation pattern known from most browsers and desktop applications. This allows even more intuitive diagram navigation, no matter where a diagram is embedded.
+
+
+
+
+
+
+
+In addition to BPMN diagram rendering, `bpmn-visualization` provides various way to let you discover and navigate the diagram 
 
 * zoom
 * fit: reset/set the zoom level and eventually translate the diagram (for instance, center the diagram). This can be done at load time or at any time.
 * panning: drag the diagram and move/translate it
 
 
+
+==== Diagram Display and Navigation in Action
+
+
+*TODO explain what we do here*
 
 image::images/bpmn-diagram_navigation_C.2.0.gif[BPMN Diagram Navigation]
 
