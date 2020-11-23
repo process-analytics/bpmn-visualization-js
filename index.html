@@ -445,28 +445,32 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_introduction">1. Introduction</a></li>
-<li><a href="#_demo">2. 🎮 Demo</a></li>
-<li><a href="#_browser_support">3. 🌏 Browser Support</a></li>
-<li><a href="#_usage">4. ♻️ Usage</a></li>
-<li><a href="#supported-bpmn-elements">5. Supported BPMN Elements</a>
+<li><a href="#_overview">2. Overview</a>
 <ul class="sectlevel2">
-<li><a href="#_containers">5.1. Containers</a></li>
-<li><a href="#_activities">5.2. Activities</a></li>
-<li><a href="#_events">5.3. Events</a></li>
-<li><a href="#_flows">5.4. Flows</a></li>
-<li><a href="#_gateways">5.5. Gateways</a></li>
-<li><a href="#_labels">5.6. Labels</a></li>
-<li><a href="#_artifacts">5.7. Artifacts</a></li>
-<li><a href="#_associations">5.8. Associations</a></li>
+<li><a href="#_live_examples">2.1. Live Examples</a></li>
+<li><a href="#_usage">2.2. Usage</a></li>
+<li><a href="#_bpmn_diagrams">2.3. BPMN Diagrams</a></li>
 </ul>
 </li>
-<li><a href="#_architecture_and_development">6. Architecture and Development</a>
+<li><a href="#supported-bpmn-elements">3. Supported BPMN Elements</a>
 <ul class="sectlevel2">
-<li><a href="#_architecture_overview">6.1. Architecture Overview</a></li>
-<li><a href="#bpmn-internal-model">6.2. BPMN Internal Model</a></li>
-<li><a href="#_bpmn_parsing">6.3. BPMN Parsing</a></li>
-<li><a href="#_mxgraph_integration">6.4. mxGraph Integration</a></li>
-<li><a href="#_development">6.5. Development</a></li>
+<li><a href="#_containers">3.1. Containers</a></li>
+<li><a href="#_activities">3.2. Activities</a></li>
+<li><a href="#_events">3.3. Events</a></li>
+<li><a href="#_flows">3.4. Flows</a></li>
+<li><a href="#_gateways">3.5. Gateways</a></li>
+<li><a href="#_labels">3.6. Labels</a></li>
+<li><a href="#_artifacts">3.7. Artifacts</a></li>
+<li><a href="#_associations">3.8. Associations</a></li>
+</ul>
+</li>
+<li><a href="#_architecture_and_development">4. Architecture and Development</a>
+<ul class="sectlevel2">
+<li><a href="#_architecture_overview">4.1. Architecture Overview</a></li>
+<li><a href="#bpmn-internal-model">4.2. BPMN Internal Model</a></li>
+<li><a href="#_bpmn_parsing">4.3. BPMN Parsing</a></li>
+<li><a href="#_mxgraph_integration">4.4. mxGraph Integration</a></li>
+<li><a href="#_development">4.5. Development</a></li>
 </ul>
 </li>
 </ul>
@@ -485,210 +489,95 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><code>bpmn-visualization</code> is a TypeScript library to visualize process execution data on <a href="https://www.omg.org/spec/BPMN/2.0.2/">BPMN</a>
 diagrams. It is in early development stages and is subject to changes prior to the <code>1.0.0</code> release.</p>
 </div>
-<div class="paragraph">
-<p>Implemented features:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Rendering of the most  <a href="#supported-bpmn-elements">common BPMN elements</a>.
-Notice that there is currently no plan to support <code>Conversation</code> and <code>Choreography</code>.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Current implementation:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>The <a href="https://github.com/process-analytics/bpmn-visualization-js/milestone/18">packaging</a> of the library.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Future features:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>BPMN extensions</p>
-</li>
-<li>
-<p>The library extension points</p>
-</li>
-<li>
-<p>Display options for execution data with interactive capacities.</p>
-</li>
-</ul>
-</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_demo"><a class="anchor" href="#_demo"></a><a class="link" href="#_demo">2. 🎮 Demo</a></h2>
+<h2 id="_overview"><a class="anchor" href="#_overview"></a><a class="link" href="#_overview">2. Overview</a></h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_live_examples"><a class="anchor" href="#_live_examples"></a><a class="link" href="#_live_examples">2.1. Live Examples</a></h3>
 <div class="paragraph">
-<p>Give a try to the <a href="https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/index.html"><strong><span class="icon"><i class="fa fa-forward"></i></span> demo live environment</strong></a>.
-The demo let you load a BPMN file to see how <code>bpmn-visualization</code> renders it. Various versions of the lib are available.</p>
+<p>To see <code>bpmn-visualization</code> in action, give a try to the <a href="https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html"><strong><span class="icon"><i class="fa fa-forward"></i></span> examples live environment</strong></a>.<br>
+You will quickly have an overview of the <code>bpmn-visualization</code> capabilities.</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_usage"><a class="anchor" href="#_usage"></a><a class="link" href="#_usage">2.2. Usage</a></h3>
 <div class="paragraph">
-<p>If you need BPMN examples, you can use resources from:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>the <a href="http://www.omgwiki.org/bpmn-miwg">BPMN Model Interchange Working Group (BPMN MIWG)</a></p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/bpmn-miwg/bpmn-miwg-test-suite" class="bare">https://github.com/bpmn-miwg/bpmn-miwg-test-suite</a></p>
-</li>
-<li>
-<p><a href="https://github.com/bpmn-miwg/bpmn-miwg-demos" class="bare">https://github.com/bpmn-miwg/bpmn-miwg-demos</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><a href="https://github.com/process-analytics/bpmn-visualization-examples/blob/master/bpmn-files/README.md">bpmn-visualization BPMN test diagrams</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_browser_support"><a class="anchor" href="#_browser_support"></a><a class="link" href="#_browser_support">3. 🌏 Browser Support</a></h2>
-<div class="sectionbody">
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top"><span class="image"><img src="https://www.google.com/chrome/static/images/chrome-logo.svg" alt="chrome logo" width="18"></span> Chrome</th>
-<th class="tableblock halign-left valign-top"><span class="image"><img src="https://user-media-prod-cdn.itsre-sumo.mozilla.net/uploads/products/2020-04-14-08-36-13-8dda6f.png" alt="2020 04 14 08 36 13 8dda6f" width="18"></span> Firefox</th>
-<th class="tableblock halign-left valign-top"><span class="image"><img src="https://developer.apple.com/assets/elements/icons/safari/safari-96x96.png" alt="safari 96x96" width="18"></span> Safari</th>
-<th class="tableblock halign-left valign-top"><span class="image"><img src="https://avatars0.githubusercontent.com/u/11354582?s=200&amp;v=4" alt="11354582?s=200&amp;v=4" width="18"></span> Edge</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check"></i></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="icon"><i class="fa fa-check"></i></span></p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p><strong>Note</strong>: Internet Explorer will never be supported.<br>
-The library may work with the other browsers. They must at least support ES6.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_usage"><a class="anchor" href="#_usage"></a><a class="link" href="#_usage">4. ♻️ Usage</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>For now, we don&#8217;t put the released library on npm. So you need to clone the repository in local, get the last tag, and build it.<br>
-⚠️  WE ARE CURRENTLY WORKING ON THE PACKAGING ⚠️</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Load necessary scripts</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-html" data-lang="html">    &lt;!-- load global settings --&gt;
-    &lt;script src="./static/js/configureMxGraphGlobals.js"&gt;&lt;/script&gt;
-    &lt;!-- load mxGraph client library --&gt;
-    &lt;script src="./static/js/mxClient.min.js"&gt;&lt;/script&gt;
-    &lt;!-- load BPMN Visualization library --&gt;
-    &lt;script src="&lt;YOUR_PATH&gt;/bpmn-visualization-js/dist/index.es.js"&gt;&lt;/script&gt;</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Define your BPMN content using one of the following ways:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Copy/Paste directly the XML content in a variable</p>
-</li>
-<li>
-<p>Load it from a url, like this <a href="https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/load-remote-bpmn-diagrams/index.html">example</a></p>
-</li>
-<li>
-<p>Load from your computer, like the <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/master/src/demo/index.ts">demo example</a></p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-javascript" data-lang="javascript">    const bpmnContent = ``; // your BPMN 2.0 XML content</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Define the mxGraph container</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-html" data-lang="html">    &lt;div id="graph"&gt;&lt;/div&gt;</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Initialize BpmnVisualization from the container</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-javascript" data-lang="javascript">    console.log(`Initializing BpmnVisualization with container '${container}'...`);
-    const bpmnVisualization = new BpmnVisualization(window.document.getElementById(container));</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Load the bpmn content from BpmnVisualization</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-javascript" data-lang="javascript">    console.log('Loading bpmn....');
-    bpmnVisualization.load(bpmnContent);
-    console.log('BPMN loaded');</code></pre>
-</div>
+<p><code>bpmn-visualization</code> can be directly used in HTML pages or integrated in Javascript and TypeScript applications. It is distributed as a <a href="https://npmjs.org/package/bpmn-visualization:">npm package</a>
+in various bundle formats.</p>
 </div>
 <div class="paragraph">
-<p>💡 Want to know more about <code>bpmn-visualization</code> usage and extensibility? Have a look at the
-<a href="https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html"><strong><span class="icon"><i class="fa fa-forward"></i></span> examples live environment</strong></a>.</p>
+<p>The API documentation is provided directly in the package thanks to the TypeScript declaration files that can used in IDE for code assist.</p>
 </div>
 <div class="paragraph">
 <p>For more technical details and how-to, go to the <a href="https://github.com/process-analytics/bpmn-visualization-examples/">bpmn-visualization-examples</a>
 repository.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_bpmn_diagrams"><a class="anchor" href="#_bpmn_diagrams"></a><a class="link" href="#_bpmn_diagrams">2.3. BPMN Diagrams</a></h3>
+<div class="paragraph">
+<p><a href="https://www.omg.org/spec/BPMN/2.0.2/">BPMN diagrams</a> are at the foundation of the <code>bpmn-visualization</code> capabilities.</p>
+</div>
+<div class="paragraph">
+<p>Go to <a href="#supported-bpmn-elements">Supported BPMN Elements</a> section to better now what is the current BPMN support.</p>
+</div>
+<div class="sect3">
+<h4 id="_diagram_display"><a class="anchor" href="#_diagram_display"></a><a class="link" href="#_diagram_display">2.3.1. Diagram Display</a></h4>
+<div class="paragraph">
+<p>The first goal of <code>bpmn-visualization</code> is to display BPMN diagrams but this is up to the integration (i.e. the application that uses it) to provide the BPMN diagram
+content. <br>
+For instance, it can be retrieved from a local file, by pulling a REST API, made available after a push from websockets or SSE, &#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>Once the integration gets the BPMN diagram input source, it just has to pass it to <code>bpmn-visualization</code> which is then in charge of rendering the diagram.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="diagram-navigation"><a class="anchor" href="#diagram-navigation"></a><a class="link" href="#diagram-navigation">2.3.2. Diagram Navigation</a></h4>
+<div class="paragraph">
+<p>In addition to rendering, <code>bpmn-visualization</code> provides various ways to let you discover and navigate through the BPMN diagrams.
+This is made available at load time or at runtime, through user interactions or API calls.</p>
+</div>
+<div class="paragraph">
+<p>The navigation features are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>zoom: change the diagram scale to show details or have an overview of the diagram.</p>
+</li>
+<li>
+<p>fit: reset/set the zoom level and eventually translate the diagram (for instance, center the diagram).</p>
+</li>
+<li>
+<p>panning: drag the diagram and move/translate it, to hidden parts or change the position in the view.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Navigation is particularly useful for large diagrams. In that case, fitting the view provides a good overview, but it can be hard to see some details.<br>
+You need to zoom to highlight specific parts, then panning helps you to view different diagram portions.<br>
+Finally, after navigating in various area, you may want to reset the zoom level and have a diagram overview.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_diagram_display_and_navigation_in_action"><a class="anchor" href="#_diagram_display_and_navigation_in_action"></a><a class="link" href="#_diagram_display_and_navigation_in_action">2.3.3. Diagram Display and Navigation in Action</a></h4>
+<div class="imageblock">
+<div class="content">
+<img src="images/bpmn-diagram_navigation_C.2.0.gif" alt="BPMN Diagram Navigation">
+</div>
+</div>
+<div class="paragraph">
+<p><em>Navigation with the <a href="https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/cc75e467fd2b3009e67d4b24943591c66ce91a23/Reference/C.2.0.bpmn">migw-test-suite C.2.0</a> BPMN diagram</em></p>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="sect1">
-<h2 id="supported-bpmn-elements"><a class="anchor" href="#supported-bpmn-elements"></a><a class="link" href="#supported-bpmn-elements">5. Supported BPMN Elements</a></h2>
+<h2 id="supported-bpmn-elements"><a class="anchor" href="#supported-bpmn-elements"></a><a class="link" href="#supported-bpmn-elements">3. Supported BPMN Elements</a></h2>
 <div class="sectionbody">
 <div class="admonitionblock note">
 <table>
@@ -703,7 +592,7 @@ The BPMN support roadmap is available in <a href="https://github.com/process-ana
 </table>
 </div>
 <div class="paragraph">
-<p>The following presents BPMN elements that can be displayed by the lib and states which is their rendering status i.e. if
+<p>The following presents BPMN elements that can be displayed by the <code>bpmn-visualization</code> and states which is their rendering status i.e. if
 the BPMN elements are rendered with their final shapes.</p>
 </div>
 <div class="paragraph">
@@ -738,7 +627,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_containers"><a class="anchor" href="#_containers"></a><a class="link" href="#_containers">5.1. Containers</a></h3>
+<h3 id="_containers"><a class="anchor" href="#_containers"></a><a class="link" href="#_containers">3.1. Containers</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Containers</caption>
 <colgroup>
@@ -770,7 +659,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_activities"><a class="anchor" href="#_activities"></a><a class="link" href="#_activities">5.2. Activities</a></h3>
+<h3 id="_activities"><a class="anchor" href="#_activities"></a><a class="link" href="#_activities">3.2. Activities</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 2. Activities</caption>
 <colgroup>
@@ -895,7 +784,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_events"><a class="anchor" href="#_events"></a><a class="link" href="#_events">5.3. Events</a></h3>
+<h3 id="_events"><a class="anchor" href="#_events"></a><a class="link" href="#_events">3.3. Events</a></h3>
 <div class="paragraph">
 <p>The event definition can be defined on the event or on the definitions.</p>
 </div>
@@ -1301,7 +1190,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_flows"><a class="anchor" href="#_flows"></a><a class="link" href="#_flows">5.4. Flows</a></h3>
+<h3 id="_flows"><a class="anchor" href="#_flows"></a><a class="link" href="#_flows">3.4. Flows</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 12. Flows</caption>
 <colgroup>
@@ -1367,7 +1256,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_gateways"><a class="anchor" href="#_gateways"></a><a class="link" href="#_gateways">5.5. Gateways</a></h3>
+<h3 id="_gateways"><a class="anchor" href="#_gateways"></a><a class="link" href="#_gateways">3.5. Gateways</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 13. Gateways</caption>
 <colgroup>
@@ -1407,7 +1296,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_labels"><a class="anchor" href="#_labels"></a><a class="link" href="#_labels">5.6. Labels</a></h3>
+<h3 id="_labels"><a class="anchor" href="#_labels"></a><a class="link" href="#_labels">3.6. Labels</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 14. Labels</caption>
 <colgroup>
@@ -1437,7 +1326,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_artifacts"><a class="anchor" href="#_artifacts"></a><a class="link" href="#_artifacts">5.7. Artifacts</a></h3>
+<h3 id="_artifacts"><a class="anchor" href="#_artifacts"></a><a class="link" href="#_artifacts">3.7. Artifacts</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 15. Artifacts</caption>
 <colgroup>
@@ -1462,7 +1351,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_associations"><a class="anchor" href="#_associations"></a><a class="link" href="#_associations">5.8. Associations</a></h3>
+<h3 id="_associations"><a class="anchor" href="#_associations"></a><a class="link" href="#_associations">3.8. Associations</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 16. Associations</caption>
 <colgroup>
@@ -1489,12 +1378,12 @@ the BPMN elements are rendered with their final shapes.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_architecture_and_development"><a class="anchor" href="#_architecture_and_development"></a><a class="link" href="#_architecture_and_development">6. Architecture and Development</a></h2>
+<h2 id="_architecture_and_development"><a class="anchor" href="#_architecture_and_development"></a><a class="link" href="#_architecture_and_development">4. Architecture and Development</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_architecture_overview"><a class="anchor" href="#_architecture_overview"></a><a class="link" href="#_architecture_overview">6.1. Architecture Overview</a></h3>
+<h3 id="_architecture_overview"><a class="anchor" href="#_architecture_overview"></a><a class="link" href="#_architecture_overview">4.1. Architecture Overview</a></h3>
 <div class="paragraph">
-<p>The lib consists on 2 main modules</p>
+<p><code>bpmn-visualization</code> consists on 2 main modules:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1513,7 +1402,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="bpmn-internal-model"><a class="anchor" href="#bpmn-internal-model"></a><a class="link" href="#bpmn-internal-model">6.2. BPMN Internal Model</a></h3>
+<h3 id="bpmn-internal-model"><a class="anchor" href="#bpmn-internal-model"></a><a class="link" href="#bpmn-internal-model">4.2. BPMN Internal Model</a></h3>
 <div class="paragraph">
 <p>Our internal model is based on the <a href="https://www.omg.org/spec/BPMN/2.0.2/PDF">BPMN specification</a>.</p>
 </div>
@@ -1522,24 +1411,20 @@ the BPMN elements are rendered with their final shapes.</p>
 <img src="images/architecture/internal-model.svg" alt="internal model">
 </div>
 </div>
-<div class="paragraph">
-<p><strong>Note</strong>: If you want to update the model, you need to update the <a href="images/architecture/internal-model.drawio">Model as draw.io</a>
-file with <a href="https://app.diagrams.net" class="bare">https://app.diagrams.net</a>, and export it as SVG in the <a href="images/architecture/internal-model.svg">svg file</a>.</p>
-</div>
 </div>
 <div class="sect2">
-<h3 id="_bpmn_parsing"><a class="anchor" href="#_bpmn_parsing"></a><a class="link" href="#_bpmn_parsing">6.3. BPMN Parsing</a></h3>
+<h3 id="_bpmn_parsing"><a class="anchor" href="#_bpmn_parsing"></a><a class="link" href="#_bpmn_parsing">4.3. BPMN Parsing</a></h3>
 <div class="sect3">
-<h4 id="_xml_parser"><a class="anchor" href="#_xml_parser"></a><a class="link" href="#_xml_parser">6.3.1. XML Parser</a></h4>
+<h4 id="_xml_parser"><a class="anchor" href="#_xml_parser"></a><a class="link" href="#_xml_parser">4.3.1. XML Parser</a></h4>
 <div class="paragraph">
-<p>To parse XML data, we use the library <a href="https://github.com/NaturalIntelligence/fast-xml-parser">fast-xml-parser</a>.</p>
+<p>To parse XML data, we use the <a href="https://github.com/NaturalIntelligence/fast-xml-parser">fast-xml-parser</a> library.</p>
 </div>
 <div class="paragraph">
 <p>You can see the implementation in <strong>BpmnXmlParser.ts</strong>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_json_parser"><a class="anchor" href="#_json_parser"></a><a class="link" href="#_json_parser">6.3.2. Json Parser</a></h4>
+<h4 id="_json_parser"><a class="anchor" href="#_json_parser"></a><a class="link" href="#_json_parser">4.3.2. Json Parser</a></h4>
 <div class="paragraph">
 <p>To parse a JSON data, we use a custom parser.</p>
 </div>
@@ -1550,270 +1435,20 @@ We have different <em>converters</em> (in the <strong>converter</strong> folder 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_mxgraph_integration"><a class="anchor" href="#_mxgraph_integration"></a><a class="link" href="#_mxgraph_integration">6.4. mxGraph Integration</a></h3>
+<h3 id="_mxgraph_integration"><a class="anchor" href="#_mxgraph_integration"></a><a class="link" href="#_mxgraph_integration">4.4. mxGraph Integration</a></h3>
 <div class="paragraph">
 <p>The <a href="https://jgraph.github.io/mxgraph/">mxGraph</a> integration is in charge of displaying the BPMN diagrams, by filling the
-<a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.1:">mxGraph model</a> from the BPMN model.</p>
+<a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.1">mxGraph model</a> from the BPMN model.</p>
 </div>
 <div class="paragraph">
-<p>It defines the <a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.1">BPMN styles</a> including dedicated BPMN shapes
-which are associated to the <code>mxGraph</code> <a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.4">mxCell</a> when the elements
-are inserted into the <code>mxGraph</code> model:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>vertex</code> for BPMN Shapes</p>
-</li>
-<li>
-<p><code>edge</code> for BPMN Edges</p>
-</li>
-</ul>
+<p>It also provides the Diagram Navigation support.</p>
 </div>
 <div class="paragraph">
-<p>The main entry point for <code>mxGraph</code> rendering is <code>MxGraphRenderer</code>.</p>
-</div>
-<div class="paragraph">
-<p>If you are new to <code>mxGraph</code> or want to know more about it, please have a look at the <a href="https://jgraph.github.io/mxgraph/docs/tutorial.html">mxGraph tutorial</a>
-and <a href="https://jgraph.github.io/mxgraph/docs/manual.html">mxGraph manual</a>.</p>
-</div>
-<div class="sect3">
-<h4 id="_logical_groups_of_bpmn_elements"><a class="anchor" href="#_logical_groups_of_bpmn_elements"></a><a class="link" href="#_logical_groups_of_bpmn_elements">6.4.1. Logical Groups of BPMN Elements</a></h4>
-<div class="paragraph">
-<p><a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.4">mxGraph Group Structure</a> allows to define a parent-child relationship
-that leverages various rendering features like collapsing/expanding, layering, drill down, group move/hide, &#8230;&#8203;
-See <a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.5">mxGraph Complexity Management</a> for more details.</p>
-</div>
-<div class="paragraph">
-<p>On <code>mxGraph</code> graph creation, the lib fills the following group of BPMN elements:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>pool</code> is the parent of <code>lanes</code> and <code>inter-lane elements</code> (for instance, <code>sequence flows</code>), or any BPMN elements when there is no <code>lane</code></p>
-</li>
-<li>
-<p><code>lane</code> is the parent of elements it includes in the BPMN source</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The default mxGraph parent is the parent of</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>inter pool elements (for instance, <code>message flows</code>)</p>
-</li>
-<li>
-<p>elements when the BPMN source doesn&#8217;t define any lane/pool</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_bpmn_elements_positioning"><a class="anchor" href="#_bpmn_elements_positioning"></a><a class="link" href="#_bpmn_elements_positioning">6.4.2. BPMN elements positioning</a></h4>
-<div class="paragraph">
-<p><strong>Note</strong>: the following applies to both BPMN shapes and edges (including waypoints)</p>
-</div>
-<div class="paragraph">
-<p>The bpmn input source coordinates are absolute whereas mxgraph uses coordinates in the referential of the parent cell.
-As we define a parent-child relationship when inserting BPMN elements in the mxGraph model, a coordinate transformation
-layer is required. See <code>MxGraphRenderer</code> for more details.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_bpmn_elements_rendering"><a class="anchor" href="#_bpmn_elements_rendering"></a><a class="link" href="#_bpmn_elements_rendering">6.4.3. BPMN elements rendering</a></h4>
-<div class="paragraph">
-<p>When inserting an element on the <code>mxGraph</code> graph, a style is passed to identify the way it will be rendered.</p>
-</div>
-<div class="paragraph">
-<p>The <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html">style</a> is defined and registered in
-<code>StyleConfigurator</code>. In particular, it refers to the name of a <a href="https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html">mxShape</a>
-used for the rendering.</p>
-</div>
-<div class="paragraph">
-<p>The <code>mxShape</code> can be a standard <code>mxGraph</code> class or a custom BPMN <code>mxShape</code> defined by the lib. The custom <code>mxShapes</code> are registered by <code>ShapeConfigurator</code>
-which associates the <code>mxShape</code> name (used in style definition) with the <code>mxShape</code> class to be used.</p>
-</div>
-<div class="sect4">
-<h5 id="_resources"><a class="anchor" href="#_resources"></a><a class="link" href="#_resources">6.4.3.1. Resources</a></h5>
-<div class="sect5">
-<h6 id="_mxgraph"><a class="anchor" href="#_mxgraph"></a><a class="link" href="#_mxgraph">6.4.3.1.1. mxGraph</a></h6>
-<div class="quoteblock">
-<div class="title"><a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.2">mxgraph Geometry</a></div>
-<blockquote>
-The coordinate system in JavaScript is x is positive to the right and y is positive
-downwards, and in terms of the graph, the positioning is absolute to the container
-within which the mxGraph is placed.
-</blockquote>
-</div>
-<div class="quoteblock">
-<div class="title"><a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.4">mxgraph Group Structure</a></div>
-<blockquote>
-The x,y position of a vertex is its position relative to its parent, so in the case of
-default grouping (all cells sharing the default parent) the cell positioning is also
-the absolute co-ordinates on the graph component.
-</blockquote>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_bpmn_specification"><a class="anchor" href="#_bpmn_specification"></a><a class="link" href="#_bpmn_specification">6.4.3.1.2. BPMN specification</a></h6>
-<div class="quoteblock">
-<div class="title">BPMNPlane (page 371)</div>
-<blockquote>
-BPMNPlane element is always owned by a BPMNDiagram and represents the root diagram element of that diagram.
-The plane represents a 2 dimensional surface with an origin at (0, 0) along the x and y axes with increasing coordinates
-to the right and bottom. Only positive coordinates are allowed for diagram elements that are nested in a BPMNPlane.
-</blockquote>
-</div>
-<div class="quoteblock">
-<div class="title">BPMNShape (page 372)</div>
-<blockquote>
-All BPMNShape elements are owned directly by a BPMNPlane (that is the root element in a BPMNDiagram), i.e., shapes
-are not nested within each other in the BPMN DI model although they may appear that way when depicted. The bounds
-of a BPMNShape are always relative to that plane’s origin point and are REQUIRED to be positive coordinates. Note that
-the bounds’ x and y coordinates are the position of the upper left corner of the shape (relative to the upper left corner of
-the plane).
-</blockquote>
-</div>
-<div class="quoteblock">
-<div class="title">BPMNEdge (page 375)</div>
-<blockquote>
-All BPMNEdge elements are owned directly by a BPMNPlane (that is the root element in a BPMNDiagram). The
-waypoints of BPMNEdge are always relative to that plane’s origin point and are REQUIRED to be positive coordinates.
-</blockquote>
-</div>
-<div class="quoteblock">
-<div class="title">BPMNLabel (page 377)</div>
-<blockquote>
-The bounds of BPMNLabel are always relative to the containing plane’s origin point. Note that the bounds’ x and y
-coordinates are the position of the upper left corner of the label (relative to the upper left corner of the plane).
-</blockquote>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_label_font_and_bounds"><a class="anchor" href="#_label_font_and_bounds"></a><a class="link" href="#_label_font_and_bounds">6.4.4. Label Font and Bounds</a></h4>
-<div class="paragraph">
-<p>The <code>mxGraph</code> integration renders labels based on the definition taken from the BPMN source. When the label style is not
-or only partially defined in BPMN, the following fallback takes place:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>for labels without a font, the rendering may not be accurate: the default font used by the original modeler may differ
-from the one the lib uses. As a result, the bounds set in the BPMN file may be too small or large for the lib font. So the
-resulting text wrapping cannot be the same as with the original modeler.</p>
-</li>
-<li>
-<p>for labels without bounds, the lib uses an arbitrary position which depends on the type of the BPMN element (for instance, middle
-centred for tasks or on the bottom for start events). As for fonts, this does not cover all use cases, but works most of
-the time.</p>
-</li>
-</ul>
-</div>
-<div class="sect4">
-<h5 id="_shape"><a class="anchor" href="#_shape"></a><a class="link" href="#_shape">6.4.4.1. Shape</a></h5>
-<div class="paragraph">
-<p>The <code>mxGraph</code> integration uses the following to set the label bounds</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>the <code>vertex mxCell</code> geometry offset, see <a href="https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/model/mxGeometry.js#L60">mxGeometry</a>
-for more details</p>
-<div class="ulist">
-<ul>
-<li>
-<p>x and y position relative to the shape <code>vertex</code> itself</p>
-</li>
-<li>
-<p>as for the  shape <code>vertex</code> position, a coordinate transformation layer is required.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>styling for the label width (for word wrapping)</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_edge"><a class="anchor" href="#_edge"></a><a class="link" href="#_edge">6.4.4.2. Edge</a></h5>
-<div class="sect5">
-<h6 id="_overview"><a class="anchor" href="#_overview"></a><a class="link" href="#_overview">6.4.4.2.1. Overview</a></h6>
-<div class="paragraph">
-<p>The mxGraph integration uses the <code>edge mxCell</code> geometry to set the label bounds</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>absolute geometry</p>
-</li>
-<li>
-<p>offset x and y: position related to the center of the edge and as for the Shape Position, a coordinate transformation layer is required.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>the center depends on the 2 terminal waypoints</p>
-</li>
-<li>
-<p>if the waypoints are not available, no position is set and the label is placed on the edge center</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>width and height: for word wrapping.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>see <a href="https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/model/mxGeometry.js#L60">mxGeometry</a></p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_mxgraph_details"><a class="anchor" href="#_mxgraph_details"></a><a class="link" href="#_mxgraph_details">6.4.4.2.2. mxGraph Details</a></h6>
-<div class="paragraph">
-<p>The label position is related to the 'center' of the edge, see <a href="https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/model/mxGeometry.js#L35">mxGeometry</a>
-for more details. The definition of 'center' differs whether the <code>mxGeometry</code> is <code>relative</code> or not:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>if relative, it is the center along the line</p>
-</li>
-<li>
-<p>if absolute, it is derived from the terminal points</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>This is explained in <a href="https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/view/mxGraphView.js#L2187">mxGraphView.updateEdgeLabelOffset</a></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>center between the two endpoints if the geometry is absolute</p>
-</li>
-<li>
-<p>the relative distance between the center along the line, and the absolute orthogonal distance if the geometry is relative.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Check the <a href="https://github.com/process-analytics/bpmn-visualization-js/pull/291#issuecomment-642024601">GitHub Pull Request #291</a>
-to see various positioning methods in action.</p>
-</div>
-</div>
-</div>
+<p>For more details, see the <a href="https://github.com/process-analytics/bpmn-visualization-js/tree/master/docs/development/mxgraph-integration.md">development documentation</a>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_development"><a class="anchor" href="#_development"></a><a class="link" href="#_development">6.5. Development</a></h3>
+<h3 id="_development"><a class="anchor" href="#_development"></a><a class="link" href="#_development">4.5. Development</a></h3>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -1841,7 +1476,7 @@ to see various positioning methods in action.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-16 17:45:49 UTC
+Last updated 2020-11-23 15:16:38 UTC
 </div>
 </div>
 </body>
