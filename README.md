@@ -99,8 +99,9 @@ npm i bpmn-visualization
 ```
 * Initialize BpmnVisualization and load the diagram
 ```javascript
-    const bpmnVisualization = new bpmnvisu.BpmnVisualization(document.getElementById('bpmn-container'));
-    bpmnVisualization.load(bpmnDiagram());
+    const bpmnContainerElt = document.getElementById('bpmn-container');
+    const bpmnVisualization = new bpmnvisu.BpmnVisualization(bpmnContainerElt);
+    bpmnVisualization.load(bpmnContent);
 ```
 
 💡 Want to know more about `bpmn-visualization` usage and extensibility? Have a look at the
