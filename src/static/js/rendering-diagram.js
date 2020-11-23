@@ -109,7 +109,7 @@ function configureControlsPanel(parameters) {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function fitOnClick(fitType) {
-  document.getElementById(fitType).onclick = () => fit({ type: FitType[fitType] });
+  document.getElementById(fitType).onclick = () => fit({ type: fitType });
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -150,11 +150,9 @@ function start() {
     },
   });
 
-  fitOnClick('None');
-  fitOnClick('HorizontalVertical');
-  fitOnClick('Horizontal');
-  fitOnClick('Vertical');
-  fitOnClick('Center');
+  for (let fitTypeElement in FitType) {
+    fitOnClick(fitTypeElement);
+  }
 }
 
 documentReady(start);
