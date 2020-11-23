@@ -2,7 +2,7 @@
 Below guidance should serve to write the properly distributed documentation and to avoid any duplications.
 
 Projects documentation consists of:
-- HTML documentation - everything at the root of the docs/ folders and under /docs/architecture
+- HTML documentation - everything under the /docs/users folder
     - High level information
     - Contextual content
     - BPMN support details

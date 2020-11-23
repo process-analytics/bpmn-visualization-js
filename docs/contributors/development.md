@@ -1,8 +1,8 @@
 # Development
 
 **Note**:
-- information about the library internals are available in the [architecture folder](../architecture) or in html form in the [documentation site](https://process-analytics.github.io/bpmn-visualization-js/#_architecture_and_development)
-- additional information related to development can also be found in the [development details page](.//README.md)
+- information about the library internals are available in the [architecture folder](../users/architecture) or in html form in the [documentation site](https://process-analytics.github.io/bpmn-visualization-js/#_architecture_and_development)
+- additional information related to development can also be found in the [contributors guidelines page](./README.md)
 
 ## Requirements
 
