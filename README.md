@@ -38,9 +38,9 @@
 <br>
 
 
-## 🎮 Demo
+## 🎮 Demo and examples 
 
-Please check [__⏩ demo live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html). \
+Please check [__⏩ live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html). \
 You will find there basic usage as well as detailed examples showing possible rendering customizations.
 
 ## 🎨 Features
@@ -52,11 +52,11 @@ Already available features:
 - [Navigate through the BPMN diagram](https://process-analytics.github.io/bpmn-visualization-js/#diagram-navigation)
 
 Planned features:
-- Display options for execution data with interactive capacities.
+- Display options for execution data with interactive capacities
 - BPMN extensions
 - Library extension points
 
-## 🌏 Browser Support
+## 🌏 Browsers Support
 
 **We do our best to support recent versions of major browsers**
 
@@ -69,15 +69,12 @@ The library may work with the other browsers. They must at least support ES6.
 
 
 ## ♻️ Usage
-Library is available through [NPM](https://npmjs.org/package/bpmn-visualization) \
+The library is available from [NPM](https://npmjs.org/package/bpmn-visualization). \
 We support various module formats such as:
-[IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE),
-[ESM](https://dev.to/iggredible/what-the-heck-are-cjs-amd-umd-and-esm-ikm),
-[CommonJS](https://www.typescriptlang.org/docs/handbook/2/modules.html#commonjs).
+- [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE): `dist/bpmn-visualization.js`
+- [ESM](https://dev.to/iggredible/what-the-heck-are-cjs-amd-umd-and-esm-ikm): `dist/bpmn-visualization.esm.js`
+- [CommonJS](https://www.typescriptlang.org/docs/handbook/2/modules.html#commonjs): `dist/bpmn-visualization.cjs.js`
   
-Here are examples per module: \
-[bpmn-visualization (IIFE)](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/01-getting-started) \
-[bpmn-visualization (ESM); Typescript + Rollup](https://github.com/process-analytics/bpmn-visualization-examples/tree/master/examples/projects/typescript-vanilla-with-rollup)
 
 ⚒️ If you want to configure yourself:
 * Install the dependency in your **package.json** file:
@@ -85,20 +82,18 @@ Here are examples per module: \
 npm i bpmn-visualization
 ```
 
-* Load bpmn-visualization script (replace _X._Y._Z by the recent version)
+* Load bpmn-visualization script (replace {version} by the recent version)
 ```html
-    <script src="https://unpkg.com/bpmn-visualization@_X._Y._Z/dist/bpmn-visualization.js"></script>
+    <script src="https://unpkg.com/bpmn-visualization@{version}/dist/bpmn-visualization.js"></script>
 ```
 * Define your BPMN content using one of the following ways:
   * Copy/Paste directly the XML content in a variable
   * Load it from a url, like this [example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/load-remote-bpmn-diagrams/index.html)
   * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-js/blob/master/src/demo/index.ts)
 ```javascript
-    function bpmnDiagram() {
-      return  ``; // your BPMN 2.0 XML content
-    }
+    let bpmnContent; // your BPMN 2.0 XML content
 ```
-* Define the bpmn diagram container
+* In the HTML page, define the container that displays the BPMN diagram.
 ```html
     <div id="bpmn-container"></div>
 ```
