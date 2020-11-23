@@ -1,4 +1,4 @@
-#Documentation
+# Documentation guidelines
 Below guidance should serve to write the properly distributed documentation and to avoid any duplications.
 
 Projects documentation consists of:
@@ -20,7 +20,7 @@ The root README file content should not be overwhelming and supposed to contain 
  - Links to examples and developers or html documentation for more details
 
 
-### Building the html documentation
+## Building the html documentation
 
 **DISCLAIMER**:
 The documentation sources are in the AsciiDoctor format. The display

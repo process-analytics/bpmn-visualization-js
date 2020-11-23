@@ -82,9 +82,13 @@ We support various module formats such as:
 npm i bpmn-visualization
 ```
 
-* Load bpmn-visualization script (replace {version} by the recent version)
+* In the HTML page:
+   * bpmn-visualization script (replace {version} by the recent version)
+   * define the container that displays the BPMN diagram. Here _bpmn-container_
 ```html
     <script src="https://unpkg.com/bpmn-visualization@{version}/dist/bpmn-visualization.js"></script>
+    ...
+    <div id="bpmn-container"></div>
 ```
 * Define your BPMN content using one of the following ways:
   * Copy/Paste directly the XML content in a variable
