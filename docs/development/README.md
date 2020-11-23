@@ -14,7 +14,9 @@ Here are some tips to help during development.
 - [testing](./testing.md)
 - [how to support new BPMN elements](./bpmn-support-how-to.md)
 - [how to submit us your work](./pull-request.md)
+- [mxgraph integration](./mxgraph-integration.md)
 - [mxgraph version bump](./mxgraph-version-bump.md)
 
 ## Misc
+- [documentation guidelines](docs/development/documentation-guidelines.md)
 - [for the maintainers](./maintainers.md)

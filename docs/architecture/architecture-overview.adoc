@@ -1,9 +1,8 @@
 === Architecture Overview
 
-The lib consists on 2 main modules
+`bpmn-visualization` consists on 2 main modules:
 
 * parsing: read a BPMN source (xml string) and convert it into its own <<bpmn-internal-model,internal Model>>.
 * rendering: display the BPMN diagrams represented by the internal Model, using the https://jgraph.github.io/mxgraph/[mxGraph library]
 
 image::images/architecture/architecture_overview.svg[]
-

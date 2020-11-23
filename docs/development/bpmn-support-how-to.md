@@ -39,6 +39,19 @@ Refer to existing Pull Requests to have a better view about the work to do, for 
 - [Manual Task Detection Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/582/files)
 
 
+### BPMN model update
+
+When changing the model, the image representing the model in the documentation needs to be updated as well.
+
+The documentation uses the SVG image produced from draw.io file.
+This file is stored [here](../architecture/images/architecture/internal-model.drawio).
+
+To update the model
+- edit [internal-model.drawio](../architecture/images/architecture/internal-model.drawio) with https://app.diagrams.net or with the `diagrams.net` desktop application
+- store the modified file in the repository 
+- don't forget to export it as SVG and store it in [the repository](../architecture/images/architecture/internal-model.svg) as well
+
+
 ### What to change?
 
 Except for special container elements like `Pool`, `Lane` and `Subprocess`, detecting a new BPMN element only requires to

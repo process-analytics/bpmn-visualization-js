@@ -22,6 +22,8 @@
 
 include::intro.adoc[]
 
+include::overview.adoc[]
+
 include::bpmn-support.adoc[]
 
 include::architecture/00-index.adoc[]

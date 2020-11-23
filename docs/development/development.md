@@ -41,17 +41,3 @@ Although Linting, Sonar and Tests keeps the code in a good shape
 We strongly recommend you to read following resources to be able to write code that is conform to the best practices:
 - [basics](https://www.typescriptlang.org/docs/handbook/basic-types.html)
 - [do's and don'ts](https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html)
-
-## Building the html documentation
-
-**DISCLAIMER**:
-- the documentation sources are in the AsciiDoctor format and are hosted in the [docs](..) folder. The display
-may not fully work (font-awesome icons and some links) depending on the rendering engine. This is the case when
-displayed directly on GitHub Web.
-
-From the root folder of the repository, run 
-```bash
-npm run docs
-```
-
-The documentation is generated in the `build/docs` folder.
