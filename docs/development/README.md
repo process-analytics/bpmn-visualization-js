@@ -18,5 +18,5 @@ Here are some tips to help during development.
 - [mxgraph version bump](./mxgraph-version-bump.md)
 
 ## Misc
-- [documentation](./documentation.md)
+- [documentation guidelines](docs/development/documentation-guidelines.md)
 - [for the maintainers](./maintainers.md)
