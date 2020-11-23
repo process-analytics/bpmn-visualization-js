@@ -92,13 +92,7 @@ npm i bpmn-visualization
   * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-js/blob/master/src/demo/index.ts)
 ```javascript
     let bpmnContent; // your BPMN 2.0 XML content
-```
-* In the HTML page, define the container that displays the BPMN diagram.
-```html
-    <div id="bpmn-container"></div>
-```
-* Initialize BpmnVisualization and load the diagram
-```javascript
+    // initialize BpmnVisualization and load the diagram
     const bpmnContainerElt = document.getElementById('bpmn-container');
     const bpmnVisualization = new bpmnvisu.BpmnVisualization(bpmnContainerElt);
     bpmnVisualization.load(bpmnContent);
