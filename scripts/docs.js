@@ -28,10 +28,9 @@ console.info('Building bpmn-visualization html documentation');
 fse.removeSync(docsOutput);
 
 // build html docs
-Asciidoctor().convert(fs.readFileSync('docs/index.adoc'), {
-  base_dir: 'docs',
-  to_file: `../${docsOutput}/index.html`,
-  // to_file: '../build/docs/index.html',
+Asciidoctor().convert(fs.readFileSync('docs/users/index.adoc'), {
+  base_dir: 'docs/users',
+  to_file: `../../${docsOutput}/index.html`,
   standalone: true,
   mkdirs: true,
   safe: 'unsafe', // needed because we want to generate the html outside of the directory that stores the source files
@@ -40,8 +39,8 @@ Asciidoctor().convert(fs.readFileSync('docs/index.adoc'), {
 // copy images
 fse.ensureDirSync(`${docsOutput}/images`);
 
-fse.copySync('docs/images', `${docsOutput}/images`);
-fse.copySync('docs/architecture/images', `${docsOutput}/images`);
+fse.copySync('docs/users/images', `${docsOutput}/images`);
+fse.copySync('docs/users/architecture/images', `${docsOutput}/images`);
 fse.copySync('src/static/img/favicon.ico', `${docsOutput}/favicon.ico`);
 
 // eslint-disable-next-line no-console
