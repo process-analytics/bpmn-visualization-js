@@ -26,7 +26,7 @@ let loadOptions: LoadOptions = {};
 export function updateLoadOptions(fitOptions: FitOptions): void {
   log('Updating load options', fitOptions);
   loadOptions.fit = fitOptions;
-  log('Load options updated!', loadOptions);
+  log('Load options updated!', stringify(loadOptions));
 }
 
 /**
@@ -110,10 +110,11 @@ function defaultStatusFetchKoNotifier(errorMsg: string): void {
 }
 
 function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration, parameters: URLSearchParams): FitOptions {
-  const fitOptions = config.loadOptions?.fit || {};
-  const parameterFitType = parameters.get('fitTypeOnLoad');
+  const fitOptions: FitOptions = config.loadOptions?.fit || {};
+  const parameterFitType: string = parameters.get('fitTypeOnLoad');
   if (parameterFitType) {
-    fitOptions.type = FitType[parameterFitType as keyof typeof FitType];
+    // As the parameter is a string, and the load/fit APIs accept only enum to avoid error, we need to convert it
+    fitOptions.type = <FitType>parameterFitType;
   }
   const parameterFitMargin = parameters.get('fitMargin');
   if (parameterFitMargin) {

@@ -17,7 +17,7 @@ import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, Imag
 import { FitType, LoadOptions } from '../../src/component/options';
 import { join, dirname } from 'path';
 
-function getCustomSnapshotIdentifier(fitType: string, fileName: string, margin = 0): string {
+function getCustomSnapshotIdentifier(fitType: FitType, fileName: string, margin = 0): string {
   return `no-diagram-visual-regression-fit-type-${fitType}-margin-${margin == null || margin < 0 ? 0 : margin}-diagram-${fileName}`;
 }
 
@@ -54,15 +54,9 @@ describe('no diagram visual regression', () => {
     ]),
   );
 
-  const fitTypes: [string, FitType][] = [
-    [FitType[FitType.None], FitType.None],
-    [FitType[FitType.HorizontalVertical], FitType.HorizontalVertical],
-    [FitType[FitType.Horizontal], FitType.Horizontal],
-    [FitType[FitType.Vertical], FitType.Vertical],
-    [FitType[FitType.Center], FitType.Center],
-  ];
-  describe.each(fitTypes)('load options - fit %s', (loadFitTitle: string, loadFitType: FitType) => {
-    const loadFitDiffDir = join(loadDiffDir, `fit-type-${loadFitTitle}`);
+  const fitTypes: FitType[] = [FitType.None, FitType.HorizontalVertical, FitType.Horizontal, FitType.Vertical, FitType.Center];
+  describe.each(fitTypes)('load options - fit %s', (loadFitType: FitType) => {
+    const loadFitDiffDir = join(loadDiffDir, `fit-type-${loadFitType}`);
     const fitDiffDir = join(loadFitDiffDir, 'fit');
 
     describe.each(['horizontal', 'vertical', 'with_outside_flows', 'with_outside_labels'])('diagram %s', (fileName: string) => {
@@ -78,15 +72,15 @@ describe('no diagram visual regression', () => {
         const config = imageSnapshotConfigurator.getConfig(fileName, 0.00006);
         expect(image).toMatchImageSnapshot({
           ...config,
-          customSnapshotIdentifier: getCustomSnapshotIdentifier(loadFitTitle, fileName),
+          customSnapshotIdentifier: getCustomSnapshotIdentifier(loadFitType, fileName),
           customDiffDir: loadFitDiffDir,
         });
       });
 
-      it.each(fitTypes)(`load + fit %s`, async (fitTitle: string) => {
+      it.each(fitTypes)(`load + fit %s`, async (fitType: FitType) => {
         await initializePage({ fit: { type: loadFitType } }, fileName);
 
-        await page.click(`#${fitTitle}`);
+        await page.click(`#${fitType}`);
         // To unselect the button
         await page.mouse.click(0, 0);
 
@@ -99,8 +93,8 @@ describe('no diagram visual regression', () => {
         const config = imageSnapshotConfigurator.getConfig(fileName, 0.00006);
         expect(image).toMatchImageSnapshot({
           ...config,
-          customSnapshotIdentifier: getCustomSnapshotIdentifier(fitTitle, fileName),
-          customDiffDir: join(fitDiffDir, `fit-type-${fitTitle}`),
+          customSnapshotIdentifier: getCustomSnapshotIdentifier(fitType, fileName),
+          customDiffDir: join(fitDiffDir, `fit-type-${fitType}`),
         });
       });
 
@@ -117,8 +111,8 @@ describe('no diagram visual regression', () => {
           const config = imageSnapshotConfigurator.getConfig(fileName);
           expect(image).toMatchImageSnapshot({
             ...config,
-            customSnapshotIdentifier: getCustomSnapshotIdentifier(loadFitTitle, fileName, margin),
-            customDiffDir: join(loadDiffDir, `fit-type-${loadFitTitle}-margin-${margin}`),
+            customSnapshotIdentifier: getCustomSnapshotIdentifier(loadFitType, fileName, margin),
+            customDiffDir: join(loadDiffDir, `fit-type-${loadFitType}-margin-${margin}`),
           });
         });
       }

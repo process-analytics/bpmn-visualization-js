@@ -64,13 +64,13 @@ export interface FitOptions {
  */
 export enum FitType {
   /** No fit, use dimensions and coordinates from the BPMN diagram. */
-  None,
+  None = 'None',
   /** Fit the whole html container available to render the BPMN diagram. */
-  HorizontalVertical,
+  HorizontalVertical = 'HorizontalVertical',
   /** Fit only horizontally. */
-  Horizontal,
+  Horizontal = 'Horizontal',
   /** Fit only vertically. */
-  Vertical,
+  Vertical = 'Vertical',
   /** Fit and center the BPMN Diagram. */
-  Center,
+  Center = 'Center',
 }
