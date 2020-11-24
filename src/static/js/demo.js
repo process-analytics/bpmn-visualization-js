@@ -77,7 +77,10 @@ function configureFitTypeSelect() {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureFitMarginInput() {
   const fitMarginElt = document.getElementById('fit-margin');
-  fitMarginElt.onchange = event => updateFitConfig({ margin: event.target.value });
+  fitMarginElt.onchange = event => {
+    updateFitConfig({ margin: event.target.value });
+    fit(fitOptions);
+  };
 
   if (fitOptions.margin) {
     fitMarginElt.value = fitOptions.margin;
