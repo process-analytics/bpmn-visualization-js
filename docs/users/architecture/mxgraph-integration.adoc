@@ -5,4 +5,4 @@ https://jgraph.github.io/mxgraph/docs/manual.html#3.1.1[mxGraph model] from the 
 
 It also provides the Diagram Navigation support.
 
-For more details, see the https://github.com/process-analytics/bpmn-visualization-js/tree/master/docs/development/mxgraph-integration.md[development documentation].
+For more details, see the https://github.com/process-analytics/bpmn-visualization-js/tree/master/docs/contributors/mxgraph-integration.md[development documentation].

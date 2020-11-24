@@ -25,17 +25,17 @@ If you start working on one of the existing [issues](https://github.com/process-
 
 3. Do not commit changes to files that are irrelevant to your feature or bugfix (eg: `.gitignore`).
 
-4. Provide [tests](./docs/development/development.md#tests) and documentation whenever possible.
+4. Provide [tests](./docs/contributors/development.md#tests) and documentation whenever possible.
 
-5. Be sure you have followed the [code style](./docs/development/development.md#code-style) for the project.
+5. Be sure you have followed the [code style](./docs/contributors/development.md#code-style) for the project.
 
 6. Prior opening a Pull Request, ensure the build is fully working by locally running `npm run all` (build, check and
 test everything)
 
-7. Open a [GitHub Pull Request](./docs/development/pull-request.md#open-a-pull-request) with your patches. (**1** pull request = **1** feature or bug)
+7. Open a [GitHub Pull Request](./docs/contributors/pull-request.md#open-a-pull-request) with your patches. (**1** pull request = **1** feature or bug)
    We will review your contribution and respond as quickly as possible. Keep in mind that this is an open source project, and it may take us some time to get back to you. Your patience is very much appreciated.
 
-8. If this is your 1st Pull Request, sign the [Contributor License Agreement](./docs/development/pull-request.md#sign-the-contributor-license-agreement)
+8. If this is your 1st Pull Request, sign the [Contributor License Agreement](./docs/contributors/pull-request.md#sign-the-contributor-license-agreement)
 
 9. Be willing to accept criticism and work on improving your code. 
 
@@ -54,11 +54,11 @@ git checkout -b 25-annotations_to_tasks
 ```
 
 ### IDE configuration
-To know how configurate your development environment, see [IDE configuration](./docs/development/ide-configuration.md).
+To know how configurate your development environment, see [IDE configuration](./docs/contributors/ide-configuration.md).
 
 ### Development
 
-You'll find [here](./docs/development/development.md) the necessary information to build, test, lint your code, and some tips too. 
+You'll find [here](./docs/contributors/development.md) the necessary information to build, test, lint your code, and some tips too. 
 
 ### Commit in your branch
 There is no convention for the commit message in your branch.
@@ -69,11 +69,11 @@ The most important part is the title of the Pull Request, because:
 
 ### Pull Request
 
-After your development finished, you need to open a Pull Request. You'll find [here](./docs/development/pull-request.md) all the necessary information to open it and to keep it updated.
+After your development finished, you need to open a Pull Request. You'll find [here](./docs/contributors/pull-request.md) all the necessary information to open it and to keep it updated.
 
 
 At this point, you're ready to make your changes! Feel free to ask for help. Everyone is a beginner at first 😸
 
 ## Maintainers
 
-See the necessary information for the [Maintainers](./docs/development/maintainers.md)
+See the necessary information for the [Maintainers](./docs/contributors/maintainers.md)
