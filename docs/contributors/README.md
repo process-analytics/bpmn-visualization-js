@@ -13,7 +13,7 @@ Here are some tips to help during development.
 ## Contributing
 - [testing](testing.md)
 - [how to support new BPMN elements](bpmn-support-how-to.md)
-- [how to submit us your work](pull-request.md)
+- [how to submit your work](pull-request.md)
 - [mxgraph integration](mxgraph-integration.md)
 - [mxgraph version bump](mxgraph-version-bump.md)
 
