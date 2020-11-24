@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <title>BPMN Visualization Demo</title>
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
@@ -62,6 +63,16 @@
                   <input type="number" id="fit-margin" min="0" max="100" maxlength="3" oninput="validity.valid||(value='');" class="text-red-900 pl-1">
                 </label>
               </a>
+            </li>
+            <li class="mr-3 flex-1">
+              <div id="zoom-config-controls" class="py-1 md:py-3 pl-0 md:pl-1 align-middle text-white border-b-2 border-gray-800 border-yellow-500" style="visibility: hidden;">
+                <label for="zoom-throttle" class="block w-full">Throttle:
+                  <input id="zoom-throttle" class="zoom-config float-right" type="number" placeholder="thr" value="30" min="0" max="100" disabled title="to play with throttle pass parameter in url like this: .../navigation-diagram.html?zoomConfigControls=true&zoomThrottle=40"/>
+                </label>
+                <label for="zoom-debounce" class="block w-full">Debounce:
+                  <input id="zoom-debounce" class="zoom-config float-right" type="number" placeholder="deb" value="30" min="0" max="100" disabled title="to play with debounce pass parameter in url like this: .../navigation-diagram.html?zoomConfigControls=true&zoomDebounce=30"/>
+                </label>
+              </div>
             </li>
           </ul>
         </div>

@@ -99,15 +99,39 @@ function configureControlPanel() {
   }
 }
 
+function preventZoomingPage() {
+  document.addEventListener(
+    'wheel',
+    e => {
+      if (e.ctrlKey) event.preventDefault(); //prevent zoom
+    },
+    { passive: false, capture: 'bubble' },
+  );
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
+  preventZoomingPage();
+
+  const parameters = new URLSearchParams(window.location.search);
+  const zoomThrottleElt = document.getElementById('zoom-throttle'),
+    zoomDebounceElt = document.getElementById('zoom-debounce'),
+    zoomControlsElt = document.getElementById('zoom-config-controls');
+  if (parameters.get('zoomThrottle')) {
+    zoomControlsElt.style = 'visibility: visible';
+    zoomThrottleElt.value = parameters.get('zoomThrottle');
+  }
+  if (parameters.get('zoomDebounce')) {
+    zoomControlsElt.style = 'visibility: visible';
+    zoomDebounceElt.value = parameters.get('zoomDebounce');
+  }
   startBpmnVisualization({
     container: 'bpmn-container',
     globalOptions: {
       mouseNavigationSupport: true,
       zoomConfiguration: {
-        throttleDelay: 30,
-        debounceDelay: 30,
+        throttleDelay: zoomThrottleElt.value,
+        debounceDelay: zoomDebounceElt.value,
       },
     },
   });
