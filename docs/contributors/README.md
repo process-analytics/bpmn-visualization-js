@@ -1,7 +1,7 @@
 # Guidelines for Contributors and Development
 
 General information are available in the [Contributing Guide](../../CONTRIBUTING.md).
-Information about the library internals are available in the [architecture folder](../architecture) or in html form in the [documentation site](https://process-analytics.github.io/bpmn-visualization-js/#_architecture_and_development)
+Information about the library internals are available in the [architecture folder](../users/architecture) or in html form in the [documentation site](https://process-analytics.github.io/bpmn-visualization-js/#_architecture_and_development)
 
 Here are some tips to help during development.
 
