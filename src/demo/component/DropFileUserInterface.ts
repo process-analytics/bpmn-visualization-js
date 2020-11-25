@@ -85,9 +85,8 @@ export class DropFileUserInterface {
 #${this.outerContainerId} .drop-here-text {
     display: none;
     border: 2px solid transparent;
-    width: 98%;
-    height: 98%;
-    margin: 1%;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
 }
 #${this.outerContainerId} .drop-here-text p {
@@ -100,7 +99,7 @@ export class DropFileUserInterface {
 #${this.outerContainerId}.dragging  .drop-here-text {
     cursor: default;
     display: block;
-    border: 3px dashed rgba(0,0,0,.2);
+    border: 2px dashed rgba(0,0,0,.2);
     border-radius: 7px;
 }`;
     // endregion
