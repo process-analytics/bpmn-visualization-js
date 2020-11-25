@@ -109,9 +109,18 @@ function preventZoomingPage() {
   );
 }
 
+function setupFixedDiagramContainerSize(containerId) {
+  const containerElt = document.getElementById(containerId);
+  const height = containerElt.parentNode.parentNode.getBoundingClientRect().height;
+  // parent height minus 2 x padding
+  containerElt.style = `overflow: hidden; height:${height - 2 * 20}px`;
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
   preventZoomingPage();
+  const bpmnContainerId = 'bpmn-container';
+  setupFixedDiagramContainerSize(bpmnContainerId);
 
   const parameters = new URLSearchParams(window.location.search);
   const zoomThrottleElt = document.getElementById('zoom-throttle'),
@@ -126,7 +135,7 @@ function startDemo() {
     zoomDebounceElt.value = parameters.get('zoomDebounce');
   }
   startBpmnVisualization({
-    container: 'bpmn-container',
+    container: bpmnContainerId,
     globalOptions: {
       mouseNavigationSupport: true,
       zoomConfiguration: {

@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <!-- 768 is the break point from which current layout is nicely displayed, below that is not yet supported -->
+    <meta name="viewport" content="width=768, initial-scale=0.5, maximum-scale=0.5, user-scalable=no, shrink-to-fit=no">
     <title>BPMN Visualization Demo</title>
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
@@ -47,7 +48,7 @@
             <li class="mr-3 flex-1">
               <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline border-b-2 border-blue-600">
                 <label>Fit type
-                  <select name="fitTypes" id="fitType-selected" class="text-blue-900">
+                  <select name="fitTypes" id="fitType-selected" class="w-full text-blue-900">
                     <option value="None" selected="yes">None</option>
                     <option value="HorizontalVertical">Horizontal-Vertical</option>
                     <option value="Horizontal">Horizontal</option>
@@ -60,7 +61,7 @@
             <li class="mr-3 flex-1">
               <a href="#" class="block py-1 md:py-3 pl-0 md:pl-1 align-middle text-white no-underline border-b-2 border-gray-800 border-red-500">
                 <label for="fit-margin">Fit margin
-                  <input type="number" id="fit-margin" min="0" max="100" maxlength="3" oninput="validity.valid||(value='');" class="text-red-900 pl-1">
+                  <input type="number" id="fit-margin" min="0" max="100" maxlength="3" oninput="validity.valid||(value='');" class="text-red-900 pl-1 float-right">
                 </label>
               </a>
             </li>
@@ -92,9 +93,7 @@
             <!-- TODO: check if possible to drop [style]-->
             <div class="bg-white border-transparent rounded-lg shadow-xl overflow-hidden absolute" style="top: 158px; right: 20px; bottom: 20px; left: 215px;">
               <div class="p-5">
-
                   <div id="bpmn-container"></div>
-
               </div>
             </div>
             <!--/Graph Space-->

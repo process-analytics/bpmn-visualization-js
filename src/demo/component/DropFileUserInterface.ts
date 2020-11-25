@@ -26,11 +26,11 @@ export class DropFileUserInterface {
   }
 
   private initializeDragAndDrop(): void {
-    this.addDomElements();
+    const containerToBeFaded = document.getElementById(this.containerToFadeId);
+    this.addDomElements(containerToBeFaded);
     this.addStyle();
 
     const dropContainer = document.getElementById(this.outerContainerId);
-    const containerToBeFaded = document.getElementById(this.containerToFadeId);
     // prevent loading file by the browser
     this.preventDefaultsOnEvents(['dragover', 'drop'], this.window);
     this.preventDefaultsOnEvents(['dragover', 'dragleave', 'drop'], dropContainer);
@@ -50,7 +50,7 @@ export class DropFileUserInterface {
     });
   }
 
-  private addDomElements(): void {
+  private addDomElements(containerToBeFaded: HTMLElement): void {
     const p = this.document.createElement('p');
     p.textContent = 'open BPMN diagram';
     const innerDiv = this.document.createElement('div');
@@ -59,7 +59,7 @@ export class DropFileUserInterface {
     const containerDiv = this.document.createElement('div');
     containerDiv.id = this.outerContainerId;
     containerDiv.appendChild(innerDiv);
-    this.body.insertBefore(containerDiv, this.body.firstChild);
+    containerToBeFaded.parentNode.prepend(containerDiv);
   }
 
   private addStyle(): void {
@@ -100,7 +100,7 @@ export class DropFileUserInterface {
 #${this.outerContainerId}.dragging  .drop-here-text {
     cursor: default;
     display: block;
-    border: 2px dashed #555;
+    border: 3px dashed rgba(0,0,0,.2);
     border-radius: 7px;
 }`;
     // endregion
