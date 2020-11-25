@@ -50,7 +50,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Lint check
-        run: npm run lint-check
+        run: npm run lint-check -- -f json -o build/eslint-reporter.json
       - name: Build Application
         run: npm run build
       - name: Test Application
