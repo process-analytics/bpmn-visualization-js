@@ -81,6 +81,7 @@ export class DropFileUserInterface {
     font-weight: bold;
     text-align: center;
     color: #555;
+    padding: 10px;
 }
 #${this.outerContainerId} .drop-here-text {
     display: none;
