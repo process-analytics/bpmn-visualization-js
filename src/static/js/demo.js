@@ -99,6 +99,7 @@ function configureControlPanel() {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function preventZoomingPage() {
   document.addEventListener(
     'wheel',
@@ -109,6 +110,7 @@ function preventZoomingPage() {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function setupFixedDiagramContainerSize(containerId) {
   const containerElt = document.getElementById(containerId);
   const height = containerElt.parentNode.parentNode.getBoundingClientRect().height;
