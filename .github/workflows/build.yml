@@ -55,7 +55,13 @@ jobs:
         run: npm run build
       - name: Test Application
         id: 'test_unit'
-        run: npm run test:unit
+        run: |
+          if ["${{ matrix.os.name }}" = "ubuntu-20.04"]; then
+            npm run test:unit:coverage
+          else
+            npm run test:unit
+          fi
+        shell: bash
       - name: Upload unit test results
         if: ${{ failure() && steps.test_unit.outcome == 'failure' }}
         uses: actions/upload-artifact@v2
@@ -64,7 +70,13 @@ jobs:
           path: build/test-report/unit
       - name: Test Application End to End
         id: 'test_e2e'
-        run: npm run test:e2e
+        run: |
+          if ["${{ matrix.os.name }}" = "ubuntu-20.04"]; then
+            npm run test:e2e:coverage
+          else
+            npm run test:e2e
+          fi
+        shell: bash
       - name: Upload e2e test results
         if: ${{ failure() && steps.test_e2e.outcome == 'failure' }}
         uses: actions/upload-artifact@v2
