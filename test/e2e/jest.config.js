@@ -39,5 +39,11 @@ module.exports = {
         includeSuiteFailure: true,
       },
     ],
+    [
+      'jest-sonar',
+      {
+        outputDirectory: 'build/test-report/e2e',
+      },
+    ],
   ],
 };

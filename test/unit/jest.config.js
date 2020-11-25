@@ -48,5 +48,11 @@ module.exports = {
         includeSuiteFailure: true,
       },
     ],
+    [
+      'jest-sonar',
+      {
+        outputDirectory: 'build/test-report/unit',
+      },
+    ],
   ],
 };
