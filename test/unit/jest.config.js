@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 module.exports = {
-  roots: ['./'],
+  rootDir: '../..',
+  roots: ['./test/unit', './src'],
   moduleNameMapper: {
     // mock files that jest doesn't support like CSS and SVG files
     '\\.css$': './../module-mock.js',
     '\\.svg$': './../module-mock.js',
   },
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  testPathIgnorePatterns: ['/node_modules/', 'dist'],
+  testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
   collectCoverageFrom: ['**/*.{ts,js}'],
-  coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static'],
   coverageThreshold: {
     global: {
       branches: 80,
@@ -35,8 +36,9 @@ module.exports = {
       statements: 80,
     },
   },
-  coverageReporters: ['json', 'json-summary', 'lcov', 'text', 'text-summary', 'clover'],
-  setupFiles: ['./jest.globals.ts'],
+  coverageReporters: ['lcovonly', 'text', 'text-summary'],
+  coverageDirectory: 'build/test-report/unit',
+  setupFiles: ['./test/unit/jest.globals.ts'],
   reporters: [
     'default',
     [

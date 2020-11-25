@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 module.exports = {
+  rootDir: '../..',
+  roots: ['./test/e2e', './src'],
   preset: 'jest-puppeteer',
-  roots: ['./'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  testPathIgnorePatterns: ['/node_modules/', 'dist'],
+  testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
   testTimeout: 200000,
   transform: {
     '^.+\\.ts?$': 'ts-jest',
@@ -25,9 +26,21 @@ module.exports = {
   testEnvironment: 'jest-environment-puppeteer-jsdom',
   globalSetup: 'jest-environment-puppeteer-jsdom/setup',
   globalTeardown: 'jest-environment-puppeteer-jsdom/teardown',
-  setupFiles: ['./config/jest.globals.ts'],
+  collectCoverageFrom: ['**/*.{ts,js}'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static'],
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
+    },
+  },
+  coverageReporters: ['lcovonly', 'text', 'text-summary'],
+  coverageDirectory: 'build/test-report/e2e',
+  setupFiles: ['./test/e2e/config/jest.globals.ts'],
   // jest-image-snapshot configuration doesn't work with setupFiles, fix with setupFilesAfterEnv: see https://github.com/testing-library/jest-dom/issues/122#issuecomment-650520461
-  setupFilesAfterEnv: ['./config/jest.image.ts'],
+  setupFilesAfterEnv: ['./test/e2e/config/jest.image.ts'],
   reporters: [
     'default',
     [
