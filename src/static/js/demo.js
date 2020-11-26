@@ -115,15 +115,24 @@ function startDemo() {
     const bpmnEltId = event.target.value;
     log('bpmn element', bpmnEltId);
     const htmlElt = bpmnVisualization.getBpmnHtmlElement(bpmnEltId);
-    //log('Found', stringify(htmlElt));
+    if (!htmlElt) {
+      log('not found!');
+      return;
+    }
 
-    htmlElt.classList.add('warning');
+    log('Found html element');
+    htmlElt.onclick = event => {
+      window.alert(`You click on ${bpmnEltId}`);
+    };
+
+    //
+    // htmlElt.classList.add('warning');
   };
 }
 
-function stringify(value) {
-  return JSON.stringify(value, undefined, 2);
-}
+// function stringify(value) {
+//   return JSON.stringify(value, undefined, 2);
+// }
 
 // Start
 documentReady(startDemo);
