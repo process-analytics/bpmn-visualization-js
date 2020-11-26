@@ -28,7 +28,7 @@ export default class BpmnVisualization {
   /**
    * @experimental subject to change, feedback welcome
    */
-  private readonly htmlElementRegistry: HtmlElementRegistry;
+  readonly htmlElementRegistry: HtmlElementRegistry;
 
   constructor(protected container: HTMLElement, options?: GlobalOptions) {
     try {
