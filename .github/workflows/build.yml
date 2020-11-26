@@ -23,7 +23,6 @@ on:
       - 'docs/**'
       - '*.md'
       - LICENSE
-    types: [opened, synchronize, reopened]
 
 jobs:
   build:
