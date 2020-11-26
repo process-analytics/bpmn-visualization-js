@@ -16,38 +16,43 @@
 import BpmnVisualization from '../../src/component/BpmnVisualization';
 import { readFileSync } from '../helpers/file-helper';
 
-const graphContainerId = 'bpmn-visualization-graph';
+const bpmnContainerId = 'bpmn-visualization-container';
 
 function initializeBpmnVisualization(): BpmnVisualization {
-  // insert graph container
+  // insert bpmn container
   const containerDiv = document.createElement('div');
-  containerDiv.id = graphContainerId;
+  containerDiv.id = bpmnContainerId;
   document.body.insertBefore(containerDiv, document.body.firstChild);
-  // initialize graph
-  const bpmnVisuGraphContainer = document.getElementById(graphContainerId);
-  return new BpmnVisualization(bpmnVisuGraphContainer);
-}
-
-function findSvgElement(cellId: string): SVGGeometryElement {
-  const cellGroups = document.querySelectorAll(`#${graphContainerId} svg g g[data-cell-id="${cellId}"]`);
-  const event = cellGroups[0] as SVGGElement;
-  return event.firstChild as SVGGeometryElement;
-}
-
-function expectEvent(cellId: string): void {
-  expect(findSvgElement(cellId).nodeName).toBe('ellipse');
-}
-
-function expectTask(cellId: string): void {
-  expect(findSvgElement(cellId).nodeName).toBe('rect');
+  // initialize bpmn-visualization
+  const bpmnVisualizationElt = document.getElementById(bpmnContainerId);
+  return new BpmnVisualization(bpmnVisualizationElt);
 }
 
 describe('BpmnVisu DOM only checks', () => {
   it('DOM should contains BPMN elements when loading simple-start-task-end.bpmn', async () => {
-    initializeBpmnVisualization().load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+    const bpmnVisualization = initializeBpmnVisualization();
+    bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
 
-    expectEvent('StartEvent_1');
-    expectTask('Activity_1');
-    expectEvent('EndEvent_1');
+    const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+    htmlElementLookup.expectEvent('StartEvent_1');
+    htmlElementLookup.expectTask('Activity_1');
+    htmlElementLookup.expectEvent('EndEvent_1');
   });
 });
+
+class HtmlElementLookup {
+  constructor(private bpmnVisualization: BpmnVisualization) {}
+
+  private findSvgElement(cellId: string): SVGGeometryElement {
+    const cellSvgElement = this.bpmnVisualization.htmlElementRegistry.getBpmnHtmlElement(cellId); // should be SVGGElement
+    return cellSvgElement.firstChild as SVGGeometryElement;
+  }
+
+  expectEvent(cellId: string): void {
+    expect(this.findSvgElement(cellId).nodeName).toBe('ellipse');
+  }
+
+  expectTask(cellId: string): void {
+    expect(this.findSvgElement(cellId).nodeName).toBe('rect');
+  }
+}
