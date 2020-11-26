@@ -29,6 +29,10 @@ export function updateLoadOptions(fitOptions: FitOptions): void {
   log('Load options updated!', stringify(loadOptions));
 }
 
+export function getBpmnVisualization(): BpmnVisualization {
+  return bpmnVisualization;
+}
+
 /**
  * Returns a copy
  */

@@ -5,6 +5,14 @@
     <title>BPMN Visualization Demo</title>
     <link href="./static/css/main.css" rel="stylesheet">
     <link rel="shortcut icon" href="./static/img/favicon.ico">
+    <style>
+      .warning {
+        fill: orange;
+      }
+      .ok {
+        fill: chartreuse;
+      }
+    </style>
 </head>
 <body>
     <div id="controls" class="controls">
@@ -26,6 +34,11 @@
           <label for="fit-margin">Fit margin
             <input type="number" id="fit-margin" min="0" max="100" maxlength="3" oninput="validity.valid||(value='');">
           </label>
+
+          <label for="bpmn-element">Bpnm Element
+            <input type="text" id="bpmn-element" >
+          </label>
+
         </div>
       </div>
       <div id="file-panel">

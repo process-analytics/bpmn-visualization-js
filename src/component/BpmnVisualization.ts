@@ -55,4 +55,16 @@ export default class BpmnVisualization {
   public fit(options?: FitOptions): void {
     this.graph.customFit(options);
   }
+
+  getBpmnHtmlElement(bpmnElementId: string): HTMLElement {
+    const bpmnContainerId = this.container.id;
+    const cssSelector = `#${bpmnContainerId} svg g g[data-cell-id="${bpmnElementId}"]`;
+
+    return document.querySelector<HTMLElement>(cssSelector);
+  }
+
+  // addCssClass(bpmnElementId: string, cssClassName: string): void {
+  //
+  // }
+  // remove
 }

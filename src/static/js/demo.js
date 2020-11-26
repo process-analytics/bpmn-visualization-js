@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, FitType, fit, log, updateLoadOptions, getCurrentLoadOptions } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, FitType, fit, log, updateLoadOptions, getCurrentLoadOptions, getBpmnVisualization } from '../../index.es.js';
 
 let fitOnLoad = true;
 let fitOptions = {};
@@ -108,6 +108,21 @@ function startDemo() {
   configureFitMarginInput();
   configureFitOnLoadCheckBox();
   configureControlPanel();
+
+  const bpmnVisualization = getBpmnVisualization();
+  const fitMarginElt = document.getElementById('bpmn-element');
+  fitMarginElt.onchange = event => {
+    const bpmnEltId = event.target.value;
+    log('bpmn element', bpmnEltId);
+    const htmlElt = bpmnVisualization.getBpmnHtmlElement(bpmnEltId);
+    //log('Found', stringify(htmlElt));
+
+    htmlElt.classList.add('warning');
+  };
+}
+
+function stringify(value) {
+  return JSON.stringify(value, undefined, 2);
 }
 
 // Start
