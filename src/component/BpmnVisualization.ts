@@ -78,9 +78,4 @@ class HtmlElementRegistry {
     // TODO error management, for now we return null
     return document.querySelector<HTMLElement>(cssSelector);
   }
-
-  // addCssClass(bpmnElementId: string, cssClassName: string): void {
-  //
-  // }
-  // remove
 }
