@@ -18,13 +18,14 @@ import { mxgraph } from 'ts-mxgraph';
 import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
 import { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
-import { GlobalOptions, FitOptions, LoadOptions } from './options';
+import { FitOptions, GlobalOptions, LoadOptions } from './options';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
 
 export default class BpmnVisualization {
   public readonly graph: BpmnMxGraph;
+  private readonly htmlApi: ElementSearchAPI;
 
   constructor(protected container: HTMLElement, options?: GlobalOptions) {
     try {
@@ -34,6 +35,8 @@ export default class BpmnVisualization {
       // Instantiate and configure Graph
       const configurator = new MxGraphConfigurator(this.container);
       this.graph = configurator.configure(options);
+
+      this.htmlApi = new ElementSearchAPI(this.container.id);
     } catch (e) {
       // TODO error handling
       mxUtils.alert('Cannot start application: ' + e.message);
@@ -55,11 +58,13 @@ export default class BpmnVisualization {
   public fit(options?: FitOptions): void {
     this.graph.customFit(options);
   }
+}
+
+class ElementSearchAPI {
+  constructor(private containerId: string) {}
 
   getBpmnHtmlElement(bpmnElementId: string): HTMLElement {
-    const bpmnContainerId = this.container.id;
-    const cssSelector = `#${bpmnContainerId} svg g g[data-cell-id="${bpmnElementId}"]`;
-
+    const cssSelector = `#${this.containerId} svg g g[data-cell-id="${bpmnElementId}"]`;
     return document.querySelector<HTMLElement>(cssSelector);
   }
 
