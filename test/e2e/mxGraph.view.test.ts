@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 import { loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
+import { BpmnElementSelector } from './helpers/visu-utils';
 
 let bpmnContainerId = 'bpmn-container';
+let bpmnElementSelector = new BpmnElementSelector(bpmnContainerId);
 
 async function expectLabel(cellId: string, expectedText?: string): Promise<void> {
   if (!expectedText) {
     return;
   }
-  const svgElementHandle = await page.waitForSelector(`#${bpmnContainerId} svg g g[data-cell-id="${cellId}"] g foreignObject`);
+  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.labelOfFirstAvailableElement(cellId));
   // contains 3 div
   expect(await svgElementHandle.evaluate(node => (node.firstChild.firstChild.firstChild as HTMLElement).innerHTML)).toBe(expectedText);
 }
 
 async function expectEvent(cellId: string, expectedText: string): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(`#${bpmnContainerId} svg g g[data-cell-id="${cellId}"]`);
-  // TODO do we test class?
+  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(cellId));
+  // TODO do we test the class attribute?
   expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('ellipse');
   expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('rx'))).toBe('18');
   expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('ry'))).toBe('18');
@@ -36,7 +38,7 @@ async function expectEvent(cellId: string, expectedText: string): Promise<void> 
 }
 
 async function expectTask(cellId: string, expectedText: string): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(`#${bpmnContainerId} svg g g[data-cell-id="${cellId}"]`);
+  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(cellId));
   expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-task');
   expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('rect');
   expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('width'))).toBe('100');
@@ -45,7 +47,7 @@ async function expectTask(cellId: string, expectedText: string): Promise<void> {
 }
 
 async function expectSequenceFlow(cellId: string, expectedText?: string): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(`#${bpmnContainerId} svg g g[data-cell-id="${cellId}"]`);
+  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(cellId));
   expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-sequenceFlow-normal');
   expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('path');
   await expectLabel(cellId, expectedText);
@@ -72,6 +74,8 @@ describe('demo page', () => {
 describe('lib-integration page', () => {
   it('should display diagram in page', async () => {
     bpmnContainerId = 'bpmn-container-custom';
+    bpmnElementSelector = new BpmnElementSelector(bpmnContainerId);
+
     await page.goto(`http://localhost:10002/lib-integration.html?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-only.bpmn')}`);
     await expect(page.title()).resolves.toMatch('BPMN Visualization Lib Integration');
     await page.waitForSelector(`#${bpmnContainerId}`);
