@@ -27,7 +27,7 @@ module.exports = {
     '^.+\\.ts?$': 'ts-jest',
   },
   collectCoverageFrom: ['**/*.{ts,js}'],
-  coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static', 'src/model'],
   coverageReporters: ['lcovonly', 'text', 'text-summary'],
   coverageDirectory: 'build/test-report/unit',
   setupFiles: ['./test/unit/jest.globals.ts'],
