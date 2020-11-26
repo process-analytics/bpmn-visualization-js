@@ -28,14 +28,6 @@ module.exports = {
   },
   collectCoverageFrom: ['**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static'],
-  coverageThreshold: {
-    global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
-    },
-  },
   coverageReporters: ['lcovonly', 'text', 'text-summary'],
   coverageDirectory: 'build/test-report/unit',
   setupFiles: ['./test/unit/jest.globals.ts'],

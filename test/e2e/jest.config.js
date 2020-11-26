@@ -28,14 +28,6 @@ module.exports = {
   globalTeardown: 'jest-environment-puppeteer-jsdom/teardown',
   collectCoverageFrom: ['**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static'],
-  coverageThreshold: {
-    global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
-    },
-  },
   coverageReporters: ['lcovonly', 'text', 'text-summary'],
   coverageDirectory: 'build/test-report/e2e',
   setupFiles: ['./test/e2e/config/jest.globals.ts'],
