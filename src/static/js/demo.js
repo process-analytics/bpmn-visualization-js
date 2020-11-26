@@ -114,7 +114,7 @@ function startDemo() {
   fitMarginElt.onchange = event => {
     const bpmnEltId = event.target.value;
     log('bpmn element', bpmnEltId);
-    const htmlElt = bpmnVisualization.htmlApi.getBpmnHtmlElement(bpmnEltId);
+    const htmlElt = bpmnVisualization.htmlElementRegistry.getBpmnHtmlElement(bpmnEltId);
     if (!htmlElt) {
       log('not found!');
       return;

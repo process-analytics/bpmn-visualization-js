@@ -25,7 +25,10 @@ declare const mxClient: typeof mxgraph.mxClient;
 
 export default class BpmnVisualization {
   public readonly graph: BpmnMxGraph;
-  private readonly htmlApi: ElementSearchAPI;
+  /**
+   * @experimental subject to change, feedback welcome
+   */
+  private readonly htmlElementRegistry: HtmlElementRegistry;
 
   constructor(protected container: HTMLElement, options?: GlobalOptions) {
     try {
@@ -36,7 +39,7 @@ export default class BpmnVisualization {
       const configurator = new MxGraphConfigurator(this.container);
       this.graph = configurator.configure(options);
 
-      this.htmlApi = new ElementSearchAPI(this.container.id);
+      this.htmlElementRegistry = new HtmlElementRegistry(this.container.id);
     } catch (e) {
       // TODO error handling
       mxUtils.alert('Cannot start application: ' + e.message);
@@ -60,11 +63,19 @@ export default class BpmnVisualization {
   }
 }
 
-class ElementSearchAPI {
+/**
+ * @experimental subject to change, feedback welcome
+ */
+class HtmlElementRegistry {
   constructor(private containerId: string) {}
 
-  getBpmnHtmlElement(bpmnElementId: string): HTMLElement {
+  /**
+   * Returns `null` if no element is found.
+   * @param bpmnElementId the id of the BPMN element represented by the searched Html Element.
+   */
+  getBpmnHtmlElement(bpmnElementId: string): HTMLElement | null {
     const cssSelector = `#${this.containerId} svg g g[data-cell-id="${bpmnElementId}"]`;
+    // TODO error management, for now we return null
     return document.querySelector<HTMLElement>(cssSelector);
   }
 
