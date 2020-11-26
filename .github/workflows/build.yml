@@ -37,7 +37,15 @@ jobs:
           - { name: macos-10.15 }
           - { name: windows-2019 }
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout with shallow clone
+        uses: actions/checkout@v2
+        if: ${{ !contains(matrix.os.coverage, 'coverage') }}
+      - name: Checkout without shallow clone
+        uses: actions/checkout@v2
+        if: ${{ contains(matrix.os.coverage, 'coverage') }}
+        with:
+          # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
       - name: Setup node
         uses: actions/setup-node@v1
         with:
