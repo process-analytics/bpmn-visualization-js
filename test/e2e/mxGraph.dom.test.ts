@@ -40,6 +40,7 @@ describe('BpmnVisu DOM only checks', () => {
   });
 });
 
+// TODO duplication between HtmlElementLookup and
 class HtmlElementLookup {
   constructor(private bpmnVisualization: BpmnVisualization) {}
 
