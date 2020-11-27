@@ -31,10 +31,14 @@ async function expectLabel(cellId: string, expectedText?: string): Promise<void>
 
 async function expectEvent(cellId: string, expectedText: string): Promise<void> {
   const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(cellId));
-  // TODO do we test the class attribute?
-  expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('ellipse');
+  // TODO test the class attribute: currently not possible as it contains the full mxgraph style (we should have something like bpmn.<type>: bpmn.startEvent, bpmn.exclusiveGateway)
+  // expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('ellipse');
+  await expectFirstChildNodeName(svgElementHandle, 'ellipse');
   expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('rx'))).toBe('18');
   expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('ry'))).toBe('18');
+  // await expectFirstChildAttribute(svgElementHandle, 'rx', '181');
+  // await expectFirstChildAttribute(svgElementHandle, 'ry', '181');
+
   await expectLabel(cellId, expectedText);
 }
 
