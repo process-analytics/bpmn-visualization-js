@@ -32,7 +32,6 @@ async function expectLabel(cellId: string, expectedText?: string): Promise<void>
 async function expectEvent(cellId: string, expectedText: string): Promise<void> {
   const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(cellId));
   // TODO test the class attribute: currently not possible as it contains the full mxgraph style (we should have something like bpmn.<type>: bpmn.startEvent, bpmn.exclusiveGateway)
-  // expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('ellipse');
   await expectFirstChildNodeName(svgElementHandle, 'ellipse');
   expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('rx'))).toBe('18');
   expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('ry'))).toBe('18');
@@ -56,10 +55,6 @@ async function expectFirstChildAttribute(svgElementHandle: ElementHandle, attrib
 
 async function expectTask(cellId: string, expectedText: string): Promise<void> {
   const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(cellId));
-  // expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-task');
-  // expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('rect');
-  // expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('width'))).toBe('100');
-  // expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('height'))).toBe('80');
   await expectClassName(svgElementHandle, 'class-state-cell-style-task');
   await expectFirstChildNodeName(svgElementHandle, 'rect');
   expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('width'))).toBe('100');
@@ -71,8 +66,6 @@ async function expectTask(cellId: string, expectedText: string): Promise<void> {
 
 async function expectSequenceFlow(cellId: string, expectedText?: string): Promise<void> {
   const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(cellId));
-  // expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-sequenceFlow-normal');
-  // expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('path');
   await expectClassName(svgElementHandle, 'class-state-cell-style-sequenceFlow-normal');
   await expectFirstChildNodeName(svgElementHandle, 'path');
   await expectLabel(cellId, expectedText);
