@@ -15,6 +15,7 @@
  */
 import { loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
 import { BpmnElementSelector } from './helpers/visu-utils';
+import { ElementHandle } from 'puppeteer';
 
 let bpmnContainerId = 'bpmn-container';
 let bpmnElementSelector = new BpmnElementSelector(bpmnContainerId);
@@ -37,19 +38,39 @@ async function expectEvent(cellId: string, expectedText: string): Promise<void> 
   await expectLabel(cellId, expectedText);
 }
 
+async function expectClassName(svgElementHandle: ElementHandle, className: string): Promise<void> {
+  expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe(className);
+}
+
+async function expectFirstChildNodeName(svgElementHandle: ElementHandle, nodeName: string): Promise<void> {
+  expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe(nodeName);
+}
+
+async function expectFirstChildAttribute(svgElementHandle: ElementHandle, attribute: string, value: string): Promise<void> {
+  expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute(attribute))).toBe(value);
+}
+
 async function expectTask(cellId: string, expectedText: string): Promise<void> {
   const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(cellId));
-  expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-task');
-  expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('rect');
+  // expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-task');
+  // expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('rect');
+  // expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('width'))).toBe('100');
+  // expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('height'))).toBe('80');
+  await expectClassName(svgElementHandle, 'class-state-cell-style-task');
+  await expectFirstChildNodeName(svgElementHandle, 'rect');
   expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('width'))).toBe('100');
   expect(await svgElementHandle.evaluate(node => (node.firstChild as SVGGElement).getAttribute('height'))).toBe('80');
+  // await expectFirstChildAttribute(svgElementHandle, 'width', '100');
+  // await expectFirstChildAttribute(svgElementHandle, 'height', '801');
   await expectLabel(cellId, expectedText);
 }
 
 async function expectSequenceFlow(cellId: string, expectedText?: string): Promise<void> {
   const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(cellId));
-  expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-sequenceFlow-normal');
-  expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('path');
+  // expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe('class-state-cell-style-sequenceFlow-normal');
+  // expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe('path');
+  await expectClassName(svgElementHandle, 'class-state-cell-style-sequenceFlow-normal');
+  await expectFirstChildNodeName(svgElementHandle, 'path');
   await expectLabel(cellId, expectedText);
 }
 
