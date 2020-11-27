@@ -99,6 +99,9 @@ function configureControlPanel() {
   }
 }
 
+// The following function `preventZoomingPage` serves to block the page content zoom.
+// It is to make zooming of the actual diagram area more convenient for the user.
+// Without that function, the zooming performed out of the diagram area can mess up the page layout.
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function preventZoomingPage() {
   document.addEventListener(

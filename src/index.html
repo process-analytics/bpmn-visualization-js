@@ -40,14 +40,14 @@
             </li>
             <li class="mr-3 flex-1">
               <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline border-b-2 border-gray-800 border-purple-500">
-                <label for="fitOnLoad">Fit on load
+                <label for="fitOnLoad">Fit on load:
                   <input type="checkbox" id="fitOnLoad" name="fitOnLoad" checked>
                 </label>
               </a>
             </li>
             <li class="mr-3 flex-1">
               <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline border-b-2 border-blue-600">
-                <label>Fit type
+                <label>Fit type:
                   <select name="fitTypes" id="fitType-selected" class="w-full text-blue-900">
                     <option value="None" selected="yes">None</option>
                     <option value="HorizontalVertical">Horizontal-Vertical</option>
@@ -60,18 +60,20 @@
             </li>
             <li class="mr-3 flex-1">
               <a href="#" class="block py-1 md:py-3 pl-0 md:pl-1 align-middle text-white no-underline border-b-2 border-gray-800 border-red-500">
-                <label for="fit-margin">Fit margin
-                  <input type="number" id="fit-margin" min="0" max="100" maxlength="3" oninput="validity.valid||(value='');" class="text-red-900 pl-1 float-right">
+                <label for="fit-margin">Fit margin:
+                  <input type="number" id="fit-margin" min="0" max="100" value="0" maxlength="3" oninput="validity.valid||(value='');" class="text-red-900 pl-1 float-right md:w-1/3">
                 </label>
               </a>
             </li>
             <li class="mr-3 flex-1">
-              <div id="zoom-config-controls" class="py-1 md:py-3 pl-0 md:pl-1 align-middle text-white border-b-2 border-gray-800 border-yellow-500" style="visibility: hidden;">
+              <div id="zoom-config-controls" class="py-1 md:py-3 pl-1 md:pl-1 align-middle text-white border-b-2 border-gray-800 border-yellow-500">
                 <label for="zoom-throttle" class="block w-full">Throttle:
-                  <input id="zoom-throttle" class="zoom-config float-right" type="number" placeholder="thr" value="30" min="0" max="100" disabled title="to play with throttle pass parameter in url like this: .../navigation-diagram.html?zoomConfigControls=true&zoomThrottle=40"/>
+                  <input id="zoom-throttle" class="md:w-1/3 pl-1 float-right bg-gray-500 text-black" type="number" placeholder="throttle" value="30" min="0" max="100" disabled
+                         title="to play with throttle pass parameter in url like this: .../?zoomThrottle=40"/>
                 </label>
-                <label for="zoom-debounce" class="block w-full">Debounce:
-                  <input id="zoom-debounce" class="zoom-config float-right" type="number" placeholder="deb" value="30" min="0" max="100" disabled title="to play with debounce pass parameter in url like this: .../navigation-diagram.html?zoomConfigControls=true&zoomDebounce=30"/>
+                <label for="zoom-debounce" class="block w-full mt-3">Debounce:
+                  <input id="zoom-debounce" class="md:w-1/3 pl-1 float-right bg-gray-500 text-black" type="number" placeholder="debounce" value="30" min="0" max="100" disabled
+                         title="to play with debounce pass parameter in url like this: .../?zoomDebounce=30"/>
                 </label>
               </div>
             </li>
