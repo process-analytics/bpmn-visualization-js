@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v2
         if: ${{ contains(matrix.os.coverage, 'coverage') }}
         with:
-          # Disabling shallow clone is recommended for improving relevancy of reporting
+          # Disabling shallow clone is recommended for improving relevancy of SonarCloud reporting
           fetch-depth: 0
       - name: Setup node
         uses: actions/setup-node@v1
