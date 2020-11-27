@@ -173,7 +173,7 @@ export function delay(time: number): Promise<unknown> {
 export class BpmnElementSelector {
   constructor(private containerId: string) {}
 
-  // TODO do we make explicit that this is a group?
+  // TODO do we make explicit that this is a svg group?
   firstAvailableElement(bpmnElementId?: string): string {
     if (!bpmnElementId) {
       return `#${this.containerId} > svg > g > g > g[data-cell-id]`;
