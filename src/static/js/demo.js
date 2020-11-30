@@ -77,7 +77,10 @@ function configureFitTypeSelect() {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureFitMarginInput() {
   const fitMarginElt = document.getElementById('fit-margin');
-  fitMarginElt.onchange = event => updateFitConfig({ margin: event.target.value });
+  fitMarginElt.onchange = event => {
+    updateFitConfig({ margin: event.target.value });
+    fit(fitOptions);
+  };
 
   if (fitOptions.margin) {
     fitMarginElt.value = fitOptions.margin;
@@ -96,9 +99,56 @@ function configureControlPanel() {
   }
 }
 
+// The following function `preventZoomingPage` serves to block the page content zoom.
+// It is to make zooming of the actual diagram area more convenient for the user.
+// Without that function, the zooming performed out of the diagram area can mess up the page layout.
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function preventZoomingPage() {
+  document.addEventListener(
+    'wheel',
+    e => {
+      if (e.ctrlKey) event.preventDefault(); //prevent zoom
+    },
+    { passive: false, capture: 'bubble' },
+  );
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function setupFixedDiagramContainerSize(containerId) {
+  const containerElt = document.getElementById(containerId);
+  const height = containerElt.parentNode.parentNode.getBoundingClientRect().height;
+  // parent height minus 2 x padding
+  containerElt.style = `overflow: hidden; height:${height - 2 * 20}px`;
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
-  startBpmnVisualization({ container: 'bpmn-container' });
+  preventZoomingPage();
+  const bpmnContainerId = 'bpmn-container';
+  setupFixedDiagramContainerSize(bpmnContainerId);
+
+  const parameters = new URLSearchParams(window.location.search);
+  const zoomThrottleElt = document.getElementById('zoom-throttle'),
+    zoomDebounceElt = document.getElementById('zoom-debounce'),
+    zoomControlsElt = document.getElementById('zoom-config-controls');
+  if (parameters.get('zoomThrottle')) {
+    zoomControlsElt.style = 'visibility: visible';
+    zoomThrottleElt.value = parameters.get('zoomThrottle');
+  }
+  if (parameters.get('zoomDebounce')) {
+    zoomControlsElt.style = 'visibility: visible';
+    zoomDebounceElt.value = parameters.get('zoomDebounce');
+  }
+  startBpmnVisualization({
+    container: bpmnContainerId,
+    globalOptions: {
+      mouseNavigationSupport: true,
+      zoomConfiguration: {
+        throttleDelay: zoomThrottleElt.value,
+        debounceDelay: zoomDebounceElt.value,
+      },
+    },
+  });
 
   // Configure custom html elements
   document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
