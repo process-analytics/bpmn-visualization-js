@@ -15,19 +15,19 @@
  */
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
-import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape, BoundaryEventShape } from '../shape/event-shapes';
-import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape, EventBasedGatewayShape } from '../shape/gateway-shapes';
+import { BoundaryEventShape, CatchIntermediateEventShape, EndEventShape, StartEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
+import { EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
 import {
-  SubProcessShape,
+  BusinessRuleTaskShape,
+  CallActivityShape,
+  ManualTaskShape,
   ReceiveTaskShape,
+  ScriptTaskShape,
+  SendTaskShape,
   ServiceTaskShape,
+  SubProcessShape,
   TaskShape,
   UserTaskShape,
-  CallActivityShape,
-  SendTaskShape,
-  ManualTaskShape,
-  ScriptTaskShape,
-  BusinessRuleTaskShape,
 } from '../shape/activity-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
@@ -90,12 +90,19 @@ export default class ShapeConfigurator {
         this.node.removeAttribute('transform');
       }
 
+      // START bpmn-visualization
       // add attributes to be able to identify elements in DOM
       if (this.state && this.state.cell) {
-        this.node.setAttribute('class', 'class-state-cell-style-' + this.state.cell.style.replace(';', '-'));
-        this.node.setAttribute('data-cell-id', this.state.cell.id);
+        // 'this.state.style' = the style definition associated with the cell
+        // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
+        const cellStyle = this.state.cell.style;
+        const bpmnShapeName = extractShapeName(cellStyle);
+        // console.info('@@@extracted shapeName', bpmnShapeName);
+
+        this.node.setAttribute('class', bpmnShapeName);
+        this.node.setAttribute('data-bpmn-id', this.state.cell.id);
       }
-      //
+      // END bpmn-visualization
       canvas.minStrokeWidth = this.minSvgStrokeWidth;
 
       if (!this.antiAlias) {
@@ -108,4 +115,12 @@ export default class ShapeConfigurator {
       return canvas;
     };
   }
+}
+
+function stringify(value: unknown): string {
+  return JSON.stringify(value, undefined, 2);
+}
+
+function extractShapeName(style: string): string {
+  return (style ?? '').split(';')[0];
 }
