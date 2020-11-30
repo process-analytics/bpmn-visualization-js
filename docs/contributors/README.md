@@ -20,3 +20,4 @@ Here are some tips to help during development.
 ## Misc
 - [documentation guidelines](documentation-guidelines.md)
 - [for the maintainers](maintainers.md)
+- [CSS tailwind](css-tailwind.md)
