@@ -14,10 +14,10 @@ Here are some tips to help during development.
 - [testing](testing.md)
 - [how to support new BPMN elements](bpmn-support-how-to.md)
 - [how to submit your work](pull-request.md)
+- [demo page css](demo-page-css.md)
 - [mxgraph integration](mxgraph-integration.md)
 - [mxgraph version bump](mxgraph-version-bump.md)
 
 ## Misc
 - [documentation guidelines](documentation-guidelines.md)
 - [for the maintainers](maintainers.md)
-- [CSS tailwind](css-tailwind.md)
