@@ -97,7 +97,6 @@ export default class ShapeConfigurator {
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cellStyle = this.state.cell.style;
         const bpmnShapeName = extractShapeName(cellStyle);
-        // console.info('@@@extracted shapeName', bpmnShapeName);
 
         this.node.setAttribute('class', bpmnShapeName);
         this.node.setAttribute('data-bpmn-id', this.state.cell.id);
@@ -115,10 +114,6 @@ export default class ShapeConfigurator {
       return canvas;
     };
   }
-}
-
-function stringify(value: unknown): string {
-  return JSON.stringify(value, undefined, 2);
 }
 
 function extractShapeName(style: string): string {
