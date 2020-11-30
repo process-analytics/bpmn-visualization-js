@@ -33,11 +33,19 @@ jobs:
       matrix:
         # syntax inspired from https://github.community/t5/GitHub-Actions/Using-a-matrix-defined-input-for-a-custom-action/m-p/32032/highlight/true#M988
         os:
-          - { name: ubuntu-20.04 }
+          - { name: ubuntu-20.04, coverage: '-- --coverage' }
           - { name: macos-10.15 }
           - { name: windows-2019 }
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout with shallow clone
+        uses: actions/checkout@v2
+        if: ${{ !contains(matrix.os.coverage, 'coverage') }}
+      - name: Checkout without shallow clone
+        uses: actions/checkout@v2
+        if: ${{ contains(matrix.os.coverage, 'coverage') }}
+        with:
+          # Disabling shallow clone is recommended for improving relevancy of SonarCloud reporting
+          fetch-depth: 0
       - name: Setup node
         uses: actions/setup-node@v1
         with:
@@ -54,7 +62,7 @@ jobs:
         run: npm run build
       - name: Test Application
         id: 'test_unit'
-        run: npm run test:unit
+        run: npm run test:unit ${{ matrix.os.coverage }}
       - name: Upload unit test results
         if: ${{ failure() && steps.test_unit.outcome == 'failure' }}
         uses: actions/upload-artifact@v2
@@ -63,7 +71,7 @@ jobs:
           path: build/test-report/unit
       - name: Test Application End to End
         id: 'test_e2e'
-        run: npm run test:e2e
+        run: npm run test:e2e ${{ matrix.os.coverage }}
       - name: Upload e2e test results
         if: ${{ failure() && steps.test_e2e.outcome == 'failure' }}
         uses: actions/upload-artifact@v2
@@ -73,3 +81,11 @@ jobs:
       # Ensure we don't break scripts
       - name: Build utils
         run: npm run build-utils
+
+      # No need to run the analysis from all environments
+      - name: SonarCloud Scan
+        if: ${{ success() && contains(matrix.os.coverage, 'coverage') }}
+        uses: SonarSource/sonarcloud-github-action@v1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

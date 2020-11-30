@@ -14,29 +14,23 @@
  * limitations under the License.
  */
 module.exports = {
-  roots: ['./'],
+  rootDir: '../..',
+  roots: ['./test/unit', './src'],
   moduleNameMapper: {
     // mock files that jest doesn't support like CSS and SVG files
     '\\.css$': './../module-mock.js',
     '\\.svg$': './../module-mock.js',
   },
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  testPathIgnorePatterns: ['/node_modules/', 'dist'],
+  testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
   collectCoverageFrom: ['**/*.{ts,js}'],
-  coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test'],
-  coverageThreshold: {
-    global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
-    },
-  },
-  coverageReporters: ['json', 'json-summary', 'lcov', 'text', 'text-summary', 'clover'],
-  setupFiles: ['./jest.globals.ts'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static', 'src/model'],
+  coverageReporters: ['lcovonly', 'text', 'text-summary'],
+  coverageDirectory: 'build/test-report/unit',
+  setupFiles: ['./test/unit/jest.globals.ts'],
   reporters: [
     'default',
     [
@@ -46,6 +40,12 @@ module.exports = {
         outputPath: 'build/test-report/unit/index.html',
         includeFailureMsg: true,
         includeSuiteFailure: true,
+      },
+    ],
+    [
+      'jest-sonar',
+      {
+        outputDirectory: 'build/test-report/unit',
       },
     ],
   ],
