@@ -40,7 +40,7 @@ describe('BpmnVisu DOM only checks', () => {
   });
 });
 
-// TODO duplication between HtmlElementLookup and
+// TODO duplicated with HtmlElementLookup in visu-utils.ts
 class HtmlElementLookup {
   constructor(private bpmnVisualization: BpmnVisualization) {}
 
