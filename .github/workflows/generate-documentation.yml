@@ -5,14 +5,14 @@ on:
     branches:
       - master
     paths:
-      - 'docs/**'
+      - 'docs/users/**'
       - 'scripts/docs.js'
       - '.github/workflows/generate-documentation.yml'
   pull_request:
     branches:
       - master
     paths:
-      - 'docs/**'
+      - 'docs/users/**'
       - 'scripts/docs.js'
       - '.github/workflows/generate-documentation.yml'
 
