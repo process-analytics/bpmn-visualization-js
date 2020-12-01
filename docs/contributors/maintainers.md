@@ -102,4 +102,14 @@ Alternatively, you can create the tag from your local machine and then push it.
 ## Communicate about the release
 
 - twitter
-- ....
+
+you can use this template:
+
+> 📣 BPMN Visualization {version} is out! 🎉
+>
+> ===> some short description here <===
+>
+> #bpmnvisualization
+>
+> https://github.com/process-analytics/bpmn-visualization-js/releases/tag/v{version}
+
