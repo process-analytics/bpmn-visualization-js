@@ -70,6 +70,7 @@ pluginsNoDeps.push(autoExternal());
 // Copy static resources to dist
 if (devMode || demoMode) {
   plugins.push(execute('npm run demo:css'));
+  plugins.push(execute('npm run watch:css'));
 
   const copyTargets = [];
   copyTargets.push({ src: 'src/*.html', dest: 'dist/' });
