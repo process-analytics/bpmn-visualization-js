@@ -18,6 +18,7 @@ import debugLogger from 'debug';
 import { copyFileSync, loadBpmnContentForUrlQueryParam } from '../../helpers/file-helper';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { FitType, LoadOptions } from '../../../src/component/options';
+import BpmnVisualization from '../../../src/component/BpmnVisualization';
 
 const log = debugLogger('test');
 
@@ -170,6 +171,7 @@ export function delay(time: number): Promise<unknown> {
 /**
  * @see {@link HtmlElementRegistry} for more details
  */
+// TODO duplication with HtmlElementRegistry
 export class BpmnElementSelector {
   constructor(private containerId: string) {}
 
@@ -183,5 +185,23 @@ export class BpmnElementSelector {
 
   labelOfFirstAvailableElement(bpmnElementId?: string): string {
     return `#${this.containerId} svg g g[data-cell-id="${bpmnElementId}"] g foreignObject`;
+  }
+}
+
+// TODO duplication with puppeteer expects in mxGraph.view.test.ts
+export class HtmlElementLookup {
+  constructor(private bpmnVisualization: BpmnVisualization) {}
+
+  private findSvgElement(cellId: string): SVGGeometryElement {
+    const cellSvgElement = this.bpmnVisualization.htmlElementRegistry.getBpmnHtmlElement(cellId); // should be SVGGElement
+    return cellSvgElement.firstChild as SVGGeometryElement;
+  }
+
+  expectEvent(cellId: string): void {
+    expect(this.findSvgElement(cellId).nodeName).toBe('ellipse');
+  }
+
+  expectTask(cellId: string): void {
+    expect(this.findSvgElement(cellId).nodeName).toBe('rect');
   }
 }
