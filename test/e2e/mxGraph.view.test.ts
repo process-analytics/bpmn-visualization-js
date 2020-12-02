@@ -20,23 +20,23 @@ import { ElementHandle } from 'puppeteer';
 let bpmnContainerId = 'bpmn-container';
 let bpmnElementSelector = new BpmnElementSelector(bpmnContainerId);
 
-async function expectLabel(cellId: string, expectedText?: string): Promise<void> {
+async function expectLabel(bpmnId: string, expectedText?: string): Promise<void> {
   if (!expectedText) {
     return;
   }
-  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.labelOfFirstAvailableElement(cellId));
+  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.labelOfFirstAvailableElement(bpmnId));
   // contains 3 div
   expect(await svgElementHandle.evaluate(node => (node.firstChild.firstChild.firstChild as HTMLElement).innerHTML)).toBe(expectedText);
 }
 
-async function expectEvent(cellId: string, expectedText: string): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(cellId));
+async function expectEvent(bpmnId: string, expectedText: string): Promise<void> {
+  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(bpmnId));
   // TODO test the class attribute: currently not possible as it contains the full mxgraph style (we should have something like bpmn.<type>: bpmn.startEvent, bpmn.exclusiveGateway)
   await expectFirstChildNodeName(svgElementHandle, 'ellipse');
   await expectFirstChildAttribute(svgElementHandle, 'rx', '18');
   await expectFirstChildAttribute(svgElementHandle, 'ry', '18');
 
-  await expectLabel(cellId, expectedText);
+  await expectLabel(bpmnId, expectedText);
 }
 
 async function expectClassName(svgElementHandle: ElementHandle, className: string): Promise<void> {
@@ -55,20 +55,20 @@ async function expectFirstChildAttribute(svgElementHandle: ElementHandle, attrib
   ).toBe(value);
 }
 
-async function expectTask(cellId: string, expectedText: string): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(cellId));
+async function expectTask(bpmnId: string, expectedText: string): Promise<void> {
+  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(bpmnId));
   await expectClassName(svgElementHandle, 'class-state-cell-style-task');
   await expectFirstChildNodeName(svgElementHandle, 'rect');
   await expectFirstChildAttribute(svgElementHandle, 'width', '100');
   await expectFirstChildAttribute(svgElementHandle, 'height', '80');
-  await expectLabel(cellId, expectedText);
+  await expectLabel(bpmnId, expectedText);
 }
 
-async function expectSequenceFlow(cellId: string, expectedText?: string): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(cellId));
+async function expectSequenceFlow(bpmnId: string, expectedText?: string): Promise<void> {
+  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(bpmnId));
   await expectClassName(svgElementHandle, 'class-state-cell-style-sequenceFlow-normal');
   await expectFirstChildNodeName(svgElementHandle, 'path');
-  await expectLabel(cellId, expectedText);
+  await expectLabel(bpmnId, expectedText);
 }
 
 describe('demo page', () => {
