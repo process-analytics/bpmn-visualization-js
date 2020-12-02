@@ -13,13 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-module.exports = {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-    cssnano: {
-      preset: 'default',
-    },
-  },
+const defaultPlugins = {
+  tailwindcss: {},
+  autoprefixer: {},
 };
+
+const plugins = process.env.devLiveReloadMode
+  ? defaultPlugins
+  : {
+      ...defaultPlugins,
+      cssnano: {
+        preset: 'default',
+      },
+    };
+module.exports = { plugins };
