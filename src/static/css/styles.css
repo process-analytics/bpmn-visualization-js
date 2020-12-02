@@ -5,3 +5,14 @@
 @tailwind components;
 /* noinspection CssInvalidAtRule */
 @tailwind utilities;
+.testing {
+  position: fixed;
+  top: 0;
+  right: 50%;
+  z-index: 999;
+  height: 100px;
+  width: 100px;
+  background-color: #4c1d95;
+  border: 5px solid #4f8a10;
+  color: #B0B0B0;
+}

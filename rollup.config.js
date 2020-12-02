@@ -20,6 +20,11 @@ import copyWatch from 'rollup-plugin-copy-watch';
 import { terser } from 'rollup-plugin-terser';
 import sizes from 'rollup-plugin-sizes';
 import autoExternal from 'rollup-plugin-auto-external';
+import postcss from 'rollup-plugin-postcss';
+import tailwindcss from 'tailwindcss';
+import autoprefixer from 'autoprefixer';
+import cssnano from 'cssnano';
+import execute from 'rollup-plugin-execute';
 
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
@@ -68,6 +73,27 @@ pluginsNoDeps.push(autoExternal());
 
 // Copy static resources to dist
 if (devMode || demoMode) {
+  plugins.push(execute('npm run demo:css'));
+  // plugins.push(
+  //   postcss({
+  //     config: {
+  //       path: './postcss.config.js',
+  //     },
+  //     extensions: ['.css'],
+  //     // extract: path.resolve('src/static/css/tailwind.css'),
+  //     extract: path.join(__dirname, 'src/static/css/tailwindx.css'),
+  //     // plugins: [tailwindcss(), autoprefixer()],
+  //     // modules: true,
+  //     // plugins: [
+  //     //   tailwindcss(),
+  //     //   autoprefixer(),
+  //     //   // cssnano({
+  //     //   //   preset: 'default',
+  //     //   // }),
+  //     // ],
+  //   }),
+  // );
+
   const copyTargets = [];
   copyTargets.push({ src: 'src/*.html', dest: 'dist/' });
   copyTargets.push({ src: 'src/static', dest: 'dist' });
