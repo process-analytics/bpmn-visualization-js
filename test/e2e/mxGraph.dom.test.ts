@@ -15,6 +15,7 @@
  */
 import BpmnVisualization from '../../src/component/BpmnVisualization';
 import { readFileSync } from '../helpers/file-helper';
+import { HtmlElementLookup } from './helpers/visu-utils';
 
 const bpmnContainerId = 'bpmn-visualization-container';
 
@@ -39,20 +40,3 @@ describe('BpmnVisu DOM only checks', () => {
     htmlElementLookup.expectEvent('EndEvent_1');
   });
 });
-
-class HtmlElementLookup {
-  constructor(private bpmnVisualization: BpmnVisualization) {}
-
-  private findSvgElement(cellId: string): SVGGeometryElement {
-    const cellSvgElement = this.bpmnVisualization.htmlElementRegistry.getBpmnHtmlElement(cellId); // should be SVGGElement
-    return cellSvgElement.firstChild as SVGGeometryElement;
-  }
-
-  expectEvent(cellId: string): void {
-    expect(this.findSvgElement(cellId).nodeName).toBe('ellipse');
-  }
-
-  expectTask(cellId: string): void {
-    expect(this.findSvgElement(cellId).nodeName).toBe('rect');
-  }
-}
