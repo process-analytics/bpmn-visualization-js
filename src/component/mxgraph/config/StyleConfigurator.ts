@@ -380,3 +380,7 @@ export default class StyleConfigurator {
     return value;
   }
 }
+
+export function computeBpmnBaseClassName(name: string): string {
+  return !name ? '' : 'bpmn-' + name.replace(/([A-Z])/g, g => '-' + g[0].toLowerCase());
+}
