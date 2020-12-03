@@ -32,6 +32,7 @@ import {
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
+import { computeBpmnBaseClassName } from './StyleConfigurator';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -96,9 +97,9 @@ export default class ShapeConfigurator {
         // 'this.state.style' = the style definition associated with the cell
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cellStyle = this.state.cell.style;
-        const bpmnShapeName = extractShapeName(cellStyle);
+        const bpmnBaseClassName = computeBpmnBaseClassName(extractShapeName(cellStyle));
 
-        this.node.setAttribute('class', bpmnShapeName);
+        this.node.setAttribute('class', bpmnBaseClassName);
         this.node.setAttribute('data-bpmn-id', this.state.cell.id);
       }
       // END bpmn-visualization

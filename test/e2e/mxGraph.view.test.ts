@@ -31,7 +31,7 @@ async function expectLabel(bpmnId: string, expectedText?: string): Promise<void>
 
 async function expectEvent(bpmnId: string, expectedText: string, isStartEvent = true): Promise<void> {
   const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(bpmnId));
-  await expectClassName(svgElementHandle, isStartEvent ? 'startEvent' : 'endEvent');
+  await expectClassName(svgElementHandle, isStartEvent ? 'bpmn-start-event' : 'bpmn-end-event');
   await expectFirstChildNodeName(svgElementHandle, 'ellipse');
   await expectFirstChildAttribute(svgElementHandle, 'rx', '18');
   await expectFirstChildAttribute(svgElementHandle, 'ry', '18');
@@ -57,7 +57,7 @@ async function expectFirstChildAttribute(svgElementHandle: ElementHandle, attrib
 
 async function expectTask(bpmnId: string, expectedText: string): Promise<void> {
   const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(bpmnId));
-  await expectClassName(svgElementHandle, 'task');
+  await expectClassName(svgElementHandle, 'bpmn-task');
   await expectFirstChildNodeName(svgElementHandle, 'rect');
   await expectFirstChildAttribute(svgElementHandle, 'width', '100');
   await expectFirstChildAttribute(svgElementHandle, 'height', '80');
@@ -66,7 +66,7 @@ async function expectTask(bpmnId: string, expectedText: string): Promise<void> {
 
 async function expectSequenceFlow(bpmnId: string, expectedText?: string): Promise<void> {
   const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(bpmnId));
-  await expectClassName(svgElementHandle, 'sequenceFlow');
+  await expectClassName(svgElementHandle, 'bpmn-sequence-flow');
   await expectFirstChildNodeName(svgElementHandle, 'path');
   await expectLabel(bpmnId, expectedText);
 }
