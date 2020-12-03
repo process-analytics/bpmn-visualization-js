@@ -75,7 +75,8 @@ export default class ShapeConfigurator {
   }
 
   private initMxShapePrototype(isFF: boolean): void {
-    // this change is needed for adding the custom attributes that permits identification of the BPMN elements
+    // The following is copied from the mxgraph mxShape implementation then converted to TypeScript and enriched for bpmn-visualization
+    // It is needed for adding the custom attributes that permits identification of the BPMN elements in the DOM
     mxShape.prototype.createSvgCanvas = function () {
       const canvas = new mxSvgCanvas2D(this.node, false);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
@@ -91,7 +92,7 @@ export default class ShapeConfigurator {
         this.node.removeAttribute('transform');
       }
 
-      // START bpmn-visualization
+      // START bpmn-visualization CUSTOMIZATION
       // add attributes to be able to identify elements in DOM
       if (this.state && this.state.cell) {
         // 'this.state.style' = the style definition associated with the cell
@@ -102,7 +103,7 @@ export default class ShapeConfigurator {
         this.node.setAttribute('class', bpmnBaseClassName);
         this.node.setAttribute('data-bpmn-id', this.state.cell.id);
       }
-      // END bpmn-visualization
+      // END bpmn-visualization CUSTOMIZATION
       canvas.minStrokeWidth = this.minSvgStrokeWidth;
 
       if (!this.antiAlias) {
