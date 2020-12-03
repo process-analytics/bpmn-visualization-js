@@ -192,16 +192,16 @@ export class BpmnElementSelector {
 export class HtmlElementLookup {
   constructor(private bpmnVisualization: BpmnVisualization) {}
 
-  private findSvgElement(cellId: string): SVGGeometryElement {
-    const cellSvgElement = this.bpmnVisualization.htmlElementRegistry.getBpmnHtmlElement(cellId); // should be SVGGElement
+  private findSvgElement(bpmnId: string): SVGGeometryElement {
+    const cellSvgElement = this.bpmnVisualization.htmlElementRegistry.getBpmnHtmlElement(bpmnId); // should be SVGGElement
     return cellSvgElement.firstChild as SVGGeometryElement;
   }
 
-  expectEvent(cellId: string): void {
-    expect(this.findSvgElement(cellId).nodeName).toBe('ellipse');
+  expectEvent(bpmnId: string): void {
+    expect(this.findSvgElement(bpmnId).nodeName).toBe('ellipse');
   }
 
-  expectTask(cellId: string): void {
-    expect(this.findSvgElement(cellId).nodeName).toBe('rect');
+  expectTask(bpmnId: string): void {
+    expect(this.findSvgElement(bpmnId).nodeName).toBe('rect');
   }
 }
