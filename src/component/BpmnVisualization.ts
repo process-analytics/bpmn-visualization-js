@@ -96,7 +96,7 @@ class HtmlElementRegistry {
      *     <g>
      *       <g></g>
      *       <g>
-     *         <g style="" class="pool" data-bpm-id="Participant_1">....</g>
+     *         <g style="" class="pool" data-bpmn-id="Participant_1">....</g>
      *       </g>
      *       <g></g>
      *       <g></g>
