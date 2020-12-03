@@ -178,13 +178,13 @@ export class BpmnElementSelector {
   // TODO do we make explicit that this is a svg group?
   firstAvailableElement(bpmnElementId?: string): string {
     if (!bpmnElementId) {
-      return `#${this.containerId} > svg > g > g > g[data-cell-id]`;
+      return `#${this.containerId} > svg > g > g > g[data-bpmn-id]`;
     }
-    return `#${this.containerId} svg g g[data-cell-id="${bpmnElementId}"]`;
+    return `#${this.containerId} svg g g[data-bpmn-id="${bpmnElementId}"]`;
   }
 
   labelOfFirstAvailableElement(bpmnElementId?: string): string {
-    return `#${this.containerId} svg g g[data-cell-id="${bpmnElementId}"] g foreignObject`;
+    return `#${this.containerId} svg g g[data-bpmn-id="${bpmnElementId}"] g foreignObject`;
   }
 }
 

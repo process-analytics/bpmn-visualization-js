@@ -29,9 +29,9 @@ async function expectLabel(bpmnId: string, expectedText?: string): Promise<void>
   expect(await svgElementHandle.evaluate(node => (node.firstChild.firstChild.firstChild as HTMLElement).innerHTML)).toBe(expectedText);
 }
 
-async function expectEvent(bpmnId: string, expectedText: string): Promise<void> {
+async function expectEvent(bpmnId: string, expectedText: string, isStartEvent = true): Promise<void> {
   const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(bpmnId));
-  // TODO test the class attribute: currently not possible as it contains the full mxgraph style (we should have something like bpmn.<type>: bpmn.startEvent, bpmn.exclusiveGateway)
+  await expectClassName(svgElementHandle, isStartEvent ? 'startEvent' : 'endEvent');
   await expectFirstChildNodeName(svgElementHandle, 'ellipse');
   await expectFirstChildAttribute(svgElementHandle, 'rx', '18');
   await expectFirstChildAttribute(svgElementHandle, 'ry', '18');
@@ -57,7 +57,7 @@ async function expectFirstChildAttribute(svgElementHandle: ElementHandle, attrib
 
 async function expectTask(bpmnId: string, expectedText: string): Promise<void> {
   const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(bpmnId));
-  await expectClassName(svgElementHandle, 'class-state-cell-style-task');
+  await expectClassName(svgElementHandle, 'task');
   await expectFirstChildNodeName(svgElementHandle, 'rect');
   await expectFirstChildAttribute(svgElementHandle, 'width', '100');
   await expectFirstChildAttribute(svgElementHandle, 'height', '80');
@@ -66,7 +66,7 @@ async function expectTask(bpmnId: string, expectedText: string): Promise<void> {
 
 async function expectSequenceFlow(bpmnId: string, expectedText?: string): Promise<void> {
   const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(bpmnId));
-  await expectClassName(svgElementHandle, 'class-state-cell-style-sequenceFlow-normal');
+  await expectClassName(svgElementHandle, 'sequenceFlow');
   await expectFirstChildNodeName(svgElementHandle, 'path');
   await expectLabel(bpmnId, expectedText);
 }
@@ -85,7 +85,7 @@ describe('demo page', () => {
     await expectSequenceFlow('Flow_1', 'Sequence Flow 1');
     await expectTask('Activity_1', 'Task 1');
     await expectSequenceFlow('Flow_2');
-    await expectEvent('EndEvent_1', 'End Event 1');
+    await expectEvent('EndEvent_1', 'End Event 1', false);
   });
 });
 
