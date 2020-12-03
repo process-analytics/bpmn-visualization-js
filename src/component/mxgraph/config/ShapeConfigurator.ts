@@ -15,23 +15,24 @@
  */
 import { mxgraph } from 'ts-mxgraph';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
-import { EndEventShape, StartEventShape, ThrowIntermediateEventShape, CatchIntermediateEventShape, BoundaryEventShape } from '../shape/event-shapes';
-import { ExclusiveGatewayShape, ParallelGatewayShape, InclusiveGatewayShape, EventBasedGatewayShape } from '../shape/gateway-shapes';
+import { BoundaryEventShape, CatchIntermediateEventShape, EndEventShape, StartEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
+import { EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
 import {
-  SubProcessShape,
+  BusinessRuleTaskShape,
+  CallActivityShape,
+  ManualTaskShape,
   ReceiveTaskShape,
+  ScriptTaskShape,
+  SendTaskShape,
   ServiceTaskShape,
+  SubProcessShape,
   TaskShape,
   UserTaskShape,
-  CallActivityShape,
-  SendTaskShape,
-  ManualTaskShape,
-  ScriptTaskShape,
-  BusinessRuleTaskShape,
 } from '../shape/activity-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
+import { computeBpmnBaseClassName } from './StyleConfigurator';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -74,7 +75,8 @@ export default class ShapeConfigurator {
   }
 
   private initMxShapePrototype(isFF: boolean): void {
-    // this change is needed for adding the custom attributes that permits identification of the BPMN elements
+    // The following is copied from the mxgraph mxShape implementation then converted to TypeScript and enriched for bpmn-visualization
+    // It is needed for adding the custom attributes that permits identification of the BPMN elements in the DOM
     mxShape.prototype.createSvgCanvas = function () {
       const canvas = new mxSvgCanvas2D(this.node, false);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
@@ -90,12 +92,18 @@ export default class ShapeConfigurator {
         this.node.removeAttribute('transform');
       }
 
+      // START bpmn-visualization CUSTOMIZATION
       // add attributes to be able to identify elements in DOM
       if (this.state && this.state.cell) {
-        this.node.setAttribute('class', 'class-state-cell-style-' + this.state.cell.style.replace(';', '-'));
-        this.node.setAttribute('data-cell-id', this.state.cell.id);
+        // 'this.state.style' = the style definition associated with the cell
+        // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
+        const cellStyle = this.state.cell.style;
+        const bpmnBaseClassName = computeBpmnBaseClassName(extractShapeName(cellStyle));
+
+        this.node.setAttribute('class', bpmnBaseClassName);
+        this.node.setAttribute('data-bpmn-id', this.state.cell.id);
       }
-      //
+      // END bpmn-visualization CUSTOMIZATION
       canvas.minStrokeWidth = this.minSvgStrokeWidth;
 
       if (!this.antiAlias) {
@@ -108,4 +116,8 @@ export default class ShapeConfigurator {
       return canvas;
     };
   }
+}
+
+function extractShapeName(style: string): string {
+  return (style ?? '').split(';')[0];
 }

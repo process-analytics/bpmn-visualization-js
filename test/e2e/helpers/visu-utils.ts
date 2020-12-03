@@ -178,13 +178,13 @@ export class BpmnElementSelector {
   // TODO do we make explicit that this is a svg group?
   firstAvailableElement(bpmnElementId?: string): string {
     if (!bpmnElementId) {
-      return `#${this.containerId} > svg > g > g > g[data-cell-id]`;
+      return `#${this.containerId} > svg > g > g > g[data-bpmn-id]`;
     }
-    return `#${this.containerId} svg g g[data-cell-id="${bpmnElementId}"]`;
+    return `#${this.containerId} svg g g[data-bpmn-id="${bpmnElementId}"]`;
   }
 
   labelOfFirstAvailableElement(bpmnElementId?: string): string {
-    return `#${this.containerId} svg g g[data-cell-id="${bpmnElementId}"] g foreignObject`;
+    return `#${this.containerId} svg g g[data-bpmn-id="${bpmnElementId}"] g foreignObject`;
   }
 }
 
@@ -192,16 +192,16 @@ export class BpmnElementSelector {
 export class HtmlElementLookup {
   constructor(private bpmnVisualization: BpmnVisualization) {}
 
-  private findSvgElement(cellId: string): SVGGeometryElement {
-    const cellSvgElement = this.bpmnVisualization.htmlElementRegistry.getBpmnHtmlElement(cellId); // should be SVGGElement
+  private findSvgElement(bpmnId: string): SVGGeometryElement {
+    const cellSvgElement = this.bpmnVisualization.htmlElementRegistry.getBpmnHtmlElement(bpmnId); // should be SVGGElement
     return cellSvgElement.firstChild as SVGGeometryElement;
   }
 
-  expectEvent(cellId: string): void {
-    expect(this.findSvgElement(cellId).nodeName).toBe('ellipse');
+  expectEvent(bpmnId: string): void {
+    expect(this.findSvgElement(bpmnId).nodeName).toBe('ellipse');
   }
 
-  expectTask(cellId: string): void {
-    expect(this.findSvgElement(cellId).nodeName).toBe('rect');
+  expectTask(bpmnId: string): void {
+    expect(this.findSvgElement(bpmnId).nodeName).toBe('rect');
   }
 }

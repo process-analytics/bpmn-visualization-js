@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import StyleConfigurator from '../../../../../src/component/mxgraph/config/StyleConfigurator';
+import StyleConfigurator, { computeBpmnBaseClassName } from '../../../../../src/component/mxgraph/config/StyleConfigurator';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, {
   ShapeBpmnActivity,
@@ -43,6 +43,7 @@ import { BpmnEventKind } from '../../../../../src/model/bpmn/internal/shape/Shap
 import each from 'jest-each';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { AssociationDirectionKind } from '../../../../../src/model/bpmn/internal/edge/AssociationDirectionKind';
+import { FlowKind } from '../../../../../src/model/bpmn/internal/edge/FlowKind';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
@@ -405,5 +406,28 @@ describe('mxgraph renderer', () => {
       gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
       expect(computeStyle(shape)).toEqual(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.gatewayKind=${gatewayKind};fontFamily=Arial`);
     });
+  });
+});
+
+describe('compute css class names of BPMN elements', () => {
+  it.each`
+    kind                                             | expectedClassName
+    ${undefined}                                     | ${''}
+    ${null}                                          | ${''}
+    ${''}                                            | ${''}
+    ${FlowKind.ASSOCIATION_FLOW}                     | ${'bpmn-association'}
+    ${FlowKind.MESSAGE_FLOW}                         | ${'bpmn-message-flow'}
+    ${FlowKind.SEQUENCE_FLOW}                        | ${'bpmn-sequence-flow'}
+    ${ShapeBpmnElementKind.CALL_ACTIVITY}            | ${'bpmn-call-activity'}
+    ${ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH} | ${'bpmn-intermediate-catch-event'}
+    ${ShapeBpmnElementKind.EVENT_START}              | ${'bpmn-start-event'}
+    ${ShapeBpmnElementKind.GATEWAY_EVENT_BASED}      | ${'bpmn-event-based-gateway'}
+    ${ShapeBpmnElementKind.GATEWAY_PARALLEL}         | ${'bpmn-parallel-gateway'}
+    ${ShapeBpmnElementKind.SUB_PROCESS}              | ${'bpmn-sub-process'}
+    ${ShapeBpmnElementKind.TASK}                     | ${'bpmn-task'}
+    ${ShapeBpmnElementKind.TASK_BUSINESS_RULE}       | ${'bpmn-business-rule-task'}
+    ${ShapeBpmnElementKind.TASK_BUSINESS_RULE}       | ${'bpmn-business-rule-task'}
+  `('$kind classname', ({ kind, expectedClassName }) => {
+    expect(computeBpmnBaseClassName(kind)).toEqual(expectedClassName);
   });
 });
