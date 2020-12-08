@@ -26,7 +26,7 @@ export class BpmnElementsRegistry {
 
   constructor(graph: BpmnMxGraph) {
     this.bpmnModelRegistry = new BpmnModelRegistry(graph);
-    this.htmlElementRegistry = new _HtmlElementRegistry(graph.container.id);
+    this.htmlElementRegistry = new _HtmlElementRegistry(graph.container?.id);
   }
 
   // TODO doc, not found elements are not present in the return array
