@@ -77,6 +77,7 @@ export class BpmnElementsRegistry {
     const ids = ensureIsArray(bpmnElementIds) as string[];
 
     ids.forEach(id => {
+      // TODO we don't need this for now, this is part of #929
       const mxCell = this.graph.getModel().getCell(id);
       // TODO if null, return
       const label = mxCell.value;
