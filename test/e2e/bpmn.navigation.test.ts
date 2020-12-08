@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 import { BpmnDiagramPreparation, delay, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
+import { join } from 'path';
 
 describe('diagram navigation', () => {
   const delayToWaitUntilZoomIsDone = 100;
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
     new Map<string, ImageSnapshotThresholdConfig>([
       [
-        'simple-2_start_events-1_task',
+        'simple.2.start.events.1.task',
         // minimal threshold to make test pass on Github Workflow
         // ubuntu: Expected image to match or be a close match to snapshot but was 0.0009247488045871499% different from snapshot
         // macOS: Expected image to match or be a close match to snapshot but was 0.0009247488045871499% different from snapshot
@@ -34,12 +35,15 @@ describe('diagram navigation', () => {
     ]),
   );
 
+  const navigationDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), 'navigation');
+  const navigationDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), 'navigation');
+
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
   const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map(), { name: 'rendering-diagram', queryParams: [] }, 'navigation');
 
   const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-container', 'BPMN Visualization - Diagram Rendering');
 
-  const fileName = 'simple-2_start_events-1_task';
+  const fileName = 'simple.2.start.events.1.task';
   let viewportCenterX: number;
   let viewportCenterY: number;
   beforeEach(async () => {
@@ -57,7 +61,13 @@ describe('diagram navigation', () => {
     await page.mouse.up();
 
     const image = await page.screenshot({ fullPage: true });
-    expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
+    const config = imageSnapshotConfigurator.getConfig(fileName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: 'mouse.panning',
+      customSnapshotsDir: navigationDir,
+      customDiffDir: navigationDiffDir,
+    });
   });
 
   it.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoom: string) => {
@@ -69,7 +79,13 @@ describe('diagram navigation', () => {
     await delay(delayToWaitUntilZoomIsDone);
 
     const image = await page.screenshot({ fullPage: true });
-    expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
+    const config = imageSnapshotConfigurator.getConfig(fileName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: zoom === 'zoom in' ? 'mouse.zoom.in' : 'mouse.zoom.out',
+      customSnapshotsDir: navigationDir,
+      customDiffDir: navigationDiffDir,
+    });
   });
 
   // TODO Set customSnapshotIdentifier & customDiffDir to use the same snapshot like it is done in diagram rendering test
@@ -91,6 +107,12 @@ describe('diagram navigation', () => {
     }
     await delay(delayToWaitUntilZoomIsDone);
     const image = await page.screenshot({ fullPage: true });
-    expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
+    const config = imageSnapshotConfigurator.getConfig(fileName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: 'initial.zoom',
+      customSnapshotsDir: navigationDir,
+      customDiffDir: join(navigationDiffDir, `${xTimes}-zoom-in-out`),
+    });
   });
 });
