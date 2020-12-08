@@ -44,6 +44,7 @@ export class BpmnElementsRegistry {
     return bpmnElements;
   }
 
+  // TODO we should also allow FlowKind
   // getElementsByKinds(kinds: ShapeBpmnElementKind | ShapeBpmnElementKind[]): BpmnElement[] {
   //   return [];
   // }
