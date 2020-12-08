@@ -20,7 +20,63 @@ import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
 /**
  * @experimental subject to change, feedback welcome
  */
-export class HtmlElementRegistry {
+export class BpmnElementsRegistry {
+  private bpmnModelRegistry: BpmnModelRegistry;
+  private htmlElementRegistry: _HtmlElementRegistry;
+
+  constructor(graph: BpmnMxGraph) {
+    this.bpmnModelRegistry = new BpmnModelRegistry(graph);
+    this.htmlElementRegistry = new _HtmlElementRegistry(graph.container.id);
+  }
+
+  getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[] {
+    // TODO move ensureIsArray to helpers/arrays.ts and add dedicated tests
+    const ids = ensureIsArray(bpmnElementIds) as string[];
+
+    const bpmnElements: BpmnElement[] = [];
+    ids.forEach(id => {
+      const bpmnSemantic = this.bpmnModelRegistry.getBpmnSemantic(id);
+      const bpmnHtmlElement = this.htmlElementRegistry.getBpmnHtmlElement(id);
+      bpmnElements.push({ ...bpmnSemantic, htmlElement: bpmnHtmlElement });
+    });
+
+    return bpmnElements;
+  }
+
+  // getElementsByKinds(kinds: ShapeBpmnElementKind | ShapeBpmnElementKind[]): BpmnElement[] {
+  //   return [];
+  // }
+}
+
+interface BpmnSemantic {
+  id: string;
+  label: string;
+  // TODO this should be mandatory
+  kind?: ShapeBpmnElementKind;
+}
+
+export interface BpmnElement extends BpmnSemantic {
+  htmlElement: HTMLElement;
+}
+
+// TODO decide if we use mxgraph model or our internal model
+// for now, we don't store the BpmnModel so we can use it, information are only available in the mxgraph model
+class BpmnModelRegistry {
+  constructor(private graph: BpmnMxGraph) {}
+
+  getBpmnSemantic(id: string): BpmnSemantic {
+    // TODO we don't need this for now, this is part of #929
+    const mxCell = this.graph.getModel().getCell(id);
+    // TODO if null, return or throw error
+    const label = mxCell.value;
+    // TODO get shape kind from model
+
+    return { id: id, label: label };
+  }
+}
+
+// TODO rename into HtmlElementRegistry
+class _HtmlElementRegistry {
   constructor(private containerId: string) {}
 
   /**
@@ -67,37 +123,11 @@ export class HtmlElementRegistry {
   }
 }
 
-// TODO move comments from HtmlElementRegistry here
-export class BpmnElementsRegistry {
-  // TODO we should extract the code processing the model (mxgraph or internal) from this class and the code that does the DOM lookup as well
-  constructor(private containerId: string, private graph: BpmnMxGraph) {}
-
-  getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[] {
-    // TODO move ensureIsArray to helpers/arrays.ts and add dedicated tests
-    const ids = ensureIsArray(bpmnElementIds) as string[];
-
-    ids.forEach(id => {
-      // TODO we don't need this for now, this is part of #929
-      const mxCell = this.graph.getModel().getCell(id);
-      // TODO if null, return
-      const label = mxCell.value;
-      // TODO get shape kind from model
-    });
-
-    return [];
+/**
+ * @experimental subject to change, feedback welcome
+ */
+export class HtmlElementRegistry extends _HtmlElementRegistry {
+  constructor(containerId: string) {
+    super(containerId);
   }
-
-  getElementsByKinds(kinds: ShapeBpmnElementKind | ShapeBpmnElementKind[]): BpmnElement[] {
-    return [];
-  }
-}
-
-interface BpmnSemantic {
-  id: string;
-  label: string;
-  kind: ShapeBpmnElementKind;
-}
-
-export interface BpmnElement extends BpmnSemantic {
-  htmlElement: HTMLElement;
 }
