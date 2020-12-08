@@ -172,6 +172,7 @@ export function delay(time: number): Promise<unknown> {
  * @see {@link HtmlElementRegistry} for more details
  */
 // TODO duplication with HtmlElementRegistry
+// TODO move to bpmn-elements-registry
 export class BpmnElementSelector {
   constructor(private containerId: string) {}
 
