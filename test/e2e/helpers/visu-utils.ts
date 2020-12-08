@@ -19,6 +19,7 @@ import { copyFileSync, loadBpmnContentForUrlQueryParam } from '../../helpers/fil
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { FitType, LoadOptions } from '../../../src/component/options';
 import BpmnVisualization from '../../../src/component/BpmnVisualization';
+import { BpmnElementSelector } from '../../../dist/component/registry';
 
 const log = debugLogger('test');
 
@@ -166,27 +167,6 @@ export function delay(time: number): Promise<unknown> {
   return new Promise(function (resolve) {
     setTimeout(resolve, time);
   });
-}
-
-/**
- * @see {@link HtmlElementRegistry} for more details
- */
-// TODO duplication with HtmlElementRegistry
-// TODO move to bpmn-elements-registry
-export class BpmnElementSelector {
-  constructor(private containerId: string) {}
-
-  // TODO do we make explicit that this is a svg group?
-  firstAvailableElement(bpmnElementId?: string): string {
-    if (!bpmnElementId) {
-      return `#${this.containerId} > svg > g > g > g[data-bpmn-id]`;
-    }
-    return `#${this.containerId} svg g g[data-bpmn-id="${bpmnElementId}"]`;
-  }
-
-  labelOfFirstAvailableElement(bpmnElementId?: string): string {
-    return `#${this.containerId} svg g g[data-bpmn-id="${bpmnElementId}"] g foreignObject`;
-  }
 }
 
 // TODO duplication with puppeteer expects in mxGraph.view.test.ts
