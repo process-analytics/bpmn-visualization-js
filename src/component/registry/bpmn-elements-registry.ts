@@ -22,11 +22,11 @@ import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
  */
 export class BpmnElementsRegistry {
   private bpmnModelRegistry: BpmnModelRegistry;
-  private htmlElementRegistry: _HtmlElementRegistry;
+  private htmlElementRegistry: HtmlElementRegistry;
 
   constructor(graph: BpmnMxGraph) {
     this.bpmnModelRegistry = new BpmnModelRegistry(graph);
-    this.htmlElementRegistry = new _HtmlElementRegistry(graph.container?.id);
+    this.htmlElementRegistry = new HtmlElementRegistry(graph.container?.id);
   }
 
   // TODO doc, not found elements are not present in the return array
@@ -50,7 +50,10 @@ export class BpmnElementsRegistry {
 
   /**
    * Returns `null` if no element is found.
+   *
+   * Use {@link getElementsByIds} instead
    * @param bpmnElementId the id of the BPMN element represented by the searched Html Element.
+   * @deprecated
    */
   getBpmnHtmlElement(bpmnElementId: string): HTMLElement | null {
     // TODO temp to keep compatibility
@@ -101,8 +104,7 @@ export class BpmnElementSelector {
   }
 }
 
-// TODO rename into HtmlElementRegistry
-class _HtmlElementRegistry {
+class HtmlElementRegistry {
   constructor(private containerId: string) {}
 
   /**
@@ -146,14 +148,5 @@ class _HtmlElementRegistry {
     const cssSelector = `#${this.containerId} svg g g[data-bpmn-id="${bpmnElementId}"]`;
     // TODO error management, for now we return null
     return document.querySelector<HTMLElement>(cssSelector);
-  }
-}
-
-/**
- * @experimental subject to change, feedback welcome
- */
-export class HtmlElementRegistry extends _HtmlElementRegistry {
-  constructor(containerId: string) {
-    super(containerId);
   }
 }
