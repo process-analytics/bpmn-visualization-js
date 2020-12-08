@@ -19,7 +19,6 @@ import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
 import { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
 import { FitOptions, GlobalOptions, LoadOptions } from './options';
-import { ShapeBpmnElementKind } from '../model/bpmn/internal/shape';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -112,13 +111,4 @@ class HtmlElementRegistry {
     // TODO error management, for now we return null
     return document.querySelector<HTMLElement>(cssSelector);
   }
-
-  getBpmnHtmlElements(query: BpmnHtmlElementsQuery): HTMLElement[] {
-    return null;
-  }
-}
-
-interface BpmnHtmlElementsQuery {
-  bpmnElementIds?: string | string[];
-  shapes?: ShapeBpmnElementKind | ShapeBpmnElementKind[];
 }
