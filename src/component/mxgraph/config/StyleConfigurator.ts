@@ -381,6 +381,7 @@ export default class StyleConfigurator {
   }
 }
 
+// TODO move to StyleUtils + tests as well
 export function computeBpmnBaseClassName(name: string): string {
   return !name ? '' : 'bpmn-' + name.replace(/([A-Z])/g, g => '-' + g[0].toLowerCase());
 }

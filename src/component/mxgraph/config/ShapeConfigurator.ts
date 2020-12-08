@@ -118,6 +118,7 @@ export default class ShapeConfigurator {
   }
 }
 
+// TODO move to StyleUtils
 function extractShapeName(style: string): string {
   return (style ?? '').split(';')[0];
 }
