@@ -29,6 +29,7 @@ export class BpmnElementsRegistry {
     this.htmlElementRegistry = new _HtmlElementRegistry(graph.container.id);
   }
 
+  // TODO doc, not found elements are not present in the return array
   getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[] {
     // TODO move ensureIsArray to helpers/arrays.ts and add dedicated tests
     const ids = ensureIsArray(bpmnElementIds) as string[];
@@ -46,12 +47,21 @@ export class BpmnElementsRegistry {
   // getElementsByKinds(kinds: ShapeBpmnElementKind | ShapeBpmnElementKind[]): BpmnElement[] {
   //   return [];
   // }
+
+  /**
+   * Returns `null` if no element is found.
+   * @param bpmnElementId the id of the BPMN element represented by the searched Html Element.
+   */
+  getBpmnHtmlElement(bpmnElementId: string): HTMLElement | null {
+    // TODO temp to keep compatibility
+    return this.htmlElementRegistry.getBpmnHtmlElement(bpmnElementId);
+  }
 }
 
 interface BpmnSemantic {
   id: string;
   label: string;
-  // TODO this should be mandatory
+  // TODO this should be mandatory as part of #929
   kind?: ShapeBpmnElementKind;
 }
 
@@ -64,14 +74,14 @@ export interface BpmnElement extends BpmnSemantic {
 class BpmnModelRegistry {
   constructor(private graph: BpmnMxGraph) {}
 
-  getBpmnSemantic(id: string): BpmnSemantic {
+  getBpmnSemantic(bpmnElementId: string): BpmnSemantic {
     // TODO we don't need this for now, this is part of #929
-    const mxCell = this.graph.getModel().getCell(id);
+    const mxCell = this.graph.getModel().getCell(bpmnElementId);
     // TODO if null, return or throw error
     const label = mxCell.value;
     // TODO get shape kind from model
 
-    return { id: id, label: label };
+    return { id: bpmnElementId, label: label };
   }
 }
 
