@@ -16,14 +16,6 @@
 
 import * as fs from 'fs';
 
-// const json = fs.readFileSync('./package.json', 'utf8').toString();
-// const pkg = JSON.parse(json);
-// const oldVersion = pkg.version;
-// const version = oldVersion.replace(/-post$/, '');
-//
-// const updated = json.replace(`"version": "${oldVersion}"`, `"version": "${version}"`);
-// fs.writeFileSync('./package.json', updated);
-
 log('Managing version suffix in configuration files');
 const currentVersion = getCurrentVersion();
 log('Current version', currentVersion);
