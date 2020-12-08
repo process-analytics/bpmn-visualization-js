@@ -5,6 +5,7 @@
 @tailwind components;
 /* noinspection CssInvalidAtRule */
 @tailwind utilities;
+/* TODO: remove following rules after tests on other platforms */
 .testing {
   position: fixed;
   top: 0;
