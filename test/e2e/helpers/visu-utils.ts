@@ -52,6 +52,8 @@ const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
 };
 
 export class ImageSnapshotConfigurator {
+  private readonly defaultCustomDiffDir: string;
+  private readonly defaultCustomSnapshotsDir: string;
   /**
    * <b>About `thresholdConfig`</b>
    *
@@ -60,12 +62,16 @@ export class ImageSnapshotConfigurator {
    * This is generally only required for diagram containing labels. If you are not testing the labels (value, position, ...) as part of the use case you want to cover, remove labels
    * from the BPMN diagram to avoid such discrepancies.
    */
-  constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>) {}
+  constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>, private customDirName: string, readonly defaultFailureThreshold = 0.000004) {
+    this.defaultCustomDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), customDirName);
+    this.defaultCustomSnapshotsDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), customDirName);
+  }
 
   // minimal threshold to make tests for diagram renders pass on local
   // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
-  getConfig(fileName: string, failureThreshold = 0.000004): MatchImageSnapshotOptions {
+  getConfig(fileName: string): MatchImageSnapshotOptions {
     const config = this.thresholdConfig.get(fileName);
+    let failureThreshold = this.defaultFailureThreshold;
     if (config) {
       log(`Building dedicated image snapshot configuration for '${fileName}'`);
       const simplePlatformName = getSimplePlatformName();
@@ -77,7 +83,14 @@ export class ImageSnapshotConfigurator {
     }
 
     log(`ImageSnapshot - using failureThreshold: ${failureThreshold}`);
-    return { ...defaultImageSnapshotConfig, failureThreshold: failureThreshold, failureThresholdType: 'percent' };
+    return {
+      ...defaultImageSnapshotConfig,
+      failureThreshold: failureThreshold,
+      failureThresholdType: 'percent',
+      customSnapshotIdentifier: fileName,
+      customSnapshotsDir: this.defaultCustomSnapshotsDir,
+      customDiffDir: this.defaultCustomDiffDir,
+    };
   }
 
   static getSnapshotsDir(): string {

@@ -33,10 +33,8 @@ describe('diagram navigation', () => {
         },
       ],
     ]),
+    'navigation',
   );
-
-  const navigationDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), 'navigation');
-  const navigationDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), 'navigation');
 
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
   const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map(), { name: 'rendering-diagram', queryParams: [] }, 'navigation');
@@ -65,8 +63,6 @@ describe('diagram navigation', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'mouse.panning',
-      customSnapshotsDir: navigationDir,
-      customDiffDir: navigationDiffDir,
     });
   });
 
@@ -83,8 +79,6 @@ describe('diagram navigation', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: zoom === 'zoom in' ? 'mouse.zoom.in' : 'mouse.zoom.out',
-      customSnapshotsDir: navigationDir,
-      customDiffDir: navigationDiffDir,
     });
   });
 
@@ -111,8 +105,7 @@ describe('diagram navigation', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'initial.zoom',
-      customSnapshotsDir: navigationDir,
-      customDiffDir: join(navigationDiffDir, `${xTimes}-zoom-in-out`),
+      customDiffDir: join(config.customDiffDir, `${xTimes}-zoom-in-out`),
     });
   });
 });

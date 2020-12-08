@@ -17,8 +17,7 @@ import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, Imag
 import { FitType, LoadOptions } from '../../src/component/options';
 import { join } from 'path';
 
-function getCustomSnapshotDir(fitType: FitType, margin = 0): string {
-  const fitDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), 'fit');
+function getCustomSnapshotDir(fitDir: string, fitType: FitType, margin = 0): string {
   const typeDir = join(fitDir, `type-${fitType}`);
   return join(typeDir, `margin-${margin == null || margin < 0 ? 0 : margin}`);
 }
@@ -48,6 +47,12 @@ describe('no diagram visual regression', () => {
         },
       ],
     ]),
+    'fit',
+    // minimal threshold to make test pass on Github Workflow
+    // ubuntu: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
+    // macOS: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
+    // windows: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
+    0.00006,
   );
 
   const fitTypes: FitType[] = [FitType.None, FitType.HorizontalVertical, FitType.Horizontal, FitType.Vertical, FitType.Center];
@@ -61,15 +66,11 @@ describe('no diagram visual regression', () => {
 
         const image = await page.screenshot({ fullPage: true });
 
-        // minimal threshold to make test pass on Github Workflow
-        // ubuntu: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-        // macOS: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-        // windows: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-        const config = imageSnapshotConfigurator.getConfig(fileName, 0.00006);
+        const config = imageSnapshotConfigurator.getConfig(fileName);
         expect(image).toMatchImageSnapshot({
           ...config,
           customSnapshotIdentifier: fileName,
-          customSnapshotsDir: getCustomSnapshotDir(loadFitType),
+          customSnapshotsDir: getCustomSnapshotDir(config.customSnapshotsDir, loadFitType),
           customDiffDir: loadFitDiffDir,
         });
       });
@@ -83,15 +84,11 @@ describe('no diagram visual regression', () => {
 
         const image = await page.screenshot({ fullPage: true });
 
-        // minimal threshold to make test pass on Github Workflow
-        // ubuntu: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-        // macos: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-        // windows: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-        const config = imageSnapshotConfigurator.getConfig(fileName, 0.00006);
+        const config = imageSnapshotConfigurator.getConfig(fileName);
         expect(image).toMatchImageSnapshot({
           ...config,
           customSnapshotIdentifier: fileName,
-          customSnapshotsDir: getCustomSnapshotDir(fitType),
+          customSnapshotsDir: getCustomSnapshotDir(config.customSnapshotsDir, fitType),
           customDiffDir: join(fitDiffDir, `type-${fitType}`),
         });
       });
@@ -110,7 +107,7 @@ describe('no diagram visual regression', () => {
           expect(image).toMatchImageSnapshot({
             ...config,
             customSnapshotIdentifier: fileName,
-            customSnapshotsDir: getCustomSnapshotDir(loadFitType, margin),
+            customSnapshotsDir: getCustomSnapshotDir(config.customSnapshotsDir, loadFitType, margin),
             customDiffDir: join(loadFitDiffDir, `margin-${margin}`),
           });
         });
