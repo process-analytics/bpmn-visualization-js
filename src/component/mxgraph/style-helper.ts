@@ -17,3 +17,8 @@
 export function computeBpmnBaseClassName(name: string): string {
   return !name ? '' : 'bpmn-' + name.replace(/([A-Z])/g, g => '-' + g[0].toLowerCase());
 }
+
+export function extractShapeName(cell: mxCell): string {
+  const style = cell.style;
+  return (style ?? '').split(';')[0];
+}
