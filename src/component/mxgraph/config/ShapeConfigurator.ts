@@ -32,7 +32,7 @@ import {
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
-import { computeBpmnBaseClassName } from './StyleConfigurator';
+import { computeBpmnBaseClassName } from '../style-helper';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
