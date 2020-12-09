@@ -27,7 +27,7 @@ export class BpmnElementsRegistry {
   constructor(graph: BpmnMxGraph) {
     // TODO this should not be instantiate here but injected
     this.bpmnModelRegistry = new BpmnModelRegistry(graph);
-    this.htmlElementRegistry = new HtmlElementRegistry(new BpmnElementSelector(graph.container?.id));
+    this.htmlElementRegistry = new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id));
   }
 
   // TODO doc, not found elements are not present in the return array
@@ -87,8 +87,7 @@ class BpmnModelRegistry {
   }
 }
 
-// TODO rename into BpmnQuerySelectors
-export class BpmnElementSelector {
+export class BpmnQuerySelectors {
   constructor(private containerId: string) {}
 
   /**
@@ -140,7 +139,7 @@ export class BpmnElementSelector {
 }
 
 class HtmlElementRegistry {
-  constructor(private selectors: BpmnElementSelector) {}
+  constructor(private selectors: BpmnQuerySelectors) {}
 
   /**
    * Returns `null` if no element is found.

@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 import { loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
-import { BpmnElementSelector } from '../../src/component/registry';
+import { BpmnQuerySelectors } from '../../src/component/registry';
 import { ElementHandle } from 'puppeteer';
 
 let bpmnContainerId = 'bpmn-container';
-let bpmnElementSelector = new BpmnElementSelector(bpmnContainerId);
+let bpmnQuerySelectors = new BpmnQuerySelectors(bpmnContainerId);
 
 async function expectLabel(bpmnId: string, expectedText?: string): Promise<void> {
   if (!expectedText) {
     return;
   }
-  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.labelOfFirstAvailableElement(bpmnId));
+  const svgElementHandle = await page.waitForSelector(bpmnQuerySelectors.labelOfFirstAvailableElement(bpmnId));
   // contains 3 div
   expect(await svgElementHandle.evaluate(node => (node.firstChild.firstChild.firstChild as HTMLElement).innerHTML)).toBe(expectedText);
 }
 
 async function expectEvent(bpmnId: string, expectedText: string, isStartEvent = true): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(bpmnId));
+  const svgElementHandle = await page.waitForSelector(bpmnQuerySelectors.firstAvailableElement(bpmnId));
   await expectClassName(svgElementHandle, isStartEvent ? 'bpmn-start-event' : 'bpmn-end-event');
   await expectFirstChildNodeName(svgElementHandle, 'ellipse');
   await expectFirstChildAttribute(svgElementHandle, 'rx', '18');
@@ -56,7 +56,7 @@ async function expectFirstChildAttribute(svgElementHandle: ElementHandle, attrib
 }
 
 async function expectTask(bpmnId: string, expectedText: string): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(bpmnId));
+  const svgElementHandle = await page.waitForSelector(bpmnQuerySelectors.firstAvailableElement(bpmnId));
   await expectClassName(svgElementHandle, 'bpmn-task');
   await expectFirstChildNodeName(svgElementHandle, 'rect');
   await expectFirstChildAttribute(svgElementHandle, 'width', '100');
@@ -65,7 +65,7 @@ async function expectTask(bpmnId: string, expectedText: string): Promise<void> {
 }
 
 async function expectSequenceFlow(bpmnId: string, expectedText?: string): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(bpmnElementSelector.firstAvailableElement(bpmnId));
+  const svgElementHandle = await page.waitForSelector(bpmnQuerySelectors.firstAvailableElement(bpmnId));
   await expectClassName(svgElementHandle, 'bpmn-sequence-flow');
   await expectFirstChildNodeName(svgElementHandle, 'path');
   await expectLabel(bpmnId, expectedText);
@@ -92,7 +92,7 @@ describe('demo page', () => {
 describe('lib-integration page', () => {
   it('should display diagram in page', async () => {
     bpmnContainerId = 'bpmn-container-custom';
-    bpmnElementSelector = new BpmnElementSelector(bpmnContainerId);
+    bpmnQuerySelectors = new BpmnQuerySelectors(bpmnContainerId);
 
     await page.goto(`http://localhost:10002/lib-integration.html?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-only.bpmn')}`);
     await expect(page.title()).resolves.toMatch('BPMN Visualization Lib Integration');

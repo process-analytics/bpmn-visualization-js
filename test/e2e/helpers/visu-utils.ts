@@ -19,7 +19,7 @@ import { copyFileSync, loadBpmnContentForUrlQueryParam } from '../../helpers/fil
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { FitType, LoadOptions } from '../../../src/component/options';
 import BpmnVisualization from '../../../src/component/BpmnVisualization';
-import { BpmnElementSelector } from '../../../src/component/registry';
+import { BpmnQuerySelectors } from '../../../src/component/registry';
 
 const log = debugLogger('test');
 
@@ -157,7 +157,7 @@ export class PageTester {
     const bpmnContainerElementHandle = await page.waitForSelector(`#${this.bpmnContainerId}`, waitForSelectorOptions);
     await expect(page.title()).resolves.toMatch(this.expectedPageTitle);
 
-    await page.waitForSelector(new BpmnElementSelector(this.bpmnContainerId).firstAvailableElement(), waitForSelectorOptions);
+    await page.waitForSelector(new BpmnQuerySelectors(this.bpmnContainerId).firstAvailableElement(), waitForSelectorOptions);
 
     return bpmnContainerElementHandle;
   }
