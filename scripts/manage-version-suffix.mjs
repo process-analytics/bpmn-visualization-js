@@ -23,9 +23,9 @@ log('Current version', currentVersion);
 const newVersion = addOrRemoveVersionSuffix(currentVersion);
 log('New version', newVersion);
 
-updateVersionInNpmFile('./package.json', currentVersion, newVersion);
-updateVersionInNpmFile('./package-lock.json', currentVersion, newVersion);
-updateVersionInSonarFile('./sonar-project.properties', currentVersion, newVersion);
+updateVersionInNpmFile('./package.json', newVersion);
+updateVersionInNpmFile('./package-lock.json', newVersion);
+updateVersionInSonarFile('./sonar-project.properties', newVersion);
 
 log('Configuration files have been updated');
 
@@ -45,14 +45,16 @@ function addOrRemoveVersionSuffix(version) {
   return version.endsWith('-post') ? version.replace(/-post$/, '') : `${version}-post`;
 }
 
-function updateVersionInNpmFile(path, currentVersion, newVersion) {
-  const content = fs.readFileSync(path, 'utf8').toString();
-  const updatedContent = content.replace(`"version": "${currentVersion}"`, `"version": "${newVersion}"`);
-  fs.writeFileSync(path, updatedContent);
+function updateVersionInNpmFile(path, newVersion) {
+  const json = fs.readFileSync(path, 'utf8').toString();
+  const pkg = JSON.parse(json);
+  pkg.version = newVersion;
+  fs.writeFileSync(path, JSON.stringify(pkg, null, 2) + '\n');
 }
 
-function updateVersionInSonarFile(path, currentVersion, newVersion) {
+function updateVersionInSonarFile(path, newVersion) {
   const content = fs.readFileSync(path, 'utf8').toString();
-  const updatedContent = content.replace(`sonar.projectVersion=${currentVersion}`, `sonar.projectVersion=${newVersion}`);
+  // replace the 1st occurrence, is ok as a key appears only once in the file
+  const updatedContent = content.replace(/sonar\.projectVersion=.*/, `sonar.projectVersion=${newVersion}`);
   fs.writeFileSync(path, updatedContent);
 }
