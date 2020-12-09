@@ -66,11 +66,7 @@ class BpmnModelRegistry {
       return undefined;
     }
 
-    const name = mxCell.value;
-    const isShape = mxCell.isVertex();
-    const kind = extractBpmnKindFromStyle(mxCell);
-
-    return { id: bpmnElementId, name: name, isShape: isShape, kind: kind };
+    return { id: bpmnElementId, name: mxCell.value, isShape: mxCell.isVertex(), kind: extractBpmnKindFromStyle(mxCell) };
   }
 }
 
