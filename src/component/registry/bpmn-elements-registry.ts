@@ -67,8 +67,8 @@ interface BpmnSemantic {
   id: string;
   label: string;
   isShape: boolean;
-  // TODO this should be mandatory as part of #929
-  kind?: ShapeBpmnElementKind | FlowKind;
+  // TODO this should be ShapeBpmnElementKind | FlowKind as part of #929
+  kind: string;
 }
 
 export interface BpmnElement extends BpmnSemantic {
@@ -90,7 +90,7 @@ class BpmnModelRegistry {
     const shapeName = extractShapeName(mxCell);
     // const kind = isShape ? ShapeBpmnElementKind[shapeName] : FlowKind[shapeName];
 
-    return { id: bpmnElementId, label: label, isShape: isShape };
+    return { id: bpmnElementId, label: label, isShape: isShape, kind: shapeName };
   }
 }
 

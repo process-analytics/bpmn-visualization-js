@@ -24,6 +24,10 @@ export function computeBpmnBaseClassName(bpmnElementKind: string): string {
   return !bpmnElementKind ? '' : 'bpmn-' + bpmnElementKind.replace(/([A-Z])/g, g => '-' + g[0].toLowerCase());
 }
 
+/**
+ * Extract the mxGraph shape name defined in the style of the cell. It is the string representation of the bpmn element kind i.e {@link ShapeBpmnElementKind} and {@link FlowKind}.
+ * @param cell the mxCell whose style is checked.
+ */
 export function extractShapeName(cell: mxCell): string {
   const style = cell.style;
   return (style ?? '').split(';')[0];
