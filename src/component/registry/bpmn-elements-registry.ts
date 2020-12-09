@@ -51,17 +51,6 @@ export class BpmnElementsRegistry {
   // getElementsByKinds(kinds: ShapeBpmnElementKind | ShapeBpmnElementKind[]): BpmnElement[] {
   //   return [];
   // }
-
-  /**
-   * Returns `null` if no element is found.
-   *
-   * Use {@link getElementsByIds} instead (temporary to keep compatibility with previous versions)
-   * @param bpmnElementId the id of the BPMN element represented by the searched Html Element.
-   * @deprecated
-   */
-  getBpmnHtmlElement(bpmnElementId: string): HTMLElement | null {
-    return this.htmlElementRegistry.getBpmnHtmlElement(bpmnElementId);
-  }
 }
 
 interface BpmnSemantic {
