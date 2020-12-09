@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
-import { BpmnQuerySelectors } from '../../src/component/registry';
+import { BpmnQuerySelectors } from '../../src/component/registry/bpmn-elements-registry';
 import { ElementHandle } from 'puppeteer';
 
 let bpmnContainerId = 'bpmn-container';

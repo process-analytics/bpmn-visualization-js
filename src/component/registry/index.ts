@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export * from './bpmn-elements-registry';
+export { BpmnElementsRegistry, BpmnElement } from './bpmn-elements-registry';
