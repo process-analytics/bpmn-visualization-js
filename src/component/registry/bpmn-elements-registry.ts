@@ -30,17 +30,15 @@ export class BpmnElementsRegistry {
   // TODO doc, not found elements are not present in the return array
   getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[] {
     // TODO move ensureIsArray to src/helpers/arrays.ts (not only for model) and add dedicated tests
-    const ids = ensureIsArray(bpmnElementIds) as string[];
-
-    return ids
+    return (ensureIsArray(bpmnElementIds) as string[])
       .map(id => {
-        const bpmnSemantic = this.bpmnModelRegistry.getBpmnSemantic(id);
-        if (bpmnSemantic) {
-          const bpmnHtmlElement = this.htmlElementRegistry.getBpmnHtmlElement(id);
-          return { ...bpmnSemantic, htmlElement: bpmnHtmlElement };
-        }
+        return this.bpmnModelRegistry.getBpmnSemantic(id);
       })
-      .filter(e => e);
+      .filter(e => e)
+      .map(bpmnSemantic => {
+        const bpmnHtmlElement = this.htmlElementRegistry.getBpmnHtmlElement(bpmnSemantic.id);
+        return { ...bpmnSemantic, htmlElement: bpmnHtmlElement };
+      });
   }
 
   // TODO we should also allow FlowKind
