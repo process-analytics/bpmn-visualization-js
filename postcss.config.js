@@ -18,7 +18,6 @@ const defaultPlugins = {
   autoprefixer: {},
 };
 
-/* TODO: decide if we want it - it is little quicker but output tailwind.css is not minified therefore before pushing `npm run demo:css` need to be run*/
 const plugins = process.env.devLiveReloadMode
   ? defaultPlugins
   : {
