@@ -17,18 +17,15 @@ import { ensureIsArray } from '../parser/json/converter/utils';
 import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
 import { extractBpmnKindFromStyle } from '../mxgraph/style-helper';
 
+export function newBpmnElementsRegistry(graph: BpmnMxGraph): BpmnElementsRegistry {
+  return new BpmnElementsRegistry(new BpmnModelRegistry(graph), new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)));
+}
+
 /**
  * @experimental subject to change, feedback welcome
  */
 export class BpmnElementsRegistry {
-  private bpmnModelRegistry: BpmnModelRegistry;
-  private htmlElementRegistry: HtmlElementRegistry;
-
-  constructor(graph: BpmnMxGraph) {
-    // TODO this should not be instantiate here but injected
-    this.bpmnModelRegistry = new BpmnModelRegistry(graph);
-    this.htmlElementRegistry = new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id));
-  }
+  constructor(private bpmnModelRegistry: BpmnModelRegistry, private htmlElementRegistry: HtmlElementRegistry) {}
 
   // TODO doc, not found elements are not present in the return array
   getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[] {

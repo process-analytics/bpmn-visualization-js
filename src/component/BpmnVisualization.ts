@@ -20,6 +20,7 @@ import { newBpmnParser } from './parser/BpmnParser';
 import { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
 import { FitOptions, GlobalOptions, LoadOptions } from './options';
 import { BpmnElementsRegistry } from './registry';
+import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -40,7 +41,7 @@ export default class BpmnVisualization {
       const configurator = new MxGraphConfigurator(this.container);
       this.graph = configurator.configure(options);
 
-      this.bpmnElementsRegistry = new BpmnElementsRegistry(this.graph);
+      this.bpmnElementsRegistry = newBpmnElementsRegistry(this.graph);
     } catch (e) {
       // TODO error handling
       mxUtils.alert('Cannot start application: ' + e.message);
