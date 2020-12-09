@@ -68,8 +68,8 @@
     "test:e2e": "cross-env DEBUG=test JEST_IMAGE_SNAPSHOT_TRACK_OBSOLETE=1 JEST_PUPPETEER_CONFIG=./test/e2e/jest-puppeteer.config.js jest --runInBand --detectOpenHandles --testPathIgnorePatterns ./test/e2e/performance --config=./test/e2e/jest.config.js",
     "test:perf": "cd ./test/e2e && jest --runInBand --detectOpenHandles --testNamePattern=performance",
     "test:e2e:coverage": "npm run test:e2e -- --coverage",
-    "version-prepare": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m '[RELEASE] prepare version for release'",
-    "postversion": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m '[RELEASE] prepare version for new developments'"
+    "version-prepare": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for release\"",
+    "postversion": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for new developments\""
   },
   "dependencies": {
     "entities": "^2.1.0",
