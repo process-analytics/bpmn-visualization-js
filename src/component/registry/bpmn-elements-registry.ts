@@ -37,8 +37,10 @@ export class BpmnElementsRegistry {
     const bpmnElements: BpmnElement[] = [];
     ids.forEach(id => {
       const bpmnSemantic = this.bpmnModelRegistry.getBpmnSemantic(id);
-      const bpmnHtmlElement = this.htmlElementRegistry.getBpmnHtmlElement(id);
-      bpmnElements.push({ ...bpmnSemantic, htmlElement: bpmnHtmlElement });
+      if (bpmnSemantic) {
+        const bpmnHtmlElement = this.htmlElementRegistry.getBpmnHtmlElement(id);
+        bpmnElements.push({ ...bpmnSemantic, htmlElement: bpmnHtmlElement });
+      }
     });
 
     return bpmnElements;
@@ -78,10 +80,13 @@ export interface BpmnElement extends BpmnSemantic {
 class BpmnModelRegistry {
   constructor(private graph: BpmnMxGraph) {}
 
-  getBpmnSemantic(bpmnElementId: string): BpmnSemantic {
+  getBpmnSemantic(bpmnElementId: string): BpmnSemantic | undefined {
     // TODO we don't need this for now, this is part of #929
     const mxCell = this.graph.getModel().getCell(bpmnElementId);
-    // TODO if mxCell is null, return or throw error
+    if (mxCell == null) {
+      return undefined;
+    }
+
     const label = mxCell.value;
     const isShape = mxCell.isVertex();
     const kind = extractShapeName(mxCell);
