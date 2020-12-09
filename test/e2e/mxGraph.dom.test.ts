@@ -54,13 +54,13 @@ describe('Bpmn Elements registry', () => {
     expect(startEventElement.id).toEqual('StartEvent_1');
     expect(startEventElement.isShape).toBeTruthy();
     expect(startEventElement.kind).toEqual(ShapeBpmnElementKind.EVENT_START);
-    expect(startEventElement.label).toEqual('Start Event 1');
+    expect(startEventElement.name).toEqual('Start Event 1');
 
     const sequenceFlow2Element = bpmnElements[1];
     expect(sequenceFlow2Element.id).toEqual('Flow_2');
     expect(sequenceFlow2Element.isShape).toBeFalsy();
     expect(sequenceFlow2Element.kind).toEqual(FlowKind.SEQUENCE_FLOW);
-    expect(sequenceFlow2Element.label).toBeUndefined();
+    expect(sequenceFlow2Element.name).toBeUndefined();
   });
 
   it('Look for unknown BPMN elements by ids', async () => {

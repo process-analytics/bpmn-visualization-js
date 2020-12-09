@@ -45,7 +45,7 @@ export class BpmnElementsRegistry {
 
 interface BpmnSemantic {
   id: string;
-  label: string;
+  name: string;
   /** `true` when relates to a BPMN Shape, `false` when relates to a BPMN Edge. */
   isShape: boolean;
   // TODO this would be more 'typed oriented' to use ShapeBpmnElementKind | FlowKind (as part of #929)
@@ -66,11 +66,11 @@ class BpmnModelRegistry {
       return undefined;
     }
 
-    const label = mxCell.value;
+    const name = mxCell.value;
     const isShape = mxCell.isVertex();
     const kind = extractBpmnKindFromStyle(mxCell);
 
-    return { id: bpmnElementId, label: label, isShape: isShape, kind: kind };
+    return { id: bpmnElementId, name: name, isShape: isShape, kind: kind };
   }
 }
 
