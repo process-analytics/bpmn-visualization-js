@@ -175,7 +175,7 @@ export class HtmlElementLookup {
 
   private findSvgElement(bpmnId: string): SVGGeometryElement {
     const bpmnElements = this.bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnId);
-    const cellSvgElement = bpmnElements[0].htmlElement; // should be SVGGElement
+    const cellSvgElement = bpmnElements[0].htmlElement; // we expect a SVGGElement
     return cellSvgElement.firstChild as SVGGeometryElement;
   }
 
