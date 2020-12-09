@@ -48,6 +48,7 @@ export class BpmnElementsRegistry {
   }
 
   // TODO we should also allow FlowKind
+  // we probably to introduce something like 'type BpmnKind = ShapeBpmnElementKind | FlowKind'
   // getElementsByKinds(kinds: ShapeBpmnElementKind | ShapeBpmnElementKind[]): BpmnElement[] {
   //   return [];
   // }
@@ -57,7 +58,7 @@ interface BpmnSemantic {
   id: string;
   label: string;
   isShape: boolean;
-  // TODO this should be ShapeBpmnElementKind | FlowKind as part of #929
+  // TODO this would be more 'typed oriented' to use ShapeBpmnElementKind | FlowKind (as part of #929)
   kind: string;
 }
 
@@ -65,13 +66,11 @@ export interface BpmnElement extends BpmnSemantic {
   htmlElement: HTMLElement;
 }
 
-// TODO decide if we use mxgraph model or our internal model
 // for now, we don't store the BpmnModel so we can use it, information are only available in the mxgraph model
 class BpmnModelRegistry {
   constructor(private graph: BpmnMxGraph) {}
 
   getBpmnSemantic(bpmnElementId: string): BpmnSemantic | undefined {
-    // TODO we don't need this for now, this is part of #929
     const mxCell = this.graph.getModel().getCell(bpmnElementId);
     if (mxCell == null) {
       return undefined;
@@ -80,8 +79,6 @@ class BpmnModelRegistry {
     const label = mxCell.value;
     const isShape = mxCell.isVertex();
     const kind = extractBpmnKindFromStyle(mxCell);
-    // TODO get kind as enum value for #929
-    // const kind = isShape ? ShapeBpmnElementKind[shapeName] : FlowKind[shapeName];
 
     return { id: bpmnElementId, label: label, isShape: isShape, kind: kind };
   }
