@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
-export function computeBpmnBaseClassName(name: string): string {
-  return !name ? '' : 'bpmn-' + name.replace(/([A-Z])/g, g => '-' + g[0].toLowerCase());
+/**
+ * Compute the class name in an hyphen case form.
+ * For instance, `userTask` returns `bpmn-user-task`
+ * ```
+ * @param bpmnElementKind the string representation of a bpmn element kind i.e {@link ShapeBpmnElementKind} and {@link FlowKind}.
+ */
+export function computeBpmnBaseClassName(bpmnElementKind: string): string {
+  return !bpmnElementKind ? '' : 'bpmn-' + bpmnElementKind.replace(/([A-Z])/g, g => '-' + g[0].toLowerCase());
 }
 
 export function extractShapeName(cell: mxCell): string {
