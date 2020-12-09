@@ -20,6 +20,7 @@ import copyWatch from 'rollup-plugin-copy-watch';
 import { terser } from 'rollup-plugin-terser';
 import sizes from 'rollup-plugin-sizes';
 import autoExternal from 'rollup-plugin-auto-external';
+import execute from 'rollup-plugin-execute';
 
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
@@ -68,6 +69,11 @@ pluginsNoDeps.push(autoExternal());
 
 // Copy static resources to dist
 if (devMode || demoMode) {
+  plugins.push(execute('npm run demo:css'));
+  if (devLiveReloadMode) {
+    plugins.push(execute('npm run watch:css'));
+  }
+
   const copyTargets = [];
   copyTargets.push({ src: 'src/*.html', dest: 'dist/' });
   copyTargets.push({ src: 'src/static', dest: 'dist' });
