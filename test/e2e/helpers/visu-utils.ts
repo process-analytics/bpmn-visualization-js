@@ -52,8 +52,8 @@ const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
 };
 
 export class ImageSnapshotConfigurator {
-  private readonly defaultCustomDiffDir: string;
-  private readonly defaultCustomSnapshotsDir: string;
+  protected readonly defaultCustomDiffDir: string;
+  protected readonly defaultCustomSnapshotsDir: string;
   /**
    * <b>About `thresholdConfig`</b>
    *
@@ -69,7 +69,8 @@ export class ImageSnapshotConfigurator {
 
   // minimal threshold to make tests for diagram renders pass on local
   // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
-  getConfig(fileName: string): MatchImageSnapshotOptions {
+  getConfig(param: string | { fileName: string }): MatchImageSnapshotOptions {
+    const fileName = typeof param === 'string' ? param : param.fileName;
     const config = this.thresholdConfig.get(fileName);
     let failureThreshold = this.defaultFailureThreshold;
     if (config) {
