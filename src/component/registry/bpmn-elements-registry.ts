@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 import { ensureIsArray } from '../parser/json/converter/utils';
-import { ShapeBpmnElementKind } from '../../model/bpmn/internal/shape';
 import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
 import { extractShapeName } from '../mxgraph/style-helper';
-import { FlowKind } from '../../model/bpmn/internal/edge/FlowKind';
 
 /**
  * @experimental subject to change, feedback welcome
