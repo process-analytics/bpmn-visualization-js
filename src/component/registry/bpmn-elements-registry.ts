@@ -86,11 +86,11 @@ class BpmnModelRegistry {
     // TODO if mxCell is null, return or throw error
     const label = mxCell.value;
     const isShape = mxCell.isVertex();
-    // TODO get kind from model
-    const shapeName = extractShapeName(mxCell);
+    const kind = extractShapeName(mxCell);
+    // TODO get kind as enum value for #929
     // const kind = isShape ? ShapeBpmnElementKind[shapeName] : FlowKind[shapeName];
 
-    return { id: bpmnElementId, label: label, isShape: isShape, kind: shapeName };
+    return { id: bpmnElementId, label: label, isShape: isShape, kind: kind };
   }
 }
 
