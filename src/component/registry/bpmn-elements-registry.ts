@@ -35,12 +35,6 @@ export class BpmnElementsRegistry {
       .filter(e => e)
       .map(bpmnSemantic => ({ ...bpmnSemantic, htmlElement: this.htmlElementRegistry.getBpmnHtmlElement(bpmnSemantic.id) }));
   }
-
-  // TODO we should also allow FlowKind
-  // we probably to introduce something like 'type BpmnKind = ShapeBpmnElementKind | FlowKind'
-  // getElementsByKinds(kinds: ShapeBpmnElementKind | ShapeBpmnElementKind[]): BpmnElement[] {
-  //   return [];
-  // }
 }
 
 interface BpmnSemantic {
@@ -48,7 +42,8 @@ interface BpmnSemantic {
   name: string;
   /** `true` when relates to a BPMN Shape, `false` when relates to a BPMN Edge. */
   isShape: boolean;
-  // TODO this would be more 'typed oriented' to use ShapeBpmnElementKind | FlowKind (as part of #929)
+  // TODO this would be more 'type oriented' to use ShapeBpmnElementKind | FlowKind (as part of #929)
+  // we will probably introduce something like 'type BpmnKind = ShapeBpmnElementKind | FlowKind'
   kind: string;
 }
 
