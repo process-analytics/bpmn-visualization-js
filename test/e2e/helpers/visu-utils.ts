@@ -19,7 +19,7 @@ import { copyFileSync, loadBpmnContentForUrlQueryParam } from '../../helpers/fil
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { FitType, LoadOptions } from '../../../src/component/options';
 import BpmnVisualization from '../../../src/component/BpmnVisualization';
-import { BpmnElementSelector } from '../../../dist/component/registry';
+import { BpmnElementSelector } from '../../../src/component/registry';
 
 const log = debugLogger('test');
 
