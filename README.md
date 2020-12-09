@@ -6,7 +6,7 @@
           <img alt="npm package" src="https://img.shields.io/npm/v/bpmn-visualization.svg?color=orange"> 
         </a> 
         <a href="https://github.com/process-analytics/bpmn-visualization-js/releases">
-          <img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/process-analytics/bpmn-visualization-js?color=orange&include_prereleases"> 
+          <img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/process-analytics/bpmn-visualization-js?label=changelog&include_prereleases"> 
         </a> 
         <a href="https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html">
           <img alt="Live Demo" src="https://img.shields.io/badge/demo-online-blueviolet.svg"> 
