@@ -15,7 +15,7 @@
  */
 import { ensureIsArray } from '../parser/json/converter/utils';
 import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
-import { extractShapeName } from '../mxgraph/style-helper';
+import { extractBpmnKindFromStyle } from '../mxgraph/style-helper';
 
 /**
  * @experimental subject to change, feedback welcome
@@ -79,7 +79,7 @@ class BpmnModelRegistry {
 
     const label = mxCell.value;
     const isShape = mxCell.isVertex();
-    const kind = extractShapeName(mxCell);
+    const kind = extractBpmnKindFromStyle(mxCell);
     // TODO get kind as enum value for #929
     // const kind = isShape ? ShapeBpmnElementKind[shapeName] : FlowKind[shapeName];
 
