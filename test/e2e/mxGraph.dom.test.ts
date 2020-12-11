@@ -50,17 +50,17 @@ describe('Bpmn Elements registry', () => {
     const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['StartEvent_1', 'Flow_2']);
     expect(bpmnElements).toHaveLength(2);
 
-    const startEventElement = bpmnElements[0];
-    expect(startEventElement.id).toEqual('StartEvent_1');
-    expect(startEventElement.isShape).toBeTruthy();
-    expect(startEventElement.kind).toEqual(ShapeBpmnElementKind.EVENT_START);
-    expect(startEventElement.name).toEqual('Start Event 1');
+    const startEventBpmnSemantic = bpmnElements[0].bpmnSemantic;
+    expect(startEventBpmnSemantic.id).toEqual('StartEvent_1');
+    expect(startEventBpmnSemantic.isShape).toBeTruthy();
+    expect(startEventBpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_START);
+    expect(startEventBpmnSemantic.name).toEqual('Start Event 1');
 
-    const sequenceFlow2Element = bpmnElements[1];
-    expect(sequenceFlow2Element.id).toEqual('Flow_2');
-    expect(sequenceFlow2Element.isShape).toBeFalsy();
-    expect(sequenceFlow2Element.kind).toEqual(FlowKind.SEQUENCE_FLOW);
-    expect(sequenceFlow2Element.name).toBeUndefined();
+    const sequenceFlow2BpmnSemantic = bpmnElements[1].bpmnSemantic;
+    expect(sequenceFlow2BpmnSemantic.id).toEqual('Flow_2');
+    expect(sequenceFlow2BpmnSemantic.isShape).toBeFalsy();
+    expect(sequenceFlow2BpmnSemantic.kind).toEqual(FlowKind.SEQUENCE_FLOW);
+    expect(sequenceFlow2BpmnSemantic.name).toBeUndefined();
   });
 
   it('Look for unknown BPMN elements by ids', async () => {

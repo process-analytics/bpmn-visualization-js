@@ -33,11 +33,11 @@ export class BpmnElementsRegistry {
     return (ensureIsArray(bpmnElementIds) as string[])
       .map(id => this.bpmnModelRegistry.getBpmnSemantic(id))
       .filter(e => e)
-      .map(bpmnSemantic => ({ ...bpmnSemantic, htmlElement: this.htmlElementRegistry.getBpmnHtmlElement(bpmnSemantic.id) }));
+      .map(bpmnSemantic => ({ bpmnSemantic: bpmnSemantic, htmlElement: this.htmlElementRegistry.getBpmnHtmlElement(bpmnSemantic.id) }));
   }
 }
 
-interface BpmnSemantic {
+export interface BpmnSemantic {
   id: string;
   name: string;
   /** `true` when relates to a BPMN Shape, `false` when relates to a BPMN Edge. */
@@ -47,7 +47,8 @@ interface BpmnSemantic {
   kind: string;
 }
 
-export interface BpmnElement extends BpmnSemantic {
+export interface BpmnElement {
+  bpmnSemantic: BpmnSemantic;
   htmlElement: HTMLElement;
 }
 
