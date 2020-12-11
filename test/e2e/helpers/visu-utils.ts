@@ -19,6 +19,7 @@ import { copyFileSync, loadBpmnContentForUrlQueryParam } from '../../helpers/fil
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { FitType, LoadOptions } from '../../../src/component/options';
 import BpmnVisualization from '../../../src/component/BpmnVisualization';
+import { BpmnQuerySelectors } from '../../../src/component/registry/bpmn-elements-registry';
 
 const log = debugLogger('test');
 
@@ -156,7 +157,7 @@ export class PageTester {
     const bpmnContainerElementHandle = await page.waitForSelector(`#${this.bpmnContainerId}`, waitForSelectorOptions);
     await expect(page.title()).resolves.toMatch(this.expectedPageTitle);
 
-    await page.waitForSelector(new BpmnElementSelector(this.bpmnContainerId).firstAvailableElement(), waitForSelectorOptions);
+    await page.waitForSelector(new BpmnQuerySelectors(this.bpmnContainerId).firstAvailableElement(), waitForSelectorOptions);
 
     return bpmnContainerElementHandle;
   }
@@ -168,32 +169,13 @@ export function delay(time: number): Promise<unknown> {
   });
 }
 
-/**
- * @see {@link HtmlElementRegistry} for more details
- */
-// TODO duplication with HtmlElementRegistry
-export class BpmnElementSelector {
-  constructor(private containerId: string) {}
-
-  // TODO do we make explicit that this is a svg group?
-  firstAvailableElement(bpmnElementId?: string): string {
-    if (!bpmnElementId) {
-      return `#${this.containerId} > svg > g > g > g[data-bpmn-id]`;
-    }
-    return `#${this.containerId} svg g g[data-bpmn-id="${bpmnElementId}"]`;
-  }
-
-  labelOfFirstAvailableElement(bpmnElementId?: string): string {
-    return `#${this.containerId} svg g g[data-bpmn-id="${bpmnElementId}"] g foreignObject`;
-  }
-}
-
 // TODO duplication with puppeteer expects in mxGraph.view.test.ts
 export class HtmlElementLookup {
   constructor(private bpmnVisualization: BpmnVisualization) {}
 
   private findSvgElement(bpmnId: string): SVGGeometryElement {
-    const cellSvgElement = this.bpmnVisualization.htmlElementRegistry.getBpmnHtmlElement(bpmnId); // should be SVGGElement
+    const bpmnElements = this.bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnId);
+    const cellSvgElement = bpmnElements[0].htmlElement; // we expect a SVGGElement
     return cellSvgElement.firstChild as SVGGeometryElement;
   }
 

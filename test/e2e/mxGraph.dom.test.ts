@@ -16,8 +16,11 @@
 import BpmnVisualization from '../../src/component/BpmnVisualization';
 import { readFileSync } from '../helpers/file-helper';
 import { HtmlElementLookup } from './helpers/visu-utils';
+import { ShapeBpmnElementKind } from '../../src/model/bpmn/internal/shape';
+import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 
 const bpmnContainerId = 'bpmn-visualization-container';
+const bpmnVisualization = initializeBpmnVisualization();
 
 function initializeBpmnVisualization(): BpmnVisualization {
   // insert bpmn container
@@ -29,14 +32,40 @@ function initializeBpmnVisualization(): BpmnVisualization {
   return new BpmnVisualization(bpmnVisualizationElt);
 }
 
-describe('BpmnVisu DOM only checks', () => {
+describe('DOM only checks', () => {
   it('DOM should contains BPMN elements when loading simple-start-task-end.bpmn', async () => {
-    const bpmnVisualization = initializeBpmnVisualization();
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
 
     const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
     htmlElementLookup.expectEvent('StartEvent_1');
     htmlElementLookup.expectTask('Activity_1');
     htmlElementLookup.expectEvent('EndEvent_1');
+  });
+});
+
+describe('Bpmn Elements registry', () => {
+  it('Look for several BPMN elements by ids', async () => {
+    bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+
+    const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['StartEvent_1', 'Flow_2']);
+    expect(bpmnElements).toHaveLength(2);
+
+    const startEventBpmnSemantic = bpmnElements[0].bpmnSemantic;
+    expect(startEventBpmnSemantic.id).toEqual('StartEvent_1');
+    expect(startEventBpmnSemantic.isShape).toBeTruthy();
+    expect(startEventBpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_START);
+    expect(startEventBpmnSemantic.name).toEqual('Start Event 1');
+
+    const sequenceFlow2BpmnSemantic = bpmnElements[1].bpmnSemantic;
+    expect(sequenceFlow2BpmnSemantic.id).toEqual('Flow_2');
+    expect(sequenceFlow2BpmnSemantic.isShape).toBeFalsy();
+    expect(sequenceFlow2BpmnSemantic.kind).toEqual(FlowKind.SEQUENCE_FLOW);
+    expect(sequenceFlow2BpmnSemantic.name).toBeUndefined();
+  });
+
+  it('Look for unknown BPMN elements by ids', async () => {
+    bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+    const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByIds('unknown');
+    expect(bpmnElements).toHaveLength(0);
   });
 });
