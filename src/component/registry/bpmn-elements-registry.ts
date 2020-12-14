@@ -30,7 +30,7 @@ export class BpmnElementsRegistry {
   // TODO doc, not found elements are not present in the return array
   getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[] {
     // TODO move ensureIsArray to src/helpers/arrays.ts (not only for model) and add dedicated tests
-    return (ensureIsArray(bpmnElementIds) as string[])
+    return ensureIsArray<string>(bpmnElementIds)
       .map(id => this.bpmnModelRegistry.getBpmnSemantic(id))
       .filter(e => e)
       .map(bpmnSemantic => ({ bpmnSemantic: bpmnSemantic, htmlElement: this.htmlElementRegistry.getBpmnHtmlElement(bpmnSemantic.id) }));
