@@ -37,7 +37,7 @@ jobs:
       - name: Checkout master
         run: git checkout master && git pull --tags
       - name: Bump Version
-        run: npm version ${{ github.event.inputs.type }} --message "[RELEASE] %s"
+        run: npm run version-prepare && npm version ${{ github.event.inputs.type }} --message "[RELEASE] %s"
       - name: Push Version
         run: git push && git push --tags
 
