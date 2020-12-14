@@ -16,11 +16,40 @@
 import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
 import { FitType, LoadOptions } from '../../src/component/options';
 import { join } from 'path';
+import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 
-function getCustomSnapshotDir(fitType: FitType, margin = 0): string {
-  const fitDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), 'fit');
-  const typeDir = join(fitDir, `type-${fitType}`);
-  return join(typeDir, `margin-${margin == null || margin < 0 ? 0 : margin}`);
+class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
+  getConfig(param: {
+    fileName: string;
+    buildCustomDiffDir: (config: MatchImageSnapshotOptions, fitType: FitType, margin?: number) => string;
+    fitType: FitType;
+    margin?: number;
+  }): MatchImageSnapshotOptions {
+    const config = super.getConfig(param);
+    config.customSnapshotsDir = FitImageSnapshotConfigurator.buildSnapshotFitDir(config.customSnapshotsDir, param.fitType, true, param.margin ? param.margin : 0);
+    config.customDiffDir = param.buildCustomDiffDir(config, param.fitType, param.margin);
+    return config;
+  }
+
+  private static buildSnapshotFitDir(parentDir: string, fitType: FitType, withMargin = false, margin?: number): string {
+    const typeDir = join(parentDir, `type-${fitType}`);
+
+    if (!withMargin) {
+      return typeDir;
+    }
+    return join(typeDir, `margin-${margin == null || margin < 0 ? 0 : margin}`);
+  }
+
+  static buildOnLoadDiffDir(config: MatchImageSnapshotOptions, fitType: FitType, withMargin = false, margin?: number): string {
+    const onLoadDir = join(config.customDiffDir, 'on-load');
+    return FitImageSnapshotConfigurator.buildSnapshotFitDir(onLoadDir, fitType, withMargin, margin);
+  }
+
+  static buildAfterLoadDiffDir(config: MatchImageSnapshotOptions, afterLoadFitType: FitType, onLoadFitType: FitType): string {
+    const afterLoadDir = join(config.customDiffDir, 'after-load');
+    const snapshotFitTypeDir = FitImageSnapshotConfigurator.buildSnapshotFitDir(afterLoadDir, afterLoadFitType);
+    return join(snapshotFitTypeDir, `on-load_type-${onLoadFitType}`);
+  }
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -30,10 +59,8 @@ async function initializePage(loadOptions: LoadOptions, fileName: string): Promi
   await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
 }
 
-const loadDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), 'load');
-
 describe('no diagram visual regression', () => {
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
+  const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(
     new Map<string, ImageSnapshotThresholdConfig>([
       [
         'with.outside.labels',
@@ -48,71 +75,64 @@ describe('no diagram visual regression', () => {
         },
       ],
     ]),
+    'fit',
+    // minimal threshold to make test pass on Github Workflow
+    // ubuntu: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
+    // macOS: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
+    // windows: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
+    0.00006,
   );
 
   const fitTypes: FitType[] = [FitType.None, FitType.HorizontalVertical, FitType.Horizontal, FitType.Vertical, FitType.Center];
-  describe.each(fitTypes)('load options - fit %s', (loadFitType: FitType) => {
-    const loadFitDiffDir = join(loadDiffDir, `type-${loadFitType}`);
-    const fitDiffDir = join(loadFitDiffDir, 'fit');
-
+  describe.each(fitTypes)('load options - fit %s', (onLoadFitType: FitType) => {
     describe.each(['horizontal', 'vertical', 'with.outside.flows', 'with.outside.labels'])('diagram %s', (fileName: string) => {
       it('load', async () => {
-        await initializePage({ fit: { type: loadFitType } }, fileName);
+        await initializePage({ fit: { type: onLoadFitType } }, fileName);
 
         const image = await page.screenshot({ fullPage: true });
 
-        // minimal threshold to make test pass on Github Workflow
-        // ubuntu: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-        // macOS: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-        // windows: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-        const config = imageSnapshotConfigurator.getConfig(fileName, 0.00006);
-        expect(image).toMatchImageSnapshot({
-          ...config,
-          customSnapshotIdentifier: fileName,
-          customSnapshotsDir: getCustomSnapshotDir(loadFitType),
-          customDiffDir: loadFitDiffDir,
+        const config = imageSnapshotConfigurator.getConfig({
+          fileName,
+          fitType: onLoadFitType,
+          buildCustomDiffDir: (config, fitType) => FitImageSnapshotConfigurator.buildOnLoadDiffDir(config, fitType),
         });
+        expect(image).toMatchImageSnapshot(config);
       });
 
-      it.each(fitTypes)(`load + fit %s`, async (fitType: FitType) => {
-        await initializePage({ fit: { type: loadFitType } }, fileName);
+      it.each(fitTypes)(`load + fit %s`, async (afterLoadFitType: FitType) => {
+        await initializePage({ fit: { type: onLoadFitType } }, fileName);
 
-        await page.click(`#${fitType}`);
+        await page.click(`#${afterLoadFitType}`);
         // To unselect the button
         await page.mouse.click(0, 0);
 
         const image = await page.screenshot({ fullPage: true });
 
-        // minimal threshold to make test pass on Github Workflow
-        // ubuntu: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-        // macos: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-        // windows: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-        const config = imageSnapshotConfigurator.getConfig(fileName, 0.00006);
-        expect(image).toMatchImageSnapshot({
-          ...config,
-          customSnapshotIdentifier: fileName,
-          customSnapshotsDir: getCustomSnapshotDir(fitType),
-          customDiffDir: join(fitDiffDir, `type-${fitType}`),
+        const config = imageSnapshotConfigurator.getConfig({
+          fileName,
+          fitType: afterLoadFitType,
+          buildCustomDiffDir: (config, fitType) => FitImageSnapshotConfigurator.buildAfterLoadDiffDir(config, fitType, onLoadFitType),
         });
+        expect(image).toMatchImageSnapshot(config);
       });
 
       if (
-        (loadFitType === FitType.Center && fileName === 'with.outside.flows') ||
-        (loadFitType === FitType.Horizontal && fileName === 'horizontal') ||
-        (loadFitType === FitType.Vertical && fileName === 'vertical')
+        (onLoadFitType === FitType.Center && fileName === 'with.outside.flows') ||
+        (onLoadFitType === FitType.Horizontal && fileName === 'horizontal') ||
+        (onLoadFitType === FitType.Vertical && fileName === 'vertical')
       ) {
         it.each([-100, 0, 20, 50, null])('load with margin %s', async (margin: number) => {
-          await initializePage({ fit: { type: loadFitType, margin: margin } }, fileName);
+          await initializePage({ fit: { type: onLoadFitType, margin: margin } }, fileName);
 
           const image = await page.screenshot({ fullPage: true });
 
-          const config = imageSnapshotConfigurator.getConfig(fileName);
-          expect(image).toMatchImageSnapshot({
-            ...config,
-            customSnapshotIdentifier: fileName,
-            customSnapshotsDir: getCustomSnapshotDir(loadFitType, margin),
-            customDiffDir: join(loadFitDiffDir, `margin-${margin}`),
+          const config = imageSnapshotConfigurator.getConfig({
+            fileName,
+            fitType: onLoadFitType,
+            margin,
+            buildCustomDiffDir: (config, fitType, margin) => FitImageSnapshotConfigurator.buildOnLoadDiffDir(config, fitType, true, margin),
           });
+          expect(image).toMatchImageSnapshot(config);
         });
       }
     });

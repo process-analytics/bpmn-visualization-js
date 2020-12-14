@@ -15,7 +15,6 @@
  */
 import { findFiles } from '../helpers/file-helper';
 import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
-import { join } from 'path';
 
 describe('no BPMN elements visual regression', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
@@ -109,6 +108,7 @@ describe('no BPMN elements visual regression', () => {
         },
       ],
     ]),
+    'bpmn',
   );
 
   const bpmnDiagramPreparation = new BpmnDiagramPreparation(
@@ -130,9 +130,6 @@ describe('no BPMN elements visual regression', () => {
       return filename.split('.').slice(0, -1).join('.');
     });
 
-  const bpmnDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), 'bpmn');
-  const bpmnDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), 'bpmn');
-
   it('check bpmn non-regression files availability', () => {
     expect(bpmnFileNames).toContain('gateways');
   });
@@ -142,11 +139,6 @@ describe('no BPMN elements visual regression', () => {
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(fileName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: fileName,
-      customSnapshotsDir: bpmnDir,
-      customDiffDir: bpmnDiffDir,
-    });
+    expect(image).toMatchImageSnapshot(config);
   });
 });
