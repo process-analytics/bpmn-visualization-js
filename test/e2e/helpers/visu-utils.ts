@@ -19,6 +19,7 @@ import { copyFileSync, loadBpmnContentForUrlQueryParam } from '../../helpers/fil
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { FitType, LoadOptions } from '../../../src/component/options';
 import BpmnVisualization from '../../../src/component/BpmnVisualization';
+import { dirname, join } from 'path';
 import { BpmnQuerySelectors } from '../../../src/component/registry/bpmn-elements-registry';
 
 const log = debugLogger('test');
@@ -77,6 +78,14 @@ export class ImageSnapshotConfigurator {
 
     log(`ImageSnapshot - using failureThreshold: ${failureThreshold}`);
     return { ...defaultImageSnapshotConfig, failureThreshold: failureThreshold, failureThresholdType: 'percent' };
+  }
+
+  static getSnapshotsDir(): string {
+    return join(dirname(expect.getState().testPath), '__image_snapshots__');
+  }
+
+  static getDiffDir(): string {
+    return join(ImageSnapshotConfigurator.getSnapshotsDir(), '__diff_output__');
   }
 }
 
