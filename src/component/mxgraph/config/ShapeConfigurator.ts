@@ -32,7 +32,7 @@ import {
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
-import { computeBpmnBaseClassName } from './StyleConfigurator';
+import { computeBpmnBaseClassName, extractBpmnKindFromStyle } from '../style-helper';
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -97,8 +97,8 @@ export default class ShapeConfigurator {
       if (this.state && this.state.cell) {
         // 'this.state.style' = the style definition associated with the cell
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
-        const cellStyle = this.state.cell.style;
-        const bpmnBaseClassName = computeBpmnBaseClassName(extractShapeName(cellStyle));
+        const cell = this.state.cell;
+        const bpmnBaseClassName = computeBpmnBaseClassName(extractBpmnKindFromStyle(cell));
 
         this.node.setAttribute('class', bpmnBaseClassName);
         this.node.setAttribute('data-bpmn-id', this.state.cell.id);
@@ -116,8 +116,4 @@ export default class ShapeConfigurator {
       return canvas;
     };
   }
-}
-
-function extractShapeName(style: string): string {
-  return (style ?? '').split(';')[0];
 }
