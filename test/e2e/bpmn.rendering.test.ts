@@ -15,12 +15,13 @@
  */
 import { findFiles } from '../helpers/file-helper';
 import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
+import { join } from 'path';
 
 describe('no BPMN elements visual regression', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
     new Map<string, ImageSnapshotThresholdConfig>([
       [
-        'flows.message.02.labels-and-complex-paths', // minimal threshold to make test pass on Github Workflow
+        'flows.message.02.labels.and.complex.paths', // minimal threshold to make test pass on Github Workflow
         // ubuntu: Expected image to match or be a close match to snapshot but was 0.00018742700883533914%
         // macOS: Expected image to match or be a close match to snapshot but was 0.10865713972554311%
         // windows: Expected image to match or be a close match to snapshot but was 0.11321398812403904%
@@ -42,7 +43,7 @@ describe('no BPMN elements visual regression', () => {
         },
       ],
       [
-        'labels.02.position-and-line-breaks',
+        'labels.02.position.and.line.breaks',
         // ubuntu:  1 character change: 0.09528559852869378%
         // macOS: Expected image to match or be a close match to snapshot but was 0.766651632718518%
         // windows: Expected image to match or be a close match to snapshot but was 0.6363888273688278%
@@ -67,7 +68,7 @@ describe('no BPMN elements visual regression', () => {
       // macOS: Expected image to match or be a close match to snapshot but was 0.15006201878846603%
       // windows: Expected image to match or be a close match to snapshot but was 0.12200021675353723%
       [
-        'pools.01.labels-and-lanes',
+        'pools.01.labels.and.lanes',
         {
           linux: 0.002,
           macos: 0.0016,
@@ -78,7 +79,7 @@ describe('no BPMN elements visual regression', () => {
       // macOS: Expected image to match or be a close match to snapshot but was 0.14776609441433664%
       // windows: Expected image to match or be a close match to snapshot but was 0.1182792778311903%
       [
-        'pools.02.vertical.with-lanes',
+        'pools.02.vertical.with.lanes',
         {
           linux: 0.0014,
           macos: 0.0015,
@@ -89,7 +90,7 @@ describe('no BPMN elements visual regression', () => {
       // macOS: Expected image to match or be a close match to snapshot but was 0.07646269456225152% different from snapshot
       // windows: Expected image to match or be a close match to snapshot but was 0.11539494876845469% different from snapshot
       [
-        'pools.03.black-box',
+        'pools.03.black.box',
         {
           linux: 0.00005,
           macos: 0.0008,
@@ -129,6 +130,9 @@ describe('no BPMN elements visual regression', () => {
       return filename.split('.').slice(0, -1).join('.');
     });
 
+  const bpmnDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), 'bpmn');
+  const bpmnDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), 'bpmn');
+
   it('check bpmn non-regression files availability', () => {
     expect(bpmnFileNames).toContain('gateways');
   });
@@ -137,6 +141,12 @@ describe('no BPMN elements visual regression', () => {
     await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
 
     const image = await page.screenshot({ fullPage: true });
-    expect(image).toMatchImageSnapshot(imageSnapshotConfigurator.getConfig(fileName));
+    const config = imageSnapshotConfigurator.getConfig(fileName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: fileName,
+      customSnapshotsDir: bpmnDir,
+      customDiffDir: bpmnDiffDir,
+    });
   });
 });
