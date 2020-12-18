@@ -15,9 +15,9 @@
  */
 import { FlowKind } from '../../../../src/model/bpmn/internal/edge/FlowKind';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal/shape';
-import { computeBpmnBaseClassName } from '../../../../src/component/mxgraph/style-helper';
+import { computeBpmnBaseClassName, computeAllBpmnClassNames } from '../../../../src/component/mxgraph/style-helper';
 
-describe('compute css class names of BPMN elements', () => {
+describe('compute base css class names of BPMN elements', () => {
   it.each`
     kind                                             | expectedClassName
     ${undefined}                                     | ${''}
@@ -34,8 +34,20 @@ describe('compute css class names of BPMN elements', () => {
     ${ShapeBpmnElementKind.SUB_PROCESS}              | ${'bpmn-sub-process'}
     ${ShapeBpmnElementKind.TASK}                     | ${'bpmn-task'}
     ${ShapeBpmnElementKind.TASK_BUSINESS_RULE}       | ${'bpmn-business-rule-task'}
-    ${ShapeBpmnElementKind.TASK_BUSINESS_RULE}       | ${'bpmn-business-rule-task'}
-  `('$kind classname', ({ kind, expectedClassName }) => {
+    ${ShapeBpmnElementKind.TASK_SERVICE}             | ${'bpmn-service-task'}
+  `('$kind Bpmn base classname', ({ kind, expectedClassName }) => {
     expect(computeBpmnBaseClassName(kind)).toEqual(expectedClassName);
+  });
+});
+
+describe('compute all css class names of BPMN elements', () => {
+  it.each`
+    kind                                       | isLabel  | expectedClassName
+    ${FlowKind.ASSOCIATION_FLOW}               | ${true}  | ${'bpmn-association bpmn-label'}
+    ${FlowKind.MESSAGE_FLOW}                   | ${false} | ${'bpmn-message-flow'}
+    ${ShapeBpmnElementKind.CALL_ACTIVITY}      | ${true}  | ${'bpmn-call-activity bpmn-label'}
+    ${ShapeBpmnElementKind.TASK_BUSINESS_RULE} | ${false} | ${'bpmn-business-rule-task'}
+  `('$kind all classes when isLabel $isLabel', ({ kind, isLabel, expectedClassName }) => {
+    expect(computeAllBpmnClassNames(kind, isLabel)).toEqual(expectedClassName);
   });
 });
