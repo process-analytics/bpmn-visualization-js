@@ -137,8 +137,8 @@ export class BpmnQuerySelectors {
     return `#${this.containerId} > svg > g > g > g[data-bpmn-id="${bpmnElementId}"].bpmn-label > g > foreignObject`;
   }
 
-  elementsOfKind(kind: string): string {
-    return `#${this.containerId} > svg > g > g > g.${kind}:not(.bpmn-label)`;
+  elementsOfKind(bpmnKindCssClassname: string): string {
+    return `#${this.containerId} > svg > g > g > g.${bpmnKindCssClassname}:not(.bpmn-label)`;
   }
 }
 
@@ -154,8 +154,8 @@ class HtmlElementRegistry {
     return document.querySelector<HTMLElement>(this.selectors.element(bpmnElementId));
   }
 
-  getBpmnHtmlElements(kind: BpmnKind): HTMLElement[] {
-    const selectors = this.selectors.elementsOfKind(computeBpmnBaseClassName(kind));
+  getBpmnHtmlElements(bpmnElementKind: BpmnKind): HTMLElement[] {
+    const selectors = this.selectors.elementsOfKind(computeBpmnBaseClassName(bpmnElementKind));
     return [...document.querySelectorAll<HTMLElement>(selectors)];
   }
 }
