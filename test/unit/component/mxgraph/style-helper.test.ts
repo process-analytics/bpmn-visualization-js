@@ -36,6 +36,6 @@ describe('compute css class names of BPMN elements', () => {
     ${ShapeBpmnElementKind.TASK_BUSINESS_RULE}       | ${'bpmn-business-rule-task'}
     ${ShapeBpmnElementKind.TASK_BUSINESS_RULE}       | ${'bpmn-business-rule-task'}
   `('$kind classname', ({ kind, expectedClassName }) => {
-    expect(computeBpmnBaseClassName(kind)).toEqual(expectedClassName);
+    expect(computeBpmnBaseClassName(kind, false)).toEqual(expectedClassName);
   });
 });
