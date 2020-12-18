@@ -38,9 +38,9 @@ export class BpmnElementsRegistry {
       .map(bpmnSemantic => ({ bpmnSemantic: bpmnSemantic, htmlElement: this.htmlElementRegistry.getBpmnHtmlElement(bpmnSemantic.id) }));
   }
 
-  getElementsByKinds(bpmnKinds: BpmnKind | BpmnKind[]): BpmnElement[] {
+  getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
     const bpmnElements: BpmnElement[] = [];
-    ensureIsArray<BpmnKind>(bpmnKinds)
+    ensureIsArray<BpmnElementKind>(bpmnKinds)
       .map(kind =>
         // TODO when implementing #953, use the model to search for Bpmn elements matching kinds instead of css selectors
         this.htmlElementRegistry.getBpmnHtmlElements(kind).map(
@@ -58,14 +58,14 @@ export class BpmnElementsRegistry {
   }
 }
 
-export type BpmnKind = FlowKind | ShapeBpmnElementKind;
+export type BpmnElementKind = FlowKind | ShapeBpmnElementKind;
 
 export interface BpmnSemantic {
   id: string;
   name: string;
   /** `true` when relates to a BPMN Shape, `false` when relates to a BPMN Edge. */
   isShape: boolean;
-  // TODO use a more 'type oriented' BpmnKind (as part of #929)
+  // TODO use a more 'type oriented' BpmnElementKind (as part of #929)
   kind: string;
 }
 
@@ -154,7 +154,7 @@ class HtmlElementRegistry {
     return document.querySelector<HTMLElement>(this.selectors.element(bpmnElementId));
   }
 
-  getBpmnHtmlElements(bpmnElementKind: BpmnKind): HTMLElement[] {
+  getBpmnHtmlElements(bpmnElementKind: BpmnElementKind): HTMLElement[] {
     const selectors = this.selectors.elementsOfKind(computeBpmnBaseClassName(bpmnElementKind));
     return [...document.querySelectorAll<HTMLElement>(selectors)];
   }

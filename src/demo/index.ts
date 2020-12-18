@@ -17,7 +17,7 @@ import BpmnVisualization from '../component/BpmnVisualization';
 import { GlobalOptions, FitOptions, FitType, LoadOptions } from '../component/options';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { BpmnElement, BpmnKind } from '../component/registry/bpmn-elements-registry';
+import { BpmnElement, BpmnElementKind } from '../component/registry/bpmn-elements-registry';
 
 export * from './helper';
 
@@ -53,7 +53,7 @@ export function fit(fitOptions: FitOptions): void {
   log('Fit done with configuration', stringify(fitOptions));
 }
 
-export function getElementsByKinds(bpmnKinds: BpmnKind | BpmnKind[]): BpmnElement[] {
+export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
   return bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(bpmnKinds);
 }
 
