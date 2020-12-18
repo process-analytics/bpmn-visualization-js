@@ -19,11 +19,21 @@
  * For instance, `userTask` returns `bpmn-user-task`
  * ```
  * @param bpmnElementKind the string representation of a BPMN element kind i.e {@link ShapeBpmnElementKind} and {@link FlowKind}.
- * @param isLabel the boolean that indicates if class must be computed for label
+ * @param isLabel the boolean that indicates if class must be computed for label.
  */
-export function computeBpmnBaseClassName(bpmnElementKind: string, isLabel: boolean): string {
-  const classCss = !bpmnElementKind ? '' : 'bpmn-' + bpmnElementKind.replace(/([A-Z])/g, g => '-' + g[0].toLowerCase());
-  return isLabel ? classCss + '-label' : classCss;
+export function computeBpmnBaseClassNames(bpmnElementKind: string, isLabel: boolean): string {
+  const classCss = computeBpmnBaseClassName(bpmnElementKind);
+  return isLabel ? addLabelClass(classCss) : classCss;
+}
+
+/**
+ * Compute the class name in an hyphen case form.
+ * For instance, `userTask` returns `bpmn-user-task`
+ * ```
+ * @param bpmnElementKind the string representation of a BPMN element kind i.e {@link ShapeBpmnElementKind} and {@link FlowKind}.
+ */
+export function computeBpmnBaseClassName(bpmnElementKind: string): string {
+  return !bpmnElementKind ? '' : 'bpmn-' + bpmnElementKind.replace(/([A-Z])/g, g => '-' + g[0].toLowerCase());
 }
 
 /**
@@ -32,4 +42,25 @@ export function computeBpmnBaseClassName(bpmnElementKind: string, isLabel: boole
  */
 export function extractBpmnKindFromStyle(cell: mxCell): string {
   return cell.style.split(';')[0];
+}
+
+/**
+ * Adds bpmn-label css class to the classCss string.
+ * @param classCss the existing class string
+ */
+export function addLabelClass(classCss: string): string {
+  return addClass(classCss, 'bpmn-label');
+}
+
+/**
+ * Adds arbitrary class to the classCss string.
+ * @param classCss the existing class string
+ * @param newClass the new css class to be added
+ */
+function addClass(classCss: string, newClass: string | string[]): string {
+  if (Array.isArray(newClass)) {
+    return classCss + ' ' + newClass.join(' ');
+  } else {
+    return classCss + ' ' + newClass;
+  }
 }

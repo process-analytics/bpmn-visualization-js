@@ -15,7 +15,7 @@
  */
 import { FlowKind } from '../../../../src/model/bpmn/internal/edge/FlowKind';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal/shape';
-import { computeBpmnBaseClassName } from '../../../../src/component/mxgraph/style-helper';
+import { addLabelClass, computeBpmnBaseClassNames } from '../../../../src/component/mxgraph/style-helper';
 describe.each([false, true])('compute css class names of BPMN elements', isLabel => {
   it.each`
     kind                                             | expectedClassName
@@ -35,6 +35,6 @@ describe.each([false, true])('compute css class names of BPMN elements', isLabel
     ${ShapeBpmnElementKind.TASK_BUSINESS_RULE}       | ${'bpmn-business-rule-task'}
     ${ShapeBpmnElementKind.TASK_BUSINESS_RULE}       | ${'bpmn-business-rule-task'}
   `('$kind classname', ({ kind, expectedClassName }) => {
-    expect(computeBpmnBaseClassName(kind, isLabel)).toEqual(isLabel ? expectedClassName + '-label' : expectedClassName);
+    expect(computeBpmnBaseClassNames(kind, isLabel)).toEqual(isLabel ? addLabelClass(expectedClassName) : expectedClassName);
   });
 });
