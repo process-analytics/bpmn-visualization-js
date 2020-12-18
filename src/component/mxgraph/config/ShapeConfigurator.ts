@@ -98,7 +98,8 @@ export default class ShapeConfigurator {
         // 'this.state.style' = the style definition associated with the cell
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cell = this.state.cell;
-        const bpmnBaseClassName = computeBpmnBaseClassName(extractBpmnKindFromStyle(cell));
+        // dialect = strictHtml means that current node holds the label
+        const bpmnBaseClassName = computeBpmnBaseClassName(extractBpmnKindFromStyle(cell), this.dialect === 'strictHtml');
 
         this.node.setAttribute('class', bpmnBaseClassName);
         this.node.setAttribute('data-bpmn-id', this.state.cell.id);
