@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BPMN Visualization Non Regression</title>
+    <link rel="shortcut icon" href="./static/img/favicon.ico">
+    <style>
+      #main-container {
+        top: 140px;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        position: absolute;
+      }
+      #bpmn-container {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        border-style: solid;
+        border-color: #B0B0B0;
+        border-width: 1px;
+
+        position: absolute;
+        overflow: hidden;
+      }
+
+      textarea {
+        resize: none;
+        height: 100px;
+        right: 10px;
+        position: absolute;
+        width: 70%;
+      }
+    </style>
+</head>
+<body>
+    <div id="controls">
+      <label for="bpmn-kinds-select">Select by Kinds:</label><select id="bpmn-kinds-select">
+        <option value="task">Abstract Task</option>
+        <option value="userTask">User Task</option>
+        <option value="scriptTask">Script Task</option>
+        <option value="serviceTask">Service Task</option>
+        <option value="startEvent">Start Event</option>
+        <option value="endEvent">End Event</option>
+        <option value="intermediateCatchEvent">Catch Event</option>
+        <option value="intermediateThrowEvent">Throw Event</option>
+        <option value="lane">Lane</option>
+      </select>
+      <button id="bpmn-kinds-textarea-clean-btn">Clear</button>
+      <textarea id="elements-result"></textarea>
+    </div>
+
+    <div id="main-container">
+      <div id="bpmn-container"></div>
+    </div>
+
+    <!-- load global settings -->
+    <script src="./static/js/configureMxGraphGlobals.js"></script>
+    <!-- load mxGraph client library -->
+    <script src="./static/js/mxClient.min.js"></script>
+    <!-- load app -->
+    <script src="./static/js/elements-identification.js" type="module"></script>
+</body>
+</html>

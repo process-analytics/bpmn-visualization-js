@@ -15,7 +15,9 @@
  */
 import { ensureIsArray } from '../parser/json/converter/utils';
 import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
-import { extractBpmnKindFromStyle } from '../mxgraph/style-helper';
+import { computeBpmnBaseClassName, extractBpmnKindFromStyle } from '../mxgraph/style-helper';
+import { FlowKind } from '../../model/bpmn/internal/edge/FlowKind';
+import { ShapeBpmnElementKind } from '../../model/bpmn/internal/shape';
 
 export function newBpmnElementsRegistry(graph: BpmnMxGraph): BpmnElementsRegistry {
   return new BpmnElementsRegistry(new BpmnModelRegistry(graph), new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)));
@@ -35,15 +37,35 @@ export class BpmnElementsRegistry {
       .filter(e => e)
       .map(bpmnSemantic => ({ bpmnSemantic: bpmnSemantic, htmlElement: this.htmlElementRegistry.getBpmnHtmlElement(bpmnSemantic.id) }));
   }
+
+  getElementsByKinds(bpmnKinds: BpmnKind | BpmnKind[]): BpmnElement[] {
+    const bpmnElements: BpmnElement[] = [];
+    ensureIsArray<BpmnKind>(bpmnKinds)
+      .map(kind =>
+        // TODO when implementing #953, use the model to search for Bpmn elements matching kinds instead of css selectors
+        this.htmlElementRegistry.getBpmnHtmlElements(kind).map(
+          htmlElement =>
+            ({
+              htmlElement: htmlElement,
+              bpmnSemantic: this.bpmnModelRegistry.getBpmnSemantic(htmlElement.getAttribute('data-bpmn-id')),
+            } as BpmnElement),
+        ),
+      )
+      // We will be able to use flatmap instead when targeting es2019+
+      .forEach(innerBpmnElements => bpmnElements.push(...innerBpmnElements));
+
+    return bpmnElements;
+  }
 }
+
+export type BpmnKind = FlowKind | ShapeBpmnElementKind;
 
 export interface BpmnSemantic {
   id: string;
   name: string;
   /** `true` when relates to a BPMN Shape, `false` when relates to a BPMN Edge. */
   isShape: boolean;
-  // TODO this would be more 'type oriented' to use ShapeBpmnElementKind | FlowKind (as part of #929)
-  // we will probably introduce something like 'type BpmnKind = ShapeBpmnElementKind | FlowKind'
+  // TODO use a more 'type oriented' BpmnKind (as part of #929)
   kind: string;
 }
 
@@ -88,7 +110,7 @@ class BpmnModelRegistry {
  *     <g>
  *       <g></g>
  *       <g>
- *         <g style="" class="pool" data-bpmn-id="Participant_1">....</g>
+ *         <g style="" class="bpmn-pool" data-bpmn-id="Participant_1">....</g>
  *       </g>
  *       <g></g>
  *       <g></g>
@@ -102,16 +124,22 @@ export class BpmnQuerySelectors {
   constructor(private containerId: string) {}
 
   // TODO do we make explicit that this selector targets a SVG group?
-  firstAvailableElement(bpmnElementId?: string): string {
-    if (!bpmnElementId) {
-      return `#${this.containerId} > svg > g > g > g[data-bpmn-id]`;
-    }
-    // TODO use more precise selector
+  existingElement(): string {
+    return `#${this.containerId} > svg > g > g > g[data-bpmn-id]`;
+  }
+
+  element(bpmnElementId: string): string {
+    // TODO use more precise selector (use child combinator)
     return `#${this.containerId} svg g g[data-bpmn-id="${bpmnElementId}"]`;
   }
 
-  labelOfFirstAvailableElement(bpmnElementId?: string): string {
+  labelOfElement(bpmnElementId?: string): string {
     return `#${this.containerId} > svg > g > g > g[data-bpmn-id="${bpmnElementId}"].bpmn-label > g > foreignObject`;
+  }
+
+  elementsOfKind(kind: string): string {
+    // style is NOT empty in g node that hold the label i.e. the one with a foreignObject
+    return `#${this.containerId} > svg > g > g > g.${kind}:not([style=""])`;
   }
 }
 
@@ -124,6 +152,11 @@ class HtmlElementRegistry {
    */
   getBpmnHtmlElement(bpmnElementId: string): HTMLElement | null {
     // TODO error management, for now we return null
-    return document.querySelector<HTMLElement>(this.selectors.firstAvailableElement(bpmnElementId));
+    return document.querySelector<HTMLElement>(this.selectors.element(bpmnElementId));
+  }
+
+  getBpmnHtmlElements(kind: BpmnKind): HTMLElement[] {
+    const selectors = this.selectors.elementsOfKind(computeBpmnBaseClassName(kind));
+    return [...document.querySelectorAll<HTMLElement>(selectors)];
   }
 }

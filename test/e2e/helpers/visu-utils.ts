@@ -180,7 +180,7 @@ export class PageTester {
     const bpmnContainerElementHandle = await page.waitForSelector(`#${this.bpmnContainerId}`, waitForSelectorOptions);
     await expect(page.title()).resolves.toMatch(this.expectedPageTitle);
 
-    await page.waitForSelector(new BpmnQuerySelectors(this.bpmnContainerId).firstAvailableElement(), waitForSelectorOptions);
+    await page.waitForSelector(new BpmnQuerySelectors(this.bpmnContainerId).existingElement(), waitForSelectorOptions);
 
     return bpmnContainerElementHandle;
   }
@@ -192,21 +192,43 @@ export function delay(time: number): Promise<unknown> {
   });
 }
 
-// TODO duplication with puppeteer expects in mxGraph.view.test.ts
 export class HtmlElementLookup {
   constructor(private bpmnVisualization: BpmnVisualization) {}
 
-  private findSvgElement(bpmnId: string): SVGGeometryElement {
+  private findSvgElement(bpmnId: string): HTMLElement {
     const bpmnElements = this.bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnId);
-    const cellSvgElement = bpmnElements[0].htmlElement; // we expect a SVGGElement
-    return cellSvgElement.firstChild as SVGGeometryElement;
+    return bpmnElements.length == 0 ? undefined : bpmnElements[0].htmlElement;
   }
 
   expectEvent(bpmnId: string): void {
-    expect(this.findSvgElement(bpmnId).nodeName).toBe('ellipse');
+    expectSvgEvent(this.findSvgElement(bpmnId));
   }
 
   expectTask(bpmnId: string): void {
-    expect(this.findSvgElement(bpmnId).nodeName).toBe('rect');
+    expectSvgTask(this.findSvgElement(bpmnId));
   }
+}
+
+export function expectSvgEvent(svgGroupElement: HTMLElement): void {
+  expectSvgFirstChildNodeName(svgGroupElement, 'ellipse');
+}
+
+export function expectSvgTask(svgGroupElement: HTMLElement): void {
+  expectSvgFirstChildNodeName(svgGroupElement, 'rect');
+}
+
+export function expectSvgPool(svgGroupElement: HTMLElement): void {
+  expectSvgFirstChildNodeName(svgGroupElement, 'path');
+}
+
+export function expectSvgSequenceFlow(svgGroupElement: HTMLElement): void {
+  expectSvgFirstChildNodeName(svgGroupElement, 'path');
+}
+
+// TODO duplication with puppeteer expects in mxGraph.view.test.ts
+// we expect a SVGGElement as HTMLElement parameter
+function expectSvgFirstChildNodeName(svgGroupElement: HTMLElement, name: string): void {
+  expect(svgGroupElement).not.toBeUndefined();
+  const firstChild = svgGroupElement.firstChild as SVGGeometryElement;
+  expect(firstChild.nodeName).toEqual(name);
 }

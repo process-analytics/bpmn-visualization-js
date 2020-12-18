@@ -24,13 +24,13 @@ async function expectLabel(bpmnId: string, expectedText?: string): Promise<void>
   if (!expectedText) {
     return;
   }
-  const svgElementHandle = await page.waitForSelector(bpmnQuerySelectors.labelOfFirstAvailableElement(bpmnId));
+  const svgElementHandle = await page.waitForSelector(bpmnQuerySelectors.labelOfElement(bpmnId));
   // contains 3 div
   expect(await svgElementHandle.evaluate(node => (node.firstChild.firstChild.firstChild as HTMLElement).innerHTML)).toBe(expectedText);
 }
 
 async function expectEvent(bpmnId: string, expectedText: string, isStartEvent = true): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(bpmnQuerySelectors.firstAvailableElement(bpmnId));
+  const svgElementHandle = await page.waitForSelector(bpmnQuerySelectors.element(bpmnId));
   await expectClassName(svgElementHandle, isStartEvent ? 'bpmn-start-event' : 'bpmn-end-event');
   await expectFirstChildNodeName(svgElementHandle, 'ellipse');
   await expectFirstChildAttribute(svgElementHandle, 'rx', '18');
@@ -56,7 +56,7 @@ async function expectFirstChildAttribute(svgElementHandle: ElementHandle, attrib
 }
 
 async function expectTask(bpmnId: string, expectedText: string): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(bpmnQuerySelectors.firstAvailableElement(bpmnId));
+  const svgElementHandle = await page.waitForSelector(bpmnQuerySelectors.element(bpmnId));
   await expectClassName(svgElementHandle, 'bpmn-task');
   await expectFirstChildNodeName(svgElementHandle, 'rect');
   await expectFirstChildAttribute(svgElementHandle, 'width', '100');
@@ -65,7 +65,7 @@ async function expectTask(bpmnId: string, expectedText: string): Promise<void> {
 }
 
 async function expectSequenceFlow(bpmnId: string, expectedText?: string): Promise<void> {
-  const svgElementHandle = await page.waitForSelector(bpmnQuerySelectors.firstAvailableElement(bpmnId));
+  const svgElementHandle = await page.waitForSelector(bpmnQuerySelectors.element(bpmnId));
   await expectClassName(svgElementHandle, 'bpmn-sequence-flow');
   await expectFirstChildNodeName(svgElementHandle, 'path');
   await expectLabel(bpmnId, expectedText);
