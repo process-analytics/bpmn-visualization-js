@@ -111,8 +111,7 @@ export class BpmnQuerySelectors {
   }
 
   labelOfFirstAvailableElement(bpmnElementId?: string): string {
-    // TODO use more precise selector
-    return `#${this.containerId} svg g g[data-bpmn-id="${bpmnElementId}"] g foreignObject`;
+    return `#${this.containerId} svg > g > g > g[data-bpmn-id="${bpmnElementId}"].bpmn-label > g > foreignObject`;
   }
 }
 
