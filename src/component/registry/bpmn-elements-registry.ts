@@ -138,8 +138,7 @@ export class BpmnQuerySelectors {
   }
 
   elementsOfKind(kind: string): string {
-    // style is NOT empty in g node that hold the label i.e. the one with a foreignObject
-    return `#${this.containerId} > svg > g > g > g.${kind}:not([style=""])`;
+    return `#${this.containerId} > svg > g > g > g.${kind}:not(.bpmn-label)`;
   }
 }
 
