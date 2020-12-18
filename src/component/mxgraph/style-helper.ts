@@ -15,13 +15,12 @@
  */
 
 /**
- * Compute the class name in an hyphen case form.
- * For instance, `userTask` returns `bpmn-user-task`
- * ```
+ * Compute the all class names associated to a given bpmn element kind in an hyphen case form.
+ *
  * @param bpmnElementKind the string representation of a BPMN element kind i.e {@link ShapeBpmnElementKind} and {@link FlowKind}.
  * @param isLabel the boolean that indicates if class must be computed for label.
  */
-export function computeBpmnBaseClassNames(bpmnElementKind: string, isLabel: boolean): string {
+export function computeAllBpmnClassNames(bpmnElementKind: string, isLabel: boolean): string {
   const classCss = computeBpmnBaseClassName(bpmnElementKind);
   return isLabel ? addLabelClass(classCss) : classCss;
 }
@@ -29,7 +28,7 @@ export function computeBpmnBaseClassNames(bpmnElementKind: string, isLabel: bool
 /**
  * Compute the class name in an hyphen case form.
  * For instance, `userTask` returns `bpmn-user-task`
- * ```
+ *
  * @param bpmnElementKind the string representation of a BPMN element kind i.e {@link ShapeBpmnElementKind} and {@link FlowKind}.
  */
 export function computeBpmnBaseClassName(bpmnElementKind: string): string {
