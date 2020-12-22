@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnDiagramPreparation, BpmnLoadMethod, delay, getSimplePlatformName, PageTester } from '../helpers/visu-utils';
+import { BpmnLoadMethod, delay, getSimplePlatformName, PageTester } from '../helpers/visu-utils';
 import { calculateMetrics, ChartData, PerformanceMetric } from '../helpers/perf-utils';
 import * as fs from 'fs';
 
@@ -23,16 +23,14 @@ const metricsArray: Array<PerformanceMetric> = [];
 
 describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
-  const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map([['B.2.0', BpmnLoadMethod.Url]]), { name: 'rendering-diagram', queryParams: [] }, 'performance');
-
-  const pageTester = new PageTester(bpmnDiagramPreparation, 'BPMN Visualization - Diagram Rendering');
+  const pageTester = new PageTester({ pageFileName: 'rendering-diagram', queryParams: [], expectedPageTitle: 'BPMN Visualization - Diagram Rendering' }, 'performance');
 
   const fileName = 'B.2.0';
   let viewportCenterX: number;
   let viewportCenterY: number;
 
   beforeEach(async () => {
-    const bpmnContainerElementHandle = await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
+    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(fileName, BpmnLoadMethod.Url);
     const bounding_box = await bpmnContainerElementHandle.boundingBox();
     viewportCenterX = bounding_box.x + bounding_box.width / 2;
     viewportCenterY = bounding_box.y + bounding_box.height / 2;
