@@ -16,8 +16,19 @@
 import { delay, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
 import { join } from 'path';
 
+const delayToWaitUntilZoomIsDone = 100;
+
+async function zoom(xTimes: number, deltaX: number): Promise<void> {
+  await page.keyboard.down('Control');
+
+  for (let i = 0; i < xTimes; i++) {
+    await page.mouse.wheel({ deltaX: deltaX });
+    // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
+    await delay(delayToWaitUntilZoomIsDone);
+  }
+}
+
 describe('diagram navigation', () => {
-  const delayToWaitUntilZoomIsDone = 100;
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
     new Map<string, ImageSnapshotThresholdConfig>([
       [
@@ -64,40 +75,27 @@ describe('diagram navigation', () => {
     });
   });
 
-  it.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoom: string) => {
-    const deltaX = zoom === 'zoom in' ? -100 : 100;
+  it.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
+    const deltaX = zoomMode === 'zoom in' ? -100 : 100;
     // simulate mouse+ctrl zoom
     await page.mouse.move(viewportCenterX + 200, viewportCenterY);
-    await page.keyboard.down('Control');
-    await page.mouse.wheel({ deltaX: deltaX });
-    await delay(delayToWaitUntilZoomIsDone);
+    await zoom(1, deltaX);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(fileName);
     expect(image).toMatchImageSnapshot({
       ...config,
-      customSnapshotIdentifier: zoom === 'zoom in' ? 'mouse.zoom.in' : 'mouse.zoom.out',
+      customSnapshotIdentifier: zoomMode === 'zoom in' ? 'mouse.zoom.in' : 'mouse.zoom.out',
     });
   });
 
-  // TODO Set customSnapshotIdentifier & customDiffDir to use the same snapshot like it is done in diagram rendering test
   it.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
     const deltaX = -100;
     // simulate mouse+ctrl zoom
     await page.mouse.move(viewportCenterX + 200, viewportCenterY);
-    await page.keyboard.down('Control');
-    for (let i = 0; i < xTimes; i++) {
-      await page.mouse.wheel({ deltaX: deltaX });
-      // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
-      await delay(delayToWaitUntilZoomIsDone);
-    }
-    await delay(delayToWaitUntilZoomIsDone);
-    for (let i = 0; i < xTimes; i++) {
-      await page.mouse.wheel({ deltaX: -deltaX });
-      // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
-      await delay(delayToWaitUntilZoomIsDone);
-    }
-    await delay(delayToWaitUntilZoomIsDone);
+    await zoom(xTimes, deltaX);
+    await zoom(xTimes, -deltaX);
+
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(fileName);
     expect(image).toMatchImageSnapshot({
