@@ -51,20 +51,20 @@ describe('diagram navigation', () => {
   const pageTester = new PageTester({ pageFileName: 'rendering-diagram', queryParams: [], expectedPageTitle: 'BPMN Visualization - Diagram Rendering' }, 'navigation');
 
   const fileName = 'simple.2.start.events.1.task';
-  let viewportCenterX: number;
-  let viewportCenterY: number;
+  let containerCenterX: number;
+  let containerCenterY: number;
   beforeEach(async () => {
     const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
     const bounding_box = await bpmnContainerElementHandle.boundingBox();
-    viewportCenterX = bounding_box.x + bounding_box.width / 2;
-    viewportCenterY = bounding_box.y + bounding_box.height / 2;
+    containerCenterX = bounding_box.x + bounding_box.width / 2;
+    containerCenterY = bounding_box.y + bounding_box.height / 2;
   });
 
   it('mouse panning', async () => {
     // simulate mouse panning
-    await page.mouse.move(viewportCenterX, viewportCenterY);
+    await page.mouse.move(containerCenterX, containerCenterY);
     await page.mouse.down();
-    await page.mouse.move(viewportCenterX + 150, viewportCenterY + 40);
+    await page.mouse.move(containerCenterX + 150, containerCenterY + 40);
     await page.mouse.up();
 
     const image = await page.screenshot({ fullPage: true });
@@ -78,7 +78,7 @@ describe('diagram navigation', () => {
   it.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
     const deltaX = zoomMode === 'zoom in' ? -100 : 100;
     // simulate mouse+ctrl zoom
-    await page.mouse.move(viewportCenterX + 200, viewportCenterY);
+    await page.mouse.move(containerCenterX + 200, containerCenterY);
     await zoom(1, deltaX);
 
     const image = await page.screenshot({ fullPage: true });
@@ -92,7 +92,7 @@ describe('diagram navigation', () => {
   it.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
     const deltaX = -100;
     // simulate mouse+ctrl zoom
-    await page.mouse.move(viewportCenterX + 200, viewportCenterY);
+    await page.mouse.move(containerCenterX + 200, containerCenterY);
     await zoom(xTimes, deltaX);
     await zoom(xTimes, -deltaX);
 
