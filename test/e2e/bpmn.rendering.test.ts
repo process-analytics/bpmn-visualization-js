@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 import { findFiles } from '../helpers/file-helper';
-import { BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
+import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
+import { BpmnLoadMethod, PageTester } from './helpers/visu/PageTester';
 
 describe('no BPMN elements visual regression', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(

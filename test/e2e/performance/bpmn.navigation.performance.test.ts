@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnLoadMethod, delay, getSimplePlatformName, PageTester } from '../helpers/visu-utils';
+import { delay, getSimplePlatformName } from '../helpers/test-utils';
 import { calculateMetrics, ChartData, PerformanceMetric } from '../helpers/perf-utils';
 import * as fs from 'fs';
+import { BpmnLoadMethod, PageTester } from '../helpers/visu/PageTester';
 
 const platform = getSimplePlatformName();
 const performanceDataFilePath = './performance/data/' + platform + '/data.js';
