@@ -17,7 +17,7 @@ import { FitType } from '../../src/component/options';
 import { join } from 'path';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
-import { BpmnLoadMethod, PageTester } from './helpers/visu/PageTester';
+import { PageTester } from './helpers/visu/PageTester';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   getConfig(param: {
@@ -77,13 +77,13 @@ describe('no diagram visual regression', () => {
     0.00006,
   );
 
-  const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' }, 'diagram');
+  const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
 
   const fitTypes: FitType[] = [FitType.None, FitType.HorizontalVertical, FitType.Horizontal, FitType.Vertical, FitType.Center];
   describe.each(fitTypes)('load options - fit %s', (onLoadFitType: FitType) => {
     describe.each(['horizontal', 'vertical', 'with.outside.flows', 'with.outside.labels'])('diagram %s', (fileName: string) => {
       it('load', async () => {
-        await pageTester.loadBPMNDiagramInRefreshedPage(fileName, BpmnLoadMethod.QueryParam, { fit: { type: onLoadFitType } });
+        await pageTester.loadBPMNDiagramInRefreshedPage(fileName, { fit: { type: onLoadFitType } });
 
         const image = await page.screenshot({ fullPage: true });
 
@@ -96,7 +96,7 @@ describe('no diagram visual regression', () => {
       });
 
       it.each(fitTypes)(`load + fit %s`, async (afterLoadFitType: FitType) => {
-        await pageTester.loadBPMNDiagramInRefreshedPage(fileName, BpmnLoadMethod.QueryParam, { fit: { type: onLoadFitType } });
+        await pageTester.loadBPMNDiagramInRefreshedPage(fileName, { fit: { type: onLoadFitType } });
 
         await page.click(`#${afterLoadFitType}`);
         // To unselect the button
@@ -118,7 +118,7 @@ describe('no diagram visual regression', () => {
         (onLoadFitType === FitType.Vertical && fileName === 'vertical')
       ) {
         it.each([-100, 0, 20, 50, null])('load with margin %s', async (margin: number) => {
-          await pageTester.loadBPMNDiagramInRefreshedPage(fileName, BpmnLoadMethod.QueryParam, { fit: { type: onLoadFitType, margin: margin } });
+          await pageTester.loadBPMNDiagramInRefreshedPage(fileName, { fit: { type: onLoadFitType, margin: margin } });
 
           const image = await page.screenshot({ fullPage: true });
 

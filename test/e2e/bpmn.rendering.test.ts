@@ -15,7 +15,7 @@
  */
 import { findFiles } from '../helpers/file-helper';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
-import { BpmnLoadMethod, PageTester } from './helpers/visu/PageTester';
+import { PageTester } from './helpers/visu/PageTester';
 
 describe('no BPMN elements visual regression', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
@@ -112,7 +112,7 @@ describe('no BPMN elements visual regression', () => {
     'bpmn',
   );
 
-  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' }, 'non-regression');
+  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' });
 
   const bpmnDiagramFileNames = findFiles('../fixtures/bpmn/non-regression/')
     .filter(filename => {
@@ -127,8 +127,7 @@ describe('no BPMN elements visual regression', () => {
   });
 
   it.each(bpmnDiagramFileNames)(`%s`, async (bpmnDiagramFileName: string) => {
-    const bpmnLoadMethod = bpmnDiagramFileName === 'events' || bpmnDiagramFileName === 'markers.01.positioning' ? BpmnLoadMethod.Url : BpmnLoadMethod.QueryParam;
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramFileName, bpmnLoadMethod);
+    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramFileName);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramFileName);
