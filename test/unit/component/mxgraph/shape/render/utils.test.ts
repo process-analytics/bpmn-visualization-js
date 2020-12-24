@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { orderActivityMarkers } from '../../../../../../src/component/g6/shape/render/utils';
+import { orderActivityMarkers } from '../../../../../../src/component/g6/shape/utils';
 import { ShapeBpmnMarkerKind } from '../../../../../../src/model/bpmn/internal/shape';
 
 function computeAllPermutations(array: string[]): string[][][] {

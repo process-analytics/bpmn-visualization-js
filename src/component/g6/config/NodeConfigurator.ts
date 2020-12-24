@@ -15,121 +15,8 @@
  */
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
 import G6 from '@antv/g6';
-import { IShape } from '@antv/g-canvas/lib/interfaces';
-import { ModelConfig } from '@antv/g6/lib/types';
-import { Group as GGroup } from '@antv/g-canvas';
-
-const ICON_MAP = {
-  a: 'https://gw.alipayobjects.com/mdn/rms_8fd2eb/afts/img/A*0HC-SawWYUoAAAAAAAAAAABkARQnAQ',
-  b: 'https://gw.alipayobjects.com/mdn/rms_8fd2eb/afts/img/A*sxK0RJ1UhNkAAAAAAAAAAABkARQnAQ',
-};
-
-function drawTask(): (cfg?: ModelConfig, group?: GGroup) => IShape {
-  return (cfg, group): IShape => {
-    const color = cfg.error ? '#F4664A' : '#30BF78';
-    const r = 2;
-    const shape = group.addShape('rect', {
-      attrs: {
-        x: 0,
-        y: 0,
-        width: 200,
-        height: 60,
-        stroke: color,
-        radius: r,
-      },
-      name: 'main-box',
-      draggable: true,
-    });
-
-    group.addShape('rect', {
-      attrs: {
-        x: 0,
-        y: 0,
-        width: 200,
-        height: 20,
-        fill: color,
-        radius: [r, r, 0, 0],
-      },
-      name: 'title-box',
-      draggable: true,
-    });
-
-    // left icon
-    group.addShape('image', {
-      attrs: {
-        x: 4,
-        y: 2,
-        height: 16,
-        width: 16,
-        cursor: 'pointer',
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        img: ICON_MAP[cfg.nodeType || 'a'],
-      },
-      name: 'node-icon',
-    });
-
-    // title text
-    group.addShape('text', {
-      attrs: {
-        textBaseline: 'top',
-        y: 2,
-        x: 24,
-        lineHeight: 20,
-        text: cfg.title,
-        fill: '#fff',
-      },
-      name: 'title',
-    });
-
-    if (cfg.nodeLevel > 0) {
-      group.addShape('marker', {
-        attrs: {
-          x: 184,
-          y: 30,
-          r: 6,
-          cursor: 'pointer',
-          symbol: cfg.collapse ? G6.Marker.expand : G6.Marker.collapse,
-          stroke: '#666',
-          lineWidth: 1,
-        },
-        name: 'collapse-icon',
-      });
-    }
-
-    // The content list
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    cfg.markers?.forEach((item, index) => {
-      // name text
-      group.addShape('text', {
-        attrs: {
-          textBaseline: 'top',
-          y: 25,
-          x: 24 + index * 60,
-          lineHeight: 20,
-          text: item.title,
-          fill: 'rgba(0,0,0, 0.4)',
-        },
-        name: `index-title-${index}`,
-      });
-
-      // value text
-      group.addShape('text', {
-        attrs: {
-          textBaseline: 'top',
-          y: 42,
-          x: 24 + index * 60,
-          lineHeight: 20,
-          text: item.value,
-          fill: '#595959',
-        },
-        name: `index-title-${index}`,
-      });
-    });
-    return shape;
-  };
-}
+import { drawEvent } from '../node/event-nodes';
+import { drawTask } from '../node/activity-nodes';
 
 export default class NodeConfigurator {
   public configureNodes(): void {
@@ -192,51 +79,42 @@ export default class NodeConfigurator {
       extendedNodeName,
     );*/
 
+    G6.registerNode(ShapeBpmnElementKind.POOL, { drawShape: drawEvent() });
+    G6.registerNode(ShapeBpmnElementKind.LANE, { drawShape: drawEvent() });
+
     // events
-    G6.registerNode(
-      ShapeBpmnElementKind.EVENT_END,
-      {
-        drawShape: drawTask(),
-      },
-      'single-node',
-    );
+    G6.registerNode(ShapeBpmnElementKind.EVENT_END, { drawShape: drawEvent() }, 'single-node');
+    G6.registerNode(ShapeBpmnElementKind.EVENT_START, { drawShape: drawEvent() });
+    G6.registerNode(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, { drawShape: drawEvent() });
+    G6.registerNode(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, { drawShape: drawEvent() });
+    G6.registerNode(ShapeBpmnElementKind.EVENT_BOUNDARY, { drawShape: drawEvent() });
 
-    // tasks
-    G6.registerNode(
-      ShapeBpmnElementKind.TASK,
-      {
-        drawShape: drawTask(),
-      },
-      'single-node',
-    );
-
-    /* mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_END, EndEventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_START, StartEventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, CatchIntermediateEventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_BOUNDARY, BoundaryEventShape);
     // gateways
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EVENT_BASED, EventBasedGatewayShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape);
+    G6.registerNode(ShapeBpmnElementKind.GATEWAY_EVENT_BASED, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.GATEWAY_PARALLEL, { drawShape: drawTask() });
+
     // activities
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.SUB_PROCESS, SubProcessShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.CALL_ACTIVITY, CallActivityShape);
+    G6.registerNode(ShapeBpmnElementKind.SUB_PROCESS, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.CALL_ACTIVITY, { drawShape: drawTask() });
+
     // tasks
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK, TaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_USER, UserTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SEND, SendTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_MANUAL, ManualTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SCRIPT, ScriptTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_BUSINESS_RULE, BusinessRuleTaskShape);
+    G6.registerNode(ShapeBpmnElementKind.TASK, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.TASK_SERVICE, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.TASK_USER, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.TASK_RECEIVE, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.TASK_SEND, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.TASK_MANUAL, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.TASK_SCRIPT, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.TASK_BUSINESS_RULE, { drawShape: drawTask() });
+
     // artifacts
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
+    G6.registerNode(ShapeBpmnElementKind.TEXT_ANNOTATION, { drawShape: drawTask() });
 
     // shapes for flows
-    mxCellRenderer.registerShape(StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON, MessageFlowIconShape);*/
+    // TODO Add to Edge registry
+    // mxCellRenderer.registerShape(StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON, MessageFlowIconShape);
   }
 }
 
