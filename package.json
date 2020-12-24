@@ -78,6 +78,7 @@
     "postversion": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for new developments\""
   },
   "dependencies": {
+    "cytoscape": "^3.16.3",
     "entities": "^2.2.0",
     "fast-xml-parser": "^3.17.6",
     "lodash.debounce": "^4.0.8",
@@ -88,6 +89,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.1.1",
     "@typed-mxgraph/typed-mxgraph": "^1.0.0-2",
+    "@types/cytoscape": "^3.14.9",
     "@types/debug": "^4.1.5",
     "@types/jest": "^26.0.20",
     "@types/jest-environment-puppeteer": "^4.3.2",
