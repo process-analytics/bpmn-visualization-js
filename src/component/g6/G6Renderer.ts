@@ -21,6 +21,18 @@ import { RenderedModel } from '../registry/bpmn-model-registry';
 import { Graph } from '@antv/g6';
 import { EdgeConfig, GraphData, NodeConfig } from '@antv/g6/lib/types';
 
+export interface BpmnNodeConfig extends NodeConfig {
+  bpmn: {
+    eventKind?: ShapeBpmnEventKind;
+    isInterrupting?: boolean;
+    subProcessKind?: ShapeBpmnSubProcessKind;
+    instantiate?: boolean;
+    markers?: ShapeBpmnMarkerKind[];
+    isHorizontal?: boolean;
+    gatewayKind?: ShapeBpmnEventBasedGatewayKind;
+  };
+}
+
 /**
  * @internal
  */
@@ -51,7 +63,7 @@ export default class G6Renderer {
     this.graph.render();
   }
 
-  private convertToNodes(shapes: Shape[]): NodeConfig[] {
+  private convertToNodes(shapes: Shape[]): BpmnNodeConfig[] {
     return shapes.map(shape => this.insertShape(shape));
   }
 
@@ -66,45 +78,109 @@ export default class G6Renderer {
     }
   }*/
 
-  private insertShape(shape: Shape): NodeConfig {
-    const kind = shape.bpmnElement.kind;
-    const node: NodeConfig = {
-      id: shape.bpmnElement.id,
-      type: kind,
-      label: shape.bpmnElement.name,
-      x: shape.bounds.x,
-      y: shape.bounds.y,
-      size: [shape.bounds.width, shape.bounds.height],
-    };
-    if (kind === ShapeBpmnElementKind.EVENT_END) {
-      node.nodeType = 'a';
-      node.error = true;
-    } else if (kind === ShapeBpmnElementKind.TASK) {
-      node.nodeType = 'b';
-      node.markers = [
-        { title: '成功率', value: '11%' },
-        { title: '耗时', value: '111' },
-        { title: '错误数', value: '111' },
-      ];
-    }
-    return node;
-
-    /*    const bpmnElement = shape.bpmnElement;
+  private insertShape(shape: Shape): BpmnNodeConfig {
+    const bpmnElement = shape.bpmnElement;
     if (bpmnElement) {
-      const parent = this.getParent(bpmnElement);
+      /*      const parent = this.getParent(bpmnElement);
       if (!parent) {
         // TODO error management
         console.warn('Not possible to insert shape %s: parent cell %s is not found', bpmnElement.id, bpmnElement.parentId);
         return;
       }
-      const bounds = shape.bounds;
-      let labelBounds = shape.label?.bounds;
-      // pool/lane label bounds are not managed for now (use hard coded values)
-      labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
-      const style = this.styleConfigurator.computeStyle(shape, labelBounds);
+     */
 
-      this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
-    }*/
+      const bounds = shape.bounds;
+      const kind = bpmnElement.kind;
+
+      const node: BpmnNodeConfig = {
+        id: bpmnElement.id,
+        type: kind,
+        label: bpmnElement.name,
+        x: bounds.x,
+        y: bounds.y,
+        size: [shape.bounds.width, shape.bounds.height],
+        bpmn: {},
+      };
+
+      const bpmnCfg = node.bpmn;
+      if (bpmnElement instanceof ShapeBpmnEvent) {
+        bpmnCfg.eventKind = bpmnElement.eventKind;
+
+        if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
+          bpmnCfg.isInterrupting = bpmnElement.isInterrupting;
+        }
+      } else if (bpmnElement instanceof ShapeBpmnActivity) {
+        if (bpmnElement instanceof ShapeBpmnSubProcess) {
+          bpmnCfg.subProcessKind = bpmnElement.subProcessKind;
+        } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
+          bpmnCfg.instantiate = bpmnElement.instantiate;
+        }
+
+        bpmnCfg.markers = bpmnElement.markers;
+      } else if (ShapeUtil.isPoolOrLane((bpmnElement as ShapeBpmnElement).kind)) {
+        // mxConstants.STYLE_HORIZONTAL is for the label
+        // In BPMN, isHorizontal is for the Shape
+        bpmnCfg.isHorizontal = shape.isHorizontal;
+      } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
+        bpmnCfg.instantiate = bpmnElement.instantiate;
+        bpmnCfg.gatewayKind = bpmnElement.gatewayKind;
+      }
+
+      const label = shape.label;
+      if (label) {
+        const labelBounds = label.bounds;
+        /*    // pool/lane label bounds are not managed for now (use hard coded values)
+      labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds; */
+
+        const position = ShapeUtil.isEvent(kind) ? 'bottom' : ShapeUtil.isActivity(kind) ? 'Center' : 'Top';
+        node.labelCfg = { refX: labelBounds.x, refY: labelBounds.y, position };
+
+        const font = label.font;
+        if (font) {
+          const fontStyle = font.isItalic ? 'italic' : 'normal';
+
+          // G6 Text Shape properties
+          const fontWeight = font.isBold ? 'bold' : 'normal';
+          const fontFamily = font.name;
+
+          let textDecoration = '';
+          if (font.isStrikeThrough) {
+            textDecoration = 'line-through ';
+          }
+          if (font.isUnderline) {
+            textDecoration += 'underline';
+          }
+
+          node.labelCfg.style = { fontSize: font.size, fontStyle };
+        }
+      }
+
+      /*
+      if (labelBounds) {
+        styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
+        if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
+          styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
+        }
+
+        if (bpmnCell instanceof Shape) {
+          // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
+          styleValues.set(mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
+          // align settings
+          styleValues.set(mxConstants.STYLE_LABEL_POSITION, mxConstants.ALIGN_TOP);
+          styleValues.set(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_LEFT);
+        }
+      }
+      // when no label bounds, adjust the default style dynamically
+      else if (
+        bpmnCell instanceof Shape &&
+        (bpmnElement instanceof ShapeBpmnSubProcess || bpmnElement instanceof ShapeBpmnCallActivity) &&
+        !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)
+      ) {
+        styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
+      }*/
+
+      return node;
+    }
   }
 
   private convertToEdges(edges: Edge[]): EdgeConfig[] {
