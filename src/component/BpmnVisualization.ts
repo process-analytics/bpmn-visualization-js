@@ -21,8 +21,7 @@ import { BpmnModelRegistry } from './registry/bpmn-model-registry';
 import { htmlElement } from './helpers/dom-utils';
 import { Graph } from '@antv/g6';
 import G6Configurator from './g6/config/G6Configurator';
-import { ShapeBpmnElementKind } from '../model/bpmn/internal/shape';
-import { NodeConfig } from '@antv/g6/lib/types';
+import { newG6Renderer } from './g6/G6Renderer';
 
 /**
  * @category Initialization
@@ -48,97 +47,8 @@ export default class BpmnVisualization {
   public load(xml: string, options?: LoadOptions): void {
     try {
       const bpmnModel = newBpmnParser().parse(xml);
-
-      // const renderedModel = this.bpmnModelRegistry.computeRenderedModel(bpmnModel);
-      // newMxGraphRenderer(this.graph).render(renderedModel, options);
-
-      // eslint-disable-next-line no-console
-      console.log('____________________BPMN MODEL___________________', bpmnModel);
-
-      const data = {
-        nodes: bpmnModel.flowNodes.map(function (flowNode) {
-          // nodeType: 'message' --> for event
-          const kind = flowNode.bpmnElement.kind;
-          const node: NodeConfig = {
-            id: flowNode.bpmnElement.id,
-            label: flowNode.bpmnElement.name,
-            x: flowNode.bounds.x,
-            y: flowNode.bounds.y,
-            size: [flowNode.bounds.width, flowNode.bounds.height],
-          };
-          if (kind === ShapeBpmnElementKind.EVENT_END) {
-            node.type = kind;
-            node.nodeType = 'a';
-            node.error = true;
-          } else if (kind === ShapeBpmnElementKind.TASK) {
-            node.type = kind;
-            node.nodeType = 'b';
-            node.markers = [
-              { title: '成功率', value: '11%' },
-              { title: '耗时', value: '111' },
-              { title: '错误数', value: '111' },
-            ];
-          }
-          return node;
-        }),
-        edges: bpmnModel.edges.map(function (edge) {
-          return { id: edge.id, type: edge.bpmnElement.kind, label: edge.bpmnElement.name, source: edge.bpmnElement.sourceRefId, target: edge.bpmnElement.targetRefId };
-        }),
-      };
-
-      // const data = {
-      //   nodes: [
-      //     {
-      //       title: 'node1',
-      //       error: true,
-      //       nodeType: 'a',
-      //       id: 'node1',
-      //       nodeLevel: 2,
-      //       panels: [
-      //         { title: '成功率', value: '11%' },
-      //         { title: '耗时', value: '111' },
-      //         { title: '错误数', value: '111' },
-      //       ],
-      //       x: 100,
-      //       y: 100,
-      //     },
-      //     {
-      //       title: 'node2',
-      //       error: false,
-      //       nodeType: 'b',
-      //       id: 'node2',
-      //       nodeLevel: 0,
-      //       panels: [
-      //         { title: '成功率', value: '11%' },
-      //         { title: '耗时', value: '111' },
-      //         { title: '错误数', value: '111' },
-      //       ],
-      //       x: 100,
-      //       y: 200,
-      //     },
-      //     {
-      //       title: 'node3',
-      //       error: false,
-      //       nodeType: 'a',
-      //       id: 'node3',
-      //       nodeLevel: 3,
-      //       panels: [
-      //         { title: '成功率', value: '11%' },
-      //         { title: '耗时', value: '111' },
-      //         { title: '错误数', value: '111' },
-      //       ],
-      //       collapse: true,
-      //       x: 100,
-      //       y: 300,
-      //     },
-      //   ],
-      // };
-
-      this.graph.data(data);
-      this.graph.render();
-
-      // eslint-disable-next-line no-console
-      console.log('_______________________G6_____________________', this.graph);
+      const renderedModel = this.bpmnModelRegistry.computeRenderedModel(bpmnModel);
+      newG6Renderer(this.graph).render(renderedModel, options);
     } catch (e) {
       // TODO error handling
       window.alert(`Cannot load bpmn diagram: ${e.message}`);
@@ -148,5 +58,6 @@ export default class BpmnVisualization {
 
   public fit(options?: FitOptions): void {
     this.graph.fitCenter();
+    // this.graph.fitView(padding);
   }
 }

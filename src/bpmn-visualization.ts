@@ -20,7 +20,6 @@ import BpmnVisualization from './component/BpmnVisualization';
 /*import IconPainter from './component/g6/shape/render/IconPainter';
 import StyleConfigurator from './component/g6/config/StyleConfigurator';*/
 import ShapeUtil from './model/bpmn/internal/shape/ShapeUtil';
-import { mxgraph } from './component/mxgraph/initializer';
 
 export { BpmnVisualization };
 /*export { IconPainter };
@@ -30,7 +29,7 @@ export { ShapeUtil };
 
 export * from './component/options';
 export * from './component/g6/StyleUtils';
-/*export * from './component/g6/shape/render';*/
+/*export * from './component/g6/shape';*/
 export * from './component/registry';
 
 // TODO restore 'alias export' to avoid any name clash with the demo code, when esLint parsing error is fixed: "Parsing error: Cannot read property 'map' of undefined"
@@ -39,5 +38,3 @@ export * from './component/registry';
 // export * as bpmnVisualizationDemo from './demo';
 export * from './demo';
 export * from './model/bpmn/internal/shape';
-
-export const mxConstants = mxgraph.mxConstants;

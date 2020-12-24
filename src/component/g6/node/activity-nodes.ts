@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { ModelConfig } from '@antv/g6/lib/types';
+import { Group as GGroup } from '@antv/g-canvas';
+import { IShape } from '@antv/g-canvas/lib/interfaces';
+import G6 from '@antv/g6';
 
 // function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
 //   IconPainterProvider.get().paintEnvelopeIcon({
@@ -23,54 +27,134 @@
 //   });
 // }
 
-/*protected paintMarkerIcons(paintParameter: PaintParameter): void {
-  const markers = StyleUtils.getBpmnMarkers(this.style);
-  if (markers) {
-    orderActivityMarkers(markers.split(',')).forEach((marker, idx, allMarkers) => {
-      paintParameter = {
-        ...paintParameter,
-        setIconOrigin: this.getIconOriginForMarkerIcon(allMarkers.length, idx + 1),
-      };
-      paintParameter.c.save(); // ensure we can later restore the configuration
-      switch (marker) {
-        case ShapeBpmnMarkerKind.LOOP:
-          this.iconPainter.paintLoopIcon(paintParameter);
-          break;
-        case ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL:
-          this.iconPainter.paintSequentialMultiInstanceIcon(paintParameter);
-          break;
-        case ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL:
-          this.iconPainter.paintParallelMultiInstanceIcon(paintParameter);
-          break;
-        case ShapeBpmnMarkerKind.EXPAND:
-          this.iconPainter.paintExpandIcon(paintParameter);
-          break;
-      }
-      // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
-      paintParameter.c.restore();
-    });
-  }
-}*/
+const ICON_MAP = {
+  a: 'https://gw.alipayobjects.com/mdn/rms_8fd2eb/afts/img/A*0HC-SawWYUoAAAAAAAAAAABkARQnAQ',
+  b: 'https://gw.alipayobjects.com/mdn/rms_8fd2eb/afts/img/A*sxK0RJ1UhNkAAAAAAAAAAABkARQnAQ',
+};
 
-/*private getIconOriginForMarkerIcon(allMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
-  let setIconOrigin: (canvas: BpmnCanvas) => void;
-if (allMarkers === 1) {
-  setIconOrigin = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
-} else if (allMarkers === 2) {
-  setIconOrigin = (canvas: BpmnCanvas) => {
-    canvas.setIconOriginForIconBottomCentered();
-    const xTranslation = Math.pow(-1, markerOrder) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
-    canvas.translateIconOrigin(xTranslation, 0);
+export function drawTask(): (cfg?: ModelConfig, group?: GGroup) => IShape {
+  return (cfg, group): IShape => {
+    const color = cfg.error ? '#F4664A' : '#30BF78';
+    const r = 2;
+    const width = (cfg.size as number[])[0];
+    const height = (cfg.size as number[])[1];
+    const shape = group.addShape('rect', {
+      attrs: {
+        x: 0,
+        y: 0,
+        width,
+        height,
+        stroke: color,
+        radius: r,
+      },
+      name: 'main-box',
+      draggable: true,
+    });
+
+    group.addShape('rect', {
+      attrs: {
+        x: 0,
+        y: 0,
+        width,
+        height: height / 3,
+        fill: color,
+        radius: [r, r, 0, 0],
+      },
+      name: 'title-box',
+      draggable: true,
+    });
+
+    // left icon
+    group.addShape('image', {
+      attrs: {
+        x: 4,
+        y: 2,
+        height: 16,
+        width: 16,
+        cursor: 'pointer',
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        img: ICON_MAP[cfg.nodeType || 'a'],
+      },
+      name: 'node-icon',
+    });
+
+    // title text
+    group.addShape('text', {
+      attrs: {
+        textBaseline: 'top',
+        y: 2,
+        x: 24,
+        lineHeight: 20,
+        text: cfg.title,
+        fill: '#fff',
+      },
+      name: 'title',
+    });
+
+    if (cfg.nodeLevel > 0) {
+      group.addShape('marker', {
+        attrs: {
+          x: 184,
+          y: 30,
+          r: 6,
+          cursor: 'pointer',
+          symbol: cfg.collapse ? G6.Marker.expand : G6.Marker.collapse,
+          stroke: '#666',
+          lineWidth: 1,
+        },
+        name: 'collapse-icon',
+      });
+    }
+
+    // The content list
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    cfg.markers?.forEach((item, index) => {
+      // name text
+      group.addShape('text', {
+        attrs: {
+          textBaseline: 'top',
+          y: 25,
+          x: 24 + index * 60,
+          lineHeight: 20,
+          text: item.title,
+          fill: 'rgba(0,0,0, 0.4)',
+        },
+        name: `index-title-${index}`,
+      });
+
+      // value text
+      group.addShape('text', {
+        attrs: {
+          textBaseline: 'top',
+          y: 42,
+          x: 24 + index * 60,
+          lineHeight: 20,
+          text: item.value,
+          fill: '#595959',
+        },
+        name: `index-title-${index}`,
+      });
+    });
+    return shape;
   };
-} else {
-  // TODO: once we support 3 markers in a group
-  throw new Error('NOT_IMPLEMENTED - to have a group of >2 markers in a row, centered in the task, implement this piece of code');
 }
-return setIconOrigin;
-}*/
 
 /*
-export abstract class BaseActivityShape extends mxRectangleShape {
+function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
+  IconPainterProvider.get().paintEnvelopeIcon({
+    ...paintParameter,
+    setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(),
+    ratioFromParent: 0.2,
+    icon: { ...paintParameter.icon, isFilled: isFilled },
+  });
+}
+
+/!**
+ * @internal
+ *!/
+export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
   protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
@@ -145,6 +229,9 @@ abstract class BaseTaskShape extends BaseActivityShape {
   protected abstract paintTaskIcon(paintParameter: PaintParameter): void;
 }
 
+/!**
+ * @internal
+ *!/
 export class TaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -157,6 +244,9 @@ export class TaskShape extends BaseTaskShape {
   }
 }
 
+/!**
+ * @internal
+ *!/
 export class ServiceTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -167,6 +257,9 @@ export class ServiceTaskShape extends BaseTaskShape {
   }
 }
 
+/!**
+ * @internal
+ *!/
 export class UserTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -177,6 +270,9 @@ export class UserTaskShape extends BaseTaskShape {
   }
 }
 
+!/**
+ * @internal
+ *!/
 export class ReceiveTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -215,6 +311,9 @@ export class ReceiveTaskShape extends BaseTaskShape {
   }
 }
 
+/!**
+ * @internal
+ *!/
 export class SendTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -225,6 +324,9 @@ export class SendTaskShape extends BaseTaskShape {
   }
 }
 
+/!**
+ * @internal
+ *!/
 export class ManualTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -235,6 +337,9 @@ export class ManualTaskShape extends BaseTaskShape {
   }
 }
 
+/!**
+ * @internal
+ *!/
 export class ScriptTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -245,12 +350,18 @@ export class ScriptTaskShape extends BaseTaskShape {
   }
 }
 
+/!**
+ * @internal
+ *!/
 export class CallActivityShape extends BaseActivityShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
   }
 }
 
+/!**
+ * @internal
+ *!/
 export class SubProcessShape extends BaseActivityShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -271,6 +382,9 @@ export class SubProcessShape extends BaseActivityShape {
   }
 }
 
+/!**
+ * @internal
+ *!/
 export class BusinessRuleTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ensureIsArray } from '../helpers/array-utils';
-import { computeBpmnBaseClassName } from '../mxgraph/style-helper';
+import { computeBpmnBaseClassName } from '../g6/style-helper';
 import { CssRegistry } from './css-registry';
 import G6CellUpdater, { newG6CellUpdater } from '../g6/G6CellUpdater';
 import { BpmnQuerySelectors } from './query-selectors';
@@ -22,7 +22,6 @@ import { BpmnElement, Overlay } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
 import { Graph } from '@antv/g6';
-import { Item } from '@antv/g6/lib/types';
 
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: Graph): BpmnElementsRegistry {
   return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.getContainer()?.id)), new CssRegistry(), newG6CellUpdater(graph));

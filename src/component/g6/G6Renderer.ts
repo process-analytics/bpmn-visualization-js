@@ -13,59 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
 import Shape from '../../model/bpmn/internal/shape/Shape';
 import Edge from '../../model/bpmn/internal/edge/Edge';
-import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
-import Waypoint from '../../model/bpmn/internal/edge/Waypoint';
-import Bounds from '../../model/bpmn/internal/Bounds';
-import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
-import CoordinatesTranslator from '../g6/renderer/CoordinatesTranslator';
-import StyleConfigurator from './config/StyleConfigurator';
-import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';
-import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
-import { BpmnMxGraph } from './BpmnMxGraph';
+import { ShapeBpmnElementKind } from '../../model/bpmn/internal/shape';
 import { LoadOptions } from '../options';
 import { RenderedModel } from '../registry/bpmn-model-registry';
-import { mxgraph } from './initializer';
-import { mxCell } from 'mxgraph'; // for types
+import { Graph } from '@antv/g6';
+import { EdgeConfig, GraphData, NodeConfig } from '@antv/g6/lib/types';
 
-/!**
+/**
  * @internal
- *!/
-export default class MxGraphRenderer {
-  constructor(readonly graph: BpmnMxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
+ */
+export default class G6Renderer {
+  constructor(
+    readonly graph: Graph, // , readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator
+  ) {}
 
   public render(renderedModel: RenderedModel, loadOptions?: LoadOptions): void {
-    this.insertShapesAndEdges(renderedModel);
-    this.graph.customFit(loadOptions?.fit);
+    this.insertNodesAndEdges(renderedModel);
+    // this.graph.customFit(loadOptions?.fit);
   }
 
-  private insertShapesAndEdges({ pools, lanes, subprocesses, otherFlowNodes, boundaryEvents, edges }: RenderedModel): void {
-    const model = this.graph.getModel();
-    model.clear(); // ensure to remove manual changes or already loaded graphs
-    model.beginUpdate();
-    try {
-      this.insertShapes(pools);
-      this.insertShapes(lanes);
-      this.insertShapes(subprocesses);
-      this.insertShapes(otherFlowNodes);
-      // last shape as the boundary event parent must be in the model (subprocess or activity)
-      this.insertShapes(boundaryEvents);
-      // at last as edge source and target must be present in the model prior insertion, otherwise they are not rendered
-      this.insertEdges(edges);
-    } finally {
-      model.endUpdate();
-    }
+  private insertNodesAndEdges({ pools, lanes, subprocesses, otherFlowNodes, boundaryEvents, edges }: RenderedModel): void {
+    const data: GraphData = { nodes: [], edges: [], combos: [] };
+
+    data.nodes = data.nodes.concat(this.convertToNodes(pools));
+    data.nodes = data.nodes.concat(this.convertToNodes(lanes));
+    data.nodes = data.nodes.concat(this.convertToNodes(subprocesses));
+    data.nodes = data.nodes.concat(this.convertToNodes(otherFlowNodes));
+    // last shape as the boundary event parent must be in the model (subprocess or activity)
+    data.nodes = data.nodes.concat(this.convertToNodes(boundaryEvents));
+
+    // at last as edge source and target must be present in the model prior insertion, otherwise they are not rendered
+    data.edges = data.edges.concat(this.convertToEdges(edges));
+
+    this.graph.data(data);
+    this.graph.render();
   }
 
-  private insertShapes(shapes: Shape[]): void {
-    shapes.forEach(shape => {
-      this.insertShape(shape);
-    });
+  private convertToNodes(shapes: Shape[]): NodeConfig[] {
+    return shapes.map(shape => this.insertShape(shape));
   }
 
-  private getParent(bpmnElement: ShapeBpmnElement): mxCell {
+  /*  private getParent(bpmnElement: ShapeBpmnElement): mxCell {
     const bpmnElementParent = this.getCell(bpmnElement.parentId);
     if (bpmnElementParent) {
       return bpmnElementParent;
@@ -74,10 +64,32 @@ export default class MxGraphRenderer {
     if (!ShapeUtil.isBoundaryEvent(bpmnElement.kind)) {
       return this.graph.getDefaultParent();
     }
-  }
+  }*/
 
-  private insertShape(shape: Shape): void {
-    const bpmnElement = shape.bpmnElement;
+  private insertShape(shape: Shape): NodeConfig {
+    const kind = shape.bpmnElement.kind;
+    const node: NodeConfig = {
+      id: shape.bpmnElement.id,
+      type: kind,
+      label: shape.bpmnElement.name,
+      x: shape.bounds.x,
+      y: shape.bounds.y,
+      size: [shape.bounds.width, shape.bounds.height],
+    };
+    if (kind === ShapeBpmnElementKind.EVENT_END) {
+      node.nodeType = 'a';
+      node.error = true;
+    } else if (kind === ShapeBpmnElementKind.TASK) {
+      node.nodeType = 'b';
+      node.markers = [
+        { title: '成功率', value: '11%' },
+        { title: '耗时', value: '111' },
+        { title: '错误数', value: '111' },
+      ];
+    }
+    return node;
+
+    /*    const bpmnElement = shape.bpmnElement;
     if (bpmnElement) {
       const parent = this.getParent(bpmnElement);
       if (!parent) {
@@ -92,14 +104,14 @@ export default class MxGraphRenderer {
       const style = this.styleConfigurator.computeStyle(shape, labelBounds);
 
       this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
-    }
+    }*/
   }
 
-  private insertEdges(edges: Edge[]): void {
-    edges.forEach(edge => {
+  private convertToEdges(edges: Edge[]): EdgeConfig[] {
+    return edges.map(edge => {
       const bpmnElement = edge.bpmnElement;
       if (bpmnElement) {
-        const parent = this.graph.getDefaultParent();
+        /*        const parent = this.graph.getDefaultParent();
         const source = this.getCell(bpmnElement.sourceRefId);
         const target = this.getCell(bpmnElement.targetRefId);
         const labelBounds = edge.label?.bounds;
@@ -122,12 +134,14 @@ export default class MxGraphRenderer {
           }
         }
 
-        this.insertMessageFlowIconIfNeeded(edge, mxEdge);
+        this.insertMessageFlowIconIfNeeded(edge, mxEdge);*/
+
+        return { id: edge.id, type: bpmnElement.kind, label: bpmnElement.name, source: bpmnElement.sourceRefId, target: bpmnElement.targetRefId };
       }
     });
   }
 
-  private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: mxCell): void {
+  /*  private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: mxCell): void {
     if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
       const cell = this.graph.insertVertex(mxEdge, `messageFlowIcon_of_${mxEdge.id}`, undefined, 0, 0, 20, 14, this.styleConfigurator.computeMessageFlowIconStyle(edge));
       cell.geometry.relative = true;
@@ -158,13 +172,15 @@ export default class MxGraphRenderer {
       cell.geometry.offset = new mxgraph.mxPoint(relativeLabelX, relativeLabelY);
     }
     return cell;
-  }
+  }*/
 }
 
-/!**
+/**
  * @internal
- *!/
-export function newMxGraphRenderer(graph: BpmnMxGraph): MxGraphRenderer {
-  return new MxGraphRenderer(graph, new CoordinatesTranslator(graph), new StyleConfigurator(graph));
+ */
+export function newG6Renderer(graph: Graph): G6Renderer {
+  return new G6Renderer(
+    graph,
+    // , new CoordinatesTranslator(graph), new StyleConfigurator(graph)
+  );
 }
-*/

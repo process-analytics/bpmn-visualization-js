@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
+import { ShapeBpmnMarkerKind } from '../../../model/bpmn/internal/shape';
 
 const referenceOrderedMarkers = [
   ShapeBpmnMarkerKind.LOOP,
