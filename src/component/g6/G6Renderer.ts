@@ -133,7 +133,7 @@ export default class G6Renderer {
       labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds; */
 
         const position = ShapeUtil.isEvent(kind) ? 'bottom' : ShapeUtil.isActivity(kind) ? 'Center' : 'Top';
-        node.labelCfg = { refX: labelBounds.x, refY: labelBounds.y, position };
+        node.labelCfg = { refX: labelBounds?.x, refY: labelBounds?.y, position };
 
         const font = label.font;
         if (font) {
