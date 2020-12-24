@@ -17,6 +17,9 @@ import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
 import G6 from '@antv/g6';
 import { drawEvent } from '../node/event-nodes';
 import { drawTask } from '../node/activity-nodes';
+import { drawTextAnnotation } from '../node/text-annotation-nodes';
+import { drawGateway } from '../node/gateway-nodes';
+import { drawSwinlane } from '../node/swinlane-nodes';
 
 export default class NodeConfigurator {
   public configureNodes(): void {
@@ -79,8 +82,8 @@ export default class NodeConfigurator {
       extendedNodeName,
     );*/
 
-    G6.registerNode(ShapeBpmnElementKind.POOL, { drawShape: drawEvent() });
-    G6.registerNode(ShapeBpmnElementKind.LANE, { drawShape: drawEvent() });
+    G6.registerNode(ShapeBpmnElementKind.POOL, { drawShape: drawSwinlane() });
+    G6.registerNode(ShapeBpmnElementKind.LANE, { drawShape: drawSwinlane() });
 
     // events
     G6.registerNode(ShapeBpmnElementKind.EVENT_END, { drawShape: drawEvent() }, 'single-node');
@@ -90,10 +93,10 @@ export default class NodeConfigurator {
     G6.registerNode(ShapeBpmnElementKind.EVENT_BOUNDARY, { drawShape: drawEvent() });
 
     // gateways
-    G6.registerNode(ShapeBpmnElementKind.GATEWAY_EVENT_BASED, { drawShape: drawTask() });
-    G6.registerNode(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, { drawShape: drawTask() });
-    G6.registerNode(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, { drawShape: drawTask() });
-    G6.registerNode(ShapeBpmnElementKind.GATEWAY_PARALLEL, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.GATEWAY_EVENT_BASED, { drawShape: drawGateway() });
+    G6.registerNode(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, { drawShape: drawGateway() });
+    G6.registerNode(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, { drawShape: drawGateway() });
+    G6.registerNode(ShapeBpmnElementKind.GATEWAY_PARALLEL, { drawShape: drawGateway() });
 
     // activities
     G6.registerNode(ShapeBpmnElementKind.SUB_PROCESS, { drawShape: drawTask() });
@@ -110,7 +113,7 @@ export default class NodeConfigurator {
     G6.registerNode(ShapeBpmnElementKind.TASK_BUSINESS_RULE, { drawShape: drawTask() });
 
     // artifacts
-    G6.registerNode(ShapeBpmnElementKind.TEXT_ANNOTATION, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.TEXT_ANNOTATION, { drawShape: drawTextAnnotation() });
 
     // shapes for flows
     // TODO Add to Edge registry
