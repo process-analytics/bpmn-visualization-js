@@ -74,7 +74,7 @@
   },
   "dependencies": {
     "entities": "^2.1.0",
-    "fast-xml-parser": "^3.17.4",
+    "fast-xml-parser": "^3.17.6",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "mxgraph": "4.1.0"
