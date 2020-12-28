@@ -92,7 +92,7 @@
     "@types/puppeteer": "^5.4.2",
     "@typescript-eslint/eslint-plugin": "^4.11.0",
     "@typescript-eslint/parser": "^4.8.2",
-    "asciidoctor": "^2.2.0",
+    "asciidoctor": "^2.2.1",
     "autoprefixer": "^10.1.0",
     "chokidar-cli": "^2.1.0",
     "clipboardy": "^2.3.0",
