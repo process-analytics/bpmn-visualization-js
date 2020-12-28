@@ -18,6 +18,7 @@ import { GlobalOptions } from '../../options';
 import NodeConfigurator from './NodeConfigurator';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
 import { IShape } from '@antv/g-canvas/lib/interfaces';
+import EdgeConfigurator from './EdgeConfigurator';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib
@@ -37,7 +38,9 @@ export default class G6Configurator {
     new StyleConfigurator(this.graph).configureStyles();
     new MarkerConfigurator().configureMarkers();
     new MxClientConfigurator().configureMxCodec();*/
+
     new NodeConfigurator().configureNodes();
+    new EdgeConfigurator().configureEdges();
 
     const width = this.container.scrollWidth;
     const height = this.container.scrollHeight || 500;
