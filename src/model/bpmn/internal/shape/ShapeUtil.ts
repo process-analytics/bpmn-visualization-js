@@ -85,6 +85,10 @@ export default class ShapeUtil {
     return this.ACTIVITY_KINDS.includes(kind);
   }
 
+  static isTask(kind: ShapeBpmnElementKind): boolean {
+    return this.TASK_KINDS.includes(kind);
+  }
+
   public static isWithDefaultSequenceFlow(kind: ShapeBpmnElementKind): boolean {
     return this.FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS.includes(kind);
   }

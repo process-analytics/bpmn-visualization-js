@@ -82,42 +82,38 @@ export default class NodeConfigurator {
       extendedNodeName,
     );*/
 
-    G6.registerNode(ShapeBpmnElementKind.POOL, { drawShape: drawSwinlane() });
+    G6.registerNode(ShapeBpmnElementKind.POOL, { drawShape: drawSwinlane() }, 'single-node');
     G6.registerNode(ShapeBpmnElementKind.LANE, { drawShape: drawSwinlane() });
 
     // events
     G6.registerNode(ShapeBpmnElementKind.EVENT_END, { drawShape: drawEvent() }, 'single-node');
-    G6.registerNode(ShapeBpmnElementKind.EVENT_START, { drawShape: drawEvent() });
-    G6.registerNode(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, { drawShape: drawEvent() });
-    G6.registerNode(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, { drawShape: drawEvent() });
-    G6.registerNode(ShapeBpmnElementKind.EVENT_BOUNDARY, { drawShape: drawEvent() });
+    G6.registerNode(ShapeBpmnElementKind.EVENT_START, { drawShape: drawEvent() }, 'circle');
+    G6.registerNode(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, { drawShape: drawEvent() }, 'circle');
+    G6.registerNode(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, { drawShape: drawEvent() }, 'circle');
+    G6.registerNode(ShapeBpmnElementKind.EVENT_BOUNDARY, { drawShape: drawEvent() }, 'circle');
 
     // gateways
-    G6.registerNode(ShapeBpmnElementKind.GATEWAY_EVENT_BASED, { drawShape: drawGateway() });
-    G6.registerNode(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, { drawShape: drawGateway() });
-    G6.registerNode(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, { drawShape: drawGateway() });
-    G6.registerNode(ShapeBpmnElementKind.GATEWAY_PARALLEL, { drawShape: drawGateway() });
+    G6.registerNode(ShapeBpmnElementKind.GATEWAY_EVENT_BASED, { drawShape: drawGateway() }, 'diamond');
+    G6.registerNode(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, { drawShape: drawGateway() }, 'diamond');
+    G6.registerNode(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, { drawShape: drawGateway() }, 'diamond');
+    G6.registerNode(ShapeBpmnElementKind.GATEWAY_PARALLEL, { drawShape: drawGateway() }, 'diamond');
 
     // activities
-    G6.registerNode(ShapeBpmnElementKind.SUB_PROCESS, { drawShape: drawTask() });
-    G6.registerNode(ShapeBpmnElementKind.CALL_ACTIVITY, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.SUB_PROCESS, { drawShape: drawTask() }, 'rect');
+    G6.registerNode(ShapeBpmnElementKind.CALL_ACTIVITY, { drawShape: drawTask() }, 'rect');
 
     // tasks
-    G6.registerNode(ShapeBpmnElementKind.TASK, { drawShape: drawTask() });
-    G6.registerNode(ShapeBpmnElementKind.TASK_SERVICE, { drawShape: drawTask() });
-    G6.registerNode(ShapeBpmnElementKind.TASK_USER, { drawShape: drawTask() });
-    G6.registerNode(ShapeBpmnElementKind.TASK_RECEIVE, { drawShape: drawTask() });
-    G6.registerNode(ShapeBpmnElementKind.TASK_SEND, { drawShape: drawTask() });
-    G6.registerNode(ShapeBpmnElementKind.TASK_MANUAL, { drawShape: drawTask() });
-    G6.registerNode(ShapeBpmnElementKind.TASK_SCRIPT, { drawShape: drawTask() });
-    G6.registerNode(ShapeBpmnElementKind.TASK_BUSINESS_RULE, { drawShape: drawTask() });
+    G6.registerNode(ShapeBpmnElementKind.TASK, { drawShape: drawTask() }, 'rect');
+    G6.registerNode(ShapeBpmnElementKind.TASK_SERVICE, { drawShape: drawTask() }, 'rect');
+    G6.registerNode(ShapeBpmnElementKind.TASK_USER, { drawShape: drawTask() }, 'rect');
+    G6.registerNode(ShapeBpmnElementKind.TASK_RECEIVE, { drawShape: drawTask() }, 'rect');
+    G6.registerNode(ShapeBpmnElementKind.TASK_SEND, { drawShape: drawTask() }, 'rect');
+    G6.registerNode(ShapeBpmnElementKind.TASK_MANUAL, { drawShape: drawTask() }, 'rect');
+    G6.registerNode(ShapeBpmnElementKind.TASK_SCRIPT, { drawShape: drawTask() }, 'rect');
+    G6.registerNode(ShapeBpmnElementKind.TASK_BUSINESS_RULE, { drawShape: drawTask() }, 'rect');
 
     // artifacts
-    G6.registerNode(ShapeBpmnElementKind.TEXT_ANNOTATION, { drawShape: drawTextAnnotation() });
-
-    // shapes for flows
-    // TODO Add to Edge registry
-    // mxCellRenderer.registerShape(StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON, MessageFlowIconShape);
+    G6.registerNode(ShapeBpmnElementKind.TEXT_ANNOTATION, { drawShape: drawTextAnnotation() }, 'single-node');
   }
 }
 
