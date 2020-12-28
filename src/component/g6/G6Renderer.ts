@@ -19,9 +19,13 @@ import { ShapeBpmnElementKind } from '../../model/bpmn/internal/shape';
 import { LoadOptions } from '../options';
 import { RenderedModel } from '../registry/bpmn-model-registry';
 import { Graph } from '@antv/g6';
-import { EdgeConfig, GraphData, NodeConfig } from '@antv/g6/lib/types';
+import { EdgeConfig, GraphData, IPoint, NodeConfig } from '@antv/g6/lib/types';
+import { SequenceFlowKind } from '../../model/bpmn/internal/edge/SequenceFlowKind';
+import { AssociationDirectionKind } from '../../model/bpmn/internal/edge/AssociationDirectionKind';
+import { AssociationFlow, MessageFlow, SequenceFlow } from '../../model/bpmn/internal/edge/Flow';
+import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
 
-export interface BpmnNodeConfig extends NodeConfig {
+export interface BpmnG6NodeConfig extends NodeConfig {
   bpmn: {
     eventKind?: ShapeBpmnEventKind;
     isInterrupting?: boolean;
@@ -30,6 +34,14 @@ export interface BpmnNodeConfig extends NodeConfig {
     markers?: ShapeBpmnMarkerKind[];
     isHorizontal?: boolean;
     gatewayKind?: ShapeBpmnEventBasedGatewayKind;
+  };
+}
+
+export interface BpmnG6EdgeConfig extends EdgeConfig {
+  bpmn?: {
+    sequenceFlowKind?: SequenceFlowKind;
+    associationDirectionKind?: AssociationDirectionKind;
+    messageVisibleKind?: boolean;
   };
 }
 
@@ -63,7 +75,7 @@ export default class G6Renderer {
     this.graph.render();
   }
 
-  private convertToNodes(shapes: Shape[]): BpmnNodeConfig[] {
+  private convertToNodes(shapes: Shape[]): BpmnG6NodeConfig[] {
     return shapes.map(shape => this.insertShape(shape));
   }
 
@@ -78,7 +90,7 @@ export default class G6Renderer {
     }
   }*/
 
-  private insertShape(shape: Shape): BpmnNodeConfig {
+  private insertShape(shape: Shape): BpmnG6NodeConfig {
     const bpmnElement = shape.bpmnElement;
     if (bpmnElement) {
       /*      const parent = this.getParent(bpmnElement);
@@ -92,7 +104,7 @@ export default class G6Renderer {
       const bounds = shape.bounds;
       const kind = bpmnElement.kind;
 
-      const node: BpmnNodeConfig = {
+      const node: BpmnG6NodeConfig = {
         id: bpmnElement.id,
         type: kind,
         label: bpmnElement.name,
@@ -183,7 +195,7 @@ export default class G6Renderer {
     }
   }
 
-  private convertToEdges(edges: Edge[]): EdgeConfig[] {
+  private convertToEdges(edges: Edge[]): BpmnG6EdgeConfig[] {
     return edges.map(edge => {
       const bpmnElement = edge.bpmnElement;
       if (bpmnElement) {
@@ -212,9 +224,40 @@ export default class G6Renderer {
 
         this.insertMessageFlowIconIfNeeded(edge, mxEdge);*/
 
-        return { id: edge.id, type: bpmnElement.kind, label: bpmnElement.name, source: bpmnElement.sourceRefId, target: bpmnElement.targetRefId };
+        const edgeConf: BpmnG6EdgeConfig = {
+          id: edge.id,
+          type: bpmnElement.kind,
+          label: bpmnElement.name,
+          source: bpmnElement.sourceRefId,
+          target: bpmnElement.targetRefId,
+          controlPoints: edge.waypoints as IPoint[],
+          /*         sourceAnchor: 0,
+          targetAnchor: 0,*/
+        };
+        if (bpmnElement instanceof SequenceFlow) {
+          edgeConf.sequenceFlowKind = bpmnElement.sequenceFlowKind;
+        } else if (bpmnElement instanceof AssociationFlow) {
+          edgeConf.associationDirectionKind = bpmnElement.associationDirectionKind;
+        } else if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
+          edgeConf.messageVisibleKind = edge.messageVisibleKind;
+        }
+        return edgeConf;
       }
     });
+
+    /*    const font = bpmnCell.label?.font;
+    if (font) {
+      // styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
+      // styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
+      // styleValues.set(mxConstants.STYLE_FONTSTYLE, StyleConfigurator.getFontStyleValue(font));
+    }
+
+    if (labelBounds) {
+      // styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
+      if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
+        // styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
+      }
+    }*/
   }
 
   /*  private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: mxCell): void {
