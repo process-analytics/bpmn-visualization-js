@@ -165,7 +165,7 @@ export class BpmnDiagramPreparation {
 }
 
 export class PageTester {
-  constructor(readonly bpmnDiagramPreparation: BpmnDiagramPreparation, readonly bpmnContainerId: string, readonly expectedPageTitle: string) {}
+  constructor(readonly bpmnDiagramPreparation: BpmnDiagramPreparation, readonly expectedPageTitle: string) {}
 
   async expectBpmnDiagramToBeDisplayed(fileName: string): Promise<ElementHandle<Element>> {
     const url = this.bpmnDiagramPreparation.prepareTestResourcesAndGetPageUrl(fileName);
@@ -177,12 +177,12 @@ export class PageTester {
     expect(response.status()).toBe(200);
 
     const waitForSelectorOptions = { timeout: 5_000 };
-    const bpmnContainerElementHandle = await page.waitForSelector(`#${this.bpmnContainerId}`, waitForSelectorOptions);
     await expect(page.title()).resolves.toMatch(this.expectedPageTitle);
 
-    await page.waitForSelector(new BpmnQuerySelectors(this.bpmnContainerId).existingElement(), waitForSelectorOptions);
-
-    return bpmnContainerElementHandle;
+    const bpmnContainerId = 'bpmn-container';
+    const elementHandle = await page.waitForSelector(`#${bpmnContainerId}`, waitForSelectorOptions);
+    await page.waitForSelector(new BpmnQuerySelectors(bpmnContainerId).existingElement(), waitForSelectorOptions);
+    return elementHandle;
   }
 }
 

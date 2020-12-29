@@ -40,7 +40,7 @@ describe.each([1, 2, 3, 4, 5])('load performance', run => {
     const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map([['B.2.0', BpmnLoadMethod.Url]]), { name: 'rendering-diagram', queryParams: [] }, 'performance', {
       fit: { type: FitType.HorizontalVertical },
     });
-    const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-container', 'BPMN Visualization - Diagram Rendering');
+    const pageTester = new PageTester(bpmnDiagramPreparation, 'BPMN Visualization - Diagram Rendering');
     await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
     const metricsEnd = await page.metrics();
 

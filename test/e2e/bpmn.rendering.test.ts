@@ -120,7 +120,7 @@ describe('no BPMN elements visual regression', () => {
     'non-regression',
   );
 
-  const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-container', 'BPMN Visualization Non Regression');
+  const pageTester = new PageTester(bpmnDiagramPreparation, 'BPMN Visualization Non Regression');
 
   const bpmnFileNames = findFiles('../fixtures/bpmn/non-regression/')
     .filter(filename => {

@@ -55,7 +55,7 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 async function initializePage(loadOptions: LoadOptions, fileName: string): Promise<any> {
   const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'rendering-diagram' }, 'diagram', loadOptions);
-  const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-container', 'BPMN Visualization - Diagram Rendering');
+  const pageTester = new PageTester(bpmnDiagramPreparation, 'BPMN Visualization - Diagram Rendering');
   await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
 }
 

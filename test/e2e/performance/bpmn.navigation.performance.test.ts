@@ -25,7 +25,7 @@ describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
   const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map([['B.2.0', BpmnLoadMethod.Url]]), { name: 'rendering-diagram', queryParams: [] }, 'performance');
 
-  const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-container', 'BPMN Visualization - Diagram Rendering');
+  const pageTester = new PageTester(bpmnDiagramPreparation, 'BPMN Visualization - Diagram Rendering');
 
   const fileName = 'B.2.0';
   let viewportCenterX: number;

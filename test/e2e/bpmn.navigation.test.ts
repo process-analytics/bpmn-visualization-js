@@ -39,7 +39,7 @@ describe('diagram navigation', () => {
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
   const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map(), { name: 'rendering-diagram', queryParams: [] }, 'navigation');
 
-  const pageTester = new PageTester(bpmnDiagramPreparation, 'bpmn-container', 'BPMN Visualization - Diagram Rendering');
+  const pageTester = new PageTester(bpmnDiagramPreparation, 'BPMN Visualization - Diagram Rendering');
 
   const fileName = 'simple.2.start.events.1.task';
   let viewportCenterX: number;
