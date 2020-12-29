@@ -109,7 +109,6 @@ export default class StyleConfigurator {
   constructor(private graph: BpmnMxGraph) {}
 
   public configureStyles(): void {
-    mxConstants.RECTANGLE_ROUNDING_FACTOR = 0.1;
     this.configureDefaultVertexStyle();
 
     this.configurePoolStyle();
@@ -211,6 +210,7 @@ export default class StyleConfigurator {
       const style = this.cloneDefaultVertexStyle();
       style[mxConstants.STYLE_SHAPE] = kind;
       style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+      style[mxConstants.STYLE_ABSOLUTE_ARCSIZE] = true;
       this.putCellStyle(kind, style);
     });
   }
