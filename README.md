@@ -95,7 +95,7 @@ npm i bpmn-visualization
 ```
 * Define your BPMN content using one of the following ways:
   * Copy/Paste directly the XML content in a variable
-  * Load it from a url, like this [example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/load-remote-bpmn-diagrams/index.html)
+  * Load it from a url, like this [example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/display-bpmn-diagram/load-remote-bpmn-diagrams/index.html)
   * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-js/blob/master/src/demo/index.ts)
 ```javascript
     let bpmnContent; // your BPMN 2.0 XML content
