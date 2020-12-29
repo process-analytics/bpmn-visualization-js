@@ -180,8 +180,9 @@ export class PageTester {
     await expect(page.title()).resolves.toMatch(this.expectedPageTitle);
 
     const bpmnContainerId = 'bpmn-container';
+    const elementHandle = await page.waitForSelector(`#${bpmnContainerId}`, waitForSelectorOptions);
     await page.waitForSelector(new BpmnQuerySelectors(bpmnContainerId).existingElement(), waitForSelectorOptions);
-    return await page.waitForSelector(`#${bpmnContainerId}`, waitForSelectorOptions);
+    return elementHandle;
   }
 }
 
