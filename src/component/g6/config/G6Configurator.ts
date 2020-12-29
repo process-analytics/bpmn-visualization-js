@@ -16,9 +16,8 @@
 import G6, { Graph } from '@antv/g6';
 import { GlobalOptions } from '../../options';
 import NodeConfigurator from './NodeConfigurator';
-import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
-import { IShape } from '@antv/g-canvas/lib/interfaces';
 import EdgeConfigurator from './EdgeConfigurator';
+import { IG6GraphEvent } from '@antv/g6/lib/types';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib
@@ -43,14 +42,36 @@ export default class G6Configurator {
     new EdgeConfigurator().configureEdges();
 
     const width = this.container.scrollWidth;
-    const height = this.container.scrollHeight || 500;
+    const height = this.container.scrollHeight || 700;
+
+    /*    const width = this.container.clientWidth;
+    const height = this.container.clientHeight || 700;*/
 
     this.graph = new G6.Graph({
       container: this.container,
       width,
       height,
-      fitCenter: true,
-      fitView: true,
+      /*   fitCenter: true,
+      fitView: true,*/
+
+      // Not working; Fix: https://github.com/antvis/G6/issues/2379
+      modes: {
+        default: [
+          /*          'drag-node',
+          'drag-node-with-group',*/
+          /*{
+            type: 'drag-canvas',
+            // https://github.com/antvis/G6/issues/2419
+            // https://github.com/antvis/G6/issues/2366
+            // enableOptimize: true, // enable the optimize to hide the shapes beside nodes' keyShape
+          },*/
+          /*   {
+            type: 'zoom-canvas',
+            // enableOptimize: true, // enable the optimize to hide the shapes beside nodes' keyShape
+          },*/
+        ],
+      },
+
       defaultNode: {
         type: 'star',
         size: [20],
@@ -71,7 +92,21 @@ export default class G6Configurator {
           stroke: '#e2e2e2',
         },
       },
+      nodeStateStyles: {
+        yourStateName: {
+          stroke: '#f00',
+          lineWidth: 3,
+        },
+      },
+      edgeStateStyles: {
+        yourStateName: {
+          stroke: '#f00',
+          lineWidth: 3,
+        },
+      },
     });
+
+    // this.enableDraggingOnNodesAndEdges(this.graph);
 
     if (typeof window !== 'undefined') {
       window.onresize = () => {
@@ -82,6 +117,38 @@ export default class G6Configurator {
     }
 
     return this.graph;
+  }
+
+  private enableDraggingOnNodesAndEdges(graph: Graph): void {
+    /**
+     * Normally, edges and nodes capture any event that originate on them
+     * Therefore, we need to forward those event to the canvas to enable dragging that starts on nodes or edges
+     * Additionally, event.shape needs to be undefined in order work correctly with the native implementation of 'drag-canvas'
+     */
+    graph.on('node:dragstart', (event: IG6GraphEvent) => {
+      (event.shape as any) = undefined;
+      graph.emit('dragstart', event);
+    });
+    graph.on('node:drag', (event: IG6GraphEvent) => {
+      (event.shape as any) = undefined;
+      graph.emit('drag', event);
+    });
+    graph.on('node:dragend', (event: IG6GraphEvent) => {
+      (event.shape as any) = undefined;
+      graph.emit('dragend', event);
+    });
+    graph.on('edge:dragstart', (event: IG6GraphEvent) => {
+      (event.shape as any) = undefined;
+      graph.emit('dragstart', event);
+    });
+    graph.on('edge:drag', (event: IG6GraphEvent) => {
+      (event.shape as any) = undefined;
+      graph.emit('drag', event);
+    });
+    graph.on('edge:dragend', (event: IG6GraphEvent) => {
+      (event.shape as any) = undefined;
+      graph.emit('dragend', event);
+    });
   }
 
   /*
