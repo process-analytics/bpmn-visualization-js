@@ -91,7 +91,7 @@
     "@types/minimist": "^1.2.1",
     "@types/puppeteer": "^5.4.2",
     "@typescript-eslint/eslint-plugin": "^4.11.0",
-    "@typescript-eslint/parser": "^4.8.2",
+    "@typescript-eslint/parser": "^4.11.1",
     "asciidoctor": "^2.2.1",
     "autoprefixer": "^10.1.0",
     "chokidar-cli": "^2.1.0",
