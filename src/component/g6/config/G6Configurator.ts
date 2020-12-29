@@ -54,6 +54,8 @@ export default class G6Configurator {
       /*   fitCenter: true,
       fitView: true,*/
 
+      renderer: 'svg',
+
       // Not working; Fix: https://github.com/antvis/G6/issues/2379
       modes: {
         default: [
