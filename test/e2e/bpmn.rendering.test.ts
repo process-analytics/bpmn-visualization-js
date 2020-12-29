@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { findFiles } from '../helpers/file-helper';
-import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
+import { BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
 
 describe('no BPMN elements visual regression', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
@@ -111,18 +111,9 @@ describe('no BPMN elements visual regression', () => {
     'bpmn',
   );
 
-  const bpmnDiagramPreparation = new BpmnDiagramPreparation(
-    new Map<string, BpmnLoadMethod>([
-      ['events', BpmnLoadMethod.Url],
-      ['markers.01.positioning', BpmnLoadMethod.Url],
-    ]),
-    { name: 'non-regression' },
-    'non-regression',
-  );
+  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' }, 'non-regression');
 
-  const pageTester = new PageTester(bpmnDiagramPreparation, 'BPMN Visualization Non Regression');
-
-  const bpmnFileNames = findFiles('../fixtures/bpmn/non-regression/')
+  const bpmnDiagramFileNames = findFiles('../fixtures/bpmn/non-regression/')
     .filter(filename => {
       return filename.endsWith('.bpmn');
     })
@@ -131,14 +122,15 @@ describe('no BPMN elements visual regression', () => {
     });
 
   it('check bpmn non-regression files availability', () => {
-    expect(bpmnFileNames).toContain('gateways');
+    expect(bpmnDiagramFileNames).toContain('gateways');
   });
 
-  it.each(bpmnFileNames)(`%s`, async (fileName: string) => {
-    await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
+  it.each(bpmnDiagramFileNames)(`%s`, async (bpmnDiagramFileName: string) => {
+    const bpmnLoadMethod = bpmnDiagramFileName === 'events' || bpmnDiagramFileName === 'markers.01.positioning' ? BpmnLoadMethod.Url : BpmnLoadMethod.QueryParam;
+    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramFileName, bpmnLoadMethod);
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(fileName);
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramFileName);
     expect(image).toMatchImageSnapshot(config);
   });
 });

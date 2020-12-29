@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnDiagramPreparation, BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
-import { FitType, LoadOptions } from '../../src/component/options';
+import { BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
+import { FitType } from '../../src/component/options';
 import { join } from 'path';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 
@@ -52,13 +52,6 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   }
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-async function initializePage(loadOptions: LoadOptions, fileName: string): Promise<any> {
-  const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map<string, BpmnLoadMethod>([]), { name: 'rendering-diagram' }, 'diagram', loadOptions);
-  const pageTester = new PageTester(bpmnDiagramPreparation, 'BPMN Visualization - Diagram Rendering');
-  await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
-}
-
 describe('no diagram visual regression', () => {
   const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(
     new Map<string, ImageSnapshotThresholdConfig>([
@@ -83,11 +76,13 @@ describe('no diagram visual regression', () => {
     0.00006,
   );
 
+  const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' }, 'diagram');
+
   const fitTypes: FitType[] = [FitType.None, FitType.HorizontalVertical, FitType.Horizontal, FitType.Vertical, FitType.Center];
   describe.each(fitTypes)('load options - fit %s', (onLoadFitType: FitType) => {
     describe.each(['horizontal', 'vertical', 'with.outside.flows', 'with.outside.labels'])('diagram %s', (fileName: string) => {
       it('load', async () => {
-        await initializePage({ fit: { type: onLoadFitType } }, fileName);
+        await pageTester.loadBPMNDiagramInRefreshedPage(fileName, BpmnLoadMethod.QueryParam, { fit: { type: onLoadFitType } });
 
         const image = await page.screenshot({ fullPage: true });
 
@@ -100,7 +95,7 @@ describe('no diagram visual regression', () => {
       });
 
       it.each(fitTypes)(`load + fit %s`, async (afterLoadFitType: FitType) => {
-        await initializePage({ fit: { type: onLoadFitType } }, fileName);
+        await pageTester.loadBPMNDiagramInRefreshedPage(fileName, BpmnLoadMethod.QueryParam, { fit: { type: onLoadFitType } });
 
         await page.click(`#${afterLoadFitType}`);
         // To unselect the button
@@ -122,7 +117,7 @@ describe('no diagram visual regression', () => {
         (onLoadFitType === FitType.Vertical && fileName === 'vertical')
       ) {
         it.each([-100, 0, 20, 50, null])('load with margin %s', async (margin: number) => {
-          await initializePage({ fit: { type: onLoadFitType, margin: margin } }, fileName);
+          await pageTester.loadBPMNDiagramInRefreshedPage(fileName, BpmnLoadMethod.QueryParam, { fit: { type: onLoadFitType, margin: margin } });
 
           const image = await page.screenshot({ fullPage: true });
 

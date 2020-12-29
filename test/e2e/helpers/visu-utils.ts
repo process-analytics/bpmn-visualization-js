@@ -109,11 +109,12 @@ export enum BpmnLoadMethod {
 }
 
 export interface TargetedPage {
-  name: string;
+  pageFileName: string;
   queryParams?: string[];
+  expectedPageTitle: string;
 }
 
-export class BpmnDiagramPreparation {
+export class PageTester {
   private readonly baseUrl: string;
 
   /**
@@ -127,62 +128,55 @@ export class BpmnDiagramPreparation {
    * Prior adding a config here, review your file to check if it is not too large because it contains too much elements, in particular, some elements not related to what you want to
    * test.
    */
-  constructor(
-    readonly bpmnLoadMethodConfig: Map<string, BpmnLoadMethod>,
-    targetedPage: TargetedPage,
-    readonly sourceBpmnFolderName: string,
-    loadOptions: LoadOptions = { fit: { type: FitType.HorizontalVertical } },
-  ) {
+  constructor(readonly targetedPage: TargetedPage, readonly sourceBpmnFolderName: string) {
     const params = targetedPage.queryParams?.join('&') ?? '';
-    this.baseUrl = `http://localhost:10002/${targetedPage.name}.html?fitTypeOnLoad=${loadOptions?.fit?.type}&fitMargin=${loadOptions?.fit?.margin}&${params}`;
+
+    this.baseUrl = `http://localhost:10002/${targetedPage.pageFileName}.html?${params}`;
+  }
+
+  async loadBPMNDiagramInRefreshedPage(bpmnDiagramFileName: string, bpmnLoadMethod?: BpmnLoadMethod, loadParams?: LoadOptions): Promise<ElementHandle<Element>> {
+    const url = this.getPageUrl(bpmnDiagramFileName, bpmnLoadMethod, loadParams);
+    const response = await page.goto(url);
+    // Uncomment the following in case of http error 400 (probably because of a too large bpmn file)
+    // eslint-disable-next-line no-console
+    // await page.evaluate(() => console.log(`url is ${location.href}`));
+
+    expect(response.status()).toBe(200);
+    await expect(page.title()).resolves.toMatch(this.targetedPage.expectedPageTitle);
+
+    const waitForSelectorOptions = { timeout: 5_000 };
+    const bpmnContainerId = 'bpmn-container';
+    const elementHandle = await page.waitForSelector(`#${bpmnContainerId}`, waitForSelectorOptions);
+    await page.waitForSelector(new BpmnQuerySelectors(bpmnContainerId).existingElement(), waitForSelectorOptions);
+    return elementHandle;
   }
 
   /**
    * @param fileName the name of the BPMN file without extension
    */
-  prepareTestResourcesAndGetPageUrl(fileName: string): string {
-    let url = this.baseUrl;
-
-    const bpmnLoadMethod = this.getBpmnLoadMethod(fileName);
+  private getPageUrl(
+    fileName: string,
+    bpmnLoadMethod: BpmnLoadMethod = BpmnLoadMethod.QueryParam,
+    loadOptions: LoadOptions = { fit: { type: FitType.HorizontalVertical } },
+  ): string {
     log(`Use '${bpmnLoadMethod}' as BPMN Load Method for '${fileName}'`);
+
+    let url = this.baseUrl;
+    url += `&fitTypeOnLoad=${loadOptions?.fit?.type}&fitMargin=${loadOptions?.fit?.margin}`;
+    url += `&${this.getUrlParameterForBPMNContent(fileName, bpmnLoadMethod)}`;
+    return url;
+  }
+
+  private getUrlParameterForBPMNContent(fileName: string, bpmnLoadMethod: BpmnLoadMethod): string {
     const relPathToBpmnFile = `../fixtures/bpmn/${this.sourceBpmnFolderName}/${fileName}.bpmn`;
     switch (bpmnLoadMethod) {
       case BpmnLoadMethod.QueryParam:
         const bpmnContent = loadBpmnContentForUrlQueryParam(relPathToBpmnFile);
-        url += `&bpmn=${bpmnContent}`;
-        break;
+        return `bpmn=${bpmnContent}`;
       case BpmnLoadMethod.Url:
         copyFileSync(relPathToBpmnFile, `../../dist/static/diagrams/`, `${fileName}.bpmn`);
-        url += `&url=./static/diagrams/${fileName}.bpmn`;
-        break;
+        return `url=./static/diagrams/${fileName}.bpmn`;
     }
-    return url;
-  }
-
-  private getBpmnLoadMethod(fileName: string): BpmnLoadMethod {
-    return this.bpmnLoadMethodConfig.get(fileName) || BpmnLoadMethod.QueryParam;
-  }
-}
-
-export class PageTester {
-  constructor(readonly bpmnDiagramPreparation: BpmnDiagramPreparation, readonly expectedPageTitle: string) {}
-
-  async expectBpmnDiagramToBeDisplayed(fileName: string): Promise<ElementHandle<Element>> {
-    const url = this.bpmnDiagramPreparation.prepareTestResourcesAndGetPageUrl(fileName);
-
-    const response = await page.goto(url);
-    // Uncomment the following in case of http error 400 (probably because of a too large bpmn file)
-    // eslint-disable-next-line no-console
-    // await page.evaluate(() => console.log(`url is ${location.href}`));
-    expect(response.status()).toBe(200);
-
-    const waitForSelectorOptions = { timeout: 5_000 };
-    await expect(page.title()).resolves.toMatch(this.expectedPageTitle);
-
-    const bpmnContainerId = 'bpmn-container';
-    const elementHandle = await page.waitForSelector(`#${bpmnContainerId}`, waitForSelectorOptions);
-    await page.waitForSelector(new BpmnQuerySelectors(bpmnContainerId).existingElement(), waitForSelectorOptions);
-    return elementHandle;
   }
 }
 

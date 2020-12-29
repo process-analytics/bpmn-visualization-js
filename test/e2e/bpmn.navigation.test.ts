@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnDiagramPreparation, delay, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
+import { delay, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
 import { join } from 'path';
 
 describe('diagram navigation', () => {
@@ -37,15 +37,13 @@ describe('diagram navigation', () => {
   );
 
   // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
-  const bpmnDiagramPreparation = new BpmnDiagramPreparation(new Map(), { name: 'rendering-diagram', queryParams: [] }, 'navigation');
-
-  const pageTester = new PageTester(bpmnDiagramPreparation, 'BPMN Visualization - Diagram Rendering');
+  const pageTester = new PageTester({ pageFileName: 'rendering-diagram', queryParams: [], expectedPageTitle: 'BPMN Visualization - Diagram Rendering' }, 'navigation');
 
   const fileName = 'simple.2.start.events.1.task';
   let viewportCenterX: number;
   let viewportCenterY: number;
   beforeEach(async () => {
-    const bpmnContainerElementHandle = await pageTester.expectBpmnDiagramToBeDisplayed(fileName);
+    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
     const bounding_box = await bpmnContainerElementHandle.boundingBox();
     viewportCenterX = bounding_box.x + bounding_box.width / 2;
     viewportCenterY = bounding_box.y + bounding_box.height / 2;
