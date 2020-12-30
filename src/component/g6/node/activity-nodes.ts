@@ -109,6 +109,7 @@ export function drawTask(): (cfg?: BpmnG6NodeConfig, group?: GGroup) => IShape {
         stroke: color,
         strokeWidth: StyleDefault.STROKE_WIDTH_THIN,
         radius: r,
+        anchorPoints: cfg.anchorPoints,
       },
       name: 'main-box',
       draggable: true,

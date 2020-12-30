@@ -26,6 +26,7 @@ export function drawSwinlane(): (cfg?: ModelConfig, group?: GGroup) => IShape {
         width,
         height,
         stroke: 'black',
+        anchorPoints: cfg.anchorPoints,
       },
       name: 'main-box',
       draggable: true,

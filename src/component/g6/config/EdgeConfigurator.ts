@@ -19,10 +19,6 @@ import { getSequenceFlowDefinition } from '../node/flow-edges';
 
 export default class EdgeConfigurator {
   public configureEdges(): void {
-    this.registerEdges();
-  }
-
-  private registerEdges(): void {
     G6.registerEdge(FlowKind.SEQUENCE_FLOW, getSequenceFlowDefinition, 'polyline');
     G6.registerEdge(FlowKind.ASSOCIATION_FLOW, getSequenceFlowDefinition, 'polyline');
     G6.registerEdge(FlowKind.MESSAGE_FLOW, getSequenceFlowDefinition, 'polyline');
