@@ -65,16 +65,26 @@ if (!buildBundles) {
   ];
 } else {
   const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjs(), json()];
-  const configIife = {
+  const outputIIFE = {
+    // hack to have the mxGraph configuration prior the load of the mxGraph lib
+    banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
+    file: pkg.browser,
+    name: 'bpmnvisu',
+    format: 'iife',
+  };
+
+  const configIIFE = {
+    input: libInput,
+    output: outputIIFE,
+    plugins: pluginsBundleIIFE,
+  };
+  const configIIFEMinified = {
     input: libInput,
     output: {
-      // hack to have the mxGraph configuration prior the load of the mxGraph lib
-      banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
-      file: pkg.browser,
-      name: 'bpmnvisu',
-      format: 'iife',
+      ...outputIIFE,
+      file: pkg.browser.replace('.js', '.min.js'),
     },
-    plugins: pluginsBundleIIFE,
+    plugins: withMinification(pluginsBundleIIFE),
   };
 
   // ensure we do not bundle dependencies
@@ -104,7 +114,7 @@ if (!buildBundles) {
       { file: pkg.main, format: 'cjs' },
     ],
   };
-  rollupConfigs = [configIife, configBundles, configBundlesMinified];
+  rollupConfigs = [configIIFE, configIIFEMinified, configBundles, configBundlesMinified];
 }
 
 export default rollupConfigs;
