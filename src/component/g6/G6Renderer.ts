@@ -111,6 +111,10 @@ export default class G6Renderer {
         x: bounds.x,
         y: bounds.y,
         size: [shape.bounds.width, shape.bounds.height],
+        anchorPoints: [
+          [0, 0.5],
+          [1, 0.5],
+        ],
         bpmn: {},
       };
 

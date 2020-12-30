@@ -113,8 +113,6 @@ export function getSequenceFlowDefinition(): ShapeOptions {
       },
     },
     draw: drawSequenceFlow(),
-    afterDraw: afterDrawSequenceFlow(),
-    // update: undefined,
   };
 }
 function drawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: GGroup) => IShape {
@@ -156,19 +154,18 @@ function drawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: GGroup) => IShape 
 
     return group.addShape('path', {
       attrs: {
-        stroke: '#333',
-        lineWidth: 1,
         source: cfg.source,
         target: cfg.target,
-        // path: [
-        //   ['M', startPoint.x, startPoint.y],
-        //   ['L', endPoint.x / 3 + (2 / 3) * startPoint.x, startPoint.y], // 1/3
-        //   ['L', endPoint.x / 3 + (2 / 3) * startPoint.x, endPoint.y], // 2/3
-        //   ['L', endPoint.x, endPoint.y],
-        // ],
-        style: {
-          endArrow,
-        },
+
+        stroke: '#333',
+        lineWidth: 8,
+        lineAppendWidth: 5,
+        path: [
+          ['M', startPoint.x, startPoint.y],
+          ['L', endPoint.x / 3 + (2 / 3) * startPoint.x, startPoint.y], // 1/3
+          ['L', endPoint.x / 3 + (2 / 3) * startPoint.x, endPoint.y], // 2/3
+          ['L', endPoint.x, endPoint.y],
+        ],
         endArrow,
 
         label: cfg.label,
@@ -180,28 +177,8 @@ function drawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: GGroup) => IShape 
           },
         },
       },
-      className: 'edge-shape',
       // must be assigned in G6 3.3 and later versions. it can be any value you want
       name: 'path-shape',
-    });
-  };
-}
-function afterDrawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: GGroup) => IShape {
-  return (cfg, group): IShape => {
-    // get the first shape in the graphics group of this edge, it is the path of the edge here
-    const shape = group.get('children')[0];
-    // get the coordinate of the mid point on the path
-    const midPoint = shape.getPoint(0.5);
-    // add a rect on the mid point of the path. note that the origin of a rect shape is on its lefttop
-    return group.addShape('rect', {
-      attrs: {
-        width: 10,
-        height: 10,
-        fill: '#f00',
-        // x and y should be minus width / 2 and height / 2 respectively to translate the center of the rect to the midPoint
-        x: midPoint.x - 5,
-        y: midPoint.y - 5,
-      },
     });
   };
 }

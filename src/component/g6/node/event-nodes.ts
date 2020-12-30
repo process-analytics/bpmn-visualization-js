@@ -59,12 +59,14 @@ export function drawEvent(): (cfg?: BpmnG6NodeConfig, group?: GGroup) => IShape 
     const shape = group.addShape('path', {
       attrs: { path, fill: 'white' },
       name: 'main-box',
+      draggable: true,
     });
     group.addShape('path', {
       attrs: {
         /*     x: 0,
         y: 0,*/
         path,
+        anchorPoints: cfg.anchorPoints,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         stroke: COLOR_MAP[cfg.type],

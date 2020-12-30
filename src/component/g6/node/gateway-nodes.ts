@@ -34,6 +34,7 @@ export function drawGateway(): (cfg?: ModelConfig, group?: GGroup) => IShape {
           [height, width / 2],
           [height / 2, 0],
         ],
+        anchorPoints: cfg.anchorPoints,
         stroke: 'salmon',
         label: cfg.label,
         labelCfg: {
@@ -45,6 +46,7 @@ export function drawGateway(): (cfg?: ModelConfig, group?: GGroup) => IShape {
         },
       },
       name: 'main-box',
+      draggable: true,
     });
 
     group.addShape('image', {
