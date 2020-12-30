@@ -81,7 +81,7 @@
     "postpublish": "pinst --enable"
   },
   "dependencies": {
-    "@antv/g6": "4.0.3",
+    "@antv/g6": "4.0.4",
     "entities": "^2.2.0",
     "fast-xml-parser": "^3.19.0",
     "lodash.debounce": "^4.0.8",
