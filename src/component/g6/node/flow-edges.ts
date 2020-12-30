@@ -103,7 +103,6 @@ import G6 from '@antv/g6';
 export function getSequenceFlowDefinition(): ShapeOptions {
   return {
     options: {
-      type: 'polyline',
       style: {
         stroke: '#ccc',
         endArrow: {
@@ -112,7 +111,9 @@ export function getSequenceFlowDefinition(): ShapeOptions {
         },
       },
     },
-    draw: drawSequenceFlow(),
+    // draw: drawSequenceFlow(),
+    afterDraw: afterDrawSequenceFlow(),
+    update: undefined,
   };
 }
 function drawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: GGroup) => IShape {
@@ -152,7 +153,7 @@ function drawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: GGroup) => IShape 
     // the end point
     points.push(endPoint);
 
-    return group.addShape('path', {
+    const mainShape = group.addShape('path', {
       attrs: {
         source: cfg.source,
         target: cfg.target,
@@ -179,6 +180,52 @@ function drawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: GGroup) => IShape 
       },
       // must be assigned in G6 3.3 and later versions. it can be any value you want
       name: 'path-shape',
+    });
+
+    group.addShape('marker', {
+      attrs: {
+        x: 10,
+        y: 10,
+        r: 10,
+        symbol: 'square',
+      },
+      // must be assigned in G6 3.3 and later versions. it can be any value you want
+      name: 'marker-shape',
+    });
+
+    return mainShape;
+  };
+}
+
+function afterDrawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: GGroup) => void {
+  return (cfg, group): void => {
+    // get the first shape in the graphics group of this edge, it is the path of the edge here
+    const mainShape = group.get('children')[0];
+
+    // get the coordinate of the quatile on the path
+    const quatile = mainShape.getPoint(0.25);
+    const quatileColor = cfg.quatileColor || '#333';
+    // add a circle on the quatile of the path
+    /*
+    group.addShape('circle', {
+      attrs: {
+        r: 5,
+        fill: quatileColor || '#333',
+        x: quatile.x,
+        y: quatile.y,
+      },
+    });
+*/
+
+    group.addShape('marker', {
+      attrs: {
+        x: quatile.x,
+        y: quatile.y,
+        r: 5,
+        symbol: 'square',
+      },
+      // must be assigned in G6 3.3 and later versions. it can be any value you want
+      name: 'marker-shape',
     });
   };
 }
