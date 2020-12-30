@@ -59,18 +59,18 @@ export default class G6Configurator {
       // Not working; Fix: https://github.com/antvis/G6/issues/2379
       modes: {
         default: [
-          /*          'drag-node',
-          'drag-node-with-group',*/
-          /*{
+          'drag-node',
+          // 'drag-node-with-group',
+          {
             type: 'drag-canvas',
             // https://github.com/antvis/G6/issues/2419
             // https://github.com/antvis/G6/issues/2366
-            // enableOptimize: true, // enable the optimize to hide the shapes beside nodes' keyShape
-          },*/
-          /*   {
+            enableOptimize: true, // enable the optimize to hide the shapes beside nodes' keyShape
+          },
+          {
             type: 'zoom-canvas',
-            // enableOptimize: true, // enable the optimize to hide the shapes beside nodes' keyShape
-          },*/
+            enableOptimize: true, // enable the optimize to hide the shapes beside nodes' keyShape
+          },
         ],
       },
 
@@ -80,7 +80,7 @@ export default class G6Configurator {
         color: '#5B8FF9',
         style: {
           fill: '#9EC9FF',
-          lineWidth: 10,
+          lineWidth: 2,
         },
         labelCfg: {
           style: {
@@ -92,6 +92,7 @@ export default class G6Configurator {
       defaultEdge: {
         style: {
           stroke: '#e2e2e2',
+          lineAppendWidth: 2,
         },
       },
       nodeStateStyles: {
