@@ -35,6 +35,9 @@ export interface BpmnG6NodeConfig extends NodeConfig {
     isHorizontal?: boolean;
     gatewayKind?: ShapeBpmnEventBasedGatewayKind;
   };
+  fontWeight?: string;
+  fontFamily?: string;
+  textDecoration?: string;
 }
 
 export interface BpmnG6EdgeConfig extends EdgeConfig {
@@ -43,6 +46,9 @@ export interface BpmnG6EdgeConfig extends EdgeConfig {
     associationDirectionKind?: AssociationDirectionKind;
     messageVisibleKind?: boolean;
   };
+  fontWeight?: string;
+  fontFamily?: string;
+  textDecoration?: string;
 }
 
 /**
@@ -148,16 +154,18 @@ export default class G6Renderer {
         /*    // pool/lane label bounds are not managed for now (use hard coded values)
       labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds; */
 
-        const position = ShapeUtil.isEvent(kind) ? 'bottom' : ShapeUtil.isActivity(kind) ? 'Center' : 'Top';
-        node.labelCfg = { refX: labelBounds?.x, refY: labelBounds?.y, position };
+        node.labelCfg = { refX: labelBounds?.x, refY: labelBounds?.y };
+        /*        if (!labelBounds?.x) {
+          node.labelCfg.position = ShapeUtil.isEvent(kind) ? 'bottom' : ShapeUtil.isActivity(kind) ? 'middle' : 'top';
+        }*/
 
         const font = label.font;
         if (font) {
           const fontStyle = font.isItalic ? 'italic' : 'normal';
 
           // G6 Text Shape properties
-          const fontWeight = font.isBold ? 'bold' : 'normal';
-          const fontFamily = font.name;
+          node.fontWeight = font.isBold ? 'bold' : 'normal';
+          node.fontFamily = font.name;
 
           let textDecoration = '';
           if (font.isStrikeThrough) {
@@ -166,6 +174,7 @@ export default class G6Renderer {
           if (font.isUnderline) {
             textDecoration += 'underline';
           }
+          node.textDecoration = textDecoration;
 
           node.labelCfg.style = { fontSize: font.size, fontStyle };
         }
@@ -245,6 +254,36 @@ export default class G6Renderer {
         } else if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
           edgeConf.messageVisibleKind = edge.messageVisibleKind;
         }
+
+        const label = edge.label;
+        if (label) {
+          const labelBounds = label.bounds;
+          /*    // pool/lane label bounds are not managed for now (use hard coded values)
+        labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds; */
+
+          edgeConf.labelCfg = { refX: labelBounds?.x, refY: labelBounds?.y };
+
+          const font = label.font;
+          if (font) {
+            const fontStyle = font.isItalic ? 'italic' : 'normal';
+
+            // G6 Text Shape properties
+            edgeConf.fontWeight = font.isBold ? 'bold' : 'normal';
+            edgeConf.fontFamily = font.name;
+
+            let textDecoration = '';
+            if (font.isStrikeThrough) {
+              textDecoration = 'line-through ';
+            }
+            if (font.isUnderline) {
+              textDecoration += 'underline';
+            }
+            edgeConf.textDecoration = textDecoration;
+
+            edgeConf.labelCfg.style = { fontSize: font.size, fontStyle };
+          }
+        }
+
         return edgeConf;
       }
     });

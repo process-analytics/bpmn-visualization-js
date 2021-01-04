@@ -103,7 +103,7 @@ export default class NodeConfigurator {
     G6.registerNode(ShapeBpmnElementKind.CALL_ACTIVITY, { drawShape: drawTask() }, 'rect');
 
     // tasks
-    G6.registerNode(ShapeBpmnElementKind.TASK, { drawShape: drawTask() }, 'rect');
+    G6.registerNode(ShapeBpmnElementKind.TASK, { drawShape: drawTask() });
     G6.registerNode(ShapeBpmnElementKind.TASK_SERVICE, { drawShape: drawTask() }, 'rect');
     G6.registerNode(ShapeBpmnElementKind.TASK_USER, { drawShape: drawTask() }, 'rect');
     G6.registerNode(ShapeBpmnElementKind.TASK_RECEIVE, { drawShape: drawTask() }, 'rect');
