@@ -39,11 +39,8 @@ export class MessageFlowIconShape extends mxgraph.mxRectangleShape {
 }
 */
 
-import { Group as GGroup } from '@antv/g-canvas';
-import { IShape } from '@antv/g-canvas/lib/interfaces';
 import { BpmnG6EdgeConfig } from '../G6Renderer';
-import { ShapeOptions } from '@antv/g6/lib/interface/shape';
-import G6 from '@antv/g6';
+import G6, { ShapeOptions, IGroup as GGroup, IShape } from '@antv/g6';
 
 // private specificFlowStyles: Map<FlowKind, (style: StyleMap) => void> = new Map([
 //   [

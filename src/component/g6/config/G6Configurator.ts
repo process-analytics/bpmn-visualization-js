@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import G6, { Graph } from '@antv/g6';
+import G6, { Graph, IG6GraphEvent } from '@antv/g6';
 import { GlobalOptions } from '../../options';
 import NodeConfigurator from './NodeConfigurator';
 import EdgeConfigurator from './EdgeConfigurator';
-import { IG6GraphEvent } from '@antv/g6/lib/types';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib
