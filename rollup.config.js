@@ -33,10 +33,6 @@ import parseArgs from 'minimist';
 import * as fs from 'fs';
 import path from 'path';
 
-function readFileSync(relPathToSourceFile, encoding = 'utf8') {
-  return fs.readFileSync(path.join(__dirname, relPathToSourceFile), encoding);
-}
-
 const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
 const demoMode = process.env.demoMode;
@@ -47,84 +43,12 @@ const argv = parseArgs(process.argv.slice(2)); // start with 'node rollup' so dr
 const serverPort = process.env.SERVER_PORT || argv['config-server-port'] || 10001;
 const buildBundles = argv['config-build-bundles'] || false;
 
-const sourceMap = !demoMode;
-const tsDeclarationFiles = !demoMode || buildBundles;
-
-const tsconfigOverride = { compilerOptions: { declaration: tsDeclarationFiles } };
-
-const plugins = [
-  typescript({
-    typescript: require('typescript'),
-    tsconfigOverride: tsconfigOverride,
-  }),
-];
-const pluginsNoDeps = [...plugins];
-
-plugins.push(resolve());
-plugins.push(commonjs());
-plugins.push(json());
-
-pluginsNoDeps.push(json());
-pluginsNoDeps.push(autoExternal());
-
-// Copy static resources to dist
-if (devMode || demoMode) {
-  plugins.push(execute('npm run demo:css'));
-  if (devLiveReloadMode) {
-    plugins.push(execute('npm run watch:css'));
-  }
-
-  const copyTargets = [];
-  copyTargets.push({ src: 'src/*.html', dest: 'dist/' });
-  copyTargets.push({ src: 'src/static', dest: 'dist' });
-  copyTargets.push({ src: 'node_modules/mxgraph/javascript/mxClient.min.js', dest: 'dist/static/js/' });
-  let copyPlugin;
-  if (devLiveReloadMode) {
-    copyPlugin = copyWatch({
-      watch: ['src/static/**', 'src/*.html'],
-      targets: copyTargets,
-    });
-  } else {
-    copyPlugin = copy({
-      targets: copyTargets,
-    });
-  }
-  plugins.push(copyPlugin);
-
-  // to have sizes of dependencies listed at the end of build log
-  plugins.push(sizes());
-}
-
-if (devMode) {
-  // Create a server for dev mode
-  plugins.push(serve({ contentBase: 'dist', port: serverPort }));
-
-  if (devLiveReloadMode) {
-    // Allow to livereload on any update
-    plugins.push(livereload({ watch: 'dist', verbose: true }));
-  }
-}
-
-const minify = demoMode || buildBundles;
-const pluginsNoDepsNoMin = [...pluginsNoDeps];
-if (minify) {
-  plugins.push(
-    terser({
-      ecma: 6,
-    }),
-  );
-  pluginsNoDeps.push(
-    terser({
-      ecma: 6,
-    }),
-  );
-}
-
 const libInput = 'src/bpmn-visualization.ts';
 let rollupConfigs;
 
+// internal lib development
 if (!buildBundles) {
-  // internal lib development
+  const sourceMap = !demoMode;
   rollupConfigs = [
     {
       input: libInput,
@@ -136,10 +60,11 @@ if (!buildBundles) {
         },
       ],
       external: [...Object.keys(pkg.peerDependencies || {})],
-      plugins: plugins,
+      plugins: pluginsForDevelopment(),
     },
   ];
 } else {
+  const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjs(), json()];
   const configIife = {
     input: libInput,
     output: {
@@ -149,11 +74,13 @@ if (!buildBundles) {
       name: 'bpmnvisu',
       format: 'iife',
     },
-    // TODO we may use this plugin configuration instead resolve({browser: true})
-    // If true, instructs the plugin to use the "browser" property in package.json files to specify alternative files to load for bundling. This is useful when bundling for a browser environment.
-    plugins: plugins,
+    plugins: pluginsBundleIIFE,
   };
-  const configEsmMin = {
+
+  // ensure we do not bundle dependencies
+  const pluginsBundles = [typescriptPlugin(), json(), autoExternal()];
+
+  const configBundlesMinified = {
     input: libInput,
     output: [
       {
@@ -167,17 +94,92 @@ if (!buildBundles) {
     ],
     // except these 'custom specified' dependencies, rest of them is treated by the plugin: autoExternal
     external: ['entities/lib/decode', 'fast-xml-parser/src/parser'],
-    plugins: pluginsNoDeps,
+    plugins: withMinification(pluginsBundles),
   };
-  const configEsm = {
-    ...configEsmMin,
-    plugins: pluginsNoDepsNoMin,
+  const configBundles = {
+    ...configBundlesMinified,
+    plugins: pluginsBundles,
     output: [
       { file: pkg.module, format: 'es' },
       { file: pkg.main, format: 'cjs' },
     ],
   };
-  rollupConfigs = [configIife, configEsm, configEsmMin];
+  rollupConfigs = [configIife, configBundles, configBundlesMinified];
 }
 
 export default rollupConfigs;
+
+// =====================================================================================================================
+// helpers
+// =====================================================================================================================
+
+function typescriptPlugin() {
+  const tsDeclarationFiles = !demoMode || buildBundles;
+  const tsconfigOverride = { compilerOptions: { declaration: tsDeclarationFiles } };
+  return typescript({
+    typescript: require('typescript'),
+    tsconfigOverride: tsconfigOverride,
+  });
+}
+
+function withMinification(plugins) {
+  return [
+    ...plugins,
+    terser({
+      ecma: 6,
+    }),
+  ];
+}
+
+function pluginsForDevelopment() {
+  const plugins = [typescriptPlugin(), resolve(), commonjs(), json()];
+  const outputDir = 'dist';
+
+  // Copy static resources
+  if (devMode || demoMode) {
+    plugins.push(execute('npm run demo:css'));
+    if (devLiveReloadMode) {
+      plugins.push(execute('npm run watch:css'));
+    }
+
+    const copyTargets = [];
+    copyTargets.push({ src: 'src/*.html', dest: `${outputDir}/` });
+    copyTargets.push({ src: 'src/static', dest: outputDir });
+    copyTargets.push({ src: 'node_modules/mxgraph/javascript/mxClient.min.js', dest: `${outputDir}/static/js/` });
+    let copyPlugin;
+    if (devLiveReloadMode) {
+      copyPlugin = copyWatch({
+        watch: ['src/static/**', 'src/*.html'],
+        targets: copyTargets,
+      });
+    } else {
+      copyPlugin = copy({
+        targets: copyTargets,
+      });
+    }
+    plugins.push(copyPlugin);
+
+    // to have sizes of dependencies listed at the end of build log
+    plugins.push(sizes());
+  }
+
+  if (devMode) {
+    // Create a server for dev mode
+    plugins.push(serve({ contentBase: outputDir, port: serverPort }));
+
+    if (devLiveReloadMode) {
+      // Allow to livereload on any update
+      plugins.push(livereload({ watch: outputDir, verbose: true }));
+    }
+  }
+
+  if (demoMode) {
+    return withMinification(plugins);
+  }
+
+  return plugins;
+}
+
+function readFileSync(relPathToSourceFile, encoding = 'utf8') {
+  return fs.readFileSync(path.join(__dirname, relPathToSourceFile), encoding);
+}
