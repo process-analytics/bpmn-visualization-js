@@ -869,7 +869,7 @@ export default class IconPainter {
   /**
    * This icon is used by `event-based gateway`.
    */
-  paintPentagon(paintParameter: PaintParameter): void {
+  public paintPentagon(paintParameter: PaintParameter): void {
     const canvas = this.newBpmnCanvas(paintParameter, { width: 16, height: 16 });
 
     // Shape
