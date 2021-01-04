@@ -15,7 +15,6 @@
  */
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
-import BpmnCanvas from './render/BpmnCanvas';
 
 abstract class GatewayShape extends mxRhombus {
   protected iconPainter = IconPainterProvider.get();
