@@ -15,15 +15,24 @@
  */
 import Shape from '../../model/bpmn/internal/shape/Shape';
 import Edge from '../../model/bpmn/internal/edge/Edge';
-import { ShapeBpmnElementKind } from '../../model/bpmn/internal/shape';
-import { LoadOptions } from '../options';
-import { RenderedModel } from '../registry/bpmn-model-registry';
-import { Graph } from '@antv/g6';
-import { EdgeConfig, GraphData, IPoint, NodeConfig } from '@antv/g6/lib/types';
+import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal/shape';
 import { SequenceFlowKind } from '../../model/bpmn/internal/edge/SequenceFlowKind';
 import { AssociationDirectionKind } from '../../model/bpmn/internal/edge/AssociationDirectionKind';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../model/bpmn/internal/edge/Flow';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
+import ShapeBpmnElement, {
+  ShapeBpmnActivity,
+  ShapeBpmnBoundaryEvent,
+  ShapeBpmnEvent,
+  ShapeBpmnEventBasedGateway,
+  ShapeBpmnStartEvent,
+  ShapeBpmnSubProcess,
+} from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
+import { LoadOptions } from '../options';
+import { RenderedModel } from '../registry/bpmn-model-registry';
+import { Graph } from '@antv/g6';
+import { EdgeConfig, GraphData, IPoint, NodeConfig } from '@antv/g6';
 
 export interface BpmnG6NodeConfig extends NodeConfig {
   bpmn: {

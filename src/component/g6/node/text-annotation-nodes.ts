@@ -1,7 +1,4 @@
-import { ModelConfig } from '@antv/g6/lib/types';
-import { Group as GGroup } from '@antv/g-canvas';
-import { IShape } from '@antv/g-canvas/lib/interfaces';
-import G6 from '@antv/g6';
+import { ModelConfig, IGroup as GGroup, IShape } from '@antv/g6';
 
 /**
  * Copyright 2020 Bonitasoft S.A.
