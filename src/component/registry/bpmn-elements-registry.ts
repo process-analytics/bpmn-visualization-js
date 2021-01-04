@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import { ensureIsArray } from '../helpers/array-utils';
-import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
 import { computeBpmnBaseClassName } from '../mxgraph/style-helper';
 import { CssRegistry } from './css-registry';
 import MxGraphCellUpdater, { newMxGraphCellUpdater } from '../mxgraph/MxGraphCellUpdater';
@@ -23,9 +21,11 @@ import { BpmnQuerySelectors } from './query-selectors';
 import { BpmnElement, Overlay } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
+import { Graph } from '@antv/g6';
+import { Item } from '@antv/g6/lib/types';
 
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnMxGraph): BpmnElementsRegistry {
-  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), newMxGraphCellUpdater(graph));
+  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.getContainer()?.id)), new CssRegistry(), newMxGraphCellUpdater(graph));
 }
 
 /**
