@@ -355,10 +355,7 @@ export default class IconPainter {
    */
   public paintXCrossIcon(paintParameter: PaintParameter): void {
     const canvas = this.drawCrossIcon(paintParameter);
-    // only work for centered cross
-    const rotationCenterX = (paintParameter.shape.w / 2) * paintParameter.ratioFromParent;
-    const rotationCenterY = (paintParameter.shape.h / 2) * paintParameter.ratioFromParent;
-    canvas.rotate(45, false, false, rotationCenterX, rotationCenterY);
+    canvas.rotateOnIconCenter(45);
     canvas.fillAndStroke();
   }
 
