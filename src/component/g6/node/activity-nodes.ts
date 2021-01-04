@@ -131,15 +131,32 @@ export function drawTask(): (cfg?: BpmnG6NodeConfig, group?: GGroup) => IShape {
     });
 
     // label text
-    group.addShape('text', {
-      attrs: {
-        x: cfg.labelCfg.refX,
-        y: cfg.labelCfg.refY,
-        text: cfg.label,
-        fill: 'pink',
-      },
-      name: 'label',
-    });
+    const textAttr: any = {
+      lineHeight: height - 20,
+      text: cfg.label,
+      fontSize: cfg.labelCfg.style.fontSize,
+      fontFamily: cfg.fontFamily,
+      fontWeight: cfg.fontWeight,
+      /*  Not existing in this shape
+       textDecoration: cfg.textDecoration,*/
+      fontStyle: cfg.labelCfg.style.fontStyle,
+      fill: 'pink',
+      shadowOffsetX: 2,
+      shadowOffsetY: 2,
+      shadowColor: 'blue',
+    };
+    if (cfg.labelCfg.refX) {
+      textAttr.x = cfg.labelCfg.refX;
+      textAttr.y = cfg.labelCfg.refY;
+    } else {
+      textAttr.textBaseline = 'middle';
+      textAttr.textAlign = 'center';
+      textAttr.x = width / 2;
+      textAttr.y = height / 2;
+      textAttr.width = width - 20;
+      textAttr.height = height - 20;
+    }
+    group.addShape('text', { attrs: textAttr, name: 'label' });
 
     // The content list
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
