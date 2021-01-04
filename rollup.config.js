@@ -21,6 +21,7 @@ import { terser } from 'rollup-plugin-terser';
 import sizes from 'rollup-plugin-sizes';
 import autoExternal from 'rollup-plugin-auto-external';
 import execute from 'rollup-plugin-execute';
+import builtins from 'rollup-plugin-node-builtins';
 
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
@@ -62,7 +63,7 @@ if (!buildBundles) {
     },
   ];
 } else {
-  const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjs(), json()];
+  const pluginsBundleIIFE = [typescriptPlugin(), resolve({ browser: true }), commonjs(), json()];
   const outputIIFE = {
     file: pkg.browser.replace('.min.js', '.js'),
     name: 'bpmnvisu',
@@ -138,7 +139,7 @@ function withMinification(plugins) {
 }
 
 function pluginsForDevelopment() {
-  const plugins = [typescriptPlugin(), resolve(), commonjs(), json()];
+  const plugins = [typescriptPlugin(), resolve({ browser: true }), commonjs(), json()];
 
   // Copy static resources
   if (devMode || demoMode) {
@@ -162,6 +163,7 @@ function pluginsForDevelopment() {
       });
     }
     plugins.push(copyPlugin);
+    plugins.push(builtins());
 
     // to have sizes of dependencies listed at the end of build log
     plugins.push(sizes());
