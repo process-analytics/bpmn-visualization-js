@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnLoadMethod, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, PageTester } from './helpers/visu-utils';
 import { FitType } from '../../src/component/options';
 import { join } from 'path';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
+import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
+import { BpmnLoadMethod, PageTester } from './helpers/visu/PageTester';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   getConfig(param: {
