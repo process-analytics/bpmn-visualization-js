@@ -90,7 +90,7 @@ export class PageTester {
         const bpmnContent = loadBpmnContentForUrlQueryParam(relPathToBpmnFile);
         return `bpmn=${bpmnContent}`;
       case BpmnLoadMethod.Url:
-        copyFileSync(relPathToBpmnFile, `../../dist/static/diagrams/`, `${fileName}.bpmn`);
+        copyFileSync(relPathToBpmnFile, `../../build/public/static/diagrams/`, `${fileName}.bpmn`);
         return `url=./static/diagrams/${fileName}.bpmn`;
     }
   }
