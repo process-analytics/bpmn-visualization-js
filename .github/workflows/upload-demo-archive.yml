@@ -47,5 +47,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: demo-${{github.sha}}
-          path: dist
+          path: build/demo
 

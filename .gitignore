@@ -5,13 +5,12 @@
 *.DS_Store
 
 # Build directories
-/node_modules/
-/dist/
-/.nyc_output/
-/coverage/
-build
-/test/e2e/__image_snapshots__/__diff_output__/
 *.jest-image-snapshot-touched-files
+/build/
+/dist/
+/lib/
+/node_modules/
+/test/e2e/__image_snapshots__/__diff_output__/
 /scripts/utils/dist/
 
 # npm build
