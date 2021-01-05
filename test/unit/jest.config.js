@@ -28,7 +28,7 @@ module.exports = {
   },
   collectCoverageFrom: ['**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static', 'src/model'],
-  coverageReporters: ['lcovonly', 'text', 'text-summary'],
+  coverageReporters: ['lcov', 'text-summary'],
   coverageDirectory: 'build/test-report/unit',
   setupFiles: ['./test/unit/jest.globals.ts'],
   reporters: [
