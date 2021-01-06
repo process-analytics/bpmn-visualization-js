@@ -14,48 +14,26 @@
  * limitations under the License.
  */
 
-import { mxgraphFactory } from 'ts-mxgraph';
+import { mxgraph } from '../../../src/component/mxgraph/initializer';
 
-const {
-  mxClient,
-  mxUtils,
-  mxConstants,
-  mxCodec,
-  mxCodecRegistry,
-  mxSvgCanvas2D,
-  mxCellRenderer,
-  mxGeometry,
-  mxPerimeter,
-  mxGraph,
-  mxGraphModel,
-  mxShape,
-  mxMarker,
-  mxPoint,
-  mxEllipse,
-  mxRhombus,
-  mxRectangleShape,
-} = mxgraphFactory({
-  mxLoadResources: false,
-  mxLoadStylesheets: false,
-});
 // to prevent TS error Property 'mxXyz' does not exist on type 'Global'.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const globalAny: any = global;
 
-globalAny.mxClient = mxClient;
-globalAny.mxUtils = mxUtils;
-globalAny.mxConstants = mxConstants;
-globalAny.mxCodec = mxCodec;
-globalAny.mxCodecRegistry = mxCodecRegistry;
-globalAny.mxSvgCanvas2D = mxSvgCanvas2D;
-globalAny.mxCellRenderer = mxCellRenderer;
-globalAny.mxGeometry = mxGeometry;
-globalAny.mxPerimeter = mxPerimeter;
-globalAny.mxGraph = mxGraph;
-globalAny.mxGraphModel = mxGraphModel;
-globalAny.mxShape = mxShape;
-globalAny.mxMarker = mxMarker;
-globalAny.mxPoint = mxPoint;
-globalAny.mxEllipse = mxEllipse;
-globalAny.mxRhombus = mxRhombus;
-globalAny.mxRectangleShape = mxRectangleShape;
+globalAny.mxClient = mxgraph.mxClient;
+globalAny.mxUtils = mxgraph.mxUtils;
+globalAny.mxConstants = mxgraph.mxConstants;
+globalAny.mxCodec = mxgraph.mxCodec;
+globalAny.mxCodecRegistry = mxgraph.mxCodecRegistry;
+globalAny.mxSvgCanvas2D = mxgraph.mxSvgCanvas2D;
+globalAny.mxCellRenderer = mxgraph.mxCellRenderer;
+globalAny.mxGeometry = mxgraph.mxGeometry;
+globalAny.mxPerimeter = mxgraph.mxPerimeter;
+globalAny.mxGraph = mxgraph.mxGraph;
+globalAny.mxGraphModel = mxgraph.mxGraphModel;
+globalAny.mxShape = mxgraph.mxShape;
+globalAny.mxMarker = mxgraph.mxMarker;
+globalAny.mxPoint = mxgraph.mxPoint;
+globalAny.mxEllipse = mxgraph.mxEllipse;
+globalAny.mxRhombus = mxgraph.mxRhombus;
+globalAny.mxRectangleShape = mxgraph.mxRectangleShape;

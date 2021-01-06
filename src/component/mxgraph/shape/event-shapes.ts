@@ -17,6 +17,7 @@ import { ShapeBpmnEventKind } from '../../../model/bpmn/internal/shape';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import BpmnCanvas from './render/BpmnCanvas';
+import { mxAbstractCanvas2D, mxEllipse, mxRectangle } from 'mxgraph';
 
 abstract class EventShape extends mxEllipse {
   protected iconPainter = IconPainterProvider.get();

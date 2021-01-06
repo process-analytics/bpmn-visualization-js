@@ -18,6 +18,7 @@ import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import { GlobalOptions } from '../options';
 import { BpmnMxGraph } from './BpmnMxGraph';
+import { mxgraph } from './initializer';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib
@@ -62,8 +63,8 @@ export default class MxGraphConfigurator {
     const panningHandler = this.graph.panningHandler;
     if (options?.navigation?.enabled) {
       // Pan configuration
-      panningHandler.addListener(mxEvent.PAN_START, this.getPanningHandler('grab'));
-      panningHandler.addListener(mxEvent.PAN_END, this.getPanningHandler('default'));
+      panningHandler.addListener(mxgraph.mxEvent.PAN_START, this.getPanningHandler('grab'));
+      panningHandler.addListener(mxgraph.mxEvent.PAN_END, this.getPanningHandler('default'));
 
       this.graph.panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
       // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left click

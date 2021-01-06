@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 import { FitOptions, FitType, ZoomConfiguration } from '../options';
-import { mxgraph } from 'ts-mxgraph';
+import { mxgraph } from './initializer';
+import { mxGraph, mxMouseEvent } from 'mxgraph';
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
-
-// TODO unable to load mxClient from mxgraph-type-definitions@1.0.4
-declare const mxClient: typeof mxgraph.mxClient;
 
 export class BpmnMxGraph extends mxGraph {
   private cumulativeZoomFactor = 1;
@@ -104,8 +102,8 @@ export class BpmnMxGraph extends mxGraph {
 
   createMouseWheelZoomExperience(config: ZoomConfiguration): void {
     config = ensureValidZoomConfiguration(config);
-    mxEvent.addMouseWheelListener(debounce(this.getZoomHandler(true), config.debounceDelay), this.container);
-    mxEvent.addMouseWheelListener(throttle(this.getZoomHandler(false), config.throttleDelay), this.container);
+    mxgraph.mxEvent.addMouseWheelListener(debounce(this.getZoomHandler(true), config.debounceDelay), this.container);
+    mxgraph.mxEvent.addMouseWheelListener(throttle(this.getZoomHandler(false), config.throttleDelay), this.container);
   }
 
   // solution inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
@@ -113,7 +111,7 @@ export class BpmnMxGraph extends mxGraph {
     const [x, y] = this.getRelativeEventCoordinates(evt);
     this.zoomTo(null, null, up, x, y, performScaling);
     if (performScaling) {
-      mxEvent.consume(evt);
+      mxgraph.mxEvent.consume(evt);
     }
   }
 
@@ -121,11 +119,11 @@ export class BpmnMxGraph extends mxGraph {
     return (event: Event, up: boolean) => {
       // TODO review type: this hack is due to the introduction of mxgraph-type-definitions
       const evt = (event as unknown) as MouseEvent;
-      if (mxEvent.isConsumed((evt as unknown) as mxMouseEvent)) {
+      if (mxgraph.mxEvent.isConsumed((evt as unknown) as mxMouseEvent)) {
         return;
       }
       // only the ctrl key or the meta key on mac
-      const isZoomWheelEvent = (evt.ctrlKey || (mxClient.IS_MAC && evt.metaKey)) && !evt.altKey && !evt.shiftKey;
+      const isZoomWheelEvent = (evt.ctrlKey || (mxgraph.mxClient.IS_MAC && evt.metaKey)) && !evt.altKey && !evt.shiftKey;
       if (isZoomWheelEvent) {
         this.performZoom(up, evt, calculateFactorOnly);
       }

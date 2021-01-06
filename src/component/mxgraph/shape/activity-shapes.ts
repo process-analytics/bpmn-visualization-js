@@ -18,6 +18,7 @@ import { buildPaintParameter, IconPainterProvider, PaintParameter } from './rend
 import { ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal/shape';
 import BpmnCanvas from './render/BpmnCanvas';
 import { orderActivityMarkers } from './render/utils';
+import { mxAbstractCanvas2D, mxRectangle, mxRectangleShape } from 'mxgraph';
 
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
   IconPainterProvider.get().paintEnvelopeIcon({

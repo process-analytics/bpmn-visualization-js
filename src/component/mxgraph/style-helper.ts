@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { mxCell } from 'mxgraph';
 
 /**
  * Compute the all class names associated to a given bpmn element kind in an hyphen case form.

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { BpmnMxGraph } from '../BpmnMxGraph';
+import { mxCell, mxPoint } from 'mxgraph';
 
 export default class CoordinatesTranslator {
   constructor(readonly graph: BpmnMxGraph) {}

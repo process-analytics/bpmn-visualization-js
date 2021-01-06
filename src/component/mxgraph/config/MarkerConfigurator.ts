@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { MarkerIdentifier } from '../StyleUtils';
+import { mxAbstractCanvas2D, mxCell, mxMarker, mxPoint, mxShape } from 'mxgraph';
 
 export default class MarkerConfigurator {
   public configureMarkers(): void {

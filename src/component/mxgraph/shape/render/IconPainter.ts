@@ -17,6 +17,7 @@
 import BpmnCanvas from './BpmnCanvas';
 import StyleUtils from '../../StyleUtils';
 import { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
+import { mxAbstractCanvas2D, mxShape } from 'mxgraph';
 
 export interface PaintParameter {
   c: mxAbstractCanvas2D;
