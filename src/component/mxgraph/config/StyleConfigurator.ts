@@ -211,6 +211,7 @@ export default class StyleConfigurator {
       style[mxConstants.STYLE_SHAPE] = kind;
       style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
       style[mxConstants.STYLE_ABSOLUTE_ARCSIZE] = true;
+      style[mxConstants.STYLE_ARCSIZE] = 20;
       this.putCellStyle(kind, style);
     });
   }
