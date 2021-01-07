@@ -65,28 +65,30 @@ if (!buildBundles) {
     },
   ];
 } else {
-  const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjs(), json()];
-  const outputIIFE = {
-    // hack to have the mxGraph configuration prior the load of the mxGraph lib
-    banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
-    file: pkg.browser.replace('.min.js', '.js'),
-    name: 'bpmnvisu',
-    format: 'iife',
-  };
-
-  const configIIFE = {
-    input: libInput,
-    output: outputIIFE,
-    plugins: pluginsBundleIIFE,
-  };
-  const configIIFEMinified = {
-    input: libInput,
-    output: {
-      ...outputIIFE,
-      file: pkg.browser,
-    },
-    plugins: withMinification(pluginsBundleIIFE),
-  };
+  // const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjs(), json()];
+  // const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjsPlugin(), json()];
+  // const outputIIFE = {
+  //   // hack to have the mxGraph configuration prior the load of the mxGraph lib
+  //   banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
+  //   file: pkg.browser.replace('.min.js', '.js'),
+  //   name: 'bpmnvisu',
+  //   format: 'iife',
+  // };
+  //
+  // const configIIFE = {
+  //   input: libInput,
+  //   output: outputIIFE,
+  //   plugins: pluginsBundleIIFE,
+  // };
+  // const configIIFEMinified = {
+  //   input: libInput,
+  //   output: {
+  //     ...outputIIFE,
+  //     file: pkg.browser,
+  //   },
+  //   plugins: withMinification(pluginsBundleIIFE),
+  // };
+  // rollupConfigs = [configIife];
 
   // ensure we do not bundle dependencies
   const pluginsBundles = [typescriptPlugin(), json(), autoExternal()];
@@ -115,7 +117,8 @@ if (!buildBundles) {
       { file: pkg.main, format: 'cjs' },
     ],
   };
-  rollupConfigs = [configIIFE, configIIFEMinified, configBundles, configBundlesMinified];
+  rollupConfigs = [configBundles];
+  // rollupConfigs = [configIIFE, configIIFEMinified, configBundles, configBundlesMinified];
 }
 
 export default rollupConfigs;
@@ -142,8 +145,17 @@ function withMinification(plugins) {
   ];
 }
 
+function commonjsPlugin() {
+  return commonjs({
+    namedExports: {
+      'node_modules/mxgraph/javascript/dist/build.js,': ['mxgraph'],
+    },
+  });
+}
+
 function pluginsForDevelopment() {
-  const plugins = [typescriptPlugin(), resolve(), commonjs(), json()];
+  // const plugins = [typescriptPlugin(), resolve(), commonjs(), json()];
+  const plugins = [typescriptPlugin(), resolve(), commonjsPlugin(), json()];
 
   // Copy static resources
   if (devMode || demoMode) {
