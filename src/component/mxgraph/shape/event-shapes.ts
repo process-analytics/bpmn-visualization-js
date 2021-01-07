@@ -17,7 +17,8 @@ import { ShapeBpmnEventKind } from '../../../model/bpmn/internal/shape';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import BpmnCanvas from './render/BpmnCanvas';
-import { mxAbstractCanvas2D, mxEllipse, mxRectangle } from 'mxgraph';
+//import { mxEllipse } from 'mxgraph';
+//import * as mxgraph from 'mxgraph';
 
 abstract class EventShape extends mxEllipse {
   protected iconPainter = IconPainterProvider.get();
@@ -150,7 +151,7 @@ abstract class IntermediateEventShape extends EventShape {
 }
 
 export class CatchIntermediateEventShape extends IntermediateEventShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
+  public constructor(bounds: mxgraph.mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 }
