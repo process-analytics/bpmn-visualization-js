@@ -37,7 +37,7 @@ export default class BpmnVisualization {
       if (!mxClient.isBrowserSupported()) {
         mxUtils.error('Browser is not supported!', 200, false);
       }
-      // Instantiate and configure Graph
+      // Instantiate and configure mxgraph
       const configurator = new MxGraphConfigurator(this.container);
       this.graph = configurator.configure(options);
 
