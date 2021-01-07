@@ -15,7 +15,7 @@
  */
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
-//import { mxAbstractCanvas2D, mxRectangle, mxRhombus } from 'mxgraph';
+import { mxAbstractCanvas2D, mxRectangle, mxRhombus } from 'mxgraph';
 
 abstract class GatewayShape extends mxRhombus {
   protected iconPainter = IconPainterProvider.get();

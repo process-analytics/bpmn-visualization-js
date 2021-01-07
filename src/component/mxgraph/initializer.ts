@@ -40,8 +40,5 @@ export const mxgraph = factory({
   mxLoadResources: false,
   mxLoadStylesheets: false,
 });
-
-export const mx = mxgraph;
-
 // eslint-disable-next-line no-console
 console.info(`Using mxgraph ${mxgraph.mxClient.VERSION}`);
