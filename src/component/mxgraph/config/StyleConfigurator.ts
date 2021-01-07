@@ -34,36 +34,37 @@ import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
 import { AssociationDirectionKind } from '../../../model/bpmn/internal/edge/AssociationDirectionKind';
 import { BpmnMxGraph } from '../BpmnMxGraph';
-import { mxConstants, mxPerimeter, mxStylesheet, mxUtils, StyleMap } from 'mxgraph';
+import { mxStylesheet, StyleMap } from 'mxgraph';
+import { mxgraph } from '../initializer';
 
 export default class StyleConfigurator {
   private specificFlowStyles: Map<FlowKind, (style: StyleMap) => void> = new Map([
     [
       FlowKind.SEQUENCE_FLOW,
       (style: StyleMap) => {
-        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
+        style[mxgraph.mxConstants.STYLE_ENDARROW] = mxgraph.mxConstants.ARROW_BLOCK_THIN;
       },
     ],
     [
       FlowKind.MESSAGE_FLOW,
       (style: StyleMap) => {
-        style[mxConstants.STYLE_DASHED] = true;
-        style[mxConstants.STYLE_DASH_PATTERN] = '8 5';
-        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OVAL;
-        style[mxConstants.STYLE_STARTSIZE] = 8;
-        style[mxConstants.STYLE_STARTFILL] = false;
-        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
-        style[mxConstants.STYLE_ENDFILL] = false;
+        style[mxgraph.mxConstants.STYLE_DASHED] = true;
+        style[mxgraph.mxConstants.STYLE_DASH_PATTERN] = '8 5';
+        style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_OVAL;
+        style[mxgraph.mxConstants.STYLE_STARTSIZE] = 8;
+        style[mxgraph.mxConstants.STYLE_STARTFILL] = false;
+        style[mxgraph.mxConstants.STYLE_ENDARROW] = mxgraph.mxConstants.ARROW_BLOCK_THIN;
+        style[mxgraph.mxConstants.STYLE_ENDFILL] = false;
       },
     ],
     [
       FlowKind.ASSOCIATION_FLOW,
       (style: StyleMap) => {
-        style[mxConstants.STYLE_DASHED] = true;
-        style[mxConstants.STYLE_DASH_PATTERN] = '1 2';
-        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_OPEN_THIN;
-        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OPEN_THIN;
-        style[mxConstants.STYLE_STARTSIZE] = 12;
+        style[mxgraph.mxConstants.STYLE_DASHED] = true;
+        style[mxgraph.mxConstants.STYLE_DASH_PATTERN] = '1 2';
+        style[mxgraph.mxConstants.STYLE_ENDARROW] = mxgraph.mxConstants.ARROW_OPEN_THIN;
+        style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_OPEN_THIN;
+        style[mxgraph.mxConstants.STYLE_STARTSIZE] = 12;
       },
     ],
   ]);
@@ -71,15 +72,15 @@ export default class StyleConfigurator {
     [
       SequenceFlowKind.DEFAULT,
       (style: StyleMap) => {
-        style[mxConstants.STYLE_STARTARROW] = MarkerIdentifier.ARROW_DASH;
+        style[mxgraph.mxConstants.STYLE_STARTARROW] = MarkerIdentifier.ARROW_DASH;
       },
     ],
     [
       SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
       (style: StyleMap) => {
-        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_DIAMOND_THIN;
-        style[mxConstants.STYLE_STARTSIZE] = 18;
-        style[mxConstants.STYLE_STARTFILL] = false;
+        style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_DIAMOND_THIN;
+        style[mxgraph.mxConstants.STYLE_STARTSIZE] = 18;
+        style[mxgraph.mxConstants.STYLE_STARTFILL] = false;
       },
     ],
   ]);
@@ -87,22 +88,22 @@ export default class StyleConfigurator {
     [
       AssociationDirectionKind.NONE,
       (style: StyleMap) => {
-        style[mxConstants.STYLE_STARTARROW] = undefined;
-        style[mxConstants.STYLE_ENDARROW] = undefined;
-        style[mxConstants.STYLE_EDGE] = undefined; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
+        style[mxgraph.mxConstants.STYLE_STARTARROW] = undefined;
+        style[mxgraph.mxConstants.STYLE_ENDARROW] = undefined;
+        style[mxgraph.mxConstants.STYLE_EDGE] = undefined; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
     [
       AssociationDirectionKind.ONE,
       (style: StyleMap) => {
-        style[mxConstants.STYLE_STARTARROW] = undefined;
-        style[mxConstants.STYLE_EDGE] = undefined; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
+        style[mxgraph.mxConstants.STYLE_STARTARROW] = undefined;
+        style[mxgraph.mxConstants.STYLE_EDGE] = undefined; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
     [
       AssociationDirectionKind.BOTH,
       (style: StyleMap) => {
-        style[mxConstants.STYLE_EDGE] = undefined; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
+        style[mxgraph.mxConstants.STYLE_EDGE] = undefined; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
   ]);
@@ -110,7 +111,7 @@ export default class StyleConfigurator {
   constructor(private graph: BpmnMxGraph) {}
 
   public configureStyles(): void {
-    mxConstants.RECTANGLE_ROUNDING_FACTOR = 0.1;
+    mxgraph.mxConstants.RECTANGLE_ROUNDING_FACTOR = 0.1;
     this.configureDefaultVertexStyle();
 
     this.configurePoolStyle();
@@ -139,12 +140,12 @@ export default class StyleConfigurator {
 
   private cloneDefaultVertexStyle(): StyleMap {
     const defaultStyle = this.getDefaultVertexStyle();
-    return mxUtils.clone(defaultStyle);
+    return mxgraph.mxUtils.clone(defaultStyle);
   }
 
   private cloneDefaultEdgeStyle(): StyleMap {
     const defaultStyle = this.getDefaultEdgeStyle();
-    return mxUtils.clone(defaultStyle);
+    return mxgraph.mxUtils.clone(defaultStyle);
   }
 
   private putCellStyle(name: ShapeBpmnElementKind, style: StyleMap): void {
@@ -158,32 +159,32 @@ export default class StyleConfigurator {
 
   private configurePoolStyle(): void {
     const style = this.cloneDefaultVertexStyle();
-    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_SWIMLANE;
+    style[mxgraph.mxConstants.STYLE_SHAPE] = mxgraph.mxConstants.SHAPE_SWIMLANE;
 
     // TODO Remove when the bounds of the pool label is implemented
-    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
-    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
+    style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
+    style[mxgraph.mxConstants.STYLE_ALIGN] = mxgraph.mxConstants.ALIGN_CENTER;
 
     // TODO manage pool text area rendering. Maybe we can calculate it from the label size/bounds
     // most of BPMN pool are ok when setting it to 30
-    style[mxConstants.STYLE_STARTSIZE] = StyleDefault.POOL_LABEL_SIZE;
+    style[mxgraph.mxConstants.STYLE_STARTSIZE] = StyleDefault.POOL_LABEL_SIZE;
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.POOL, style);
   }
 
   private configureLaneStyle(): void {
     const style = this.cloneDefaultVertexStyle();
-    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_SWIMLANE;
+    style[mxgraph.mxConstants.STYLE_SHAPE] = mxgraph.mxConstants.SHAPE_SWIMLANE;
 
     // TODO Remove when the bounds of the lane label is implemented
-    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
-    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
+    style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
+    style[mxgraph.mxConstants.STYLE_ALIGN] = mxgraph.mxConstants.ALIGN_CENTER;
 
-    style[mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
+    style[mxgraph.mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
 
     // TODO manage lane text area rendering. there is no Label neither the size available (we have only attribute name="Text of the Label")
     // perhaps it can be calculated as a difference of starting point (either x or y) between pool, lane, sub-lane ?
-    style[mxConstants.STYLE_STARTSIZE] = StyleDefault.LANE_LABEL_SIZE;
+    style[mxgraph.mxConstants.STYLE_STARTSIZE] = StyleDefault.LANE_LABEL_SIZE;
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.LANE, style);
   }
@@ -191,27 +192,27 @@ export default class StyleConfigurator {
   private configureEventStyles(): void {
     ShapeUtil.topLevelBpmnEventKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
-      style[mxConstants.STYLE_SHAPE] = kind;
-      style[mxConstants.STYLE_PERIMETER] = mxPerimeter.EllipsePerimeter;
-      style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_BOTTOM;
+      style[mxgraph.mxConstants.STYLE_SHAPE] = kind;
+      style[mxgraph.mxConstants.STYLE_PERIMETER] = mxgraph.mxPerimeter.EllipsePerimeter;
+      style[mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxgraph.mxConstants.ALIGN_BOTTOM;
       this.putCellStyle(kind, style);
     });
   }
 
   private configureTextAnnotationStyle(): void {
     const style = this.cloneDefaultVertexStyle();
-    style[mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TEXT_ANNOTATION;
-    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
-    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
-    style[mxConstants.STYLE_SPACING_LEFT] = 5;
+    style[mxgraph.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TEXT_ANNOTATION;
+    style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
+    style[mxgraph.mxConstants.STYLE_ALIGN] = mxgraph.mxConstants.ALIGN_LEFT;
+    style[mxgraph.mxConstants.STYLE_SPACING_LEFT] = 5;
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
   }
 
   private configureActivityStyles(): void {
     ShapeUtil.activityKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
-      style[mxConstants.STYLE_SHAPE] = kind;
-      style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+      style[mxgraph.mxConstants.STYLE_SHAPE] = kind;
+      style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
       this.putCellStyle(kind, style);
     });
   }
@@ -219,13 +220,13 @@ export default class StyleConfigurator {
   private configureGatewayStyles(): void {
     ShapeUtil.gatewayKinds().forEach(kind => {
       const style = this.cloneDefaultVertexStyle();
-      style[mxConstants.STYLE_SHAPE] = kind;
-      style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
-      style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
+      style[mxgraph.mxConstants.STYLE_SHAPE] = kind;
+      style[mxgraph.mxConstants.STYLE_PERIMETER] = mxgraph.mxPerimeter.RhombusPerimeter;
+      style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_TOP;
 
       // Default positioning in case there is no BPMN LabelStyle
-      style[mxConstants.STYLE_LABEL_POSITION] = mxConstants.ALIGN_LEFT;
-      style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_TOP;
+      style[mxgraph.mxConstants.STYLE_LABEL_POSITION] = mxgraph.mxConstants.ALIGN_LEFT;
+      style[mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxgraph.mxConstants.ALIGN_TOP;
 
       this.putCellStyle(kind, style);
     });
@@ -233,28 +234,28 @@ export default class StyleConfigurator {
 
   private configureDefaultEdgeStyle(): void {
     const style = this.getDefaultEdgeStyle();
-    style[mxConstants.STYLE_EDGE] = mxConstants.EDGESTYLE_SEGMENT;
-    style[mxConstants.STYLE_ENDSIZE] = 12;
-    style[mxConstants.STYLE_STROKEWIDTH] = 1.5;
-    style[mxConstants.STYLE_ROUNDED] = 1;
-    style[mxConstants.STYLE_ARCSIZE] = 5;
-    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_BOTTOM;
+    style[mxgraph.mxConstants.STYLE_EDGE] = mxgraph.mxConstants.EDGESTYLE_SEGMENT;
+    style[mxgraph.mxConstants.STYLE_ENDSIZE] = 12;
+    style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = 1.5;
+    style[mxgraph.mxConstants.STYLE_ROUNDED] = 1;
+    style[mxgraph.mxConstants.STYLE_ARCSIZE] = 5;
+    style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_BOTTOM;
 
-    delete style[mxConstants.STYLE_ENDARROW];
+    delete style[mxgraph.mxConstants.STYLE_ENDARROW];
 
     this.configureCommonDefaultStyle(style);
   }
 
   private configureCommonDefaultStyle(style: StyleMap): void {
-    style[mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
-    style[mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
-    style[mxConstants.STYLE_FONTCOLOR] = StyleDefault.DEFAULT_FONT_COLOR;
-    style[mxConstants.STYLE_FILLCOLOR] = StyleDefault.DEFAULT_FILL_COLOR;
-    style[mxConstants.STYLE_STROKECOLOR] = StyleDefault.DEFAULT_STROKE_COLOR;
-    style[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = mxConstants.NONE;
+    style[mxgraph.mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
+    style[mxgraph.mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
+    style[mxgraph.mxConstants.STYLE_FONTCOLOR] = StyleDefault.DEFAULT_FONT_COLOR;
+    style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.DEFAULT_FILL_COLOR;
+    style[mxgraph.mxConstants.STYLE_STROKECOLOR] = StyleDefault.DEFAULT_STROKE_COLOR;
+    style[mxgraph.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = mxgraph.mxConstants.NONE;
 
     // only works with html labels (enabled by MxGraphConfigurator)
-    style[mxConstants.STYLE_WHITE_SPACE] = 'wrap';
+    style[mxgraph.mxConstants.STYLE_WHITE_SPACE] = 'wrap';
   }
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: StyleMap) => void>): void {
@@ -308,9 +309,9 @@ export default class StyleConfigurator {
           styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
         }
       } else if (ShapeUtil.isPoolOrLane((bpmnElement as ShapeBpmnElement).kind)) {
-        // mxConstants.STYLE_HORIZONTAL is for the label
+        // mxgraph.mxConstants.STYLE_HORIZONTAL is for the label
         // In BPMN, isHorizontal is for the Shape
-        styleValues.set(mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
+        styleValues.set(mxgraph.mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
       } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, String(bpmnElement.instantiate));
         styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
@@ -326,23 +327,23 @@ export default class StyleConfigurator {
 
     const font = bpmnCell.label?.font;
     if (font) {
-      styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
-      styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
-      styleValues.set(mxConstants.STYLE_FONTSTYLE, StyleConfigurator.getFontStyleValue(font));
+      styleValues.set(mxgraph.mxConstants.STYLE_FONTFAMILY, font.name);
+      styleValues.set(mxgraph.mxConstants.STYLE_FONTSIZE, font.size);
+      styleValues.set(mxgraph.mxConstants.STYLE_FONTSTYLE, StyleConfigurator.getFontStyleValue(font));
     }
 
     if (labelBounds) {
-      styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
+      styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_ALIGN, mxgraph.mxConstants.ALIGN_TOP);
       if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
-        styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
+        styleValues.set(mxgraph.mxConstants.STYLE_ALIGN, mxgraph.mxConstants.ALIGN_CENTER);
       }
 
       if (bpmnCell instanceof Shape) {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
-        styleValues.set(mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
+        styleValues.set(mxgraph.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
         // align settings
-        styleValues.set(mxConstants.STYLE_LABEL_POSITION, mxConstants.ALIGN_TOP);
-        styleValues.set(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_LEFT);
+        styleValues.set(mxgraph.mxConstants.STYLE_LABEL_POSITION, mxgraph.mxConstants.ALIGN_TOP);
+        styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxgraph.mxConstants.ALIGN_LEFT);
       }
     }
     // when no label bounds, adjust the default style dynamically
@@ -351,7 +352,7 @@ export default class StyleConfigurator {
       (bpmnElement instanceof ShapeBpmnSubProcess || bpmnElement instanceof ShapeBpmnCallActivity) &&
       !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)
     ) {
-      styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
+      styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_ALIGN, mxgraph.mxConstants.ALIGN_TOP);
     }
 
     return [] //
@@ -367,16 +368,16 @@ export default class StyleConfigurator {
   private static getFontStyleValue(font: Font): number {
     let value = 0;
     if (font.isBold) {
-      value += mxConstants.FONT_BOLD;
+      value += mxgraph.mxConstants.FONT_BOLD;
     }
     if (font.isItalic) {
-      value += mxConstants.FONT_ITALIC;
+      value += mxgraph.mxConstants.FONT_ITALIC;
     }
     if (font.isStrikeThrough) {
-      value += mxConstants.FONT_STRIKETHROUGH;
+      value += mxgraph.mxConstants.FONT_STRIKETHROUGH;
     }
     if (font.isUnderline) {
-      value += mxConstants.FONT_UNDERLINE;
+      value += mxgraph.mxConstants.FONT_UNDERLINE;
     }
     return value;
   }
