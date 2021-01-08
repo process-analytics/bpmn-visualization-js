@@ -53,11 +53,7 @@ abstract class EventShape extends mxEllipse {
       (paintParameter: PaintParameter) =>
         this.iconPainter.paintDoubleLeftArrowheadsIcon({ ...paintParameter, ratioFromParent: 0.7, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
     ],
-    [
-      ShapeBpmnEventKind.CANCEL,
-      (paintParameter: PaintParameter) =>
-        this.iconPainter.paintXCrossIcon({ ...paintParameter, ratioFromParent: 0.39, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(9) }),
-    ],
+    [ShapeBpmnEventKind.CANCEL, (paintParameter: PaintParameter) => this.iconPainter.paintXCrossIcon({ ...paintParameter, ratioFromParent: 0.78 })],
     [
       ShapeBpmnEventKind.ESCALATION,
       (paintParameter: PaintParameter) =>
