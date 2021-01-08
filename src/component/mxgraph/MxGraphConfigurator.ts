@@ -61,18 +61,26 @@ export default class MxGraphConfigurator {
   private configureMouseNavigationSupport(options?: GlobalOptions): void {
     const mouseNavigationSupport = options?.mouseNavigationSupport;
     // Pan configuration
+    const panningHandler = this.graph.panningHandler;
     if (mouseNavigationSupport) {
-      this.graph.panningHandler.useLeftButtonForPanning = true;
-      this.graph.panningHandler.ignoreCell = true; // ok here as we cannot select cells
-      this.graph.panningHandler.addListener(mxEvent.PAN_START, this.getPanningHandler('grab'));
-      this.graph.panningHandler.addListener(mxEvent.PAN_END, this.getPanningHandler('default'));
+      panningHandler.addListener(mxEvent.PAN_START, this.getPanningHandler('grab'));
+      panningHandler.addListener(mxEvent.PAN_END, this.getPanningHandler('default'));
+
+      this.graph.panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
+      // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left click
+      // The mxGraph standard implementation doesn't ignore right click in this case, so do it by ourself
+      panningHandler.isForcePanningEvent = (me): boolean => mxEvent.isLeftMouseButton(me.getEvent()) || mxEvent.isMultiTouchEvent(me.getEvent());
       this.graph.setPanning(true);
 
       // Zoom configuration
       this.graph.createMouseWheelZoomExperience(options.zoomConfiguration);
     } else {
       this.graph.setPanning(false);
-      this.graph.panningHandler.setPinchEnabled(false); // ensure gesture support is disabled (zoom only for now!)
+      // Disable gesture support for zoom
+      panningHandler.setPinchEnabled(false);
+      // Disable panning on touch device
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      panningHandler.isForcePanningEvent = (me: mxMouseEvent): boolean => false;
     }
   }
 
