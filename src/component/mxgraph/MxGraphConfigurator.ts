@@ -16,7 +16,6 @@
 import StyleConfigurator from './config/StyleConfigurator';
 import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
-import MxClientConfigurator from './config/MxClientConfigurator';
 import { GlobalOptions } from '../options';
 import { BpmnMxGraph } from './BpmnMxGraph';
 
@@ -40,7 +39,6 @@ export default class MxGraphConfigurator {
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
     new MarkerConfigurator().configureMarkers();
-    new MxClientConfigurator().configureMxCodec();
     return this.graph;
   }
 
