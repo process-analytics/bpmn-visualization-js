@@ -303,7 +303,8 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  private static drawCrossIcon(canvas: BpmnCanvas): void {
+  private drawCrossIcon(paintParameter: PaintParameter): BpmnCanvas {
+    const canvas = this.newBpmnCanvas(paintParameter, { height: 1, width: 1 });
     canvas.begin();
     canvas.moveTo(0.38, 0);
     canvas.lineTo(0.62, 0);
@@ -318,6 +319,7 @@ export default class IconPainter {
     canvas.lineTo(0, 0.38);
     canvas.lineTo(0.38, 0.38);
     canvas.close();
+    return canvas;
   }
 
   /**
@@ -352,23 +354,16 @@ export default class IconPainter {
    * This icon is used by `exclusive gateway`.
    */
   public paintXCrossIcon(paintParameter: PaintParameter): void {
-    const canvas = this.newBpmnCanvas(paintParameter, { height: 0.5, width: 0.5 });
-
-    IconPainter.drawCrossIcon(canvas);
-    const rotationCenterX = paintParameter.shape.w * paintParameter.ratioFromParent;
-    const rotationCenterY = paintParameter.shape.h * paintParameter.ratioFromParent;
-    canvas.rotate(45, false, false, rotationCenterX, rotationCenterY);
+    const canvas = this.drawCrossIcon(paintParameter);
+    canvas.rotateOnIconCenter(45);
     canvas.fillAndStroke();
   }
 
   /**
-   * This icon is used by `parallel gateway`.
+   * This icon is used by `parallel gateway` and 'event-based gateway'.
    */
-  public paintPlusCrossIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
-    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon: { ...icon, isFilled: true } }, { height: 0.5, width: 0.5 });
-
-    IconPainter.drawCrossIcon(canvas);
-    canvas.fillAndStroke();
+  public paintPlusCrossIcon(paintParameter: PaintParameter): void {
+    this.drawCrossIcon(paintParameter).fillAndStroke();
   }
 
   /**
@@ -866,6 +861,24 @@ export default class IconPainter {
     canvas.lineTo(0, 0);
     canvas.close();
     canvas.fillAndStroke();
+  }
+
+  /**
+   * This icon is used by `event-based gateway`.
+   */
+  public paintPentagon(paintParameter: PaintParameter): void {
+    const canvas = this.newBpmnCanvas(paintParameter, { width: 16, height: 16 });
+
+    // Shape
+    canvas.begin();
+    canvas.moveTo(16, 6.5);
+    canvas.lineTo(8, 0);
+    canvas.lineTo(0, 6.5);
+    canvas.lineTo(3, 16);
+    canvas.lineTo(13, 16);
+    canvas.lineTo(16, 6.5);
+    canvas.lineTo(8, 0); // extra line to ensure the path is fully closed (otherwise, there is a glitch on the latest corner)
+    canvas.stroke();
   }
 }
 
