@@ -239,10 +239,9 @@ export default class BpmnCanvas {
     this.c.ellipse(this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y), w * this.scaleX, h * this.scaleY);
   }
 
-  /**
-   * IMPORTANT: the cx and cy parameters (coordinates of the center of the rotation) are relative to the icon origin BUT they are not scaled!
-   */
-  rotate(theta: number, flipH: boolean, flipV: boolean, cx: number, cy: number): void {
-    this.c.rotate(theta, flipH, flipV, this.iconPaintingOriginX + cx, this.iconPaintingOriginY + cy);
+  rotateOnIconCenter(theta: number): void {
+    const rotationCenterX = this.iconPaintingOriginX + (this.iconOriginalSize.width / 2) * this.scaleX;
+    const rotationCenterY = this.iconPaintingOriginY + (this.iconOriginalSize.height / 2) * this.scaleY;
+    this.c.rotate(theta, false, false, rotationCenterX, rotationCenterY);
   }
 }

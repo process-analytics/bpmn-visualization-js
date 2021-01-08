@@ -19,7 +19,7 @@ import { readFileSync } from '../../../helpers/file-helper';
 describe('parse xml to model', () => {
   it('Single process with no participant', () => {
     const parser = newBpmnParser();
-    const model = parser.parse(readFileSync('../fixtures/bpmn/parser-test.bpmn'));
+    const model = parser.parse(readFileSync('../fixtures/bpmn/xml-parsing/miwg-A.1.0.bpmn'));
 
     expect(model.flowNodes).toHaveLength(5);
     expect(model.edges).toHaveLength(4);

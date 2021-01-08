@@ -15,7 +15,6 @@
  */
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
-import BpmnCanvas from './render/BpmnCanvas';
 
 abstract class GatewayShape extends mxRhombus {
   protected iconPainter = IconPainterProvider.get();
@@ -46,7 +45,7 @@ export class ExclusiveGatewayShape extends GatewayShape {
     this.iconPainter.paintXCrossIcon({
       ...paintParameter,
       icon: { ...paintParameter.icon, isFilled: true },
-      setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(4),
+      ratioFromParent: 0.5,
     });
   }
 }
@@ -57,7 +56,11 @@ export class ParallelGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    this.iconPainter.paintPlusCrossIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(4) });
+    this.iconPainter.paintPlusCrossIcon({
+      ...paintParameter,
+      icon: { ...paintParameter.icon, isFilled: true },
+      ratioFromParent: 0.5,
+    });
   }
 }
 
@@ -80,17 +83,30 @@ export class EventBasedGatewayShape extends GatewayShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  protected paintOuterShape(paintParameter: PaintParameter): void {
-    const isParallel = StyleUtils.getBpmnIsParallelEventBasedGateway(this.style);
-    const fillColor = StyleUtils.getBpmnIsInstantiating(this.style) ? (isParallel ? 'lightBlue' : 'purple') : 'orange';
-
-    paintParameter.c.setFillColor(fillColor);
-    paintParameter.c.setFillAlpha(0.6);
-    super.paintOuterShape(paintParameter);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    // TODO rendering will be managed later
+    paintParameter = { ...paintParameter, icon: { ...paintParameter.icon, strokeWidth: 1 } };
+
+    // circle (simple or double)
+    this.iconPainter.paintCircleIcon({
+      ...paintParameter,
+      ratioFromParent: 0.55,
+    });
+    if (!StyleUtils.getBpmnIsInstantiating(this.style)) {
+      this.iconPainter.paintCircleIcon({
+        ...paintParameter,
+        ratioFromParent: 0.45,
+      });
+    }
+
+    // inner icon
+    const innerIconPaintParameter = {
+      ...paintParameter,
+      ratioFromParent: 0.3,
+    };
+    if (StyleUtils.getBpmnIsParallelEventBasedGateway(this.style)) {
+      this.iconPainter.paintPlusCrossIcon(innerIconPaintParameter);
+    } else {
+      this.iconPainter.paintPentagon(innerIconPaintParameter);
+    }
   }
 }
