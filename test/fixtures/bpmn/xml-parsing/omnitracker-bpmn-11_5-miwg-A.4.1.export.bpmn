@@ -1,0 +1,202 @@
+<!-- from https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/4178270d96046fc8a5763f6e4357df2728a21edb/OMNITRACKER%20BPMN%2011.5/A.4.1-export.bpmn -->
+<sem:definitions expressionLanguage="http://www.omninet.de/bpmn/expressions/v1" typeLanguage="http://www.omninet.de/bpmn/types/v1" targetNamespace="http://www.omninet.de/bpmn/definitions/v1" xmlns:sem="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:ot="http://www.omninet.de/ot/bpmn/v1">
+  <sem:itemDefinition id="_OT_NAMESPACES_">
+    <sem:extensionElements>
+      <ot:namespace id="_1" name="OMG Export" alias="OMG Export"/>
+      <ot:namespace id="_2" name="A.4.1" alias="A.4.1" parent="_1"/>
+    </sem:extensionElements>
+  </sem:itemDefinition>
+  <sem:message id="_3" name="message1" ot:alias="message1" ot:namespace="_2"/>
+  <sem:message id="_4" name="message2" ot:alias="message2" ot:namespace="_2"/>
+  <sem:collaboration id="_6" ot:outerProcess="_7">
+    <sem:participant id="_8" name="Pool 1" processRef="_9"/>
+    <sem:participant id="_10" name="Pool 2" processRef="_11"/>
+    <sem:messageFlow id="_47" name="Message Flow 1" ot:displayName="Message Flow 1" ot:alias="edge2" sourceRef="_15" targetRef="_28" messageRef="_3"/>
+    <sem:messageFlow id="_48" name="Message Flow 2" ot:displayName="Message Flow 2" ot:alias="edge3" sourceRef="_31" targetRef="_16" messageRef="_4"/>
+  </sem:collaboration>
+  <sem:process name="A.4.1_Canvas" ot:alias="A.4.1Canvas" id="_7">
+    <sem:extensionElements>
+      <ot:startPermission/>
+    </sem:extensionElements>
+  </sem:process>
+  <sem:process name="Pool1_Pool" ot:alias="Pool1Pool" ot:displayName="Pool 1" id="_9">
+    <sem:extensionElements>
+      <ot:startPermission/>
+    </sem:extensionElements>
+    <sem:laneSet id="_12" ot:alias="laneSetNode1">
+      <sem:lane id="_13" name="" ot:alias="lane1" ot:displayName="Lane1"/>
+    </sem:laneSet>
+    <sem:sequenceFlow id="_14" ot:alias="flow2" sourceRef="_15" targetRef="_16"/>
+    <sem:sequenceFlow id="_17" ot:alias="flow3" sourceRef="_16" targetRef="_18"/>
+    <sem:sequenceFlow id="_19" ot:alias="flow1" sourceRef="_20" targetRef="_15"/>
+    <sem:task id="_16" name="Task 2" ot:displayName="Task 2" ot:alias="task2"/>
+    <sem:endEvent id="_18" name="End Event 1 " ot:displayName="End Event 1 " ot:alias="event2"/>
+    <sem:task id="_15" name="Task 1" ot:displayName="Task 1" ot:alias="task1"/>
+    <sem:startEvent id="_20" name="Start Event 1 " ot:displayName="Start Event 1 " ot:alias="event1"/>
+  </sem:process>
+  <sem:process name="Pool2_Pool" ot:alias="Pool2Pool" ot:displayName="Pool 2" id="_11">
+    <sem:extensionElements>
+      <ot:startPermission/>
+    </sem:extensionElements>
+    <sem:laneSet id="_21" ot:alias="laneSetNode2">
+      <sem:lane id="_22" name="" ot:alias="lane2" ot:displayName="Lane2"/>
+      <sem:lane id="_23" name="" ot:alias="lane3" ot:displayName="Lane3"/>
+    </sem:laneSet>
+    <sem:sequenceFlow id="_24" ot:alias="flow12" sourceRef="_25" targetRef="_26"/>
+    <sem:sequenceFlow id="_27" ot:alias="edge1" sourceRef="_28" targetRef="_25"/>
+    <sem:sequenceFlow id="_29" ot:alias="flow7" sourceRef="_30" targetRef="_31"/>
+    <sem:sequenceFlow id="_32" ot:alias="flow5" sourceRef="_28" targetRef="_30"/>
+    <sem:sequenceFlow id="_33" ot:alias="flow6" sourceRef="_31" targetRef="_34"/>
+    <sem:sequenceFlow id="_35" ot:alias="flow4" sourceRef="_36" targetRef="_28"/>
+    <sem:task id="_31" name="Task 5" ot:displayName="Task 5" ot:alias="task4"/>
+    <sem:endEvent id="_26" name="End Event 5" ot:displayName="End Event 5" ot:alias="event9"/>
+    <sem:startEvent id="_36" name="Start Event 2" ot:displayName="Start Event 2" ot:alias="event3"/>
+    <sem:subProcess id="_25" name="Expanded Sub-Process 2" ot:subProcessAlias="subProcess2" ot:alias="process2">
+      <sem:sequenceFlow id="_37" ot:alias="flow11" sourceRef="_38" targetRef="_39"/>
+      <sem:sequenceFlow id="_40" ot:alias="flow10" sourceRef="_41" targetRef="_38"/>
+      <sem:endEvent id="_39" name="End Event 4" ot:displayName="End Event 4" ot:alias="event8"/>
+      <sem:task id="_38" name="Task 6" ot:displayName="Task 6" ot:alias="task6"/>
+      <sem:startEvent id="_41" name="Start Event 4" ot:displayName="Start Event 4" ot:alias="event7"/>
+    </sem:subProcess>
+    <sem:task id="_28" name="Task 3" ot:displayName="Task 3" ot:alias="task3"/>
+    <sem:subProcess id="_30" name="Expanded Sub-Process 1" ot:subProcessAlias="subProcess1" ot:alias="process1">
+      <sem:sequenceFlow id="_42" ot:alias="flow9" sourceRef="_43" targetRef="_44"/>
+      <sem:sequenceFlow id="_45" ot:alias="flow8" sourceRef="_46" targetRef="_43"/>
+      <sem:endEvent id="_44" name="End Event 3" ot:displayName="End Event 3" ot:alias="event6"/>
+      <sem:task id="_43" name="Task 4" ot:displayName="Task 4" ot:alias="task5"/>
+      <sem:startEvent id="_46" name="Start Event 3" ot:displayName="Start Event 3" ot:alias="event5"/>
+    </sem:subProcess>
+    <sem:endEvent id="_34" name="End Event 2" ot:displayName="End Event 2" ot:alias="event4"/>
+  </sem:process>
+  <bpmndi:BPMNDiagram id="_5" name="A.4.1_Diagram">
+    <bpmndi:BPMNPlane ot:namespace="_2" ot:alias="A.4.1Diagram" bpmnElement="_6">
+      <bpmndi:BPMNShape bpmnElement="_8" isHorizontal="false">
+        <dc:Bounds x="0" y="0" width="226" height="724"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" isHorizontal="false">
+        <dc:Bounds x="372" y="0" width="465" height="724"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" isHorizontal="false">
+        <dc:Bounds x="0" y="0" width="226" height="724"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_14">
+        <di:waypoint x="113" y="223.1"/>
+        <di:waypoint x="113" y="570.1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_17">
+        <di:waypoint x="113" y="630.1"/>
+        <di:waypoint x="113" y="665.1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_19">
+        <di:waypoint x="114" y="93.0999999999999"/>
+        <di:waypoint x="114" y="163.1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="_16">
+        <dc:Bounds x="68" y="570.1" width="90" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_18">
+        <dc:Bounds x="95" y="665.1" width="32" height="32"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_15">
+        <dc:Bounds x="68" y="163.1" width="90" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_20">
+        <dc:Bounds x="98" y="61.0999999999999" width="32" height="32"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_22" isHorizontal="false">
+        <dc:Bounds x="372" y="0" width="232.5" height="724"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_23" isHorizontal="false">
+        <dc:Bounds x="604.5" y="0" width="232.5" height="724"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_24">
+        <di:waypoint x="721.5" y="521.1"/>
+        <di:waypoint x="721.5" y="665.1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_27">
+        <di:waypoint x="530" y="193.1"/>
+        <di:waypoint x="721.5" y="193.1"/>
+        <di:waypoint x="721.5" y="283.1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_29">
+        <di:waypoint x="486" y="521.1"/>
+        <di:waypoint x="486" y="570.1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_32">
+        <di:waypoint x="485" y="223.1"/>
+        <di:waypoint x="485" y="283.1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_33">
+        <di:waypoint x="485" y="630.1"/>
+        <di:waypoint x="485" y="665.1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_35">
+        <di:waypoint x="486" y="93.0999999999999"/>
+        <di:waypoint x="486" y="163.1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="_31">
+        <dc:Bounds x="440" y="570.1" width="90" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_26">
+        <dc:Bounds x="705" y="665.1" width="32" height="32"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_36">
+        <dc:Bounds x="470" y="61.0999999999999" width="32" height="32"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_37">
+        <di:waypoint x="719.5" y="432"/>
+        <di:waypoint x="719.5" y="465.1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_40">
+        <di:waypoint x="720.5" y="323"/>
+        <di:waypoint x="720.5" y="372"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="_39">
+        <dc:Bounds x="703.5" y="465.1" width="32" height="32"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_38">
+        <dc:Bounds x="674.5" y="372" width="90" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_41">
+        <dc:Bounds x="704.5" y="291" width="32" height="32"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_25">
+        <dc:Bounds x="630.5" y="283.1" width="182" height="238"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_28">
+        <dc:Bounds x="440" y="163.1" width="90" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_42">
+        <di:waypoint x="484" y="432"/>
+        <di:waypoint x="484" y="465.1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_45">
+        <di:waypoint x="485" y="323"/>
+        <di:waypoint x="485" y="372"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="_44">
+        <dc:Bounds x="468" y="465.1" width="32" height="32"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_43">
+        <dc:Bounds x="439" y="372" width="90" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_46">
+        <dc:Bounds x="469" y="291" width="32" height="32"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_30">
+        <dc:Bounds x="399" y="283.1" width="174" height="238"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_34">
+        <dc:Bounds x="467" y="665.1" width="32" height="32"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_47">
+        <di:waypoint x="158" y="193.1"/>
+        <di:waypoint x="440" y="193.1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_48">
+        <di:waypoint x="440" y="600.1"/>
+        <di:waypoint x="158" y="600.1"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</sem:definitions>
