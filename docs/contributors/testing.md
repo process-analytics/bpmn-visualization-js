@@ -149,10 +149,10 @@ The threshold can be configured by test and by os, we generally find the thresho
 
 ##### BPMN diagram load method
 
-The default load method only allows small diagrams, so in case of the diagram is too large, the test server responds with
-an `HTTP 400 error`.
-In that case, configure an alternate load method by referencing the name of the test BPMN diagram in the load configuration
-settings.
+At the initialization of the HTML, the configured BPMN Diagram file is load from `dist/static/diagrams`.
+
+All the files from the directories `test/fixtures/bpmn/diagram`, `test/fixtures/bpmn/navigation`, `test/fixtures/bpmn/non-regression` & `test/fixtures/bpmn/performance` are copied to `dist/static/diagrams` at the Jest setup, if they don't exist.
+If you add a new directory of BPMN files, you need to add its configuration in `test/e2e/config/copy.bpmn.diagram.ts`.
 
 ### Performance tests
 For now these tests are defined under `/test/e2e/performance/` as the performance is being measured for complex(e2e) tasks:
