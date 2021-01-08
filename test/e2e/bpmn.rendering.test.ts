@@ -114,7 +114,7 @@ describe('no BPMN elements visual regression', () => {
 
   const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' });
 
-  const bpmnDiagramFileNames = findFiles('../fixtures/bpmn/non-regression/')
+  const bpmnDiagramNames = findFiles('../fixtures/bpmn/non-regression/')
     .filter(filename => {
       return filename.endsWith('.bpmn');
     })
@@ -123,14 +123,14 @@ describe('no BPMN elements visual regression', () => {
     });
 
   it('check bpmn non-regression files availability', () => {
-    expect(bpmnDiagramFileNames).toContain('gateways');
+    expect(bpmnDiagramNames).toContain('gateways');
   });
 
-  it.each(bpmnDiagramFileNames)(`%s`, async (bpmnDiagramFileName: string) => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramFileName);
+  it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {
+    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramFileName);
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot(config);
   });
 });

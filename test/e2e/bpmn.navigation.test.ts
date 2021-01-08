@@ -52,11 +52,11 @@ describe('diagram navigation', () => {
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
   const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
 
-  const fileName = 'simple.2.start.events.1.task';
+  const bpmnDiagramName = 'simple.2.start.events.1.task';
   let containerCenterX: number;
   let containerCenterY: number;
   beforeEach(async () => {
-    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
+    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
     const bounding_box = await bpmnContainerElementHandle.boundingBox();
     containerCenterX = bounding_box.x + bounding_box.width / 2;
     containerCenterY = bounding_box.y + bounding_box.height / 2;
@@ -70,7 +70,7 @@ describe('diagram navigation', () => {
     await page.mouse.up();
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(fileName);
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'mouse.panning',
@@ -84,7 +84,7 @@ describe('diagram navigation', () => {
     await zoom(1, deltaX);
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(fileName);
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: zoomMode === 'zoom in' ? 'mouse.zoom.in' : 'mouse.zoom.out',
@@ -99,7 +99,7 @@ describe('diagram navigation', () => {
     await zoom(xTimes, -deltaX);
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(fileName);
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'initial.zoom',

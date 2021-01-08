@@ -42,8 +42,8 @@ export class PageTester {
     this.baseUrl = `http://localhost:10002/${targetedPage.pageFileName}.html?showMousePointer=${showMousePointer}`;
   }
 
-  async loadBPMNDiagramInRefreshedPage(bpmnDiagramFileName: string, loadOptions?: LoadOptions): Promise<ElementHandle<Element>> {
-    const url = this.getPageUrl(bpmnDiagramFileName, loadOptions);
+  async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, loadOptions?: LoadOptions): Promise<ElementHandle<Element>> {
+    const url = this.getPageUrl(bpmnDiagramName, loadOptions);
     const response = await page.goto(url);
     // Uncomment the following in case of http error 400 (probably because of a too large bpmn file)
     // eslint-disable-next-line no-console
@@ -60,12 +60,12 @@ export class PageTester {
   }
 
   /**
-   * @param bpmnDiagramFileName the name of the BPMN file without extension
+   * @param bpmnDiagramName the name of the BPMN file without extension
    */
-  private getPageUrl(bpmnDiagramFileName: string, loadOptions: LoadOptions = { fit: { type: FitType.HorizontalVertical } }): string {
+  private getPageUrl(bpmnDiagramName: string, loadOptions: LoadOptions = { fit: { type: FitType.HorizontalVertical } }): string {
     let url = this.baseUrl;
     url += `&fitTypeOnLoad=${loadOptions.fit?.type}&fitMargin=${loadOptions.fit?.margin}`;
-    url += `&url=./static/diagrams/${bpmnDiagramFileName}.bpmn`;
+    url += `&url=./static/diagrams/${bpmnDiagramName}.bpmn`;
     return url;
   }
 }
