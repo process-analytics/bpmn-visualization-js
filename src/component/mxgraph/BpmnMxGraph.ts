@@ -15,12 +15,12 @@
  */
 import { FitOptions, FitType, ZoomConfiguration } from '../options';
 import { mxgraph } from './initializer';
-import { mxGraph, mxMouseEvent } from 'mxgraph';
+import { mxMouseEvent } from 'mxgraph'; // for types
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 
-export class BpmnMxGraph extends mxGraph {
+export class BpmnMxGraph extends mxgraph.mxGraph {
   private cumulativeZoomFactor = 1;
 
   constructor(readonly container: HTMLElement) {
