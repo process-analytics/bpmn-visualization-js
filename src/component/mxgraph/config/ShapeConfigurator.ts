@@ -33,7 +33,6 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
-import { mxShape, mxSvgCanvas2D } from 'mxgraph';
 
 export default class ShapeConfigurator {
   public configureShapes(): void {
@@ -75,8 +74,8 @@ export default class ShapeConfigurator {
   private initMxShapePrototype(): void {
     // The following is copied from the mxgraph mxShape implementation then converted to TypeScript and enriched for bpmn-visualization
     // It is needed for adding the custom attributes that permits identification of the BPMN elements in the DOM
-    mxShape.prototype.createSvgCanvas = function () {
-      const canvas = new mxSvgCanvas2D(this.node, false);
+    mxgraph.mxShape.prototype.createSvgCanvas = function () {
+      const canvas = new mxgraph.mxSvgCanvas2D(this.node, false);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
       canvas.pointerEventsValue = this.svgPointerEvents;
       // TODO remove this commented code (has been removed in mxgraph@4.1.1
