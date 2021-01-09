@@ -15,9 +15,10 @@
  */
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
-import { mxAbstractCanvas2D, mxRectangle, mxRhombus } from 'mxgraph';
+import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph'; // for types
+import { mxgraph } from '../initializer';
 
-abstract class GatewayShape extends mxRhombus {
+abstract class GatewayShape extends mxgraph.mxRhombus {
   protected iconPainter = IconPainterProvider.get();
 
   protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {

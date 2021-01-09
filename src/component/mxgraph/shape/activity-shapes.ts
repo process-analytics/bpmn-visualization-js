@@ -18,7 +18,8 @@ import { buildPaintParameter, IconPainterProvider, PaintParameter } from './rend
 import { ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal/shape';
 import BpmnCanvas from './render/BpmnCanvas';
 import { orderActivityMarkers } from './render/utils';
-import { mxAbstractCanvas2D, mxRectangle, mxRectangleShape } from 'mxgraph';
+import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph'; // for types
+import { mxgraph } from '../initializer';
 
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
   IconPainterProvider.get().paintEnvelopeIcon({
@@ -29,7 +30,7 @@ function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): v
   });
 }
 
-export abstract class BaseActivityShape extends mxRectangleShape {
+export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
   protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {

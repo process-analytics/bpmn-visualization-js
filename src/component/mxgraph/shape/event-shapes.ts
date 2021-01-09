@@ -17,9 +17,10 @@ import { ShapeBpmnEventKind } from '../../../model/bpmn/internal/shape';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import BpmnCanvas from './render/BpmnCanvas';
-import { mxAbstractCanvas2D, mxEllipse, mxRectangle } from 'mxgraph';
+import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph';
+import { mxgraph } from '../initializer'; // for types
 
-abstract class EventShape extends mxEllipse {
+abstract class EventShape extends mxgraph.mxEllipse {
   protected iconPainter = IconPainterProvider.get();
 
   // TODO: when all/more event types will be supported, we could move to a Record/MappedType
