@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import factory from 'mxgraph';
+import factory, { mxGraphExportObject } from 'mxgraph';
 
 // // options to set
 // const options = {
@@ -36,9 +36,25 @@ import factory from 'mxgraph';
 //   window[key] = options[key];
 // });
 
-export const mxgraph = factory({
-  mxLoadResources: false,
-  mxLoadStylesheets: false,
-});
-// eslint-disable-next-line no-console
-console.info(`Using mxgraph ${mxgraph.mxClient.VERSION}`);
+// export const mxgraph = factory({
+//   mxLoadResources: false,
+//   mxLoadStylesheets: false,
+// });
+// // eslint-disable-next-line no-console
+// console.info(`Using mxgraph ${mxgraph.mxClient.VERSION}`);
+
+export const mxgraph = initialize();
+
+function initialize(): mxGraphExportObject {
+  // eslint-disable-next-line no-console
+  console.info('Initializing mxGraph....');
+
+  (window as any)['mxBasePath'] = 'assets/mxgraph';
+  const mxgraphLib = factory({
+    // not working see https://github.com/jgraph/mxgraph/issues/479
+    mxBasePath: 'assets/mxgraph',
+  });
+  // eslint-disable-next-line no-console
+  console.info(`mxGraph ${mxgraphLib.mxClient.VERSION} initialized`);
+  return mxgraphLib;
+}
