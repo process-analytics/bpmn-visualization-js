@@ -66,20 +66,20 @@ if (!buildBundles) {
   ];
 } else {
   // const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjs(), json()];
-  // const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjsPlugin(), json()];
-  // const outputIIFE = {
-  //   // hack to have the mxGraph configuration prior the load of the mxGraph lib
-  //   banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
-  //   file: pkg.browser.replace('.min.js', '.js'),
-  //   name: 'bpmnvisu',
-  //   format: 'iife',
-  // };
-  //
-  // const configIIFE = {
-  //   input: libInput,
-  //   output: outputIIFE,
-  //   plugins: pluginsBundleIIFE,
-  // };
+  const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjsPlugin(), json()];
+  const outputIIFE = {
+    // hack to have the mxGraph configuration prior the load of the mxGraph lib
+    banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
+    file: pkg.browser.replace('.min.js', '.js'),
+    name: 'bpmnvisu',
+    format: 'iife',
+  };
+
+  const configIIFE = {
+    input: libInput,
+    output: outputIIFE,
+    plugins: pluginsBundleIIFE,
+  };
   // const configIIFEMinified = {
   //   input: libInput,
   //   output: {
@@ -88,36 +88,15 @@ if (!buildBundles) {
   //   },
   //   plugins: withMinification(pluginsBundleIIFE),
   // };
-  // rollupConfigs = [configIife];
-
-  // ensure we do not bundle dependencies
-  const pluginsBundles = [typescriptPlugin(), json(), autoExternal()];
-
-  const configBundlesMinified = {
-    input: libInput,
-    output: [
-      {
-        file: pkg.module.replace('.js', '.min.js'),
-        format: 'es',
-      },
-      {
-        file: pkg.main.replace('.js', '.min.js'),
-        format: 'cjs',
-      },
-    ],
-    // except these 'custom specified' dependencies, rest of them is treated by the plugin: autoExternal
-    external: ['entities/lib/decode', 'fast-xml-parser/src/parser'],
-    plugins: withMinification(pluginsBundles),
-  };
-  const configBundles = {
-    ...configBundlesMinified,
-    plugins: pluginsBundles,
-    output: [
-      { file: pkg.module, format: 'es' },
-      { file: pkg.main, format: 'cjs' },
-    ],
-  };
-  rollupConfigs = [configBundles];
+  // const configBundles = {
+  //   ...configBundlesMinified,
+  //   plugins: pluginsBundles,
+  //   output: [
+  //     { file: pkg.module, format: 'es' },
+  //     { file: pkg.main, format: 'cjs' },
+  //   ],
+  // };
+  rollupConfigs = [configIIFE];
   // rollupConfigs = [configIIFE, configIIFEMinified, configBundles, configBundlesMinified];
 }
 
