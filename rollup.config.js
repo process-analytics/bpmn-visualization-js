@@ -68,7 +68,7 @@ if (!buildBundles) {
   const outputIIFE = {
     // hack to have the mxGraph configuration prior the load of the mxGraph lib
     banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
-    file: pkg.browser,
+    file: pkg.browser.replace('.min.js', '.js'),
     name: 'bpmnvisu',
     format: 'iife',
   };
@@ -82,7 +82,7 @@ if (!buildBundles) {
     input: libInput,
     output: {
       ...outputIIFE,
-      file: pkg.browser.replace('.js', '.min.js'),
+      file: pkg.browser,
     },
     plugins: withMinification(pluginsBundleIIFE),
   };
@@ -114,7 +114,7 @@ if (!buildBundles) {
       { file: pkg.main, format: 'cjs' },
     ],
   };
-  rollupConfigs = [configIIFE, configIIFEMinified, configBundles, configBundlesMinified];
+  rollupConfigs = [configIIFE, configIIFEMinified];
 }
 
 export default rollupConfigs;
