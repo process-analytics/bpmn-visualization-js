@@ -8,10 +8,8 @@ on:
       -  v*
     paths-ignore:
       - '.github/workflows/build.yml'
-      - '.github/workflows/build-bundles.yml'
       - '.github/workflows/fill-gh-draft-release.yml'
       - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/release.yml'
       - '.gitignore'
       - 'docs/**'
       - '*.md'
@@ -21,10 +19,8 @@ on:
       - master
     paths-ignore:
       - '.github/workflows/build.yml'
-      - '.github/workflows/build-bundles.yml'
       - '.github/workflows/fill-gh-draft-release.yml'
       - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/release.yml'
       - '.gitignore'
       - 'docs/**'
       - '*.md'

@@ -5,10 +5,8 @@ on:
     branches:
       - master
     paths-ignore:
-      - '.github/workflows/build-bundles.yml'
       - '.github/workflows/fill-gh-draft-release.yml'
       - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/release.yml'
       - '.github/workflows/upload-demo-archive.yml'
       - '.gitignore'
       - 'docs/**'
@@ -18,10 +16,8 @@ on:
     branches:
       - master
     paths-ignore:
-      - '.github/workflows/build-bundles.yml'
       - '.github/workflows/fill-gh-draft-release.yml'
       - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/release.yml'
       - '.github/workflows/upload-demo-archive.yml'
       - '.gitignore'
       - 'docs/**'
