@@ -1,6 +1,6 @@
 {
   "name": "bpmn-visualization",
-  "version": "0.9.0-post",
+  "version": "0.10.0-post",
   "description": "A TypeScript library to visualize process execution data on BPMN diagrams",
   "keywords": [
     "bpmn2",
@@ -83,7 +83,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.0.1",
     "@types/debug": "^4.1.5",
-    "@types/jest": "^26.0.19",
+    "@types/jest": "^26.0.20",
     "@types/jest-environment-puppeteer": "^4.3.2",
     "@types/jest-image-snapshot": "^4.1.3",
     "@types/lodash.debounce": "^4.0.6",
