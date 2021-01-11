@@ -1,17 +1,15 @@
-name: Upload Demo Archive
+name: Build Bundles
 
 on:
   push:
     branches:
       - master
-    tags:
-      -  v*
     paths-ignore:
       - '.github/workflows/build.yml'
-      - '.github/workflows/build-bundles.yml'
       - '.github/workflows/fill-gh-draft-release.yml'
       - '.github/workflows/generate-documentation.yml'
       - '.github/workflows/release.yml'
+      - '.github/workflows/upload-demo-archive.yml'
       - '.gitignore'
       - 'docs/**'
       - '*.md'
@@ -21,18 +19,27 @@ on:
       - master
     paths-ignore:
       - '.github/workflows/build.yml'
-      - '.github/workflows/build-bundles.yml'
       - '.github/workflows/fill-gh-draft-release.yml'
       - '.github/workflows/generate-documentation.yml'
       - '.github/workflows/release.yml'
+      - '.github/workflows/upload-demo-archive.yml'
       - '.gitignore'
       - 'docs/**'
       - '*.md'
       - LICENSE
 
 jobs:
-  upload_demo_archive:
-    runs-on: ubuntu-20.04
+  build:
+    runs-on: ${{ matrix.os.name }}
+    strategy:
+      # we want to run the full build on all os: don't cancel running jobs even if one fails
+      fail-fast: false
+      matrix:
+        # syntax inspired from https://github.community/t5/GitHub-Actions/Using-a-matrix-defined-input-for-a-custom-action/m-p/32032/highlight/true#M988
+        os:
+          - { name: ubuntu-20.04 }
+          - { name: macos-10.15 }
+          - { name: windows-2019 }
     steps:
       - uses: actions/checkout@v2
       - name: Setup node
@@ -45,11 +52,14 @@ jobs:
           npm --version
       - name: Install dependencies
         run: npm ci
-      - name: Build Demo
-        run: npm run demo
-      - name: Upload
+      - name: Build bundles
+        run: npm run prepare # simulate what is called on npm publish
+      - name: Test bundles
+        id: 'test_bundles'
+        run: npm run test:bundles
+      - name: Upload bundles test results
+        if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
         uses: actions/upload-artifact@v2
         with:
-          name: demo-${{github.sha}}
-          path: build/demo
-
+          name: bundles-test-results-${{matrix.os.name}}-${{github.sha}}
+          path: build/test-report/bundles
