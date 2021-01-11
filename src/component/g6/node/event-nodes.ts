@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { IGroup, IShape } from '@antv/g6/es';
+import { IGroup, IShape, ModelConfig } from '@antv/g6/es';
 import { BpmnG6NodeConfig } from '../G6Renderer';
 
 const COLOR_MAP = {
@@ -24,7 +24,7 @@ const COLOR_MAP = {
   boundaryEvent: '#FFE4B5',
 };
 
-export function drawEvent(): (cfg?: BpmnG6NodeConfig, group?: IGroup) => IShape {
+export function drawEvent(): (cfg?: ModelConfig | BpmnG6NodeConfig, group?: IGroup) => IShape {
   return (cfg, group): IShape => {
     const width = (cfg.size as number[])[0];
     const height = (cfg.size as number[])[1];
