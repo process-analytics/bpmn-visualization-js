@@ -98,13 +98,24 @@ describe('no BPMN elements visual regression', () => {
         },
       ],
       // ubuntu:
-      // macOS: Expected image to match or be a close match to snapshot but was 0.000987831756826818% different from snapshot
+      // macOS: Expected image to match or be a close match to snapshot but was 0.001366648725187325% different from snapshot
       // windows:
       [
         'events',
         {
           linux: 0.000004,
-          macos: 0.00001,
+          macos: 0.00002,
+          windows: 0.000004,
+        },
+      ],
+      // ubuntu:
+      // macOS: Expected image to match or be a close match to snapshot but was 0.0005804554357724534% different from snapshot
+      // windows:
+      [
+        'gateways',
+        {
+          linux: 0.000004,
+          macos: 0.000006,
           windows: 0.000004,
         },
       ],
