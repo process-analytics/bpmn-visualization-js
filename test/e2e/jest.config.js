@@ -28,7 +28,7 @@ module.exports = {
   globalTeardown: 'jest-environment-puppeteer-jsdom/teardown',
   collectCoverageFrom: ['**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static', 'src/model'],
-  coverageReporters: ['lcovonly', 'text', 'text-summary'],
+  coverageReporters: ['lcov', 'text-summary'],
   coverageDirectory: 'build/test-report/e2e',
   setupFiles: ['./test/e2e/config/jest.globals.ts', './test/e2e/config/copy.bpmn.diagram.ts'],
   // jest-image-snapshot configuration doesn't work with setupFiles, fix with setupFilesAfterEnv: see https://github.com/testing-library/jest-dom/issues/122#issuecomment-650520461

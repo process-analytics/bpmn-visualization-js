@@ -180,6 +180,13 @@ See `package.json` for extra available scripts
 - `npm run test:e2e:coverage`   *Run end-to-end tests with coverage*
 - `npm run test:perf`           *Run performance tests*
 
+### Test reports
+
+Html reports are generated for test execution and coverage in
+- `build/test-report/unit` for unit tests
+- `build/test-report/e2e` for end-to-end tests
+
+
 ### Debugging end-to-end tests
 
 To see what is happening in your local web browser used by the tests
