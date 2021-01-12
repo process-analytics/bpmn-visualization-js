@@ -10,7 +10,7 @@
 <!-- iife bundle -->
 <script src="../../../dist/bpmn-visualization.min.js"></script>
 <script>
-  const bpmnVisualization = new bpmnvisu.BpmnVisualization(document.getElementById('bpmn-container-for-iife-bundle'))
+  const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: document.getElementById('bpmn-container-for-iife-bundle') });
   bpmnVisualization.load(bpmnContent());
 
   function bpmnContent() {
