@@ -16,25 +16,25 @@
 import { delay, getSimplePlatformName } from '../helpers/test-utils';
 import { calculateMetrics, ChartData, PerformanceMetric } from '../helpers/perf-utils';
 import * as fs from 'fs';
-import { BpmnLoadMethod, PageTester } from '../helpers/visu/PageTester';
+import { PageTester } from '../helpers/visu/PageTester';
 
 const platform = getSimplePlatformName();
 const performanceDataFilePath = './performance/data/' + platform + '/data.js';
 const metricsArray: Array<PerformanceMetric> = [];
 
 describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
-  // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
-  const pageTester = new PageTester({ pageFileName: 'rendering-diagram', queryParams: [], expectedPageTitle: 'BPMN Visualization - Diagram Rendering' }, 'performance');
+  // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
+  const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
 
   const fileName = 'B.2.0';
-  let viewportCenterX: number;
-  let viewportCenterY: number;
+  let containerCenterX: number;
+  let containerCenterY: number;
 
   beforeEach(async () => {
-    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(fileName, BpmnLoadMethod.Url);
+    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
     const bounding_box = await bpmnContainerElementHandle.boundingBox();
-    viewportCenterX = bounding_box.x + bounding_box.width / 2;
-    viewportCenterY = bounding_box.y + bounding_box.height / 2;
+    containerCenterX = bounding_box.x + bounding_box.width / 2;
+    containerCenterY = bounding_box.y + bounding_box.height / 2;
   });
 
   it.each([30])(`ctrl + mouse: check performance while performing zoom in and zoom out [%s times]`, async (xTimes: number) => {
@@ -42,7 +42,7 @@ describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
     const metricsStart = await page.metrics();
 
     // simulate mouse+ctrl zoom
-    await page.mouse.move(viewportCenterX + 200, viewportCenterY);
+    await page.mouse.move(containerCenterX + 200, containerCenterY);
     await page.keyboard.down('Control');
     for (let i = 0; i < xTimes; i++) {
       await page.mouse.wheel({ deltaX: deltaX });
