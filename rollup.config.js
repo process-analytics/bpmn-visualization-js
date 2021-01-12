@@ -43,6 +43,7 @@ const argv = parseArgs(process.argv.slice(2)); // start with 'node rollup' so dr
 const serverPort = process.env.SERVER_PORT || argv['config-server-port'] || 10001;
 const buildBundles = argv['config-build-bundles'] || false;
 
+const outputDir = demoMode ? 'build/demo' : 'build/public';
 const libInput = 'src/bpmn-visualization.ts';
 let rollupConfigs;
 
@@ -54,7 +55,7 @@ if (!buildBundles) {
       input: libInput,
       output: [
         {
-          file: 'dist/index.es.js',
+          file: `${outputDir}/index.es.js`,
           format: 'es',
           sourcemap: sourceMap,
         },
@@ -143,7 +144,6 @@ function withMinification(plugins) {
 
 function pluginsForDevelopment() {
   const plugins = [typescriptPlugin(), resolve(), commonjs(), json()];
-  const outputDir = 'dist';
 
   // Copy static resources
   if (devMode || demoMode) {
