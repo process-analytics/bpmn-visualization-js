@@ -18,6 +18,7 @@ import { join } from 'path';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
 import { PageTester } from './helpers/visu/PageTester';
+import { getBpmnDiagramNames } from './helpers/test-utils';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   getConfig(param: {
@@ -53,6 +54,8 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   }
 }
 
+const bpmnDiagramNames = getBpmnDiagramNames('diagram');
+
 describe('no diagram visual regression', () => {
   const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(
     new Map<string, ImageSnapshotThresholdConfig>([
@@ -81,7 +84,7 @@ describe('no diagram visual regression', () => {
 
   const fitTypes: FitType[] = [FitType.None, FitType.HorizontalVertical, FitType.Horizontal, FitType.Vertical, FitType.Center];
   describe.each(fitTypes)('load options - fit %s', (onLoadFitType: FitType) => {
-    describe.each(['horizontal', 'vertical', 'with.outside.flows', 'with.outside.labels'])('diagram %s', (bpmnDiagramName: string) => {
+    describe.each(bpmnDiagramNames)('diagram %s', (bpmnDiagramName: string) => {
       it('load', async () => {
         await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, { fit: { type: onLoadFitType } });
 

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { findFiles } from '../helpers/file-helper';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
 import { PageTester } from './helpers/visu/PageTester';
+import { getBpmnDiagramNames } from './helpers/test-utils';
 
 describe('no BPMN elements visual regression', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
@@ -124,14 +124,7 @@ describe('no BPMN elements visual regression', () => {
   );
 
   const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' });
-
-  const bpmnDiagramNames = findFiles('../fixtures/bpmn/non-regression/')
-    .filter(filename => {
-      return filename.endsWith('.bpmn');
-    })
-    .map(filename => {
-      return filename.split('.').slice(0, -1).join('.');
-    });
+  const bpmnDiagramNames = getBpmnDiagramNames('non-regression');
 
   it('check bpmn non-regression files availability', () => {
     expect(bpmnDiagramNames).toContain('gateways');
