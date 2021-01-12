@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0f7xung" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="8.0.1">
+  <bpmn:process id="Process_0ztjz3c" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_01">
+      <bpmn:outgoing>Flow_startevent01_to_exclusivegateway01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="AbstractTask_01">
+      <bpmn:incoming>Flow_exclusivegateway01_to_abstracttask01</bpmn:incoming>
+      <bpmn:outgoing>Flow_abstracttask01_exclusivegateway02</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_exclusivegateway01_to_abstracttask01" sourceRef="ExclusiveGateway_01" targetRef="AbstractTask_01" />
+    <bpmn:exclusiveGateway id="ExclusiveGateway_02">
+      <bpmn:incoming>Flow_abstracttask01_exclusivegateway02</bpmn:incoming>
+      <bpmn:outgoing>Flow_exclusivegateway02_to_abstracttask0203</bpmn:outgoing>
+      <bpmn:outgoing>Flow_exclusivegateway02_to_abstracttask0202</bpmn:outgoing>
+      <bpmn:outgoing>Flow_exclusivegateway02_to_abstracttask0201</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_abstracttask01_exclusivegateway02" sourceRef="AbstractTask_01" targetRef="ExclusiveGateway_02" />
+    <bpmn:task id="AbstractTask_02_03">
+      <bpmn:incoming>Flow_exclusivegateway02_to_abstracttask0203</bpmn:incoming>
+      <bpmn:outgoing>Flow_abstracttask0203_to_endevent03</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_exclusivegateway02_to_abstracttask0203" sourceRef="ExclusiveGateway_02" targetRef="AbstractTask_02_03" />
+    <bpmn:task id="AbstractTask_02_02">
+      <bpmn:incoming>Flow_exclusivegateway02_to_abstracttask0202</bpmn:incoming>
+      <bpmn:outgoing>Flow_abstracttask0202_to_endevent02</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_exclusivegateway02_to_abstracttask0202" sourceRef="ExclusiveGateway_02" targetRef="AbstractTask_02_02" />
+    <bpmn:task id="AbstractTask_02_01">
+      <bpmn:incoming>Flow_exclusivegateway02_to_abstracttask0201</bpmn:incoming>
+      <bpmn:outgoing>Flow_abstracttask0201_to_endevent01</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_exclusivegateway02_to_abstracttask0201" sourceRef="ExclusiveGateway_02" targetRef="AbstractTask_02_01" />
+    <bpmn:endEvent id="EndEvent_01">
+      <bpmn:incoming>Flow_abstracttask0201_to_endevent01</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="EndEvent_02">
+      <bpmn:incoming>Flow_abstracttask0202_to_endevent02</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="ExclusiveGateway_01">
+      <bpmn:incoming>Flow_startevent01_to_exclusivegateway01</bpmn:incoming>
+      <bpmn:incoming>Flow_startevent02_to_exclusivegateway01</bpmn:incoming>
+      <bpmn:outgoing>Flow_exclusivegateway01_to_abstracttask01</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_startevent01_to_exclusivegateway01" sourceRef="StartEvent_01" targetRef="ExclusiveGateway_01" />
+    <bpmn:startEvent id="StartEvent_02">
+      <bpmn:outgoing>Flow_startevent02_to_exclusivegateway01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_startevent02_to_exclusivegateway01" sourceRef="StartEvent_02" targetRef="ExclusiveGateway_01" />
+    <bpmn:endEvent id="EndEvent_03">
+      <bpmn:incoming>Flow_abstracttask0203_to_endevent03</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_abstracttask0201_to_endevent01" sourceRef="AbstractTask_02_01" targetRef="EndEvent_01" />
+    <bpmn:sequenceFlow id="Flow_abstracttask0202_to_endevent02" sourceRef="AbstractTask_02_02" targetRef="EndEvent_02" />
+    <bpmn:sequenceFlow id="Flow_abstracttask0203_to_endevent03" sourceRef="AbstractTask_02_03" targetRef="EndEvent_03" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0ztjz3c">
+      <bpmndi:BPMNEdge id="Flow_startevent02_to_exclusivegateway01_di" bpmnElement="Flow_startevent02_to_exclusivegateway01">
+        <!-- x="192" y="390" is on the start event perimeter -->
+        <di:waypoint x="198" y="395" />
+        <di:waypoint x="220" y="390" />
+        <!-- x="220" y="305" is on bottom of the exclusive gateway perimeter -->
+        <di:waypoint x="225" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_startevent01_to_exclusivegateway01_di" bpmnElement="Flow_startevent01_to_exclusivegateway01">
+        <!-- x="192" y="99" is on the start event perimeter -->
+        <di:waypoint x="196" y="102" />
+        <di:waypoint x="220" y="99" />
+        <!-- x="220" y="255" is on top of the exclusive gateway perimeter -->
+        <di:waypoint x="198" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_exclusivegateway02_to_abstracttask0201_di" bpmnElement="Flow_exclusivegateway02_to_abstracttask0201">
+        <!-- x="500" y="195" is on top of the exclusive gateway perimeter -->
+        <di:waypoint x="492" y="185" />
+        <di:waypoint x="500" y="80" />
+        <!-- x="570" y="80" is on left center of the abstract task perimeter -->
+        <di:waypoint x="565" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_exclusivegateway02_to_abstracttask0202_di" bpmnElement="Flow_exclusivegateway02_to_abstracttask0202">
+        <!-- x="525" y="220" is on right of the exclusive gateway perimeter -->
+        <di:waypoint x="529" y="224" />
+        <!-- x="570" y="220" is on left center of the abstract task perimeter -->
+        <di:waypoint x="565" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_exclusivegateway02_to_abstracttask0203_di" bpmnElement="Flow_exclusivegateway02_to_abstracttask0203">
+        <!-- x="500" y="245" is on bottom of the exclusive gateway perimeter -->
+        <di:waypoint x="510" y="249" />
+        <di:waypoint x="500" y="360" />
+        <!-- x="570" y="360" is on left center of the abstract task perimeter -->
+        <di:waypoint x="566" y="364" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_abstracttask01_exclusivegateway02_di" bpmnElement="Flow_abstracttask01_exclusivegateway02">
+        <!-- x="420" y="220" is on right center of the abstract task perimeter -->
+        <di:waypoint x="423" y="211" />
+        <!-- x="475" y="220" is on left of the exclusive gateway perimeter -->
+        <di:waypoint x="471" y="226" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_exclusivegateway01_to_abstracttask01_di" bpmnElement="Flow_exclusivegateway01_to_abstracttask01">
+        <!-- x="245" y="280" is on right of the exclusive gateway perimeter -->
+        <di:waypoint x="249" y="278" />
+        <di:waypoint x="370" y="280" />
+        <!-- x="370" y="260" is on bottom center of the abstract task perimeter -->
+        <di:waypoint x="365" y="264" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_abstracttask0201_to_endevent01_di" bpmnElement="Flow_abstracttask0201_to_endevent01">
+        <!-- x="670" y="80" is on right of the task perimeter -->
+        <di:waypoint x="673" y="80" />
+        <!-- x="763" y="80" is on left of the end event perimeter -->
+        <di:waypoint x="756" y="82" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_abstracttask0202_to_endevent02_di" bpmnElement="Flow_abstracttask0202_to_endevent02">
+        <!-- x="670" y="220" is on right of the task perimeter -->
+        <di:waypoint x="674" y="220" />
+        <!-- x="763" y="220" is on left of the end event perimeter -->
+        <di:waypoint x="757" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_abstracttask0203_to_endevent03_di" bpmnElement="Flow_abstracttask0203_to_endevent03">
+        <!-- x="670" y="360" is on right of the task perimeter -->
+        <di:waypoint x="672" y="350" />
+        <!-- x="763" y="360" is on left of the end event perimeter -->
+        <di:waypoint x="758" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_01_di" bpmnElement="StartEvent_01">
+        <dc:Bounds x="156" y="81" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AbstractTask_01_di" bpmnElement="AbstractTask_01">
+        <dc:Bounds x="320" y="180" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_02_di" bpmnElement="ExclusiveGateway_02" isMarkerVisible="true">
+        <dc:Bounds x="475" y="195" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AbstractTask_02_03_di" bpmnElement="AbstractTask_02_03">
+        <dc:Bounds x="570" y="320" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AbstractTask_02_02_di" bpmnElement="AbstractTask_02_02">
+        <dc:Bounds x="570" y="180" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AbstractTask_02_01_di" bpmnElement="AbstractTask_02_01">
+        <dc:Bounds x="570" y="40" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_01_di" bpmnElement="ExclusiveGateway_01" isMarkerVisible="true">
+        <dc:Bounds x="195" y="255" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_02_di" bpmnElement="StartEvent_02">
+        <dc:Bounds x="156" y="372" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_01_di" bpmnElement="EndEvent_01">
+        <dc:Bounds x="763" y="62" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_02_di" bpmnElement="EndEvent_02">
+        <dc:Bounds x="763" y="202" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_03_di" bpmnElement="EndEvent_03">
+        <dc:Bounds x="763" y="342" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
