@@ -54,9 +54,7 @@ of the `Done` column related to the milestone
 ### NPM publish new version
 - Ensure you are on the last tag locally: `git checkout vX.Y.Z`
 - Pull the new version created by the release workflow: `git pull origin`
-- Build bundles by running: `npm pack`
-- Check build locally by accessing `./test-bundle/lib-integration-iife.html` in your browser
-- If everything is OK run `npm publish` to make the new version available to the community (you can pass --dry-run to validate command prior publishing)
+- Run `npm publish` to make the new version available to the community (you can pass --dry-run to validate the command prior publishing)
 
 
 ## bpmn-visualization-examples repository update
