@@ -17,14 +17,15 @@ import { FitType, LoadOptions } from '../../../../src/component/options';
 import { ElementHandle } from 'puppeteer';
 import { BpmnQuerySelectors } from '../../../../src/component/registry/bpmn-elements-registry';
 
-/**
- * @param pageFileName the name of the page file without extension
- * @param expectedPageTitle the expected of the page title after the page loading
- * @param showMousePointer true if the mouse pointer is display, false else, after the page loading
- **/
 export interface TargetedPage {
+  /** the name of the page file without extension */
   pageFileName: string;
+  /** the expected of the page title after the page loading */
   expectedPageTitle: string;
+  /**
+   * Set to `true` to display the mouse pointer after the page loading
+   * @default false
+   */
   showMousePointer?: boolean;
 }
 
