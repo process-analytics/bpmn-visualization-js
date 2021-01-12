@@ -8,7 +8,6 @@
 *.jest-image-snapshot-touched-files
 /build/
 /dist/
-/lib/
 /node_modules/
 /test/e2e/__image_snapshots__/__diff_output__/
 /scripts/utils/dist/

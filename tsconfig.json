@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "./lib",
-    "outDir": "./lib",
+    "declaration": false,
+    "outDir": "./build/lib",
     "module": "es6",
     "target": "es6",
     "noImplicitAny": true,
@@ -13,7 +12,7 @@
     "skipLibCheck": false,
     "experimentalDecorators": true,
     "moduleResolution": "node",
-    "sourceMap": true,
+    "sourceMap": false,
     "allowSyntheticDefaultImports": true,
     "typeRoots": [
       "node_modules/@types",
