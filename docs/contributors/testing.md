@@ -172,7 +172,7 @@ Preview is available in the browser, simply open file `/bpmn-visu-js/test/e2e/pe
 
 ### Bundles tests
 
-They ensure that the bundles provided in the npm package are working, and they are defined under `/test/e2e/performance/`.
+They ensure that the bundles provided in the npm package are working, and they are defined under `/test/bundles/`.
 
 
 ## Running tests 
