@@ -47,7 +47,7 @@
   ],
   "scripts": {
     "all": "run-s clean lint lint-check build test",
-    "clean": "rimraf build dist lib",
+    "clean": "rimraf build dist",
     "build": "rollup -c",
     "build-bundles": "rollup -c --config-build-bundles true",
     "prepare": "run-s clean build-bundles",
