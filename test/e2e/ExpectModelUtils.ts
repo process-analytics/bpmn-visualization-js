@@ -166,7 +166,7 @@ export interface ExpectedEventBasedGatewayModelElement extends ExpectedShapeMode
   gatewayKind?: ShapeBpmnEventBasedGatewayKind;
 }
 
-export const bpmnVisualization = new BpmnVisualization(null);
+export const bpmnVisualization = new BpmnVisualization({ container: null });
 
 export function getDefaultParentId(): string {
   return bpmnVisualization.graph.getDefaultParent().id;

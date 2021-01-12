@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Bonitasoft S.A.
+ * Copyright 2021 Bonitasoft S.A.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, startBpmnVisualization } from '../../index.es.js';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function statusFetchKO(errorMsg) {
-  const statusElt = document.getElementById('fetch-status');
-  statusElt.innerText = errorMsg;
-  statusElt.className = 'status-ko';
+export function htmlElement(element: string | HTMLElement): HTMLElement | null {
+  if (element instanceof HTMLElement) {
+    return element;
+  }
+  return document.getElementById(element);
 }
-
-documentReady(() => startBpmnVisualization({ globalOptions: { container: 'bpmn-container' }, statusFetchKoNotifier: statusFetchKO }));
