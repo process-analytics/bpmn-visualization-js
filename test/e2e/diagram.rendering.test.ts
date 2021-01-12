@@ -17,7 +17,8 @@ import { FitType } from '../../src/component/options';
 import { join } from 'path';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
-import { BpmnLoadMethod, PageTester } from './helpers/visu/PageTester';
+import { PageTester } from './helpers/visu/PageTester';
+import { getBpmnDiagramNames } from './helpers/test-utils';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   getConfig(param: {
@@ -53,6 +54,8 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   }
 }
 
+const bpmnDiagramNames = getBpmnDiagramNames('diagram');
+
 describe('no diagram visual regression', () => {
   const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(
     new Map<string, ImageSnapshotThresholdConfig>([
@@ -77,18 +80,18 @@ describe('no diagram visual regression', () => {
     0.00006,
   );
 
-  const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' }, 'diagram');
+  const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
 
   const fitTypes: FitType[] = [FitType.None, FitType.HorizontalVertical, FitType.Horizontal, FitType.Vertical, FitType.Center];
   describe.each(fitTypes)('load options - fit %s', (onLoadFitType: FitType) => {
-    describe.each(['horizontal', 'vertical', 'with.outside.flows', 'with.outside.labels'])('diagram %s', (fileName: string) => {
+    describe.each(bpmnDiagramNames)('diagram %s', (bpmnDiagramName: string) => {
       it('load', async () => {
-        await pageTester.loadBPMNDiagramInRefreshedPage(fileName, BpmnLoadMethod.QueryParam, { fit: { type: onLoadFitType } });
+        await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, { fit: { type: onLoadFitType } });
 
         const image = await page.screenshot({ fullPage: true });
 
         const config = imageSnapshotConfigurator.getConfig({
-          fileName,
+          fileName: bpmnDiagramName,
           fitType: onLoadFitType,
           buildCustomDiffDir: (config, fitType) => FitImageSnapshotConfigurator.buildOnLoadDiffDir(config, fitType),
         });
@@ -96,7 +99,7 @@ describe('no diagram visual regression', () => {
       });
 
       it.each(fitTypes)(`load + fit %s`, async (afterLoadFitType: FitType) => {
-        await pageTester.loadBPMNDiagramInRefreshedPage(fileName, BpmnLoadMethod.QueryParam, { fit: { type: onLoadFitType } });
+        await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, { fit: { type: onLoadFitType } });
 
         await page.click(`#${afterLoadFitType}`);
         // To unselect the button
@@ -105,7 +108,7 @@ describe('no diagram visual regression', () => {
         const image = await page.screenshot({ fullPage: true });
 
         const config = imageSnapshotConfigurator.getConfig({
-          fileName,
+          fileName: bpmnDiagramName,
           fitType: afterLoadFitType,
           buildCustomDiffDir: (config, fitType) => FitImageSnapshotConfigurator.buildAfterLoadDiffDir(config, fitType, onLoadFitType),
         });
@@ -113,17 +116,17 @@ describe('no diagram visual regression', () => {
       });
 
       if (
-        (onLoadFitType === FitType.Center && fileName === 'with.outside.flows') ||
-        (onLoadFitType === FitType.Horizontal && fileName === 'horizontal') ||
-        (onLoadFitType === FitType.Vertical && fileName === 'vertical')
+        (onLoadFitType === FitType.Center && bpmnDiagramName === 'with.outside.flows') ||
+        (onLoadFitType === FitType.Horizontal && bpmnDiagramName === 'horizontal') ||
+        (onLoadFitType === FitType.Vertical && bpmnDiagramName === 'vertical')
       ) {
         it.each([-100, 0, 20, 50, null])('load with margin %s', async (margin: number) => {
-          await pageTester.loadBPMNDiagramInRefreshedPage(fileName, BpmnLoadMethod.QueryParam, { fit: { type: onLoadFitType, margin: margin } });
+          await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, { fit: { type: onLoadFitType, margin: margin } });
 
           const image = await page.screenshot({ fullPage: true });
 
           const config = imageSnapshotConfigurator.getConfig({
-            fileName,
+            fileName: bpmnDiagramName,
             fitType: onLoadFitType,
             margin,
             buildCustomDiffDir: (config, fitType, margin) => FitImageSnapshotConfigurator.buildOnLoadDiffDir(config, fitType, true, margin),

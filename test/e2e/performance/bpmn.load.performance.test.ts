@@ -16,7 +16,7 @@
 import { getSimplePlatformName } from '../helpers/test-utils';
 import * as fs from 'fs';
 import { calculateMetrics, ChartData } from '../helpers/perf-utils';
-import { BpmnLoadMethod, PageTester } from '../helpers/visu/PageTester';
+import { PageTester } from '../helpers/visu/PageTester';
 
 interface PerformanceMetric {
   run: number;
@@ -31,14 +31,13 @@ const performanceDataFilePath = './performance/data/' + platform + '/data.js';
 const metricsArray: Array<PerformanceMetric> = [];
 
 describe.each([1, 2, 3, 4, 5])('load performance', run => {
-  // to have mouse pointer visible during headless test - add 'showMousePointer=true' to queryParams
-
+  // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
+  const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
   const fileName = 'B.2.0';
 
   it.each([1])('check performance for file loading and displaying diagram with FitType.HorizontalVertical', async () => {
     const metricsStart = await page.metrics();
-    const pageTester = new PageTester({ pageFileName: 'rendering-diagram', queryParams: [], expectedPageTitle: 'BPMN Visualization - Diagram Rendering' }, 'performance');
-    await pageTester.loadBPMNDiagramInRefreshedPage(fileName, BpmnLoadMethod.Url);
+    await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
     const metricsEnd = await page.metrics();
 
     const metric = { ...calculateMetrics(metricsStart, metricsEnd), run: run };
