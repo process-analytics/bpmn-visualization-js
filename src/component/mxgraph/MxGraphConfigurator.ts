@@ -59,10 +59,9 @@ export default class MxGraphConfigurator {
   }
 
   private configureNavigationSupport(options: GlobalOptions): void {
-    const isNavigationEnabled = options?.navigation?.enabled;
-    // Pan configuration
     const panningHandler = this.graph.panningHandler;
-    if (isNavigationEnabled) {
+    if (options?.navigation?.enabled) {
+      // Pan configuration
       panningHandler.addListener(mxEvent.PAN_START, this.getPanningHandler('grab'));
       panningHandler.addListener(mxEvent.PAN_END, this.getPanningHandler('default'));
 
