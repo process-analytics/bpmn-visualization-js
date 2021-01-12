@@ -14,11 +14,28 @@
  * limitations under the License.
  */
 import { BpmnPuppeteer } from '../e2e/helpers/visu/bpmn-puppeteer-utils';
-import { join } from 'path';
+import { existsSync } from 'fs';
+import { resolve } from 'path';
 
 describe('bundles', () => {
+  describe('All bundles have been generated', () => {
+    const bundlesDirectoryPath = resolve(__dirname, '../../dist');
+
+    it.each`
+      file                               | bundleType
+      ${'bpmn-visualization.cjs.js'}     | ${'CommonJS'}
+      ${'bpmn-visualization.cjs.min.js'} | ${'CommonJS minified'}
+      ${'bpmn-visualization.esm.js'}     | ${'ESM'}
+      ${'bpmn-visualization.esm.min.js'} | ${'ESM minified'}
+      ${'bpmn-visualization.js'}         | ${'IIFE'}
+      ${'bpmn-visualization.min.js'}     | ${'IIFE minified'}
+    `('$bundleType', ({ file, bundleType }) => {
+      expect(existsSync(resolve(bundlesDirectoryPath, file))).toBe(true);
+    });
+  });
+
   it('IIFE bundle - should generate BPMN Diagram SVG', async () => {
-    const pagePath = join(__dirname, 'static/lib-integration-iife.html');
+    const pagePath = resolve(__dirname, 'static/lib-integration-iife.html');
     await page.goto(`file://${pagePath}`);
 
     const bpmnPuppeteer = new BpmnPuppeteer('bpmn-container-for-iife-bundle', page);
