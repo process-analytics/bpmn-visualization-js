@@ -16,18 +16,17 @@
 import { FitType, LoadOptions } from '../../../../src/component/options';
 import { ElementHandle } from 'puppeteer';
 import { BpmnQuerySelectors } from '../../../../src/component/registry/bpmn-elements-registry';
-import { copyFileSync, loadBpmnContentForUrlQueryParam } from '../../../helpers/file-helper';
-import { log } from '../test-utils';
-
-export enum BpmnLoadMethod {
-  QueryParam = 'query param',
-  Url = 'url',
-}
 
 export interface TargetedPage {
+  /** the name of the page file without extension */
   pageFileName: string;
-  queryParams?: string[];
+  /** the expected of the page title after the page loading */
   expectedPageTitle: string;
+  /**
+   * Set to `true` to display the mouse pointer after the page loading
+   * @default false
+   */
+  showMousePointer?: boolean;
 }
 
 export class PageTester {
@@ -44,14 +43,13 @@ export class PageTester {
    * Prior adding a config here, review your file to check if it is not too large because it contains too much elements, in particular, some elements not related to what you want to
    * test.
    */
-  constructor(readonly targetedPage: TargetedPage, readonly sourceBpmnFolderName: string) {
-    const params = targetedPage.queryParams?.join('&') ?? '';
-
-    this.baseUrl = `http://localhost:10002/${targetedPage.pageFileName}.html?${params}`;
+  constructor(readonly targetedPage: TargetedPage) {
+    const showMousePointer = targetedPage.showMousePointer ?? false;
+    this.baseUrl = `http://localhost:10002/${targetedPage.pageFileName}.html?showMousePointer=${showMousePointer}`;
   }
 
-  async loadBPMNDiagramInRefreshedPage(bpmnDiagramFileName: string, bpmnLoadMethod?: BpmnLoadMethod, loadParams?: LoadOptions): Promise<ElementHandle<Element>> {
-    const url = this.getPageUrl(bpmnDiagramFileName, bpmnLoadMethod, loadParams);
+  async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, loadOptions?: LoadOptions): Promise<ElementHandle<Element>> {
+    const url = this.getPageUrl(bpmnDiagramName, loadOptions);
     const response = await page.goto(url);
     // Uncomment the following in case of http error 400 (probably because of a too large bpmn file)
     // eslint-disable-next-line no-console
@@ -68,30 +66,12 @@ export class PageTester {
   }
 
   /**
-   * @param fileName the name of the BPMN file without extension
+   * @param bpmnDiagramName the name of the BPMN file without extension
    */
-  private getPageUrl(
-    fileName: string,
-    bpmnLoadMethod: BpmnLoadMethod = BpmnLoadMethod.QueryParam,
-    loadOptions: LoadOptions = { fit: { type: FitType.HorizontalVertical } },
-  ): string {
-    log(`Use '${bpmnLoadMethod}' as BPMN Load Method for '${fileName}'`);
-
+  private getPageUrl(bpmnDiagramName: string, loadOptions: LoadOptions = { fit: { type: FitType.HorizontalVertical } }): string {
     let url = this.baseUrl;
     url += `&fitTypeOnLoad=${loadOptions.fit?.type}&fitMargin=${loadOptions.fit?.margin}`;
-    url += `&${this.getUrlParameterForBPMNContent(fileName, bpmnLoadMethod)}`;
+    url += `&url=./static/diagrams/${bpmnDiagramName}.bpmn`;
     return url;
-  }
-
-  private getUrlParameterForBPMNContent(fileName: string, bpmnLoadMethod: BpmnLoadMethod): string {
-    const relPathToBpmnFile = `../fixtures/bpmn/${this.sourceBpmnFolderName}/${fileName}.bpmn`;
-    switch (bpmnLoadMethod) {
-      case BpmnLoadMethod.QueryParam:
-        const bpmnContent = loadBpmnContentForUrlQueryParam(relPathToBpmnFile);
-        return `bpmn=${bpmnContent}`;
-      case BpmnLoadMethod.Url:
-        copyFileSync(relPathToBpmnFile, `../../dist/static/diagrams/`, `${fileName}.bpmn`);
-        return `url=./static/diagrams/${fileName}.bpmn`;
-    }
   }
 }

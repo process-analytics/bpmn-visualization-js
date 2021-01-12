@@ -13,22 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, FitType, fit, log, updateLoadOptions, getCurrentLoadOptions } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions } from '../../index.es.js';
 
 let fitOnLoad = true;
 let fitOptions = {};
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function configureBpmnContainer() {
-  const container = document.getElementById('bpmn-container');
-
-  const useFixedSize = !(fitOptions.type && FitType[fitOptions.type] === 'None'); // !== 'None'
-  if (useFixedSize) {
-    container.classList.add('fixed-size');
-  } else {
-    container.classList.remove('fixed-size');
-  }
-}
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureFitOnLoadCheckBox() {
@@ -61,7 +49,6 @@ function configureFitTypeSelect() {
   const fitTypeSelectedElt = document.getElementById('fitType-selected');
   fitTypeSelectedElt.onchange = event => {
     updateFitConfig({ type: event.target.value });
-    configureBpmnContainer();
     fit(fitOptions);
   };
 
@@ -70,8 +57,6 @@ function configureFitTypeSelect() {
   } else {
     updateFitConfig({ type: fitTypeSelectedElt.value });
   }
-
-  configureBpmnContainer();
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -140,12 +125,14 @@ function startDemo() {
     zoomDebounceElt.value = parameters.get('zoomDebounce');
   }
   startBpmnVisualization({
-    container: bpmnContainerId,
     globalOptions: {
-      mouseNavigationSupport: true,
-      zoomConfiguration: {
-        throttleDelay: zoomThrottleElt.value,
-        debounceDelay: zoomDebounceElt.value,
+      container: bpmnContainerId,
+      navigation: {
+        enabled: true,
+        zoom: {
+          throttleDelay: zoomThrottleElt.value,
+          debounceDelay: zoomDebounceElt.value,
+        },
       },
     },
   });

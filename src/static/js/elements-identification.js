@@ -39,9 +39,11 @@ function configureControls() {
 
 documentReady(() => {
   startBpmnVisualization({
-    container: 'bpmn-container',
     globalOptions: {
-      mouseNavigationSupport: true,
+      container: 'bpmn-container',
+      navigation: {
+        enabled: true,
+      },
     },
   });
   updateLoadOptions({ type: FitType.Center, margin: 20 });

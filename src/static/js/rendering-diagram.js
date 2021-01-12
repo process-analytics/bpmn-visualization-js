@@ -140,12 +140,14 @@ function start() {
   const elZoomDebounce = configureZoomDebounceInput(parameters);
 
   startBpmnVisualization({
-    container: 'bpmn-container',
     globalOptions: {
-      mouseNavigationSupport: true,
-      zoomConfiguration: {
-        throttleDelay: elZoomThrottle.value,
-        debounceDelay: elZoomDebounce.value,
+      container: 'bpmn-container',
+      navigation: {
+        enabled: true,
+        zoom: {
+          throttleDelay: elZoomThrottle.value,
+          debounceDelay: elZoomDebounce.value,
+        },
       },
     },
   });

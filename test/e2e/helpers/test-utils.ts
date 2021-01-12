@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 import debugLogger from 'debug';
+import { findFiles } from '../../helpers/file-helper';
+import { join } from 'path';
 
 export const log = debugLogger('test');
 
@@ -34,4 +36,14 @@ export function delay(time: number): Promise<unknown> {
   return new Promise(function (resolve) {
     setTimeout(resolve, time);
   });
+}
+
+export function getBpmnDiagramNames(directoryName: string): string[] {
+  return findFiles(join('../fixtures/bpmn/', directoryName))
+    .filter(filename => {
+      return filename.endsWith('.bpmn');
+    })
+    .map(filename => {
+      return filename.split('.').slice(0, -1).join('.');
+    });
 }

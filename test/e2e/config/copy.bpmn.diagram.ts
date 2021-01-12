@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, startBpmnVisualization } from '../../index.es.js';
+import { copySync } from 'fs-extra';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function statusFetchKO(errorMsg) {
-  const statusElt = document.getElementById('fetch-status');
-  statusElt.innerText = errorMsg;
-  statusElt.className = 'status-ko';
+function copyDirectoryContentIfNotExists(dirName: string): void {
+  copySync(`${__dirname}/../../fixtures/bpmn/${dirName}`, `${__dirname}/../../../build/public/static/diagrams/`, { overwrite: false });
 }
 
-documentReady(() => startBpmnVisualization({ globalOptions: { container: 'bpmn-container' }, statusFetchKoNotifier: statusFetchKO }));
+copyDirectoryContentIfNotExists('diagram');
+copyDirectoryContentIfNotExists('navigation');
+copyDirectoryContentIfNotExists('non-regression');
+copyDirectoryContentIfNotExists('performance');

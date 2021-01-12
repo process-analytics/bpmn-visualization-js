@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { findFiles } from '../helpers/file-helper';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
-import { BpmnLoadMethod, PageTester } from './helpers/visu/PageTester';
+import { PageTester } from './helpers/visu/PageTester';
+import { getBpmnDiagramNames } from './helpers/test-utils';
 
 describe('no BPMN elements visual regression', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
@@ -123,26 +123,18 @@ describe('no BPMN elements visual regression', () => {
     'bpmn',
   );
 
-  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' }, 'non-regression');
-
-  const bpmnDiagramFileNames = findFiles('../fixtures/bpmn/non-regression/')
-    .filter(filename => {
-      return filename.endsWith('.bpmn');
-    })
-    .map(filename => {
-      return filename.split('.').slice(0, -1).join('.');
-    });
+  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' });
+  const bpmnDiagramNames = getBpmnDiagramNames('non-regression');
 
   it('check bpmn non-regression files availability', () => {
-    expect(bpmnDiagramFileNames).toContain('gateways');
+    expect(bpmnDiagramNames).toContain('gateways');
   });
 
-  it.each(bpmnDiagramFileNames)(`%s`, async (bpmnDiagramFileName: string) => {
-    const bpmnLoadMethod = bpmnDiagramFileName === 'events' || bpmnDiagramFileName === 'markers.01.positioning' ? BpmnLoadMethod.Url : BpmnLoadMethod.QueryParam;
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramFileName, bpmnLoadMethod);
+  it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {
+    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramFileName);
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot(config);
   });
 });

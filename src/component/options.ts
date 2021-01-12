@@ -18,11 +18,19 @@
  * Options to configure `bpmn-visualization` at initialization.
  */
 export interface GlobalOptions {
+  /** The id of a DOM element or an HTML node where the BPMN diagram is rendered. */
+  container: string | HTMLElement;
+  /** Control the BPMN diagram navigation i.e. panning and zoom. */
+  navigation?: NavigationConfiguration;
+}
+
+export interface NavigationConfiguration {
   /**
-   * If set to `true`, activate panning i.e. the BPMN diagram is draggable and can be moved using the mouse.
+   * @default false
    */
-  mouseNavigationSupport: boolean;
-  zoomConfiguration: ZoomConfiguration;
+  enabled: boolean;
+  /** Tune how the zoom behaves when using the mouse wheel or with gesture/pinch on touch devices. */
+  zoom: ZoomConfiguration;
 }
 
 /**

@@ -33,9 +33,9 @@ export default class MxGraphConfigurator {
     this.graph = new BpmnMxGraph(container);
   }
 
-  public configure(options?: GlobalOptions): BpmnMxGraph {
+  public configure(options: GlobalOptions): BpmnMxGraph {
     this.configureGraph();
-    this.configureMouseNavigationSupport(options);
+    this.configureNavigationSupport(options);
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
     new MarkerConfigurator().configureMarkers();
@@ -58,11 +58,10 @@ export default class MxGraphConfigurator {
     this.graph.foldingEnabled = false;
   }
 
-  private configureMouseNavigationSupport(options?: GlobalOptions): void {
-    const mouseNavigationSupport = options?.mouseNavigationSupport;
-    // Pan configuration
+  private configureNavigationSupport(options: GlobalOptions): void {
     const panningHandler = this.graph.panningHandler;
-    if (mouseNavigationSupport) {
+    if (options?.navigation?.enabled) {
+      // Pan configuration
       panningHandler.addListener(mxEvent.PAN_START, this.getPanningHandler('grab'));
       panningHandler.addListener(mxEvent.PAN_END, this.getPanningHandler('default'));
 
@@ -73,7 +72,7 @@ export default class MxGraphConfigurator {
       this.graph.setPanning(true);
 
       // Zoom configuration
-      this.graph.createMouseWheelZoomExperience(options.zoomConfiguration);
+      this.graph.createMouseWheelZoomExperience(options?.navigation?.zoom);
     } else {
       this.graph.setPanning(false);
       // Disable gesture support for zoom
