@@ -63,6 +63,7 @@
     "lint": "tsc --noEmit && eslint \"*/**/*.{js,ts,tsx}\" NOTICE --quiet --fix",
     "lint-check": "tsc --noEmit && eslint \"*/**/*.{js,ts,tsx}\" NOTICE --max-warnings 0",
     "test": "run-s test:unit test:e2e",
+    "test:coverage": "run-s test:unit:coverage test:e2e:coverage",
     "test:unit": "jest --runInBand --config=./test/unit/jest.config.js",
     "test:unit:coverage": "npm run test:unit -- --coverage",
     "test:unit:watch": "npm run test:unit:coverage -- --watchAll",
