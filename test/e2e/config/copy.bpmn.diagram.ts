@@ -16,7 +16,7 @@
 import { copySync } from 'fs-extra';
 
 function copyDirectoryContentIfNotExists(dirName: string): void {
-  copySync(`${__dirname}/../../fixtures/bpmn/${dirName}`, `${__dirname}/../../../dist/static/diagrams/`, { overwrite: false });
+  copySync(`${__dirname}/../../fixtures/bpmn/${dirName}`, `${__dirname}/../../../build/public/static/diagrams/`, { overwrite: false });
 }
 
 copyDirectoryContentIfNotExists('diagram');
