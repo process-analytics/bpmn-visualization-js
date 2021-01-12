@@ -29,9 +29,13 @@ describe('bundles', () => {
       ${'bpmn-visualization.esm.min.js'} | ${'ESM minified'}
       ${'bpmn-visualization.js'}         | ${'IIFE'}
       ${'bpmn-visualization.min.js'}     | ${'IIFE minified'}
-    `('$bundleType', ({ file, bundleType }) => {
-      expect(existsSync(resolve(bundlesDirectoryPath, file))).toBe(true);
-    });
+    `(
+      '$bundleType',
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      ({ file, bundleType }) => {
+        expect(existsSync(resolve(bundlesDirectoryPath, file))).toBe(true);
+      },
+    );
   });
 
   it('IIFE bundle - should generate BPMN Diagram SVG', async () => {
