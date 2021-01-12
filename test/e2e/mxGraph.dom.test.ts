@@ -27,8 +27,7 @@ function initializeBpmnVisualization(): BpmnVisualization {
   containerDiv.id = bpmnContainerId;
   document.body.insertBefore(containerDiv, document.body.firstChild);
   // initialize bpmn-visualization
-  const bpmnVisualizationElt = document.getElementById(bpmnContainerId);
-  return new BpmnVisualization(bpmnVisualizationElt);
+  return new BpmnVisualization({ container: bpmnContainerId });
 }
 
 describe('DOM only checks', () => {

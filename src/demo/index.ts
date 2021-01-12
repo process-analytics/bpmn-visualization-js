@@ -104,9 +104,8 @@ function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) 
 }
 
 export interface BpmnVisualizationDemoConfiguration {
-  container: string;
   statusFetchKoNotifier?: (errorMsg: string) => void;
-  globalOptions?: GlobalOptions;
+  globalOptions: GlobalOptions;
   loadOptions?: LoadOptions;
 }
 
@@ -130,12 +129,12 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
-  const container = config.container;
+  const container = config.globalOptions.container;
 
   log(`Initializing BpmnVisualization with container '${container}'...`);
-  bpmnVisualization = new BpmnVisualization(window.document.getElementById(container), config.globalOptions);
+  bpmnVisualization = new BpmnVisualization(config.globalOptions);
   log('Initialization completed');
-  new DropFileUserInterface(window, 'drop-container', container, readAndLoadFile);
+  new DropFileUserInterface(window, 'drop-container', container as string, readAndLoadFile);
   log('Drag&Drop support initialized');
 
   const parameters = new URLSearchParams(window.location.search);
