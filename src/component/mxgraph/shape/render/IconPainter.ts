@@ -96,9 +96,10 @@ export default class IconPainter {
     canvas.rect(0, 0, w, h);
     canvas.fillAndStroke();
 
-    if (paintParameter.icon.isFilled) {
+    const { icon } = paintParameter;
+    if (icon.isFilled) {
       // Choose light color for envelope closure
-      canvas.setStrokeColor(paintParameter.icon.fillColor);
+      canvas.setStrokeColor(icon.fillColor);
     }
 
     // Paint the envelope closure
@@ -596,7 +597,8 @@ export default class IconPainter {
   paintLoopIcon(paintParameter: PaintParameter): void {
     // this implementation is adapted from the draw.io BPMN 'Loop'
     // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L543
-    paintParameter.icon.fillColor = paintParameter.icon.strokeColor;
+    const { icon } = paintParameter;
+    icon.fillColor = icon.strokeColor;
     const canvas = this.newBpmnCanvas(paintParameter, { width: 22.49, height: 21.62 });
 
     // Loop
@@ -620,8 +622,9 @@ export default class IconPainter {
   paintSequentialMultiInstanceIcon(paintParameter: PaintParameter): void {
     const originalIconSize = { width: 16, height: 16 };
     const canvas = this.newBpmnCanvas(paintParameter, originalIconSize);
+    const { c, icon } = paintParameter;
+    c.setFillColor(icon.strokeColor);
 
-    paintParameter.c.setFillColor(paintParameter.icon.strokeColor);
     const barWidth = originalIconSize.width;
     const barHeight = originalIconSize.height / 5; // 3 bars + 2 interspaces
     canvas.rect(0, 0, barWidth, barHeight);
@@ -638,8 +641,9 @@ export default class IconPainter {
   paintParallelMultiInstanceIcon(paintParameter: PaintParameter): void {
     const originalIconSize = { width: 16, height: 16 };
     const canvas = this.newBpmnCanvas(paintParameter, originalIconSize);
+    const { c, icon } = paintParameter;
+    c.setFillColor(icon.strokeColor);
 
-    paintParameter.c.setFillColor(paintParameter.icon.strokeColor);
     const barWidth = originalIconSize.width / 5; // 3 bars + 2 interspaces
     const barHeight = originalIconSize.height;
     canvas.begin();
