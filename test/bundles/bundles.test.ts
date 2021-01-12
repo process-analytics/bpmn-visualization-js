@@ -16,8 +16,8 @@
 import { BpmnPuppeteer } from '../e2e/helpers/visu/bpmn-puppeteer-utils';
 import { join } from 'path';
 
-describe('IIFE bundle', () => {
-  it('should generate BPMN Diagram SVG', async () => {
+describe('bundles', () => {
+  it('IIFE bundle - should generate BPMN Diagram SVG', async () => {
     const pagePath = join(__dirname, 'static/lib-integration-iife.html');
     await page.goto(`file://${pagePath}`);
 
