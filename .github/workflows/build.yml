@@ -81,6 +81,18 @@ jobs:
       # Ensure we don't break scripts
       - name: Build utils
         run: npm run build-utils
+      # Ensure we can build working bundles
+      - name: Build bundles
+        run: npm run build-bundles
+      - name: Test bundles
+        id: 'test_bundles'
+        run: npm run test:bundles
+      - name: Upload bundles test results
+        if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: bundles-test-results-${{matrix.os.name}}-${{github.sha}}
+          path: build/test-report/bundles
 
       # No need to run the analysis from all environments
       - name: SonarCloud Scan

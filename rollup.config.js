@@ -115,7 +115,7 @@ if (!buildBundles) {
       { file: pkg.main, format: 'cjs' },
     ],
   };
-  rollupConfigs = [configIIFE, configIIFEMinified];
+  rollupConfigs = [configIIFE, configIIFEMinified, configBundles, configBundlesMinified];
 }
 
 export default rollupConfigs;

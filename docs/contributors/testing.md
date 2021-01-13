@@ -170,6 +170,11 @@ How to run? Check the next [section](#Running tests).
 The results are under `/test/e2e/performance/data/`. \
 Preview is available in the browser, simply open file `/bpmn-visu-js/test/e2e/performance/index.html` in your favourite browser.
 
+### Bundles tests
+
+They ensure that the bundles provided in the npm package are working, and they are defined under `/test/bundles/`.
+
+
 ## Running tests 
 
 See `package.json` for extra available scripts
@@ -179,6 +184,7 @@ See `package.json` for extra available scripts
 - `npm run test:e2e`            *Run end-to-end tests*.
 - `npm run test:e2e:coverage`   *Run end-to-end tests with coverage*
 - `npm run test:perf`           *Run performance tests*
+- `npm run test:bundles`        *Run bundles tests*
 
 ### Test reports
 
@@ -187,7 +193,7 @@ Html reports are generated for test execution and coverage in
 - `build/test-report/e2e` for end-to-end tests
 
 
-### Debugging end-to-end tests
+### Debugging end-to-end and bundles tests
 
 To see what is happening in your local web browser used by the tests
 - disable the `headless` mode by setting the `HEADLESS` environment variable to `false`
