@@ -21,6 +21,7 @@ import { terser } from 'rollup-plugin-terser';
 import sizes from 'rollup-plugin-sizes';
 import autoExternal from 'rollup-plugin-auto-external';
 import execute from 'rollup-plugin-execute';
+import istanbul from 'rollup-plugin-istanbul';
 
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
@@ -143,7 +144,23 @@ function withMinification(plugins) {
 }
 
 function pluginsForDevelopment() {
-  const plugins = [typescriptPlugin(), resolve(), commonjs(), json()];
+  const plugins = [
+    typescriptPlugin(),
+    resolve(),
+    commonjs(),
+    json(),
+    istanbul({
+      exclude: ['test/**/*.js'],
+      instrumenterConfig: {
+        embedSource: true,
+        esModules: true,
+        compact: true,
+        produceSourceMap: true,
+        autoWrap: true,
+        preserveComments: true,
+      },
+    }),
+  ];
 
   // Copy static resources
   if (devMode || demoMode) {

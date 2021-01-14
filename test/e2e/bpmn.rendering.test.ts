@@ -16,6 +16,8 @@
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
 import { PageTester } from './helpers/visu/PageTester';
 import { getBpmnDiagramNames } from './helpers/test-utils';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const pti = require('puppeteer-to-istanbul');
 
 describe('no BPMN elements visual regression', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
@@ -131,10 +133,15 @@ describe('no BPMN elements visual regression', () => {
   });
 
   it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {
+    await Promise.all([page.coverage.startJSCoverage(), page.coverage.startCSSCoverage()]);
+
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot(config);
+
+    const [jsCoverage, cssCoverage] = await Promise.all([page.coverage.stopJSCoverage(), page.coverage.stopCSSCoverage()]);
+    pti.write([...jsCoverage, ...cssCoverage], { includeHostname: true, storagePath: '../../.nyc_output' });
   });
 });

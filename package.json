@@ -79,7 +79,8 @@
     "fast-xml-parser": "^3.17.6",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
-    "mxgraph": "4.1.0"
+    "mxgraph": "4.1.0",
+    "nyc": "^15.1.0"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^4.1.0",
@@ -121,6 +122,7 @@
     "postcss-cli": "^8.3.1",
     "prettier": "^2.2.1",
     "puppeteer": "^5.5.0",
+    "puppeteer-to-istanbul": "^1.4.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.36.2",
     "rollup-plugin-auto-external": "^2.0.0",
@@ -128,6 +130,7 @@
     "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-copy-watch": "0.0.1",
     "rollup-plugin-execute": "^1.1.1",
+    "rollup-plugin-istanbul": "^3.0.0",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-node-externals": "^2.2.0",
     "rollup-plugin-serve": "^1.1.0",
