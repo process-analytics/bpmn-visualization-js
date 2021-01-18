@@ -19,6 +19,7 @@ import MarkerConfigurator from './config/MarkerConfigurator';
 import { GlobalOptions } from '../options';
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { mxgraph } from './initializer';
+import { mxMouseEvent } from 'mxgraph'; // for types
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib
@@ -69,7 +70,7 @@ export default class MxGraphConfigurator {
       this.graph.panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
       // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left click
       // The mxGraph standard implementation doesn't ignore right click in this case, so do it by ourself
-      panningHandler.isForcePanningEvent = (me): boolean => mxEvent.isLeftMouseButton(me.getEvent()) || mxEvent.isMultiTouchEvent(me.getEvent());
+      panningHandler.isForcePanningEvent = (me): boolean => mxgraph.mxEvent.isLeftMouseButton(me.getEvent()) || mxgraph.mxEvent.isMultiTouchEvent(me.getEvent());
       this.graph.setPanning(true);
 
       // Zoom configuration
