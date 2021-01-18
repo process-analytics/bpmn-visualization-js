@@ -15,45 +15,18 @@
  */
 import factory, { mxGraphExportObject } from 'mxgraph';
 
-// // options to set
-// const options = {
-//   mxLoadResources: false,
-//   mxLoadStylesheets: false,
-// };
-// // available options
-// const optionKeys = [
-//   'mxBasePath',
-//   'mxDefaultLanguage',
-//   'mxForceIncludes',
-//   'mxImageBasePath',
-//   'mxLanguage',
-//   'mxLanguages',
-//   'mxLoadResources',
-//   'mxLoadStylesheets',
-//   'mxResourceExtension',
-// ];
-// optionKeys.forEach(key => {
-//   window[key] = options[key];
-// });
-
-// export const mxgraph = factory({
-//   mxLoadResources: false,
-//   mxLoadStylesheets: false,
-// });
-// // eslint-disable-next-line no-console
-// console.info(`Using mxgraph ${mxgraph.mxClient.VERSION}`);
-
 export const mxgraph = initialize();
 
 function initialize(): mxGraphExportObject {
-  // eslint-disable-next-line no-console
-  console.info('Initializing mxGraph....');
+  // set options globally, as it is not working when passing options to the factory (https://github.com/jgraph/mxgraph/issues/479)
+  (window as any)['mxLoadResources'] = false;
+  (window as any)['mxLoadStylesheets'] = false;
+  // extras, otherwise we got 'Uncaught ReferenceError: assignment to undeclared variable mxForceIncludes'
+  (window as any)['mxForceIncludes'] = false;
+  (window as any)['mxResourceExtension'] = '.txt';
+  //return factory({});
 
-  (window as any)['mxBasePath'] = 'assets/mxgraph';
-  const mxgraphLib = factory({
-    // not working see https://github.com/jgraph/mxgraph/issues/479
-    mxBasePath: 'assets/mxgraph',
-  });
+  const mxgraphLib = factory({});
   // eslint-disable-next-line no-console
   console.info(`mxGraph ${mxgraphLib.mxClient.VERSION} initialized`);
   return mxgraphLib;
