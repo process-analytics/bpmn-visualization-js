@@ -105,8 +105,8 @@ You can set the BPMN content using one of the following ways:
 ### Browser usage
 
 * In the HTML page:
-   * load `bpmn-visualization` (replace `{version}` by the recent version)
-   * define the container that displays the BPMN diagram. Here _bpmn-container_
+   * Load `bpmn-visualization` (replace `{version}` by the recent version)
+   * Define the container that displays the BPMN diagram, here _bpmn-container_
 ```html
     <script src="https://unpkg.com/bpmn-visualization@{version}/dist/bpmn-visualization.js"></script>
     ...
