@@ -2,8 +2,8 @@
   "compilerOptions": {
     "declaration": false,
     "outDir": "./build/lib",
-    "module": "es6",
-    "target": "es6",
+    "module": "ES2015",
+    "target": "ES2015",
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "alwaysStrict": true,
@@ -14,10 +14,11 @@
     "moduleResolution": "node",
     "sourceMap": false,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": false,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
     "typeRoots": [
       "node_modules/@types",
       "node_modules/@typed-mxgraph"
-    ]
+    ],
   },
   "include": [
     "src/**/*"

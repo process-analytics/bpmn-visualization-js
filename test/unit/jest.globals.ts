@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from '../../src/component/mxgraph/initializer';
+//import { mxgraph } from '../../src/component/mxgraph/initializer';
 
 // to prevent TS error Property 'mxXyz' does not exist on type 'Global'.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const globalAny: any = global;
+//const globalAny: any = global;
 
-globalAny.mxPoint = mxgraph.mxPoint;
-globalAny.mxConstants = mxgraph.mxConstants;
+// globalAny.mxPoint = mxgraph.mxPoint;
+//globalAny.mxConstants = mxgraph.mxConstants;
