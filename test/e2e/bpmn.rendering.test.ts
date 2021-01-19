@@ -64,6 +64,17 @@ describe('no BPMN elements visual regression', () => {
           windows: 0.003,
         },
       ],
+      [
+        'labels.04.fonts',
+        {
+          //  Expected image to match or be a close match to snapshot but was 0.00019304876757164635%
+          linux: 0.000002,
+          // Expected image to match or be a close match to snapshot but was 0.18334725431882193%
+          macos: 0.0019,
+          // Expected image to match or be a close match to snapshot but was 0.18553107384994272%
+          windows: 0.0019,
+        },
+      ],
       // ubuntu: Expected image to match or be a close match to snapshot but was 0.19665548561466073%
       // macOS: Expected image to match or be a close match to snapshot but was 0.15006201878846603%
       // windows: Expected image to match or be a close match to snapshot but was 0.12200021675353723%
