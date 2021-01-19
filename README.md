@@ -144,8 +144,8 @@ for more details:
 **[statically.io](https://statically.io)** (<kbd>demo</kbd> and <kbd>examples</kbd> live environments)
 
 
-<a name="code_coverage">*️⃣ </a> The code coverage doesn't count the code that is only tested through HTML page, like MxGraph. \
-As **puppeteer-to-istanbul** library doesn't support source map, the code coverage based on e2e is on break. \
+<a name="code_coverage">*️⃣</a> The value of the code coverage is underestimated because of the source map limitation. \
+It doesn't count the code that is only tested through HTML page, like MxGraph. \
 The related issue is [[INFRA] Improve code coverage measure](https://github.com/process-analytics/bpmn-visualization-js/issues/924).
 
 
