@@ -33,6 +33,7 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
+import {CssRegistry} from "../../registry/css-registry";
 
 // TODO unable to load mxClient from mxgraph-type-definitions@1.0.2
 declare const mxClient: typeof mxgraph.mxClient;
@@ -98,8 +99,13 @@ export default class ShapeConfigurator {
         // 'this.state.style' = the style definition associated with the cell
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cell = this.state.cell;
+
+        // the 'bpmnElementsRegistry' instance is injected within the 'mxShape' rendering function
+        // may return a string or Array<string>
+        const userCssClassNames =  CssRegistry.getInstance().getClassNames(cell.getId()).join(' ');
+        // also merge existing allBpmnClassNames
         // dialect = strictHtml means that current node holds the label
-        const allBpmnClassNames = computeAllBpmnClassNames(extractBpmnKindFromStyle(cell), this.dialect === 'strictHtml');
+        const allBpmnClassNames = computeAllBpmnClassNames(extractBpmnKindFromStyle(cell), this.dialect === 'strictHtml').concat(' ').concat(userCssClassNames);
 
         this.node.setAttribute('class', allBpmnClassNames);
         this.node.setAttribute('data-bpmn-id', this.state.cell.id);
