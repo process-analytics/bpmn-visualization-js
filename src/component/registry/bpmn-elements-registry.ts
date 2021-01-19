@@ -24,12 +24,40 @@ export function newBpmnElementsRegistry(graph: BpmnMxGraph): BpmnElementsRegistr
 }
 
 /**
- * @experimental subject to change, feedback welcome
+ * @experimental subject to change, feedback welcome.
+ *
+ * > BpmnElementRegistry is a public API that permits to find the BpmnElements present in the diagram.
+ * > How to access it:
+ *
+ * ```javascript
+ * // 1. Initialize the BpmnVisualization.
+ * const bpmnVisualization = new bpmnvisu.BpmnVisualization(document.getElementById('bpmn-container'));
+ * // 2. Get diagram and load it.
+ * const bpmn = 'BPMN diagram string - whether coming from bpmn.xml file or some API call';
+ * bpmnVisualization.load(bpmn);
+ * // 3. Access registry directly from bpmnVisualization.
+ * bpmnVisualization.bpmnElementsRegistry
+ * ```
  */
 export class BpmnElementsRegistry {
+  /**
+   * @internal
+   */
   constructor(private bpmnModelRegistry: BpmnModelRegistry, private htmlElementRegistry: HtmlElementRegistry) {}
 
   // TODO doc, not found elements are not present in the return array
+  /**
+   * Get all elements by ids.
+   *
+   * ```javascript
+   * ...
+   * // Find all elements by specified id or ids
+   * const bpmnElementsSet1 = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds('userTask_1');
+   * const bpmnElementsSet2 = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(['startEvent_3', 'userTask_2']);
+   * // now you can do whatever you want with the elements
+   * ...
+   * ```
+   */
   getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[] {
     // TODO move ensureIsArray to src/helpers/arrays.ts (not only for model) and add dedicated tests
     return ensureIsArray<string>(bpmnElementIds)
@@ -38,6 +66,18 @@ export class BpmnElementsRegistry {
       .map(bpmnSemantic => ({ bpmnSemantic: bpmnSemantic, htmlElement: this.htmlElementRegistry.getBpmnHtmlElement(bpmnSemantic.id) }));
   }
 
+  /**
+   * Get all elements by kinds.
+   *
+   * ```javascript
+   * ...
+   * // Find all elements by desired type or types
+   * const bpmnTaskElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(ShapeBpmnElementKind.TASK);
+   * const bpmnEndEventAndPoolElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds([bpmnvisu.ShapeBpmnElementKind.EVENT_END, bpmnvisu.ShapeBpmnElementKind.POOL]);
+   * // now you can do whatever you want with the elements
+   * ...
+   * ```
+   */
   getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
     const bpmnElements: BpmnElement[] = [];
     ensureIsArray<BpmnElementKind>(bpmnKinds)

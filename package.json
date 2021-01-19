@@ -47,6 +47,7 @@
   ],
   "scripts": {
     "all": "run-s clean lint lint-check build test",
+    "api-doc": "typedoc src/api/public/api.ts",
     "clean": "rimraf build dist",
     "build": "rollup -c",
     "build-bundles": "rollup -c --config-build-bundles true",
@@ -136,6 +137,7 @@
     "tailwindcss": "^2.0.2",
     "ts-jest": "^26.4.4",
     "ts-mxgraph": "git+https://github.com/process-analytics/ts-mxgraph.git#v1.0.1",
+    "typedoc": "^0.20.16",
     "typescript": "^4.1.3"
   },
   "lint-staged": {
