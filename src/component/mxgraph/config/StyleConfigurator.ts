@@ -34,8 +34,8 @@ import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
 import { AssociationDirectionKind } from '../../../model/bpmn/internal/edge/AssociationDirectionKind';
 import { BpmnMxGraph } from '../BpmnMxGraph';
-import { mxStylesheet, StyleMap } from 'mxgraph';
 import { mxgraph } from '../initializer';
+import { mxStylesheet, StyleMap } from 'mxgraph'; // for types
 
 export default class StyleConfigurator {
   private specificFlowStyles: Map<FlowKind, (style: StyleMap) => void> = new Map([

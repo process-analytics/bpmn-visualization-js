@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import { StyleDefault } from '../StyleUtils';
-import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph'; // for types
 import { mxgraph } from '../initializer';
+import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph'; // for types
 
 export class TextAnnotationShape extends mxgraph.mxRectangleShape {
   private readonly TEXT_ANNOTATION_BORDER_LENGTH = 10;

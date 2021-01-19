@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 import { FitOptions, FitType, ZoomConfiguration } from '../options';
-import { mxgraph } from './initializer';
-import { mxMouseEvent } from 'mxgraph'; // for types
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
+import { mxgraph } from './initializer';
+import { mxMouseEvent } from 'mxgraph'; // for types
 
 export class BpmnMxGraph extends mxgraph.mxGraph {
   private cumulativeZoomFactor = 1;

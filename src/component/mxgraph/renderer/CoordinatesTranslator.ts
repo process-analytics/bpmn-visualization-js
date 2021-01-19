@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import { BpmnMxGraph } from '../BpmnMxGraph';
-import { mxCell, mxPoint } from 'mxgraph';
-import { mxgraph } from '../initializer'; // for types
+import { mxgraph } from '../initializer';
+import { mxCell, mxPoint } from 'mxgraph'; // for types
 
 export default class CoordinatesTranslator {
   constructor(readonly graph: BpmnMxGraph) {}

@@ -1,5 +1,3 @@
-import BpmnCanvas from './BpmnCanvas';
-
 /**
  * Copyright 2020 Bonitasoft S.A.
  *
@@ -15,6 +13,8 @@ import BpmnCanvas from './BpmnCanvas';
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import BpmnCanvas from './BpmnCanvas';
 
 export interface ShapeConfiguration {
   x: number;

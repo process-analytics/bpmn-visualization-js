@@ -16,8 +16,8 @@
 import { buildPaintParameter, IconPainterProvider } from './render';
 import StyleUtils from '../StyleUtils';
 import { MessageVisibleKind } from '../../../model/bpmn/internal/edge/MessageVisibleKind';
-import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph';
 import { mxgraph } from '../initializer';
+import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph'; // for types
 
 export class MessageFlowIconShape extends mxgraph.mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
