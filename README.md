@@ -79,31 +79,48 @@ We support various module formats such as:
 - [CommonJS](https://www.typescriptlang.org/docs/handbook/2/modules.html#commonjs): `dist/bpmn-visualization.cjs.js`
   
 
-⚒️ If you want to configure yourself:
+### Project usage
+
 * Install the dependency in your **package.json** file:
 ```shell script
 npm i bpmn-visualization
 ```
 
+```javascript
+import { BpmnVisualization } from 'bpmn-visualization';
+
+let bpmnContent; // your BPMN 2.0 XML content
+// initialize BpmnVisualization and load the diagram
+// 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
+const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container'});
+bpmnVisualization.load(bpmnContent);
+```
+
+You can set the BPMN content using one of the following ways:
+  * Copy/Paste directly the XML content in a variable
+  * Load it from an url, like this [example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/display-bpmn-diagram/load-remote-bpmn-diagrams/index.html)
+  * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-js/blob/master/src/demo/index.ts)
+
+
+### Browser usage
+
 * In the HTML page:
-   * bpmn-visualization script (replace {version} by the recent version)
+   * load `bpmn-visualization` (replace `{version}` by the recent version)
    * define the container that displays the BPMN diagram. Here _bpmn-container_
 ```html
     <script src="https://unpkg.com/bpmn-visualization@{version}/dist/bpmn-visualization.js"></script>
     ...
     <div id="bpmn-container"></div>
 ```
-* Define your BPMN content using one of the following ways:
-  * Copy/Paste directly the XML content in a variable
-  * Load it from a url, like this [example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/display-bpmn-diagram/load-remote-bpmn-diagrams/index.html)
-  * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-js/blob/master/src/demo/index.ts)
+* Put this Javascript snippet within the HTML page
 ```javascript
-    let bpmnContent; // your BPMN 2.0 XML content
+    let bpmnContent; // your BPMN 2.0 XML content, see tips below
     // initialize BpmnVisualization and load the diagram
-    const bpmnContainerElt = document.getElementById('bpmn-container');
-    const bpmnVisualization = new bpmnvisu.BpmnVisualization(bpmnContainerElt);
+    const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: 'bpmn-container'});
     bpmnVisualization.load(bpmnContent);
 ```
+
+### ⚒️ More
 
 💡 Want to know more about `bpmn-visualization` usage and extensibility? Have a look at the
 [__⏩ live examples site__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
