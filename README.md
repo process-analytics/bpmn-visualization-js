@@ -1,6 +1,6 @@
 <h1 align="center">BPMN Visualization</h1>
 <div align="center">
-    <p align="center"> <img title="BPMN Visualization" src="docs/users/images/diagram-example.png"></p>
+    <p align="center"> <img title="BPMN Visualization" src="docs/users/images/diagram-example.png" alt="BPMN Visualization diagram example"></p>
     <p align="center"> 
         <a href="https://npmjs.org/package/bpmn-visualization">
           <img alt="npm package" src="https://img.shields.io/npm/v/bpmn-visualization.svg?color=orange"> 
@@ -12,23 +12,24 @@
           <img alt="Live Demo" src="https://img.shields.io/badge/demo-online-blueviolet.svg"> 
         </a> 
         <a href="https://github.com/process-analytics/bpmn-visualization-js/actions">
-        <img alt="Build" src="https://github.com/process-analytics/bpmn-visualization-js/workflows/Build/badge.svg"> 
+          <img alt="Build" src="https://github.com/process-analytics/bpmn-visualization-js/workflows/Build/badge.svg"> 
         </a> 
         <a href="https://sonarcloud.io/dashboard?id=process-analytics_bpmn-visualization-js">
-        <img alt="Coverage" src="https://sonarcloud.io/api/project_badges/measure?project=process-analytics_bpmn-visualization-js&metric=coverage"> 
+          <img alt="Coverage" src="https://sonarcloud.io/api/project_badges/measure?project=process-analytics_bpmn-visualization-js&metric=coverage"
+               title="The code coverage is underestimated. It doesn't count the code that is only tested through HTML page.">
         </a>
         <a href="https://gitpod.io/#https://github.com/process-analytics/bpmn-visualization-js" target="_blank">
-        <img alt="Gitpod" src="https://img.shields.io/badge/Gitpod-ready--to--code-chartreuse?logo=gitpod"> 
+          <img alt="Gitpod" src="https://img.shields.io/badge/Gitpod-ready--to--code-chartreuse?logo=gitpod"> 
         </a> 
         <br>
         <a href="CONTRIBUTING.md">
-        <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square"> 
+          <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square"> 
         </a> 
         <a href="CODE_OF_CONDUCT.md">
-        <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg"> 
+          <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg"> 
         </a> 
         <a href="LICENSE">
-        <img alt="License" src="https://img.shields.io/github/license/process-analytics/bpmn-visualization-js?color=blue"> 
+          <img alt="License" src="https://img.shields.io/github/license/process-analytics/bpmn-visualization-js?color=blue"> 
         </a>
     </p>
 </div>  
