@@ -30,9 +30,6 @@ import json from '@rollup/plugin-json';
 
 import parseArgs from 'minimist';
 
-import * as fs from 'fs';
-import path from 'path';
-
 const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
 const demoMode = process.env.demoMode;
