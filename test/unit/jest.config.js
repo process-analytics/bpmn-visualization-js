@@ -16,11 +16,11 @@
 module.exports = {
   rootDir: '../..',
   roots: ['./test/unit', './src'],
-  moduleNameMapper: {
-    // mock files that jest doesn't support like CSS and SVG files
-    '\\.css$': './../module-mock.js',
-    '\\.svg$': './../module-mock.js',
-  },
+  // moduleNameMapper: {
+  //   // mock files that jest doesn't support like CSS and SVG files
+  //   '\\.css$': './../module-mock.js',
+  //   '\\.svg$': './../module-mock.js',
+  // },
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
   transform: {
