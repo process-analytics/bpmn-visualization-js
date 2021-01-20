@@ -47,7 +47,8 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./api/
+          publish_dir: ./
+          destination_dir: ./api/
           keep_files: true
           user_name: 'process-analytics-bot'
           user_email: '62586190+process-analytics-bot@users.noreply.github.com'

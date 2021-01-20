@@ -1,7 +1,7 @@
 {
   "name": "BpmnVisualization API Documentation",
   "readme": "none",
-  "out": "./api/public",
+  "out": "./build/docs/api",
   "excludeInternal": true,
   "excludeExternals": true,
   "excludePrivate": true,
