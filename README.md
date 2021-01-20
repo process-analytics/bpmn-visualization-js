@@ -16,8 +16,8 @@
         </a> 
         <a href="https://sonarcloud.io/dashboard?id=process-analytics_bpmn-visualization-js">
           <img alt="Coverage" src="https://sonarcloud.io/api/project_badges/measure?project=process-analytics_bpmn-visualization-js&metric=coverage"
-               title="The code coverage is underestimated: it doesn't count the code that is only tested through HTML page.">
-        </a><a href="#code_coverage">*️⃣</a>
+               title="The code coverage is underestimated. It doesn't count the code that is only tested through HTML page.">
+        </a>
         <a href="https://gitpod.io/#https://github.com/process-analytics/bpmn-visualization-js" target="_blank">
           <img alt="Gitpod" src="https://img.shields.io/badge/Gitpod-ready--to--code-chartreuse?logo=gitpod"> 
         </a> 
@@ -143,11 +143,6 @@ for more details:
 [![statically.io logo](https://statically.io/icons/icon-96x96.png "statically.io")](https://statically.io)
 
 **[statically.io](https://statically.io)** (<kbd>demo</kbd> and <kbd>examples</kbd> live environments)
-
-
-<a name="code_coverage">*️⃣</a> The value of the code coverage is underestimated because of the source map limitation. \
-It doesn't count the code that is only tested through HTML page, like MxGraph. \
-The related issue is [[INFRA] Improve code coverage measure](https://github.com/process-analytics/bpmn-visualization-js/issues/924).
 
 
 [demo-live-environment]: https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/index.html
