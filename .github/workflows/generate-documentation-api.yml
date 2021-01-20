@@ -1,0 +1,53 @@
+name: Generate Documentation API
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'src/api/public/api.ts'
+      - '.github/workflows/generate-documentation-api.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'src/api/public/api.ts'
+      - '.github/workflows/generate-documentation-api.yml'
+
+jobs:
+  generate_doc_api:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Install dependencies
+        run: npm ci
+      - name: Build docs
+        run: npm run api-doc
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: documentation-api-${{github.sha}}
+          path: build/docs/api
+
+  push_doc_api_to_gh_pages:
+    # only when 'on push to master'
+    if: github.event_name == 'push' &&  github.event.ref == 'refs/heads/master'
+    runs-on: ubuntu-20.04
+    needs: generate_doc_api
+    steps:
+      - name: Download
+        uses: actions/download-artifact@v2
+        with:
+          name: documentation-api-${{github.sha}}
+      - name: Push to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./api/
+          keep_files: true
+          user_name: 'process-analytics-bot'
+          user_email: '62586190+process-analytics-bot@users.noreply.github.com'
