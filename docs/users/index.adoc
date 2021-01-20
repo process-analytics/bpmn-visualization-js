@@ -19,6 +19,8 @@
 :favicon:
 // enable font-awesome icons
 :icons: font
+// enable link attributes
+:linkattrs:
 
 include::intro.adoc[]
 
