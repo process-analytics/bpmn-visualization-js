@@ -15,31 +15,29 @@
  */
 module.exports = {
   rootDir: '../..',
-  roots: ['./test/e2e', './src'],
-  preset: 'jest-puppeteer',
+  roots: ['./test/integration', './src'],
+  // moduleNameMapper: {
+  //   // mock files that jest doesn't support like CSS and SVG files
+  //   '\\.css$': './../module-mock.js',
+  //   '\\.svg$': './../module-mock.js',
+  // },
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
-  testTimeout: 200000,
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
-  testEnvironment: 'jest-environment-puppeteer-jsdom',
-  globalSetup: 'jest-environment-puppeteer-jsdom/setup',
-  globalTeardown: 'jest-environment-puppeteer-jsdom/teardown',
   collectCoverageFrom: ['**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static', 'src/model'],
   coverageReporters: ['lcov', 'text-summary'],
-  coverageDirectory: 'build/test-report/e2e',
-  setupFiles: ['./test/e2e/config/copy.bpmn.diagram.ts'],
-  // jest-image-snapshot configuration doesn't work with setupFiles, fix with setupFilesAfterEnv: see https://github.com/testing-library/jest-dom/issues/122#issuecomment-650520461
-  setupFilesAfterEnv: ['./test/e2e/config/jest.image.ts'],
+  coverageDirectory: 'build/test-report/integration',
+  setupFiles: ['./test/integration/jest.globals.ts'],
   reporters: [
     'default',
     [
       'jest-html-reporter',
       {
-        pageTitle: 'bpmn-visualization E2E Test Report',
-        outputPath: 'build/test-report/e2e/index.html',
+        pageTitle: 'bpmn-visualization Integration Test Report',
+        outputPath: 'build/test-report/integration/index.html',
         includeFailureMsg: true,
         includeSuiteFailure: true,
       },
@@ -47,7 +45,7 @@ module.exports = {
     [
       'jest-sonar',
       {
-        outputDirectory: 'build/test-report/e2e',
+        outputDirectory: 'build/test-report/integration',
       },
     ],
   ],
