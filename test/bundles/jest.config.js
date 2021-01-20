@@ -23,9 +23,6 @@ module.exports = {
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
-  testEnvironment: 'jest-environment-puppeteer',
-  globalSetup: 'jest-environment-puppeteer/setup',
-  globalTeardown: 'jest-environment-puppeteer/teardown',
   reporters: [
     'default',
     [
