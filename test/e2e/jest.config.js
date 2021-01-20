@@ -23,9 +23,6 @@ module.exports = {
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
-  testEnvironment: 'jest-environment-puppeteer-jsdom',
-  globalSetup: 'jest-environment-puppeteer-jsdom/setup',
-  globalTeardown: 'jest-environment-puppeteer-jsdom/teardown',
   collectCoverageFrom: ['**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static', 'src/model'],
   coverageReporters: ['lcov', 'text-summary'],
