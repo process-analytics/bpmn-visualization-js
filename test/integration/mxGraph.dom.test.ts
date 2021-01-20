@@ -16,7 +16,7 @@
 import { readFileSync } from '../helpers/file-helper';
 import { BpmnElement, BpmnVisualization, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
 import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
-import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask, HtmlElementLookup } from './helpers/visu/html-utils';
+import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask, HtmlElementLookup } from './helpers/html-utils';
 
 const bpmnContainerId = 'bpmn-visualization-container';
 const bpmnVisualization = initializeBpmnVisualization();
