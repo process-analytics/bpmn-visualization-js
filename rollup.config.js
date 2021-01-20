@@ -62,8 +62,7 @@ if (!buildBundles) {
     },
   ];
 } else {
-  // const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjs(), json()];
-  const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjsPlugin(), json()];
+  const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjs(), json()];
   const outputIIFE = {
     file: pkg.browser.replace('.min.js', '.js'),
     name: 'bpmnvisu',
@@ -138,17 +137,8 @@ function withMinification(plugins) {
   ];
 }
 
-function commonjsPlugin() {
-  return commonjs({
-    namedExports: {
-      'node_modules/mxgraph/javascript/dist/build.js,': ['mxgraph'],
-    },
-  });
-}
-
 function pluginsForDevelopment() {
-  // const plugins = [typescriptPlugin(), resolve(), commonjs(), json()];
-  const plugins = [typescriptPlugin(), resolve(), commonjsPlugin(), json()];
+  const plugins = [typescriptPlugin(), resolve(), commonjs(), json()];
 
   // Copy static resources
   if (devMode || demoMode) {
