@@ -144,7 +144,6 @@ function pluginsForDevelopment() {
     const copyTargets = [];
     copyTargets.push({ src: 'src/*.html', dest: `${outputDir}/` });
     copyTargets.push({ src: 'src/static', dest: outputDir });
-    copyTargets.push({ src: 'node_modules/mxgraph/javascript/mxClient.min.js', dest: `${outputDir}/static/js/` });
     let copyPlugin;
     if (devLiveReloadMode) {
       copyPlugin = copyWatch({
@@ -177,8 +176,4 @@ function pluginsForDevelopment() {
   }
 
   return plugins;
-}
-
-function readFileSync(relPathToSourceFile, encoding = 'utf8') {
-  return fs.readFileSync(path.join(__dirname, relPathToSourceFile), encoding);
 }
