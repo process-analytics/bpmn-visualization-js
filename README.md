@@ -1,6 +1,6 @@
 <h1 align="center">BPMN Visualization</h1>
 <div align="center">
-    <p align="center"> <img title="BPMN Visualization" src="docs/users/images/diagram-example.png"></p>
+    <p align="center"> <img title="BPMN Visualization" src="docs/users/images/diagram-example.png" alt="BPMN Visualization diagram example"></p>
     <p align="center"> 
         <a href="https://npmjs.org/package/bpmn-visualization">
           <img alt="npm package" src="https://img.shields.io/npm/v/bpmn-visualization.svg?color=orange"> 
@@ -12,23 +12,24 @@
           <img alt="Live Demo" src="https://img.shields.io/badge/demo-online-blueviolet.svg"> 
         </a> 
         <a href="https://github.com/process-analytics/bpmn-visualization-js/actions">
-        <img alt="Build" src="https://github.com/process-analytics/bpmn-visualization-js/workflows/Build/badge.svg"> 
+          <img alt="Build" src="https://github.com/process-analytics/bpmn-visualization-js/workflows/Build/badge.svg"> 
         </a> 
         <a href="https://sonarcloud.io/dashboard?id=process-analytics_bpmn-visualization-js">
-        <img alt="Coverage" src="https://sonarcloud.io/api/project_badges/measure?project=process-analytics_bpmn-visualization-js&metric=coverage"> 
+          <img alt="Coverage" src="https://sonarcloud.io/api/project_badges/measure?project=process-analytics_bpmn-visualization-js&metric=coverage"
+               title="The code coverage is underestimated. It doesn't count the code that is only tested through HTML page.">
         </a>
         <a href="https://gitpod.io/#https://github.com/process-analytics/bpmn-visualization-js" target="_blank">
-        <img alt="Gitpod" src="https://img.shields.io/badge/Gitpod-ready--to--code-chartreuse?logo=gitpod"> 
+          <img alt="Gitpod" src="https://img.shields.io/badge/Gitpod-ready--to--code-chartreuse?logo=gitpod"> 
         </a> 
         <br>
         <a href="CONTRIBUTING.md">
-        <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square"> 
+          <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square"> 
         </a> 
         <a href="CODE_OF_CONDUCT.md">
-        <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg"> 
+          <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg"> 
         </a> 
         <a href="LICENSE">
-        <img alt="License" src="https://img.shields.io/github/license/process-analytics/bpmn-visualization-js?color=blue"> 
+          <img alt="License" src="https://img.shields.io/github/license/process-analytics/bpmn-visualization-js?color=blue"> 
         </a>
     </p>
 </div>  
@@ -79,31 +80,48 @@ We support various module formats such as:
 - [CommonJS](https://www.typescriptlang.org/docs/handbook/2/modules.html#commonjs): `dist/bpmn-visualization.cjs.js`
   
 
-⚒️ If you want to configure yourself:
+### Project usage
+
 * Install the dependency in your **package.json** file:
 ```shell script
 npm i bpmn-visualization
 ```
 
+```javascript
+import { BpmnVisualization } from 'bpmn-visualization';
+
+let bpmnContent; // your BPMN 2.0 XML content
+// initialize BpmnVisualization and load the diagram
+// 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
+const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container'});
+bpmnVisualization.load(bpmnContent);
+```
+
+You can set the BPMN content using one of the following ways:
+  * Copy/Paste directly the XML content in a variable
+  * Load it from an url, like this [example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/display-bpmn-diagram/load-remote-bpmn-diagrams/index.html)
+  * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-js/blob/master/src/demo/index.ts)
+
+
+### Browser usage
+
 * In the HTML page:
-   * bpmn-visualization script (replace {version} by the recent version)
-   * define the container that displays the BPMN diagram. Here _bpmn-container_
+   * Load `bpmn-visualization` (replace `{version}` by the recent version)
+   * Define the container that displays the BPMN diagram, here _bpmn-container_
 ```html
     <script src="https://unpkg.com/bpmn-visualization@{version}/dist/bpmn-visualization.js"></script>
     ...
     <div id="bpmn-container"></div>
 ```
-* Define your BPMN content using one of the following ways:
-  * Copy/Paste directly the XML content in a variable
-  * Load it from a url, like this [example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/display-bpmn-diagram/load-remote-bpmn-diagrams/index.html)
-  * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-js/blob/master/src/demo/index.ts)
+* Put this Javascript snippet within the HTML page
 ```javascript
-    let bpmnContent; // your BPMN 2.0 XML content
+    let bpmnContent; // your BPMN 2.0 XML content, see tips below
     // initialize BpmnVisualization and load the diagram
-    const bpmnContainerElt = document.getElementById('bpmn-container');
-    const bpmnVisualization = new bpmnvisu.BpmnVisualization(bpmnContainerElt);
+    const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: 'bpmn-container'});
     bpmnVisualization.load(bpmnContent);
 ```
+
+### ⚒️ More
 
 💡 Want to know more about `bpmn-visualization` usage and extensibility? Have a look at the
 [__⏩ live examples site__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
