@@ -68,8 +68,6 @@ if (!buildBundles) {
   // const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjs(), json()];
   const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjsPlugin(), json()];
   const outputIIFE = {
-    // hack to have the mxGraph configuration prior the load of the mxGraph lib
-    banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
     file: pkg.browser.replace('.min.js', '.js'),
     name: 'bpmnvisu',
     format: 'iife',
