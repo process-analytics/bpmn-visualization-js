@@ -75,24 +75,43 @@ if (!buildBundles) {
     output: outputIIFE,
     plugins: pluginsBundleIIFE,
   };
-  // const configIIFEMinified = {
-  //   input: libInput,
-  //   output: {
-  //     ...outputIIFE,
-  //     file: pkg.browser,
-  //   },
-  //   plugins: withMinification(pluginsBundleIIFE),
-  // };
-  // const configBundles = {
-  //   ...configBundlesMinified,
-  //   plugins: pluginsBundles,
-  //   output: [
-  //     { file: pkg.module, format: 'es' },
-  //     { file: pkg.main, format: 'cjs' },
-  //   ],
-  // };
-  rollupConfigs = [configIIFE];
-  // rollupConfigs = [configIIFE, configIIFEMinified, configBundles, configBundlesMinified];
+  const configIIFEMinified = {
+    input: libInput,
+    output: {
+      ...outputIIFE,
+      file: pkg.browser,
+    },
+    plugins: withMinification(pluginsBundleIIFE),
+  };
+
+  // ensure we do not bundle dependencies
+  const pluginsBundles = [typescriptPlugin(), json(), autoExternal()];
+
+  const configBundlesMinified = {
+    input: libInput,
+    output: [
+      {
+        file: pkg.module.replace('.js', '.min.js'),
+        format: 'es',
+      },
+      {
+        file: pkg.main.replace('.js', '.min.js'),
+        format: 'cjs',
+      },
+    ],
+    // except these 'custom specified' dependencies, rest of them is treated by the plugin: autoExternal
+    external: ['entities/lib/decode', 'fast-xml-parser/src/parser'],
+    plugins: withMinification(pluginsBundles),
+  };
+  const configBundles = {
+    ...configBundlesMinified,
+    plugins: pluginsBundles,
+    output: [
+      { file: pkg.module, format: 'es' },
+      { file: pkg.main, format: 'cjs' },
+    ],
+  };
+  rollupConfigs = [configIIFE, configIIFEMinified, configBundles, configBundlesMinified];
 }
 
 export default rollupConfigs;
