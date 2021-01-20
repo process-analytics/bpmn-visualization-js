@@ -47,7 +47,6 @@
   ],
   "scripts": {
     "all": "run-s clean lint lint-check build test",
-    "api-doc": "typedoc src/api/public/api.ts",
     "clean": "rimraf build dist",
     "build": "rollup -c",
     "build-bundles": "rollup -c --config-build-bundles true",
@@ -57,7 +56,9 @@
     "demo:clean": "rimraf build/demo",
     "demo:css": "postcss src/static/css/styles.css -o src/static/css/tailwind.css",
     "demo:build": "rollup -c --silent --environment demoMode:true",
-    "docs": "node scripts/docs.js",
+    "docs": "run-s user-docs api-docs",
+    "user-docs": "node scripts/docs.js",
+    "api-docs": "typedoc src/api/public/api.ts",
     "start": "rollup -c --silent --environment devMode:true",
     "watch": "rollup -cw --environment devLiveReloadMode:true",
     "watch:css": "chokidar \"src/static/css/styles.css\" \"src/*.html\" --command \"npm run demo:css\" --verbose",
