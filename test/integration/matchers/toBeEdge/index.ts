@@ -20,6 +20,7 @@ import { FlowKind } from '../../../../src/model/bpmn/internal/edge/FlowKind';
 import { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement, getDefaultParentId } from '../../helpers/model-expect';
 import { MessageVisibleKind } from '../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { StyleIdentifier } from '../../../../src/component/mxgraph/StyleUtils';
+import { mxgraph } from '../../../../src/component/mxgraph/initializer';
 
 function buildExpectedStateStyle(expectedModel: ExpectedEdgeModelElement): ExpectedStateStyle {
   const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
@@ -79,7 +80,7 @@ export function toBeSequenceFlow(this: MatcherContext, received: string, expecte
 }
 
 export function toBeMessageFlow(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
-  return buildEdgeMatcher('toBeMessageFlow', this, received, { ...expected, kind: FlowKind.MESSAGE_FLOW, startArrow: mxConstants.ARROW_OVAL, endArrow: 'blockThin' });
+  return buildEdgeMatcher('toBeMessageFlow', this, received, { ...expected, kind: FlowKind.MESSAGE_FLOW, startArrow: mxgraph.mxConstants.ARROW_OVAL, endArrow: 'blockThin' });
 }
 
 export function toBeAssociationFlow(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
