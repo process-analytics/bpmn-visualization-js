@@ -14,23 +14,7 @@
  * limitations under the License.
  */
 export class CssRegistry {
-  private static instance: CssRegistry;
-
   private classNamesByBPMNId = new Map<string, string[]>();
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor() {}
-
-  /**
-   * The static method that controls the access to the singleton instance.
-   */
-  public static getInstance(): CssRegistry {
-    if (!CssRegistry.instance) {
-      CssRegistry.instance = new CssRegistry();
-    }
-
-    return CssRegistry.instance;
-  }
 
   getClassNames(bpmnElementId: string): string[] {
     return this.classNamesByBPMNId.get(bpmnElementId) || [];

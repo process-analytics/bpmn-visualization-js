@@ -21,7 +21,7 @@ import { ShapeBpmnElementKind } from '../../model/bpmn/internal/shape';
 import { CssRegistry } from './css-registry';
 
 export function newBpmnElementsRegistry(graph: BpmnMxGraph): BpmnElementsRegistry {
-  return new BpmnElementsRegistry(new BpmnModelRegistry(graph), new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), CssRegistry.getInstance());
+  return new BpmnElementsRegistry(new BpmnModelRegistry(graph), new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry());
 }
 
 /**
@@ -108,7 +108,7 @@ export class BpmnElementsRegistry {
     const arrayClassNames = ensureIsArray<string>(classNames);
     ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
       this.cssRegistry.addClassNames(bpmnElementId, arrayClassNames);
-      this.bpmnModelRegistry.refreshCell(bpmnElementId);
+      this.bpmnModelRegistry.refreshCell(bpmnElementId, this.cssRegistry);
     });
   }
 }
@@ -142,13 +142,13 @@ class BpmnModelRegistry {
     return { id: bpmnElementId, name: mxCell.value, isShape: mxCell.isVertex(), kind: extractBpmnKindFromStyle(mxCell) };
   }
 
-  refreshCell(bpmnElementId: string): void {
+  refreshCell(bpmnElementId: string, cssRegistry: CssRegistry): void {
     const model = this.graph.getModel();
     const mxCell = model.getCell(bpmnElementId);
     if (mxCell) {
       const view = this.graph.getView();
       const state = view.getState(mxCell);
-      state.style['bpmnCustomCSSClasses'] = CssRegistry.getInstance().getClassNames(bpmnElementId).join(' ');
+      state.style['bpmnCustomCSSClasses'] = cssRegistry.getClassNames(bpmnElementId).join(' ');
       // view.updateCellState(state);
       state.shape.apply(state);
       state.shape.redraw();
