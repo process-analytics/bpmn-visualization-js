@@ -42,7 +42,7 @@ export class BpmnPuppeteer {
 
   async expectEvent(bpmnId: string, expectedText: string, isStartEvent = true): Promise<void> {
     const svgElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.element(bpmnId));
-    await expectClassName(svgElementHandle, isStartEvent ? 'bpmn-start-event' : 'bpmn-end-event');
+    await expectClassAttribute(svgElementHandle, isStartEvent ? 'bpmn-start-event' : 'bpmn-end-event');
     await expectFirstChildNodeName(svgElementHandle, 'ellipse');
     await this.expectFirstChildAttribute(svgElementHandle, 'rx', '18');
     await this.expectFirstChildAttribute(svgElementHandle, 'ry', '18');
@@ -60,7 +60,7 @@ export class BpmnPuppeteer {
 
   async expectTask(bpmnId: string, expectedText: string): Promise<void> {
     const svgElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.element(bpmnId));
-    await expectClassName(svgElementHandle, 'bpmn-task');
+    await expectClassAttribute(svgElementHandle, 'bpmn-task');
     await expectFirstChildNodeName(svgElementHandle, 'rect');
     await this.expectFirstChildAttribute(svgElementHandle, 'width', '100');
     await this.expectFirstChildAttribute(svgElementHandle, 'height', '80');
@@ -69,14 +69,14 @@ export class BpmnPuppeteer {
 
   async expectSequenceFlow(bpmnId: string, expectedText?: string): Promise<void> {
     const svgElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.element(bpmnId));
-    await expectClassName(svgElementHandle, 'bpmn-sequence-flow');
+    await expectClassAttribute(svgElementHandle, 'bpmn-sequence-flow');
     await expectFirstChildNodeName(svgElementHandle, 'path');
     await this.expectLabel(bpmnId, expectedText);
   }
 }
 
-async function expectClassName(svgElementHandle: ElementHandle, className: string): Promise<void> {
-  expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe(className);
+async function expectClassAttribute(svgElementHandle: ElementHandle, value: string): Promise<void> {
+  expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe(value);
 }
 
 async function expectFirstChildNodeName(svgElementHandle: ElementHandle, nodeName: string): Promise<void> {
