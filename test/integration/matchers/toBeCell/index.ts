@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { buildCellMatcher, ExpectedCell, getCell } from '../matcherUtils';
+import { buildCellMatcher, ExpectedCell, getCell } from '../matcher-utils';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import { ExpectedCellWithGeometry, getDefaultParentId } from '../../helpers/model-expect';
