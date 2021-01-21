@@ -9,10 +9,11 @@ You will quickly have an overview of the `bpmn-visualization` capabilities.
 
 === Usage
 
-`bpmn-visualization` can be directly used in HTML pages or integrated in Javascript and TypeScript applications. It is distributed as a https://npmjs.org/package/bpmn-visualization:[npm package]
+`bpmn-visualization` can be directly used in HTML pages or integrated in Javascript and TypeScript applications. It is distributed as a https://npmjs.org/package/bpmn-visualization[npm package]
 in various bundle formats.
 
-The API documentation is provided directly in the package thanks to the TypeScript declaration files that can used in IDE for code assist.
+The API documentation is provided directly in the package thanks to the TypeScript declaration files that can be used in IDE for code assist.
+There is also a html version which can be previewed link:./api/index.html[here, window="_blank"].
 
 For more technical details and how-to, go to the https://github.com/process-analytics/bpmn-visualization-examples/[bpmn-visualization-examples]
 repository.

@@ -56,7 +56,9 @@
     "demo:clean": "rimraf build/demo",
     "demo:css": "postcss src/static/css/styles.css -o src/static/css/tailwind.css",
     "demo:build": "rollup -c --silent --environment demoMode:true",
-    "docs": "node scripts/docs.js",
+    "docs": "run-s user-docs api-docs",
+    "user-docs": "node scripts/docs.js",
+    "api-docs": "typedoc src/api/public/api.ts",
     "start": "rollup -c --silent --environment devMode:true",
     "watch": "rollup -cw --environment devLiveReloadMode:true",
     "watch:css": "chokidar \"src/static/css/styles.css\" \"src/*.html\" --command \"npm run demo:css\" --verbose",
@@ -136,6 +138,7 @@
     "tailwindcss": "^2.0.2",
     "ts-jest": "^26.4.4",
     "ts-mxgraph": "git+https://github.com/process-analytics/ts-mxgraph.git#v1.0.1",
+    "typedoc": "^0.20.16",
     "typescript": "^4.1.3"
   },
   "lint-staged": {
