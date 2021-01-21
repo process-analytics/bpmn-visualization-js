@@ -19,7 +19,7 @@ module.exports = {
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
   transform: {
-    '^.+\\.ts?$': 'ts-jest',
+    '^.+\\.ts?$': ['ts-jest', { useESM: true }],
   },
   collectCoverageFrom: ['**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static', 'src/model'],

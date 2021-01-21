@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as mx from 'mxgraph';
+import factory, { mxGraphExportObject } from 'mxgraph';
 
 export const mxgraph = initialize();
 
-function initialize(): mx.mxGraphExportObject {
+function initialize(): mxGraphExportObject {
   /* eslint-disable @typescript-eslint/no-explicit-any */
   // set options globally, as it is not working when passing options to the factory (https://github.com/jgraph/mxgraph/issues/479)
   (window as any)['mxLoadResources'] = false;
@@ -28,7 +28,7 @@ function initialize(): mx.mxGraphExportObject {
   /* eslint-enable @typescript-eslint/no-explicit-any */
 
   //return factory({});
-  const mxgraphLib = mx.default({});
+  const mxgraphLib = factory({});
   // eslint-disable-next-line no-console
   console.info(`mxGraph ${mxgraphLib.mxClient.VERSION} initialized`);
   return mxgraphLib;
