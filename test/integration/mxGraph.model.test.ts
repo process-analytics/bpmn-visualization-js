@@ -18,7 +18,7 @@ import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlo
 import { MarkerIdentifier } from '../../src/bpmn-visualization';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { readFileSync } from '../helpers/file-helper';
-import { bpmnVisualization, ExpectedShapeModelElement } from './ExpectModelUtils';
+import { bpmnVisualization, ExpectedShapeModelElement } from './helpers/model-expect';
 
 describe('mxGraph model', () => {
   it('bpmn elements should be available in the mxGraph model', async () => {

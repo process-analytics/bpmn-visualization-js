@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/internal/shape';
-import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
-import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
-import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
-import BpmnVisualization from '../../src/component/BpmnVisualization';
+import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../src/model/bpmn/internal/shape';
+import { FlowKind } from '../../../src/model/bpmn/internal/edge/FlowKind';
+import { MessageVisibleKind } from '../../../src/model/bpmn/internal/edge/MessageVisibleKind';
+import { SequenceFlowKind } from '../../../src/model/bpmn/internal/edge/SequenceFlowKind';
+import BpmnVisualization from '../../../src/component/BpmnVisualization';
 import {
   toBeCell,
   toBeCellWithParentAndGeometry,
@@ -43,7 +43,7 @@ import {
   toBeSubProcess,
   toBePool,
   toBeLane,
-} from './matchers';
+} from '../matchers';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

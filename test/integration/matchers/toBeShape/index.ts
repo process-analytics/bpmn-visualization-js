@@ -24,7 +24,7 @@ import {
   ExpectedStartEventModelElement,
   ExpectedSubProcessModelElement,
   getDefaultParentId,
-} from '../../ExpectModelUtils';
+} from '../../helpers/model-expect';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal/shape';
 
 function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): ExpectedStateStyle {

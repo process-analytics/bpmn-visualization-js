@@ -17,7 +17,7 @@ import { ExpectedStateStyle, ExpectedCell, buildCommonExpectedStateStyle, buildC
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import { FlowKind } from '../../../../src/model/bpmn/internal/edge/FlowKind';
-import { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement, getDefaultParentId } from '../../ExpectModelUtils';
+import { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement, getDefaultParentId } from '../../helpers/model-expect';
 import { MessageVisibleKind } from '../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { StyleIdentifier } from '../../../../src/component/mxgraph/StyleUtils';
 
