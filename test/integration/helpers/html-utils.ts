@@ -99,7 +99,7 @@ export function expectSvgSequenceFlow(svgGroupElement: HTMLElement): void {
   expectSvgFirstChildNodeName(svgGroupElement, 'path');
 }
 
-// TODO duplication with puppeteer expects in mxGraph.view.test.ts
+// TODO duplication with puppeteer expects in generated.svg.test.ts
 // we expect a SVGGElement as HTMLElement parameter
 function expectSvgFirstChildNodeName(svgGroupElement: HTMLElement, name: string): void {
   expect(svgGroupElement).not.toBeUndefined();
