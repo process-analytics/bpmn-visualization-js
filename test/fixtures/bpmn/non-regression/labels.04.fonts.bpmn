@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0g0wkw3" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="8.0.1">
+  <bpmn:process id="Process_0jsrcqv" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1omufvy" name="bold">
+      <bpmn:outgoing>Flow_0zxbqa5</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Activity_116eaag" name="bold italic">
+      <bpmn:incoming>Flow_0zxbqa5</bpmn:incoming>
+      <bpmn:outgoing>Flow_07vj0qd</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0zxbqa5" name="italic" sourceRef="StartEvent_1omufvy" targetRef="Activity_116eaag" />
+    <bpmn:endEvent id="Event_0445f4y" name="italic">
+      <bpmn:incoming>Flow_1io36a6</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_07vj0qd" name="Custom font" sourceRef="Activity_116eaag" targetRef="Activity_1rs00lc" />
+    <bpmn:sequenceFlow id="Flow_1io36a6" name="strike through" sourceRef="Activity_14ka1l2" targetRef="Event_0445f4y" />
+    <bpmn:task id="Activity_1rs00lc" name="underline">
+      <bpmn:incoming>Flow_07vj0qd</bpmn:incoming>
+      <bpmn:outgoing>Flow_12vt18t</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Activity_14ka1l2" name="Custom font">
+      <bpmn:incoming>Flow_12vt18t</bpmn:incoming>
+      <bpmn:outgoing>Flow_1io36a6</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_12vt18t" name="bold" sourceRef="Activity_1rs00lc" targetRef="Activity_14ka1l2" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0jsrcqv">
+      <bpmndi:BPMNEdge id="Flow_12vt18t_di" bpmnElement="Flow_12vt18t">
+        <di:waypoint x="570" y="160" />
+        <di:waypoint x="570" y="280" />
+        <bpmndi:BPMNLabel labelStyle="BPMNLabelStyle_bold">
+          <dc:Bounds x="529" y="213" width="21" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1io36a6_di" bpmnElement="Flow_1io36a6">
+        <di:waypoint x="520" y="320" />
+        <di:waypoint x="368" y="320" />
+        <bpmndi:BPMNLabel labelStyle="BPMNLabelStyle_strikeThrough">
+          <dc:Bounds x="436" y="345" width="67" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07vj0qd_di" bpmnElement="Flow_07vj0qd">
+        <di:waypoint x="410" y="120" />
+        <di:waypoint x="520" y="120" />
+        <bpmndi:BPMNLabel labelStyle="BPMNLabelStyle_custom_font-family_larger">
+          <dc:Bounds x="440" y="93" width="60" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0zxbqa5_di" bpmnElement="Flow_0zxbqa5">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="310" y="120" />
+        <bpmndi:BPMNLabel labelStyle="BPMNLabelStyle_italic">
+          <dc:Bounds x="239" y="127" width="23" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1omufvy">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel labelStyle="BPMNLabelStyle_bold">
+          <dc:Bounds x="160" y="145" width="21" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_116eaag_di" bpmnElement="Activity_116eaag">
+        <dc:Bounds x="310" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel labelStyle="BPMNLabelStyle_bold_italic" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1rs00lc_di" bpmnElement="Activity_1rs00lc">
+        <dc:Bounds x="520" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel labelStyle="BPMNLabelStyle_underline" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14ka1l2_di" bpmnElement="Activity_14ka1l2">
+        <dc:Bounds x="520" y="280" width="100" height="80" />
+        <bpmndi:BPMNLabel labelStyle="BPMNLabelStyle_custom_font-family_smaller" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0445f4y_di" bpmnElement="Event_0445f4y">
+        <dc:Bounds x="332" y="302" width="36" height="36" />
+        <bpmndi:BPMNLabel labelStyle="BPMNLabelStyle_italic">
+          <dc:Bounds x="339" y="345" width="23" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+    <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_bold">
+      <dc:Font isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" />
+    </bpmndi:BPMNLabelStyle>
+    <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_bold_italic">
+      <dc:Font isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" />
+    </bpmndi:BPMNLabelStyle>
+    <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_italic">
+      <dc:Font isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false" />
+    </bpmndi:BPMNLabelStyle>
+    <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_strikeThrough">
+      <dc:Font isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="true" />
+    </bpmndi:BPMNLabelStyle>
+    <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_underline">
+      <dc:Font isBold="false" isItalic="false" isUnderline="true" isStrikeThrough="false" />
+    </bpmndi:BPMNLabelStyle>
+    <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_custom_font-family_smaller">
+      <dc:Font name="Times" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" />
+    </bpmndi:BPMNLabelStyle>
+    <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_custom_font-family_larger">
+      <dc:Font name="Times" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" />
+    </bpmndi:BPMNLabelStyle>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

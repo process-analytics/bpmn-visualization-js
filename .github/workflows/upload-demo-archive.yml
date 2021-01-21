@@ -8,8 +8,10 @@ on:
       -  v*
     paths-ignore:
       - '.github/workflows/build.yml'
+      - '.github/workflows/codeql-analysis.yml'
       - '.github/workflows/fill-gh-draft-release.yml'
       - '.github/workflows/generate-documentation.yml'
+      - '.github/workflows/release.yml'
       - '.gitignore'
       - 'docs/**'
       - '*.md'
@@ -19,8 +21,10 @@ on:
       - master
     paths-ignore:
       - '.github/workflows/build.yml'
+      - '.github/workflows/codeql-analysis.yml'
       - '.github/workflows/fill-gh-draft-release.yml'
       - '.github/workflows/generate-documentation.yml'
+      - '.github/workflows/release.yml'
       - '.gitignore'
       - 'docs/**'
       - '*.md'
@@ -35,10 +39,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - name: Verify node, npm version
-        run: |
-          node --version
-          npm --version
       - name: Install dependencies
         run: npm ci
       - name: Build Demo
