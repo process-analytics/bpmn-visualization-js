@@ -13,7 +13,7 @@ You will quickly have an overview of the `bpmn-visualization` capabilities.
 in various bundle formats.
 
 The API documentation is provided directly in the package thanks to the TypeScript declaration files that can be used in IDE for code assist.
-There is also a html version of API which can be previewed https://process-analytics.github.io/bpmn-visualization-js/api/index.html[here, window="_blank"].
+There is also a html version of API which can be previewed link:./api/index.html[here, window="_blank"].
 
 For more technical details and how-to, go to the https://github.com/process-analytics/bpmn-visualization-examples/[bpmn-visualization-examples]
 repository.

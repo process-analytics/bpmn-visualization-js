@@ -72,7 +72,7 @@ export class BpmnElementsRegistry {
    * ```javascript
    * ...
    * // Find all elements by desired type or types
-   * const bpmnTaskElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(ShapeBpmnElementKind.TASK);
+   * const bpmnTaskElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(bpmnvisu.ShapeBpmnElementKind.TASK);
    * const bpmnEndEventAndPoolElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds([bpmnvisu.ShapeBpmnElementKind.EVENT_END, bpmnvisu.ShapeBpmnElementKind.POOL]);
    * // now you can do whatever you want with the elements
    * ...

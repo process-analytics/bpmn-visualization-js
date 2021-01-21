@@ -4,6 +4,5 @@
   "out": "./build/docs/api",
   "excludeInternal": true,
   "excludeExternals": true,
-  "excludePrivate": true,
-  "excludeProtected": true
+  "excludePrivate": true
 }
