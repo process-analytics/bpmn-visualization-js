@@ -1,0 +1,238 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>BpmnElementsRegistry | BpmnVisualization API Documentation</title>
+	<meta name="description" content="Documentation for BpmnVisualization API Documentation">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">BpmnVisualization API Documentation</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../index.html">BpmnVisualization API Documentation</a>
+				</li>
+				<li>
+					<a href="bpmnelementsregistry.html">BpmnElementsRegistry</a>
+				</li>
+			</ul>
+			<h1>Class BpmnElementsRegistry</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<dl class="tsd-comment-tags">
+						<dt>experimental</dt>
+						<dd><p>subject to change, feedback welcome.</p>
+							<blockquote>
+								<p>BpmnElementRegistry is a public API that permits to find the BpmnElements present in the diagram.
+								How to access it:</p>
+							</blockquote>
+							<pre><code class="language-javascript"><span style="color: #008000">// 1. Initialize the BpmnVisualization.</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">bpmnVisualization</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">bpmnvisu</span><span style="color: #000000">.</span><span style="color: #267F99">BpmnVisualization</span><span style="color: #000000">(</span><span style="color: #001080">document</span><span style="color: #000000">.</span><span style="color: #795E26">getElementById</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;bpmn-container&#039;</span><span style="color: #000000">));</span>
+<span style="color: #008000">// 2. Get diagram and load it.</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">bpmn</span><span style="color: #000000"> = </span><span style="color: #A31515">&#039;BPMN diagram string - whether coming from bpmn.xml file or some API call&#039;</span><span style="color: #000000">;</span>
+<span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #795E26">load</span><span style="color: #000000">(</span><span style="color: #001080">bpmn</span><span style="color: #000000">);</span>
+<span style="color: #008000">// 3. Access registry directly from bpmnVisualization.</span>
+<span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span>
+</code></pre>
+						</dd>
+					</dl>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">BpmnElementsRegistry</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bpmnelementsregistry.html#getelementsbyids" class="tsd-kind-icon">get<wbr>Elements<wbr>ByIds</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bpmnelementsregistry.html#getelementsbykinds" class="tsd-kind-icon">get<wbr>Elements<wbr>ByKinds</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getelementsbyids" class="tsd-anchor"></a>
+					<h3>get<wbr>Elements<wbr>ByIds</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Elements<wbr>ByIds<span class="tsd-signature-symbol">(</span>bpmnElementIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/bpmnelement.html" class="tsd-signature-type" data-tsd-kind="Interface">BpmnElement</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/554df22/src/component/registry/bpmn-elements-registry.ts#L61">component/registry/bpmn-elements-registry.ts:61</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get all elements by ids.</p>
+								</div>
+								<pre><code class="language-javascript"><span style="color: #000000">...</span>
+<span style="color: #008000">// Find all elements by specified id or ids</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">bpmnElementsSet1</span><span style="color: #000000"> = </span><span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span><span style="color: #000000">.</span><span style="color: #795E26">getElementsByKinds</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;userTask_1&#039;</span><span style="color: #000000">);</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">bpmnElementsSet2</span><span style="color: #000000"> = </span><span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span><span style="color: #000000">.</span><span style="color: #795E26">getElementsByKinds</span><span style="color: #000000">([</span><span style="color: #A31515">&#039;startEvent_3&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;userTask_2&#039;</span><span style="color: #000000">]);</span>
+<span style="color: #008000">// now you can do whatever you want with the elements</span>
+<span style="color: #000000">...</span>
+</code></pre>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>bpmnElementIds: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/bpmnelement.html" class="tsd-signature-type" data-tsd-kind="Interface">BpmnElement</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getelementsbykinds" class="tsd-anchor"></a>
+					<h3>get<wbr>Elements<wbr>ByKinds</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Elements<wbr>ByKinds<span class="tsd-signature-symbol">(</span>bpmnKinds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SEQUENCE_FLOW</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">MESSAGE_FLOW</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ASSOCIATION_FLOW</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">LANE</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">POOL</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CALL_ACTIVITY</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">SUB_PROCESS</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK_USER</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK_SERVICE</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK_RECEIVE</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK_SEND</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK_MANUAL</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK_SCRIPT</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK_BUSINESS_RULE</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TEXT_ANNOTATION</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">GATEWAY_PARALLEL</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">GATEWAY_EXCLUSIVE</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">GATEWAY_INCLUSIVE</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">GATEWAY_EVENT_BASED</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">EVENT_START</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">EVENT_END</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">EVENT_INTERMEDIATE_CATCH</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">EVENT_INTERMEDIATE_THROW</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">EVENT_BOUNDARY</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BpmnElementKind</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/bpmnelement.html" class="tsd-signature-type" data-tsd-kind="Interface">BpmnElement</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/554df22/src/component/registry/bpmn-elements-registry.ts#L81">component/registry/bpmn-elements-registry.ts:81</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get all elements by kinds.</p>
+								</div>
+								<pre><code class="language-javascript"><span style="color: #000000">...</span>
+<span style="color: #008000">// Find all elements by desired type or types</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">bpmnTaskElements</span><span style="color: #000000"> = </span><span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span><span style="color: #000000">.</span><span style="color: #795E26">getElementsByKinds</span><span style="color: #000000">(</span><span style="color: #001080">bpmnvisu</span><span style="color: #000000">.</span><span style="color: #001080">ShapeBpmnElementKind</span><span style="color: #000000">.</span><span style="color: #0070C1">TASK</span><span style="color: #000000">);</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">bpmnEndEventAndPoolElements</span><span style="color: #000000"> = </span><span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span><span style="color: #000000">.</span><span style="color: #795E26">getElementsByKinds</span><span style="color: #000000">([</span><span style="color: #001080">bpmnvisu</span><span style="color: #000000">.</span><span style="color: #001080">ShapeBpmnElementKind</span><span style="color: #000000">.</span><span style="color: #0070C1">EVENT_END</span><span style="color: #000000">, </span><span style="color: #001080">bpmnvisu</span><span style="color: #000000">.</span><span style="color: #001080">ShapeBpmnElementKind</span><span style="color: #000000">.</span><span style="color: #0070C1">POOL</span><span style="color: #000000">]);</span>
+<span style="color: #008000">// now you can do whatever you want with the elements</span>
+<span style="color: #000000">...</span>
+</code></pre>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>bpmnKinds: <span class="tsd-signature-type">SEQUENCE_FLOW</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">MESSAGE_FLOW</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ASSOCIATION_FLOW</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">LANE</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">POOL</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CALL_ACTIVITY</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">SUB_PROCESS</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK_USER</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK_SERVICE</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK_RECEIVE</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK_SEND</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK_MANUAL</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK_SCRIPT</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TASK_BUSINESS_RULE</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TEXT_ANNOTATION</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">GATEWAY_PARALLEL</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">GATEWAY_EXCLUSIVE</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">GATEWAY_INCLUSIVE</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">GATEWAY_EVENT_BASED</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">EVENT_START</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">EVENT_END</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">EVENT_INTERMEDIATE_CATCH</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">EVENT_INTERMEDIATE_THROW</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">EVENT_BOUNDARY</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BpmnElementKind</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/bpmnelement.html" class="tsd-signature-type" data-tsd-kind="Interface">BpmnElement</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../index.html">Exports</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class">
+						<a href="bpmnelementsregistry.html" class="tsd-kind-icon">Bpmn<wbr>Elements<wbr>Registry</a>
+						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="bpmnelementsregistry.html#getelementsbyids" class="tsd-kind-icon">get<wbr>Elements<wbr>ByIds</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="bpmnelementsregistry.html#getelementsbykinds" class="tsd-kind-icon">get<wbr>Elements<wbr>ByKinds</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/bpmnelement.html" class="tsd-kind-icon">Bpmn<wbr>Element</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/bpmnsemantic.html" class="tsd-kind-icon">Bpmn<wbr>Semantic</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
