@@ -38,7 +38,10 @@ export class CssRegistry {
 
   addClassNames(bpmnElementId: string, classNames: string[]): void {
     const existingClassNames = this.classNamesByBPMNId.get(bpmnElementId);
-    const setClassNames = !existingClassNames ? classNames : existingClassNames.concat(classNames);
+    const setClassNames = !existingClassNames
+      ? classNames
+      : // To avoid duplicated classes
+        Array.from(new Set(existingClassNames.concat(classNames)));
     this.classNamesByBPMNId.set(bpmnElementId, setClassNames);
   }
 }
