@@ -19,6 +19,7 @@ import { computeBpmnBaseClassName, extractBpmnKindFromStyle } from '../mxgraph/s
 import { FlowKind } from '../../model/bpmn/internal/edge/FlowKind';
 import { ShapeBpmnElementKind } from '../../model/bpmn/internal/shape';
 import { CssRegistry } from './css-registry';
+import { defaultMxGraphRenderer } from '../mxgraph/MxGraphRenderer';
 
 export function newBpmnElementsRegistry(graph: BpmnMxGraph): BpmnElementsRegistry {
   return new BpmnElementsRegistry(new BpmnModelRegistry(graph), new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry());
@@ -149,7 +150,6 @@ class BpmnModelRegistry {
       const view = this.graph.getView();
       const state = view.getState(mxCell);
       state.style['bpmnCustomCSSClasses'] = cssRegistry.getClassNames(bpmnElementId).join(' ');
-      // view.updateCellState(state);
       state.shape.apply(state);
       state.shape.redraw();
     }

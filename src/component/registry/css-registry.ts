@@ -21,6 +21,8 @@ export class CssRegistry {
   }
 
   addClassNames(bpmnElementId: string, classNames: string[]): void {
+    // TODO: return the real modified id
+
     const existingClassNames = this.classNamesByBPMNId.get(bpmnElementId);
     const setClassNames = !existingClassNames
       ? classNames
