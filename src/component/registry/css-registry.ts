@@ -37,6 +37,8 @@ export class CssRegistry {
   }
 
   addClassNames(bpmnElementId: string, classNames: string[]): void {
+    // eslint-disable-next-line no-console
+    console.log('addClassNames - ' + bpmnElementId + ' - ' + classNames);
     const existingClassNames = this.classNamesByBPMNId.get(bpmnElementId);
     const setClassNames = !existingClassNames ? classNames : existingClassNames.concat(classNames);
     this.classNamesByBPMNId.set(bpmnElementId, setClassNames);

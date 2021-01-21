@@ -146,8 +146,17 @@ class BpmnModelRegistry {
     const model = this.graph.getModel();
     const mxCell = model.getCell(bpmnElementId);
     if (mxCell) {
-      // to be done in a mxgraph transaction
-      model.execute(new mxStyleChange(model, mxCell, mxCell.style));
+      const bpmnCustomCSSClasses = CssRegistry.getInstance().getClassNames(bpmnElementId).join(' ');
+
+      // TODO: Need to replace if already exists
+      // eslint-disable-next-line no-console
+      console.log('before - ' + mxCell.getStyle());
+      const style = mxCell.getStyle().concat(`;bpmnCustomCSSClasses=${bpmnCustomCSSClasses}`);
+      // eslint-disable-next-line no-console
+      console.log('after - ' + style);
+      model.setStyle(mxCell, style);
+
+      //  model.setValue(mxCell, 'toto');
     }
   }
 }

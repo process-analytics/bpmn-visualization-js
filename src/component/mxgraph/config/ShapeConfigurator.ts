@@ -106,8 +106,8 @@ export default class ShapeConfigurator {
         // also merge existing allBpmnClassNames
         // dialect = strictHtml means that current node holds the label
         const allBpmnClassNames = computeAllBpmnClassNames(extractBpmnKindFromStyle(cell), this.dialect === 'strictHtml').concat(' ').concat(userCssClassNames);
-
         this.node.setAttribute('class', allBpmnClassNames);
+
         this.node.setAttribute('data-bpmn-id', this.state.cell.id);
       }
       // END bpmn-visualization CUSTOMIZATION
