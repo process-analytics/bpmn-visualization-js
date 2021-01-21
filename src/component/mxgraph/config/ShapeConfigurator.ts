@@ -79,6 +79,7 @@ export default class ShapeConfigurator {
     // The following is copied from the mxgraph mxShape implementation then converted to TypeScript and enriched for bpmn-visualization
     // It is needed for adding the custom attributes that permits identification of the BPMN elements in the DOM
     mxShape.prototype.createSvgCanvas = function () {
+      console.log('createSvgCanvas');
       const canvas = new mxSvgCanvas2D(this.node, false);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
       canvas.pointerEventsValue = this.svgPointerEvents;
@@ -96,6 +97,7 @@ export default class ShapeConfigurator {
       // START bpmn-visualization CUSTOMIZATION
       // add attributes to be able to identify elements in DOM
       if (this.state && this.state.cell) {
+        console.log('if');
         // 'this.state.style' = the style definition associated with the cell
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cell = this.state.cell;
@@ -103,6 +105,8 @@ export default class ShapeConfigurator {
         // the 'bpmnElementsRegistry' instance is injected within the 'mxShape' rendering function
         // may return a string or Array<string>
         const userCssClassNames =  CssRegistry.getInstance().getClassNames(cell.getId()).join(' ');
+        console.log('state.style.bpmnCustomCSSClasses - ' , this.state.style['bpmnCustomCSSClasses']);
+        console.log('state.style - ' , this.state.style);
         // also merge existing allBpmnClassNames
         // dialect = strictHtml means that current node holds the label
         const allBpmnClassNames = computeAllBpmnClassNames(extractBpmnKindFromStyle(cell), this.dialect === 'strictHtml').concat(' ').concat(userCssClassNames);

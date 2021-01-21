@@ -148,13 +148,37 @@ class BpmnModelRegistry {
     if (mxCell) {
       const bpmnCustomCSSClasses = CssRegistry.getInstance().getClassNames(bpmnElementId).join(' ');
 
-      // TODO: Need to replace if already exists
+      // --------------------
+      // The BPMN style is not rendered
+
       // eslint-disable-next-line no-console
-      console.log('before - ' + mxCell.getStyle());
-      const style = mxCell.getStyle().concat(`;bpmnCustomCSSClasses=${bpmnCustomCSSClasses}`);
+      /* console.log('before - ' + mxCell.getStyle());
+        // TODO: Need to replace if already exists
+      const style = mxCell.getStyle().concat(`;fillColor=Orange;`);
       // eslint-disable-next-line no-console
       console.log('after - ' + style);
-      model.setStyle(mxCell, style);
+      model.setStyle(mxCell, style);*/
+
+      //    mxUtils.setCellStyles(model, [mxCell], mxConstants.STYLE_FILLCOLOR, 'Orange');
+
+      // --------------------
+
+      /*      const view = this.graph.getView();
+      const state = view.getState(mxCell);
+      state.style[mxConstants.STYLE_FILLCOLOR] = 'Orange';
+      view.updateCellState(state);
+      state.shape.apply(state);
+      state.shape.redraw();*/
+
+      const view = this.graph.getView();
+      const state = view.getState(mxCell);
+      state.style['bpmnCustomCSSClasses'] = bpmnCustomCSSClasses;
+      view.updateCellState(state);
+      state.shape.apply(state);
+      state.shape.redraw();
+
+      // eslint-disable-next-line no-console
+      console.log('style after - ' + model.getCell(bpmnElementId).style);
 
       //  model.setValue(mxCell, 'toto');
     }
