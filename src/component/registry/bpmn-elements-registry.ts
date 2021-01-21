@@ -19,7 +19,6 @@ import { computeBpmnBaseClassName, extractBpmnKindFromStyle } from '../mxgraph/s
 import { FlowKind } from '../../model/bpmn/internal/edge/FlowKind';
 import { ShapeBpmnElementKind } from '../../model/bpmn/internal/shape';
 import { CssRegistry } from './css-registry';
-import { defaultMxGraphRenderer } from '../mxgraph/MxGraphRenderer';
 
 export function newBpmnElementsRegistry(graph: BpmnMxGraph): BpmnElementsRegistry {
   return new BpmnElementsRegistry(new BpmnModelRegistry(graph), new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry());
