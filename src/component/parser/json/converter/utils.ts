@@ -17,27 +17,6 @@ import ShapeBpmnElement, { Participant } from '../../../../model/bpmn/internal/s
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
 import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../model/bpmn/internal/shape';
 
-function convertEmptyStringAndObject<T>(element: string | T, acceptEmptyString: boolean): T {
-  if (element === '') {
-    return acceptEmptyString ? ({} as T) : undefined;
-  }
-  return element as T;
-}
-
-export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEmptyString = false): Array<T> {
-  if (elements === undefined || elements === null) {
-    return [];
-  }
-
-  let returnedArray;
-  if (!Array.isArray(elements)) {
-    returnedArray = [convertEmptyStringAndObject(elements, acceptEmptyString)];
-  } else {
-    returnedArray = elements.map(element => convertEmptyStringAndObject(element, acceptEmptyString));
-  }
-  return returnedArray.filter(value => value);
-}
-
 export class ConvertedElements {
   private participantsById: Map<string, Participant> = new Map();
   private findParticipantById(id: string): Participant {

@@ -16,7 +16,8 @@
 import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
 import { bpmnEventKinds } from '../../../../model/bpmn/internal/shape';
 import { TEventDefinition } from '../../../../model/bpmn/json/baseElement/rootElement/eventDefinition';
-import { ConvertedElements, ensureIsArray } from './utils';
+import { ConvertedElements } from './utils';
+import { ensureIsArray } from '../../../helpers/array-utils';
 
 export default class EventDefinitionConverter {
   constructor(readonly convertedElements: ConvertedElements) {}
