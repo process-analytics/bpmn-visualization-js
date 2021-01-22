@@ -61,7 +61,6 @@ export class BpmnElementsRegistry {
    * ```
    */
   getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[] {
-    // TODO move ensureIsArray to src/helpers/arrays.ts (not only for model) and add dedicated tests
     return ensureIsArray<string>(bpmnElementIds)
       .map(id => this.bpmnModelRegistry.getBpmnSemantic(id))
       .filter(e => e)
