@@ -31,7 +31,7 @@ export default class BpmnVisualization {
    */
   readonly bpmnElementsRegistry: BpmnElementsRegistry;
 
-  private mxGraphRenderer: MxGraphRenderer;
+  private readonly mxGraphRenderer: MxGraphRenderer;
 
   constructor(options: GlobalOptions) {
     // mxgraph configuration
