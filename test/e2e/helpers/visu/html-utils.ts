@@ -23,6 +23,11 @@ export class HtmlElementLookup {
     return bpmnElements.length == 0 ? undefined : bpmnElements[0].htmlElement;
   }
 
+  expectNoElement(bpmnId: string): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expect(svgGroupElement).toBeUndefined();
+  }
+
   expectStartEvent(bpmnId: string): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgEvent(svgGroupElement);

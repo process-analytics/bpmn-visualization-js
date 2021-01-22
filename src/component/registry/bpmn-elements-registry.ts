@@ -143,15 +143,15 @@ class BpmnModelRegistry {
   }
 
   refreshCell(bpmnElementId: string, cssRegistry: CssRegistry): void {
-    const model = this.graph.getModel();
-    const mxCell = model.getCell(bpmnElementId);
-    if (mxCell) {
-      const view = this.graph.getView();
-      const state = view.getState(mxCell);
-      state.style['bpmnCustomCSSClasses'] = cssRegistry.getClassNames(bpmnElementId).join(' ');
-      state.shape.apply(state);
-      state.shape.redraw();
+    const mxCell = this.graph.getModel().getCell(bpmnElementId);
+    if (!mxCell) {
+      return;
     }
+    const view = this.graph.getView();
+    const state = view.getState(mxCell);
+    state.style['bpmnCustomCSSClasses'] = cssRegistry.getClassNames(bpmnElementId).join(' ');
+    state.shape.apply(state);
+    state.shape.redraw();
   }
 }
 

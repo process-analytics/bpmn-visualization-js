@@ -163,7 +163,7 @@ describe('Bpmn Elements registry', () => {
 });
 
 describe('Bpmn Elements registry - CSS class management', () => {
-  it('Add classes', async () => {
+  it('Add classes', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
     const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
@@ -179,5 +179,15 @@ describe('Bpmn Elements registry - CSS class management', () => {
     bpmnVisualization.bpmnElementsRegistry.addCssClasses(['endEvent_message_1', 'serviceTask_1_2'], ['class2', 'class3']);
     htmlElementLookup.expectServiceTask('serviceTask_1_2', ['class1', 'class2', 'class3']);
     htmlElementLookup.expectEndEvent('endEvent_message_1', ['class2', 'class3']);
+  });
+
+  it('No issue when element does not exist', () => {
+    bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+    const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+
+    const nonExistingBpmnId = 'i-do-not-exist-for-sure';
+    htmlElementLookup.expectNoElement(nonExistingBpmnId);
+    // this call ensure that there is not issue on the rendering part
+    bpmnVisualization.bpmnElementsRegistry.addCssClasses(nonExistingBpmnId, 'class1');
   });
 });
