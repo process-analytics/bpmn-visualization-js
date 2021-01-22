@@ -20,13 +20,13 @@
  * @param bpmnElementKind the string representation of a BPMN element kind i.e {@link ShapeBpmnElementKind} and {@link FlowKind}.
  * @param isLabel the boolean that indicates if class must be computed for label.
  */
-export function computeAllBpmnClassNames(bpmnElementKind: string, isLabel: boolean): string {
+export function computeAllBpmnClassNames(bpmnElementKind: string, isLabel: boolean): string[] {
   const classes: string[] = [];
   classes.push(computeBpmnBaseClassName(bpmnElementKind));
   if (isLabel) {
     classes.push('bpmn-label');
   }
-  return classes.join(' ');
+  return classes;
 }
 
 /**

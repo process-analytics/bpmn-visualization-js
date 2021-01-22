@@ -150,7 +150,7 @@ class BpmnModelRegistry {
     }
     const view = this.graph.getView();
     const state = view.getState(mxCell);
-    state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES] = cssRegistry.getClassNames(bpmnElementId).join(' ');
+    state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES] = cssRegistry.getClassNames(bpmnElementId);
     state.shape.apply(state);
     state.shape.redraw();
   }
