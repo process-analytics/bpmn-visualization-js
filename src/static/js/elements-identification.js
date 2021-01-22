@@ -32,7 +32,7 @@ function configureControls() {
     textArea.scrollTop = textArea.scrollHeight;
 
     const bpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
-    addCssClasses(bpmnIds, 'test');
+    addCssClasses(bpmnIds, 'color-rect');
   };
 
   document.getElementById('bpmn-kinds-textarea-clean-btn').onclick = function () {
