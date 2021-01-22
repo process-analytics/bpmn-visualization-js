@@ -15,13 +15,13 @@
  */
 import { CssRegistry } from '../../../../src/component/registry/css-registry';
 
+let cssRegistry: CssRegistry;
+beforeEach(() => {
+  cssRegistry = new CssRegistry();
+});
+
 describe('manage css classes for BPMN cells', () => {
   describe('Get css classes', () => {
-    let cssRegistry: CssRegistry;
-    beforeEach(() => {
-      cssRegistry = new CssRegistry();
-    });
-
     it('getClassNames should return a empty array, when no class name is registered for the BPMN element', () => {
       cssRegistry.addClassNames('bpmn-id-1', ['class-name']);
       expect(cssRegistry.getClassNames('bpmn-id-2')).toHaveLength(0);
@@ -29,11 +29,6 @@ describe('manage css classes for BPMN cells', () => {
   });
 
   describe('Add css classes', () => {
-    let cssRegistry: CssRegistry;
-    beforeEach(() => {
-      cssRegistry = new CssRegistry();
-    });
-
     it('1 class name should be registered, when add it for the first time', () => {
       const bpmnElementId = 'bpmn-id';
       const classNames = ['class-name'];
@@ -76,11 +71,6 @@ describe('manage css classes for BPMN cells', () => {
   });
 
   describe('Remove css classes', () => {
-    let cssRegistry: CssRegistry;
-    beforeEach(() => {
-      cssRegistry = new CssRegistry();
-    });
-
     it('Remove the only existing class', () => {
       const bpmnElementId = 'bpmn-id';
       cssRegistry.addClassNames(bpmnElementId, ['class-to-remove']);
