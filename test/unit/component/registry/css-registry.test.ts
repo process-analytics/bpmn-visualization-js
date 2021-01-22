@@ -16,6 +16,18 @@
 import { CssRegistry } from '../../../../src/component/registry/css-registry';
 
 describe('manage css classes for BPMN cells', () => {
+  describe('Get css classes', () => {
+    let cssRegistry: CssRegistry;
+    beforeEach(() => {
+      cssRegistry = new CssRegistry();
+    });
+
+    it('getClassNames should return a empty array, when no class name is registered for the BPMN element', () => {
+      cssRegistry.addClassNames('bpmn-id-1', ['class-name']);
+      expect(cssRegistry.getClassNames('bpmn-id-2')).toHaveLength(0);
+    });
+  });
+
   describe('Add css classes', () => {
     let cssRegistry: CssRegistry;
     beforeEach(() => {
@@ -60,12 +72,6 @@ describe('manage css classes for BPMN cells', () => {
 
       expect(result).toBeTruthy();
       expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class-name-1', 'class-name-2', 'class-name-3', 'class-name-4']);
-    });
-
-    it('getClassNames should return a empty array, when no class name is registered for the BPMN element', () => {
-      cssRegistry.addClassNames('bpmn-id-1', ['class-name']);
-
-      expect(cssRegistry.getClassNames('bpmn-id-2')).toHaveLength(0);
     });
   });
 
