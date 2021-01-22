@@ -21,7 +21,6 @@ import { FitOptions, GlobalOptions, LoadOptions } from './options';
 import { BpmnElementsRegistry } from './registry';
 import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { htmlElement } from './helpers/dom-utils';
-import { CssRegistry } from './registry/css-registry';
 
 export default class BpmnVisualization {
   public readonly graph: BpmnMxGraph;
@@ -38,9 +37,8 @@ export default class BpmnVisualization {
     const configurator = new MxGraphConfigurator(htmlElement(options?.container));
     this.graph = configurator.configure(options);
     // other configurations
-    const cssRegistry = new CssRegistry();
-    this.mxGraphRenderer = newMxGraphRenderer(this.graph, cssRegistry);
-    this.bpmnElementsRegistry = newBpmnElementsRegistry(this.graph, cssRegistry, this.mxGraphRenderer);
+    this.mxGraphRenderer = newMxGraphRenderer(this.graph);
+    this.bpmnElementsRegistry = newBpmnElementsRegistry(this.graph, this.mxGraphRenderer);
   }
 
   public load(xml: string, options?: LoadOptions): void {

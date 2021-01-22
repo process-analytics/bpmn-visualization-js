@@ -21,8 +21,8 @@ import { ShapeBpmnElementKind } from '../../model/bpmn/internal/shape';
 import { CssRegistry } from './css-registry';
 import MxGraphRenderer from '../mxgraph/MxGraphRenderer';
 
-export function newBpmnElementsRegistry(graph: BpmnMxGraph, cssRegistry: CssRegistry, mxGraphRenderer: MxGraphRenderer): BpmnElementsRegistry {
-  return new BpmnElementsRegistry(new BpmnModelRegistry(graph), new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), cssRegistry, mxGraphRenderer);
+export function newBpmnElementsRegistry(graph: BpmnMxGraph, mxGraphRenderer: MxGraphRenderer): BpmnElementsRegistry {
+  return new BpmnElementsRegistry(new BpmnModelRegistry(graph), new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), mxGraphRenderer);
 }
 
 /**
@@ -113,7 +113,8 @@ export class BpmnElementsRegistry {
     const arrayClassNames = ensureIsArray<string>(classNames);
     ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
       if (this.cssRegistry.addClassNames(bpmnElementId, arrayClassNames)) {
-        this.mxGraphRenderer.refreshCell(bpmnElementId);
+        const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
+        this.mxGraphRenderer.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
       }
     });
   }

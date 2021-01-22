@@ -27,16 +27,10 @@ import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibl
 import { ShapeBpmnMarkerKind } from '../../model/bpmn/internal/shape';
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { LoadOptions } from '../options';
-import { CssRegistry } from '../registry/css-registry';
 import { StyleIdentifier } from './StyleUtils';
 
 export default class MxGraphRenderer {
-  constructor(
-    readonly graph: BpmnMxGraph,
-    readonly coordinatesTranslator: CoordinatesTranslator,
-    readonly styleConfigurator: StyleConfigurator,
-    readonly cssRegistry: CssRegistry,
-  ) {}
+  constructor(readonly graph: BpmnMxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
 
   public render(bpmnModel: BpmnModel, loadOptions?: LoadOptions): void {
     this.insertShapesAndEdges(bpmnModel);
@@ -164,21 +158,21 @@ export default class MxGraphRenderer {
     return mxCell;
   }
 
-  public refreshCell(bpmnElementId: string): void {
+  public updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
     const mxCell = this.graph.getModel().getCell(bpmnElementId);
     if (!mxCell) {
       return;
     }
     const view = this.graph.getView();
     const state = view.getState(mxCell);
-    state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES] = this.cssRegistry.getClassNames(bpmnElementId);
+    state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES] = cssClasses;
     state.shape.apply(state);
     state.shape.redraw();
   }
 }
 
-export function newMxGraphRenderer(graph: BpmnMxGraph, cssRegistry: CssRegistry): MxGraphRenderer {
-  return new MxGraphRenderer(graph, new CoordinatesTranslator(graph), new StyleConfigurator(graph), cssRegistry);
+export function newMxGraphRenderer(graph: BpmnMxGraph): MxGraphRenderer {
+  return new MxGraphRenderer(graph, new CoordinatesTranslator(graph), new StyleConfigurator(graph));
 }
 
 function toDisplayedModel(bpmnModel: BpmnModel): DisplayedModel {
