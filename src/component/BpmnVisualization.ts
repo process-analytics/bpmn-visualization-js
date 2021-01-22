@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
-import MxGraphRenderer, { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
+import MxGraphRenderer, { newMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
 import { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
 import { FitOptions, GlobalOptions, LoadOptions } from './options';
@@ -39,7 +39,7 @@ export default class BpmnVisualization {
     this.graph = configurator.configure(options);
     // other configurations
     const cssRegistry = new CssRegistry();
-    this.mxGraphRenderer = defaultMxGraphRenderer(this.graph, cssRegistry);
+    this.mxGraphRenderer = newMxGraphRenderer(this.graph, cssRegistry);
     this.bpmnElementsRegistry = newBpmnElementsRegistry(this.graph, cssRegistry, this.mxGraphRenderer);
   }
 

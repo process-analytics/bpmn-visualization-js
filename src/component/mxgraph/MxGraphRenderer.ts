@@ -177,7 +177,7 @@ export default class MxGraphRenderer {
   }
 }
 
-export function defaultMxGraphRenderer(graph: BpmnMxGraph, cssRegistry: CssRegistry): MxGraphRenderer {
+export function newMxGraphRenderer(graph: BpmnMxGraph, cssRegistry: CssRegistry): MxGraphRenderer {
   return new MxGraphRenderer(graph, new CoordinatesTranslator(graph), new StyleConfigurator(graph), cssRegistry);
 }
 
