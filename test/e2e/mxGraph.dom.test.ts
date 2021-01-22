@@ -35,9 +35,9 @@ describe('DOM only checks', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
 
     const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
-    htmlElementLookup.expectEvent('StartEvent_1');
+    htmlElementLookup.expectStartEvent('StartEvent_1');
     htmlElementLookup.expectTask('Activity_1');
-    htmlElementLookup.expectEvent('EndEvent_1');
+    htmlElementLookup.expectEndEvent('EndEvent_1');
   });
 });
 
@@ -158,6 +158,38 @@ describe('Bpmn Elements registry', () => {
 
       expectServiceTaskBpmnElement(bpmnElements[0], { id: 'serviceTask_1_2', name: 'Service Task 1.2' });
       expectServiceTaskBpmnElement(bpmnElements[1], { id: 'serviceTask_2_1', name: 'Service Task 2.1' });
+    });
+  });
+});
+
+describe('Bpmn Elements registry - CSS class management', () => {
+  describe('Add classes', () => {
+    it('Add one or several classes to one or several BPMN elements', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+
+      // default classes
+      htmlElementLookup.expectServiceTask('serviceTask_1_2');
+      htmlElementLookup.expectEndEvent('endEvent_message_1');
+
+      // add a single class to a single element
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses('serviceTask_1_2', 'class1');
+      htmlElementLookup.expectServiceTask('serviceTask_1_2', ['class1']);
+
+      // add a several classes to a several elements
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses(['endEvent_message_1', 'serviceTask_1_2'], ['class2', 'class3']);
+      htmlElementLookup.expectServiceTask('serviceTask_1_2', ['class1', 'class2', 'class3']);
+      htmlElementLookup.expectEndEvent('endEvent_message_1', ['class2', 'class3']);
+    });
+
+    it('BPMN element does not exist', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+
+      const nonExistingBpmnId = 'i-do-not-exist-for-sure';
+      htmlElementLookup.expectNoElement(nonExistingBpmnId);
+      // this call ensure that there is not issue on the rendering part
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses(nonExistingBpmnId, 'class1');
     });
   });
 });

@@ -23,12 +23,37 @@ export class HtmlElementLookup {
     return bpmnElements.length == 0 ? undefined : bpmnElements[0].htmlElement;
   }
 
-  expectEvent(bpmnId: string): void {
-    expectSvgEvent(this.findSvgElement(bpmnId));
+  expectNoElement(bpmnId: string): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expect(svgGroupElement).toBeUndefined();
+  }
+
+  expectStartEvent(bpmnId: string): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expectSvgEvent(svgGroupElement);
+    expectSvgElementClassAttribute(svgGroupElement, 'bpmn-start-event');
+  }
+
+  expectEndEvent(bpmnId: string, additionalClasses?: string[]): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expectSvgEvent(svgGroupElement);
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-end-event', additionalClasses));
   }
 
   expectTask(bpmnId: string): void {
-    expectSvgTask(this.findSvgElement(bpmnId));
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expectSvgTask(svgGroupElement);
+    expectSvgElementClassAttribute(svgGroupElement, 'bpmn-task');
+  }
+
+  expectServiceTask(bpmnId: string, additionalClasses?: string[]): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expectSvgTask(svgGroupElement);
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-service-task', additionalClasses));
+  }
+
+  private static computeClassValue(bpmnClass: string, additionalClasses?: string[]): string {
+    return [bpmnClass].concat(additionalClasses).filter(Boolean).join(' ');
   }
 }
 
@@ -54,4 +79,9 @@ function expectSvgFirstChildNodeName(svgGroupElement: HTMLElement, name: string)
   expect(svgGroupElement).not.toBeUndefined();
   const firstChild = svgGroupElement.firstChild as SVGGeometryElement;
   expect(firstChild.nodeName).toEqual(name);
+}
+
+function expectSvgElementClassAttribute(svgElement: HTMLElement, value: string): void {
+  expect(svgElement).not.toBeUndefined();
+  expect(svgElement.getAttribute('class')).toEqual(value);
 }

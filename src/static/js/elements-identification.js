@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, FitType, getElementsByKinds, log, startBpmnVisualization, updateLoadOptions } from '../../index.es.js';
+import { documentReady, FitType, getElementsByKinds, addCssClasses, log, startBpmnVisualization, updateLoadOptions } from '../../index.es.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureControls() {
@@ -30,6 +30,9 @@ function configureControls() {
 
     textArea.value += [textHeader, lines].join('\n') + '\n';
     textArea.scrollTop = textArea.scrollHeight;
+
+    const bpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
+    addCssClasses(bpmnIds, 'test');
   };
 
   document.getElementById('bpmn-kinds-textarea-clean-btn').onclick = function () {
