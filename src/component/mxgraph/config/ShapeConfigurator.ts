@@ -98,8 +98,13 @@ export default class ShapeConfigurator {
         // 'this.state.style' = the style definition associated with the cell
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cell = this.state.cell;
-        // dialect = strictHtml means that current node holds the label
-        const allBpmnClassNames = computeAllBpmnClassNames(extractBpmnKindFromStyle(cell), this.dialect === 'strictHtml');
+        // dialect = strictHtml is set means that current node holds an html label
+        let allBpmnClassNames = computeAllBpmnClassNames(extractBpmnKindFromStyle(cell), this.dialect === mxConstants.DIALECT_STRICTHTML);
+        // TODO change the computeAllBpmnClassNames implementation to return an array and manage the string join here instead
+        const extraCssClasses =  this.state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES];
+        if (extraCssClasses) {
+          allBpmnClassNames = allBpmnClassNames.concat(' ').concat(extraCssClasses);
+        }
 
         this.node.setAttribute('class', allBpmnClassNames);
         this.node.setAttribute('data-bpmn-id', this.state.cell.id);

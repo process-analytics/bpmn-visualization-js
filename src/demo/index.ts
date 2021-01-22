@@ -57,6 +57,10 @@ export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[
   return bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(bpmnKinds);
 }
 
+export function addCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
+  return bpmnVisualization.bpmnElementsRegistry.addCssClasses(bpmnElementId, classNames);
+}
+
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {
   const reader = new FileReader();
