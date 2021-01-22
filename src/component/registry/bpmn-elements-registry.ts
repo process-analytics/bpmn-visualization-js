@@ -107,8 +107,9 @@ export class BpmnElementsRegistry {
   addCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
     const arrayClassNames = ensureIsArray<string>(classNames);
     ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
-      this.cssRegistry.addClassNames(bpmnElementId, arrayClassNames);
-      this.bpmnModelRegistry.refreshCell(bpmnElementId, this.cssRegistry);
+      if (this.cssRegistry.addClassNames(bpmnElementId, arrayClassNames)) {
+        this.bpmnModelRegistry.refreshCell(bpmnElementId, this.cssRegistry);
+      }
     });
   }
 }

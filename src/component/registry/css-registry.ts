@@ -13,21 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { arraysAreIdentical } from '../helpers/array-utils';
+
 export class CssRegistry {
   private classNamesByBPMNId = new Map<string, string[]>();
 
+  /**
+   * Get the CSS class names for a specific HTML element
+   *
+   * @param bpmnElementId the BPMN id of the HTML element from the DOM
+   * @return the registered CSS class names
+   */
   getClassNames(bpmnElementId: string): string[] {
     return this.classNamesByBPMNId.get(bpmnElementId) || [];
   }
 
-  addClassNames(bpmnElementId: string, classNames: string[]): void {
-    // TODO: return the real modified id
-
+  /**
+   * Register the CSS class names for a specific HTML element
+   *
+   * @param bpmnElementId the BPMN id of the HTML element from the DOM
+   * @param classNames the CSS class names to register
+   * @return true if at least one class name from parameters was not registered; false otherwise
+   */
+  addClassNames(bpmnElementId: string, classNames: string[]): boolean {
     const existingClassNames = this.classNamesByBPMNId.get(bpmnElementId);
-    const setClassNames = !existingClassNames
-      ? classNames
-      : // To avoid duplicated classes
-        Array.from(new Set(existingClassNames.concat(classNames)));
-    this.classNamesByBPMNId.set(bpmnElementId, setClassNames);
+    if (!existingClassNames) {
+      return this.register(bpmnElementId, classNames);
+    }
+
+    const classNamesToSet = Array.from(new Set(existingClassNames.concat(classNames)));
+    if (!arraysAreIdentical(existingClassNames, classNamesToSet)) {
+      return this.register(bpmnElementId, classNamesToSet);
+    }
+
+    return false;
+  }
+
+  private register(bpmnElementId: string, classNames: string[]): boolean {
+    this.classNamesByBPMNId.set(bpmnElementId, classNames);
+    return true;
   }
 }

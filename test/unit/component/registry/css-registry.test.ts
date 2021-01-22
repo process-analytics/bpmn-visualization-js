@@ -49,6 +49,24 @@ describe('manage css classes for BPMN cells', () => {
     expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class-name-1', 'class-name-2', 'class-name-3', 'class-name-4']);
   });
 
+  it('addClassNames should return true, when at least one new class name is not registered', () => {
+    const bpmnElementId = 'bpmn-id';
+    cssRegistry.addClassNames(bpmnElementId, ['class-name-1']);
+
+    const result = cssRegistry.addClassNames(bpmnElementId, ['class-name-1', 'class-name-2']);
+
+    expect(result).toBeTruthy();
+  });
+
+  it('addClassNames should return false, when all the new class names are registered', () => {
+    const bpmnElementId = 'bpmn-id';
+    cssRegistry.addClassNames(bpmnElementId, ['class-name-1', 'class-name-2']);
+
+    const result = cssRegistry.addClassNames(bpmnElementId, ['class-name-2', 'class-name-1']);
+
+    expect(result).toBeFalsy();
+  });
+
   it('getClassNames should return a empty array, when no class name is registered for the BPMN element', () => {
     cssRegistry.addClassNames('bpmn-id-1', ['class-name']);
 

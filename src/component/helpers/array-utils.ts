@@ -33,3 +33,13 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
   }
   return returnedArray.filter(value => value);
 }
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export function arraysAreIdentical(array1: any[], array2: any[]): boolean {
+  return (
+    array1.length == array2.length &&
+    array1.every((element, index) => {
+      return element === array2[index];
+    })
+  );
+}
