@@ -14,33 +14,39 @@
  * limitations under the License.
  */
 import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
-import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
+import MxGraphRenderer, { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
 import { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
 import { FitOptions, GlobalOptions, LoadOptions } from './options';
 import { BpmnElementsRegistry } from './registry';
 import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { htmlElement } from './helpers/dom-utils';
+import { CssRegistry } from './registry/css-registry';
 
 export default class BpmnVisualization {
   public readonly graph: BpmnMxGraph;
+
   /**
    * @experimental subject to change, feedback welcome
    */
   readonly bpmnElementsRegistry: BpmnElementsRegistry;
+
+  private mxGraphRenderer: MxGraphRenderer;
 
   constructor(options: GlobalOptions) {
     // mxgraph configuration
     const configurator = new MxGraphConfigurator(htmlElement(options?.container));
     this.graph = configurator.configure(options);
     // other configurations
-    this.bpmnElementsRegistry = newBpmnElementsRegistry(this.graph);
+    const cssRegistry = new CssRegistry();
+    this.mxGraphRenderer = defaultMxGraphRenderer(this.graph, cssRegistry);
+    this.bpmnElementsRegistry = newBpmnElementsRegistry(this.graph, cssRegistry, this.mxGraphRenderer);
   }
 
   public load(xml: string, options?: LoadOptions): void {
     try {
       const bpmnModel = newBpmnParser().parse(xml);
-      defaultMxGraphRenderer(this.graph).render(bpmnModel, options);
+      this.mxGraphRenderer.render(bpmnModel, options);
     } catch (e) {
       // TODO error handling
       window.alert(`Cannot load bpmn diagram: ${e.message}`);

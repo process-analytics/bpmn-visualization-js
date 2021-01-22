@@ -19,10 +19,10 @@ import { computeBpmnBaseClassName, extractBpmnKindFromStyle } from '../mxgraph/s
 import { FlowKind } from '../../model/bpmn/internal/edge/FlowKind';
 import { ShapeBpmnElementKind } from '../../model/bpmn/internal/shape';
 import { CssRegistry } from './css-registry';
-import { StyleIdentifier } from '../mxgraph/StyleUtils';
+import MxGraphRenderer from '../mxgraph/MxGraphRenderer';
 
-export function newBpmnElementsRegistry(graph: BpmnMxGraph): BpmnElementsRegistry {
-  return new BpmnElementsRegistry(new BpmnModelRegistry(graph), new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry());
+export function newBpmnElementsRegistry(graph: BpmnMxGraph, cssRegistry: CssRegistry, mxGraphRenderer: MxGraphRenderer): BpmnElementsRegistry {
+  return new BpmnElementsRegistry(new BpmnModelRegistry(graph), new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), cssRegistry, mxGraphRenderer);
 }
 
 /**
@@ -45,7 +45,12 @@ export class BpmnElementsRegistry {
   /**
    * @internal
    */
-  constructor(private bpmnModelRegistry: BpmnModelRegistry, private htmlElementRegistry: HtmlElementRegistry, private cssRegistry: CssRegistry) {}
+  constructor(
+    private bpmnModelRegistry: BpmnModelRegistry,
+    private htmlElementRegistry: HtmlElementRegistry,
+    private cssRegistry: CssRegistry,
+    private mxGraphRenderer: MxGraphRenderer,
+  ) {}
 
   // TODO doc, not found elements are not present in the return array
   /**
@@ -108,7 +113,7 @@ export class BpmnElementsRegistry {
     const arrayClassNames = ensureIsArray<string>(classNames);
     ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
       if (this.cssRegistry.addClassNames(bpmnElementId, arrayClassNames)) {
-        this.bpmnModelRegistry.refreshCell(bpmnElementId, this.cssRegistry);
+        this.mxGraphRenderer.refreshCell(bpmnElementId);
       }
     });
   }
@@ -141,19 +146,6 @@ class BpmnModelRegistry {
     }
 
     return { id: bpmnElementId, name: mxCell.value, isShape: mxCell.isVertex(), kind: extractBpmnKindFromStyle(mxCell) };
-  }
-
-  // TODO move to a dedicated class in charge of updating the mxgraph/rendered model
-  refreshCell(bpmnElementId: string, cssRegistry: CssRegistry): void {
-    const mxCell = this.graph.getModel().getCell(bpmnElementId);
-    if (!mxCell) {
-      return;
-    }
-    const view = this.graph.getView();
-    const state = view.getState(mxCell);
-    state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES] = cssRegistry.getClassNames(bpmnElementId);
-    state.shape.apply(state);
-    state.shape.redraw();
   }
 }
 
