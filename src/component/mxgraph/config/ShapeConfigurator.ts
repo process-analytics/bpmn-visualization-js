@@ -98,9 +98,8 @@ export default class ShapeConfigurator {
         // 'this.state.style' = the style definition associated with the cell
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cell = this.state.cell;
-
-        const isLabel = this.dialect === mxConstants.DIALECT_STRICTHTML; // set to this dialect when managing html labels
-        let allBpmnClassNames = computeAllBpmnClassNames(extractBpmnKindFromStyle(cell), isLabel);
+        // dialect = strictHtml is set means that current node holds an html label
+        let allBpmnClassNames = computeAllBpmnClassNames(extractBpmnKindFromStyle(cell), this.dialect === mxConstants.DIALECT_STRICTHTML).concat(' ').concat(userCssClassNames);
         // TODO change the computeAllBpmnClassNames implementation to return an array and manage the string join here instead
         const userCssClassNames =  this.state.style['bpmnCustomCSSClasses'];
         if (userCssClassNames) {
@@ -108,7 +107,6 @@ export default class ShapeConfigurator {
         }
 
         this.node.setAttribute('class', allBpmnClassNames);
-
         this.node.setAttribute('data-bpmn-id', this.state.cell.id);
       }
       // END bpmn-visualization CUSTOMIZATION
