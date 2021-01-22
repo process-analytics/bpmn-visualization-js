@@ -18,7 +18,8 @@ import { MessageFlow } from '../../../../model/bpmn/internal/edge/Flow';
 import { TCollaboration } from '../../../../model/bpmn/json/baseElement/rootElement/collaboration';
 import { TParticipant } from '../../../../model/bpmn/json/baseElement/participant';
 import { TMessageFlow } from '../../../../model/bpmn/json/baseElement/baseElement';
-import { ConvertedElements, ensureIsArray } from './utils';
+import { ConvertedElements } from './utils';
+import { ensureIsArray } from '../../../helpers/array-utils';
 
 export default class CollaborationConverter {
   constructor(readonly convertedElements: ConvertedElements) {}

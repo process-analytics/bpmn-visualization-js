@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ensureIsArray } from '../parser/json/converter/utils';
+import { ensureIsArray } from '../helpers/array-utils';
 import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
 import { computeBpmnBaseClassName, extractBpmnKindFromStyle } from '../mxgraph/style-helper';
 import { FlowKind } from '../../model/bpmn/internal/edge/FlowKind';
@@ -61,7 +61,6 @@ export class BpmnElementsRegistry {
    * ```
    */
   getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[] {
-    // TODO move ensureIsArray to src/helpers/arrays.ts (not only for model) and add dedicated tests
     return ensureIsArray<string>(bpmnElementIds)
       .map(id => this.bpmnModelRegistry.getBpmnSemantic(id))
       .filter(e => e)

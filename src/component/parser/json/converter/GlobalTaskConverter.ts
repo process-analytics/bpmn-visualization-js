@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
-import { ConvertedElements, ensureIsArray } from './utils';
+import { ConvertedElements } from './utils';
 import { TGlobalTask } from '../../../../model/bpmn/json/baseElement/rootElement/globalTask';
+import { ensureIsArray } from '../../../helpers/array-utils';
 
 export default class GlobalTaskConverter {
   constructor(readonly convertedElements: ConvertedElements) {}

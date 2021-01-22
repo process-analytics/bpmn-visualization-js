@@ -44,9 +44,10 @@ import { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseEle
 import { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
 import { TAssociation, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
 import { AssociationDirectionKind } from '../../../../model/bpmn/internal/edge/AssociationDirectionKind';
-import { ConvertedElements, ensureIsArray } from './utils';
+import { ConvertedElements } from './utils';
 import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
+import { ensureIsArray } from '../../../helpers/array-utils';
 
 interface EventDefinition {
   kind: ShapeBpmnEventKind;

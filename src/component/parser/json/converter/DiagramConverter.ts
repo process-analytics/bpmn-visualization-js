@@ -23,9 +23,10 @@ import Label, { Font } from '../../../../model/bpmn/internal/Label';
 import { MessageVisibleKind } from '../../../../model/bpmn/internal/edge/MessageVisibleKind';
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
 import { Point } from '../../../../model/bpmn/json/DC';
-import { ConvertedElements, ensureIsArray } from './utils';
+import { ConvertedElements } from './utils';
 import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
+import { ensureIsArray } from '../../../helpers/array-utils';
 
 export default class DiagramConverter {
   constructor(readonly convertedElements: ConvertedElements) {}
