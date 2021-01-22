@@ -141,10 +141,10 @@ export class BpmnElementsRegistry {
    * @param classNames The name of the class(es) to remove from the BPMN element(s)
    */
   removeCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
-    // TODO duplication with addCssClasses
-    // only the call to remove or add class differ
+    // TODO duplication with addCssClasses (only the call to removeClassNames or addClassNames differ)
+    const arrayClassNames = ensureIsArray<string>(classNames);
     ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
-      if (this.cssRegistry.removeClassNames(bpmnElementId, ensureIsArray<string>(classNames))) {
+      if (this.cssRegistry.removeClassNames(bpmnElementId, arrayClassNames)) {
         this.bpmnModelRegistry.refreshCell(bpmnElementId, this.cssRegistry);
       }
     });
