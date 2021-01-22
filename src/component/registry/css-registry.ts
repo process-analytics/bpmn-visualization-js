@@ -33,7 +33,7 @@ export class CssRegistry {
    *
    * @param bpmnElementId the BPMN id of the HTML element from the DOM
    * @param classNames the CSS class names to register
-   * @return true if at least one class name from parameters was not registered; false otherwise
+   * @return true if at least one class name from parameters has been added; false otherwise
    */
   addClassNames(bpmnElementId: string, classNames: string[]): boolean {
     const existingClassNames = this.classNamesByBPMNId.get(bpmnElementId);
