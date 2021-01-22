@@ -142,6 +142,7 @@ class BpmnModelRegistry {
     return { id: bpmnElementId, name: mxCell.value, isShape: mxCell.isVertex(), kind: extractBpmnKindFromStyle(mxCell) };
   }
 
+  // TODO move to a dedicated class in charge of updating the mxgraph/rendered model
   refreshCell(bpmnElementId: string, cssRegistry: CssRegistry): void {
     const mxCell = this.graph.getModel().getCell(bpmnElementId);
     if (!mxCell) {
