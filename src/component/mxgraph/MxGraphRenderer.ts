@@ -128,9 +128,9 @@ export default class MxGraphRenderer {
 
   private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: mxCell): void {
     if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
-      const mxCell = this.graph.insertVertex(mxEdge, `messageFlowIcon_of_${mxEdge.id}`, undefined, 0, 0, 20, 14, this.styleConfigurator.computeMessageFlowIconStyle(edge));
-      mxCell.geometry.relative = true;
-      mxCell.geometry.offset = new mxgraph.mxPoint(-10, -7);
+      const cell = this.graph.insertVertex(mxEdge, `messageFlowIcon_of_${mxEdge.id}`, undefined, 0, 0, 20, 14, this.styleConfigurator.computeMessageFlowIconStyle(edge));
+      cell.geometry.relative = true;
+      cell.geometry.offset = new mxgraph.mxPoint(-10, -7);
     }
   }
 
@@ -148,15 +148,15 @@ export default class MxGraphRenderer {
 
   private insertVertex(parent: mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxCell {
     const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new mxgraph.mxPoint(bounds.x, bounds.y));
-    const mxCell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
+    const cell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 
     if (labelBounds) {
       // label coordinates are relative in the cell referential coordinates
       const relativeLabelX = labelBounds.x - bounds.x;
       const relativeLabelY = labelBounds.y - bounds.y;
-      mxCell.geometry.offset = new mxgraph.mxPoint(relativeLabelX, relativeLabelY);
+      cell.geometry.offset = new mxgraph.mxPoint(relativeLabelX, relativeLabelY);
     }
-    return mxCell;
+    return cell;
   }
 }
 
