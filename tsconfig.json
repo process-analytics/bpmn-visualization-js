@@ -16,7 +16,7 @@
     "allowSyntheticDefaultImports": true,
     "typeRoots": [
       "node_modules/@types",
-      "node_modules/mxgraph-type-definitions"
+      "node_modules/@typed-mxgraph"
     ]
   },
   "include": [
