@@ -99,6 +99,7 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bpmnelementsregistry.html#addcssclasses" class="tsd-kind-icon">add<wbr>Css<wbr>Classes</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bpmnelementsregistry.html#getelementsbyids" class="tsd-kind-icon">get<wbr>Elements<wbr>ByIds</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bpmnelementsregistry.html#getelementsbykinds" class="tsd-kind-icon">get<wbr>Elements<wbr>ByKinds</a></li>
 							</ul>
@@ -109,6 +110,43 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="addcssclasses" class="tsd-anchor"></a>
+					<h3>add<wbr>Css<wbr>Classes</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Css<wbr>Classes<span class="tsd-signature-symbol">(</span>bpmnElementIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, classNames<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/c8c1cfe/src/component/registry/bpmn-elements-registry.ts#L107">component/registry/bpmn-elements-registry.ts:107</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add one/several CSS class(es) to one/several BPMN element(s)</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>bpmnElementIds: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The BPMN id of the element(s) where to add the CSS classes</p>
+									</div>
+								</li>
+								<li>
+									<h5>classNames: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The name of the class(es) to add to the BPMN element(s)</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="getelementsbyids" class="tsd-anchor"></a>
 					<h3>get<wbr>Elements<wbr>ByIds</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -118,7 +156,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/554df22/src/component/registry/bpmn-elements-registry.ts#L61">component/registry/bpmn-elements-registry.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/c8c1cfe/src/component/registry/bpmn-elements-registry.ts#L63">component/registry/bpmn-elements-registry.ts:63</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -127,8 +165,8 @@
 								</div>
 								<pre><code class="language-javascript"><span style="color: #000000">...</span>
 <span style="color: #008000">// Find all elements by specified id or ids</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">bpmnElementsSet1</span><span style="color: #000000"> = </span><span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span><span style="color: #000000">.</span><span style="color: #795E26">getElementsByKinds</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;userTask_1&#039;</span><span style="color: #000000">);</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">bpmnElementsSet2</span><span style="color: #000000"> = </span><span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span><span style="color: #000000">.</span><span style="color: #795E26">getElementsByKinds</span><span style="color: #000000">([</span><span style="color: #A31515">&#039;startEvent_3&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;userTask_2&#039;</span><span style="color: #000000">]);</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">bpmnElementsSet1</span><span style="color: #000000"> = </span><span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span><span style="color: #000000">.</span><span style="color: #795E26">getElementsByIds</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;userTask_1&#039;</span><span style="color: #000000">);</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">bpmnElementsSet2</span><span style="color: #000000"> = </span><span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span><span style="color: #000000">.</span><span style="color: #795E26">getElementsByIds</span><span style="color: #000000">([</span><span style="color: #A31515">&#039;startEvent_3&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;userTask_2&#039;</span><span style="color: #000000">]);</span>
 <span style="color: #008000">// now you can do whatever you want with the elements</span>
 <span style="color: #000000">...</span>
 </code></pre>
@@ -153,7 +191,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/554df22/src/component/registry/bpmn-elements-registry.ts#L81">component/registry/bpmn-elements-registry.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/c8c1cfe/src/component/registry/bpmn-elements-registry.ts#L82">component/registry/bpmn-elements-registry.ts:82</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -195,6 +233,9 @@
 					<li class="current tsd-kind-class">
 						<a href="bpmnelementsregistry.html" class="tsd-kind-icon">Bpmn<wbr>Elements<wbr>Registry</a>
 						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="bpmnelementsregistry.html#addcssclasses" class="tsd-kind-icon">add<wbr>Css<wbr>Classes</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="bpmnelementsregistry.html#getelementsbyids" class="tsd-kind-icon">get<wbr>Elements<wbr>ByIds</a>
 							</li>
