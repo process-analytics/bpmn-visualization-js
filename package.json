@@ -106,7 +106,7 @@
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-notice": "^0.9.10",
     "eslint-plugin-prettier": "^3.3.1",
-    "fs-extra": "^9.0.1",
+    "fs-extra": "^9.1.0",
     "husky": "^4.3.8",
     "jest": "^26.6.3",
     "jest-environment-puppeteer-jsdom": "^4.3.1",
