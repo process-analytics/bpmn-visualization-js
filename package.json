@@ -76,7 +76,7 @@
     "postversion": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for new developments\""
   },
   "dependencies": {
-    "entities": "^2.1.0",
+    "entities": "^2.2.0",
     "fast-xml-parser": "^3.17.6",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
