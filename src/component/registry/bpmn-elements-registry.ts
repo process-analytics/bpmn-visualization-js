@@ -103,6 +103,16 @@ export class BpmnElementsRegistry {
    *
    * @param bpmnElementIds The BPMN id of the element(s) where to add the CSS classes
    * @param classNames The name of the class(es) to add to the BPMN element(s)
+   *
+   * ```javascript
+   * ...
+   * // Add 'success-path' to BPMN elements with id: flow_1 and flow_5
+   * bpmnVisualization.bpmnElementsRegistry.addCssClasses(['flow_1', 'flow_5'], 'success-path');
+   *
+   * // Add 'suspicious-path' and 'additional-info' to BPMN element with id: task_3
+   * bpmnVisualization.bpmnElementsRegistry.addCssClasses('task_3', ['suspicious-path', 'additional-info']);
+   * ...
+   * ```
    */
   addCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
     const arrayClassNames = ensureIsArray<string>(classNames);
