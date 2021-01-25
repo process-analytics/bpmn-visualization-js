@@ -27,9 +27,5 @@ function initialize(): mxGraphExportObject {
   (window as any)['mxResourceExtension'] = '.txt';
   /* eslint-enable @typescript-eslint/no-explicit-any */
 
-  //return factory({});
-  const mxgraphLib = factory({});
-  // eslint-disable-next-line no-console
-  console.info(`mxGraph ${mxgraphLib.mxClient.VERSION} initialized`);
-  return mxgraphLib;
+  return factory({});
 }
