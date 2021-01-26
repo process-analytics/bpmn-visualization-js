@@ -38,24 +38,22 @@ export class CssRegistry {
    * @return true if at least one class name from parameters has been added; false otherwise
    */
   addClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    const initialClassNames = new Set(this.classNamesByBPMNId.get(bpmnElementId));
-    const resultingClassNames = new Set(initialClassNames);
+    const resultingClassNames = new Set(this.classNamesByBPMNId.get(bpmnElementId));
+    const initialClassesNumber = resultingClassNames.size;
     ensureIsArray(classNames).forEach(c => resultingClassNames.add(c));
 
     this.classNamesByBPMNId.set(bpmnElementId, Array.from(resultingClassNames));
-    return resultingClassNames.size > initialClassNames.size;
+    return resultingClassNames.size > initialClassesNumber;
   }
 
   // return `true` if at least one class has been removed
   removeClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    // TODO need review with addClassNames for consistency + decide to directly use Set
-    const existingClassNames = this.classNamesByBPMNId.get(bpmnElementId);
-    const remainingClasses = new Set(existingClassNames);
+    const resultingClassNames = new Set(this.classNamesByBPMNId.get(bpmnElementId));
+    const initialClassesNumber = resultingClassNames.size;
+    // TODO duplication with addClassNames (the method call on the set only differs and the size condition)
+    ensureIsArray(classNames).forEach(c => resultingClassNames.delete(c));
 
-    let removed = false;
-    ensureIsArray(classNames).forEach(c => (removed = remainingClasses.delete(c) || removed));
-
-    this.classNamesByBPMNId.set(bpmnElementId, Array.from(remainingClasses));
-    return removed;
+    this.classNamesByBPMNId.set(bpmnElementId, Array.from(resultingClassNames));
+    return resultingClassNames.size < initialClassesNumber;
   }
 }
