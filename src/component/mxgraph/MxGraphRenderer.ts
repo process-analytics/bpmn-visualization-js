@@ -157,18 +157,6 @@ export default class MxGraphRenderer {
     }
     return mxCell;
   }
-
-  public updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
-    const mxCell = this.graph.getModel().getCell(bpmnElementId);
-    if (!mxCell) {
-      return;
-    }
-    const view = this.graph.getView();
-    const state = view.getState(mxCell);
-    state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES] = cssClasses;
-    state.shape.apply(state);
-    state.shape.redraw();
-  }
 }
 
 export function newMxGraphRenderer(graph: BpmnMxGraph): MxGraphRenderer {

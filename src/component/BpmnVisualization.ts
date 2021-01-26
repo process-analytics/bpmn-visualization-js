@@ -30,21 +30,18 @@ export default class BpmnVisualization {
    */
   readonly bpmnElementsRegistry: BpmnElementsRegistry;
 
-  private readonly mxGraphRenderer: MxGraphRenderer;
-
   constructor(options: GlobalOptions) {
     // mxgraph configuration
     const configurator = new MxGraphConfigurator(htmlElement(options?.container));
     this.graph = configurator.configure(options);
     // other configurations
-    this.mxGraphRenderer = newMxGraphRenderer(this.graph);
-    this.bpmnElementsRegistry = newBpmnElementsRegistry(this.graph, this.mxGraphRenderer);
+    this.bpmnElementsRegistry = newBpmnElementsRegistry(this.graph);
   }
 
   public load(xml: string, options?: LoadOptions): void {
     try {
       const bpmnModel = newBpmnParser().parse(xml);
-      this.mxGraphRenderer.render(bpmnModel, options);
+      newMxGraphRenderer(this.graph).render(bpmnModel, options);
     } catch (e) {
       // TODO error handling
       window.alert(`Cannot load bpmn diagram: ${e.message}`);

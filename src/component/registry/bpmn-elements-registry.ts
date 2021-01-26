@@ -20,9 +20,15 @@ import { FlowKind } from '../../model/bpmn/internal/edge/FlowKind';
 import { ShapeBpmnElementKind } from '../../model/bpmn/internal/shape';
 import { CssRegistry } from './css-registry';
 import MxGraphRenderer from '../mxgraph/MxGraphRenderer';
+import MxGraphCellUpdater from '../mxgraph/MxGraphCellUpdater';
 
-export function newBpmnElementsRegistry(graph: BpmnMxGraph, mxGraphRenderer: MxGraphRenderer): BpmnElementsRegistry {
-  return new BpmnElementsRegistry(new BpmnModelRegistry(graph), new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), mxGraphRenderer);
+export function newBpmnElementsRegistry(graph: BpmnMxGraph): BpmnElementsRegistry {
+  return new BpmnElementsRegistry(
+    new BpmnModelRegistry(graph),
+    new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)),
+    new CssRegistry(),
+    new MxGraphCellUpdater(graph),
+  );
 }
 
 /**
@@ -49,7 +55,7 @@ export class BpmnElementsRegistry {
     private bpmnModelRegistry: BpmnModelRegistry,
     private htmlElementRegistry: HtmlElementRegistry,
     private cssRegistry: CssRegistry,
-    private mxGraphRenderer: MxGraphRenderer,
+    private mxGraphCellUpdater: MxGraphCellUpdater,
   ) {}
 
   // TODO doc, not found elements are not present in the return array
@@ -124,7 +130,7 @@ export class BpmnElementsRegistry {
     ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
       if (this.cssRegistry.addClassNames(bpmnElementId, arrayClassNames)) {
         const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
-        this.mxGraphRenderer.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
+        this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
       }
     });
   }

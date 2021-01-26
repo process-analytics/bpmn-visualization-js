@@ -26,8 +26,9 @@ describe('manage css classes for BPMN cells', () => {
     const bpmnElementId = 'bpmn-id';
     const classNames = ['class-name'];
 
-    cssRegistry.addClassNames(bpmnElementId, classNames);
+    const result = cssRegistry.addClassNames(bpmnElementId, classNames);
 
+    expect(result).toBeTruthy();
     expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(classNames);
   });
 
@@ -35,8 +36,9 @@ describe('manage css classes for BPMN cells', () => {
     const bpmnElementId = 'bpmn-id';
     const classNames = ['class-name-1', 'class-name-2'];
 
-    cssRegistry.addClassNames(bpmnElementId, classNames);
+    const result = cssRegistry.addClassNames(bpmnElementId, classNames);
 
+    expect(result).toBeTruthy();
     expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(classNames);
   });
 
@@ -44,27 +46,20 @@ describe('manage css classes for BPMN cells', () => {
     const bpmnElementId = 'bpmn-id';
     cssRegistry.addClassNames(bpmnElementId, ['class-name-1', 'class-name-2']);
 
-    cssRegistry.addClassNames(bpmnElementId, ['class-name-3', 'class-name-2', 'class-name-4']);
-
-    expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class-name-1', 'class-name-2', 'class-name-3', 'class-name-4']);
-  });
-
-  it('addClassNames should return true, when at least one new class name is not registered', () => {
-    const bpmnElementId = 'bpmn-id';
-    cssRegistry.addClassNames(bpmnElementId, ['class-name-1']);
-
-    const result = cssRegistry.addClassNames(bpmnElementId, ['class-name-1', 'class-name-2']);
-
-    expect(result).toBeTruthy();
-  });
-
-  it('addClassNames should return false, when all the new class names are registered', () => {
-    const bpmnElementId = 'bpmn-id';
-    cssRegistry.addClassNames(bpmnElementId, ['class-name-1', 'class-name-2']);
-
     const result = cssRegistry.addClassNames(bpmnElementId, ['class-name-2', 'class-name-1']);
 
     expect(result).toBeFalsy();
+    expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class-name-1', 'class-name-2']);
+  });
+
+  it('the unregistered class names should be registered, when the other are already registered', () => {
+    const bpmnElementId = 'bpmn-id';
+    cssRegistry.addClassNames(bpmnElementId, ['class-name-1', 'class-name-2']);
+
+    const result = cssRegistry.addClassNames(bpmnElementId, ['class-name-3', 'class-name-2', 'class-name-4']);
+
+    expect(result).toBeTruthy();
+    expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class-name-1', 'class-name-2', 'class-name-3', 'class-name-4']);
   });
 
   it('getClassNames should return a empty array, when no class name is registered for the BPMN element', () => {
