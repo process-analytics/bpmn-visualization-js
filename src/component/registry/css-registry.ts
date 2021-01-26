@@ -57,6 +57,10 @@ export class CssRegistry {
 
   // return `true` if at least one class has been removed
   removeClassNames(bpmnElementId: string, classNames: string[]): boolean {
+    if (!classNames) {
+      return false;
+    }
+
     // TODO need review with addClassNames for consistency + decide to directly use Set
     const existingClassNames = this.classNamesByBPMNId.get(bpmnElementId);
     const remainingClasses = new Set(existingClassNames);
