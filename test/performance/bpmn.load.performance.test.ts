@@ -15,16 +15,8 @@
  */
 import { getSimplePlatformName } from '../e2e/helpers/test-utils';
 import * as fs from 'fs';
-import { calculateMetrics, ChartData } from './helpers/perf-utils';
+import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
 import { PageTester } from '../e2e/helpers/visu/PageTester';
-
-interface PerformanceMetric {
-  run: number;
-  TaskDuration: number;
-  ScriptDuration: number;
-  RecalcStyleDuration: number;
-  LayoutDuration: number;
-}
 
 const platform = getSimplePlatformName();
 const performanceDataFilePath = './performance/data/' + platform + '/data.js';
