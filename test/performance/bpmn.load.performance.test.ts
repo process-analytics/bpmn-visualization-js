@@ -19,7 +19,7 @@ import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-u
 import { PageTester } from '../e2e/helpers/visu/PageTester';
 
 const platform = getSimplePlatformName();
-const performanceDataFilePath = './performance/data/' + platform + '/data.js';
+const performanceDataFilePath = './data/' + platform + '/data.js';
 const metricsArray: Array<PerformanceMetric> = [];
 
 describe.each([1, 2, 3, 4, 5])('load performance', run => {
