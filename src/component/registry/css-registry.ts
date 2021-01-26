@@ -37,10 +37,10 @@ export class CssRegistry {
    * @return true if at least one class name from parameters has been added; false otherwise
    */
   addClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    const existingClassNames = this.classNamesByBPMNId.get(bpmnElementId);
-    if (!existingClassNames) {
-      return this.register(bpmnElementId, classNames);
-    }
+    const existingClassNames = this.classNamesByBPMNId.get(bpmnElementId) || [];
+    // if (!existingClassNames) {
+    //   return this.register(bpmnElementId, classNames);
+    // }
 
     const classNamesToSet = Array.from(new Set(existingClassNames.concat(classNames)));
     if (!arraysAreIdentical(existingClassNames, classNamesToSet)) {

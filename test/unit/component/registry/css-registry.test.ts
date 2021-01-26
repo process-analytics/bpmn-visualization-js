@@ -32,6 +32,10 @@ describe('manage css classes for BPMN cells', () => {
   });
 
   describe('Add css classes', () => {
+    it('Add an undefined array of classes', () => {
+      expect(cssRegistry.addClassNames('bpmn-id', undefined)).toBeFalsy();
+    });
+
     it('1 class name should be registered, when add it for the first time', () => {
       const bpmnElementId = 'bpmn-id';
       const classNames = ['class-name'];
