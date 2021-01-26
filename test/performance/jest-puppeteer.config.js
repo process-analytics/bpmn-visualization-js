@@ -15,8 +15,8 @@
  */
 module.exports = {
   server: {
-    command: `npm run start -- --config-server-port 10003`,
-    port: 10003,
+    command: `npm run start -- --config-server-port 10002`,
+    port: 10002,
     launchTimeout: 30000, // high value mainly for GitHub Workflows running on macOS (slow machines)
     debug: true,
   },
