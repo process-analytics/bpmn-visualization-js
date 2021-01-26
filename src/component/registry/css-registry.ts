@@ -38,21 +38,14 @@ export class CssRegistry {
    */
   addClassNames(bpmnElementId: string, classNames: string[]): boolean {
     const existingClassNames = this.classNamesByBPMNId.get(bpmnElementId) || [];
-    // if (!existingClassNames) {
-    //   return this.register(bpmnElementId, classNames);
-    // }
 
     const classNamesToSet = Array.from(new Set(existingClassNames.concat(classNames)));
     if (!arraysAreIdentical(existingClassNames, classNamesToSet)) {
-      return this.register(bpmnElementId, classNamesToSet);
+      this.classNamesByBPMNId.set(bpmnElementId, classNames);
+      return true;
     }
 
     return false;
-  }
-
-  private register(bpmnElementId: string, classNames: string[]): boolean {
-    this.classNamesByBPMNId.set(bpmnElementId, classNames);
-    return true;
   }
 
   // return `true` if at least one class has been removed
