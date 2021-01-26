@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { arraysAreIdentical } from '../helpers/array-utils';
 
 export class CssRegistry {
   // TODO using a Set internally will prevent multi transformation (only when getting the class list)
@@ -37,15 +36,16 @@ export class CssRegistry {
    * @return true if at least one class name from parameters has been added; false otherwise
    */
   addClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    const existingClassNames = this.classNamesByBPMNId.get(bpmnElementId) || [];
-
-    const classNamesToSet = Array.from(new Set(existingClassNames.concat(classNames)));
-    if (!arraysAreIdentical(existingClassNames, classNamesToSet)) {
-      this.classNamesByBPMNId.set(bpmnElementId, classNames);
-      return true;
+    if (!classNames) {
+      return false;
     }
 
-    return false;
+    const initialClassNames = new Set(this.classNamesByBPMNId.get(bpmnElementId));
+    const resultingClassNames = new Set(initialClassNames);
+    classNames.forEach(c => resultingClassNames.add(c));
+
+    this.classNamesByBPMNId.set(bpmnElementId, Array.from(resultingClassNames));
+    return resultingClassNames.size > initialClassNames.size;
   }
 
   // return `true` if at least one class has been removed

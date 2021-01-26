@@ -33,14 +33,3 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
   }
   return returnedArray.filter(value => value);
 }
-
-export function arraysAreIdentical<T>(array1: T[], array2: T[]): boolean {
-  array1 = ensureIsArray(array1);
-  array2 = ensureIsArray(array2);
-  return (
-    array1.length == array2.length &&
-    array1.every((element, index) => {
-      return element === array2[index];
-    })
-  );
-}
