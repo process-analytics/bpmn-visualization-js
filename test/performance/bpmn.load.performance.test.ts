@@ -15,7 +15,7 @@
  */
 import { getSimplePlatformName } from '../e2e/helpers/test-utils';
 import * as fs from 'fs';
-import { calculateMetrics, ChartData } from '../e2e/helpers/perf-utils';
+import { calculateMetrics, ChartData } from './helpers/perf-utils';
 import { PageTester } from '../e2e/helpers/visu/PageTester';
 
 interface PerformanceMetric {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { delay, getSimplePlatformName } from '../e2e/helpers/test-utils';
-import { calculateMetrics, ChartData, PerformanceMetric } from '../e2e/helpers/perf-utils';
+import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
 import * as fs from 'fs';
 import { PageTester } from '../e2e/helpers/visu/PageTester';
 
