@@ -176,7 +176,7 @@ describe('Bpmn Elements registry - CSS class management', () => {
       bpmnVisualization.bpmnElementsRegistry.addCssClasses('serviceTask_1_2', 'class1');
       htmlElementLookup.expectServiceTask('serviceTask_1_2', ['class1']);
 
-      // add a several classes to a several elements
+      // add several classes to several elements
       bpmnVisualization.bpmnElementsRegistry.addCssClasses(['endEvent_message_1', 'serviceTask_1_2'], ['class2', 'class3']);
       htmlElementLookup.expectServiceTask('serviceTask_1_2', ['class1', 'class2', 'class3']);
       htmlElementLookup.expectEndEvent('endEvent_message_1', ['class2', 'class3']);
@@ -186,10 +186,43 @@ describe('Bpmn Elements registry - CSS class management', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
       const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
-      const nonExistingBpmnId = 'i-do-not-exist-for-sure';
+      const nonExistingBpmnId = 'i-do-not-exist-for-add';
       htmlElementLookup.expectNoElement(nonExistingBpmnId);
-      // this call ensure that there is not issue on the rendering part
+      // this call ensures that there is not issue on the rendering part
       bpmnVisualization.bpmnElementsRegistry.addCssClasses(nonExistingBpmnId, 'class1');
+    });
+  });
+
+  describe('Remove classes', () => {
+    it('Remove one or several classes to one or several BPMN elements', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+
+      // default classes
+      htmlElementLookup.expectUserTask('userTask_0');
+      htmlElementLookup.expectLane('lane_01');
+
+      // remove a single class from a single element
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses('userTask_0', 'class1');
+      htmlElementLookup.expectUserTask('userTask_0', ['class1']); // TODO do we keep this check
+      bpmnVisualization.bpmnElementsRegistry.removeCssClasses('userTask_0', 'class1');
+      htmlElementLookup.expectUserTask('userTask_0');
+
+      // remove several classes from several elements
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses(['lane_01', 'userTask_0'], ['class1', 'class2', 'class3']);
+      bpmnVisualization.bpmnElementsRegistry.removeCssClasses(['lane_01', 'userTask_0'], ['class1', 'class3']);
+      htmlElementLookup.expectLane('lane_01', ['class2']);
+      htmlElementLookup.expectUserTask('userTask_0', ['class2']);
+    });
+
+    it('BPMN element does not exist', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+
+      const nonExistingBpmnId = 'i-do-not-exist-for-removal';
+      htmlElementLookup.expectNoElement(nonExistingBpmnId);
+      // this call ensures that there is not issue on the rendering part
+      bpmnVisualization.bpmnElementsRegistry.removeCssClasses(nonExistingBpmnId, 'class1');
     });
   });
 });

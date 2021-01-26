@@ -109,7 +109,7 @@ export class BpmnElementsRegistry {
   }
 
   /**
-   * Add one/several CSS class(es) to one/several BPMN element(s)
+   * Add one/several CSS class(es) to one/several BPMN element(s).
    *
    * @param bpmnElementIds The BPMN id of the element(s) where to add the CSS classes
    * @param classNames The name of the class(es) to add to the BPMN element(s)
@@ -130,6 +130,22 @@ export class BpmnElementsRegistry {
       if (this.cssRegistry.addClassNames(bpmnElementId, arrayClassNames)) {
         const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
         this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
+      }
+    });
+  }
+
+  /**
+   * Remove one/several CSS class(es) from one/several BPMN element(s).
+   *
+   * @param bpmnElementIds The BPMN id of the element(s) where to remove the CSS classes
+   * @param classNames The name of the class(es) to remove from the BPMN element(s)
+   */
+  removeCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
+    // TODO duplication with addCssClasses
+    // only the call to remove or add class differ
+    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
+      if (this.cssRegistry.removeClassNames(bpmnElementId, ensureIsArray<string>(classNames))) {
+        this.bpmnModelRegistry.refreshCell(bpmnElementId, this.cssRegistry);
       }
     });
   }

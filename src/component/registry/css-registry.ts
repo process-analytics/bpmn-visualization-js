@@ -16,6 +16,7 @@
 import { arraysAreIdentical } from '../helpers/array-utils';
 
 export class CssRegistry {
+  // TODO using a Set internally will prevent multi transformation (only when getting the class list)
   private classNamesByBPMNId = new Map<string, string[]>();
 
   /**
@@ -52,5 +53,17 @@ export class CssRegistry {
   private register(bpmnElementId: string, classNames: string[]): boolean {
     this.classNamesByBPMNId.set(bpmnElementId, classNames);
     return true;
+  }
+
+  // return `true` if at least one class has been removed
+  removeClassNames(bpmnElementId: string, classNames: string[]): boolean {
+    const existingClassNames = this.classNamesByBPMNId.get(bpmnElementId);
+    const remainingClasses = new Set(existingClassNames);
+
+    let removed = false;
+    classNames.forEach(c => (removed = remainingClasses.delete(c) || removed));
+
+    this.classNamesByBPMNId.set(bpmnElementId, Array.from(remainingClasses));
+    return removed;
   }
 }
