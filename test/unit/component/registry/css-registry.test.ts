@@ -108,10 +108,8 @@ describe('manage css classes for BPMN cells', () => {
     it('Remove a class twice', () => {
       const bpmnElementId = 'bpmn-id';
       cssRegistry.addClassNames(bpmnElementId, ['class-to-remove']);
-      let removed = cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove']);
-      expect(removed).toBeTruthy();
-      removed = cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove']);
-      expect(removed).toBeFalsy();
+      expect(cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeTruthy();
+      expect(cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeFalsy();
       expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
     });
   });
