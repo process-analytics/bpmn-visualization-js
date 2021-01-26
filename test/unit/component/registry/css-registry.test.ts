@@ -22,6 +22,9 @@ beforeEach(() => {
 
 describe('manage css classes for BPMN cells', () => {
   describe('Get css classes', () => {
+    it('getClassNames should return a empty array, when no class is registered at all', () => {
+      expect(cssRegistry.getClassNames('bpmn-id-1')).toHaveLength(0);
+    });
     it('getClassNames should return a empty array, when no class name is registered for the BPMN element', () => {
       cssRegistry.addClassNames('bpmn-id-1', ['class-name']);
       expect(cssRegistry.getClassNames('bpmn-id-2')).toHaveLength(0);
