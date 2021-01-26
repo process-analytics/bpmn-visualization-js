@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
-import MxGraphRenderer, { newMxGraphRenderer } from './mxgraph/MxGraphRenderer';
+import { newMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
 import { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
 import { FitOptions, GlobalOptions, LoadOptions } from './options';

@@ -27,7 +27,6 @@ import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibl
 import { ShapeBpmnMarkerKind } from '../../model/bpmn/internal/shape';
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { LoadOptions } from '../options';
-import { StyleIdentifier } from './StyleUtils';
 
 export default class MxGraphRenderer {
   constructor(readonly graph: BpmnMxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
