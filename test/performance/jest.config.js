@@ -23,27 +23,5 @@ module.exports = {
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
-  // collectCoverageFrom: ['**/*.{ts,js}'],
-  // coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static', 'src/model'],
-  // coverageReporters: ['lcov', 'text-summary'],
-  // coverageDirectory: 'build/test-report/e2e',
   setupFiles: ['./test/e2e/config/copy.bpmn.diagram.ts'],
-  // reporters: [
-  //   'default',
-  //   [
-  //     'jest-html-reporter',
-  //     {
-  //       pageTitle: 'bpmn-visualization E2E Test Report',
-  //       outputPath: 'build/test-report/e2e/index.html',
-  //       includeFailureMsg: true,
-  //       includeSuiteFailure: true,
-  //     },
-  //   ],
-  //   [
-  //     'jest-sonar',
-  //     {
-  //       outputDirectory: 'build/test-report/e2e',
-  //     },
-  //   ],
-  // ],
 };
