@@ -34,8 +34,22 @@
         width: 70%;
       }
 
-      .color-rect > rect {
+      /* activity */
+      .detection-activity > rect:nth-child(1) {
         fill: aquamarine;
+      }
+      /* gateway */
+      .detection-gateway > path:nth-child(1) {
+        stroke: chartreuse;
+        stroke-width: 4;
+      }
+      /* event */
+      .detection-event > ellipse {
+        stroke: red;
+      }
+      /* lane */
+      .detection-lane > path:nth-child(3) {
+        fill: palevioletred;
       }
     </style>
 </head>
@@ -50,6 +64,9 @@
         <option value="endEvent">End Event</option>
         <option value="intermediateCatchEvent">Catch Event</option>
         <option value="intermediateThrowEvent">Throw Event</option>
+        <option value="exclusiveGateway">Exclusive Gateway</option>
+        <option value="inclusiveGateway">Inclusive Gateway</option>
+        <option value="parallelGateway">Parallel Gateway</option>
         <option value="lane">Lane</option>
       </select>
       <button id="bpmn-kinds-textarea-clean-btn">Clear</button>

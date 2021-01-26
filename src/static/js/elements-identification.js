@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, FitType, getElementsByKinds, addCssClasses, log, startBpmnVisualization, updateLoadOptions } from '../../index.es.js';
+import { documentReady, FitType, getElementsByKinds, addCssClasses, removeCssClasses, log, startBpmnVisualization, updateLoadOptions, ShapeUtil } from '../../index.es.js';
+
+let lastBpmnIdsWithExtraCssClasses = [];
+let lastCssClassName = '';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureControls() {
@@ -31,13 +34,34 @@ function configureControls() {
     textArea.value += [textHeader, lines].join('\n') + '\n';
     textArea.scrollTop = textArea.scrollHeight;
 
+    // CSS classes update
+    removeCssClasses(lastBpmnIdsWithExtraCssClasses, lastCssClassName);
     const bpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
-    addCssClasses(bpmnIds, 'color-rect');
+    lastCssClassName = getCustomCssClassName(bpmnKind);
+    addCssClasses(bpmnIds, lastCssClassName);
+    lastBpmnIdsWithExtraCssClasses = bpmnIds;
   };
 
   document.getElementById('bpmn-kinds-textarea-clean-btn').onclick = function () {
     textArea.value = '';
+    removeCssClasses(lastBpmnIdsWithExtraCssClasses, lastCssClassName);
+    lastBpmnIdsWithExtraCssClasses = [];
+    lastCssClassName = '';
   };
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function getCustomCssClassName(bpmnKind) {
+  if (ShapeUtil.isActivity(bpmnKind)) {
+    return 'detection-activity';
+  } else if (bpmnKind.includes('Gateway')) {
+    return 'detection-gateway';
+  } else if (bpmnKind.includes('Event')) {
+    return 'detection-event';
+  } else if (bpmnKind.includes('lane')) {
+    return 'detection-lane';
+  }
+  return 'detection';
 }
 
 documentReady(() => {

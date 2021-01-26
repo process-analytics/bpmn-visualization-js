@@ -61,6 +61,10 @@ export function addCssClasses(bpmnElementId: string | string[], classNames: stri
   return bpmnVisualization.bpmnElementsRegistry.addCssClasses(bpmnElementId, classNames);
 }
 
+export function removeCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
+  return bpmnVisualization.bpmnElementsRegistry.removeCssClasses(bpmnElementId, classNames);
+}
+
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {
   const reader = new FileReader();
