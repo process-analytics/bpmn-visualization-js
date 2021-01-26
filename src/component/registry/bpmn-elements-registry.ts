@@ -145,7 +145,8 @@ export class BpmnElementsRegistry {
     const arrayClassNames = ensureIsArray<string>(classNames);
     ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
       if (this.cssRegistry.removeClassNames(bpmnElementId, arrayClassNames)) {
-        this.bpmnModelRegistry.refreshCell(bpmnElementId, this.cssRegistry);
+        const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
+        this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
       }
     });
   }
