@@ -26,8 +26,9 @@ describe('manage css classes for BPMN cells', () => {
     const bpmnElementId = 'bpmn-id';
     const classNames = ['class-name'];
 
-    cssRegistry.addClassNames(bpmnElementId, classNames);
+    const result = cssRegistry.addClassNames(bpmnElementId, classNames);
 
+    expect(result).toBeTruthy();
     expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(classNames);
   });
 
@@ -35,8 +36,9 @@ describe('manage css classes for BPMN cells', () => {
     const bpmnElementId = 'bpmn-id';
     const classNames = ['class-name-1', 'class-name-2'];
 
-    cssRegistry.addClassNames(bpmnElementId, classNames);
+    const result = cssRegistry.addClassNames(bpmnElementId, classNames);
 
+    expect(result).toBeTruthy();
     expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(classNames);
   });
 
@@ -44,8 +46,19 @@ describe('manage css classes for BPMN cells', () => {
     const bpmnElementId = 'bpmn-id';
     cssRegistry.addClassNames(bpmnElementId, ['class-name-1', 'class-name-2']);
 
-    cssRegistry.addClassNames(bpmnElementId, ['class-name-3', 'class-name-2', 'class-name-4']);
+    const result = cssRegistry.addClassNames(bpmnElementId, ['class-name-2', 'class-name-1']);
 
+    expect(result).toBeFalsy();
+    expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class-name-1', 'class-name-2']);
+  });
+
+  it('the unregistered class names should be registered, when the other are already registered', () => {
+    const bpmnElementId = 'bpmn-id';
+    cssRegistry.addClassNames(bpmnElementId, ['class-name-1', 'class-name-2']);
+
+    const result = cssRegistry.addClassNames(bpmnElementId, ['class-name-3', 'class-name-2', 'class-name-4']);
+
+    expect(result).toBeTruthy();
     expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class-name-1', 'class-name-2', 'class-name-3', 'class-name-4']);
   });
 

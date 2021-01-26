@@ -158,7 +158,7 @@ export default class MxGraphRenderer {
   }
 }
 
-export function defaultMxGraphRenderer(graph: BpmnMxGraph): MxGraphRenderer {
+export function newMxGraphRenderer(graph: BpmnMxGraph): MxGraphRenderer {
   return new MxGraphRenderer(graph, new CoordinatesTranslator(graph), new StyleConfigurator(graph));
 }
 

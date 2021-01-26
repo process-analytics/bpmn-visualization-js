@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
-import { defaultMxGraphRenderer } from './mxgraph/MxGraphRenderer';
+import { newMxGraphRenderer } from './mxgraph/MxGraphRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
 import { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
 import { FitOptions, GlobalOptions, LoadOptions } from './options';
@@ -24,6 +24,7 @@ import { htmlElement } from './helpers/dom-utils';
 
 export default class BpmnVisualization {
   public readonly graph: BpmnMxGraph;
+
   /**
    * @experimental subject to change, feedback welcome
    */
@@ -40,7 +41,7 @@ export default class BpmnVisualization {
   public load(xml: string, options?: LoadOptions): void {
     try {
       const bpmnModel = newBpmnParser().parse(xml);
-      defaultMxGraphRenderer(this.graph).render(bpmnModel, options);
+      newMxGraphRenderer(this.graph).render(bpmnModel, options);
     } catch (e) {
       // TODO error handling
       window.alert(`Cannot load bpmn diagram: ${e.message}`);

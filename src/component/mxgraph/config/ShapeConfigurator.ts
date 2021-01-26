@@ -100,13 +100,12 @@ export default class ShapeConfigurator {
         const cell = this.state.cell;
         // dialect = strictHtml is set means that current node holds an html label
         let allBpmnClassNames = computeAllBpmnClassNames(extractBpmnKindFromStyle(cell), this.dialect === mxConstants.DIALECT_STRICTHTML);
-        // TODO change the computeAllBpmnClassNames implementation to return an array and manage the string join here instead
         const extraCssClasses =  this.state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES];
         if (extraCssClasses) {
-          allBpmnClassNames = allBpmnClassNames.concat(' ').concat(extraCssClasses);
+          allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
         }
 
-        this.node.setAttribute('class', allBpmnClassNames);
+        this.node.setAttribute('class', allBpmnClassNames.join(' '));
         this.node.setAttribute('data-bpmn-id', this.state.cell.id);
       }
       // END bpmn-visualization CUSTOMIZATION
