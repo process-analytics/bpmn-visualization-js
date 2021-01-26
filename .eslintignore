@@ -5,5 +5,4 @@ config/
 dist/
 node_modules/
 scripts/utils/dist/
-test/e2e/performance/data/
 test/performance/data/
