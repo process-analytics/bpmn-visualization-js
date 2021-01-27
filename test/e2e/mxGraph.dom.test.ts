@@ -225,4 +225,32 @@ describe('Bpmn Elements registry - CSS class management', () => {
       bpmnVisualization.bpmnElementsRegistry.removeCssClasses(nonExistingBpmnId, 'class1');
     });
   });
+
+  describe('Toggle classes', () => {
+    it('Toggle one or several classes to one or several BPMN elements', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+
+      // toggle a classes for a single element
+      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('userTask_0', 'class1');
+      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('userTask_0', ['class1', 'class2']);
+      htmlElementLookup.expectUserTask('userTask_0', ['class2']);
+
+      // toggle a classes for several elements
+      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_01', 'userTask_0'], ['class1', 'class2', 'class3']);
+      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_01', 'userTask_0'], ['class1', 'class3', 'class4']);
+      htmlElementLookup.expectLane('lane_01', ['class2', 'class4']);
+      htmlElementLookup.expectUserTask('userTask_0', ['class4']);
+    });
+
+    it('BPMN element does not exist', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+
+      const nonExistingBpmnId = 'i-do-not-exist-for-toggle';
+      htmlElementLookup.expectNoElement(nonExistingBpmnId);
+      // this call ensures that there is not issue on the rendering part
+      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(nonExistingBpmnId, 'class1');
+    });
+  });
 });
