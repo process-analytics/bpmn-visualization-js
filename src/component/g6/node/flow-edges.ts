@@ -102,10 +102,7 @@ export function getSequenceFlowDefinition(): ShapeOptions {
     options: {
       style: {
         stroke: '#ccc',
-        endArrow: {
-          path: G6.Arrow.triangle(10, 20, 25),
-          d: 25,
-        },
+        endArrow: { fill: 'blue', path: G6.Arrow.triangle(10, 20, 25), d: 25 },
       },
     },
     // draw: drawSequenceFlow(),
@@ -201,7 +198,6 @@ function afterDrawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: IGroup) => vo
 
     // get the coordinate of the quatile on the path
     const quatile = mainShape.getPoint(0.25);
-    const quatileColor = cfg.quatileColor || '#333';
     // add a circle on the quatile of the path
     /*
     group.addShape('circle', {
@@ -220,6 +216,7 @@ function afterDrawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: IGroup) => vo
         y: quatile.y,
         r: 5,
         symbol: 'square',
+        fill: 'orange',
       },
       // must be assigned in G6 3.3 and later versions. it can be any value you want
       name: 'marker-shape',
