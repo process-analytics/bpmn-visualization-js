@@ -25,7 +25,7 @@ import builtins from 'rollup-plugin-node-builtins';
 
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
 import pkg from './package.json';
 import json from '@rollup/plugin-json';
 
@@ -63,7 +63,7 @@ if (!buildBundles) {
     },
   ];
 } else {
-  const pluginsBundleIIFE = [typescriptPlugin(), nodeResolve({ browser: true }), commonjs(), json()];
+  const pluginsBundleIIFE = [typescriptPlugin(), resolve({ browser: true }), commonjs(), json()];
   const outputIIFE = {
     file: pkg.browser.replace('.min.js', '.js'),
     name: 'bpmnvisu',
@@ -139,7 +139,7 @@ function withMinification(plugins) {
 }
 
 function pluginsForDevelopment() {
-  const plugins = [typescriptPlugin(), nodeResolve({ mainFields: ['module'], modulesOnly: true }), commonjs(), json()];
+  const plugins = [typescriptPlugin(), resolve({ browser: true }), commonjs(), json()];
 
   // Copy static resources
   if (devMode || demoMode) {

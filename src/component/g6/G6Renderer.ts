@@ -31,7 +31,7 @@ import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
 import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal/shape';
 import { LoadOptions } from '../options';
 import { RenderedModel } from '../registry/bpmn-model-registry';
-import { Graph, EdgeConfig, GraphData, IPoint, NodeConfig } from '@antv/g6';
+import { Graph, EdgeConfig, GraphData, IPoint, NodeConfig } from '@antv/g6/es';
 
 export interface BpmnG6NodeConfig extends NodeConfig {
   bpmn: {
