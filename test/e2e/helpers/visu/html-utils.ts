@@ -64,6 +64,12 @@ export class HtmlElementLookup {
     expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-lane', additionalClasses));
   }
 
+  expectExclusiveGateway(bpmnId: string, additionalClasses?: string[]): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expectSvgGateway(svgGroupElement);
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-exclusive-gateway', additionalClasses));
+  }
+
   private static computeClassValue(bpmnClass: string, additionalClasses?: string[]): string {
     return [bpmnClass].concat(additionalClasses).filter(Boolean).join(' ');
   }
@@ -78,6 +84,10 @@ export function expectSvgTask(svgGroupElement: HTMLElement): void {
 }
 
 export function expectSvgLane(svgGroupElement: HTMLElement): void {
+  expectSvgFirstChildNodeName(svgGroupElement, 'path');
+}
+
+export function expectSvgGateway(svgGroupElement: HTMLElement): void {
   expectSvgFirstChildNodeName(svgGroupElement, 'path');
 }
 

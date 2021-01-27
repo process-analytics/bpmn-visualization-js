@@ -232,15 +232,15 @@ describe('Bpmn Elements registry - CSS class management', () => {
       const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
       // toggle a classes for a single element
-      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('userTask_0', 'class1');
-      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('userTask_0', ['class1', 'class2']);
-      htmlElementLookup.expectUserTask('userTask_0', ['class2']);
+      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('gateway_01', 'class1');
+      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('gateway_01', ['class1', 'class2']);
+      htmlElementLookup.expectExclusiveGateway('gateway_01', ['class2']);
 
       // toggle a classes for several elements
-      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_01', 'userTask_0'], ['class1', 'class2', 'class3']);
-      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_01', 'userTask_0'], ['class1', 'class3', 'class4']);
-      htmlElementLookup.expectLane('lane_01', ['class2', 'class4']);
-      htmlElementLookup.expectUserTask('userTask_0', ['class4']);
+      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_02', 'gateway_01'], ['class1', 'class2', 'class3']);
+      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_02', 'gateway_01'], ['class1', 'class3', 'class4']);
+      htmlElementLookup.expectLane('lane_02', ['class2', 'class4']);
+      htmlElementLookup.expectExclusiveGateway('gateway_01', ['class4']);
     });
 
     it('BPMN element does not exist', () => {
