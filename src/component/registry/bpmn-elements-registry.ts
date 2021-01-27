@@ -137,6 +137,15 @@ export class BpmnElementsRegistry {
   /**
    * Remove one/several CSS class(es) from one/several BPMN element(s).
    *
+   * @example
+   * ```javascript
+   * // Remove 'highlight' from BPMN elements with id: activity_1 and activity_2
+   * bpmnVisualization.bpmnElementsRegistry.addCssClasses(['activity_1', 'activity_2'], 'highlight');
+   *
+   * // Remove 'running' and 'additional-info' from BPMN element with id: task_3
+   * bpmnVisualization.bpmnElementsRegistry.addCssClasses('task_3', ['running', 'additional-info']);
+   * ```
+   *
    * @param bpmnElementIds The BPMN id of the element(s) where to remove the CSS classes
    * @param classNames The name of the class(es) to remove from the BPMN element(s)
    */
