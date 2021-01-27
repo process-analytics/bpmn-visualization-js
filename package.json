@@ -75,7 +75,8 @@
     "test:perf": "cross-env JEST_PUPPETEER_CONFIG=./test/performance/jest-puppeteer.config.js jest --runInBand --detectOpenHandles --config=./test/performance/jest.config.js",
     "test:bundles": "jest --runInBand --detectOpenHandles --config=./test/bundles/jest.config.js",
     "version-prepare": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for release\"",
-    "postversion": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for new developments\""
+    "postversion": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for new developments\"",
+    "serve": "npx http-server ./build/public --port 10002 -c-1 -s"
   },
   "dependencies": {
     "entities": "^2.2.0",
