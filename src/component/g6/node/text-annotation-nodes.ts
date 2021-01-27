@@ -1,5 +1,3 @@
-import { ModelConfig, IGroup as GGroup, IShape } from '@antv/g6';
-
 /**
  * Copyright 2020 Bonitasoft S.A.
  *
@@ -15,8 +13,9 @@ import { ModelConfig, IGroup as GGroup, IShape } from '@antv/g6';
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { ModelConfig, IGroup, IShape } from '@antv/g6/es';
 
-export function drawTextAnnotation(): (cfg?: ModelConfig, group?: GGroup) => IShape {
+export function drawTextAnnotation(): (cfg?: ModelConfig, group?: IGroup) => IShape {
   return (cfg, group): IShape => {
     const color = cfg.error ? '#F4664A' : '#30BF78';
     const r = 5;
