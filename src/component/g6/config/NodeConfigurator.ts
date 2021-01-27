@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
-import G6 from '@antv/g6/es';
+import G6 from '@antv/g6';
 import { drawEvent } from '../node/event-nodes';
 import { drawTask } from '../node/activity-nodes';
 import { drawTextAnnotation } from '../node/text-annotation-nodes';
