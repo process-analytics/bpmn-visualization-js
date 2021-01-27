@@ -17,8 +17,7 @@
 import { ensureIsArray } from '../helpers/array-utils';
 
 export class CssRegistry {
-  // TODO using a Set internally will prevent multi transformation (only when getting the class list)
-  private classNamesByBPMNId = new Map<string, string[]>();
+  private classNamesByBPMNId = new Map<string, Set<string>>();
 
   /**
    * Get the CSS class names for a specific HTML element
@@ -27,7 +26,7 @@ export class CssRegistry {
    * @return the registered CSS class names
    */
   getClassNames(bpmnElementId: string): string[] {
-    return this.classNamesByBPMNId.get(bpmnElementId) || [];
+    return Array.from(this.classNamesByBPMNId.get(bpmnElementId) || '');
   }
 
   /**
@@ -38,22 +37,26 @@ export class CssRegistry {
    * @return true if at least one class name from parameters has been added; false otherwise
    */
   addClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    const resultingClassNames = new Set(this.classNamesByBPMNId.get(bpmnElementId));
-    const initialClassesNumber = resultingClassNames.size;
-    ensureIsArray(classNames).forEach(c => resultingClassNames.add(c));
+    const currentClassNames = this.getOrInitializeClassNames(bpmnElementId);
+    const initialClassNamesNumber = currentClassNames.size;
+    ensureIsArray(classNames).forEach(c => currentClassNames.add(c));
+    return currentClassNames.size != initialClassNamesNumber;
+  }
 
-    this.classNamesByBPMNId.set(bpmnElementId, Array.from(resultingClassNames));
-    return resultingClassNames.size != initialClassesNumber;
+  private getOrInitializeClassNames(bpmnElementId: string): Set<string> {
+    let classNames = this.classNamesByBPMNId.get(bpmnElementId);
+    if (classNames == null) {
+      classNames = new Set();
+      this.classNamesByBPMNId.set(bpmnElementId, classNames);
+    }
+    return classNames;
   }
 
   // return `true` if at least one class has been removed
   removeClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    const resultingClassNames = new Set(this.classNamesByBPMNId.get(bpmnElementId));
-    const initialClassesNumber = resultingClassNames.size;
-    // TODO duplication with addClassNames (the method call on the set only differs)
-    ensureIsArray(classNames).forEach(c => resultingClassNames.delete(c));
-
-    this.classNamesByBPMNId.set(bpmnElementId, Array.from(resultingClassNames));
-    return resultingClassNames.size != initialClassesNumber;
+    const currentClassNames = this.getOrInitializeClassNames(bpmnElementId);
+    const initialClassNamesNumber = currentClassNames.size;
+    ensureIsArray(classNames).forEach(c => currentClassNames.delete(c)); // TODO duplication with addClassNames (the method call on the set only differs)
+    return currentClassNames.size != initialClassNamesNumber;
   }
 }
