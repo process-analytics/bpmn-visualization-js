@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import G6 from '@antv/g6';
+import G6 from '@antv/g6/es';
 import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
 import { getSequenceFlowDefinition } from '../node/flow-edges';
 

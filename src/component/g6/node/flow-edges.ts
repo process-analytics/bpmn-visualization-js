@@ -39,8 +39,8 @@ export class MessageFlowIconShape extends mxgraph.mxRectangleShape {
 }
 */
 
+import G6, { ShapeOptions, IGroup, IShape } from '@antv/g6/es';
 import { BpmnG6EdgeConfig } from '../G6Renderer';
-import G6, { ShapeOptions, IGroup as GGroup, IShape } from '@antv/g6';
 
 // private specificFlowStyles: Map<FlowKind, (style: StyleMap) => void> = new Map([
 //   [
@@ -113,7 +113,7 @@ export function getSequenceFlowDefinition(): ShapeOptions {
     update: undefined,
   };
 }
-function drawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: GGroup) => IShape {
+function drawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: IGroup) => IShape {
   return (cfg, group): IShape => {
     const startPoint = cfg.startPoint;
     const endPoint = cfg.endPoint;
@@ -194,7 +194,7 @@ function drawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: GGroup) => IShape 
   };
 }
 
-function afterDrawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: GGroup) => void {
+function afterDrawSequenceFlow(): (cfg?: BpmnG6EdgeConfig, group?: IGroup) => void {
   return (cfg, group): void => {
     // get the first shape in the graphics group of this edge, it is the path of the edge here
     const mainShape = group.get('children')[0];

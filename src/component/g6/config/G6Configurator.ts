@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import G6, { Graph, IG6GraphEvent } from '@antv/g6';
+import G6, { Graph, IG6GraphEvent } from '@antv/g6/es';
 import { GlobalOptions } from '../../options';
 import NodeConfigurator from './NodeConfigurator';
 import EdgeConfigurator from './EdgeConfigurator';

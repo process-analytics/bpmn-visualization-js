@@ -1,5 +1,3 @@
-import { ModelConfig, IGroup as GGroup, IShape } from '@antv/g6';
-
 /**
  * Copyright 2020 Bonitasoft S.A.
  *
@@ -15,6 +13,7 @@ import { ModelConfig, IGroup as GGroup, IShape } from '@antv/g6';
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { ModelConfig, IGroup as GGroup, IShape } from '@antv/g6/es';
 
 export function drawGateway(): (cfg?: ModelConfig, group?: GGroup) => IShape {
   return (cfg, group): IShape => {

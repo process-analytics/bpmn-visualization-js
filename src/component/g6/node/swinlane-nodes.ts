@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ModelConfig, IGroup as GGroup, IShape } from '@antv/g6';
+import { ModelConfig, IGroup, IShape } from '@antv/g6/es';
 
-export function drawSwinlane(): (cfg?: ModelConfig, group?: GGroup) => IShape {
+export function drawSwinlane(): (cfg?: ModelConfig, group?: IGroup) => IShape {
   return (cfg, group): IShape => {
     const width = (cfg.size as number[])[0];
     const height = (cfg.size as number[])[1];

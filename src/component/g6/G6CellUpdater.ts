@@ -13,11 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import { Graph } from '@antv/g6';
-//import { StyleIdentifier } from './StyleUtils';
+import { Graph } from '@antv/g6/es';
 import { Overlay } from '../registry';
-//import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 
 export function newG6CellUpdater(graph: Graph): G6CellUpdater {
