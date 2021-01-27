@@ -26,7 +26,7 @@ export class CssRegistry {
    * @return the registered CSS class names
    */
   getClassNames(bpmnElementId: string): string[] {
-    return Array.from(this.classNamesByBPMNId.get(bpmnElementId) || '');
+    return Array.from(this.classNamesByBPMNId.get(bpmnElementId) || []);
   }
 
   /**
