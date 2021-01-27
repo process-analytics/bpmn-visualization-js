@@ -70,6 +70,6 @@ export class CssRegistry {
         currentClassNames.has(c) ? currentClassNames.delete(c) : currentClassNames.add(c);
       });
     }
-    return classNames.length > 0;
+    return classNames && classNames.length > 0;
   }
 }
