@@ -43,17 +43,17 @@ export class CssRegistry {
     ensureIsArray(classNames).forEach(c => resultingClassNames.add(c));
 
     this.classNamesByBPMNId.set(bpmnElementId, Array.from(resultingClassNames));
-    return resultingClassNames.size > initialClassesNumber;
+    return resultingClassNames.size != initialClassesNumber;
   }
 
   // return `true` if at least one class has been removed
   removeClassNames(bpmnElementId: string, classNames: string[]): boolean {
     const resultingClassNames = new Set(this.classNamesByBPMNId.get(bpmnElementId));
     const initialClassesNumber = resultingClassNames.size;
-    // TODO duplication with addClassNames (the method call on the set only differs and the size condition)
+    // TODO duplication with addClassNames (the method call on the set only differs)
     ensureIsArray(classNames).forEach(c => resultingClassNames.delete(c));
 
     this.classNamesByBPMNId.set(bpmnElementId, Array.from(resultingClassNames));
-    return resultingClassNames.size < initialClassesNumber;
+    return resultingClassNames.size != initialClassesNumber;
   }
 }
