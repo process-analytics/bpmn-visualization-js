@@ -119,6 +119,13 @@ describe('manage css classes for BPMN cells', () => {
       expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class1', 'class2']);
     });
 
+    it('Remove existing and non-existing classes', () => {
+      const bpmnElementId = 'bpmn-id';
+      cssRegistry.addClassNames(bpmnElementId, ['class1', 'class-to-remove-1', 'class2']);
+      expect(cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove-1', 'not-exist'])).toBeTruthy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class1', 'class2']);
+    });
+
     it('Remove a class twice', () => {
       const bpmnElementId = 'bpmn-id';
       cssRegistry.addClassNames(bpmnElementId, ['class-to-remove']);
