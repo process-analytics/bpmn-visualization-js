@@ -19,7 +19,7 @@ import { BpmnElementsRegistry } from './registry';
 import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { BpmnModelRegistry } from './registry/bpmn-model-registry';
 import { htmlElement } from './helpers/dom-utils';
-import { Graph } from '@antv/g6/es';
+import { Graph } from '@antv/g6';
 import G6Configurator from './g6/config/G6Configurator';
 import { newG6Renderer } from './g6/G6Renderer';
 

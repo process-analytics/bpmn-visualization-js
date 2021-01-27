@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Graph } from '@antv/g6/es';
+import { Graph } from '@antv/g6';
 import {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,

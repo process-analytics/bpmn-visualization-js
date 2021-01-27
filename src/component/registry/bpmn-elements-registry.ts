@@ -21,7 +21,7 @@ import { BpmnQuerySelectors } from './query-selectors';
 import { BpmnElement, Overlay } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
-import { Graph, Item } from '@antv/g6/es';
+import { Graph, Item } from '@antv/g6';
 
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: Graph): BpmnElementsRegistry {
   return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.getContainer()?.id)), new CssRegistry(), newG6CellUpdater(graph));

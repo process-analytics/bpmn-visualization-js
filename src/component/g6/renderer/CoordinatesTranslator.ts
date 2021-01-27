@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-import { Graph } from '@antv/g6/es';
+import { Graph } from '@antv/g6';
 
-/**
- * @internal
- */
 export default class CoordinatesTranslator {
   constructor(readonly graph: Graph) {}
 

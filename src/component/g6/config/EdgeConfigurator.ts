@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import G6 from '@antv/g6/es';
+import G6 from '@antv/g6';
 import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
 import { getSequenceFlowDefinition } from '../node/flow-edges';
 
 export default class EdgeConfigurator {
   public configureEdges(): void {
-    G6.registerEdge(FlowKind.SEQUENCE_FLOW, getSequenceFlowDefinition, 'polyline');
+    G6.registerEdge(FlowKind.SEQUENCE_FLOW, getSequenceFlowDefinition, 'line');
     G6.registerEdge(FlowKind.ASSOCIATION_FLOW, getSequenceFlowDefinition, 'polyline');
     G6.registerEdge(FlowKind.MESSAGE_FLOW, getSequenceFlowDefinition, 'polyline');
 
