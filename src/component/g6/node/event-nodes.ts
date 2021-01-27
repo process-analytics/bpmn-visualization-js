@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { IGroup, IShape, ModelConfig } from '@antv/g6';
+import { IGroup, IShape, ModelConfig } from '@antv/g6/es';
 import { BpmnG6NodeConfig } from '../G6Renderer';
 
 const COLOR_MAP = {
