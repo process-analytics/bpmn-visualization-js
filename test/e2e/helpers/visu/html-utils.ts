@@ -52,6 +52,18 @@ export class HtmlElementLookup {
     expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-service-task', additionalClasses));
   }
 
+  expectUserTask(bpmnId: string, additionalClasses?: string[]): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expectSvgTask(svgGroupElement);
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-user-task', additionalClasses));
+  }
+
+  expectLane(bpmnId: string, additionalClasses?: string[]): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expectSvgLane(svgGroupElement);
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-lane', additionalClasses));
+  }
+
   private static computeClassValue(bpmnClass: string, additionalClasses?: string[]): string {
     return [bpmnClass].concat(additionalClasses).filter(Boolean).join(' ');
   }
@@ -63,6 +75,10 @@ export function expectSvgEvent(svgGroupElement: HTMLElement): void {
 
 export function expectSvgTask(svgGroupElement: HTMLElement): void {
   expectSvgFirstChildNodeName(svgGroupElement, 'rect');
+}
+
+export function expectSvgLane(svgGroupElement: HTMLElement): void {
+  expectSvgFirstChildNodeName(svgGroupElement, 'path');
 }
 
 export function expectSvgPool(svgGroupElement: HTMLElement): void {

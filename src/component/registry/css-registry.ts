@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { arraysAreIdentical } from '../helpers/array-utils';
+
+import { ensureIsArray } from '../helpers/array-utils';
 
 export class CssRegistry {
-  private classNamesByBPMNId = new Map<string, string[]>();
+  private classNamesByBPMNId = new Map<string, Set<string>>();
 
   /**
    * Get the CSS class names for a specific HTML element
@@ -25,7 +26,7 @@ export class CssRegistry {
    * @return the registered CSS class names
    */
   getClassNames(bpmnElementId: string): string[] {
-    return this.classNamesByBPMNId.get(bpmnElementId) || [];
+    return Array.from(this.classNamesByBPMNId.get(bpmnElementId) || []);
   }
 
   /**
@@ -36,21 +37,26 @@ export class CssRegistry {
    * @return true if at least one class name from parameters has been added; false otherwise
    */
   addClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    const existingClassNames = this.classNamesByBPMNId.get(bpmnElementId);
-    if (!existingClassNames) {
-      return this.register(bpmnElementId, classNames);
-    }
-
-    const classNamesToSet = Array.from(new Set(existingClassNames.concat(classNames)));
-    if (!arraysAreIdentical(existingClassNames, classNamesToSet)) {
-      return this.register(bpmnElementId, classNamesToSet);
-    }
-
-    return false;
+    const currentClassNames = this.getOrInitializeClassNames(bpmnElementId);
+    const initialClassNamesNumber = currentClassNames.size;
+    ensureIsArray(classNames).forEach(c => currentClassNames.add(c));
+    return currentClassNames.size != initialClassNamesNumber;
   }
 
-  private register(bpmnElementId: string, classNames: string[]): boolean {
-    this.classNamesByBPMNId.set(bpmnElementId, classNames);
-    return true;
+  private getOrInitializeClassNames(bpmnElementId: string): Set<string> {
+    let classNames = this.classNamesByBPMNId.get(bpmnElementId);
+    if (classNames == null) {
+      classNames = new Set();
+      this.classNamesByBPMNId.set(bpmnElementId, classNames);
+    }
+    return classNames;
+  }
+
+  // return `true` if at least one class has been removed
+  removeClassNames(bpmnElementId: string, classNames: string[]): boolean {
+    const currentClassNames = this.getOrInitializeClassNames(bpmnElementId);
+    const initialClassNamesNumber = currentClassNames.size;
+    ensureIsArray(classNames).forEach(c => currentClassNames.delete(c)); // TODO duplication with addClassNames (the method call on the set only differs)
+    return currentClassNames.size != initialClassNamesNumber;
   }
 }

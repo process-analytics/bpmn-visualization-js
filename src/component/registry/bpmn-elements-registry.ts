@@ -109,25 +109,52 @@ export class BpmnElementsRegistry {
   }
 
   /**
-   * Add one/several CSS class(es) to one/several BPMN element(s)
+   * Add one/several CSS class(es) to one/several BPMN element(s).
    *
-   * @param bpmnElementIds The BPMN id of the element(s) where to add the CSS classes
-   * @param classNames The name of the class(es) to add to the BPMN element(s)
+   * Notice that if you pass ids that are not related to existing BPMN elements, their reference will be kept within the registry but nothing happens on the rendering side.
    *
+   * @example
    * ```javascript
-   * ...
    * // Add 'success-path' to BPMN elements with id: flow_1 and flow_5
    * bpmnVisualization.bpmnElementsRegistry.addCssClasses(['flow_1', 'flow_5'], 'success-path');
    *
    * // Add 'suspicious-path' and 'additional-info' to BPMN element with id: task_3
    * bpmnVisualization.bpmnElementsRegistry.addCssClasses('task_3', ['suspicious-path', 'additional-info']);
-   * ...
    * ```
+   *
+   * @param bpmnElementIds The BPMN id of the element(s) where to add the CSS classes
+   * @param classNames The name of the class(es) to add to the BPMN element(s)
    */
   addCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
     const arrayClassNames = ensureIsArray<string>(classNames);
     ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
       if (this.cssRegistry.addClassNames(bpmnElementId, arrayClassNames)) {
+        const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
+        this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
+      }
+    });
+  }
+
+  /**
+   * Remove one/several CSS class(es) from one/several BPMN element(s).
+   *
+   * @example
+   * ```javascript
+   * // Remove 'highlight' from BPMN elements with id: activity_1 and activity_2
+   * bpmnVisualization.bpmnElementsRegistry.addCssClasses(['activity_1', 'activity_2'], 'highlight');
+   *
+   * // Remove 'running' and 'additional-info' from BPMN element with id: task_3
+   * bpmnVisualization.bpmnElementsRegistry.addCssClasses('task_3', ['running', 'additional-info']);
+   * ```
+   *
+   * @param bpmnElementIds The BPMN id of the element(s) where to remove the CSS classes
+   * @param classNames The name of the class(es) to remove from the BPMN element(s)
+   */
+  removeCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
+    // TODO duplication with addCssClasses (only the call to removeClassNames or addClassNames differ)
+    const arrayClassNames = ensureIsArray<string>(classNames);
+    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
+      if (this.cssRegistry.removeClassNames(bpmnElementId, arrayClassNames)) {
         const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
         this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
       }
