@@ -25,4 +25,4 @@ export * from '../../component/registry/types';
 export * from '../../model/bpmn/internal/api';
 
 // Other
-export { StyleDefault } from '../../component/mxgraph/StyleUtils';
+export { StyleDefault } from '../../component/g6/StyleUtils';

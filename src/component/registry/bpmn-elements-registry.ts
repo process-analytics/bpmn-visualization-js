@@ -223,7 +223,7 @@ export class BpmnElementsRegistry {
    * @param overlays The overlays to add to the BPMN element
    */
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
-    this.mxGraphCellUpdater.addOverlays(bpmnElementId, overlays);
+    this.g6CellUpdater.addOverlays(bpmnElementId, overlays);
   }
 
   /**
@@ -240,7 +240,7 @@ export class BpmnElementsRegistry {
    * @param bpmnElementId The BPMN id of the element where to remove the overlays
    */
   removeAllOverlays(bpmnElementId: string): void {
-    this.mxGraphCellUpdater.removeAllOverlays(bpmnElementId);
+    this.g6CellUpdater.removeAllOverlays(bpmnElementId);
   }
 }
 

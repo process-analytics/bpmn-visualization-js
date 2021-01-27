@@ -81,7 +81,13 @@
     "postpublish": "pinst --enable"
   },
   "dependencies": {
+    "@antv/algorithm": "0.0.7",
+    "@antv/chart-node-g6": "0.0.4",
     "@antv/g6": "4.1.4",
+    "@antv/g6-core": "0.0.7",
+    "@antv/g6-element": "0.0.6",
+    "@antv/g6-pc": "0.0.8",
+    "@antv/g6-plugin": "0.0.6",
     "entities": "^2.2.0",
     "fast-xml-parser": "^3.19.0",
     "lodash.debounce": "^4.0.8",

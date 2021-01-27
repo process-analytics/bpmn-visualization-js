@@ -34,7 +34,7 @@ export class OverlayConverter {
     ['middle-right', { horizontalAlign: 'right', verticalAlign: 'middle' }],
   ]);
 
-  convert(overlay: Overlay): MxGraphCustomOverlayOptions {
+  convert(overlay: Overlay): G6CustomOverlayOptions {
     const position = this.convertPosition(overlay);
     const style = OverlayConverter.convertStyle(overlay);
     return { position, style };
@@ -53,7 +53,7 @@ export class OverlayConverter {
     };
 
     const style = overlay.style;
-    const convertedStyle = <MxGraphCustomOverlayStyle>{ ...defaultStyle };
+    const convertedStyle = <G6CustomOverlayStyle>{ ...defaultStyle };
     if (!style) {
       return convertedStyle;
     }
@@ -65,21 +65,21 @@ export class OverlayConverter {
     return convertedStyle;
   }
 
-  private static convertFill(convertedStyle: MxGraphCustomOverlayStyle, apiFill: OverlayFill): void {
+  private static convertFill(convertedStyle: G6CustomOverlayStyle, apiFill: OverlayFill): void {
     if (apiFill) {
       convertedStyle.fill.color = apiFill.color ?? convertedStyle.fill.color;
       convertedStyle.fill.opacity = apiFill.opacity ?? convertedStyle.fill.opacity;
     }
   }
 
-  private static convertStroke(convertedStyle: MxGraphCustomOverlayStyle, apiStroke: OverlayStroke): void {
+  private static convertStroke(convertedStyle: G6CustomOverlayStyle, apiStroke: OverlayStroke): void {
     if (apiStroke) {
       convertedStyle.stroke.color = apiStroke.color ?? convertedStyle.stroke.color;
       convertedStyle.stroke.width = apiStroke.width ?? convertedStyle.stroke.width;
     }
   }
 
-  private static convertFont(convertedStyle: MxGraphCustomOverlayStyle, apiFont: OverlayFont): void {
+  private static convertFont(convertedStyle: G6CustomOverlayStyle, apiFont: OverlayFont): void {
     if (apiFont) {
       convertedStyle.font.color = apiFont.color ?? convertedStyle.font.color;
       convertedStyle.font.size = apiFont.size ?? convertedStyle.font.size;
