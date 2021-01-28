@@ -29,7 +29,7 @@ Tips
 ### Integration tests
 
 We have the following types of integration tests, to check the integration with `mxGraph`:
-- model: check the library fills the `mxGraph` model with BPMN elements. The model must contain the related vertices and
+- model: check if the library fills the `mxGraph` model with BPMN elements. The model must contain the related vertices and
   edges, with right coordinates, dimensions and style.
 - dom: `JSDOM` based, no browser, check SVG elements are created or updated accordingly. They are used for both non regression
 (`mxGraph` integration) and DOM additions for custom interactions.
