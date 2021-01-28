@@ -42,7 +42,6 @@ export interface NavigationConfiguration {
  * Zoom specific options.
  *
  * @category Initialization
- *
  */
 export interface ZoomConfiguration {
   /**
