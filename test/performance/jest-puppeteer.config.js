@@ -17,7 +17,8 @@ module.exports = {
   server: {
     command: `npm run start -- --config-server-port 10002`,
     port: 10002,
-    launchTimeout: 30000, // high value mainly for GitHub Workflows running on macOS (slow machines)
+    protocol: 'http', // if default or tcp, the test starts right await whereas the dev server is not available on http
+    launchTimeout: 30000, // the bundle build time can be large, see also configuration for e2e tests
     debug: true,
   },
   launch: {
