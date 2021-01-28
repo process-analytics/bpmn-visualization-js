@@ -17,7 +17,7 @@ module.exports = {
   rootDir: '../..',
   roots: ['./test/e2e', './src'],
   preset: 'jest-puppeteer',
-  testMatch: ['**/bpmn.navigation.test.ts'],
+  testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
   testTimeout: 200000,
   transform: {
