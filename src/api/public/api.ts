@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnVisualization from '../../component/BpmnVisualization';
-import { GlobalOptions, NavigationConfiguration, FitOptions, FitType, LoadOptions, ZoomConfiguration } from '../../component/options';
 
 // Initialization and configuration options
+import BpmnVisualization from '../../component/BpmnVisualization';
 export { BpmnVisualization };
-export { GlobalOptions, NavigationConfiguration, FitOptions, FitType, LoadOptions, ZoomConfiguration };
+export { GlobalOptions, NavigationConfiguration, FitOptions, FitType, LoadOptions, ZoomConfiguration } from '../../component/options';
 
 // Interaction
 export { BpmnElementsRegistry, BpmnSemantic, BpmnElement } from '../../component/registry';
