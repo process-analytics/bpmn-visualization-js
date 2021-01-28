@@ -142,6 +142,12 @@ describe('manage css classes for BPMN cells', () => {
       expect(cssRegistry.toggleClasses(bpmnElementId, undefined)).toBeFalsy();
       expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class']);
     });
+    it('Toggle an empty array of classes', () => {
+      const bpmnElementId = 'bpmn-id';
+      cssRegistry.toggleClasses(bpmnElementId, ['class']);
+      expect(cssRegistry.toggleClasses(bpmnElementId, [])).toBeFalsy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class']);
+    });
 
     it('Toggle the only existing class', () => {
       const bpmnElementId = 'bpmn-id';
