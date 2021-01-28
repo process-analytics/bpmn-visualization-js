@@ -44,7 +44,6 @@ import {
   toBePool,
   toBeLane,
 } from '../matchers';
-import { mxgraph } from '../../src/component/mxgraph/initializer';
 import { mxGeometry } from 'mxgraph'; // for types
 
 declare global {
