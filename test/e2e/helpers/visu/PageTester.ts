@@ -15,7 +15,7 @@
  */
 import { FitType, LoadOptions } from '../../../../src/component/options';
 import { ElementHandle } from 'puppeteer';
-import { BpmnQuerySelectors } from '../../../../src/component/registry/bpmn-elements-registry';
+import { BpmnQuerySelectors } from '../../../../src/component/registry/query-selectors';
 
 export interface TargetedPage {
   /** the name of the page file without extension */

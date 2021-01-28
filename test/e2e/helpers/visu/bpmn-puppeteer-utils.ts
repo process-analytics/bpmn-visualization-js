@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnQuerySelectors } from '../../../../src/component/registry/bpmn-elements-registry';
 import { ElementHandle, Page } from 'puppeteer';
+import { BpmnQuerySelectors } from '../../../../src/component/registry/query-selectors';
 
 export class BpmnPuppeteer {
   private bpmnQuerySelectors: BpmnQuerySelectors;
