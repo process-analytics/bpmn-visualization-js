@@ -126,7 +126,7 @@ export class BpmnElementsRegistry {
    * @param classNames The name of the class(es) to add to the BPMN element(s)
    */
   addCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
-    this.prepareClassesUpdate(bpmnElementIds, classNames, this.cssRegistry.addClassNames);
+    this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.addClassNames.bind(this.cssRegistry));
   }
 
   /**
@@ -145,7 +145,7 @@ export class BpmnElementsRegistry {
    * @param classNames The name of the class(es) to remove from the BPMN element(s)
    */
   removeCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
-    this.prepareClassesUpdate(bpmnElementIds, classNames, this.cssRegistry.removeClassNames);
+    this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.removeClassNames.bind(this.cssRegistry));
   }
 
   /**
@@ -165,10 +165,10 @@ export class BpmnElementsRegistry {
    * @param classNames The name of the class(es) to remove from the BPMN element(s)
    */
   toggleCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
-    this.prepareClassesUpdate(bpmnElementIds, classNames, this.cssRegistry.toggleClasses);
+    this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.toggleClasses.bind(this.cssRegistry));
   }
 
-  private prepareClassesUpdate(bpmnElementIds: string | string[], classNames: string | string[], callback: (bpmnElementId: string, classNames: string[]) => boolean): void {
+  private updateCssClasses(bpmnElementIds: string | string[], classNames: string | string[], callback: (bpmnElementId: string, classNames: string[]) => boolean): void {
     const arrayClassNames = ensureIsArray<string>(classNames);
     ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => this.updateCellIfChanged(callback(bpmnElementId, arrayClassNames), bpmnElementId));
   }
