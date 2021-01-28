@@ -15,7 +15,7 @@
  */
 module.exports = {
   server: {
-    command: 'npm run build && npm run serve',
+    command: `npm run start -- --config-server-port 10002`,
     port: 10002,
     //protocol: 'http',
     //usedPortAction: 'ignore',
