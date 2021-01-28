@@ -126,13 +126,7 @@ export class BpmnElementsRegistry {
    * @param classNames The name of the class(es) to add to the BPMN element(s)
    */
   addCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
-    const arrayClassNames = ensureIsArray<string>(classNames);
-    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
-      if (this.cssRegistry.addClassNames(bpmnElementId, arrayClassNames)) {
-        const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
-        this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
-      }
-    });
+    this.prepareClassesUpdate(bpmnElementIds, classNames, this.cssRegistry.addClassNames);
   }
 
   /**
@@ -151,14 +145,7 @@ export class BpmnElementsRegistry {
    * @param classNames The name of the class(es) to remove from the BPMN element(s)
    */
   removeCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
-    // TODO duplication with addCssClasses (only the call to removeClassNames or addClassNames differ)
-    const arrayClassNames = ensureIsArray<string>(classNames);
-    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
-      if (this.cssRegistry.removeClassNames(bpmnElementId, arrayClassNames)) {
-        const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
-        this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
-      }
-    });
+    this.prepareClassesUpdate(bpmnElementIds, classNames, this.cssRegistry.removeClassNames);
   }
 
   /**
@@ -178,14 +165,19 @@ export class BpmnElementsRegistry {
    * @param classNames The name of the class(es) to remove from the BPMN element(s)
    */
   toggleCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
-    // TODO duplication with addCssClasses (only the call to removeClassNames or addClassNames or toggleClasses differ)
+    this.prepareClassesUpdate(bpmnElementIds, classNames, this.cssRegistry.toggleClasses);
+  }
+
+  private prepareClassesUpdate(bpmnElementIds: string | string[], classNames: string | string[], callback: (bpmnElementId: string, classNames: string[]) => boolean): void {
     const arrayClassNames = ensureIsArray<string>(classNames);
-    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
-      if (this.cssRegistry.toggleClasses(bpmnElementId, arrayClassNames)) {
-        const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
-        this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
-      }
-    });
+    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => this.updateCellIfChanged(callback(bpmnElementId, arrayClassNames), bpmnElementId));
+  }
+
+  private updateCellIfChanged(updateCell: boolean, bpmnElementId: string): void {
+    if (updateCell) {
+      const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
+      this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
+    }
   }
 }
 
