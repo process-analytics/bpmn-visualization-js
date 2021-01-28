@@ -16,6 +16,8 @@
 
 /**
  * Options to configure `bpmn-visualization` at initialization.
+ *
+ * @category Initialization
  */
 export interface GlobalOptions {
   /** The id of a DOM element or an HTML node where the BPMN diagram is rendered. */
@@ -24,17 +26,23 @@ export interface GlobalOptions {
   navigation?: NavigationConfiguration;
 }
 
+/**
+ * @category Initialization
+ */
 export interface NavigationConfiguration {
   /**
    * @default false
    */
   enabled: boolean;
   /** Tune how the zoom behaves when using the mouse wheel or with gesture/pinch on touch devices. */
-  zoom: ZoomConfiguration;
+  zoom?: ZoomConfiguration;
 }
 
 /**
  * Zoom specific options.
+ *
+ * @category Initialization
+ *
  */
 export interface ZoomConfiguration {
   /**
@@ -54,11 +62,16 @@ export interface ZoomConfiguration {
 
 /**
  * Options when loading a BPMN Diagram.
+ *
+ * @category Initialization
  */
 export interface LoadOptions {
   fit?: FitOptions;
 }
 
+/**
+ * @category Initialization
+ */
 export interface FitOptions {
   type?: FitType; // TODO mandatory?
   /**
@@ -69,6 +82,8 @@ export interface FitOptions {
 
 /**
  * @default {@link FitType.None}
+ *
+ * @category Initialization
  */
 export enum FitType {
   /** No fit, use dimensions and coordinates from the BPMN diagram. */
