@@ -134,4 +134,60 @@ describe('manage css classes for BPMN cells', () => {
       expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
     });
   });
+
+  describe('Toggle css classes', () => {
+    it('Toggle an undefined array of classes', () => {
+      const bpmnElementId = 'bpmn-id';
+      cssRegistry.toggleClasses(bpmnElementId, ['class']);
+      expect(cssRegistry.toggleClasses(bpmnElementId, undefined)).toBeFalsy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class']);
+    });
+    it('Toggle an empty array of classes', () => {
+      const bpmnElementId = 'bpmn-id';
+      cssRegistry.toggleClasses(bpmnElementId, ['class']);
+      expect(cssRegistry.toggleClasses(bpmnElementId, [])).toBeFalsy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class']);
+    });
+
+    it('Toggle the only existing class', () => {
+      const bpmnElementId = 'bpmn-id';
+      cssRegistry.toggleClasses(bpmnElementId, ['class-to-toggle']);
+      expect(cssRegistry.toggleClasses(bpmnElementId, ['class-to-toggle'])).toBeTruthy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
+    });
+
+    it('Toggle a single class when several exist', () => {
+      const bpmnElementId = 'bpmn-id';
+      cssRegistry.toggleClasses(bpmnElementId, ['class1', 'class-to-toggle', 'class2']);
+      expect(cssRegistry.toggleClasses(bpmnElementId, ['class-to-toggle'])).toBeTruthy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class1', 'class2']);
+    });
+
+    it('Toggle several classes when several exist', () => {
+      const bpmnElementId = 'bpmn-id';
+      cssRegistry.toggleClasses(bpmnElementId, ['class1', 'class-to-toggle1', 'class2', 'class-to-toggle2']);
+      expect(cssRegistry.toggleClasses(bpmnElementId, ['class-to-toggle1', 'class-to-toggle2', 'class3'])).toBeTruthy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class1', 'class2', 'class3']);
+    });
+
+    it('Toggle a class when none had been added first', () => {
+      const bpmnElementId = 'bpmn-id';
+      expect(cssRegistry.toggleClasses(bpmnElementId, ['class-to-toggle'])).toBeTruthy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(1);
+    });
+
+    it('Toggle a class that is not present when others have been added first', () => {
+      const bpmnElementId = 'bpmn-id';
+      cssRegistry.toggleClasses(bpmnElementId, ['class1', 'class2']);
+      expect(cssRegistry.toggleClasses(bpmnElementId, ['class-to-toggle'])).toBeTruthy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class1', 'class2', 'class-to-toggle']);
+    });
+
+    it('Toggle existing and non-existing classes', () => {
+      const bpmnElementId = 'bpmn-id';
+      cssRegistry.toggleClasses(bpmnElementId, ['class1', 'class-to-toggle-1', 'class2']);
+      expect(cssRegistry.toggleClasses(bpmnElementId, ['class-to-toggle-1', 'not-exist'])).toBeTruthy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class1', 'class2', 'not-exist']);
+    });
+  });
 });

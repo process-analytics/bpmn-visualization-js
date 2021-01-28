@@ -59,4 +59,17 @@ export class CssRegistry {
     ensureIsArray(classNames).forEach(c => currentClassNames.delete(c)); // TODO duplication with addClassNames (the method call on the set only differs)
     return currentClassNames.size != initialClassNamesNumber;
   }
+
+  // return true if passed classes array has at least one element - as toggle will always trigger changes in that case
+  toggleClasses(bpmnElementId: string, classNames: string[]): boolean {
+    const currentClassNames = this.getOrInitializeClassNames(bpmnElementId);
+    if (currentClassNames.size === 0) {
+      this.addClassNames(bpmnElementId, classNames);
+    } else {
+      ensureIsArray(classNames).forEach(c => {
+        currentClassNames.has(c) ? currentClassNames.delete(c) : currentClassNames.add(c);
+      });
+    }
+    return classNames && classNames.length > 0;
+  }
 }

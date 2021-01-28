@@ -160,6 +160,33 @@ export class BpmnElementsRegistry {
       }
     });
   }
+
+  /**
+   * Toggle one/several CSS class(es) for one/several BPMN element(s).
+   * Notice that if you pass ids that are not related to existing BPMN elements, their reference will be kept within the registry but nothing happens on the rendering side.
+   *
+   * @example
+   * ```javascript
+   * // Toggle 'highlight' for BPMN elements with id: activity_1 and activity_2
+   * bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['activity_1', 'activity_2'], 'highlight');
+   *
+   * // Toggle 'running' and 'additional-info' for BPMN element with id: task_3
+   * bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('task_3', ['running', 'additional-info']);
+   * ```
+   *
+   * @param bpmnElementIds The BPMN id of the element(s) where to remove the CSS classes
+   * @param classNames The name of the class(es) to remove from the BPMN element(s)
+   */
+  toggleCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
+    // TODO duplication with addCssClasses (only the call to removeClassNames or addClassNames or toggleClasses differ)
+    const arrayClassNames = ensureIsArray<string>(classNames);
+    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
+      if (this.cssRegistry.toggleClasses(bpmnElementId, arrayClassNames)) {
+        const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
+        this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
+      }
+    });
+  }
 }
 
 export type BpmnElementKind = FlowKind | ShapeBpmnElementKind;
