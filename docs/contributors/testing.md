@@ -21,26 +21,36 @@ Used:
 
 Tips
 - Try to always add such tests, they are fast, they cover a lot of use cases as they run at low level 
-- They may be hard to apply to mxgraph integration code especially when interacting with the mxGraph API (prefer e2e tests in that case)
+- They may be hard to apply to mxgraph integration code especially when interacting with the mxGraph API (prefer integration or at last end-to-end tests in that case)
 - To facilitate _json to model_ tests there is a CLI tool to generate json and/or internal model from bpmn file - please refer to [CLI parseBpmn](../../scripts/utils/README.md)
 - You can have a look at the existing tests for inspiration, the good example would be: [BpmnJsonParser.sequenceFlow](../../test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.normal.test.ts)
 
-### End to end tests
+
+### Integration tests
+
+We have the following types of integration tests, to check the integration with `mxGraph`:
+- model: check the library fills the `mxGraph` model with BPMN elements. The model must contain the related vertices and
+  edges, with right coordinates, dimensions and style.
+- dom: `JSDOM` based, no browser, check SVG elements are created or updated accordingly. They are used for both non regression
+(`mxGraph` integration) and DOM additions for custom interactions.
+
+Tests change frequency:
+- The `dom` tests are very rarely changed, as they are testing the `mxGraph` integration at very high level.
+- The model tests must be updated each time the library supports a new BPMN element.
+
+
+### End-to-end tests
 
 We use the [puppeteer library](https://github.com/puppeteer/puppeteer/) with the [puppeteer jest integration](https://jestjs.io/docs/en/puppeteer) to handle
 tests requiring a web browser (Chromium only for now).
 
-We have the following types of end to end tests:
-- model: check the library fills the `mxGraph` model with BPMN elements. The model must contain the related vertices and
-edges, with right coordinates, dimensions and style.
-- dom: `JSDOM` based, no browser, check SVG nodes as in view tests
-- view: ensure SVG elements are present on the web page (mainly non regression, to verify that the `mxGraph` integration uses SVG for rendering)
+We have the following types of end-to-end tests:
+- `generated svg`: ensure SVG elements are present on the web page (mainly non regression, to verify that the `mxGraph` integration uses SVG for rendering)
 - visual testing (see below)
 
 Tests change frequency:
-- The `dom` and `view` tests are very rarely changed, as they are testing the `mxGraph` integration at very high level.
-- The model tests must be updated each time the library supports a new BPMN element. 
-- The visual tests are updated each time the library supports a new BPMN element or when introducing the final BPMN element rendering.
+- `generated svg` tests are very rarely changed, as they are testing the `mxGraph` integration at very high level.
+- The `visual tests` are updated each time the library supports a new BPMN element or when introducing the final BPMN element rendering.
 
 
 ### Visual Testing
@@ -106,7 +116,7 @@ the BPMN diagram accordingly.
 
 This means that the input BPMN diagram should contain few different elements contain few elements and only elements
 related to the tested scenario.
-Otherwise, changes in non related elements would break the test whereas it has no relation with the changes.
+Otherwise, changes in non-related elements would break the test whereas it has no relation with the changes.
 
 This particularly applies to BPMN elements with icons and markers which are more subject to changes
 
@@ -154,8 +164,9 @@ At the initialization of the HTML, the configured BPMN Diagram file is load from
 All the files from the directories `test/fixtures/bpmn/diagram`, `test/fixtures/bpmn/navigation`, `test/fixtures/bpmn/non-regression` & `test/fixtures/bpmn/performance` are copied to `dist/static/diagrams` at the Jest setup, if they don't exist.
 If you add a new directory of BPMN files, you need to add its configuration in `test/e2e/config/copy.bpmn.diagram.ts`.
 
+
 ### Performance tests
-For now these tests are defined under `/test/e2e/performance/` as the performance is being measured for complex(e2e) tasks:
+For now these tests are defined under `/test/performance/` as the performance is being measured for complex (end-to-end) tasks:
 - display diagram
 - zoom in / zoom out loaded diagram
 
@@ -167,8 +178,9 @@ For the moment we have decided to run them only manually, in the future they may
 How to run? Check the next [section](#Running tests).
 
 #### Results
-The results are under `/test/e2e/performance/data/`. \
-Preview is available in the browser, simply open file `/bpmn-visu-js/test/e2e/performance/index.html` in your favourite browser.
+The results are under `/test/performance/data/`. \
+Preview is available in the browser, simply open file `/bpmn-visu-js/test/performance/index.html` in your favourite browser.
+
 
 ### Bundles tests
 
@@ -178,22 +190,25 @@ They ensure that the bundles provided in the npm package are working, and they a
 ## Running tests 
 
 See `package.json` for extra available scripts
-- `npm run test`                *Run all tests*
-- `npm run test:unit`           *Run unit tests*
-- `npm run test:unit:coverage`  *Run unit tests with coverage*
-- `npm run test:e2e`            *Run end-to-end tests*.
-- `npm run test:e2e:coverage`   *Run end-to-end tests with coverage*
-- `npm run test:perf`           *Run performance tests*
-- `npm run test:bundles`        *Run bundles tests*
+- `npm run test`                        *Run all tests*
+- `npm run test:unit`                   *Run unit tests*
+- `npm run test:unit:coverage`          *Run unit tests with coverage*
+- `npm run test:e2e`                    *Run end-to-end tests*.
+- `npm run test:e2e:coverage`           *Run end-to-end tests with coverage*
+- `npm run test:integration`            *Run integration tests*.
+- `npm run test:integration:coverage`   *Run integration tests with coverage*
+- `npm run test:perf`                   *Run performance tests*
+- `npm run test:bundles`                *Run bundles tests*
 
 ### Test reports
 
 Html reports are generated for test execution and coverage in
 - `build/test-report/unit` for unit tests
+- `build/test-report/integration` for integration tests
 - `build/test-report/e2e` for end-to-end tests
 
 
-### Debugging end-to-end and bundles tests
+### Debugging end-to-end, performance and bundles tests
 
 To see what is happening in your local web browser used by the tests
 - disable the `headless` mode by setting the `HEADLESS` environment variable to `false`
