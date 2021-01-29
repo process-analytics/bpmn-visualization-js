@@ -37,24 +37,24 @@ export class CssRegistry {
    * @return true if at least one class name from parameters has been added; false otherwise
    */
   addClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    return this.updateClassNames(bpmnElementId, classNames, (c, set) => set.add(c));
+    return this.updateClassNames(bpmnElementId, classNames, (element, set) => set.add(element));
   }
 
   // return `true` if at least one class has been removed
   removeClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    return this.updateClassNames(bpmnElementId, classNames, (c, set) => set.delete(c));
+    return this.updateClassNames(bpmnElementId, classNames, (element, set) => set.delete(element));
   }
 
   // return true if passed classes array has at least one element - as toggle will always trigger changes in that case
   toggleClasses(bpmnElementId: string, classNames: string[]): boolean {
-    this.updateClassNames(bpmnElementId, classNames, (c, set) => (set.has(c) ? set.delete(c) : set.add(c)));
+    this.updateClassNames(bpmnElementId, classNames, (element, set) => (set.has(element) ? set.delete(element) : set.add(element)));
     return classNames && classNames.length > 0;
   }
 
-  private updateClassNames(bpmnElementId: string, classNames: string[], setUpdater: (className: string, set: Set<string>) => void): boolean {
+  private updateClassNames(bpmnElementId: string, classNames: string[], updateSet: (element: string, set: Set<string>) => void): boolean {
     const currentClassNames = this.getOrInitializeClassNames(bpmnElementId);
     const initialClassNamesNumber = currentClassNames.size;
-    ensureIsArray(classNames).forEach(c => setUpdater(c, currentClassNames));
+    ensureIsArray(classNames).forEach(className => updateSet(className, currentClassNames));
     return currentClassNames.size != initialClassNamesNumber;
   }
 
