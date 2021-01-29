@@ -18,8 +18,8 @@ import { BpmnPuppeteer } from './helpers/visu/bpmn-puppeteer-utils';
 
 let bpmnPuppeteer = new BpmnPuppeteer('bpmn-container', page);
 
-describe('demo page', () => {
-  it('should display page title', async () => {
+describe('Check generated SVG', () => {
+  it('should display demo home page title', async () => {
     await page.goto('http://localhost:10002');
     await bpmnPuppeteer.expectPageTitle('BPMN Visualization Demo');
     await bpmnPuppeteer.expectAvailableBpmnContainer();
