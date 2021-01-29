@@ -16,9 +16,9 @@
 
 /* global OffscreenCanvas */
 
-import * as util from '../../../../../../node_modules/cytoscape/src/util';
-import * as is from '../../../../../../node_modules/cytoscape/src/is';
-import * as math from '../../../../../../node_modules/cytoscape/src/math';
+import * as util from 'cytoscape/src/util';
+import * as is from 'cytoscape/src/is';
+import * as math from 'cytoscape/src/math';
 import ElementTextureCache from './ele-texture-cache';
 import LayeredTextureCache from './layered-texture-cache';
 

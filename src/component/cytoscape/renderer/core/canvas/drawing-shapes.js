@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as math from '../../../../../../node_modules/cytoscape/src/math';
+import * as math from 'cytoscape/src/math';
 
 var CRp = {};
 

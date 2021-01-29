@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as util from '../../../../../../node_modules/cytoscape/src/util';
+import * as util from 'cytoscape/src/util';
 
 let CRp = {};
 

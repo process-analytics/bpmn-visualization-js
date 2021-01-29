@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as math from '../../../../../../node_modules/cytoscape/src/math';
-import { trueify, falsify, removeFromArray, clearArray, MAX_INT, assign, defaults } from '../../../../../../node_modules/cytoscape/src/util';
-import Heap from '../../../../../../node_modules/cytoscape/src/heap';
+import * as math from 'cytoscape/src/math';
+import { trueify, falsify, removeFromArray, clearArray, MAX_INT, assign, defaults } from 'cytoscape/src/util';
+import Heap from 'cytoscape/src/heap';
 import defs from './texture-cache-defs';
 import ElementTextureCacheLookup from './ele-texture-cache-lookup';
 

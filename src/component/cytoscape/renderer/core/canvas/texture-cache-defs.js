@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as util from '../../../../../../node_modules/cytoscape/src/util';
+import * as util from 'cytoscape/src/util';
 
 var fullFpsTime = 1000 / 60; // assume 60 frames per second
 

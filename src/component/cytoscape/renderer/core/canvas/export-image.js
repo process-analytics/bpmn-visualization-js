@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as is from '../../../../../../node_modules/cytoscape/src/is';
-import Promise from '../../../../../../node_modules/cytoscape/src/promise';
+import * as is from 'cytoscape/src/is';
+import Promise from 'cytoscape/src/promise';
 
 var CRp = {};
 

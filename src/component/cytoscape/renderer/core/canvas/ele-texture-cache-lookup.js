@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Map from '../../../../../../node_modules/cytoscape/src/map';
-import Set from '../../../../../../node_modules/cytoscape/src/set';
-import * as util from '../../../../../../node_modules/cytoscape/src/util';
+import Map from 'cytoscape/src/map';
+import Set from 'cytoscape/src/set';
+import * as util from 'cytoscape/src/util';
 
 // Allows lookups for (ele, lvl) => cache.
 // Uses keys so elements may share the same cache.

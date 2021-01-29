@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as util from '../../../../../../node_modules/cytoscape/src/util';
-import * as math from '../../../../../../node_modules/cytoscape/src/math';
-import Heap from '../../../../../../node_modules/cytoscape/src/heap';
-import * as is from '../../../../../../node_modules/cytoscape/src/is';
+import * as util from 'cytoscape/src/util';
+import * as math from 'cytoscape/src/math';
+import Heap from 'cytoscape/src/heap';
+import * as is from 'cytoscape/src/is';
 import defs from './texture-cache-defs';
 
 var defNumLayers = 1; // default number of layers to use
