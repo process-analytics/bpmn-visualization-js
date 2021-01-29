@@ -16,6 +16,8 @@ automation is a work in progress).
 
 ### Issues and milestones update
 
+![release process repository update](./images/release_process_part-01_repository.png)
+
 Milestone names are based on the lib version
 - Clean the opened milestone if some issues are still opened (move them to a new one or discard milestone from them)
 - Close the milestone
@@ -23,7 +25,11 @@ Milestone names are based on the lib version
 of the `Done` column related to the milestone
 
 
-### Git Tag
+#### Publish new version
+
+![release process examples repository update](./images/release_process_part-02_npm.png)
+
+#### Git Tag
 
 - Open [github actions](https://github.com/process-analytics/bpmn-visualization-js/actions?query=workflow%3ARelease)
 - Click on the 'Run workflow' dropdown located on the right side of the page
@@ -31,6 +37,12 @@ of the `Done` column related to the milestone
 - Click on the button 'Run workflow'
 - Make sure job execution was successful by checking the status
 - If everything went well you can see new tag created
+
+#### NPM publish new version
+- Ensure you are on the last tag locally: `git checkout vX.Y.Z`
+- Pull the new version created by the release workflow: `git pull origin`
+- Run `npm publish` to make the new version available to the community (you can pass --dry-run to validate the command prior publishing)
+
 
 ### GitHub update
 
@@ -51,15 +63,12 @@ of the `Done` column related to the milestone
     - put screenshots/gif of the new features
   - Published the release **only when you are done** with the release content. At any time, you can save the draft
 
-### NPM publish new version
-- Ensure you are on the last tag locally: `git checkout vX.Y.Z`
-- Pull the new version created by the release workflow: `git pull origin`
-- Run `npm publish` to make the new version available to the community (you can pass --dry-run to validate the command prior publishing)
-
 
 ## bpmn-visualization-examples repository update
 
 You must create a Pull Request to integrate any changes to this repository.
+
+![release process examples repository update](./images/release_process_part-03_examples.png)
 
 ### Demo environment update
 Make the new version available for demo
