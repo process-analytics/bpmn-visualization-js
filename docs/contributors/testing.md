@@ -45,8 +45,13 @@ We use the [puppeteer library](https://github.com/puppeteer/puppeteer/) with the
 tests requiring a web browser (Chromium only for now).
 
 We have the following types of end-to-end tests:
-- `generated svg`: ensure SVG elements are present on the web page (mainly non regression, to verify that the `mxGraph` integration uses SVG for rendering)
-- visual testing (see below)
+- `generated svg`:
+  - They ensure that SVG elements are present in the DOM of pages running in a Web Browser. They mainly check `mxGraph`
+    non regression, they verify that the `mxGraph` integration correctly generates correct SVG nodes/elements.
+  - They are very close to the 'DOM' integration tests except that we check the DOM in the browser here instead of with
+    JSDOM in integration tests.
+- visual testing (see below). In visual tests, we are focussing on the actual rendering, what the user sees. We don't care
+if the Diagram is rendered with SVG, HTML Canvas or something else.
 
 Tests change frequency:
 - `generated svg` tests are very rarely changed, as they are testing the `mxGraph` integration at very high level.
