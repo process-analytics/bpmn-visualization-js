@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+const browser = 'chromium';
+
 module.exports = {
   server: {
     command: `npm run start -- --config-server-port 10002`,
@@ -21,6 +23,7 @@ module.exports = {
     launchTimeout: 30000, // high value mainly for GitHub Workflows running on macOS (slow machines)
     debug: true,
   },
+  browser: browser,
   launch: {
     dumpio: true,
     headless: process.env.HEADLESS !== 'false',
