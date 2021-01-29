@@ -286,7 +286,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   }
 }
 
-describe('no BPMN elements visual regression', () => {
+describe('BPMN rendering', () => {
   const imageSnapshotThresholds = new ImageSnapshotThresholds();
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'bpmn', imageSnapshotThresholds.getDefault());
 
