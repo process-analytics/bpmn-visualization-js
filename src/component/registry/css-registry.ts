@@ -46,7 +46,7 @@ export class CssRegistry {
   }
 
   // return true if passed classes array has at least one element - as toggle will always trigger changes in that case
-  toggleClasses(bpmnElementId: string, classNames: string[]): boolean {
+  toggleClassNames(bpmnElementId: string, classNames: string[]): boolean {
     this.updateClassNames(bpmnElementId, classNames, (element, set) => (set.has(element) ? set.delete(element) : set.add(element)));
     return classNames && classNames.length > 0;
   }

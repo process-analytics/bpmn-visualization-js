@@ -165,12 +165,12 @@ export class BpmnElementsRegistry {
    * @param classNames The name of the class(es) to remove from the BPMN element(s)
    */
   toggleCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
-    this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.toggleClasses.bind(this.cssRegistry));
+    this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.toggleClassNames.bind(this.cssRegistry));
   }
 
-  private updateCssClasses(bpmnElementIds: string | string[], classNames: string | string[], cssClassesUpdater: (bpmnElementId: string, classNames: string[]) => boolean): void {
+  private updateCssClasses(bpmnElementIds: string | string[], classNames: string | string[], updateClassNames: (bpmnElementId: string, classNames: string[]) => boolean): void {
     const arrayClassNames = ensureIsArray<string>(classNames);
-    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => this.updateCellIfChanged(cssClassesUpdater(bpmnElementId, arrayClassNames), bpmnElementId));
+    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => this.updateCellIfChanged(updateClassNames(bpmnElementId, arrayClassNames), bpmnElementId));
   }
 
   private updateCellIfChanged(updateCell: boolean, bpmnElementId: string): void {
