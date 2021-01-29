@@ -90,7 +90,7 @@ flow` support (see `ShapeBpmnElementKind` for more details)
 * No need to create specific XML tests, the XML parsing is tested globally using BPMN files for various BPMN vendors.
 * The `mxGraph` style for the shape must be tested as well, see `StyleConfigurator`
 
-#### End To End tests
+#### Integration tests
 
 * Update model test, mainly to ensure that the new BPMN element is now stored in the `mxGraph model`, see `mxGraph.model.test.ts`.
 * Fixtures bpmn diagrams used by model tests:
@@ -103,13 +103,13 @@ flow` support (see `ShapeBpmnElementKind` for more details)
   * For special cases, a dedicated test using a specific file. Please communicate with the Core Development Team if you think you need a dedicated file.
 
 💡 If you have a format problem with the BPMN file of the test, the easier way to find the error & fix it is to load the file in your favorite BPMN editor. \
-But be carefull, all the BPMN vendors don't support all the BPMN elements and not the same. \
-So before commit the modification, verify that some elements/configuration are not deleted.
+But be careful, all the BPMN vendors don't support all the BPMN elements and not the same. \
+So before committing the modification, verify that some elements/configuration are not deleted.
 
-#### Visual testing
+#### End-to-end - Visual testing
 
 * Sometimes the new BPMN element already exists in the test BPMN diagram, so it will be rendered and test will fail. In that case, update the reference snapshot.
-* Otherwise, add the new element (follow practices described in the [./testing.md](testing) documentation)
+* Otherwise, add the new element (follow practices described in the [testing documentation](./testing.md))
 
 
 ## Elements rendering

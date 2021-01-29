@@ -13,21 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { getSimplePlatformName } from '../helpers/test-utils';
+import { getSimplePlatformName } from '../e2e/helpers/test-utils';
 import * as fs from 'fs';
-import { calculateMetrics, ChartData } from '../helpers/perf-utils';
-import { PageTester } from '../helpers/visu/PageTester';
-
-interface PerformanceMetric {
-  run: number;
-  TaskDuration: number;
-  ScriptDuration: number;
-  RecalcStyleDuration: number;
-  LayoutDuration: number;
-}
+import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
+import { PageTester } from '../e2e/helpers/visu/PageTester';
 
 const platform = getSimplePlatformName();
-const performanceDataFilePath = './performance/data/' + platform + '/data.js';
+const performanceDataFilePath = './data/' + platform + '/data.js';
 const metricsArray: Array<PerformanceMetric> = [];
 
 describe.each([1, 2, 3, 4, 5])('load performance', run => {
