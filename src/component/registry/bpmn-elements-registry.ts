@@ -168,13 +168,9 @@ export class BpmnElementsRegistry {
     this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.toggleClasses.bind(this.cssRegistry));
   }
 
-  private updateCssClasses(
-    bpmnElementIds: string | string[],
-    classNames: string | string[],
-    cssClassesUpdaterFunction: (bpmnElementId: string, classNames: string[]) => boolean,
-  ): void {
+  private updateCssClasses(bpmnElementIds: string | string[], classNames: string | string[], cssClassesUpdater: (bpmnElementId: string, classNames: string[]) => boolean): void {
     const arrayClassNames = ensureIsArray<string>(classNames);
-    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => this.updateCellIfChanged(cssClassesUpdaterFunction(bpmnElementId, arrayClassNames), bpmnElementId));
+    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => this.updateCellIfChanged(cssClassesUpdater(bpmnElementId, arrayClassNames), bpmnElementId));
   }
 
   private updateCellIfChanged(updateCell: boolean, bpmnElementId: string): void {
