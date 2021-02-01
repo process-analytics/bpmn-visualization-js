@@ -103,6 +103,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bpmnelementsregistry.html#getelementsbyids" class="tsd-kind-icon">get<wbr>Elements<wbr>ByIds</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bpmnelementsregistry.html#getelementsbykinds" class="tsd-kind-icon">get<wbr>Elements<wbr>ByKinds</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bpmnelementsregistry.html#removecssclasses" class="tsd-kind-icon">remove<wbr>Css<wbr>Classes</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="bpmnelementsregistry.html#togglecssclasses" class="tsd-kind-icon">toggle<wbr>Css<wbr>Classes</a></li>
 							</ul>
 						</section>
 					</div>
@@ -120,7 +121,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/3af6d88/src/component/registry/bpmn-elements-registry.ts#L128">component/registry/bpmn-elements-registry.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/69224ee/src/component/registry/bpmn-elements-registry.ts#L129">component/registry/bpmn-elements-registry.ts:129</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -168,7 +169,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/3af6d88/src/component/registry/bpmn-elements-registry.ts#L73">component/registry/bpmn-elements-registry.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/69224ee/src/component/registry/bpmn-elements-registry.ts#L74">component/registry/bpmn-elements-registry.ts:74</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -203,7 +204,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/3af6d88/src/component/registry/bpmn-elements-registry.ts#L92">component/registry/bpmn-elements-registry.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/69224ee/src/component/registry/bpmn-elements-registry.ts#L93">component/registry/bpmn-elements-registry.ts:93</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -238,7 +239,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/3af6d88/src/component/registry/bpmn-elements-registry.ts#L153">component/registry/bpmn-elements-registry.ts:153</a></li>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/69224ee/src/component/registry/bpmn-elements-registry.ts#L148">component/registry/bpmn-elements-registry.ts:148</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -275,6 +276,54 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="togglecssclasses" class="tsd-anchor"></a>
+					<h3>toggle<wbr>Css<wbr>Classes</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">toggle<wbr>Css<wbr>Classes<span class="tsd-signature-symbol">(</span>bpmnElementIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, classNames<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/69224ee/src/component/registry/bpmn-elements-registry.ts#L168">component/registry/bpmn-elements-registry.ts:168</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Toggle one/several CSS class(es) for one/several BPMN element(s).
+									Notice that if you pass ids that are not related to existing BPMN elements, their reference will be kept within the registry but nothing happens on the rendering side.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-javascript"><span style="color: #008000">// Toggle &#039;highlight&#039; for BPMN elements with id: activity_1 and activity_2</span>
+<span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span><span style="color: #000000">.</span><span style="color: #795E26">toggleCssClasses</span><span style="color: #000000">([</span><span style="color: #A31515">&#039;activity_1&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;activity_2&#039;</span><span style="color: #000000">], </span><span style="color: #A31515">&#039;highlight&#039;</span><span style="color: #000000">);</span>
+
+<span style="color: #008000">// Toggle &#039;running&#039; and &#039;additional-info&#039; for BPMN element with id: task_3</span>
+<span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span><span style="color: #000000">.</span><span style="color: #795E26">toggleCssClasses</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;task_3&#039;</span><span style="color: #000000">, [</span><span style="color: #A31515">&#039;running&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;additional-info&#039;</span><span style="color: #000000">]);</span>
+</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>bpmnElementIds: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The BPMN id of the element(s) where to remove the CSS classes</p>
+									</div>
+								</li>
+								<li>
+									<h5>classNames: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The name of the class(es) to remove from the BPMN element(s)</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -287,6 +336,9 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum">
+						<a href="../enums/fittype.html" class="tsd-kind-icon">Fit<wbr>Type</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
@@ -304,15 +356,36 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="bpmnelementsregistry.html#removecssclasses" class="tsd-kind-icon">remove<wbr>Css<wbr>Classes</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="bpmnelementsregistry.html#togglecssclasses" class="tsd-kind-icon">toggle<wbr>Css<wbr>Classes</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="bpmnvisualization.html" class="tsd-kind-icon">Bpmn<wbr>Visualization</a>
+					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/bpmnelement.html" class="tsd-kind-icon">Bpmn<wbr>Element</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/bpmnsemantic.html" class="tsd-kind-icon">Bpmn<wbr>Semantic</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/fitoptions.html" class="tsd-kind-icon">Fit<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/globaloptions.html" class="tsd-kind-icon">Global<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/loadoptions.html" class="tsd-kind-icon">Load<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/navigationconfiguration.html" class="tsd-kind-icon">Navigation<wbr>Configuration</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/zoomconfiguration.html" class="tsd-kind-icon">Zoom<wbr>Configuration</a>
 					</li>
 				</ul>
 			</nav>
@@ -324,10 +397,12 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 			</ul>
 		</div>
 	</div>
