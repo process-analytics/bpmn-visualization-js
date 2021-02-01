@@ -13,6 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// TODO browser management
+// get BROWSER env var
+// if (product !== undefined && !['chrome', 'firefox'].includes(product))
+// throw new Error(`Error: Invalid product value '${product}, must be one of '`)
+
 module.exports = {
   server: {
     command: `npm run start -- --config-server-port 10002`,
@@ -26,5 +32,9 @@ module.exports = {
     headless: process.env.HEADLESS !== 'false',
     slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
     args: ['--disable-infobars', '--no-sandbox', '--disable-setuid-sandbox'],
+    //product: 'firefox',
   },
+  // PUPPETEER_PRODUCT=firefox
+  // https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#environment-variables
+  // https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#puppeteerlaunchoptions
 };
