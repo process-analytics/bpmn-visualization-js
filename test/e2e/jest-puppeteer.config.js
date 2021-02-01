@@ -28,12 +28,18 @@ module.exports = {
     debug: true,
   },
   launch: {
-    dumpio: true,
+    dumpio: true, // Make browser logs visible
     headless: process.env.HEADLESS !== 'false',
     slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
     args: ['--disable-infobars', '--no-sandbox', '--disable-setuid-sandbox'],
     //product: 'firefox',
   },
+
+  // first run
+  // PUPPETEER_PRODUCT=firefox npm install puppeteer
+  // then
+  // PUPPETEER_PRODUCT=firefox HEADLESS=false npm run test:e2e
+
   // PUPPETEER_PRODUCT=firefox
   // https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#environment-variables
   // https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#puppeteerlaunchoptions
