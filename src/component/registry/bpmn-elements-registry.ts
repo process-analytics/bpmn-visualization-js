@@ -31,6 +31,7 @@ export function newBpmnElementsRegistry(graph: BpmnMxGraph): BpmnElementsRegistr
 }
 
 /**
+ * @category Interaction
  * @experimental subject to change, feedback welcome.
  *
  * > BpmnElementRegistry is a public API that permits to find the BpmnElements present in the diagram.
@@ -183,6 +184,9 @@ export class BpmnElementsRegistry {
 
 export type BpmnElementKind = FlowKind | ShapeBpmnElementKind;
 
+/**
+ * @category Interaction
+ */
 export interface BpmnSemantic {
   id: string;
   name: string;
@@ -192,6 +196,9 @@ export interface BpmnSemantic {
   kind: string;
 }
 
+/**
+ * @category Interaction
+ */
 export interface BpmnElement {
   bpmnSemantic: BpmnSemantic;
   htmlElement: HTMLElement;
