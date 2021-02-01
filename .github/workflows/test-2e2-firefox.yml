@@ -1,4 +1,4 @@
-name: Build
+name: Test End-to-End with Firefox
 
 on:
   push:
