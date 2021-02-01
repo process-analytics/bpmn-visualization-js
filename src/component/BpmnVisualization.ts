@@ -22,6 +22,9 @@ import { BpmnElementsRegistry } from './registry';
 import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { htmlElement } from './helpers/dom-utils';
 
+/**
+ * @category Initialization
+ */
 export default class BpmnVisualization {
   public readonly graph: BpmnMxGraph;
 

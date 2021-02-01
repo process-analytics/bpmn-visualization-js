@@ -4,5 +4,7 @@
   "out": "./build/docs/api",
   "excludeInternal": true,
   "excludeExternals": true,
-  "excludePrivate": true
+  "excludePrivate": true,
+  "categoryOrder": ["Initialization", "Interaction", "*"],
+  "categorizeByGroup": false
 }
