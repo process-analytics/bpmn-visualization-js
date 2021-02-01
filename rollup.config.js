@@ -30,9 +30,6 @@ import json from '@rollup/plugin-json';
 
 import parseArgs from 'minimist';
 
-import * as fs from 'fs';
-import path from 'path';
-
 const devLiveReloadMode = process.env.devLiveReloadMode;
 const devMode = devLiveReloadMode ? true : process.env.devMode;
 const demoMode = process.env.demoMode;
@@ -67,8 +64,6 @@ if (!buildBundles) {
 } else {
   const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjs(), json()];
   const outputIIFE = {
-    // hack to have the mxGraph configuration prior the load of the mxGraph lib
-    banner: readFileSync('src/static/js/configureMxGraphGlobals.js') + '\n' + readFileSync('node_modules/mxgraph/javascript/mxClient.min.js'),
     file: pkg.browser.replace('.min.js', '.js'),
     name: 'bpmnvisu',
     format: 'iife',
@@ -155,7 +150,6 @@ function pluginsForDevelopment() {
     const copyTargets = [];
     copyTargets.push({ src: 'src/*.html', dest: `${outputDir}/` });
     copyTargets.push({ src: 'src/static', dest: outputDir });
-    copyTargets.push({ src: 'node_modules/mxgraph/javascript/mxClient.min.js', dest: `${outputDir}/static/js/` });
     let copyPlugin;
     if (devLiveReloadMode) {
       copyPlugin = copyWatch({
@@ -188,8 +182,4 @@ function pluginsForDevelopment() {
   }
 
   return plugins;
-}
-
-function readFileSync(relPathToSourceFile, encoding = 'utf8') {
-  return fs.readFileSync(path.join(__dirname, relPathToSourceFile), encoding);
 }

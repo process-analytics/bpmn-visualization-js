@@ -26,6 +26,7 @@ import {
   getDefaultParentId,
 } from '../../helpers/model-expect';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal/shape';
+import { mxgraph } from '../../../../src/component/mxgraph/initializer';
 
 function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): ExpectedStateStyle {
   const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
@@ -99,12 +100,12 @@ export function toBeShape(this: MatcherContext, received: string, expected: Expe
 
 export function toBePool(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   const isHorizontal = 'isHorizontal' in expected ? expected.isHorizontal : true;
-  return buildShapeMatcher('toBePool', this, received, { ...expected, kind: ShapeBpmnElementKind.POOL, styleShape: mxConstants.SHAPE_SWIMLANE, isHorizontal });
+  return buildShapeMatcher('toBePool', this, received, { ...expected, kind: ShapeBpmnElementKind.POOL, styleShape: mxgraph.mxConstants.SHAPE_SWIMLANE, isHorizontal });
 }
 
 export function toBeLane(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   const isHorizontal = 'isHorizontal' in expected ? expected.isHorizontal : true;
-  return buildShapeMatcher('toBeLane', this, received, { ...expected, kind: ShapeBpmnElementKind.LANE, styleShape: mxConstants.SHAPE_SWIMLANE, isHorizontal });
+  return buildShapeMatcher('toBeLane', this, received, { ...expected, kind: ShapeBpmnElementKind.LANE, styleShape: mxgraph.mxConstants.SHAPE_SWIMLANE, isHorizontal });
 }
 
 export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {

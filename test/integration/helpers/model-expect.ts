@@ -44,6 +44,7 @@ import {
   toBePool,
   toBeLane,
 } from '../matchers';
+import { mxGeometry } from 'mxgraph'; // for types
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
