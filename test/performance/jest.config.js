@@ -15,24 +15,13 @@
  */
 module.exports = {
   rootDir: '../..',
-  roots: ['./test/bundles', './src'],
+  roots: ['./test/performance', './src'],
   preset: 'jest-puppeteer',
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
-  testTimeout: 20000,
+  testTimeout: 200000,
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
-  reporters: [
-    'default',
-    [
-      'jest-html-reporter',
-      {
-        pageTitle: 'bpmn-visualization bundles Test Report',
-        outputPath: 'build/test-report/bundles/index.html',
-        includeFailureMsg: true,
-        includeSuiteFailure: true,
-      },
-    ],
-  ],
+  setupFiles: ['./test/e2e/config/copy.bpmn.diagram.ts'],
 };

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { bpmnVisualization, ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../ExpectModelUtils';
+import { bpmnVisualization, ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 

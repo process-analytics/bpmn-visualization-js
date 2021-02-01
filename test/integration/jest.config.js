@@ -15,23 +15,32 @@
  */
 module.exports = {
   rootDir: '../..',
-  roots: ['./test/bundles', './src'],
-  preset: 'jest-puppeteer',
+  roots: ['./test/integration', './src'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
-  testTimeout: 20000,
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
+  collectCoverageFrom: ['**/*.{ts,js}'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static', 'src/model'],
+  coverageReporters: ['lcov', 'text-summary'],
+  coverageDirectory: 'build/test-report/integration',
+  setupFiles: ['./test/integration/jest.globals.ts'],
   reporters: [
     'default',
     [
       'jest-html-reporter',
       {
-        pageTitle: 'bpmn-visualization bundles Test Report',
-        outputPath: 'build/test-report/bundles/index.html',
+        pageTitle: 'bpmn-visualization Integration Test Report',
+        outputPath: 'build/test-report/integration/index.html',
         includeFailureMsg: true,
         includeSuiteFailure: true,
+      },
+    ],
+    [
+      'jest-sonar',
+      {
+        outputDirectory: 'build/test-report/integration',
       },
     ],
   ],

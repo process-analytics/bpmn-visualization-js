@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnVisualization from '../../../../src/component/BpmnVisualization';
+import BpmnVisualization from '../../../src/component/BpmnVisualization';
 
 export class HtmlElementLookup {
   constructor(private bpmnVisualization: BpmnVisualization) {}
@@ -99,7 +99,7 @@ export function expectSvgSequenceFlow(svgGroupElement: HTMLElement): void {
   expectSvgFirstChildNodeName(svgGroupElement, 'path');
 }
 
-// TODO duplication with puppeteer expects in mxGraph.view.test.ts
+// TODO duplication with puppeteer expects in generated.svg.test.ts
 // we expect a SVGGElement as HTMLElement parameter
 function expectSvgFirstChildNodeName(svgGroupElement: HTMLElement, name: string): void {
   expect(svgGroupElement).not.toBeUndefined();

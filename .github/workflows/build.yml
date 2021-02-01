@@ -71,6 +71,15 @@ jobs:
         with:
           name: unit-test-results-${{matrix.os.name}}-${{github.sha}}
           path: build/test-report/unit
+      - name: Test Application Integration
+        id: 'test_integration'
+        run: npm run test:integration ${{ matrix.os.coverage }}
+      - name: Upload integration test results
+        if: ${{ failure() && steps.test_integration.outcome == 'failure' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: integration-test-results-${{matrix.os.name}}-${{github.sha}}
+          path: build/test-report/integration
       - name: Test Application End to End
         id: 'test_e2e'
         run: npm run test:e2e ${{ matrix.os.coverage }}

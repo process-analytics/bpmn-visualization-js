@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 module.exports = {
-  rootDir: '../..',
-  roots: ['./test/bundles', './src'],
-  preset: 'jest-puppeteer',
-  testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
-  testTimeout: 20000,
-  transform: {
-    '^.+\\.ts?$': 'ts-jest',
+  server: {
+    command: `npm run start -- --config-server-port 10002`,
+    port: 10002,
+    protocol: 'http', // if default or tcp, the test starts right await whereas the dev server is not available on http
+    launchTimeout: 30000, // the bundle build time can be large, see also configuration for e2e tests
+    debug: true,
   },
-  reporters: [
-    'default',
-    [
-      'jest-html-reporter',
-      {
-        pageTitle: 'bpmn-visualization bundles Test Report',
-        outputPath: 'build/test-report/bundles/index.html',
-        includeFailureMsg: true,
-        includeSuiteFailure: true,
-      },
-    ],
-  ],
+  launch: {
+    dumpio: true,
+    headless: process.env.HEADLESS !== 'false',
+    slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
+    args: ['--disable-infobars', '--no-sandbox', '--disable-setuid-sandbox'],
+    timeout: 120000,
+  },
 };

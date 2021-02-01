@@ -147,7 +147,7 @@ function pluginsForDevelopment() {
 
   // Copy static resources
   if (devMode || demoMode) {
-    plugins.push(execute('npm run demo:css'));
+    plugins.push(execute('npm run demo:css', true)); // sync to ensure the execution is linked to the main rollup process
     if (devLiveReloadMode) {
       plugins.push(execute('npm run watch:css'));
     }
