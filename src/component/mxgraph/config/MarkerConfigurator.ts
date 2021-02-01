@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 import { MarkerIdentifier } from '../StyleUtils';
+import { mxgraph } from '../initializer';
+import { mxAbstractCanvas2D, mxCell, mxPoint, mxShape } from 'mxgraph'; // for types
 
 export default class MarkerConfigurator {
   public configureMarkers(): void {
@@ -45,6 +47,6 @@ export default class MarkerConfigurator {
         c.stroke();
       };
     };
-    mxMarker.addMarker(MarkerIdentifier.ARROW_DASH, createMarker);
+    mxgraph.mxMarker.addMarker(MarkerIdentifier.ARROW_DASH, createMarker);
   }
 }

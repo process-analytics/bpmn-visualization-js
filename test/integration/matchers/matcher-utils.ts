@@ -16,6 +16,8 @@
 import { bpmnVisualization, ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
+import { mxgraph } from '../../../src/component/mxgraph/initializer';
+import { mxCell, mxGeometry, StyleMap } from 'mxgraph'; // for types
 
 export interface ExpectedStateStyle extends StyleMap {
   verticalAlign?: string;
@@ -95,16 +97,16 @@ export function getFontStyleValue(expectedFont: ExpectedFont): number {
   let value = 0;
   if (expectedFont) {
     if (expectedFont.isBold) {
-      value += mxConstants.FONT_BOLD;
+      value += mxgraph.mxConstants.FONT_BOLD;
     }
     if (expectedFont.isItalic) {
-      value += mxConstants.FONT_ITALIC;
+      value += mxgraph.mxConstants.FONT_ITALIC;
     }
     if (expectedFont.isStrikeThrough) {
-      value += mxConstants.FONT_STRIKETHROUGH;
+      value += mxgraph.mxConstants.FONT_STRIKETHROUGH;
     }
     if (expectedFont.isUnderline) {
-      value += mxConstants.FONT_UNDERLINE;
+      value += mxgraph.mxConstants.FONT_UNDERLINE;
     }
   }
   return value ? value : undefined;

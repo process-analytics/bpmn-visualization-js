@@ -25,7 +25,6 @@ module.exports = {
   coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static', 'src/model'],
   coverageReporters: ['lcov', 'text-summary'],
   coverageDirectory: 'build/test-report/integration',
-  setupFiles: ['./test/integration/jest.globals.ts'],
   reporters: [
     'default',
     [
