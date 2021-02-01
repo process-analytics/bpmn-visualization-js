@@ -19,7 +19,7 @@ import * as fs from 'fs';
 import { PageTester } from '../e2e/helpers/visu/PageTester';
 
 const platform = getSimplePlatformName();
-const performanceDataFilePath = './data/' + platform + '/data.js';
+const performanceDataFilePath = './test/performance/data/' + platform + '/data.js';
 const metricsArray: Array<PerformanceMetric> = [];
 
 describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
