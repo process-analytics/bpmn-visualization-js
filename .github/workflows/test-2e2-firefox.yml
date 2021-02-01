@@ -62,11 +62,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install dependencies
-      # TODO the command does not work on windows
-        run: PUPPETEER_PRODUCT=firefox npm ci
+        env:
+          PUPPETEER_PRODUCT: firefox
+        run: npm ci
       - name: Test Application End to End
         id: 'test_e2e'
-        run: PUPPETEER_PRODUCT=firefox npm run test:e2e ${{ matrix.os.coverage }}
+        env:
+          PUPPETEER_PRODUCT: firefox
+        run: npm run test:e2e ${{ matrix.os.coverage }}
       - name: Upload e2e test results
         if: ${{ failure() && steps.test_e2e.outcome == 'failure' }}
         uses: actions/upload-artifact@v2
