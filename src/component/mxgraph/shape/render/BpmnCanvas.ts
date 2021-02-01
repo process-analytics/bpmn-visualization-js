@@ -15,6 +15,7 @@
  */
 import { StyleDefault } from '../../StyleUtils';
 import { IconConfiguration, IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
+import { mxAbstractCanvas2D } from 'mxgraph'; // for types
 
 export interface BpmnCanvasConfiguration {
   mxCanvas: mxAbstractCanvas2D;

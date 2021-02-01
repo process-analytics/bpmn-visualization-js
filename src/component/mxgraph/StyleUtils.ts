@@ -15,6 +15,7 @@
  */
 import { ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal/shape';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
+import { mxgraph } from './initializer';
 
 export enum MarkerIdentifier {
   ARROW_DASH = 'bpmn.dash',
@@ -57,59 +58,61 @@ export enum StyleIdentifier {
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
 export default class StyleUtils {
   public static getFillColor(style: any): string {
-    return mxUtils.getValue(style, mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
+    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
   }
 
   public static getStrokeColor(style: any): string {
-    return mxUtils.getValue(style, mxConstants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
+    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
   }
 
   public static getStrokeWidth(style: any): number {
-    return mxUtils.getValue(style, mxConstants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
+    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
   }
 
   public static getMargin(style: any): number {
-    return mxUtils.getValue(style, mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
+    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
   }
 
   public static isDashed(style: any): boolean {
-    return mxUtils.getValue(style, mxConstants.STYLE_DASHED, StyleDefault.DEFAULT_DASHED);
+    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_DASHED, StyleDefault.DEFAULT_DASHED);
   }
 
   public static isFixDash(style: any): boolean {
-    return mxUtils.getValue(style, mxConstants.STYLE_FIX_DASH, StyleDefault.DEFAULT_FIX_DASH);
+    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_FIX_DASH, StyleDefault.DEFAULT_FIX_DASH);
   }
 
   public static getDashPattern(style: any): string {
-    return mxUtils.getValue(style, mxConstants.STYLE_DASH_PATTERN, StyleDefault.DEFAULT_DASH_PATTERN);
+    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_DASH_PATTERN, StyleDefault.DEFAULT_DASH_PATTERN);
   }
 
   public static getBpmnEventKind(style: any): ShapeBpmnEventKind {
-    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
+    return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
   }
 
   public static getBpmnSubProcessKind(style: any): ShapeBpmnSubProcessKind {
-    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, undefined);
+    return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, undefined);
   }
 
   public static getBpmnIsInterrupting(style: any): string {
-    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, undefined);
+    return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, undefined);
   }
 
   public static getBpmnMarkers(style: any): string {
-    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_MARKERS, undefined);
+    return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_MARKERS, undefined);
   }
 
   public static getBpmnIsInstantiating(style: any): boolean {
-    return JSON.parse(mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_INSTANTIATING, false));
+    return JSON.parse(mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_INSTANTIATING, false));
   }
 
   public static getBpmnIsInitiating(style: any): MessageVisibleKind {
-    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_INITIATING, undefined);
+    return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_INITIATING, undefined);
   }
 
   public static getBpmnIsParallelEventBasedGateway(style: any): boolean {
-    return mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel;
+    return (
+      mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel
+    );
   }
 }
 /* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */

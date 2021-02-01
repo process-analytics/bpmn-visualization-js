@@ -27,6 +27,8 @@ import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibl
 import { ShapeBpmnMarkerKind } from '../../model/bpmn/internal/shape';
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { LoadOptions } from '../options';
+import { mxgraph } from './initializer';
+import { mxCell } from 'mxgraph'; // for types
 
 export default class MxGraphRenderer {
   constructor(readonly graph: BpmnMxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
@@ -112,10 +114,10 @@ export default class MxGraphRenderer {
           if (edgeCenterCoordinate) {
             mxEdge.geometry.relative = false;
 
-            const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(labelBounds.x, labelBounds.y));
+            const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxgraph.mxPoint(labelBounds.x, labelBounds.y));
             const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
             const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
-            mxEdge.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
+            mxEdge.geometry.offset = new mxgraph.mxPoint(relativeLabelX, relativeLabelY);
           }
         }
 
@@ -126,16 +128,16 @@ export default class MxGraphRenderer {
 
   private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: mxCell): void {
     if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
-      const mxCell = this.graph.insertVertex(mxEdge, `messageFlowIcon_of_${mxEdge.id}`, undefined, 0, 0, 20, 14, this.styleConfigurator.computeMessageFlowIconStyle(edge));
-      mxCell.geometry.relative = true;
-      mxCell.geometry.offset = new mxPoint(-10, -7);
+      const cell = this.graph.insertVertex(mxEdge, `messageFlowIcon_of_${mxEdge.id}`, undefined, 0, 0, 20, 14, this.styleConfigurator.computeMessageFlowIconStyle(edge));
+      cell.geometry.relative = true;
+      cell.geometry.offset = new mxgraph.mxPoint(-10, -7);
     }
   }
 
   private insertWaypoints(waypoints: Waypoint[], mxEdge: mxCell): void {
     if (waypoints) {
       mxEdge.geometry.points = waypoints.map(waypoint => {
-        return this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(waypoint.x, waypoint.y));
+        return this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxgraph.mxPoint(waypoint.x, waypoint.y));
       });
     }
   }
@@ -145,16 +147,16 @@ export default class MxGraphRenderer {
   }
 
   private insertVertex(parent: mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxCell {
-    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new mxPoint(bounds.x, bounds.y));
-    const mxCell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
+    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new mxgraph.mxPoint(bounds.x, bounds.y));
+    const cell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 
     if (labelBounds) {
       // label coordinates are relative in the cell referential coordinates
       const relativeLabelX = labelBounds.x - bounds.x;
       const relativeLabelY = labelBounds.y - bounds.y;
-      mxCell.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
+      cell.geometry.offset = new mxgraph.mxPoint(relativeLabelX, relativeLabelY);
     }
-    return mxCell;
+    return cell;
   }
 }
 
