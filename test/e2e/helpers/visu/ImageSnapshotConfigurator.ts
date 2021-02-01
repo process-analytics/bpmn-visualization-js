@@ -40,13 +40,13 @@ export class ImageSnapshotConfigurator {
   /**
    * <b>About `thresholdConfig`</b>
    *
-   * Configure threshold by bpmn files.When introducing a new test, please don't add threshold until you get failures when running
+   * Configure threshold by bpmn files. When introducing a new test, please don't add threshold until you get failures when running
    * on GitHub Workflow because of discrepancies depending of OS/machine (few pixels) and that are not visible by a human.
    * This is generally only required for diagram containing labels. If you are not testing the labels (value, position, ...) as part of the use case you want to cover, remove labels
    * from the BPMN diagram to avoid such discrepancies.
+   *
+   * Default threshold value is to make tests pass on macOS using Chromium (the GitHub workflow diff was 0.00031509446166699817%).
    */
-  // minimal threshold to make tests for diagram renders pass on local
-  // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
   constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>, snapshotsSubDirName: string, readonly defaultFailureThreshold = 0.000004) {
     this.defaultCustomDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), snapshotsSubDirName);
     this.defaultCustomSnapshotsDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), snapshotsSubDirName);
