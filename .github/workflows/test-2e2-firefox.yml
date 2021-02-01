@@ -62,10 +62,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install dependencies
-        run: npm ci
-      - name: Install Firefox for puppeteer
-      # TODO the command may not work on windows
-        run: PUPPETEER_PRODUCT=firefox npm install puppeteer
+      # TODO the command does not work on windows
+        run: PUPPETEER_PRODUCT=firefox npm ci
       - name: Test Application End to End
         id: 'test_e2e'
         run: PUPPETEER_PRODUCT=firefox npm run test:e2e ${{ matrix.os.coverage }}
