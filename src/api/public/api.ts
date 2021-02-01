@@ -15,7 +15,8 @@
  */
 
 // Initialization and configuration options
-export { BpmnVisualization } from '../../component/BpmnVisualization';
+import BpmnVisualization from '../../component/BpmnVisualization';
+export { BpmnVisualization };
 export { GlobalOptions, NavigationConfiguration, FitOptions, FitType, LoadOptions, ZoomConfiguration } from '../../component/options';
 
 // Interaction
