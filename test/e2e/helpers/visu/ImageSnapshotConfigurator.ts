@@ -18,9 +18,9 @@ import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { getSimplePlatformName, log } from '../test-utils';
 
 export interface ImageSnapshotThresholdConfig {
-  linux: number;
-  macos: number;
-  windows: number;
+  linux?: number;
+  macos?: number;
+  windows?: number;
   [key: string]: number;
 }
 
@@ -73,7 +73,7 @@ export class ImageSnapshotConfigurator {
       log(`Building dedicated image snapshot configuration for '${fileName}'`);
       const simplePlatformName = getSimplePlatformName();
       log(`Simple platform name: ${simplePlatformName}`);
-      failureThreshold = config[simplePlatformName];
+      failureThreshold = config[simplePlatformName] || failureThreshold;
     }
     log(`ImageSnapshot - using failureThreshold: ${failureThreshold}`);
 
