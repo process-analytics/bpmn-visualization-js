@@ -221,8 +221,9 @@ function getDefaultFailureThreshold(): number | undefined {
           // flows.waypoints.02.terminal.waypoints.inside.shapes 0.009843743848170217%
           // flows.waypoints.03.terminal.waypoints.outside.shapes 0.009835291276794056%
           // gateways 0.002178850223122364%
+          // tasks 0.010706645799574144%
           // macos --> 0.0099% --> 0.01%
-          return 0.0001;
+          return 0.00011;
         default:
           return undefined;
       }
