@@ -15,7 +15,7 @@
  */
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
 import { PageTester } from './helpers/visu/PageTester';
-import { getBpmnDiagramNames } from './helpers/test-utils';
+import { getBpmnDiagramNames, getSimplePlatformName, getTestedBrowserFamily } from './helpers/test-utils';
 
 function getChromiumImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThresholdConfig> {
   return new Map<string, ImageSnapshotThresholdConfig>([
@@ -124,12 +124,105 @@ function getChromiumImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThr
   ]);
 }
 
+function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThresholdConfig> {
+  return new Map<string, ImageSnapshotThresholdConfig>([
+    // [
+    //   'flows.message.02.labels.and.complex.paths',
+    //   {
+    //     linux: 0.000002,
+    //     macos: 0.0011,
+    //     windows: 0.0012,
+    //   },
+    // ],
+    // [
+    //   'labels.01.general',
+    //   {
+    //     linux: 0.0047,
+    //     macos: 0.0074,
+    //     windows: 0.005,
+    //   },
+    // ],
+    // [
+    //   'labels.02.position.and.line.breaks',
+    //   {
+    //     // 1 character change: 0.09528559852869378%
+    //     linux: 0.0009,
+    //     macos: 0.008,
+    //     windows: 0.007,
+    //   },
+    // ],
+    // [
+    //   'labels.03.default.position',
+    //   {
+    //     linux: 0.000009,
+    //     macos: 0.005,
+    //     windows: 0.003,
+    //   },
+    // ],
+    // [
+    //   'labels.04.fonts',
+    //   {
+    //     linux: 0.000002,
+    //     macos: 0.0019,
+    //     windows: 0.0019,
+    //   },
+    // ],
+    // [
+    //   'pools.01.labels.and.lanes',
+    //   {
+    //     linux: 0.002,
+    //     macos: 0.0016,
+    //     windows: 0.002,
+    //   },
+    // ],
+    // [
+    //   'pools.02.vertical.with.lanes',
+    //   {
+    //     linux: 0.0014,
+    //     macos: 0.0015,
+    //     windows: 0.002,
+    //   },
+    // ],
+    // [
+    //   'pools.03.black.box',
+    //   {
+    //     linux: 0.00005,
+    //     macos: 0.0008,
+    //     windows: 0.0012,
+    //   },
+    // ],
+  ]);
+}
+
 function getImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThresholdConfig> {
-  return getChromiumImageSnapshotThresholdConfig();
+  switch (getTestedBrowserFamily()) {
+    case 'chromium':
+      return getChromiumImageSnapshotThresholdConfig();
+    case 'firefox':
+      return getFirefoxImageSnapshotThresholdConfig();
+    default:
+      return new Map<string, ImageSnapshotThresholdConfig>();
+  }
+}
+
+function getDefaultFailureThreshold(): number | undefined {
+  const simplePlatformName = getSimplePlatformName();
+  switch (getTestedBrowserFamily()) {
+    case 'firefox':
+      // linux local Ubuntu 18.04
+      // gateways: 0.002178850223122364%
+      // tasks: 0.010706645799574144%
+      // subprocess.03:  0.24225262309340861%
+      return simplePlatformName == 'linux' ? 0.00011 : undefined;
+    // for chromium, use the default set in ImageSnapshotConfigurator
+    case 'chromium':
+    default:
+      return undefined;
+  }
 }
 
 describe('no BPMN elements visual regression', () => {
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(getImageSnapshotThresholdConfig(), 'bpmn');
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(getImageSnapshotThresholdConfig(), 'bpmn', getDefaultFailureThreshold());
 
   const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' });
   const bpmnDiagramNames = getBpmnDiagramNames('non-regression');
