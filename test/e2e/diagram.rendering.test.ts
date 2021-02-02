@@ -58,26 +58,20 @@ const bpmnDiagramNames = getBpmnDiagramNames('diagram');
 
 describe('no diagram visual regression', () => {
   const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(
+    // if no dedicated information, set minimal threshold to make test pass on Github Workflow
+    // linux threshold are set for Ubuntu
     new Map<string, ImageSnapshotThresholdConfig>([
       [
         'with.outside.labels',
-        // minimal threshold to make test pass on Github Workflow
-        // ubuntu: Expected image to match or be a close match to snapshot but was 0.21788401867753882% different from snapshot
-        // macOS:
-        // windows: Expected image to match or be a close match to snapshot but was 0.19527172107433044% different from snapshot
         {
-          linux: 0.0025,
+          linux: 0.0025, // 0.21788401867753882%
           macos: 0.000004,
-          windows: 0.002,
+          windows: 0.002, // 0.19527172107433044%
         },
       ],
     ]),
     'fit',
-    // minimal threshold to make test pass on Github Workflow
-    // ubuntu: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-    // macOS: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-    // windows: Expected image to match or be a close match to snapshot but was 0.005379276499073438% different from snapshot
-    0.00006,
+    0.00006, // all OS 0.005379276499073438%
   );
 
   const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
