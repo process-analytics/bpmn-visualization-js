@@ -32,7 +32,7 @@ async function zoom(xTimes: number, deltaX: number): Promise<void> {
 
 describe('diagram navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
-    // if no dedicated information, set minimal threshold to make test pass on Github Workflow
+    // if no dedicated information, set minimal threshold to make test pass on Github Workflow on Chromium
     // linux threshold are set for Ubuntu
     new Map<string, ImageSnapshotThresholdConfig>([
       [
