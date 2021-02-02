@@ -209,16 +209,23 @@ function getDefaultFailureThreshold(): number | undefined {
   const simplePlatformName = getSimplePlatformName();
   switch (getTestedBrowserFamily()) {
     case 'firefox':
-      // complex path: 0.002091693445027687%
-      // events: 0.007134819887444355%
-      // flows.message.01.icons 0.004665530365477455%
-      // flows.sequence.kinds.and.complex.paths 0.005391709333080197%
-      // flows.waypoints.01.none 0.0004561438584071986%
-      // flows.waypoints.02.terminal.waypoints.inside.shapes 0.009843743848170217%
-      // flows.waypoints.03.terminal.waypoints.outside.shapes 0.009835291276794056%
-      // gateways 0.002178850223122364%
-      // macos --> 0.0099% --> 0.01%
-      return simplePlatformName == 'linux' ? 0.00011 : 0.0001;
+      switch (simplePlatformName) {
+        case 'linux':
+          return 0.00011;
+        case 'macos':
+          // complex path: 0.002091693445027687%
+          // events: 0.007134819887444355%
+          // flows.message.01.icons 0.004665530365477455%
+          // flows.sequence.kinds.and.complex.paths 0.005391709333080197%
+          // flows.waypoints.01.none 0.0004561438584071986%
+          // flows.waypoints.02.terminal.waypoints.inside.shapes 0.009843743848170217%
+          // flows.waypoints.03.terminal.waypoints.outside.shapes 0.009835291276794056%
+          // gateways 0.002178850223122364%
+          // macos --> 0.0099% --> 0.01%
+          return 0.0001;
+        default:
+          return undefined;
+      }
     // for chromium, use the default set in ImageSnapshotConfigurator
     case 'chromium':
     default:
