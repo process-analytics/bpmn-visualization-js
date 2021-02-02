@@ -65,7 +65,6 @@ describe('no diagram visual regression', () => {
         'with.outside.labels',
         {
           linux: 0.0025, // 0.21788401867753882%
-          macos: 0.000004,
           windows: 0.002, // 0.19527172107433044%
         },
       ],
