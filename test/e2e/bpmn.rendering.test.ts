@@ -17,6 +17,7 @@ import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpe
 import { PageTester } from './helpers/visu/PageTester';
 import { getBpmnDiagramNames, getSimplePlatformName, getTestedBrowserFamily } from './helpers/test-utils';
 
+// TODO simplify comments
 function getChromiumImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThresholdConfig> {
   return new Map<string, ImageSnapshotThresholdConfig>([
     [
