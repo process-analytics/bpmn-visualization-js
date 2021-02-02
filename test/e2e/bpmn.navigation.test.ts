@@ -32,17 +32,15 @@ async function zoom(xTimes: number, deltaX: number): Promise<void> {
 
 describe('diagram navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
+    // if no dedicated information, set minimal threshold to make test pass on Github Workflow
+    // linux threshold are set for Ubuntu
     new Map<string, ImageSnapshotThresholdConfig>([
       [
         'simple.2.start.events.1.task',
-        // minimal threshold to make test pass on Github Workflow
-        // ubuntu: Expected image to match or be a close match to snapshot but was 0.0009247488045871499% different from snapshot
-        // macOS: Expected image to match or be a close match to snapshot but was 0.0009247488045871499% different from snapshot
-        // windows: Expected image to match or be a close match to snapshot but was 0.0009247488045871499% different from snapshot
         {
-          linux: 0.0000095,
-          macos: 0.0000095,
-          windows: 0.0000095,
+          linux: 0.0000095, // 0.0009247488045871499%
+          macos: 0.0000095, // 0.0009247488045871499%
+          windows: 0.0000095, // 0.0009247488045871499%
         },
       ],
     ]),
