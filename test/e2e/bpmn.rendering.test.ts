@@ -103,70 +103,45 @@ function getChromiumImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThr
 
 function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThresholdConfig> {
   return new Map<string, ImageSnapshotThresholdConfig>([
-    // [
-    //   'flows.message.02.labels.and.complex.paths',
-    //   {
-    //     linux: 0.000002,
-    //     macos: 0.0011,
-    //     windows: 0.0012,
-    //   },
-    // ],
-    // [
-    //   'labels.01.general',
-    //   {
-    //     linux: 0.0047,
-    //     macos: 0.0074,
-    //     windows: 0.005,
-    //   },
-    // ],
-    // [
-    //   'labels.02.position.and.line.breaks',
-    //   {
-    //     // 1 character change: 0.09528559852869378%
-    //     linux: 0.0009,
-    //     macos: 0.008,
-    //     windows: 0.007,
-    //   },
-    // ],
-    // [
-    //   'labels.03.default.position',
-    //   {
-    //     linux: 0.000009,
-    //     macos: 0.005,
-    //     windows: 0.003,
-    //   },
-    // ],
-    // [
-    //   'labels.04.fonts',
-    //   {
-    //     linux: 0.000002,
-    //     macos: 0.0019,
-    //     windows: 0.0019,
-    //   },
-    // ],
-    // [
-    //   'pools.01.labels.and.lanes',
-    //   {
-    //     linux: 0.002,
-    //     macos: 0.0016,
-    //     windows: 0.002,
-    //   },
-    // ],
-    // [
-    //   'pools.02.vertical.with.lanes',
-    //   {
-    //     linux: 0.0014,
-    //     macos: 0.0015,
-    //     windows: 0.002,
-    //   },
-    // ],
-    // [
-    //   '',
-    //   {
-    //     // Local Ubuntu 18.04 and GH WF:
-    //     linux: ,
-    //   },
-    // ],
+    [
+      'flows.message.02.labels.and.complex.paths',
+      {
+        linux: 0.0057, //  0.5659391676214987%
+      },
+    ],
+    [
+      'labels.01.general',
+      {
+        // TODO we have an issue here, a break line is added in a sequence flow label
+        linux: 0.302, //  3.015066046429382%
+      },
+    ],
+    [
+      'labels.02.position.and.line.breaks',
+      {
+        // TODO issue here
+        linux: 0.611, // 6.103097407124536%
+      },
+    ],
+    [
+      'labels.03.default.position',
+      {
+        linux: 0.004, // 0.39649363179047326%
+      },
+    ],
+    [
+      'labels.04.fonts',
+      {
+        // TODO issue here
+        linux: 0.146, // 1.453465508401064%
+      },
+    ],
+    [
+      'pools.01.labels.and.lanes',
+      {
+        linux: 0.0021, // 0.2005349024704728%
+      },
+    ],
     [
       'pools.03.black.box',
       {
