@@ -196,7 +196,7 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
     [
       'subprocess.03.collapsed.with.elements',
       {
-        linux: 0.0024, // 0.24225262309340861%
+        linux: 0.0025, // 0.24225262309340861%
       },
     ],
   ]);
@@ -217,10 +217,6 @@ function getDefaultFailureThreshold(): number | undefined {
   const simplePlatformName = getSimplePlatformName();
   switch (getTestedBrowserFamily()) {
     case 'firefox':
-      // linux local Ubuntu 18.04
-      // gateways: 0.002178850223122364%
-      // tasks: 0.010706645799574144%
-      // subprocess.03:  0.24225262309340861%
       return simplePlatformName == 'linux' ? 0.00011 : undefined;
     // for chromium, use the default set in ImageSnapshotConfigurator
     case 'chromium':
