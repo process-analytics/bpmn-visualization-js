@@ -167,41 +167,36 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
     //     linux: ,
     //   },
     // ],
+    [
+      'pools.03.black.box',
+      {
+        linux: 0.0023, // 0.22636282955619252%
+      },
+    ],
 
     // tests without labels
     [
       'associations.and.annotations.01.general',
       {
-        // Local Ubuntu 18.04 and GH WF: 0.08411807630511749%
-        linux: 0.00085,
+        linux: 0.00085, // 0.08411807630511749%
       },
     ],
     [
       'markers.01.positioning',
       {
-        // Local Ubuntu 18.04 and GH WF: 0.021276591755792218%
-        linux: 0.00022,
+        linux: 0.00022, // 0.021276591755792218%
       },
     ],
     [
       'markers.02.different.tasks.sizes',
       {
-        // Local Ubuntu 18.04 and GH WF: 0.020843383822821693%
-        linux: 0.00021,
-      },
-    ],
-    [
-      'pools.03.black.box',
-      {
-        // Local Ubuntu 18.04 and GH WF: 0.22636282955619252%
-        linux: 0.0023,
+        linux: 0.00021, // 0.020843383822821693%
       },
     ],
     [
       'subprocess.03.collapsed.with.elements',
       {
-        // Local Ubuntu 18.04 and GH WF: 0.24225262309340861%
-        linux: 0.0024,
+        linux: 0.0024, // 0.24225262309340861%
       },
     ],
   ]);
