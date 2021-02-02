@@ -114,9 +114,13 @@ function getDefaultFailureThreshold(): number | undefined {
   const simplePlatformName = getSimplePlatformName();
   switch (getTestedBrowserFamily()) {
     case 'firefox':
-      // max diff for most of the diagrams
-      // outside flow: all pass with this default, some other files also pass in some fit level
-      return simplePlatformName == 'linux' ? 0.00006 : undefined;
+      switch (simplePlatformName) {
+        case 'linux':
+          return 0.00006;
+        case 'macos':
+        default:
+          return undefined;
+      }
     case 'chromium':
       return 0.00006; // all OS 0.005379276499073438%
     default:
