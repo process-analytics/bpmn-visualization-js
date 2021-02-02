@@ -1,4 +1,4 @@
-name: Test End-to-End with Firefox
+name: Run End-to-End Tests
 
 on:
   push:
@@ -42,7 +42,8 @@ jobs:
         os:
           - { name: ubuntu-20.04 }
           - { name: macos-10.15 }
-          - { name: windows-2019 }
+          # TODO tests hang on Firefox when driven by Puppeteer
+          # - { name: windows-2019 }
     steps:
       - name: Checkout
         uses: actions/checkout@v2
