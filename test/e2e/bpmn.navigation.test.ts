@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { delay } from './helpers/test-utils';
+import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { join } from 'path';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
 import { PageTester } from './helpers/visu/PageTester';
@@ -74,6 +74,13 @@ describe('diagram navigation', () => {
       customSnapshotIdentifier: 'mouse.panning',
     });
   });
+
+  // TODO restore on Firefox when puppeteer will be able to manage such event
+  // Mouse type is not supported: mouseWheel dispatchMouseEvent@chrome://remote/content/domains/parent/Input.jsm:118:13
+  if (getTestedBrowserFamily() == 'firefox') {
+    console.warn('Skipping zoom tests because of `Mouse type is not supported: mouseWheel`');
+    return;
+  }
 
   it.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
     const deltaX = zoomMode === 'zoom in' ? -100 : 100;
