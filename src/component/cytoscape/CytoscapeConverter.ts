@@ -15,11 +15,14 @@
  */
 import BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import { Core } from 'cytoscape';
+import Shape from '../../model/bpmn/internal/shape/Shape';
 
 export class CytoscapeConverter {
   constructor(private graph: Core) {}
 
   convertToCytoscapeModel(bpmnModel: BpmnModel): void {
+    this.graph.remove('*');
+
     // eslint-disable-next-line no-console
     console.log('____________________BPMN MODEL___________________', bpmnModel);
     this.convertNodes(bpmnModel);
@@ -48,54 +51,26 @@ export class CytoscapeConverter {
   }
 
   private convertNodes(bpmnModel: BpmnModel): void {
+    this.convertNode(bpmnModel.pools);
+    this.convertNode(bpmnModel.lanes);
+    this.convertNode(bpmnModel.flowNodes, true);
+  }
+
+  private convertNode(shapes: Shape[], selectable = false): void {
     this.graph.add(
-      bpmnModel.pools.map(function (flowNode) {
+      shapes.map(function (shape) {
         return {
           group: 'nodes',
           data: {
-            id: flowNode.bpmnElement.id,
-            label: flowNode.bpmnElement.name,
-            kind: flowNode.bpmnElement.kind,
-            height: flowNode.bounds.height,
-            width: flowNode.bounds.width,
+            id: shape.bpmnElement.id,
+            parent: shape.bpmnElement.parentId,
+            label: shape.bpmnElement.name,
+            kind: shape.bpmnElement.kind,
+            height: shape.bounds.height,
+            width: shape.bounds.width,
           },
-          position: { x: flowNode.bounds.x, y: flowNode.bounds.y },
-          selectable: false,
-          grabbable: false,
-          pannable: true,
-        };
-      }),
-    );
-    this.graph.add(
-      bpmnModel.lanes.map(function (flowNode) {
-        return {
-          group: 'nodes',
-          data: {
-            id: flowNode.bpmnElement.id,
-            label: flowNode.bpmnElement.name,
-            kind: flowNode.bpmnElement.kind,
-            height: flowNode.bounds.height,
-            width: flowNode.bounds.width,
-          },
-          position: { x: flowNode.bounds.x, y: flowNode.bounds.y },
-          selectable: false,
-          grabbable: false,
-          pannable: true,
-        };
-      }),
-    );
-    this.graph.add(
-      bpmnModel.flowNodes.map(function (flowNode) {
-        return {
-          group: 'nodes',
-          data: {
-            id: flowNode.bpmnElement.id,
-            label: flowNode.bpmnElement.name,
-            kind: flowNode.bpmnElement.kind,
-            height: flowNode.bounds.height,
-            width: flowNode.bounds.width,
-          },
-          position: { x: flowNode.bounds.x, y: flowNode.bounds.y },
+          position: { x: shape.bounds.x, y: shape.bounds.y },
+          selectable: selectable,
           grabbable: false,
           pannable: true,
         };
