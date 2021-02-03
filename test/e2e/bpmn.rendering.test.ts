@@ -114,16 +114,16 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
       'labels.01.general',
       {
         // TODO we have an issue here, a break line is added in a sequence flow label
-        linux: 0.302, // 3.015066046429382%
-        macos: 0.315, // 3.1499673414102203%
+        linux: 0.0302, // 3.015066046429382%
+        macos: 0.0315, // 3.1499673414102203%
       },
     ],
     [
       'labels.02.position.and.line.breaks',
       {
         // TODO issue here
-        linux: 0.611, // 6.103097407124536%
-        macos: 0.664, // 6.638739310743825%
+        linux: 0.0611, // 6.103097407124536%
+        macos: 0.0664, // 6.638739310743825%
       },
     ],
     [
