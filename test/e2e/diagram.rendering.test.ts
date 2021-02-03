@@ -77,6 +77,7 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
       {
         linux: 0.00014, // 0.012393482656647414% OR 0.013531740287897609%
         macos: 0.00014, // 0.0016017951871782898% or 0.010560069871157207% or 0.012393482656647414% or 0.013531740287897609%
+        windows: 0.00014, // 0.0016017951871782898% / 0.010560069871157207% / 0.012393482656647414% / 0.013531740287897609% /
       },
     ],
     [
@@ -84,6 +85,7 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
       {
         linux: 0.00028, // 0.007916464387214273% / 0.027530972437983525% (fit vertical margin 20)
         macos: 0.00028, // 0.003139035946830848% / 0.0050456132130283216% / 0.007916464387214273% / 0.027530972437983525%
+        windows: 0.00028, // 0.003139035946830848% / 0.0050456132130283216% / 0.007916464387214273% / 0.027530972437983525%
       },
     ],
     [
@@ -92,6 +94,8 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
         // TODO too large threshold
         linux: 0.011, // 1.0906974728819852% or 0.9832706118477974% (fit center)
         macos: 0.009, // 0.003856617605635382% or 0.004022454104279927% or 0.6845638774189866% (fit center) or 0.888760314347159%
+        // TODO issue here
+        windows: 0.03801, // 1.0555113297888274% / 1.988005296848172% / 3.726360119703187% / 3.800922249553762%
       },
     ],
   ]);
