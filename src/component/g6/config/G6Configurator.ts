@@ -72,7 +72,6 @@ export default class G6Configurator {
           },
         ],
       },
-
       defaultNode: {
         type: 'star',
         size: [20],
@@ -95,18 +94,27 @@ export default class G6Configurator {
         },
       },
       nodeStateStyles: {
-        yourStateName: {
-          stroke: '#f00',
+        // The node style when the state 'hover' is true
+        hover: {
+          fill: 'lightsteelblue',
+        },
+        // The node style when the state 'click' is true
+        click: {
+          stroke: '#000',
           lineWidth: 3,
         },
       },
+      // The edge styles in different states
       edgeStateStyles: {
-        yourStateName: {
-          stroke: '#f00',
-          lineWidth: 3,
+        // The edge style when the state 'click' is true
+        click: {
+          stroke: 'steelblue',
         },
       },
     });
+
+    this.updateItemStateOnEvent();
+
 
     // this.enableDraggingOnNodesAndEdges(this.graph);
 
@@ -119,6 +127,42 @@ export default class G6Configurator {
     }
 
     return this.graph;
+  }
+
+  private updateItemStateOnEvent() {
+    // Mouse enter a node
+    this.graph.on('node:mouseenter', (e) => {
+      const nodeItem = e.item; // Get the target item
+      this.graph.setItemState(nodeItem, 'hover', true); // Set the state 'hover' of the item to be true
+    });
+
+    // Mouse leave a node
+    this. graph.on('node:mouseleave', (e) => {
+      const nodeItem = e.item; // Get the target item
+      this.graph.setItemState(nodeItem, 'hover', false); // Set the state 'hover' of the item to be false
+    });
+
+    // Click a node
+    this. graph.on('node:click', (e) => {
+      // Swich the 'click' state of the node to be false
+      const clickNodes = this.graph.findAllByState('node', 'click');
+      clickNodes.forEach((cn) => {
+        this.graph.setItemState(cn, 'click', false);
+      });
+      const nodeItem = e.item; // et the clicked item
+      this. graph.setItemState(nodeItem, 'click', true); // Set the state 'click' of the item to be true
+    });
+
+    // Click an edge
+    this.graph.on('edge:click', (e) => {
+      // Swich the 'click' state of the edge to be false
+      const clickEdges = this.graph.findAllByState('edge', 'click');
+      clickEdges.forEach((ce) => {
+        this. graph.setItemState(ce, 'click', false);
+      });
+      const edgeItem = e.item; // Get the clicked item
+      this. graph.setItemState(edgeItem, 'click', true); // Set the state 'click' of the item to be true
+    });
   }
 
   private enableDraggingOnNodesAndEdges(graph: Graph): void {
