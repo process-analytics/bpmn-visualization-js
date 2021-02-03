@@ -108,6 +108,8 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
       {
         linux: 0.0057, // 0.5659391676214987%
         macos: 0.0066, // 0.6594568058992278%
+        // TODO issue here
+        windows: 0.0138, // 1.3758143022190916%
       },
     ],
     [
@@ -116,6 +118,8 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
         // TODO we have an issue here, a break line is added in a sequence flow label
         linux: 0.0302, // 3.015066046429382%
         macos: 0.0315, // 3.1499673414102203%
+        // TODO very big issue here!
+        windows: 0.1358, // 13.577390503131248%
       },
     ],
     [
@@ -124,6 +128,8 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
         // TODO issue here
         linux: 0.0611, // 6.103097407124536%
         macos: 0.0664, // 6.638739310743825%
+        // TODO very big issue here!
+        windows: 0.1521, // 15.20945839043877%
       },
     ],
     [
@@ -131,6 +137,8 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
       {
         linux: 0.004, // 0.39649363179047326%
         macos: 0.0083, // 0.8248769578137805%
+        // TODO issue here
+        windows: 0.0249, // 2.4808623720247835%
       },
     ],
     [
@@ -139,6 +147,7 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
         // TODO issue here
         linux: 0.0146, // 1.453465508401064%
         macos: 0.0091, // 0.904210646859438%
+        windows: 0.0173, // 1.726307512847236%
       },
     ],
     [
@@ -146,12 +155,14 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
       {
         linux: 0.0021, // 0.2005349024704728%
         macos: 0.0016, // 0.1551411970842409%
+        windows: 0.0058, // 0.5719640300611561%
       },
     ],
     [
       'pools.02.vertical.with.lanes',
       {
         macos: 0.0013, // 0.12998660434810907%
+        windows: 0.007, // 0.6925002379168488%
       },
     ],
     [
@@ -159,6 +170,7 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
       {
         linux: 0.0023, // 0.22636282955619252%
         macos: 0.0022, // 0.21007470164219333%
+        windows: 0.0058, // 0.573840178860785%
       },
     ],
 
@@ -168,6 +180,7 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
       {
         linux: 0.00085, // 0.08411807630511749%
         macos: 0.00085, // 0.08411807630511749%
+        windows: 0.00085, // 0.08411807630511749%
       },
     ],
     [
@@ -175,6 +188,7 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
       {
         linux: 0.00022, // 0.021276591755792218%
         macos: 0.00022, // 0.021276591755792218%
+        windows: 0.00022, // 0.021276591755792218%
       },
     ],
     [
@@ -182,6 +196,7 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
       {
         linux: 0.00021, // 0.020843383822821693%
         macos: 0.00021, // 0.020843383822821693%
+        windows: 0.00021, // 0.020843383822821693%
       },
     ],
     [
@@ -189,6 +204,7 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
       {
         linux: 0.0025, // 0.24225262309340861%
         macos: 0.0025, // 0.24225262309340861%
+        windows: 0.0025, // 0.24225262309340861%
       },
     ],
   ]);
@@ -210,6 +226,7 @@ function getDefaultFailureThreshold(): number | undefined {
   switch (getTestedBrowserFamily()) {
     case 'firefox':
       switch (simplePlatformName) {
+        // TODO always return the same value
         case 'linux':
           return 0.00011;
         case 'macos':
@@ -222,7 +239,21 @@ function getDefaultFailureThreshold(): number | undefined {
           // flows.waypoints.03.terminal.waypoints.outside.shapes 0.009835291276794056%
           // gateways 0.002178850223122364%
           // tasks 0.010706645799574144%
-          // macos --> 0.0099% --> 0.01%
+          // macos max: 0.0107%
+          return 0.00011;
+        case 'windows':
+          // annotation complex path 0.002091693445027687%
+          // events 0.007134819887444355%
+          // flows.message.01.icons 0.004665530365477455%
+          // flows.sequence.kinds.and.complex.paths 0.005391709333080197%
+          // flows.waypoints.01.none 0.0004561438584071986%
+          // flows.waypoints.02.terminal.waypoints.inside.shapes 0.009843743848170217%
+          // flows.waypoints.03.terminal.waypoints.outside.shapes 0.009835291276794056%
+          // gateways 0.002178850223122364%
+          // subprocess.01.with.lanes 0.009385044843390755%
+          // subprocess.02.with.inner.subprocess 0.004890549547265088%
+          // tasks 0.010706645799574144%
+          // windows max: 0.0107%
           return 0.00011;
         default:
           return undefined;
