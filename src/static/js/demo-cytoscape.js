@@ -17,7 +17,7 @@ import { documentReady, handleFileSelectCyto, initCytoBpmnVisualization } from '
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
-  initCytoBpmnVisualization('graph');
+  initCytoBpmnVisualization('graph-cyto');
 
   // Configure custom html elements
   document.getElementById('bpmn-file').addEventListener('change', handleFileSelectCyto, false);
