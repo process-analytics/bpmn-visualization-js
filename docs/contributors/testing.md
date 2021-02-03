@@ -217,7 +217,8 @@ Html reports are generated for test execution and coverage in
 
 By default, tests use Chromium and Chromium is installed by Puppeteer when running `npm install`.
 
-To use Firefox instead, first install Firefox for Puppeteer, then configure Puppeteer to Firefox:
+To use Firefox instead, use a `PUPPETEER_PRODUCT` environment variable: first install Firefox for Puppeteer, then configure
+Puppeteer to use Firefox:
 - on Linux or macOS
 ```bash
 # install Firefox for Puppeteer
@@ -225,10 +226,10 @@ PUPPETEER_PRODUCT=firefox npm install puppeteer
 # Run tests with Firefox
 PUPPETEER_PRODUCT=firefox npm run test:e2e
 ```
-- on Windows
-```powershell
-set PUPPETEER_PRODUCT=firefox; npm install puppeteer
-set PUPPETEER_PRODUCT=firefox; npm run test:e2e
+- on Windows using `cmd` (⚠️ there is no space between `firefox` and `&&`)
+```batch
+set PUPPETEER_PRODUCT=firefox&& npm install puppeteer
+set PUPPETEER_PRODUCT=firefox&& npm run test:e2e
 ```
 
 
