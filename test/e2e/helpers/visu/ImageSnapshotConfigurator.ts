@@ -41,7 +41,6 @@ function getSnapshotsDir(): string {
 function getDiffDir(): string {
   const testDirName = dirname(expect.getState().testPath);
   // directory is relative to $ROOT/test/e2e
-  // TODO can we get the path from the jest configuration?
   return join(testDirName, '../../build/test-report/e2e/__diff_output__');
 }
 
