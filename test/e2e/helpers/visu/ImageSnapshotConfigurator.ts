@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { join } from 'path';
+import { dirname, join } from 'path';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { getSimplePlatformName, log } from '../test-utils';
 
@@ -34,6 +34,17 @@ const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
   failureThresholdType: 'percent',
 };
 
+function getSnapshotsDir(): string {
+  return join(dirname(expect.getState().testPath), '__image_snapshots__');
+}
+
+function getDiffDir(): string {
+  const testDirName = dirname(expect.getState().testPath);
+  // directory is relative to $ROOT/test/e2e
+  // TODO can we get the path from the jest configuration?
+  return join(testDirName, '../../build/test-report/e2e/__diff_output__');
+}
+
 export class ImageSnapshotConfigurator {
   protected readonly defaultCustomDiffDir: string;
   protected readonly defaultCustomSnapshotsDir: string;
@@ -48,10 +59,8 @@ export class ImageSnapshotConfigurator {
   // minimal threshold to make tests for diagram renders pass on local
   // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
   constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>, snapshotsSubDirName: string, readonly defaultFailureThreshold = 0.000004) {
-    // directories are relative to $ROOT/test/e2e
-    this.defaultCustomSnapshotsDir = join('__image_snapshots__', snapshotsSubDirName);
-    // TODO can we get the path from the jest configuration?
-    this.defaultCustomDiffDir = join('../../build/test-report/e2e/__diff_output__', snapshotsSubDirName);
+    this.defaultCustomDiffDir = join(getDiffDir(), snapshotsSubDirName);
+    this.defaultCustomSnapshotsDir = join(getSnapshotsDir(), snapshotsSubDirName);
   }
 
   getConfig(param: string | { fileName: string }): MatchImageSnapshotOptions {
