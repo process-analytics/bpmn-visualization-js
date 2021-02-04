@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import ShapeBpmnElement, {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
@@ -56,6 +57,9 @@ interface EventDefinition {
 
 type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTextAnnotation;
 
+/**
+ * @internal
+ */
 export default class ProcessConverter {
   private defaultSequenceFlowIds: string[] = [];
 

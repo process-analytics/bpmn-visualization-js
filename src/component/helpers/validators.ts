@@ -13,19 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { ZoomConfiguration } from '../options';
 
+/**
+ * @internal
+ * @param value
+ * @param min
+ * @param max
+ * @param defaultValue
+ */
 export function ensureInRange(value: number, min: number, max: number, defaultValue: number): number {
   let inRangeValue = value == undefined ? defaultValue : value;
   inRangeValue = Math.min(Math.max(inRangeValue, min), max);
   return inRangeValue;
 }
 
+/**
+ * @internal
+ * @param input
+ */
 export function ensurePositiveValue(input: number | undefined | null): number {
   return Math.max(input || 0, 0);
 }
 
 /**
+ * @internal
  * Make sure the configuration parameters are defined and in range
  * @param config the {@link ZoomConfiguration} to make valid
  */

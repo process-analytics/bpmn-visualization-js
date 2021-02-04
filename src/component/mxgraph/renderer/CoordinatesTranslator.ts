@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { BpmnMxGraph } from '../BpmnMxGraph';
 import { mxgraph } from '../initializer';
 import { mxCell, mxPoint } from 'mxgraph'; // for types
 
+/**
+ * @internal
+ */
 export default class CoordinatesTranslator {
   constructor(readonly graph: BpmnMxGraph) {}
 

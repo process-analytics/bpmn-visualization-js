@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @internal
+ * @param element
+ */
 export function htmlElement(element: string | HTMLElement): HTMLElement | null {
   if (element instanceof HTMLElement) {
     return element;

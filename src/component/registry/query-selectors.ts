@@ -15,6 +15,7 @@
  */
 
 /**
+ * @internal
  * Once mxGraph is initialized at BpmnVisualization construction, prior loading a BPMN diagram, the DOM looks like:
  * ```html
  * <div id="bpmn-container" style="touch-action: none;">

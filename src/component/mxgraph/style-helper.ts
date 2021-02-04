@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { mxCell } from 'mxgraph'; // for types
 
 /**
+ * @internal
  * Compute the all class names associated to a given bpmn element kind in an hyphen case form.
  *
  * @param bpmnElementKind the string representation of a BPMN element kind i.e {@link ShapeBpmnElementKind} and {@link FlowKind}.
@@ -31,6 +33,7 @@ export function computeAllBpmnClassNames(bpmnElementKind: string, isLabel: boole
 }
 
 /**
+ * @internal
  * Compute the class name in an hyphen case form.
  * For instance, `userTask` returns `bpmn-user-task`
  *
@@ -41,6 +44,7 @@ export function computeBpmnBaseClassName(bpmnElementKind: string): string {
 }
 
 /**
+ * @internal
  * Extract the BPMN kind from the style of the cell. It is the string representation of the BPMN element kind i.e {@link ShapeBpmnElementKind} and {@link FlowKind}.
  * @param cell the mxCell whose style is checked.
  */

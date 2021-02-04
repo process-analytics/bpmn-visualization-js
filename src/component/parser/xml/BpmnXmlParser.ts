@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { parse } from 'fast-xml-parser/src/parser';
 import { decodeXML } from 'entities/lib/decode';
 import { BpmnJsonModel } from '../../../model/bpmn/json/BPMN20';
 
 /**
+ * @internal
  * Parse bpmn xml source
  */
 export default class BpmnXmlParser {

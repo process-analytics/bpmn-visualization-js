@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { MessageFlow } from '../../../../model/bpmn/internal/edge/Flow';
 import { TCollaboration } from '../../../../model/bpmn/json/baseElement/rootElement/collaboration';
@@ -21,6 +22,9 @@ import { TMessageFlow } from '../../../../model/bpmn/json/baseElement/baseElemen
 import { ConvertedElements } from './utils';
 import { ensureIsArray } from '../../../helpers/array-utils';
 
+/**
+ * @internal
+ */
 export default class CollaborationConverter {
   constructor(readonly convertedElements: ConvertedElements) {}
 

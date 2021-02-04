@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { ensureIsArray } from '../helpers/array-utils';
 import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
 import { computeBpmnBaseClassName } from '../mxgraph/style-helper';
