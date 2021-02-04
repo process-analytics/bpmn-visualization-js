@@ -148,8 +148,7 @@ export default class MxGraphRenderer {
 
   private insertVertex(parent: mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxCell {
     const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new mxgraph.mxPoint(bounds.x, bounds.y));
-    // TMP generate visualization errors
-    const cell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x + 2, vertexCoordinates.y, bounds.width, bounds.height, style);
+    const cell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 
     if (labelBounds) {
       // label coordinates are relative in the cell referential coordinates
