@@ -152,7 +152,8 @@ export default class MxGraphRenderer {
 
     if (labelBounds) {
       // label coordinates are relative in the cell referential coordinates
-      const relativeLabelX = labelBounds.x - bounds.x;
+      // TMP generate visualization errors
+      const relativeLabelX = labelBounds.x - bounds.x - 4;
       const relativeLabelY = labelBounds.y - bounds.y;
       cell.geometry.offset = new mxgraph.mxPoint(relativeLabelX, relativeLabelY);
     }
