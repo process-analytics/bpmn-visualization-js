@@ -34,16 +34,6 @@ const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
   failureThresholdType: 'percent',
 };
 
-function getSnapshotsDir(): string {
-  return join(dirname(expect.getState().testPath), '__image_snapshots__');
-}
-
-function getDiffDir(): string {
-  const testDirName = dirname(expect.getState().testPath);
-  // directory is relative to $ROOT/test/e2e
-  return join(testDirName, '../../build/test-report/e2e/__diff_output__');
-}
-
 export class ImageSnapshotConfigurator {
   protected readonly defaultCustomDiffDir: string;
   protected readonly defaultCustomSnapshotsDir: string;
@@ -58,8 +48,8 @@ export class ImageSnapshotConfigurator {
   // minimal threshold to make tests for diagram renders pass on local
   // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
   constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>, snapshotsSubDirName: string, readonly defaultFailureThreshold = 0.000004) {
-    this.defaultCustomDiffDir = join(getDiffDir(), snapshotsSubDirName);
-    this.defaultCustomSnapshotsDir = join(getSnapshotsDir(), snapshotsSubDirName);
+    this.defaultCustomDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), snapshotsSubDirName);
+    this.defaultCustomSnapshotsDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), snapshotsSubDirName);
   }
 
   getConfig(param: string | { fileName: string }): MatchImageSnapshotOptions {
@@ -88,5 +78,15 @@ export class ImageSnapshotConfigurator {
     log(`ImageSnapshot - using failureThreshold: ${failureThreshold}`);
 
     return failureThreshold;
+  }
+
+  static getSnapshotsDir(): string {
+    return join(dirname(expect.getState().testPath), '__image_snapshots__');
+  }
+
+  static getDiffDir(): string {
+    const testDirName = dirname(expect.getState().testPath);
+    // directory is relative to $ROOT/test/e2e
+    return join(testDirName, '../../build/test-report/e2e/__diff_output__');
   }
 }
