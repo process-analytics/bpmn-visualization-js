@@ -26,8 +26,8 @@ export interface ImageSnapshotThresholdConfig {
 
 const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
   diffDirection: 'vertical',
-  // useful on CI (no need to retrieve the diff image, copy/paste image content from logs)
-  dumpDiffToConsole: true,
+  // locally and on CI, see diff images folder directly
+  dumpDiffToConsole: false,
   // use SSIM to limit false positive
   // https://github.com/americanexpress/jest-image-snapshot#recommendations-when-using-ssim-comparison
   comparisonMethod: 'ssim',
@@ -47,9 +47,11 @@ export class ImageSnapshotConfigurator {
    */
   // minimal threshold to make tests for diagram renders pass on local
   // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
-  constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>, private customDirName: string, readonly defaultFailureThreshold = 0.000004) {
-    this.defaultCustomDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), customDirName);
-    this.defaultCustomSnapshotsDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), customDirName);
+  constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>, snapshotsSubDirName: string, readonly defaultFailureThreshold = 0.000004) {
+    // directories are relative to $ROOT/test/e2e
+    this.defaultCustomSnapshotsDir = join('__image_snapshots__', snapshotsSubDirName);
+    // TODO can we get the path from the jest configuration?
+    this.defaultCustomDiffDir = join('../../build/test-report/e2e/__diff_output__', snapshotsSubDirName);
   }
 
   getConfig(param: string | { fileName: string }): MatchImageSnapshotOptions {
@@ -78,13 +80,5 @@ export class ImageSnapshotConfigurator {
     log(`ImageSnapshot - using failureThreshold: ${failureThreshold}`);
 
     return failureThreshold;
-  }
-
-  static getSnapshotsDir(): string {
-    return join(dirname(expect.getState().testPath), '__image_snapshots__');
-  }
-
-  static getDiffDir(): string {
-    return join(ImageSnapshotConfigurator.getSnapshotsDir(), '__diff_output__');
   }
 }
