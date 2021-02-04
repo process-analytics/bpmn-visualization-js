@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { dirname, join } from 'path';
+import { join } from 'path';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { getSimplePlatformName, log } from '../test-utils';
 
