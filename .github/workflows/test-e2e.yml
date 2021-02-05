@@ -43,7 +43,7 @@ jobs:
           - { name: ubuntu-20.04, headless: true }
           - { name: macos-10.15, headless: true }
           # tests hang forever with headless Firefox on Windows
-           - { name: windows-2019, headless: false }
+          - { name: windows-2019, headless: false }
     steps:
       - name: Checkout
         uses: actions/checkout@v2
