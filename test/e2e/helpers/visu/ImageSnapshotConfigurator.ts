@@ -15,7 +15,7 @@
  */
 import { dirname, join } from 'path';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
-import { getSimplePlatformName, log } from '../test-utils';
+import { getSimplePlatformName, getTestedBrowserFamily, log } from '../test-utils';
 
 export interface ImageSnapshotThresholdConfig {
   linux?: number;
@@ -90,4 +90,26 @@ export class ImageSnapshotConfigurator {
     // directory is relative to $ROOT/test/e2e
     return join(testDirName, '../../build/test-report/e2e/__diff_output__');
   }
+}
+
+// TODO rename file
+export abstract class MultiBrowserImageSnapshotThresholds {
+  abstract getChromiumImageSnapshotThresholds(): Map<string, ImageSnapshotThresholdConfig>;
+
+  abstract getFirefoxImageSnapshotThresholds(): Map<string, ImageSnapshotThresholdConfig>;
+
+  // TODO rename with simpler names
+  getImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThresholdConfig> {
+    switch (getTestedBrowserFamily()) {
+      case 'chromium':
+        return this.getChromiumImageSnapshotThresholds();
+      case 'firefox':
+        return this.getFirefoxImageSnapshotThresholds();
+      default:
+        return new Map<string, ImageSnapshotThresholdConfig>();
+    }
+  }
+
+  // TODO this way of doing still introduce duplications
+  abstract getDefaultFailureThreshold(): number;
 }
