@@ -115,21 +115,12 @@ function getImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThresholdCo
 
 // TODO duplicate logic with what we have in bpmn.rendering.test.ts
 function getDefaultFailureThreshold(): number | undefined {
-  const simplePlatformName = getSimplePlatformName();
   switch (getTestedBrowserFamily()) {
-    case 'firefox':
-      switch (simplePlatformName) {
-        case 'linux':
-          return 0.00006;
-        case 'macos':
-        case 'windows':
-        default:
-          return undefined;
-      }
     case 'chromium':
+    case 'firefox':
       return 0.00006; // all OS 0.005379276499073438%
     default:
-      return undefined;
+      return 0;
   }
 }
 
