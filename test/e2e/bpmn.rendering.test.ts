@@ -23,7 +23,7 @@ import { PageTester } from './helpers/visu/PageTester';
 import { getBpmnDiagramNames, getTestedBrowserFamily } from './helpers/test-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
-  getChromiumImageSnapshotThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     // if no dedicated information, set minimal threshold to make test pass on Github Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
@@ -107,7 +107,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     ]);
   }
 
-  getDefaultFailureThreshold(): number {
+  getDefault(): number {
     switch (getTestedBrowserFamily()) {
       case 'firefox':
         return 0.00011;
@@ -118,7 +118,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     }
   }
 
-  getFirefoxImageSnapshotThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'flows.message.02.labels.and.complex.paths',
@@ -230,11 +230,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
 describe('no BPMN elements visual regression', () => {
   const imageSnapshotThresholds = new ImageSnapshotThresholds();
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
-    imageSnapshotThresholds.getImageSnapshotThresholdConfig(),
-    'bpmn',
-    imageSnapshotThresholds.getDefaultFailureThreshold(),
-  );
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'bpmn', imageSnapshotThresholds.getDefault());
 
   const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' });
   const bpmnDiagramNames = getBpmnDiagramNames('non-regression');

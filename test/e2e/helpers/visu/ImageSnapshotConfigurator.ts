@@ -94,22 +94,21 @@ export class ImageSnapshotConfigurator {
 
 // TODO rename file
 export abstract class MultiBrowserImageSnapshotThresholds {
-  abstract getChromiumImageSnapshotThresholds(): Map<string, ImageSnapshotThresholdConfig>;
+  abstract getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig>;
 
-  abstract getFirefoxImageSnapshotThresholds(): Map<string, ImageSnapshotThresholdConfig>;
+  abstract getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig>;
 
-  // TODO rename with simpler names
-  getImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThresholdConfig> {
+  getThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     switch (getTestedBrowserFamily()) {
       case 'chromium':
-        return this.getChromiumImageSnapshotThresholds();
+        return this.getChromiumThresholds();
       case 'firefox':
-        return this.getFirefoxImageSnapshotThresholds();
+        return this.getFirefoxThresholds();
       default:
         return new Map<string, ImageSnapshotThresholdConfig>();
     }
   }
 
   // TODO this way of doing still introduce duplications
-  abstract getDefaultFailureThreshold(): number;
+  abstract getDefault(): number;
 }
