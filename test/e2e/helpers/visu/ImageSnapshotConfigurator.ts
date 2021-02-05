@@ -34,6 +34,7 @@ const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
   failureThresholdType: 'percent',
 };
 
+/** Default threshold value is to make tests pass on macOS using Chromium (the GitHub workflow diff was 0.00031509446166699817%). */
 export const defaultChromiumFailureThreshold = 0.000004;
 
 export class ImageSnapshotConfigurator {
@@ -46,8 +47,6 @@ export class ImageSnapshotConfigurator {
    * on GitHub Workflow because of discrepancies depending of OS/machine and browser (few pixels) and that are not visible by a human.
    * This is generally only required for diagram containing labels. If you are not testing the labels (value, position, ...) as part of the use case you want to cover, remove labels
    * from the BPMN diagram to avoid such discrepancies.
-   *
-   * Default threshold value is to make tests pass on macOS using Chromium (the GitHub workflow diff was 0.00031509446166699817%).
    */
   constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>, snapshotsSubDirName: string, readonly defaultFailureThreshold: number) {
     this.defaultCustomDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), snapshotsSubDirName);
