@@ -15,7 +15,7 @@
  */
 import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { join } from 'path';
-import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
+import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { PageTester } from './helpers/visu/PageTester';
 
 const delayToWaitUntilZoomIsDone = 100;

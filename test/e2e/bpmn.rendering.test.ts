@@ -18,7 +18,7 @@ import {
   ImageSnapshotConfigurator,
   ImageSnapshotThresholdConfig,
   MultiBrowserImageSnapshotThresholds,
-} from './helpers/visu/ImageSnapshotConfigurator';
+} from './helpers/visu/image-snapshot-config';
 import { PageTester } from './helpers/visu/PageTester';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 
