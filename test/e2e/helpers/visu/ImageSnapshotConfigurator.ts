@@ -96,9 +96,9 @@ export class ImageSnapshotConfigurator {
 export abstract class MultiBrowserImageSnapshotThresholds {
   constructor(private chromiumDefault: number, private firefoxDefault: number) {}
 
-  abstract getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig>;
+  protected abstract getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig>;
 
-  abstract getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig>;
+  protected abstract getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig>;
 
   getThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     switch (getTestedBrowserFamily()) {
