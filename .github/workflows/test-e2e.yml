@@ -40,10 +40,10 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - { name: ubuntu-20.04, headless: true }
-          - { name: macos-10.15, headless: true }
-          # tests hang forever with headless Firefox on Windows
-          - { name: windows-2019, headless: false }
+          - { name: ubuntu-20.04 }
+          - { name: macos-10.15 }
+          # TODO tests hang on Firefox when driven by Puppeteer
+          # - { name: windows-2019 }
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -70,7 +70,6 @@ jobs:
         id: 'test_e2e'
         env:
           PUPPETEER_PRODUCT: firefox
-          HEADLESS: ${{ matrix.os.headless }}
         run: npm run test:e2e
       - name: Upload e2e test results
         if: ${{ failure() && steps.test_e2e.outcome == 'failure' }}
