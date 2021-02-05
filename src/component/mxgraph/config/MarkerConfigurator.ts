@@ -18,6 +18,9 @@ import { MarkerIdentifier } from '../StyleUtils';
 import { mxgraph } from '../initializer';
 import { mxAbstractCanvas2D, mxCell, mxPoint, mxShape } from 'mxgraph'; // for types
 
+/**
+ * @internal
+ */
 export default class MarkerConfigurator {
   public configureMarkers(): void {
     this.registerArrowDashMarker();

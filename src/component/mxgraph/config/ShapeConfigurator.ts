@@ -35,6 +35,9 @@ import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
 
+/**
+ * @internal
+ */
 export default class ShapeConfigurator {
   public configureShapes(): void {
     this.initMxShapePrototype();

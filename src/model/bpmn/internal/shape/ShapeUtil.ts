@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
 
+/**
+ * @internal
+ */
 export type BpmnEventKind =
   | ShapeBpmnElementKind.EVENT_BOUNDARY
   | ShapeBpmnElementKind.EVENT_START
@@ -24,6 +28,9 @@ export type BpmnEventKind =
 
 // TODO move to ShapeBpmnElementKind? and rename into ShapeBpmnElementKindUtil?
 // TODO bpmnEventKinds currently hosted in ProcessConverter may be hosted here
+/**
+ * @internal
+ */
 export default class ShapeUtil {
   private static readonly EVENT_KINDS = ShapeUtil.filterKind('Event');
   private static readonly GATEWAY_KINDS = ShapeUtil.filterKind('Gateway');

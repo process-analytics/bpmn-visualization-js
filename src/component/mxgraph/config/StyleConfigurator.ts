@@ -38,6 +38,9 @@ import { BpmnMxGraph } from '../BpmnMxGraph';
 import { mxgraph } from '../initializer';
 import { mxStylesheet, StyleMap } from 'mxgraph'; // for types
 
+/**
+ * @internal
+ */
 export default class StyleConfigurator {
   private specificFlowStyles: Map<FlowKind, (style: StyleMap) => void> = new Map([
     [

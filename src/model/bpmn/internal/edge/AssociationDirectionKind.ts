@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
+ * @internal
  The real name of the field in the BPMN XSD
  */
 export enum AssociationDirectionKind {

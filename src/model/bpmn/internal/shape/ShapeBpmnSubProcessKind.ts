@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
+ * @internal
  * Base name of the BPMN specification.
  */
 export enum ShapeBpmnSubProcessKind {
