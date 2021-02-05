@@ -16,7 +16,6 @@
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
 import G6 from '@antv/g6';
 import { IShape } from '@antv/g-canvas/lib/interfaces';
-import { StyleDefault } from '../../mxgraph/StyleUtils';
 import { ModelConfig } from '@antv/g6/lib/types';
 import { Group as GGroup } from '@antv/g-canvas';
 
@@ -240,3 +239,112 @@ export default class NodeConfigurator {
     mxCellRenderer.registerShape(StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON, MessageFlowIconShape);*/
   }
 }
+
+/*
+  private initMxShapePrototype(): void {
+    // The following is copied from the mxgraph mxShape implementation then converted to TypeScript and enriched for bpmn-visualization
+    // It is needed for adding the custom attributes that permits identification of the BPMN elements in the DOM
+    mxgraph.mxShape.prototype.createSvgCanvas = function () {
+      const canvas = new mxgraph.mxSvgCanvas2D(this.node, false);
+      canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
+      canvas.pointerEventsValue = this.svgPointerEvents;
+      // TODO remove this commented code (has been removed in mxgraph@4.1.1
+      //((canvas as unknown) as mxgraph.mxSvgCanvas2D).blockImagePointerEvents = isFF;
+      const off = this.getSvgScreenOffset();
+
+      if (off != 0) {
+        this.node.setAttribute('transform', 'translate(' + off + ',' + off + ')');
+      } else {
+        this.node.removeAttribute('transform');
+      }
+
+      // START bpmn-visualization CUSTOMIZATION
+      // add attributes to be able to identify elements in DOM
+      if (this.state && this.state.cell) {
+        // 'this.state.style' = the style definition associated with the cell
+        // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
+        const cell = this.state.cell;
+        // dialect = strictHtml is set means that current node holds an html label
+        let allBpmnClassNames = computeAllBpmnClassNames(extractBpmnKindFromStyle(cell), this.dialect === mxgraph.mxConstants.DIALECT_STRICTHTML);
+        const extraCssClasses =  this.state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES];
+        if (extraCssClasses) {
+          allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
+        }
+
+        this.node.setAttribute('class', allBpmnClassNames.join(' '));
+        this.node.setAttribute('data-bpmn-id', this.state.cell.id);
+      }
+      // END bpmn-visualization CUSTOMIZATION
+      canvas.minStrokeWidth = this.minSvgStrokeWidth;
+
+      if (!this.antiAlias) {
+        // Rounds all numbers in the SVG output to integers
+        canvas.format = function (value: string) {
+          return Math.round(parseFloat(value));
+        };
+      }
+
+      return canvas;
+    };
+  }
+
+  initMxCellRendererCreateCellOverlays(): void {
+    mxgraph.mxCellRenderer.prototype.createCellOverlays = function(state: mxCellState) {
+      const graph = state.view.graph;
+      const overlays = graph.getCellOverlays(state.cell);
+      let dict = null;
+
+      if (overlays != null) {
+        dict = new mxgraph.mxDictionary<mxShape>();
+
+        for (let currentOverlay of overlays) {
+          const shape = (state.overlays != null) ? state.overlays.remove(currentOverlay) : null;
+          if (shape != null) {
+            dict.put(currentOverlay, shape);
+            continue;
+          }
+
+          let overlayShape: mxShape;
+
+          // START bpmn-visualization CUSTOMIZATION
+          if (currentOverlay instanceof MxGraphCustomOverlay) {
+            overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxgraph.mxRectangle(0, 0, 0, 0), currentOverlay.style);
+          } else {
+            overlayShape = new mxgraph.mxImageShape(new mxgraph.mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
+            (<mxImageShape>overlayShape).preserveImageAspect = false;
+          }
+          // END bpmn-visualization CUSTOMIZATION
+
+          overlayShape.dialect = state.view.graph.dialect;
+          overlayShape.overlay = currentOverlay;
+
+          // The 'initializeOverlay' signature forces us to hardly cast the overlayShape
+          this.initializeOverlay(state, <mxImageShape>overlayShape);
+          this.installCellOverlayListeners(state, currentOverlay, overlayShape);
+
+          if (currentOverlay.cursor != null) {
+            overlayShape.node.style.cursor = currentOverlay.cursor;
+          }
+
+          // START bpmn-visualization CUSTOMIZATION
+          if (overlayShape instanceof OverlayBadgeShape) {
+            overlayShape.node.classList.add('overlay-badge');
+            overlayShape.node.setAttribute('data-bpmn-id', state.cell.id);
+          }
+          // END bpmn-visualization CUSTOMIZATION
+
+          dict.put(currentOverlay, overlayShape);
+        }
+      }
+
+      // Removes unused
+      if (state.overlays != null) {
+        state.overlays.visit(function(id: string, shape: mxShape) {
+          shape.destroy();
+        });
+      }
+
+      state.overlays = dict;
+    };
+  }
+*/

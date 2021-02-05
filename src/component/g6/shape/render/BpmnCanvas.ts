@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+/*
 import { StyleDefault } from '../../StyleUtils';
 import { IconConfiguration, IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 import { mxAbstractCanvas2D } from 'mxgraph'; // for types
@@ -24,9 +24,9 @@ export interface BpmnCanvasConfiguration {
   iconConfiguration: IconConfiguration;
 }
 
-/**
+/!**
  * Compute the icon size proportionally to a ratio of the shape size. The proportions of the icon are left untouched.
- */
+ *!/
 export function computeScaledIconSize(initialIconSize: Size, iconStyleConfiguration: IconStyleConfiguration, shapeConfiguration: ShapeConfiguration, ratioFromShape: number): Size {
   let iconWidthProportionalToShape;
   let iconHeightProportionalToShape;
@@ -44,7 +44,7 @@ export function computeScaledIconSize(initialIconSize: Size, iconStyleConfigurat
   return { width: paintIconWidth, height: paintIconHeight };
 }
 
-/**
+/!**
  * Wrapper of {@link mxAbstractCanvas2D} to simplify method calls when painting icons/markers of BPMN shapes.
  *
  * It can scale dimensions passed to the method of the original {@link mxAbstractCanvas2D}
@@ -59,7 +59,7 @@ export function computeScaledIconSize(initialIconSize: Size, iconStyleConfigurat
  * const canvas = new BpmnCanvas(c, 0.26, 0.35);
  * canvas.moveTo(8, 39);
  * canvas.lineTo(12, 25);
- */
+ *!/
 export default class BpmnCanvas {
   private c: mxAbstractCanvas2D;
 
@@ -92,48 +92,48 @@ export default class BpmnCanvas {
     iconConfiguration.setIconOrigin(this);
   }
 
-  /**
+  /!**
    * Set the icon origin to the top left corner of the shape.
    *
    * @param shapeDimensionProportion proportion of the width/height used to translate the icon origin from the shape origin.
    * @internal
-   */
+   *!/
   setIconOriginToShapeTopLeftProportionally(shapeDimensionProportion: number): void {
     const shape = this.shapeConfiguration;
     this.iconPaintingOriginX = shape.x + shape.w / shapeDimensionProportion;
     this.iconPaintingOriginY = shape.y + shape.h / shapeDimensionProportion;
   }
 
-  /**
+  /!**
    * Set the icon origin to the top left corner of the shape.
-   */
+   *!/
   setIconOriginToShapeTopLeft(topMargin: number = StyleDefault.SHAPE_ACTIVITY_TOP_MARGIN, leftMargin: number = StyleDefault.SHAPE_ACTIVITY_LEFT_MARGIN): void {
     const shape = this.shapeConfiguration;
     this.iconPaintingOriginX = shape.x + leftMargin;
     this.iconPaintingOriginY = shape.y + topMargin;
   }
 
-  /**
+  /!**
    * Set the icon origin to ensure that the icon is centered on the shape.
-   */
+   *!/
   setIconOriginForIconCentered(): void {
     const shape = this.shapeConfiguration;
     this.iconPaintingOriginX = shape.x + (shape.w - this.iconOriginalSize.width * this.scaleX) / 2;
     this.iconPaintingOriginY = shape.y + (shape.h - this.iconOriginalSize.height * this.scaleY) / 2;
   }
 
-  /**
+  /!**
    * Set the icon origin to ensure that, on the shape, the icon is horizontally centered and vertically aligned to the bottom.
-   */
+   *!/
   setIconOriginForIconBottomCentered(bottomMargin: number = StyleDefault.SHAPE_ACTIVITY_BOTTOM_MARGIN): void {
     const shape = this.shapeConfiguration;
     this.iconPaintingOriginX = shape.x + (shape.w - this.iconOriginalSize.width * this.scaleX) / 2;
     this.iconPaintingOriginY = shape.y + (shape.h - this.iconOriginalSize.height * this.scaleY - bottomMargin);
   }
 
-  /**
+  /!**
    * Set the icon origin to ensure that, on the shape, the icon is vertically aligned to the bottom and translate to the left from the horizontal center.
-   */
+   *!/
   setIconOriginForIconOnBottomLeft(
     bottomMargin: number = StyleDefault.SHAPE_ACTIVITY_BOTTOM_MARGIN,
     fromCenterMargin: number = StyleDefault.SHAPE_ACTIVITY_FROM_CENTER_MARGIN,
@@ -143,14 +143,14 @@ export default class BpmnCanvas {
     this.iconPaintingOriginY = shape.y + (shape.h - this.iconOriginalSize.height * this.scaleY - bottomMargin);
   }
 
-  /**
+  /!**
    * Translate the icon origin using the scale factor associated to the horizontal and vertical directions.
    *
    * The values should be given with using the icon original size (as translated values will be scaled as other values passed to method of this class).
    *
    * @param dx the horizontal translation
    * @param dy the vertical translation
-   */
+   *!/
   translateIconOrigin(dx: number, dy: number): void {
     this.iconPaintingOriginX += this.scaleX * dx;
     this.iconPaintingOriginY += this.scaleY * dy;
@@ -247,3 +247,4 @@ export default class BpmnCanvas {
     this.c.rotate(theta, false, false, rotationCenterX, rotationCenterY);
   }
 }
+*/

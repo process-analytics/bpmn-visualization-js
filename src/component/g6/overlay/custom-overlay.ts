@@ -13,35 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { mxgraph } from '../initializer';
-import { mxCellState, mxPoint, mxRectangle } from 'mxgraph';
 import { OverlayStyle } from '../../registry';
 
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
 export type HorizontalAlignType = 'left' | 'center' | 'right';
 
-export interface MxGraphCustomOverlayOptions {
-  position: MxGraphCustomOverlayPosition;
-  style: MxGraphCustomOverlayStyle;
+export interface G6CustomOverlayOptions {
+  position: G6CustomOverlayPosition;
+  style: G6CustomOverlayStyle;
 }
 
-export interface MxGraphCustomOverlayPosition {
+export interface G6CustomOverlayPosition {
   horizontalAlign?: HorizontalAlignType;
   verticalAlign?: VerticalAlignType;
 }
 
-export type MxGraphCustomOverlayStyle = Required<OverlayStyle>;
+export type G6CustomOverlayStyle = Required<OverlayStyle>;
 
-export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
-  public readonly style: MxGraphCustomOverlayStyle;
+export class G6CustomOverlay {
+  public readonly style: G6CustomOverlayStyle;
 
-  constructor(public label: string, options: MxGraphCustomOverlayOptions) {
-    super(null, '', options.position.horizontalAlign, options.position.verticalAlign, null, 'default');
+  constructor(public label: string, options: G6CustomOverlayOptions) {
+    // super(null, '', options.position.horizontalAlign, options.position.verticalAlign, null, 'default');
     this.style = options.style;
   }
 
   // Based on original method from mxCellOverlay (mxCellOverlay.prototype.getBounds)
-  getBounds(state: mxCellState): mxRectangle {
+  /*  getBounds(state: mxCellState): mxRectangle {
     const isEdge = state.view.graph.getModel().isEdge(state.cell);
     const s = state.view.scale;
     let pt;
@@ -104,4 +102,5 @@ export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
       return pts[pts.length - 1];
     }
   }
+*/
 }

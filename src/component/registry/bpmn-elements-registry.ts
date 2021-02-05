@@ -16,7 +16,7 @@
 import { ensureIsArray } from '../helpers/array-utils';
 import { computeBpmnBaseClassName } from '../mxgraph/style-helper';
 import { CssRegistry } from './css-registry';
-import MxGraphCellUpdater, { newMxGraphCellUpdater } from '../mxgraph/MxGraphCellUpdater';
+import G6CellUpdater, { newG6CellUpdater } from '../g6/G6CellUpdater';
 import { BpmnQuerySelectors } from './query-selectors';
 import { BpmnElement, Overlay } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
@@ -24,8 +24,8 @@ import { BpmnElementKind } from '../../model/bpmn/internal/api';
 import { Graph } from '@antv/g6';
 import { Item } from '@antv/g6/lib/types';
 
-export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnMxGraph): BpmnElementsRegistry {
-  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.getContainer()?.id)), new CssRegistry(), newMxGraphCellUpdater(graph));
+export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: Graph): BpmnElementsRegistry {
+  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.getContainer()?.id)), new CssRegistry(), newG6CellUpdater(graph));
 }
 
 /**
@@ -53,7 +53,7 @@ export class BpmnElementsRegistry {
     private bpmnModelRegistry: BpmnModelRegistry,
     private htmlElementRegistry: HtmlElementRegistry,
     private cssRegistry: CssRegistry,
-    private mxGraphCellUpdater: MxGraphCellUpdater,
+    private g6CellUpdater: G6CellUpdater,
   ) {}
 
   // TODO doc, not found elements are not present in the return array
@@ -175,7 +175,7 @@ export class BpmnElementsRegistry {
   private updateCellIfChanged(updateCell: boolean, bpmnElementId: string): void {
     if (updateCell) {
       const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
-      this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
+      this.g6CellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
     }
   }
 

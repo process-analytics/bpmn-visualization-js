@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+/*
 import { StyleDefault } from '../StyleUtils';
 import { mxgraph } from '../initializer';
 import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph'; // for types
 
-/**
+/!**
  * @internal
- */
+ *!/
 export class TextAnnotationShape extends mxgraph.mxRectangleShape {
   private readonly TEXT_ANNOTATION_BORDER_LENGTH = 10;
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
@@ -38,3 +38,4 @@ export class TextAnnotationShape extends mxgraph.mxRectangleShape {
     c.fillAndStroke();
   }
 }
+*/

@@ -17,20 +17,20 @@
 // TODO remove dedicated import/export
 // this is currently needed, otherwise module default exports are not exported in bundle js
 import BpmnVisualization from './component/BpmnVisualization';
-import IconPainter from './component/mxgraph/shape/render/IconPainter';
-import StyleConfigurator from './component/mxgraph/config/StyleConfigurator';
+/*import IconPainter from './component/g6/shape/render/IconPainter';
+import StyleConfigurator from './component/g6/config/StyleConfigurator';*/
 import ShapeUtil from './model/bpmn/internal/shape/ShapeUtil';
 import { mxgraph } from './component/mxgraph/initializer';
 
 export { BpmnVisualization };
-export { IconPainter };
-export { StyleConfigurator };
+/*export { IconPainter };
+export { StyleConfigurator };*/
 export { ShapeUtil };
 // end of 'TO DO remove dedicated import/export'
 
 export * from './component/options';
-export * from './component/mxgraph/StyleUtils';
-export * from './component/mxgraph/shape/render';
+export * from './component/g6/StyleUtils';
+/*export * from './component/g6/shape/render';*/
 export * from './component/registry';
 
 // TODO restore 'alias export' to avoid any name clash with the demo code, when esLint parsing error is fixed: "Parsing error: Cannot read property 'map' of undefined"

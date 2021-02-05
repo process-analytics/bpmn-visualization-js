@@ -81,47 +81,56 @@ export default class G6Configurator {
     return this.graph;
   }
 
-  /*private configureGraph(): void {
-    this.graph.setCellsLocked(true);
-    this.graph.setCellsSelectable(false);
-    this.graph.setEdgeLabelsMovable(false);
+  /*
+    private configureGraph(): void {
+      this.graph.setCellsLocked(true);
+      this.graph.setCellsSelectable(false);
+      this.graph.setEdgeLabelsMovable(false);
 
-    this.graph.setHtmlLabels(true); // required for wrapping
+      this.graph.setHtmlLabels(true); // required for wrapping
 
-    // To have the boundary event on the border of a task
-    this.graph.setConstrainChildren(false);
-    this.graph.setExtendParents(false);
+      // To have the boundary event on the border of a task
+      this.graph.setConstrainChildren(false);
+      this.graph.setExtendParents(false);
 
-    // Disable folding for container mxCell (pool, lane, sub process, call activity) because we don't need it.
-    // This also prevents requesting unavailable images (see #185) as we don't override BpmnMxGraph folding default images.
-    this.graph.foldingEnabled = false;
-  }
-
-  private configureMouseNavigationSupport(options?: GlobalOptions): void {
-    const mouseNavigationSupport = options?.mouseNavigationSupport;
-    // Pan configuration
-    if (mouseNavigationSupport) {
-      this.graph.panningHandler.useLeftButtonForPanning = true;
-      this.graph.panningHandler.ignoreCell = true; // ok here as we cannot select cells
-      this.graph.panningHandler.addListener(mxEvent.PAN_START, this.getPanningHandler('grab'));
-      this.graph.panningHandler.addListener(mxEvent.PAN_END, this.getPanningHandler('default'));
-      this.graph.setPanning(true);
-
-      // Zoom configuration
-      this.graph.createMouseWheelZoomExperience(options.zoomConfiguration);
-    } else {
-      this.graph.setPanning(false);
-      this.graph.panningHandler.setPinchEnabled(false); // ensure gesture support is disabled (zoom only for now!)
+      // Disable folding for container mxCell (pool, lane, sub process, call activity) because we don't need it.
+      // This also prevents requesting unavailable images (see #185) as we don't override BpmnMxGraph folding default images.
+      this.graph.foldingEnabled = false;
     }
-  }
 
-  private getPanningHandler(cursor: 'grab' | 'default'): OmitThisParameter<(this: BpmnMxGraph) => void> {
-    return this.getPanningHandlerCallback(cursor).bind(this.graph);
-  }
+    private configureNavigationSupport(options: GlobalOptions): void {
+      const panningHandler = this.graph.panningHandler;
+      if (options?.navigation?.enabled) {
+        // Pan configuration
+        panningHandler.addListener(mxgraph.mxEvent.PAN_START, this.getPanningHandler('grab'));
+        panningHandler.addListener(mxgraph.mxEvent.PAN_END, this.getPanningHandler('default'));
 
-  private getPanningHandlerCallback(cursor: 'grab' | 'default'): () => void {
-    return function (this: BpmnMxGraph): void {
-      this.isEnabled() && (this.container.style.cursor = cursor);
-    };
-  }*/
+        this.graph.panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
+        // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left click
+        // The mxGraph standard implementation doesn't ignore right click in this case, so do it by ourself
+        panningHandler.isForcePanningEvent = (me): boolean => mxgraph.mxEvent.isLeftMouseButton(me.getEvent()) || mxgraph.mxEvent.isMultiTouchEvent(me.getEvent());
+        this.graph.setPanning(true);
+
+        // Zoom configuration
+        this.graph.createMouseWheelZoomExperience(options?.navigation?.zoom);
+      } else {
+        this.graph.setPanning(false);
+        // Disable gesture support for zoom
+        panningHandler.setPinchEnabled(false);
+        // Disable panning on touch device
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        panningHandler.isForcePanningEvent = (me: mxMouseEvent): boolean => false;
+      }
+    }
+
+    private getPanningHandler(cursor: 'grab' | 'default'): OmitThisParameter<(this: BpmnMxGraph) => void> {
+      return this.getPanningHandlerCallback(cursor).bind(this.graph);
+    }
+
+    private getPanningHandlerCallback(cursor: 'grab' | 'default'): () => void {
+      return function (this: BpmnMxGraph): void {
+        this.isEnabled() && (this.container.style.cursor = cursor);
+      };
+    }
+  */
 }

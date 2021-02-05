@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-import { BpmnMxGraph } from '../BpmnMxGraph';
-import { mxgraph } from '../initializer';
-import { mxCell, mxPoint } from 'mxgraph'; // for types
+import { Graph } from '@antv/g6';
 
 /**
  * @internal
  */
 export default class CoordinatesTranslator {
-  constructor(readonly graph: BpmnMxGraph) {}
+  constructor(readonly graph: Graph) {}
 
-  /**
+  /*  /!**
    * Compute an absolute coordinate in relative coordinates in the parent cell referential.
    * @param parent the cell to use for the new coordinate referential
    * @param absoluteCoordinate
-   */
+   *!/
   public computeRelativeCoordinates(parent: mxCell, absoluteCoordinate: mxPoint): mxPoint {
     const translateForRoot = this.getTranslateForRoot(parent);
     const relativeX = absoluteCoordinate.x + translateForRoot.x;
@@ -58,12 +56,12 @@ export default class CoordinatesTranslator {
     return offset;
   }
 
-  /**
+  /!**
    * Compute the center of the provided `mxCell` for absolute geometry: this is the center point of a segment whose edges
    * are the terminal points of the mxCell geometry points. Returns `undefined` if the 2 terminal points are not available.
    *
    * The center coordinates are given in the same referential as the `mxCell`, so relative to its parent.
-   */
+   *!/
   public computeEdgeCenter(mxEdge: mxCell): mxPoint {
     const points: mxPoint[] = mxEdge.geometry.points;
 
@@ -77,5 +75,5 @@ export default class CoordinatesTranslator {
     }
 
     return undefined;
-  }
+  }*/
 }

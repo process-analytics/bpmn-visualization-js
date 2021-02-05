@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+/*
 import Shape from '../../model/bpmn/internal/shape/Shape';
 import Edge from '../../model/bpmn/internal/edge/Edge';
 import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import Waypoint from '../../model/bpmn/internal/edge/Waypoint';
 import Bounds from '../../model/bpmn/internal/Bounds';
 import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
-import CoordinatesTranslator from './renderer/CoordinatesTranslator';
+import CoordinatesTranslator from '../g6/renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
 import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
@@ -30,9 +30,9 @@ import { RenderedModel } from '../registry/bpmn-model-registry';
 import { mxgraph } from './initializer';
 import { mxCell } from 'mxgraph'; // for types
 
-/**
+/!**
  * @internal
- */
+ *!/
 export default class MxGraphRenderer {
   constructor(readonly graph: BpmnMxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
 
@@ -161,9 +161,10 @@ export default class MxGraphRenderer {
   }
 }
 
-/**
+/!**
  * @internal
- */
+ *!/
 export function newMxGraphRenderer(graph: BpmnMxGraph): MxGraphRenderer {
   return new MxGraphRenderer(graph, new CoordinatesTranslator(graph), new StyleConfigurator(graph));
 }
+*/

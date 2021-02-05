@@ -14,27 +14,63 @@
  * limitations under the License.
  */
 
-import StyleUtils, { StyleDefault } from '../StyleUtils';
-import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render';
-import { ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal/shape';
-import BpmnCanvas from './render/BpmnCanvas';
-import { orderActivityMarkers } from './render/utils';
-import { mxgraph } from '../initializer';
-import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph'; // for types
+// function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
+//   IconPainterProvider.get().paintEnvelopeIcon({
+//     ...paintParameter,
+//     setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(),
+//     ratioFromParent: 0.2,
+//     icon: { ...paintParameter.icon, isFilled: isFilled },
+//   });
+// }
 
-function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
-  IconPainterProvider.get().paintEnvelopeIcon({
-    ...paintParameter,
-    setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(),
-    ratioFromParent: 0.2,
-    icon: { ...paintParameter.icon, isFilled: isFilled },
-  });
+/*protected paintMarkerIcons(paintParameter: PaintParameter): void {
+  const markers = StyleUtils.getBpmnMarkers(this.style);
+  if (markers) {
+    orderActivityMarkers(markers.split(',')).forEach((marker, idx, allMarkers) => {
+      paintParameter = {
+        ...paintParameter,
+        setIconOrigin: this.getIconOriginForMarkerIcon(allMarkers.length, idx + 1),
+      };
+      paintParameter.c.save(); // ensure we can later restore the configuration
+      switch (marker) {
+        case ShapeBpmnMarkerKind.LOOP:
+          this.iconPainter.paintLoopIcon(paintParameter);
+          break;
+        case ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL:
+          this.iconPainter.paintSequentialMultiInstanceIcon(paintParameter);
+          break;
+        case ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL:
+          this.iconPainter.paintParallelMultiInstanceIcon(paintParameter);
+          break;
+        case ShapeBpmnMarkerKind.EXPAND:
+          this.iconPainter.paintExpandIcon(paintParameter);
+          break;
+      }
+      // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
+      paintParameter.c.restore();
+    });
+  }
+}*/
+
+/*private getIconOriginForMarkerIcon(allMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
+  let setIconOrigin: (canvas: BpmnCanvas) => void;
+if (allMarkers === 1) {
+  setIconOrigin = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
+} else if (allMarkers === 2) {
+  setIconOrigin = (canvas: BpmnCanvas) => {
+    canvas.setIconOriginForIconBottomCentered();
+    const xTranslation = Math.pow(-1, markerOrder) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
+    canvas.translateIconOrigin(xTranslation, 0);
+  };
+} else {
+  // TODO: once we support 3 markers in a group
+  throw new Error('NOT_IMPLEMENTED - to have a group of >2 markers in a row, centered in the task, implement this piece of code');
 }
+return setIconOrigin;
+}*/
 
-/**
- * @internal
- */
-export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
+/*
+export abstract class BaseActivityShape extends mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
   protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
@@ -109,9 +145,6 @@ abstract class BaseTaskShape extends BaseActivityShape {
   protected abstract paintTaskIcon(paintParameter: PaintParameter): void;
 }
 
-/**
- * @internal
- */
 export class TaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -124,9 +157,6 @@ export class TaskShape extends BaseTaskShape {
   }
 }
 
-/**
- * @internal
- */
 export class ServiceTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -137,9 +167,6 @@ export class ServiceTaskShape extends BaseTaskShape {
   }
 }
 
-/**
- * @internal
- */
 export class UserTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -150,9 +177,6 @@ export class UserTaskShape extends BaseTaskShape {
   }
 }
 
-/**
- * @internal
- */
 export class ReceiveTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -191,9 +215,6 @@ export class ReceiveTaskShape extends BaseTaskShape {
   }
 }
 
-/**
- * @internal
- */
 export class SendTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -204,9 +225,6 @@ export class SendTaskShape extends BaseTaskShape {
   }
 }
 
-/**
- * @internal
- */
 export class ManualTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -217,9 +235,6 @@ export class ManualTaskShape extends BaseTaskShape {
   }
 }
 
-/**
- * @internal
- */
 export class ScriptTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -230,18 +245,12 @@ export class ScriptTaskShape extends BaseTaskShape {
   }
 }
 
-/**
- * @internal
- */
 export class CallActivityShape extends BaseActivityShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
   }
 }
 
-/**
- * @internal
- */
 export class SubProcessShape extends BaseActivityShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -262,9 +271,6 @@ export class SubProcessShape extends BaseActivityShape {
   }
 }
 
-/**
- * @internal
- */
 export class BusinessRuleTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -278,3 +284,4 @@ export class BusinessRuleTaskShape extends BaseTaskShape {
     });
   }
 }
+*/

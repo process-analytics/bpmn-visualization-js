@@ -19,7 +19,7 @@ import { BpmnElementsRegistry } from './registry';
 import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { BpmnModelRegistry } from './registry/bpmn-model-registry';
 import { htmlElement } from './helpers/dom-utils';
-import G6, { Graph } from '@antv/g6';
+import { Graph } from '@antv/g6';
 import G6Configurator from './g6/config/G6Configurator';
 import { ShapeBpmnElementKind } from '../model/bpmn/internal/shape';
 import { NodeConfig } from '@antv/g6/lib/types';
@@ -34,7 +34,6 @@ export default class BpmnVisualization {
    */
   readonly bpmnElementsRegistry: BpmnElementsRegistry;
   private readonly bpmnModelRegistry: BpmnModelRegistry;
-
 
   constructor(options?: GlobalOptions) {
     // Instantiate and configure Graph

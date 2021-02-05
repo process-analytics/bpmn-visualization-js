@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-import { BpmnMxGraph } from './BpmnMxGraph';
-import { StyleIdentifier } from './StyleUtils';
+import { Graph } from '@antv/g6';
+//import { StyleIdentifier } from './StyleUtils';
 import { Overlay } from '../registry';
-import { MxGraphCustomOverlay } from './overlay/custom-overlay';
-import { ensureIsArray } from '../helpers/array-utils';
+//import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 
-export function newMxGraphCellUpdater(graph: BpmnMxGraph): MxGraphCellUpdater {
-  return new MxGraphCellUpdater(graph, new OverlayConverter());
+export function newG6CellUpdater(graph: Graph): G6CellUpdater {
+  return new G6CellUpdater(graph, new OverlayConverter());
 }
 
 /**
  * @internal
  */
-export default class MxGraphCellUpdater {
-  constructor(readonly graph: BpmnMxGraph, readonly overlayConverter: OverlayConverter) {}
+export default class G6CellUpdater {
+  constructor(readonly graph: Graph, readonly overlayConverter: OverlayConverter) {}
 
   public updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
-    const mxCell = this.graph.getModel().getCell(bpmnElementId);
+    /*    const mxCell = this.graph.getModel().getCell(bpmnElementId);
     if (!mxCell) {
       return;
     }
@@ -40,25 +39,26 @@ export default class MxGraphCellUpdater {
     const state = view.getState(mxCell);
     state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES] = cssClasses;
     state.shape.apply(state);
-    state.shape.redraw();
+    state.shape.redraw();*/
   }
 
   public addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
-    const mxCell = this.graph.getModel().getCell(bpmnElementId);
+    /* const mxCell = this.graph.getModel().getCell(bpmnElementId);
     if (!mxCell) {
       return;
     }
     ensureIsArray(overlays).forEach(overlay => {
       const bpmnOverlay = new MxGraphCustomOverlay(overlay.label, this.overlayConverter.convert(overlay));
       this.graph.addCellOverlay(mxCell, bpmnOverlay);
-    });
+    }); */
   }
 
   public removeAllOverlays(bpmnElementId: string): void {
-    const mxCell = this.graph.getModel().getCell(bpmnElementId);
+    /*  const mxCell = this.graph.getModel().getCell(bpmnElementId);
     if (!mxCell) {
       return;
     }
     this.graph.removeCellOverlays(mxCell);
+    */
   }
 }

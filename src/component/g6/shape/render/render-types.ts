@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+/*
 import BpmnCanvas from './BpmnCanvas';
 
 export interface ShapeConfiguration {
@@ -39,8 +39,9 @@ export interface Size {
 
 export interface IconConfiguration {
   originalSize: Size;
-  /** If `undefined`, no scaling will be done in {@link BpmnCanvas}. */
+  /!** If `undefined`, no scaling will be done in {@link BpmnCanvas}. *!/
   ratioFromShape?: number;
   style: IconStyleConfiguration;
   setIconOrigin: (canvas: BpmnCanvas) => void;
 }
+*/

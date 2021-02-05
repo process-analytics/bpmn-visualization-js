@@ -15,7 +15,7 @@
  */
 import { FlowKind } from '../../../../src/model/bpmn/internal/edge/FlowKind';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal/shape';
-import { computeBpmnBaseClassName, computeAllBpmnClassNames } from '../../../../src/component/mxgraph/style-helper';
+import { computeBpmnBaseClassName, computeAllBpmnClassNames } from '../../../../src/component/g6/style-helper';
 
 describe('compute base css class names of BPMN elements', () => {
   it.each`

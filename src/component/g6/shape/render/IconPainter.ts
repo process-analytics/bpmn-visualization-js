@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
+/*
 import BpmnCanvas from './BpmnCanvas';
-import StyleUtils from '../../StyleUtils';
 import { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 import { mxAbstractCanvas2D, mxShape } from 'mxgraph'; // for types
 
 export interface PaintParameter {
-  c: mxAbstractCanvas2D;
+  // c: mxAbstractCanvas2D;
   shape: ShapeConfiguration;
   icon: IconStyleConfiguration;
   ratioFromParent?: number;
   setIconOrigin: (canvas: BpmnCanvas) => void;
 }
-
+export default class IconPainter {}
+/*
 export function buildPaintParameter(
   c: mxAbstractCanvas2D,
   x: number,
@@ -57,7 +58,7 @@ export default class IconPainter {
     // empty by nature
   }
 
-  /**
+  /!**
    * Utility paint icon methods to easily instantiate a {@link BpmnCanvas} from a {@link PaintParameter}.
    *
    * @param c                       mxgraph `mxAbstractCanvas2D` in charge of performing the paint operations.
@@ -67,7 +68,7 @@ export default class IconPainter {
    * @param icon                    style of the icon.
    * @param originalIconSize        original size of the icon used to compute the scaling/ratio in {@link BpmnCanvas}.
    * @protected
-   */
+   *!/
   protected newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter, originalIconSize: Size): BpmnCanvas {
     return new BpmnCanvas({
       mxCanvas: c,
@@ -81,9 +82,9 @@ export default class IconPainter {
     });
   }
 
-  /**
+  /!**
    * This icon is used by `message event`, `receive task`, `send task`.
-   */
+   *!/
   paintEnvelopeIcon(paintParameter: PaintParameter): void {
     // this implementation is adapted from the draw.io BPMN 'message' symbol
     // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L465
@@ -122,9 +123,9 @@ export default class IconPainter {
     canvas.stroke();
   }
 
-  /**
+  /!**
    * This icon is used by `inclusive gateway` and `terminate event`.
-   */
+   *!/
   paintCircleIcon(paintParameter: PaintParameter): void {
     // highly inspired from mxDoubleEllipse
     const originalIconSize = { width: paintParameter.shape.w, height: paintParameter.shape.h };
@@ -143,9 +144,9 @@ export default class IconPainter {
     }
   }
 
-  /**
+  /!**
    * This icon is used by `timer event`.
-   */
+   *!/
   paintClockIcon(paintParameter: PaintParameter): void {
     // implementation adapted from https://www.flaticon.com/free-icon/clock_223404
     const canvas = this.newBpmnCanvas(paintParameter, { height: 152, width: 152 });
@@ -240,9 +241,9 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  /**
+  /!**
    * This icon is used by `signal event`.
-   */
+   *!/
   paintTriangleIcon(paintParameter: PaintParameter): void {
     // implementation adapted from https://thenounproject.com/term/triangle/2452089/
     const canvas = this.newBpmnCanvas(paintParameter, { height: 735, width: 849 });
@@ -260,9 +261,9 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  /**
+  /!**
    * This icon is used by `escalation event`.
-   */
+   *!/
   paintUpArrowheadIcon(paintParameter: PaintParameter): void {
     const canvas = this.newBpmnCanvas(paintParameter, { height: 50, width: 40 });
 
@@ -279,9 +280,9 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  /**
+  /!**
    * This icon is used by `compensation event`.
-   */
+   *!/
   paintDoubleLeftArrowheadsIcon(paintParameter: PaintParameter): void {
     const canvas = this.newBpmnCanvas(paintParameter, { height: 53.5, width: 105 });
 
@@ -324,9 +325,9 @@ export default class IconPainter {
     return canvas;
   }
 
-  /**
+  /!**
    * This icon is used by `conditional event`.
-   */
+   *!/
   paintListIcon(paintParameter: PaintParameter): void {
     const canvas = this.newBpmnCanvas(paintParameter, { height: 60, width: 60 });
 
@@ -352,25 +353,35 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  /**
+  /!**
    * This icon is used by `exclusive gateway`.
-   */
+   *!/
   paintXCrossIcon(paintParameter: PaintParameter): void {
     const canvas = this.drawCrossIcon(paintParameter);
     canvas.rotateOnIconCenter(45);
     canvas.fillAndStroke();
   }
 
-  /**
+  /!**
+<<<<<<< HEAD:src/component/g6/shape/IconPainter.ts
    * This icon is used by `parallel gateway` and 'event-based gateway'.
-   */
+   *!/
   paintPlusCrossIcon(paintParameter: PaintParameter): void {
     this.drawCrossIcon(paintParameter).fillAndStroke();
+=======
+   * This icon is used by `parallel gateway`.
+   *!/
+  public paintPlusCrossIcon({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter): void {
+    const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon: { ...icon, isFilled: true } }, { height: 0.5, width: 0.5 });
+
+    IconPainter.drawCrossIcon(canvas);
+    canvas.fillAndStroke();
+>>>>>>> 41cb26c... Copy old mxGraph files conf:src/component/g6/node/render/IconPainter.ts
   }
 
-  /**
+  /!**
    * This icon is used by `user task`.
-   */
+   *!/
   paintPersonIcon(paintParameter: PaintParameter): void {
     // implementation adapted from https://www.flaticon.com/free-icon/employees_554768
     // use https://github.com/process-analytics/mxgraph-svg2shape to generate the xml stencil and port it to code
@@ -455,9 +466,9 @@ export default class IconPainter {
     canvas.fill();
   }
 
-  /**
+  /!**
    * This icon is used by `service tasks`.
-   */
+   *!/
   paintGearIcon(paintParameter: PaintParameter): void {
     // this implementation is adapted from the draw.io BPMN 'Service Task' stencil
     // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L898
@@ -567,9 +578,9 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  /**
+  /!**
    * This icon is used to display the `expand marker` on `activities`.
-   */
+   *!/
   paintExpandIcon(paintParameter: PaintParameter): void {
     const originalIconSize = { width: 16, height: 16 };
     const canvas = this.newBpmnCanvas(paintParameter, originalIconSize);
@@ -592,9 +603,9 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  /**
+  /!**
    * This icon is used to display the `loop marker` on `activities`.
-   */
+   *!/
   paintLoopIcon(paintParameter: PaintParameter): void {
     // this implementation is adapted from the draw.io BPMN 'Loop'
     // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L543
@@ -617,9 +628,9 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  /**
+  /!**
    * This icon is used to display the `sequential multi-instance marker` on `activities`.
-   */
+   *!/
   paintSequentialMultiInstanceIcon(paintParameter: PaintParameter): void {
     const originalIconSize = { width: 16, height: 16 };
     const canvas = this.newBpmnCanvas(paintParameter, originalIconSize);
@@ -636,9 +647,9 @@ export default class IconPainter {
     canvas.fill();
   }
 
-  /**
+  /!**
    * This icon is used to display the `parallel multi-instance marker` on `activities`.
-   */
+   *!/
   paintParallelMultiInstanceIcon(paintParameter: PaintParameter): void {
     const originalIconSize = { width: 16, height: 16 };
     const canvas = this.newBpmnCanvas(paintParameter, originalIconSize);
@@ -656,9 +667,9 @@ export default class IconPainter {
     canvas.fill();
   }
 
-  /**
+  /!**
    * This icon is used by `link event`.
-   */
+   *!/
   paintRightArrowIcon(paintParameter: PaintParameter): void {
     // this implementation is adapted from https://www.flaticon.com/free-icon/right-arrow_222330
     const canvas = this.newBpmnCanvas(paintParameter, { width: 512, height: 415.23 });
@@ -677,9 +688,9 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  /**
+  /!**
    * This icon is used by `error event`.
-   */
+   *!/
   paintErrorIcon(paintParameter: PaintParameter): void {
     const canvas = this.newBpmnCanvas(paintParameter, { width: 72.44, height: 71.82 });
 
@@ -695,9 +706,9 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  /**
+  /!**
    * This icon is used by `manual task`.
-   */
+   *!/
   paintHandIcon(paintParameter: PaintParameter): void {
     // this implementation is adapted from the noun project 'hand' icon
     // https://thenounproject.com/term/hand/7660/
@@ -733,9 +744,9 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  /**
+  /!**
    * This icon is used by `script task`.
-   */
+   *!/
   paintScriptIcon(paintParameter: PaintParameter): void {
     // this implementation is adapted from the noun project 'script' icon
     // https://thenounproject.com/term/script/2331578/
@@ -813,9 +824,9 @@ export default class IconPainter {
     canvas.fill();
   }
 
-  /**
+  /!**
    * This icon is used by `business rule task`.
-   */
+   *!/
   paintTableIcon(paintParameter: PaintParameter): void {
     const canvas = this.newBpmnCanvas(paintParameter, { width: 640, height: 640 });
 
@@ -861,9 +872,9 @@ export default class IconPainter {
     canvas.fillAndStroke();
   }
 
-  /**
+  /!**
    * This icon is used by `event-based gateway`.
-   */
+   *!/
   paintPentagon(paintParameter: PaintParameter): void {
     const canvas = this.newBpmnCanvas(paintParameter, { width: 16, height: 16 });
 
@@ -890,3 +901,4 @@ export class IconPainterProvider {
     this.instance = painter;
   }
 }
+*/

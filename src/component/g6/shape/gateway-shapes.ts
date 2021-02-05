@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+/*
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import { mxgraph } from '../initializer';
@@ -39,9 +39,9 @@ abstract class GatewayShape extends mxgraph.mxRhombus {
   }
 }
 
-/**
+/!**
  * @internal
- */
+ *!/
 export class ExclusiveGatewayShape extends GatewayShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
@@ -56,9 +56,9 @@ export class ExclusiveGatewayShape extends GatewayShape {
   }
 }
 
-/**
+/!**
  * @internal
- */
+ *!/
 export class ParallelGatewayShape extends GatewayShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
@@ -73,9 +73,9 @@ export class ParallelGatewayShape extends GatewayShape {
   }
 }
 
-/**
+/!**
  * @internal
- */
+ *!/
 export class InclusiveGatewayShape extends GatewayShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
@@ -90,9 +90,9 @@ export class InclusiveGatewayShape extends GatewayShape {
   }
 }
 
-/**
+!/**
  * @internal
- */
+ *!/
 export class EventBasedGatewayShape extends GatewayShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
@@ -125,3 +125,4 @@ export class EventBasedGatewayShape extends GatewayShape {
     }
   }
 }
+*/

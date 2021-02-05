@@ -15,10 +15,10 @@
  */
 import { Overlay, OverlayFont, OverlayPosition, OverlayFill, OverlayStroke } from '../../registry';
 import { StyleDefault } from '../StyleUtils';
-import { MxGraphCustomOverlayOptions, MxGraphCustomOverlayPosition, MxGraphCustomOverlayStyle } from './custom-overlay';
+import { G6CustomOverlayOptions, G6CustomOverlayPosition, G6CustomOverlayStyle } from './custom-overlay';
 
 export class OverlayConverter {
-  private overlayPositions: Map<OverlayPosition, MxGraphCustomOverlayPosition> = new Map([
+  private overlayPositions: Map<OverlayPosition, G6CustomOverlayPosition> = new Map([
     // Edge
     ['start', { horizontalAlign: 'left', verticalAlign: 'top' }],
     ['middle', { horizontalAlign: 'center', verticalAlign: 'top' }],
@@ -40,11 +40,11 @@ export class OverlayConverter {
     return { position, style };
   }
 
-  private convertPosition(overlay: Overlay): MxGraphCustomOverlayPosition {
+  private convertPosition(overlay: Overlay): G6CustomOverlayPosition {
     return this.overlayPositions.get(overlay.position);
   }
 
-  private static convertStyle(overlay: Overlay): MxGraphCustomOverlayStyle {
+  private static convertStyle(overlay: Overlay): G6CustomOverlayStyle {
     // recompute the style at each call to ensure we consider default changes that could occur after lib initialization
     const defaultStyle = {
       fill: { color: StyleDefault.DEFAULT_OVERLAY_FILL_COLOR.valueOf(), opacity: StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY.valueOf() },

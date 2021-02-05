@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+/*
 import { ShapeBpmnEventKind } from '../../../model/bpmn/internal/shape';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
@@ -121,18 +121,18 @@ abstract class EventShape extends mxgraph.mxEllipse {
   }
 }
 
-/**
+/!**
  * @internal
- */
+ *!/
 export class StartEventShape extends EventShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 }
 
-/**
+/!**
  * @internal
- */
+ *!/
 export class EndEventShape extends EventShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
@@ -157,18 +157,18 @@ abstract class IntermediateEventShape extends EventShape {
   }
 }
 
-/**
+/!**
  * @internal
- */
+ *!/
 export class CatchIntermediateEventShape extends IntermediateEventShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 }
 
-/**
+/!**
  * @internal
- */
+ *!/
 export class ThrowIntermediateEventShape extends IntermediateEventShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -176,11 +176,12 @@ export class ThrowIntermediateEventShape extends IntermediateEventShape {
   }
 }
 
-/**
+/!**
  * @internal
- */
+ *!/
 export class BoundaryEventShape extends IntermediateEventShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 }
+*/
