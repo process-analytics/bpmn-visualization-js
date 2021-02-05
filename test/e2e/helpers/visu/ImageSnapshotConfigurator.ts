@@ -26,8 +26,8 @@ export interface ImageSnapshotThresholdConfig {
 
 const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
   diffDirection: 'vertical',
-  // useful on CI (no need to retrieve the diff image, copy/paste image content from logs)
-  dumpDiffToConsole: true,
+  // locally and on CI, see diff images folder directly
+  dumpDiffToConsole: false,
   // use SSIM to limit false positive
   // https://github.com/americanexpress/jest-image-snapshot#recommendations-when-using-ssim-comparison
   comparisonMethod: 'ssim',
@@ -47,9 +47,9 @@ export class ImageSnapshotConfigurator {
    */
   // minimal threshold to make tests for diagram renders pass on local
   // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
-  constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>, private customDirName: string, readonly defaultFailureThreshold = 0.000004) {
-    this.defaultCustomDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), customDirName);
-    this.defaultCustomSnapshotsDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), customDirName);
+  constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>, snapshotsSubDirName: string, readonly defaultFailureThreshold = 0.000004) {
+    this.defaultCustomDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), snapshotsSubDirName);
+    this.defaultCustomSnapshotsDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), snapshotsSubDirName);
   }
 
   getConfig(param: string | { fileName: string }): MatchImageSnapshotOptions {
@@ -85,6 +85,8 @@ export class ImageSnapshotConfigurator {
   }
 
   static getDiffDir(): string {
-    return join(ImageSnapshotConfigurator.getSnapshotsDir(), '__diff_output__');
+    const testDirName = dirname(expect.getState().testPath);
+    // directory is relative to $ROOT/test/e2e
+    return join(testDirName, '../../build/test-report/e2e/__diff_output__');
   }
 }
