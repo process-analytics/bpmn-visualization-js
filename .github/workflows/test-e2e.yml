@@ -71,7 +71,7 @@ jobs:
         env:
           PUPPETEER_PRODUCT: firefox
           HEADLESS: ${{ matrix.os.headless }}
-        run: npm run test:e2e ${{ matrix.os.coverage }}
+        run: npm run test:e2e
       - name: Upload e2e test results
         if: ${{ failure() && steps.test_e2e.outcome == 'failure' }}
         uses: actions/upload-artifact@v2
