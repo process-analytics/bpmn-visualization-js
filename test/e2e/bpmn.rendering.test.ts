@@ -108,27 +108,27 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
       {
         linux: 0.0057, // 0.5659391676214987%
         macos: 0.0066, // 0.6594568058992278%
-        // TODO issue here
+        // TODO possible rendering issue so high threshold value
         windows: 0.0138, // 1.3758143022190916%
       },
     ],
     [
       'labels.01.general',
       {
-        // TODO we have an issue here, a break line is added in a sequence flow label
+        // TODO possible rendering issue so high threshold value
         linux: 0.0302, // 3.015066046429382%
         macos: 0.0315, // 3.1499673414102203%
-        // TODO very big issue here!
+        // very high threshold
         windows: 0.1358, // 13.577390503131248%
       },
     ],
     [
       'labels.02.position.and.line.breaks',
       {
-        // TODO issue here
+        // TODO possible rendering issue so high threshold value
         linux: 0.0611, // 6.103097407124536%
         macos: 0.0664, // 6.638739310743825%
-        // TODO very big issue here!
+        // very high threshold
         windows: 0.1521, // 15.20945839043877%
       },
     ],
@@ -137,14 +137,14 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
       {
         linux: 0.004, // 0.39649363179047326%
         macos: 0.0083, // 0.8248769578137805%
-        // TODO issue here
+        // TODO possible rendering issue so high threshold value
         windows: 0.0249, // 2.4808623720247835%
       },
     ],
     [
       'labels.04.fonts',
       {
-        // TODO issue here
+        // TODO possible rendering issue so high threshold value
         linux: 0.0146, // 1.453465508401064%
         macos: 0.0091, // 0.904210646859438%
         windows: 0.0173, // 1.726307512847236%
