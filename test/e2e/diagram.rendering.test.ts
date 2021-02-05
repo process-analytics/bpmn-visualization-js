@@ -16,9 +16,9 @@
 import { FitType } from '../../src/component/options';
 import { join } from 'path';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
-import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
+import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/ImageSnapshotConfigurator';
 import { PageTester } from './helpers/visu/PageTester';
-import { getBpmnDiagramNames, getTestedBrowserFamily } from './helpers/test-utils';
+import { getBpmnDiagramNames } from './helpers/test-utils';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   getConfig(param: {
@@ -56,78 +56,59 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
 
 const bpmnDiagramNames = getBpmnDiagramNames('diagram');
 
-function getChromiumImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThresholdConfig> {
-  // if no dedicated information, set minimal threshold to make test pass on Github Workflow
-  // linux threshold are set for Ubuntu
-  return new Map<string, ImageSnapshotThresholdConfig>([
-    [
-      'with.outside.labels',
-      {
-        linux: 0.0025, // 0.21788401867753882%
-        windows: 0.002, // 0.19527172107433044%
-      },
-    ],
-  ]);
-}
-
-function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThresholdConfig> {
-  return new Map<string, ImageSnapshotThresholdConfig>([
-    [
-      'horizontal',
-      {
-        // max is 0.013531740287897609%
-        linux: 0.00014,
-        macos: 0.00014,
-        windows: 0.00014,
-      },
-    ],
-    [
-      'vertical',
-      {
-        // max is 0.027530972437983525%
-        linux: 0.00028,
-        macos: 0.00028,
-        windows: 0.00028,
-      },
-    ],
-    [
-      'with.outside.labels',
-      {
-        // TODO possible rendering issue so high threshold value
-        linux: 0.011, // 1.0906974728819852%
-        macos: 0.009, // 0.888760314347159%
-        // TODO possible rendering issue so high threshold value
-        windows: 0.03801, // 3.800922249553762%
-      },
-    ],
-  ]);
-}
-
-// TODO duplicate logic with what we have in bpmn.rendering.test.ts
-function getImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThresholdConfig> {
-  switch (getTestedBrowserFamily()) {
-    case 'chromium':
-      return getChromiumImageSnapshotThresholdConfig();
-    case 'firefox':
-      return getFirefoxImageSnapshotThresholdConfig();
-    default:
-      return new Map<string, ImageSnapshotThresholdConfig>();
+class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
+  getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    // if no dedicated information, set minimal threshold to make test pass on Github Workflow
+    // linux threshold are set for Ubuntu
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'with.outside.labels',
+        {
+          linux: 0.0025, // 0.21788401867753882%
+          windows: 0.002, // 0.19527172107433044%
+        },
+      ],
+    ]);
   }
-}
 
-// TODO duplicate logic with what we have in bpmn.rendering.test.ts
-function getDefaultFailureThreshold(): number | undefined {
-  switch (getTestedBrowserFamily()) {
-    case 'chromium':
-    case 'firefox':
-      return 0.00006; // all OS 0.005379276499073438%
-    default:
-      return 0;
+  getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'horizontal',
+        {
+          // max is 0.013531740287897609%
+          linux: 0.00014,
+          macos: 0.00014,
+          windows: 0.00014,
+        },
+      ],
+      [
+        'vertical',
+        {
+          // max is 0.027530972437983525%
+          linux: 0.00028,
+          macos: 0.00028,
+          windows: 0.00028,
+        },
+      ],
+      [
+        'with.outside.labels',
+        {
+          // TODO possible rendering issue so high threshold value
+          linux: 0.011, // 1.0906974728819852%
+          macos: 0.009, // 0.888760314347159%
+          // TODO possible rendering issue so high threshold value
+          windows: 0.03801, // 3.800922249553762%
+        },
+      ],
+    ]);
   }
 }
 
 describe('no diagram visual regression', () => {
-  const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(getImageSnapshotThresholdConfig(), 'fit', getDefaultFailureThreshold());
+  const defaultFailureThreshold = 0.00006; // all OS 0.005379276499073438%
+  const imageSnapshotThresholds = new ImageSnapshotThresholds(defaultFailureThreshold, defaultFailureThreshold);
+  const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'fit', imageSnapshotThresholds.getDefault());
 
   const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
 
