@@ -91,10 +91,10 @@ function getFirefoxImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThre
     [
       'with.outside.labels',
       {
-        // TODO too large threshold
+        // TODO possible rendering issue so high threshold value
         linux: 0.011, // 1.0906974728819852% or 0.9832706118477974% (fit center)
         macos: 0.009, // 0.003856617605635382% or 0.004022454104279927% or 0.6845638774189866% (fit center) or 0.888760314347159%
-        // TODO issue here
+        // TODO possible rendering issue so high threshold value
         windows: 0.03801, // 1.0555113297888274% / 1.988005296848172% / 3.726360119703187% / 3.800922249553762%
       },
     ],
@@ -122,6 +122,7 @@ function getDefaultFailureThreshold(): number | undefined {
         case 'linux':
           return 0.00006;
         case 'macos':
+        case 'windows':
         default:
           return undefined;
       }
