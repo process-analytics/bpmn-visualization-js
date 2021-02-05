@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
 import { StyleDefault } from '../StyleUtils';
 import { mxgraph } from '../initializer';
 import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph'; // for types
@@ -34,3 +35,4 @@ export class TextAnnotationShape extends mxgraph.mxRectangleShape {
     c.fillAndStroke();
   }
 }
+*/

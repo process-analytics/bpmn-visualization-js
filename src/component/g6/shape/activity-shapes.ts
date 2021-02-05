@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render';
 import { ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal/shape';
@@ -244,3 +245,4 @@ export class BusinessRuleTaskShape extends BaseTaskShape {
     });
   }
 }
+*/

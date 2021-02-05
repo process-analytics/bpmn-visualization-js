@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
 import { ShapeBpmnEventKind } from '../../../model/bpmn/internal/shape';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
@@ -168,3 +169,4 @@ export class BoundaryEventShape extends IntermediateEventShape {
     super(bounds, fill, stroke, strokewidth);
   }
 }
+*/

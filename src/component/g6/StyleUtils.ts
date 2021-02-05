@@ -15,7 +15,6 @@
  */
 import { ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal/shape';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
-import { mxgraph } from './initializer';
 
 export enum MarkerIdentifier {
   ARROW_DASH = 'bpmn.dash',
@@ -57,7 +56,7 @@ export enum StyleIdentifier {
 
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
 export default class StyleUtils {
-  public static getFillColor(style: any): string {
+  /* public static getFillColor(style: any): string {
     return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
   }
 
@@ -113,6 +112,6 @@ export default class StyleUtils {
     return (
       mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel
     );
-  }
+  }*/
 }
 /* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */

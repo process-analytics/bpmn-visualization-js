@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import { mxgraph } from '../initializer';
@@ -112,3 +113,4 @@ export class EventBasedGatewayShape extends GatewayShape {
     }
   }
 }
+*/

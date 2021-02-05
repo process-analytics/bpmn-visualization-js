@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
 import { MarkerIdentifier } from '../StyleUtils';
 import { mxgraph } from '../initializer';
 import { mxAbstractCanvas2D, mxCell, mxPoint, mxShape } from 'mxgraph'; // for types
@@ -50,3 +51,4 @@ export default class MarkerConfigurator {
     mxgraph.mxMarker.addMarker(MarkerIdentifier.ARROW_DASH, createMarker);
   }
 }
+*/

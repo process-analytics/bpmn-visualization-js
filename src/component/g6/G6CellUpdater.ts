@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnMxGraph } from './BpmnMxGraph';
-import { StyleIdentifier } from './StyleUtils';
+import { Graph } from '@antv/g6';
 
-export default class MxGraphCellUpdater {
-  constructor(readonly graph: BpmnMxGraph) {}
+export default class G6CellUpdater {
+  constructor(readonly graph: Graph) {}
 
   public updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
-    const mxCell = this.graph.getModel().getCell(bpmnElementId);
+    /*    const mxCell = this.graph.getModel().getCell(bpmnElementId);
     if (!mxCell) {
       return;
     }
@@ -28,6 +27,6 @@ export default class MxGraphCellUpdater {
     const state = view.getState(mxCell);
     state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES] = cssClasses;
     state.shape.apply(state);
-    state.shape.redraw();
+    state.shape.redraw();*/
   }
 }
