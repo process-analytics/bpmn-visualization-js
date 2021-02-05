@@ -18,7 +18,7 @@ import { join } from 'path';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
 import { PageTester } from './helpers/visu/PageTester';
-import { getBpmnDiagramNames, getSimplePlatformName, getTestedBrowserFamily } from './helpers/test-utils';
+import { getBpmnDiagramNames, getTestedBrowserFamily } from './helpers/test-utils';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   getConfig(param: {

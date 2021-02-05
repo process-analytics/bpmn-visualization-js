@@ -15,7 +15,7 @@
  */
 import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { join } from 'path';
-import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
+import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
 import { PageTester } from './helpers/visu/PageTester';
 
 const delayToWaitUntilZoomIsDone = 100;
@@ -45,6 +45,7 @@ describe('diagram navigation', () => {
       ],
     ]),
     'navigation',
+    defaultChromiumFailureThreshold,
   );
 
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter

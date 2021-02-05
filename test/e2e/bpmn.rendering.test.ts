@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
+import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
 import { PageTester } from './helpers/visu/PageTester';
-import { getBpmnDiagramNames, getSimplePlatformName, getTestedBrowserFamily } from './helpers/test-utils';
+import { getBpmnDiagramNames, getTestedBrowserFamily } from './helpers/test-utils';
 
 function getChromiumImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThresholdConfig> {
   // if no dedicated information, set minimal threshold to make test pass on Github Workflow
@@ -221,14 +221,14 @@ function getImageSnapshotThresholdConfig(): Map<string, ImageSnapshotThresholdCo
   }
 }
 
-function getDefaultFailureThreshold(): number | undefined {
+function getDefaultFailureThreshold(): number {
   switch (getTestedBrowserFamily()) {
     case 'firefox':
       return 0.00011;
-    // for chromium, use the default set in ImageSnapshotConfigurator
     case 'chromium':
+      return defaultChromiumFailureThreshold;
     default:
-      return undefined;
+      return 0;
   }
 }
 
