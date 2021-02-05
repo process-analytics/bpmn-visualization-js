@@ -94,6 +94,8 @@ export class ImageSnapshotConfigurator {
 
 // TODO rename file
 export abstract class MultiBrowserImageSnapshotThresholds {
+  constructor(private chromiumDefault: number, private firefoxDefault: number) {}
+
   abstract getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig>;
 
   abstract getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig>;
@@ -110,5 +112,14 @@ export abstract class MultiBrowserImageSnapshotThresholds {
   }
 
   // TODO this way of doing still introduce duplications
-  abstract getDefault(): number;
+  getDefault(): number {
+    switch (getTestedBrowserFamily()) {
+      case 'chromium':
+        return this.chromiumDefault;
+      case 'firefox':
+        return this.firefoxDefault;
+      default:
+        return 0;
+    }
+  }
 }

@@ -20,7 +20,7 @@ import {
   MultiBrowserImageSnapshotThresholds,
 } from './helpers/visu/ImageSnapshotConfigurator';
 import { PageTester } from './helpers/visu/PageTester';
-import { getBpmnDiagramNames, getTestedBrowserFamily } from './helpers/test-utils';
+import { getBpmnDiagramNames } from './helpers/test-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -105,17 +105,6 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
     ]);
-  }
-
-  getDefault(): number {
-    switch (getTestedBrowserFamily()) {
-      case 'firefox':
-        return 0.00011;
-      case 'chromium':
-        return defaultChromiumFailureThreshold;
-      default:
-        return 0;
-    }
   }
 
   getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -229,7 +218,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 }
 
 describe('no BPMN elements visual regression', () => {
-  const imageSnapshotThresholds = new ImageSnapshotThresholds();
+  const imageSnapshotThresholds = new ImageSnapshotThresholds(defaultChromiumFailureThreshold, 0.00011);
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'bpmn', imageSnapshotThresholds.getDefault());
 
   const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' });
