@@ -107,7 +107,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
 describe('no diagram visual regression', () => {
   const defaultFailureThreshold = 0.00006; // all OS 0.005379276499073438%
-  const imageSnapshotThresholds = new ImageSnapshotThresholds(defaultFailureThreshold, defaultFailureThreshold);
+  const imageSnapshotThresholds = new ImageSnapshotThresholds({ chromium: defaultFailureThreshold, firefox: defaultFailureThreshold });
   const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'fit', imageSnapshotThresholds.getDefault());
 
   const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });

@@ -218,7 +218,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 }
 
 describe('no BPMN elements visual regression', () => {
-  const imageSnapshotThresholds = new ImageSnapshotThresholds(defaultChromiumFailureThreshold, 0.00011);
+  const imageSnapshotThresholds = new ImageSnapshotThresholds({ chromium: defaultChromiumFailureThreshold, firefox: 0.00011 });
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'bpmn', imageSnapshotThresholds.getDefault());
 
   const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' });

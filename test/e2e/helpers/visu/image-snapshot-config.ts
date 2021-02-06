@@ -92,8 +92,19 @@ export class ImageSnapshotConfigurator {
   }
 }
 
+interface ThresholdDefaults {
+  chromium: number;
+  firefox: number;
+}
+
 export abstract class MultiBrowserImageSnapshotThresholds {
-  constructor(private chromiumDefault: number, private firefoxDefault: number) {}
+  private readonly chromiumDefault: number;
+  private readonly firefoxDefault: number;
+
+  constructor(thresholdDefaults: ThresholdDefaults) {
+    this.chromiumDefault = thresholdDefaults.chromium;
+    this.firefoxDefault = thresholdDefaults.firefox;
+  }
 
   protected abstract getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig>;
 
