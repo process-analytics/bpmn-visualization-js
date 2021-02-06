@@ -57,6 +57,10 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
 const bpmnDiagramNames = getBpmnDiagramNames('diagram');
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
+  constructor() {
+    const defaultFailureThreshold = 0.00006; // all OS 0.005379276499073438%
+    super({ chromium: defaultFailureThreshold, firefox: defaultFailureThreshold });
+  }
   getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     // if no dedicated information, set minimal threshold to make test pass on Github Workflow
     // linux threshold are set for Ubuntu
@@ -106,8 +110,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 }
 
 describe('no diagram visual regression', () => {
-  const defaultFailureThreshold = 0.00006; // all OS 0.005379276499073438%
-  const imageSnapshotThresholds = new ImageSnapshotThresholds({ chromium: defaultFailureThreshold, firefox: defaultFailureThreshold });
+  const imageSnapshotThresholds = new ImageSnapshotThresholds();
   const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'fit', imageSnapshotThresholds.getDefault());
 
   const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });

@@ -23,6 +23,10 @@ import { PageTester } from './helpers/visu/PageTester';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
+  constructor() {
+    super({ chromium: defaultChromiumFailureThreshold, firefox: 0.00011 });
+  }
+
   getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     // if no dedicated information, set minimal threshold to make test pass on Github Workflow
     // linux threshold are set for Ubuntu
@@ -218,7 +222,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 }
 
 describe('no BPMN elements visual regression', () => {
-  const imageSnapshotThresholds = new ImageSnapshotThresholds({ chromium: defaultChromiumFailureThreshold, firefox: 0.00011 });
+  const imageSnapshotThresholds = new ImageSnapshotThresholds();
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'bpmn', imageSnapshotThresholds.getDefault());
 
   const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' });
