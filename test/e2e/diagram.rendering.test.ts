@@ -121,7 +121,7 @@ describe('no diagram visual regression', () => {
       it('load', async () => {
         await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, { fit: { type: onLoadFitType } });
 
-        const image = await page.screenshot({ fullPage: true });
+        const image = await page.screenshot({ fullPage: true, captureBeyondViewport: true });
 
         const config = imageSnapshotConfigurator.getConfig({
           fileName: bpmnDiagramName,
@@ -138,7 +138,7 @@ describe('no diagram visual regression', () => {
         // To unselect the button
         await page.mouse.click(0, 0);
 
-        const image = await page.screenshot({ fullPage: true });
+        const image = await page.screenshot({ fullPage: true, captureBeyondViewport: true });
 
         const config = imageSnapshotConfigurator.getConfig({
           fileName: bpmnDiagramName,
@@ -156,7 +156,7 @@ describe('no diagram visual regression', () => {
         it.each([-100, 0, 20, 50, null])('load with margin %s', async (margin: number) => {
           await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, { fit: { type: onLoadFitType, margin: margin } });
 
-          const image = await page.screenshot({ fullPage: true });
+          const image = await page.screenshot({ fullPage: true, captureBeyondViewport: true });
 
           const config = imageSnapshotConfigurator.getConfig({
             fileName: bpmnDiagramName,

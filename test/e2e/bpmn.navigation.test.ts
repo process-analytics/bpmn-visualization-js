@@ -68,7 +68,7 @@ describe('diagram navigation', () => {
     await page.mouse.move(containerCenterX + 150, containerCenterY + 40);
     await page.mouse.up();
 
-    const image = await page.screenshot({ fullPage: true });
+    const image = await page.screenshot({ fullPage: true, captureBeyondViewport: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
@@ -89,7 +89,7 @@ describe('diagram navigation', () => {
     await page.mouse.move(containerCenterX + 200, containerCenterY);
     await zoom(1, deltaX);
 
-    const image = await page.screenshot({ fullPage: true });
+    const image = await page.screenshot({ fullPage: true, captureBeyondViewport: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
@@ -104,7 +104,7 @@ describe('diagram navigation', () => {
     await zoom(xTimes, deltaX);
     await zoom(xTimes, -deltaX);
 
-    const image = await page.screenshot({ fullPage: true });
+    const image = await page.screenshot({ fullPage: true, captureBeyondViewport: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,

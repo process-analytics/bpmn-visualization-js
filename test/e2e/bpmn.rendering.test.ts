@@ -235,7 +235,7 @@ describe('no BPMN elements visual regression', () => {
   it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-    const image = await page.screenshot({ fullPage: true });
+    const image = await page.screenshot({ fullPage: true, captureBeyondViewport: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot(config);
   });
