@@ -1,0 +1,79 @@
+name: Run End-to-End Tests
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '.github/workflows/build.yml'
+      - '.github/workflows/codeql-analysis.yml'
+      - '.github/workflows/fill-gh-draft-release.yml'
+      - '.github/workflows/generate-documentation.yml'
+      - '.github/workflows/generate-documentation-api.yml'
+      - '.github/workflows/release.yml'
+      - '.github/workflows/upload-demo-archive.yml'
+      - '.gitignore'
+      - 'docs/**'
+      - '*.md'
+      - LICENSE
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - '.github/workflows/build.yml'
+      - '.github/workflows/codeql-analysis.yml'
+      - '.github/workflows/fill-gh-draft-release.yml'
+      - '.github/workflows/generate-documentation.yml'
+      - '.github/workflows/generate-documentation-api.yml'
+      - '.github/workflows/release.yml'
+      - '.github/workflows/upload-demo-archive.yml'
+      - '.gitignore'
+      - 'docs/**'
+      - '*.md'
+      - LICENSE
+
+jobs:
+  test_e2e:
+    runs-on: ${{ matrix.os.name }}
+    strategy:
+      # we want to run the full build on all os: don't cancel running jobs even if one fails
+      fail-fast: false
+      matrix:
+        os:
+          - { name: ubuntu-20.04 }
+          - { name: macos-10.15 }
+          # TODO tests hang on Firefox when driven by Puppeteer
+          # - { name: windows-2019 }
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Get npm cache directory
+        id: npm-cache
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - name: Setup GitHub cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install dependencies
+        env:
+          PUPPETEER_PRODUCT: firefox
+        run: npm ci
+      - name: Test Application End to End
+        id: 'test_e2e'
+        env:
+          PUPPETEER_PRODUCT: firefox
+        run: npm run test:e2e
+      - name: Upload e2e test results
+        if: ${{ failure() && steps.test_e2e.outcome == 'failure' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: e2e-firefox-test-results-${{matrix.os.name}}-${{github.sha}}
+          path: build/test-report/e2e

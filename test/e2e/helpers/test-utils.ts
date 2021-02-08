@@ -19,7 +19,9 @@ import { join } from 'path';
 
 export const log = debugLogger('test');
 
-export function getSimplePlatformName(): string {
+export type OsName = 'linux' | 'macos' | 'windows';
+
+export function getSimplePlatformName(): OsName {
   const platform = process.platform;
   log(`This platform is ${platform}`);
 
@@ -30,6 +32,12 @@ export function getSimplePlatformName(): string {
   }
   // we don't support other platform than linux, so hardcode it
   return 'linux';
+}
+
+export type BrowserFamily = 'chromium' | 'firefox';
+
+export function getTestedBrowserFamily(): BrowserFamily {
+  return process.env.PUPPETEER_PRODUCT === 'firefox' ? 'firefox' : 'chromium';
 }
 
 export function delay(time: number): Promise<unknown> {
