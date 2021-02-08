@@ -20,6 +20,7 @@ import BpmnVisualization from './component/BpmnVisualization';
 import IconPainter from './component/mxgraph/shape/render/IconPainter';
 import StyleConfigurator from './component/mxgraph/config/StyleConfigurator';
 import ShapeUtil from './model/bpmn/internal/shape/ShapeUtil';
+import { mxgraph } from './component/mxgraph/initializer';
 
 export { BpmnVisualization };
 export { IconPainter };
@@ -38,3 +39,5 @@ export * from './component/registry';
 // export * as bpmnVisualizationDemo from './demo';
 export * from './demo';
 export * from './model/bpmn/internal/shape';
+
+export const mxConstants = mxgraph.mxConstants;
