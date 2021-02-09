@@ -42,7 +42,7 @@ Tests change frequency:
 ### End-to-end tests
 
 We use the [puppeteer library](https://github.com/puppeteer/puppeteer/) with the [puppeteer jest integration](https://jestjs.io/docs/en/puppeteer) to handle
-tests requiring a web browser (Chromium only for now).
+tests requiring a web browser. Chromium and Firefox can be used when running tests.
 
 We have the following types of end-to-end tests:
 - `generated svg`:
@@ -211,6 +211,29 @@ Html reports are generated for test execution and coverage in
 - `build/test-report/unit` for unit tests
 - `build/test-report/integration` for integration tests
 - `build/test-report/e2e` for end-to-end tests
+
+
+### Web Browser choice for end-to-end tests
+
+By default, tests use Chromium and Chromium is installed by Puppeteer when running `npm install`.
+
+To use Firefox instead, use a `PUPPETEER_PRODUCT` environment variable: first install Firefox for Puppeteer, then configure
+Puppeteer to use Firefox:
+- on Linux or macOS
+```bash
+# install Firefox for Puppeteer
+PUPPETEER_PRODUCT=firefox npm install puppeteer
+# Run tests with Firefox
+PUPPETEER_PRODUCT=firefox npm run test:e2e
+```
+- on Windows using `cmd`  
+  - ⚠️ for some reasons, tests on Windows are working only in mode `headless: false` (update test/e2e/jest-puppeteer.config.js
+    or use extra environment variable, see below)
+  - ⚠️ there is no space between `firefox` and `&&`
+```batch
+set PUPPETEER_PRODUCT=firefox&& npm install puppeteer
+set PUPPETEER_PRODUCT=firefox&& npm run test:e2e
+```
 
 
 ### Debugging end-to-end, performance and bundles tests
