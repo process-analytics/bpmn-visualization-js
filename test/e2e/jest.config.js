@@ -16,7 +16,7 @@
 module.exports = {
   rootDir: '../..',
   roots: ['./test/e2e', './src'],
-  preset: 'jest-puppeteer',
+  preset: 'jest-playwright-preset',
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
   testTimeout: 200000,
@@ -29,7 +29,8 @@ module.exports = {
   coverageDirectory: 'build/test-report/e2e',
   setupFiles: ['./test/e2e/config/copy.bpmn.diagram.ts'],
   // jest-image-snapshot configuration doesn't work with setupFiles, fix with setupFilesAfterEnv: see https://github.com/testing-library/jest-dom/issues/122#issuecomment-650520461
-  setupFilesAfterEnv: ['./test/e2e/config/jest.image.ts'],
+  // TODO Remove global.types.ts, and import globally like https://github.com/playwright-community/jest-playwright#usage-with-typescript
+  setupFilesAfterEnv: ['./test/e2e/config/global.types.ts', './test/e2e/config/jest.image.ts', 'expect-playwright'],
   reporters: [
     'default',
     [

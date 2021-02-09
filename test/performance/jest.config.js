@@ -16,7 +16,7 @@
 module.exports = {
   rootDir: '../..',
   roots: ['./test/performance', './src'],
-  preset: 'jest-puppeteer',
+  preset: 'jest-playwright-preset',
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
   testTimeout: 200000,
@@ -24,4 +24,5 @@ module.exports = {
     '^.+\\.ts?$': 'ts-jest',
   },
   setupFiles: ['./test/e2e/config/copy.bpmn.diagram.ts'],
+  setupFilesAfterEnv: ['expect-playwright'],
 };
