@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { delay } from './helpers/test-utils';
+import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { join } from 'path';
-import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/ImageSnapshotConfigurator';
+import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { PageTester } from './helpers/visu/PageTester';
 
 const delayToWaitUntilZoomIsDone = 100;
@@ -32,21 +32,20 @@ async function zoom(xTimes: number, deltaX: number): Promise<void> {
 
 describe('diagram navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
+    // if no dedicated information, set minimal threshold to make test pass on Github Workflow on Chromium
+    // linux threshold are set for Ubuntu
     new Map<string, ImageSnapshotThresholdConfig>([
       [
         'simple.2.start.events.1.task',
-        // minimal threshold to make test pass on Github Workflow
-        // ubuntu: Expected image to match or be a close match to snapshot but was 0.0009247488045871499% different from snapshot
-        // macOS: Expected image to match or be a close match to snapshot but was 0.0009247488045871499% different from snapshot
-        // windows: Expected image to match or be a close match to snapshot but was 0.0009247488045871499% different from snapshot
         {
-          linux: 0.0000095,
-          macos: 0.0000095,
-          windows: 0.0000095,
+          linux: 0.0000095, // 0.0009247488045871499%
+          macos: 0.0000095, // 0.0009247488045871499%
+          windows: 0.0000095, // 0.0009247488045871499%
         },
       ],
     ]),
     'navigation',
+    defaultChromiumFailureThreshold,
   );
 
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
@@ -76,6 +75,13 @@ describe('diagram navigation', () => {
       customSnapshotIdentifier: 'mouse.panning',
     });
   });
+
+  // TODO restore on Firefox when puppeteer will be able to manage such event
+  // Mouse type is not supported: mouseWheel dispatchMouseEvent@chrome://remote/content/domains/parent/Input.jsm:118:13
+  if (getTestedBrowserFamily() == 'firefox') {
+    console.warn('Skipping zoom tests because of `Mouse type is not supported: mouseWheel`');
+    return;
+  }
 
   it.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
     const deltaX = zoomMode === 'zoom in' ? -100 : 100;

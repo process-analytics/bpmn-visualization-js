@@ -15,12 +15,12 @@
  */
 import { dirname, join } from 'path';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
-import { getSimplePlatformName, log } from '../test-utils';
+import { getSimplePlatformName, getTestedBrowserFamily, log } from '../test-utils';
 
 export interface ImageSnapshotThresholdConfig {
-  linux: number;
-  macos: number;
-  windows: number;
+  linux?: number;
+  macos?: number;
+  windows?: number;
   [key: string]: number;
 }
 
@@ -34,20 +34,21 @@ const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
   failureThresholdType: 'percent',
 };
 
+/** Default threshold value is to make tests pass on macOS using Chromium (the GitHub workflow diff was 0.00031509446166699817%). */
+export const defaultChromiumFailureThreshold = 0.000004;
+
 export class ImageSnapshotConfigurator {
   protected readonly defaultCustomDiffDir: string;
   protected readonly defaultCustomSnapshotsDir: string;
   /**
-   * <b>About `thresholdConfig`</b>
+   * <b>About `thresholdConfig`</b> (configure threshold by bpmn files)
    *
-   * Configure threshold by bpmn files.When introducing a new test, please don't add threshold until you get failures when running
-   * on GitHub Workflow because of discrepancies depending of OS/machine (few pixels) and that are not visible by a human.
+   * When introducing a new test, please don't add threshold until you get failures when running
+   * on GitHub Workflow because of discrepancies depending of OS/machine and browser (few pixels) and that are not visible by a human.
    * This is generally only required for diagram containing labels. If you are not testing the labels (value, position, ...) as part of the use case you want to cover, remove labels
    * from the BPMN diagram to avoid such discrepancies.
    */
-  // minimal threshold to make tests for diagram renders pass on local
-  // macOS: Expected image to match or be a close match to snapshot but was 0.00031509446166699817% different from snapshot
-  constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>, snapshotsSubDirName: string, readonly defaultFailureThreshold = 0.000004) {
+  constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>, snapshotsSubDirName: string, readonly defaultFailureThreshold: number) {
     this.defaultCustomDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), snapshotsSubDirName);
     this.defaultCustomSnapshotsDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), snapshotsSubDirName);
   }
@@ -73,7 +74,7 @@ export class ImageSnapshotConfigurator {
       log(`Building dedicated image snapshot configuration for '${fileName}'`);
       const simplePlatformName = getSimplePlatformName();
       log(`Simple platform name: ${simplePlatformName}`);
-      failureThreshold = config[simplePlatformName];
+      failureThreshold = config[simplePlatformName] || failureThreshold;
     }
     log(`ImageSnapshot - using failureThreshold: ${failureThreshold}`);
 
@@ -88,5 +89,46 @@ export class ImageSnapshotConfigurator {
     const testDirName = dirname(expect.getState().testPath);
     // directory is relative to $ROOT/test/e2e
     return join(testDirName, '../../build/test-report/e2e/__diff_output__');
+  }
+}
+
+interface ThresholdDefaults {
+  chromium: number;
+  firefox: number;
+}
+
+export abstract class MultiBrowserImageSnapshotThresholds {
+  private readonly chromiumDefault: number;
+  private readonly firefoxDefault: number;
+
+  constructor(thresholdDefaults: ThresholdDefaults) {
+    this.chromiumDefault = thresholdDefaults.chromium;
+    this.firefoxDefault = thresholdDefaults.firefox;
+  }
+
+  protected abstract getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig>;
+
+  protected abstract getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig>;
+
+  getThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    switch (getTestedBrowserFamily()) {
+      case 'chromium':
+        return this.getChromiumThresholds();
+      case 'firefox':
+        return this.getFirefoxThresholds();
+      default:
+        return new Map<string, ImageSnapshotThresholdConfig>();
+    }
+  }
+
+  getDefault(): number {
+    switch (getTestedBrowserFamily()) {
+      case 'chromium':
+        return this.chromiumDefault;
+      case 'firefox':
+        return this.firefoxDefault;
+      default:
+        return 0;
+    }
   }
 }
