@@ -14,36 +14,40 @@
  * limitations under the License.
  */
 import { loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
-import { BpmnPuppeteer } from './helpers/visu/bpmn-puppeteer-utils';
+import { BpmnPlaywright } from './helpers/visu/bpmn-playwright-utils';
 
-let bpmnPuppeteer = new BpmnPuppeteer('bpmn-container', page);
+// TODO Import them globally in tsconfig when their bug on definition will fix, like https://github.com/playwright-community/jest-playwright#usage-with-typescript
+import 'jest-playwright-preset';
+import 'expect-playwright';
+
+let bpmnPlaywright = new BpmnPlaywright('bpmn-container', page);
 
 describe('demo page', () => {
   it('should display page title', async () => {
     await page.goto('http://localhost:10002');
-    await bpmnPuppeteer.expectPageTitle('BPMN Visualization Demo');
-    await bpmnPuppeteer.expectAvailableBpmnContainer();
+    await bpmnPlaywright.expectPageTitle('BPMN Visualization Demo');
+    await bpmnPlaywright.expectAvailableBpmnContainer();
   });
 
   it('should display diagram in page', async () => {
     await page.goto(`http://localhost:10002?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
 
-    await bpmnPuppeteer.expectEvent('StartEvent_1', 'Start Event 1');
-    await bpmnPuppeteer.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
-    await bpmnPuppeteer.expectTask('Activity_1', 'Task 1');
-    await bpmnPuppeteer.expectSequenceFlow('Flow_2');
-    await bpmnPuppeteer.expectEvent('EndEvent_1', 'End Event 1', false);
+    await bpmnPlaywright.expectEvent('StartEvent_1', 'Start Event 1');
+    await bpmnPlaywright.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
+    await bpmnPlaywright.expectTask('Activity_1', 'Task 1');
+    await bpmnPlaywright.expectSequenceFlow('Flow_2');
+    await bpmnPlaywright.expectEvent('EndEvent_1', 'End Event 1', false);
   });
 });
 
 describe('lib-integration page', () => {
   it('should display diagram in page', async () => {
-    bpmnPuppeteer = new BpmnPuppeteer('bpmn-container-custom', page);
+    bpmnPlaywright = new BpmnPlaywright('bpmn-container-custom', page);
 
     await page.goto(`http://localhost:10002/lib-integration.html?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-only.bpmn')}`);
-    await bpmnPuppeteer.expectPageTitle('BPMN Visualization Lib Integration');
-    await bpmnPuppeteer.expectAvailableBpmnContainer();
+    await bpmnPlaywright.expectPageTitle('BPMN Visualization Lib Integration');
+    await bpmnPlaywright.expectAvailableBpmnContainer();
 
-    await bpmnPuppeteer.expectEvent('StartEvent_1', 'Start Event Only');
+    await bpmnPlaywright.expectEvent('StartEvent_1', 'Start Event Only');
   });
 });

@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// TODO Import them globally in tsconfig when their bug on definition will fix, like https://github.com/playwright-community/jest-playwright#usage-with-typescript
+import 'jest-playwright-preset';
+import 'expect-playwright';
+
 import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { join } from 'path';
 import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';

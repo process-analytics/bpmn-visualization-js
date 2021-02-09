@@ -20,6 +20,10 @@ import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserIm
 import { PageTester } from './helpers/visu/PageTester';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 
+// TODO Import them globally in tsconfig when their bug on definition will fix, like https://github.com/playwright-community/jest-playwright#usage-with-typescript
+import 'jest-playwright-preset';
+import 'expect-playwright';
+
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   getConfig(param: {
     fileName: string;

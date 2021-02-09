@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import { FitType, LoadOptions } from '../../../../src/component/options';
-import { ElementHandle } from 'puppeteer';
 import { BpmnQuerySelectors } from '../../../../src/component/registry/query-selectors';
+import { ElementHandle } from 'playwright';
 
 export interface TargetedPage {
   /** the name of the page file without extension */
