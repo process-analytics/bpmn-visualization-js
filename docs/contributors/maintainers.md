@@ -39,8 +39,8 @@ of the `Done` column related to the milestone
 - If everything went well you can see new tag created
 
 #### NPM publish new version
-- Ensure you are on the last tag locally: `git checkout vX.Y.Z`
 - Pull the new version created by the release workflow: `git pull origin`
+- Ensure you are on the last tag locally: `git checkout vX.Y.Z`
 - Run `npm publish` to make the new version available to the community (you can pass --dry-run to validate the command prior publishing)
 
 
