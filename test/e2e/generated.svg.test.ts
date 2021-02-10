@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import 'jest-playwright-preset';
 import { loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
 import { BpmnPlaywright } from './helpers/visu/bpmn-playwright-utils';
-
-// TODO Import them globally in tsconfig when their bug on definition will fix, like https://github.com/playwright-community/jest-playwright#usage-with-typescript
-import 'jest-playwright-preset';
 
 let bpmnPlaywright = new BpmnPlaywright('bpmn-container', page);
 
