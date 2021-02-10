@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// assume a single browser is passed at a given time
+const browser = process.env.BROWSER || 'chromium';
+
 module.exports = {
   serverOptions: {
     command: `npm run start -- --config-server-port 10002`,
@@ -32,6 +36,8 @@ module.exports = {
       log: (name, severity, message) => console.log(`${name} ${message}`),
     },
     slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
+    // TODO review options, seems not working on webkit
+    // the following is for chromium
     args: ['--disable-infobars', '--no-sandbox', '--disable-setuid-sandbox'],
   },
   launchType: 'LAUNCH',
@@ -41,7 +47,6 @@ module.exports = {
       height: 600,
     },
   },
-  // TODO let configure the browsers to use
-  browsers: ['chromium'],
+  browsers: [browser],
   collectCoverage: process.env.COVERAGE === 'true',
 };

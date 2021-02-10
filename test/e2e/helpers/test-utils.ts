@@ -16,6 +16,7 @@
 import debugLogger from 'debug';
 import { findFiles } from '../../helpers/file-helper';
 import { join } from 'path';
+import 'jest-playwright-preset';
 
 export const log = debugLogger('test');
 
@@ -34,12 +35,10 @@ export function getSimplePlatformName(): OsName {
   return 'linux';
 }
 
-export type BrowserFamily = 'chromium' | 'firefox';
+export type BrowserFamily = 'chromium' | 'firefox' | 'webkit';
 
 export function getTestedBrowserFamily(): BrowserFamily {
-  const browserFamily = process.env.PUPPETEER_PRODUCT === 'firefox' ? 'firefox' : 'chromium';
-  log(`The browser family used for test is ${browserFamily}`);
-  return browserFamily;
+  return browserName;
 }
 
 export function delay(time: number): Promise<unknown> {

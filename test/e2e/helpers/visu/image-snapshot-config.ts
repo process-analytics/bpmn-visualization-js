@@ -111,7 +111,9 @@ export abstract class MultiBrowserImageSnapshotThresholds {
   protected abstract getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig>;
 
   getThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    switch (getTestedBrowserFamily()) {
+    const testedBrowserFamily = getTestedBrowserFamily();
+    log(`The browser family used for test is ${testedBrowserFamily}`);
+    switch (testedBrowserFamily) {
       case 'chromium':
         return this.getChromiumThresholds();
       case 'firefox':
