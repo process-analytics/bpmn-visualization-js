@@ -26,11 +26,50 @@ async function zoom(xTimes: number, deltaX: number): Promise<void> {
   await page.keyboard.down('Control');
 
   for (let i = 0; i < xTimes; i++) {
-    await page.mouse.wheel({ deltaX: deltaX });
+    // await page.mouse.wheel({ deltaX: deltaX });
+    await chromiumMouseWheel(deltaX);
     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
     await delay(delayToWaitUntilZoomIsDone);
   }
 }
+
+// WIP - workaround for https://github.com/microsoft/playwright/issues/1115
+// only works with chromium
+// taken from https://github.com/xtermjs/xterm.js/blob/23dba6aebd0d25180716ec45d106c6ac81d16153/test/api/MouseTracking.api.ts#L77
+async function chromiumMouseWheel(deltaX: number): Promise<void> {
+  // https://github.com/microsoft/playwright/blob/v1.8.0/src/server/input.ts#L171
+  const self = page.mouse as any;
+  return await self._raw._client.send('Input.dispatchMouseEvent', {
+    type: 'mouseWheel',
+    x: self._x,
+    y: self._y,
+    deltaX: deltaX,
+    deltaY: 0,
+    // deltaX: 0,
+    // deltaY: -10,
+  });
+}
+// async function wheelUp(deltaX: number): Promise<void> {
+//   const self = page.mouse as any;
+//   return await self._raw._client.send('Input.dispatchMouseEvent', {
+//     type: 'mouseWheel',
+//     x: self._x,
+//     y: self._y,
+//     deltaX: 0,
+//     deltaY: -10,
+//   });
+// }
+// async function wheelDown(deltaX: number): Promise<void> {
+//   const self = page.mouse as any;
+//   return await self._raw._client.send('Input.dispatchMouseEvent', {
+//     type: 'mouseWheel',
+//     x: self._x,
+//     y: self._y,
+//     deltaX: 0,
+//     deltaY: 10,
+//   });
+// }
+// END OF - WIP - workaround for https://github.com/microsoft/playwright/issues/1115
 
 describe('diagram navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
@@ -78,9 +117,10 @@ describe('diagram navigation', () => {
     });
   });
 
+  // TODO do something like xtermjs to skip test on non chromium browser: https://github.com/xtermjs/xterm.js/commit/7400b888df698d15864ab2c41ad0ed0262f812fb#diff-23460af115aa97331c36c0ce462cbc4dd8067c0ddbca1e9d3de560ebf44024ee
   // TODO restore on Firefox when puppeteer will be able to manage such event
   // Mouse type is not supported: mouseWheel dispatchMouseEvent@chrome://remote/content/domains/parent/Input.jsm:118:13
-  if (getTestedBrowserFamily() == 'firefox') {
+  if (getTestedBrowserFamily() !== 'chromium') {
     console.warn('Skipping zoom tests because of `Mouse type is not supported: mouseWheel`');
     return;
   }
