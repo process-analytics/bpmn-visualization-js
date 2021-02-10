@@ -71,7 +71,7 @@
     "test:integration:coverage": "npm run test:integration -- --coverage",
     "test:unit:watch": "npm run test:unit:coverage -- --watchAll",
     "test:e2e": "cross-env DEBUG=test JEST_IMAGE_SNAPSHOT_TRACK_OBSOLETE=1 JEST_PLAYWRIGHT_CONFIG=./test/e2e/jest-playwright.config.js jest --runInBand --detectOpenHandles --config=./test/e2e/jest.config.js",
-    "test:e2e:coverage": "COVERAGE=true npm run test:e2e -- --coverage",
+    "test:e2e:coverage": "cross-env COVERAGE=true npm run test:e2e -- --coverage",
     "test:perf": "cross-env JEST_PLAYWRIGHT_CONFIG=./test/performance/jest-playwright.config.js jest --runInBand --detectOpenHandles --config=./test/performance/jest.config.js",
     "test:bundles": "jest --runInBand --detectOpenHandles --config=./test/bundles/jest.config.js",
     "version-prepare": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for release\"",
