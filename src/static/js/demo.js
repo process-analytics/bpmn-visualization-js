@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions, addOverlay } from '../../index.es.js';
 
 let fitOnLoad = true;
 let fitOptions = {};
@@ -84,6 +84,21 @@ function configureControlPanel() {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureAddTooltip() {
+  const inputElt = document.getElementById('bpmnElementIdOrNameWithTooltip');
+  inputElt.oninput = event => addOverlay(event.target.value);
+  inputElt.addEventListener(
+    'diagramLoaded',
+    event => {
+      if (inputElt.value) {
+        addOverlay(event.target.value);
+      }
+    },
+    false,
+  );
+}
+
 // The following function `preventZoomingPage` serves to block the page content zoom.
 // It is to make zooming of the actual diagram area more convenient for the user.
 // Without that function, the zooming performed out of the diagram area can mess up the page layout.
@@ -145,6 +160,7 @@ function startDemo() {
   configureFitMarginInput();
   configureFitOnLoadCheckBox();
   configureControlPanel();
+  configureAddTooltip();
 }
 
 // Start

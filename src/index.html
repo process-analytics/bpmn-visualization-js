@@ -9,6 +9,20 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
     <link href="./static/css/tailwind.css" rel="stylesheet">
     <link rel="shortcut icon" href="./static/img/favicon.ico">
+
+    <style>
+      .tooltip {
+        background: Chartreuse;
+        color: white;
+        font-weight: bold;
+        padding: 4px 8px;
+        font-size: 13px;
+        border-radius: 4px;
+        width: 50px;
+        height: 20px;
+        position: sticky;
+      }
+    </style>
 </head>
 <body class="overflow-hidden bg-gray-800 font-sans leading-normal tracking-normal mt-12">
     <!--Nav-->
@@ -76,6 +90,13 @@
                          title="to play with debounce pass parameter in url like this: .../?zoomDebounce=30"/>
                 </label>
               </div>
+            </li>
+            <li class="mr-3 flex-1">
+              <a href="#"  class="block py-1 md:py-3 pl-1 align-middle text-white no-underline border-b-2 border-pink-600">
+                <label>Add tooltip on:
+                  <input id="bpmnElementIdOrNameWithTooltip" class="w-full pl-1 text-black" type="text" placeholder="id or name of BPMN element" title="id or name of BPMN element"/>
+                </label>
+              </a>
             </li>
           </ul>
         </div>

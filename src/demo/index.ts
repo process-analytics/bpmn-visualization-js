@@ -19,6 +19,7 @@ import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { BpmnElement } from '../component/registry';
 import { BpmnElementKind } from '../model/bpmn/internal/api';
+import { mxCell } from 'mxgraph';
 
 export * from './helper';
 
@@ -58,6 +59,29 @@ export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[
   return bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(bpmnKinds);
 }
 
+function getId(bpmnElementName: string): string {
+  const model = bpmnVisualization.graph.getModel();
+  const mxCells = model.filterDescendants((cell: mxCell) => {
+    return cell.value === bpmnElementName;
+  });
+
+  if (mxCells && mxCells.length !== 0) {
+    return mxCells[0].id;
+  }
+}
+
+export function addOverlay(bpmnElementIdOrName: string): void {
+  let bpmnElementId = bpmnElementIdOrName;
+
+  const elementsByIds = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnElementIdOrName);
+  if (!elementsByIds || elementsByIds.length === 0) {
+    bpmnElementId = getId(bpmnElementIdOrName);
+  }
+  if (bpmnElementId) {
+    return bpmnVisualization.bpmnElementsRegistry.addOverlay(bpmnElementId);
+  }
+}
+
 export function addCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
   return bpmnVisualization.bpmnElementsRegistry.addCssClasses(bpmnElementId, classNames);
 }
@@ -73,6 +97,8 @@ function readAndLoadFile(f: File): void {
     loadBpmn(reader.result as string);
   };
   reader.readAsText(f);
+
+  document.getElementById('bpmnElementIdOrNameWithTooltip').dispatchEvent(new CustomEvent('diagramLoaded'));
 }
 
 /**
