@@ -37,7 +37,9 @@ export function getSimplePlatformName(): OsName {
 export type BrowserFamily = 'chromium' | 'firefox';
 
 export function getTestedBrowserFamily(): BrowserFamily {
-  return process.env.PUPPETEER_PRODUCT === 'firefox' ? 'firefox' : 'chromium';
+  const browserFamily = process.env.PUPPETEER_PRODUCT === 'firefox' ? 'firefox' : 'chromium';
+  log(`The browser family used for test is ${browserFamily}`);
+  return browserFamily;
 }
 
 export function delay(time: number): Promise<unknown> {
