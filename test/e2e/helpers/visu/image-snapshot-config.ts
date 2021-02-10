@@ -71,12 +71,14 @@ export class ImageSnapshotConfigurator {
 
     const config = this.thresholdConfig.get(fileName);
     if (config) {
-      log(`Building dedicated image snapshot configuration for '${fileName}'`);
+      log(`Using dedicated image snapshot threshold for '${fileName}'`);
       const simplePlatformName = getSimplePlatformName();
       log(`Simple platform name: ${simplePlatformName}`);
       failureThreshold = config[simplePlatformName] || failureThreshold;
+    } else {
+      log(`Using default image snapshot threshold for '${fileName}'`);
     }
-    log(`ImageSnapshot - using failureThreshold: ${failureThreshold}`);
+    log(`--> threshold: ${failureThreshold}`);
 
     return failureThreshold;
   }
