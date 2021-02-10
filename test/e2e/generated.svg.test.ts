@@ -18,7 +18,6 @@ import { BpmnPlaywright } from './helpers/visu/bpmn-playwright-utils';
 
 // TODO Import them globally in tsconfig when their bug on definition will fix, like https://github.com/playwright-community/jest-playwright#usage-with-typescript
 import 'jest-playwright-preset';
-import 'expect-playwright';
 
 let bpmnPlaywright = new BpmnPlaywright('bpmn-container', page);
 

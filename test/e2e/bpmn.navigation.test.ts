@@ -15,7 +15,6 @@
  */
 // TODO Import them globally in tsconfig when their bug on definition will fix, like https://github.com/playwright-community/jest-playwright#usage-with-typescript
 import 'jest-playwright-preset';
-import 'expect-playwright';
 
 import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { join } from 'path';

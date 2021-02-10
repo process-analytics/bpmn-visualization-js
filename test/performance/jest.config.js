@@ -24,5 +24,4 @@ module.exports = {
     '^.+\\.ts?$': 'ts-jest',
   },
   setupFiles: ['./test/e2e/config/copy.bpmn.diagram.ts'],
-  setupFilesAfterEnv: ['expect-playwright'],
 };
