@@ -42,8 +42,7 @@ jobs:
         os:
           - { name: ubuntu-20.04 }
           - { name: macos-10.15 }
-          # TODO tests hang on Firefox when driven by Puppeteer
-          # - { name: windows-2019 }
+          - { name: windows-2019 }
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -63,13 +62,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install dependencies
-        env:
-          PUPPETEER_PRODUCT: firefox
         run: npm ci
+      # install OS dependencies required by browsers on the GitHub runner
+      - uses: microsoft/playwright-github-action@v1.4.4
       - name: Test Application End to End
         id: 'test_e2e'
         env:
-          PUPPETEER_PRODUCT: firefox
+          BROWSER: firefox
         run: npm run test:e2e
       - name: Upload e2e test results
         if: ${{ failure() && steps.test_e2e.outcome == 'failure' }}
