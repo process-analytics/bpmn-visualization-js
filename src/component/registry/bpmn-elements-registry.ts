@@ -22,6 +22,7 @@ import { BpmnQuerySelectors } from './query-selectors';
 import { BpmnElement } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
+import { createPopper, flip, preventOverflow } from '@popperjs/core';
 
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnMxGraph): BpmnElementsRegistry {
   return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), new MxGraphCellUpdater(graph));
@@ -175,6 +176,29 @@ export class BpmnElementsRegistry {
     if (updateCell) {
       const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
       this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
+    }
+  }
+
+  addOverlay(bpmnElementId: string): void {
+    const elementsByIds = this.getElementsByIds(bpmnElementId);
+    if (elementsByIds && elementsByIds.length > 0) {
+      const button = elementsByIds[0].htmlElement;
+
+      const tooltipDiv = document.createElement('div');
+      tooltipDiv.id = 'tooltip';
+      tooltipDiv.setAttribute('role', 'tooltip');
+      tooltipDiv.classList.add('tooltip');
+      document.getElementById('bpmn-container').appendChild(tooltipDiv);
+
+      // const tooltip = document.getElementById('tooltip');
+
+      createPopper(button, tooltipDiv, {
+        placement: 'right',
+        modifiers: [preventOverflow, flip],
+      });
+    } else {
+      // eslint-disable-next-line no-console
+      console.log('No BPMN element with id %s', bpmnElementId);
     }
   }
 }
