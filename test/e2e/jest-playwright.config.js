@@ -24,6 +24,7 @@ module.exports = {
   },
   launchOptions: {
     headless: process.env.HEADLESS !== 'false',
+    // TODO make browser logs work
     logger: {
       // Make browser logs visible
       isEnabled: name => name === 'browser',
