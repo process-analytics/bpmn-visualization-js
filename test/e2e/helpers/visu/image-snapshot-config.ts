@@ -101,7 +101,7 @@ export abstract class MultiBrowserImageSnapshotThresholds {
   private readonly chromiumDefault: number;
   private readonly firefoxDefault: number;
 
-  constructor(thresholdDefaults: ThresholdDefaults) {
+  protected constructor(thresholdDefaults: ThresholdDefaults) {
     this.chromiumDefault = thresholdDefaults.chromium;
     this.firefoxDefault = thresholdDefaults.firefox;
   }
