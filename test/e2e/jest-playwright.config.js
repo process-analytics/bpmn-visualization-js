@@ -40,6 +40,7 @@ module.exports = {
       height: 600,
     },
   },
-  browsers: ['chromium', 'firefox', 'webkit'],
+  // TODO let configure the browsers to use
+  browsers: ['chromium'],
   collectCoverage: process.env.COVERAGE === 'true',
 };
