@@ -27,6 +27,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import pkg from './package.json';
 import json from '@rollup/plugin-json';
+import replace from '@rollup/plugin-replace';
 
 import parseArgs from 'minimist';
 
@@ -138,7 +139,15 @@ function withMinification(plugins) {
 }
 
 function pluginsForDevelopment() {
-  const plugins = [typescriptPlugin(), resolve(), commonjs(), json()];
+  const plugins = [
+    typescriptPlugin(),
+    resolve(),
+    commonjs(),
+    json(),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
+  ];
 
   // Copy static resources
   if (devMode || demoMode) {
