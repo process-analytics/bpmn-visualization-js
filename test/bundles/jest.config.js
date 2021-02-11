@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+process.env.JEST_PLAYWRIGHT_CONFIG = './test/bundles/jest-playwright.config.js';
+
 module.exports = {
   rootDir: '../..',
   roots: ['./test/bundles', './src'],
-  preset: 'jest-puppeteer',
+  preset: 'jest-playwright-preset',
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
   testTimeout: 20000,

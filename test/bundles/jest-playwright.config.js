@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 module.exports = {
-  launch: {
-    dumpio: true,
+  launchOptions: {
     headless: process.env.HEADLESS !== 'false',
     slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
-    args: ['--disable-infobars', '--no-sandbox', '--disable-setuid-sandbox'],
-    timeout: 10000,
   },
+  browsers: ['chromium', 'firefox', 'webkit'],
 };

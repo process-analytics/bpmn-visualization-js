@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnPuppeteer } from '../e2e/helpers/visu/bpmn-puppeteer-utils';
 import { existsSync } from 'fs';
 import { resolve } from 'path';
+import 'jest-playwright-preset';
+import { BpmnPlaywright } from '../e2e/helpers/visu/bpmn-playwright-utils';
 
 describe('bundles', () => {
   describe('All bundles have been generated', () => {
@@ -42,14 +43,14 @@ describe('bundles', () => {
     const pagePath = resolve(__dirname, 'static/lib-integration-iife.html');
     await page.goto(`file://${pagePath}`);
 
-    const bpmnPuppeteer = new BpmnPuppeteer('bpmn-container-for-iife-bundle', page);
-    bpmnPuppeteer.expectPageTitle('BPMN Visualization IIFE bundle');
-    bpmnPuppeteer.expectAvailableBpmnContainer();
+    const bpmnPlaywright = new BpmnPlaywright('bpmn-container-for-iife-bundle', page);
+    await bpmnPlaywright.expectPageTitle('BPMN Visualization IIFE bundle');
+    await bpmnPlaywright.expectAvailableBpmnContainer();
 
-    await bpmnPuppeteer.expectEvent('StartEvent_1', 'Start Event 1');
-    await bpmnPuppeteer.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
-    await bpmnPuppeteer.expectTask('Activity_1', 'Task 1');
-    await bpmnPuppeteer.expectSequenceFlow('Flow_2');
-    await bpmnPuppeteer.expectEvent('EndEvent_1', 'End Event 1', false);
+    await bpmnPlaywright.expectEvent('StartEvent_1', 'Start Event 1');
+    await bpmnPlaywright.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
+    await bpmnPlaywright.expectTask('Activity_1', 'Task 1');
+    await bpmnPlaywright.expectSequenceFlow('Flow_2');
+    await bpmnPlaywright.expectEvent('EndEvent_1', 'End Event 1', false);
   });
 });
