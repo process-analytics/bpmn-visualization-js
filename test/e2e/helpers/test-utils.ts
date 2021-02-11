@@ -18,13 +18,14 @@ import { findFiles } from '../../helpers/file-helper';
 import { join } from 'path';
 import 'jest-playwright-preset';
 
-export const log = debugLogger('test');
+// TODO debug log namespace change: update doc + npm script
+export const configLog = debugLogger('bv:e2e:config');
 
 export type OsName = 'linux' | 'macos' | 'windows';
 
 export function getSimplePlatformName(): OsName {
   const platform = process.platform;
-  log(`This platform is ${platform}`);
+  configLog(`This platform is ${platform}`);
 
   if (platform.startsWith('win')) {
     return 'windows';

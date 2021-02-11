@@ -15,7 +15,7 @@
  */
 import { dirname, join } from 'path';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
-import { getSimplePlatformName, getTestedBrowserFamily, log } from '../test-utils';
+import { configLog, getSimplePlatformName, getTestedBrowserFamily } from '../test-utils';
 
 export interface ImageSnapshotThresholdConfig {
   linux?: number;
@@ -71,14 +71,14 @@ export class ImageSnapshotConfigurator {
 
     const config = this.thresholdConfig.get(fileName);
     if (config) {
-      log(`Using dedicated image snapshot threshold for '${fileName}'`);
+      configLog(`Using dedicated image snapshot threshold for '${fileName}'`);
       const simplePlatformName = getSimplePlatformName();
-      log(`Simple platform name: ${simplePlatformName}`);
+      configLog(`Simple platform name: ${simplePlatformName}`);
       failureThreshold = config[simplePlatformName] || failureThreshold;
     } else {
-      log(`Using default image snapshot threshold for '${fileName}'`);
+      configLog(`Using default image snapshot threshold for '${fileName}'`);
     }
-    log(`--> threshold: ${failureThreshold}`);
+    configLog(`--> threshold: ${failureThreshold}`);
 
     return failureThreshold;
   }
@@ -114,7 +114,7 @@ export abstract class MultiBrowserImageSnapshotThresholds {
 
   getThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     const testedBrowserFamily = getTestedBrowserFamily();
-    log(`The browser family used for test is ${testedBrowserFamily}`);
+    configLog(`The browser family used for test is ${testedBrowserFamily}`);
     switch (testedBrowserFamily) {
       case 'chromium':
         return this.getChromiumThresholds();
