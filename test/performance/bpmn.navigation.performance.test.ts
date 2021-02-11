@@ -17,6 +17,7 @@ import { delay, getSimplePlatformName } from '../e2e/helpers/test-utils';
 import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
 import * as fs from 'fs';
 import { PageTester } from '../e2e/helpers/visu/PageTester';
+import { chromiumMouseWheel } from '../e2e/helpers/visu/playwright-utils';
 
 const platform = getSimplePlatformName();
 const performanceDataFilePath = './test/performance/data/' + platform + '/data.js';
@@ -42,17 +43,18 @@ describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
     const metricsStart = await page.metrics();
 
     // simulate mouse+ctrl zoom
+
     await page.mouse.move(containerCenterX + 200, containerCenterY);
     await page.keyboard.down('Control');
     for (let i = 0; i < xTimes; i++) {
-      await page.mouse.wheel({ deltaX: deltaX });
+      await chromiumMouseWheel(containerCenterX + 200, containerCenterY, deltaX);
       if (i % 5 === 0) {
         await delay(30);
       }
     }
     await delay(100);
     for (let i = 0; i < xTimes; i++) {
-      await page.mouse.wheel({ deltaX: -deltaX });
+      await chromiumMouseWheel(containerCenterX + 200, containerCenterY, -deltaX);
       if (i % 5 === 0) {
         await delay(30);
       }
