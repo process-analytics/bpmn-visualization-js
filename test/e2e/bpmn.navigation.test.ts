@@ -19,6 +19,7 @@ import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { join } from 'path';
 import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { PageTester } from './helpers/visu/PageTester';
+import debugLogger from 'debug';
 
 const delayToWaitUntilZoomIsDone = 100;
 
@@ -100,6 +101,11 @@ describe('diagram navigation', () => {
     'navigation',
     defaultChromiumFailureThreshold,
   );
+
+  // activate displaying browser console logs
+  // this is from https://playwright.dev/docs/api/class-page#pageonconsole
+  const browserLog = debugLogger('bv:browserLog');
+  page.on('console', msg => browserLog('<%s> %s', msg.type(), msg.text()));
 
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
   const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });

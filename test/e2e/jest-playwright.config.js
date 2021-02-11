@@ -29,6 +29,7 @@ module.exports = {
   launchOptions: {
     headless: process.env.HEADLESS !== 'false',
     // TODO make browser logs work
+    // the following is from https://playwright.dev/docs/api/class-logger (not sure this is what we want)
     logger: {
       // Make browser logs visible
       isEnabled: name => name === 'browser',
