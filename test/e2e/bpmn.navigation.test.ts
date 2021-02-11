@@ -152,7 +152,7 @@ describe('diagram navigation', () => {
     containerCenterY = bounding_box.y + bounding_box.height / 2;
   });
 
-  it.skip('mouse panning', async () => {
+  it('mouse panning', async () => {
     // simulate mouse panning
     await page.mouse.move(containerCenterX, containerCenterY);
     await page.mouse.down();
