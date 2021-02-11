@@ -16,10 +16,10 @@
 import 'jest-playwright-preset';
 import { join } from 'path';
 import debugLogger from 'debug';
-import { ChromiumBrowserContext } from 'playwright';
 import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/PageTester';
+import { chromiumMouseWheel } from './helpers/visu/playwright-utils';
 
 const delayToWaitUntilZoomIsDone = 100;
 
@@ -29,32 +29,6 @@ async function chromiumZoom(xTimes: number, x: number, y: number, deltaX: number
     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
     await delay(delayToWaitUntilZoomIsDone);
   }
-}
-
-// workaround for https://github.com/microsoft/playwright/issues/1115 that only works with chromium
-// inspired from https://github.com/microsoft/playwright/issues/2642#issuecomment-647846972
-// https://github.com/microsoft/playwright/blob/v1.8.1/docs/src/api/class-cdpsession.md
-async function chromiumMouseWheel(x: number, y: number, deltaX: number): Promise<void> {
-  // possible improvement to investigate: can we access to the chromium server directly?
-  // page._channel Proxy where Target is an EventEmitter
-  // server Mouse https://github.com/microsoft/playwright/blob/v1.8.0/src/server/input.ts#L171
-  // chromium server RawMouse: https://github.com/microsoft/playwright/blob/v1.8.0/src/server/chromium/crInput.ts#L95
-  // RawMouse as a _client field
-
-  const client = await (page.context() as ChromiumBrowserContext).newCDPSession(page);
-  // for troubleshooting, see playwright protocol debug logs
-  // example when performing panning (set DEBUG=pw:protocol env var)
-  await client.send('Input.dispatchMouseEvent', {
-    x: x,
-    y: y,
-    type: 'mouseWheel',
-    deltaX: deltaX,
-    deltaY: 0,
-    modifiers: 2, // CTRL
-  });
-  // TODO try to find a way to use the same session
-  // detach is it not reused outside this function
-  await client.detach();
 }
 
 describe('diagram navigation', () => {
