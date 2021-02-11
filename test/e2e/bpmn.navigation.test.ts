@@ -23,18 +23,26 @@ import { PageTester } from './helpers/visu/PageTester';
 
 const delayToWaitUntilZoomIsDone = 100;
 
-async function zoom(xTimes: number, deltaX: number): Promise<void> {
-  // TODO with the hack we may not need to call control as it is passed with the mousewheel event
-  await page.keyboard.down('Control');
+// async function zoom(xTimes: number, deltaX: number): Promise<void> {
+//   // TODO with the hack we may not need to call control as it is passed with the mousewheel event
+//   await page.keyboard.down('Control');
+//
+//   for (let i = 0; i < xTimes; i++) {
+//     // await page.mouse.wheel({ deltaX: deltaX });
+//     // await chromiumMouseWheel(deltaX);
+//     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
+//     await delay(delayToWaitUntilZoomIsDone);
+//   }
+//
+//   await page.keyboard.up('Control');
+// }
 
+async function chromiumZoom(xTimes: number, x: number, y: number, deltaX: number): Promise<void> {
   for (let i = 0; i < xTimes; i++) {
-    // await page.mouse.wheel({ deltaX: deltaX });
-    await chromiumMouseWheel(deltaX);
+    await chromiumMouseWheel(x, y, deltaX);
     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
     await delay(delayToWaitUntilZoomIsDone);
   }
-
-  await page.keyboard.up('Control');
 }
 
 // TODO try to find a way to use the same session
@@ -44,13 +52,14 @@ async function zoom(xTimes: number, deltaX: number): Promise<void> {
 // only works with chromium
 // inspired from (not working as playwright server side code) https://github.com/xtermjs/xterm.js/blob/23dba6aebd0d25180716ec45d106c6ac81d16153/test/api/MouseTracking.api.ts#L77
 // inspired from https://github.com/microsoft/playwright/issues/2642#issuecomment-647846972
-async function chromiumMouseWheel(deltaX: number): Promise<void> {
+async function chromiumMouseWheel(x: number, y: number, deltaX: number): Promise<void> {
   const client = await (page.context() as ChromiumBrowserContext).newCDPSession(page);
   await client.send('Input.dispatchMouseEvent', {
     // "type":"mouseMoved","button":"none","x":615,"y":300,"modifiers":2
-    // TODO we should manage x and y
-    x: 615,
-    y: 300,
+    x: x,
+    y: y,
+    // x: 615,
+    // y: 300,
     // x: 200,
     // y: 200,
     type: 'mouseWheel',
@@ -184,9 +193,7 @@ describe('diagram navigation', () => {
 
   it.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
     const deltaX = zoomMode === 'zoom in' ? -100 : 100;
-    // simulate mouse+ctrl zoom
-    await page.mouse.move(containerCenterX + 200, containerCenterY);
-    await zoom(1, deltaX);
+    await chromiumZoom(1, containerCenterX + 200, containerCenterY, deltaX);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -196,12 +203,12 @@ describe('diagram navigation', () => {
     });
   });
 
-  it.skip.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
+  it.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
     const deltaX = -100;
     // simulate mouse+ctrl zoom
     await page.mouse.move(containerCenterX + 200, containerCenterY);
-    await zoom(xTimes, deltaX);
-    await zoom(xTimes, -deltaX);
+    await chromiumZoom(xTimes, containerCenterX + 200, containerCenterY, deltaX);
+    await chromiumZoom(xTimes, containerCenterX + 200, containerCenterY, -deltaX);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
