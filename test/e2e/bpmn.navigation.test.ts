@@ -25,6 +25,7 @@ import { PageTester } from './helpers/visu/PageTester';
 const delayToWaitUntilZoomIsDone = 100;
 
 async function zoom(xTimes: number, deltaX: number): Promise<void> {
+  // TODO with the hack we may not need to call control as it is passed with the mousewheel event
   await page.keyboard.down('Control');
 
   for (let i = 0; i < xTimes; i++) {
