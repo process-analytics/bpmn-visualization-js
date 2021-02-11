@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import 'jest-playwright-preset';
-
 import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { join } from 'path';
 import debugLogger from 'debug';
