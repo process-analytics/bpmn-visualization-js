@@ -41,8 +41,6 @@ async function chromiumMouseWheel(x: number, y: number, deltaX: number): Promise
   // chromium server RawMouse: https://github.com/microsoft/playwright/blob/v1.8.0/src/server/chromium/crInput.ts#L95
   // RawMouse as a _client field
 
-  // TODO try to find a way to use the same session
-  // TODO if no reuse, detach session when done??? or reuse the client?
   const client = await (page.context() as ChromiumBrowserContext).newCDPSession(page);
   // for troubleshooting, see playwright protocol debug logs
   // example when performing panning (set DEBUG=pw:protocol env var)
@@ -54,6 +52,9 @@ async function chromiumMouseWheel(x: number, y: number, deltaX: number): Promise
     deltaY: 0,
     modifiers: 2, // CTRL
   });
+  // TODO try to find a way to use the same session
+  // detach is it not reused outside this function
+  await client.detach();
 }
 
 describe('diagram navigation', () => {
