@@ -16,6 +16,8 @@
 import { BpmnQuerySelectors } from '../../../../src/component/registry/query-selectors';
 import { ElementHandle, Page } from 'playwright';
 
+// TODO we could probably remove most of async directive in this class
+//  by swiching from await expect... to expect().resolves
 export class BpmnPlaywright {
   private bpmnQuerySelectors: BpmnQuerySelectors;
 
