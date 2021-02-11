@@ -17,9 +17,10 @@ import 'jest-playwright-preset';
 
 import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { join } from 'path';
+import debugLogger from 'debug';
+import { ChromiumBrowserContext } from 'playwright';
 import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { PageTester } from './helpers/visu/PageTester';
-import debugLogger from 'debug';
 
 const delayToWaitUntilZoomIsDone = 100;
 
@@ -32,15 +33,45 @@ async function zoom(xTimes: number, deltaX: number): Promise<void> {
     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
     await delay(delayToWaitUntilZoomIsDone);
   }
+
+  await page.keyboard.up('Control');
 }
+
+// TODO try to find a way to use the same session
+// TODO pass the x/y coordinates
 
 // WIP - workaround for https://github.com/microsoft/playwright/issues/1115
 // only works with chromium
 // taken from https://github.com/xtermjs/xterm.js/blob/23dba6aebd0d25180716ec45d106c6ac81d16153/test/api/MouseTracking.api.ts#L77
 async function chromiumMouseWheel(deltaX: number): Promise<void> {
+  const client = await (page.context() as ChromiumBrowserContext).newCDPSession(page);
+  await client.send('Input.dispatchMouseEvent', {
+    // "type":"mouseMoved","button":"none","x":615,"y":300,"modifiers":0
+    // TODO we should manage x and y
+    x: 615,
+    y: 300,
+    // x: 200,
+    // y: 200,
+    type: 'mouseWheel',
+    // x: self._x,
+    // y: self._y,
+    deltaX: deltaX,
+    deltaY: 0,
+    // deltaX: 0,
+    // deltaY: -10,
+    // TODO needed as this is not the same session
+    modifiers: 2, // CTRL
+  });
+
+  //const client = await page.context() as .newCDPSession(page);
+
+  // const browser = await chromium.launch({ headless: false });
+  // const page = await browser.newPage();
+  // const client = await page.context().newCDPSession(page);
+
   // server Mouse https://github.com/microsoft/playwright/blob/v1.8.0/src/server/input.ts#L171
   // chromium server RawMouse: https://github.com/microsoft/playwright/blob/v1.8.0/src/server/chromium/crInput.ts#L95
-  const self = page.mouse as any;
+  //const self = page.mouse as any;
 
   // playwright protocol debug logs when performing panning (set DEBUG=pw:protocol env var)
   //   pw:protocol SEND ► {"id":54,"method":"Input.dispatchMouseEvent","params":{"type":"mouseMoved","button":"none","x":415,"y":300,"modifiers":0},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"} +3ms
@@ -52,15 +83,15 @@ async function chromiumMouseWheel(deltaX: number): Promise<void> {
   //   pw:protocol SEND ► {"id":57,"method":"Input.dispatchMouseEvent","params":{"type":"mouseReleased","button":"left","x":565,"y":340,"modifiers":0,"clickCount":1},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"}
 
   // field _channel: Proxy
-  return await self._raw._client.send('Input.dispatchMouseEvent', {
-    type: 'mouseWheel',
-    x: self._x,
-    y: self._y,
-    deltaX: deltaX,
-    deltaY: 0,
-    // deltaX: 0,
-    // deltaY: -10,
-  });
+  // return await self._raw._client.send('Input.dispatchMouseEvent', {
+  //   type: 'mouseWheel',
+  //   x: self._x,
+  //   y: self._y,
+  //   deltaX: deltaX,
+  //   deltaY: 0,
+  //   // deltaX: 0,
+  //   // deltaY: -10,
+  // });
 }
 // async function wheelUp(deltaX: number): Promise<void> {
 //   const self = page.mouse as any;
@@ -120,7 +151,7 @@ describe('diagram navigation', () => {
     containerCenterY = bounding_box.y + bounding_box.height / 2;
   });
 
-  it('mouse panning', async () => {
+  it.skip('mouse panning', async () => {
     // simulate mouse panning
     await page.mouse.move(containerCenterX, containerCenterY);
     await page.mouse.down();
@@ -143,7 +174,7 @@ describe('diagram navigation', () => {
     return;
   }
 
-  it.skip.each(['zoom in'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
+  it.each(['zoom in'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
     const deltaX = zoomMode === 'zoom in' ? -100 : 100;
     // simulate mouse+ctrl zoom
     await page.mouse.move(containerCenterX + 200, containerCenterY);
