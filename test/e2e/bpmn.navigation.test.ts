@@ -174,7 +174,7 @@ describe('diagram navigation', () => {
     return;
   }
 
-  it.each(['zoom in'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
+  it.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
     const deltaX = zoomMode === 'zoom in' ? -100 : 100;
     // simulate mouse+ctrl zoom
     await page.mouse.move(containerCenterX + 200, containerCenterY);
