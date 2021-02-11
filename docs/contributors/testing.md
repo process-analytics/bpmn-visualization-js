@@ -227,7 +227,7 @@ PUPPETEER_PRODUCT=firefox npm install puppeteer
 PUPPETEER_PRODUCT=firefox npm run test:e2e
 ```
 - on Windows using `cmd`  
-  - ⚠️ for some reasons, tests on Windows are working only in mode `headless: false` (update test/e2e/jest-puppeteer.config.js
+  - ⚠️ for some reasons, tests on Windows are working only in mode `headless: false` (update test/e2e/jest-playwright.config.js
     or use extra environment variable, see below)
   - ⚠️ there is no space between `firefox` and `&&`
 ```batch
