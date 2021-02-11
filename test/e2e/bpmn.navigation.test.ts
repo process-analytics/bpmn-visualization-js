@@ -104,7 +104,7 @@ describe('diagram navigation', () => {
 
   // activate displaying browser console logs
   // this is from https://playwright.dev/docs/api/class-page#pageonconsole
-  const browserLog = debugLogger('bv:browserLog');
+  const browserLog = debugLogger('bv:e2e:browser');
   page.on('console', msg => browserLog('<%s> %s', msg.type(), msg.text()));
 
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
