@@ -15,6 +15,7 @@
  */
 
 // assume a single browser is passed at a given time
+// TODO: manage several browsers at the same time (split by ,)
 const browser = process.env.BROWSER || 'chromium';
 
 module.exports = {
@@ -28,20 +29,7 @@ module.exports = {
   },
   launchOptions: {
     headless: process.env.HEADLESS !== 'false',
-    // TODO make browser logs work
-    // the following is from https://playwright.dev/docs/api/class-logger (not sure this is what we want)
-    logger: {
-      // Make browser logs visible
-      // see https://github.com/microsoft/playwright/issues/4125
-      isEnabled: name => true,
-      //isEnabled: name => name === 'browser',
-      // eslint-disable-next-line no-console
-      log: (name, severity, message) => console.log(`${name} ${message}`),
-    },
     slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
-    // TODO review options, seems not working on webkit
-    // the following is for chromium
-    args: ['--disable-infobars', '--no-sandbox', '--disable-setuid-sandbox'],
   },
   launchType: 'LAUNCH',
   contextOptions: {
@@ -51,5 +39,6 @@ module.exports = {
     },
   },
   browsers: [browser],
-  collectCoverage: process.env.COVERAGE === 'true',
+  // TODO probably not for now
+  // collectCoverage: process.env.COVERAGE === 'true',
 };
