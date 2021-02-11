@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 import 'jest-playwright-preset';
-import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { join } from 'path';
 import debugLogger from 'debug';
 import { ChromiumBrowserContext } from 'playwright';
 import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/PageTester';
 
 const delayToWaitUntilZoomIsDone = 100;
@@ -63,6 +63,9 @@ async function chromiumMouseWheel(deltaX: number): Promise<void> {
     // TODO needed as this is not the same session
     modifiers: 2, // CTRL
   });
+
+  // TODO detatch session when done??? or reuse the client?
+  // check the EventEmitter in page.mouse!
 
   //const client = await page.context() as .newCDPSession(page);
 
@@ -136,6 +139,10 @@ describe('diagram navigation', () => {
 
   // activate displaying browser console logs
   // this is from https://playwright.dev/docs/api/class-page#pageonconsole
+  // TODO make browser logs work
+  // the following is from https://playwright.dev/docs/api/class-logger (not sure this is what we want)
+  // see https://github.com/microsoft/playwright/issues/4498
+  // see DEBUG=pw:browser* (https://github.com/microsoft/playwright/issues/1959#issuecomment-619069349)
   const browserLog = debugLogger('bv:e2e:browser');
   page.on('console', msg => browserLog('<%s> %s', msg.type(), msg.text()));
 
