@@ -17,6 +17,7 @@ import { getSimplePlatformName } from '../e2e/helpers/test-utils';
 import * as fs from 'fs';
 import { calculateMetrics, ChartData, getPageMetrics, PerformanceMetric } from './helpers/perf-utils';
 import { PageTester } from '../e2e/helpers/visu/PageTester';
+import { chromiumMetrics } from './helpers/metrics-chromium';
 
 const platform = getSimplePlatformName();
 const performanceDataFilePath = './test/performance/data/' + platform + '/data.js';
@@ -28,9 +29,11 @@ describe.each([1])('load performance', run => {
   const fileName = 'B.2.0';
 
   it.each([1])('check performance for file loading and displaying diagram with FitType.HorizontalVertical', async () => {
-    const metricsStart = await getPageMetrics(page);
+    const metricsStart = await chromiumMetrics(page);
+    // const metricsStart = await getPageMetrics(page);
     await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
-    const metricsEnd = await getPageMetrics(page);
+    const metricsEnd = await chromiumMetrics(page);
+    // const metricsEnd = await getPageMetrics(page);
 
     // const metric = { ...calculateMetrics(metricsStart, metricsEnd), run: run };
     // metricsArray.push(metric);
