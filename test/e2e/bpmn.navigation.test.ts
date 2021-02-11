@@ -23,20 +23,6 @@ import { PageTester } from './helpers/visu/PageTester';
 
 const delayToWaitUntilZoomIsDone = 100;
 
-// async function zoom(xTimes: number, deltaX: number): Promise<void> {
-//   // TODO with the hack we may not need to call control as it is passed with the mousewheel event
-//   await page.keyboard.down('Control');
-//
-//   for (let i = 0; i < xTimes; i++) {
-//     // await page.mouse.wheel({ deltaX: deltaX });
-//     // await chromiumMouseWheel(deltaX);
-//     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
-//     await delay(delayToWaitUntilZoomIsDone);
-//   }
-//
-//   await page.keyboard.up('Control');
-// }
-
 async function chromiumZoom(xTimes: number, x: number, y: number, deltaX: number): Promise<void> {
   for (let i = 0; i < xTimes; i++) {
     await chromiumMouseWheel(x, y, deltaX);
@@ -45,42 +31,22 @@ async function chromiumZoom(xTimes: number, x: number, y: number, deltaX: number
   }
 }
 
-// TODO try to find a way to use the same session
-// TODO pass the x/y coordinates
-
-// WIP - workaround for https://github.com/microsoft/playwright/issues/1115
-// only works with chromium
-// inspired from (not working as playwright server side code) https://github.com/xtermjs/xterm.js/blob/23dba6aebd0d25180716ec45d106c6ac81d16153/test/api/MouseTracking.api.ts#L77
+// workaround for https://github.com/microsoft/playwright/issues/1115 that only works with chromium
 // inspired from https://github.com/microsoft/playwright/issues/2642#issuecomment-647846972
 async function chromiumMouseWheel(x: number, y: number, deltaX: number): Promise<void> {
+  // TODO try to find a way to use the same session
+  // TODO if no reuse, detach session when done??? or reuse the client?
   const client = await (page.context() as ChromiumBrowserContext).newCDPSession(page);
   await client.send('Input.dispatchMouseEvent', {
-    // "type":"mouseMoved","button":"none","x":615,"y":300,"modifiers":2
     x: x,
     y: y,
-    // x: 615,
-    // y: 300,
-    // x: 200,
-    // y: 200,
     type: 'mouseWheel',
-    // x: self._x,
-    // y: self._y,
     deltaX: deltaX,
     deltaY: 0,
-    // deltaX: 0,
-    // deltaY: -10,
-    // TODO needed as this is not the same session
     modifiers: 2, // CTRL
   });
 
-  // TODO detatch session when done??? or reuse the client?
   // check the EventEmitter in page.mouse!
-
-  //const client = await page.context() as .newCDPSession(page);
-
-  // const browser = await chromium.launch({ headless: false });
-  // const page = await browser.newPage();
-  // const client = await page.context().newCDPSession(page);
 
   // server Mouse https://github.com/microsoft/playwright/blob/v1.8.0/src/server/input.ts#L171
   // chromium server RawMouse: https://github.com/microsoft/playwright/blob/v1.8.0/src/server/chromium/crInput.ts#L95
@@ -106,26 +72,6 @@ async function chromiumMouseWheel(x: number, y: number, deltaX: number): Promise
   //   // deltaY: -10,
   // });
 }
-// async function wheelUp(deltaX: number): Promise<void> {
-//   const self = page.mouse as any;
-//   return await self._raw._client.send('Input.dispatchMouseEvent', {
-//     type: 'mouseWheel',
-//     x: self._x,
-//     y: self._y,
-//     deltaX: 0,
-//     deltaY: -10,
-//   });
-// }
-// async function wheelDown(deltaX: number): Promise<void> {
-//   const self = page.mouse as any;
-//   return await self._raw._client.send('Input.dispatchMouseEvent', {
-//     type: 'mouseWheel',
-//     x: self._x,
-//     y: self._y,
-//     deltaX: 0,
-//     deltaY: 10,
-//   });
-// }
 // END OF - WIP - workaround for https://github.com/microsoft/playwright/issues/1115
 
 describe('diagram navigation', () => {
@@ -148,10 +94,7 @@ describe('diagram navigation', () => {
 
   // activate displaying browser console logs
   // this is from https://playwright.dev/docs/api/class-page#pageonconsole
-  // TODO make browser logs work
-  // the following is from https://playwright.dev/docs/api/class-logger (not sure this is what we want)
-  // see https://github.com/microsoft/playwright/issues/4498
-  // see DEBUG=pw:browser* (https://github.com/microsoft/playwright/issues/1959#issuecomment-619069349)
+  // see https://github.com/microsoft/playwright/issues/4498 and https://github.com/microsoft/playwright/issues/4125
   const browserLog = debugLogger('bv:e2e:browser');
   page.on('console', msg => browserLog('<%s> %s', msg.type(), msg.text()));
 
