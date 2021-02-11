@@ -1,5 +1,3 @@
-import { Metrics } from 'puppeteer';
-
 /**
  * Copyright 2020 Bonitasoft S.A.
  *
@@ -15,6 +13,9 @@ import { Metrics } from 'puppeteer';
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// import { Metrics } from 'puppeteer';
+import { Page } from 'playwright';
+
 export interface PerformanceMetric {
   run: number;
   TaskDuration: number;
@@ -28,7 +29,7 @@ export interface ChartData {
   zoom: Array<PerformanceMetric>;
 }
 
-export function calculateMetrics(metricsStart: Metrics, metricsEnd: Metrics): PerformanceMetric {
+export function calculateMetrics(metricsStart: any, metricsEnd: any): PerformanceMetric {
   return {
     run: new Date().getMilliseconds(),
     LayoutDuration: metricsEnd.LayoutDuration - metricsStart.LayoutDuration,
@@ -36,4 +37,25 @@ export function calculateMetrics(metricsStart: Metrics, metricsEnd: Metrics): Pe
     ScriptDuration: metricsEnd.ScriptDuration - metricsStart.ScriptDuration,
     TaskDuration: metricsEnd.TaskDuration - metricsStart.TaskDuration,
   };
+}
+
+// workaround for https://github.com/microsoft/playwright/issues/590
+// inspired from https://github.com/microsoft/playwright/issues/2816#issuecomment-749269171
+export async function getPageMetrics(
+  page: Page,
+): Promise<{
+  format: 'PerformanceNavigationTiming' | 'PerformanceTiming';
+  data: PerformanceNavigationTiming | PerformanceTiming;
+}> {
+  return JSON.parse(
+    await page.evaluate(() => {
+      const [timing] = performance.getEntriesByType('navigation');
+      return JSON.stringify({
+        format: timing ? 'PerformanceNavigationTiming' : 'PerformanceTiming',
+        data: timing || window.performance.timing,
+      });
+    }),
+
+    //performance.memory.usedJSHeapSize
+  );
 }
