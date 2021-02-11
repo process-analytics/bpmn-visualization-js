@@ -37,8 +37,20 @@ async function zoom(xTimes: number, deltaX: number): Promise<void> {
 // only works with chromium
 // taken from https://github.com/xtermjs/xterm.js/blob/23dba6aebd0d25180716ec45d106c6ac81d16153/test/api/MouseTracking.api.ts#L77
 async function chromiumMouseWheel(deltaX: number): Promise<void> {
-  // https://github.com/microsoft/playwright/blob/v1.8.0/src/server/input.ts#L171
+  // server Mouse https://github.com/microsoft/playwright/blob/v1.8.0/src/server/input.ts#L171
+  // chromium server RawMouse: https://github.com/microsoft/playwright/blob/v1.8.0/src/server/chromium/crInput.ts#L95
   const self = page.mouse as any;
+
+  // playwright protocol debug logs when performing panning (set DEBUG=pw:protocol env var)
+  //   pw:protocol SEND ► {"id":54,"method":"Input.dispatchMouseEvent","params":{"type":"mouseMoved","button":"none","x":415,"y":300,"modifiers":0},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"} +3ms
+  //   pw:protocol ◀ RECV {"id":54,"result":{},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"} +8ms
+  //   pw:protocol SEND ► {"id":55,"method":"Input.dispatchMouseEvent","params":{"type":"mousePressed","button":"left","x":415,"y":300,"modifiers":0,"clickCount":1},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"} +1ms
+  //   pw:protocol ◀ RECV {"id":55,"result":{},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"} +4ms
+  //   pw:protocol SEND ► {"id":56,"method":"Input.dispatchMouseEvent","params":{"type":"mouseMoved","button":"left","x":565,"y":340,"modifiers":0},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"} +0ms
+  //   pw:protocol ◀ RECV {"id":56,"result":{},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"} +7ms
+  //   pw:protocol SEND ► {"id":57,"method":"Input.dispatchMouseEvent","params":{"type":"mouseReleased","button":"left","x":565,"y":340,"modifiers":0,"clickCount":1},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"}
+
+  // field _channel: Proxy
   return await self._raw._client.send('Input.dispatchMouseEvent', {
     type: 'mouseWheel',
     x: self._x,
@@ -125,7 +137,7 @@ describe('diagram navigation', () => {
     return;
   }
 
-  it.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
+  it.skip.each(['zoom in'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
     const deltaX = zoomMode === 'zoom in' ? -100 : 100;
     // simulate mouse+ctrl zoom
     await page.mouse.move(containerCenterX + 200, containerCenterY);
@@ -139,7 +151,7 @@ describe('diagram navigation', () => {
     });
   });
 
-  it.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
+  it.skip.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
     const deltaX = -100;
     // simulate mouse+ctrl zoom
     await page.mouse.move(containerCenterX + 200, containerCenterY);
