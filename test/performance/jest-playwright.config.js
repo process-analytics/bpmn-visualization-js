@@ -24,14 +24,7 @@ module.exports = {
   },
   launchOptions: {
     headless: process.env.HEADLESS !== 'false',
-    logger: {
-      // Make browser logs visible
-      isEnabled: name => name === 'browser',
-      // eslint-disable-next-line no-console
-      log: (name, severity, message) => console.log(`${name} ${message}`),
-    },
     slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
-    args: ['--disable-infobars', '--no-sandbox', '--disable-setuid-sandbox'],
   },
   launchType: 'LAUNCH',
   contextOptions: {
@@ -40,7 +33,6 @@ module.exports = {
       height: 600,
     },
   },
-  browsers: ['chromium', 'firefox', 'webkit'],
-  device: [],
-  collectCoverage: process.env.COVERAGE === 'true',
+  // only collect on chromium for now
+  browsers: ['chromium'],
 };
