@@ -32,7 +32,9 @@ module.exports = {
     // the following is from https://playwright.dev/docs/api/class-logger (not sure this is what we want)
     logger: {
       // Make browser logs visible
-      isEnabled: name => name === 'browser',
+      // see https://github.com/microsoft/playwright/issues/4125
+      isEnabled: name => true,
+      //isEnabled: name => name === 'browser',
       // eslint-disable-next-line no-console
       log: (name, severity, message) => console.log(`${name} ${message}`),
     },

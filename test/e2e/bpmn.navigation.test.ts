@@ -43,11 +43,12 @@ async function zoom(xTimes: number, deltaX: number): Promise<void> {
 
 // WIP - workaround for https://github.com/microsoft/playwright/issues/1115
 // only works with chromium
-// taken from https://github.com/xtermjs/xterm.js/blob/23dba6aebd0d25180716ec45d106c6ac81d16153/test/api/MouseTracking.api.ts#L77
+// inspired from (not working as playwright server side code) https://github.com/xtermjs/xterm.js/blob/23dba6aebd0d25180716ec45d106c6ac81d16153/test/api/MouseTracking.api.ts#L77
+// inspired from https://github.com/microsoft/playwright/issues/2642#issuecomment-647846972
 async function chromiumMouseWheel(deltaX: number): Promise<void> {
   const client = await (page.context() as ChromiumBrowserContext).newCDPSession(page);
   await client.send('Input.dispatchMouseEvent', {
-    // "type":"mouseMoved","button":"none","x":615,"y":300,"modifiers":0
+    // "type":"mouseMoved","button":"none","x":615,"y":300,"modifiers":2
     // TODO we should manage x and y
     x: 615,
     y: 300,
