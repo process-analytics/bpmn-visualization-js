@@ -33,10 +33,19 @@ async function chromiumZoom(xTimes: number, x: number, y: number, deltaX: number
 
 // workaround for https://github.com/microsoft/playwright/issues/1115 that only works with chromium
 // inspired from https://github.com/microsoft/playwright/issues/2642#issuecomment-647846972
+// https://github.com/microsoft/playwright/blob/v1.8.1/docs/src/api/class-cdpsession.md
 async function chromiumMouseWheel(x: number, y: number, deltaX: number): Promise<void> {
+  // possible improvement to investigate: can we access to the chromium server directly?
+  // page._channel Proxy where Target is an EventEmitter
+  // server Mouse https://github.com/microsoft/playwright/blob/v1.8.0/src/server/input.ts#L171
+  // chromium server RawMouse: https://github.com/microsoft/playwright/blob/v1.8.0/src/server/chromium/crInput.ts#L95
+  // RawMouse as a _client field
+
   // TODO try to find a way to use the same session
   // TODO if no reuse, detach session when done??? or reuse the client?
   const client = await (page.context() as ChromiumBrowserContext).newCDPSession(page);
+  // for troubleshooting, see playwright protocol debug logs
+  // example when performing panning (set DEBUG=pw:protocol env var)
   await client.send('Input.dispatchMouseEvent', {
     x: x,
     y: y,
@@ -45,34 +54,7 @@ async function chromiumMouseWheel(x: number, y: number, deltaX: number): Promise
     deltaY: 0,
     modifiers: 2, // CTRL
   });
-
-  // check the EventEmitter in page.mouse!
-
-  // server Mouse https://github.com/microsoft/playwright/blob/v1.8.0/src/server/input.ts#L171
-  // chromium server RawMouse: https://github.com/microsoft/playwright/blob/v1.8.0/src/server/chromium/crInput.ts#L95
-  //const self = page.mouse as any;
-
-  // playwright protocol debug logs when performing panning (set DEBUG=pw:protocol env var)
-  //   pw:protocol SEND ► {"id":54,"method":"Input.dispatchMouseEvent","params":{"type":"mouseMoved","button":"none","x":415,"y":300,"modifiers":0},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"} +3ms
-  //   pw:protocol ◀ RECV {"id":54,"result":{},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"} +8ms
-  //   pw:protocol SEND ► {"id":55,"method":"Input.dispatchMouseEvent","params":{"type":"mousePressed","button":"left","x":415,"y":300,"modifiers":0,"clickCount":1},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"} +1ms
-  //   pw:protocol ◀ RECV {"id":55,"result":{},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"} +4ms
-  //   pw:protocol SEND ► {"id":56,"method":"Input.dispatchMouseEvent","params":{"type":"mouseMoved","button":"left","x":565,"y":340,"modifiers":0},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"} +0ms
-  //   pw:protocol ◀ RECV {"id":56,"result":{},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"} +7ms
-  //   pw:protocol SEND ► {"id":57,"method":"Input.dispatchMouseEvent","params":{"type":"mouseReleased","button":"left","x":565,"y":340,"modifiers":0,"clickCount":1},"sessionId":"E50793050ECCE3EC1F74E702BBC09E9E"}
-
-  // field _channel: Proxy
-  // return await self._raw._client.send('Input.dispatchMouseEvent', {
-  //   type: 'mouseWheel',
-  //   x: self._x,
-  //   y: self._y,
-  //   deltaX: deltaX,
-  //   deltaY: 0,
-  //   // deltaX: 0,
-  //   // deltaY: -10,
-  // });
 }
-// END OF - WIP - workaround for https://github.com/microsoft/playwright/issues/1115
 
 describe('diagram navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
