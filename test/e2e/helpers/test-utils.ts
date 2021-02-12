@@ -18,8 +18,7 @@ import { findFiles } from '../../helpers/file-helper';
 import { join } from 'path';
 import 'jest-playwright-preset';
 
-// TODO debug log namespace change: update doc + npm script
-export const configLog = debugLogger('bv:e2e:config');
+export const configLog = debugLogger('bv:test:config');
 
 export type OsName = 'linux' | 'macos' | 'windows';
 
