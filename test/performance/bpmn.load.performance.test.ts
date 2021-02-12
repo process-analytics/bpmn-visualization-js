@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { getSimplePlatformName } from '../e2e/helpers/test-utils';
 import * as fs from 'fs';
-import { calculateMetrics, ChartData, getPageMetrics, PerformanceMetric } from './helpers/perf-utils';
+import { getSimplePlatformName } from '../e2e/helpers/test-utils';
 import { PageTester } from '../e2e/helpers/visu/PageTester';
+import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
 import { chromiumMetrics } from './helpers/metrics-chromium';
 
 const platform = getSimplePlatformName();
@@ -30,26 +30,24 @@ describe.each([1])('load performance', run => {
 
   it.each([1])('check performance for file loading and displaying diagram with FitType.HorizontalVertical', async () => {
     const metricsStart = await chromiumMetrics(page);
-    // const metricsStart = await getPageMetrics(page);
     await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
     const metricsEnd = await chromiumMetrics(page);
-    // const metricsEnd = await getPageMetrics(page);
 
-    // const metric = { ...calculateMetrics(metricsStart, metricsEnd), run: run };
-    // metricsArray.push(metric);
+    const metric = { ...calculateMetrics(metricsStart, metricsEnd), run: run };
+    metricsArray.push(metric);
     expect(true).toBe(true);
   });
 });
-// afterAll(() => {
-//   try {
-//     const oldDataString = fs.readFileSync(performanceDataFilePath, 'utf8');
-//     const oldData = JSON.parse(oldDataString.substring('const data = '.length, oldDataString.length)) as ChartData;
-//     const data = {
-//       zoom: oldData.zoom,
-//       load: oldData.load.concat(metricsArray),
-//     };
-//     fs.writeFileSync(performanceDataFilePath, 'const data = ' + JSON.stringify(data));
-//   } catch (err) {
-//     console.error(err);
-//   }
-// });
+afterAll(() => {
+  try {
+    const oldDataString = fs.readFileSync(performanceDataFilePath, 'utf8');
+    const oldData = JSON.parse(oldDataString.substring('const data = '.length, oldDataString.length)) as ChartData;
+    const data = {
+      zoom: oldData.zoom,
+      load: oldData.load.concat(metricsArray),
+    };
+    fs.writeFileSync(performanceDataFilePath, 'const data = ' + JSON.stringify(data));
+  } catch (err) {
+    console.error(err);
+  }
+});

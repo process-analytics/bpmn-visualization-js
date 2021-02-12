@@ -39,6 +39,7 @@ export function calculateMetrics(metricsStart: any, metricsEnd: any): Performanc
   };
 }
 
+// TODO seems not useful here
 // workaround for https://github.com/microsoft/playwright/issues/590
 // inspired from https://github.com/microsoft/playwright/issues/2816#issuecomment-749269171
 export async function getPageMetrics(
@@ -55,7 +56,5 @@ export async function getPageMetrics(
         data: timing || window.performance.timing,
       });
     }),
-
-    //performance.memory.usedJSHeapSize
   );
 }
