@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { ElementHandle } from 'playwright';
+import 'jest-playwright-preset';
 import { FitType, LoadOptions } from '../../../../src/component/options';
 import { BpmnQuerySelectors } from '../../../../src/component/registry/query-selectors';
 
