@@ -37,6 +37,4 @@ module.exports = {
     },
   },
   browsers: browsers,
-  // TODO probably not for now
-  // collectCoverage: process.env.COVERAGE === 'true',
 };
