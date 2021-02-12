@@ -17,21 +17,25 @@ import * as fs from 'fs';
 import { getSimplePlatformName } from '../e2e/helpers/test-utils';
 import { PageTester } from '../e2e/helpers/visu/PageTester';
 import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
-import { chromiumMetrics } from './helpers/metrics-chromium';
+import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
 
 const platform = getSimplePlatformName();
 const performanceDataFilePath = './test/performance/data/' + platform + '/data.js';
 const metricsArray: Array<PerformanceMetric> = [];
 
+let metricsCollector: ChromiumMetricsCollector;
+beforeAll(async () => {
+  metricsCollector = await ChromiumMetricsCollector.create(page);
+});
 describe.each([1, 2, 3, 4, 5])('load performance', run => {
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
   const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
   const fileName = 'B.2.0';
 
   it.each([1])('check performance for file loading and displaying diagram with FitType.HorizontalVertical', async () => {
-    const metricsStart = await chromiumMetrics(page);
+    const metricsStart = await metricsCollector.metrics();
     await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
-    const metricsEnd = await chromiumMetrics(page);
+    const metricsEnd = await metricsCollector.metrics();
 
     const metric = { ...calculateMetrics(metricsStart, metricsEnd), run: run };
     metricsArray.push(metric);
@@ -39,6 +43,7 @@ describe.each([1, 2, 3, 4, 5])('load performance', run => {
   });
 });
 afterAll(() => {
+  metricsCollector.destroy();
   try {
     const oldDataString = fs.readFileSync(performanceDataFilePath, 'utf8');
     const oldData = JSON.parse(oldDataString.substring('const data = '.length, oldDataString.length)) as ChartData;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ChromiumBrowserContext, Page } from 'playwright';
+import { CDPSession, ChromiumBrowserContext, Page } from 'playwright';
 import { Protocol } from 'playwright/types/protocol';
 
 // from https://github.com/puppeteer/puppeteer/blob/v7.0.4/src/common/Page.ts
@@ -33,20 +33,8 @@ export interface Metrics {
   JSHeapTotalSize?: number;
 }
 
-export async function chromiumMetrics(page: Page): Promise<Metrics> {
-  // TODO create a class an keep the client in a field + detach at the end
-  const client = await (page.context() as ChromiumBrowserContext).newCDPSession(page);
-  // TODO should be only be done once
-  // https://github.com/puppeteer/puppeteer/blob/v7.0.4/src/common/Page.ts#L492
-  await client.send('Performance.enable');
-  //client.on('Performance.metrics', (event) => this._emitMetrics(event));
-  const response = await client.send('Performance.getMetrics');
-  // await client.detach();
-  return buildMetricsObject(response.metrics);
-}
-
 export class ChromiumMetricsCollector {
-  private client: any;
+  private client: CDPSession;
 
   private constructor() {
     // ensure to use the factory method
@@ -62,7 +50,6 @@ export class ChromiumMetricsCollector {
 
   async metrics(): Promise<Metrics> {
     const response = await this.client.send('Performance.getMetrics');
-    // await client.detach();
     return buildMetricsObject(response.metrics);
   }
 
