@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-// assume a single browser is passed at a given time
-// TODO: manage several browsers at the same time (split by ,)
-const browser = process.env.BROWSER || 'chromium';
+const browsers = (process.env.BROWSER || 'chromium').split(',');
 
 module.exports = {
   serverOptions: {
@@ -38,7 +36,7 @@ module.exports = {
       height: 600,
     },
   },
-  browsers: [browser],
+  browsers: browsers,
   // TODO probably not for now
   // collectCoverage: process.env.COVERAGE === 'true',
 };
