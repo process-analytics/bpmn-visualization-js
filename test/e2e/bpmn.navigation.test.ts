@@ -15,11 +15,10 @@
  */
 import 'jest-playwright-preset';
 import { join } from 'path';
-import debugLogger from 'debug';
 import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/PageTester';
-import { chromiumMouseWheel } from './helpers/visu/playwright-utils';
+import { browserConsoleSupport, chromiumMouseWheel } from './helpers/visu/playwright-utils';
 
 const delayToWaitUntilZoomIsDone = 100;
 
@@ -31,6 +30,9 @@ async function chromiumZoom(xTimes: number, x: number, y: number, deltaX: number
   }
 }
 
+beforeAll(() => {
+  browserConsoleSupport();
+});
 describe('diagram navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
     // if no dedicated information, set minimal threshold to make test pass on Github Workflow on Chromium
@@ -48,12 +50,6 @@ describe('diagram navigation', () => {
     'navigation',
     defaultChromiumFailureThreshold,
   );
-
-  // activate displaying browser console logs
-  // this is from https://playwright.dev/docs/api/class-page#pageonconsole
-  // see https://github.com/microsoft/playwright/issues/4498 and https://github.com/microsoft/playwright/issues/4125
-  const browserLog = debugLogger('bv:e2e:browser');
-  page.on('console', msg => browserLog('<%s> %s', msg.type(), msg.text()));
 
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
   const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
