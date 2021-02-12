@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// import { Metrics } from 'puppeteer';
 import { Page } from 'playwright';
+import { Metrics } from './metrics-chromium';
 
 export interface PerformanceMetric {
   run: number;
@@ -29,7 +29,7 @@ export interface ChartData {
   zoom: Array<PerformanceMetric>;
 }
 
-export function calculateMetrics(metricsStart: any, metricsEnd: any): PerformanceMetric {
+export function calculateMetrics(metricsStart: Metrics, metricsEnd: Metrics): PerformanceMetric {
   return {
     run: new Date().getMilliseconds(),
     LayoutDuration: metricsEnd.LayoutDuration - metricsStart.LayoutDuration,
