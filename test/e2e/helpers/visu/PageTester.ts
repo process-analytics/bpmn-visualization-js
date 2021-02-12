@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { ElementHandle } from 'playwright';
 import { FitType, LoadOptions } from '../../../../src/component/options';
 import { BpmnQuerySelectors } from '../../../../src/component/registry/query-selectors';
-import { ElementHandle } from 'playwright';
 
 export interface TargetedPage {
   /** the name of the page file without extension */
