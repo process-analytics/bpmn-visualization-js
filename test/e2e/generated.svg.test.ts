@@ -15,10 +15,10 @@
  */
 import 'jest-playwright-preset';
 import { loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
-import { BpmnPlaywright } from './helpers/visu/bpmn-playwright-utils';
+import { BpmnPage } from './helpers/visu/bpmn-playwright-utils';
 import { browserConsoleSupport } from './helpers/visu/playwright-utils';
 
-let bpmnPlaywright = new BpmnPlaywright('bpmn-container', page);
+let bpmnPage = new BpmnPage('bpmn-container', page);
 
 beforeAll(() => {
   browserConsoleSupport();
@@ -26,29 +26,29 @@ beforeAll(() => {
 describe('demo page', () => {
   it('should display page title', async () => {
     await page.goto('http://localhost:10002');
-    await bpmnPlaywright.expectPageTitle('BPMN Visualization Demo');
-    await bpmnPlaywright.expectAvailableBpmnContainer();
+    await bpmnPage.expectPageTitle('BPMN Visualization Demo');
+    await bpmnPage.expectAvailableBpmnContainer();
   });
 
   it('should display diagram in page', async () => {
     await page.goto(`http://localhost:10002?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
 
-    await bpmnPlaywright.expectEvent('StartEvent_1', 'Start Event 1');
-    await bpmnPlaywright.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
-    await bpmnPlaywright.expectTask('Activity_1', 'Task 1');
-    await bpmnPlaywright.expectSequenceFlow('Flow_2');
-    await bpmnPlaywright.expectEvent('EndEvent_1', 'End Event 1', false);
+    await bpmnPage.expectEvent('StartEvent_1', 'Start Event 1');
+    await bpmnPage.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
+    await bpmnPage.expectTask('Activity_1', 'Task 1');
+    await bpmnPage.expectSequenceFlow('Flow_2');
+    await bpmnPage.expectEvent('EndEvent_1', 'End Event 1', false);
   });
 });
 
 describe('lib-integration page', () => {
   it('should display diagram in page', async () => {
-    bpmnPlaywright = new BpmnPlaywright('bpmn-container-custom', page);
+    bpmnPage = new BpmnPage('bpmn-container-custom', page);
 
     await page.goto(`http://localhost:10002/lib-integration.html?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-only.bpmn')}`);
-    await bpmnPlaywright.expectPageTitle('BPMN Visualization Lib Integration');
-    await bpmnPlaywright.expectAvailableBpmnContainer();
+    await bpmnPage.expectPageTitle('BPMN Visualization Lib Integration');
+    await bpmnPage.expectAvailableBpmnContainer();
 
-    await bpmnPlaywright.expectEvent('StartEvent_1', 'Start Event Only');
+    await bpmnPage.expectEvent('StartEvent_1', 'Start Event Only');
   });
 });

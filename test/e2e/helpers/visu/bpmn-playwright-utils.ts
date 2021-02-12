@@ -18,7 +18,7 @@ import { ElementHandle, Page } from 'playwright';
 
 // TODO we could probably remove most of async directive in this class
 //  by swiching from await expect... to expect().resolves
-export class BpmnPlaywright {
+export class BpmnPage {
   private bpmnQuerySelectors: BpmnQuerySelectors;
 
   constructor(private bpmnContainerId: string, private currentPage: Page) {
