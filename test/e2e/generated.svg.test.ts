@@ -16,9 +16,13 @@
 import 'jest-playwright-preset';
 import { loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
 import { BpmnPlaywright } from './helpers/visu/bpmn-playwright-utils';
+import { browserConsoleSupport } from './helpers/visu/playwright-utils';
 
 let bpmnPlaywright = new BpmnPlaywright('bpmn-container', page);
 
+beforeAll(() => {
+  browserConsoleSupport();
+});
 describe('demo page', () => {
   it('should display page title', async () => {
     await page.goto('http://localhost:10002');

@@ -19,6 +19,7 @@ import 'jest-playwright-preset';
 import { FitType } from '../../src/component/options';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { PageTester } from './helpers/visu/PageTester';
+import { browserConsoleSupport } from './helpers/visu/playwright-utils';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
@@ -110,6 +111,9 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   }
 }
 
+beforeAll(() => {
+  browserConsoleSupport();
+});
 describe('no diagram visual regression', () => {
   const imageSnapshotThresholds = new ImageSnapshotThresholds();
   const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'fit', imageSnapshotThresholds.getDefault());
