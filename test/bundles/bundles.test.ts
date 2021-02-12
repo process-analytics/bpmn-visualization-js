@@ -16,7 +16,7 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import 'jest-playwright-preset';
-import { BpmnPage } from '../e2e/helpers/visu/bpmn-playwright-utils';
+import { BpmnPage } from '../e2e/helpers/visu/bpmn-page-utils';
 
 describe('bundles', () => {
   describe('All bundles have been generated', () => {

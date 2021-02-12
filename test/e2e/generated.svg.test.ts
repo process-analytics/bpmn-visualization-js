@@ -15,7 +15,7 @@
  */
 import 'jest-playwright-preset';
 import { loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
-import { BpmnPage } from './helpers/visu/bpmn-playwright-utils';
+import { BpmnPage } from './helpers/visu/bpmn-page-utils';
 import { browserConsoleSupport } from './helpers/visu/playwright-utils';
 
 let bpmnPage = new BpmnPage('bpmn-container', page);
