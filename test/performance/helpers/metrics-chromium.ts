@@ -37,11 +37,38 @@ export async function chromiumMetrics(page: Page): Promise<Metrics> {
   // TODO create a class an keep the client in a field + detach at the end
   const client = await (page.context() as ChromiumBrowserContext).newCDPSession(page);
   // TODO should be only be done once
+  // https://github.com/puppeteer/puppeteer/blob/v7.0.4/src/common/Page.ts#L492
   await client.send('Performance.enable');
   //client.on('Performance.metrics', (event) => this._emitMetrics(event));
   const response = await client.send('Performance.getMetrics');
   // await client.detach();
   return buildMetricsObject(response.metrics);
+}
+
+export class ChromiumMetricsCollector {
+  private client: any;
+
+  private constructor() {
+    // ensure to use the factory method
+  }
+
+  static async create(page: Page): Promise<ChromiumMetricsCollector> {
+    const collector = new ChromiumMetricsCollector();
+    collector.client = await (page.context() as ChromiumBrowserContext).newCDPSession(page);
+    // https://github.com/puppeteer/puppeteer/blob/v7.0.4/src/common/Page.ts#L492
+    await collector.client.send('Performance.enable');
+    return collector;
+  }
+
+  async metrics(): Promise<Metrics> {
+    const response = await this.client.send('Performance.getMetrics');
+    // await client.detach();
+    return buildMetricsObject(response.metrics);
+  }
+
+  async destroy(): Promise<void> {
+    await this.client.detach();
+  }
 }
 
 const supportedMetrics = new Set<string>([
