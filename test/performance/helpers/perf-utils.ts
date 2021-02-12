@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Page } from 'playwright';
 import { Metrics } from './metrics-chromium';
 
 export interface PerformanceMetric {
@@ -37,24 +36,4 @@ export function calculateMetrics(metricsStart: Metrics, metricsEnd: Metrics): Pe
     ScriptDuration: metricsEnd.ScriptDuration - metricsStart.ScriptDuration,
     TaskDuration: metricsEnd.TaskDuration - metricsStart.TaskDuration,
   };
-}
-
-// TODO seems not useful here
-// workaround for https://github.com/microsoft/playwright/issues/590
-// inspired from https://github.com/microsoft/playwright/issues/2816#issuecomment-749269171
-export async function getPageMetrics(
-  page: Page,
-): Promise<{
-  format: 'PerformanceNavigationTiming' | 'PerformanceTiming';
-  data: PerformanceNavigationTiming | PerformanceTiming;
-}> {
-  return JSON.parse(
-    await page.evaluate(() => {
-      const [timing] = performance.getEntriesByType('navigation');
-      return JSON.stringify({
-        format: timing ? 'PerformanceNavigationTiming' : 'PerformanceTiming',
-        data: timing || window.performance.timing,
-      });
-    }),
-  );
 }

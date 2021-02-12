@@ -16,7 +16,9 @@
 import { CDPSession, ChromiumBrowserContext, Page } from 'playwright';
 import { Protocol } from 'playwright/types/protocol';
 
-// from https://github.com/puppeteer/puppeteer/blob/v7.0.4/src/common/Page.ts
+// Workarounds no Metrics API in Playwright: https://github.com/microsoft/playwright/issues/590
+// inspired from https://github.com/puppeteer/puppeteer/blob/v7.0.4/src/common/Page.ts
+// possible alternative: https://github.com/microsoft/playwright/issues/2816#issuecomment-749269171
 export interface Metrics {
   Timestamp?: number;
   Documents?: number;
