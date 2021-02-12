@@ -23,7 +23,7 @@ const platform = getSimplePlatformName();
 const performanceDataFilePath = './test/performance/data/' + platform + '/data.js';
 const metricsArray: Array<PerformanceMetric> = [];
 
-describe.each([1])('load performance', run => {
+describe.each([1, 2, 3, 4, 5])('load performance', run => {
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
   const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
   const fileName = 'B.2.0';
