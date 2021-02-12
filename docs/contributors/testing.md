@@ -41,7 +41,7 @@ Tests change frequency:
 
 ### End-to-end tests
 
-We use the [puppeteer library](https://github.com/puppeteer/puppeteer/) with the [puppeteer jest integration](https://jestjs.io/docs/en/puppeteer) to handle
+We use the [playwright library](https://playwright.dev/) with the [jest-playwright integration](https://github.com/playwright-community/jest-playwright) to handle
 tests requiring a web browser. Chromium and Firefox can be used when running tests.
 
 We have the following types of end-to-end tests:
@@ -215,32 +215,29 @@ Html reports are generated for test execution and coverage in
 
 ### Web Browser choice for end-to-end tests
 
-By default, tests use Chromium and Chromium is installed by Puppeteer when running `npm install`.
+Web browsers are installed by `playwright` when running `npm install` and by default, tests use Chromium. 
 
-To use Firefox instead, use a `PUPPETEER_PRODUCT` environment variable: first install Firefox for Puppeteer, then configure
-Puppeteer to use Firefox:
+To use Firefox instead, use a `BROWSER` environment variable:
 - on Linux or macOS
 ```bash
-# install Firefox for Puppeteer
-PUPPETEER_PRODUCT=firefox npm install puppeteer
-# Run tests with Firefox
-PUPPETEER_PRODUCT=firefox npm run test:e2e
+BROWSER=firefox npm run test:e2e
 ```
-- on Windows using `cmd`  
-  - ⚠️ for some reasons, tests on Windows are working only in mode `headless: false` (update test/e2e/jest-playwright.config.js
-    or use extra environment variable, see below)
-  - ⚠️ there is no space between `firefox` and `&&`
+- on Windows using `cmd` ⚠️ there is no space between `firefox` and `&&`
 ```batch
-set PUPPETEER_PRODUCT=firefox&& npm install puppeteer
-set PUPPETEER_PRODUCT=firefox&& npm run test:e2e
+set BROWSER=firefox&& npm run test:e2e
 ```
 
+It is also possible to make tests use several browsers, pass the list of browsers separated by a comma when setting the
+`BROWSER` environment variable. For instance, on Linux or macOS:
+```bash
+BROWSER=chromium,firefox
+```
 
 ### Debugging end-to-end, performance and bundles tests
 
 To see what is happening in your local web browser used by the tests
 - disable the `headless` mode by setting the `HEADLESS` environment variable to `false`
 - set the `SLOWMO` environment variable to a positive millisecond value (between `200` and `500` should be enough). This
-slows Puppeteer down by milliseconds that we specify. So we will be able to observe what it actually does.
-- set the `DEBUG` environment variable with `DEBUG=test` to activate debug logs. This is activated by default when
+slows Playwright down by milliseconds that we specify. So we will be able to observe what it actually does.
+- set the `DEBUG` environment variable with `DEBUG=bv:e2e:*` to activate debug logs. This is activated by default when
 running the npm task. Think about it when running tests in your IDE.
