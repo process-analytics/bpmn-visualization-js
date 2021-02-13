@@ -24,8 +24,6 @@ export type OsName = 'linux' | 'macos' | 'windows';
 
 export function getSimplePlatformName(): OsName {
   const platform = process.platform;
-  configLog(`This platform is ${platform}`);
-
   if (platform.startsWith('win')) {
     return 'windows';
   } else if (platform.startsWith('darwin')) {
