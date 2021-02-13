@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import 'jest-playwright-preset';
-
 import {
   defaultChromiumFailureThreshold,
   ImageSnapshotConfigurator,
@@ -22,7 +21,6 @@ import {
   MultiBrowserImageSnapshotThresholds,
 } from './helpers/visu/image-snapshot-config';
 import { PageTester } from './helpers/visu/PageTester';
-import { browserConsoleSupport } from './helpers/visu/playwright-utils';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
@@ -224,9 +222,6 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   }
 }
 
-beforeAll(() => {
-  browserConsoleSupport();
-});
 describe('no BPMN elements visual regression', () => {
   const imageSnapshotThresholds = new ImageSnapshotThresholds();
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'bpmn', imageSnapshotThresholds.getDefault());

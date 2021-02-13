@@ -15,15 +15,6 @@
  */
 import 'jest-playwright-preset';
 import { ChromiumBrowserContext } from 'playwright';
-import debugLogger from 'debug';
-
-// Allow to get browser console logs
-// this is from https://playwright.dev/docs/api/class-page#pageonconsole
-// see https://github.com/microsoft/playwright/issues/4498 and https://github.com/microsoft/playwright/issues/4125
-const browserLog = debugLogger('bv:test:browser');
-export function browserConsoleSupport(): void {
-  page.on('console', msg => browserLog('<%s> %s', msg.type(), msg.text()));
-}
 
 // workaround for https://github.com/microsoft/playwright/issues/1115 that only works with chromium
 // inspired from https://github.com/microsoft/playwright/issues/2642#issuecomment-647846972

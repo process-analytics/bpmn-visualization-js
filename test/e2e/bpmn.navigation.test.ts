@@ -18,7 +18,7 @@ import { join } from 'path';
 import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/PageTester';
-import { browserConsoleSupport, chromiumMouseWheel } from './helpers/visu/playwright-utils';
+import { chromiumMouseWheel } from './helpers/visu/playwright-utils';
 
 const delayToWaitUntilZoomIsDone = 100;
 
@@ -30,9 +30,6 @@ async function chromiumZoom(xTimes: number, x: number, y: number, deltaX: number
   }
 }
 
-beforeAll(() => {
-  browserConsoleSupport();
-});
 describe('diagram navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
     // if no dedicated information, set minimal threshold to make test pass on Github Workflow on Chromium
