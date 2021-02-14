@@ -60,6 +60,8 @@ function getCustomCssClassName(bpmnKind) {
     return 'detection-event';
   } else if (bpmnKind.includes('lane')) {
     return 'detection-lane';
+  } else if (bpmnKind.includes('Flow')) {
+    return 'detection-flow';
   }
   return 'detection';
 }

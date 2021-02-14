@@ -20,4 +20,5 @@ export { BpmnVisualization };
 export { GlobalOptions, NavigationConfiguration, FitOptions, FitType, LoadOptions, ZoomConfiguration } from '../../component/options';
 
 // Interaction
-export { BpmnElementsRegistry, BpmnSemantic, BpmnElement } from '../../component/registry';
+export { BpmnElement, BpmnElementsRegistry, BpmnSemantic } from '../../component/registry';
+export * from '../../model/bpmn/internal/api';

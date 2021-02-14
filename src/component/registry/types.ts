@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Bonitasoft S.A.
+ * Copyright 2021 Bonitasoft S.A.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,5 +14,23 @@
  * limitations under the License.
  */
 
-export { BpmnElementsRegistry } from './bpmn-elements-registry';
-export * from './types';
+import { BpmnElementKind } from '../../model/bpmn/internal/api';
+
+/**
+ * @category Interaction
+ */
+export interface BpmnSemantic {
+  id: string;
+  name: string;
+  /** `true` when relates to a BPMN Shape, `false` when relates to a BPMN Edge. */
+  isShape: boolean;
+  kind: BpmnElementKind;
+}
+
+/**
+ * @category Interaction
+ */
+export interface BpmnElement {
+  bpmnSemantic: BpmnSemantic;
+  htmlElement: HTMLElement;
+}

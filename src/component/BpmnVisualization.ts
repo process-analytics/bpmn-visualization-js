@@ -20,6 +20,7 @@ import { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
 import { FitOptions, GlobalOptions, LoadOptions } from './options';
 import { BpmnElementsRegistry } from './registry';
 import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
+import { BpmnModelRegistry } from './registry/bpmn-model-registry';
 import { htmlElement } from './helpers/dom-utils';
 
 /**
@@ -32,19 +33,22 @@ export default class BpmnVisualization {
    * @experimental subject to change, feedback welcome
    */
   readonly bpmnElementsRegistry: BpmnElementsRegistry;
+  private readonly _bpmnModelRegistry: BpmnModelRegistry;
 
   constructor(options: GlobalOptions) {
     // mxgraph configuration
     const configurator = new MxGraphConfigurator(htmlElement(options?.container));
     this.graph = configurator.configure(options);
     // other configurations
-    this.bpmnElementsRegistry = newBpmnElementsRegistry(this.graph);
+    this._bpmnModelRegistry = new BpmnModelRegistry();
+    this.bpmnElementsRegistry = newBpmnElementsRegistry(this._bpmnModelRegistry, this.graph);
   }
 
   public load(xml: string, options?: LoadOptions): void {
     try {
       const bpmnModel = newBpmnParser().parse(xml);
-      newMxGraphRenderer(this.graph).render(bpmnModel, options);
+      const renderedModel = this._bpmnModelRegistry.computeRenderedModel(bpmnModel);
+      newMxGraphRenderer(this.graph).render(renderedModel, options);
     } catch (e) {
       // TODO error handling
       window.alert(`Cannot load bpmn diagram: ${e.message}`);

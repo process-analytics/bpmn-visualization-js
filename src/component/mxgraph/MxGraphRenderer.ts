@@ -15,8 +15,7 @@
  */
 import Shape from '../../model/bpmn/internal/shape/Shape';
 import Edge from '../../model/bpmn/internal/edge/Edge';
-import BpmnModel from '../../model/bpmn/internal/BpmnModel';
-import ShapeBpmnElement, { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import Waypoint from '../../model/bpmn/internal/edge/Waypoint';
 import Bounds from '../../model/bpmn/internal/Bounds';
 import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
@@ -24,35 +23,33 @@ import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleConfigurator from './config/StyleConfigurator';
 import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
-import { ShapeBpmnMarkerKind } from '../../model/bpmn/internal/shape';
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { LoadOptions } from '../options';
+import { RenderedModel } from '../registry/bpmn-model-registry'; // for types
 import { mxgraph } from './initializer';
 import { mxCell } from 'mxgraph'; // for types
 
 export default class MxGraphRenderer {
   constructor(readonly graph: BpmnMxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
 
-  public render(bpmnModel: BpmnModel, loadOptions?: LoadOptions): void {
-    this.insertShapesAndEdges(bpmnModel);
+  public render(renderedModel: RenderedModel, loadOptions?: LoadOptions): void {
+    this.insertShapesAndEdges(renderedModel);
     this.graph.customFit(loadOptions?.fit);
   }
 
-  private insertShapesAndEdges(bpmnModel: BpmnModel): void {
-    const displayedModel = toDisplayedModel(bpmnModel);
-
+  private insertShapesAndEdges(renderedModel: RenderedModel): void {
     const model = this.graph.getModel();
     model.clear(); // ensure to remove manual changes or already loaded graphs
     model.beginUpdate();
     try {
-      this.insertShapes(displayedModel.pools);
-      this.insertShapes(displayedModel.lanes);
-      this.insertShapes(displayedModel.subprocesses);
-      this.insertShapes(displayedModel.otherFlowNodes);
+      this.insertShapes(renderedModel.pools);
+      this.insertShapes(renderedModel.lanes);
+      this.insertShapes(renderedModel.subprocesses);
+      this.insertShapes(renderedModel.otherFlowNodes);
       // last shape as the boundary event parent must be in the model (subprocess or activity)
-      this.insertShapes(displayedModel.boundaryEvents);
+      this.insertShapes(renderedModel.boundaryEvents);
       // at last as edge source and target must be present in the model prior insertion, otherwise they are not rendered
-      this.insertEdges(displayedModel.edges);
+      this.insertEdges(renderedModel.edges);
     } finally {
       model.endUpdate();
     }
@@ -162,38 +159,4 @@ export default class MxGraphRenderer {
 
 export function newMxGraphRenderer(graph: BpmnMxGraph): MxGraphRenderer {
   return new MxGraphRenderer(graph, new CoordinatesTranslator(graph), new StyleConfigurator(graph));
-}
-
-function toDisplayedModel(bpmnModel: BpmnModel): DisplayedModel {
-  const collapsedSubProcessIds: string[] = bpmnModel.flowNodes
-    .filter(shape => {
-      const bpmnElement = shape.bpmnElement;
-      return ShapeUtil.isSubProcess(bpmnElement?.kind) && (bpmnElement as ShapeBpmnSubProcess)?.markers.includes(ShapeBpmnMarkerKind.EXPAND);
-    })
-    .map(shape => shape.bpmnElement?.id);
-
-  const subprocesses: Shape[] = [];
-  const boundaryEvents: Shape[] = [];
-  const otherFlowNodes: Shape[] = [];
-  bpmnModel.flowNodes.forEach(shape => {
-    const kind = shape.bpmnElement?.kind;
-    if (ShapeUtil.isSubProcess(kind)) {
-      subprocesses.push(shape);
-    } else if (ShapeUtil.isBoundaryEvent(kind)) {
-      boundaryEvents.push(shape);
-    } else if (!collapsedSubProcessIds.includes(shape.bpmnElement?.parentId)) {
-      otherFlowNodes.push(shape);
-    }
-  });
-
-  return { boundaryEvents: boundaryEvents, edges: bpmnModel.edges, lanes: bpmnModel.lanes, otherFlowNodes: otherFlowNodes, pools: bpmnModel.pools, subprocesses: subprocesses };
-}
-
-interface DisplayedModel {
-  edges: Edge[];
-  boundaryEvents: Shape[];
-  otherFlowNodes: Shape[];
-  lanes: Shape[];
-  pools: Shape[];
-  subprocesses: Shape[];
 }
