@@ -22,16 +22,11 @@ export default class GlobalTaskConverter {
   constructor(readonly convertedElements: ConvertedElements) {}
 
   deserialize(definitions: TDefinitions): void {
-    try {
-      this.parseGlobalTasks(definitions.globalTask);
-      this.parseGlobalTasks(definitions.globalBusinessRuleTask);
-      this.parseGlobalTasks(definitions.globalManualTask);
-      this.parseGlobalTasks(definitions.globalScriptTask);
-      this.parseGlobalTasks(definitions.globalUserTask);
-    } catch (e) {
-      // TODO error management
-      console.error(e as Error);
-    }
+    this.parseGlobalTasks(definitions.globalTask);
+    this.parseGlobalTasks(definitions.globalBusinessRuleTask);
+    this.parseGlobalTasks(definitions.globalManualTask);
+    this.parseGlobalTasks(definitions.globalScriptTask);
+    this.parseGlobalTasks(definitions.globalUserTask);
   }
 
   private parseGlobalTasks<T extends TGlobalTask>(globalTasks: T | T[]): void {

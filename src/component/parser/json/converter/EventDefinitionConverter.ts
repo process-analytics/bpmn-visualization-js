@@ -23,17 +23,12 @@ export default class EventDefinitionConverter {
   constructor(readonly convertedElements: ConvertedElements) {}
 
   deserialize(definitions: TDefinitions): void {
-    try {
-      bpmnEventKinds.forEach(eventKind => {
-        // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
-        const eventDefinitions: string | TEventDefinition | (string | TEventDefinition)[] = definitions[eventKind + 'EventDefinition'];
-        ensureIsArray<TEventDefinition>(eventDefinitions, true).forEach(eventDefinition => {
-          this.convertedElements.registerEventDefinitionsOfDefinitions(eventDefinition.id, eventKind);
-        });
+    bpmnEventKinds.forEach(eventKind => {
+      // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
+      const eventDefinitions: string | TEventDefinition | (string | TEventDefinition)[] = definitions[eventKind + 'EventDefinition'];
+      ensureIsArray<TEventDefinition>(eventDefinitions, true).forEach(eventDefinition => {
+        this.convertedElements.registerEventDefinitionsOfDefinitions(eventDefinition.id, eventKind);
       });
-    } catch (e) {
-      // TODO error management
-      console.error(e as Error);
-    }
+    });
   }
 }

@@ -41,22 +41,17 @@ export default class DiagramConverter {
 
     const bpmnDiagram = ensureIsArray(bpmnDiagrams)[0];
     if (bpmnDiagram) {
-      try {
-        // Need to be done before deserialization of Shape and Edge, to link the converted fonts to them
-        this.deserializeFonts(bpmnDiagram.BPMNLabelStyle);
+      // Need to be done before deserialization of Shape and Edge, to link the converted fonts to them
+      this.deserializeFonts(bpmnDiagram.BPMNLabelStyle);
 
-        const plane = bpmnDiagram.BPMNPlane;
-        const convertedEdges = this.deserializeEdges(plane.BPMNEdge);
-        const convertedShapes = this.deserializeShapes(plane.BPMNShape);
+      const plane = bpmnDiagram.BPMNPlane;
+      const convertedEdges = this.deserializeEdges(plane.BPMNEdge);
+      const convertedShapes = this.deserializeShapes(plane.BPMNShape);
 
-        flowNodes.push(...convertedShapes.flowNodes);
-        lanes.push(...convertedShapes.lanes);
-        pools.push(...convertedShapes.pools);
-        edges.push(...convertedEdges);
-      } catch (e) {
-        // TODO error management
-        console.error(e as Error);
-      }
+      flowNodes.push(...convertedShapes.flowNodes);
+      lanes.push(...convertedShapes.lanes);
+      pools.push(...convertedShapes.pools);
+      edges.push(...convertedEdges);
     }
     return { flowNodes, lanes, pools, edges };
   }
@@ -100,7 +95,7 @@ export default class DiagramConverter {
         continue;
       }
 
-      // TODO error management
+      // TODO decide how to manage elements not found during parsing as part of #35
       console.warn('Shape json deserialization: unable to find bpmn element with id %s', shape.bpmnElement);
     }
 
@@ -149,7 +144,7 @@ export default class DiagramConverter {
           this.convertedElements.findAssociationFlow(edge.bpmnElement);
 
         if (!flow) {
-          // TODO error management
+          // TODO decide how to manage elements not found during parsing as part of #35
           console.warn('Edge json deserialization: unable to find bpmn element with id %s', edge.bpmnElement);
           return;
         }
@@ -186,7 +181,7 @@ export default class DiagramConverter {
       font = this.convertedFonts.get(labelStyle);
 
       if (!font) {
-        // TODO error management
+        // TODO decide how to manage elements not found during parsing as part of #35
         console.warn('Unable to assign font from style %s to shape/edge %s', labelStyle, id);
       }
     }
