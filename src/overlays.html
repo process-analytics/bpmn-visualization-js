@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BPMN Visualization Non Regression</title>
+    <link rel="shortcut icon" href="./static/img/favicon.ico">
+    <style>
+      #main-container {
+        top: 140px;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        position: absolute;
+      }
+      #bpmn-container {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        border-style: solid;
+        border-color: #B0B0B0;
+        border-width: 1px;
+
+        position: absolute;
+        overflow: hidden;
+      }
+
+      #controls label {
+        position: absolute;
+        left: 10px;
+      }
+
+      #controls label:nth-child(1) {
+        top: 10px;
+      }
+
+      #controls label:nth-child(2) {
+        top: 40px;
+      }
+
+      #controls label:nth-child(3) {
+        top: 72px;
+      }
+
+      #controls label:nth-child(1) select {
+        margin-left: 38px;
+      }
+
+      #controls label:nth-child(2) input {
+        margin-left: 1px;
+      }
+
+      #controls label:nth-child(3) input {
+        margin-left: 42px;
+      }
+
+      #controls button {
+        position: absolute;
+        top: 106px;
+      }
+
+      #controls button#attach-badge {
+        left: 110px;
+      }
+
+      #controls button#bpmn-kinds-textarea-clean-btn {
+        left: 10px;
+      }
+
+      textarea {
+        resize: none;
+        height: 100px;
+        right: 10px;
+        position: absolute;
+        width: 50%;
+      }
+
+      /* activity */
+      .detection-activity > rect:nth-child(1) {
+        fill: aquamarine;
+      }
+      /* gateway */
+      .detection-gateway > path:nth-child(1) {
+        stroke: chartreuse;
+        stroke-width: 4;
+      }
+      /* event */
+      .detection-event > ellipse {
+        stroke: red;
+      }
+      /* lane */
+      .detection-lane > path:nth-child(3) {
+        fill: palevioletred;
+      }
+      .badge-overlay rect {
+        rx: 2px;
+      }
+    </style>
+</head>
+<body>
+    <div id="controls">
+      <label for="bpmn-elements-select">Select by Kinds:
+        <select id="bpmn-elements-select">
+          <option>choose Bpmn element</option>
+          <option value="_65f5459f-44ae-436d-a089-a91d6d78075b">Task 1</option>
+        </select>
+      </label>
+      <label>Chosen element id:
+        <input id="chosen-id" type="text" value="_65f5459f-44ae-436d-a089-a91d6d78075b" />
+      </label>
+      <label>Badge value:
+        <input id="badge-value" type="number" value="44" />
+      </label>
+      <button id="attach-badge">Attach badge to chosen element</button>
+      <button id="bpmn-kinds-textarea-clean-btn">Clear</button>
+      <textarea id="elements-result"></textarea>
+    </div>
+
+    <div id="main-container">
+      <div id="bpmn-container"></div>
+    </div>
+
+    <!-- load app -->
+    <script src="./static/js/overlays.js" type="module"></script>
+</body>
+</html>

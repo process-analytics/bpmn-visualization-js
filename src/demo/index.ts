@@ -136,7 +136,7 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
   return fitOptions;
 }
 
-export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
+export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): BpmnVisualization {
   const log = logStartup;
   const container = config.globalOptions.container;
 
@@ -174,4 +174,5 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
     return;
   }
   log("No 'url to fetch BPMN content' provided");
+  return bpmnVisualization;
 }
