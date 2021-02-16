@@ -77,7 +77,7 @@
     "version-prepare": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for release\"",
     "postversion": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for new developments\"",
     "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable", 
+    "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable"
   },
   "dependencies": {
@@ -142,16 +142,5 @@
     "ts-jest": "^26.5.2",
     "typedoc": "^0.20.28",
     "typescript": "^4.1.5"
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx}": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }
