@@ -217,20 +217,20 @@ Html reports are generated for test execution and coverage in
 
 Web browsers are installed by `playwright` when running `npm install` and by default, tests use Chromium. 
 
-To use Firefox instead, use a `BROWSER` environment variable:
+To use Firefox instead, use a `BROWSERS` environment variable:
 - on Linux or macOS
 ```bash
-BROWSER=firefox npm run test:e2e
+BROWSERS=firefox npm run test:e2e
 ```
 - on Windows using `cmd` ⚠️ there is no space between `firefox` and `&&`
 ```batch
-set BROWSER=firefox&& npm run test:e2e
+set BROWSERS=firefox&& npm run test:e2e
 ```
 
 It is also possible to make tests use several browsers, pass the list of browsers separated by a comma when setting the
-`BROWSER` environment variable. For instance, on Linux or macOS:
+`BROWSERS` environment variable. For instance, on Linux or macOS:
 ```bash
-BROWSER=chromium,firefox
+BROWSERS=chromium,firefox
 ```
 
 ### Debugging end-to-end, performance and bundles tests

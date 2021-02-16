@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-const browsers = (process.env.BROWSER || 'chromium').split(',');
+const browsers = (process.env.BROWSERS || 'chromium').split(',');
 
 module.exports = {
   serverOptions: {

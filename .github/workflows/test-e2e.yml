@@ -68,7 +68,7 @@ jobs:
       - name: Test Application End to End
         id: 'test_e2e'
         env:
-          BROWSER: firefox
+          BROWSERS: firefox
         run: npm run test:e2e
       - name: Upload e2e test results
         if: ${{ failure() && steps.test_e2e.outcome == 'failure' }}
