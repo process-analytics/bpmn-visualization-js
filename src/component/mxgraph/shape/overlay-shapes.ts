@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 import { mxgraph } from '../initializer';
-import { mxRectangle } from 'mxgraph';
+import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph';
+import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render';
+import { StyleDefault } from '../StyleUtils';
 
 export class OverlayBadgeShape extends mxgraph.mxText {
   public constructor(value: string, bounds: mxRectangle) {
@@ -25,5 +27,30 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.background = 'white';
+  }
+}
+
+export class OverlayBadgeEllipseShape extends mxgraph.mxEllipse {
+  protected iconPainter = IconPainterProvider.get();
+  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
+    super(bounds, fill, stroke, strokewidth);
+  }
+
+  protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {
+    super.paintVertexShape(c, x, y, w, h);
+  }
+
+  public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+    const paintParameter = buildPaintParameter(c, x, y, w, h, this, 0.25, false);
+    this.paintOuterShape(paintParameter);
+    this.paintInnerShape(paintParameter);
+  }
+
+  protected paintInnerShape(paintParameter: PaintParameter): void {
+    this.iconPainter.paintXCrossIcon({
+      ...paintParameter,
+      icon: { ...paintParameter.icon, isFilled: true },
+      ratioFromParent: 0.5,
+    });
   }
 }

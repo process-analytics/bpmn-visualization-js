@@ -26,45 +26,48 @@
         overflow: hidden;
       }
 
-      #controls label {
-        position: absolute;
+      #controls .controls-group:nth-child(1) label {
+        display: block;
+        position: relative;
         left: 10px;
       }
 
-      #controls label:nth-child(1) {
+      #controls .controls-group:nth-child(1) label:nth-child(1) {
         top: 10px;
       }
 
-      #controls label:nth-child(2) {
-        top: 40px;
+      #controls .controls-group:nth-child(1) label:nth-child(2) {
+        top: 20px;
       }
 
-      #controls label:nth-child(3) {
-        top: 72px;
+      #controls .controls-group:nth-child(1) label:nth-child(3) {
+        top: 32px;
       }
 
-      #controls label:nth-child(1) select {
+      #controls .controls-group:nth-child(1) label:nth-child(1) select {
         margin-left: 38px;
       }
 
-      #controls label:nth-child(2) input {
+      #controls .controls-group:nth-child(1) label:nth-child(2) input {
         margin-left: 1px;
       }
 
-      #controls label:nth-child(3) input {
+      #controls .controls-group:nth-child(1) label:nth-child(3) input {
         margin-left: 42px;
       }
 
       #controls button {
-        position: absolute;
-        top: 106px;
+        display: block;
+        position: relative;
       }
 
       #controls button#attach-badge {
+        top: 42px;
         left: 110px;
       }
 
       #controls button#bpmn-kinds-textarea-clean-btn {
+        top: 20px;
         left: 10px;
       }
 
@@ -72,7 +75,7 @@
         resize: none;
         height: 100px;
         right: 10px;
-        position: absolute;
+        position: relative;
         width: 50%;
       }
 
@@ -96,25 +99,55 @@
       .badge-overlay rect {
         rx: 2px;
       }
+      #controls {
+        display: flex;
+        flex-direction: row;
+      }
+      .controls-group {
+        flex: 1;
+      }
+      .controls-group p {
+        margin: 10px 0;
+      }
     </style>
 </head>
 <body>
     <div id="controls">
-      <label for="bpmn-elements-select">Select by Kinds:
-        <select id="bpmn-elements-select">
-          <option>choose Bpmn element</option>
-          <option value="_65f5459f-44ae-436d-a089-a91d6d78075b">Task 1</option>
-        </select>
-      </label>
-      <label>Chosen element id:
-        <input id="chosen-id" type="text" value="_65f5459f-44ae-436d-a089-a91d6d78075b" />
-      </label>
-      <label>Badge value:
-        <input id="badge-value" type="number" value="44" />
-      </label>
-      <button id="attach-badge">Attach badge to chosen element</button>
-      <button id="bpmn-kinds-textarea-clean-btn">Clear</button>
-      <textarea id="elements-result"></textarea>
+      <div class="controls-group">
+        <label for="bpmn-elements-select">Select by Kinds:
+          <select id="bpmn-elements-select">
+            <option>choose Bpmn element</option>
+            <option value="_65f5459f-44ae-436d-a089-a91d6d78075b">Task 1</option>
+          </select>
+        </label>
+        <label>Chosen element id:
+          <input id="chosen-id" type="text" value="_65f5459f-44ae-436d-a089-a91d6d78075b" />
+        </label>
+        <label>Badge value:
+          <input id="badge-value" type="number" value="44" />
+        </label>
+        <button id="attach-badge">Attach badge to chosen element</button>
+        <button id="bpmn-kinds-textarea-clean-btn">Clear</button>
+      </div>
+      <div class="controls-group">
+        <p>Horizontal align:
+          <label>left<input type="radio" name="horizontalAlign" value="left" checked/></label>
+          <label>center<input type="radio" name="horizontalAlign" value="center" /></label>
+          <label>right<input type="radio" name="horizontalAlign" value="right" /></label>
+        </p>
+        <p>Vertical align:
+          <label>bottom<input type="radio" name="verticalAlign" value="bottom" /></label>
+          <label>middle<input type="radio" name="verticalAlign" value="middle" /></label>
+          <label>top<input type="radio" name="verticalAlign" value="top" checked/></label>
+        </p>
+        <p>Badge kind:
+          <label>text<input type="radio" name="badgeKind" value="badgeText" checked/></label>
+          <label>ellipse<input type="radio" name="badgeKind" value="badgeEllipse" /></label>
+        </p>
+      </div>
+      <div class="controls-group">
+        <textarea id="elements-result"></textarea>
+      </div>
     </div>
 
     <div id="main-container">

@@ -39,8 +39,7 @@ function configureControls(bpmnElementsRegistry) {
     const bpmnId = document.getElementById('chosen-id').value;
     const badgeValue = document.getElementById('badge-value').value;
 
-    bpmnElementsRegistry.addBadgeToElement(bpmnId, badgeValue);
-
+    bpmnElementsRegistry.addBadgeToElement(bpmnId, badgeValue, getCheckedRadioValue('badgeKind'), getCheckedRadioValue('horizontalAlign'), getCheckedRadioValue('verticalAlign'));
     // log(`Searching for Bpmn elements of '${bpmnId}' kind`);
     // document.getElementById('chosen-id').value = bpmnId;
     // const elementsById = bpmnElementsRegistry.getElementsByIds(bpmnId);
@@ -59,6 +58,11 @@ function configureControls(bpmnElementsRegistry) {
     // addCssClasses(bpmnIds, lastCssClassName);
     // lastBpmnIdsWithExtraCssClasses = bpmnIds;
   };
+}
+
+function getCheckedRadioValue(name) {
+  const elements = document.getElementsByName(name);
+  for (let i = 0, len = elements.length; i < len; ++i) if (elements[i].checked) return elements[i].value;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

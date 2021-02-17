@@ -36,7 +36,7 @@ import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-hel
 import { mxCellState, mxImageShape, mxShape } from 'mxgraph';
 import { BpmnOverlay } from '../../registry/bpmn-elements-registry';
 import { OverlayKind } from '../../../model/bpmn/internal/overlay/OverlayKind';
-import { OverlayBadgeShape } from '../shape/overlay-shapes'; // for types
+import { OverlayBadgeEllipseShape, OverlayBadgeShape } from '../shape/overlay-shapes'; // for types
 
 export default class ShapeConfigurator {
   public configureShapes(): void {
@@ -76,7 +76,8 @@ export default class ShapeConfigurator {
     mxgraph.mxCellRenderer.registerShape(StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON, MessageFlowIconShape);
 
     // shapes for overlays
-    mxgraph.mxCellRenderer.registerShape(OverlayKind.BADGE, OverlayBadgeShape);
+    mxgraph.mxCellRenderer.registerShape(OverlayKind.BADGE_TEXT, OverlayBadgeShape);
+    mxgraph.mxCellRenderer.registerShape(OverlayKind.BADGE_ELLIPSE, OverlayBadgeEllipseShape);
   }
 
   private initMxShapePrototype(): void {
@@ -189,7 +190,11 @@ export default class ShapeConfigurator {
           if (shape == null) {
             let tmp: mxShape;
             if (currentOverlay instanceof BpmnOverlay) {
-              tmp = new OverlayBadgeShape(currentOverlay.value, new mxgraph.mxRectangle(0, 0, 0, 0));
+              if (currentOverlay.kind === OverlayKind.BADGE_ELLIPSE) {
+                tmp = new OverlayBadgeEllipseShape(new mxgraph.mxRectangle(0, 0, 0, 0), 'chartreuse', 'black');
+              } else {
+                tmp = new OverlayBadgeShape(currentOverlay.value, new mxgraph.mxRectangle(0, 0, 0, 0));
+              }
               tmp.dialect = state.view.graph.dialect;
             } else {
               tmp = new mxgraph.mxImageShape(new mxgraph.mxRectangle(0, 0, 0, 0), currentOverlay.image.src);

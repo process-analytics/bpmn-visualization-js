@@ -22,19 +22,25 @@ import { BpmnQuerySelectors } from './query-selectors';
 import { BpmnElement } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
-import { mxCell, mxCellOverlay, mxCellState, mxPoint, mxRectangle } from 'mxgraph'; // for types
+import { mxCell, mxCellOverlay, mxPoint } from 'mxgraph'; // for types
 import { mxgraph } from '../mxgraph/initializer';
+import { OverlayKind } from '../../model/bpmn/internal/overlay/OverlayKind';
 
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnMxGraph): BpmnElementsRegistry {
   return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), new MxGraphCellUpdater(graph));
 }
 
+export type VerticalAlignType = 'bottom' | 'middle' | 'top';
+export type HorizontalAlignType = 'left' | 'center' | 'right';
+
 export class BpmnOverlay extends mxgraph.mxCellOverlay {
   value: string;
-  constructor(value: string, tooltip: string, align?: string, verticalAlign?: string, offset?: mxPoint, cursor?: string) {
+  kind: OverlayKind;
+  constructor(value: string, tooltip: string, kind: OverlayKind, align?: HorizontalAlignType, verticalAlign?: VerticalAlignType, offset?: mxPoint, cursor?: string) {
     // TODO: get rid of workaround mxImage
     super(new mxgraph.mxImage('JUST_WORKAROUND', 10, 10), tooltip, align, verticalAlign, offset, cursor);
     this.value = value;
+    this.kind = kind;
   }
 }
 /**
@@ -65,9 +71,15 @@ export class BpmnElementsRegistry {
     private mxGraphCellUpdater: MxGraphCellUpdater,
   ) {}
 
-  addBadgeToElement(id: string, value: string): void {
+  addBadgeToElement(
+    id: string,
+    value: string,
+    kind: OverlayKind = OverlayKind.BADGE_TEXT,
+    align: HorizontalAlignType = mxgraph.mxConstants.ALIGN_RIGHT,
+    verticalAlign: VerticalAlignType = mxgraph.mxConstants.ALIGN_TOP,
+  ): void {
     // TODO: positioning - configurable, if position is taken do we display new element and remove the old one?
-    const overlay = new BpmnOverlay(value, 'tooltip', mxgraph.mxConstants.ALIGN_RIGHT, mxgraph.mxConstants.ALIGN_TOP);
+    const overlay = new BpmnOverlay(value, 'tooltip', kind, align, verticalAlign);
     this.bpmnModelRegistry.addCellOverlay(id, overlay);
   }
 

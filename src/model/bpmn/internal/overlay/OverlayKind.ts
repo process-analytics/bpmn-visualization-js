@@ -14,5 +14,6 @@
  * limitations under the License.
  */
 export enum OverlayKind {
-  BADGE = 'badge',
+  BADGE_TEXT = 'badgeText',
+  BADGE_ELLIPSE = 'badgeEllipse',
 }
