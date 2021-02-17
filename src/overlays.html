@@ -71,6 +71,11 @@
         left: 10px;
       }
 
+      #controls button#attach-badge-batch {
+        left: 355px;
+        background-color: chartreuse;
+      }
+
       textarea {
         resize: none;
         height: 100px;
@@ -128,12 +133,13 @@
         </label>
         <button id="attach-badge">Attach badge to chosen element</button>
         <button id="bpmn-kinds-textarea-clean-btn">Clear</button>
+        <button id="attach-badge-batch">Attach badge to batch</button>
       </div>
       <div class="controls-group">
         <p>Horizontal align:
-          <label>left<input type="radio" name="horizontalAlign" value="left" checked/></label>
+          <label>left<input type="radio" name="horizontalAlign" value="left"/></label>
           <label>center<input type="radio" name="horizontalAlign" value="center" /></label>
-          <label>right<input type="radio" name="horizontalAlign" value="right" /></label>
+          <label>right<input type="radio" name="horizontalAlign" value="right" checked /></label>
         </p>
         <p>Vertical align:
           <label>bottom<input type="radio" name="verticalAlign" value="bottom" /></label>
