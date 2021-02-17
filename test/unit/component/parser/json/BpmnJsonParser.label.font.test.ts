@@ -82,17 +82,24 @@ describe('parse bpmn as json for label font', () => {
     },
   );
 
-  it("should convert as Edge with Font, when a BPMNEdge (who references a BPMNLabelStyle with font) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
+  it("should convert as Edge with Font, when a BPMNEdge (which references a BPMNLabelStyle with font) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',
-        process: '',
+        process: {
+          sequenceFlow: {
+            id: 'sequenceFlow_id_0',
+            sourceRef: 'sourceRef',
+            targetRef: 'targetRef',
+          },
+        },
         BPMNDiagram: {
           id: 'BpmnDiagram_1',
           BPMNPlane: {
             id: 'BpmnPlane_1',
             BPMNEdge: {
               id: 'BPMNEdge_id_0',
+              bpmnElement: 'sequenceFlow_id_0',
               waypoint: [{ x: 10, y: 10 }],
               BPMNLabel: {
                 id: 'label_id',
@@ -174,7 +181,20 @@ describe('parse bpmn as json for label font', () => {
     const json = {
       definitions: {
         targetNamespace: '',
-        process: '',
+        process: {
+          sequenceFlow: [
+            {
+              id: 'sequenceFlow_id_0',
+              sourceRef: 'sourceRef_0',
+              targetRef: 'targetRef_0',
+            },
+            {
+              id: 'sequenceFlow_id_1',
+              sourceRef: 'sourceRef_1',
+              targetRef: 'targetRef_1',
+            },
+          ],
+        },
         BPMNDiagram: {
           id: 'BpmnDiagram_1',
           BPMNPlane: {
@@ -182,6 +202,7 @@ describe('parse bpmn as json for label font', () => {
             BPMNEdge: [
               {
                 id: 'BPMNEdge_id_0',
+                bpmnElement: 'sequenceFlow_id_0',
                 waypoint: [{ x: 10, y: 10 }],
                 BPMNLabel: {
                   labelStyle: 'style_id_1',
@@ -189,6 +210,7 @@ describe('parse bpmn as json for label font', () => {
               },
               {
                 id: 'BPMNEdge_id_1',
+                bpmnElement: 'sequenceFlow_id_1',
                 waypoint: [{ x: 10, y: 10 }],
                 BPMNLabel: {
                   labelStyle: 'style_id_1',
@@ -280,11 +302,24 @@ describe('parse bpmn as json for label font', () => {
     expect(model.flowNodes[1].label).toBeUndefined();
   });
 
-  it("should convert as Edge[] without Font, when BPMNEdges (who reference a BPMNLabelStyle) are an attribute (as array) of 'BPMNPlane' (as object) & BPMNLabelStyle (with font with/without all attributes) is an attribute (as array) of 'BPMNDiagram' (as object)", () => {
+  it("should convert as Edge[] without Font, when BPMNEdges (which reference a BPMNLabelStyle) are an attribute (as array) of 'BPMNPlane' (as object) & BPMNLabelStyle (with font with/without all attributes) is an attribute (as array) of 'BPMNDiagram' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',
-        process: '',
+        process: {
+          sequenceFlow: [
+            {
+              id: 'sequenceFlow_id_0',
+              sourceRef: 'sourceRef_0',
+              targetRef: 'targetRef_0',
+            },
+            {
+              id: 'sequenceFlow_id_1',
+              sourceRef: 'sourceRef_1',
+              targetRef: 'targetRef_1',
+            },
+          ],
+        },
         BPMNDiagram: {
           id: 'BpmnDiagram_1',
           BPMNPlane: {
@@ -292,6 +327,7 @@ describe('parse bpmn as json for label font', () => {
             BPMNEdge: [
               {
                 id: 'BPMNEdge_id_0',
+                bpmnElement: 'sequenceFlow_id_0',
                 waypoint: [{ x: 10, y: 10 }],
                 BPMNLabel: {
                   id: 'label_id_1',
@@ -300,6 +336,7 @@ describe('parse bpmn as json for label font', () => {
               },
               {
                 id: 'BPMNEdge_id_1',
+                bpmnElement: 'sequenceFlow_id_1',
                 waypoint: [{ x: 10, y: 10 }],
                 BPMNLabel: {
                   id: 'label_id_2',
@@ -372,17 +409,24 @@ describe('parse bpmn as json for label font', () => {
     expect(model.flowNodes[0].label).toBeUndefined();
   });
 
-  it("should convert as Edge without Font, when a BPMNEdge (who references a BPMNLabelStyle without font) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
+  it("should convert as Edge without Font, when a BPMNEdge (which references a BPMNLabelStyle without font) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     const json = {
       definitions: {
         targetNamespace: '',
-        process: '',
+        process: {
+          sequenceFlow: {
+            id: 'sequenceFlow_id_0',
+            sourceRef: 'sourceRef_0',
+            targetRef: 'targetRef_0',
+          },
+        },
         BPMNDiagram: {
           id: 'BpmnDiagram_1',
           BPMNPlane: {
             id: 'BpmnPlane_1',
             BPMNEdge: {
               id: 'BPMNEdge_id_0',
+              bpmnElement: 'sequenceFlow_id_0',
               waypoint: [{ x: 10, y: 10 }],
               BPMNLabel: {
                 id: 'label_id',
@@ -437,18 +481,25 @@ describe('parse bpmn as json for label font', () => {
     expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNShape_id_0');
   });
 
-  it("should convert as Edge without Font, when a BPMNEdge (who references a non-existing BPMNLabelStyle) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
+  it("should convert as Edge without Font, when a BPMNEdge (which references a non-existing BPMNLabelStyle) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     console.warn = jest.fn();
     const json = {
       definitions: {
         targetNamespace: '',
-        process: '',
+        process: {
+          sequenceFlow: {
+            id: 'sequenceFlow_id_0',
+            sourceRef: 'sourceRef_0',
+            targetRef: 'targetRef_0',
+          },
+        },
         BPMNDiagram: {
           id: 'BpmnDiagram_1',
           BPMNPlane: {
             id: 'BpmnPlane_1',
             BPMNEdge: {
               id: 'BPMNEdge_id_0',
+              bpmnElement: 'sequenceFlow_id_0',
               waypoint: [{ x: 10, y: 10 }],
               BPMNLabel: {
                 id: 'label_id',
