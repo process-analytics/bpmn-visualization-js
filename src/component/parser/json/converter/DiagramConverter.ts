@@ -73,30 +73,28 @@ export default class DiagramConverter {
     //    if found push in an array and process next element
     const convertedShapes: Shapes = { flowNodes: [], lanes: [], pools: [] };
 
-    shapes = ensureIsArray(shapes);
-
-    for (const shape of shapes) {
+    ensureIsArray(shapes).forEach(shape => {
       const flowNode = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findFlowNode(bpmnElement));
       if (flowNode) {
         convertedShapes.flowNodes.push(flowNode);
-        continue;
+        return;
       }
 
       const lane = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findLane(bpmnElement));
       if (lane) {
         convertedShapes.lanes.push(lane);
-        continue;
+        return;
       }
 
       const pool = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findProcess(bpmnElement));
       if (pool) {
         convertedShapes.pools.push(pool);
-        continue;
+        return;
       }
 
       // TODO decide how to manage elements not found during parsing as part of #35
       console.warn('Shape json deserialization: unable to find bpmn element with id %s', shape.bpmnElement);
-    }
+    });
 
     return convertedShapes;
   }
