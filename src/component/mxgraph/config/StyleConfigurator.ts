@@ -20,7 +20,7 @@ import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import Edge from '../../../model/bpmn/internal/edge/Edge';
 import Bounds from '../../../model/bpmn/internal/Bounds';
-import ShapeBpmnElement, {
+import {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
