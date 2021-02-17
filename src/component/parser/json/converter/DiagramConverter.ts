@@ -75,8 +75,7 @@ export default class DiagramConverter {
 
     shapes = ensureIsArray(shapes);
 
-    for (let i = 0; i < shapes.length; i++) {
-      const shape = shapes[i];
+    for (const shape of shapes) {
       const flowNode = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findFlowNode(bpmnElement));
       if (flowNode) {
         convertedShapes.flowNodes.push(flowNode);
