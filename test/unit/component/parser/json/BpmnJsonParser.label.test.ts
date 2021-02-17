@@ -67,13 +67,20 @@ describe('parse bpmn as json for label font', () => {
     const json = {
       definitions: {
         targetNamespace: '',
-        process: '',
+        process: {
+          sequenceFlow: {
+            id: 'sequenceFlow_id_0',
+            sourceRef: 'sourceRef_0',
+            targetRef: 'targetRef_0',
+          },
+        },
         BPMNDiagram: {
           id: 'BpmnDiagram_1',
           BPMNPlane: {
             id: 'BpmnPlane_1',
             BPMNEdge: {
               id: 'BPMNEdge_id_0',
+              bpmnElement: 'sequenceFlow_id_0',
               waypoint: [{ x: 10, y: 10 }],
               BPMNLabel: '',
             },
@@ -123,13 +130,20 @@ describe('parse bpmn as json for label font', () => {
     const json = {
       definitions: {
         targetNamespace: '',
-        process: '',
+        process: {
+          sequenceFlow: {
+            id: 'sequenceFlow_id_0',
+            sourceRef: 'sourceRef_0',
+            targetRef: 'targetRef_0',
+          },
+        },
         BPMNDiagram: {
           id: 'BpmnDiagram_1',
           BPMNPlane: {
             id: 'BpmnPlane_1',
             BPMNEdge: {
               id: 'BPMNEdge_id_0',
+              bpmnElement: 'sequenceFlow_id_0',
               waypoint: [{ x: 10, y: 10 }],
               BPMNLabel: {
                 id: '',
@@ -178,13 +192,20 @@ describe('parse bpmn as json for label font', () => {
     const json = {
       definitions: {
         targetNamespace: '',
-        process: '',
+        process: {
+          sequenceFlow: {
+            id: 'sequenceFlow_id_0',
+            sourceRef: 'sourceRef_0',
+            targetRef: 'targetRef_0',
+          },
+        },
         BPMNDiagram: {
           id: 'BpmnDiagram_1',
           BPMNPlane: {
             id: 'BpmnPlane_1',
             BPMNEdge: {
               id: 'BPMNEdge_id_0',
+              bpmnElement: 'sequenceFlow_id_0',
               waypoint: [{ x: 10, y: 10 }],
             },
           },

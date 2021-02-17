@@ -141,19 +141,28 @@ export default class DiagramConverter {
   }
 
   private deserializeEdges(edges: BPMNEdge | BPMNEdge[]): Edge[] {
-    return ensureIsArray(edges).map(edge => {
-      const flow =
-        this.convertedElements.findSequenceFlow(edge.bpmnElement) ||
-        this.convertedElements.findMessageFlow(edge.bpmnElement) ||
-        this.convertedElements.findAssociationFlow(edge.bpmnElement);
-      const waypoints = this.deserializeWaypoints(edge.waypoint);
-      const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
+    return ensureIsArray(edges)
+      .map(edge => {
+        const flow =
+          this.convertedElements.findSequenceFlow(edge.bpmnElement) ||
+          this.convertedElements.findMessageFlow(edge.bpmnElement) ||
+          this.convertedElements.findAssociationFlow(edge.bpmnElement);
 
-      // TODO Remove messageVisibleKind conversion type when we merge/simplify internal model with BPMN json model
-      const messageVisibleKind = edge.messageVisibleKind ? ((edge.messageVisibleKind as unknown) as MessageVisibleKind) : MessageVisibleKind.NONE;
+        if (!flow) {
+          // TODO error management
+          console.warn('Edge json deserialization: unable to find bpmn element with id %s', edge.bpmnElement);
+          return;
+        }
 
-      return new Edge(edge.id, flow, waypoints, label, messageVisibleKind);
-    });
+        const waypoints = this.deserializeWaypoints(edge.waypoint);
+        const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
+
+        // TODO Remove messageVisibleKind conversion type when we merge/simplify internal model with BPMN json model
+        const messageVisibleKind = edge.messageVisibleKind ? ((edge.messageVisibleKind as unknown) as MessageVisibleKind) : MessageVisibleKind.NONE;
+
+        return new Edge(edge.id, flow, waypoints, label, messageVisibleKind);
+      })
+      .filter(edge => edge);
   }
 
   private deserializeWaypoints(waypoints: Point[]): Waypoint[] {
