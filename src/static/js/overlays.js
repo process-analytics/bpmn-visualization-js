@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, FitType, getElementsByKinds, log, startBpmnVisualization, ShapeUtil } from '../../index.es.js';
+import { documentReady, FitType, getElementsByKinds, log, startBpmnVisualization } from '../../index.es.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureControls(bpmnElementsRegistry) {
