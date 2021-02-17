@@ -47,6 +47,8 @@ function loadBpmn(bpmn: string): void {
   log('Loading bpmn....');
   bpmnVisualization.load(bpmn, loadOptions);
   log('BPMN loaded with configuration', stringify(loadOptions));
+
+  document.getElementById('bpmnElementIdOrNameWithTooltip').dispatchEvent(new CustomEvent('diagramLoaded'));
 }
 
 export function fit(fitOptions: FitOptions): void {
@@ -82,6 +84,10 @@ export function addOverlay(bpmnElementIdOrName: string): void {
   }
 }
 
+export function removeOverlay(bpmnElementIdOrName: string): void {
+  return bpmnVisualization.bpmnElementsRegistry.removeOverlay(bpmnElementIdOrName);
+}
+
 export function addCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
   return bpmnVisualization.bpmnElementsRegistry.addCssClasses(bpmnElementId, classNames);
 }
@@ -97,8 +103,6 @@ function readAndLoadFile(f: File): void {
     loadBpmn(reader.result as string);
   };
   reader.readAsText(f);
-
-  document.getElementById('bpmnElementIdOrNameWithTooltip').dispatchEvent(new CustomEvent('diagramLoaded'));
 }
 
 /**

@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions, addOverlay } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions, addOverlay, removeOverlay } from '../../index.es.js';
 
 let fitOnLoad = true;
 let fitOptions = {};
+let currentBpmnElementIdOrName;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureFitOnLoadCheckBox() {
@@ -84,15 +85,23 @@ function configureControlPanel() {
   }
 }
 
+function changeOverlay(nextBpmnElementIdOrName) {
+  if (currentBpmnElementIdOrName) {
+    removeOverlay(currentBpmnElementIdOrName);
+  }
+  addOverlay(nextBpmnElementIdOrName);
+  currentBpmnElementIdOrName = nextBpmnElementIdOrName;
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureAddTooltip() {
   const inputElt = document.getElementById('bpmnElementIdOrNameWithTooltip');
-  inputElt.oninput = event => addOverlay(event.target.value);
+  inputElt.oninput = event => changeOverlay(event.target.value);
   inputElt.addEventListener(
     'diagramLoaded',
-    event => {
+    () => {
       if (inputElt.value) {
-        addOverlay(event.target.value);
+        changeOverlay(inputElt.value);
       }
     },
     false,

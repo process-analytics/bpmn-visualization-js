@@ -22,7 +22,7 @@ import { BpmnQuerySelectors } from './query-selectors';
 import { BpmnElement } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
-import { createPopper, flip, preventOverflow } from '@popperjs/core';
+import { createPopper, flip, Instance, preventOverflow } from '@popperjs/core';
 
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnMxGraph): BpmnElementsRegistry {
   return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), new MxGraphCellUpdater(graph));
@@ -46,6 +46,8 @@ export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, gr
  * ```
  */
 export class BpmnElementsRegistry {
+  private popperInstance: Instance = null;
+
   /**
    * @internal
    */
@@ -192,13 +194,20 @@ export class BpmnElementsRegistry {
 
       // const tooltip = document.getElementById('tooltip');
 
-      createPopper(button, tooltipDiv, {
+      this.popperInstance = createPopper(button, tooltipDiv, {
         placement: 'right',
         modifiers: [preventOverflow, flip],
       });
     } else {
       // eslint-disable-next-line no-console
       console.log('No BPMN element with id %s', bpmnElementId);
+    }
+  }
+
+  removeOverlay(bpmnElementId: string): void {
+    if (this.popperInstance) {
+      this.popperInstance.destroy();
+      this.popperInstance = null;
     }
   }
 }
