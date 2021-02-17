@@ -110,6 +110,7 @@ function configureControls(bpmnElementsRegistry) {
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function getCheckedRadioValue(name) {
   const elements = document.getElementsByName(name);
   for (let element of elements) {
@@ -118,6 +119,7 @@ function getCheckedRadioValue(name) {
     }
   }
 }
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function checkNextRadioValue(name) {
   const elements = document.getElementsByName(name);
   const lastIndex = elements.length - 1;
@@ -141,19 +143,6 @@ function checkNextRadioValue(name) {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function getCustomCssClassName(bpmnKind) {
-  if (ShapeUtil.isActivity(bpmnKind)) {
-    return 'detection-activity';
-  } else if (bpmnKind.includes('Gateway')) {
-    return 'detection-gateway';
-  } else if (bpmnKind.includes('Event')) {
-    return 'detection-event';
-  } else if (bpmnKind.includes('lane')) {
-    return 'detection-lane';
-  }
-  return 'detection';
-}
 const bpmnFileSimple = `<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
 <semantic:definitions id="_1373649919111" name="A.3.0" targetNamespace="http://www.trisotech.com/definitions/_1373649919111" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <semantic:process isExecutable="false" id="WFP-6-">
