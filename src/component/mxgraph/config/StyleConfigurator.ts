@@ -305,7 +305,7 @@ export default class StyleConfigurator {
       .join(';');
   }
 
-  private computeShapeStyle(bpmnCell: Shape  ) : Map<string, string | number>{
+  private computeShapeStyle(bpmnCell: Shape): Map<string, string | number>{
     const styleValues = new Map<string, string | number>();
     const bpmnElement = bpmnCell.bpmnElement;
 
@@ -326,7 +326,7 @@ export default class StyleConfigurator {
       if (markers.length > 0) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
       }
-    } else if (ShapeUtil.isPoolOrLane((bpmnElement as ShapeBpmnElement).kind)) {
+    } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
       // mxgraph.mxConstants.STYLE_HORIZONTAL is for the label
       // In BPMN, isHorizontal is for the Shape
       styleValues.set(mxgraph.mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
@@ -338,7 +338,7 @@ export default class StyleConfigurator {
     return styleValues;
   }
 
-  private computeEdgeStyle(bpmnCell: Edge ): string[]{
+  private computeEdgeStyle(bpmnCell: Edge): string[]{
     const styles: string[] = [];
 
     const bpmnElement = bpmnCell.bpmnElement;
@@ -352,7 +352,7 @@ export default class StyleConfigurator {
     return styles;
   }
 
-  private computeFontStyleValues(bpmnCell: Shape | Edge) : Map<string, string | number> {
+  private computeFontStyleValues(bpmnCell: Shape | Edge): Map<string, string | number> {
     const styleValues = new Map<string, string | number>();
 
     const font = bpmnCell.label?.font;
