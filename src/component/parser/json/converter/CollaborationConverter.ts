@@ -25,12 +25,7 @@ export default class CollaborationConverter {
   constructor(readonly convertedElements: ConvertedElements) {}
 
   deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): void {
-    try {
-      ensureIsArray(collaborations).forEach(collaboration => this.parseCollaboration(collaboration));
-    } catch (e) {
-      // TODO error management
-      console.error(e as Error);
-    }
+    ensureIsArray(collaborations).forEach(collaboration => this.parseCollaboration(collaboration));
   }
 
   private parseCollaboration(collaboration: TCollaboration): void {
