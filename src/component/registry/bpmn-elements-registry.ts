@@ -22,7 +22,7 @@ import { BpmnQuerySelectors } from './query-selectors';
 import { BpmnElement } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
-import { mxCell, mxCellOverlay, mxPoint } from 'mxgraph'; // for types
+import { mxCell, mxCellOverlay, mxCellState, mxPoint } from 'mxgraph'; // for types
 import { mxgraph } from '../mxgraph/initializer';
 import { OverlayKind } from '../../model/bpmn/internal/overlay/OverlayKind';
 
@@ -37,10 +37,57 @@ export class BpmnOverlay extends mxgraph.mxCellOverlay {
   value: string;
   kind: OverlayKind;
   constructor(value: string, tooltip: string, kind: OverlayKind, align?: HorizontalAlignType, verticalAlign?: VerticalAlignType, offset?: mxPoint, cursor?: string) {
-    // TODO: get rid of workaround mxImage
-    super(new mxgraph.mxImage('JUST_WORKAROUND', 10, 10), tooltip, align, verticalAlign, offset, cursor);
+    super(null, tooltip, align, verticalAlign, offset, cursor);
     this.value = value;
     this.kind = kind;
+  }
+  // Based on original method from mxCellOverlay (mxCellOverlay.prototype.getBounds)
+  getBounds(state: mxCellState) {
+    const isEdge = state.view.graph.getModel().isEdge(state.cell);
+    const s = state.view.scale;
+    let pt = null;
+
+    // 0 values to position the overlays on extreme/center points
+    const w = 0; // this.image.width;
+    const h = 0; // this.image.height;
+
+    if (isEdge) {
+      const pts = state.absolutePoints;
+
+      if (pts.length % 2 == 1) {
+        pt = pts[Math.floor(pts.length / 2)];
+      } else {
+        const idx = pts.length / 2;
+        const p0 = pts[idx - 1];
+        const p1 = pts[idx];
+        pt = new mxgraph.mxPoint(p0.x + (p1.x - p0.x) / 2, p0.y + (p1.y - p0.y) / 2);
+      }
+    } else {
+      pt = new mxgraph.mxPoint();
+
+      if (this.align == mxgraph.mxConstants.ALIGN_LEFT) {
+        pt.x = state.x;
+      } else if (this.align == mxgraph.mxConstants.ALIGN_CENTER) {
+        pt.x = state.x + state.width / 2;
+      } else {
+        pt.x = state.x + state.width;
+      }
+
+      if (this.verticalAlign == mxgraph.mxConstants.ALIGN_TOP) {
+        pt.y = state.y;
+      } else if (this.verticalAlign == mxgraph.mxConstants.ALIGN_MIDDLE) {
+        pt.y = state.y + state.height / 2;
+      } else {
+        pt.y = state.y + state.height;
+      }
+    }
+
+    return new mxgraph.mxRectangle(
+      Math.round(pt.x - (w * this.defaultOverlap - this.offset.x) * s),
+      Math.round(pt.y - (h * this.defaultOverlap - this.offset.y) * s),
+      w * s,
+      h * s,
+    );
   }
 }
 /**
