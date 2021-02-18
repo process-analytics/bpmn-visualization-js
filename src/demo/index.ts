@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../component/BpmnVisualization';
-import { GlobalOptions, FitOptions, FitType, LoadOptions } from '../component/options';
+import { FitOptions, FitType, GlobalOptions, LoadOptions } from '../component/options';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { BpmnElement } from '../component/registry';
 import { BpmnElementKind } from '../model/bpmn/internal/api';
+import { mxCell } from 'mxgraph';
+import { Position } from '../component/registry/badge-registry';
 
 export * from './helper';
 
@@ -46,6 +48,8 @@ function loadBpmn(bpmn: string): void {
   log('Loading bpmn....');
   bpmnVisualization.load(bpmn, loadOptions);
   log('BPMN loaded with configuration', stringify(loadOptions));
+
+  document.getElementById('bpmnElementIdOrNameWithTooltip').dispatchEvent(new CustomEvent('diagramLoaded'));
 }
 
 export function fit(fitOptions: FitOptions): void {
@@ -56,6 +60,33 @@ export function fit(fitOptions: FitOptions): void {
 
 export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
   return bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(bpmnKinds);
+}
+
+function getId(bpmnElementName: string): string {
+  const model = bpmnVisualization.graph.getModel();
+  const mxCells = model.filterDescendants((cell: mxCell) => {
+    return cell.value === bpmnElementName;
+  });
+
+  if (mxCells && mxCells.length !== 0) {
+    return mxCells[0].id;
+  }
+}
+
+export function addOverlay(bpmnElementIdOrName: string): void {
+  let bpmnElementId = bpmnElementIdOrName;
+
+  const elementsByIds = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnElementIdOrName);
+  if (!elementsByIds || elementsByIds.length === 0) {
+    bpmnElementId = getId(bpmnElementIdOrName);
+  }
+  if (bpmnElementId) {
+    return bpmnVisualization.bpmnElementsRegistry.addBadges(bpmnElementId, [{ position: Position.RIGHT_BOTTOM, value: '30' }]);
+  }
+}
+
+export function removeOverlay(bpmnElementIdOrName: string): void {
+  return bpmnVisualization.bpmnElementsRegistry.removeBadges(bpmnElementIdOrName, []);
 }
 
 export function addCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {

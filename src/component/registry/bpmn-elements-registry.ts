@@ -22,9 +22,16 @@ import { BpmnQuerySelectors } from './query-selectors';
 import { BpmnElement } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
+import { Badge, BadgeRegistry } from './badge-registry';
 
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnMxGraph): BpmnElementsRegistry {
-  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), new MxGraphCellUpdater(graph));
+  return new BpmnElementsRegistry(
+    bpmnModelRegistry,
+    new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)),
+    new CssRegistry(),
+    new BadgeRegistry(),
+    new MxGraphCellUpdater(graph),
+  );
 }
 
 /**
@@ -52,6 +59,7 @@ export class BpmnElementsRegistry {
     private bpmnModelRegistry: BpmnModelRegistry,
     private htmlElementRegistry: HtmlElementRegistry,
     private cssRegistry: CssRegistry,
+    private badgeRegistry: BadgeRegistry,
     private mxGraphCellUpdater: MxGraphCellUpdater,
   ) {}
 
@@ -176,6 +184,16 @@ export class BpmnElementsRegistry {
       const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
       this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
     }
+  }
+
+  addBadges(bpmnElementId: string, badges: Badge[]): void {
+    this.badgeRegistry.addBadges(bpmnElementId, badges);
+    this.mxGraphCellUpdater.updateAndRefreshBadgesOfCell(bpmnElementId, badges);
+  }
+
+  removeBadges(bpmnElementId: string, badges: Badge[]): void {
+    this.badgeRegistry.removeBadges(bpmnElementId, badges);
+    this.mxGraphCellUpdater.updateAndRefreshBadgesOfCell(bpmnElementId, badges);
   }
 }
 

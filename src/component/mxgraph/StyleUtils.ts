@@ -53,6 +53,7 @@ export enum StyleIdentifier {
   BPMN_STYLE_MESSAGE_FLOW_ICON = 'bpmn.messageFlowIcon',
   BPMN_STYLE_EVENT_BASED_GATEWAY_KIND = 'bpmn.gatewayKind',
   BPMN_STYLE_EXTRA_CSS_CLASSES = 'bpmn.extra.css.classes',
+  BPMN_STYLE_EXTRA_BADGES = 'bpmn.extra.css.badges',
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
