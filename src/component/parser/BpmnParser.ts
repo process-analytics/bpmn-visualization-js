@@ -21,6 +21,7 @@ class BpmnParser {
   constructor(readonly jsonParser: BpmnJsonParser, readonly xmlParser: BpmnXmlParser) {}
 
   parse(bpmnAsXml: string): BpmnModel {
+    // TODO decide how to manage parsing errors as part of #35
     const json = this.xmlParser.parse(bpmnAsXml);
     return this.jsonParser.parse(json);
   }

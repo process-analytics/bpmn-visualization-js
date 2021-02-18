@@ -62,12 +62,7 @@ export default class ProcessConverter {
   constructor(readonly convertedElements: ConvertedElements) {}
 
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
-    try {
-      ensureIsArray(processes).forEach(process => this.parseProcess(process));
-    } catch (e) {
-      // TODO error management
-      console.error(e as Error);
-    }
+    ensureIsArray(processes).forEach(process => this.parseProcess(process));
   }
 
   private parseProcess(process: TProcess): void {
@@ -192,7 +187,7 @@ export default class ProcessConverter {
     if (ShapeUtil.isActivity(parent?.kind)) {
       return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity);
     } else {
-      // TODO error management
+      // TODO decide how to manage elements not found during parsing as part of #35
       console.warn('The boundary event %s must be attach to an activity, and not to %s', bpmnElement.id, parent?.kind);
     }
   }
@@ -263,7 +258,7 @@ export default class ProcessConverter {
           shapeBpmnElement.parentId = laneId;
         }
       } else {
-        // TODO error management
+        // TODO decide how to manage elements not found during parsing as part of #35
         console.warn('Unable to assign lane %s as parent: flow node %s is not found', laneId, flowNodeRef);
       }
     });
