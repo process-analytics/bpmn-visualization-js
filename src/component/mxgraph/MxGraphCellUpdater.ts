@@ -15,6 +15,7 @@
  */
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { StyleIdentifier } from './StyleUtils';
+import { Badge } from '../registry/badge-registry';
 
 export default class MxGraphCellUpdater {
   constructor(readonly graph: BpmnMxGraph) {}
@@ -27,6 +28,18 @@ export default class MxGraphCellUpdater {
     const view = this.graph.getView();
     const state = view.getState(mxCell);
     state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES] = cssClasses;
+    state.shape.apply(state);
+    state.shape.redraw();
+  }
+
+  public updateAndRefreshBadgesOfCell(bpmnElementId: string, badges: Badge[]): void {
+    const mxCell = this.graph.getModel().getCell(bpmnElementId);
+    if (!mxCell) {
+      return;
+    }
+    const view = this.graph.getView();
+    const state = view.getState(mxCell);
+    state.style[StyleIdentifier.BPMN_STYLE_EXTRA_BADGES] = badges;
     state.shape.apply(state);
     state.shape.redraw();
   }

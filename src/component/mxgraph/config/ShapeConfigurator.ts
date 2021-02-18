@@ -33,6 +33,8 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
+import svg from 'svg.js';
+import {Badge, Position} from "../../registry/badge-registry";
 
 export default class ShapeConfigurator {
   public configureShapes(): void {
@@ -92,19 +94,40 @@ export default class ShapeConfigurator {
       // add attributes to be able to identify elements in DOM
       if (this.state && this.state.cell) {
         // 'this.state.style' = the style definition associated with the cell
-        // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
+        // 'this.state.cell.style' = the style applied to the cell: 1st draw: style name = bpmn shape name
         const cell = this.state.cell;
         // dialect = strictHtml is set means that current node holds an html label
+
+
         let allBpmnClassNames = computeAllBpmnClassNames(extractBpmnKindFromStyle(cell), this.dialect === mxgraph.mxConstants.DIALECT_STRICTHTML);
         const extraCssClasses =  this.state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES];
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
         }
-
         this.node.setAttribute('class', allBpmnClassNames.join(' '));
+
+
+        const extraBadges: Badge[] =  this.state.style[StyleIdentifier.BPMN_STYLE_EXTRA_BADGES];
+        if(extraBadges){
+          const rect = this.node.children[0];
+          const draw = svg(this.node).width(rect.getAttribute('width')).height(rect.getAttribute('height')).x(rect.getAttribute('x')).y(rect.getAttribute('y'));
+
+          extraBadges.forEach((badge) => {
+            switch (badge.position) {
+              case Position.RIGHT_BOTTOM:
+                const group = draw.group().x(rect.getAttribute('x')).y(rect.getAttribute('y')); // x+10, y-10
+                group.circle(20).fill('Chartreuse');
+                group.text(badge.value).fill('black').style('color', 'black').x('50%').y('50%').font({ anchor: 'middle' });
+                break;
+            }
+          });
+        }
+
         this.node.setAttribute('data-bpmn-id', this.state.cell.id);
       }
       // END bpmn-visualization CUSTOMIZATION
+
+
       canvas.minStrokeWidth = this.minSvgStrokeWidth;
 
       if (!this.antiAlias) {
