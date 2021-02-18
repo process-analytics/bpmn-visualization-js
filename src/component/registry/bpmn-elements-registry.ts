@@ -22,7 +22,7 @@ import { BpmnQuerySelectors } from './query-selectors';
 import { BpmnElement } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
-import { mxCell, mxCellOverlay, mxCellState, mxPoint } from 'mxgraph'; // for types
+import { mxCell, mxCellOverlay, mxCellState, mxPoint, mxRectangle } from 'mxgraph'; // for types
 import { mxgraph } from '../mxgraph/initializer';
 import { OverlayKind } from '../../model/bpmn/internal/overlay/OverlayKind';
 
@@ -42,14 +42,15 @@ export class BpmnOverlay extends mxgraph.mxCellOverlay {
     this.kind = kind;
   }
   // Based on original method from mxCellOverlay (mxCellOverlay.prototype.getBounds)
-  getBounds(state: mxCellState) {
+  getBounds(state: mxCellState): mxRectangle {
     const isEdge = state.view.graph.getModel().isEdge(state.cell);
     const s = state.view.scale;
-    let pt = null;
+    let pt;
 
-    // 0 values to position the overlays on extreme/center points
-    const w = 0; // this.image.width;
-    const h = 0; // this.image.height;
+    // TODO: the other overlay types than OverlayKind.BADGE_TEXT should be handled separately, for now hardcoded 10 is just for testing purpose of this POC
+    // 0 values to position the text overlays on extreme/center points
+    const w = this.kind === OverlayKind.BADGE_TEXT ? 0 : 10; // this.image.width;
+    const h = this.kind === OverlayKind.BADGE_TEXT ? 0 : 10; // this.image.height;
 
     if (isEdge) {
       const pts = state.absolutePoints;
