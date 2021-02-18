@@ -22,7 +22,7 @@ import { BpmnQuerySelectors } from './query-selectors';
 import { BpmnElement } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
-import { createPopper, flip, Instance, preventOverflow } from '@popperjs/core';
+import { createPopper, Instance } from '@popperjs/core';
 
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnMxGraph): BpmnElementsRegistry {
   return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), new MxGraphCellUpdater(graph));
@@ -196,8 +196,14 @@ export class BpmnElementsRegistry {
       this.popperInstance = createPopper(button, tooltipDiv, {
         placement: 'right-end',
         modifiers: [
-          preventOverflow,
-          flip,
+          /*         {
+            name: 'preventOverflow',
+            options: {
+              // boundary: button,
+              altBoundary: true, // false by default
+            },
+          },*/
+          //flip,
           {
             name: 'offset',
             options: {
