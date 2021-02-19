@@ -35,6 +35,7 @@ import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
 import svg from 'svg.js';
 import {Badge, Position} from "../../registry/badge-registry";
+import {mxAbstractCanvas2D, mxSvgCanvas2D, mxVmlCanvas2D, mxXmlCanvas2D} from "mxgraph";
 
 export default class ShapeConfigurator {
   public configureShapes(): void {
@@ -106,23 +107,6 @@ export default class ShapeConfigurator {
         }
         this.node.setAttribute('class', allBpmnClassNames.join(' '));
 
-
-        const extraBadges: Badge[] =  this.state.style[StyleIdentifier.BPMN_STYLE_EXTRA_BADGES];
-        if(extraBadges){
-          const rect = this.node.children[0];
-          const draw = svg(this.node).width(rect.getAttribute('width')).height(rect.getAttribute('height')).x(rect.getAttribute('x')).y(rect.getAttribute('y'));
-
-          extraBadges.forEach((badge) => {
-            switch (badge.position) {
-              case Position.RIGHT_BOTTOM:
-                const group = draw.group().x(rect.getAttribute('x')).y(rect.getAttribute('y')); // x+10, y-10
-                group.circle(20).fill('Chartreuse');
-                group.text(badge.value).fill('black').style('color', 'black').x('50%').y('50%').font({ anchor: 'middle' });
-                break;
-            }
-          });
-        }
-
         this.node.setAttribute('data-bpmn-id', this.state.cell.id);
       }
       // END bpmn-visualization CUSTOMIZATION
@@ -138,6 +122,63 @@ export default class ShapeConfigurator {
       }
 
       return canvas;
+    };
+
+    mxgraph.mxShape.prototype.redrawShape = function()  {
+      const canvas: mxSvgCanvas2D = this.createCanvas() as unknown as mxSvgCanvas2D;
+
+      if (canvas != null)  {
+        // Specifies if events should be handled
+        canvas.pointerEvents = this.pointerEvents;
+
+        this.paint(canvas);
+
+        // START bpmn-visualization CUSTOMIZATION
+        const extraBadges: Badge[] =  this.state.style[StyleIdentifier.BPMN_STYLE_EXTRA_BADGES];
+        if(extraBadges){
+          const rect = this.node.children[0];
+          const rectWidth = Number(rect.getAttribute('width'));
+          const rectHeight = Number(rect.getAttribute('height'));
+          const rectX = Number(rect.getAttribute('x'));
+          const rectY = Number(rect.getAttribute('y'));
+
+          const badgeSize = 20;
+          const draw = svg(this.node).width(rectWidth+ badgeSize).height(rectHeight+badgeSize).x(rectX-badgeSize/2).y(rectY-badgeSize/2);
+
+          extraBadges.forEach((badge) => {
+            switch (badge.position) {
+              case Position.RIGHT_TOP: {
+                const group = draw.group().x(rectWidth).y(0).width(badgeSize).height(badgeSize);
+                group.circle(badgeSize).fill('Chartreuse');
+                group.text(badge.value).fill('black').x(badgeSize/2).y(0).font({ size:10, anchor: 'middle' });
+                break;
+              }
+              case Position.RIGHT_BOTTOM: {
+                const group = draw.group().x(rectWidth).y(rectHeight).width(badgeSize).height(badgeSize);
+                group.circle(badgeSize).fill('DeepPink');
+                group.plain(badge.value).fill('white').x(badgeSize/2).y(0).font({ size:10, anchor: 'middle' });
+                break;
+              }
+              case Position.LEFT_BOTTOM: {
+                const group = draw.group().x(0).y(rectHeight).width(badgeSize).height(badgeSize);
+                group.circle(badgeSize).fill('PeachPuff');
+                group.text(badge.value).fill('black').x(badgeSize/2).y(0).font({ size:10, anchor: 'middle' });
+                break;
+              }
+              case Position.LEFT_BOTTOM: {
+                const group = draw.group().x(0).y(0).width(badgeSize).height(badgeSize);
+                group.circle(badgeSize).fill('Aquamarine');
+                group.text(badge.value).fill('black').x(badgeSize/2).y(0).font({ size:10, anchor: 'middle' });
+                break;
+              }
+            }
+          });
+        }
+        // END bpmn-visualization CUSTOMIZATION
+
+        // @ts-ignore
+        this.destroyCanvas(canvas);
+      }
     };
   }
 }
