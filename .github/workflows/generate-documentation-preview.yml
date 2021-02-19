@@ -1,0 +1,25 @@
+name: Generate Documentation Preview
+
+on:
+  pull_request:
+    # To manage 'surge-preview' action teardown, add default event types + closed event type
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - master
+
+jobs:
+  doc_preview:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish preview
+        uses: afc163/surge-preview@v1
+        with:
+          surge_token: ${{ secrets.SURGE_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dist: build/docs
+          failOnError: true
+          teardown: 'true'
+          build: |
+            npm ci
+            npm run docs
