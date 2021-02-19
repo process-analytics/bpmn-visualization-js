@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions, addOverlay, removeOverlay } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions, addBadge, removeBadge, Position } from '../../index.es.js';
 
 let fitOnLoad = true;
 let fitOptions = {};
-let currentBpmnElementIdOrName;
+let currentBpmnElementIdOrNameWithBadge;
+let badgePosition = Position.RIGHT_TOP;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureFitOnLoadCheckBox() {
@@ -85,27 +86,39 @@ function configureControlPanel() {
   }
 }
 
-function changeOverlay(nextBpmnElementIdOrName) {
-  if (currentBpmnElementIdOrName) {
-    removeOverlay(currentBpmnElementIdOrName);
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function changeBadge(nextBpmnElementIdOrName) {
+  if (currentBpmnElementIdOrNameWithBadge) {
+    removeBadge(currentBpmnElementIdOrNameWithBadge);
   }
-  addOverlay(nextBpmnElementIdOrName);
-  currentBpmnElementIdOrName = nextBpmnElementIdOrName;
+  addBadge(nextBpmnElementIdOrName, badgePosition);
+  currentBpmnElementIdOrNameWithBadge = nextBpmnElementIdOrName;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function configureAddTooltip() {
-  const inputElt = document.getElementById('bpmnElementIdOrNameWithTooltip');
-  inputElt.oninput = event => changeOverlay(event.target.value);
+function configureAddBadge() {
+  const inputElt = document.getElementById('bpmnElementIdOrNameWithBadge');
+  inputElt.oninput = event => changeBadge(event.target.value);
   inputElt.addEventListener(
     'diagramLoaded',
     () => {
       if (inputElt.value) {
-        changeOverlay(inputElt.value);
+        changeBadge(inputElt.value);
       }
     },
     false,
   );
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureBadgePositionSelect() {
+  const badgePositionElt = document.getElementById('badgePosition-selected');
+  badgePositionElt.onchange = event => {
+    removeBadge(currentBpmnElementIdOrNameWithBadge, badgePosition);
+    badgePosition = event.target.value;
+    addBadge(currentBpmnElementIdOrNameWithBadge, badgePosition);
+  };
+  badgePosition = badgePositionElt.value;
 }
 
 // The following function `preventZoomingPage` serves to block the page content zoom.
@@ -169,7 +182,8 @@ function startDemo() {
   configureFitMarginInput();
   configureFitOnLoadCheckBox();
   configureControlPanel();
-  configureAddTooltip();
+  configureBadgePositionSelect();
+  configureAddBadge();
 }
 
 // Start

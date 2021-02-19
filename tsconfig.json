@@ -20,7 +20,7 @@
       "node_modules/@typed-mxgraph"
     ]
   },
-  "files": ["node_modules/svg.js/svg.js.d.ts"],
+  "files": ["node_modules/@svgdotjs/svg.js/svg.js.d.ts"],
   "include": [
     "src/**/*"
   ]

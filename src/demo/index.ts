@@ -23,6 +23,7 @@ import { mxCell } from 'mxgraph';
 import { Position } from '../component/registry/badge-registry';
 
 export * from './helper';
+export { Position };
 
 let bpmnVisualization: BpmnVisualization;
 let loadOptions: LoadOptions = {};
@@ -49,7 +50,7 @@ function loadBpmn(bpmn: string): void {
   bpmnVisualization.load(bpmn, loadOptions);
   log('BPMN loaded with configuration', stringify(loadOptions));
 
-  document.getElementById('bpmnElementIdOrNameWithTooltip').dispatchEvent(new CustomEvent('diagramLoaded'));
+  document.getElementById('bpmnElementIdOrNameWithBadge').dispatchEvent(new CustomEvent('diagramLoaded'));
 }
 
 export function fit(fitOptions: FitOptions): void {
@@ -73,7 +74,7 @@ function getId(bpmnElementName: string): string {
   }
 }
 
-export function addOverlay(bpmnElementIdOrName: string): void {
+export function addBadge(bpmnElementIdOrName: string, position: Position): void {
   let bpmnElementId = bpmnElementIdOrName;
 
   const elementsByIds = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnElementIdOrName);
@@ -81,12 +82,12 @@ export function addOverlay(bpmnElementIdOrName: string): void {
     bpmnElementId = getId(bpmnElementIdOrName);
   }
   if (bpmnElementId) {
-    return bpmnVisualization.bpmnElementsRegistry.addBadges(bpmnElementId, [{ position: Position.RIGHT_BOTTOM, value: '30' }]);
+    return bpmnVisualization.bpmnElementsRegistry.addBadges(bpmnElementId, [{ position, value: '30' }]);
   }
 }
 
-export function removeOverlay(bpmnElementIdOrName: string): void {
-  return bpmnVisualization.bpmnElementsRegistry.removeBadges(bpmnElementIdOrName, []);
+export function removeBadge(bpmnElementIdOrName: string, position: Position): void {
+  return bpmnVisualization.bpmnElementsRegistry.removeBadges(bpmnElementIdOrName, [{ position, value: '30' }]);
 }
 
 export function addCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
