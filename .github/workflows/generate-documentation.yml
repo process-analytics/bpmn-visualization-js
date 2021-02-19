@@ -8,14 +8,10 @@ on:
     paths:
       - 'docs/users/**'
       - 'scripts/docs.js'
+      - 'src/api/public/api.ts'
       - '.github/workflows/generate-documentation.yml'
-  pull_request:
-    branches:
-      - master
-    paths:
-      - 'docs/users/**'
-      - 'scripts/docs.js'
-      - '.github/workflows/generate-documentation.yml'
+      - 'package.json' # we want to rebuild the documentation when libs used by the doc generation change
+      - 'typedoc.json'
 
 jobs:
   generate_doc:
@@ -38,9 +34,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install dependencies
-        run: npm ci
+        # https://playwright.dev/docs/installation/#skip-browser-downloads
+        run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm ci
       - name: Build docs
-        run: npm run user-docs
+        run: npm run docs
       - name: Upload
         uses: actions/upload-artifact@v2
         with:

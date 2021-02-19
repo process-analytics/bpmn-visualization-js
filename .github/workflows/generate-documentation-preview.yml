@@ -1,4 +1,4 @@
-name: Generate Demo Preview
+name: Generate Documentation Preview
 
 on:
   pull_request:
@@ -6,31 +6,31 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
-    paths-ignore:
-      - '.github/workflows/build.yml'
-      - '.github/workflows/codeql-analysis.yml'
-      - '.github/workflows/fill-gh-draft-release.yml'
+    paths:
+      - 'docs/users/**'
+      - 'scripts/docs.js'
+      - 'src/api/public/api.ts'
       - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/release.yml'
-      - '.gitignore'
-      - 'docs/**'
-      - '*.md'
-      - LICENSE
+      - 'package.json' # we want to rebuild the documentation when libs used by the doc generation change
+      - 'typedoc.json'
 
 jobs:
-  demo_preview:
+  doc_preview:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Publish Demo preview
-        id: publish_demo_preview
+      - name: Publish preview
+        id: publish_preview
         uses: afc163/surge-preview@v1
+        env:
+          # https://playwright.dev/docs/installation/#skip-browser-downloads
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          dist: build/demo
+          dist: build/docs
           failOnError: true
           teardown: 'true'
           build: |
             npm ci
-            npm run demo
+            npm run docs
