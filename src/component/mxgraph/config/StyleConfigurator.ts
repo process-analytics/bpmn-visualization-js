@@ -20,7 +20,7 @@ import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import Edge from '../../../model/bpmn/internal/edge/Edge';
 import Bounds from '../../../model/bpmn/internal/Bounds';
-import ShapeBpmnElement, {
+import {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
@@ -286,44 +286,74 @@ export default class StyleConfigurator {
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
-    const styleValues = new Map<string, string | number>();
     const styles: string[] = [bpmnCell.bpmnElement?.kind as string];
 
-    const bpmnElement = bpmnCell.bpmnElement;
+    let shapeStyleValues;
     if (bpmnCell instanceof Shape) {
-      if (bpmnElement instanceof ShapeBpmnEvent) {
-        styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
-
-        if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
-          styleValues.set(StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
-        }
-      } else if (bpmnElement instanceof ShapeBpmnActivity) {
-        if (bpmnElement instanceof ShapeBpmnSubProcess) {
-          styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
-        } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
-          styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, String(bpmnElement.instantiate));
-        }
-
-        const markers: ShapeBpmnMarkerKind[] = bpmnElement.markers;
-        if (markers.length > 0) {
-          styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
-        }
-      } else if (ShapeUtil.isPoolOrLane((bpmnElement as ShapeBpmnElement).kind)) {
-        // mxgraph.mxConstants.STYLE_HORIZONTAL is for the label
-        // In BPMN, isHorizontal is for the Shape
-        styleValues.set(mxgraph.mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
-      } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
-        styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, String(bpmnElement.instantiate));
-        styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
-      }
+      shapeStyleValues = this.computeShapeStyle(bpmnCell);
     } else {
-      if (bpmnElement instanceof SequenceFlow) {
-        styles.push(bpmnElement.sequenceFlowKind);
-      }
-      if (bpmnElement instanceof AssociationFlow) {
-        styles.push(bpmnElement.associationDirectionKind);
-      }
+      styles.push(...this.computeEdgeStyle(bpmnCell));
+      shapeStyleValues = new Map<string, string | number>();
     }
+
+    const fontStyleValues = this.computeFontStyleValues(bpmnCell);
+    const labelStyleValues = this.computeLabelStyleValues(bpmnCell, labelBounds);
+
+    return [] //
+      .concat([...styles])
+      .concat([...shapeStyleValues, ...fontStyleValues, ...labelStyleValues].filter(([, v]) => v && v != 'undefined').map(([key, value]) => key + '=' + value))
+      .join(';');
+  }
+
+  private computeShapeStyle(shape: Shape): Map<string, string | number>{
+    const styleValues = new Map<string, string | number>();
+    const bpmnElement = shape.bpmnElement;
+
+    if (bpmnElement instanceof ShapeBpmnEvent) {
+      styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
+
+      if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
+        styleValues.set(StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
+      }
+    } else if (bpmnElement instanceof ShapeBpmnActivity) {
+      if (bpmnElement instanceof ShapeBpmnSubProcess) {
+        styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
+      } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
+        styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, String(bpmnElement.instantiate));
+      }
+
+      const markers: ShapeBpmnMarkerKind[] = bpmnElement.markers;
+      if (markers.length > 0) {
+        styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
+      }
+    } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
+      // mxgraph.mxConstants.STYLE_HORIZONTAL is for the label
+      // In BPMN, isHorizontal is for the Shape
+      styleValues.set(mxgraph.mxConstants.STYLE_HORIZONTAL, shape.isHorizontal ? '0' : '1');
+    } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
+      styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, String(bpmnElement.instantiate));
+      styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
+    }
+
+    return styleValues;
+  }
+
+  private computeEdgeStyle(edge: Edge): string[]{
+    const styles: string[] = [];
+
+    const bpmnElement = edge.bpmnElement;
+    if (bpmnElement instanceof SequenceFlow) {
+      styles.push(bpmnElement.sequenceFlowKind);
+    }
+    if (bpmnElement instanceof AssociationFlow) {
+      styles.push(bpmnElement.associationDirectionKind);
+    }
+
+    return styles;
+  }
+
+  private computeFontStyleValues(bpmnCell: Shape | Edge): Map<string, string | number> {
+    const styleValues = new Map<string, string | number>();
 
     const font = bpmnCell.label?.font;
     if (font) {
@@ -332,6 +362,13 @@ export default class StyleConfigurator {
       styleValues.set(mxgraph.mxConstants.STYLE_FONTSTYLE, StyleConfigurator.getFontStyleValue(font));
     }
 
+    return styleValues;
+  }
+
+  private computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): Map<string, string | number> {
+    const styleValues = new Map<string, string | number>();
+
+    const bpmnElement = bpmnCell.bpmnElement;
     if (labelBounds) {
       styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_ALIGN, mxgraph.mxConstants.ALIGN_TOP);
       if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
@@ -355,10 +392,7 @@ export default class StyleConfigurator {
       styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_ALIGN, mxgraph.mxConstants.ALIGN_TOP);
     }
 
-    return [] //
-      .concat([...styles])
-      .concat([...styleValues].filter(([, v]) => v && v != 'undefined').map(([key, value]) => key + '=' + value))
-      .join(';');
+    return styleValues;
   }
 
   computeMessageFlowIconStyle(edge: Edge): string {
