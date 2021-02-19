@@ -305,9 +305,9 @@ export default class StyleConfigurator {
       .join(';');
   }
 
-  private computeShapeStyle(bpmnCell: Shape): Map<string, string | number>{
+  private computeShapeStyle(shape: Shape): Map<string, string | number>{
     const styleValues = new Map<string, string | number>();
-    const bpmnElement = bpmnCell.bpmnElement;
+    const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
       styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
@@ -329,7 +329,7 @@ export default class StyleConfigurator {
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
       // mxgraph.mxConstants.STYLE_HORIZONTAL is for the label
       // In BPMN, isHorizontal is for the Shape
-      styleValues.set(mxgraph.mxConstants.STYLE_HORIZONTAL, bpmnCell.isHorizontal ? '0' : '1');
+      styleValues.set(mxgraph.mxConstants.STYLE_HORIZONTAL, shape.isHorizontal ? '0' : '1');
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
       styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, String(bpmnElement.instantiate));
       styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
@@ -338,10 +338,10 @@ export default class StyleConfigurator {
     return styleValues;
   }
 
-  private computeEdgeStyle(bpmnCell: Edge): string[]{
+  private computeEdgeStyle(edge: Edge): string[]{
     const styles: string[] = [];
 
-    const bpmnElement = bpmnCell.bpmnElement;
+    const bpmnElement = edge.bpmnElement;
     if (bpmnElement instanceof SequenceFlow) {
       styles.push(bpmnElement.sequenceFlowKind);
     }
