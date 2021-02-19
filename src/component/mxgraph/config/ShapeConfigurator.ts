@@ -33,9 +33,24 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
-import svg from 'svg.js';
 import {Badge, Position} from "../../registry/badge-registry";
-import {mxAbstractCanvas2D, mxSvgCanvas2D, mxVmlCanvas2D, mxXmlCanvas2D} from "mxgraph";
+import {mxSvgCanvas2D} from "mxgraph";
+import {G, SVG} from "@svgdotjs/svg.js";
+
+interface Coordinate { x: number; y: number; }
+interface BadgePaint { relativeCoordinate: Coordinate; text: string; backgroungColor: string; textColor?: string; }
+
+
+function drawBadgeOnTask(canvas: G,  rect: Coordinate, badge: BadgePaint ) : void{
+  const badgeSize = 20;
+
+  const absoluteBadgeX = rect.x - badgeSize / 2 + badge.relativeCoordinate.x;
+  const absoluteBadgeY = rect.y - badgeSize / 2 + badge.relativeCoordinate.y;
+
+  const group = canvas.group();
+  group.circle(badgeSize).x(absoluteBadgeX).y(absoluteBadgeY).fill(badge.backgroungColor);
+  group.text(badge.text).fill(badge.textColor? badge.textColor : 'black').x(absoluteBadgeX + (badgeSize / 2)).y(absoluteBadgeY + 6).font({size: 10, anchor: 'middle'});
+}
 
 export default class ShapeConfigurator {
   public configureShapes(): void {
@@ -136,39 +151,56 @@ export default class ShapeConfigurator {
         // START bpmn-visualization CUSTOMIZATION
         const extraBadges: Badge[] =  this.state.style[StyleIdentifier.BPMN_STYLE_EXTRA_BADGES];
         if(extraBadges){
-          const rect = this.node.children[0];
+          const node: SVGGElement = this.node as unknown as SVGGElement;
+          const rect = node.children[0];
           const rectWidth = Number(rect.getAttribute('width'));
           const rectHeight = Number(rect.getAttribute('height'));
-          const rectX = Number(rect.getAttribute('x'));
-          const rectY = Number(rect.getAttribute('y'));
+          const rectCoordinate = {x: Number(rect.getAttribute('x')),  y: Number(rect.getAttribute('y'))};
 
-          const badgeSize = 20;
-          const draw = svg(this.node).width(rectWidth+ badgeSize).height(rectHeight+badgeSize).x(rectX-badgeSize/2).y(rectY-badgeSize/2);
+          const canvas = SVG(node);
+          //   .panZoom({ zoomMin: 0.5, zoomMax: 20 });
 
           extraBadges.forEach((badge) => {
             switch (badge.position) {
               case Position.RIGHT_TOP: {
-                const group = draw.group().x(rectWidth).y(0).width(badgeSize).height(badgeSize);
-                group.circle(badgeSize).fill('Chartreuse');
-                group.text(badge.value).fill('black').x(badgeSize/2).y(0).font({ size:10, anchor: 'middle' });
+                drawBadgeOnTask(canvas, rectCoordinate, {
+                  relativeCoordinate: {
+                    x: rectWidth, y:0
+                  },
+                  text: badge.value,
+                  backgroungColor:'Chartreuse'
+                });
                 break;
               }
               case Position.RIGHT_BOTTOM: {
-                const group = draw.group().x(rectWidth).y(rectHeight).width(badgeSize).height(badgeSize);
-                group.circle(badgeSize).fill('DeepPink');
-                group.plain(badge.value).fill('white').x(badgeSize/2).y(0).font({ size:10, anchor: 'middle' });
+                drawBadgeOnTask(canvas, rectCoordinate, {
+                  relativeCoordinate: {
+                    x: rectWidth, y:rectHeight
+                  },
+                  text: badge.value,
+                  backgroungColor:'DeepPink',
+                  textColor: 'white'
+                });
                 break;
               }
               case Position.LEFT_BOTTOM: {
-                const group = draw.group().x(0).y(rectHeight).width(badgeSize).height(badgeSize);
-                group.circle(badgeSize).fill('PeachPuff');
-                group.text(badge.value).fill('black').x(badgeSize/2).y(0).font({ size:10, anchor: 'middle' });
+                drawBadgeOnTask(canvas, rectCoordinate, {
+                  relativeCoordinate: {
+                    x: 0,y: rectHeight
+                  },
+                  text: badge.value,
+                  backgroungColor: 'PeachPuff'
+                });
                 break;
               }
-              case Position.LEFT_BOTTOM: {
-                const group = draw.group().x(0).y(0).width(badgeSize).height(badgeSize);
-                group.circle(badgeSize).fill('Aquamarine');
-                group.text(badge.value).fill('black').x(badgeSize/2).y(0).font({ size:10, anchor: 'middle' });
+              case Position.LEFT_TOP: {
+                drawBadgeOnTask(canvas, rectCoordinate, {
+                  relativeCoordinate:  {
+                    x: 0,y:  0
+                  },
+                  text: badge.value,
+                  backgroungColor:'Aquamarine'
+                });
                 break;
               }
             }
