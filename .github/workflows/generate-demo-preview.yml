@@ -19,7 +19,7 @@ on:
       - LICENSE
 
 jobs:
-  doc_preview:
+  demo_preview:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
