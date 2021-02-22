@@ -81,7 +81,7 @@
     "postpublish": "pinst --enable"
   },
   "dependencies": {
-    "@popperjs/core": "^2.7.0",
+    "@popperjs/core": "^2.8.3",
     "entities": "^2.2.0",
     "fast-xml-parser": "^3.18.0",
     "lodash.debounce": "^4.0.8",
