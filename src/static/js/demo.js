@@ -85,6 +85,7 @@ function configureControlPanel() {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function changeOverlay(nextBpmnElementIdOrName) {
   if (currentBpmnElementIdOrName) {
     removeOverlay(currentBpmnElementIdOrName);

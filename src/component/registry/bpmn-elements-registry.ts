@@ -190,13 +190,21 @@ export class BpmnElementsRegistry {
       tooltipDiv.id = 'tooltip';
       tooltipDiv.setAttribute('role', 'tooltip');
       tooltipDiv.classList.add('tooltip');
+      tooltipDiv.innerHTML = '30';
       document.getElementById('bpmn-container').appendChild(tooltipDiv);
 
-      // const tooltip = document.getElementById('tooltip');
-
       this.popperInstance = createPopper(button, tooltipDiv, {
-        placement: 'right',
-        modifiers: [preventOverflow, flip],
+        placement: 'right-end',
+        modifiers: [
+          preventOverflow,
+          flip,
+          {
+            name: 'offset',
+            options: {
+              offset: [10, -10],
+            },
+          },
+        ],
       });
     } else {
       // eslint-disable-next-line no-console
@@ -204,6 +212,7 @@ export class BpmnElementsRegistry {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   removeOverlay(bpmnElementId: string): void {
     if (this.popperInstance) {
       this.popperInstance.destroy();
