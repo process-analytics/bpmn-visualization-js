@@ -22,4 +22,5 @@ jobs:
           failOnError: true
           teardown: 'true'
           build: |
+            npm ci
             npm run demo
