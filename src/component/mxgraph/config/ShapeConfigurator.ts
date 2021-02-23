@@ -33,22 +33,25 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
-import {Badge, Position} from "../../registry/badge-registry";
-import {mxSvgCanvas2D} from "mxgraph";
-import {G, SVG} from "@svgdotjs/svg.js";
+import { Badge, Position } from "../../registry/badge-registry";
+import { mxSvgCanvas2D } from "mxgraph";
+import { G, Shape, SVG} from "@svgdotjs/svg.js";
 
 interface Coordinate { x: number; y: number; }
-interface BadgePaint { relativeCoordinate: Coordinate; text: string; backgroungColor: string; textColor?: string; }
+interface BadgePaint { relativeCoordinate: Coordinate; text: string; backgroungColor?: string; textColor?: string; }
 
 
-function drawBadgeOnTask(canvas: G,  rect: Coordinate, badge: BadgePaint ) : void{
+function drawBadgeOnTask(canvas: G, rect: Coordinate, badge: BadgePaint, drawBackground: (group: G, badgeSize: number) => Shape): void {
   const badgeSize = 20;
 
   const absoluteBadgeX = rect.x - badgeSize / 2 + badge.relativeCoordinate.x;
   const absoluteBadgeY = rect.y - badgeSize / 2 + badge.relativeCoordinate.y;
 
   const group = canvas.group();
-  group.circle(badgeSize).x(absoluteBadgeX).y(absoluteBadgeY).fill(badge.backgroungColor);
+  const background = drawBackground(group, badgeSize).x(absoluteBadgeX).y(absoluteBadgeY);
+  if(badge.backgroungColor) {
+    background.fill(badge.backgroungColor);
+  }
   group.text(badge.text).fill(badge.textColor? badge.textColor : 'black').x(absoluteBadgeX + (badgeSize / 2)).y(absoluteBadgeY + 6).font({size: 10, anchor: 'middle'});
 }
 
@@ -163,44 +166,70 @@ export default class ShapeConfigurator {
           extraBadges.forEach((badge) => {
             switch (badge.position) {
               case Position.RIGHT_TOP: {
-                drawBadgeOnTask(canvas, rectCoordinate, {
-                  relativeCoordinate: {
-                    x: rectWidth, y:0
+                drawBadgeOnTask(
+                  canvas,
+                  rectCoordinate,
+                  {
+                    relativeCoordinate: {
+                      x: rectWidth, y:0
+                    },
+                    text: badge.value,
+                    backgroungColor:'Chartreuse'
                   },
-                  text: badge.value,
-                  backgroungColor:'Chartreuse'
-                });
+                  (group: G, badgeSize: number) => group.circle(badgeSize)
+                );
                 break;
               }
               case Position.RIGHT_BOTTOM: {
-                drawBadgeOnTask(canvas, rectCoordinate, {
-                  relativeCoordinate: {
-                    x: rectWidth, y:rectHeight
+                drawBadgeOnTask(
+                  canvas,
+                  rectCoordinate,
+                  {
+                    relativeCoordinate: {
+                      x: rectWidth, y: rectHeight
+                    },
+                    text: badge.value,
+                    backgroungColor: 'DeepPink',
+                    textColor: 'white'
                   },
-                  text: badge.value,
-                  backgroungColor:'DeepPink',
-                  textColor: 'white'
-                });
+                  (group: G, badgeSize: number) => group .rect(badgeSize, badgeSize).radius(5)
+                );
                 break;
               }
               case Position.LEFT_BOTTOM: {
-                drawBadgeOnTask(canvas, rectCoordinate, {
-                  relativeCoordinate: {
-                    x: 0,y: rectHeight
+                drawBadgeOnTask(
+                  canvas,
+                  rectCoordinate,
+                  {
+                    relativeCoordinate: {
+                      x: 0, y: rectHeight
+                    },
+                    text: badge.value,
+                    textColor: 'White'
                   },
-                  text: badge.value,
-                  backgroungColor: 'PeachPuff'
-                });
+                  (group: G, badgeSize: number) => {
+                    var radial =  group.gradient('radial', function(add) {
+                      add.stop(0, '#0f9')
+                      add.stop(1, '#f06')
+                    });
+                    return group.ellipse(badgeSize * 2, badgeSize).move(badgeSize + 5, 5).fill(radial);
+                  }
+                );
                 break;
               }
               case Position.LEFT_TOP: {
-                drawBadgeOnTask(canvas, rectCoordinate, {
-                  relativeCoordinate:  {
-                    x: 0,y:  0
+                drawBadgeOnTask(
+                  canvas,
+                  rectCoordinate,
+                  {
+                    relativeCoordinate: {
+                      x: 0, y: 0
+                    },
+                    text: badge.value,
+                    backgroungColor: 'Aquamarine'
                   },
-                  text: badge.value,
-                  backgroungColor:'Aquamarine'
-                });
+                  (group: G, badgeSize: number) => group.polygon('10,0 12,8 20,10 12,12 10,20 8,12 0,10 8,8')
+                );
                 break;
               }
             }
