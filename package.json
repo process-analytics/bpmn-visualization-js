@@ -78,12 +78,12 @@
     "postversion": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for new developments\""
   },
   "dependencies": {
+    "@svgdotjs/svg.js": "^3.0.16",
     "entities": "^2.2.0",
     "fast-xml-parser": "^3.18.0",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
-    "mxgraph": "4.1.0",
-    "svg.js": "^2.7.1"
+    "mxgraph": "4.1.0"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^4.1.0",
