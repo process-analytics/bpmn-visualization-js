@@ -35,24 +35,24 @@ import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
 import { Badge, Position } from "../../registry/badge-registry";
 import { mxSvgCanvas2D } from "mxgraph";
-import { G, Shape, SVG} from "@svgdotjs/svg.js";
+import {A, G, Shape, SVG} from "@svgdotjs/svg.js";
 
 interface Coordinate { x: number; y: number; }
 interface BadgePaint { relativeCoordinate: Coordinate; text: string; backgroungColor?: string; textColor?: string; }
 
 
-function drawBadgeOnTask(canvas: G, rect: Coordinate, badge: BadgePaint, drawBackground: (group: G, badgeSize: number) => Shape): void {
+function drawBadgeOnTask(canvas: G, rect: Coordinate, badge: BadgePaint, drawBackground: (link: A, badgeSize: number) => Shape): void {
   const badgeSize = 20;
 
   const absoluteBadgeX = rect.x - badgeSize / 2 + badge.relativeCoordinate.x;
   const absoluteBadgeY = rect.y - badgeSize / 2 + badge.relativeCoordinate.y;
 
-  const group = canvas.group();
-  const background = drawBackground(group, badgeSize).x(absoluteBadgeX).y(absoluteBadgeY);
+  const link = canvas.group().link('https://github.com/process-analytics/bpmn-visualization-js');
+  const background = drawBackground(link, badgeSize).x(absoluteBadgeX).y(absoluteBadgeY);
   if(badge.backgroungColor) {
     background.fill(badge.backgroungColor);
   }
-  group.text(badge.text).fill(badge.textColor? badge.textColor : 'black').x(absoluteBadgeX + (badgeSize / 2)).y(absoluteBadgeY + 6).font({size: 10, anchor: 'middle'});
+  link.text(badge.text).fill(badge.textColor? badge.textColor : 'black').x(absoluteBadgeX + (badgeSize / 2)).y(absoluteBadgeY + 6).font({size: 10, anchor: 'middle'});
 }
 
 export default class ShapeConfigurator {
@@ -176,7 +176,7 @@ export default class ShapeConfigurator {
                     text: badge.value,
                     backgroungColor:'Chartreuse'
                   },
-                  (group: G, badgeSize: number) => group.circle(badgeSize)
+                  (link: A, badgeSize: number) => link.circle(badgeSize)
                 );
                 break;
               }
@@ -192,7 +192,7 @@ export default class ShapeConfigurator {
                     backgroungColor: 'DeepPink',
                     textColor: 'white'
                   },
-                  (group: G, badgeSize: number) => group .rect(badgeSize, badgeSize).radius(5)
+                  (link: A, badgeSize: number) => link.rect(badgeSize, badgeSize).radius(5)
                 );
                 break;
               }
@@ -207,12 +207,12 @@ export default class ShapeConfigurator {
                     text: badge.value,
                     textColor: 'White'
                   },
-                  (group: G, badgeSize: number) => {
-                    var radial =  group.gradient('radial', function(add) {
+                  (link: A, badgeSize: number) => {
+                    var radial =  link.gradient('radial', function(add) {
                       add.stop(0, '#0f9')
                       add.stop(1, '#f06')
                     });
-                    return group.ellipse(badgeSize * 2, badgeSize).move(badgeSize + 5, 5).fill(radial);
+                    return link.ellipse(badgeSize * 2, badgeSize).move(badgeSize + 5, 5).fill(radial);
                   }
                 );
                 break;
@@ -228,7 +228,12 @@ export default class ShapeConfigurator {
                     text: badge.value,
                     backgroungColor: 'Aquamarine'
                   },
-                  (group: G, badgeSize: number) => group.polygon('10,0 12,8 20,10 12,12 10,20 8,12 0,10 8,8')
+                  (link: A, badgeSize: number) => {
+                    const middleBadgeSize = badgeSize / 2;
+                    const middlePlusBadgeSize = badgeSize / 2.5;
+                    const middleMinusBadgeSize = badgeSize / 1.7;
+                    return link.polygon(`${middleBadgeSize},0 ${middleMinusBadgeSize},${middlePlusBadgeSize} ${badgeSize},${middleBadgeSize} ${middleMinusBadgeSize},${middleMinusBadgeSize} ${middleBadgeSize},${badgeSize} ${middlePlusBadgeSize},${middleMinusBadgeSize} 0,${middleBadgeSize} ${middlePlusBadgeSize},${middlePlusBadgeSize}`);
+                  }
                 );
                 break;
               }
