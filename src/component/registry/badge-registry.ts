@@ -17,10 +17,16 @@
 import { ensureIsArray } from '../helpers/array-utils';
 
 export enum Position {
+  // For task
   LEFT_BOTTOM = 'Left_Bottom',
   LEFT_TOP = 'Left_Top',
   RIGHT_BOTTOM = 'Right_Bottom',
   RIGHT_TOP = 'Right_Top',
+
+  // For edge
+  START = 'Start',
+  MIDDLE = 'Middle',
+  END = 'End',
 }
 
 export interface Badge {

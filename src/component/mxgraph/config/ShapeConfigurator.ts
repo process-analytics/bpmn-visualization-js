@@ -35,10 +35,10 @@ import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
 import { Badge, Position } from "../../registry/badge-registry";
 import { mxSvgCanvas2D } from "mxgraph";
-import {A, G, Shape, SVG} from "@svgdotjs/svg.js";
+import {A, G, Path, Shape, SVG} from "@svgdotjs/svg.js";
 
 interface Coordinate { x: number; y: number; }
-interface BadgePaint { relativeCoordinate: Coordinate; text: string; backgroungColor?: string; textColor?: string; }
+interface BadgePaint { relativeCoordinate: Coordinate; text?: string; backgroungColor?: string; textColor?: string; }
 
 
 function drawBadgeOnTask(canvas: G, rect: Coordinate, badge: BadgePaint, drawBackground: (link: A, badgeSize: number) => Shape): void {
@@ -53,6 +53,17 @@ function drawBadgeOnTask(canvas: G, rect: Coordinate, badge: BadgePaint, drawBac
     background.fill(badge.backgroungColor);
   }
   link.text(badge.text).fill(badge.textColor? badge.textColor : 'black').x(absoluteBadgeX + (badgeSize / 2)).y(absoluteBadgeY + 6).font({size: 10, anchor: 'middle'});
+}
+
+function drawBadgeOnEdge(canvas: G, markerPosition: string): void {
+  const badgeSize = 35;
+
+  (canvas.findOne('path:nth-child(2)') as Path).marker(markerPosition, badgeSize, badgeSize, function(add) {
+    const link = add.link('https://github.com/process-analytics/bpmn-visualization-js');
+
+    // From https://thenounproject.com/term/owl/147407/
+    link.image('/static/img/owl-147407.png').size(badgeSize, badgeSize);
+  });
 }
 
 export default class ShapeConfigurator {
@@ -235,6 +246,18 @@ export default class ShapeConfigurator {
                     return link.polygon(`${middleBadgeSize},0 ${middleMinusBadgeSize},${middlePlusBadgeSize} ${badgeSize},${middleBadgeSize} ${middleMinusBadgeSize},${middleMinusBadgeSize} ${middleBadgeSize},${badgeSize} ${middlePlusBadgeSize},${middleMinusBadgeSize} 0,${middleBadgeSize} ${middlePlusBadgeSize},${middlePlusBadgeSize}`);
                   }
                 );
+                break;
+              }
+              case Position.START: {
+                drawBadgeOnEdge(canvas, 'start');
+                break;
+              }
+              case Position.MIDDLE: {
+                drawBadgeOnEdge(canvas, 'mid');
+                break;
+              }
+              case Position.END: {
+                drawBadgeOnEdge(canvas, 'end');
                 break;
               }
             }
