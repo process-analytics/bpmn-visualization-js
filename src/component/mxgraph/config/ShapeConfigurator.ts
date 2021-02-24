@@ -55,11 +55,13 @@ function drawBadgeOnTask(canvas: G, rect: Coordinate, badge: BadgePaint, drawBac
   link.text(badge.text).fill(badge.textColor? badge.textColor : 'black').x(absoluteBadgeX + (badgeSize / 2)).y(absoluteBadgeY + 6).font({size: 10, anchor: 'middle'});
 }
 
-function drawBadgeOnEdge(canvas: G, markerPosition: string): void {
-  const badgeSize = 35;
+function drawBadgeOnEdge(canvas: G, positionRatio: number): void {
+  const badgeSize = 50;
 
-  (canvas.findOne('path:nth-child(2)') as Path).marker(markerPosition, badgeSize, badgeSize, function(add) {
-    const link = add.link('https://github.com/process-analytics/bpmn-visualization-js');
+  const pathLine = canvas.findOne('path:nth-child(2)') as Path;
+  const markerCenter = pathLine.pointAt(pathLine.length() * positionRatio);
+  canvas.path().size(badgeSize, badgeSize).center(markerCenter.x-17, markerCenter.y-17).marker('start', badgeSize, badgeSize, function(marker) {
+    const link = marker.link('https://github.com/process-analytics/bpmn-visualization-js');
 
     // From https://thenounproject.com/term/owl/147407/
     link.image('/static/img/owl-147407.png').size(badgeSize, badgeSize);
@@ -249,15 +251,15 @@ export default class ShapeConfigurator {
                 break;
               }
               case Position.START: {
-                drawBadgeOnEdge(canvas, 'start');
+                drawBadgeOnEdge(canvas, 5/100);
                 break;
               }
               case Position.MIDDLE: {
-                drawBadgeOnEdge(canvas, 'mid');
+                drawBadgeOnEdge(canvas, 50/100);
                 break;
               }
               case Position.END: {
-                drawBadgeOnEdge(canvas, 'end');
+                drawBadgeOnEdge(canvas, 95/100);
                 break;
               }
             }
