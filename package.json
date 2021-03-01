@@ -124,7 +124,7 @@
     "prettier": "^2.2.1",
     "puppeteer": "^5.5.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.39.0",
+    "rollup": "^2.40.0",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-copy": "^3.4.0",
