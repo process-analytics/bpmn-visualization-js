@@ -19,7 +19,7 @@ import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { BpmnElement, BpmnElementKind } from '../component/registry/bpmn-elements-registry';
 import { mxCell } from 'mxgraph';
-import { Position } from '../component/registry/badge-registry';
+import { Badge, Position } from '../component/registry/badge-registry';
 
 export * from './helper';
 export { Position };
@@ -81,8 +81,12 @@ export function addBadge(bpmnElementIdOrName: string, position: Position): void 
     bpmnElementId = getId(bpmnElementIdOrName);
   }
   if (bpmnElementId) {
-    return bpmnVisualization.bpmnElementsRegistry.addBadges(bpmnElementId, [{ position, value: '30' }]);
+    return bpmnVisualization.bpmnElementsRegistry.addBadges(bpmnElementId, [{ position, value: Math.floor(Math.random() * 30) + '' }]);
   }
+}
+
+export function getBadges(bpmnElementId: string): Badge[] {
+  return bpmnVisualization.bpmnElementsRegistry.getBadges(bpmnElementId);
 }
 
 export function removeBadge(bpmnElementIdOrName: string, position: Position): void {

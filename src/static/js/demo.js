@@ -95,6 +95,21 @@ function changeBadge(nextBpmnElementIdOrName) {
   currentBpmnElementIdOrNameWithBadge = nextBpmnElementIdOrName;
 }
 
+let totalBadges = 0;
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function badgeStressTest() {
+  Array.from(document.getElementsByTagName('foreignObject')).forEach(el => {
+    const name = el.querySelector('div > div > div').innerText;
+    if (name) {
+      ['Right_Top', 'Right_Bottom', 'Left_Top', 'Left_Bottom'].forEach(position => {
+        addBadge(name, position);
+        totalBadges++;
+      });
+    }
+  });
+  document.getElementById('totalBadges').innerText = `BADGES: ${totalBadges}`;
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureAddBadge() {
   const inputElt = document.getElementById('bpmnElementIdOrNameWithBadge');
@@ -108,6 +123,11 @@ function configureAddBadge() {
     },
     false,
   );
+
+  // stress tests
+  document.getElementById('testBadges').addEventListener('mousedown', () => {
+    badgeStressTest();
+  });
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

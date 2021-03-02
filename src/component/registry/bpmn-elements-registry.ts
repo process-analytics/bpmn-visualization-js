@@ -187,12 +187,16 @@ export class BpmnElementsRegistry {
 
   addBadges(bpmnElementId: string, badges: Badge[]): void {
     this.badgeRegistry.addBadges(bpmnElementId, badges);
-    this.mxGraphCellUpdater.updateAndRefreshBadgesOfCell(bpmnElementId, badges);
+    this.mxGraphCellUpdater.updateAndRefreshBadgesOfCell(bpmnElementId, this.getBadges(bpmnElementId));
   }
 
   removeBadges(bpmnElementId: string, badges: Badge[]): void {
     this.badgeRegistry.removeBadges(bpmnElementId, badges);
-    this.mxGraphCellUpdater.updateAndRefreshBadgesOfCell(bpmnElementId, badges);
+    this.mxGraphCellUpdater.updateAndRefreshBadgesOfCell(bpmnElementId, this.getBadges(bpmnElementId));
+  }
+
+  getBadges(bpmnElementId: string): Badge[] {
+    return this.badgeRegistry.getBadges(bpmnElementId);
   }
 }
 
