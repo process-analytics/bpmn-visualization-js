@@ -25,7 +25,7 @@ import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { LoadOptions } from '../options';
-import { RenderedModel } from '../registry/bpmn-model-registry'; // for types
+import { RenderedModel } from '../registry/bpmn-model-registry';
 import { mxgraph } from './initializer';
 import { mxCell } from 'mxgraph'; // for types
 
@@ -37,19 +37,19 @@ export default class MxGraphRenderer {
     this.graph.customFit(loadOptions?.fit);
   }
 
-  private insertShapesAndEdges(renderedModel: RenderedModel): void {
+  private insertShapesAndEdges({ pools, lanes, subprocesses, otherFlowNodes, boundaryEvents, edges }: RenderedModel): void {
     const model = this.graph.getModel();
     model.clear(); // ensure to remove manual changes or already loaded graphs
     model.beginUpdate();
     try {
-      this.insertShapes(renderedModel.pools);
-      this.insertShapes(renderedModel.lanes);
-      this.insertShapes(renderedModel.subprocesses);
-      this.insertShapes(renderedModel.otherFlowNodes);
+      this.insertShapes(pools);
+      this.insertShapes(lanes);
+      this.insertShapes(subprocesses);
+      this.insertShapes(otherFlowNodes);
       // last shape as the boundary event parent must be in the model (subprocess or activity)
-      this.insertShapes(renderedModel.boundaryEvents);
+      this.insertShapes(boundaryEvents);
       // at last as edge source and target must be present in the model prior insertion, otherwise they are not rendered
-      this.insertEdges(renderedModel.edges);
+      this.insertEdges(edges);
     } finally {
       model.endUpdate();
     }
