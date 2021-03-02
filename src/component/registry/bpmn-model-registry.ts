@@ -44,20 +44,20 @@ function toRenderedModel(bpmnModel: BpmnModel): RenderedModel {
   const collapsedSubProcessIds: string[] = bpmnModel.flowNodes
     .filter(shape => {
       const bpmnElement = shape.bpmnElement;
-      return ShapeUtil.isSubProcess(bpmnElement?.kind) && (bpmnElement as ShapeBpmnSubProcess)?.markers.includes(ShapeBpmnMarkerKind.EXPAND);
+      return ShapeUtil.isSubProcess(bpmnElement.kind) && (bpmnElement as ShapeBpmnSubProcess).markers.includes(ShapeBpmnMarkerKind.EXPAND);
     })
-    .map(shape => shape.bpmnElement?.id);
+    .map(shape => shape.bpmnElement.id);
 
   const subprocesses: Shape[] = [];
   const boundaryEvents: Shape[] = [];
   const otherFlowNodes: Shape[] = [];
   bpmnModel.flowNodes.forEach(shape => {
-    const kind = shape.bpmnElement?.kind;
+    const kind = shape.bpmnElement.kind;
     if (ShapeUtil.isSubProcess(kind)) {
       subprocesses.push(shape);
     } else if (ShapeUtil.isBoundaryEvent(kind)) {
       boundaryEvents.push(shape);
-    } else if (!collapsedSubProcessIds.includes(shape.bpmnElement?.parentId)) {
+    } else if (!collapsedSubProcessIds.includes(shape.bpmnElement.parentId)) {
       otherFlowNodes.push(shape);
     }
   });
