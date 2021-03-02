@@ -20,8 +20,8 @@ import { MessageVisibleKind } from './MessageVisibleKind';
 
 export default class Edge {
   constructor(
-    readonly id?: string,
-    readonly bpmnElement?: Flow,
+    readonly id: string,
+    readonly bpmnElement: Flow,
     readonly waypoints?: Waypoint[],
     readonly label?: Label,
     readonly messageVisibleKind: MessageVisibleKind = MessageVisibleKind.NONE,
