@@ -16,15 +16,14 @@
 import debugLogger from 'debug';
 import { findFiles } from '../../helpers/file-helper';
 import { join } from 'path';
+import 'jest-playwright-preset';
 
-export const log = debugLogger('test');
+export const configLog = debugLogger('bv:test:config');
 
 export type OsName = 'linux' | 'macos' | 'windows';
 
 export function getSimplePlatformName(): OsName {
   const platform = process.platform;
-  log(`This platform is ${platform}`);
-
   if (platform.startsWith('win')) {
     return 'windows';
   } else if (platform.startsWith('darwin')) {
@@ -34,10 +33,10 @@ export function getSimplePlatformName(): OsName {
   return 'linux';
 }
 
-export type BrowserFamily = 'chromium' | 'firefox';
+export type BrowserFamily = 'chromium' | 'firefox' | 'webkit';
 
 export function getTestedBrowserFamily(): BrowserFamily {
-  return process.env.PUPPETEER_PRODUCT === 'firefox' ? 'firefox' : 'chromium';
+  return browserName;
 }
 
 export function delay(time: number): Promise<unknown> {

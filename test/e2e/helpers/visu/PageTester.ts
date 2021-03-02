@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { ElementHandle } from 'playwright';
+import 'jest-playwright-preset';
 import { FitType, LoadOptions } from '../../../../src/component/options';
-import { ElementHandle } from 'puppeteer';
 import { BpmnQuerySelectors } from '../../../../src/component/registry/query-selectors';
 
 export interface TargetedPage {

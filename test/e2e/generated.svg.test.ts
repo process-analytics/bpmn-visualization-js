@@ -13,37 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import 'jest-playwright-preset';
 import { loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
-import { BpmnPuppeteer } from './helpers/visu/bpmn-puppeteer-utils';
+import { BpmnPage } from './helpers/visu/bpmn-page-utils';
 
-let bpmnPuppeteer = new BpmnPuppeteer('bpmn-container', page);
+let bpmnPage = new BpmnPage('bpmn-container', page);
 
 describe('demo page', () => {
   it('should display page title', async () => {
     await page.goto('http://localhost:10002');
-    await bpmnPuppeteer.expectPageTitle('BPMN Visualization Demo');
-    await bpmnPuppeteer.expectAvailableBpmnContainer();
+    await bpmnPage.expectPageTitle('BPMN Visualization Demo');
+    await bpmnPage.expectAvailableBpmnContainer();
   });
 
   it('should display diagram in page', async () => {
     await page.goto(`http://localhost:10002?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
 
-    await bpmnPuppeteer.expectEvent('StartEvent_1', 'Start Event 1');
-    await bpmnPuppeteer.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
-    await bpmnPuppeteer.expectTask('Activity_1', 'Task 1');
-    await bpmnPuppeteer.expectSequenceFlow('Flow_2');
-    await bpmnPuppeteer.expectEvent('EndEvent_1', 'End Event 1', false);
+    await bpmnPage.expectEvent('StartEvent_1', 'Start Event 1');
+    await bpmnPage.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
+    await bpmnPage.expectTask('Activity_1', 'Task 1');
+    await bpmnPage.expectSequenceFlow('Flow_2');
+    await bpmnPage.expectEvent('EndEvent_1', 'End Event 1', false);
   });
 });
 
 describe('lib-integration page', () => {
   it('should display diagram in page', async () => {
-    bpmnPuppeteer = new BpmnPuppeteer('bpmn-container-custom', page);
+    bpmnPage = new BpmnPage('bpmn-container-custom', page);
 
     await page.goto(`http://localhost:10002/lib-integration.html?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-only.bpmn')}`);
-    await bpmnPuppeteer.expectPageTitle('BPMN Visualization Lib Integration');
-    await bpmnPuppeteer.expectAvailableBpmnContainer();
+    await bpmnPage.expectPageTitle('BPMN Visualization Lib Integration');
+    await bpmnPage.expectAvailableBpmnContainer();
 
-    await bpmnPuppeteer.expectEvent('StartEvent_1', 'Start Event Only');
+    await bpmnPage.expectEvent('StartEvent_1', 'Start Event Only');
   });
 });

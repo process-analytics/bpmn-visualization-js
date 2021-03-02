@@ -91,6 +91,8 @@ jobs:
         with:
           name: integration-test-results-${{matrix.os.name}}-${{github.sha}}
           path: build/test-report/integration
+      # install OS dependencies required by browsers on the GitHub runner
+      - uses: microsoft/playwright-github-action@v1.4.4
       - name: Test Application End to End
         id: 'test_e2e'
         run: npm run test:e2e ${{ matrix.os.coverage }}

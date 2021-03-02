@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { delay, getTestedBrowserFamily } from './helpers/test-utils';
+import 'jest-playwright-preset';
 import { join } from 'path';
 import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import { delay, getTestedBrowserFamily } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/PageTester';
+import { chromiumMouseWheel } from './helpers/visu/playwright-utils';
 
 const delayToWaitUntilZoomIsDone = 100;
 
-async function zoom(xTimes: number, deltaX: number): Promise<void> {
-  await page.keyboard.down('Control');
-
+async function chromiumZoom(xTimes: number, x: number, y: number, deltaX: number): Promise<void> {
   for (let i = 0; i < xTimes; i++) {
-    await page.mouse.wheel({ deltaX: deltaX });
+    await chromiumMouseWheel(x, y, deltaX);
     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
     await delay(delayToWaitUntilZoomIsDone);
   }
@@ -76,18 +76,14 @@ describe('diagram navigation', () => {
     });
   });
 
-  // TODO restore on Firefox when puppeteer will be able to manage such event
-  // Mouse type is not supported: mouseWheel dispatchMouseEvent@chrome://remote/content/domains/parent/Input.jsm:118:13
-  if (getTestedBrowserFamily() == 'firefox') {
-    console.warn('Skipping zoom tests because of `Mouse type is not supported: mouseWheel`');
-    return;
-  }
+  // TODO activate tests relying on mousewheel events on non Chromium browsers when playwright will support it natively: https://github.com/microsoft/playwright/issues/1115
+  // inspired from https://github.com/xtermjs/xterm.js/commit/7400b888df698d15864ab2c41ad0ed0262f812fb#diff-23460af115aa97331c36c0ce462cbc4dd8067c0ddbca1e9d3de560ebf44024ee
+  // Wheel events are hacked using private API that is only available in Chromium
+  const itMouseWheel = getTestedBrowserFamily() === 'chromium' ? it : it.skip;
 
-  it.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
+  itMouseWheel.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
     const deltaX = zoomMode === 'zoom in' ? -100 : 100;
-    // simulate mouse+ctrl zoom
-    await page.mouse.move(containerCenterX + 200, containerCenterY);
-    await zoom(1, deltaX);
+    await chromiumZoom(1, containerCenterX + 200, containerCenterY, deltaX);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -97,12 +93,12 @@ describe('diagram navigation', () => {
     });
   });
 
-  it.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
+  itMouseWheel.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
     const deltaX = -100;
     // simulate mouse+ctrl zoom
     await page.mouse.move(containerCenterX + 200, containerCenterY);
-    await zoom(xTimes, deltaX);
-    await zoom(xTimes, -deltaX);
+    await chromiumZoom(xTimes, containerCenterX + 200, containerCenterY, deltaX);
+    await chromiumZoom(xTimes, containerCenterX + 200, containerCenterY, -deltaX);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);

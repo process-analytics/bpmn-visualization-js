@@ -1,5 +1,3 @@
-import { Metrics } from 'puppeteer';
-
 /**
  * Copyright 2020 Bonitasoft S.A.
  *
@@ -15,6 +13,8 @@ import { Metrics } from 'puppeteer';
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Metrics } from './metrics-chromium';
+
 export interface PerformanceMetric {
   run: number;
   TaskDuration: number;
