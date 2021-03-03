@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Bonitasoft S.A.
+ * Copyright 2021 Bonitasoft S.A.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,5 +14,9 @@
  * limitations under the License.
  */
 
-export { BpmnElementsRegistry } from './bpmn-elements-registry';
-export * from './types';
+import { FlowKind } from './edge/FlowKind';
+import { ShapeBpmnElementKind } from './shape';
+
+export type BpmnElementKind = FlowKind | ShapeBpmnElementKind;
+export { FlowKind } from './edge/FlowKind';
+export { ShapeBpmnElementKind } from './shape';

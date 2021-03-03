@@ -15,20 +15,16 @@
  */
 import { ensureIsArray } from '../helpers/array-utils';
 import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
-import { computeBpmnBaseClassName, extractBpmnKindFromStyle } from '../mxgraph/style-helper';
-import { FlowKind } from '../../model/bpmn/internal/edge/FlowKind';
-import { ShapeBpmnElementKind } from '../../model/bpmn/internal/shape';
+import { computeBpmnBaseClassName } from '../mxgraph/style-helper';
 import { CssRegistry } from './css-registry';
 import MxGraphCellUpdater from '../mxgraph/MxGraphCellUpdater';
 import { BpmnQuerySelectors } from './query-selectors';
+import { BpmnElement } from './types';
+import { BpmnModelRegistry } from './bpmn-model-registry';
+import { BpmnElementKind } from '../../model/bpmn/internal/api';
 
-export function newBpmnElementsRegistry(graph: BpmnMxGraph): BpmnElementsRegistry {
-  return new BpmnElementsRegistry(
-    new BpmnModelRegistry(graph),
-    new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)),
-    new CssRegistry(),
-    new MxGraphCellUpdater(graph),
-  );
+export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnMxGraph): BpmnElementsRegistry {
+  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), new MxGraphCellUpdater(graph));
 }
 
 /**
@@ -180,42 +176,6 @@ export class BpmnElementsRegistry {
       const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
       this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
     }
-  }
-}
-
-export type BpmnElementKind = FlowKind | ShapeBpmnElementKind;
-
-/**
- * @category Interaction
- */
-export interface BpmnSemantic {
-  id: string;
-  name: string;
-  /** `true` when relates to a BPMN Shape, `false` when relates to a BPMN Edge. */
-  isShape: boolean;
-  // TODO use a more 'type oriented' BpmnElementKind (as part of #929)
-  kind: string;
-}
-
-/**
- * @category Interaction
- */
-export interface BpmnElement {
-  bpmnSemantic: BpmnSemantic;
-  htmlElement: HTMLElement;
-}
-
-// for now, we don't store the BpmnModel so we can use it, information are only available in the mxgraph model
-class BpmnModelRegistry {
-  constructor(private graph: BpmnMxGraph) {}
-
-  getBpmnSemantic(bpmnElementId: string): BpmnSemantic | undefined {
-    const mxCell = this.graph.getModel().getCell(bpmnElementId);
-    if (mxCell == null) {
-      return undefined;
-    }
-
-    return { id: bpmnElementId, name: mxCell.value, isShape: mxCell.isVertex(), kind: extractBpmnKindFromStyle(mxCell) };
   }
 }
 

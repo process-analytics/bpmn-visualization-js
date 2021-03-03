@@ -286,7 +286,7 @@ export default class StyleConfigurator {
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
-    const styles: string[] = [bpmnCell.bpmnElement?.kind as string];
+    const styles: string[] = [bpmnCell.bpmnElement.kind as string];
 
     let shapeStyleValues;
     if (bpmnCell instanceof Shape) {

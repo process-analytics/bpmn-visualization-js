@@ -17,7 +17,8 @@ import BpmnVisualization from '../component/BpmnVisualization';
 import { GlobalOptions, FitOptions, FitType, LoadOptions } from '../component/options';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { BpmnElement, BpmnElementKind } from '../component/registry/bpmn-elements-registry';
+import { BpmnElement } from '../component/registry';
+import { BpmnElementKind } from '../model/bpmn/internal/api';
 
 export * from './helper';
 

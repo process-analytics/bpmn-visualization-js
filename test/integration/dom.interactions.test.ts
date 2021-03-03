@@ -17,6 +17,7 @@ import { readFileSync } from '../helpers/file-helper';
 import { BpmnElement, BpmnVisualization, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
 import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask, HtmlElementLookup } from './helpers/html-utils';
+import { ExpectedBaseBpmnElement, expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '../unit/helpers/bpmn-semantic-utils';
 
 const bpmnContainerId = 'bpmn-visualization-container';
 const bpmnVisualization = initializeBpmnVisualization();
@@ -41,60 +42,33 @@ describe('DOM only checks', () => {
   });
 });
 
-interface ExpectedBaseBpmnElement {
-  id: string;
-  name?: string;
-}
-
-function expectShapeBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  const bpmnSemantic = bpmnElement.bpmnSemantic;
-  expect(bpmnSemantic.id).toEqual(expected.id);
-  expect(bpmnSemantic.name).toEqual(expected.name);
-  expect(bpmnSemantic.isShape).toBeTruthy();
-}
-
 function expectStartEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  expectShapeBpmnElement(bpmnElement, expected);
-  expect(bpmnElement.bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_START);
-
+  expectStartEvent(bpmnElement.bpmnSemantic, expected);
   expectSvgEvent(bpmnElement.htmlElement);
 }
 
 function expectEndEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  expectShapeBpmnElement(bpmnElement, expected);
-  expect(bpmnElement.bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_END);
-
+  expectEndEvent(bpmnElement.bpmnSemantic, expected);
   expectSvgEvent(bpmnElement.htmlElement);
 }
 
 function expectSequenceFlowBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  const bpmnSemantic = bpmnElement.bpmnSemantic;
-  expect(bpmnSemantic.id).toEqual(expected.id);
-  expect(bpmnSemantic.name).toEqual(expected.name);
-  expect(bpmnSemantic.isShape).toBeFalsy();
-  expect(bpmnSemantic.kind).toEqual(FlowKind.SEQUENCE_FLOW);
-
+  expectSequenceFlow(bpmnElement.bpmnSemantic, expected);
   expectSvgSequenceFlow(bpmnElement.htmlElement);
 }
 
 function expectTaskBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  expectShapeBpmnElement(bpmnElement, expected);
-  expect(bpmnElement.bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.TASK);
-
+  expectTask(bpmnElement.bpmnSemantic, expected);
   expectSvgTask(bpmnElement.htmlElement);
 }
 
 function expectServiceTaskBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  expectShapeBpmnElement(bpmnElement, expected);
-  expect(bpmnElement.bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.TASK_SERVICE);
-
+  expectServiceTask(bpmnElement.bpmnSemantic, expected);
   expectSvgTask(bpmnElement.htmlElement);
 }
 
 function expectPoolBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  expectShapeBpmnElement(bpmnElement, expected);
-  expect(bpmnElement.bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.POOL);
-
+  expectPool(bpmnElement.bpmnSemantic, expected);
   expectSvgPool(bpmnElement.htmlElement);
 }
 

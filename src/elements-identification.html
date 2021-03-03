@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BPMN Visualization Non Regression</title>
+    <title>BPMN Visualization - Elements Identification</title>
     <link rel="shortcut icon" href="./static/img/favicon.ico">
     <style>
       #main-container {
@@ -51,6 +51,25 @@
       .detection-lane > path:nth-child(3) {
         fill: palevioletred;
       }
+      /* sequence flow arrow */
+      .detection-flow > path:nth-child(3),
+      /* message flow start */
+      .detection-flow > ellipse:nth-child(4),
+      /* message flow arrow */
+      .detection-flow > path:nth-child(6) {
+        fill: dodgerblue;
+      }
+      /* sequence flow arrow */
+      .detection-flow > path:nth-child(3),
+        /* message flow start */
+      .detection-flow > ellipse:nth-child(4),
+        /* message flow arrow */
+      .detection-flow > path:nth-child(6),
+      /* edge line */
+      .detection-flow > path:nth-child(2) {
+        stroke: dodgerblue;
+        stroke-width: 4px;
+      }
     </style>
 </head>
 <body>
@@ -68,6 +87,8 @@
         <option value="inclusiveGateway">Inclusive Gateway</option>
         <option value="parallelGateway">Parallel Gateway</option>
         <option value="lane">Lane</option>
+        <option value="messageFlow">Message Flow</option>
+        <option value="sequenceFlow">Sequence Flow</option>
       </select>
       <button id="bpmn-kinds-textarea-clean-btn">Clear</button>
       <textarea id="elements-result"></textarea>
