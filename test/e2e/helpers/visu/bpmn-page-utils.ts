@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import { BpmnQuerySelectors } from '../../../../src/component/registry/query-selectors';
-import { ElementHandle, Page } from 'puppeteer';
+import { ElementHandle, Page } from 'playwright';
 
-export class BpmnPuppeteer {
+export class BpmnPage {
   private bpmnQuerySelectors: BpmnQuerySelectors;
 
   constructor(private bpmnContainerId: string, private currentPage: Page) {
@@ -75,7 +75,7 @@ export class BpmnPuppeteer {
   }
 }
 
-async function expectClassAttribute(svgElementHandle: ElementHandle, value: string): Promise<void> {
+async function expectClassAttribute(svgElementHandle: ElementHandle<Element>, value: string): Promise<void> {
   expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe(value);
 }
 

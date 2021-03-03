@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import 'jest-playwright-preset';
 import {
   defaultChromiumFailureThreshold,
   ImageSnapshotConfigurator,
@@ -116,10 +117,10 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'flows.message.02.labels.and.complex.paths',
         {
-          linux: 0.0057, // 0.5659391676214987%
+          linux: 0.0058, // 0.5735938633560478%
           macos: 0.0066, // 0.6594568058992278%
           // TODO possible rendering issue so high threshold value
-          windows: 0.0138, // 1.3758143022190916%
+          windows: 0.0139, // 1.3835961661211371%
         },
       ],
       [
@@ -145,7 +146,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.03.default.position',
         {
-          linux: 0.004, // 0.39649363179047326%
+          linux: 0.0041, // 0.4028583275889175%
           macos: 0.0083, // 0.8248769578137805%
           // TODO possible rendering issue so high threshold value
           windows: 0.0249, // 2.4808623720247835%
@@ -157,7 +158,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           // TODO possible rendering issue so high threshold value
           linux: 0.0146, // 1.453465508401064%
           macos: 0.0091, // 0.904210646859438%
-          windows: 0.0173, // 1.726307512847236%
+          windows: 0.0174, // 1.730192454959012%
         },
       ],
       [
@@ -180,7 +181,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.0023, // 0.22636282955619252%
           macos: 0.0022, // 0.21007470164219333%
-          windows: 0.0058, // 0.573840178860785%
+          windows: 0.0059, // 0.5856398049701173%
         },
       ],
 

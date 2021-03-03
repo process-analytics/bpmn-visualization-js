@@ -15,7 +15,7 @@
  */
 import { dirname, join } from 'path';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
-import { getSimplePlatformName, getTestedBrowserFamily, log } from '../test-utils';
+import { configLog, getSimplePlatformName, getTestedBrowserFamily } from '../test-utils';
 
 export interface ImageSnapshotThresholdConfig {
   linux?: number;
@@ -71,12 +71,14 @@ export class ImageSnapshotConfigurator {
 
     const config = this.thresholdConfig.get(fileName);
     if (config) {
-      log(`Building dedicated image snapshot configuration for '${fileName}'`);
+      configLog(`Using dedicated image snapshot threshold for '${fileName}'`);
       const simplePlatformName = getSimplePlatformName();
-      log(`Simple platform name: ${simplePlatformName}`);
+      configLog(`Simple platform name: ${simplePlatformName}`);
       failureThreshold = config[simplePlatformName] || failureThreshold;
+    } else {
+      configLog(`Using default image snapshot threshold for '${fileName}'`);
     }
-    log(`ImageSnapshot - using failureThreshold: ${failureThreshold}`);
+    configLog(`--> threshold: ${failureThreshold}`);
 
     return failureThreshold;
   }
@@ -101,7 +103,7 @@ export abstract class MultiBrowserImageSnapshotThresholds {
   private readonly chromiumDefault: number;
   private readonly firefoxDefault: number;
 
-  constructor(thresholdDefaults: ThresholdDefaults) {
+  protected constructor(thresholdDefaults: ThresholdDefaults) {
     this.chromiumDefault = thresholdDefaults.chromium;
     this.firefoxDefault = thresholdDefaults.firefox;
   }
@@ -111,7 +113,9 @@ export abstract class MultiBrowserImageSnapshotThresholds {
   protected abstract getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig>;
 
   getThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    switch (getTestedBrowserFamily()) {
+    const testedBrowserFamily = getTestedBrowserFamily();
+    configLog(`The browser family used for test is ${testedBrowserFamily}`);
+    switch (testedBrowserFamily) {
       case 'chromium':
         return this.getChromiumThresholds();
       case 'firefox':

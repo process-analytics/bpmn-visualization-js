@@ -28,10 +28,7 @@
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
-            "disableOptimisticBPs": true,
-            "env": {
-                "JEST_PUPPETEER_CONFIG": "./test/e2e/jest-puppeteer.config.js",
-            }
+            "disableOptimisticBPs": true
         }
     ]
 }

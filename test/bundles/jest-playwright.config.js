@@ -13,17 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-process.env.JEST_PLAYWRIGHT_CONFIG = './test/performance/jest-playwright.config.js';
-
 module.exports = {
-  rootDir: '../..',
-  roots: ['./test/performance', './src'],
-  preset: 'jest-playwright-preset',
-  testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
-  testTimeout: 200000,
-  transform: {
-    '^.+\\.ts?$': 'ts-jest',
+  launchOptions: {
+    headless: process.env.HEADLESS !== 'false',
+    slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
   },
-  setupFiles: ['./test/e2e/config/copy.bpmn.diagram.ts'],
+  browsers: ['chromium', 'firefox', 'webkit'],
 };

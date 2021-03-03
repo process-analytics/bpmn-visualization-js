@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Bonitasoft S.A.
+ * Copyright 2021 Bonitasoft S.A.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-module.exports = {
-  launch: {
-    dumpio: true,
-    headless: process.env.HEADLESS !== 'false',
-    slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
-    args: ['--disable-infobars', '--no-sandbox', '--disable-setuid-sandbox'],
-    timeout: 10000,
-  },
-};
+import debugLogger from "debug";
+import 'jest-playwright-preset';
+
+// Allow to get browser console logs
+// this is from https://playwright.dev/docs/api/class-page#pageonconsole
+// see https://github.com/microsoft/playwright/issues/4498 and https://github.com/microsoft/playwright/issues/4125
+const browserLog = debugLogger('bv:test:browser');
+page.on('console', msg => browserLog('<%s> %s', msg.type(), msg.text()));
