@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>FitType | BpmnVisualization API Documentation</title>
+	<title>FlowKind | BpmnVisualization API Documentation</title>
 	<meta name="description" content="Documentation for BpmnVisualization API Documentation">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -53,10 +53,10 @@
 					<a href="../index.html">BpmnVisualization API Documentation</a>
 				</li>
 				<li>
-					<a href="fittype.html">FitType</a>
+					<a href="flowkind.html">FlowKind</a>
 				</li>
 			</ul>
-			<h1>Enumeration FitType</h1>
+			<h1>Enumeration FlowKind</h1>
 		</div>
 	</div>
 </header>
@@ -65,11 +65,9 @@
 		<div class="col-8 col-content">
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
-					<dl class="tsd-comment-tags">
-						<dt>default</dt>
-						<dd><p><a href="fittype.html#none">FitType.None</a></p>
-						</dd>
-					</dl>
+					<div class="lead">
+						<p>The real name of the field in the BPMN XSD</p>
+					</div>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -79,11 +77,9 @@
 						<section class="tsd-index-section ">
 							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="fittype.html#center" class="tsd-kind-icon">Center</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="fittype.html#horizontal" class="tsd-kind-icon">Horizontal</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="fittype.html#horizontalvertical" class="tsd-kind-icon">Horizontal<wbr>Vertical</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="fittype.html#none" class="tsd-kind-icon">None</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="fittype.html#vertical" class="tsd-kind-icon">Vertical</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="flowkind.html#association_flow" class="tsd-kind-icon">ASSOCIATION_<wbr>FLOW</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="flowkind.html#message_flow" class="tsd-kind-icon">MESSAGE_<wbr>FLOW</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="flowkind.html#sequence_flow" class="tsd-kind-icon">SEQUENCE_<wbr>FLOW</a></li>
 							</ul>
 						</section>
 					</div>
@@ -92,79 +88,34 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Enumeration members</h2>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="center" class="tsd-anchor"></a>
-					<h3>Center</h3>
-					<div class="tsd-signature tsd-kind-icon">Center<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;Center&quot;</span></div>
+					<a name="association_flow" class="tsd-anchor"></a>
+					<h3>ASSOCIATION_<wbr>FLOW</h3>
+					<div class="tsd-signature tsd-kind-icon">ASSOCIATION_<wbr>FLOW<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;association&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/4b6a720/src/component/options.ts#L97">component/options.ts:97</a></li>
+							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/4b6a720/src/model/bpmn/internal/edge/FlowKind.ts#L22">model/bpmn/internal/edge/FlowKind.ts:22</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Fit and center the BPMN Diagram.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="horizontal" class="tsd-anchor"></a>
-					<h3>Horizontal</h3>
-					<div class="tsd-signature tsd-kind-icon">Horizontal<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;Horizontal&quot;</span></div>
+					<a name="message_flow" class="tsd-anchor"></a>
+					<h3>MESSAGE_<wbr>FLOW</h3>
+					<div class="tsd-signature tsd-kind-icon">MESSAGE_<wbr>FLOW<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;messageFlow&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/4b6a720/src/component/options.ts#L93">component/options.ts:93</a></li>
+							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/4b6a720/src/model/bpmn/internal/edge/FlowKind.ts#L21">model/bpmn/internal/edge/FlowKind.ts:21</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Fit only horizontally.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="horizontalvertical" class="tsd-anchor"></a>
-					<h3>Horizontal<wbr>Vertical</h3>
-					<div class="tsd-signature tsd-kind-icon">Horizontal<wbr>Vertical<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;HorizontalVertical&quot;</span></div>
+					<a name="sequence_flow" class="tsd-anchor"></a>
+					<h3>SEQUENCE_<wbr>FLOW</h3>
+					<div class="tsd-signature tsd-kind-icon">SEQUENCE_<wbr>FLOW<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;sequenceFlow&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/4b6a720/src/component/options.ts#L91">component/options.ts:91</a></li>
+							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/4b6a720/src/model/bpmn/internal/edge/FlowKind.ts#L20">model/bpmn/internal/edge/FlowKind.ts:20</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Fit the whole html container available to render the BPMN diagram.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="none" class="tsd-anchor"></a>
-					<h3>None</h3>
-					<div class="tsd-signature tsd-kind-icon">None<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;None&quot;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/4b6a720/src/component/options.ts#L89">component/options.ts:89</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>No fit, use dimensions and coordinates from the BPMN diagram.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="vertical" class="tsd-anchor"></a>
-					<h3>Vertical</h3>
-					<div class="tsd-signature tsd-kind-icon">Vertical<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;Vertical&quot;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/4b6a720/src/component/options.ts#L95">component/options.ts:95</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Fit only vertically.</p>
-						</div>
-					</div>
 				</section>
 			</section>
 		</div>
@@ -178,33 +129,27 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum">
+						<a href="fittype.html" class="tsd-kind-icon">Fit<wbr>Type</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-enum">
-						<a href="fittype.html" class="tsd-kind-icon">Fit<wbr>Type</a>
+						<a href="flowkind.html" class="tsd-kind-icon">Flow<wbr>Kind</a>
 						<ul>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="fittype.html#center" class="tsd-kind-icon">Center</a>
+								<a href="flowkind.html#association_flow" class="tsd-kind-icon">ASSOCIATION_<wbr>FLOW</a>
 							</li>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="fittype.html#horizontal" class="tsd-kind-icon">Horizontal</a>
+								<a href="flowkind.html#message_flow" class="tsd-kind-icon">MESSAGE_<wbr>FLOW</a>
 							</li>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="fittype.html#horizontalvertical" class="tsd-kind-icon">Horizontal<wbr>Vertical</a>
-							</li>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="fittype.html#none" class="tsd-kind-icon">None</a>
-							</li>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="fittype.html#vertical" class="tsd-kind-icon">Vertical</a>
+								<a href="flowkind.html#sequence_flow" class="tsd-kind-icon">SEQUENCE_<wbr>FLOW</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-enum">
-						<a href="flowkind.html" class="tsd-kind-icon">Flow<wbr>Kind</a>
-					</li>
 					<li class=" tsd-kind-enum">
 						<a href="shapebpmnelementkind.html" class="tsd-kind-icon">Shape<wbr>Bpmn<wbr>Element<wbr>Kind</a>
 					</li>
