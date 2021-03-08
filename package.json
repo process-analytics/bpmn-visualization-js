@@ -1,6 +1,6 @@
 {
   "name": "bpmn-visualization",
-  "version": "0.12.1-post",
+  "version": "0.12.1",
   "description": "A TypeScript library to visualize process execution data on BPMN diagrams",
   "keywords": [
     "bpmn2",
@@ -144,7 +144,11 @@
     "typescript": "^4.1.5"
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": [ "eslint --fix" ],
-    "NOTICE": [ "eslint --fix" ]
+    "*.{js,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "NOTICE": [
+      "eslint --fix"
+    ]
   }
 }
