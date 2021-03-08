@@ -66,34 +66,38 @@ of the `Done` column related to the milestone
 
 ## bpmn-visualization-examples repository update
 
-You must create a Pull Request to integrate any changes to this repository.
+A Pull Request is created automatically with the following changes:
+- The old demo is replaced by the new.
+- The BPMN Visualization version, in the examples, is replaced by the new version of the library.
 
 ![release process examples repository update](./images/release_process_part-03_examples.png)
 
-### Demo environment update
-Make the new version available for demo
+If, for some reasons, the Pull Request is not created, you can execute manually the [Update BPMN Visualization version](https://github.com/process-analytics/bpmn-visualization-examples/actions/workflows/update_bpmn_visualization_version.yml) job. \
+If it is still not created, you can follow the next steps:
 
-- the `Upload` GitHub workflow has built the demo for the new tag, so download the demo artifact directly from the
-Actions section on GitHub
-- alternatively, if the artifact is not available via GitHub Actions, you can build it locally
-  - checkout the git tag related to the new version
-  - run `npm run demo` which generates it in the `dist` folder
-- create a new branch in the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/demo)
- repository and add the new demo content (proceed how it has been done for prior versions). 
-- push to GitHub and create a new Pull Request
+⚠️⚠️⚠️ _**Only if the job to create the Pull Request and update the demo & the examples does NOT work!**_  ⚠️⚠️⚠️
+
+### Demo environment update
+Make the new version available for demo.
+
+- The `Upload` GitHub workflow has built the demo for the new tag, so download the demo artifact directly from the  Actions section on GitHub.
+- Alternatively, if the artifact is not available via GitHub Actions, you can build it locally.
+  - Checkout the git tag related to the new version.
+  - Run `npm run demo` which generates it in the `dist` folder.
+- Create a new branch in the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/demo) repository and add the new demo content (proceed how it has been done for prior versions). 
+- Push to GitHub and create a new Pull Request.
 
 ### Examples update
 **Note**: do this using the Pull Request you have just created for the demo update
 
-- Make the examples use the latest version of the lib. A bash script is available to help you for this task in the `scripts`
-folder.
+- Make the examples use the latest version of the lib. A bash script is available to help you for this task in the `scripts` folder.
 - Tests that the examples work with the new lib version.
 - If temporary version of the lib has been commited (generally in the demo folder) to make examples use it prior availability on npmjs, delete the corresponding file and update the examples.
 
+⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
 
 ### Tagging
 When all updates have been completed, merge the Pull Request created above.
-
 
 To create the tag, the easiest way is to create a new release by following the [GitHub help](https://help.github.com/en/github/administering-a-repository/managing-releases-in-a-repository#creating-a-release)
 - for `Tag version`, use a value that is the same as the lib. The tag will be created when the release will be published
@@ -103,20 +107,19 @@ To create the tag, the easiest way is to create a new release by following the [
   - in that case, choose a dedicated commit 
   - **important**: ensure that the build is passing on the chosen branch or commit used to create the release
 
-
 Alternatively, you can create the tag from your local machine and then push it.
 
 ## Communicate about the release
 
-- twitter
+### Twitter
 
-you can use this template:
+You can use this template:
 
 > 📣 BPMN Visualization {version} is out! 🎉
 >
 > ===> some short description here <===
 >
-> #bpmnvisualization
+> #bpmnvisualization #bpmn #visualization #typescript #opensource
 >
 > https://github.com/process-analytics/bpmn-visualization-js/releases/tag/v{version}
 
