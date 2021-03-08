@@ -1,4 +1,4 @@
-name: Upload Demo Archive
+name: Upload New Demo Archive & Send Repository Dispatch Event
 
 on:
   push:
@@ -48,7 +48,7 @@ jobs:
       - name: Get the version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v*}
-      - name: Repository Dispatch
+      - name: Send Repository Dispatch event
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.GH_RELEASE_TOKEN }}
