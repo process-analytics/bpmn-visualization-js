@@ -1,4 +1,4 @@
-name: Upload New Demo Archive & Send Repository Dispatch Event
+name: Upload Demo Archive & Trigger Examples Repository Update
 
 on:
   push:
@@ -60,4 +60,3 @@ jobs:
               "artifact_name": "demo-${{github.sha}}",
               "version": "${{ steps.get_version.outputs.VERSION }}"
             }'
-
