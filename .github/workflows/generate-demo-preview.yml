@@ -6,16 +6,10 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
-    paths-ignore:
-      - '.github/workflows/build.yml'
-      - '.github/workflows/codeql-analysis.yml'
-      - '.github/workflows/fill-gh-draft-release.yml'
-      - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/release.yml'
-      - '.gitignore'
-      - 'docs/**'
-      - '*.md'
-      - LICENSE
+    paths:
+      - '.github/workflows/generate-demo-preview.yml'
+      - 'src/**/*'
+      - 'package.json'
 
 jobs:
   demo_preview:
