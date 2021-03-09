@@ -36,7 +36,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install dependencies
-        run: npm ci
+        # https://playwright.dev/docs/installation/#skip-browser-downloads
+        run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm ci
       - name: Build Demo
         run: npm run demo
       - name: Upload
