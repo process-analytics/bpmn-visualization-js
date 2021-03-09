@@ -20,6 +20,8 @@ import { BpmnSemantic } from './types';
 import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
 import ShapeBpmnElement, { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { ShapeBpmnMarkerKind } from '../../model/bpmn/internal/shape';
+import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
+import { mxCell, mxCellOverlay } from 'mxgraph'; // for types
 
 export class BpmnModelRegistry {
   private searchableModel: SearchableModel;
@@ -37,6 +39,19 @@ export class BpmnModelRegistry {
     const bpmnElement = element.bpmnElement;
     const isShape = bpmnElement instanceof ShapeBpmnElement;
     return { id: bpmnElementId, name: bpmnElement.name, isShape: isShape, kind: bpmnElement.kind };
+  }
+
+  private getCellById(graph: BpmnMxGraph, bpmnElementId: string): mxCell {
+    const mxCell = graph.getModel().getCell(bpmnElementId);
+    if (mxCell == null) {
+      return undefined;
+    }
+    return mxCell;
+  }
+
+  addCellOverlay(graph: BpmnMxGraph, id: string, overlay: mxCellOverlay): void {
+    const mxCell = this.getCellById(graph, id);
+    graph.addCellOverlay(mxCell, overlay);
   }
 }
 

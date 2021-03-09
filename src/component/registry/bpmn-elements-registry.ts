@@ -22,7 +22,7 @@ import { BpmnQuerySelectors } from './query-selectors';
 import { BpmnElement } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
-import { mxCell, mxCellOverlay, mxCellState, mxPoint, mxRectangle } from 'mxgraph'; // for types
+import { mxCellState, mxPoint, mxRectangle } from 'mxgraph'; // for types
 import { mxgraph } from '../mxgraph/initializer';
 import { OverlayKind } from '../../model/bpmn/internal/overlay/OverlayKind';
 
@@ -120,6 +120,7 @@ export class BpmnElementsRegistry {
   ) {}
 
   addBadgeToElement(
+    graph: BpmnMxGraph,
     id: string,
     value: string,
     kind: OverlayKind = OverlayKind.BADGE_TEXT,
@@ -128,7 +129,7 @@ export class BpmnElementsRegistry {
   ): void {
     // TODO: positioning - configurable, if position is taken do we display new element and remove the old one?
     const overlay = new BpmnOverlay(value, 'tooltip', kind, align, verticalAlign);
-    this.bpmnModelRegistry.addCellOverlay(id, overlay);
+    this.bpmnModelRegistry.addCellOverlay(graph, id, overlay);
   }
 
   // TODO doc, not found elements are not present in the return array

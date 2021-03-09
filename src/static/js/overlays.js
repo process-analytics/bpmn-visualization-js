@@ -16,7 +16,7 @@
 import { documentReady, FitType, getElementsByKinds, log, startBpmnVisualization } from '../../index.es.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function configureControls(bpmnElementsRegistry) {
+function configureControls(bpmnElementsRegistry, graph) {
   let totalBadgeCount = 0;
   let totalElementCount = 0;
   const textArea = document.getElementById('elements-result');
@@ -56,6 +56,7 @@ function configureControls(bpmnElementsRegistry) {
       const badgeValue = document.getElementById('badge-value').value;
       if (element.bpmnSemantic && element.bpmnSemantic.id) {
         bpmnElementsRegistry.addBadgeToElement(
+          graph,
           element.bpmnSemantic.id,
           badgeValue,
           getCheckedRadioValue('badgeKind'),
@@ -106,7 +107,14 @@ function configureControls(bpmnElementsRegistry) {
   document.getElementById('attach-badge').onclick = function () {
     const bpmnId = document.getElementById('chosen-id').value;
     const badgeValue = document.getElementById('badge-value').value;
-    bpmnElementsRegistry.addBadgeToElement(bpmnId, badgeValue, getCheckedRadioValue('badgeKind'), getCheckedRadioValue('horizontalAlign'), getCheckedRadioValue('verticalAlign'));
+    bpmnElementsRegistry.addBadgeToElement(
+      graph,
+      bpmnId,
+      badgeValue,
+      getCheckedRadioValue('badgeKind'),
+      getCheckedRadioValue('horizontalAlign'),
+      getCheckedRadioValue('verticalAlign'),
+    );
   };
 }
 
@@ -2032,7 +2040,7 @@ documentReady(() => {
       margin: 50,
     },
   });
-  configureControls(bpmnVisu.bpmnElementsRegistry);
+  configureControls(bpmnVisu.bpmnElementsRegistry, bpmnVisu.graph);
   if (bpmnParameterValue === 'true') {
     bpmnVisu.load(bpmnFileB20);
   } else {
