@@ -123,6 +123,9 @@ You can set the BPMN content using one of the following ways:
     bpmnVisualization.load(bpmnContent);
 ```
 
+### 👤 User documentation
+The User documentation with the feature list & the public API is stored on [Github pages](https://process-analytics.github.io/bpmn-visualization-js/).
+
 ### ⚒️ More
 
 💡 Want to know more about `bpmn-visualization` usage and extensibility? Have a look at the
