@@ -31,6 +31,7 @@ jobs:
           dist: build/demo
           failOnError: true
           teardown: 'true'
+          # https://playwright.dev/docs/installation/#skip-browser-downloads
           build: |
-            npm ci
+            PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm ci
             npm run demo
