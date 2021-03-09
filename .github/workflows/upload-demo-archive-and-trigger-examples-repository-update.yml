@@ -4,16 +4,6 @@ on:
   push:
     tags:
       -  v*
-    paths-ignore:
-      - '.github/workflows/build.yml'
-      - '.github/workflows/codeql-analysis.yml'
-      - '.github/workflows/fill-gh-draft-release.yml'
-      - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/release.yml'
-      - '.gitignore'
-      - 'docs/**'
-      - '*.md'
-      - LICENSE
 
 jobs:
   upload_demo_archive:
