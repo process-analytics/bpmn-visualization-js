@@ -12,6 +12,16 @@ on:
       - '.github/workflows/generate-documentation.yml'
       - 'package.json' # we want to rebuild the documentation when libs used by the doc generation change
       - 'typedoc.json'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'docs/users/**'
+      - 'scripts/docs.js'
+      - 'src/api/public/api.ts'
+      - '.github/workflows/generate-documentation.yml'
+      - 'package.json' # trigger when libs used by the doc generation change
+      - 'typedoc.json'
 
 jobs:
   generate_doc:
