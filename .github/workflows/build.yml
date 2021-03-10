@@ -4,29 +4,35 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - '.github/workflows/codeql-analysis.yml'
-      - '.github/workflows/fill-gh-draft-release.yml'
-      - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/release.yml'
-      - '.github/workflows/upload-demo-archive.yml'
-      - '.gitignore'
-      - 'docs/**'
-      - '*.md'
-      - LICENSE
+    paths:
+      - '.github/build.yml'
+      - 'config/**/*'
+      - 'scripts/**/*'
+      - 'src/**/*'
+      - 'test/**/*'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'postcss.config.js'
+      - 'rollup.config.js'
+      - 'tailwind.config.js'
+      - 'tsconfig.json'
+      - 'utils.rollup.config.js'
   pull_request:
     branches:
       - master
-    paths-ignore:
-      - '.github/workflows/codeql-analysis.yml'
-      - '.github/workflows/fill-gh-draft-release.yml'
-      - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/release.yml'
-      - '.github/workflows/upload-demo-archive.yml'
-      - '.gitignore'
-      - 'docs/**'
-      - '*.md'
-      - LICENSE
+    paths:
+      - '.github/build.yml'
+      - 'config/**/*'
+      - 'scripts/**/*'
+      - 'src/**/*'
+      - 'test/**/*'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'postcss.config.js'
+      - 'rollup.config.js'
+      - 'tailwind.config.js'
+      - 'tsconfig.json'
+      - 'utils.rollup.config.js'
 
 jobs:
   build:
