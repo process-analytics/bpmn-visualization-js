@@ -8,8 +8,13 @@ on:
       - master
     paths:
       - '.github/workflows/generate-demo-preview.yml'
+      - 'config/**/*'
       - 'src/**/*'
       - 'package.json'
+      - 'postcss.config.js'
+      - 'rollup.config.js'
+      - 'tailwind.config.js'
+      - 'tsconfig.json'
 
 jobs:
   demo_preview:
