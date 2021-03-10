@@ -11,7 +11,6 @@ on:
       - '.github/workflows/codeql-analysis.yml'
       - '.github/workflows/fill-gh-draft-release.yml'
       - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/generate-documentation-api.yml'
       - '.github/workflows/release.yml'
       - '.gitignore'
       - 'docs/**'
