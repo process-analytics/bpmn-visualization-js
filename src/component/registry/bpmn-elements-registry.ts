@@ -36,10 +36,11 @@ export type HorizontalAlignType = 'left' | 'center' | 'right';
 export class BpmnOverlay extends mxgraph.mxCellOverlay {
   value: string;
   kind: OverlayKind;
-  constructor(value: string, tooltip: string, kind: OverlayKind, align?: HorizontalAlignType, verticalAlign?: VerticalAlignType, offset?: mxPoint, cursor?: string) {
+  constructor(value: string, tooltip: string, kind: OverlayKind, align?: HorizontalAlignType, verticalAlign?: VerticalAlignType, offset?: mxPoint, cursor = 'pointer') {
     super(null, tooltip, align, verticalAlign, offset, cursor);
     this.value = value;
     this.kind = kind;
+    this.cursor = cursor;
   }
   // Based on original method from mxCellOverlay (mxCellOverlay.prototype.getBounds)
   getBounds(state: mxCellState): mxRectangle {
@@ -126,9 +127,16 @@ export class BpmnElementsRegistry {
     kind: OverlayKind = OverlayKind.BADGE_TEXT,
     align: HorizontalAlignType = mxgraph.mxConstants.ALIGN_RIGHT,
     verticalAlign: VerticalAlignType = mxgraph.mxConstants.ALIGN_TOP,
+    badgeClickCallback?: (cellValue: string, cellId: string) => void,
   ): void {
     // TODO: positioning - configurable, if position is taken do we display new element and remove the old one?
     const overlay = new BpmnOverlay(value, 'tooltip', kind, align, verticalAlign);
+    if (badgeClickCallback) {
+      overlay.addListener(mxgraph.mxEvent.CLICK, (sender, evt) => {
+        const cell = evt.getProperty('cell');
+        badgeClickCallback(cell.value, cell.id);
+      });
+    }
     this.bpmnModelRegistry.addCellOverlay(graph, id, overlay);
   }
 

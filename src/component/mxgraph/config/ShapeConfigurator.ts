@@ -212,7 +212,6 @@ export default class ShapeConfigurator {
             }
 
             if (currentOverlay instanceof BpmnOverlay) {
-              tmp.node.style.cursor = 'default';
               tmp.node.classList.add('badge-overlay');
             }
 
