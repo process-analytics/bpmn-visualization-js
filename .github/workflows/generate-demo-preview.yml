@@ -19,13 +19,15 @@ jobs:
       - name: Publish Demo preview
         id: publish_demo_preview
         uses: afc163/surge-preview@v1
+        env:
+          # https://playwright.dev/docs/installation/#skip-browser-downloads
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           dist: build/demo
           failOnError: true
           teardown: 'true'
-          # https://playwright.dev/docs/installation/#skip-browser-downloads
           build: |
-            PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm ci
+            npm ci
             npm run demo
