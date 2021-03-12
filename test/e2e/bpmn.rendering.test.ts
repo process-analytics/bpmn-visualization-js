@@ -37,7 +37,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.000002, // 0.00018742700883533914%
           macos: 0.0011, // 0.10865713972554311%
-          windows: 0.0012, // 0.11321398812403904%
+          windows: 0.004, // 0.3963857943718785%
         },
       ],
       [
@@ -61,7 +61,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.000009, // 0.0008459985669673209%
           macos: 0.005, // 0.4666976128188338%
-          windows: 0.003, // 0.2970500950379207%
+          windows: 0.0032, // 0.3130780811589351%
         },
       ],
       [
@@ -69,7 +69,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.000002, // 0.00019304876757164635%
           macos: 0.0019, // 0.18334725431882193%
-          windows: 0.0019, // 0.18553107384994272%
+          windows: 0.0022, // 0.21203992685594475%
         },
       ],
       [
@@ -93,7 +93,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.00005, // 0.0043243364134193385%
           macos: 0.0008, // 0.07646269456225152%
-          windows: 0.0012, // 0.11539494876845469%
+          windows: 0.0013, // 0.12511544978087707%
         },
       ],
       // tests without labels
