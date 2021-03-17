@@ -17,7 +17,8 @@ import { bpmnVisualization, ExpectedEdgeModelElement, ExpectedFont, ExpectedShap
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import { mxgraph } from '../../../src/component/mxgraph/initializer';
-import { mxCell, mxGeometry, StyleMap } from 'mxgraph'; // for types
+import { mxCell, mxGeometry, StyleMap } from 'mxgraph';
+import { BpmnOverlay } from '../../../src/component/mxgraph/overlay/BpmnOverlay';
 
 export interface ExpectedStateStyle extends StyleMap {
   verticalAlign?: string;
@@ -48,6 +49,13 @@ export interface ExpectedCell {
   state?: {
     style: ExpectedStateStyle;
   };
+  overlays?: ExpectedOverlay[];
+}
+
+export interface ExpectedOverlay {
+  label?: string;
+  horizontalAlign?: string;
+  verticalAlign?: string;
 }
 
 export const EXPECTED_LABEL = 'Expected in the mxGraph model';
@@ -160,6 +168,19 @@ export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCel
     parent: { id: cell.parent.id },
     state: { style: buildReceivedStateStyle(cell) },
   };
+
+  const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as BpmnOverlay[];
+  if (cellOverlays) {
+    receivedCell.overlays = cellOverlays.map(cellOverlay => {
+      return {
+        label: cellOverlay.label,
+        horizontalAlign: cellOverlay.align,
+        verticalAlign: cellOverlay.verticalAlign,
+      };
+    });
+  } else {
+    receivedCell.overlays = undefined;
+  }
 
   if (cell.edge) {
     const children = cell.children;

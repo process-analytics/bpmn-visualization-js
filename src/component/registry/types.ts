@@ -41,5 +41,5 @@ export type OverlayPosition = OverlayShapePosition | OverlayEdgePosition;
 
 export interface Overlay {
   position: OverlayPosition;
-  label: string;
+  label?: string;
 }

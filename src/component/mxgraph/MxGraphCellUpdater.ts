@@ -36,9 +36,10 @@ export default class MxGraphCellUpdater {
 
   public addOverlay(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
     const mxCell = this.graph.getModel().getCell(bpmnElementId);
-    // if (!mxCell) {
-    //   return;
-    // }
+    if (!mxCell) {
+      return;
+    }
+
     // TODO: use mxGraph transaction
     ensureIsArray(overlays).forEach(overlay => {
       const bpmnOverlay = new BpmnOverlay(overlay.label);

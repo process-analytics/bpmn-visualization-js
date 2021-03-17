@@ -55,6 +55,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
     state: {
       style: buildExpectedStateStyle(expectedModel),
     },
+    overlays: expectedModel.overlays,
   };
 
   if (expectedModel.messageVisibleKind && expectedModel.messageVisibleKind !== MessageVisibleKind.NONE) {

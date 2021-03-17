@@ -45,6 +45,7 @@ import {
   toBeLane,
 } from '../matchers';
 import { mxGeometry } from 'mxgraph'; // for types
+import { ExpectedOverlay } from '../matchers/matcher-utils';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -131,6 +132,7 @@ export interface ExpectedShapeModelElement {
   markers?: ShapeBpmnMarkerKind[];
   isInstantiating?: boolean;
   isHorizontal?: boolean;
+  overlays?: ExpectedOverlay[];
 }
 
 export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
@@ -150,6 +152,7 @@ export interface ExpectedEdgeModelElement {
   endArrow?: string;
   verticalAlign?: string;
   messageVisibleKind?: MessageVisibleKind;
+  overlays?: ExpectedOverlay[];
 }
 
 export interface ExpectedSequenceFlowModelElement extends ExpectedEdgeModelElement {
