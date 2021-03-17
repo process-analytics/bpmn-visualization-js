@@ -19,7 +19,7 @@ import { computeBpmnBaseClassName } from '../mxgraph/style-helper';
 import { CssRegistry } from './css-registry';
 import MxGraphCellUpdater from '../mxgraph/MxGraphCellUpdater';
 import { BpmnQuerySelectors } from './query-selectors';
-import { BpmnElement } from './types';
+import { BpmnElement, Overlay } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
 
@@ -176,6 +176,10 @@ export class BpmnElementsRegistry {
       const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
       this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
     }
+  }
+
+  addOverlay(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
+    this.mxGraphCellUpdater.addOverlay(bpmnElementId, overlays);
   }
 }
 

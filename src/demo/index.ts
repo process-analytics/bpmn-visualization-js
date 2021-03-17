@@ -17,7 +17,7 @@ import BpmnVisualization from '../component/BpmnVisualization';
 import { GlobalOptions, FitOptions, FitType, LoadOptions } from '../component/options';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { BpmnElement } from '../component/registry';
+import { BpmnElement, OverlayPosition } from '../component/registry';
 import { BpmnElementKind } from '../model/bpmn/internal/api';
 
 export * from './helper';
@@ -134,6 +134,10 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
     fitOptions.margin = Number(parameterFitMargin);
   }
   return fitOptions;
+}
+
+export function addOverlay(bpmnElementId: string, position: OverlayPosition): void {
+  return bpmnVisualization.bpmnElementsRegistry.addOverlay(bpmnElementId, [{ position, label: '30' }]);
 }
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {

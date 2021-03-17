@@ -13,7 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, FitType, getElementsByKinds, addCssClasses, removeCssClasses, log, startBpmnVisualization, updateLoadOptions, ShapeUtil } from '../../index.es.js';
+import {
+  documentReady,
+  FitType,
+  getElementsByKinds,
+  addCssClasses,
+  removeCssClasses,
+  log,
+  startBpmnVisualization,
+  updateLoadOptions,
+  ShapeUtil,
+  addOverlay,
+} from '../../index.es.js';
 
 let lastBpmnIdsWithExtraCssClasses = [];
 let lastCssClassName = '';
@@ -40,6 +51,11 @@ function configureControls() {
     lastCssClassName = getCustomCssClassName(bpmnKind);
     addCssClasses(bpmnIds, lastCssClassName);
     lastBpmnIdsWithExtraCssClasses = bpmnIds;
+
+    // Overlay update
+    bpmnIds.forEach(id => {
+      addOverlay(id, getOverlayPosition(bpmnKind));
+    });
   };
 
   document.getElementById('bpmn-kinds-textarea-clean-btn').onclick = function () {
@@ -64,6 +80,22 @@ function getCustomCssClassName(bpmnKind) {
     return 'detection-flow';
   }
   return 'detection';
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function getOverlayPosition(bpmnKind) {
+  if (ShapeUtil.isActivity(bpmnKind)) {
+    return 'top-left';
+  } else if (bpmnKind.includes('Gateway')) {
+    return 'top-right';
+  } else if (bpmnKind.includes('Event')) {
+    return 'bottom-left';
+  } else if (bpmnKind.includes('lane')) {
+    return 'bottom-right';
+  } else if (bpmnKind.includes('Flow')) {
+    return 'middle';
+  }
+  return 'top-left';
 }
 
 documentReady(() => {

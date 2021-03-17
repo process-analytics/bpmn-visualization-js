@@ -34,3 +34,12 @@ export interface BpmnElement {
   bpmnSemantic: BpmnSemantic;
   htmlElement: HTMLElement;
 }
+
+export type OverlayShapePosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+export type OverlayEdgePosition = 'start' | 'middle' | 'end';
+export type OverlayPosition = OverlayShapePosition | OverlayEdgePosition;
+
+export interface Overlay {
+  position: OverlayPosition;
+  label: string;
+}

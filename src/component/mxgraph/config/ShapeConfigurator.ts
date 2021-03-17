@@ -33,11 +33,16 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
+import { mxCellState, mxImageShape, mxShape } from 'mxgraph';
+import { BpmnOverlay } from '../overlay/BpmnOverlay';
+import { OverlayBadgeShape } from '../overlay/shapes';
 
 export default class ShapeConfigurator {
   public configureShapes(): void {
     this.initMxShapePrototype();
     this.registerShapes();
+    this.initMxCellRendererRedrawCellOverlays();
+    this.initMxCellRendererCreateCellOverlays();
   }
 
   private registerShapes(): void {
@@ -117,4 +122,114 @@ export default class ShapeConfigurator {
       return canvas;
     };
   }
+
+  initMxCellRendererRedrawCellOverlays(): void {
+    mxgraph.mxCellRenderer.prototype.redrawCellOverlays = function(state: StateWithOverlays, forced: boolean) {
+      this.createCellOverlays(state);
+
+      if (state.overlays != null) {
+        const rot = mxgraph.mxUtils.mod(mxgraph.mxUtils.getValue(state.style, mxgraph.mxConstants.STYLE_ROTATION, 0), 90);
+        const rad = mxgraph.mxUtils.toRadians(rot);
+        const cos = Math.cos(rad);
+        const sin = Math.sin(rad);
+
+        state.overlays.visit(function(id: string, shape: mxShape) {
+          let bounds: any;
+          bounds = (<ShapeWithOverlay>shape).overlay.getBounds(state);
+
+          if (!state.view.graph.getModel().isEdge(state.cell)) {
+            if (state.shape != null && rot != 0) {
+              let cx = bounds.getCenterX();
+              let cy = bounds.getCenterY();
+
+              const point = mxgraph.mxUtils.getRotatedPoint(new mxgraph.mxPoint(cx, cy), cos, sin,
+                new mxgraph.mxPoint(state.getCenterX(), state.getCenterY()));
+
+              cx = point.x;
+              cy = point.y;
+              bounds.x = Math.round(cx - bounds.width / 2);
+              bounds.y = Math.round(cy - bounds.height / 2);
+            }
+          }
+
+          if (forced || shape.bounds == null || shape.scale != state.view.scale ||
+            !shape.bounds.equals(bounds)) {
+            shape.bounds = bounds;
+            shape.scale = state.view.scale;
+            shape.redraw();
+          }
+        });
+      }
+    };
+  }
+
+  initMxCellRendererCreateCellOverlays(): void {
+    /**
+     * Function: createCellOverlays
+     *
+     * Creates the actual shape for showing the overlay for the given cell state.
+     *
+     * Parameters:
+     *
+     * state - <mxCellState> for which the overlay should be created.
+     */
+    mxgraph.mxCellRenderer.prototype.createCellOverlays = function(state: StateWithOverlays) {
+      const graph = state.view.graph;
+      const overlays = graph.getCellOverlays(state.cell);
+      let dict = null;
+
+      if (overlays != null) {
+        dict = new mxgraph.mxDictionary();
+
+        for (let i = 0; i < overlays.length; i++) {
+          const currentOverlay = overlays[i];
+          const shape = (state.overlays != null) ? state.overlays.remove(currentOverlay) : null;
+
+          if (shape == null) {
+            let tmp: mxShape;
+            if (currentOverlay instanceof BpmnOverlay) {
+              tmp = new OverlayBadgeShape(currentOverlay.label, new mxgraph.mxRectangle(0, 0, 0, 0));
+            } else {
+              tmp = new mxgraph.mxImageShape(new mxgraph.mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
+              (<mxImageShape>tmp).preserveImageAspect = false;
+            }
+            tmp.dialect = state.view.graph.dialect;
+            (<ShapeWithOverlay>tmp).overlay = currentOverlay;
+
+            // TODO: find solution to not cast tmp into mxImageShape
+            this.initializeOverlay(state, <mxImageShape>tmp);
+            this.installCellOverlayListeners(state, currentOverlay, tmp);
+
+            if (currentOverlay.cursor != null) {
+              tmp.node.style.cursor = currentOverlay.cursor;
+            }
+
+            if (currentOverlay instanceof BpmnOverlay) {
+              tmp.node.classList.add('badge-overlay');
+            }
+
+            dict.put(currentOverlay, tmp);
+          } else {
+            dict.put(currentOverlay, shape);
+          }
+        }
+      }
+
+      // Removes unused
+      if (state.overlays != null) {
+        state.overlays.visit(function(id: string, shape: mxShape) {
+          shape.destroy();
+        });
+      }
+
+      state.overlays = dict;
+    };
+  }
+}
+interface StateWithOverlays extends mxCellState {
+  overlays: any
+}
+
+interface ShapeWithOverlay extends mxShape {
+  overlay: any
 }
