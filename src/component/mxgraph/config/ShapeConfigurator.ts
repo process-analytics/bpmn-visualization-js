@@ -187,12 +187,16 @@ export default class ShapeConfigurator {
 
           if (shape == null) {
             let tmp: mxShape;
+
+            // START bpmn-visualization CUSTOMIZATION
             if (currentOverlay instanceof BpmnOverlay) {
               tmp = new OverlayBadgeShape(currentOverlay.label, new mxgraph.mxRectangle(0, 0, 0, 0));
             } else {
               tmp = new mxgraph.mxImageShape(new mxgraph.mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
               (<mxImageShape>tmp).preserveImageAspect = false;
             }
+            // END bpmn-visualization CUSTOMIZATION
+
             tmp.dialect = state.view.graph.dialect;
             (<ShapeWithOverlay>tmp).overlay = currentOverlay;
 

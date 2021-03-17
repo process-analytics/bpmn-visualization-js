@@ -1267,7 +1267,7 @@ describe('mxGraph model', () => {
         expect('Flow_1bewc4s').toBeSequenceFlow({
           label: 'link',
           parentId: 'Lane_13kpaun',
-          overlays: [{ label: '6', horizontalAlign: 'start', verticalAlign: 'top' }],
+          overlays: [{ label: '6', horizontalAlign: 'left', verticalAlign: 'top' }],
         });
 
         // add several overlays to single edge without overlay
@@ -1276,10 +1276,11 @@ describe('mxGraph model', () => {
           { position: 'end', label: '8' },
         ]);
         expect('Flow_1dmga1h').toBeSequenceFlow({
-          parentId: 'lane_02',
+          parentId: 'Lane_13kpaun',
+          verticalAlign: 'bottom',
           overlays: [
-            { label: '7', horizontalAlign: 'middle', verticalAlign: 'top' },
-            { label: '8', horizontalAlign: 'end', verticalAlign: 'top' },
+            { label: '7', horizontalAlign: 'center', verticalAlign: 'top' },
+            { label: '8', horizontalAlign: 'right', verticalAlign: 'top' },
           ],
         });
 
@@ -1292,9 +1293,9 @@ describe('mxGraph model', () => {
           label: 'link',
           parentId: 'Lane_13kpaun',
           overlays: [
-            { label: '6', horizontalAlign: 'start', verticalAlign: 'top' },
-            { label: '7', horizontalAlign: 'middle', verticalAlign: 'top' },
-            { label: '8', horizontalAlign: 'end', verticalAlign: 'top' },
+            { label: '6', horizontalAlign: 'left', verticalAlign: 'top' },
+            { label: '7', horizontalAlign: 'center', verticalAlign: 'top' },
+            { label: '8', horizontalAlign: 'right', verticalAlign: 'top' },
           ],
         });
       });

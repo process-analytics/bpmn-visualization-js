@@ -16,7 +16,7 @@
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { StyleIdentifier } from './StyleUtils';
 import { Overlay } from '../registry';
-import { BpmnOverlay } from './overlay/BpmnOverlay';
+import { BpmnOverlay, BpmnOverlayOptions } from './overlay/BpmnOverlay';
 import { ensureIsArray } from '../helpers/array-utils';
 
 export default class MxGraphCellUpdater {
@@ -42,8 +42,62 @@ export default class MxGraphCellUpdater {
 
     // TODO: use mxGraph transaction
     ensureIsArray(overlays).forEach(overlay => {
-      const bpmnOverlay = new BpmnOverlay(overlay.label);
+      const bpmnOverlay = new BpmnOverlay(overlay.label, this.getOptions(overlay));
       this.graph.addCellOverlay(mxCell, bpmnOverlay);
     });
+  }
+
+  private getOptions(overlay: Overlay): BpmnOverlayOptions {
+    switch (overlay.position) {
+      case 'top-left': {
+        return {
+          horizontalAlign: 'left',
+          verticalAlign: 'top',
+        };
+        break;
+      }
+      case 'top-right': {
+        return {
+          horizontalAlign: 'right',
+          verticalAlign: 'top',
+        };
+        break;
+      }
+      case 'bottom-left': {
+        return {
+          horizontalAlign: 'left',
+          verticalAlign: 'bottom',
+        };
+        break;
+      }
+      case 'bottom-right': {
+        return {
+          horizontalAlign: 'right',
+          verticalAlign: 'bottom',
+        };
+        break;
+      }
+      case 'start': {
+        return {
+          horizontalAlign: 'left',
+          verticalAlign: 'top',
+        };
+        break;
+      }
+      case 'middle': {
+        return {
+          horizontalAlign: 'center',
+          verticalAlign: 'top',
+        };
+        break;
+      }
+      case 'end': {
+        return {
+          horizontalAlign: 'right',
+          verticalAlign: 'top',
+        };
+        break;
+      }
+    }
   }
 }

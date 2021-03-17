@@ -35,10 +35,12 @@ export class BpmnOverlay extends mxgraph.mxCellOverlay {
     const s = state.view.scale;
     let pt;
 
-    // TODO: the other overlay types than OverlayKind.BADGE_TEXT should be handled separately, for now hardcoded 10 is just for testing purpose of this POC
+    // START bpmn-visualization CUSTOMIZATION
+    // TODO: the other overlay types than OverlayKind.BADGE_RECT should be handled separately, for now hardcoded 10 is just for testing purpose of this POC
     // 0 values to position the text overlays on extreme/center points
     const w = 0; // this.image.width;
     const h = 0; // this.image.height;
+    // END bpmn-visualization CUSTOMIZATION
 
     if (isEdge) {
       const pts = state.absolutePoints;
