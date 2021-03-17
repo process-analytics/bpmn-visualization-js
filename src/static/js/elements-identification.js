@@ -51,7 +51,7 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
 
   // Overlay update
   bpmnIds.forEach(id => {
-    addOverlay(id, getOverlayPosition(bpmnKind));
+    addOverlay(id, getOverlay(bpmnKind));
   });
 }
 
@@ -88,19 +88,19 @@ function getCustomCssClassName(bpmnKind) {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function getOverlayPosition(bpmnKind) {
+function getOverlay(bpmnKind) {
   if (ShapeUtil.isActivity(bpmnKind)) {
-    return 'top-left';
+    return { position: 'top-left', label: '30' };
   } else if (bpmnKind.includes('Gateway')) {
-    return 'top-right';
+    return { position: 'top-right', label: '3' };
   } else if (bpmnKind.includes('Event')) {
-    return 'bottom-left';
+    return { position: 'bottom-left', label: '15' };
   } else if (bpmnKind.includes('lane')) {
-    return 'bottom-right';
+    return { position: 'bottom-right', label: '100' };
   } else if (bpmnKind.includes('Flow')) {
-    return 'middle';
+    return { position: 'middle', label: '999999' };
   }
-  return 'top-left';
+  return { position: 'top-left', label: '40' };
 }
 
 documentReady(() => {

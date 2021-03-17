@@ -17,7 +17,7 @@ import BpmnVisualization from '../component/BpmnVisualization';
 import { GlobalOptions, FitOptions, FitType, LoadOptions } from '../component/options';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { BpmnElement, OverlayPosition } from '../component/registry';
+import { BpmnElement, Overlay, OverlayPosition } from '../component/registry';
 import { BpmnElementKind } from '../model/bpmn/internal/api';
 
 export * from './helper';
@@ -65,6 +65,10 @@ export function addCssClasses(bpmnElementId: string | string[], classNames: stri
 
 export function removeCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
   return bpmnVisualization.bpmnElementsRegistry.removeCssClasses(bpmnElementId, classNames);
+}
+
+export function addOverlay(bpmnElementId: string, overlay: Overlay): void {
+  return bpmnVisualization.bpmnElementsRegistry.addOverlay(bpmnElementId, [overlay]);
 }
 
 // callback function for opening | dropping the file to be loaded
@@ -135,10 +139,6 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
     fitOptions.margin = Number(parameterFitMargin);
   }
   return fitOptions;
-}
-
-export function addOverlay(bpmnElementId: string, position: OverlayPosition): void {
-  return bpmnVisualization.bpmnElementsRegistry.addOverlay(bpmnElementId, [{ position, label: '30' }]);
 }
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
