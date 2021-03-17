@@ -46,6 +46,7 @@ function loadBpmn(bpmn: string): void {
   log('Loading bpmn....');
   bpmnVisualization.load(bpmn, loadOptions);
   log('BPMN loaded with configuration', stringify(loadOptions));
+  document.dispatchEvent(new CustomEvent('diagramLoaded'));
 }
 
 export function fit(fitOptions: FitOptions): void {
