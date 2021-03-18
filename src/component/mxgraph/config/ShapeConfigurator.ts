@@ -206,6 +206,7 @@ export default class ShapeConfigurator {
           if (overlayShape instanceof OverlayBadgeShape) {
             // TODO custom css class management
             overlayShape.node.classList.add('overlay-badge');
+            overlayShape.node.setAttribute('data-bpmn-id', state.cell.id);
           }
           // END bpmn-visualization CUSTOMIZATION
 
