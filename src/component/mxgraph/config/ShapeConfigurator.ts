@@ -164,15 +164,6 @@ export default class ShapeConfigurator {
   }
 
   initMxCellRendererCreateCellOverlays(): void {
-    /**
-     * Function: createCellOverlays
-     *
-     * Creates the actual shape for showing the overlay for the given cell state.
-     *
-     * Parameters:
-     *
-     * state - <mxCellState> for which the overlay should be created.
-     */
     mxgraph.mxCellRenderer.prototype.createCellOverlays = function(state: StateWithOverlays) {
       const graph = state.view.graph;
       const overlays = graph.getCellOverlays(state.cell);
