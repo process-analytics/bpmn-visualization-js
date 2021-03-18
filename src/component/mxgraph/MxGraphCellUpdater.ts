@@ -15,9 +15,11 @@
  */
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { StyleIdentifier } from './StyleUtils';
-import { Overlay } from '../registry';
+import { Overlay, OverlayPosition } from '../registry';
 import { BpmnOverlay, BpmnOverlayOptions } from './overlay/BpmnOverlay';
 import { ensureIsArray } from '../helpers/array-utils';
+import { ShapeBpmnEventKind } from '../../model/bpmn/internal/shape';
+import { PaintParameter } from './shape/render';
 
 export default class MxGraphCellUpdater {
   constructor(readonly graph: BpmnMxGraph) {}
@@ -42,47 +44,20 @@ export default class MxGraphCellUpdater {
 
     // TODO: use mxGraph transaction
     ensureIsArray(overlays).forEach(overlay => {
-      const bpmnOverlay = new BpmnOverlay(overlay.label, this.getOptions(overlay));
+      const bpmnOverlay = new BpmnOverlay(overlay.label, this.overlayPositions.get(overlay.position));
       this.graph.addCellOverlay(mxCell, bpmnOverlay);
     });
   }
 
-  // TODO replace by a map and a function
-  private getOptions(overlay: Overlay): BpmnOverlayOptions {
-    switch (overlay.position) {
-      case 'start': // for edge
-      case 'top-left': {
-        return {
-          horizontalAlign: 'left',
-          verticalAlign: 'top',
-        };
-      }
-      case 'end': // for edge
-      case 'top-right': {
-        return {
-          horizontalAlign: 'right',
-          verticalAlign: 'top',
-        };
-      }
-      case 'bottom-left': {
-        return {
-          horizontalAlign: 'left',
-          verticalAlign: 'bottom',
-        };
-      }
-      case 'bottom-right': {
-        return {
-          horizontalAlign: 'right',
-          verticalAlign: 'bottom',
-        };
-      }
-      case 'middle': {
-        // for edge
-        return {
-          horizontalAlign: 'center',
-          verticalAlign: 'top',
-        };
-      }
-    }
-  }
+  private overlayPositions: Map<OverlayPosition, BpmnOverlayOptions> = new Map([
+    // Edge
+    ['start', { horizontalAlign: 'left', verticalAlign: 'top' }],
+    ['middle', { horizontalAlign: 'center', verticalAlign: 'top' }],
+    ['end', { horizontalAlign: 'right', verticalAlign: 'top' }],
+    // Shape
+    ['top-left', { horizontalAlign: 'left', verticalAlign: 'top' }],
+    ['top-right', { horizontalAlign: 'right', verticalAlign: 'top' }],
+    ['bottom-left', { horizontalAlign: 'left', verticalAlign: 'bottom' }],
+    ['bottom-right', { horizontalAlign: 'right', verticalAlign: 'bottom' }],
+  ]);
 }
