@@ -33,7 +33,7 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
-import {mxCellOverlay, mxCellState, mxImageShape, mxShape} from 'mxgraph';
+import { mxCellState, mxImageShape, mxShape } from 'mxgraph';
 import { BpmnOverlay } from '../overlay/BpmnOverlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 
