@@ -47,6 +47,7 @@ export default class MxGraphCellUpdater {
     });
   }
 
+  // TODO replace by a map and a function
   private getOptions(overlay: Overlay): BpmnOverlayOptions {
     switch (overlay.position) {
       case 'top-left': {
