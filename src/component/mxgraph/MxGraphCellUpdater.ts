@@ -50,12 +50,14 @@ export default class MxGraphCellUpdater {
   // TODO replace by a map and a function
   private getOptions(overlay: Overlay): BpmnOverlayOptions {
     switch (overlay.position) {
+      case 'start': // for edge
       case 'top-left': {
         return {
           horizontalAlign: 'left',
           verticalAlign: 'top',
         };
       }
+      case 'end': // for edge
       case 'top-right': {
         return {
           horizontalAlign: 'right',
@@ -74,21 +76,10 @@ export default class MxGraphCellUpdater {
           verticalAlign: 'bottom',
         };
       }
-      case 'start': {
-        return {
-          horizontalAlign: 'left',
-          verticalAlign: 'top',
-        };
-      }
       case 'middle': {
+        // for edge
         return {
           horizontalAlign: 'center',
-          verticalAlign: 'top',
-        };
-      }
-      case 'end': {
-        return {
-          horizontalAlign: 'right',
           verticalAlign: 'top',
         };
       }
