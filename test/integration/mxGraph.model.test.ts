@@ -1232,6 +1232,7 @@ describe('mxGraph model', () => {
         bpmnVisualization.bpmnElementsRegistry.addOverlay('endEvent_message_1', [
           { position: 'top-right', label: '7' },
           { position: 'bottom-left', label: '8' },
+          { position: 'bottom-right', label: '99' },
         ]);
         expect('endEvent_message_1').toBeEndEvent({
           label: 'message end 2',
@@ -1240,6 +1241,7 @@ describe('mxGraph model', () => {
           overlays: [
             { label: '7', horizontalAlign: 'right', verticalAlign: 'top' },
             { label: '8', horizontalAlign: 'left', verticalAlign: 'bottom' },
+            { label: '99', horizontalAlign: 'right', verticalAlign: 'bottom' },
           ],
         });
 
@@ -1247,6 +1249,7 @@ describe('mxGraph model', () => {
         bpmnVisualization.bpmnElementsRegistry.addOverlay('serviceTask_1_2', [
           { position: 'top-right', label: '7' },
           { position: 'bottom-left', label: '8' },
+          { position: 'bottom-right', label: '99' },
         ]);
         expect('serviceTask_1_2').toBeServiceTask({
           label: 'Service Task 1.2',
@@ -1255,6 +1258,7 @@ describe('mxGraph model', () => {
             { label: '6', horizontalAlign: 'left', verticalAlign: 'top' },
             { label: '7', horizontalAlign: 'right', verticalAlign: 'top' },
             { label: '8', horizontalAlign: 'left', verticalAlign: 'bottom' },
+            { label: '99', horizontalAlign: 'right', verticalAlign: 'bottom' },
           ],
         });
       });
