@@ -41,7 +41,6 @@ export default class ShapeConfigurator {
   public configureShapes(): void {
     this.initMxShapePrototype();
     this.registerShapes();
-    // this.initMxCellRendererRedrawCellOverlays();
     this.initMxCellRendererCreateCellOverlays();
   }
 
@@ -123,47 +122,6 @@ export default class ShapeConfigurator {
     };
   }
 
-  // TODO remove this commented function if we finally don't use it
-  // initMxCellRendererRedrawCellOverlays(): void {
-  //   mxgraph.mxCellRenderer.prototype.redrawCellOverlays = function(state: StateWithOverlays, forced: boolean) {
-  //     this.createCellOverlays(state);
-  //
-  //     if (state.overlays != null) {
-  //       const rot = mxgraph.mxUtils.mod(mxgraph.mxUtils.getValue(state.style, mxgraph.mxConstants.STYLE_ROTATION, 0), 90);
-  //       const rad = mxgraph.mxUtils.toRadians(rot);
-  //       const cos = Math.cos(rad);
-  //       const sin = Math.sin(rad);
-  //
-  //       state.overlays.visit(function(id: string, shape: mxShape) {
-  //         let bounds: any;
-  //         bounds = (<ShapeWithOverlay>shape).overlay.getBounds(state);
-  //
-  //         if (!state.view.graph.getModel().isEdge(state.cell)) {
-  //           if (state.shape != null && rot != 0) {
-  //             let cx = bounds.getCenterX();
-  //             let cy = bounds.getCenterY();
-  //
-  //             const point = mxgraph.mxUtils.getRotatedPoint(new mxgraph.mxPoint(cx, cy), cos, sin,
-  //               new mxgraph.mxPoint(state.getCenterX(), state.getCenterY()));
-  //
-  //             cx = point.x;
-  //             cy = point.y;
-  //             bounds.x = Math.round(cx - bounds.width / 2);
-  //             bounds.y = Math.round(cy - bounds.height / 2);
-  //           }
-  //         }
-  //
-  //         if (forced || shape.bounds == null || shape.scale != state.view.scale ||
-  //           !shape.bounds.equals(bounds)) {
-  //           shape.bounds = bounds;
-  //           shape.scale = state.view.scale;
-  //           shape.redraw();
-  //         }
-  //       });
-  //     }
-  //   };
-  // }
-
   initMxCellRendererCreateCellOverlays(): void {
     mxgraph.mxCellRenderer.prototype.createCellOverlays = function(state: StateWithOverlays) {
       const graph = state.view.graph;
@@ -194,7 +152,7 @@ export default class ShapeConfigurator {
           overlayShape.dialect = state.view.graph.dialect;
           (<ShapeWithOverlay>overlayShape).overlay = currentOverlay;
 
-          // TODO: find solution to not cast overlayShape into mxImageShape
+          // The 'initializeOverlay' signature forces us to hardly cast the overlayShape
           this.initializeOverlay(state, <mxImageShape>overlayShape);
           this.installCellOverlayListeners(state, currentOverlay, overlayShape);
 
@@ -204,7 +162,6 @@ export default class ShapeConfigurator {
 
           // START bpmn-visualization CUSTOMIZATION
           if (overlayShape instanceof OverlayBadgeShape) {
-            // TODO custom css class management
             overlayShape.node.classList.add('overlay-badge');
             overlayShape.node.setAttribute('data-bpmn-id', state.cell.id);
           }
@@ -227,6 +184,7 @@ export default class ShapeConfigurator {
 }
 
 // TODO to remove when typed-mxgraph definitions will declare the overlays property
+// should be overlays: mxDictionary<mxCellOverlay> but the remove function should also modified (key should be any instead of string)
 interface StateWithOverlays extends mxCellState {
   overlays: any
 }
