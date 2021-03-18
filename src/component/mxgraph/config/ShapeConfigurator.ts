@@ -184,31 +184,31 @@ export default class ShapeConfigurator {
         for (let currentOverlay of overlays) {
           const shape = (state.overlays != null) ? state.overlays.remove(currentOverlay) : null;
           if (shape == null) {
-            let tmp: mxShape;
+            let overlayShape: mxShape;
 
             // START bpmn-visualization CUSTOMIZATION
             if (currentOverlay instanceof BpmnOverlay) {
-              tmp = new OverlayBadgeShape(currentOverlay.label, new mxgraph.mxRectangle(0, 0, 0, 0));
+              overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxgraph.mxRectangle(0, 0, 0, 0));
               // TODO custom css class management
-              tmp.node.classList.add('overlay-badge');
+              overlayShape.node.classList.add('overlay-badge');
             } else {
-              tmp = new mxgraph.mxImageShape(new mxgraph.mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
-              (<mxImageShape>tmp).preserveImageAspect = false;
+              overlayShape = new mxgraph.mxImageShape(new mxgraph.mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
+              (<mxImageShape>overlayShape).preserveImageAspect = false;
             }
             // END bpmn-visualization CUSTOMIZATION
 
-            tmp.dialect = state.view.graph.dialect;
-            (<ShapeWithOverlay>tmp).overlay = currentOverlay;
+            overlayShape.dialect = state.view.graph.dialect;
+            (<ShapeWithOverlay>overlayShape).overlay = currentOverlay;
 
-            // TODO: find solution to not cast tmp into mxImageShape
-            this.initializeOverlay(state, <mxImageShape>tmp);
-            this.installCellOverlayListeners(state, currentOverlay, tmp);
+            // TODO: find solution to not cast overlayShape into mxImageShape
+            this.initializeOverlay(state, <mxImageShape>overlayShape);
+            this.installCellOverlayListeners(state, currentOverlay, overlayShape);
 
             if (currentOverlay.cursor != null) {
-              tmp.node.style.cursor = currentOverlay.cursor;
+              overlayShape.node.style.cursor = currentOverlay.cursor;
             }
 
-            dict.put(currentOverlay, tmp);
+            dict.put(currentOverlay, overlayShape);
           } else {
             dict.put(currentOverlay, shape);
           }
