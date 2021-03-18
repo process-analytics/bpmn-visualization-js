@@ -44,8 +44,6 @@ export default class MxGraphCellUpdater {
     if (!mxCell) {
       return;
     }
-
-    // TODO: use mxGraph transaction
     ensureIsArray(overlays).forEach(overlay => {
       const bpmnOverlay = new BpmnOverlay(overlay.label, this.overlayConverter.convertPosition(overlay));
       this.graph.addCellOverlay(mxCell, bpmnOverlay);
