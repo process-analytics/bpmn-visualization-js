@@ -181,8 +181,6 @@ export default class ShapeConfigurator {
             // START bpmn-visualization CUSTOMIZATION
             if (currentOverlay instanceof BpmnOverlay) {
               overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxgraph.mxRectangle(0, 0, 0, 0));
-              // TODO custom css class management
-              overlayShape.node.classList.add('overlay-badge');
             } else {
               overlayShape = new mxgraph.mxImageShape(new mxgraph.mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
               (<mxImageShape>overlayShape).preserveImageAspect = false;
@@ -199,6 +197,13 @@ export default class ShapeConfigurator {
             if (currentOverlay.cursor != null) {
               overlayShape.node.style.cursor = currentOverlay.cursor;
             }
+
+            // START bpmn-visualization CUSTOMIZATION
+            if (overlayShape instanceof OverlayBadgeShape) {
+              // TODO custom css class management
+              overlayShape.node.classList.add('overlay-badge');
+            }
+            // END bpmn-visualization CUSTOMIZATION
 
             dict.put(currentOverlay, overlayShape);
           } else {
