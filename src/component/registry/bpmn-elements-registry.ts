@@ -17,14 +17,14 @@ import { ensureIsArray } from '../helpers/array-utils';
 import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
 import { computeBpmnBaseClassName } from '../mxgraph/style-helper';
 import { CssRegistry } from './css-registry';
-import MxGraphCellUpdater from '../mxgraph/MxGraphCellUpdater';
+import MxGraphCellUpdater, { newMxGraphCellUpdater } from '../mxgraph/MxGraphCellUpdater';
 import { BpmnQuerySelectors } from './query-selectors';
 import { BpmnElement, Overlay } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
 
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnMxGraph): BpmnElementsRegistry {
-  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), new MxGraphCellUpdater(graph));
+  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), newMxGraphCellUpdater(graph));
 }
 
 /**

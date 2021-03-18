@@ -15,14 +15,17 @@
  */
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { StyleIdentifier } from './StyleUtils';
-import { Overlay, OverlayPosition } from '../registry';
-import { BpmnOverlay, BpmnOverlayOptions } from './overlay/BpmnOverlay';
+import { Overlay } from '../registry';
+import { BpmnOverlay } from './overlay/BpmnOverlay';
 import { ensureIsArray } from '../helpers/array-utils';
-import { ShapeBpmnEventKind } from '../../model/bpmn/internal/shape';
-import { PaintParameter } from './shape/render';
+import { OverlayConverter } from './overlay/OverlayConverter';
+
+export function newMxGraphCellUpdater(graph: BpmnMxGraph): MxGraphCellUpdater {
+  return new MxGraphCellUpdater(graph, new OverlayConverter());
+}
 
 export default class MxGraphCellUpdater {
-  constructor(readonly graph: BpmnMxGraph) {}
+  constructor(readonly graph: BpmnMxGraph, readonly overlayConverter: OverlayConverter) {}
 
   public updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
     const mxCell = this.graph.getModel().getCell(bpmnElementId);
@@ -44,20 +47,8 @@ export default class MxGraphCellUpdater {
 
     // TODO: use mxGraph transaction
     ensureIsArray(overlays).forEach(overlay => {
-      const bpmnOverlay = new BpmnOverlay(overlay.label, this.overlayPositions.get(overlay.position));
+      const bpmnOverlay = new BpmnOverlay(overlay.label, this.overlayConverter.convertPosition(overlay));
       this.graph.addCellOverlay(mxCell, bpmnOverlay);
     });
   }
-
-  private overlayPositions: Map<OverlayPosition, BpmnOverlayOptions> = new Map([
-    // Edge
-    ['start', { horizontalAlign: 'left', verticalAlign: 'top' }],
-    ['middle', { horizontalAlign: 'center', verticalAlign: 'top' }],
-    ['end', { horizontalAlign: 'right', verticalAlign: 'top' }],
-    // Shape
-    ['top-left', { horizontalAlign: 'left', verticalAlign: 'top' }],
-    ['top-right', { horizontalAlign: 'right', verticalAlign: 'top' }],
-    ['bottom-left', { horizontalAlign: 'left', verticalAlign: 'bottom' }],
-    ['bottom-right', { horizontalAlign: 'right', verticalAlign: 'bottom' }],
-  ]);
 }
