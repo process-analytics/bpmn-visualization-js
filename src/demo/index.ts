@@ -17,7 +17,7 @@ import BpmnVisualization from '../component/BpmnVisualization';
 import { GlobalOptions, FitOptions, FitType, LoadOptions } from '../component/options';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { BpmnElement, Overlay, OverlayPosition } from '../component/registry';
+import { BpmnElement, Overlay } from '../component/registry';
 import { BpmnElementKind } from '../model/bpmn/internal/api';
 
 export * from './helper';
