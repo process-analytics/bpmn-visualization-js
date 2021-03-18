@@ -175,40 +175,41 @@ export default class ShapeConfigurator {
 
         for (let currentOverlay of overlays) {
           const shape = (state.overlays != null) ? state.overlays.remove(currentOverlay) : null;
-          if (shape == null) {
-            let overlayShape: mxShape;
-
-            // START bpmn-visualization CUSTOMIZATION
-            if (currentOverlay instanceof BpmnOverlay) {
-              overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxgraph.mxRectangle(0, 0, 0, 0));
-            } else {
-              overlayShape = new mxgraph.mxImageShape(new mxgraph.mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
-              (<mxImageShape>overlayShape).preserveImageAspect = false;
-            }
-            // END bpmn-visualization CUSTOMIZATION
-
-            overlayShape.dialect = state.view.graph.dialect;
-            (<ShapeWithOverlay>overlayShape).overlay = currentOverlay;
-
-            // TODO: find solution to not cast overlayShape into mxImageShape
-            this.initializeOverlay(state, <mxImageShape>overlayShape);
-            this.installCellOverlayListeners(state, currentOverlay, overlayShape);
-
-            if (currentOverlay.cursor != null) {
-              overlayShape.node.style.cursor = currentOverlay.cursor;
-            }
-
-            // START bpmn-visualization CUSTOMIZATION
-            if (overlayShape instanceof OverlayBadgeShape) {
-              // TODO custom css class management
-              overlayShape.node.classList.add('overlay-badge');
-            }
-            // END bpmn-visualization CUSTOMIZATION
-
-            dict.put(currentOverlay, overlayShape);
-          } else {
+          if (shape != null) {
             dict.put(currentOverlay, shape);
+            continue;
           }
+
+          let overlayShape: mxShape;
+
+          // START bpmn-visualization CUSTOMIZATION
+          if (currentOverlay instanceof BpmnOverlay) {
+            overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxgraph.mxRectangle(0, 0, 0, 0));
+          } else {
+            overlayShape = new mxgraph.mxImageShape(new mxgraph.mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
+            (<mxImageShape>overlayShape).preserveImageAspect = false;
+          }
+          // END bpmn-visualization CUSTOMIZATION
+
+          overlayShape.dialect = state.view.graph.dialect;
+          (<ShapeWithOverlay>overlayShape).overlay = currentOverlay;
+
+          // TODO: find solution to not cast overlayShape into mxImageShape
+          this.initializeOverlay(state, <mxImageShape>overlayShape);
+          this.installCellOverlayListeners(state, currentOverlay, overlayShape);
+
+          if (currentOverlay.cursor != null) {
+            overlayShape.node.style.cursor = currentOverlay.cursor;
+          }
+
+          // START bpmn-visualization CUSTOMIZATION
+          if (overlayShape instanceof OverlayBadgeShape) {
+            // TODO custom css class management
+            overlayShape.node.classList.add('overlay-badge');
+          }
+          // END bpmn-visualization CUSTOMIZATION
+
+          dict.put(currentOverlay, overlayShape);
         }
       }
 
