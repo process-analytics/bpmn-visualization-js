@@ -35,10 +35,9 @@ export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
     let pt;
 
     // START bpmn-visualization CUSTOMIZATION
-    // TODO: the other overlay types than OverlayKind.BADGE_RECT should be handled separately, for now hardcoded 10 is just for testing purpose of this POC
     // 0 values to position the text overlays on extreme/center points
-    const w = 0; // this.image.width;
-    const h = 0; // this.image.height;
+    const w = 0;
+    const h = 0;
     // END bpmn-visualization CUSTOMIZATION
 
     if (isEdge) {
