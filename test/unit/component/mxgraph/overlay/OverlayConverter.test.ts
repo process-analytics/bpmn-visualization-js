@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { OverlayConverter } from '../../../../../src/component/mxgraph/overlay/OverlayConverter';
-import { MxGraphCustomOverlayOptions } from '../../../../../src/component/mxgraph/overlay/BpmnOverlay';
+import { MxGraphCustomOverlayOptions } from '../../../../../src/component/mxgraph/overlay/custom-overlay';
 import { Overlay, OverlayPosition } from '../../../../../src/component/registry/types';
 
 describe('overlay converter', () => {

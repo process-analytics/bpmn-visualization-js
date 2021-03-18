@@ -34,7 +34,7 @@ import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
 import { mxCellState, mxImageShape, mxShape } from 'mxgraph';
-import { MxGraphCustomOverlay } from '../overlay/BpmnOverlay';
+import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 
 export default class ShapeConfigurator {

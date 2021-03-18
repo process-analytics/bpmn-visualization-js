@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Overlay, OverlayPosition } from '../../registry';
-import { MxGraphCustomOverlayOptions } from './BpmnOverlay';
+import { MxGraphCustomOverlayOptions } from './custom-overlay';
 
 export class OverlayConverter {
   private overlayPositions: Map<OverlayPosition, MxGraphCustomOverlayOptions> = new Map([
