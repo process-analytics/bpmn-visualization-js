@@ -54,49 +54,42 @@ export default class MxGraphCellUpdater {
           horizontalAlign: 'left',
           verticalAlign: 'top',
         };
-        break;
       }
       case 'top-right': {
         return {
           horizontalAlign: 'right',
           verticalAlign: 'top',
         };
-        break;
       }
       case 'bottom-left': {
         return {
           horizontalAlign: 'left',
           verticalAlign: 'bottom',
         };
-        break;
       }
       case 'bottom-right': {
         return {
           horizontalAlign: 'right',
           verticalAlign: 'bottom',
         };
-        break;
       }
       case 'start': {
         return {
           horizontalAlign: 'left',
           verticalAlign: 'top',
         };
-        break;
       }
       case 'middle': {
         return {
           horizontalAlign: 'center',
           verticalAlign: 'top',
         };
-        break;
       }
       case 'end': {
         return {
           horizontalAlign: 'right',
           verticalAlign: 'top',
         };
-        break;
       }
     }
   }
