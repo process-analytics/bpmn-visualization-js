@@ -33,7 +33,7 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
-import { mxCellState, mxImageShape, mxShape } from 'mxgraph';
+import {mxCellOverlay, mxCellState, mxImageShape, mxShape} from 'mxgraph';
 import { BpmnOverlay } from '../overlay/BpmnOverlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 
@@ -181,10 +181,8 @@ export default class ShapeConfigurator {
       if (overlays != null) {
         dict = new mxgraph.mxDictionary();
 
-        for (let i = 0; i < overlays.length; i++) {
-          const currentOverlay = overlays[i];
+        for (let currentOverlay of overlays) {
           const shape = (state.overlays != null) ? state.overlays.remove(currentOverlay) : null;
-
           if (shape == null) {
             let tmp: mxShape;
 
