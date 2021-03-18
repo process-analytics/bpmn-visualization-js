@@ -16,7 +16,7 @@
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { StyleIdentifier } from './StyleUtils';
 import { Overlay } from '../registry';
-import { BpmnOverlay } from './overlay/BpmnOverlay';
+import { MxGraphCustomOverlay } from './overlay/BpmnOverlay';
 import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 
@@ -45,7 +45,7 @@ export default class MxGraphCellUpdater {
       return;
     }
     ensureIsArray(overlays).forEach(overlay => {
-      const bpmnOverlay = new BpmnOverlay(overlay.label, this.overlayConverter.convertPosition(overlay));
+      const bpmnOverlay = new MxGraphCustomOverlay(overlay.label, this.overlayConverter.convertPosition(overlay));
       this.graph.addCellOverlay(mxCell, bpmnOverlay);
     });
   }

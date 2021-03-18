@@ -18,7 +18,7 @@ import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import { mxgraph } from '../../../src/component/mxgraph/initializer';
 import { mxCell, mxGeometry, StyleMap } from 'mxgraph';
-import { BpmnOverlay } from '../../../src/component/mxgraph/overlay/BpmnOverlay';
+import { MxGraphCustomOverlay } from '../../../src/component/mxgraph/overlay/BpmnOverlay';
 
 export interface ExpectedStateStyle extends StyleMap {
   verticalAlign?: string;
@@ -169,7 +169,7 @@ export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCel
     state: { style: buildReceivedStateStyle(cell) },
   };
 
-  const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as BpmnOverlay[];
+  const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as MxGraphCustomOverlay[];
   if (cellOverlays) {
     receivedCell.overlays = cellOverlays.map(cellOverlay => {
       return {

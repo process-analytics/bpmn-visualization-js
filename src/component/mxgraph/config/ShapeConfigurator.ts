@@ -34,7 +34,7 @@ import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
 import { mxCellState, mxImageShape, mxShape } from 'mxgraph';
-import { BpmnOverlay } from '../overlay/BpmnOverlay';
+import { MxGraphCustomOverlay } from '../overlay/BpmnOverlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 
 export default class ShapeConfigurator {
@@ -141,7 +141,7 @@ export default class ShapeConfigurator {
           let overlayShape: mxShape;
 
           // START bpmn-visualization CUSTOMIZATION
-          if (currentOverlay instanceof BpmnOverlay) {
+          if (currentOverlay instanceof MxGraphCustomOverlay) {
             overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxgraph.mxRectangle(0, 0, 0, 0));
           } else {
             overlayShape = new mxgraph.mxImageShape(new mxgraph.mxRectangle(0, 0, 0, 0), currentOverlay.image.src);

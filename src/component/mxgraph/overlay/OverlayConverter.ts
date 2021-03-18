@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import { Overlay, OverlayPosition } from '../../registry';
-import { BpmnOverlayOptions } from './BpmnOverlay';
+import { MxGraphCustomOverlayOptions } from './BpmnOverlay';
 
 export class OverlayConverter {
-  private overlayPositions: Map<OverlayPosition, BpmnOverlayOptions> = new Map([
+  private overlayPositions: Map<OverlayPosition, MxGraphCustomOverlayOptions> = new Map([
     // Edge
     ['start', { horizontalAlign: 'left', verticalAlign: 'top' }],
     ['middle', { horizontalAlign: 'center', verticalAlign: 'top' }],
@@ -29,7 +29,7 @@ export class OverlayConverter {
     ['bottom-right', { horizontalAlign: 'right', verticalAlign: 'bottom' }],
   ]);
 
-  convertPosition(overlay: Overlay): BpmnOverlayOptions {
+  convertPosition(overlay: Overlay): MxGraphCustomOverlayOptions {
     return this.overlayPositions.get(overlay.position);
   }
 }

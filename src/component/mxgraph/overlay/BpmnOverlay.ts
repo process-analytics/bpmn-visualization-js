@@ -19,14 +19,13 @@ import { mxCellState, mxRectangle } from 'mxgraph';
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
 export type HorizontalAlignType = 'left' | 'center' | 'right';
 
-export interface BpmnOverlayOptions {
+export interface MxGraphCustomOverlayOptions {
   horizontalAlign?: HorizontalAlignType;
   verticalAlign?: VerticalAlignType;
 }
 
-// TODO: validate name BpmnOverlay?
-export class BpmnOverlay extends mxgraph.mxCellOverlay {
-  constructor(public label: string, options?: BpmnOverlayOptions) {
+export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
+  constructor(public label: string, options?: MxGraphCustomOverlayOptions) {
     super(null, '', options?.horizontalAlign, options?.verticalAlign, null, 'default');
   }
   // Based on original method from mxCellOverlay (mxCellOverlay.prototype.getBounds)

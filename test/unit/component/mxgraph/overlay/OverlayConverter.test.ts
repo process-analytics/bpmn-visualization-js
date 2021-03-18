@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 import { OverlayConverter } from '../../../../../src/component/mxgraph/overlay/OverlayConverter';
-import { BpmnOverlayOptions } from '../../../../../src/component/mxgraph/overlay/BpmnOverlay';
+import { MxGraphCustomOverlayOptions } from '../../../../../src/component/mxgraph/overlay/BpmnOverlay';
 import { Overlay, OverlayPosition } from '../../../../../src/component/registry/types';
 
 describe('overlay converter', () => {
   const overlayConverter = new OverlayConverter();
 
   it.each([
-    [<OverlayPosition>'top-left', <BpmnOverlayOptions>{ horizontalAlign: 'left', verticalAlign: 'top' }],
-    [<OverlayPosition>'top-right', <BpmnOverlayOptions>{ horizontalAlign: 'right', verticalAlign: 'top' }],
-    [<OverlayPosition>'bottom-left', <BpmnOverlayOptions>{ horizontalAlign: 'left', verticalAlign: 'bottom' }],
-    [<OverlayPosition>'bottom-right', <BpmnOverlayOptions>{ horizontalAlign: 'right', verticalAlign: 'bottom' }],
-    [<OverlayPosition>'start', <BpmnOverlayOptions>{ horizontalAlign: 'left', verticalAlign: 'top' }],
-    [<OverlayPosition>'middle', <BpmnOverlayOptions>{ horizontalAlign: 'center', verticalAlign: 'top' }],
-    [<OverlayPosition>'end', <BpmnOverlayOptions>{ horizontalAlign: 'right', verticalAlign: 'top' }],
-  ])('convert API overlay position %s to mxGraph overlay position %s', (apiPosition: OverlayPosition, mxGraphPosition: BpmnOverlayOptions) => {
+    [<OverlayPosition>'top-left', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'left', verticalAlign: 'top' }],
+    [<OverlayPosition>'top-right', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'right', verticalAlign: 'top' }],
+    [<OverlayPosition>'bottom-left', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'left', verticalAlign: 'bottom' }],
+    [<OverlayPosition>'bottom-right', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'right', verticalAlign: 'bottom' }],
+    [<OverlayPosition>'start', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'left', verticalAlign: 'top' }],
+    [<OverlayPosition>'middle', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'center', verticalAlign: 'top' }],
+    [<OverlayPosition>'end', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'right', verticalAlign: 'top' }],
+  ])('convert API overlay position %s to mxGraph overlay position %s', (apiPosition: OverlayPosition, mxGraphPosition: MxGraphCustomOverlayOptions) => {
     const overlay: Overlay = { position: apiPosition };
 
     const result = overlayConverter.convertPosition(overlay);
