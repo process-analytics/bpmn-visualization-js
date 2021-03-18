@@ -41,7 +41,7 @@ export default class ShapeConfigurator {
   public configureShapes(): void {
     this.initMxShapePrototype();
     this.registerShapes();
-    this.initMxCellRendererRedrawCellOverlays();
+    // this.initMxCellRendererRedrawCellOverlays();
     this.initMxCellRendererCreateCellOverlays();
   }
 
@@ -123,45 +123,46 @@ export default class ShapeConfigurator {
     };
   }
 
-  initMxCellRendererRedrawCellOverlays(): void {
-    mxgraph.mxCellRenderer.prototype.redrawCellOverlays = function(state: StateWithOverlays, forced: boolean) {
-      this.createCellOverlays(state);
-
-      if (state.overlays != null) {
-        const rot = mxgraph.mxUtils.mod(mxgraph.mxUtils.getValue(state.style, mxgraph.mxConstants.STYLE_ROTATION, 0), 90);
-        const rad = mxgraph.mxUtils.toRadians(rot);
-        const cos = Math.cos(rad);
-        const sin = Math.sin(rad);
-
-        state.overlays.visit(function(id: string, shape: mxShape) {
-          let bounds: any;
-          bounds = (<ShapeWithOverlay>shape).overlay.getBounds(state);
-
-          if (!state.view.graph.getModel().isEdge(state.cell)) {
-            if (state.shape != null && rot != 0) {
-              let cx = bounds.getCenterX();
-              let cy = bounds.getCenterY();
-
-              const point = mxgraph.mxUtils.getRotatedPoint(new mxgraph.mxPoint(cx, cy), cos, sin,
-                new mxgraph.mxPoint(state.getCenterX(), state.getCenterY()));
-
-              cx = point.x;
-              cy = point.y;
-              bounds.x = Math.round(cx - bounds.width / 2);
-              bounds.y = Math.round(cy - bounds.height / 2);
-            }
-          }
-
-          if (forced || shape.bounds == null || shape.scale != state.view.scale ||
-            !shape.bounds.equals(bounds)) {
-            shape.bounds = bounds;
-            shape.scale = state.view.scale;
-            shape.redraw();
-          }
-        });
-      }
-    };
-  }
+  // TODO remove this commented function if we finally don't use it
+  // initMxCellRendererRedrawCellOverlays(): void {
+  //   mxgraph.mxCellRenderer.prototype.redrawCellOverlays = function(state: StateWithOverlays, forced: boolean) {
+  //     this.createCellOverlays(state);
+  //
+  //     if (state.overlays != null) {
+  //       const rot = mxgraph.mxUtils.mod(mxgraph.mxUtils.getValue(state.style, mxgraph.mxConstants.STYLE_ROTATION, 0), 90);
+  //       const rad = mxgraph.mxUtils.toRadians(rot);
+  //       const cos = Math.cos(rad);
+  //       const sin = Math.sin(rad);
+  //
+  //       state.overlays.visit(function(id: string, shape: mxShape) {
+  //         let bounds: any;
+  //         bounds = (<ShapeWithOverlay>shape).overlay.getBounds(state);
+  //
+  //         if (!state.view.graph.getModel().isEdge(state.cell)) {
+  //           if (state.shape != null && rot != 0) {
+  //             let cx = bounds.getCenterX();
+  //             let cy = bounds.getCenterY();
+  //
+  //             const point = mxgraph.mxUtils.getRotatedPoint(new mxgraph.mxPoint(cx, cy), cos, sin,
+  //               new mxgraph.mxPoint(state.getCenterX(), state.getCenterY()));
+  //
+  //             cx = point.x;
+  //             cy = point.y;
+  //             bounds.x = Math.round(cx - bounds.width / 2);
+  //             bounds.y = Math.round(cy - bounds.height / 2);
+  //           }
+  //         }
+  //
+  //         if (forced || shape.bounds == null || shape.scale != state.view.scale ||
+  //           !shape.bounds.equals(bounds)) {
+  //           shape.bounds = bounds;
+  //           shape.scale = state.view.scale;
+  //           shape.redraw();
+  //         }
+  //       });
+  //     }
+  //   };
+  // }
 
   initMxCellRendererCreateCellOverlays(): void {
     mxgraph.mxCellRenderer.prototype.createCellOverlays = function(state: StateWithOverlays) {
