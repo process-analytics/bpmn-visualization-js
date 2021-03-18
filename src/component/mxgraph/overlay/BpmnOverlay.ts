@@ -27,7 +27,7 @@ export interface BpmnOverlayOptions {
 // TODO: validate name BpmnOverlay?
 export class BpmnOverlay extends mxgraph.mxCellOverlay {
   constructor(public label: string, options?: BpmnOverlayOptions) {
-    super(null, '', options?.horizontalAlign, options?.verticalAlign);
+    super(null, '', options?.horizontalAlign, options?.verticalAlign, null, 'default');
   }
   // Based on original method from mxCellOverlay (mxCellOverlay.prototype.getBounds)
   getBounds(state: mxCellState): mxRectangle {
