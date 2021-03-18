@@ -228,10 +228,13 @@ export default class ShapeConfigurator {
     };
   }
 }
+
+// TODO to remove when typed-mxgraph definitions will declare the overlays property
 interface StateWithOverlays extends mxCellState {
   overlays: any
 }
 
+// TODO to remove when typed-mxgraph definitions will declare the overlays property
 interface ShapeWithOverlay extends mxShape {
   overlay: any
 }
