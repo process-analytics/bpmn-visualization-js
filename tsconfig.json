@@ -18,7 +18,8 @@
     "typeRoots": [
       "node_modules/@types",
       "node_modules/@typed-mxgraph"
-    ]
+    ],
+    "stripInternal": true
   },
   "include": [
     "src/**/*"

@@ -15,9 +15,10 @@
  */
 
 /**
- * Base name of the EventDefinition fields in the BPMN XSD. In the xsd, the value is <enum_value>EventDefinition
+ * Base name of the EventDefinition fields in the BPMN XSD for event kinds. In the xsd, the value is <enum_value>EventDefinition.
  *
  * For instance, TERMINATE --> terminateEventDefinition
+ * @category BPMN
  */
 export enum ShapeBpmnEventKind {
   NONE = 'none',
@@ -35,6 +36,7 @@ export enum ShapeBpmnEventKind {
 
 /**
  * Elements that are effectively used in BPMN diagram as base for eventDefinition i.e all {@link ShapeBpmnEventKind} elements except {@link ShapeBpmnEventKind.NONE}
+ * @internal
  */
 export const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
   return kind != ShapeBpmnEventKind.NONE;
@@ -44,6 +46,7 @@ export const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
  * List supported events in addition to the NONE event.
  *
  * Temporarily used until we support all events
+ * @internal
  */
 // TODO When a new kind is supported, uncomment the corresponding line in test/unit/component/parser/json/BpmnJsonParser.event.test.ts
 export const supportedBpmnEventKinds = [

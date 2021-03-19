@@ -13,13 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import Shape from './shape/Shape';
 import Edge from './edge/Edge';
 
+/**
+ * @internal
+ */
 export default interface BpmnModel extends Shapes {
   edges: Edge[];
 }
 
+/**
+ * @internal
+ */
 export interface Shapes {
   flowNodes: Shape[];
   lanes: Shape[];

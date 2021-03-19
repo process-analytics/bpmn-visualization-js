@@ -13,12 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
 import { bpmnEventKinds } from '../../../../model/bpmn/internal/shape';
 import { TEventDefinition } from '../../../../model/bpmn/json/baseElement/rootElement/eventDefinition';
 import { ConvertedElements } from './utils';
 import { ensureIsArray } from '../../../helpers/array-utils';
 
+/**
+ * @internal
+ */
 export default class EventDefinitionConverter {
   constructor(readonly convertedElements: ConvertedElements) {}
 

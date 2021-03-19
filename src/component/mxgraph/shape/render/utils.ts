@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
 
 const referenceOrderedMarkers = [
@@ -24,6 +25,9 @@ const referenceOrderedMarkers = [
   ShapeBpmnMarkerKind.ADHOC,
 ];
 
+/**
+ * @internal
+ */
 export function orderActivityMarkers(markers: string[]): string[] {
   const orderedMarkers: string[] = [];
 

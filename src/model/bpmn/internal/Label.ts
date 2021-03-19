@@ -13,12 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import Bounds from './Bounds';
 
+/**
+ * @internal
+ */
 export default class Label {
   constructor(readonly font?: Font, readonly bounds?: Bounds) {}
 }
 
+/**
+ * @internal
+ */
 export class Font {
   constructor(
     readonly name?: string,

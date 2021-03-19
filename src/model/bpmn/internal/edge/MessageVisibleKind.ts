@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
- The real value of the field in the BPMN XSD, except 'None'.
+ * The real value of the visible message field in the BPMN XSD, except 'None'.
+ * @category BPMN
  */
 export enum MessageVisibleKind {
   NONE = 'none',

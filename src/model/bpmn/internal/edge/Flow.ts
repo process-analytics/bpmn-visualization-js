@@ -13,26 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { SequenceFlowKind } from './SequenceFlowKind';
 import { FlowKind } from './FlowKind';
 import { AssociationDirectionKind } from './AssociationDirectionKind';
 
+/**
+ * @internal
+ */
 export default abstract class Flow {
   constructor(readonly id: string, readonly name: string, readonly kind: FlowKind, readonly sourceRefId?: string, readonly targetRefId?: string) {}
 }
 
+/**
+ * @internal
+ */
 export class SequenceFlow extends Flow {
   constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly sequenceFlowKind = SequenceFlowKind.NORMAL) {
     super(id, name, FlowKind.SEQUENCE_FLOW, sourceRefId, targetRefId);
   }
 }
 
+/**
+ * @internal
+ */
 export class MessageFlow extends Flow {
   constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string) {
     super(id, name, FlowKind.MESSAGE_FLOW, sourceRefId, targetRefId);
   }
 }
 
+/**
+ * @internal
+ */
 export class AssociationFlow extends Flow {
   constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly associationDirectionKind = AssociationDirectionKind.NONE) {
     super(id, name, FlowKind.ASSOCIATION_FLOW, sourceRefId, targetRefId);

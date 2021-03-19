@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/**
+ * @internal
+ */
 export default class Bounds {
   public constructor(readonly x: number, readonly y: number, readonly width: number, readonly height: number) {}
 }

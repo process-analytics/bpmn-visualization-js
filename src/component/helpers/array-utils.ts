@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 function convertEmptyStringAndObject<T>(element: string | T, acceptEmptyString: boolean): T {
   if (element === '') {
     return acceptEmptyString ? ({} as T) : undefined;
@@ -20,6 +21,9 @@ function convertEmptyStringAndObject<T>(element: string | T, acceptEmptyString: 
   return element as T;
 }
 
+/**
+ * @internal
+ */
 export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEmptyString = false): Array<T> {
   if (elements === undefined || elements === null) {
     return [];

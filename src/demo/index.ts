@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import BpmnVisualization from '../component/BpmnVisualization';
 import { GlobalOptions, FitOptions, FitType, LoadOptions } from '../component/options';
 import { log, logStartup } from './helper';
@@ -25,6 +26,9 @@ export * from './helper';
 let bpmnVisualization: BpmnVisualization;
 let loadOptions: LoadOptions = {};
 
+/**
+ * @internal
+ */
 export function updateLoadOptions(fitOptions: FitOptions): void {
   log('Updating load options', fitOptions);
   loadOptions.fit = fitOptions;
@@ -32,7 +36,7 @@ export function updateLoadOptions(fitOptions: FitOptions): void {
 }
 
 /**
- * Returns a copy
+ * @internal
  */
 export function getCurrentLoadOptions(): LoadOptions {
   return { ...loadOptions };
@@ -48,20 +52,32 @@ function loadBpmn(bpmn: string): void {
   log('BPMN loaded with configuration', stringify(loadOptions));
 }
 
+/**
+ * @internal
+ */
 export function fit(fitOptions: FitOptions): void {
   log('Fitting....');
   bpmnVisualization.fit(fitOptions);
   log('Fit done with configuration', stringify(fitOptions));
 }
 
+/**
+ * @internal
+ */
 export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
   return bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(bpmnKinds);
 }
 
+/**
+ * @internal
+ */
 export function addCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
   return bpmnVisualization.bpmnElementsRegistry.addCssClasses(bpmnElementId, classNames);
 }
 
+/**
+ * @internal
+ */
 export function removeCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
   return bpmnVisualization.bpmnElementsRegistry.removeCssClasses(bpmnElementId, classNames);
 }
@@ -75,10 +91,11 @@ function readAndLoadFile(f: File): void {
   reader.readAsText(f);
 }
 
+// TODO: make File Open Button a self contained component
 /**
  * <b>IMPORTANT</b>: be sure to have call the `startBpmnVisualization` function prior calling this function as it relies on resources that must be initialized first.
+ * @internal
  */
-// TODO: make File Open Button a self contained component
 // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types
 export function handleFileSelect(evt: any): void {
   const f = evt.target.files[0];
@@ -112,6 +129,9 @@ function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) 
     });
 }
 
+/**
+ * @internal
+ */
 export interface BpmnVisualizationDemoConfiguration {
   statusFetchKoNotifier?: (errorMsg: string) => void;
   globalOptions: GlobalOptions;
@@ -136,6 +156,9 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
   return fitOptions;
 }
 
+/**
+ * @internal
+ */
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
   const container = config.globalOptions.container;
