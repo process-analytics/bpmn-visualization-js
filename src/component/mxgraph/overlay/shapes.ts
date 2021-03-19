@@ -16,6 +16,7 @@
 import { mxgraph } from '../initializer';
 import { mxRectangle } from 'mxgraph';
 
+// TODO remove ts-ignore when typed-mxgraph definitions will declare the mxText missing properties
 export class OverlayBadgeShape extends mxgraph.mxText {
   public constructor(value: string, bounds: mxRectangle) {
     super(value, bounds);
