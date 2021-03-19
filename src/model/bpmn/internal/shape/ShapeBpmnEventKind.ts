@@ -15,10 +15,10 @@
  */
 
 /**
- * Base name of the EventDefinition fields in the BPMN XSD. In the xsd, the value is <enum_value>EventDefinition
+ * Base name of the EventDefinition fields in the BPMN XSD for event kinds. In the xsd, the value is <enum_value>EventDefinition.
  *
  * For instance, TERMINATE --> terminateEventDefinition
- * @internal
+ * @category BPMN
  */
 export enum ShapeBpmnEventKind {
   NONE = 'none',
