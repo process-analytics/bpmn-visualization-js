@@ -58,7 +58,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
 describe('BPMN elements with overlays', () => {
   const imageSnapshotThresholds = new ImageSnapshotThresholds();
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'bpmn', imageSnapshotThresholds.getDefault());
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'overlays', imageSnapshotThresholds.getDefault());
 
   const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization Overlays' });
   const bpmnDiagramName = 'overlays.start.flow.task';
