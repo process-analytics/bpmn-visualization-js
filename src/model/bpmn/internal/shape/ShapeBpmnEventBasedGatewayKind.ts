@@ -15,8 +15,8 @@
  */
 
 /**
- * @internal
  * Values available for the `eventGatewayType` property in the BPMN specification.
+ * @internal
  */
 export enum ShapeBpmnEventBasedGatewayKind {
   Exclusive = 'Exclusive',

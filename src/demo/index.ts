@@ -28,7 +28,6 @@ let loadOptions: LoadOptions = {};
 
 /**
  * @internal
- * @param fitOptions
  */
 export function updateLoadOptions(fitOptions: FitOptions): void {
   log('Updating load options', fitOptions);
@@ -38,7 +37,6 @@ export function updateLoadOptions(fitOptions: FitOptions): void {
 
 /**
  * @internal
- * Returns a copy
  */
 export function getCurrentLoadOptions(): LoadOptions {
   return { ...loadOptions };
@@ -56,7 +54,6 @@ function loadBpmn(bpmn: string): void {
 
 /**
  * @internal
- * @param fitOptions
  */
 export function fit(fitOptions: FitOptions): void {
   log('Fitting....');
@@ -66,7 +63,6 @@ export function fit(fitOptions: FitOptions): void {
 
 /**
  * @internal
- * @param bpmnKinds
  */
 export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
   return bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(bpmnKinds);
@@ -74,8 +70,6 @@ export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[
 
 /**
  * @internal
- * @param bpmnElementId
- * @param classNames
  */
 export function addCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
   return bpmnVisualization.bpmnElementsRegistry.addCssClasses(bpmnElementId, classNames);
@@ -83,8 +77,6 @@ export function addCssClasses(bpmnElementId: string | string[], classNames: stri
 
 /**
  * @internal
- * @param bpmnElementId
- * @param classNames
  */
 export function removeCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
   return bpmnVisualization.bpmnElementsRegistry.removeCssClasses(bpmnElementId, classNames);
@@ -99,11 +91,10 @@ function readAndLoadFile(f: File): void {
   reader.readAsText(f);
 }
 
-// <b>IMPORTANT</b>: be sure to have call the `startBpmnVisualization` function prior calling this function as it relies on resources that must be initialized first.
 // TODO: make File Open Button a self contained component
 /**
+ * <b>IMPORTANT</b>: be sure to have call the `startBpmnVisualization` function prior calling this function as it relies on resources that must be initialized first.
  * @internal
- * @param evt
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types
 export function handleFileSelect(evt: any): void {
@@ -167,7 +158,6 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
 
 /**
  * @internal
- * @param config
  */
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;

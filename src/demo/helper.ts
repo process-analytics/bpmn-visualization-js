@@ -16,7 +16,6 @@
 
 /**
  * @internal
- * @param callbackFunction
  */
 export function documentReady(callbackFunction: () => void): void {
   // see if DOM is already available
@@ -35,8 +34,6 @@ function _log(header: string, message: unknown, ...optionalParams: unknown[]): v
 
 /**
  * @internal
- * @param message
- * @param optionalParams
  */
 export function logStartup(message?: string, ...optionalParams: unknown[]): void {
   _log('[DEMO STARTUP]', message, ...optionalParams);
@@ -44,8 +41,6 @@ export function logStartup(message?: string, ...optionalParams: unknown[]): void
 
 /**
  * @internal
- * @param message
- * @param optionalParams
  */
 export function log(message?: string, ...optionalParams: unknown[]): void {
   _log('[DEMO]', message, ...optionalParams);

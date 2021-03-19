@@ -19,8 +19,8 @@ import { decodeXML } from 'entities/lib/decode';
 import { BpmnJsonModel } from '../../../model/bpmn/json/BPMN20';
 
 /**
- * @internal
  * Parse bpmn xml source
+ * @internal
  */
 export default class BpmnXmlParser {
   private options = {

@@ -15,8 +15,8 @@
  */
 
 /**
+ * The real value of the field in the BPMN XSD, except 'None'.
  * @internal
- The real value of the field in the BPMN XSD, except 'None'.
  */
 export enum MessageVisibleKind {
   NONE = 'none',

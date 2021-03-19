@@ -18,10 +18,6 @@ import { ZoomConfiguration } from '../options';
 
 /**
  * @internal
- * @param value
- * @param min
- * @param max
- * @param defaultValue
  */
 export function ensureInRange(value: number, min: number, max: number, defaultValue: number): number {
   let inRangeValue = value == undefined ? defaultValue : value;
@@ -31,16 +27,15 @@ export function ensureInRange(value: number, min: number, max: number, defaultVa
 
 /**
  * @internal
- * @param input
  */
 export function ensurePositiveValue(input: number | undefined | null): number {
   return Math.max(input || 0, 0);
 }
 
 /**
- * @internal
  * Make sure the configuration parameters are defined and in range
  * @param config the {@link ZoomConfiguration} to make valid
+ * @internal
  */
 export function ensureValidZoomConfiguration(config: ZoomConfiguration): ZoomConfiguration {
   const validatedConfig = config ?? {};

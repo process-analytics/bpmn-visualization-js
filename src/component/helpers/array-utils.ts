@@ -23,8 +23,6 @@ function convertEmptyStringAndObject<T>(element: string | T, acceptEmptyString: 
 
 /**
  * @internal
- * @param elements
- * @param acceptEmptyString
  */
 export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEmptyString = false): Array<T> {
   if (elements === undefined || elements === null) {

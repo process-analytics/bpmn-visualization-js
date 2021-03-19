@@ -31,8 +31,8 @@ export class BpmnMxGraph extends mxgraph.mxGraph {
     super(container);
   }
 
-  // override fit to set initial cumulativeZoomFactor
   /**
+   * Overridden to set initial cumulativeZoomFactor
    * @internal
    */
   fit(border: number, keepOrigin?: boolean, margin?: number, enabled?: boolean, ignoreWidth?: boolean, ignoreHeight?: boolean, maxHeight?: number): number {
@@ -41,8 +41,8 @@ export class BpmnMxGraph extends mxgraph.mxGraph {
     return scale;
   }
 
-  // override fit to set initial cumulativeZoomFactor
   /**
+   * Overridden to set initial cumulativeZoomFactor
    * @internal
    */
   zoomActual(): void {

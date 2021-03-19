@@ -15,8 +15,8 @@
  */
 
 /**
- * @internal
  * Base name of the BPMN specification.
+ * @internal
  */
 export enum ShapeBpmnSubProcessKind {
   EMBEDDED = 'embedded',

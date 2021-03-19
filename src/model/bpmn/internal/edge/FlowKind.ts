@@ -15,8 +15,8 @@
  */
 
 /**
+ * The real name of the field in the BPMN XSD
  * @internal
- The real name of the field in the BPMN XSD
  */
 export enum FlowKind {
   SEQUENCE_FLOW = 'sequenceFlow',

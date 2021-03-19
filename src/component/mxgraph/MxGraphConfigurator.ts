@@ -23,12 +23,12 @@ import { mxgraph } from './initializer';
 import { mxMouseEvent } from 'mxgraph'; // for types
 
 /**
- * @internal
  * Configure the BpmnMxGraph graph that can be used by the lib
  * <ul>
  *     <li>styles
  *     <li>shapes
  *     <li>markers
+ * @internal
  */
 export default class MxGraphConfigurator {
   private readonly graph: BpmnMxGraph;
