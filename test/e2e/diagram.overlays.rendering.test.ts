@@ -34,8 +34,8 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'simple-start-task',
         {
-          linux: 0.000004,
-          macos: 0.000004,
+          linux: 0.0024, // 0.2237761571968533%
+          macos: 0.0008, // 0.0729159761465925%
           windows: 0.000004,
         },
       ],
