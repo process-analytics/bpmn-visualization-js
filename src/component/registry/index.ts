@@ -14,8 +14,5 @@
  * limitations under the License.
  */
 
-/**
- * @internal
- */
 export { BpmnElementsRegistry } from './bpmn-elements-registry';
 export * from './types';
