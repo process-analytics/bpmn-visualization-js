@@ -23,3 +23,4 @@ copyDirectoryContentIfNotExists('diagram');
 copyDirectoryContentIfNotExists('navigation');
 copyDirectoryContentIfNotExists('non-regression');
 copyDirectoryContentIfNotExists('performance');
+copyDirectoryContentIfNotExists('overlays');
