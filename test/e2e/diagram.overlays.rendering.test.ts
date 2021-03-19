@@ -34,7 +34,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.start.flow.task',
         {
-          linux: 0.0024, // 0.2237761571968533%
+          linux: 0.0023, // 0.2237761571968533%
           macos: 0.0008, // 0.0729159761465925%
           windows: 0.000004,
         },
@@ -47,9 +47,9 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.start.flow.task',
         {
-          linux: 0.000004,
-          macos: 0.000004,
-          windows: 0.000004,
+          linux: 0.0023, // 0.22444374007244416%
+          macos: 0.0025, // 0.24420815130801188%
+          windows: 0.007, // 0.6915678561497107%
         },
       ],
     ]);
