@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import BpmnModel from '../../../model/bpmn/internal/BpmnModel';
 import { BpmnJsonModel, TDefinitions } from '../../../model/bpmn/json/BPMN20';
 import CollaborationConverter from './converter/CollaborationConverter';
@@ -22,6 +23,9 @@ import EventDefinitionConverter from './converter/EventDefinitionConverter';
 import GlobalTaskConverter from './converter/GlobalTaskConverter';
 import { ConvertedElements } from './converter/utils';
 
+/**
+ * @internal
+ */
 export default class BpmnJsonParser {
   constructor(
     readonly collaborationConverter: CollaborationConverter,
@@ -42,6 +46,9 @@ export default class BpmnJsonParser {
   }
 }
 
+/**
+ * @internal
+ */
 export function newBpmnJsonParser(): BpmnJsonParser {
   const convertedElements = new ConvertedElements();
   return new BpmnJsonParser(

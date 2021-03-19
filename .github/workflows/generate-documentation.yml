@@ -8,7 +8,7 @@ on:
     paths:
       - 'docs/users/**'
       - 'scripts/docs.js'
-      - 'src/api/public/api.ts'
+      - 'src/**'
       - '.github/workflows/generate-documentation.yml'
       - 'package.json'
       - 'package-lock.json'
@@ -21,7 +21,7 @@ on:
     paths:
       - 'docs/users/**'
       - 'scripts/docs.js'
-      - 'src/api/public/api.ts'
+      - 'src/**'
       - '.github/workflows/generate-documentation.yml'
       - 'package.json'
       - 'package-lock.json'

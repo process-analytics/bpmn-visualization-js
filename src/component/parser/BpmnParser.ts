@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import BpmnXmlParser from './xml/BpmnXmlParser';
 import BpmnJsonParser, { newBpmnJsonParser } from './json/BpmnJsonParser';
 
+/**
+ * @internal
+ */
 class BpmnParser {
   constructor(readonly jsonParser: BpmnJsonParser, readonly xmlParser: BpmnXmlParser) {}
 
@@ -28,6 +32,9 @@ class BpmnParser {
 }
 
 // TODO review usage when introducing dependency injection, see #110
+/**
+ * @internal
+ */
 export function newBpmnParser(): BpmnParser {
   return new BpmnParser(newBpmnJsonParser(), new BpmnXmlParser());
 }

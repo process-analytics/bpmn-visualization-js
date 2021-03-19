@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { FitOptions, FitType, ZoomConfiguration } from '../options';
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import debounce from 'lodash.debounce';
@@ -23,23 +24,35 @@ import { mxMouseEvent } from 'mxgraph'; // for types
 export class BpmnMxGraph extends mxgraph.mxGraph {
   private cumulativeZoomFactor = 1;
 
+  /**
+   * @internal
+   */
   constructor(readonly container: HTMLElement) {
     super(container);
   }
 
-  // override fit to set initial cumulativeZoomFactor
+  /**
+   * Overridden to set initial cumulativeZoomFactor
+   * @internal
+   */
   fit(border: number, keepOrigin?: boolean, margin?: number, enabled?: boolean, ignoreWidth?: boolean, ignoreHeight?: boolean, maxHeight?: number): number {
     const scale = super.fit(border, keepOrigin, margin, enabled, ignoreWidth, ignoreHeight, maxHeight);
     this.cumulativeZoomFactor = scale;
     return scale;
   }
 
-  // override fit to set initial cumulativeZoomFactor
+  /**
+   * Overridden to set initial cumulativeZoomFactor
+   * @internal
+   */
   zoomActual(): void {
     super.zoomActual();
     this.cumulativeZoomFactor = this.view.scale;
   }
 
+  /**
+   * @internal
+   */
   public customFit(fitOptions: FitOptions): void {
     // TODO avoid extra zoom/fit reset
     // see https://github.com/process-analytics/bpmn-visualization-js/issues/888
@@ -85,10 +98,9 @@ export class BpmnMxGraph extends mxgraph.mxGraph {
     }
   }
 
-  private static enforcePositiveValue(input: number | undefined | null): number {
-    return Math.max(input || 0, 0);
-  }
-
+  /**
+   * @internal
+   */
   zoomTo(scale: number, center?: boolean, up?: boolean, offsetX?: number, offsetY?: number, performScaling?: boolean): void {
     if (scale === null) {
       const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(up, offsetX, offsetY);
@@ -100,6 +112,9 @@ export class BpmnMxGraph extends mxgraph.mxGraph {
     }
   }
 
+  /**
+   * @internal
+   */
   createMouseWheelZoomExperience(config: ZoomConfiguration): void {
     config = ensureValidZoomConfiguration(config);
     mxgraph.mxEvent.addMouseWheelListener(debounce(this.getZoomHandler(true), config.debounceDelay), this.container);
