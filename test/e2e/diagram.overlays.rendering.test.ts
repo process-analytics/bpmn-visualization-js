@@ -32,7 +32,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
-        'simple-start-task',
+        'overlays.start.flow.task',
         {
           linux: 0.0024, // 0.2237761571968533%
           macos: 0.0008, // 0.0729159761465925%
@@ -45,7 +45,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
-        'simple-start-task',
+        'overlays.start.flow.task',
         {
           linux: 0.000004,
           macos: 0.000004,
