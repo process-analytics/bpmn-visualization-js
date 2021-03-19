@@ -16,7 +16,6 @@
 
 /**
  * The real name of the field in the BPMN XSD
- * @internal
  */
 export enum ShapeBpmnElementKind {
   LANE = 'lane',
