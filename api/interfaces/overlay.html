@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ZoomConfiguration | BpmnVisualization API Documentation</title>
+	<title>Overlay | BpmnVisualization API Documentation</title>
 	<meta name="description" content="Documentation for BpmnVisualization API Documentation">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -53,28 +53,21 @@
 					<a href="../index.html">BpmnVisualization API Documentation</a>
 				</li>
 				<li>
-					<a href="zoomconfiguration.html">ZoomConfiguration</a>
+					<a href="overlay.html">Overlay</a>
 				</li>
 			</ul>
-			<h1>Interface ZoomConfiguration</h1>
+			<h1>Interface Overlay</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Zoom specific options.</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ZoomConfiguration</span>
+						<span class="target">Overlay</span>
 					</li>
 				</ul>
 			</section>
@@ -85,8 +78,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="zoomconfiguration.html#debouncedelay" class="tsd-kind-icon">debounce<wbr>Delay</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="zoomconfiguration.html#throttledelay" class="tsd-kind-icon">throttle<wbr>Delay</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="overlay.html#label" class="tsd-kind-icon">label</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="overlay.html#position" class="tsd-kind-icon">position</a></li>
 							</ul>
 						</section>
 					</div>
@@ -95,47 +88,24 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="debouncedelay" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> debounce<wbr>Delay</h3>
-					<div class="tsd-signature tsd-kind-icon">debounce<wbr>Delay<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="label" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> label</h3>
+					<div class="tsd-signature tsd-kind-icon">label<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/0c3f68f/src/component/options.ts#L59">component/options.ts:59</a></li>
+							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/0c3f68f/src/component/registry/types.ts#L56">component/registry/types.ts:56</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>debounceDelay [ms] responsible for debouncing the zoom function - the actual scaling. A bigger value results in bigger gain in zoom factor before actual scaling takes place.
-							Values must be in the [0, 100] interval, values outside of this interval are set to the interval bounds.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>default</dt>
-							<dd><p>50</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="throttledelay" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> throttle<wbr>Delay</h3>
-					<div class="tsd-signature tsd-kind-icon">throttle<wbr>Delay<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="position" class="tsd-anchor"></a>
+					<h3>position</h3>
+					<div class="tsd-signature tsd-kind-icon">position<span class="tsd-signature-symbol">:</span> <a href="../index.html#overlayshapeposition" class="tsd-signature-type" data-tsd-kind="Type alias">OverlayShapePosition</a><span class="tsd-signature-symbol"> | </span><a href="../index.html#overlayedgeposition" class="tsd-signature-type" data-tsd-kind="Type alias">OverlayEdgePosition</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/0c3f68f/src/component/options.ts#L53">component/options.ts:53</a></li>
+							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/0c3f68f/src/component/registry/types.ts#L55">component/registry/types.ts:55</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>throttleDelay [ms] responsible for throttling the mouse scroll event (not every event is firing the function handler, only limited number can lunch handler). A smaller value
-								results in more events fired, bigger gain in zoom factor.
-							Values must be in the [0, 100] interval, values outside of this interval are set to the interval bounds.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>default</dt>
-							<dd><p>50</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 			</section>
 		</div>
@@ -182,24 +152,24 @@
 					<li class=" tsd-kind-interface">
 						<a href="navigationconfiguration.html" class="tsd-kind-icon">Navigation<wbr>Configuration</a>
 					</li>
-					<li class=" tsd-kind-interface">
-						<a href="overlay.html" class="tsd-kind-icon">Overlay</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="zoomconfiguration.html" class="tsd-kind-icon">Zoom<wbr>Configuration</a>
+						<a href="overlay.html" class="tsd-kind-icon">Overlay</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="zoomconfiguration.html#debouncedelay" class="tsd-kind-icon">debounce<wbr>Delay</a>
+								<a href="overlay.html#label" class="tsd-kind-icon">label</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="zoomconfiguration.html#throttledelay" class="tsd-kind-icon">throttle<wbr>Delay</a>
+								<a href="overlay.html#position" class="tsd-kind-icon">position</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface">
+						<a href="zoomconfiguration.html" class="tsd-kind-icon">Zoom<wbr>Configuration</a>
+					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="../index.html#bpmnelementkind" class="tsd-kind-icon">Bpmn<wbr>Element<wbr>Kind</a>
 					</li>
