@@ -187,16 +187,16 @@ export class BpmnElementsRegistry {
    * @example
    * ```javascript
    * // Add an overlay to BPMN elements with id 'task_1'
-   * bpmnVisualization.bpmnElementsRegistry.addOverlay('task_1'], { position: 'top-left', label: '40' });
+   * bpmnVisualization.bpmnElementsRegistry.addOverlays('task_1', { position: 'top-left', label: '40' });
    *
    * // Add several overlays to BPMN element with id 'task_3'
-   * bpmnVisualization.bpmnElementsRegistry.addCssClasses('task_3', [{ position: 'bottom-right', label: '110' }, { position: 'top-left', label: '40' }]);
+   * bpmnVisualization.bpmnElementsRegistry.addOverlays('task_3', [{ position: 'bottom-right', label: '110' }, { position: 'top-left', label: '40' }]);
    * ```
    *
    * @param bpmnElementId The BPMN id of the element where to add the overlays
    * @param overlays The overlays to add to the BPMN element
    */
-  addOverlay(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
+  addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
     this.mxGraphCellUpdater.addOverlay(bpmnElementId, overlays);
   }
 }

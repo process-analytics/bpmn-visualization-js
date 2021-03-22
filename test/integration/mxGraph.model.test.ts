@@ -1221,7 +1221,7 @@ describe('mxGraph model', () => {
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
 
         // add a single overlay to a single shape
-        bpmnVisualization.bpmnElementsRegistry.addOverlay('serviceTask_1_2', { position: 'top-left', label: '6' });
+        bpmnVisualization.bpmnElementsRegistry.addOverlays('serviceTask_1_2', { position: 'top-left', label: '6' });
         expect('serviceTask_1_2').toBeServiceTask({
           label: 'Service Task 1.2',
           parentId: 'Lane_13kpaun',
@@ -1229,7 +1229,7 @@ describe('mxGraph model', () => {
         });
 
         // add several overlays to single shape without overlay
-        bpmnVisualization.bpmnElementsRegistry.addOverlay('endEvent_message_1', [
+        bpmnVisualization.bpmnElementsRegistry.addOverlays('endEvent_message_1', [
           { position: 'top-right', label: '7' },
           { position: 'bottom-left', label: '8' },
           { position: 'bottom-right', label: '99' },
@@ -1246,7 +1246,7 @@ describe('mxGraph model', () => {
         });
 
         // add several overlays to single shape with overlays
-        bpmnVisualization.bpmnElementsRegistry.addOverlay('serviceTask_1_2', [
+        bpmnVisualization.bpmnElementsRegistry.addOverlays('serviceTask_1_2', [
           { position: 'top-right', label: '7' },
           { position: 'bottom-left', label: '8' },
           { position: 'bottom-right', label: '99' },
@@ -1267,7 +1267,7 @@ describe('mxGraph model', () => {
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
 
         // add a single overlay to a single edge
-        bpmnVisualization.bpmnElementsRegistry.addOverlay('Flow_1bewc4s', { position: 'start', label: '6' });
+        bpmnVisualization.bpmnElementsRegistry.addOverlays('Flow_1bewc4s', { position: 'start', label: '6' });
         expect('Flow_1bewc4s').toBeSequenceFlow({
           label: 'link',
           parentId: 'Lane_13kpaun',
@@ -1275,7 +1275,7 @@ describe('mxGraph model', () => {
         });
 
         // add several overlays to single edge without overlay
-        bpmnVisualization.bpmnElementsRegistry.addOverlay('Flow_1dmga1h', [
+        bpmnVisualization.bpmnElementsRegistry.addOverlays('Flow_1dmga1h', [
           { position: 'middle', label: '7' },
           { position: 'end', label: '8' },
         ]);
@@ -1289,7 +1289,7 @@ describe('mxGraph model', () => {
         });
 
         // add several overlays to single edge with overlays
-        bpmnVisualization.bpmnElementsRegistry.addOverlay('Flow_1bewc4s', [
+        bpmnVisualization.bpmnElementsRegistry.addOverlays('Flow_1bewc4s', [
           { position: 'middle', label: '7' },
           { position: 'end', label: '8' },
         ]);
@@ -1310,7 +1310,7 @@ describe('mxGraph model', () => {
         const nonExistingBpmnId = 'i-do-not-exist-for-add';
         expect(nonExistingBpmnId).not.toBeCell();
         // this call ensures that there is not issue on the rendering part
-        bpmnVisualization.bpmnElementsRegistry.addOverlay(nonExistingBpmnId, { position: 'top-left', label: '6' });
+        bpmnVisualization.bpmnElementsRegistry.addOverlays(nonExistingBpmnId, { position: 'top-left', label: '6' });
       });
     });
   });

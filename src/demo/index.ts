@@ -84,7 +84,7 @@ export function removeCssClasses(bpmnElementId: string | string[], classNames: s
 }
 
 export function addOverlay(bpmnElementId: string, overlay: Overlay): void {
-  return bpmnVisualization.bpmnElementsRegistry.addOverlay(bpmnElementId, [overlay]);
+  return bpmnVisualization.bpmnElementsRegistry.addOverlays(bpmnElementId, [overlay]);
 }
 
 // callback function for opening | dropping the file to be loaded

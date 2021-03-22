@@ -239,7 +239,7 @@ describe('Bpmn Elements registry - Add Overlay', () => {
 
     // add a single overlay to a single element
     const overlayLabel = '123';
-    bpmnVisualization.bpmnElementsRegistry.addOverlay('serviceTask_1_2', { label: overlayLabel, position: 'top-left' });
+    bpmnVisualization.bpmnElementsRegistry.addOverlays('serviceTask_1_2', { label: overlayLabel, position: 'top-left' });
     const svgOverlayGroupElementQuery = `#${bpmnVisualization.graph.container.id} > svg > g > g:nth-child(3) > g[data-bpmn-id="serviceTask_1_2"]`;
 
     const overlayGrouplement = document.querySelector<SVGGElement>(svgOverlayGroupElementQuery);
