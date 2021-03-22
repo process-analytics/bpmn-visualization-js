@@ -34,6 +34,9 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
+import { mxCellState, mxImageShape, mxShape } from 'mxgraph';
+import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
+import { OverlayBadgeShape } from '../overlay/shapes';
 
 /**
  * @internal
@@ -42,6 +45,7 @@ export default class ShapeConfigurator {
   public configureShapes(): void {
     this.initMxShapePrototype();
     this.registerShapes();
+    this.initMxCellRendererCreateCellOverlays();
   }
 
   private registerShapes(): void {
@@ -121,4 +125,75 @@ export default class ShapeConfigurator {
       return canvas;
     };
   }
+
+  initMxCellRendererCreateCellOverlays(): void {
+    mxgraph.mxCellRenderer.prototype.createCellOverlays = function(state: StateWithOverlays) {
+      const graph = state.view.graph;
+      const overlays = graph.getCellOverlays(state.cell);
+      let dict = null;
+
+      if (overlays != null) {
+        dict = new mxgraph.mxDictionary();
+
+        for (let currentOverlay of overlays) {
+          const shape = (state.overlays != null) ? state.overlays.remove(currentOverlay) : null;
+          if (shape != null) {
+            dict.put(currentOverlay, shape);
+            continue;
+          }
+
+          let overlayShape: mxShape;
+
+          // START bpmn-visualization CUSTOMIZATION
+          if (currentOverlay instanceof MxGraphCustomOverlay) {
+            overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxgraph.mxRectangle(0, 0, 0, 0));
+          } else {
+            overlayShape = new mxgraph.mxImageShape(new mxgraph.mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
+            (<mxImageShape>overlayShape).preserveImageAspect = false;
+          }
+          // END bpmn-visualization CUSTOMIZATION
+
+          overlayShape.dialect = state.view.graph.dialect;
+          (<ShapeWithOverlay>overlayShape).overlay = currentOverlay;
+
+          // The 'initializeOverlay' signature forces us to hardly cast the overlayShape
+          this.initializeOverlay(state, <mxImageShape>overlayShape);
+          this.installCellOverlayListeners(state, currentOverlay, overlayShape);
+
+          if (currentOverlay.cursor != null) {
+            overlayShape.node.style.cursor = currentOverlay.cursor;
+          }
+
+          // START bpmn-visualization CUSTOMIZATION
+          if (overlayShape instanceof OverlayBadgeShape) {
+            overlayShape.node.classList.add('overlay-badge');
+            overlayShape.node.setAttribute('data-bpmn-id', state.cell.id);
+          }
+          // END bpmn-visualization CUSTOMIZATION
+
+          dict.put(currentOverlay, overlayShape);
+        }
+      }
+
+      // Removes unused
+      if (state.overlays != null) {
+        state.overlays.visit(function(id: string, shape: mxShape) {
+          shape.destroy();
+        });
+      }
+
+      state.overlays = dict;
+    };
+  }
+}
+
+// TODO to remove when typed-mxgraph definitions will declare the overlays property
+// should be overlays: mxDictionary<mxCellOverlay> but the remove function should also modified (key should be any instead of string)
+interface StateWithOverlays extends mxCellState {
+  overlays: any
+}
+
+// TODO to remove when typed-mxgraph definitions will declare the overlays property
+interface ShapeWithOverlay extends mxShape {
+  overlay: any
 }

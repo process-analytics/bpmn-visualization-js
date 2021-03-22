@@ -16,12 +16,20 @@
 
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { StyleIdentifier } from './StyleUtils';
+import { Overlay } from '../registry';
+import { MxGraphCustomOverlay } from './overlay/custom-overlay';
+import { ensureIsArray } from '../helpers/array-utils';
+import { OverlayConverter } from './overlay/OverlayConverter';
+
+export function newMxGraphCellUpdater(graph: BpmnMxGraph): MxGraphCellUpdater {
+  return new MxGraphCellUpdater(graph, new OverlayConverter());
+}
 
 /**
  * @internal
  */
 export default class MxGraphCellUpdater {
-  constructor(readonly graph: BpmnMxGraph) {}
+  constructor(readonly graph: BpmnMxGraph, readonly overlayConverter: OverlayConverter) {}
 
   public updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
     const mxCell = this.graph.getModel().getCell(bpmnElementId);
@@ -33,5 +41,16 @@ export default class MxGraphCellUpdater {
     state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES] = cssClasses;
     state.shape.apply(state);
     state.shape.redraw();
+  }
+
+  public addOverlay(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
+    const mxCell = this.graph.getModel().getCell(bpmnElementId);
+    if (!mxCell) {
+      return;
+    }
+    ensureIsArray(overlays).forEach(overlay => {
+      const bpmnOverlay = new MxGraphCustomOverlay(overlay.label, this.overlayConverter.convertPosition(overlay));
+      this.graph.addCellOverlay(mxCell, bpmnOverlay);
+    });
   }
 }

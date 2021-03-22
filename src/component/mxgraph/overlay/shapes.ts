@@ -13,13 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { mxgraph } from '../initializer';
+import { mxRectangle } from 'mxgraph';
 
-// Initialization and configuration options
-import BpmnVisualization from '../../component/BpmnVisualization';
-export { BpmnVisualization };
-export { GlobalOptions, NavigationConfiguration, FitOptions, FitType, LoadOptions, ZoomConfiguration } from '../../component/options';
-
-// Interaction
-export { BpmnElement, BpmnElementsRegistry, BpmnSemantic } from '../../component/registry';
-export * from '../../component/registry/types';
-export * from '../../model/bpmn/internal/api';
+// TODO remove ts-ignore when typed-mxgraph definitions will declare the mxText missing properties
+export class OverlayBadgeShape extends mxgraph.mxText {
+  public constructor(value: string, bounds: mxRectangle) {
+    super(value, bounds);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    this.border = 'black';
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    this.background = 'white';
+  }
+}

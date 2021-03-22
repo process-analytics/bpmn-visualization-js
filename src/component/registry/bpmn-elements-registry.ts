@@ -18,14 +18,14 @@ import { ensureIsArray } from '../helpers/array-utils';
 import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
 import { computeBpmnBaseClassName } from '../mxgraph/style-helper';
 import { CssRegistry } from './css-registry';
-import MxGraphCellUpdater from '../mxgraph/MxGraphCellUpdater';
+import MxGraphCellUpdater, { newMxGraphCellUpdater } from '../mxgraph/MxGraphCellUpdater';
 import { BpmnQuerySelectors } from './query-selectors';
-import { BpmnElement } from './types';
+import { BpmnElement, Overlay } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
 
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnMxGraph): BpmnElementsRegistry {
-  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), new MxGraphCellUpdater(graph));
+  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), newMxGraphCellUpdater(graph));
 }
 
 /**
@@ -177,6 +177,27 @@ export class BpmnElementsRegistry {
       const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
       this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
     }
+  }
+
+  /**
+   * Add one/several overlays to a BPMN element.
+   *
+   * Notice that if you pass an id that is not related to an existing BPMN element, nothing happens on the rendering side.
+   *
+   * @example
+   * ```javascript
+   * // Add an overlay to BPMN elements with id 'task_1'
+   * bpmnVisualization.bpmnElementsRegistry.addOverlay('task_1'], { position: 'top-left', label: '40' });
+   *
+   * // Add several overlays to BPMN element with id 'task_3'
+   * bpmnVisualization.bpmnElementsRegistry.addCssClasses('task_3', [{ position: 'bottom-right', label: '110' }, { position: 'top-left', label: '40' }]);
+   * ```
+   *
+   * @param bpmnElementId The BPMN id of the element where to add the overlays
+   * @param overlays The overlays to add to the BPMN element
+   */
+  addOverlay(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
+    this.mxGraphCellUpdater.addOverlay(bpmnElementId, overlays);
   }
 }
 

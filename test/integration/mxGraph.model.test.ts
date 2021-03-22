@@ -1214,4 +1214,104 @@ describe('mxGraph model', () => {
     expect('SubLane_Vertical_1').toBeLane({ ...minimalPoolModelElement, label: 'Sub-Lane 1', parentId: 'Lane_Vertical_With_Sub_Lane' });
     expect('SubLane_Vertical_2').toBeLane({ ...minimalPoolModelElement, label: 'Sub-Lane 2', parentId: 'Lane_Vertical_With_Sub_Lane' });
   });
+
+  describe('Overlay', () => {
+    describe('Add overlays', () => {
+      it('Add one or several overlays to one BPMN shape', () => {
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+
+        // add a single overlay to a single shape
+        bpmnVisualization.bpmnElementsRegistry.addOverlay('serviceTask_1_2', { position: 'top-left', label: '6' });
+        expect('serviceTask_1_2').toBeServiceTask({
+          label: 'Service Task 1.2',
+          parentId: 'Lane_13kpaun',
+          overlays: [{ label: '6', horizontalAlign: 'left', verticalAlign: 'top' }],
+        });
+
+        // add several overlays to single shape without overlay
+        bpmnVisualization.bpmnElementsRegistry.addOverlay('endEvent_message_1', [
+          { position: 'top-right', label: '7' },
+          { position: 'bottom-left', label: '8' },
+          { position: 'bottom-right', label: '99' },
+        ]);
+        expect('endEvent_message_1').toBeEndEvent({
+          label: 'message end 2',
+          parentId: 'lane_02',
+          eventKind: ShapeBpmnEventKind.MESSAGE,
+          overlays: [
+            { label: '7', horizontalAlign: 'right', verticalAlign: 'top' },
+            { label: '8', horizontalAlign: 'left', verticalAlign: 'bottom' },
+            { label: '99', horizontalAlign: 'right', verticalAlign: 'bottom' },
+          ],
+        });
+
+        // add several overlays to single shape with overlays
+        bpmnVisualization.bpmnElementsRegistry.addOverlay('serviceTask_1_2', [
+          { position: 'top-right', label: '7' },
+          { position: 'bottom-left', label: '8' },
+          { position: 'bottom-right', label: '99' },
+        ]);
+        expect('serviceTask_1_2').toBeServiceTask({
+          label: 'Service Task 1.2',
+          parentId: 'Lane_13kpaun',
+          overlays: [
+            { label: '6', horizontalAlign: 'left', verticalAlign: 'top' },
+            { label: '7', horizontalAlign: 'right', verticalAlign: 'top' },
+            { label: '8', horizontalAlign: 'left', verticalAlign: 'bottom' },
+            { label: '99', horizontalAlign: 'right', verticalAlign: 'bottom' },
+          ],
+        });
+      });
+
+      it('Add one or several overlays to one BPMN edge', () => {
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+
+        // add a single overlay to a single edge
+        bpmnVisualization.bpmnElementsRegistry.addOverlay('Flow_1bewc4s', { position: 'start', label: '6' });
+        expect('Flow_1bewc4s').toBeSequenceFlow({
+          label: 'link',
+          parentId: 'Lane_13kpaun',
+          overlays: [{ label: '6', horizontalAlign: 'left', verticalAlign: 'top' }],
+        });
+
+        // add several overlays to single edge without overlay
+        bpmnVisualization.bpmnElementsRegistry.addOverlay('Flow_1dmga1h', [
+          { position: 'middle', label: '7' },
+          { position: 'end', label: '8' },
+        ]);
+        expect('Flow_1dmga1h').toBeSequenceFlow({
+          parentId: 'Lane_13kpaun',
+          verticalAlign: 'bottom',
+          overlays: [
+            { label: '7', horizontalAlign: 'center', verticalAlign: 'top' },
+            { label: '8', horizontalAlign: 'right', verticalAlign: 'top' },
+          ],
+        });
+
+        // add several overlays to single edge with overlays
+        bpmnVisualization.bpmnElementsRegistry.addOverlay('Flow_1bewc4s', [
+          { position: 'middle', label: '7' },
+          { position: 'end', label: '8' },
+        ]);
+        expect('Flow_1bewc4s').toBeSequenceFlow({
+          label: 'link',
+          parentId: 'Lane_13kpaun',
+          overlays: [
+            { label: '6', horizontalAlign: 'left', verticalAlign: 'top' },
+            { label: '7', horizontalAlign: 'center', verticalAlign: 'top' },
+            { label: '8', horizontalAlign: 'right', verticalAlign: 'top' },
+          ],
+        });
+      });
+
+      it('BPMN element does not exist', () => {
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+
+        const nonExistingBpmnId = 'i-do-not-exist-for-add';
+        expect(nonExistingBpmnId).not.toBeCell();
+        // this call ensures that there is not issue on the rendering part
+        bpmnVisualization.bpmnElementsRegistry.addOverlay(nonExistingBpmnId, { position: 'top-left', label: '6' });
+      });
+    });
+  });
 });

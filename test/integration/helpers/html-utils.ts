@@ -107,7 +107,7 @@ function expectSvgFirstChildNodeName(svgGroupElement: HTMLElement, name: string)
   expect(firstChild.nodeName).toEqual(name);
 }
 
-function expectSvgElementClassAttribute(svgElement: HTMLElement, value: string): void {
+export function expectSvgElementClassAttribute(svgElement: HTMLElement | SVGElement, value: string): void {
   expect(svgElement).not.toBeUndefined();
   expect(svgElement.getAttribute('class')).toEqual(value);
 }

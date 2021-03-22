@@ -13,34 +13,55 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, FitType, getElementsByKinds, addCssClasses, removeCssClasses, log, startBpmnVisualization, updateLoadOptions, ShapeUtil } from '../../index.es.js';
+import {
+  documentReady,
+  FitType,
+  getElementsByKinds,
+  addCssClasses,
+  removeCssClasses,
+  log,
+  startBpmnVisualization,
+  updateLoadOptions,
+  ShapeUtil,
+  addOverlay,
+} from '../../index.es.js';
 
 let lastBpmnIdsWithExtraCssClasses = [];
 let lastCssClassName = '';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function updateSelectedBPMNElements(textArea, bpmnKind) {
+  log(`Searching for Bpmn elements of '${bpmnKind}' kind`);
+  const elementsByKinds = getElementsByKinds(bpmnKind);
+
+  // Update text area
+  const textHeader = `Found ${elementsByKinds.length} ${bpmnKind}(s)`;
+  log(textHeader);
+  const lines = elementsByKinds.map(elt => `  - ${elt.bpmnSemantic.id}: '${elt.bpmnSemantic.name}'`).join('\n');
+
+  textArea.value += [textHeader, lines].join('\n') + '\n';
+  textArea.scrollTop = textArea.scrollHeight;
+
+  // CSS classes update
+  removeCssClasses(lastBpmnIdsWithExtraCssClasses, lastCssClassName);
+  const bpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
+  lastCssClassName = getCustomCssClassName(bpmnKind);
+  addCssClasses(bpmnIds, lastCssClassName);
+  lastBpmnIdsWithExtraCssClasses = bpmnIds;
+
+  // Overlay update
+  bpmnIds.forEach(id => {
+    addOverlay(id, getOverlay(bpmnKind));
+  });
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureControls() {
   const textArea = document.getElementById('elements-result');
 
-  document.getElementById('bpmn-kinds-select').onchange = function (ev) {
-    const bpmnKind = ev.target.value;
-    log(`Searching for Bpmn elements of '${bpmnKind}' kind`);
-    const elementsByKinds = getElementsByKinds(bpmnKind);
-
-    const textHeader = `Found ${elementsByKinds.length} ${bpmnKind}(s)`;
-    log(textHeader);
-    const lines = elementsByKinds.map(elt => `  - ${elt.bpmnSemantic.id}: '${elt.bpmnSemantic.name}'`).join('\n');
-
-    textArea.value += [textHeader, lines].join('\n') + '\n';
-    textArea.scrollTop = textArea.scrollHeight;
-
-    // CSS classes update
-    removeCssClasses(lastBpmnIdsWithExtraCssClasses, lastCssClassName);
-    const bpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
-    lastCssClassName = getCustomCssClassName(bpmnKind);
-    addCssClasses(bpmnIds, lastCssClassName);
-    lastBpmnIdsWithExtraCssClasses = bpmnIds;
-  };
+  const selectedKindElt = document.getElementById('bpmn-kinds-select');
+  selectedKindElt.onchange = event => updateSelectedBPMNElements(textArea, event.target.value);
+  document.addEventListener('diagramLoaded', () => updateSelectedBPMNElements(textArea, selectedKindElt.value), false);
 
   document.getElementById('bpmn-kinds-textarea-clean-btn').onclick = function () {
     textArea.value = '';
@@ -64,6 +85,22 @@ function getCustomCssClassName(bpmnKind) {
     return 'detection-flow';
   }
   return 'detection';
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function getOverlay(bpmnKind) {
+  if (ShapeUtil.isActivity(bpmnKind)) {
+    return { position: 'top-left', label: '30' };
+  } else if (bpmnKind.includes('Gateway')) {
+    return { position: 'top-right', label: '3' };
+  } else if (bpmnKind.includes('Event')) {
+    return { position: 'bottom-left', label: '15' };
+  } else if (bpmnKind.includes('lane')) {
+    return { position: 'bottom-right', label: '100' };
+  } else if (bpmnKind.includes('Flow')) {
+    return { position: 'middle', label: '999999' };
+  }
+  return { position: 'top-left', label: '40' };
 }
 
 documentReady(() => {

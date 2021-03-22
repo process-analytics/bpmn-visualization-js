@@ -87,6 +87,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedShapeModelElement)
     state: {
       style: buildExpectedStateStyle(expectedModel),
     },
+    overlays: expectedModel.overlays,
   };
 }
 

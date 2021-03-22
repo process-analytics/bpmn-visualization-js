@@ -18,7 +18,7 @@ import BpmnVisualization from '../component/BpmnVisualization';
 import { GlobalOptions, FitOptions, FitType, LoadOptions } from '../component/options';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { BpmnElement } from '../component/registry';
+import { BpmnElement, Overlay } from '../component/registry';
 import { BpmnElementKind } from '../model/bpmn/internal/api';
 
 export * from './helper';
@@ -50,6 +50,7 @@ function loadBpmn(bpmn: string): void {
   log('Loading bpmn....');
   bpmnVisualization.load(bpmn, loadOptions);
   log('BPMN loaded with configuration', stringify(loadOptions));
+  document.dispatchEvent(new CustomEvent('diagramLoaded'));
 }
 
 /**
@@ -80,6 +81,10 @@ export function addCssClasses(bpmnElementId: string | string[], classNames: stri
  */
 export function removeCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
   return bpmnVisualization.bpmnElementsRegistry.removeCssClasses(bpmnElementId, classNames);
+}
+
+export function addOverlay(bpmnElementId: string, overlay: Overlay): void {
+  return bpmnVisualization.bpmnElementsRegistry.addOverlay(bpmnElementId, [overlay]);
 }
 
 // callback function for opening | dropping the file to be loaded

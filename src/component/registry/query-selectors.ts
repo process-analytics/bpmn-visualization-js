@@ -38,7 +38,9 @@
  *       <g>
  *         <g style="" class="bpmn-pool" data-bpmn-id="Participant_1">....</g>
  *       </g>
- *       <g></g>
+ *       <g>
+ *         <g style="" class="overlay-badge" data-bpmn-id="Participant_1">...</g>
+ *       </g>
  *       <g></g>
  *     </g>
  *   </svg>

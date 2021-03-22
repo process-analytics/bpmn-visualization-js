@@ -16,7 +16,7 @@
 import { readFileSync } from '../helpers/file-helper';
 import { BpmnElement, BpmnVisualization, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
 import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
-import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask, HtmlElementLookup } from './helpers/html-utils';
+import { expectSvgElementClassAttribute, expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask, HtmlElementLookup } from './helpers/html-utils';
 import { ExpectedBaseBpmnElement, expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '../unit/helpers/bpmn-semantic-utils';
 
 const bpmnContainerId = 'bpmn-visualization-container';
@@ -226,5 +226,24 @@ describe('Bpmn Elements registry - CSS class management', () => {
       // this call ensures that there is not issue on the rendering part
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(nonExistingBpmnId, 'class1');
     });
+  });
+});
+
+describe('Bpmn Elements registry - Add Overlay', () => {
+  it('Add one overlay to BPMN element', () => {
+    bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+    const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+
+    // default classes
+    htmlElementLookup.expectServiceTask('serviceTask_1_2');
+
+    // add a single overlay to a single element
+    const overlayLabel = '123';
+    bpmnVisualization.bpmnElementsRegistry.addOverlay('serviceTask_1_2', { label: overlayLabel, position: 'top-left' });
+    const svgOverlayGroupElementQuery = `#${bpmnVisualization.graph.container.id} > svg > g > g:nth-child(3) > g[data-bpmn-id="serviceTask_1_2"]`;
+
+    const overlayGrouplement = document.querySelector<SVGGElement>(svgOverlayGroupElementQuery);
+    expect(overlayGrouplement.querySelector('g > text').innerHTML).toEqual(overlayLabel);
+    expectSvgElementClassAttribute(overlayGrouplement, 'overlay-badge');
   });
 });
