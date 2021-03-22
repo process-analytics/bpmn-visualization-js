@@ -35,10 +35,22 @@ export interface BpmnElement {
   htmlElement: HTMLElement;
 }
 
+/**
+ * @category Interaction
+ */
 export type OverlayShapePosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+/**
+ * @category Interaction
+ */
 export type OverlayEdgePosition = 'start' | 'middle' | 'end';
+/**
+ * @category Interaction
+ */
 export type OverlayPosition = OverlayShapePosition | OverlayEdgePosition;
 
+/**
+ * @category Interaction
+ */
 export interface Overlay {
   position: OverlayPosition;
   label?: string;
