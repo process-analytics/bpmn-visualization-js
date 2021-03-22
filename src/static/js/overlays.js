@@ -28,13 +28,19 @@ documentReady(() => {
 
   const positions = new Map([
     ['StartEvent_1', 'top-left'],
-    ['Flow_1', 'middle'],
+    // TODO: uncomment or use when we add support for edge overlay
+    // ['Flow_1', 'middle'],
     ['Activity_1', 'top-right'],
   ]);
 
   setTimeout(() => {
     // Overlay update
-    ['StartEvent_1', 'Flow_1', 'Activity_1'].forEach(id => {
+    [
+      'StartEvent_1',
+      // TODO: uncomment or use when we add support for edge overlay
+      // 'Flow_1',
+      'Activity_1',
+    ].forEach(id => {
       addOverlay(id, { position: positions.get(id), label: '123' });
     });
   }, 500);

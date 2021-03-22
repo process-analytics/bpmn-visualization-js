@@ -63,10 +63,11 @@ describe('BPMN elements with overlays', () => {
   const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization Overlays' });
   const bpmnDiagramName = 'overlays.start.flow.task';
 
-  it('Check badges are present on StartEvent, Flow, Task', async () => {
+  it('Check badges are present on StartEvent, Task', async () => {
     const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
     await bpmnContainerElementHandle.waitForSelector('svg > g > g:nth-child(3) > g[data-bpmn-id="StartEvent_1"]');
-    await bpmnContainerElementHandle.waitForSelector('svg > g > g:nth-child(3) > g[data-bpmn-id="Flow_1"]');
+    // TODO: uncomment or use when we add support for edge overlay
+    // await bpmnContainerElementHandle.waitForSelector('svg > g > g:nth-child(3) > g[data-bpmn-id="Flow_1"]');
     await bpmnContainerElementHandle.waitForSelector('svg > g > g:nth-child(3) > g[data-bpmn-id="Activity_1"]');
 
     const image = await page.screenshot({ fullPage: true });
