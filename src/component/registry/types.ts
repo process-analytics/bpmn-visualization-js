@@ -38,7 +38,7 @@ export interface BpmnElement {
 /**
  * @category Interaction
  */
-export type OverlayShapePosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+export type OverlayShapePosition = 'top-left' | 'top-right' | 'top-center' | 'bottom-left' | 'bottom-right' | 'bottom-center' | 'middle-left' | 'middle-right';
 /**
  * @category Interaction
  */
