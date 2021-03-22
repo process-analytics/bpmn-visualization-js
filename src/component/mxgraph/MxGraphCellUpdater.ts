@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { StyleIdentifier } from './StyleUtils';
 import { Overlay } from '../registry';
@@ -24,6 +25,9 @@ export function newMxGraphCellUpdater(graph: BpmnMxGraph): MxGraphCellUpdater {
   return new MxGraphCellUpdater(graph, new OverlayConverter());
 }
 
+/**
+ * @internal
+ */
 export default class MxGraphCellUpdater {
   constructor(readonly graph: BpmnMxGraph, readonly overlayConverter: OverlayConverter) {}
 

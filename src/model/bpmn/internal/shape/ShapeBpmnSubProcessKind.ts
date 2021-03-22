@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
- * Base name of the BPMN specification.
+ * Base name of the BPMN specification for sub-process kinds.
+ * @category BPMN
  */
 export enum ShapeBpmnSubProcessKind {
   EMBEDDED = 'embedded',

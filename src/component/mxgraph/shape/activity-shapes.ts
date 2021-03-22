@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render';
 import { ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal/shape';
@@ -30,6 +31,9 @@ function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): v
   });
 }
 
+/**
+ * @internal
+ */
 export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
@@ -105,6 +109,9 @@ abstract class BaseTaskShape extends BaseActivityShape {
   protected abstract paintTaskIcon(paintParameter: PaintParameter): void;
 }
 
+/**
+ * @internal
+ */
 export class TaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -117,6 +124,9 @@ export class TaskShape extends BaseTaskShape {
   }
 }
 
+/**
+ * @internal
+ */
 export class ServiceTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -127,6 +137,9 @@ export class ServiceTaskShape extends BaseTaskShape {
   }
 }
 
+/**
+ * @internal
+ */
 export class UserTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -137,6 +150,9 @@ export class UserTaskShape extends BaseTaskShape {
   }
 }
 
+/**
+ * @internal
+ */
 export class ReceiveTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -175,6 +191,9 @@ export class ReceiveTaskShape extends BaseTaskShape {
   }
 }
 
+/**
+ * @internal
+ */
 export class SendTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -185,6 +204,9 @@ export class SendTaskShape extends BaseTaskShape {
   }
 }
 
+/**
+ * @internal
+ */
 export class ManualTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -195,6 +217,9 @@ export class ManualTaskShape extends BaseTaskShape {
   }
 }
 
+/**
+ * @internal
+ */
 export class ScriptTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -205,12 +230,18 @@ export class ScriptTaskShape extends BaseTaskShape {
   }
 }
 
+/**
+ * @internal
+ */
 export class CallActivityShape extends BaseActivityShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
   }
 }
 
+/**
+ * @internal
+ */
 export class SubProcessShape extends BaseActivityShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
@@ -231,6 +262,9 @@ export class SubProcessShape extends BaseActivityShape {
   }
 }
 
+/**
+ * @internal
+ */
 export class BusinessRuleTaskShape extends BaseTaskShape {
   public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);

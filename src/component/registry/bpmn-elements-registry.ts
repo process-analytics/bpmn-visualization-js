@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { ensureIsArray } from '../helpers/array-utils';
 import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
 import { computeBpmnBaseClassName } from '../mxgraph/style-helper';
@@ -133,10 +134,10 @@ export class BpmnElementsRegistry {
    * @example
    * ```javascript
    * // Remove 'highlight' from BPMN elements with id: activity_1 and activity_2
-   * bpmnVisualization.bpmnElementsRegistry.addCssClasses(['activity_1', 'activity_2'], 'highlight');
+   * bpmnVisualization.bpmnElementsRegistry.removeCssClasses(['activity_1', 'activity_2'], 'highlight');
    *
    * // Remove 'running' and 'additional-info' from BPMN element with id: task_3
-   * bpmnVisualization.bpmnElementsRegistry.addCssClasses('task_3', ['running', 'additional-info']);
+   * bpmnVisualization.bpmnElementsRegistry.removeCssClasses('task_3', ['running', 'additional-info']);
    * ```
    *
    * @param bpmnElementIds The BPMN id of the element(s) where to remove the CSS classes

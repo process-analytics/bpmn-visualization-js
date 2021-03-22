@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/**
+ * @internal
+ */
 export enum ShapeBpmnMarkerKind {
   ADHOC = 'adhoc',
   COMPENSATION = 'compensation',

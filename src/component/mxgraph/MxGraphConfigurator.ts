@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import StyleConfigurator from './config/StyleConfigurator';
 import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
@@ -27,6 +28,7 @@ import { mxMouseEvent } from 'mxgraph'; // for types
  *     <li>styles
  *     <li>shapes
  *     <li>markers
+ * @internal
  */
 export default class MxGraphConfigurator {
   private readonly graph: BpmnMxGraph;

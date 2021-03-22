@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../model/bpmn/internal/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../model/bpmn/internal/edge/SequenceFlowKind';
@@ -37,6 +38,9 @@ import { BpmnMxGraph } from '../BpmnMxGraph';
 import { mxgraph } from '../initializer';
 import { mxStylesheet, StyleMap } from 'mxgraph'; // for types
 
+/**
+ * @internal
+ */
 export default class StyleConfigurator {
   private specificFlowStyles: Map<FlowKind, (style: StyleMap) => void> = new Map([
     [

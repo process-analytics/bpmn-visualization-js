@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
- The real name of the field in the BPMN XSD
+ * The real name of the field in the BPMN XSD
+ * @internal
  */
 export enum AssociationDirectionKind {
   NONE = 'None',

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import Shape from '../../../../model/bpmn/internal/shape/Shape';
 import Bounds from '../../../../model/bpmn/internal/Bounds';
 import ShapeBpmnElement, { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
@@ -28,6 +29,9 @@ import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { ensureIsArray } from '../../../helpers/array-utils';
 
+/**
+ * @internal
+ */
 export default class DiagramConverter {
   constructor(readonly convertedElements: ConvertedElements) {}
 

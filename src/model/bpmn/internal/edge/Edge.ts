@@ -13,11 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import Waypoint from './Waypoint';
 import Label from '../Label';
 import Flow from './Flow';
 import { MessageVisibleKind } from './MessageVisibleKind';
 
+/**
+ * @internal
+ */
 export default class Edge {
   constructor(
     readonly id: string,

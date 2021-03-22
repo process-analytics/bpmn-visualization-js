@@ -16,6 +16,9 @@
 
 import { ensureIsArray } from '../helpers/array-utils';
 
+/**
+ * @internal
+ */
 export class CssRegistry {
   private classNamesByBPMNId = new Map<string, Set<string>>();
 

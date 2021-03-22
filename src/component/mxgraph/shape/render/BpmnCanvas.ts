@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { StyleDefault } from '../../StyleUtils';
 import { IconConfiguration, IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 import { mxAbstractCanvas2D } from 'mxgraph'; // for types

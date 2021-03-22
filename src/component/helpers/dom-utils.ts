@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * @internal
+ */
 export function htmlElement(element: string | HTMLElement): HTMLElement | null {
   if (element instanceof HTMLElement) {
     return element;

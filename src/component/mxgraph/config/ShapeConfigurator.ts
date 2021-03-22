@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { mxgraph } from '../initializer';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
 import { BoundaryEventShape, CatchIntermediateEventShape, EndEventShape, StartEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
@@ -37,6 +38,9 @@ import { mxCellState, mxImageShape, mxShape } from 'mxgraph';
 import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 
+/**
+ * @internal
+ */
 export default class ShapeConfigurator {
   public configureShapes(): void {
     this.initMxShapePrototype();
