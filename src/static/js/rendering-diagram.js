@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, startBpmnVisualization, fit, FitType } from '../../index.es.js';
+import { documentReady, startBpmnVisualization, fit, FitType, addOverlay } from '../../index.es.js';
 
 // to show mouse pointer position - usefull for testing
 // @see https://github.com/puppeteer/puppeteer/issues/374
@@ -131,6 +131,11 @@ function configureZoomDebounceInput(parameters) {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureAddOverlay(position) {
+  document.getElementById(position).onclick = () => addOverlay(document.getElementById('bpmn-id-input').value, { position, label: '123' });
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function start() {
   const parameters = new URLSearchParams(window.location.search);
   configureMousePointer(parameters);
@@ -155,6 +160,18 @@ function start() {
   for (let fitTypeElement in FitType) {
     fitOnClick(fitTypeElement);
   }
+
+  configureAddOverlay('start');
+  configureAddOverlay('middle');
+  configureAddOverlay('end');
+  configureAddOverlay('top-left');
+  configureAddOverlay('top-center');
+  configureAddOverlay('top-right');
+  configureAddOverlay('bottom-left');
+  configureAddOverlay('bottom-center');
+  configureAddOverlay('bottom-right');
+  configureAddOverlay('middle-left');
+  configureAddOverlay('middle-right');
 }
 
 documentReady(start);
