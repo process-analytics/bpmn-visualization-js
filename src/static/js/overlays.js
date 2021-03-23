@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, startBpmnVisualization, addOverlays } from '../../index.es.js';
+import { documentReady, startBpmnVisualization, addOverlays, removeAllOverlays } from '../../index.es.js';
 
 // to show mouse pointer position - useful for testing
 // @see https://github.com/puppeteer/puppeteer/issues/374
@@ -113,6 +113,11 @@ function configureAddOverlays(position) {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureRemoveAllOverlays() {
+  document.getElementById('clear').onclick = () => removeAllOverlays(document.getElementById('bpmn-id-input').value);
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function start() {
   const parameters = new URLSearchParams(window.location.search);
   configureMousePointer(parameters);
@@ -138,6 +143,8 @@ function start() {
   configureAddOverlays('bottom-right');
   configureAddOverlays('middle-left');
   configureAddOverlays('middle-right');
+
+  configureRemoveAllOverlays();
 }
 
 documentReady(start);
