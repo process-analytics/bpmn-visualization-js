@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, startBpmnVisualization, fit, FitType } from '../../index.es.js';
+import { documentReady, startBpmnVisualization, addOverlay } from '../../index.es.js';
 
 // to show mouse pointer position - usefull for testing
 // @see https://github.com/puppeteer/puppeteer/issues/374
@@ -108,26 +108,8 @@ function configureControlsPanel(parameters) {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function fitOnClick(fitType) {
-  document.getElementById(fitType).onclick = () => fit({ type: fitType });
-}
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function configureZoomThrottleInput(parameters) {
-  const elZoomThrottle = document.getElementById('zoom-throttle');
-  if (parameters.get('zoomThrottle')) {
-    elZoomThrottle.value = parameters.get('zoomThrottle');
-  }
-  return elZoomThrottle;
-}
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function configureZoomDebounceInput(parameters) {
-  const elZoomDebounce = document.getElementById('zoom-debounce');
-  if (parameters.get('zoomDebounce')) {
-    elZoomDebounce.value = parameters.get('zoomDebounce');
-  }
-  return elZoomDebounce;
+function configureAddOverlay(position) {
+  document.getElementById(position).onclick = () => addOverlay(document.getElementById('bpmn-id-input').value, { position, label: '123' });
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -136,25 +118,30 @@ function start() {
   configureMousePointer(parameters);
   configureControlsPanel(parameters);
 
-  const elZoomThrottle = configureZoomThrottleInput(parameters);
-  const elZoomDebounce = configureZoomDebounceInput(parameters);
-
   startBpmnVisualization({
     globalOptions: {
       container: 'bpmn-container',
       navigation: {
         enabled: true,
         zoom: {
-          throttleDelay: elZoomThrottle.value,
-          debounceDelay: elZoomDebounce.value,
+          throttleDelay: 40,
+          debounceDelay: 30,
         },
       },
     },
   });
 
-  for (let fitTypeElement in FitType) {
-    fitOnClick(fitTypeElement);
-  }
+  configureAddOverlay('start');
+  configureAddOverlay('middle');
+  configureAddOverlay('end');
+  configureAddOverlay('top-left');
+  configureAddOverlay('top-center');
+  configureAddOverlay('top-right');
+  configureAddOverlay('bottom-left');
+  configureAddOverlay('bottom-center');
+  configureAddOverlay('bottom-right');
+  configureAddOverlay('middle-left');
+  configureAddOverlay('middle-right');
 }
 
 documentReady(start);

@@ -75,7 +75,7 @@ describe('BPMN elements with overlays', () => {
   const imageSnapshotThresholds = new ImageSnapshotThresholds();
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'overlay', imageSnapshotThresholds.getDefault());
 
-  const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
+  const pageTester = new PageTester({ pageFileName: 'overlay', expectedPageTitle: 'BPMN Visualization - Overlay' });
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
 
   it.each([
