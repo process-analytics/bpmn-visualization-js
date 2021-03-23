@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 import 'jest-playwright-preset';
-import {
-  defaultChromiumFailureThreshold,
-  ImageSnapshotConfigurator,
-  ImageSnapshotThresholdConfig,
-  MultiBrowserImageSnapshotThresholds,
-} from './helpers/visu/image-snapshot-config';
+import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { PageTester } from './helpers/visu/PageTester';
 import { join } from 'path';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../build/public/component/registry';
@@ -29,7 +24,7 @@ import { ElementHandle } from 'playwright';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    super({ chromium: defaultChromiumFailureThreshold, firefox: 0.00011 });
+    super({ chromium: 0.000005, firefox: 0.0004 });
   }
 
   getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -37,11 +32,10 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
-        'overlays.start.flow.task',
+        'overlays.start.flow.task.gateway',
         {
-          linux: 0.0023, // 0.2237761571968533%
-          macos: 0.0008, // 0.0729159761465925%
-          windows: 0.000004,
+          linux: 0.001, // 0.09368089665046096%
+          windows: 0.0003, // 0.025623788967854555%
         },
       ],
     ]);
@@ -50,11 +44,10 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
-        'overlays.start.flow.task',
+        'overlays.start.flow.task.gateway',
         {
-          linux: 0.0023, // 0.22444374007244416%
-          macos: 0.0025, // 0.24420815130801188%
-          windows: 0.007, // 0.6915678561497107%
+          linux: 0.0053, // 0.5229417116423329%
+          macos: 0.0061, // 0.6026399523082704%
         },
       ],
     ]);
