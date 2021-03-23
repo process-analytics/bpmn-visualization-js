@@ -76,21 +76,22 @@ describe('BPMN elements with overlays', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'overlay', imageSnapshotThresholds.getDefault());
 
   const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
-  const bpmnDiagramName = 'overlays.start.flow.task';
+  const bpmnDiagramName = 'overlays.start.flow.task.gateway';
 
   it.each([<OverlayShapePosition>'top-left', <OverlayShapePosition>'top-right', <OverlayShapePosition>'bottom-left', <OverlayShapePosition>'bottom-right'])(
-    `add overlay on StartEvent and Task on %s`,
+    `add overlay on StartEvent, Gateway and Task on %s`,
     async (position: OverlayShapePosition) => {
       const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
       await addOverlay(bpmnContainerElementHandle, 'StartEvent_1', position);
       await addOverlay(bpmnContainerElementHandle, 'Activity_1', position);
+      await addOverlay(bpmnContainerElementHandle, 'Gateway_1', position);
 
       const image = await page.screenshot({ fullPage: true });
       const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
       expect(image).toMatchImageSnapshot({
         ...config,
-        customSnapshotIdentifier: 'add.overlay.on.task.and.event',
+        customSnapshotIdentifier: 'add.overlay.on.task.gateway.and.event',
         customSnapshotsDir: buildOverlaySnapshotDir(config, position),
       });
     },
