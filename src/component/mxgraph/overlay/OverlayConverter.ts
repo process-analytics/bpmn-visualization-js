@@ -25,8 +25,12 @@ export class OverlayConverter {
     // Shape
     ['top-left', { horizontalAlign: 'left', verticalAlign: 'top' }],
     ['top-right', { horizontalAlign: 'right', verticalAlign: 'top' }],
+    ['top-center', { horizontalAlign: 'center', verticalAlign: 'top' }],
     ['bottom-left', { horizontalAlign: 'left', verticalAlign: 'bottom' }],
     ['bottom-right', { horizontalAlign: 'right', verticalAlign: 'bottom' }],
+    ['bottom-center', { horizontalAlign: 'center', verticalAlign: 'bottom' }],
+    ['middle-left', { horizontalAlign: 'left', verticalAlign: 'middle' }],
+    ['middle-right', { horizontalAlign: 'right', verticalAlign: 'middle' }],
   ]);
 
   convertPosition(overlay: Overlay): MxGraphCustomOverlayOptions {
