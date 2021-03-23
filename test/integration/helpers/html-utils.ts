@@ -34,6 +34,12 @@ export class HtmlElementLookup {
     expectSvgElementClassAttribute(svgGroupElement, 'bpmn-start-event');
   }
 
+  expectIntermediateThrowEvent(bpmnId: string): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expectSvgEvent(svgGroupElement);
+    expectSvgElementClassAttribute(svgGroupElement, 'bpmn-intermediate-throw-event');
+  }
+
   expectEndEvent(bpmnId: string, additionalClasses?: string[]): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgEvent(svgGroupElement);
@@ -62,6 +68,12 @@ export class HtmlElementLookup {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgLane(svgGroupElement);
     expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-lane', additionalClasses));
+  }
+
+  expectPool(bpmnId: string): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expectSvgPool(svgGroupElement);
+    expectSvgElementClassAttribute(svgGroupElement, 'bpmn-pool');
   }
 
   expectExclusiveGateway(bpmnId: string, additionalClasses?: string[]): void {
