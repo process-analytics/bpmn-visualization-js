@@ -78,24 +78,30 @@ describe('BPMN elements with overlays', () => {
   const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
 
-  it.each([<OverlayShapePosition>'top-left', <OverlayShapePosition>'top-right', <OverlayShapePosition>'bottom-left', <OverlayShapePosition>'bottom-right'])(
-    `add overlay on StartEvent, Gateway and Task on %s`,
-    async (position: OverlayShapePosition) => {
-      const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+  it.each([
+    <OverlayShapePosition>'top-left',
+    <OverlayShapePosition>'top-center',
+    <OverlayShapePosition>'top-right',
+    <OverlayShapePosition>'bottom-left',
+    <OverlayShapePosition>'bottom-center',
+    <OverlayShapePosition>'bottom-right',
+    <OverlayShapePosition>'middle-left',
+    <OverlayShapePosition>'middle-right',
+  ])(`add overlay on StartEvent, Gateway and Task on %s`, async (position: OverlayShapePosition) => {
+    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-      await addOverlay(bpmnContainerElementHandle, 'StartEvent_1', position);
-      await addOverlay(bpmnContainerElementHandle, 'Activity_1', position);
-      await addOverlay(bpmnContainerElementHandle, 'Gateway_1', position);
+    await addOverlay(bpmnContainerElementHandle, 'StartEvent_1', position);
+    await addOverlay(bpmnContainerElementHandle, 'Activity_1', position);
+    await addOverlay(bpmnContainerElementHandle, 'Gateway_1', position);
 
-      const image = await page.screenshot({ fullPage: true });
-      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-      expect(image).toMatchImageSnapshot({
-        ...config,
-        customSnapshotIdentifier: 'add.overlay.on.task.gateway.and.event',
-        customSnapshotsDir: buildOverlaySnapshotDir(config, position),
-      });
-    },
-  );
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: 'add.overlay.on.task.gateway.and.event',
+      customSnapshotsDir: buildOverlaySnapshotDir(config, position),
+    });
+  });
 
   it.skip.each([<OverlayEdgePosition>'start', <OverlayEdgePosition>'middle', <OverlayEdgePosition>'end'])(
     `add overlay on SequenceFlow on %s`,
