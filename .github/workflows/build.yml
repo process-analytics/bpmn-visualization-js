@@ -71,6 +71,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+      # playwright browsers are needed for the bundle tests, so no special configuration as in other workflows
       - name: Install dependencies
         run: npm ci
       - name: Lint check
@@ -101,6 +102,8 @@ jobs:
       # Ensure we can build working bundles
       - name: Build bundles
         run: npm run build-bundles
+      # install OS dependencies required by browsers on the GitHub runner
+      - uses: microsoft/playwright-github-action@v1.4.4
       - name: Test bundles
         id: 'test_bundles'
         run: npm run test:bundles
