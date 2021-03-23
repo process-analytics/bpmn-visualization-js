@@ -19,7 +19,7 @@ import 'jest-playwright-preset';
 import { FitType } from '../../src/component/options';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { PageTester } from './helpers/visu/PageTester';
-import { getBpmnDiagramNames } from './helpers/test-utils';
+import { clickOnButton, getBpmnDiagramNames } from './helpers/test-utils';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   getConfig(param: {
@@ -134,10 +134,7 @@ describe('no diagram visual regression', () => {
 
       it.each(fitTypes)(`load + fit %s`, async (afterLoadFitType: FitType) => {
         await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, { fit: { type: onLoadFitType } });
-
-        await page.click(`#${afterLoadFitType}`);
-        // To unselect the button
-        await page.mouse.click(0, 0);
+        await clickOnButton(afterLoadFitType);
 
         const image = await page.screenshot({ fullPage: true });
 

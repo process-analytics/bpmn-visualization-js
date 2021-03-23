@@ -21,6 +21,11 @@ import {
   MultiBrowserImageSnapshotThresholds,
 } from './helpers/visu/image-snapshot-config';
 import { PageTester } from './helpers/visu/PageTester';
+import { join } from 'path';
+import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../build/public/component/registry';
+import { clickOnButton } from './helpers/test-utils';
+import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
+import { ElementHandle } from 'playwright';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -56,22 +61,55 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   }
 }
 
+function buildOverlaySnapshotDir(config: MatchImageSnapshotOptions, position: OverlayPosition): string {
+  return join(config.customSnapshotsDir, `on-position-${position}`);
+}
+
+async function addOverlay(bpmnContainerElementHandle: ElementHandle<Element>, bpmnElementId: string, position: OverlayPosition): Promise<void> {
+  await page.fill('#bpmn-id-input', bpmnElementId);
+  await clickOnButton(position);
+  await bpmnContainerElementHandle.waitForSelector(`svg > g > g:nth-child(3) > g[data-bpmn-id="${bpmnElementId}"]`);
+}
+
 describe('BPMN elements with overlays', () => {
   const imageSnapshotThresholds = new ImageSnapshotThresholds();
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'overlays', imageSnapshotThresholds.getDefault());
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'overlay', imageSnapshotThresholds.getDefault());
 
-  const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization Overlays' });
+  const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
   const bpmnDiagramName = 'overlays.start.flow.task';
 
-  it('Check badges are present on StartEvent, Task', async () => {
-    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
-    await bpmnContainerElementHandle.waitForSelector('svg > g > g:nth-child(3) > g[data-bpmn-id="StartEvent_1"]');
-    // TODO: uncomment or use when we add support for edge overlay
-    // await bpmnContainerElementHandle.waitForSelector('svg > g > g:nth-child(3) > g[data-bpmn-id="Flow_1"]');
-    await bpmnContainerElementHandle.waitForSelector('svg > g > g:nth-child(3) > g[data-bpmn-id="Activity_1"]');
+  it.each([<OverlayShapePosition>'top-left', <OverlayShapePosition>'top-right', <OverlayShapePosition>'bottom-left', <OverlayShapePosition>'bottom-right'])(
+    `add overlay on StartEvent and Task on %s`,
+    async (position: OverlayShapePosition) => {
+      const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-    const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot(config);
-  });
+      await addOverlay(bpmnContainerElementHandle, 'StartEvent_1', position);
+      await addOverlay(bpmnContainerElementHandle, 'Activity_1', position);
+
+      const image = await page.screenshot({ fullPage: true });
+      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+      expect(image).toMatchImageSnapshot({
+        ...config,
+        customSnapshotIdentifier: 'add.overlay.on.task.and.event',
+        customSnapshotsDir: buildOverlaySnapshotDir(config, position),
+      });
+    },
+  );
+
+  it.skip.each([<OverlayEdgePosition>'start', <OverlayEdgePosition>'middle', <OverlayEdgePosition>'end'])(
+    `add overlay on SequenceFlow on %s`,
+    async (position: OverlayEdgePosition) => {
+      const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+
+      await addOverlay(bpmnContainerElementHandle, 'Flow_1', position);
+
+      const image = await page.screenshot({ fullPage: true });
+      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+      expect(image).toMatchImageSnapshot({
+        ...config,
+        customSnapshotIdentifier: 'add.overlay.on.sequence.flow',
+        customSnapshotsDir: buildOverlaySnapshotDir(config, position),
+      });
+    },
+  );
 });

@@ -54,3 +54,9 @@ export function getBpmnDiagramNames(directoryName: string): string[] {
       return filename.split('.').slice(0, -1).join('.');
     });
 }
+
+export async function clickOnButton(buttonId: string): Promise<void> {
+  await page.click(`#${buttonId}`);
+  // To unselect the button
+  await page.mouse.click(0, 0);
+}
