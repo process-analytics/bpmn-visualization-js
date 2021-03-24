@@ -24,9 +24,10 @@ import {
   updateLoadOptions,
   ShapeUtil,
   addOverlays,
+  removeAllOverlays,
 } from '../../index.es.js';
 
-let lastBpmnIdsWithExtraCssClasses = [];
+let lastBpmnIdsWithExtraCssClassesAndOverlays = [];
 let lastCssClassName = '';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -43,16 +44,15 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
   textArea.scrollTop = textArea.scrollHeight;
 
   // CSS classes update
-  removeCssClasses(lastBpmnIdsWithExtraCssClasses, lastCssClassName);
-  const bpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
+  removeCssClasses(lastBpmnIdsWithExtraCssClassesAndOverlays, lastCssClassName);
   lastCssClassName = getCustomCssClassName(bpmnKind);
+  const bpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
   addCssClasses(bpmnIds, lastCssClassName);
-  lastBpmnIdsWithExtraCssClasses = bpmnIds;
 
   // Overlays update
-  bpmnIds.forEach(id => {
-    addOverlays(id, getOverlay(bpmnKind));
-  });
+  lastBpmnIdsWithExtraCssClassesAndOverlays.forEach(id => removeAllOverlays(id));
+  bpmnIds.forEach(id => addOverlays(id, getOverlay(bpmnKind)));
+  lastBpmnIdsWithExtraCssClassesAndOverlays = bpmnIds;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -65,8 +65,8 @@ function configureControls() {
 
   document.getElementById('bpmn-kinds-textarea-clean-btn').onclick = function () {
     textArea.value = '';
-    removeCssClasses(lastBpmnIdsWithExtraCssClasses, lastCssClassName);
-    lastBpmnIdsWithExtraCssClasses = [];
+    removeCssClasses(lastBpmnIdsWithExtraCssClassesAndOverlays, lastCssClassName);
+    lastBpmnIdsWithExtraCssClassesAndOverlays = [];
     lastCssClassName = '';
   };
 }

@@ -87,6 +87,10 @@ export function addOverlays(bpmnElementId: string, overlay: Overlay): void {
   return bpmnVisualization.bpmnElementsRegistry.addOverlays(bpmnElementId, [overlay]);
 }
 
+export function removeAllOverlays(bpmnElementId: string): void {
+  return bpmnVisualization.bpmnElementsRegistry.removeAllOverlays(bpmnElementId);
+}
+
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {
   const reader = new FileReader();
