@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, startBpmnVisualization, addOverlay } from '../../index.es.js';
+import { documentReady, startBpmnVisualization, addOverlays } from '../../index.es.js';
 
 // to show mouse pointer position - usefull for testing
 // @see https://github.com/puppeteer/puppeteer/issues/374
@@ -108,8 +108,8 @@ function configureControlsPanel(parameters) {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function configureAddOverlay(position) {
-  document.getElementById(position).onclick = () => addOverlay(document.getElementById('bpmn-id-input').value, { position, label: '123' });
+function configureAddOverlays(position) {
+  document.getElementById(position).onclick = () => addOverlays(document.getElementById('bpmn-id-input').value, { position, label: '123' });
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -131,17 +131,17 @@ function start() {
     },
   });
 
-  configureAddOverlay('start');
-  configureAddOverlay('middle');
-  configureAddOverlay('end');
-  configureAddOverlay('top-left');
-  configureAddOverlay('top-center');
-  configureAddOverlay('top-right');
-  configureAddOverlay('bottom-left');
-  configureAddOverlay('bottom-center');
-  configureAddOverlay('bottom-right');
-  configureAddOverlay('middle-left');
-  configureAddOverlay('middle-right');
+  configureAddOverlays('start');
+  configureAddOverlays('middle');
+  configureAddOverlays('end');
+  configureAddOverlays('top-left');
+  configureAddOverlays('top-center');
+  configureAddOverlays('top-right');
+  configureAddOverlays('bottom-left');
+  configureAddOverlays('bottom-center');
+  configureAddOverlays('bottom-right');
+  configureAddOverlays('middle-left');
+  configureAddOverlays('middle-right');
 }
 
 documentReady(start);
