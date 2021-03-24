@@ -40,6 +40,17 @@ describe('DOM only checks', () => {
     htmlElementLookup.expectTask('Activity_1');
     htmlElementLookup.expectEndEvent('EndEvent_1');
   });
+
+  it('DOM should contains BPMN elements when loading model-complete-semantic.bpmn', async () => {
+    bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
+
+    const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+    htmlElementLookup.expectPool('participant_1_id');
+    htmlElementLookup.expectLane('lane_4_1_id');
+
+    htmlElementLookup.expectStartEvent('start_event_signal_id');
+    htmlElementLookup.expectIntermediateThrowEvent('intermediate_throw_event_message_id');
+  });
 });
 
 function expectStartEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {

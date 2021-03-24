@@ -15,7 +15,7 @@
  */
 import { OverlayConverter } from '../../../../../src/component/mxgraph/overlay/OverlayConverter';
 import { MxGraphCustomOverlayOptions } from '../../../../../src/component/mxgraph/overlay/custom-overlay';
-import { Overlay, OverlayPosition } from '../../../../../src/component/registry/types';
+import { Overlay, OverlayPosition } from '../../../../../src/component/registry';
 
 describe('overlay converter', () => {
   const overlayConverter = new OverlayConverter();
@@ -23,8 +23,12 @@ describe('overlay converter', () => {
   it.each([
     [<OverlayPosition>'top-left', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'left', verticalAlign: 'top' }],
     [<OverlayPosition>'top-right', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'right', verticalAlign: 'top' }],
+    [<OverlayPosition>'top-center', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'center', verticalAlign: 'top' }],
     [<OverlayPosition>'bottom-left', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'left', verticalAlign: 'bottom' }],
     [<OverlayPosition>'bottom-right', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'right', verticalAlign: 'bottom' }],
+    [<OverlayPosition>'bottom-center', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'center', verticalAlign: 'bottom' }],
+    [<OverlayPosition>'middle-left', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'left', verticalAlign: 'middle' }],
+    [<OverlayPosition>'middle-right', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'right', verticalAlign: 'middle' }],
     [<OverlayPosition>'start', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'left', verticalAlign: 'top' }],
     [<OverlayPosition>'middle', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'center', verticalAlign: 'top' }],
     [<OverlayPosition>'end', <MxGraphCustomOverlayOptions>{ horizontalAlign: 'right', verticalAlign: 'top' }],
