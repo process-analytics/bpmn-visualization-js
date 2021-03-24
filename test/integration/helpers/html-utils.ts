@@ -52,10 +52,18 @@ export class HtmlElementLookup {
     expectSvgElementClassAttribute(svgGroupElement, 'bpmn-task');
   }
 
-  expectServiceTask(bpmnId: string, additionalClasses?: string[]): void {
+  expectServiceTask(bpmnId: string, options?: { additionalClasses?: string[]; overlayLabel?: string }): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgTask(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-service-task', additionalClasses));
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-service-task', options?.additionalClasses));
+
+    const overlayGroupElement = document.querySelector<SVGGElement>(`#${this.bpmnVisualization.graph.container.id} > svg > g > g:nth-child(3) > g[data-bpmn-id="${bpmnId}"]`);
+    if (options?.overlayLabel) {
+      expect(overlayGroupElement.querySelector('g > text').innerHTML).toEqual(options.overlayLabel);
+      expectSvgElementClassAttribute(overlayGroupElement, 'overlay-badge');
+    } else {
+      expect(overlayGroupElement).toBeNull();
+    }
   }
 
   expectUserTask(bpmnId: string, additionalClasses?: string[]): void {

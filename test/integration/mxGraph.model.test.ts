@@ -1318,6 +1318,11 @@ describe('mxGraph model', () => {
       it('Remove all overlays to one BPMN shape', () => {
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
 
+        bpmnVisualization.bpmnElementsRegistry.addOverlays('serviceTask_1_2', [
+          { position: 'top-right', label: '7' },
+          { position: 'bottom-left', label: '8' },
+          { position: 'bottom-right', label: '99' },
+        ]);
         bpmnVisualization.bpmnElementsRegistry.removeAllOverlays('serviceTask_1_2');
         expect('serviceTask_1_2').toBeServiceTask({
           label: 'Service Task 1.2',
@@ -1329,6 +1334,10 @@ describe('mxGraph model', () => {
       it('Remove all overlays to one BPMN edge', () => {
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
 
+        bpmnVisualization.bpmnElementsRegistry.addOverlays('Flow_1bewc4s', [
+          { position: 'middle', label: '7' },
+          { position: 'end', label: '8' },
+        ]);
         bpmnVisualization.bpmnElementsRegistry.removeAllOverlays('Flow_1bewc4s');
         expect('Flow_1bewc4s').toBeSequenceFlow({
           label: 'link',
