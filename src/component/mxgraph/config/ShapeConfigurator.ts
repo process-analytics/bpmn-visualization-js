@@ -15,6 +15,7 @@
  */
 
 import { mxgraph } from '../initializer';
+import { mxCellOverlay, mxCellState, mxImageShape, mxShape } from 'mxgraph'; // for types
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
 import { BoundaryEventShape, CatchIntermediateEventShape, EndEventShape, StartEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
 import { EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
@@ -34,7 +35,6 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
-import { mxCellState, mxImageShape, mxShape } from 'mxgraph';
 import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 
@@ -133,7 +133,7 @@ export default class ShapeConfigurator {
       let dict = null;
 
       if (overlays != null) {
-        dict = new mxgraph.mxDictionary();
+        dict = new mxgraph.mxDictionary<mxShape>();
 
         for (let currentOverlay of overlays) {
           const shape = (state.overlays != null) ? state.overlays.remove(currentOverlay) : null;
@@ -188,12 +188,12 @@ export default class ShapeConfigurator {
 }
 
 // TODO to remove when typed-mxgraph definitions will declare the overlays property
-// should be overlays: mxDictionary<mxCellOverlay> but the remove function should also modified (key should be any instead of string)
+// should be overlays: mxDictionary<mxShape> but the remove function should also modified (key should be any instead of string)
 interface StateWithOverlays extends mxCellState {
   overlays: any
 }
 
 // TODO to remove when typed-mxgraph definitions will declare the overlays property
 interface ShapeWithOverlay extends mxShape {
-  overlay: any
+  overlay: mxCellOverlay
 }
