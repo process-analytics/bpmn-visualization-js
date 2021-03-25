@@ -61,14 +61,13 @@ function buildOverlaySnapshotDir(config: MatchImageSnapshotOptions, position: Ov
 async function addOverlay(bpmnContainerElementHandle: ElementHandle<Element>, bpmnElementId: string, position: OverlayPosition): Promise<void> {
   await page.fill('#bpmn-id-input', bpmnElementId);
   await clickOnButton(position);
-  await bpmnContainerElementHandle.waitForSelector(`svg > g > g:nth-child(3) > g[data-bpmn-id="${bpmnElementId}"]`);
 }
 
 describe('BPMN elements with overlays', () => {
   const imageSnapshotThresholds = new ImageSnapshotThresholds();
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'overlay', imageSnapshotThresholds.getDefault());
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'overlays', imageSnapshotThresholds.getDefault());
 
-  const pageTester = new PageTester({ pageFileName: 'overlay', expectedPageTitle: 'BPMN Visualization - Overlay' });
+  const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlay' });
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
 
   it.each([
