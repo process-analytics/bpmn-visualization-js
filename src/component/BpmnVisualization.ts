@@ -34,21 +34,21 @@ export default class BpmnVisualization {
    * @experimental subject to change, feedback welcome
    */
   readonly bpmnElementsRegistry: BpmnElementsRegistry;
-  private readonly _bpmnModelRegistry: BpmnModelRegistry;
+  private readonly bpmnModelRegistry: BpmnModelRegistry;
 
   constructor(options: GlobalOptions) {
     // mxgraph configuration
     const configurator = new MxGraphConfigurator(htmlElement(options?.container));
     this.graph = configurator.configure(options);
     // other configurations
-    this._bpmnModelRegistry = new BpmnModelRegistry();
-    this.bpmnElementsRegistry = newBpmnElementsRegistry(this._bpmnModelRegistry, this.graph);
+    this.bpmnModelRegistry = new BpmnModelRegistry();
+    this.bpmnElementsRegistry = newBpmnElementsRegistry(this.bpmnModelRegistry, this.graph);
   }
 
   public load(xml: string, options?: LoadOptions): void {
     try {
       const bpmnModel = newBpmnParser().parse(xml);
-      const renderedModel = this._bpmnModelRegistry.computeRenderedModel(bpmnModel);
+      const renderedModel = this.bpmnModelRegistry.computeRenderedModel(bpmnModel);
       newMxGraphRenderer(this.graph).render(renderedModel, options);
     } catch (e) {
       // TODO error handling
