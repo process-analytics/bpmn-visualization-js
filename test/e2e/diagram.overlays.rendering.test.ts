@@ -71,13 +71,13 @@ describe('BPMN elements with overlays', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
 
   it.each([
-    // <OverlayShapePosition>'top-left',
-    // <OverlayShapePosition>'top-center',
-    // <OverlayShapePosition>'top-right',
-    // <OverlayShapePosition>'bottom-left',
-    // <OverlayShapePosition>'bottom-center',
-    // <OverlayShapePosition>'bottom-right',
-    // <OverlayShapePosition>'middle-left',
+    <OverlayShapePosition>'top-left',
+    <OverlayShapePosition>'top-center',
+    <OverlayShapePosition>'top-right',
+    <OverlayShapePosition>'bottom-left',
+    <OverlayShapePosition>'bottom-center',
+    <OverlayShapePosition>'bottom-right',
+    <OverlayShapePosition>'middle-left',
     <OverlayShapePosition>'middle-right',
   ])(`add overlay on StartEvent, Gateway and Task on %s`, async (position: OverlayShapePosition) => {
     const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
@@ -95,6 +95,7 @@ describe('BPMN elements with overlays', () => {
     });
   });
 
+  // TODO tests will be added with https://github.com/process-analytics/bpmn-visualization-js/issues/1166
   it.skip.each([<OverlayEdgePosition>'start', <OverlayEdgePosition>'middle', <OverlayEdgePosition>'end'])(
     `add overlay on SequenceFlow on %s`,
     async (position: OverlayEdgePosition) => {
