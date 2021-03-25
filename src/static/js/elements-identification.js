@@ -23,7 +23,7 @@ import {
   startBpmnVisualization,
   updateLoadOptions,
   ShapeUtil,
-  addOverlay,
+  addOverlays,
 } from '../../index.es.js';
 
 let lastBpmnIdsWithExtraCssClasses = [];
@@ -49,9 +49,9 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
   addCssClasses(bpmnIds, lastCssClassName);
   lastBpmnIdsWithExtraCssClasses = bpmnIds;
 
-  // Overlay update
+  // Overlays update
   bpmnIds.forEach(id => {
-    addOverlay(id, getOverlay(bpmnKind));
+    addOverlays(id, getOverlay(bpmnKind));
   });
 }
 

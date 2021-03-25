@@ -197,7 +197,7 @@ export class BpmnElementsRegistry {
    * @param overlays The overlays to add to the BPMN element
    */
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
-    this.mxGraphCellUpdater.addOverlay(bpmnElementId, overlays);
+    this.mxGraphCellUpdater.addOverlays(bpmnElementId, overlays);
   }
 }
 

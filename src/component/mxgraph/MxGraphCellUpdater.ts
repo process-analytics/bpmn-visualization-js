@@ -43,7 +43,7 @@ export default class MxGraphCellUpdater {
     state.shape.redraw();
   }
 
-  public addOverlay(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
+  public addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
     const mxCell = this.graph.getModel().getCell(bpmnElementId);
     if (!mxCell) {
       return;

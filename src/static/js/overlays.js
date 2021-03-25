@@ -13,9 +13,111 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, FitType, startBpmnVisualization, updateLoadOptions, addOverlay } from '../../index.es.js';
+import { documentReady, startBpmnVisualization, addOverlays } from '../../index.es.js';
 
-documentReady(() => {
+// to show mouse pointer position - useful for testing
+// @see https://github.com/puppeteer/puppeteer/issues/374
+// @see https://github.com/puppeteer/puppeteer/blob/4fdb1e3cab34310b4a1012c3024a94bc422b3b92/test/assets/input/mouse-helper.js
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function showMousePointer() {
+  const box = document.createElement('div');
+  box.classList.add('mouse-helper');
+  const styleElement = document.createElement('style');
+  styleElement.innerHTML = `
+  .mouse-helper {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background: rgba(0,0,0,.4);
+    border: 1px solid white;
+    border-radius: 10px;
+    margin-left: -10px;
+    margin-top: -10px;
+    transition: background .2s, border-radius .2s, border-color .2s;
+  }
+  .mouse-helper.button-1 {
+    transition: none;
+    background: rgba(0,0,0,0.9);
+  }
+  .mouse-helper.button-2 {
+    transition: none;
+    border-color: rgba(0,0,255,0.9);
+  }
+  .mouse-helper.button-3 {
+    transition: none;
+    border-radius: 4px;
+  }
+  .mouse-helper.button-4 {
+    transition: none;
+    border-color: rgba(255,0,0,0.9);
+  }
+  .mouse-helper.button-5 {
+    transition: none;
+    border-color: rgba(0,255,0,0.9);
+  }
+  `;
+  document.head.appendChild(styleElement);
+  document.body.appendChild(box);
+  document.addEventListener(
+    'mousemove',
+    event => {
+      box.style.left = event.pageX + 'px';
+      box.style.top = event.pageY + 'px';
+      updateButtons(event.buttons);
+    },
+    true,
+  );
+  document.addEventListener(
+    'mousedown',
+    event => {
+      updateButtons(event.buttons);
+      box.classList.add('button-' + event.which);
+    },
+    true,
+  );
+  document.addEventListener(
+    'mouseup',
+    event => {
+      updateButtons(event.buttons);
+      box.classList.remove('button-' + event.which);
+    },
+    true,
+  );
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  function updateButtons(buttons) {
+    for (let i = 0; i < 5; i++) box.classList.toggle('button-' + i, buttons & (1 << i));
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureMousePointer(parameters) {
+  if (parameters.get('showMousePointer') === 'true') {
+    showMousePointer();
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureControlsPanel(parameters) {
+  const elControlsPanel = document.getElementById('controls-panel');
+  if (parameters.get('showControlsPanel') === 'true') {
+    elControlsPanel.classList.remove('hidden');
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function configureAddOverlays(position) {
+  document.getElementById(position).onclick = () => addOverlays(document.getElementById('bpmn-id-input').value, { position, label: '123' });
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function start() {
+  const parameters = new URLSearchParams(window.location.search);
+  configureMousePointer(parameters);
+  configureControlsPanel(parameters);
+
   startBpmnVisualization({
     globalOptions: {
       container: 'bpmn-container',
@@ -24,24 +126,18 @@ documentReady(() => {
       },
     },
   });
-  updateLoadOptions({ type: FitType.Center, margin: 20 });
 
-  const positions = new Map([
-    ['StartEvent_1', 'top-left'],
-    // TODO: uncomment or use when we add support for edge overlay
-    // ['Flow_1', 'middle'],
-    ['Activity_1', 'top-right'],
-  ]);
+  configureAddOverlays('start');
+  configureAddOverlays('middle');
+  configureAddOverlays('end');
+  configureAddOverlays('top-left');
+  configureAddOverlays('top-center');
+  configureAddOverlays('top-right');
+  configureAddOverlays('bottom-left');
+  configureAddOverlays('bottom-center');
+  configureAddOverlays('bottom-right');
+  configureAddOverlays('middle-left');
+  configureAddOverlays('middle-right');
+}
 
-  setTimeout(() => {
-    // Overlay update
-    [
-      'StartEvent_1',
-      // TODO: uncomment or use when we add support for edge overlay
-      // 'Flow_1',
-      'Activity_1',
-    ].forEach(id => {
-      addOverlay(id, { position: positions.get(id), label: '123' });
-    });
-  }, 500);
-});
+documentReady(start);
