@@ -123,10 +123,6 @@ function start() {
       container: 'bpmn-container',
       navigation: {
         enabled: true,
-        zoom: {
-          throttleDelay: 40,
-          debounceDelay: 30,
-        },
       },
     },
   });
