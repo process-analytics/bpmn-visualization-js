@@ -15,7 +15,7 @@
  */
 import { documentReady, startBpmnVisualization, addOverlays } from '../../index.es.js';
 
-// to show mouse pointer position - usefull for testing
+// to show mouse pointer position - useful for testing
 // @see https://github.com/puppeteer/puppeteer/issues/374
 // @see https://github.com/puppeteer/puppeteer/blob/4fdb1e3cab34310b4a1012c3024a94bc422b3b92/test/assets/input/mouse-helper.js
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
