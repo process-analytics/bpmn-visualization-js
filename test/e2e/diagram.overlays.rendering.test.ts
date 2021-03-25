@@ -67,17 +67,17 @@ describe('BPMN elements with overlays', () => {
   const imageSnapshotThresholds = new ImageSnapshotThresholds();
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'overlays', imageSnapshotThresholds.getDefault());
 
-  const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlay' });
+  const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' });
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
 
   it.each([
-    <OverlayShapePosition>'top-left',
-    <OverlayShapePosition>'top-center',
-    <OverlayShapePosition>'top-right',
-    <OverlayShapePosition>'bottom-left',
-    <OverlayShapePosition>'bottom-center',
-    <OverlayShapePosition>'bottom-right',
-    <OverlayShapePosition>'middle-left',
+    // <OverlayShapePosition>'top-left',
+    // <OverlayShapePosition>'top-center',
+    // <OverlayShapePosition>'top-right',
+    // <OverlayShapePosition>'bottom-left',
+    // <OverlayShapePosition>'bottom-center',
+    // <OverlayShapePosition>'bottom-right',
+    // <OverlayShapePosition>'middle-left',
     <OverlayShapePosition>'middle-right',
   ])(`add overlay on StartEvent, Gateway and Task on %s`, async (position: OverlayShapePosition) => {
     const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
