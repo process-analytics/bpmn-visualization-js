@@ -1,25 +1,267 @@
+<!-- Available query parameters to configure the behaviour of this page -->
+<!-- showControlsPanel: if true, display buttons to apply overlays to BPMN elements (on the left side of the page) -->
+<!-- showMousePointer: if true, highlight/show the mouse position -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>BPMN Visualization Overlays</title>
-    <link rel="shortcut icon" href="./static/img/favicon.ico">
-    <style>
-      #bpmn-container {
-        top: 10px;
-        bottom: 10px;
-        left: 10px;
-        right: 10px;
-        position: absolute;
-        overflow: hidden;
-      }
-    </style>
+  <meta charset="UTF-8">
+  <title>BPMN Visualization - Overlays</title>
+  <link rel="shortcut icon" href="./static/img/favicon.ico">
+
+  <style>
+    .hidden {
+      opacity: 0;
+    }
+
+    .flex-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .flex-container > div {
+      top: 20px;
+      bottom: 20px;
+      position: absolute;
+    }
+
+    .flex-column-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+
+    #bpmn-container {
+      left: 50px;
+      right: 20px;
+      border-style: solid;
+      border-color: #B0B0B0;
+      border-width: 1px;
+      overflow: hidden;
+    }
+
+    button {
+      border-radius: 4px;
+      padding: 0;
+      width: 28px;
+      height: 28px;
+    }
+
+    .overlay {
+      background-color: MintCream;
+    }
+
+    .tooltip {
+      visibility: hidden;
+      width: 300px;
+      background-color: black;
+      color: #fff;
+      fill: #B0B0B0;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      top: -5px;
+      left: 110%;
+      font-family: monospace;
+    }
+
+    .info:hover .tooltip {
+      visibility: visible;
+    }
+
+    label {
+      font-size: 0.65em;
+    }
+  </style>
 </head>
 <body>
-    <div id="fetch-status"></div>
-    <div id="bpmn-container"></div>
+<div class="flex-container">
+  <div id="controls-panel" class="flex-column-container hidden" style="flex-grow: 1">
+    <div class="info">
+      <!-- https://icons.getbootstrap.com/icons/info-square-fill/ -->
+      <svg width="28px" height="28px" viewBox="0 0 16 16" class="bi bi-info-square-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd"
+              d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+      </svg>
+      <div class="tooltip">
+        <p>Drag and Drop a BPMN file</p>
+      </div>
+    </div>
 
-    <!-- load app -->
-    <script src="./static/js/overlays.js" type="module"></script>
+    <!-- Overlay -->
+    <h5>Overlay</h5>
+    <label for="bpmn-id-input">Selected BPMN Element</label>
+    <input id="bpmn-id-input">
+    <button type="button" class="overlay" id="start" title="Add overlay on the start of the edge">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24" height="24">
+        <defs>
+          <path d="M20.5 15.49L17.5 19.11L17.5 11.86L17.5 4.62L20.5 8.24L23.5 11.86L20.5 15.49Z" id="b1Hrf82jB2"></path>
+          <path d="M19.74 12C16.55 12 10.17 12 0.59 12" id="a22Hrm2jxs"></path>
+          <path d="M6.59 11.86C6.59 14.31 5.25 16.29 3.59 16.29C1.94 16.29 0.59 14.31 0.59 11.86C0.59 9.42 1.94 7.44 3.59 7.44C5.25 7.44 6.59 9.42 6.59 11.86Z"
+                id="b2hlvdIfrY"></path>
+        </defs>
+        <g>
+          <use xlink:href="#b1Hrf82jB2" opacity="1" fill="#12010d" fill-opacity="1"></use>
+          <use xlink:href="#a22Hrm2jxs" opacity="1" fill-opacity="0" stroke="#040501" stroke-width="2" stroke-opacity="1"></use>
+          <use xlink:href="#b2hlvdIfrY" opacity="1" fill="#f65bc3" fill-opacity="1"></use>
+        </g>
+      </svg>
+    </button>
+    <button type="button" class="overlay" id="middle" title="Add overlay on the middle of the edge">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24" height="24">
+        <defs>
+          <path d="M20.5 15.49L17.5 19.11L17.5 11.86L17.5 4.62L20.5 8.24L23.5 11.86L20.5 15.49Z" id="b1Hrf82jB2"></path>
+          <path d="M19.74 12C16.55 12 10.17 12 0.59 12" id="a22Hrm2jxs"></path>
+          <path d="M12.37 11.86C12.37 14.31 11.03 16.29 9.37 16.29C7.72 16.29 6.37 14.31 6.37 11.86C6.37 9.42 7.72 7.44 9.37 7.44C11.03 7.44 12.37 9.42 12.37 11.86Z"
+                id="a3UW4OJtps"></path>
+        </defs>
+        <g>
+          <use xlink:href="#b1Hrf82jB2" opacity="1" fill="#12010d" fill-opacity="1"></use>
+          <use xlink:href="#a22Hrm2jxs" opacity="1" fill-opacity="0" stroke="#040501" stroke-width="2" stroke-opacity="1"></use>
+          <use xlink:href="#a3UW4OJtps" opacity="1" fill="#f65bc3" fill-opacity="1"></use>
+        </g>
+      </svg>
+    </button>
+    <button type="button" class="overlay" id="end" title="Add overlay on the end of the edge">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24" height="24">
+        <defs>
+          <path d="M20.5 15.49L17.5 19.11L17.5 11.86L17.5 4.62L20.5 8.24L23.5 11.86L20.5 15.49Z" id="b1Hrf82jB2"></path>
+          <path d="M19.74 12C16.55 12 10.17 12 0.59 12" id="a22Hrm2jxs"></path>
+          <path d="M17.19 11.73C17.19 14.17 15.85 16.15 14.19 16.15C12.54 16.15 11.19 14.17 11.19 11.73C11.19 9.29 12.54 7.3 14.19 7.3C15.85 7.3 17.19 9.29 17.19 11.73Z"
+                id="aL951rTpo"></path>
+        </defs>
+        <g>
+          <use xlink:href="#b1Hrf82jB2" opacity="1" fill="#12010d" fill-opacity="1"></use>
+          <use xlink:href="#a22Hrm2jxs" opacity="1" fill-opacity="0" stroke="#040501" stroke-width="2" stroke-opacity="1"></use>
+          <use xlink:href="#aL951rTpo" opacity="1" fill="#f65bc3" fill-opacity="1"></use>
+        </g>
+      </svg>
+    </button>
+    <button type="button" class="overlay" id="top-left" title="Add overlay on the top left of the shape">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24" height="24">
+        <defs>
+          <path
+            d="M21.18 16.27C21.18 18.44 19.62 20.19 17.71 20.19C14.73 20.19 9.27 20.19 6.29 20.19C4.38 20.19 2.82 18.44 2.82 16.27C2.82 13.92 2.82 10.78 2.82 8.42C2.82 6.26 4.38 4.5 6.29 4.5C9.27 4.5 14.73 4.5 17.71 4.5C19.62 4.5 21.18 6.26 21.18 8.42C21.18 10.78 21.18 13.92 21.18 16.27Z"
+            id="b38fGJxyxD"></path>
+          <path d="M0.85 5.76C0.85 4.06 2.18 2.68 3.82 2.68C5.47 2.68 6.8 4.06 6.8 5.76C6.8 7.46 5.47 8.85 3.82 8.85C2.18 8.85 0.85 7.46 0.85 5.76Z" id="a30JgDXm9"></path>
+        </defs>
+        <g>
+          <use xlink:href="#b38fGJxyxD" opacity="1" fill-opacity="0" stroke="#010200" stroke-width="1" stroke-opacity="1"></use>
+          <use xlink:href="#a30JgDXm9" opacity="1" fill="#f65bc3" fill-opacity="1"></use>
+        </g>
+      </svg>
+    </button>
+    <button type="button" class="overlay" id="top-center" title="Add overlay on the top center of the shape">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24" height="24">
+        <defs>
+          <path
+            d="M21.18 16.27C21.18 18.44 19.62 20.19 17.71 20.19C14.73 20.19 9.27 20.19 6.29 20.19C4.38 20.19 2.82 18.44 2.82 16.27C2.82 13.92 2.82 10.78 2.82 8.42C2.82 6.26 4.38 4.5 6.29 4.5C9.27 4.5 14.73 4.5 17.71 4.5C19.62 4.5 21.18 6.26 21.18 8.42C21.18 10.78 21.18 13.92 21.18 16.27Z"
+            id="b38fGJxyxD"></path>
+          <path d="M9.02 4.5C9.02 2.79 10.36 1.41 11.99 1.41C13.64 1.41 14.97 2.79 14.97 4.5C14.97 6.2 13.64 7.59 11.99 7.59C10.36 7.59 9.02 6.2 9.02 4.5Z" id="a2qjjh30WU"></path>
+        </defs>
+        <g>
+          <use xlink:href="#b38fGJxyxD" opacity="1" fill-opacity="0" stroke="#010200" stroke-width="1" stroke-opacity="1"></use>
+          <use xlink:href="#a2qjjh30WU" opacity="1" fill="#f65bc3" fill-opacity="1"></use>
+        </g>
+      </svg>
+    </button>
+    <button type="button" class="overlay" id="top-right" title="Add overlay on the top right of the shape">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24" height="24">
+        <defs>
+          <path
+            d="M21.18 16.27C21.18 18.44 19.62 20.19 17.71 20.19C14.73 20.19 9.27 20.19 6.29 20.19C4.38 20.19 2.82 18.44 2.82 16.27C2.82 13.92 2.82 10.78 2.82 8.42C2.82 6.26 4.38 4.5 6.29 4.5C9.27 4.5 14.73 4.5 17.71 4.5C19.62 4.5 21.18 6.26 21.18 8.42C21.18 10.78 21.18 13.92 21.18 16.27Z"
+            id="b38fGJxyxD"></path>
+          <path d="M16.85 5.76C16.85 4.06 18.18 2.68 19.82 2.68C21.47 2.68 22.8 4.06 22.8 5.76C22.8 7.46 21.47 8.85 19.82 8.85C18.18 8.85 16.85 7.46 16.85 5.76Z"
+                id="dc6GaQ2oN"></path>
+        </defs>
+        <g>
+          <use xlink:href="#b38fGJxyxD" opacity="1" fill-opacity="0" stroke="#010200" stroke-width="1" stroke-opacity="1"></use>
+          <use xlink:href="#dc6GaQ2oN" opacity="1" fill="#f65bc3" fill-opacity="1"></use>
+        </g>
+      </svg>
+    </button>
+    <button type="button" class="overlay" id="middle-right" title="Add overlay on the middle right of the shape">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24" height="24">
+        <defs>
+          <path
+            d="M21.18 16.27C21.18 18.44 19.62 20.19 17.71 20.19C14.73 20.19 9.27 20.19 6.29 20.19C4.38 20.19 2.82 18.44 2.82 16.27C2.82 13.92 2.82 10.78 2.82 8.42C2.82 6.26 4.38 4.5 6.29 4.5C9.27 4.5 14.73 4.5 17.71 4.5C19.62 4.5 21.18 6.26 21.18 8.42C21.18 10.78 21.18 13.92 21.18 16.27Z"
+            id="b38fGJxyxD"></path>
+          <path d="M18.21 12.34C18.21 10.64 19.54 9.26 21.17 9.26C22.82 9.26 24.16 10.64 24.16 12.34C24.16 14.04 22.82 15.43 21.17 15.43C19.54 15.43 18.21 14.04 18.21 12.34Z"
+                id="b7H9MFGaQ"></path>
+        </defs>
+        <g>
+          <use xlink:href="#b38fGJxyxD" opacity="1" fill-opacity="0" stroke="#010200" stroke-width="1" stroke-opacity="1"></use>
+          <use xlink:href="#b7H9MFGaQ" opacity="1" fill="#f65bc3" fill-opacity="1"></use>
+        </g>
+      </svg>
+    </button>
+    <button type="button" class="overlay" id="bottom-right" title="Add overlay on the top right of the shape">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24" height="24">
+        <defs>
+          <path
+            d="M21.18 16.27C21.18 18.44 19.62 20.19 17.71 20.19C14.73 20.19 9.27 20.19 6.29 20.19C4.38 20.19 2.82 18.44 2.82 16.27C2.82 13.92 2.82 10.78 2.82 8.42C2.82 6.26 4.38 4.5 6.29 4.5C9.27 4.5 14.73 4.5 17.71 4.5C19.62 4.5 21.18 6.26 21.18 8.42C21.18 10.78 21.18 13.92 21.18 16.27Z"
+            id="b38fGJxyxD"></path>
+          <path d="M16.85 19.51C16.85 17.81 18.18 16.43 19.82 16.43C21.47 16.43 22.8 17.81 22.8 19.51C22.8 21.21 21.47 22.6 19.82 22.6C18.18 22.6 16.85 21.21 16.85 19.51Z"
+                id="a1I8UgfMpA"></path>
+        </defs>
+        <g>
+          <use xlink:href="#b38fGJxyxD" opacity="1" fill-opacity="0" stroke="#010200" stroke-width="1" stroke-opacity="1"></use>
+          <use xlink:href="#a1I8UgfMpA" opacity="1" fill="#f65bc3" fill-opacity="1"></use>
+        </g>
+      </svg>
+    </button>
+    <button type="button" class="overlay" id="bottom-center" title="Add overlay on the bottom center of the shape">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24" height="24">
+        <defs>
+          <path
+            d="M21.18 16.27C21.18 18.44 19.62 20.19 17.71 20.19C14.73 20.19 9.27 20.19 6.29 20.19C4.38 20.19 2.82 18.44 2.82 16.27C2.82 13.92 2.82 10.78 2.82 8.42C2.82 6.26 4.38 4.5 6.29 4.5C9.27 4.5 14.73 4.5 17.71 4.5C19.62 4.5 21.18 6.26 21.18 8.42C21.18 10.78 21.18 13.92 21.18 16.27Z"
+            id="b38fGJxyxD"></path>
+          <path d="M9.02 20.19C9.02 18.49 10.36 17.11 11.99 17.11C13.64 17.11 14.97 18.49 14.97 20.19C14.97 21.89 13.64 23.28 11.99 23.28C10.36 23.28 9.02 21.89 9.02 20.19Z"
+                id="bppu6sfFE"></path>
+        </defs>
+        <g>
+          <use xlink:href="#b38fGJxyxD" opacity="1" fill-opacity="0" stroke="#010200" stroke-width="1" stroke-opacity="1"></use>
+          <use xlink:href="#bppu6sfFE" opacity="1" fill="#f65bc3" fill-opacity="1"></use>
+        </g>
+      </svg>
+    </button>
+    <button type="button" class="overlay" id="bottom-left" title="Add overlay on the bottom left of the shape">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24" height="24">
+        <defs>
+          <path
+            d="M21.18 8.42C21.18 10.78 21.18 13.92 21.18 16.27C21.18 18.44 19.62 20.19 17.71 20.19C14.73 20.19 9.27 20.19 6.29 20.19C4.38 20.19 2.82 18.44 2.82 16.27C2.82 13.92 2.82 10.78 2.82 8.42C2.82 6.26 4.38 4.5 6.29 4.5C9.27 4.5 14.73 4.5 17.71 4.5C19.62 4.5 21.18 6.26 21.18 8.42Z"
+            id="c18B1s7AYL"></path>
+          <path d="M3.57 22.35C2.21 22.35 1.1 20.96 1.1 19.26C1.1 17.56 2.21 16.18 3.57 16.18C4.94 16.18 6.05 17.56 6.05 19.26C6.05 20.96 4.94 22.35 3.57 22.35Z"
+                id="a1lKJcmcZY"></path>
+        </defs>
+        <g>
+          <use xlink:href="#c18B1s7AYL" opacity="1" fill-opacity="0" stroke="#010200" stroke-width="1" stroke-opacity="1"></use>
+          <use xlink:href="#a1lKJcmcZY" opacity="1" fill="#f65bc3" fill-opacity="1"></use>
+        </g>
+      </svg>
+    </button>
+    <button type="button" class="overlay" id="middle-left" title="Add overlay on the middle left of the shape">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24" height="24">
+        <defs>
+          <path
+            d="M21.18 16.27C21.18 18.44 19.62 20.19 17.71 20.19C14.73 20.19 9.27 20.19 6.29 20.19C4.38 20.19 2.82 18.44 2.82 16.27C2.82 13.92 2.82 10.78 2.82 8.42C2.82 6.26 4.38 4.5 6.29 4.5C9.27 4.5 14.73 4.5 17.71 4.5C19.62 4.5 21.18 6.26 21.18 8.42C21.18 10.78 21.18 13.92 21.18 16.27Z"
+            id="b38fGJxyxD"></path>
+          <path d="M0 12.34C0 10.64 1.33 9.26 2.97 9.26C4.62 9.26 5.95 10.64 5.95 12.34C5.95 14.04 4.62 15.43 2.97 15.43C1.33 15.43 0 14.04 0 12.34Z" id="b1hDiEZ2vk"></path>
+        </defs>
+        <g>
+          <use xlink:href="#b38fGJxyxD" opacity="1" fill-opacity="0" stroke="#010200" stroke-width="1" stroke-opacity="1"></use>
+          <use xlink:href="#b1hDiEZ2vk" opacity="1" fill="#f65bc3" fill-opacity="1"></use>
+        </g>
+      </svg>
+    </button>
+  </div>
+
+  <div id="bpmn-container"></div>
+</div>
+
+<!-- load app -->
+<script src="./static/js/overlays.js" type="module"></script>
 </body>
 </html>
