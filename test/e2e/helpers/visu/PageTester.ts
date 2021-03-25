@@ -57,7 +57,7 @@ export class PageTester {
     // await page.evaluate(() => console.log(`url is ${location.href}`));
 
     expect(response.status()).toBe(200);
-    await expect(page.title()).resolves.toMatch(this.targetedPage.expectedPageTitle);
+    await expect(page.title()).resolves.toEqual(this.targetedPage.expectedPageTitle);
 
     const waitForSelectorOptions = { timeout: 5_000 };
     const bpmnContainerId = 'bpmn-container';
