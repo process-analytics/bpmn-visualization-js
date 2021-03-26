@@ -43,16 +43,21 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
   textArea.value += [textHeader, lines].join('\n') + '\n';
   textArea.scrollTop = textArea.scrollHeight;
 
+  // newly identified elements and values
+  const newlyIdentifiedBpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
+  const newlyCssClassName = getCustomCssClassName(bpmnKind);
+
   // CSS classes update
   removeCssClasses(lastIdentifiedBpmnIds, lastCssClassName);
-  lastCssClassName = getCustomCssClassName(bpmnKind);
-  const bpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
-  addCssClasses(bpmnIds, lastCssClassName);
+  addCssClasses(newlyIdentifiedBpmnIds, newlyCssClassName);
 
   // Overlays update
   lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
-  bpmnIds.forEach(id => addOverlays(id, getOverlay(bpmnKind)));
-  lastIdentifiedBpmnIds = bpmnIds;
+  newlyIdentifiedBpmnIds.forEach(id => addOverlays(id, getOverlay(bpmnKind)));
+
+  // keep track of newly identified elements and values
+  lastIdentifiedBpmnIds = newlyIdentifiedBpmnIds;
+  lastCssClassName = newlyCssClassName;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -66,6 +71,8 @@ function configureControls() {
   document.getElementById('clear-btn').onclick = function () {
     textArea.value = '';
     removeCssClasses(lastIdentifiedBpmnIds, lastCssClassName);
+
+    // reset identified elements and values
     lastIdentifiedBpmnIds = [];
     lastCssClassName = '';
   };
