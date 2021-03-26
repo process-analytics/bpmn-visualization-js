@@ -20,7 +20,6 @@ import { join } from 'path';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../build/public/component/registry';
 import { clickOnButton } from './helpers/test-utils';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
-import { ElementHandle } from 'playwright';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
