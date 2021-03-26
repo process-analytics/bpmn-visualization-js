@@ -255,7 +255,7 @@ describe('Bpmn Elements registry - Overlay management', () => {
     htmlElementLookup.expectServiceTask('serviceTask_1_2', { overlayLabel });
   });
 
-  it('Remove all overlays to a BPMN element', () => {
+  it('Remove all overlays from a BPMN element', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
     const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
