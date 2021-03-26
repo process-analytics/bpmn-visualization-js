@@ -45,6 +45,6 @@ describe('lib-integration page', () => {
     await bpmnPage.expectPageTitle('BPMN Visualization Lib Integration');
     await bpmnPage.expectAvailableBpmnContainer();
 
-    await bpmnPage.expectEvent('StartEvent_1', 'Start Event Only NONO');
+    await bpmnPage.expectEvent('StartEvent_1', 'Start Event Only');
   });
 });
