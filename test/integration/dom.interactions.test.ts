@@ -244,11 +244,9 @@ describe('Bpmn Elements registry - Overlay management', () => {
   it('Add one overlay to a BPMN element', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
     const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
-
-    // default classes
     htmlElementLookup.expectServiceTask('serviceTask_1_2');
 
-    // add a single overlay to a single element
+    // add a single overlay
     const overlayLabel = '123';
     bpmnVisualization.bpmnElementsRegistry.addOverlays('serviceTask_1_2', { label: overlayLabel, position: 'top-left' });
 
@@ -258,11 +256,9 @@ describe('Bpmn Elements registry - Overlay management', () => {
   it('Remove all overlays from a BPMN element', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
     const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
-
-    // default classes
     htmlElementLookup.expectServiceTask('serviceTask_1_2');
 
-    // remove all overlays to a single element
+    // remove all overlays
     bpmnVisualization.bpmnElementsRegistry.addOverlays('serviceTask_1_2', { label: '8789', position: 'top-left' });
     bpmnVisualization.bpmnElementsRegistry.removeAllOverlays('serviceTask_1_2');
 
