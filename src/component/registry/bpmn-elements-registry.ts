@@ -203,6 +203,8 @@ export class BpmnElementsRegistry {
   /**
    * Remove all overlays of a BPMN element.
    *
+   * <b>WARNING</b>: could be renamed when adding support for removal of one or several specific overlays.
+   *
    * @example
    * ```javascript
    * //  all overlays of the BPMN element with id: activity_1
