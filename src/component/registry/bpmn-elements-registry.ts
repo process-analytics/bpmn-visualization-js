@@ -199,6 +199,23 @@ export class BpmnElementsRegistry {
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
     this.mxGraphCellUpdater.addOverlays(bpmnElementId, overlays);
   }
+
+  /**
+   * Remove all overlays of a BPMN element.
+   *
+   * <b>WARNING</b>: could be renamed when adding support for removal of one or several specific overlays.
+   *
+   * @example
+   * ```javascript
+   * //  all overlays of the BPMN element with id: activity_1
+   * bpmnVisualization.bpmnElementsRegistry.removeAllOverlay('activity_1');
+   * ```
+   *
+   * @param bpmnElementId The BPMN id of the element where to remove the overlays
+   */
+  removeAllOverlays(bpmnElementId: string): void {
+    this.mxGraphCellUpdater.removeAllOverlays(bpmnElementId);
+  }
 }
 
 class HtmlElementRegistry {

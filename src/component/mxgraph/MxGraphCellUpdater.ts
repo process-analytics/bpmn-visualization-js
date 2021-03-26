@@ -53,4 +53,12 @@ export default class MxGraphCellUpdater {
       this.graph.addCellOverlay(mxCell, bpmnOverlay);
     });
   }
+
+  public removeAllOverlays(bpmnElementId: string): void {
+    const mxCell = this.graph.getModel().getCell(bpmnElementId);
+    if (!mxCell) {
+      return;
+    }
+    this.graph.removeCellOverlays(mxCell);
+  }
 }

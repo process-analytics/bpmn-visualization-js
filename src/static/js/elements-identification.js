@@ -24,9 +24,10 @@ import {
   updateLoadOptions,
   ShapeUtil,
   addOverlays,
+  removeAllOverlays,
 } from '../../index.es.js';
 
-let lastBpmnIdsWithExtraCssClasses = [];
+let lastIdentifiedBpmnIds = [];
 let lastCssClassName = '';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -42,17 +43,21 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
   textArea.value += [textHeader, lines].join('\n') + '\n';
   textArea.scrollTop = textArea.scrollHeight;
 
+  // newly identified elements and values
+  const newlyIdentifiedBpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
+  const newlyCssClassName = getCustomCssClassName(bpmnKind);
+
   // CSS classes update
-  removeCssClasses(lastBpmnIdsWithExtraCssClasses, lastCssClassName);
-  const bpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
-  lastCssClassName = getCustomCssClassName(bpmnKind);
-  addCssClasses(bpmnIds, lastCssClassName);
-  lastBpmnIdsWithExtraCssClasses = bpmnIds;
+  removeCssClasses(lastIdentifiedBpmnIds, lastCssClassName);
+  addCssClasses(newlyIdentifiedBpmnIds, newlyCssClassName);
 
   // Overlays update
-  bpmnIds.forEach(id => {
-    addOverlays(id, getOverlay(bpmnKind));
-  });
+  lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
+  newlyIdentifiedBpmnIds.forEach(id => addOverlays(id, getOverlay(bpmnKind)));
+
+  // keep track of newly identified elements and values
+  lastIdentifiedBpmnIds = newlyIdentifiedBpmnIds;
+  lastCssClassName = newlyCssClassName;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -63,10 +68,13 @@ function configureControls() {
   selectedKindElt.onchange = event => updateSelectedBPMNElements(textArea, event.target.value);
   document.addEventListener('diagramLoaded', () => updateSelectedBPMNElements(textArea, selectedKindElt.value), false);
 
-  document.getElementById('bpmn-kinds-textarea-clean-btn').onclick = function () {
+  document.getElementById('clear-btn').onclick = function () {
     textArea.value = '';
-    removeCssClasses(lastBpmnIdsWithExtraCssClasses, lastCssClassName);
-    lastBpmnIdsWithExtraCssClasses = [];
+    removeCssClasses(lastIdentifiedBpmnIds, lastCssClassName);
+    lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
+
+    // reset identified elements and values
+    lastIdentifiedBpmnIds = [];
     lastCssClassName = '';
   };
 }

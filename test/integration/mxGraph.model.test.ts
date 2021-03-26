@@ -1313,5 +1313,47 @@ describe('mxGraph model', () => {
         bpmnVisualization.bpmnElementsRegistry.addOverlays(nonExistingBpmnId, { position: 'top-left', label: '6' });
       });
     });
+
+    describe('Remove all overlays', () => {
+      it('Remove all overlays to one BPMN shape', () => {
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+
+        bpmnVisualization.bpmnElementsRegistry.addOverlays('serviceTask_1_2', [
+          { position: 'top-right', label: '7' },
+          { position: 'bottom-left', label: '8' },
+          { position: 'bottom-right', label: '99' },
+        ]);
+        bpmnVisualization.bpmnElementsRegistry.removeAllOverlays('serviceTask_1_2');
+        expect('serviceTask_1_2').toBeServiceTask({
+          label: 'Service Task 1.2',
+          parentId: 'Lane_13kpaun',
+          overlays: undefined,
+        });
+      });
+
+      it('Remove all overlays to one BPMN edge', () => {
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+
+        bpmnVisualization.bpmnElementsRegistry.addOverlays('Flow_1bewc4s', [
+          { position: 'middle', label: '7' },
+          { position: 'end', label: '8' },
+        ]);
+        bpmnVisualization.bpmnElementsRegistry.removeAllOverlays('Flow_1bewc4s');
+        expect('Flow_1bewc4s').toBeSequenceFlow({
+          label: 'link',
+          parentId: 'Lane_13kpaun',
+          overlays: undefined,
+        });
+      });
+
+      it('BPMN element does not exist', () => {
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+
+        const nonExistingBpmnId = 'i-do-not-exist-for-add';
+        expect(nonExistingBpmnId).not.toBeCell();
+        // this call ensures that there is not issue on the rendering part
+        bpmnVisualization.bpmnElementsRegistry.removeAllOverlays(nonExistingBpmnId);
+      });
+    });
   });
 });

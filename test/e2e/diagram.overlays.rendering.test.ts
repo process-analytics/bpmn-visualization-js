@@ -20,7 +20,6 @@ import { join } from 'path';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../build/public/component/registry';
 import { clickOnButton } from './helpers/test-utils';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
-import { ElementHandle } from 'playwright';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -58,9 +57,14 @@ function buildOverlaySnapshotDir(config: MatchImageSnapshotOptions, position: Ov
   return join(config.customSnapshotsDir, `on-position-${position}`);
 }
 
-async function addOverlay(bpmnContainerElementHandle: ElementHandle<Element>, bpmnElementId: string, position: OverlayPosition): Promise<void> {
+async function addOverlay(bpmnElementId: string, position: OverlayPosition): Promise<void> {
   await page.fill('#bpmn-id-input', bpmnElementId);
   await clickOnButton(position);
+}
+
+async function removeAllOverlays(bpmnElementId: string): Promise<void> {
+  await page.fill('#bpmn-id-input', bpmnElementId);
+  await clickOnButton('clear');
 }
 
 describe('BPMN elements with overlays', () => {
@@ -80,11 +84,11 @@ describe('BPMN elements with overlays', () => {
     <OverlayShapePosition>'middle-left',
     <OverlayShapePosition>'middle-right',
   ])(`add overlay on StartEvent, Gateway and Task on %s`, async (position: OverlayShapePosition) => {
-    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-    await addOverlay(bpmnContainerElementHandle, 'StartEvent_1', position);
-    await addOverlay(bpmnContainerElementHandle, 'Activity_1', position);
-    await addOverlay(bpmnContainerElementHandle, 'Gateway_1', position);
+    await addOverlay('StartEvent_1', position);
+    await addOverlay('Activity_1', position);
+    await addOverlay('Gateway_1', position);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -95,13 +99,30 @@ describe('BPMN elements with overlays', () => {
     });
   });
 
+  it(`remove all overlays of Shape on %s`, async () => {
+    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+
+    await addOverlay('Activity_1', 'top-left');
+    await addOverlay('Activity_1', 'bottom-left');
+    await addOverlay('Activity_1', 'middle-right');
+
+    await removeAllOverlays('Activity_1');
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: 'remove.all.overlays.of.shape',
+    });
+  });
+
   // TODO tests will be added with https://github.com/process-analytics/bpmn-visualization-js/issues/1166
   it.skip.each([<OverlayEdgePosition>'start', <OverlayEdgePosition>'middle', <OverlayEdgePosition>'end'])(
     `add overlay on SequenceFlow on %s`,
     async (position: OverlayEdgePosition) => {
-      const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+      await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-      await addOverlay(bpmnContainerElementHandle, 'Flow_1', position);
+      await addOverlay('Flow_1', position);
 
       const image = await page.screenshot({ fullPage: true });
       const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -112,4 +133,20 @@ describe('BPMN elements with overlays', () => {
       });
     },
   );
+
+  it.skip(`remove all overlays of Edge on %s`, async () => {
+    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+
+    await addOverlay('Flow_1', 'start');
+    await addOverlay('Flow_1', 'end');
+
+    await removeAllOverlays('Flow_1');
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: 'remove.all.overlays.of.edge',
+    });
+  });
 });
