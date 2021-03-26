@@ -13,22 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnQuerySelectors } from '../../../../src/component/registry/query-selectors';
 import { ElementHandle, Page } from 'playwright';
+import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
+
+// PageWaitForSelectorOptions is not exported by playwright
+export interface PageWaitForSelectorOptions {
+  timeout?: number;
+}
 
 export class BpmnPage {
-  private bpmnQuerySelectors: BpmnQuerySelectors;
+  private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
   constructor(private bpmnContainerId: string, private currentPage: Page) {
-    this.bpmnQuerySelectors = new BpmnQuerySelectors(this.bpmnContainerId);
+    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
   }
 
-  async expectAvailableBpmnContainer(): Promise<void> {
-    await this.currentPage.waitForSelector(`#${this.bpmnContainerId}`);
+  async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<ElementHandle<Element>> {
+    return await this.currentPage.waitForSelector(`#${this.bpmnContainerId}`, options);
   }
 
   async expectPageTitle(title: string): Promise<void> {
-    await expect(this.currentPage.title()).resolves.toMatch(title);
+    await expect(this.currentPage.title()).resolves.toEqual(title);
+  }
+
+  /**
+   * This checks that a least one BPMN element is available in the DOM as a SVG element. This ensure that the mxGraph rendering has been done.
+   */
+  async expectExistingBpmnElement(options?: PageWaitForSelectorOptions): Promise<void> {
+    await this.currentPage.waitForSelector(this.bpmnQuerySelectors.existingElement(), options);
   }
 
   async expectLabel(bpmnId: string, expectedText?: string): Promise<void> {
