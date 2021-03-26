@@ -71,6 +71,7 @@ function configureControls() {
   document.getElementById('clear-btn').onclick = function () {
     textArea.value = '';
     removeCssClasses(lastIdentifiedBpmnIds, lastCssClassName);
+    lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
 
     // reset identified elements and values
     lastIdentifiedBpmnIds = [];
