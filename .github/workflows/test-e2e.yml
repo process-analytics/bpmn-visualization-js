@@ -4,43 +4,39 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - '.github/workflows/build.yml'
-      - '.github/workflows/codeql-analysis.yml'
-      - '.github/workflows/fill-gh-draft-release.yml'
-      - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/release.yml'
-      - '.github/workflows/upload-demo-archive.yml'
-      - '.gitignore'
-      - 'docs/**'
-      - '*.md'
-      - LICENSE
+    paths:
+      - '.github/workflows/test-e2e.yml'
+      - 'src/**/*'
+      - 'test/**/*'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'postcss.config.js'
+      - 'rollup.config.js'
+      - 'tailwind.config.js'
+      - 'tsconfig.json'
   pull_request:
     branches:
       - master
-    paths-ignore:
-      - '.github/workflows/build.yml'
-      - '.github/workflows/codeql-analysis.yml'
-      - '.github/workflows/fill-gh-draft-release.yml'
-      - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/release.yml'
-      - '.github/workflows/upload-demo-archive.yml'
-      - '.gitignore'
-      - 'docs/**'
-      - '*.md'
-      - LICENSE
+    paths:
+      - '.github/workflows/test-e2e.yml'
+      - 'src/**/*'
+      - 'test/**/*'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'postcss.config.js'
+      - 'rollup.config.js'
+      - 'tailwind.config.js'
+      - 'tsconfig.json'
 
 jobs:
   test_e2e:
-    runs-on: ${{ matrix.os.name }}
+    runs-on: ${{ matrix.os }}
     strategy:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        os:
-          - { name: ubuntu-20.04 }
-          - { name: macos-10.15 }
-          - { name: windows-2019 }
+        os: [macos-10.15, ubuntu-20.04, windows-2019]
+        browser: [chromium, firefox]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -66,11 +62,11 @@ jobs:
       - name: Test Application End to End
         id: 'test_e2e'
         env:
-          BROWSERS: firefox
+          BROWSERS: ${{matrix.browser}}
         run: npm run test:e2e
       - name: Upload e2e test results
         if: ${{ failure() && steps.test_e2e.outcome == 'failure' }}
         uses: actions/upload-artifact@v2
         with:
-          name: e2e-firefox-test-results-${{matrix.os.name}}-${{github.sha}}
+          name: e2e-${{matrix.browser}}-test-results-${{matrix.os}}-${{github.sha}}
           path: build/test-report/e2e

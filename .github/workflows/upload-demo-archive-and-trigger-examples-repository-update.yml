@@ -4,16 +4,6 @@ on:
   push:
     tags:
       -  v*
-    paths-ignore:
-      - '.github/workflows/build.yml'
-      - '.github/workflows/codeql-analysis.yml'
-      - '.github/workflows/fill-gh-draft-release.yml'
-      - '.github/workflows/generate-documentation.yml'
-      - '.github/workflows/release.yml'
-      - '.gitignore'
-      - 'docs/**'
-      - '*.md'
-      - LICENSE
 
 jobs:
   upload_demo_archive:
@@ -36,7 +26,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install dependencies
-        run: npm ci
+        # https://playwright.dev/docs/installation/#skip-browser-downloads
+        run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm ci
       - name: Build Demo
         run: npm run demo
       - name: Upload

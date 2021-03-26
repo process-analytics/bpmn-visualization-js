@@ -6,10 +6,10 @@ on:
     branches:
       - master
     paths:
+      - '.github/workflows/generate-documentation.yml'
       - 'docs/users/**'
       - 'scripts/docs.js'
       - 'src/**'
-      - '.github/workflows/generate-documentation.yml'
       - 'package.json'
       - 'package-lock.json'
       - 'typedoc.json'
@@ -19,10 +19,10 @@ on:
     branches:
       - master
     paths:
+      - '.github/workflows/generate-documentation.yml'
       - 'docs/users/**'
       - 'scripts/docs.js'
       - 'src/**'
-      - '.github/workflows/generate-documentation.yml'
       - 'package.json'
       - 'package-lock.json'
       - 'typedoc.json'
