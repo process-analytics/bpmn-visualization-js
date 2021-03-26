@@ -27,7 +27,7 @@ import {
   removeAllOverlays,
 } from '../../index.es.js';
 
-let lastBpmnIdsWithExtraCssClassesAndOverlays = [];
+let lastIdentifiedBpmnIds = [];
 let lastCssClassName = '';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -44,15 +44,15 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
   textArea.scrollTop = textArea.scrollHeight;
 
   // CSS classes update
-  removeCssClasses(lastBpmnIdsWithExtraCssClassesAndOverlays, lastCssClassName);
+  removeCssClasses(lastIdentifiedBpmnIds, lastCssClassName);
   lastCssClassName = getCustomCssClassName(bpmnKind);
   const bpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
   addCssClasses(bpmnIds, lastCssClassName);
 
   // Overlays update
-  lastBpmnIdsWithExtraCssClassesAndOverlays.forEach(id => removeAllOverlays(id));
+  lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
   bpmnIds.forEach(id => addOverlays(id, getOverlay(bpmnKind)));
-  lastBpmnIdsWithExtraCssClassesAndOverlays = bpmnIds;
+  lastIdentifiedBpmnIds = bpmnIds;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -65,8 +65,8 @@ function configureControls() {
 
   document.getElementById('bpmn-kinds-textarea-clean-btn').onclick = function () {
     textArea.value = '';
-    removeCssClasses(lastBpmnIdsWithExtraCssClassesAndOverlays, lastCssClassName);
-    lastBpmnIdsWithExtraCssClassesAndOverlays = [];
+    removeCssClasses(lastIdentifiedBpmnIds, lastCssClassName);
+    lastIdentifiedBpmnIds = [];
     lastCssClassName = '';
   };
 }
