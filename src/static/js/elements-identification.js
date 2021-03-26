@@ -63,7 +63,7 @@ function configureControls() {
   selectedKindElt.onchange = event => updateSelectedBPMNElements(textArea, event.target.value);
   document.addEventListener('diagramLoaded', () => updateSelectedBPMNElements(textArea, selectedKindElt.value), false);
 
-  document.getElementById('bpmn-kinds-textarea-clean-btn').onclick = function () {
+  document.getElementById('clear-btn').onclick = function () {
     textArea.value = '';
     removeCssClasses(lastIdentifiedBpmnIds, lastCssClassName);
     lastIdentifiedBpmnIds = [];
