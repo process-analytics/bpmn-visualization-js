@@ -42,24 +42,22 @@ export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
 
     if (isEdge) {
       const pts = state.absolutePoints;
-      if (this.verticalAlign == mxgraph.mxConstants.ALIGN_TOP) {
-        // 1st point for start position
-        if (this.align == mxgraph.mxConstants.ALIGN_LEFT) {
-          pt = pts[0];
-        } else if (this.align == mxgraph.mxConstants.ALIGN_CENTER) {
-          // middle point for middle position
-          if (pts.length % 2 == 1) {
-            pt = pts[Math.floor(pts.length / 2)];
-          } else {
-            const idx = pts.length / 2;
-            const p0 = pts[idx - 1];
-            const p1 = pts[idx];
-            pt = new mxgraph.mxPoint(p0.x + (p1.x - p0.x) / 2, p0.y + (p1.y - p0.y) / 2);
-          }
+      // 1st point for start position
+      if (this.align == mxgraph.mxConstants.ALIGN_LEFT) {
+        pt = pts[0];
+      } else if (this.align == mxgraph.mxConstants.ALIGN_CENTER) {
+        // middle point for middle position
+        if (pts.length % 2 == 1) {
+          pt = pts[Math.floor(pts.length / 2)];
         } else {
-          // last point for end position
-          pt = pts[pts.length - 1];
+          const idx = pts.length / 2;
+          const p0 = pts[idx - 1];
+          const p1 = pts[idx];
+          pt = new mxgraph.mxPoint(p0.x + (p1.x - p0.x) / 2, p0.y + (p1.y - p0.y) / 2);
         }
+      } else {
+        // last point for end position
+        pt = pts[pts.length - 1];
       }
     } else {
       pt = new mxgraph.mxPoint();

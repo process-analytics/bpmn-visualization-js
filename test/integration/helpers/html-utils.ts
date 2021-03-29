@@ -102,6 +102,14 @@ export class HtmlElementLookup {
   private static computeClassValue(bpmnClass: string, additionalClasses?: string[]): string {
     return [bpmnClass].concat(additionalClasses).filter(Boolean).join(' ');
   }
+
+  expectSequenceFlow(bpmnId: string, options?: { overlayLabel?: string }): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expectSvgSequenceFlow(svgGroupElement);
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-sequence-flow'));
+
+    this.expectSvgOverlay(bpmnId, options?.overlayLabel);
+  }
 }
 
 export function expectSvgEvent(svgGroupElement: HTMLElement): void {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { readFileSync } from '../helpers/file-helper';
-import { BpmnElement, BpmnVisualization, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
+import { BpmnElement, BpmnVisualization, OverlayEdgePosition, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
 import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask, HtmlElementLookup } from './helpers/html-utils';
 import { ExpectedBaseBpmnElement, expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '../unit/helpers/bpmn-semantic-utils';
@@ -241,27 +241,40 @@ describe('Bpmn Elements registry - CSS class management', () => {
 });
 
 describe('Bpmn Elements registry - Overlay management', () => {
-  it('Add one overlay to a BPMN element', () => {
-    bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
-    const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
-    htmlElementLookup.expectServiceTask('serviceTask_1_2');
+  describe('BPMN Shape', () => {
+    it('Add one overlay to a BPMN shape', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+      htmlElementLookup.expectServiceTask('serviceTask_1_2');
 
-    // add a single overlay
-    const overlayLabel = '123';
-    bpmnVisualization.bpmnElementsRegistry.addOverlays('serviceTask_1_2', { label: overlayLabel, position: 'top-left' });
+      // add a single overlay
+      const overlayLabel = '123';
+      bpmnVisualization.bpmnElementsRegistry.addOverlays('serviceTask_1_2', { label: overlayLabel, position: 'top-left' });
 
-    htmlElementLookup.expectServiceTask('serviceTask_1_2', { overlayLabel });
+      htmlElementLookup.expectServiceTask('serviceTask_1_2', { overlayLabel });
+    });
+
+    it('Remove all overlays from a BPMN shape', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+      htmlElementLookup.expectServiceTask('serviceTask_1_2');
+
+      // remove all overlays
+      bpmnVisualization.bpmnElementsRegistry.addOverlays('serviceTask_1_2', { label: '8789', position: 'top-left' });
+      bpmnVisualization.bpmnElementsRegistry.removeAllOverlays('serviceTask_1_2');
+
+      htmlElementLookup.expectServiceTask('serviceTask_1_2');
+    });
   });
 
-  it('Remove all overlays from a BPMN element', () => {
-    bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
-    const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
-    htmlElementLookup.expectServiceTask('serviceTask_1_2');
+  describe('BPMN Edge', () => {
+    it.each(['start', 'middle', 'end'])("Ensure no issue when adding one overlay at position '%s' to a BPMN Edge without waypoints", (position: string) => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.start.flow.task.gateway.no.waypoints.bpmn'));
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+      htmlElementLookup.expectSequenceFlow('Flow_1');
 
-    // remove all overlays
-    bpmnVisualization.bpmnElementsRegistry.addOverlays('serviceTask_1_2', { label: '8789', position: 'top-left' });
-    bpmnVisualization.bpmnElementsRegistry.removeAllOverlays('serviceTask_1_2');
-
-    htmlElementLookup.expectServiceTask('serviceTask_1_2');
+      bpmnVisualization.bpmnElementsRegistry.addOverlays('Flow_1', { label: 'important', position: <OverlayEdgePosition>position });
+      htmlElementLookup.expectSequenceFlow('Flow_1', { overlayLabel: 'important' });
+    });
   });
 });
