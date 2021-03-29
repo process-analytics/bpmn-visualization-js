@@ -116,25 +116,21 @@ describe('BPMN elements with overlays', () => {
     });
   });
 
-  // TODO tests will be added with https://github.com/process-analytics/bpmn-visualization-js/issues/1166
-  it.skip.each([<OverlayEdgePosition>'start', <OverlayEdgePosition>'middle', <OverlayEdgePosition>'end'])(
-    `add overlay on SequenceFlow on %s`,
-    async (position: OverlayEdgePosition) => {
-      await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+  it.each([<OverlayEdgePosition>'start', <OverlayEdgePosition>'middle', <OverlayEdgePosition>'end'])(`add overlay on SequenceFlow on %s`, async (position: OverlayEdgePosition) => {
+    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-      await addOverlay('Flow_1', position);
+    await addOverlay('Flow_1', position);
 
-      const image = await page.screenshot({ fullPage: true });
-      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-      expect(image).toMatchImageSnapshot({
-        ...config,
-        customSnapshotIdentifier: 'add.overlay.on.sequence.flow',
-        customSnapshotsDir: buildOverlaySnapshotDir(config, position),
-      });
-    },
-  );
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: 'add.overlay.on.sequence.flow',
+      customSnapshotsDir: buildOverlaySnapshotDir(config, position),
+    });
+  });
 
-  it.skip(`remove all overlays of Edge on %s`, async () => {
+  it(`remove all overlays of Edge on %s`, async () => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
     await addOverlay('Flow_1', 'start');
