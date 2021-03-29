@@ -93,10 +93,12 @@ export class HtmlElementLookup {
     expectSvgElementClassAttribute(svgGroupElement, 'bpmn-pool');
   }
 
-  expectExclusiveGateway(bpmnId: string, additionalClasses?: string[]): void {
+  expectExclusiveGateway(bpmnId: string, options?: { additionalClasses?: string[]; overlayLabel?: string }): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgGateway(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-exclusive-gateway', additionalClasses));
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-exclusive-gateway', options?.additionalClasses));
+
+    this.expectSvgOverlay(bpmnId, options?.overlayLabel);
   }
 
   private static computeClassValue(bpmnClass: string, additionalClasses?: string[]): string {

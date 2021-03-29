@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { readFileSync } from '../helpers/file-helper';
-import { BpmnElement, BpmnVisualization, OverlayEdgePosition, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
+import { BpmnElement, BpmnVisualization, OverlayEdgePosition, OverlayShapePosition, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
 import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask, HtmlElementLookup } from './helpers/html-utils';
 import { ExpectedBaseBpmnElement, expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '../unit/helpers/bpmn-semantic-utils';
@@ -219,13 +219,13 @@ describe('Bpmn Elements registry - CSS class management', () => {
       // toggle a classes for a single element
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('gateway_01', 'class1');
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('gateway_01', ['class1', 'class2']);
-      htmlElementLookup.expectExclusiveGateway('gateway_01', ['class2']);
+      htmlElementLookup.expectExclusiveGateway('gateway_01', { additionalClasses: ['class2'] });
 
       // toggle a classes for several elements
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_02', 'gateway_01'], ['class1', 'class2', 'class3']);
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_02', 'gateway_01'], ['class1', 'class3', 'class4']);
       htmlElementLookup.expectLane('lane_02', ['class2', 'class4']);
-      htmlElementLookup.expectExclusiveGateway('gateway_01', ['class4']);
+      htmlElementLookup.expectExclusiveGateway('gateway_01', { additionalClasses: ['class4'] });
     });
 
     it('BPMN element does not exist', () => {
@@ -253,6 +253,17 @@ describe('Bpmn Elements registry - Overlay management', () => {
 
       htmlElementLookup.expectServiceTask('serviceTask_1_2', { overlayLabel });
     });
+    it.each(<Array<OverlayShapePosition>>['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right', 'middle-left', 'middle-right'])(
+      "Ensure no issue when adding one overlay at position '%s' to a BPMN Shape",
+      (position: OverlayShapePosition) => {
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.start.flow.task.gateway.bpmn'));
+        const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+        htmlElementLookup.expectExclusiveGateway('Gateway_1');
+
+        bpmnVisualization.bpmnElementsRegistry.addOverlays('Gateway_1', { label: 'Yes', position: position });
+        htmlElementLookup.expectExclusiveGateway('Gateway_1', { overlayLabel: 'Yes' });
+      },
+    );
 
     it('Remove all overlays from a BPMN shape', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
@@ -268,13 +279,16 @@ describe('Bpmn Elements registry - Overlay management', () => {
   });
 
   describe('BPMN Edge', () => {
-    it.each(['start', 'middle', 'end'])("Ensure no issue when adding one overlay at position '%s' to a BPMN Edge without waypoints", (position: string) => {
-      bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.start.flow.task.gateway.no.waypoints.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
-      htmlElementLookup.expectSequenceFlow('Flow_1');
+    it.each(<Array<OverlayEdgePosition>>['start', 'middle', 'end'])(
+      "Ensure no issue when adding one overlay at position '%s' to a BPMN Edge without waypoints",
+      (position: OverlayEdgePosition) => {
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.start.flow.task.gateway.no.waypoints.bpmn'));
+        const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+        htmlElementLookup.expectSequenceFlow('Flow_1');
 
-      bpmnVisualization.bpmnElementsRegistry.addOverlays('Flow_1', { label: 'important', position: <OverlayEdgePosition>position });
-      htmlElementLookup.expectSequenceFlow('Flow_1', { overlayLabel: 'important' });
-    });
+        bpmnVisualization.bpmnElementsRegistry.addOverlays('Flow_1', { label: 'important', position: position });
+        htmlElementLookup.expectSequenceFlow('Flow_1', { overlayLabel: 'important' });
+      },
+    );
   });
 });
