@@ -13,7 +13,7 @@
     <bpmn:textAnnotation id="TextAnnotation_0hzt86w" />
     <bpmn:association id="Association_0q6vq5f" sourceRef="Activity_0553377" targetRef="TextAnnotation_0hzt86w" />
     <bpmn:textAnnotation id="TextAnnotation_19s2lt8" />
-    <bpmn:association id="Association_04bzwcr" sourceRef="Activity_0553377" targetRef="TextAnnotation_19s2lt8" />
+    <bpmn:association id="Association_3_waypoints" sourceRef="Activity_0553377" targetRef="TextAnnotation_19s2lt8" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1ibpcfp">
@@ -68,7 +68,7 @@
         <di:waypoint x="380" y="420" />
         <di:waypoint x="395" y="356" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_04bzwcr_di" bpmnElement="Association_04bzwcr">
+      <bpmndi:BPMNEdge id="Association_3_waypoints_di" bpmnElement="Association_3_waypoints">
         <di:waypoint x="390" y="220" />
         <di:waypoint x="240" y="190" />
         <di:waypoint x="215" y="270" />

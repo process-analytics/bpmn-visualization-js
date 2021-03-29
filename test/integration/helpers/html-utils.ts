@@ -105,6 +105,14 @@ export class HtmlElementLookup {
     return [bpmnClass].concat(additionalClasses).filter(Boolean).join(' ');
   }
 
+  expectAssociation(bpmnId: string, options?: { overlayLabel?: string }): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expectSvgAssociation(svgGroupElement);
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-association'));
+
+    this.expectSvgOverlay(bpmnId, options?.overlayLabel);
+  }
+
   expectSequenceFlow(bpmnId: string, options?: { overlayLabel?: string }): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgSequenceFlow(svgGroupElement);
@@ -135,6 +143,10 @@ export function expectSvgPool(svgGroupElement: HTMLElement): void {
 }
 
 export function expectSvgSequenceFlow(svgGroupElement: HTMLElement): void {
+  expectSvgFirstChildNodeName(svgGroupElement, 'path');
+}
+
+export function expectSvgAssociation(svgGroupElement: HTMLElement): void {
   expectSvgFirstChildNodeName(svgGroupElement, 'path');
 }
 

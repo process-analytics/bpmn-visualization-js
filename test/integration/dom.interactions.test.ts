@@ -290,5 +290,16 @@ describe('Bpmn Elements registry - Overlay management', () => {
         htmlElementLookup.expectSequenceFlow('Flow_1', { overlayLabel: 'important' });
       },
     );
+    it.each(<Array<OverlayEdgePosition>>['start', 'middle', 'end'])(
+      "Ensure no issue when adding one overlay at position '%s' to a BPMN Edge with waypoints",
+      (position: OverlayEdgePosition) => {
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.edges.associations.complex.paths.bpmn'));
+        const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+        htmlElementLookup.expectAssociation('Association_3_waypoints');
+
+        bpmnVisualization.bpmnElementsRegistry.addOverlays('Association_3_waypoints', { label: 'warning', position: position });
+        htmlElementLookup.expectAssociation('Association_3_waypoints', { overlayLabel: 'warning' });
+      },
+    );
   });
 });
