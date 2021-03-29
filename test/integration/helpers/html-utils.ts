@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 import BpmnVisualization from '../../../src/component/BpmnVisualization';
+import { BpmnQuerySelectorsForTests } from '../../helpers/query-selectors';
 
 export class HtmlElementLookup {
-  constructor(private bpmnVisualization: BpmnVisualization) {}
+  private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
+
+  constructor(private bpmnVisualization: BpmnVisualization) {
+    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(bpmnVisualization.graph.container.id);
+  }
 
   private findSvgElement(bpmnId: string): HTMLElement {
     const bpmnElements = this.bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnId);
@@ -57,9 +62,13 @@ export class HtmlElementLookup {
     expectSvgTask(svgGroupElement);
     expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-service-task', options?.additionalClasses));
 
-    const overlayGroupElement = document.querySelector<SVGGElement>(`#${this.bpmnVisualization.graph.container.id} > svg > g > g:nth-child(3) > g[data-bpmn-id="${bpmnId}"]`);
-    if (options?.overlayLabel) {
-      expect(overlayGroupElement.querySelector('g > text').innerHTML).toEqual(options.overlayLabel);
+    this.expectSvgOverlay(bpmnId, options?.overlayLabel);
+  }
+
+  private expectSvgOverlay(bpmnId: string, overlayLabel?: string): void {
+    const overlayGroupElement = document.querySelector<SVGGElement>(this.bpmnQuerySelectors.overlays(bpmnId));
+    if (overlayLabel) {
+      expect(overlayGroupElement.querySelector('g > text').innerHTML).toEqual(overlayLabel);
       expectSvgElementClassAttribute(overlayGroupElement, 'overlay-badge');
     } else {
       expect(overlayGroupElement).toBeNull();

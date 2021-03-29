@@ -16,7 +16,7 @@
 import { ElementHandle } from 'playwright';
 import 'jest-playwright-preset';
 import { FitType, LoadOptions } from '../../../../src/component/options';
-import { BpmnQuerySelectors } from '../../../../src/component/registry/query-selectors';
+import { BpmnPage } from './bpmn-page-utils';
 
 export interface TargetedPage {
   /** the name of the page file without extension */
@@ -32,6 +32,7 @@ export interface TargetedPage {
 
 export class PageTester {
   private readonly baseUrl: string;
+  private bpmnPage: BpmnPage;
 
   /**
    * Configure how the BPMN file is loaded by the test page.
@@ -47,6 +48,7 @@ export class PageTester {
   constructor(readonly targetedPage: TargetedPage) {
     const showMousePointer = targetedPage.showMousePointer ?? false;
     this.baseUrl = `http://localhost:10002/${targetedPage.pageFileName}.html?showMousePointer=${showMousePointer}`;
+    this.bpmnPage = new BpmnPage('bpmn-container', page);
   }
 
   async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, loadOptions?: LoadOptions): Promise<ElementHandle<Element>> {
@@ -57,17 +59,17 @@ export class PageTester {
     // await page.evaluate(() => console.log(`url is ${location.href}`));
 
     expect(response.status()).toBe(200);
-    await expect(page.title()).resolves.toEqual(this.targetedPage.expectedPageTitle);
+    await this.bpmnPage.expectPageTitle(this.targetedPage.expectedPageTitle);
 
     const waitForSelectorOptions = { timeout: 5_000 };
-    const bpmnContainerId = 'bpmn-container';
-    const elementHandle = await page.waitForSelector(`#${bpmnContainerId}`, waitForSelectorOptions);
-    await page.waitForSelector(new BpmnQuerySelectors(bpmnContainerId).existingElement(), waitForSelectorOptions);
+    const elementHandle = await this.bpmnPage.expectAvailableBpmnContainer(waitForSelectorOptions);
+    await this.bpmnPage.expectExistingBpmnElement(waitForSelectorOptions);
     return elementHandle;
   }
 
   /**
    * @param bpmnDiagramName the name of the BPMN file without extension
+   * @param loadOptions optional fit options
    */
   private getPageUrl(bpmnDiagramName: string, loadOptions: LoadOptions = { fit: { type: FitType.HorizontalVertical } }): string {
     let url = this.baseUrl;
