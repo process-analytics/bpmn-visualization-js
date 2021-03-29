@@ -73,7 +73,7 @@ const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThr
 
 const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' });
 
-describe('BPMN elements with overlays', () => {
+describe('BPMN Shapes with overlays', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
 
   it.each(overlayShapePositionValues)(`add overlay on StartEvent, Gateway and Task on %s`, async (position: OverlayShapePosition) => {
@@ -92,7 +92,7 @@ describe('BPMN elements with overlays', () => {
     });
   });
 
-  it(`remove all overlays of Shape on %s`, async () => {
+  it(`remove all overlays of Shape`, async () => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
     await addOverlay('Activity_1', 'top-left');
@@ -110,10 +110,10 @@ describe('BPMN elements with overlays', () => {
   });
 });
 
-describe('BPMN Edge elements with overlays', () => {
+describe('BPMN Edges with overlays', () => {
   const bpmnDiagramName = 'overlays.edges.associations.complex.paths';
 
-  it.each(overlayEdgePositionValues)(`add overlay on SequenceFlow on %s`, async (position: OverlayEdgePosition) => {
+  it.each(overlayEdgePositionValues)(`add overlay on Association on %s`, async (position: OverlayEdgePosition) => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
     await addOverlay('Association_1opueuo', position);
@@ -122,12 +122,12 @@ describe('BPMN Edge elements with overlays', () => {
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
-      customSnapshotIdentifier: 'add.overlay.on.sequence.flow',
+      customSnapshotIdentifier: 'add.overlay.on.association',
       customSnapshotsDir: buildOverlaySnapshotDir(config, position),
     });
   });
 
-  it(`remove all overlays of Edge on %s`, async () => {
+  it(`remove all overlays of Association`, async () => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
     await addOverlay('Association_1opueuo', 'start');
@@ -139,7 +139,7 @@ describe('BPMN Edge elements with overlays', () => {
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
-      customSnapshotIdentifier: 'remove.all.overlays.of.edge',
+      customSnapshotIdentifier: 'remove.all.overlays.of.association',
     });
   });
 });
