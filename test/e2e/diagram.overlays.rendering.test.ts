@@ -20,6 +20,7 @@ import { join } from 'path';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../build/public/component/registry';
 import { clickOnButton } from './helpers/test-utils';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
+import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -75,16 +76,7 @@ const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle:
 describe('BPMN elements with overlays', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
 
-  it.each([
-    <OverlayShapePosition>'top-left',
-    <OverlayShapePosition>'top-center',
-    <OverlayShapePosition>'top-right',
-    <OverlayShapePosition>'bottom-left',
-    <OverlayShapePosition>'bottom-center',
-    <OverlayShapePosition>'bottom-right',
-    <OverlayShapePosition>'middle-left',
-    <OverlayShapePosition>'middle-right',
-  ])(`add overlay on StartEvent, Gateway and Task on %s`, async (position: OverlayShapePosition) => {
+  it.each(overlayShapePositionValues)(`add overlay on StartEvent, Gateway and Task on %s`, async (position: OverlayShapePosition) => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
     await addOverlay('StartEvent_1', position);
@@ -121,7 +113,7 @@ describe('BPMN elements with overlays', () => {
 describe('BPMN Edge elements with overlays', () => {
   const bpmnDiagramName = 'overlays.edges.associations.complex.paths';
 
-  it.each([<OverlayEdgePosition>'start', <OverlayEdgePosition>'middle', <OverlayEdgePosition>'end'])(`add overlay on SequenceFlow on %s`, async (position: OverlayEdgePosition) => {
+  it.each(overlayEdgePositionValues)(`add overlay on SequenceFlow on %s`, async (position: OverlayEdgePosition) => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
     await addOverlay('Association_1opueuo', position);

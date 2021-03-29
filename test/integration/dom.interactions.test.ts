@@ -18,6 +18,7 @@ import { BpmnElement, BpmnVisualization, OverlayEdgePosition, OverlayShapePositi
 import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
 import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask, HtmlElementLookup } from './helpers/html-utils';
 import { ExpectedBaseBpmnElement, expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '../unit/helpers/bpmn-semantic-utils';
+import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 
 const bpmnContainerId = 'bpmn-visualization-container';
 const bpmnVisualization = initializeBpmnVisualization();
@@ -253,17 +254,14 @@ describe('Bpmn Elements registry - Overlay management', () => {
 
       htmlElementLookup.expectServiceTask('serviceTask_1_2', { overlayLabel });
     });
-    it.each(<Array<OverlayShapePosition>>['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right', 'middle-left', 'middle-right'])(
-      "Ensure no issue when adding one overlay at position '%s' to a BPMN Shape",
-      (position: OverlayShapePosition) => {
-        bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.start.flow.task.gateway.bpmn'));
-        const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
-        htmlElementLookup.expectExclusiveGateway('Gateway_1');
+    it.each(overlayShapePositionValues)("Ensure no issue when adding one overlay at position '%s' to a BPMN Shape", (position: OverlayShapePosition) => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.start.flow.task.gateway.bpmn'));
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+      htmlElementLookup.expectExclusiveGateway('Gateway_1');
 
-        bpmnVisualization.bpmnElementsRegistry.addOverlays('Gateway_1', { label: 'Yes', position: position });
-        htmlElementLookup.expectExclusiveGateway('Gateway_1', { overlayLabel: 'Yes' });
-      },
-    );
+      bpmnVisualization.bpmnElementsRegistry.addOverlays('Gateway_1', { label: 'Yes', position: position });
+      htmlElementLookup.expectExclusiveGateway('Gateway_1', { overlayLabel: 'Yes' });
+    });
 
     it('Remove all overlays from a BPMN shape', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
@@ -279,27 +277,21 @@ describe('Bpmn Elements registry - Overlay management', () => {
   });
 
   describe('BPMN Edge', () => {
-    it.each(<Array<OverlayEdgePosition>>['start', 'middle', 'end'])(
-      "Ensure no issue when adding one overlay at position '%s' to a BPMN Edge without waypoints",
-      (position: OverlayEdgePosition) => {
-        bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.start.flow.task.gateway.no.waypoints.bpmn'));
-        const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
-        htmlElementLookup.expectSequenceFlow('Flow_1');
+    it.each(overlayEdgePositionValues)("Ensure no issue when adding one overlay at position '%s' to a BPMN Edge without waypoints", (position: OverlayEdgePosition) => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.start.flow.task.gateway.no.waypoints.bpmn'));
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+      htmlElementLookup.expectSequenceFlow('Flow_1');
 
-        bpmnVisualization.bpmnElementsRegistry.addOverlays('Flow_1', { label: 'important', position: position });
-        htmlElementLookup.expectSequenceFlow('Flow_1', { overlayLabel: 'important' });
-      },
-    );
-    it.each(<Array<OverlayEdgePosition>>['start', 'middle', 'end'])(
-      "Ensure no issue when adding one overlay at position '%s' to a BPMN Edge with waypoints",
-      (position: OverlayEdgePosition) => {
-        bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.edges.associations.complex.paths.bpmn'));
-        const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
-        htmlElementLookup.expectAssociation('Association_3_waypoints');
+      bpmnVisualization.bpmnElementsRegistry.addOverlays('Flow_1', { label: 'important', position: position });
+      htmlElementLookup.expectSequenceFlow('Flow_1', { overlayLabel: 'important' });
+    });
+    it.each(overlayEdgePositionValues)("Ensure no issue when adding one overlay at position '%s' to a BPMN Edge with waypoints", (position: OverlayEdgePosition) => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.edges.associations.complex.paths.bpmn'));
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+      htmlElementLookup.expectAssociation('Association_3_waypoints');
 
-        bpmnVisualization.bpmnElementsRegistry.addOverlays('Association_3_waypoints', { label: 'warning', position: position });
-        htmlElementLookup.expectAssociation('Association_3_waypoints', { overlayLabel: 'warning' });
-      },
-    );
+      bpmnVisualization.bpmnElementsRegistry.addOverlays('Association_3_waypoints', { label: 'warning', position: position });
+      htmlElementLookup.expectAssociation('Association_3_waypoints', { overlayLabel: 'warning' });
+    });
   });
 });
