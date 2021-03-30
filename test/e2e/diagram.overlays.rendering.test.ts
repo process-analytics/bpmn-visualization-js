@@ -175,10 +175,7 @@ describe('BPMN Edges with overlays', () => {
         customDiffDir: buildOverlayDiffDir(config, position),
       });
     });
-  });
 
-  describe.each([bpmnDiagramNameSequence, bpmnDiagramNameAssociations, bpmnDiagramNameMessage])('diagram %s', (bpmnDiagramName: string) => {
-    const [edgeKind, ids] = getEdgeKindAndIds(bpmnDiagramName);
     it(`remove all overlays of ${edgeKind} flow`, async () => {
       await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
