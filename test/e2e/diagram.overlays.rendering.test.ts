@@ -123,6 +123,8 @@ describe('BPMN Edges with overlays', () => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
     await addOverlay('Association_1opueuo', position);
+    await addOverlay('Association_0n43f9f', position);
+    await addOverlay('Association_01t0kyz', position);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
