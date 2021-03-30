@@ -124,32 +124,47 @@ describe('BPMN Shapes with overlays', () => {
 });
 
 describe('BPMN Edges with overlays', () => {
-  it.each(overlayEdgePositionValues)(`add overlay on Association on %s`, async (position: OverlayEdgePosition) => {
-    const bpmnDiagramName = 'overlays.edges.associations.complex.paths';
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+  const bpmnDiagramNameAssociations = 'overlays.edges.associations.complex.paths';
+  const bpmnDiagramNameSequence = 'overlays.edges.sequence.complex.paths';
+  function getEdgeKindAndIds(bpmnDiagramName: string): [string, string[]] {
+    let edgeKind: string;
+    let ids: string[];
+    if (bpmnDiagramName === bpmnDiagramNameAssociations) {
+      edgeKind = 'asociation';
+      ids = ['Association_1opueuo', 'Association_0n43f9f', 'Association_01t0kyz'];
+    } else {
+      edgeKind = 'sequence';
+      ids = ['Flow_039xs1c', 'Flow_0m2ldux', 'Flow_1r3oti3', 'Flow_1byeukq'];
+    }
+    return [edgeKind, ids];
+  }
+  describe.each([bpmnDiagramNameSequence, bpmnDiagramNameAssociations])('diagram %s', (bpmnDiagramName: string) => {
+    const [edgeKind, ids] = getEdgeKindAndIds(bpmnDiagramName);
+    it.each(overlayEdgePositionValues)(`add overlay on ${edgeKind} on %s`, async (position: OverlayEdgePosition) => {
+      await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-    await addOverlays(['Association_1opueuo', 'Association_0n43f9f', 'Association_01t0kyz'], position);
+      await addOverlays(ids, position);
 
-    const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: 'add.overlay.on.association',
-      customSnapshotsDir: buildOverlaySnapshotDir(config, position),
-      customDiffDir: buildOverlayDiffDir(config, position),
+      const image = await page.screenshot({ fullPage: true });
+      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+      expect(image).toMatchImageSnapshot({
+        ...config,
+        customSnapshotIdentifier: `add.overlay.on.${edgeKind}`,
+        customSnapshotsDir: buildOverlaySnapshotDir(config, position),
+        customDiffDir: buildOverlayDiffDir(config, position),
+      });
     });
   });
 
   it(`remove all overlays of Association`, async () => {
-    const bpmnDiagramName = 'overlays.edges.associations.complex.paths';
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramNameAssociations);
 
     await addOverlays('Association_1opueuo', ['start', 'end']);
 
     await removeAllOverlays('Association_1opueuo');
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramNameAssociations);
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'remove.all.overlays.of.association',
