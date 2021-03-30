@@ -41,7 +41,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.edges.associations.complex.paths',
         {
-          linux: 0.00011, // 0.007011677278323525% / 0.010863716437259363% / 0.0103145588451925%
+          linux: 0.0003, // 0.02042994297090095% / 0.028687210421007858% / 0.022131767755118048%
         },
       ],
     ]);
