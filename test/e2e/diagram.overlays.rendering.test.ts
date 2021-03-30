@@ -126,21 +126,42 @@ describe('BPMN Shapes with overlays', () => {
 describe('BPMN Edges with overlays', () => {
   const bpmnDiagramNameAssociations = 'overlays.edges.associations.complex.paths';
   const bpmnDiagramNameSequence = 'overlays.edges.sequence.complex.paths';
+  const bpmnDiagramNameMessage = 'overlays.edges.message.flows.complex.paths';
   function getEdgeKindAndIds(bpmnDiagramName: string): [string, string[]] {
     let edgeKind: string;
     let ids: string[];
-    if (bpmnDiagramName === bpmnDiagramNameAssociations) {
-      edgeKind = 'asociation';
-      ids = ['Association_1opueuo', 'Association_0n43f9f', 'Association_01t0kyz'];
-    } else {
-      edgeKind = 'sequence';
-      ids = ['Flow_039xs1c', 'Flow_0m2ldux', 'Flow_1r3oti3', 'Flow_1byeukq'];
+    switch (bpmnDiagramName) {
+      case bpmnDiagramNameAssociations:
+        edgeKind = 'asociation';
+        ids = ['Association_1opueuo', 'Association_0n43f9f', 'Association_01t0kyz'];
+        break;
+      case bpmnDiagramNameSequence:
+        edgeKind = 'sequence';
+        ids = ['Flow_039xs1c', 'Flow_0m2ldux', 'Flow_1r3oti3', 'Flow_1byeukq'];
+        break;
+      case bpmnDiagramNameMessage:
+        edgeKind = 'message';
+        ids = [
+          // incoming and outgoing flows of the 2 pools starting from the right
+          'Flow_0skfnol',
+          'Flow_0ssridu',
+          'Flow_0s4cl7e',
+          'Flow_0zz7yh1',
+          // flows in the middle of the diagram
+          'Flow_0vsaa9d',
+          'Flow_17olevz',
+          'Flow_0qhtw2k',
+          // flows on the right
+          'Flow_0mmisr0',
+          'Flow_1l8ze06',
+        ];
+        break;
     }
     return [edgeKind, ids];
   }
-  describe.each([bpmnDiagramNameSequence, bpmnDiagramNameAssociations])('diagram %s', (bpmnDiagramName: string) => {
+  describe.each([bpmnDiagramNameSequence, bpmnDiagramNameAssociations, bpmnDiagramNameMessage])('diagram %s', (bpmnDiagramName: string) => {
     const [edgeKind, ids] = getEdgeKindAndIds(bpmnDiagramName);
-    it.each(overlayEdgePositionValues)(`add overlay on ${edgeKind} on %s`, async (position: OverlayEdgePosition) => {
+    it.each(overlayEdgePositionValues)(`add overlay on ${edgeKind} flow on %s`, async (position: OverlayEdgePosition) => {
       await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
       await addOverlays(ids, position);
@@ -168,38 +189,6 @@ describe('BPMN Edges with overlays', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'remove.all.overlays.of.association',
-    });
-  });
-
-  it.each(overlayEdgePositionValues)(`add overlay on Message Flow on %s`, async (position: OverlayEdgePosition) => {
-    const bpmnDiagramName = 'overlays.edges.message.flows.complex.paths';
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
-
-    await addOverlays(
-      [
-        // incoming and outgoing flows of the 2 pools starting from the right
-        'Flow_0skfnol',
-        'Flow_0ssridu',
-        'Flow_0s4cl7e',
-        'Flow_0zz7yh1',
-        // flows in the middle of the diagram
-        'Flow_0vsaa9d',
-        'Flow_17olevz',
-        'Flow_0qhtw2k',
-        // flows on the right
-        'Flow_0mmisr0',
-        'Flow_1l8ze06',
-      ],
-      position,
-    );
-
-    const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: 'add.overlay.on.message.flow',
-      customSnapshotsDir: buildOverlaySnapshotDir(config, position),
-      customDiffDir: buildOverlayDiffDir(config, position),
     });
   });
 
