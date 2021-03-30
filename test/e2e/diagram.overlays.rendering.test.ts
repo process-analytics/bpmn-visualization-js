@@ -69,7 +69,7 @@ function buildOverlayDiffDir(config: MatchImageSnapshotOptions, position: Overla
   return join(config.customDiffDir, `on-position-${position}`);
 }
 
-async function addOverlay(bpmnElementIds: string | string[], positions: OverlayPosition | OverlayPosition[]): Promise<void> {
+async function addOverlays(bpmnElementIds: string | string[], positions: OverlayPosition | OverlayPosition[]): Promise<void> {
   positions = ensureIsArray<OverlayPosition>(positions);
   for (const bpmnElementId of ensureIsArray<string>(bpmnElementIds)) {
     await page.fill('#bpmn-id-input', bpmnElementId);
@@ -95,7 +95,7 @@ describe('BPMN Shapes with overlays', () => {
   it.each(overlayShapePositionValues)(`add overlay on StartEvent, Gateway and Task on %s`, async (position: OverlayShapePosition) => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-    await addOverlay(['StartEvent_1', 'Activity_1', 'Gateway_1'], position);
+    await addOverlays(['StartEvent_1', 'Activity_1', 'Gateway_1'], position);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -110,7 +110,7 @@ describe('BPMN Shapes with overlays', () => {
   it(`remove all overlays of Shape`, async () => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-    await addOverlay('Activity_1', ['top-left', 'bottom-left', 'middle-right']);
+    await addOverlays('Activity_1', ['top-left', 'bottom-left', 'middle-right']);
 
     await removeAllOverlays('Activity_1');
 
@@ -128,7 +128,7 @@ describe('BPMN Edges with overlays', () => {
     const bpmnDiagramName = 'overlays.edges.associations.complex.paths';
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-    await addOverlay(['Association_1opueuo', 'Association_0n43f9f', 'Association_01t0kyz'], position);
+    await addOverlays(['Association_1opueuo', 'Association_0n43f9f', 'Association_01t0kyz'], position);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -144,7 +144,7 @@ describe('BPMN Edges with overlays', () => {
     const bpmnDiagramName = 'overlays.edges.associations.complex.paths';
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-    await addOverlay('Association_1opueuo', ['start', 'end']);
+    await addOverlays('Association_1opueuo', ['start', 'end']);
 
     await removeAllOverlays('Association_1opueuo');
 
@@ -160,7 +160,7 @@ describe('BPMN Edges with overlays', () => {
     const bpmnDiagramName = 'overlays.edges.message.flows.complex.paths';
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-    await addOverlay(
+    await addOverlays(
       [
         // incoming and outgoing flows of the 2 pools starting from the right
         'Flow_0skfnol',
