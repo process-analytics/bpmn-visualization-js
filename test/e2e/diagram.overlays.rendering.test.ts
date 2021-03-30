@@ -132,7 +132,7 @@ describe('BPMN Edges with overlays', () => {
     let ids: string[];
     switch (bpmnDiagramName) {
       case bpmnDiagramNameAssociations:
-        edgeKind = 'asociation';
+        edgeKind = 'association';
         ids = ['Association_1opueuo', 'Association_0n43f9f', 'Association_01t0kyz'];
         break;
       case bpmnDiagramNameSequence:
@@ -177,34 +177,22 @@ describe('BPMN Edges with overlays', () => {
     });
   });
 
-  it(`remove all overlays of Association`, async () => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramNameAssociations);
+  describe.each([bpmnDiagramNameSequence, bpmnDiagramNameAssociations, bpmnDiagramNameMessage])('diagram %s', (bpmnDiagramName: string) => {
+    const [edgeKind, ids] = getEdgeKindAndIds(bpmnDiagramName);
+    it(`remove all overlays of ${edgeKind} flow`, async () => {
+      await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-    await addOverlays('Association_1opueuo', ['start', 'end']);
+      const id = ids.shift();
+      await addOverlays(id, ['start', 'middle', 'end']);
 
-    await removeAllOverlays('Association_1opueuo');
+      await removeAllOverlays(id);
 
-    const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramNameAssociations);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: 'remove.all.overlays.of.association',
-    });
-  });
-
-  it(`remove all overlays of Message Flow`, async () => {
-    const bpmnDiagramName = 'overlays.edges.message.flows.complex.paths';
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
-
-    await addOverlays('Flow_0vsaa9d', ['middle', 'end']);
-
-    await removeAllOverlays('Flow_0vsaa9d');
-
-    const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: 'remove.all.overlays.of.message.flow',
+      const image = await page.screenshot({ fullPage: true });
+      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+      expect(image).toMatchImageSnapshot({
+        ...config,
+        customSnapshotIdentifier: `remove.all.overlays.of.${edgeKind}`,
+      });
     });
   });
 });
