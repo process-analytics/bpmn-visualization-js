@@ -102,7 +102,7 @@ describe('BPMN Shapes with overlays', () => {
       ...config,
       customSnapshotIdentifier: 'add.overlay.on.task.gateway.and.event',
       customSnapshotsDir: buildOverlaySnapshotDir(config, position),
-      // TODO missing diff dir config
+      customDiffDir: buildOverlayDiffDir(config, position),
     });
   });
 
@@ -139,7 +139,7 @@ describe('BPMN Edges with overlays', () => {
       ...config,
       customSnapshotIdentifier: 'add.overlay.on.association',
       customSnapshotsDir: buildOverlaySnapshotDir(config, position),
-      // TODO missing diff dir config
+      customDiffDir: buildOverlayDiffDir(config, position),
     });
   });
 
