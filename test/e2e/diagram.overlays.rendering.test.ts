@@ -187,4 +187,20 @@ describe('BPMN Edges with overlays', () => {
       customDiffDir: buildOverlayDiffDir(config, position),
     });
   });
+
+  it(`remove all overlays of Message Flow`, async () => {
+    const bpmnDiagramName = 'overlays.edges.message.flows.complex.paths';
+    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+
+    await addOverlays('Flow_0vsaa9d', ['middle', 'end']);
+
+    await removeAllOverlays('Flow_0vsaa9d');
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: 'remove.all.overlays.of.message.flow',
+    });
+  });
 });
