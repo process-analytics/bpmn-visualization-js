@@ -46,7 +46,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
-        'overlays.edges.sequence.complex.paths',
+        'overlays.edges.sequence.flows.complex.paths',
         {
           linux: 0.00023, // 0.022730494717471128% / 0.01857098860091888% / 0.010326307039609794%
         },
@@ -70,7 +70,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
-        'overlays.edges.sequence.complex.paths',
+        'overlays.edges.sequence.flows.complex.paths',
         {
           linux: 0.0014, // 0.08228072459832703% / 0.13226428690803482% / 0.05865724301086228%
         },
@@ -143,8 +143,8 @@ describe('BPMN Shapes with overlays', () => {
 
 describe('BPMN Edges with overlays', () => {
   const bpmnDiagramNameAssociations = 'overlays.edges.associations.complex.paths';
-  const bpmnDiagramNameSequence = 'overlays.edges.sequence.complex.paths';
-  const bpmnDiagramNameMessage = 'overlays.edges.message.flows.complex.paths';
+  const bpmnDiagramNameMessageFlows = 'overlays.edges.message.flows.complex.paths';
+  const bpmnDiagramNameSequenceFlows = 'overlays.edges.sequence.flows.complex.paths';
   function getEdgeKindAndIds(bpmnDiagramName: string): [string, string[]] {
     let edgeKind: string;
     let ids: string[];
@@ -153,11 +153,11 @@ describe('BPMN Edges with overlays', () => {
         edgeKind = 'association';
         ids = ['Association_1opueuo', 'Association_0n43f9f', 'Association_01t0kyz'];
         break;
-      case bpmnDiagramNameSequence:
+      case bpmnDiagramNameSequenceFlows:
         edgeKind = 'sequence';
         ids = ['Flow_039xs1c', 'Flow_0m2ldux', 'Flow_1r3oti3', 'Flow_1byeukq'];
         break;
-      case bpmnDiagramNameMessage:
+      case bpmnDiagramNameMessageFlows:
         edgeKind = 'message';
         ids = [
           // incoming and outgoing flows of the 2 pools starting from the right
@@ -177,7 +177,7 @@ describe('BPMN Edges with overlays', () => {
     }
     return [edgeKind, ids];
   }
-  describe.each([bpmnDiagramNameSequence, bpmnDiagramNameAssociations, bpmnDiagramNameMessage])('diagram %s', (bpmnDiagramName: string) => {
+  describe.each([bpmnDiagramNameSequenceFlows, bpmnDiagramNameAssociations, bpmnDiagramNameMessageFlows])('diagram %s', (bpmnDiagramName: string) => {
     const [edgeKind, ids] = getEdgeKindAndIds(bpmnDiagramName);
     it.each(overlayEdgePositionValues)(`add overlay on ${edgeKind} flow on %s`, async (position: OverlayEdgePosition) => {
       await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
