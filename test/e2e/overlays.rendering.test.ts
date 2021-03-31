@@ -18,10 +18,11 @@ import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserIm
 import { PageTester } from './helpers/visu/PageTester';
 import { join } from 'path';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
-import { clickOnButton } from './helpers/test-utils';
+import { clickOnButton, getTestedBrowserFamily, mousePanning } from './helpers/test-utils';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
+import { chromiumZoom } from './bpmn.navigation.test';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -125,6 +126,7 @@ async function removeAllOverlays(bpmnElementId: string): Promise<void> {
 const imageSnapshotThresholds = new ImageSnapshotThresholds();
 const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'overlays', imageSnapshotThresholds.getDefault());
 
+// to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
 const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' });
 
 describe('BPMN Shapes with overlays', () => {
@@ -213,6 +215,51 @@ describe('BPMN Edges with overlays', () => {
         ...config,
         customSnapshotIdentifier: `remove.all.overlays.of.${edgeKind}.flow`,
       });
+    });
+  });
+});
+
+describe('Overlay navigation', () => {
+  const bpmnDiagramName = 'overlays.start.flow.task.gateway';
+
+  let containerCenterX: number;
+  let containerCenterY: number;
+
+  beforeEach(async () => {
+    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    const bounding_box = await bpmnContainerElementHandle.boundingBox();
+    containerCenterX = bounding_box.x + bounding_box.width / 2;
+    containerCenterY = bounding_box.y + bounding_box.height / 2;
+
+    await addOverlays('StartEvent_1', 'bottom-center');
+    await addOverlays('Activity_1', 'middle-right');
+    await addOverlays('Gateway_1', 'top-right');
+    await addOverlays('Flow_1', 'start');
+  });
+
+  it('panning', async () => {
+    await mousePanning(containerCenterX, containerCenterY);
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: 'panning',
+    });
+  });
+
+  // TODO activate tests relying on mousewheel events on non Chromium browsers when playwright will support it natively: https://github.com/microsoft/playwright/issues/1115
+  // inspired from https://github.com/xtermjs/xterm.js/commit/7400b888df698d15864ab2c41ad0ed0262f812fb#diff-23460af115aa97331c36c0ce462cbc4dd8067c0ddbca1e9d3de560ebf44024ee
+  // Wheel events are hacked using private API that is only available in Chromium
+  const itMouseWheel = getTestedBrowserFamily() === 'chromium' ? it : it.skip;
+  itMouseWheel(`zoom out`, async () => {
+    await chromiumZoom(1, containerCenterX + 200, containerCenterY, 100);
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: 'zoom.out',
     });
   });
 });

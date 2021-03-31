@@ -60,3 +60,11 @@ export async function clickOnButton(buttonId: string): Promise<void> {
   // To unselect the button
   await page.mouse.click(0, 0);
 }
+
+export async function mousePanning(containerCenterX: number, containerCenterY: number): Promise<void> {
+  // simulate mouse panning
+  await page.mouse.move(containerCenterX, containerCenterY);
+  await page.mouse.down();
+  await page.mouse.move(containerCenterX + 150, containerCenterY + 40);
+  await page.mouse.up();
+}
