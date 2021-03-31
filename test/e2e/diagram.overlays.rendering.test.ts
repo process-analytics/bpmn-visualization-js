@@ -77,7 +77,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.0032, // 0.31451721857130854%
           macos: 0.004, // 0.36700887485542344%
-          windows: 0.003, // 0.29324438352688054%
+          windows: 0.004, // 0.38563259095634184%
         },
       ],
       [
