@@ -188,7 +188,7 @@ describe('BPMN Edges with overlays', () => {
       const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
       expect(image).toMatchImageSnapshot({
         ...config,
-        customSnapshotIdentifier: `add.overlay.on.${edgeKind}`,
+        customSnapshotIdentifier: `add.overlay.on.${edgeKind}.flow`,
         customSnapshotsDir: buildOverlaySnapshotDir(config, position),
         customDiffDir: buildOverlayDiffDir(config, position),
       });
@@ -206,7 +206,7 @@ describe('BPMN Edges with overlays', () => {
       const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
       expect(image).toMatchImageSnapshot({
         ...config,
-        customSnapshotIdentifier: `remove.all.overlays.of.${edgeKind}`,
+        customSnapshotIdentifier: `remove.all.overlays.of.${edgeKind}.flow`,
       });
     });
   });
