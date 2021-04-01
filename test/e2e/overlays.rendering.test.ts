@@ -18,11 +18,10 @@ import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserIm
 import { PageTester } from './helpers/visu/PageTester';
 import { join } from 'path';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
-import { clickOnButton, getTestedBrowserFamily, mousePanning } from './helpers/test-utils';
+import { chromiumZoom, clickOnButton, itMouseWheel, mousePanning } from './helpers/test-utils';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
-import { chromiumZoom } from './bpmn.navigation.test';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -248,10 +247,6 @@ describe('Overlay navigation', () => {
     });
   });
 
-  // TODO activate tests relying on mousewheel events on non Chromium browsers when playwright will support it natively: https://github.com/microsoft/playwright/issues/1115
-  // inspired from https://github.com/xtermjs/xterm.js/commit/7400b888df698d15864ab2c41ad0ed0262f812fb#diff-23460af115aa97331c36c0ce462cbc4dd8067c0ddbca1e9d3de560ebf44024ee
-  // Wheel events are hacked using private API that is only available in Chromium
-  const itMouseWheel = getTestedBrowserFamily() === 'chromium' ? it : it.skip;
   itMouseWheel(`zoom out`, async () => {
     await chromiumZoom(1, containerCenterX + 200, containerCenterY, 100);
 
