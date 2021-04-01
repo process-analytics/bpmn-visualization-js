@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { mxgraph } from '../initializer';
-import { mxCellState, mxRectangle } from 'mxgraph';
+import { mxCellState, mxPoint, mxRectangle } from 'mxgraph';
 
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
 export type HorizontalAlignType = 'left' | 'center' | 'right';
@@ -41,16 +41,7 @@ export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
     // END bpmn-visualization CUSTOMIZATION
 
     if (isEdge) {
-      const pts = state.absolutePoints;
-
-      if (pts.length % 2 == 1) {
-        pt = pts[Math.floor(pts.length / 2)];
-      } else {
-        const idx = pts.length / 2;
-        const p0 = pts[idx - 1];
-        const p1 = pts[idx];
-        pt = new mxgraph.mxPoint(p0.x + (p1.x - p0.x) / 2, p0.y + (p1.y - p0.y) / 2);
-      }
+      pt = this.computeEdgeBounds(state);
     } else {
       pt = new mxgraph.mxPoint();
 
@@ -77,5 +68,28 @@ export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
       w * s,
       h * s,
     );
+  }
+
+  private computeEdgeBounds(state: mxCellState): mxPoint {
+    const pts = state.absolutePoints;
+    // 1st point for start position
+    if (this.align == mxgraph.mxConstants.ALIGN_LEFT) {
+      return pts[0];
+    }
+    // middle point for middle position
+    else if (this.align == mxgraph.mxConstants.ALIGN_CENTER) {
+      if (pts.length % 2 == 1) {
+        return pts[Math.floor(pts.length / 2)];
+      } else {
+        const idx = pts.length / 2;
+        const p0 = pts[idx - 1];
+        const p1 = pts[idx];
+        return new mxgraph.mxPoint(p0.x + (p1.x - p0.x) / 2, p0.y + (p1.y - p0.y) / 2);
+      }
+    }
+    // last point for end position
+    else {
+      return pts[pts.length - 1];
+    }
   }
 }

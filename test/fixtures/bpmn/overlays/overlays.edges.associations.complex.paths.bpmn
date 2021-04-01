@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1h46gu2" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="8.0.0">
+  <bpmn:process id="Process_1ibpcfp">
+    <bpmn:task id="Activity_0553377" />
+    <bpmn:textAnnotation id="TextAnnotation_0fq06mm" />
+    <bpmn:association id="Association_1hxhxb8" associationDirection="None" sourceRef="Activity_0553377" targetRef="TextAnnotation_0fq06mm" />
+    <bpmn:textAnnotation id="TextAnnotation_008uxt2" />
+    <bpmn:association id="Association_1opueuo" associationDirection="Both" sourceRef="Activity_0553377" targetRef="TextAnnotation_008uxt2" />
+    <bpmn:textAnnotation id="TextAnnotation_0e0yj9m" />
+    <bpmn:association id="Association_0n43f9f" associationDirection="One" sourceRef="Activity_0553377" targetRef="TextAnnotation_0e0yj9m" />
+    <bpmn:textAnnotation id="TextAnnotation_1q2lnf4" />
+    <bpmn:association id="Association_01t0kyz" sourceRef="Activity_0553377" targetRef="TextAnnotation_1q2lnf4" />
+    <bpmn:textAnnotation id="TextAnnotation_0hzt86w" />
+    <bpmn:association id="Association_0q6vq5f" sourceRef="Activity_0553377" targetRef="TextAnnotation_0hzt86w" />
+    <bpmn:textAnnotation id="TextAnnotation_19s2lt8" />
+    <bpmn:association id="Association_3_waypoints" sourceRef="Activity_0553377" targetRef="TextAnnotation_19s2lt8" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1ibpcfp">
+      <bpmndi:BPMNShape id="TextAnnotation_1q2lnf4_di" bpmnElement="TextAnnotation_1q2lnf4">
+        <dc:Bounds x="470" y="80" width="100.0000033517384" height="30.0018293788183" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0hzt86w_di" bpmnElement="TextAnnotation_0hzt86w">
+        <dc:Bounds x="510" y="350" width="100.0000033517384" height="30.0018293788183" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_008uxt2_di" bpmnElement="TextAnnotation_008uxt2">
+        <dc:Bounds x="348" y="330" width="62" height="26" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_19s2lt8_di" bpmnElement="TextAnnotation_19s2lt8">
+        <dc:Bounds x="160" y="270" width="70" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0553377_di" bpmnElement="Activity_0553377">
+        <dc:Bounds x="390" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0fq06mm_di" bpmnElement="TextAnnotation_0fq06mm">
+        <dc:Bounds x="340" y="130" width="100" height="26" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0e0yj9m_di" bpmnElement="TextAnnotation_0e0yj9m">
+        <dc:Bounds x="580" y="130" width="100" height="26" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1hxhxb8_di" bpmnElement="Association_1hxhxb8">
+        <di:waypoint x="420" y="190" />
+        <di:waypoint x="430" y="170" />
+        <di:waypoint x="408" y="156" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0n43f9f_di" bpmnElement="Association_0n43f9f">
+        <di:waypoint x="490" y="235" />
+        <di:waypoint x="580" y="270" />
+        <di:waypoint x="700" y="200" />
+        <di:waypoint x="644" y="156" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_01t0kyz_di" bpmnElement="Association_01t0kyz">
+        <di:waypoint x="467" y="190" />
+        <di:waypoint x="480" y="160" />
+        <di:waypoint x="430" y="110" />
+        <di:waypoint x="470" y="103" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0q6vq5f_di" bpmnElement="Association_0q6vq5f">
+        <di:waypoint x="451" y="270" />
+        <di:waypoint x="470" y="343" />
+        <di:waypoint x="510" y="353" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1opueuo_di" bpmnElement="Association_1opueuo">
+        <di:waypoint x="420" y="270" />
+        <di:waypoint x="400" y="310" />
+        <di:waypoint x="340" y="280" />
+        <di:waypoint x="300" y="420" />
+        <di:waypoint x="380" y="420" />
+        <di:waypoint x="395" y="356" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_3_waypoints_di" bpmnElement="Association_3_waypoints">
+        <di:waypoint x="390" y="220" />
+        <di:waypoint x="240" y="190" />
+        <di:waypoint x="215" y="270" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

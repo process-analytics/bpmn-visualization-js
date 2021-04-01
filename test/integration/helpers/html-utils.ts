@@ -93,14 +93,32 @@ export class HtmlElementLookup {
     expectSvgElementClassAttribute(svgGroupElement, 'bpmn-pool');
   }
 
-  expectExclusiveGateway(bpmnId: string, additionalClasses?: string[]): void {
+  expectExclusiveGateway(bpmnId: string, options?: { additionalClasses?: string[]; overlayLabel?: string }): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgGateway(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-exclusive-gateway', additionalClasses));
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-exclusive-gateway', options?.additionalClasses));
+
+    this.expectSvgOverlay(bpmnId, options?.overlayLabel);
   }
 
   private static computeClassValue(bpmnClass: string, additionalClasses?: string[]): string {
     return [bpmnClass].concat(additionalClasses).filter(Boolean).join(' ');
+  }
+
+  expectAssociation(bpmnId: string, options?: { overlayLabel?: string }): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expectSvgAssociation(svgGroupElement);
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-association'));
+
+    this.expectSvgOverlay(bpmnId, options?.overlayLabel);
+  }
+
+  expectSequenceFlow(bpmnId: string, options?: { overlayLabel?: string }): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expectSvgSequenceFlow(svgGroupElement);
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-sequence-flow'));
+
+    this.expectSvgOverlay(bpmnId, options?.overlayLabel);
   }
 }
 
@@ -125,6 +143,10 @@ export function expectSvgPool(svgGroupElement: HTMLElement): void {
 }
 
 export function expectSvgSequenceFlow(svgGroupElement: HTMLElement): void {
+  expectSvgFirstChildNodeName(svgGroupElement, 'path');
+}
+
+export function expectSvgAssociation(svgGroupElement: HTMLElement): void {
   expectSvgFirstChildNodeName(svgGroupElement, 'path');
 }
 
