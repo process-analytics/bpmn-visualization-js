@@ -54,4 +54,18 @@ export type OverlayPosition = OverlayShapePosition | OverlayEdgePosition;
 export interface Overlay {
   position: OverlayPosition;
   label?: string;
+  font?: {
+    color?: string;
+    size?: string;
+  };
+
+  fill?: {
+    color?: string;
+    opacity?: string;
+  };
+  stroke?: {
+    color?: string;
+    pattern?: string;
+    width?: number;
+  };
 }
