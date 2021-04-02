@@ -1,0 +1,61 @@
+.hidden {
+  opacity: 0;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-container > div {
+  top: 20px;
+  bottom: 20px;
+  position: absolute;
+}
+
+.flex-column-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+#bpmn-container {
+  left: 50px;
+  right: 20px;
+  border-style: solid;
+  border-color: #B0B0B0;
+  border-width: 1px;
+  overflow: hidden;
+}
+
+button {
+  border-radius: 4px;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+}
+
+.tooltip {
+  visibility: hidden;
+  width: 300px;
+  background-color: black;
+  color: #fff;
+  fill: #B0B0B0;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 110%;
+  font-family: monospace;
+}
+
+.info:hover .tooltip {
+  visibility: visible;
+}
+
+label {
+  font-size: 0.65em;
+}

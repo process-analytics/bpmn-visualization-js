@@ -16,19 +16,8 @@
 import 'jest-playwright-preset';
 import { join } from 'path';
 import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
-import { delay, getTestedBrowserFamily } from './helpers/test-utils';
+import { chromiumZoom, itMouseWheel, mousePanning } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/PageTester';
-import { chromiumMouseWheel } from './helpers/visu/playwright-utils';
-
-const delayToWaitUntilZoomIsDone = 100;
-
-async function chromiumZoom(xTimes: number, x: number, y: number, deltaX: number): Promise<void> {
-  for (let i = 0; i < xTimes; i++) {
-    await chromiumMouseWheel(x, y, deltaX);
-    // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
-    await delay(delayToWaitUntilZoomIsDone);
-  }
-}
 
 describe('diagram navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
@@ -62,11 +51,7 @@ describe('diagram navigation', () => {
   });
 
   it('mouse panning', async () => {
-    // simulate mouse panning
-    await page.mouse.move(containerCenterX, containerCenterY);
-    await page.mouse.down();
-    await page.mouse.move(containerCenterX + 150, containerCenterY + 40);
-    await page.mouse.up();
+    await mousePanning(containerCenterX, containerCenterY);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -75,11 +60,6 @@ describe('diagram navigation', () => {
       customSnapshotIdentifier: 'mouse.panning',
     });
   });
-
-  // TODO activate tests relying on mousewheel events on non Chromium browsers when playwright will support it natively: https://github.com/microsoft/playwright/issues/1115
-  // inspired from https://github.com/xtermjs/xterm.js/commit/7400b888df698d15864ab2c41ad0ed0262f812fb#diff-23460af115aa97331c36c0ce462cbc4dd8067c0ddbca1e9d3de560ebf44024ee
-  // Wheel events are hacked using private API that is only available in Chromium
-  const itMouseWheel = getTestedBrowserFamily() === 'chromium' ? it : it.skip;
 
   itMouseWheel.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
     const deltaX = zoomMode === 'zoom in' ? -100 : 100;

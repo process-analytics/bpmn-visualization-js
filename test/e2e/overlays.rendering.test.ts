@@ -18,7 +18,7 @@ import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserIm
 import { PageTester } from './helpers/visu/PageTester';
 import { join } from 'path';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
-import { clickOnButton } from './helpers/test-utils';
+import { chromiumZoom, clickOnButton, itMouseWheel, mousePanning } from './helpers/test-utils';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
@@ -125,6 +125,7 @@ async function removeAllOverlays(bpmnElementId: string): Promise<void> {
 const imageSnapshotThresholds = new ImageSnapshotThresholds();
 const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'overlays', imageSnapshotThresholds.getDefault());
 
+// to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
 const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' });
 
 describe('BPMN Shapes with overlays', () => {
@@ -213,6 +214,47 @@ describe('BPMN Edges with overlays', () => {
         ...config,
         customSnapshotIdentifier: `remove.all.overlays.of.${edgeKind}.flow`,
       });
+    });
+  });
+});
+
+describe('Overlay navigation', () => {
+  const bpmnDiagramName = 'overlays.start.flow.task.gateway';
+
+  let containerCenterX: number;
+  let containerCenterY: number;
+
+  beforeEach(async () => {
+    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    const bounding_box = await bpmnContainerElementHandle.boundingBox();
+    containerCenterX = bounding_box.x + bounding_box.width / 2;
+    containerCenterY = bounding_box.y + bounding_box.height / 2;
+
+    await addOverlays('StartEvent_1', 'bottom-center');
+    await addOverlays('Activity_1', 'middle-right');
+    await addOverlays('Gateway_1', 'top-right');
+    await addOverlays('Flow_1', 'start');
+  });
+
+  it('panning', async () => {
+    await mousePanning(containerCenterX, containerCenterY);
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: 'panning',
+    });
+  });
+
+  itMouseWheel(`zoom out`, async () => {
+    await chromiumZoom(1, containerCenterX + 200, containerCenterY, 100);
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: 'zoom.out',
     });
   });
 });
