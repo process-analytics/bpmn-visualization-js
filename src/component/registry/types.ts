@@ -58,7 +58,6 @@ export interface Overlay {
     color?: string;
     size?: number;
   };
-
   fill?: {
     color?: string;
     opacity?: number;
