@@ -20,8 +20,13 @@ export type VerticalAlignType = 'bottom' | 'middle' | 'top';
 export type HorizontalAlignType = 'left' | 'center' | 'right';
 
 export interface MxGraphCustomOverlayOptions {
+  // TODO remove this 2 fields
   horizontalAlign?: HorizontalAlignType;
   verticalAlign?: VerticalAlignType;
+  position?: {
+    horizontalAlign?: HorizontalAlignType;
+    verticalAlign?: VerticalAlignType;
+  };
 }
 
 export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
