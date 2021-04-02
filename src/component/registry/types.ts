@@ -56,12 +56,12 @@ export interface Overlay {
   label?: string;
   font?: {
     color?: string;
-    size?: string;
+    size?: number;
   };
 
   fill?: {
     color?: string;
-    opacity?: string;
+    opacity?: number;
   };
   stroke?: {
     color?: string;

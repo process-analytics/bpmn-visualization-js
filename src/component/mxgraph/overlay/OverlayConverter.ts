@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 import { Overlay, OverlayPosition } from '../../registry';
-import { MxGraphCustomOverlayOptions } from './custom-overlay';
+import { StyleDefault } from '../StyleUtils';
+import { MxGraphCustomOverlayOptions, MxGraphCustomOverlayPosition } from './custom-overlay';
 
 export class OverlayConverter {
-  private overlayPositions: Map<OverlayPosition, MxGraphCustomOverlayOptions> = new Map([
+  private overlayPositions: Map<OverlayPosition, MxGraphCustomOverlayPosition> = new Map([
     // Edge
     ['start', { horizontalAlign: 'left', verticalAlign: 'top' }],
     ['middle', { horizontalAlign: 'center', verticalAlign: 'top' }],
@@ -33,7 +34,15 @@ export class OverlayConverter {
     ['middle-right', { horizontalAlign: 'right', verticalAlign: 'middle' }],
   ]);
 
-  convertPosition(overlay: Overlay): MxGraphCustomOverlayOptions {
+  convert(overlay: Overlay): MxGraphCustomOverlayOptions {
+    const position = this.convertPosition(overlay);
+    const fill = overlay?.fill?.color ? overlay.fill : { ...overlay.fill, color: StyleDefault.DEFAULT_FILL_COLOR };
+    const stroke = overlay?.stroke?.color ? overlay.stroke : { ...overlay.stroke, color: StyleDefault.DEFAULT_STROKE_COLOR };
+
+    return <MxGraphCustomOverlayOptions>{ position, style: { font: overlay.font, fill, stroke } };
+  }
+
+  private convertPosition(overlay: Overlay): MxGraphCustomOverlayPosition {
     return this.overlayPositions.get(overlay.position);
   }
 }

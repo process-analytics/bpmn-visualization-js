@@ -20,19 +20,39 @@ export type VerticalAlignType = 'bottom' | 'middle' | 'top';
 export type HorizontalAlignType = 'left' | 'center' | 'right';
 
 export interface MxGraphCustomOverlayOptions {
-  // TODO remove this 2 fields
+  position: MxGraphCustomOverlayPosition;
+  style: MxGraphCustomOverlayStyle;
+}
+
+export interface MxGraphCustomOverlayPosition {
   horizontalAlign?: HorizontalAlignType;
   verticalAlign?: VerticalAlignType;
-  position?: {
-    horizontalAlign?: HorizontalAlignType;
-    verticalAlign?: VerticalAlignType;
+}
+
+export interface MxGraphCustomOverlayStyle {
+  font: {
+    color: string;
+    size: number;
+  };
+  fill: {
+    color: string;
+    opacity: number;
+  };
+  stroke: {
+    color: string;
+    pattern: string;
+    width: number;
   };
 }
 
 export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
-  constructor(public label: string, options?: MxGraphCustomOverlayOptions) {
-    super(null, '', options?.horizontalAlign, options?.verticalAlign, null, 'default');
+  public readonly style: MxGraphCustomOverlayStyle;
+
+  constructor(public label: string, options: MxGraphCustomOverlayOptions) {
+    super(null, '', options.position?.horizontalAlign, options.position?.verticalAlign, null, 'default');
+    this.style = options.style;
   }
+
   // Based on original method from mxCellOverlay (mxCellOverlay.prototype.getBounds)
   getBounds(state: mxCellState): mxRectangle {
     const isEdge = state.view.graph.getModel().isEdge(state.cell);

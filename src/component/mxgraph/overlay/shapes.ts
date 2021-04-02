@@ -15,16 +15,64 @@
  */
 import { mxgraph } from '../initializer';
 import { mxRectangle } from 'mxgraph';
+import { MxGraphCustomOverlayStyle } from './custom-overlay';
+import { StyleDefault } from '../StyleUtils';
 
 // TODO remove ts-ignore when typed-mxgraph definitions will declare the mxText missing properties
 export class OverlayBadgeShape extends mxgraph.mxText {
-  public constructor(value: string, bounds: mxRectangle) {
-    super(value, bounds);
+  public constructor(value: string, bounds: mxRectangle, style: MxGraphCustomOverlayStyle) {
+    super(
+      value,
+      bounds,
+      // align
+      undefined,
+      // valign
+      undefined,
+      style.font?.color,
+      // family
+      undefined,
+      style.font?.size,
+      // fontStyle
+      undefined,
+      // spacing
+      undefined,
+      // spacingTop
+      undefined,
+      //  spacingRight
+      undefined,
+      //   spacingBottom
+      undefined,
+      //   spacingLeft
+      undefined,
+      //  horizontal
+      undefined,
+      style.fill?.color,
+      style.stroke?.color,
+      //   wrap
+      undefined,
+      //  clipped
+      undefined,
+      //  overflow
+      undefined,
+      //   labelPadding
+      undefined,
+      //  textDirection
+      undefined,
+    );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    this.border = 'black';
+    this.fillOpacity = style.fill?.opacity;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    this.background = 'white';
+    this.strokewidth = style.stroke?.width;
+
+    if (style.stroke?.pattern) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      this.isDashed = true;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      mxgraph.mxUtils.setStyle(this.style, mxgraph.mxConstants.STYLE_DASH_PATTERN, style.stroke.pattern);
+    }
   }
 }
