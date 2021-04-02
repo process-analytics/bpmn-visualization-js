@@ -44,7 +44,7 @@
 
 ## 🎮 Demo and examples 
 
-Please check [__⏩ live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html). \
+Please check the [__⏩ live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html). \
 You will find there basic usage as well as detailed examples showing possible rendering customizations.
 
 ## 🎨 Features
@@ -55,11 +55,10 @@ Already available features:
 - [Supported BPMN Elements](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements).
 - [Navigate through the BPMN diagram](https://process-analytics.github.io/bpmn-visualization-js/#diagram-navigation)
 
-In progess:
+In progress:
 - Display options for execution data with interactive capacities
 
 Planned features:
-- BPMN extensions
 - Library extension points
 
 ## 🌏 Browsers Support
@@ -70,8 +69,14 @@ Planned features:
 | :---------: | :---------: | :---------: | :---------: |
 |  ✔️ |  ✔️ |  ✔️ |  ✔️ |
 
-**Note**: Internet Explorer will never be supported. \
-The library may work with the other browsers. They must at least support ES6.
+**Notes**:
+- Internet Explorer and Legacy Edge will never be supported.
+- Chromium based browsers should work (automatic tests are run with Chromium canary releases). In particular, the following
+browsers are known working with `bpmn-visualization@0.13.0`:
+  - Brave 1.22.70
+  - Chromium 89.0.4389.114 
+  - Opera 75.0.3969.93
+- The library may work with the other browsers. They must at least support ES6.
 
 
 ## ♻️ Usage
@@ -82,7 +87,7 @@ We support various module formats such as:
 - [CommonJS](https://www.typescriptlang.org/docs/handbook/2/modules.html#commonjs): `dist/bpmn-visualization.cjs.js`
   
 
-### Project usage
+### 📌 Project usage
 
 * Install the dependency in your **package.json** file:
 ```shell script
@@ -105,13 +110,13 @@ You can set the BPMN content using one of the following ways:
   * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-js/blob/master/src/demo/index.ts)
 
 
-### Browser usage
+### 💠 Browser usage
 
 * In the HTML page:
    * Load `bpmn-visualization` (replace `{version}` by the recent version)
    * Define the container that displays the BPMN diagram, here _bpmn-container_
 ```html
-    <script src="https://unpkg.com/bpmn-visualization@{version}/dist/bpmn-visualization.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bpmn-visualization@{version}/dist/bpmn-visualization.min.js"></script>
     ...
     <div id="bpmn-container"></div>
 ```
@@ -124,7 +129,7 @@ You can set the BPMN content using one of the following ways:
 ```
 
 ### 👤 User documentation
-The User documentation with the feature list & the public API is stored on [Github pages](https://process-analytics.github.io/bpmn-visualization-js/).
+The User documentation with the feature list & the public API are available in the [documentation site](https://process-analytics.github.io/bpmn-visualization-js/).
 
 ### ⚒️ More
 
