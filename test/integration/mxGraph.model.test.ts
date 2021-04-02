@@ -1312,6 +1312,54 @@ describe('mxGraph model', () => {
         // this call ensures that there is not issue on the rendering part
         bpmnVisualization.bpmnElementsRegistry.addOverlays(nonExistingBpmnId, { position: 'top-left', label: '6' });
       });
+
+      it('Style overlays', () => {
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+
+        bpmnVisualization.bpmnElementsRegistry.addOverlays('serviceTask_1_2', {
+          position: 'top-left',
+          label: '6',
+          font: {
+            color: 'Blue',
+            size: 20,
+          },
+          fill: {
+            color: 'Green',
+            opacity: 63,
+          },
+          stroke: {
+            color: 'Pink',
+            pattern: '5 8',
+            width: 6,
+          },
+        });
+        expect('serviceTask_1_2').toBeServiceTask({
+          label: 'Service Task 1.2',
+          parentId: 'Lane_13kpaun',
+          overlays: [
+            {
+              label: '6',
+              horizontalAlign: 'left',
+              verticalAlign: 'top',
+              style: {
+                font: {
+                  color: 'Blue',
+                  size: 20,
+                },
+                fill: {
+                  color: 'Green',
+                  opacity: 63,
+                },
+                stroke: {
+                  color: 'Pink',
+                  pattern: '5 8',
+                  width: 6,
+                },
+              },
+            },
+          ],
+        });
+      });
     });
 
     describe('Remove all overlays', () => {
