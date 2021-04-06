@@ -129,7 +129,7 @@ You can set the BPMN content using one of the following ways:
 ```
 
 ### 👤 User documentation
-The User documentation with the feature list & the public API are available in the [documentation site](https://process-analytics.github.io/bpmn-visualization-js/).
+The User documentation (with the feature list & the public API) is available in the [documentation site](https://process-analytics.github.io/bpmn-visualization-js/).
 
 ### ⚒️ More
 
