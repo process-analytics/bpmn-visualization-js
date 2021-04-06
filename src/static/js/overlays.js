@@ -16,11 +16,43 @@
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
-import { documentReady, startBpmnVisualization, addOverlays, removeAllOverlays } from '../../index.es.js';
+import { documentReady, startBpmnVisualization, addOverlays, removeAllOverlays, getElementsByIds } from '../../index.es.js';
 import { configureControlsPanel, configureMousePointer } from './test.js';
 
-function configureAddOverlays(position) {
-  document.getElementById(position).onclick = () => addOverlays(document.getElementById('bpmn-id-input').value, { position, label: '123' });
+function addOverlay(overlay) {
+  const bpmnId = document.getElementById('bpmn-id-input').value;
+  if (bpmnId) {
+    addOverlays(bpmnId, overlay);
+  }
+}
+
+function getPosition() {
+  const bpmnId = document.getElementById('bpmn-id-input').value;
+  if (bpmnId) {
+    const elementsByIds = getElementsByIds(bpmnId);
+    if (elementsByIds) {
+      if (elementsByIds[0].bpmnSemantic.isShape) {
+        return 'top-left';
+      }
+      return 'middle';
+    }
+  }
+}
+
+function configureAddDefaultOverlay(position) {
+  document.getElementById(position).onclick = () => addOverlay({ position, label: '123' });
+}
+
+function configureAddOverlayWithCustomFont() {
+  document.getElementById('font').onclick = () => addOverlay({ position: getPosition(), label: '7896', style: { font: { color: 'LightSeaGreen', size: 30 } } });
+}
+
+function configureAddOverlayWithCustomFill() {
+  document.getElementById('fill').onclick = () => addOverlay({ position: getPosition(), label: '3', style: { fill: { color: 'LightSalmon', opacity: 50 } } });
+}
+
+function configureAddOverlayWithCustomStroke() {
+  document.getElementById('stroke').onclick = () => addOverlay({ position: getPosition(), label: '41', style: { stroke: { color: 'Aquamarine', pattern: '3 2', width: 5 } } });
 }
 
 function configureRemoveAllOverlays() {
@@ -41,17 +73,21 @@ function start() {
     },
   });
 
-  configureAddOverlays('start');
-  configureAddOverlays('middle');
-  configureAddOverlays('end');
-  configureAddOverlays('top-left');
-  configureAddOverlays('top-center');
-  configureAddOverlays('top-right');
-  configureAddOverlays('bottom-left');
-  configureAddOverlays('bottom-center');
-  configureAddOverlays('bottom-right');
-  configureAddOverlays('middle-left');
-  configureAddOverlays('middle-right');
+  configureAddDefaultOverlay('start');
+  configureAddDefaultOverlay('middle');
+  configureAddDefaultOverlay('end');
+  configureAddDefaultOverlay('top-left');
+  configureAddDefaultOverlay('top-center');
+  configureAddDefaultOverlay('top-right');
+  configureAddDefaultOverlay('bottom-left');
+  configureAddDefaultOverlay('bottom-center');
+  configureAddDefaultOverlay('bottom-right');
+  configureAddDefaultOverlay('middle-left');
+  configureAddDefaultOverlay('middle-right');
+
+  configureAddOverlayWithCustomFont();
+  configureAddOverlayWithCustomFill();
+  configureAddOverlayWithCustomStroke();
 
   configureRemoveAllOverlays();
 }

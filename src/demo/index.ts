@@ -72,6 +72,13 @@ export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[
 /**
  * @internal
  */
+export function getElementsByIds(bpmnId: string | string[]): BpmnElement[] {
+  return bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnId);
+}
+
+/**
+ * @internal
+ */
 export function addCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
   return bpmnVisualization.bpmnElementsRegistry.addCssClasses(bpmnElementId, classNames);
 }
@@ -83,10 +90,16 @@ export function removeCssClasses(bpmnElementId: string | string[], classNames: s
   return bpmnVisualization.bpmnElementsRegistry.removeCssClasses(bpmnElementId, classNames);
 }
 
+/**
+ * @internal
+ */
 export function addOverlays(bpmnElementId: string, overlay: Overlay): void {
   return bpmnVisualization.bpmnElementsRegistry.addOverlays(bpmnElementId, [overlay]);
 }
 
+/**
+ * @internal
+ */
 export function removeAllOverlays(bpmnElementId: string): void {
   return bpmnVisualization.bpmnElementsRegistry.removeAllOverlays(bpmnElementId);
 }

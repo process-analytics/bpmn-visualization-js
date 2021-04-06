@@ -254,6 +254,7 @@ describe('Bpmn Elements registry - Overlay management', () => {
 
       htmlElementLookup.expectServiceTask('serviceTask_1_2', { overlayLabel });
     });
+
     it.each(overlayShapePositionValues)("Ensure no issue when adding one overlay at position '%s' to a BPMN Shape", (position: OverlayShapePosition) => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.start.flow.task.gateway.bpmn'));
       const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);

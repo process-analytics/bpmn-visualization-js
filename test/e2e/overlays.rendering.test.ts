@@ -117,6 +117,13 @@ async function addOverlays(bpmnElementIds: string | string[], positions: Overlay
   }
 }
 
+async function addStylingOverlay(bpmnElementIds: string[], style: string): Promise<void> {
+  for (const bpmnElementId of bpmnElementIds) {
+    await page.fill('#bpmn-id-input', bpmnElementId);
+    await clickOnButton(style);
+  }
+}
+
 async function removeAllOverlays(bpmnElementId: string): Promise<void> {
   await page.fill('#bpmn-id-input', bpmnElementId);
   await clickOnButton('clear');
@@ -255,6 +262,26 @@ describe('Overlay navigation', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'zoom.out',
+    });
+  });
+});
+
+describe('Overlay style', () => {
+  const bpmnDiagramName = 'overlays.start.flow.task.gateway';
+  const snapshotPath = 'with.custom.style';
+
+  it.each(['font', 'fill', 'stroke'])(`add overlay with custom %s`, async (style: string) => {
+    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+
+    await addStylingOverlay(['StartEvent_1', 'Activity_1', 'Gateway_1', 'Flow_1'], style);
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: `add.overlay.with.custom.${style}`,
+      customSnapshotsDir: join(config.customSnapshotsDir, snapshotPath),
+      customDiffDir: join(config.customDiffDir, snapshotPath),
     });
   });
 });

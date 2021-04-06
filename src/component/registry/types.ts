@@ -15,7 +15,6 @@
  */
 
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
-import { MxGraphCustomOverlayStyle } from '../mxgraph/overlay/custom-overlay';
 
 /**
  * @category Interaction
