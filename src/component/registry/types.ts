@@ -15,6 +15,7 @@
  */
 
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
+import { MxGraphCustomOverlayStyle } from '../mxgraph/overlay/custom-overlay';
 
 /**
  * @category Interaction
@@ -54,17 +55,19 @@ export type OverlayPosition = OverlayShapePosition | OverlayEdgePosition;
 export interface Overlay {
   position: OverlayPosition;
   label?: string;
-  font?: {
-    color?: string;
-    size?: number;
-  };
-  fill?: {
-    color?: string;
-    opacity?: number;
-  };
-  stroke?: {
-    color?: string;
-    pattern?: string;
-    width?: number;
+  style?: {
+    font?: {
+      color?: string;
+      size?: number;
+    };
+    fill?: {
+      color?: string;
+      opacity?: number;
+    };
+    stroke?: {
+      color?: string;
+      pattern?: string;
+      width?: number;
+    };
   };
 }

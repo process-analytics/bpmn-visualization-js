@@ -30,18 +30,18 @@ export interface MxGraphCustomOverlayPosition {
 }
 
 export interface MxGraphCustomOverlayStyle {
-  font: {
-    color: string;
-    size: number;
+  font?: {
+    color?: string;
+    size?: number;
   };
   fill: {
     color: string;
-    opacity: number;
+    opacity?: number;
   };
   stroke: {
     color: string;
-    pattern: string;
-    width: number;
+    pattern?: string;
+    width?: number;
   };
 }
 

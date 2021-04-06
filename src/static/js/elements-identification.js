@@ -101,22 +101,26 @@ function getOverlay(bpmnKind) {
     return {
       position: 'top-left',
       label: '30',
-      font: {
-        color: 'Chartreuse',
-        size: 30,
-      },
-      fill: {
-        color: 'DimGray',
+      style: {
+        font: {
+          color: 'Chartreuse',
+          size: 30,
+        },
+        fill: {
+          color: 'DimGray',
+        },
       },
     };
   } else if (bpmnKind.includes('Gateway')) {
     return {
       position: 'top-right',
       label: '3',
-      stroke: {
-        color: 'HotPink',
-        pattern: '3 2',
-        width: 4,
+      style: {
+        stroke: {
+          color: 'HotPink',
+          pattern: '3 2',
+          width: 4,
+        },
       },
     };
   } else if (bpmnKind.includes('Event')) {
@@ -127,9 +131,11 @@ function getOverlay(bpmnKind) {
     return {
       position: 'middle',
       label: '999999',
-      fill: {
-        color: 'PaleTurquoise',
-        opacity: 25,
+      style: {
+        fill: {
+          color: 'PaleTurquoise',
+          opacity: 25,
+        },
       },
     };
   }

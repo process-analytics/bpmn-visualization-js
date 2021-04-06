@@ -15,7 +15,7 @@
  */
 import { Overlay, OverlayPosition } from '../../registry';
 import { StyleDefault } from '../StyleUtils';
-import { MxGraphCustomOverlayOptions, MxGraphCustomOverlayPosition } from './custom-overlay';
+import { MxGraphCustomOverlayOptions, MxGraphCustomOverlayPosition, MxGraphCustomOverlayStyle } from './custom-overlay';
 
 export class OverlayConverter {
   private overlayPositions: Map<OverlayPosition, MxGraphCustomOverlayPosition> = new Map([
@@ -36,13 +36,22 @@ export class OverlayConverter {
 
   convert(overlay: Overlay): MxGraphCustomOverlayOptions {
     const position = this.convertPosition(overlay);
-    const fill = overlay?.fill?.color ? overlay.fill : { ...overlay.fill, color: StyleDefault.DEFAULT_FILL_COLOR };
-    const stroke = overlay?.stroke?.color ? overlay.stroke : { ...overlay.stroke, color: StyleDefault.DEFAULT_STROKE_COLOR };
-
-    return <MxGraphCustomOverlayOptions>{ position, style: { font: overlay.font, fill, stroke } };
+    const style = this.convertStyle(overlay);
+    return { position, style };
   }
 
   private convertPosition(overlay: Overlay): MxGraphCustomOverlayPosition {
     return this.overlayPositions.get(overlay.position);
+  }
+
+  private convertStyle(overlay: Overlay): MxGraphCustomOverlayStyle {
+    const defaultStyle = { fill: { color: StyleDefault.DEFAULT_FILL_COLOR.valueOf() }, stroke: { color: StyleDefault.DEFAULT_STROKE_COLOR.valueOf() } };
+
+    const style = overlay.style;
+    if (!style) {
+      return defaultStyle;
+    }
+
+    return <MxGraphCustomOverlayStyle>{ ...defaultStyle, font: style.font, fill: style.fill, stroke: style.stroke };
   }
 }

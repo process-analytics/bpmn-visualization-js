@@ -1319,18 +1319,20 @@ describe('mxGraph model', () => {
         bpmnVisualization.bpmnElementsRegistry.addOverlays('serviceTask_1_2', {
           position: 'top-left',
           label: '6',
-          font: {
-            color: 'Blue',
-            size: 20,
-          },
-          fill: {
-            color: 'Green',
-            opacity: 63,
-          },
-          stroke: {
-            color: 'Pink',
-            pattern: '5 8',
-            width: 6,
+          style: {
+            font: {
+              color: 'Blue',
+              size: 20,
+            },
+            fill: {
+              color: 'Green',
+              opacity: 63,
+            },
+            stroke: {
+              color: 'Pink',
+              pattern: '5 8',
+              width: 6,
+            },
           },
         });
         expect('serviceTask_1_2').toBeServiceTask({

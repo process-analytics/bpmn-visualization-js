@@ -46,9 +46,7 @@ describe('overlay converter', () => {
   it('convert API overlay to mxGraph overlay', () => {
     const overlay: Overlay = {
       position: undefined,
-      fill: { color: 'Green', opacity: 10 },
-      stroke: { color: 'Blue', pattern: '2 3', width: 50 },
-      font: { color: 'Yellow', size: 6 },
+      style: { fill: { color: 'Green', opacity: 10 }, stroke: { color: 'Blue', pattern: '2 3', width: 50 }, font: { color: 'Yellow', size: 6 } },
     };
 
     const result = overlayConverter.convert(overlay);
@@ -59,9 +57,7 @@ describe('overlay converter', () => {
   it('set default fill color, when there is no fill color in API overlay on conversion', () => {
     const overlay: Overlay = {
       position: undefined,
-      fill: { opacity: 10 },
-      stroke: { color: 'Blue', pattern: '2 3', width: 50 },
-      font: { color: 'Yellow', size: 6 },
+      style: { fill: { opacity: 10 }, stroke: { color: 'Blue', pattern: '2 3', width: 50 }, font: { color: 'Yellow', size: 6 } },
     };
 
     const result = overlayConverter.convert(overlay);
@@ -72,9 +68,7 @@ describe('overlay converter', () => {
   it('set default stroke color, when there is no fill color in API overlay on conversion', () => {
     const overlay: Overlay = {
       position: undefined,
-      fill: { color: 'Green', opacity: 10 },
-      stroke: { pattern: '2 3', width: 50 },
-      font: { color: 'Yellow', size: 6 },
+      style: { fill: { color: 'Green', opacity: 10 }, stroke: { pattern: '2 3', width: 50 }, font: { color: 'Yellow', size: 6 } },
     };
 
     const result = overlayConverter.convert(overlay);
