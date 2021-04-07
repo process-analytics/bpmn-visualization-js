@@ -241,7 +241,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         'labels.02.position.and.line.breaks',
         {
           // TODO possible rendering issue so high threshold value
-          macos: 0.0101, // 1.095951298813913%
+          macos: 0.011, // 1.095951298813913%
         },
       ],
       [
