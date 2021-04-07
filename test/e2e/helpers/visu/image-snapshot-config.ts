@@ -97,20 +97,27 @@ export class ImageSnapshotConfigurator {
 interface ThresholdDefaults {
   chromium: number;
   firefox: number;
+  webkit?: number; // TODO make it mandatory
 }
 
 export abstract class MultiBrowserImageSnapshotThresholds {
   private readonly chromiumDefault: number;
   private readonly firefoxDefault: number;
+  private readonly webkitDefault: number; // TODO make it mandatory
 
   protected constructor(thresholdDefaults: ThresholdDefaults) {
     this.chromiumDefault = thresholdDefaults.chromium;
     this.firefoxDefault = thresholdDefaults.firefox;
+    this.webkitDefault = thresholdDefaults.webkit ?? 0;
   }
 
   protected abstract getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig>;
 
   protected abstract getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig>;
+
+  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map(); // TODO make it abstract
+  }
 
   getThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     const testedBrowserFamily = getTestedBrowserFamily();
@@ -120,6 +127,8 @@ export abstract class MultiBrowserImageSnapshotThresholds {
         return this.getChromiumThresholds();
       case 'firefox':
         return this.getFirefoxThresholds();
+      case 'webkit':
+        return this.getWebkitThresholds();
       default:
         return new Map<string, ImageSnapshotThresholdConfig>();
     }
@@ -131,6 +140,8 @@ export abstract class MultiBrowserImageSnapshotThresholds {
         return this.chromiumDefault;
       case 'firefox':
         return this.firefoxDefault;
+      case 'webkit':
+        return this.webkitDefault;
       default:
         return 0;
     }
