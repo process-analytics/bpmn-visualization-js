@@ -108,6 +108,29 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       ],
     ]);
   }
+
+  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'horizontal',
+        {
+          macos: 0.00031, // max is 0.030754703204538547%
+        },
+      ],
+      [
+        'vertical',
+        {
+          macos: 0.00031, // max is 0.03029476340282722%
+        },
+      ],
+      [
+        'with.outside.labels',
+        {
+          macos: 0.0076, // max is 0.7546899046749656%
+        },
+      ],
+    ]);
+  }
 }
 
 describe('no diagram visual regression', () => {
