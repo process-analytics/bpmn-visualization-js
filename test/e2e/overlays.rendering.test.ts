@@ -24,7 +24,7 @@ import { ensureIsArray } from '../../src/component/helpers/array-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    super({ chromium: 0.000005, firefox: 0.0004 });
+    super({ chromium: 0.000005, firefox: 0.0004, webkit: 0 });
   }
 
   getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {

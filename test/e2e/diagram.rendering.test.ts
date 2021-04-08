@@ -60,7 +60,7 @@ const bpmnDiagramNames = getBpmnDiagramNames('diagram');
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
     const defaultFailureThreshold = 0.00006; // all OS 0.005379276499073438%
-    super({ chromium: defaultFailureThreshold, firefox: defaultFailureThreshold });
+    super({ chromium: defaultFailureThreshold, firefox: defaultFailureThreshold, webkit: defaultFailureThreshold });
   }
   getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     // if no dedicated information, set minimal threshold to make test pass on Github Workflow
