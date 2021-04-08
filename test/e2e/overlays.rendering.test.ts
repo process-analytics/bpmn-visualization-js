@@ -96,6 +96,35 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       ],
     ]);
   }
+
+  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'overlays.start.flow.task.gateway',
+        {
+          macos: 0.0051, // max 0.5021666239539258%
+        },
+      ],
+      [
+        'overlays.edges.message.flows.complex.paths',
+        {
+          macos: 0.0028, // max 0.2757481729149802%
+        },
+      ],
+      [
+        'overlays.edges.associations.complex.paths',
+        {
+          macos: 0.0028, // max 0.2757481729149802%
+        },
+      ],
+      [
+        'overlays.edges.sequence.flows.complex.paths',
+        {
+          macos: 0.00049, // max 0.048499647723088124%
+        },
+      ],
+    ]);
+  }
 }
 
 async function addOverlays(bpmnElementIds: string | string[], positions: OverlayPosition | OverlayPosition[]): Promise<void> {
