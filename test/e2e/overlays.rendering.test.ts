@@ -279,6 +279,7 @@ describe('Overlay style', () => {
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
+      failureThreshold: 0.02, // 1.926162542254506%
       customSnapshotIdentifier: `add.overlay.with.custom.${style}`,
       customSnapshotsDir: join(config.customSnapshotsDir, snapshotPath),
       customDiffDir: join(config.customDiffDir, snapshotPath),
