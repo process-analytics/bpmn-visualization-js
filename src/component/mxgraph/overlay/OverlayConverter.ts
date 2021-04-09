@@ -52,6 +52,20 @@ export class OverlayConverter {
       return defaultStyle;
     }
 
-    return <MxGraphCustomOverlayStyle>{ ...defaultStyle, font: style.font, fill: style.fill, stroke: style.stroke };
+    const convertedStyle = <MxGraphCustomOverlayStyle>{ ...defaultStyle, font: style.font };
+    if (style.fill) {
+      convertedStyle.fill.opacity = style.fill.opacity;
+      if (style.fill.color) {
+        convertedStyle.fill.color = style.fill.color;
+      }
+    }
+    if (style.stroke) {
+      convertedStyle.stroke.pattern = style.stroke.pattern;
+      convertedStyle.stroke.width = style.stroke.width;
+      if (style.stroke.color) {
+        convertedStyle.stroke.color = style.stroke.color;
+      }
+    }
+    return convertedStyle;
   }
 }

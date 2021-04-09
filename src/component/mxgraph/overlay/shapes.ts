@@ -16,7 +16,6 @@
 import { mxgraph } from '../initializer';
 import { mxRectangle } from 'mxgraph';
 import { MxGraphCustomOverlayStyle } from './custom-overlay';
-import { StyleDefault } from '../StyleUtils';
 
 // TODO remove ts-ignore when typed-mxgraph definitions will declare the mxText missing properties
 export class OverlayBadgeShape extends mxgraph.mxText {
