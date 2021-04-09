@@ -58,7 +58,7 @@
     "demo:build": "rollup -c --silent --environment demoMode:true",
     "docs": "run-s user-docs api-docs",
     "user-docs": "node scripts/docs.js",
-    "api-docs": "typedoc src/api/public/api.ts",
+    "api-docs": "typedoc --tsconfig ./tsconfig.typedoc.json src/api/public/api.ts",
     "start": "rollup -c --silent --environment devMode:true",
     "watch": "rollup -cw --environment devLiveReloadMode:true",
     "watch:css": "chokidar \"src/static/css/styles.css\" \"src/*.html\" --command \"npm run demo:css\" --verbose",
