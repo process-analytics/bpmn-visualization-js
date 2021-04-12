@@ -132,7 +132,7 @@ export class BpmnMxGraph extends mxgraph.mxGraph {
 
   private getZoomHandler(calculateFactorOnly: boolean) {
     return (event: Event, up: boolean) => {
-      // TODO review type: this hack is due to the introduction of mxgraph-type-definitions
+      // TODO review type: this hack is due to typed-mxgraph
       const evt = (event as unknown) as MouseEvent;
       if (mxgraph.mxEvent.isConsumed((evt as unknown) as mxMouseEvent)) {
         return;
