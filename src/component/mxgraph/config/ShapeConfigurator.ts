@@ -127,7 +127,7 @@ export default class ShapeConfigurator {
   }
 
   initMxCellRendererCreateCellOverlays(): void {
-    mxgraph.mxCellRenderer.prototype.createCellOverlays = function(state: StateWithOverlays) {
+    mxgraph.mxCellRenderer.prototype.createCellOverlays = function(state: mxCellState) {
       const graph = state.view.graph;
       const overlays = graph.getCellOverlays(state.cell);
       let dict = null;
@@ -154,7 +154,7 @@ export default class ShapeConfigurator {
           // END bpmn-visualization CUSTOMIZATION
 
           overlayShape.dialect = state.view.graph.dialect;
-          (<ShapeWithOverlay>overlayShape).overlay = currentOverlay;
+          overlayShape.overlay = currentOverlay;
 
           // The 'initializeOverlay' signature forces us to hardly cast the overlayShape
           this.initializeOverlay(state, <mxImageShape>overlayShape);
@@ -185,15 +185,4 @@ export default class ShapeConfigurator {
       state.overlays = dict;
     };
   }
-}
-
-// TODO to remove when typed-mxgraph definitions will declare the overlays property
-// should be overlays: mxDictionary<mxShape> but the remove function should also modified (key should be any instead of string)
-interface StateWithOverlays extends mxCellState {
-  overlays: any
-}
-
-// TODO to remove when typed-mxgraph definitions will declare the overlays property
-interface ShapeWithOverlay extends mxShape {
-  overlay: mxCellOverlay
 }

@@ -16,15 +16,15 @@
 import { mxgraph } from '../initializer';
 import { mxRectangle } from 'mxgraph';
 
-// TODO remove ts-ignore when typed-mxgraph definitions will declare the mxText missing properties
 export class OverlayBadgeShape extends mxgraph.mxText {
-  public constructor(value: string, bounds: mxRectangle) {
+  // TODO to remove when typed-mxgraph@1.0.1 mxText definitions won't declare these fields as protected (prevent assign OverlayBadgeShape instances as mxShape)
+  spacing: number;
+  bounds: mxRectangle;
+  // end of typed-mxgraph issue
+
+  constructor(value: string, bounds: mxRectangle) {
     super(value, bounds);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     this.border = 'black';
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     this.background = 'white';
   }
 }
