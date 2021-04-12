@@ -37,26 +37,21 @@ export class OverlayBadgeShape extends mxgraph.mxText {
       undefined,
       // spacingTop
       undefined,
-      //  spacingRight
+      // spacingRight
       undefined,
-      //   spacingBottom
+      // spacingBottom
       undefined,
-      //   spacingLeft
+      // spacingLeft
       undefined,
-      //  horizontal
+      // horizontal
       undefined,
       style.fill?.color,
       style.stroke?.color,
-      //   wrap
-      undefined,
-      //  clipped
-      undefined,
-      //  overflow
-      undefined,
-      //   labelPadding
-      undefined,
-      //  textDirection
-      undefined,
+      // wrap
+      // clipped
+      // overflow
+      // labelPadding
+      // textDirection
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
