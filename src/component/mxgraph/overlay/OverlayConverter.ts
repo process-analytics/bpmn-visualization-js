@@ -17,6 +17,8 @@ import { Overlay, OverlayPosition } from '../../registry';
 import { StyleDefault } from '../StyleUtils';
 import { MxGraphCustomOverlayOptions, MxGraphCustomOverlayPosition, MxGraphCustomOverlayStyle } from './custom-overlay';
 
+const defaultStyle = { fill: { color: StyleDefault.DEFAULT_FILL_COLOR.valueOf() }, stroke: { color: StyleDefault.DEFAULT_STROKE_COLOR.valueOf() } };
+
 export class OverlayConverter {
   private overlayPositions: Map<OverlayPosition, MxGraphCustomOverlayPosition> = new Map([
     // Edge
@@ -45,8 +47,6 @@ export class OverlayConverter {
   }
 
   private convertStyle(overlay: Overlay): MxGraphCustomOverlayStyle {
-    const defaultStyle = { fill: { color: StyleDefault.DEFAULT_FILL_COLOR.valueOf() }, stroke: { color: StyleDefault.DEFAULT_STROKE_COLOR.valueOf() } };
-
     const style = overlay.style;
     if (!style) {
       return defaultStyle;
