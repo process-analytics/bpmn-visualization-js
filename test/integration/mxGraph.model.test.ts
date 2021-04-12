@@ -1330,7 +1330,6 @@ describe('mxGraph model', () => {
             },
             stroke: {
               color: 'Pink',
-              pattern: '5 8',
               width: 6,
             },
           },
@@ -1354,7 +1353,6 @@ describe('mxGraph model', () => {
                 },
                 stroke: {
                   color: 'Pink',
-                  pattern: '5 8',
                   width: 6,
                 },
               },
