@@ -17,8 +17,6 @@ import { Overlay, OverlayPosition } from '../../registry';
 import { StyleDefault } from '../StyleUtils';
 import { MxGraphCustomOverlayOptions, MxGraphCustomOverlayPosition, MxGraphCustomOverlayStyle } from './custom-overlay';
 
-const defaultStyle = { fill: { color: StyleDefault.DEFAULT_FILL_COLOR.valueOf() }, stroke: { color: StyleDefault.DEFAULT_STROKE_COLOR.valueOf() } };
-
 export class OverlayConverter {
   private overlayPositions: Map<OverlayPosition, MxGraphCustomOverlayPosition> = new Map([
     // Edge
@@ -38,7 +36,7 @@ export class OverlayConverter {
 
   convert(overlay: Overlay): MxGraphCustomOverlayOptions {
     const position = this.convertPosition(overlay);
-    const style = this.convertStyle(overlay);
+    const style = OverlayConverter.convertStyle(overlay);
     return { position, style };
   }
 
@@ -46,25 +44,29 @@ export class OverlayConverter {
     return this.overlayPositions.get(overlay.position);
   }
 
-  private convertStyle(overlay: Overlay): MxGraphCustomOverlayStyle {
+  private static convertStyle(overlay: Overlay): MxGraphCustomOverlayStyle {
+    // recompute the style at each call to ensure we consider default changes that could occur after lib initialization
+    const defaultStyle = {
+      fill: { color: StyleDefault.DEFAULT_OVERLAY_FILL_COLOR.valueOf(), opacity: StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY.valueOf() },
+      stroke: { color: StyleDefault.DEFAULT_OVERLAY_STROKE_COLOR.valueOf(), width: StyleDefault.DEFAULT_OVERLAY_STROKE_WIDTH.valueOf() },
+      font: { color: StyleDefault.DEFAULT_OVERLAY_FONT_COLOR.valueOf(), size: StyleDefault.DEFAULT_OVERLAY_FONT_SIZE.valueOf() },
+    };
+
     const style = overlay.style;
+    const convertedStyle = <MxGraphCustomOverlayStyle>{ ...defaultStyle };
     if (!style) {
-      return defaultStyle;
+      return convertedStyle;
     }
 
-    const convertedStyle = <MxGraphCustomOverlayStyle>{ ...defaultStyle, font: style.font };
-    if (style.fill) {
-      convertedStyle.fill.opacity = style.fill.opacity;
-      if (style.fill.color) {
-        convertedStyle.fill.color = style.fill.color;
-      }
-    }
-    if (style.stroke) {
-      convertedStyle.stroke.width = style.stroke.width;
-      if (style.stroke.color) {
-        convertedStyle.stroke.color = style.stroke.color;
-      }
-    }
+    convertedStyle.fill.color = style.fill?.color ?? convertedStyle.fill.color;
+    convertedStyle.fill.opacity = style.fill?.opacity ?? convertedStyle.fill.opacity;
+
+    convertedStyle.stroke.color = style.stroke?.color ?? convertedStyle.stroke.color;
+    convertedStyle.stroke.width = style.stroke?.width ?? convertedStyle.stroke.width;
+
+    convertedStyle.font.color = style.font?.color ?? convertedStyle.font.color;
+    convertedStyle.font.size = style.font?.size ?? convertedStyle.font.size;
+
     return convertedStyle;
   }
 }

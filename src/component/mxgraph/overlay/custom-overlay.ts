@@ -15,6 +15,7 @@
  */
 import { mxgraph } from '../initializer';
 import { mxCellState, mxPoint, mxRectangle } from 'mxgraph';
+import { OverlayStyle } from '../../registry';
 
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
 export type HorizontalAlignType = 'left' | 'center' | 'right';
@@ -29,20 +30,7 @@ export interface MxGraphCustomOverlayPosition {
   verticalAlign?: VerticalAlignType;
 }
 
-export interface MxGraphCustomOverlayStyle {
-  font?: {
-    color?: string;
-    size?: number;
-  };
-  fill: {
-    color: string;
-    opacity?: number;
-  };
-  stroke: {
-    color: string;
-    width?: number;
-  };
-}
+export type MxGraphCustomOverlayStyle = Required<OverlayStyle>;
 
 export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
   public readonly style: MxGraphCustomOverlayStyle;

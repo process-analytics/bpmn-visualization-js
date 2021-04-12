@@ -42,11 +42,7 @@ export class OverlayBadgeShape extends mxgraph.mxText {
       style.fill?.color,
       style.stroke?.color,
     );
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     this.fillOpacity = style.fill?.opacity;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     this.strokewidth = style.stroke?.width;
   }
 }
