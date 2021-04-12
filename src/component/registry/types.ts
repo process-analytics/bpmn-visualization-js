@@ -65,7 +65,6 @@ export interface Overlay {
     };
     stroke?: {
       color?: string;
-      pattern?: string;
       width?: number;
     };
   };

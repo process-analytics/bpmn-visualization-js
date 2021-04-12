@@ -63,14 +63,5 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.strokewidth = style.stroke?.width;
-
-    if (style.stroke?.pattern) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      this.isDashed = true;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      mxgraph.mxUtils.setStyle(this.style, mxgraph.mxConstants.STYLE_DASH_PATTERN, style.stroke.pattern);
-    }
   }
 }

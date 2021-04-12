@@ -118,7 +118,6 @@ function getOverlay(bpmnKind) {
       style: {
         stroke: {
           color: 'HotPink',
-          pattern: '3 2',
           width: 4,
         },
       },

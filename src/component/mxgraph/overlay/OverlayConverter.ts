@@ -60,7 +60,6 @@ export class OverlayConverter {
       }
     }
     if (style.stroke) {
-      convertedStyle.stroke.pattern = style.stroke.pattern;
       convertedStyle.stroke.width = style.stroke.width;
       if (style.stroke.color) {
         convertedStyle.stroke.color = style.stroke.color;

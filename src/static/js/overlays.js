@@ -52,7 +52,7 @@ function configureAddOverlayWithCustomFill() {
 }
 
 function configureAddOverlayWithCustomStroke() {
-  document.getElementById('stroke').onclick = () => addOverlay({ position: getPosition(), label: '41', style: { stroke: { color: 'Aquamarine', pattern: '3 2', width: 5 } } });
+  document.getElementById('stroke').onclick = () => addOverlay({ position: getPosition(), label: '41', style: { stroke: { color: 'Aquamarine', width: 5 } } });
 }
 
 function configureRemoveAllOverlays() {

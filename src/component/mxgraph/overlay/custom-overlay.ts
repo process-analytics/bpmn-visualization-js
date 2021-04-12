@@ -40,7 +40,6 @@ export interface MxGraphCustomOverlayStyle {
   };
   stroke: {
     color: string;
-    pattern?: string;
     width?: number;
   };
 }
