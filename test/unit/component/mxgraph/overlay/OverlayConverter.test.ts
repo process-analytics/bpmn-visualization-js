@@ -65,11 +65,41 @@ describe('overlay converter', () => {
     expect(result.style.fill.color).toEqual(StyleDefault.DEFAULT_FILL_COLOR);
   });
 
+  it('set default fill color, when there is no fill in API overlay on conversion', () => {
+    const overlay: Overlay = {
+      position: undefined,
+      style: { stroke: { color: 'Blue', pattern: '2 3', width: 50 }, font: { color: 'Yellow', size: 6 } },
+    };
+
+    const result = overlayConverter.convert(overlay);
+
+    expect(result.style.fill.color).toEqual(StyleDefault.DEFAULT_FILL_COLOR);
+  });
+
   it('set default stroke color, when there is no fill color in API overlay on conversion', () => {
     const overlay: Overlay = {
       position: undefined,
       style: { fill: { color: 'Green', opacity: 10 }, stroke: { pattern: '2 3', width: 50 }, font: { color: 'Yellow', size: 6 } },
     };
+
+    const result = overlayConverter.convert(overlay);
+
+    expect(result.style.stroke.color).toEqual(StyleDefault.DEFAULT_STROKE_COLOR);
+  });
+
+  it('set default stroke color, when there is no fill in API overlay on conversion', () => {
+    const overlay: Overlay = {
+      position: undefined,
+      style: { stroke: { pattern: '2 3', width: 50 }, font: { color: 'Yellow', size: 6 } },
+    };
+
+    const result = overlayConverter.convert(overlay);
+
+    expect(result.style.stroke.color).toEqual(StyleDefault.DEFAULT_STROKE_COLOR);
+  });
+
+  it('set default stroke color, when there is no style in API overlay on conversion', () => {
+    const overlay: Overlay = { position: undefined };
 
     const result = overlayConverter.convert(overlay);
 
