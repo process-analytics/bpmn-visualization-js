@@ -27,35 +27,20 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     super(
       value,
       bounds,
-      // align
       undefined,
-      // valign
       undefined,
       style.font?.color,
-      // family
       undefined,
       style.font?.size,
-      // fontStyle
       undefined,
-      // spacing
       undefined,
-      // spacingTop
       undefined,
-      // spacingRight
       undefined,
-      // spacingBottom
       undefined,
-      // spacingLeft
       undefined,
-      // horizontal
       undefined,
       style.fill?.color,
       style.stroke?.color,
-      // wrap
-      // clipped
-      // overflow
-      // labelPadding
-      // textDirection
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
