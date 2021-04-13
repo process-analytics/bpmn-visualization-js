@@ -29,20 +29,20 @@ export class OverlayBadgeShape extends mxgraph.mxText {
       bounds,
       undefined,
       undefined,
-      style.font?.color,
+      style.font.color,
       undefined,
-      style.font?.size,
-      undefined,
-      undefined,
+      style.font.size,
       undefined,
       undefined,
       undefined,
       undefined,
       undefined,
-      style.fill?.color,
-      style.stroke?.color,
+      undefined,
+      undefined,
+      style.fill.color,
+      style.stroke.color,
     );
-    this.fillOpacity = style.fill?.opacity;
-    this.strokewidth = style.stroke?.width;
+    this.fillOpacity = style.fill.opacity;
+    this.strokewidth = style.stroke.width;
   }
 }
