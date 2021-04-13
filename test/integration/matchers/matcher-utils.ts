@@ -18,7 +18,7 @@ import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import { mxgraph } from '../../../src/component/mxgraph/initializer';
 import { mxCell, mxGeometry, StyleMap } from 'mxgraph';
-import { MxGraphCustomOverlay } from '../../../src/component/mxgraph/overlay/custom-overlay';
+import { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
 
 export interface ExpectedStateStyle extends StyleMap {
   verticalAlign?: string;
@@ -56,6 +56,7 @@ export interface ExpectedOverlay {
   label?: string;
   horizontalAlign?: string;
   verticalAlign?: string;
+  style?: MxGraphCustomOverlayStyle;
 }
 
 export const EXPECTED_LABEL = 'Expected in the mxGraph model';
@@ -176,6 +177,7 @@ export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCel
         label: cellOverlay.label,
         horizontalAlign: cellOverlay.align,
         verticalAlign: cellOverlay.verticalAlign,
+        style: cellOverlay.style,
       };
     });
   } else {

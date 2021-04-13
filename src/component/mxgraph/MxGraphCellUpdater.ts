@@ -49,7 +49,7 @@ export default class MxGraphCellUpdater {
       return;
     }
     ensureIsArray(overlays).forEach(overlay => {
-      const bpmnOverlay = new MxGraphCustomOverlay(overlay.label, this.overlayConverter.convertPosition(overlay));
+      const bpmnOverlay = new MxGraphCustomOverlay(overlay.label, this.overlayConverter.convert(overlay));
       this.graph.addCellOverlay(mxCell, bpmnOverlay);
     });
   }

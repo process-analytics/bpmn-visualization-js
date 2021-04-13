@@ -187,10 +187,37 @@ export class BpmnElementsRegistry {
    * @example
    * ```javascript
    * // Add an overlay to BPMN elements with id 'task_1'
-   * bpmnVisualization.bpmnElementsRegistry.addOverlays('task_1', { position: 'top-left', label: '40' });
+   * bpmnVisualization.bpmnElementsRegistry.addOverlays('task_1', {
+   *    position: 'top-left',
+   *    label: '40',
+   *    style: {
+   *      font: { color: 'Chartreuse', size: 8 },
+   *      fill: { color: 'Pink', opacity: 50 },
+   *      stroke: { color: 'DarkSeaGreen', width: 2 }
+   *    }
+   * });
    *
    * // Add several overlays to BPMN element with id 'task_3'
-   * bpmnVisualization.bpmnElementsRegistry.addOverlays('task_3', [{ position: 'bottom-right', label: '110' }, { position: 'top-left', label: '40' }]);
+   * bpmnVisualization.bpmnElementsRegistry.addOverlays('task_3', [
+   *    {
+   *      position: 'bottom-right',
+   *      label: '110',
+   *      style: {
+   *        font: { color: '#663399', size: 8 },
+   *        fill: { color: '#FFDAB9', opacity: 50 },
+   *        stroke: { color: 'DarkSeaGreen', width: 2 }
+   *      }
+   *    },
+   *    {
+   *      position: 'top-left',
+   *      label: '40',
+   *      style: {
+   *        font: { color: 'MidnightBlue', size: 30 },
+   *        fill: { color: 'Aquamarine', opacity: 70 },
+   *        stroke: { color: '#4B0082', width: 1 }
+   *      }
+   *    }
+   * ]);
    * ```
    *
    * @param bpmnElementId The BPMN id of the element where to add the overlays

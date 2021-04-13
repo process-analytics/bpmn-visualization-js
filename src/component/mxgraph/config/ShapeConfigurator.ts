@@ -146,7 +146,7 @@ export default class ShapeConfigurator {
 
           // START bpmn-visualization CUSTOMIZATION
           if (currentOverlay instanceof MxGraphCustomOverlay) {
-            overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxgraph.mxRectangle(0, 0, 0, 0));
+            overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxgraph.mxRectangle(0, 0, 0, 0), currentOverlay.style);
           } else {
             overlayShape = new mxgraph.mxImageShape(new mxgraph.mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
             (<mxImageShape>overlayShape).preserveImageAspect = false;

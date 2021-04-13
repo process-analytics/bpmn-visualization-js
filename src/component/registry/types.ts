@@ -51,7 +51,48 @@ export type OverlayPosition = OverlayShapePosition | OverlayEdgePosition;
 /**
  * @category Interaction
  */
+export interface OverlayStyle {
+  font?: OverlayFont;
+  fill?: OverlayFill;
+  stroke?: OverlayStroke;
+}
+
+/**
+ * The font family is {@link StyleDefault.DEFAULT_FONT_FAMILY}.
+ * @category Interaction
+ */
+export interface OverlayFont {
+  /** @default {@link StyleDefault.DEFAULT_OVERLAY_FONT_COLOR} */
+  color?: string;
+  /** @default {@link StyleDefault.DEFAULT_OVERLAY_FONT_SIZE} */
+  size?: number;
+}
+
+/**
+ * @category Interaction
+ */
+export interface OverlayFill {
+  /** @default {@link StyleDefault.DEFAULT_OVERLAY_FILL_COLOR} */
+  color?: string;
+  /** @default {@link StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY} */
+  opacity?: number;
+}
+
+/**
+ * @category Interaction
+ */
+export interface OverlayStroke {
+  /** @default {@link StyleDefault.DEFAULT_OVERLAY_STROKE_COLOR} */
+  color?: string;
+  /** @default {@link StyleDefault.DEFAULT_OVERLAY_STROKE_WIDTH} */
+  width?: number;
+}
+
+/**
+ * @category Interaction
+ */
 export interface Overlay {
   position: OverlayPosition;
   label?: string;
+  style?: OverlayStyle;
 }

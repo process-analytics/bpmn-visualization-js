@@ -98,15 +98,45 @@ function getCustomCssClassName(bpmnKind) {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function getOverlay(bpmnKind) {
   if (ShapeUtil.isActivity(bpmnKind)) {
-    return { position: 'top-left', label: '30' };
+    return {
+      position: 'top-left',
+      label: '30',
+      style: {
+        font: {
+          color: 'Chartreuse',
+          size: 30,
+        },
+        fill: {
+          color: 'DimGray',
+        },
+      },
+    };
   } else if (bpmnKind.includes('Gateway')) {
-    return { position: 'top-right', label: '3' };
+    return {
+      position: 'top-right',
+      label: '3',
+      style: {
+        stroke: {
+          color: 'HotPink',
+          width: 4,
+        },
+      },
+    };
   } else if (bpmnKind.includes('Event')) {
     return { position: 'bottom-left', label: '15' };
   } else if (bpmnKind.includes('lane')) {
     return { position: 'bottom-right', label: '100' };
   } else if (bpmnKind.includes('Flow')) {
-    return { position: 'middle', label: '999999' };
+    return {
+      position: 'middle',
+      label: '999999',
+      style: {
+        fill: {
+          color: 'PaleTurquoise',
+          opacity: 25,
+        },
+      },
+    };
   }
   return { position: 'top-left', label: '40' };
 }

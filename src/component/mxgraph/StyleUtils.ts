@@ -22,6 +22,10 @@ export enum MarkerIdentifier {
   ARROW_DASH = 'bpmn.dash',
 }
 
+/**
+ * Store all rendering defaults used by `bpmn-visualization`.
+ * @experimental The way we store and allow to change the defaults in the current form is subject to change without prior any notice.
+ */
 export enum StyleDefault {
   STROKE_WIDTH_THIN = 2,
   STROKE_WIDTH_THICK = 5,
@@ -42,6 +46,13 @@ export enum StyleDefault {
   DEFAULT_DASHED = 0, // it means 'false'
   DEFAULT_FIX_DASH = 0, // it means 'false'
   DEFAULT_DASH_PATTERN = '3 3',
+  // Overlay defaults
+  DEFAULT_OVERLAY_FILL_COLOR = DEFAULT_FILL_COLOR,
+  DEFAULT_OVERLAY_FILL_OPACITY = 100,
+  DEFAULT_OVERLAY_STROKE_COLOR = DEFAULT_STROKE_COLOR,
+  DEFAULT_OVERLAY_STROKE_WIDTH = 1,
+  DEFAULT_OVERLAY_FONT_SIZE = DEFAULT_FONT_SIZE,
+  DEFAULT_OVERLAY_FONT_COLOR = DEFAULT_FONT_COLOR,
 }
 
 export enum StyleIdentifier {
