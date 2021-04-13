@@ -23,3 +23,6 @@ export { GlobalOptions, NavigationConfiguration, FitOptions, FitType, LoadOption
 export { BpmnElement, BpmnElementsRegistry, BpmnSemantic } from '../../component/registry';
 export * from '../../component/registry/types';
 export * from '../../model/bpmn/internal/api';
+
+// Other
+export { StyleDefault } from '../../component/mxgraph/StyleUtils';

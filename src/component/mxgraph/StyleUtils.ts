@@ -22,6 +22,10 @@ export enum MarkerIdentifier {
   ARROW_DASH = 'bpmn.dash',
 }
 
+/**
+ * Store all rendering defaults used by `bpmn-visualization`.
+ * @experimental The way we store and allow to change the defaults in the current form is subject to change without prior any notice.
+ */
 export enum StyleDefault {
   STROKE_WIDTH_THIN = 2,
   STROKE_WIDTH_THICK = 5,
