@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Overlay, OverlayPosition } from '../../registry';
+import { Overlay, OverlayFont, OverlayPosition, OverlayFill, OverlayStroke } from '../../registry';
 import { StyleDefault } from '../StyleUtils';
 import { MxGraphCustomOverlayOptions, MxGraphCustomOverlayPosition, MxGraphCustomOverlayStyle } from './custom-overlay';
 
@@ -58,15 +58,31 @@ export class OverlayConverter {
       return convertedStyle;
     }
 
-    convertedStyle.fill.color = style.fill?.color ?? convertedStyle.fill.color;
-    convertedStyle.fill.opacity = style.fill?.opacity ?? convertedStyle.fill.opacity;
-
-    convertedStyle.stroke.color = style.stroke?.color ?? convertedStyle.stroke.color;
-    convertedStyle.stroke.width = style.stroke?.width ?? convertedStyle.stroke.width;
-
-    convertedStyle.font.color = style.font?.color ?? convertedStyle.font.color;
-    convertedStyle.font.size = style.font?.size ?? convertedStyle.font.size;
+    this.convertFill(convertedStyle, style.fill);
+    this.convertStroke(convertedStyle, style.stroke);
+    this.convertFont(convertedStyle, style.font);
 
     return convertedStyle;
+  }
+
+  private static convertFill(convertedStyle: MxGraphCustomOverlayStyle, apiFill: OverlayFill): void {
+    if (apiFill) {
+      convertedStyle.fill.color = apiFill.color ?? convertedStyle.fill.color;
+      convertedStyle.fill.opacity = apiFill.opacity ?? convertedStyle.fill.opacity;
+    }
+  }
+
+  private static convertStroke(convertedStyle: MxGraphCustomOverlayStyle, apiStroke: OverlayStroke): void {
+    if (apiStroke) {
+      convertedStyle.stroke.color = apiStroke.color ?? convertedStyle.stroke.color;
+      convertedStyle.stroke.width = apiStroke.width ?? convertedStyle.stroke.width;
+    }
+  }
+
+  private static convertFont(convertedStyle: MxGraphCustomOverlayStyle, apiFont: OverlayFont): void {
+    if (apiFont) {
+      convertedStyle.font.color = apiFont.color ?? convertedStyle.font.color;
+      convertedStyle.font.size = apiFont.size ?? convertedStyle.font.size;
+    }
   }
 }
