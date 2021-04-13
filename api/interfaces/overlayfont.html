@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>BpmnElement | BpmnVisualization API Documentation</title>
+	<title>OverlayFont | BpmnVisualization API Documentation</title>
 	<meta name="description" content="Documentation for BpmnVisualization API Documentation">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -53,21 +53,28 @@
 					<a href="../index.html">BpmnVisualization API Documentation</a>
 				</li>
 				<li>
-					<a href="bpmnelement.html">BpmnElement</a>
+					<a href="overlayfont.html">OverlayFont</a>
 				</li>
 			</ul>
-			<h1>Interface BpmnElement</h1>
+			<h1>Interface OverlayFont</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The font family is <a href="../enums/styledefault.html#default_font_family">StyleDefault.DEFAULT_FONT_FAMILY</a>.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">BpmnElement</span>
+						<span class="target">OverlayFont</span>
 					</li>
 				</ul>
 			</section>
@@ -78,8 +85,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="bpmnelement.html#bpmnsemantic" class="tsd-kind-icon">bpmn<wbr>Semantic</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="bpmnelement.html#htmlelement" class="tsd-kind-icon">html<wbr>Element</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="overlayfont.html#color" class="tsd-kind-icon">color</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="overlayfont.html#size" class="tsd-kind-icon">size</a></li>
 							</ul>
 						</section>
 					</div>
@@ -88,24 +95,38 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="bpmnsemantic" class="tsd-anchor"></a>
-					<h3>bpmn<wbr>Semantic</h3>
-					<div class="tsd-signature tsd-kind-icon">bpmn<wbr>Semantic<span class="tsd-signature-symbol">:</span> <a href="bpmnsemantic.html" class="tsd-signature-type" data-tsd-kind="Interface">BpmnSemantic</a></div>
+					<a name="color" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> color</h3>
+					<div class="tsd-signature tsd-kind-icon">color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/84d85cc/src/component/registry/types.ts#L34">component/registry/types.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/84d85cc/src/component/registry/types.ts#L66">component/registry/types.ts:66</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>default</dt>
+							<dd><p><a href="../enums/styledefault.html#default_overlay_font_color">StyleDefault.DEFAULT_OVERLAY_FONT_COLOR</a></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="htmlelement" class="tsd-anchor"></a>
-					<h3>html<wbr>Element</h3>
-					<div class="tsd-signature tsd-kind-icon">html<wbr>Element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<a name="size" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> size</h3>
+					<div class="tsd-signature tsd-kind-icon">size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/84d85cc/src/component/registry/types.ts#L35">component/registry/types.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/84d85cc/src/component/registry/types.ts#L68">component/registry/types.ts:68</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>default</dt>
+							<dd><p><a href="../enums/styledefault.html#default_overlay_font_size">StyleDefault.DEFAULT_OVERLAY_FONT_SIZE</a></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -137,21 +158,9 @@
 					<li class=" tsd-kind-class">
 						<a href="../classes/bpmnvisualization.html" class="tsd-kind-icon">Bpmn<wbr>Visualization</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface">
+					<li class=" tsd-kind-interface">
 						<a href="bpmnelement.html" class="tsd-kind-icon">Bpmn<wbr>Element</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="bpmnelement.html#bpmnsemantic" class="tsd-kind-icon">bpmn<wbr>Semantic</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="bpmnelement.html#htmlelement" class="tsd-kind-icon">html<wbr>Element</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface">
 						<a href="bpmnsemantic.html" class="tsd-kind-icon">Bpmn<wbr>Semantic</a>
 					</li>
@@ -173,9 +182,21 @@
 					<li class=" tsd-kind-interface">
 						<a href="overlayfill.html" class="tsd-kind-icon">Overlay<wbr>Fill</a>
 					</li>
-					<li class=" tsd-kind-interface">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface">
 						<a href="overlayfont.html" class="tsd-kind-icon">Overlay<wbr>Font</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="overlayfont.html#color" class="tsd-kind-icon">color</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="overlayfont.html#size" class="tsd-kind-icon">size</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface">
 						<a href="overlaystroke.html" class="tsd-kind-icon">Overlay<wbr>Stroke</a>
 					</li>

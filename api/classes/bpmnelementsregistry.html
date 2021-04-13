@@ -123,7 +123,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/6d0ab71/src/component/registry/bpmn-elements-registry.ts#L127">component/registry/bpmn-elements-registry.ts:127</a></li>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/84d85cc/src/component/registry/bpmn-elements-registry.ts#L127">component/registry/bpmn-elements-registry.ts:127</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -171,7 +171,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/6d0ab71/src/component/registry/bpmn-elements-registry.ts#L199">component/registry/bpmn-elements-registry.ts:199</a></li>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/84d85cc/src/component/registry/bpmn-elements-registry.ts#L226">component/registry/bpmn-elements-registry.ts:226</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -182,10 +182,37 @@
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
 									<dd><pre><code class="language-javascript"><span style="color: #008000">// Add an overlay to BPMN elements with id &#039;task_1&#039;</span>
-<span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span><span style="color: #000000">.</span><span style="color: #795E26">addOverlays</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;task_1&#039;</span><span style="color: #000000">, { </span><span style="color: #001080">position:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;top-left&#039;</span><span style="color: #000000">, </span><span style="color: #001080">label:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;40&#039;</span><span style="color: #000000"> });</span>
+<span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span><span style="color: #000000">.</span><span style="color: #795E26">addOverlays</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;task_1&#039;</span><span style="color: #000000">, {</span>
+<span style="color: #000000">   </span><span style="color: #001080">position:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;top-left&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">   </span><span style="color: #001080">label:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;40&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">   </span><span style="color: #001080">style:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">     </span><span style="color: #001080">font:</span><span style="color: #000000"> { </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Chartreuse&#039;</span><span style="color: #000000">, </span><span style="color: #001080">size:</span><span style="color: #000000"> </span><span style="color: #098658">8</span><span style="color: #000000"> },</span>
+<span style="color: #000000">     </span><span style="color: #001080">fill:</span><span style="color: #000000"> { </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Pink&#039;</span><span style="color: #000000">, </span><span style="color: #001080">opacity:</span><span style="color: #000000"> </span><span style="color: #098658">50</span><span style="color: #000000"> },</span>
+<span style="color: #000000">     </span><span style="color: #001080">stroke:</span><span style="color: #000000"> { </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;DarkSeaGreen&#039;</span><span style="color: #000000">, </span><span style="color: #001080">width:</span><span style="color: #000000"> </span><span style="color: #098658">2</span><span style="color: #000000"> }</span>
+<span style="color: #000000">   }</span>
+<span style="color: #000000">});</span>
 
 <span style="color: #008000">// Add several overlays to BPMN element with id &#039;task_3&#039;</span>
-<span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span><span style="color: #000000">.</span><span style="color: #795E26">addOverlays</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;task_3&#039;</span><span style="color: #000000">, [{ </span><span style="color: #001080">position:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;bottom-right&#039;</span><span style="color: #000000">, </span><span style="color: #001080">label:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;110&#039;</span><span style="color: #000000"> }, { </span><span style="color: #001080">position:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;top-left&#039;</span><span style="color: #000000">, </span><span style="color: #001080">label:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;40&#039;</span><span style="color: #000000"> }]);</span>
+<span style="color: #001080">bpmnVisualization</span><span style="color: #000000">.</span><span style="color: #001080">bpmnElementsRegistry</span><span style="color: #000000">.</span><span style="color: #795E26">addOverlays</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;task_3&#039;</span><span style="color: #000000">, [</span>
+<span style="color: #000000">   {</span>
+<span style="color: #000000">     </span><span style="color: #001080">position:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;bottom-right&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">     </span><span style="color: #001080">label:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;110&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">     </span><span style="color: #001080">style:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">       </span><span style="color: #001080">font:</span><span style="color: #000000"> { </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#663399&#039;</span><span style="color: #000000">, </span><span style="color: #001080">size:</span><span style="color: #000000"> </span><span style="color: #098658">8</span><span style="color: #000000"> },</span>
+<span style="color: #000000">       </span><span style="color: #001080">fill:</span><span style="color: #000000"> { </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#FFDAB9&#039;</span><span style="color: #000000">, </span><span style="color: #001080">opacity:</span><span style="color: #000000"> </span><span style="color: #098658">50</span><span style="color: #000000"> },</span>
+<span style="color: #000000">       </span><span style="color: #001080">stroke:</span><span style="color: #000000"> { </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;DarkSeaGreen&#039;</span><span style="color: #000000">, </span><span style="color: #001080">width:</span><span style="color: #000000"> </span><span style="color: #098658">2</span><span style="color: #000000"> }</span>
+<span style="color: #000000">     }</span>
+<span style="color: #000000">   },</span>
+<span style="color: #000000">   {</span>
+<span style="color: #000000">     </span><span style="color: #001080">position:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;top-left&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">     </span><span style="color: #001080">label:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;40&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">     </span><span style="color: #001080">style:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">       </span><span style="color: #001080">font:</span><span style="color: #000000"> { </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;MidnightBlue&#039;</span><span style="color: #000000">, </span><span style="color: #001080">size:</span><span style="color: #000000"> </span><span style="color: #098658">30</span><span style="color: #000000"> },</span>
+<span style="color: #000000">       </span><span style="color: #001080">fill:</span><span style="color: #000000"> { </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Aquamarine&#039;</span><span style="color: #000000">, </span><span style="color: #001080">opacity:</span><span style="color: #000000"> </span><span style="color: #098658">70</span><span style="color: #000000"> },</span>
+<span style="color: #000000">       </span><span style="color: #001080">stroke:</span><span style="color: #000000"> { </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#4B0082&#039;</span><span style="color: #000000">, </span><span style="color: #001080">width:</span><span style="color: #000000"> </span><span style="color: #098658">1</span><span style="color: #000000"> }</span>
+<span style="color: #000000">     }</span>
+<span style="color: #000000">   }</span>
+<span style="color: #000000">]);</span>
 </code></pre>
 									</dd>
 								</dl>
@@ -219,7 +246,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/6d0ab71/src/component/registry/bpmn-elements-registry.ts#L72">component/registry/bpmn-elements-registry.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/84d85cc/src/component/registry/bpmn-elements-registry.ts#L72">component/registry/bpmn-elements-registry.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -254,7 +281,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/6d0ab71/src/component/registry/bpmn-elements-registry.ts#L91">component/registry/bpmn-elements-registry.ts:91</a></li>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/84d85cc/src/component/registry/bpmn-elements-registry.ts#L91">component/registry/bpmn-elements-registry.ts:91</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -289,7 +316,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/6d0ab71/src/component/registry/bpmn-elements-registry.ts#L216">component/registry/bpmn-elements-registry.ts:216</a></li>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/84d85cc/src/component/registry/bpmn-elements-registry.ts#L243">component/registry/bpmn-elements-registry.ts:243</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -328,7 +355,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/6d0ab71/src/component/registry/bpmn-elements-registry.ts#L146">component/registry/bpmn-elements-registry.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/84d85cc/src/component/registry/bpmn-elements-registry.ts#L146">component/registry/bpmn-elements-registry.ts:146</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -375,7 +402,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/6d0ab71/src/component/registry/bpmn-elements-registry.ts#L166">component/registry/bpmn-elements-registry.ts:166</a></li>
+									<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/84d85cc/src/component/registry/bpmn-elements-registry.ts#L166">component/registry/bpmn-elements-registry.ts:166</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -434,6 +461,9 @@
 					<li class=" tsd-kind-enum">
 						<a href="../enums/shapebpmnelementkind.html" class="tsd-kind-icon">Shape<wbr>Bpmn<wbr>Element<wbr>Kind</a>
 					</li>
+					<li class=" tsd-kind-enum">
+						<a href="../enums/styledefault.html" class="tsd-kind-icon">Style<wbr>Default</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
@@ -487,6 +517,18 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/overlay.html" class="tsd-kind-icon">Overlay</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/overlayfill.html" class="tsd-kind-icon">Overlay<wbr>Fill</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/overlayfont.html" class="tsd-kind-icon">Overlay<wbr>Font</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/overlaystroke.html" class="tsd-kind-icon">Overlay<wbr>Stroke</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/overlaystyle.html" class="tsd-kind-icon">Overlay<wbr>Style</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/zoomconfiguration.html" class="tsd-kind-icon">Zoom<wbr>Configuration</a>
