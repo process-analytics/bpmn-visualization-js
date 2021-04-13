@@ -74,6 +74,21 @@ describe('overlay converter', () => {
     });
   });
 
+  it('use default fill, when there is no fill in API overlay on conversion', () => {
+    const overlay: Overlay = {
+      position: undefined,
+      style: { stroke: { color: 'Red', width: 5 }, font: { color: 'Yellow', size: 16 } },
+    };
+
+    const result = overlayConverter.convert(overlay);
+
+    expect(result.style).toEqual({
+      fill: { color: StyleDefault.DEFAULT_OVERLAY_FILL_COLOR, opacity: StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY },
+      stroke: { color: 'Red', width: 5 },
+      font: { color: 'Yellow', size: 16 },
+    });
+  });
+
   it('use default fill color, when there is no fill color in API overlay on conversion', () => {
     const overlay: Overlay = {
       position: undefined,
@@ -89,18 +104,33 @@ describe('overlay converter', () => {
     });
   });
 
-  it('use default fill color, when there is no fill in API overlay on conversion', () => {
+  it('use default fill opacity, when there is no fill opacity in API overlay on conversion', () => {
     const overlay: Overlay = {
       position: undefined,
-      style: { stroke: { color: 'Red', width: 5 }, font: { color: 'Yellow', size: 16 } },
+      style: { fill: { color: 'Chartreuse' }, stroke: { color: 'Gray', width: 4 }, font: { color: 'Orange', size: 6 } },
     };
 
     const result = overlayConverter.convert(overlay);
 
     expect(result.style).toEqual({
-      fill: { color: StyleDefault.DEFAULT_OVERLAY_FILL_COLOR, opacity: StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY },
-      stroke: { color: 'Red', width: 5 },
-      font: { color: 'Yellow', size: 16 },
+      fill: { color: 'Chartreuse', opacity: StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY },
+      stroke: { color: 'Gray', width: 4 },
+      font: { color: 'Orange', size: 6 },
+    });
+  });
+
+  it('use default stroke, when there is no stroke in API overlay on conversion', () => {
+    const overlay: Overlay = {
+      position: undefined,
+      style: { fill: { color: 'Chartreuse', opacity: 50 }, font: { color: 'Pink', size: 8 } },
+    };
+
+    const result = overlayConverter.convert(overlay);
+
+    expect(result.style).toEqual({
+      fill: { color: 'Chartreuse', opacity: 50 },
+      stroke: { color: StyleDefault.DEFAULT_OVERLAY_FONT_COLOR, width: StyleDefault.DEFAULT_OVERLAY_STROKE_WIDTH },
+      font: { color: 'Pink', size: 8 },
     });
   });
 
@@ -119,18 +149,33 @@ describe('overlay converter', () => {
     });
   });
 
-  it('use default stroke color, when there is no stroke in API overlay on conversion', () => {
+  it('use default stroke width, when there is no stroke width in API overlay on conversion', () => {
     const overlay: Overlay = {
       position: undefined,
-      style: { font: { color: 'Pink', size: 8 } },
+      style: { fill: { color: 'Chartreuse', opacity: 10 }, stroke: { color: 'Gray' }, font: { color: 'Brown', size: 10 } },
     };
 
     const result = overlayConverter.convert(overlay);
 
     expect(result.style).toEqual({
-      fill: { color: StyleDefault.DEFAULT_OVERLAY_FILL_COLOR, opacity: StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY },
-      stroke: { color: StyleDefault.DEFAULT_OVERLAY_FONT_COLOR, width: StyleDefault.DEFAULT_OVERLAY_STROKE_WIDTH },
-      font: { color: 'Pink', size: 8 },
+      fill: { color: 'Chartreuse', opacity: 10 },
+      stroke: { color: 'Gray', width: StyleDefault.DEFAULT_OVERLAY_STROKE_WIDTH },
+      font: { color: 'Brown', size: 10 },
+    });
+  });
+
+  it('use default font, when there is no font in API overlay on conversion', () => {
+    const overlay: Overlay = {
+      position: undefined,
+      style: { fill: { color: 'Chartreuse', opacity: 10 }, stroke: { color: 'Red', width: 5 } },
+    };
+
+    const result = overlayConverter.convert(overlay);
+
+    expect(result.style).toEqual({
+      fill: { color: 'Chartreuse', opacity: 10 },
+      stroke: { color: 'Red', width: 5 },
+      font: { color: StyleDefault.DEFAULT_OVERLAY_FONT_COLOR, size: StyleDefault.DEFAULT_OVERLAY_FONT_SIZE },
     });
   });
 
@@ -149,18 +194,18 @@ describe('overlay converter', () => {
     });
   });
 
-  it('use default font, when there is no font in API overlay on conversion', () => {
+  it('use default font size, when there is no font size in API overlay on conversion', () => {
     const overlay: Overlay = {
       position: undefined,
-      style: { fill: { color: 'Chartreuse', opacity: 10 }, stroke: { color: 'Red', width: 5 } },
+      style: { fill: { color: 'Chartreuse', opacity: 10 }, stroke: { color: 'Blue', width: 3 }, font: { color: 'Yellow' } },
     };
 
     const result = overlayConverter.convert(overlay);
 
     expect(result.style).toEqual({
       fill: { color: 'Chartreuse', opacity: 10 },
-      stroke: { color: 'Red', width: 5 },
-      font: { color: StyleDefault.DEFAULT_OVERLAY_FONT_COLOR, size: StyleDefault.DEFAULT_OVERLAY_FONT_SIZE },
+      stroke: { color: 'Blue', width: 3 },
+      font: { color: 'Yellow', size: StyleDefault.DEFAULT_OVERLAY_FONT_SIZE },
     });
   });
 });
