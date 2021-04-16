@@ -376,24 +376,24 @@ describe('Overlay style', () => {
 
     protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
-        // [
-        //   'fill',
-        //   {
-        //     macos: 0, //
-        //   },
-        // ],
-        // [
-        //   'font',
-        //   {
-        //     macos: 0, //
-        //   },
-        // ],
-        // [
-        //   'stroke',
-        //   {
-        //     macos: 0, //
-        //   },
-        // ],
+        [
+          'fill',
+          {
+            macos: 0.0015, // 0.1454447604660958%
+          },
+        ],
+        [
+          'font',
+          {
+            macos: 0.001, // 0.09974937844267062%
+          },
+        ],
+        [
+          'stroke',
+          {
+            macos: 0.0013, // 0.12270105834573108%
+          },
+        ],
       ]);
     }
   }
