@@ -82,6 +82,3 @@ export async function chromiumZoom(xTimes: number, x: number, y: number, deltaX:
 // inspired from https://github.com/xtermjs/xterm.js/commit/7400b888df698d15864ab2c41ad0ed0262f812fb#diff-23460af115aa97331c36c0ce462cbc4dd8067c0ddbca1e9d3de560ebf44024ee
 // Wheel events are hacked using private API that is only available in Chromium
 export const itMouseWheel = getTestedBrowserFamily() === 'chromium' ? it : it.skip;
-
-// TODO enable panning tests on webkit (see https://github.com/process-analytics/bpmn-visualization-js/pull/1197)
-export const itPanning = getTestedBrowserFamily() === 'webkit' ? it.skip : it;

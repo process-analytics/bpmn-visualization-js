@@ -18,7 +18,7 @@ import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserIm
 import { PageTester } from './helpers/visu/PageTester';
 import { join } from 'path';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
-import { chromiumZoom, clickOnButton, itMouseWheel, itPanning, mousePanning } from './helpers/test-utils';
+import { chromiumZoom, clickOnButton, itMouseWheel, mousePanning } from './helpers/test-utils';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
 
@@ -279,7 +279,7 @@ describe('Overlay navigation', () => {
     await addOverlays('Flow_1', 'start');
   });
 
-  itPanning('panning', async () => {
+  it('panning', async () => {
     await mousePanning(containerCenterX, containerCenterY);
 
     const image = await page.screenshot({ fullPage: true });

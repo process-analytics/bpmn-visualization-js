@@ -16,7 +16,7 @@
 import 'jest-playwright-preset';
 import { join } from 'path';
 import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
-import { chromiumZoom, itMouseWheel, itPanning, mousePanning } from './helpers/test-utils';
+import { chromiumZoom, itMouseWheel, mousePanning } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/PageTester';
 
 describe('diagram navigation', () => {
@@ -50,7 +50,7 @@ describe('diagram navigation', () => {
     containerCenterY = bounding_box.y + bounding_box.height / 2;
   });
 
-  itPanning('mouse panning', async () => {
+  it('mouse panning', async () => {
     await mousePanning(containerCenterX, containerCenterY);
 
     const image = await page.screenshot({ fullPage: true });
