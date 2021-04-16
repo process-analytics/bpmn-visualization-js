@@ -18,13 +18,13 @@ import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserIm
 import { PageTester } from './helpers/visu/PageTester';
 import { join } from 'path';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
-import { chromiumZoom, clickOnButton, itMouseWheel, mousePanning } from './helpers/test-utils';
+import { chromiumZoom, clickOnButton, itMouseWheel, itPanning, mousePanning } from './helpers/test-utils';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    super({ chromium: 0.000005, firefox: 0.0004 });
+    super({ chromium: 0.000005, firefox: 0.0004, webkit: 0 });
   }
 
   getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -92,6 +92,35 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           linux: 0.0014, // 0.08228072459832703% / 0.13226428690803482% / 0.05865724301086228%
           windows: 0.0024, // 0.23601194547107074%
           macos: 0.0026, // 0.25655896127774197%
+        },
+      ],
+    ]);
+  }
+
+  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'overlays.start.flow.task.gateway',
+        {
+          macos: 0.0051, // max 0.5021666239539258%
+        },
+      ],
+      [
+        'overlays.edges.message.flows.complex.paths',
+        {
+          macos: 0.0028, // max 0.2757481729149802%
+        },
+      ],
+      [
+        'overlays.edges.associations.complex.paths',
+        {
+          macos: 0.0028, // max 0.2757481729149802%
+        },
+      ],
+      [
+        'overlays.edges.sequence.flows.complex.paths',
+        {
+          macos: 0.00049, // max 0.048499647723088124%
         },
       ],
     ]);
@@ -250,7 +279,7 @@ describe('Overlay navigation', () => {
     await addOverlays('Flow_1', 'start');
   });
 
-  it('panning', async () => {
+  itPanning('panning', async () => {
     await mousePanning(containerCenterX, containerCenterY);
 
     const image = await page.screenshot({ fullPage: true });

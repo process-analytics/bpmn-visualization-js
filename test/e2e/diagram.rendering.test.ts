@@ -60,7 +60,7 @@ const bpmnDiagramNames = getBpmnDiagramNames('diagram');
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
     const defaultFailureThreshold = 0.00006; // all OS 0.005379276499073438%
-    super({ chromium: defaultFailureThreshold, firefox: defaultFailureThreshold });
+    super({ chromium: defaultFailureThreshold, firefox: defaultFailureThreshold, webkit: defaultFailureThreshold });
   }
   getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     // if no dedicated information, set minimal threshold to make test pass on Github Workflow
@@ -104,6 +104,35 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           macos: 0.009, // 0.888760314347159%
           // TODO possible rendering issue so high threshold value
           windows: 0.03801, // 3.800922249553762%
+        },
+      ],
+    ]);
+  }
+
+  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'horizontal',
+        {
+          macos: 0.00036, // max is 0.035199515671680004%
+        },
+      ],
+      [
+        'vertical',
+        {
+          macos: 0.00046, // max is 0.04522854257075215%
+        },
+      ],
+      [
+        'with.outside.flows',
+        {
+          macos: 0.00065, // max is 0.06479851023247772%
+        },
+      ],
+      [
+        'with.outside.labels',
+        {
+          macos: 0.0076, // max is 0.7546899046749656%
         },
       ],
     ]);
