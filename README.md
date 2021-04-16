@@ -1,5 +1,3 @@
-error
-
 <h1 align="center">BPMN Visualization</h1>
 <div align="center">
     <p align="center"> <img title="BPMN Visualization" src="docs/users/images/diagram-example.png" alt="BPMN Visualization diagram example"></p>
