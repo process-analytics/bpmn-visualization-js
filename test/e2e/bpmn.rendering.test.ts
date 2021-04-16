@@ -24,8 +24,9 @@ import { PageTester } from './helpers/visu/PageTester';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
+  // threshold for webkit is taken from macOS only
   constructor() {
-    super({ chromium: defaultChromiumFailureThreshold, firefox: 0.00011 });
+    super({ chromium: defaultChromiumFailureThreshold, firefox: 0.00011, webkit: 0.001 });
   }
 
   getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -216,6 +217,69 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           linux: 0.0025, // 0.24225262309340861%
           macos: 0.0025, // 0.24225262309340861%
           windows: 0.0025, // 0.24225262309340861%
+        },
+      ],
+    ]);
+  }
+
+  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'flows.message.02.labels.and.complex.paths',
+        {
+          macos: 0.0059, // 0.587504762739699%
+        },
+      ],
+      [
+        'labels.01.general',
+        {
+          // TODO possible rendering issue so high threshold value
+          macos: 0.0243, // 2.4291837017836326%
+        },
+      ],
+      [
+        'labels.02.position.and.line.breaks',
+        {
+          // TODO possible rendering issue so high threshold value
+          macos: 0.011, // 1.095951298813913%
+        },
+      ],
+      [
+        'labels.03.default.position',
+        {
+          macos: 0.006, // 0.596780142516129%
+        },
+      ],
+      [
+        'labels.04.fonts',
+        {
+          macos: 0.00625, // 0.6239949108655218%
+        },
+      ],
+      [
+        'pools.01.labels.and.lanes',
+        {
+          macos: 0.0027, // 0.2698812341275669%
+        },
+      ],
+      [
+        'pools.02.vertical.with.lanes',
+        {
+          macos: 0.0024, // 0.233821428404013%
+        },
+      ],
+      [
+        'pools.03.black.box',
+        {
+          macos: 0.0023, // 0.2242640286478026%
+        },
+      ],
+
+      // tests without labels
+      [
+        'events',
+        {
+          macos: 0.0014, // 0.13948026408254768%
         },
       ],
     ]);
