@@ -310,7 +310,7 @@ describe('Overlay style', () => {
   class OverlayStylesImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     constructor() {
       // don't set defaults as we defined thresholds for all style variants
-      super({ chromium: 0, firefox: 0 });
+      super({ chromium: 0, firefox: 0, webkit: 0 });
     }
 
     getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -371,6 +371,29 @@ describe('Overlay style', () => {
             windows: 0.00032, // 0.03129199556292095%
           },
         ],
+      ]);
+    }
+
+    protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+      return new Map<string, ImageSnapshotThresholdConfig>([
+        // [
+        //   'fill',
+        //   {
+        //     macos: 0, //
+        //   },
+        // ],
+        // [
+        //   'font',
+        //   {
+        //     macos: 0, //
+        //   },
+        // ],
+        // [
+        //   'stroke',
+        //   {
+        //     macos: 0, //
+        //   },
+        // ],
       ]);
     }
   }
