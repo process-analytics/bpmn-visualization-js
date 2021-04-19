@@ -99,7 +99,7 @@
     "@types/minimist": "^1.2.1",
     "@typescript-eslint/eslint-plugin": "^4.22.1",
     "@typescript-eslint/parser": "^4.22.1",
-    "asciidoctor": "^2.2.2",
+    "asciidoctor": "^2.2.3",
     "autoprefixer": "^10.2.5",
     "chokidar-cli": "^2.1.0",
     "clipboardy": "^2.3.0",
