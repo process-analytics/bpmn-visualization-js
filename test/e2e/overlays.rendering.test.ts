@@ -18,14 +18,13 @@ import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserIm
 import { PageTester } from './helpers/visu/PageTester';
 import { join } from 'path';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
-import { chromiumZoom, clickOnButton, itMouseWheel, mousePanning } from './helpers/test-utils';
-import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
+import { chromiumZoom, clickOnButton, itMouseWheel, itPanning, mousePanning } from './helpers/test-utils';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    super({ chromium: 0.000005, firefox: 0.0004 });
+    super({ chromium: 0.000005, firefox: 0.0004, webkit: 0 });
   }
 
   getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -97,14 +96,35 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       ],
     ]);
   }
-}
 
-function buildOverlaySnapshotDir(config: MatchImageSnapshotOptions, position: OverlayPosition): string {
-  return join(config.customSnapshotsDir, `on-position-${position}`);
-}
-
-function buildOverlayDiffDir(config: MatchImageSnapshotOptions, position: OverlayPosition): string {
-  return join(config.customDiffDir, `on-position-${position}`);
+  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'overlays.start.flow.task.gateway',
+        {
+          macos: 0.0051, // max 0.5021666239539258%
+        },
+      ],
+      [
+        'overlays.edges.message.flows.complex.paths',
+        {
+          macos: 0.0028, // max 0.2757481729149802%
+        },
+      ],
+      [
+        'overlays.edges.associations.complex.paths',
+        {
+          macos: 0.0028, // max 0.2757481729149802%
+        },
+      ],
+      [
+        'overlays.edges.sequence.flows.complex.paths',
+        {
+          macos: 0.00049, // max 0.048499647723088124%
+        },
+      ],
+    ]);
+  }
 }
 
 async function addOverlays(bpmnElementIds: string | string[], positions: OverlayPosition | OverlayPosition[]): Promise<void> {
@@ -138,6 +158,10 @@ const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle:
 describe('BPMN Shapes with overlays', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
 
+  function getShapeDir(dir: string): string {
+    return join(dir, `on.shape`);
+  }
+
   it.each(overlayShapePositionValues)(`add overlay on StartEvent, Gateway and Task on %s`, async (position: OverlayShapePosition) => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
@@ -147,9 +171,9 @@ describe('BPMN Shapes with overlays', () => {
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
-      customSnapshotIdentifier: 'add.overlay.on.task.gateway.and.event',
-      customSnapshotsDir: buildOverlaySnapshotDir(config, position),
-      customDiffDir: buildOverlayDiffDir(config, position),
+      customSnapshotIdentifier: `add.overlay.on.position.${position}`,
+      customSnapshotsDir: getShapeDir(config.customSnapshotsDir),
+      customDiffDir: getShapeDir(config.customDiffDir),
     });
   });
 
@@ -165,6 +189,8 @@ describe('BPMN Shapes with overlays', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'remove.all.overlays.of.shape',
+      customSnapshotsDir: getShapeDir(config.customSnapshotsDir),
+      customDiffDir: getShapeDir(config.customDiffDir),
     });
   });
 });
@@ -192,6 +218,14 @@ describe('BPMN Edges with overlays', () => {
     ],
     ['overlays.edges.sequence.flows.complex.paths', 'sequence', ['Flow_039xs1c', 'Flow_0m2ldux', 'Flow_1r3oti3', 'Flow_1byeukq']],
   ])('diagram %s', (bpmnDiagramName: string, edgeKind: string, bpmnElementIds: string[]) => {
+    function getEdgeDir(dir: string): string {
+      return join(dir, `on.edge`);
+    }
+
+    function getEdgePositionDir(dir: string, position: OverlayEdgePosition): string {
+      return join(getEdgeDir(dir), `on-position-${position}`);
+    }
+
     it.each(overlayEdgePositionValues)(`add overlay on ${edgeKind} flow on %s`, async (position: OverlayEdgePosition) => {
       await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
@@ -202,8 +236,8 @@ describe('BPMN Edges with overlays', () => {
       expect(image).toMatchImageSnapshot({
         ...config,
         customSnapshotIdentifier: `add.overlay.on.${edgeKind}.flow`,
-        customSnapshotsDir: buildOverlaySnapshotDir(config, position),
-        customDiffDir: buildOverlayDiffDir(config, position),
+        customSnapshotsDir: getEdgePositionDir(config.customSnapshotsDir, position),
+        customDiffDir: getEdgePositionDir(config.customDiffDir, position),
       });
     });
 
@@ -220,6 +254,8 @@ describe('BPMN Edges with overlays', () => {
       expect(image).toMatchImageSnapshot({
         ...config,
         customSnapshotIdentifier: `remove.all.overlays.of.${edgeKind}.flow`,
+        customSnapshotsDir: getEdgeDir(config.customSnapshotsDir),
+        customDiffDir: getEdgeDir(config.customDiffDir),
       });
     });
   });
@@ -243,7 +279,7 @@ describe('Overlay navigation', () => {
     await addOverlays('Flow_1', 'start');
   });
 
-  it('panning', async () => {
+  itPanning('panning', async () => {
     await mousePanning(containerCenterX, containerCenterY);
 
     const image = await page.screenshot({ fullPage: true });
