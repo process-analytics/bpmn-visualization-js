@@ -306,16 +306,110 @@ describe('Overlay style', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
   const snapshotPath = 'with.custom.style';
 
-  it.each(['font', 'fill', 'stroke'])(`add overlay with custom %s`, async (style: string) => {
+  // Configure thresholds by types of overlay styles - we use the same bpmn diagram in all tests
+  class OverlayStylesImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
+    constructor() {
+      // don't set defaults as we defined thresholds for all style variants
+      super({ chromium: 0, firefox: 0, webkit: 0 });
+    }
+
+    getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+      // if no dedicated information, set minimal threshold to make test pass on Github Workflow
+      // linux threshold are set for Ubuntu
+      return new Map<string, ImageSnapshotThresholdConfig>([
+        [
+          'fill',
+          {
+            linux: 0.00016, // 0.015068122418016028%
+            macos: 0.000006, // 0.0005215592635332555%
+            windows: 0.0001, // 0.009102728217447176%
+          },
+        ],
+        [
+          'font',
+          {
+            linux: 0.0056, // 0.551258767924101%
+            macos: 0.000002, // 0.00013412837215343032%
+            windows: 0.0019, // 0.1837913233883048%
+          },
+        ],
+        [
+          'stroke',
+          {
+            linux: 0.0018, // 0.17850987617574754%
+            macos: 0.000002, // 0.00011679796428909484%
+            windows: 0.00028, // 0.02743892318561869%
+          },
+        ],
+      ]);
+    }
+
+    getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+      return new Map<string, ImageSnapshotThresholdConfig>([
+        [
+          'fill',
+          {
+            linux: 0.0018, // 0.17274440837963256
+            macos: 0.0036, // 0.35628465895451983%
+            windows: 0.0024, // 0.023193217953598744%
+          },
+        ],
+        [
+          // TODO very large thresholds on Firefox linux/macOS for font overlay styles
+          'font',
+          {
+            linux: 0.0179, // 1.7851679094800676%
+            macos: 0.0193, // 1.926162542254506%
+            windows: 0.0074, // 0.7365585865893864%
+          },
+        ],
+        [
+          'stroke',
+          {
+            linux: 0.0031, // 0.3048495736480361%
+            macos: 0.0018, // 0.1730781727336872%
+            windows: 0.00032, // 0.03129199556292095%
+          },
+        ],
+      ]);
+    }
+
+    protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+      return new Map<string, ImageSnapshotThresholdConfig>([
+        [
+          'fill',
+          {
+            macos: 0.0015, // 0.1454447604660958%
+          },
+        ],
+        [
+          'font',
+          {
+            macos: 0.001, // 0.09974937844267062%
+          },
+        ],
+        [
+          'stroke',
+          {
+            macos: 0.0013, // 0.12270105834573108%
+          },
+        ],
+      ]);
+    }
+  }
+
+  const imageSnapshotThresholds = new OverlayStylesImageSnapshotThresholds();
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'overlays', imageSnapshotThresholds.getDefault());
+
+  it.each(['fill', 'font', 'stroke'])(`add overlay with custom %s`, async (style: string) => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
     await addStylingOverlay(['StartEvent_1', 'Activity_1', 'Gateway_1', 'Flow_1'], style);
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    const config = imageSnapshotConfigurator.getConfig(style);
     expect(image).toMatchImageSnapshot({
       ...config,
-      failureThreshold: 0.02, // 1.926162542254506%
       customSnapshotIdentifier: `add.overlay.with.custom.${style}`,
       customSnapshotsDir: join(config.customSnapshotsDir, snapshotPath),
       customDiffDir: join(config.customDiffDir, snapshotPath),
