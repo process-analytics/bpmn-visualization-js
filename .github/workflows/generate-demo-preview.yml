@@ -1,12 +1,11 @@
 name: Generate Demo Preview
 
-# read-write repo token
-# access to secrets
 on:
-  workflow_run:
-    workflows: ["Generate Previews"]
-    types:
-      - completed
+  pull_request:
+    # To manage 'surge-preview' action teardown, add default event types + closed event type
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - master
     paths:
       - '.github/workflows/generate-demo-preview.yml'
       - 'config/**/*'
@@ -30,7 +29,7 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }} || ${{ secrets.SURGE_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           dist: build/demo
           failOnError: true
           teardown: 'true'

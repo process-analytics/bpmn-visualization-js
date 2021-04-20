@@ -13,9 +13,44 @@ on:
       - 'package.json'
       - 'package-lock.json'
       - 'typedoc.json'
+  pull_request:
+    # To manage 'surge-preview' action teardown, add default event types + closed event type
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - master
+    paths:
+      - '.github/workflows/generate-documentation.yml'
+      - 'docs/users/**'
+      - 'scripts/docs.js'
+      - 'src/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'typedoc.json'
 
 jobs:
+  doc_preview:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish preview
+        id: publish_preview
+        uses: afc163/surge-preview@v1
+        env:
+          # https://playwright.dev/docs/installation/#skip-browser-downloads
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+        with:
+          surge_token: ${{ secrets.SURGE_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dist: build/docs
+          failOnError: true
+          teardown: 'true'
+          build: |
+            npm ci
+            npm run docs
+
   generate_doc:
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&  github.event.ref == 'refs/heads/master'
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -46,6 +81,7 @@ jobs:
           path: build/docs
 
   push_to_gh_pages:
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&  github.event.ref == 'refs/heads/master'
     runs-on: ubuntu-20.04
     needs: generate_doc
     steps:
