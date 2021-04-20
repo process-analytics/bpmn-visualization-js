@@ -235,7 +235,7 @@ export class BpmnElementsRegistry {
    * @example
    * ```javascript
    * //  all overlays of the BPMN element with id: activity_1
-   * bpmnVisualization.bpmnElementsRegistry.removeAllOverlay('activity_1');
+   * bpmnVisualization.bpmnElementsRegistry.removeAllOverlays('activity_1');
    * ```
    *
    * @param bpmnElementId The BPMN id of the element where to remove the overlays
