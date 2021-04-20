@@ -1,4 +1,4 @@
-name: Generate Demo Preview
+name: Generate Documentation Preview
 
 # read-write repo token
 # access to secrets
@@ -8,32 +8,32 @@ on:
     types:
       - completed
     paths:
-      - '.github/workflows/generate-demo-preview.yml'
-      - 'config/**/*'
-      - 'src/**/*'
+      - '.github/workflows/generate-documentation.yml'
+      - 'docs/users/**'
+      - 'scripts/docs.js'
+      - 'src/**'
       - 'package.json'
-      - 'postcss.config.js'
-      - 'rollup.config.js'
-      - 'tailwind.config.js'
-      - 'tsconfig.json'
+      - 'package-lock.json'
+      - 'typedoc.json'
 
 jobs:
-  demo_preview:
+  doc_preview:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Publish Demo preview
-        id: publish_demo_preview
+      - name: Publish preview
+        id: publish_preview
         uses: afc163/surge-preview@v1
         env:
           # https://playwright.dev/docs/installation/#skip-browser-downloads
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }} || ${{ secrets.SURGE_TOKEN }}
-          dist: build/demo
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dist: build/docs
           failOnError: true
           teardown: 'true'
           build: |
             npm ci
-            npm run demo
+            npm run docs
+
