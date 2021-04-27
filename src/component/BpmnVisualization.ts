@@ -23,6 +23,7 @@ import { BpmnElementsRegistry } from './registry';
 import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { BpmnModelRegistry } from './registry/bpmn-model-registry';
 import { htmlElement } from './helpers/dom-utils';
+import { mxgraph } from './mxgraph/initializer';
 
 /**
  * @category Initialization
@@ -43,6 +44,19 @@ export default class BpmnVisualization {
     // other configurations
     this.bpmnModelRegistry = new BpmnModelRegistry();
     this.bpmnElementsRegistry = newBpmnElementsRegistry(this.bpmnModelRegistry, this.graph);
+    // TODO: this will handle event on the graph level - further filtering will be needed
+    // this.addEvents();
+  }
+
+  addEvents() {
+    this.graph.addListener(mxgraph.mxEvent.CLICK, function (sender, evt) {
+      const cell = evt.getProperty('cell'); // cell may be null
+      // eslint-disable-next-line no-console
+      console.log('EVENT FROM MODEL', sender, evt, cell);
+      // if (cell != null) {
+      // }
+      //evt.consume();
+    });
   }
 
   public load(xml: string, options?: LoadOptions): void {
