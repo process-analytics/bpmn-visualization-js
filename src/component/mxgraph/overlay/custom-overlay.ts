@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { mxgraph } from '../initializer';
-import { mxCellState, mxPoint, mxRectangle } from 'mxgraph';
+import { mxCellOverlay, mxCellState, mxPoint, mxRectangle } from 'mxgraph';
 import { OverlayStyle } from '../../registry';
 
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';

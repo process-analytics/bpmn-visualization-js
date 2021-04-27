@@ -15,6 +15,7 @@
  */
 
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
+import { mxgraph } from '../mxgraph/initializer';
 
 /**
  * @category Interaction
@@ -39,10 +40,12 @@ export interface BpmnElement {
  * @category Interaction
  */
 export type OverlayShapePosition = 'top-left' | 'top-right' | 'top-center' | 'bottom-left' | 'bottom-right' | 'bottom-center' | 'middle-left' | 'middle-right';
+
 /**
  * @category Interaction
  */
 export type OverlayEdgePosition = 'start' | 'middle' | 'end';
+
 /**
  * @category Interaction
  */
@@ -51,10 +54,16 @@ export type OverlayPosition = OverlayShapePosition | OverlayEdgePosition;
 /**
  * @category Interaction
  */
+export type OverlayShape = 'rectangle' | 'ellipse' | 'doubleEllipse' | 'rhombus' | 'image' | 'label' | 'cylinder' | 'actor' | 'cloud' | 'triangle' | 'hexagon';
+
+/**
+ * @category Interaction
+ */
 export interface OverlayStyle {
   font?: OverlayFont;
   fill?: OverlayFill;
   stroke?: OverlayStroke;
+  shape?: OverlayShape;
 }
 
 /**
