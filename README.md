@@ -35,7 +35,7 @@
 </div>  
 <br>
 
-`bpmn-visualization` is a TypeScript library to visualize process execution data on [BPMN](https://www.omg.org/spec/BPMN/2.0.2/) diagrams with:
+`bpmn-visualization` is a TypeScript library for visualizing process execution data on [BPMN](https://www.omg.org/spec/BPMN/2.0.2/) diagrams with:
 - additional display options for execution data (highlight some transitions, counters, and more)
 - interactive capacities (mouse hover, click)
 
@@ -49,7 +49,7 @@ You will find there basic usage as well as detailed examples showing possible re
 
 ## 🎨 Features
 
-The `bpmn-visualization` is in early development stage and is subject to changes prior to the `1.0.0` release.\
+The `bpmn-visualization` is in early development stage and is subject to change prior to the `1.0.0` release.\
 \
 Already available features:
 - [Supported BPMN Elements](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements).
