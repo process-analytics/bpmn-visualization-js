@@ -72,6 +72,7 @@ export async function mousePanning(panningOptions: PanningOptions): Promise<void
     const containerElement: SVGElement | HTMLElement = panningOptions.containerElement;
     containerElement.dispatchEvent(new MouseEvent('mousemove', originMouseEventInit));
     containerElement.dispatchEvent(new MouseEvent('mousedown', originMouseEventInit));
+    new Promise(resolve => setTimeout(resolve, 2000));
     containerElement.dispatchEvent(new MouseEvent('mousemove', destinationMouseEventInit));
     containerElement.dispatchEvent(new MouseEvent('mouseup', destinationMouseEventInit));
 
