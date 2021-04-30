@@ -16,8 +16,10 @@
 import 'jest-playwright-preset';
 import { join } from 'path';
 import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
-import { chromiumZoom, itMouseWheel, mousePanning } from './helpers/test-utils';
+import { chromiumZoom, getContainerCenter, itMouseWheel, Point } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/PageTester';
+import { ElementHandle } from 'playwright';
+import { mousePanning } from './helpers/visu/playwright-utils';
 
 describe('diagram navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
@@ -41,17 +43,16 @@ describe('diagram navigation', () => {
   const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
 
   const bpmnDiagramName = 'simple.2.start.events.1.task';
-  let containerCenterX: number;
-  let containerCenterY: number;
+  let bpmnContainerElementHandle: ElementHandle<SVGElement | HTMLElement>;
+  let containerCenter: Point;
+
   beforeEach(async () => {
-    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
-    const bounding_box = await bpmnContainerElementHandle.boundingBox();
-    containerCenterX = bounding_box.x + bounding_box.width / 2;
-    containerCenterY = bounding_box.y + bounding_box.height / 2;
+    bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    containerCenter = await getContainerCenter(bpmnContainerElementHandle);
   });
 
   it('mouse panning', async () => {
-    await mousePanning(containerCenterX, containerCenterY);
+    await mousePanning({ containerElement: bpmnContainerElementHandle, originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -63,7 +64,7 @@ describe('diagram navigation', () => {
 
   itMouseWheel.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
     const deltaX = zoomMode === 'zoom in' ? -100 : 100;
-    await chromiumZoom(1, containerCenterX + 200, containerCenterY, deltaX);
+    await chromiumZoom(1, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -76,9 +77,9 @@ describe('diagram navigation', () => {
   itMouseWheel.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
     const deltaX = -100;
     // simulate mouse+ctrl zoom
-    await page.mouse.move(containerCenterX + 200, containerCenterY);
-    await chromiumZoom(xTimes, containerCenterX + 200, containerCenterY, deltaX);
-    await chromiumZoom(xTimes, containerCenterX + 200, containerCenterY, -deltaX);
+    await page.mouse.move(containerCenter.x + 200, containerCenter.y);
+    await chromiumZoom(xTimes, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
+    await chromiumZoom(xTimes, { x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);

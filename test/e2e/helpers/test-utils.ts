@@ -18,6 +18,12 @@ import { findFiles } from '../../helpers/file-helper';
 import { join } from 'path';
 import 'jest-playwright-preset';
 import { chromiumMouseWheel } from './visu/playwright-utils';
+import { ElementHandle } from 'playwright';
+
+export interface Point {
+  x: number;
+  y: number;
+}
 
 export const configLog = debugLogger('bv:test:config');
 
@@ -56,11 +62,19 @@ export function getBpmnDiagramNames(directoryName: string): string[] {
     });
 }
 
+export async function getContainerCenter(containerElement: ElementHandle<SVGElement | HTMLElement>): Promise<Point> {
+  const rect = await containerElement.boundingBox();
+  return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+}
+
 export async function clickOnButton(buttonId: string): Promise<void> {
   await page.click(`#${buttonId}`);
   // To unselect the button
   await page.mouse.click(0, 0);
 }
+
+/*
+TODO To uncomment when https://github.com/microsoft/playwright/issues/1094 is fixed
 
 export async function mousePanning(containerCenterX: number, containerCenterY: number): Promise<void> {
   // simulate mouse panning
@@ -68,11 +82,11 @@ export async function mousePanning(containerCenterX: number, containerCenterY: n
   await page.mouse.down();
   await page.mouse.move(containerCenterX + 150, containerCenterY + 40);
   await page.mouse.up();
-}
+}*/
 
-export async function chromiumZoom(xTimes: number, x: number, y: number, deltaX: number): Promise<void> {
+export async function chromiumZoom(xTimes: number, point: Point, deltaX: number): Promise<void> {
   for (let i = 0; i < xTimes; i++) {
-    await chromiumMouseWheel(x, y, deltaX);
+    await chromiumMouseWheel(point.x, point.y, deltaX);
     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
     await delay(100);
   }

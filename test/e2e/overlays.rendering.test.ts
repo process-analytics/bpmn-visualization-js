@@ -18,9 +18,11 @@ import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserIm
 import { PageTester } from './helpers/visu/PageTester';
 import { join } from 'path';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
-import { chromiumZoom, clickOnButton, itMouseWheel, mousePanning } from './helpers/test-utils';
+import { chromiumZoom, clickOnButton, getContainerCenter, itMouseWheel, Point } from './helpers/test-utils';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
+import { ElementHandle } from 'playwright';
+import { mousePanning } from './helpers/visu/playwright-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -153,7 +155,7 @@ const imageSnapshotThresholds = new ImageSnapshotThresholds();
 const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'overlays', imageSnapshotThresholds.getDefault());
 
 // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
-const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' });
+const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays', showMousePointer: true });
 
 describe('BPMN Shapes with overlays', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
@@ -263,15 +265,12 @@ describe('BPMN Edges with overlays', () => {
 
 describe('Overlay navigation', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
-
-  let containerCenterX: number;
-  let containerCenterY: number;
+  let bpmnContainerElementHandle: ElementHandle<SVGElement | HTMLElement>;
+  let containerCenter: Point;
 
   beforeEach(async () => {
-    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
-    const bounding_box = await bpmnContainerElementHandle.boundingBox();
-    containerCenterX = bounding_box.x + bounding_box.width / 2;
-    containerCenterY = bounding_box.y + bounding_box.height / 2;
+    bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    containerCenter = await getContainerCenter(bpmnContainerElementHandle);
 
     await addOverlays('StartEvent_1', 'bottom-center');
     await addOverlays('Activity_1', 'middle-right');
@@ -280,7 +279,7 @@ describe('Overlay navigation', () => {
   });
 
   it('panning', async () => {
-    await mousePanning(containerCenterX, containerCenterY);
+    await mousePanning({ containerElement: bpmnContainerElementHandle, originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -291,7 +290,7 @@ describe('Overlay navigation', () => {
   });
 
   itMouseWheel(`zoom out`, async () => {
-    await chromiumZoom(1, containerCenterX + 200, containerCenterY, 100);
+    await chromiumZoom(1, { x: containerCenter.x + 200, y: containerCenter.y }, 100);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
