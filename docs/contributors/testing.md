@@ -82,7 +82,7 @@ Quote from [cypress.io](https://docs.cypress.io/guides/tooling/visual-testing.ht
 
 - tests the BPMN Diagram visual rendering 
 - visual non regression tests: keep consistent rendering across versions
-- navigation non regression tests: checks on the interactions, i.e. consistency on how diagram looks after panning
+- navigation non regression tests: checks on the interactions, i.e. consistency on how diagram looks after pan
 - useful to detect mxgraph behaviour changes (see [mxGraph version bump](./mxgraph-version-bump.md)) or unexpected changes introduced by refactoring in
 the rendering code of the lib
 - see [issue 526]( https://github.com/process-analytics/bpmn-visualization-js/issues/526) for more context

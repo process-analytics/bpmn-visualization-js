@@ -46,11 +46,11 @@ The navigation features are:
 
 * zoom: change the diagram scale to show details or have an overview of the diagram.
 * fit: reset/set the zoom level and eventually translate the diagram (for instance, center the diagram).
-* panning: drag the diagram and move/translate it, to hidden parts or change the position in the view.
+* pan: drag the diagram and move/translate it, to hidden parts or change the position in the view.
 
 
 Navigation is particularly useful for large diagrams. In that case, fitting the view provides a good overview, but it can be hard to see some details. +
-You need to zoom to highlight specific parts, then panning helps you to view different diagram portions. +
+You need to zoom to highlight specific parts, then pan helps you to view different diagram portions. +
 Finally, after navigating in various areas, you may want to reset the zoom level and have a diagram overview. 
 
 
