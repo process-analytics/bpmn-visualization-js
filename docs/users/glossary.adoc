@@ -1,0 +1,12 @@
+== Glossary
+- *_BPMN rendering_*: 
+- *_Customization_*: The library user changes the rendering / behavior using their own code by extending the library.
+- *_Configuration_*: The library user changes the rendering / behavior using existing features.
+- *_Custom behavior_*:
+- *_Diagram navigation_*:
+- *_Options_*: pour configurer l’initialisation de la librairie + pour configurer les API au Runtime
+- *_Library integration_*: Something about how an app can integrate the library
+- *_Process data_*: Execution data + derived data
+- *_Execution data_*:
+- *_Derived data_*:
+
