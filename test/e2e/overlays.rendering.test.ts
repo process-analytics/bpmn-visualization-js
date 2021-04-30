@@ -18,11 +18,10 @@ import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserIm
 import { PageTester } from './helpers/visu/PageTester';
 import { join } from 'path';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
-import { chromiumZoom, clickOnButton, getContainerCenter, itMouseWheel, Point } from './helpers/test-utils';
+import { chromiumZoom, clickOnButton, getContainerCenter, itMouseWheel, mousePanning, Point } from './helpers/test-utils';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
 import { ElementHandle } from 'playwright';
-import { mousePanning } from './helpers/visu/playwright-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {

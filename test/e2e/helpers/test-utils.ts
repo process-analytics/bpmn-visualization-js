@@ -17,7 +17,7 @@ import debugLogger from 'debug';
 import { findFiles } from '../../helpers/file-helper';
 import { join } from 'path';
 import 'jest-playwright-preset';
-import { chromiumMouseWheel } from './visu/playwright-utils';
+import { chromiumMouseWheel, PanningOptions, webkitMousePanning } from './visu/playwright-utils';
 import { ElementHandle } from 'playwright';
 
 export interface Point {
@@ -73,16 +73,18 @@ export async function clickOnButton(buttonId: string): Promise<void> {
   await page.mouse.click(0, 0);
 }
 
-/*
-TODO To uncomment when https://github.com/microsoft/playwright/issues/1094 is fixed
+export async function mousePanning(panningOptions: PanningOptions): Promise<void> {
+  const testedBrowserFamily = getTestedBrowserFamily();
+  testedBrowserFamily === 'webkit' ? await webkitMousePanning(panningOptions) : await chromiumAndFirefoxMousePanning(panningOptions);
+}
 
-export async function mousePanning(containerCenterX: number, containerCenterY: number): Promise<void> {
+async function chromiumAndFirefoxMousePanning({ originPoint, destinationPoint }: PanningOptions): Promise<void> {
   // simulate mouse panning
-  await page.mouse.move(containerCenterX, containerCenterY);
+  await page.mouse.move(originPoint.x, originPoint.y);
   await page.mouse.down();
-  await page.mouse.move(containerCenterX + 150, containerCenterY + 40);
+  await page.mouse.move(destinationPoint.x, destinationPoint.y);
   await page.mouse.up();
-}*/
+}
 
 export async function chromiumZoom(xTimes: number, point: Point, deltaX: number): Promise<void> {
   for (let i = 0; i < xTimes; i++) {

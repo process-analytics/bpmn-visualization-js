@@ -17,7 +17,7 @@ import 'jest-playwright-preset';
 import { ChromiumBrowserContext, ElementHandle } from 'playwright';
 import { Point } from '../test-utils';
 
-interface PanningOptions {
+export interface PanningOptions {
   containerElement: ElementHandle<SVGElement | HTMLElement>;
   originPoint: Point;
   destinationPoint: Point;
@@ -49,8 +49,8 @@ export async function chromiumMouseWheel(x: number, y: number, deltaX: number): 
   await client.detach();
 }
 
-// workaround for https://github.com/microsoft/playwright/issues/1094
-export async function mousePanning(panningOptions: PanningOptions): Promise<void> {
+// TODO To remove when https://github.com/microsoft/playwright/issues/1094 is fixed
+export async function webkitMousePanning(panningOptions: PanningOptions): Promise<void> {
   await page.evaluate(panningOptions => {
     function getMouseEventInit(point: Point): MouseEventInit {
       return {
@@ -72,7 +72,9 @@ export async function mousePanning(panningOptions: PanningOptions): Promise<void
     const containerElement: SVGElement | HTMLElement = panningOptions.containerElement;
     containerElement.dispatchEvent(new MouseEvent('mousemove', originMouseEventInit));
     containerElement.dispatchEvent(new MouseEvent('mousedown', originMouseEventInit));
-    new Promise(resolve => setTimeout(resolve, 2000));
+    setTimeout(() => {
+      // Nothing to do
+    }, 2000);
     containerElement.dispatchEvent(new MouseEvent('mousemove', destinationMouseEventInit));
     containerElement.dispatchEvent(new MouseEvent('mouseup', destinationMouseEventInit));
 

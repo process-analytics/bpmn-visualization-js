@@ -16,10 +16,9 @@
 import 'jest-playwright-preset';
 import { join } from 'path';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { chromiumZoom, getContainerCenter, itMouseWheel, Point } from './helpers/test-utils';
+import { chromiumZoom, getContainerCenter, itMouseWheel, mousePanning, Point } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/PageTester';
 import { ElementHandle } from 'playwright';
-import { mousePanning } from './helpers/visu/playwright-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
