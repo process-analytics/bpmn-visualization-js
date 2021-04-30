@@ -39,19 +39,19 @@ Once the integration gets the BPMN diagram input source, it just has to pass it 
 [[diagram-navigation]]
 ==== Diagram Navigation
 
-In addition to rendering, `bpmn-visualization` provides various ways to let you discover and navigate through the BPMN diagrams.
+In addition to BPMN diagram rendering, `bpmn-visualization` provides several ways to explore and navigate through the BPMN diagrams.
 This is made available at load time or at runtime, through user interactions or API calls.
 
 The navigation features are:
 
 * zoom: change the diagram scale to show details or have an overview of the diagram.
 * fit: reset/set the zoom level and eventually translate the diagram (for instance, center the diagram).
-* panning: drag the diagram and move/translate it, to hidden parts or change the position in the view.
+* pan: drag the diagram and move/translate it, to hidden parts or change the position in the view.
 
 
-Navigation is particularly useful for large diagrams. In that case, fitting the view provides a good overview, but it can be hard to see some details. +
-You need to zoom to highlight specific parts, then panning helps you to view different diagram portions. +
-Finally, after navigating in various areas, you may want to reset the zoom level and have a diagram overview. 
+Navigation is particularly useful for large diagrams. Fitting the view to the screen provides a good overview of a large diagram, but it can be hard to see details. +
+You can zoom to highlight specific parts, then pan to view different diagram portions. +
+After navigating around, you may want to reset the zoom level and go back to a full diagram overview.
 
 
 ==== Diagram Display and Navigation in Action
