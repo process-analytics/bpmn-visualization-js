@@ -54,7 +54,7 @@ You can zoom to highlight specific parts, then pan to view different diagram por
 After navigating around, you may want to reset the zoom level and go back to a full diagram overview.
 
 
-==== BPMN rendering and Navigation in Action
+==== BPMN rendering and Diagram Navigation in Action
 
 image::images/bpmn-diagram_navigation_C.2.0.gif[BPMN Diagram Navigation]
 
