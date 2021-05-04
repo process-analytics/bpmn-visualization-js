@@ -51,7 +51,7 @@ export class PageTester {
     this.bpmnPage = new BpmnPage('bpmn-container', page);
   }
 
-  async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, loadOptions?: LoadOptions): Promise<ElementHandle<Element>> {
+  async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, loadOptions?: LoadOptions): Promise<ElementHandle<SVGElement | HTMLElement>> {
     const url = this.getPageUrl(bpmnDiagramName, loadOptions);
     const response = await page.goto(url);
     // Uncomment the following in case of http error 400 (probably because of a too large bpmn file)

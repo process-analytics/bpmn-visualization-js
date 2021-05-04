@@ -17,7 +17,13 @@ import debugLogger from 'debug';
 import { findFiles } from '../../helpers/file-helper';
 import { join } from 'path';
 import 'jest-playwright-preset';
-import { chromiumMouseWheel } from './visu/playwright-utils';
+import { chromiumMouseWheel, PanningOptions, webkitMousePanning } from './visu/playwright-utils';
+import { ElementHandle } from 'playwright';
+
+export interface Point {
+  x: number;
+  y: number;
+}
 
 export const configLog = debugLogger('bv:test:config');
 
@@ -56,23 +62,33 @@ export function getBpmnDiagramNames(directoryName: string): string[] {
     });
 }
 
+export async function getContainerCenter(containerElement: ElementHandle<SVGElement | HTMLElement>): Promise<Point> {
+  const rect = await containerElement.boundingBox();
+  return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+}
+
 export async function clickOnButton(buttonId: string): Promise<void> {
   await page.click(`#${buttonId}`);
   // To unselect the button
   await page.mouse.click(0, 0);
 }
 
-export async function mousePanning(containerCenterX: number, containerCenterY: number): Promise<void> {
+export async function mousePanning(panningOptions: PanningOptions): Promise<void> {
+  const testedBrowserFamily = getTestedBrowserFamily();
+  testedBrowserFamily === 'webkit' ? await webkitMousePanning(panningOptions) : await chromiumAndFirefoxMousePanning(panningOptions);
+}
+
+async function chromiumAndFirefoxMousePanning({ originPoint, destinationPoint }: PanningOptions): Promise<void> {
   // simulate mouse panning
-  await page.mouse.move(containerCenterX, containerCenterY);
+  await page.mouse.move(originPoint.x, originPoint.y);
   await page.mouse.down();
-  await page.mouse.move(containerCenterX + 150, containerCenterY + 40);
+  await page.mouse.move(destinationPoint.x, destinationPoint.y);
   await page.mouse.up();
 }
 
-export async function chromiumZoom(xTimes: number, x: number, y: number, deltaX: number): Promise<void> {
+export async function chromiumZoom(xTimes: number, point: Point, deltaX: number): Promise<void> {
   for (let i = 0; i < xTimes; i++) {
-    await chromiumMouseWheel(x, y, deltaX);
+    await chromiumMouseWheel(point.x, point.y, deltaX);
     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
     await delay(100);
   }
@@ -82,6 +98,3 @@ export async function chromiumZoom(xTimes: number, x: number, y: number, deltaX:
 // inspired from https://github.com/xtermjs/xterm.js/commit/7400b888df698d15864ab2c41ad0ed0262f812fb#diff-23460af115aa97331c36c0ce462cbc4dd8067c0ddbca1e9d3de560ebf44024ee
 // Wheel events are hacked using private API that is only available in Chromium
 export const itMouseWheel = getTestedBrowserFamily() === 'chromium' ? it : it.skip;
-
-// TODO enable panning tests on webkit (see https://github.com/process-analytics/bpmn-visualization-js/pull/1197)
-export const itPanning = getTestedBrowserFamily() === 'webkit' ? it.skip : it;
