@@ -26,7 +26,7 @@ module.exports = {
     usedPortAction: 'ignore', // your test are executed, we assume that the server is already started
   },
   launchOptions: {
-    headless: process.env.HEADLESS !== false,
+    headless: process.env.HEADLESS !== 'false',
     slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
   },
   launchType: 'LAUNCH',
