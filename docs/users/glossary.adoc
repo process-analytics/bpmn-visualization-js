@@ -3,10 +3,9 @@
 - *_Customization_*: The library user changes the rendering / behavior using their own code by extending the library.
 - *_Configuration_*: The library user changes the rendering / behavior using existing features.
 - *_Custom behavior_*:
-- *_Diagram navigation_*:
+- *_Diagram navigation_*: Set of user interactions, that permits pan and zoom, to achieve desired visibility on diagram elements or diagram as a whole.
 - *_Options_*: pour configurer l’initialisation de la librairie + pour configurer les API au Runtime
 - *_Library integration_*: Something about how an app can integrate the library
 - *_Process data_*: Execution data + derived data
-- *_Execution data_*:
-- *_Derived data_*:
-
+- *_Execution data_*: Data that is generated during the natural process instance flow: state, logs, ...
+- *_Derived data_*: Data that by any means derives from the execution data and/or other contextual data.
