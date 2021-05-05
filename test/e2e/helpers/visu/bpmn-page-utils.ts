@@ -28,7 +28,7 @@ export class BpmnPage {
     this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
   }
 
-  async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<ElementHandle<Element>> {
+  async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<ElementHandle<SVGElement | HTMLElement>> {
     return await this.currentPage.waitForSelector(`#${this.bpmnContainerId}`, options);
   }
 
