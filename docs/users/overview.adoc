@@ -27,9 +27,9 @@ https://www.omg.org/spec/BPMN/2.0.2/[BPMN diagrams] are at the foundation of the
 
 Go to <<supported-bpmn-elements, Supported BPMN Elements>> section to better now what is the current BPMN support.
 
-==== Diagram Display
+==== BPMN rendering
 
-The first goal of `bpmn-visualization` is to display BPMN diagrams but this is up to the integration (i.e. the application that uses it) to provide the BPMN diagram
+The first goal of `bpmn-visualization` is to render BPMN diagrams but this is up to the integration (i.e. the application that uses it) to provide the BPMN diagram
 content.  +
 For instance, it can be retrieved from a local file, by pulling a REST API, made available after a push from websockets or SSE, ...
 
@@ -39,7 +39,7 @@ Once the integration gets the BPMN diagram input source, it just has to pass it 
 [[diagram-navigation]]
 ==== Diagram Navigation
 
-In addition to BPMN diagram rendering, `bpmn-visualization` provides several ways to explore and navigate through the BPMN diagrams.
+In addition to BPMN rendering, `bpmn-visualization` provides several ways to explore and navigate through the BPMN diagrams.
 This is made available at load time or at runtime, through user interactions or API calls.
 
 The navigation features are:
@@ -54,7 +54,7 @@ You can zoom to highlight specific parts, then pan to view different diagram por
 After navigating around, you may want to reset the zoom level and go back to a full diagram overview.
 
 
-==== Diagram Display and Navigation in Action
+==== BPMN rendering and Diagram Navigation in Action
 
 image::images/bpmn-diagram_navigation_C.2.0.gif[BPMN Diagram Navigation]
 

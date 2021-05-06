@@ -568,7 +568,7 @@ export default class IconPainter {
   }
 
   /**
-   * This icon is used to display the `expand marker` on `activities`.
+   * This icon is used to render the `expand marker` on `activities`.
    */
   paintExpandIcon(paintParameter: PaintParameter): void {
     const originalIconSize = { width: 16, height: 16 };
@@ -593,7 +593,7 @@ export default class IconPainter {
   }
 
   /**
-   * This icon is used to display the `loop marker` on `activities`.
+   * This icon is used to render the `loop marker` on `activities`.
    */
   paintLoopIcon(paintParameter: PaintParameter): void {
     // this implementation is adapted from the draw.io BPMN 'Loop'
@@ -618,7 +618,7 @@ export default class IconPainter {
   }
 
   /**
-   * This icon is used to display the `sequential multi-instance marker` on `activities`.
+   * This icon is used to render the `sequential multi-instance marker` on `activities`.
    */
   paintSequentialMultiInstanceIcon(paintParameter: PaintParameter): void {
     const originalIconSize = { width: 16, height: 16 };
@@ -637,7 +637,7 @@ export default class IconPainter {
   }
 
   /**
-   * This icon is used to display the `parallel multi-instance marker` on `activities`.
+   * This icon is used to render the `parallel multi-instance marker` on `activities`.
    */
   paintParallelMultiInstanceIcon(paintParameter: PaintParameter): void {
     const originalIconSize = { width: 16, height: 16 };
