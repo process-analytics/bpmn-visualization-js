@@ -1,6 +1,6 @@
 === mxGraph Integration
 
-The https://jgraph.github.io/mxgraph/[mxGraph] integration is in charge of displaying the BPMN diagrams, by filling the
+The https://jgraph.github.io/mxgraph/[mxGraph] integration is in charge of rendering the BPMN diagrams, by filling the
 https://jgraph.github.io/mxgraph/docs/manual.html#3.1.1[mxGraph model] from the BPMN model.
 
 It also provides the Diagram Navigation support.
