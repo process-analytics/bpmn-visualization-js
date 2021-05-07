@@ -15,7 +15,7 @@
  */
 
 import { mxgraph } from '../initializer';
-import { mxCellOverlay, mxCellState, mxImageShape, mxShape } from 'mxgraph'; // for types
+import { mxCellState, mxImageShape, mxShape } from 'mxgraph'; // for types
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
 import { BoundaryEventShape, CatchIntermediateEventShape, EndEventShape, StartEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
 import { EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
@@ -43,6 +43,7 @@ import { OverlayBadgeShape } from '../overlay/shapes';
  */
 export default class ShapeConfigurator {
   public configureShapes(): void {
+    this.adjustPaddingForOverlays();
     this.initMxShapePrototype();
     this.registerShapes();
     this.initMxCellRendererCreateCellOverlays();
@@ -123,6 +124,119 @@ export default class ShapeConfigurator {
       }
 
       return canvas;
+    };
+  }
+
+  /**
+   * The adjustment here is done to have equal paddings in overlays (badges)
+   * without this adjustment the right and bottom spacing appears not equal to left and top spacing
+   */
+  private adjustPaddingForOverlays() {
+    mxgraph.mxSvgCanvas2D.prototype.addTextBackground = function(node, str, x, y, w, h, align, valign, overflow) {
+      const s = this.state;
+
+      if (s.fontBackgroundColor != null || s.fontBorderColor != null) {
+        var bbox = null;
+
+        if (overflow == 'fill' || overflow == 'width') {
+          if (align == mxgraph.mxConstants.ALIGN_CENTER) {
+            x -= w / 2;
+          } else if (align == mxgraph.mxConstants.ALIGN_RIGHT) {
+            x -= w;
+          }
+
+          if (valign == mxgraph.mxConstants.ALIGN_MIDDLE) {
+            y -= h / 2;
+          } else if (valign == mxgraph.mxConstants.ALIGN_BOTTOM) {
+            y -= h;
+          }
+
+          bbox = new mxgraph.mxRectangle((x + 1) * s.scale, y * s.scale, (w - 2) * s.scale, (h + 2) * s.scale);
+        } else { // @ts-ignore
+          if (node.getBBox != null && this.root.ownerDocument == document) {
+            // Uses getBBox only if inside document for correct size
+            try {
+              // @ts-ignore
+              bbox = node.getBBox();
+              const ie = mxgraph.mxClient.IS_IE && mxgraph.mxClient.IS_SVG;
+              bbox = new mxgraph.mxRectangle(bbox.x, bbox.y + ((ie) ? 0 : 1), bbox.width, bbox.height + ((ie) ? 1 : 0));
+            } catch (e) {
+              // Ignores NS_ERROR_FAILURE in FF if container display is none.
+            }
+          }
+        }
+
+        if (bbox == null || bbox.width == 0 || bbox.height == 0) {
+          // Computes size if not in document or no getBBox available
+          const div = document.createElement('div');
+
+          // Wrapping and clipping can be ignored here
+          div.style.lineHeight = (mxgraph.mxConstants.ABSOLUTE_LINE_HEIGHT) ? (s.fontSize * mxgraph.mxConstants.LINE_HEIGHT) + 'px' : mxgraph.mxConstants.LINE_HEIGHT + 'px';
+          div.style.fontSize = s.fontSize + 'px';
+          div.style.fontFamily = s.fontFamily;
+          div.style.whiteSpace = 'nowrap';
+          div.style.position = 'absolute';
+          div.style.visibility = 'hidden';
+          div.style.display = (mxgraph.mxClient.IS_QUIRKS) ? 'inline' : 'inline-block';
+          div.style.zoom = '1';
+
+          if ((s.fontStyle & mxgraph.mxConstants.FONT_BOLD) == mxgraph.mxConstants.FONT_BOLD) {
+            div.style.fontWeight = 'bold';
+          }
+
+          if ((s.fontStyle & mxgraph.mxConstants.FONT_ITALIC) == mxgraph.mxConstants.FONT_ITALIC) {
+            div.style.fontStyle = 'italic';
+          }
+
+          // @ts-ignore
+          str = mxgraph.mxUtils.htmlEntities(str, false);
+          div.innerHTML = str.replace(/\n/g, '<br/>');
+
+          document.body.appendChild(div);
+          const w = div.offsetWidth;
+          const h = div.offsetHeight;
+          div.parentNode.removeChild(div);
+
+          if (align == mxgraph.mxConstants.ALIGN_CENTER) {
+            x -= w / 2;
+          } else if (align == mxgraph.mxConstants.ALIGN_RIGHT) {
+            x -= w;
+          }
+
+          if (valign == mxgraph.mxConstants.ALIGN_MIDDLE) {
+            y -= h / 2;
+          } else if (valign == mxgraph.mxConstants.ALIGN_BOTTOM) {
+            y -= h;
+          }
+
+          bbox = new mxgraph.mxRectangle((x + 1) * s.scale, (y + 2) * s.scale, w * s.scale, (h + 1) * s.scale);
+        }
+
+        if (bbox != null) {
+          const n = this.createElement('rect');
+          n.setAttribute('fill', s.fontBackgroundColor || 'none');
+          n.setAttribute('stroke', s.fontBorderColor || 'none');
+          n.setAttribute('x', String(Math.floor(bbox.x - 1)));
+          n.setAttribute('y', String(Math.floor(bbox.y - 1)));
+
+          // START bpmn-visualization CUSTOMIZATION
+          // n.setAttribute('width', String(Math.ceil(bbox.width + 2)));
+          // n.setAttribute('height', String(Math.ceil(bbox.height)));
+          n.setAttribute('width', String(Math.ceil(bbox.width + 2 + s.scale)));
+          n.setAttribute('height', String(Math.ceil(bbox.height + s.scale)));
+          // END bpmn-visualization CUSTOMIZATION
+
+          const sw = (s.fontBorderColor != null) ? Math.max(1, this.format(String(s.scale))) : 0;
+          n.setAttribute('stroke-width', String(sw));
+
+          // Workaround for crisp rendering - only required if not exporting
+          if (this.root.ownerDocument == document && mxgraph.mxUtils.mod(sw, 2) == 1) {
+            n.setAttribute('transform', 'translate(0.5, 0.5)');
+          }
+
+          node.insertBefore(n, node.firstChild);
+        }
+      }
     };
   }
 
