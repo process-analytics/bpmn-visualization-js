@@ -2,7 +2,7 @@
 - *_BPMN rendering_*: The part of the rendering that concerns purely the BPMN model according to the specification
 - *_Customization_*: The library user changes the rendering / behavior using their own code by extending the library.
 - *_Configuration_*: The library user changes the rendering / behavior using existing features.
-- *_Custom behavior_*: Any behavior that causes changes in the BPMN rendering(adding popup, changing elements color or thickness...)
+- *_Custom behavior_*: Any behavior that causes changes in the BPMN rendering (adding popup, changing elements color or thickness...)
 - *_Diagram navigation_*: Set of user interactions, that permits pan and zoom, to achieve desired visibility on diagram elements or diagram as a whole.
 - *_Options_*: To configure the initialization of the library and the APIs at the runtime
 - *_Library integration_*: Something about how an app can integrate the library
