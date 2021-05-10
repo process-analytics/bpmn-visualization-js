@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { mxgraph } from '../initializer';
-import { mxRectangle } from 'mxgraph';
+import { mxCellState, mxRectangle } from 'mxgraph';
 import { MxGraphCustomOverlayStyle } from './custom-overlay';
 
 export class OverlayBadgeShape extends mxgraph.mxText {
@@ -44,5 +44,20 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     );
     this.fillOpacity = style.fill.opacity;
     this.strokewidth = style.stroke.width;
+
+    this.opacity = 40;
+
+    // const old = this.spacing;
+    //this.spacing = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING, this.spacing));
+    this.spacingTop = 12; //(this.spacingTop - old)) + this.spacing;
+    // this.spacingRight = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_RIGHT, this.spacingRight - old)) + this.spacing;
+    // this.spacingBottom = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_BOTTOM, this.spacingBottom - old)) + this.spacing;
+    // this.spacingLeft = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_LEFT, this.spacingLeft - old)) + this.spacing;
+  }
+
+  apply(state: mxCellState): void {
+    super.apply(state);
+
+    this.opacity = 30;
   }
 }
