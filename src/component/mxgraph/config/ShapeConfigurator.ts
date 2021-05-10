@@ -133,6 +133,7 @@ export default class ShapeConfigurator {
    */
   private adjustPaddingForOverlays() {
     mxgraph.mxSvgCanvas2D.prototype.addTextBackground = function(node, str, x, y, w, h, align, valign, overflow) {
+      console.log(arguments);
       const s = this.state;
 
       if (s.fontBackgroundColor != null || s.fontBorderColor != null) {
@@ -152,21 +153,18 @@ export default class ShapeConfigurator {
           }
 
           bbox = new mxgraph.mxRectangle((x + 1) * s.scale, y * s.scale, (w - 2) * s.scale, (h + 2) * s.scale);
-        } else { // @ts-ignore
-          if (node.getBBox != null && this.root.ownerDocument == document) {
-            // Uses getBBox only if inside document for correct size
-            try {
-              // @ts-ignore
-              bbox = node.getBBox();
-              const ie = mxgraph.mxClient.IS_IE && mxgraph.mxClient.IS_SVG;
-              bbox = new mxgraph.mxRectangle(bbox.x, bbox.y + ((ie) ? 0 : 1), bbox.width, bbox.height + ((ie) ? 1 : 0));
-            } catch (e) {
-              // Ignores NS_ERROR_FAILURE in FF if container display is none.
-            }
+          // @ts-ignore
+        } else if (node.getBBox != null && this.root.ownerDocument == document) {
+          // Uses getBBox only if inside document for correct size
+          try {
+            // @ts-ignore
+            bbox = node.getBBox();
+            const ie = mxgraph.mxClient.IS_IE && mxgraph.mxClient.IS_SVG;
+            bbox = new mxgraph.mxRectangle(bbox.x, bbox.y + ((ie) ? 0 : 1), bbox.width, bbox.height + ((ie) ? 1 : 0));
+          } catch (e) {
+            // Ignores NS_ERROR_FAILURE in FF if container display is none.
           }
-        }
-
-        if (bbox == null || bbox.width == 0 || bbox.height == 0) {
+        } else {
           // Computes size if not in document or no getBBox available
           const div = document.createElement('div');
 
@@ -220,10 +218,14 @@ export default class ShapeConfigurator {
           n.setAttribute('y', String(Math.floor(bbox.y - 1)));
 
           // START bpmn-visualization CUSTOMIZATION
-          // n.setAttribute('width', String(Math.ceil(bbox.width + 2)));
-          // n.setAttribute('height', String(Math.ceil(bbox.height)));
-          n.setAttribute('width', String(Math.ceil(bbox.width + 2 + s.scale)));
-          n.setAttribute('height', String(Math.ceil(bbox.height + s.scale)));
+          // Adjust the padding for badges only
+          if((<SVGGElement>node.parentNode).classList.contains('overlay-badge')) {
+            n.setAttribute('width', String(Math.ceil(bbox.width + 2 + s.scale)));
+            n.setAttribute('height', String(Math.ceil(bbox.height + 1)));
+          } else {
+            n.setAttribute('width', String(Math.ceil(bbox.width + 2)));
+            n.setAttribute('height', String(Math.ceil(bbox.height)));
+          }
           // END bpmn-visualization CUSTOMIZATION
 
           const sw = (s.fontBorderColor != null) ? Math.max(1, this.format(String(s.scale))) : 0;
