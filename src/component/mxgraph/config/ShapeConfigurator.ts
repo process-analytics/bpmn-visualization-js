@@ -350,7 +350,7 @@ export default class ShapeConfigurator {
         {
           var text = this.createElement('text');
           // LATER: Match horizontal HTML alignment
-          // TODO wrong signature in typed-mxgraph for canvas format method
+          // TODO wrong signature in typed-mxgraph for canvas format method (should be a number parameter)
           // @ts-ignore
           text.setAttribute('x', this.format(x * s.scale) + this.textOffset);
           // @ts-ignore
