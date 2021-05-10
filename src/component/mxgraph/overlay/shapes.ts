@@ -42,15 +42,14 @@ export class OverlayBadgeShape extends mxgraph.mxText {
       undefined,
       undefined,
       undefined,
-      undefined, // fill color: delegated to the background shape
-      style.stroke.color, // TODO stroke color: delegated to the background shape
-      // undefined, //style.stroke.color,
+      style.fill.color,
+      style.stroke.color,
     );
     this.fillOpacity = style.fill.opacity;
     this.strokewidth = style.stroke.width;
 
     // This for both stroke, fill and font for the mxText part
-    this.opacity = 50;
+    // this.opacity = 50;
 
     // this.labelPadding = 4;
 
@@ -78,20 +77,16 @@ export class OverlayBadgeShape extends mxgraph.mxText {
 
     // update side effect of super.paint that calls mxShape.updateTransform
     c.scale(this.scale);
+    this.configureBackgroundShapeCanvas(c);
     this.paintBackgroundShape(c);
     c.scale(1 / this.scale); // restore initial value
 
     console.info('@@@bounds before paint', this.bounds);
     console.info('@@scale before paint', this.scale);
 
-    // see also mxShape.augmentBoundingBox
-    const firstComputedTextBbox = this.computeTextBbox(this.value, this.bounds.x / this.scale, this.bounds.y / this.scale);
+    // const firstComputedTextBbox = this.computeTextBbox(this.value, this.bounds.x / this.scale, this.bounds.y / this.scale);
+    // console.info('@@@firstComputedTextBbox prior paint', firstComputedTextBbox);
 
-    console.info('@@@firstComputedTextBbox prior paint', firstComputedTextBbox);
-
-    // TODO disable stroke, fill (set to transparent) after having paint the background
-    // probably by overriding the super.configureCanvas method
-    // c.setFillColor(undefined);
     super.paint(c);
     // console.info('@@@bounds after paint', this.bounds);
     //
@@ -100,28 +95,56 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     // this.paintBackgroundShape(c);
   }
 
-  private paintBackgroundShape(c: mxAbstractCanvas2D): void {
-    console.info('@@@@START paintBackgroundShape');
-    console.info('@@@bounds', this.bounds);
-    console.info('@@scale', this.scale);
+  private configureBackgroundShapeCanvas(c: mxAbstractCanvas2D): void {
+    console.info('@@@configureBackgroundShapeCanvas');
+    super.configureCanvas(c, 0, 0, 0, 0);
 
-    // Scale is passed-through to canvas
-    const s = this.scale;
-    const x = this.bounds.x / s;
-    const y = this.bounds.y / s;
-    // const w = this.bounds.width / s;
-    // const h = this.bounds.height / s;
+    // c.setFillColor(this.fill);
+    // c.setStrokeColor(this.stroke);
 
-    console.info('this.value', this.value);
-    const textBbox = this.computeTextBbox(this.value, x, y);
-
-    console.info('@@@computeTextBbox', textBbox);
-
-    // TODO set canvas configuration in a dedicated method
+    // TODO remove hard coded canvas style
     c.setFillColor('green');
     c.setFillAlpha(0.2);
     c.setStrokeColor('red');
     c.setStrokeWidth(1);
+  }
+
+  configureCanvas(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+    console.info('@@@configureCanvas');
+    super.configureCanvas(c, x, y, w, h);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // c.matchHtmlAlignment = false;
+
+    // delegate border and background colors to the background shape
+    c.setFontBackgroundColor(null);
+    // c.setFontBorderColor(null);
+  }
+
+  private paintBackgroundShape(c: mxAbstractCanvas2D): void {
+    console.info('@@@@START paintBackgroundShape');
+    // console.info('@@@bounds', this.bounds);
+    // console.info('@@scale', this.scale);
+
+    // Scale is passed-through to canvas
+    // const s = this.scale;
+    // const x = this.bounds.x / s;
+    // const y = this.bounds.y / s;
+    // const w = this.bounds.width / s;
+    // const h = this.bounds.height / s;
+
+    // console.info('this.value', this.value);
+    // const textBbox = this.computeTextBbox(this.value, x, y);
+    const textBbox = this.computeTextBbox();
+
+    console.info('@@@computeTextBbox', textBbox);
+
+    // TODO set canvas configuration in a dedicated method
+    // c.setFillColor('green');
+    // c.setFillAlpha(0.2);
+    // c.setStrokeColor('red');
+    // c.setStrokeWidth(1);
 
     // c.ellipse(x + 10, y + 10, 30, 30);
     // c.ellipse(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
@@ -133,17 +156,38 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     // n.setAttribute('height', String(Math.ceil(bbox.height)));
 
     // c.rect(Math.floor(textBbox.x - 1), Math.floor(textBbox.y - 1), Math.ceil(textBbox.width + 2), Math.ceil(textBbox.height));
-    // c.rect(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
-    c.rect(textBbox.x - 1, textBbox.y - 1, textBbox.width, textBbox.height - 4);
+    // c.rect(textBbox.x - 1, textBbox.y - 1, textBbox.width, textBbox.height - 4);
+    c.rect(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
     c.fillAndStroke();
-    // c.stroke();
+
+    // ellipse
+    // c.ellipse(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
+    // c.fillAndStroke();
+
+    // circle
+    // const circleWidth = Math.max(textBbox.width, textBbox.height);
+    // // TODO for circle, the x and y position need to be updated accordingly
+    // c.ellipse(textBbox.x, textBbox.y, circleWidth, circleWidth);
+    // c.fillAndStroke();
 
     console.info('@@@@done paintBackgroundShape');
   }
 
   // TODO can we computeTextBbox()?
   // from mxSvgCanvas2D.prototype.addTextBackground
-  private computeTextBbox(str: string, x: number, y: number): mxRectangle {
+  // TODO do we need to use mxShape.augmentBoundingBox
+  private computeTextBbox(): mxRectangle {
+    // Scale is passed-through to canvas
+    const s = this.scale;
+    console.info('@@@computeTextBbox bounds', this.bounds);
+    console.info('@@@computeTextBbox scale', s);
+
+    let x = this.bounds.x / s;
+    let y = this.bounds.y / s;
+
+    let str = this.value;
+    console.info('@computeTextBbox label', str);
+
     // var s = this.state;
     //
     // if (s.fontBackgroundColor != null || s.fontBorderColor != null)
@@ -196,6 +240,7 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     // console.info('@@@state during paint', s);
 
     // Wrapping and clipping can be ignored here
+    // div.style.lineHeight = '1';
     div.style.lineHeight = mxgraph.mxConstants.ABSOLUTE_LINE_HEIGHT ? this.size * mxgraph.mxConstants.LINE_HEIGHT + 'px' : `${mxgraph.mxConstants.LINE_HEIGHT}`;
     div.style.fontSize = this.size + 'px';
     div.style.fontFamily = this.family;
@@ -223,6 +268,7 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     str = mxgraph.mxUtils.htmlEntities(str, false);
+    console.info('@computeTextBbox label after htmlEntities', str);
     div.innerHTML = str.replace(/\n/g, '<br/>');
 
     document.body.appendChild(div);
