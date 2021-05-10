@@ -108,6 +108,7 @@ function getOverlay(bpmnKind) {
         },
         fill: {
           color: 'DimGray',
+          opacity: 80,
         },
       },
     };
@@ -131,7 +132,13 @@ function getOverlay(bpmnKind) {
       label: '15',
       style: {
         font: {
-          size: 30,
+          size: 25,
+        },
+        fill: {
+          color: 'orange',
+        },
+        stroke: {
+          color: 'orange',
         },
       },
     };
