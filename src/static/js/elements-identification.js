@@ -100,11 +100,11 @@ function getOverlay(bpmnKind) {
   if (ShapeUtil.isActivity(bpmnKind)) {
     return {
       position: 'top-left',
-      label: '30',
+      label: '30\nnext line',
       style: {
         font: {
           color: 'Chartreuse',
-          size: 30,
+          size: 15,
         },
         fill: {
           color: 'DimGray',
@@ -120,10 +120,21 @@ function getOverlay(bpmnKind) {
           color: 'HotPink',
           width: 4,
         },
+        font: {
+          size: 30,
+        },
       },
     };
   } else if (bpmnKind.includes('Event')) {
-    return { position: 'bottom-left', label: '15' };
+    return {
+      position: 'bottom-left',
+      label: '15',
+      style: {
+        font: {
+          size: 30,
+        },
+      },
+    };
   } else if (bpmnKind.includes('lane')) {
     return { position: 'bottom-right', label: '100' };
   } else if (bpmnKind.includes('Flow')) {
