@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 import { mxgraph } from '../initializer';
-import { mxRectangle } from 'mxgraph';
+import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph';
 import { MxGraphCustomOverlayStyle } from './custom-overlay';
 
+/* eslint-disable no-console */
 export class OverlayBadgeShape extends mxgraph.mxText {
   // TODO to remove when typed-mxgraph@1.0.1 mxText definitions won't declare these fields as protected (prevent assign OverlayBadgeShape instances as mxShape)
   spacing: number;
@@ -29,8 +30,8 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     super(
       value,
       bounds,
-      undefined,
-      undefined,
+      mxgraph.mxConstants.ALIGN_CENTER,
+      mxgraph.mxConstants.ALIGN_MIDDLE,
       style.font.color,
       undefined,
       style.font.size,
@@ -41,17 +42,20 @@ export class OverlayBadgeShape extends mxgraph.mxText {
       undefined,
       undefined,
       undefined,
-      style.fill.color,
+      undefined, //style.fill.color,
       style.stroke.color,
+      // undefined, //style.stroke.color,
     );
     this.fillOpacity = style.fill.opacity;
     this.strokewidth = style.stroke.width;
 
-    this.opacity = 40;
+    this.opacity = 50;
+
+    // this.labelPadding = 4;
 
     // const old = this.spacing;
     //this.spacing = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING, this.spacing));
-    this.spacingTop = 12; //(this.spacingTop - old)) + this.spacing;
+    // this.spacingTop = 12; //(this.spacingTop - old)) + this.spacing;
     // this.spacingRight = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_RIGHT, this.spacingRight - old)) + this.spacing;
     // this.spacingBottom = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_BOTTOM, this.spacingBottom - old)) + this.spacing;
     // this.spacingLeft = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_LEFT, this.spacingLeft - old)) + this.spacing;
@@ -63,81 +67,107 @@ export class OverlayBadgeShape extends mxgraph.mxText {
   //   this.opacity = 30;
   // }
 
-  // paint(c: mxAbstractCanvas2D): void {
-  //   // // Scale is passed-through to canvas
-  //   // var s = this.scale;
-  //   // var x = this.bounds.x / s;
-  //   // var y = this.bounds.y / s;
-  //   // var w = this.bounds.width / s;
-  //   // var h = this.bounds.height / s;
-  //   //
-  //   // this.updateTransform(c, x, y, w, h);
-  //   // this.configureCanvas(c, x, y, w, h);
-  //   //
-  //   // if (update)
-  //   // {
-  //   //   c.updateText(x, y, w, h, this.align, this.valign, this.wrap, this.overflow,
-  //   //     this.clipped, this.getTextRotation(), this.node);
-  //   // }
-  //   // else
-  //   // {
-  //   //   // Checks if text contains HTML markup
-  //   //   var realHtml = mxUtils.isNode(this.value) || this.dialect == mxConstants.DIALECT_STRICTHTML;
-  //   //
-  //   //   // Always renders labels as HTML in VML
-  //   //   var fmt = (realHtml || c instanceof mxVmlCanvas2D) ? 'html' : '';
-  //   //   var val = this.value;
-  //   //
-  //   //   if (!realHtml && fmt == 'html')
-  //   //   {
-  //   //     val = mxUtils.htmlEntities(val, false);
-  //   //   }
-  //   //
-  //   //   if (fmt == 'html' && !mxUtils.isNode(this.value))
-  //   //   {
-  //   //     val = mxUtils.replaceTrailingNewlines(val, '<div><br></div>');
-  //   //   }
-  //   //
-  //   //   // Handles trailing newlines to make sure they are visible in rendering output
-  //   //   val = (!mxUtils.isNode(this.value) && this.replaceLinefeeds && fmt == 'html') ?
-  //   //     val.replace(/\n/g, '<br/>') : val;
-  //   //
-  //   //   var dir = this.textDirection;
-  //   //
-  //   //   if (dir == mxConstants.TEXT_DIRECTION_AUTO && !realHtml)
-  //   //   {
-  //   //     dir = this.getAutoDirection();
-  //   //   }
-  //   //
-  //   //   if (dir != mxConstants.TEXT_DIRECTION_LTR && dir != mxConstants.TEXT_DIRECTION_RTL)
-  //   //   {
-  //   //     dir = null;
-  //   //   }
-  //   //
-  //   //   c.text(x, y, w, h, val, this.align, this.valign, this.wrap, fmt,
-  //   //     this.overflow, this.clipped, this.getTextRotation(), dir);
-  //   // }
-  //
-  //   // TODO disable stroke, fill (set to transparent) after having paint the background
-  //   super.paint(c, false);
-  //   console.info('@@@this.boundingBox after super paint', this.boundingBox);
-  //
-  //   // Scale is passed-through to canvas
-  //   const s = this.scale;
-  //   const x = this.bounds.x / s;
-  //   const y = this.bounds.y / s;
-  //   const w = this.bounds.width / s;
-  //   const h = this.bounds.height / s;
-  //
-  //   console.info('this.value', this.value);
-  //   const textBbox = this.computeTextBbox(this.value, x, y);
-  //   console.info('@@@computeTextBbox', textBbox);
-  //
-  //   c.ellipse(x + 10, y + 10, 30, 30);
-  //   c.fillAndStroke();
-  //   // c.stroke();
-  //   console.info('@@@@after ellipse');
-  // }
+  paint(c: mxAbstractCanvas2D): void {
+    // // Scale is passed-through to canvas
+    // var s = this.scale;
+    // var x = this.bounds.x / s;
+    // var y = this.bounds.y / s;
+    // var w = this.bounds.width / s;
+    // var h = this.bounds.height / s;
+    //
+    // this.updateTransform(c, x, y, w, h);
+    // this.configureCanvas(c, x, y, w, h);
+    //
+    // if (update)
+    // {
+    //   c.updateText(x, y, w, h, this.align, this.valign, this.wrap, this.overflow,
+    //     this.clipped, this.getTextRotation(), this.node);
+    // }
+    // else
+    // {
+    //   // Checks if text contains HTML markup
+    //   var realHtml = mxUtils.isNode(this.value) || this.dialect == mxConstants.DIALECT_STRICTHTML;
+    //
+    //   // Always renders labels as HTML in VML
+    //   var fmt = (realHtml || c instanceof mxVmlCanvas2D) ? 'html' : '';
+    //   var val = this.value;
+    //
+    //   if (!realHtml && fmt == 'html')
+    //   {
+    //     val = mxUtils.htmlEntities(val, false);
+    //   }
+    //
+    //   if (fmt == 'html' && !mxUtils.isNode(this.value))
+    //   {
+    //     val = mxUtils.replaceTrailingNewlines(val, '<div><br></div>');
+    //   }
+    //
+    //   // Handles trailing newlines to make sure they are visible in rendering output
+    //   val = (!mxUtils.isNode(this.value) && this.replaceLinefeeds && fmt == 'html') ?
+    //     val.replace(/\n/g, '<br/>') : val;
+    //
+    //   var dir = this.textDirection;
+    //
+    //   if (dir == mxConstants.TEXT_DIRECTION_AUTO && !realHtml)
+    //   {
+    //     dir = this.getAutoDirection();
+    //   }
+    //
+    //   if (dir != mxConstants.TEXT_DIRECTION_LTR && dir != mxConstants.TEXT_DIRECTION_RTL)
+    //   {
+    //     dir = null;
+    //   }
+    //
+    //   c.text(x, y, w, h, val, this.align, this.valign, this.wrap, fmt,
+    //     this.overflow, this.clipped, this.getTextRotation(), dir);
+    // }
+
+    console.info('@@@bounds before paint', this.bounds);
+    console.info('@@scale before paint', this.scale);
+
+    const firstComputedTextBbox = this.computeTextBbox(this.value, this.bounds.x / this.scale, this.bounds.y / this.scale);
+
+    console.info('@@@firstComputedTextBbox prior paint', firstComputedTextBbox);
+
+    // TODO disable stroke, fill (set to transparent) after having paint the background
+    super.paint(c);
+    console.info('@@@bounds after paint', this.bounds);
+
+    console.info('@@@this.boundingBox after super paint', this.boundingBox);
+
+    // Scale is passed-through to canvas
+    const s = this.scale;
+    const x = this.bounds.x / s;
+    const y = this.bounds.y / s;
+    // const w = this.bounds.width / s;
+    // const h = this.bounds.height / s;
+
+    console.info('this.value', this.value);
+    const textBbox = this.computeTextBbox(this.value, x, y);
+
+    console.info('@@@computeTextBbox', textBbox);
+
+    c.setFillColor('green');
+    c.setFillAlpha(0.2);
+    c.setStrokeColor('red');
+    c.setStrokeWidth(1);
+    // c.ellipse(x + 10, y + 10, 30, 30);
+    // c.ellipse(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
+
+    // rect build by addTextBackground
+    // n.setAttribute('x', String(Math.floor(bbox.x - 1)));
+    // n.setAttribute('y', String(Math.floor(bbox.y - 1)));
+    // n.setAttribute('width', String(Math.ceil(bbox.width + 2)));
+    // n.setAttribute('height', String(Math.ceil(bbox.height)));
+
+    // c.rect(Math.floor(textBbox.x - 1), Math.floor(textBbox.y - 1), Math.ceil(textBbox.width + 2), Math.ceil(textBbox.height));
+    // c.rect(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
+    c.rect(textBbox.x - 1, textBbox.y - 1, textBbox.width, textBbox.height - 4);
+    c.fillAndStroke();
+    // c.stroke();
+
+    console.info('@@@@after extra shape');
+  }
 
   // TODO can we computeTextBbox()?
   // from mxSvgCanvas2D.prototype.addTextBackground
@@ -190,7 +220,7 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     // Computes size if not in document or no getBBox available
     const div = document.createElement('div');
 
-    const s = this.state;
+    // const s = this.state;
     // console.info('@@@state during paint', s);
 
     // Wrapping and clipping can be ignored here
@@ -226,21 +256,32 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     document.body.appendChild(div);
     const w = div.offsetWidth;
     const h = div.offsetHeight;
+
+    console.info('@@computed w/h', w, h);
+    console.info('@@div getBoundingClientRect', div.getBoundingClientRect());
+
     div.parentNode.removeChild(div);
 
-    if (this.align == mxgraph.mxConstants.ALIGN_CENTER) {
-      x -= w / 2;
-    } else if (this.align == mxgraph.mxConstants.ALIGN_RIGHT) {
-      x -= w;
-    }
+    //add padding
+    //w += 2 * 3; // 3 points on each side
 
-    if (this.valign == mxgraph.mxConstants.ALIGN_MIDDLE) {
-      y -= h / 2;
-    } else if (this.valign == mxgraph.mxConstants.ALIGN_BOTTOM) {
-      y -= h;
-    }
+    // if (this.align == mxgraph.mxConstants.ALIGN_CENTER) {
+    x -= w / 2;
+    // } else if (this.align == mxgraph.mxConstants.ALIGN_RIGHT) {
+    //   x -= w;
+    // }
+    //
+    // if (this.valign == mxgraph.mxConstants.ALIGN_MIDDLE) {
+    y -= h / 2;
+    // y -= h / 2 + h / 8;
+    // } else if (this.valign == mxgraph.mxConstants.ALIGN_BOTTOM) {
+    //   y -= h;
+    // }
 
-    return new mxgraph.mxRectangle((x + 1) * this.scale, (y + 2) * this.scale, w * this.scale, (h + 1) * this.scale);
+    // return new mxgraph.mxRectangle(x, y + 2, w, h + 1);
+    return new mxgraph.mxRectangle(x, y, w, h);
+    // return new mxgraph.mxRectangle(x + 1, y + 2, w, h + 1);
+    //return new mxgraph.mxRectangle((x + 1) * this.scale, (y + 2) * this.scale, w * this.scale, (h + 1) * this.scale);
     // const bbox = new mxRectangle((x + 1) * s.scale, (y + 2) * s.scale, w * s.scale, (h + 1) * s.scale);
     // }
 
