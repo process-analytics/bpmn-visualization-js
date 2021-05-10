@@ -272,7 +272,7 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     div.innerHTML = str.replace(/\n/g, '<br/>');
 
     document.body.appendChild(div);
-    const w = div.offsetWidth;
+    let w = div.offsetWidth;
     const h = div.offsetHeight;
 
     console.info('@@computed w/h', w, h);
@@ -280,8 +280,9 @@ export class OverlayBadgeShape extends mxgraph.mxText {
 
     div.parentNode.removeChild(div);
 
+    // TODO manage spacing based on configuration
     //add padding
-    //w += 2 * 3; // 3 points on each side
+    w += 2 * 3; // 3 points on each side
 
     // if (this.align == mxgraph.mxConstants.ALIGN_CENTER) {
     x -= w / 2;
