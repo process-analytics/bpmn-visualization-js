@@ -42,11 +42,15 @@ export class OverlayBadgeShape extends mxgraph.mxText {
       undefined,
       undefined,
       undefined,
-      style.fill.color,
-      style.stroke.color,
+      undefined, // fill color delegated to background shape
+      undefined, // stroke color delegated to background shape
     );
     this.fillOpacity = style.fill.opacity;
+    this.fill = style.fill.color;
+
+    this.stroke = style.stroke.color;
     this.strokewidth = style.stroke.width;
+    console.info('@@@@constructor - strokewidth', this.strokewidth);
 
     // This for both stroke, fill and font for the mxText part
     // this.opacity = 50;
@@ -98,15 +102,15 @@ export class OverlayBadgeShape extends mxgraph.mxText {
   private configureBackgroundShapeCanvas(c: mxAbstractCanvas2D): void {
     console.info('@@@configureBackgroundShapeCanvas');
     super.configureCanvas(c, 0, 0, 0, 0);
+    c.setStrokeWidth(this.strokewidth);
 
     // c.setFillColor(this.fill);
     // c.setStrokeColor(this.stroke);
 
     // TODO remove hard coded canvas style
-    c.setFillColor('green');
-    c.setFillAlpha(0.2);
-    c.setStrokeColor('red');
-    c.setStrokeWidth(1);
+    // c.setFillColor('green');
+    // c.setFillAlpha(0.2);
+    // // c.setStrokeColor('red');
   }
 
   configureCanvas(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
@@ -119,7 +123,7 @@ export class OverlayBadgeShape extends mxgraph.mxText {
 
     // delegate border and background colors to the background shape
     c.setFontBackgroundColor(null);
-    // c.setFontBorderColor(null);
+    c.setFontBorderColor(null); // unset this to display the text border
   }
 
   private paintBackgroundShape(c: mxAbstractCanvas2D): void {
@@ -157,12 +161,12 @@ export class OverlayBadgeShape extends mxgraph.mxText {
 
     // c.rect(Math.floor(textBbox.x - 1), Math.floor(textBbox.y - 1), Math.ceil(textBbox.width + 2), Math.ceil(textBbox.height));
     // c.rect(textBbox.x - 1, textBbox.y - 1, textBbox.width, textBbox.height - 4);
-    c.rect(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
-    c.fillAndStroke();
+    // c.rect(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
+    // c.fillAndStroke();
 
     // ellipse
-    // c.ellipse(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
-    // c.fillAndStroke();
+    c.ellipse(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
+    c.fillAndStroke();
 
     // circle
     // const circleWidth = Math.max(textBbox.width, textBbox.height);
