@@ -108,7 +108,7 @@ tests are supposed to fail in that case).
 <br/><br/>
 * You have added an interface for handling interactions that manipulates the visible diagram.
 <br/><br/>
-`bpmn.navigation.test.ts` drives all visual tests for that part. A visual test only requires a BPMN diagram as input.
+`diagram.navigation.zoom.pan.tests.ts` drives all visual tests for that part. A visual test only requires a BPMN diagram as input.
 
 In both cases the reference images have to be stored in the `test/e2e/__image_snapshots__` folder.
 
