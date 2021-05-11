@@ -102,25 +102,14 @@ export class OverlayBadgeShape extends mxgraph.mxText {
   private configureBackgroundShapeCanvas(c: mxAbstractCanvas2D): void {
     console.info('@@@configureBackgroundShapeCanvas');
     super.configureCanvas(c, 0, 0, 0, 0);
+    // TODO strange this should have been configure in super.configureCanvas
+    // otherwise, the value is default (1) * scale
     c.setStrokeWidth(this.strokewidth);
-
-    // c.setFillColor(this.fill);
-    // c.setStrokeColor(this.stroke);
-
-    // TODO remove hard coded canvas style
-    // c.setFillColor('green');
-    // c.setFillAlpha(0.2);
-    // // c.setStrokeColor('red');
   }
 
   configureCanvas(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     console.info('@@@configureCanvas');
     super.configureCanvas(c, x, y, w, h);
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // c.matchHtmlAlignment = false;
-
     // delegate border and background colors to the background shape
     c.setFontBackgroundColor(null);
     c.setFontBorderColor(null); // unset this to display the text border
@@ -128,27 +117,9 @@ export class OverlayBadgeShape extends mxgraph.mxText {
 
   private paintBackgroundShape(c: mxAbstractCanvas2D): void {
     console.info('@@@@START paintBackgroundShape');
-    // console.info('@@@bounds', this.bounds);
-    // console.info('@@scale', this.scale);
-
-    // Scale is passed-through to canvas
-    // const s = this.scale;
-    // const x = this.bounds.x / s;
-    // const y = this.bounds.y / s;
-    // const w = this.bounds.width / s;
-    // const h = this.bounds.height / s;
-
-    // console.info('this.value', this.value);
-    // const textBbox = this.computeTextBbox(this.value, x, y);
     const textBbox = this.computeTextBbox();
 
     console.info('@@@computeTextBbox', textBbox);
-
-    // TODO set canvas configuration in a dedicated method
-    // c.setFillColor('green');
-    // c.setFillAlpha(0.2);
-    // c.setStrokeColor('red');
-    // c.setStrokeWidth(1);
 
     // c.ellipse(x + 10, y + 10, 30, 30);
     // c.ellipse(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
