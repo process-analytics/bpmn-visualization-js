@@ -27,13 +27,54 @@ repository.
 - *_BPMN rendering_*: The part of the rendering that concerns purely the BPMN model according to the specification
 - *_Customization_*: The library user changes the rendering / behavior using their own code by extending the library.
 - *_Configuration_*: The library user changes the rendering / behavior using existing features.
-- *_Custom behavior_*: Any behavior that causes changes in the BPMN rendering (adding popup, changing elements color or thickness...)
+- *_Custom behavior_*: Any behavior that causes changes in the BPMN rendering (adding popup, changing elements color or thickness...).
 - *_Diagram navigation_*: Set of user interactions, that permits pan and zoom, to achieve desired visibility on diagram elements or diagram as a whole.
 - *_Options_*: Configuration elements used at the library initialization and by the APIs at runtime.
-- *_Library integration_*: Something about how an app can integrate the library
-- *_Process data_*: Execution data + derived data
+- *_Library integration_*: Something about how an app can integrate the library.
+- *_Process data_*: Execution data + derived data.
 - *_Execution data_*: Data that is generated during the natural process instance flow: state, logs, ...
 - *_Derived data_*: Data that by any means derives from the execution data and/or other contextual data.
+
+
+[cols="3,7", options="header"]
+.Glossary
+|===
+|Name
+|Description
+
+|BPMN rendering
+|The part of the rendering that concerns purely the BPMN model according to the specification
+
+|*_Customization_*
+|The library user changes the rendering / behavior using their own code by extending the library
+
+|*_Configuration_*
+|The library user changes the rendering / behavior using existing features
+
+|*_Custom behavior_*
+|Any behavior that causes changes in the BPMN rendering (adding popup, changing elements color or thickness...)
+
+
+|*_Diagram navigation_*
+|Set of user interactions, that permits pan and zoom, to achieve desired visibility on diagram elements or diagram as a whole
+
+|*_Options_*
+|Configuration elements used at the library initialization and by the APIs at runtime
+
+|*_Library integration_*
+|Something about how an app can integrate the library
+
+|*_Process data_*
+|Execution data + derived data
+
+|*_Execution data_*
+|Data that is generated during the natural process instance flow: state, logs, ...
+
+|*_Derived data_*
+|Data that by any means derives from the execution data and/or other contextual data
+
+|===
+
 
 
 === BPMN Diagrams
