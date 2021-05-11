@@ -100,7 +100,10 @@ function getOverlay(bpmnKind) {
   if (ShapeUtil.isActivity(bpmnKind)) {
     return {
       position: 'top-left',
-      label: '30\nnext line',
+      label: '30 💯',
+      // label: '30 👌',
+      // label: '30 🎈',
+      // label: '30\nnext line',
       style: {
         font: {
           color: 'Chartreuse',
