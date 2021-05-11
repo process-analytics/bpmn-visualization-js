@@ -55,48 +55,27 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     // This for both stroke, fill and font for the mxText part
     // this.opacity = 50;
 
+    // TODO manage padding/spacing with configuration
+    // the following is taken from mxText but not use in svg generation (canvas and renderer)
     // this.labelPadding = 4;
 
     // const old = this.spacing;
-    //this.spacing = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING, this.spacing));
+    // this.spacing = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING, this.spacing));
     // this.spacingTop = 12; //(this.spacingTop - old)) + this.spacing;
     // this.spacingRight = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_RIGHT, this.spacingRight - old)) + this.spacing;
     // this.spacingBottom = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_BOTTOM, this.spacingBottom - old)) + this.spacing;
     // this.spacingLeft = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_LEFT, this.spacingLeft - old)) + this.spacing;
   }
 
-  // apply(state: mxCellState): void {
-  //   super.apply(state);
-  //
-  //   this.opacity = 30;
-  // }
-
   paint(c: mxAbstractCanvas2D): void {
-    // const s = this.scale;
-    // const x = this.bounds.x / s;
-    // const y = this.bounds.y / s;
-    // const w = this.bounds.width / s;
-    // const h = this.bounds.height / s;
-    // this.updateTransform(c, x, y, w, h);
-
-    // update side effect of super.paint that calls mxShape.updateTransform
+    // mimic super.paint that calls mxShape.updateTransform
     c.scale(this.scale);
     this.configureBackgroundShapeCanvas(c);
     this.paintBackgroundShape(c);
     c.scale(1 / this.scale); // restore initial value
 
-    console.info('@@@bounds before paint', this.bounds);
-    console.info('@@scale before paint', this.scale);
-
-    // const firstComputedTextBbox = this.computeTextBbox(this.value, this.bounds.x / this.scale, this.bounds.y / this.scale);
-    // console.info('@@@firstComputedTextBbox prior paint', firstComputedTextBbox);
-
+    // paint text
     super.paint(c);
-    // console.info('@@@bounds after paint', this.bounds);
-    //
-    // console.info('@@@this.boundingBox after super paint', this.boundingBox);
-    //
-    // this.paintBackgroundShape(c);
   }
 
   private configureBackgroundShapeCanvas(c: mxAbstractCanvas2D): void {
@@ -115,23 +94,12 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     c.setFontBorderColor(null); // unset this to display the text border
   }
 
+  // this is the method that will be implemented by each overlay shape implementation
   private paintBackgroundShape(c: mxAbstractCanvas2D): void {
-    console.info('@@@@START paintBackgroundShape');
+    // this should be passed to the method to avoid calling it in all implementations
     const textBbox = this.computeTextBbox();
 
-    console.info('@@@computeTextBbox', textBbox);
-
-    // c.ellipse(x + 10, y + 10, 30, 30);
-    // c.ellipse(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
-
-    // rect build by addTextBackground
-    // n.setAttribute('x', String(Math.floor(bbox.x - 1)));
-    // n.setAttribute('y', String(Math.floor(bbox.y - 1)));
-    // n.setAttribute('width', String(Math.ceil(bbox.width + 2)));
-    // n.setAttribute('height', String(Math.ceil(bbox.height)));
-
-    // c.rect(Math.floor(textBbox.x - 1), Math.floor(textBbox.y - 1), Math.ceil(textBbox.width + 2), Math.ceil(textBbox.height));
-    // c.rect(textBbox.x - 1, textBbox.y - 1, textBbox.width, textBbox.height - 4);
+    // rectangle
     c.rect(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
     c.fillAndStroke();
 
@@ -144,163 +112,61 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     // // TODO for circle, the x and y position need to be updated accordingly
     // c.ellipse(textBbox.x, textBbox.y, circleWidth, circleWidth);
     // c.fillAndStroke();
-
-    console.info('@@@@done paintBackgroundShape');
   }
 
-  // TODO can we computeTextBbox()?
-  // from mxSvgCanvas2D.prototype.addTextBackground
+  // implementation inspired of mxSvgCanvas2D.prototype.addTextBackground
   // TODO do we need to use mxShape.augmentBoundingBox
   private computeTextBbox(): mxRectangle {
     // Scale is passed-through to canvas
     const s = this.scale;
-    console.info('@@@computeTextBbox bounds', this.bounds);
-    console.info('@@@computeTextBbox scale', s);
-
     let x = this.bounds.x / s;
     let y = this.bounds.y / s;
 
-    let str = this.value;
-    console.info('@computeTextBbox label', str);
+    let text = this.value;
 
-    // var s = this.state;
-    //
-    // if (s.fontBackgroundColor != null || s.fontBorderColor != null)
-    // {
-    //   var bbox = null;
-    //
-    //   if (overflow == 'fill' || overflow == 'width')
-    //   {
-    //     if (align == mxConstants.ALIGN_CENTER)
-    //     {
-    //       x -= w / 2;
-    //     }
-    //     else if (align == mxConstants.ALIGN_RIGHT)
-    //     {
-    //       x -= w;
-    //     }
-    //
-    //     if (valign == mxConstants.ALIGN_MIDDLE)
-    //     {
-    //       y -= h / 2;
-    //     }
-    //     else if (valign == mxConstants.ALIGN_BOTTOM)
-    //     {
-    //       y -= h;
-    //     }
-    //
-    //     bbox = new mxRectangle((x + 1) * s.scale, y * s.scale, (w - 2) * s.scale, (h + 2) * s.scale);
-    //   }
-    //   else if (node.getBBox != null && this.root.ownerDocument == document)
-    //   {
-    //     // Uses getBBox only if inside document for correct size
-    //     try
-    //     {
-    //       bbox = node.getBBox();
-    //       var ie = mxClient.IS_IE && mxClient.IS_SVG;
-    //       bbox = new mxRectangle(bbox.x, bbox.y + ((ie) ? 0 : 1), bbox.width, bbox.height + ((ie) ? 1 : 0));
-    //     }
-    //     catch (e)
-    //     {
-    //       // Ignores NS_ERROR_FAILURE in FF if container display is none.
-    //     }
-    //   }
-
-    // if (bbox == null || bbox.width == 0 || bbox.height == 0)
-    // {
-    // Computes size if not in document or no getBBox available
+    // Computes size by adding the text in a hidden div that lives only temporary
     const div = document.createElement('div');
 
-    // const s = this.state;
-    // console.info('@@@state during paint', s);
-
     // Wrapping and clipping can be ignored here
-    // div.style.lineHeight = '1';
     div.style.lineHeight = mxgraph.mxConstants.ABSOLUTE_LINE_HEIGHT ? this.size * mxgraph.mxConstants.LINE_HEIGHT + 'px' : `${mxgraph.mxConstants.LINE_HEIGHT}`;
     div.style.fontSize = this.size + 'px';
     div.style.fontFamily = this.family;
-    // div.style.lineHeight = (mxgraph.mxConstants.ABSOLUTE_LINE_HEIGHT) ? (s.fontSize * mxgraph.mxConstants.LINE_HEIGHT) + 'px' : mxgraph.mxConstants.LINE_HEIGHT;
-    // div.style.fontSize = s.fontSize + 'px';
-    // div.style.fontFamily = s.fontFamily;
     div.style.whiteSpace = 'nowrap';
     div.style.position = 'absolute';
     div.style.visibility = 'hidden';
     div.style.display = 'inline-block';
-    // div.style.display = (mxClient.IS_QUIRKS) ? 'inline' : 'inline-block';
+    // non standard
     // div.style.zoom = '1';
 
     if ((this.fontStyle & mxgraph.mxConstants.FONT_BOLD) == mxgraph.mxConstants.FONT_BOLD) {
-      // if ((s.fontStyle & mxConstants.FONT_BOLD) == mxConstants.FONT_BOLD)
       div.style.fontWeight = 'bold';
     }
 
     if ((this.fontStyle & mxgraph.mxConstants.FONT_ITALIC) == mxgraph.mxConstants.FONT_ITALIC) {
-      // if ((s.fontStyle & mxConstants.FONT_ITALIC) == mxConstants.FONT_ITALIC)
       div.style.fontStyle = 'italic';
     }
 
     // TODO error in typed-mxgraph@1.0.1
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    str = mxgraph.mxUtils.htmlEntities(str, false);
-    console.info('@computeTextBbox label after htmlEntities', str);
-    div.innerHTML = str.replace(/\n/g, '<br/>');
+    text = mxgraph.mxUtils.htmlEntities(text, false);
+    console.info('@computeTextBbox label after htmlEntities', text);
+    div.innerHTML = text.replace(/\n/g, '<br/>');
 
     document.body.appendChild(div);
     let w = div.offsetWidth;
     const h = div.offsetHeight;
-
-    console.info('@@computed w/h', w, h);
-    console.info('@@div getBoundingClientRect', div.getBoundingClientRect());
-
     div.parentNode.removeChild(div);
 
-    // TODO manage spacing based on configuration
-    //add padding
+    // TODO manage spacing based on configuration and open it to vertical spacing on height
+    // padding/spacing (same for left and right)
     w += 2 * 3; // 3 points on each side
 
-    // if (this.align == mxgraph.mxConstants.ALIGN_CENTER) {
+    // we are always using ALIGN_CENTER
     x -= w / 2;
-    // } else if (this.align == mxgraph.mxConstants.ALIGN_RIGHT) {
-    //   x -= w;
-    // }
-    //
-    // if (this.valign == mxgraph.mxConstants.ALIGN_MIDDLE) {
+    // we are always using ALIGN_MIDDLE
     y -= h / 2;
-    // y -= h / 2 + h / 8;
-    // } else if (this.valign == mxgraph.mxConstants.ALIGN_BOTTOM) {
-    //   y -= h;
-    // }
 
-    // return new mxgraph.mxRectangle(x, y + 2, w, h + 1);
     return new mxgraph.mxRectangle(x, y, w, h);
-    // return new mxgraph.mxRectangle(x + 1, y + 2, w, h + 1);
-    //return new mxgraph.mxRectangle((x + 1) * this.scale, (y + 2) * this.scale, w * this.scale, (h + 1) * this.scale);
-    // const bbox = new mxRectangle((x + 1) * s.scale, (y + 2) * s.scale, w * s.scale, (h + 1) * s.scale);
-    // }
-
-    // if (bbox != null)
-    // {
-    //   var n = this.createElement('rect');
-    //   n.setAttribute('fill', s.fontBackgroundColor || 'none');
-    //   n.setAttribute('stroke', s.fontBorderColor || 'none');
-    //   n.setAttribute('x', Math.floor(bbox.x - 1));
-    //   n.setAttribute('y', Math.floor(bbox.y - 1));
-    //   n.setAttribute('width', Math.ceil(bbox.width + 2));
-    //   n.setAttribute('height', Math.ceil(bbox.height));
-    //
-    //   var sw = (s.fontBorderColor != null) ? Math.max(1, this.format(s.scale)) : 0;
-    //   n.setAttribute('stroke-width', sw);
-    //
-    //   // Workaround for crisp rendering - only required if not exporting
-    //   if (this.root.ownerDocument == document && mxUtils.mod(sw, 2) == 1)
-    //   {
-    //     n.setAttribute('transform', 'translate(0.5, 0.5)');
-    //   }
-    //
-    //   node.insertBefore(n, node.firstChild);
-    // }
-    //   }
-    // }
   }
 }
