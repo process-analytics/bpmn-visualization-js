@@ -69,7 +69,7 @@ describe('diagram navigation', () => {
   const imageSnapshotThresholds = new ImageSnapshotThresholds();
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'navigation', imageSnapshotThresholds.getDefault());
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
-  const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
+  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' });
 
   const bpmnDiagramName = 'simple.2.start.events.1.task';
   let bpmnContainerElementHandle: ElementHandle<SVGElement | HTMLElement>;
