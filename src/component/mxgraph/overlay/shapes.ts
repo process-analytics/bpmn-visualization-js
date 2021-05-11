@@ -132,12 +132,12 @@ export class OverlayBadgeShape extends mxgraph.mxText {
 
     // c.rect(Math.floor(textBbox.x - 1), Math.floor(textBbox.y - 1), Math.ceil(textBbox.width + 2), Math.ceil(textBbox.height));
     // c.rect(textBbox.x - 1, textBbox.y - 1, textBbox.width, textBbox.height - 4);
-    // c.rect(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
-    // c.fillAndStroke();
+    c.rect(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
+    c.fillAndStroke();
 
     // ellipse
-    c.ellipse(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
-    c.fillAndStroke();
+    // c.ellipse(textBbox.x, textBbox.y, textBbox.width, textBbox.height);
+    // c.fillAndStroke();
 
     // circle
     // const circleWidth = Math.max(textBbox.width, textBbox.height);
