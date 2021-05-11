@@ -102,7 +102,7 @@ function getOverlay(bpmnKind) {
       position: 'top-left',
       label: '30 💯',
       // label: '30 👌',
-      // label: '30 🎈',
+      // label: '30 🎈'
       // label: '30\nnext line',
       style: {
         font: {
