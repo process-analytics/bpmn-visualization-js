@@ -448,7 +448,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_live_examples">2.1. Live Examples</a></li>
 <li><a href="#_usage">2.2. Usage</a></li>
-<li><a href="#_bpmn_diagrams">2.3. BPMN Diagrams</a></li>
+<li><a href="#_glossary">2.3. Glossary</a></li>
+<li><a href="#_bpmn_diagrams">2.4. BPMN Diagrams</a></li>
 </ul>
 </li>
 <li><a href="#supported-bpmn-elements">3. Supported BPMN Elements</a>
@@ -525,7 +526,68 @@ repository.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_bpmn_diagrams"><a class="anchor" href="#_bpmn_diagrams"></a><a class="link" href="#_bpmn_diagrams">2.3. BPMN Diagrams</a></h3>
+<h3 id="_glossary"><a class="anchor" href="#_glossary"></a><a class="link" href="#_glossary">2.3. Glossary</a></h3>
+<div class="paragraph">
+<p>Here are a list of terms and concepts we are using in the <code>bpmn-visualization</code> documentation, issues, examples&#8230;&#8203;</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Glossary</caption>
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 70%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Term or concept</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BPMN rendering</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The part of the rendering that concerns purely the BPMN model according to the specification</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Customization</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The library user changes the rendering / behavior using their own code by extending the library</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The library user changes the rendering / behavior using existing features</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Custom behavior</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Any behavior that causes changes in the BPMN rendering (adding popup, changing elements color or thickness&#8230;&#8203;)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Diagram navigation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set of user interactions, that permits pan and zoom, to achieve desired visibility on diagram elements or diagram as a whole</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Options</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration elements used at the library initialization and by the APIs at runtime</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Library integration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Something about how an app can integrate the library</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Process data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Execution data + derived data</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Execution data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data that is generated during the natural process instance flow: state, logs, &#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Derived data</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data that by any means derives from the execution data and/or other contextual data</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_bpmn_diagrams"><a class="anchor" href="#_bpmn_diagrams"></a><a class="link" href="#_bpmn_diagrams">2.4. BPMN Diagrams</a></h3>
 <div class="paragraph">
 <p><a href="https://www.omg.org/spec/BPMN/2.0.2/">BPMN diagrams</a> are at the foundation of the <code>bpmn-visualization</code> capabilities.</p>
 </div>
@@ -533,7 +595,7 @@ repository.</p>
 <p>Go to <a href="#supported-bpmn-elements">Supported BPMN Elements</a> section to better now what is the current BPMN support.</p>
 </div>
 <div class="sect3">
-<h4 id="_bpmn_rendering"><a class="anchor" href="#_bpmn_rendering"></a><a class="link" href="#_bpmn_rendering">2.3.1. BPMN rendering</a></h4>
+<h4 id="_bpmn_rendering"><a class="anchor" href="#_bpmn_rendering"></a><a class="link" href="#_bpmn_rendering">2.4.1. BPMN rendering</a></h4>
 <div class="paragraph">
 <p>The first goal of <code>bpmn-visualization</code> is to render BPMN diagrams but this is up to the integration (i.e. the application that uses it) to provide the BPMN diagram
 content. <br>
@@ -544,7 +606,7 @@ For instance, it can be retrieved from a local file, by pulling a REST API, made
 </div>
 </div>
 <div class="sect3">
-<h4 id="diagram-navigation"><a class="anchor" href="#diagram-navigation"></a><a class="link" href="#diagram-navigation">2.3.2. Diagram Navigation</a></h4>
+<h4 id="diagram-navigation"><a class="anchor" href="#diagram-navigation"></a><a class="link" href="#diagram-navigation">2.4.2. Diagram Navigation</a></h4>
 <div class="paragraph">
 <p>In addition to BPMN rendering, <code>bpmn-visualization</code> provides several ways to explore and navigate through the BPMN diagrams.
 This is made available at load time or at runtime, through user interactions or API calls.</p>
@@ -572,7 +634,7 @@ After navigating around, you may want to reset the zoom level and go back to a f
 </div>
 </div>
 <div class="sect3">
-<h4 id="_bpmn_rendering_and_diagram_navigation_in_action"><a class="anchor" href="#_bpmn_rendering_and_diagram_navigation_in_action"></a><a class="link" href="#_bpmn_rendering_and_diagram_navigation_in_action">2.3.3. BPMN rendering and Diagram Navigation in Action</a></h4>
+<h4 id="_bpmn_rendering_and_diagram_navigation_in_action"><a class="anchor" href="#_bpmn_rendering_and_diagram_navigation_in_action"></a><a class="link" href="#_bpmn_rendering_and_diagram_navigation_in_action">2.4.3. BPMN rendering and Diagram Navigation in Action</a></h4>
 <div class="imageblock">
 <div class="content">
 <img src="images/bpmn-diagram_navigation_C.2.0.gif" alt="BPMN Diagram Navigation">
@@ -638,7 +700,7 @@ the BPMN elements are rendered with their final shapes.</p>
 <div class="sect2">
 <h3 id="_containers"><a class="anchor" href="#_containers"></a><a class="link" href="#_containers">3.1. Containers</a></h3>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. Containers</caption>
+<caption class="title">Table 2. Containers</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -670,7 +732,7 @@ the BPMN elements are rendered with their final shapes.</p>
 <div class="sect2">
 <h3 id="_activities"><a class="anchor" href="#_activities"></a><a class="link" href="#_activities">3.2. Activities</a></h3>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. Activities</caption>
+<caption class="title">Table 3. Activities</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -747,7 +809,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 3. Markers</caption>
+<caption class="title">Table 4. Markers</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -817,7 +879,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </ul>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 4. Start Events</caption>
+<caption class="title">Table 5. Start Events</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -859,7 +921,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 5. Event Sub-Process Interrupting Start Events</caption>
+<caption class="title">Table 6. Event Sub-Process Interrupting Start Events</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -911,7 +973,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 6. Event Sub-Process Non-Interrupting Start Events</caption>
+<caption class="title">Table 7. Event Sub-Process Non-Interrupting Start Events</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -953,7 +1015,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 7. Intermediate Catch Events</caption>
+<caption class="title">Table 8. Intermediate Catch Events</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -995,7 +1057,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 8. Intermediate Throw Events</caption>
+<caption class="title">Table 9. Intermediate Throw Events</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -1042,7 +1104,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 9. Interrupting Boundary Events</caption>
+<caption class="title">Table 10. Interrupting Boundary Events</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -1099,7 +1161,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 10. Non-interrupting Boundary Events</caption>
+<caption class="title">Table 11. Non-interrupting Boundary Events</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -1141,7 +1203,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 11. End Events</caption>
+<caption class="title">Table 12. End Events</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -1201,7 +1263,7 @@ the BPMN elements are rendered with their final shapes.</p>
 <div class="sect2">
 <h3 id="_flows"><a class="anchor" href="#_flows"></a><a class="link" href="#_flows">3.4. Flows</a></h3>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 12. Flows</caption>
+<caption class="title">Table 13. Flows</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -1267,7 +1329,7 @@ the BPMN elements are rendered with their final shapes.</p>
 <div class="sect2">
 <h3 id="_gateways"><a class="anchor" href="#_gateways"></a><a class="link" href="#_gateways">3.5. Gateways</a></h3>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 13. Gateways</caption>
+<caption class="title">Table 14. Gateways</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -1307,7 +1369,7 @@ the BPMN elements are rendered with their final shapes.</p>
 <div class="sect2">
 <h3 id="_labels"><a class="anchor" href="#_labels"></a><a class="link" href="#_labels">3.6. Labels</a></h3>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 14. Labels</caption>
+<caption class="title">Table 15. Labels</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -1337,7 +1399,7 @@ the BPMN elements are rendered with their final shapes.</p>
 <div class="sect2">
 <h3 id="_artifacts"><a class="anchor" href="#_artifacts"></a><a class="link" href="#_artifacts">3.7. Artifacts</a></h3>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 15. Artifacts</caption>
+<caption class="title">Table 16. Artifacts</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -1362,7 +1424,7 @@ the BPMN elements are rendered with their final shapes.</p>
 <div class="sect2">
 <h3 id="_associations"><a class="anchor" href="#_associations"></a><a class="link" href="#_associations">3.8. Associations</a></h3>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 16. Associations</caption>
+<caption class="title">Table 17. Associations</caption>
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -1485,7 +1547,7 @@ We have different <em>converters</em> (in the <strong>converter</strong> folder 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-11 15:55:58 UTC
+Last updated 2021-05-11 16:16:33 UTC
 </div>
 </div>
 </body>
