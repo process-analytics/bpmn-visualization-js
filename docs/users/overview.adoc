@@ -21,6 +21,50 @@ There is also an HTML version which is available in the link:./api/index.html[AP
 For more technical details and how-to, go to the https://github.com/process-analytics/bpmn-visualization-examples/[bpmn-visualization-examples]
 repository.
 
+
+=== Glossary
+
+Here are a list of terms and concepts we are using in the `bpmn-visualization` documentation, issues, examples...
+
+[cols="3,7", options="header"]
+.Glossary
+|===
+|Term or concept
+|Description
+
+|BPMN rendering
+|The part of the rendering that concerns purely the BPMN model according to the specification
+
+|Customization
+|The library user changes the rendering / behavior using their own code by extending the library
+
+|Configuration
+|The library user changes the rendering / behavior using existing features
+
+|Custom behavior
+|Any behavior that causes changes in the BPMN rendering (adding popup, changing elements color or thickness...)
+
+|Diagram navigation
+|Set of user interactions, that permits pan and zoom, to achieve desired visibility on diagram elements or diagram as a whole
+
+|Options
+|Configuration elements used at the library initialization and by the APIs at runtime
+
+|Library integration
+|Something about how an app can integrate the library
+
+|Process data
+|Execution data + derived data
+
+|Execution data
+|Data that is generated during the natural process instance flow: state, logs, ...
+
+|Derived data
+|Data that by any means derives from the execution data and/or other contextual data
+
+|===
+
+
 === BPMN Diagrams
 
 https://www.omg.org/spec/BPMN/2.0.2/[BPMN diagrams] are at the foundation of the `bpmn-visualization` capabilities.

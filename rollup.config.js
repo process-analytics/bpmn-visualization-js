@@ -121,7 +121,8 @@ export default rollupConfigs;
 
 function typescriptPlugin() {
   const tsDeclarationFiles = !demoMode || buildBundles;
-  const tsconfigOverride = { compilerOptions: { declaration: tsDeclarationFiles } };
+  const tsSourceMap = !demoMode && !buildBundles; // TODO logic duplicated with build selection
+  const tsconfigOverride = { compilerOptions: { sourceMap: tsSourceMap, declaration: tsDeclarationFiles } };
   return typescript({
     typescript: require('typescript'),
     tsconfigOverride: tsconfigOverride,
