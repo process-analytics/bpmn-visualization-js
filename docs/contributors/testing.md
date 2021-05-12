@@ -32,7 +32,7 @@ We have the following types of integration tests, to check the integration with 
 - model: check if the library fills the `mxGraph` model with BPMN elements. The model must contain the related vertices and
   edges, with right coordinates, dimensions and style.
 - dom: `JSDOM` based, no browser, check SVG elements are created or updated accordingly. They are used for both non regression
-(`mxGraph` integration) and DOM additions for custom interactions.
+(`mxGraph` integration) and DOM additions for custom behaviors.
 
 Tests change frequency:
 - The `dom` tests are very rarely changed, as they are testing the `mxGraph` integration at very high level.
@@ -82,8 +82,9 @@ Quote from [cypress.io](https://docs.cypress.io/guides/tooling/visual-testing.ht
 
 - tests the BPMN Diagram visual rendering 
 - visual non regression tests: keep consistent rendering across versions
-- navigation non regression tests: checks on the interactions, i.e. consistency on how diagram looks after panning
-- useful to detect mxgraph behaviour changes (see [mxGraph version bump](./mxgraph-version-bump.md)) or unexpected changes introduced by refactoring in
+- diagram navigation non regression tests: consistency on how diagram looks after panning
+- custom behavior tests: check overlays, .... rendering
+- detect mxgraph behavior changes (see [mxGraph version bump](./mxgraph-version-bump.md)) or unexpected changes introduced by refactoring in
 the rendering code of the lib
 - see [issue 526]( https://github.com/process-analytics/bpmn-visualization-js/issues/526) for more context
 
