@@ -108,7 +108,18 @@ tests are supposed to fail in that case).
 <br/><br/>
 * You have added an interface for handling interactions that manipulates the visible diagram.
 <br/><br/>
-`bpmn.navigation.test.ts` drives all visual tests for that part. A visual test only requires a BPMN diagram as input.
+`diagram.navigation.zoom.pan.tests.ts` drives all visual tests for that part. A visual test only requires a BPMN diagram as input.
+* You have changed the fit mechanism.
+<br/><br/>
+`diagram.navigation.fit.tests.ts` drives all visual tests for that part. A visual test requires a BPMN diagram and FitOptions as an input. Different Fit options are tested here.
+* You have added changes in overlays: i.e. positioning, shapes, styling.
+<br/><br/>
+`overlays.rendering.test.ts` drives all visual tests for that part. A visual test only requires a BPMN diagram as input.
+
+You should add DOM tests when:
+* You have changed the way the BPMN elements are displayed: i.e. the associated css classes, shapes, nodes order.
+  <br/><br/>
+  `generated.svg.test.ts` drives tests for that part. A test only requires a BPMN diagram as input. The DOM hierarchy is verified here as well as the nodes types and their attributes.
 
 In both cases the reference images have to be stored in the `test/e2e/__image_snapshots__` folder.
 

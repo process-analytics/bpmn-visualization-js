@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>BPMN Visualization - Diagram Rendering</title>
+  <title>BPMN Visualization - Diagram Navigation</title>
   <link rel="shortcut icon" href="./static/img/favicon.ico">
   <link rel="stylesheet" href="./static/css/test.css">
 
@@ -39,12 +39,12 @@
     <div class="flex-column-container">
       <label for="zoom-throttle">throttle</label>
       <input id="zoom-throttle" class="zoom-config" type="number" placeholder="thr" value="40" disabled
-             title="to play with throttle pass parameter in url like this: .../rendering-diagram.html?zoomThrottle=40"/>
+             title="to play with throttle pass parameter in url like this: .../diagram-navigation.html?zoomThrottle=40"/>
     </div>
     <div class="flex-column-container">
       <label for="zoom-debounce">debounce</label>
       <input id="zoom-debounce" class="zoom-config" type="number" placeholder="deb" value="30" disabled
-             title="to play with debounce pass parameter in url like this: .../rendering-diagram.html?zoomDebounce=30"/>
+             title="to play with debounce pass parameter in url like this: .../diagram-navigation.html?zoomDebounce=30"/>
     </div>
 
     <!-- Fit -->
@@ -133,6 +133,6 @@
 </div>
 
 <!-- load app -->
-<script src="./static/js/rendering-diagram.js" type="module"></script>
+<script src="./static/js/diagram-navigation.js" type="module"></script>
 </body>
 </html>

@@ -29,7 +29,7 @@ beforeAll(async () => {
 });
 describe.each([1, 2, 3, 4, 5])('load performance', run => {
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
-  const pageTester = new PageTester({ pageFileName: 'rendering-diagram', expectedPageTitle: 'BPMN Visualization - Diagram Rendering' });
+  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' });
   const fileName = 'B.2.0';
 
   it.each([1])('check performance for file loading and displaying diagram with FitType.HorizontalVertical', async () => {
