@@ -74,7 +74,12 @@ export interface OverlayFont {
 export interface OverlayFill {
   /** @default {@link StyleDefault.DEFAULT_OVERLAY_FILL_COLOR} */
   color?: string;
-  /** @default {@link StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY} */
+  /**
+   * A number between `0` (transparent) and `100` (opaque).
+   *
+   * <b>IMPORTANT</b>: this is currently not considered by the default Badge Overlay. See {@link https://github.com/process-analytics/bpmn-visualization-js/issues/1234 issue 1234}
+   * @default {@link StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY}
+   */
   opacity?: number;
 }
 
@@ -82,9 +87,18 @@ export interface OverlayFill {
  * @category Interaction
  */
 export interface OverlayStroke {
-  /** @default {@link StyleDefault.DEFAULT_OVERLAY_STROKE_COLOR} */
+  /**
+   * If you don't want to display a stroke, you can set the color to
+   *   * `transparent`
+   *   * the same value as for the fill color. This increases the padding/margin.
+   *
+   * @default {@link StyleDefault.DEFAULT_OVERLAY_STROKE_COLOR}
+   * */
   color?: string;
-  /** @default {@link StyleDefault.DEFAULT_OVERLAY_STROKE_WIDTH} */
+  /**
+   * <b>IMPORTANT</b>: this is currently not considered by the default Badge Overlay. See {@link https://github.com/process-analytics/bpmn-visualization-js/issues/1234 issue 1234}
+   * @default {@link StyleDefault.DEFAULT_OVERLAY_STROKE_WIDTH}
+   */
   width?: number;
 }
 
