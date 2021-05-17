@@ -137,8 +137,8 @@ export class BpmnMxGraph extends mxgraph.mxGraph {
       if (mxgraph.mxEvent.isConsumed(evt as unknown as mxMouseEvent)) {
         return;
       }
-      // only the ctrl key or the meta key on mac
-      const isZoomWheelEvent = (evt.ctrlKey || (mxgraph.mxClient.IS_MAC && evt.metaKey)) && !evt.altKey && !evt.shiftKey;
+      // only the ctrl key
+      const isZoomWheelEvent = evt.ctrlKey && !evt.altKey && !evt.shiftKey && !evt.metaKey;
       if (isZoomWheelEvent) {
         this.performZoom(up, evt, calculateFactorOnly);
       }
