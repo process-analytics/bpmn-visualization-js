@@ -45,6 +45,7 @@ export class OverlayBadgeShape extends mxgraph.mxText {
       undefined, // fill color delegated to background shape
       undefined, // stroke color delegated to background shape
     );
+    console.info(`@@@@constructor - value ##${this.value}##`);
     this.fillOpacity = style.fill.opacity;
     this.fill = style.fill.color;
 
@@ -150,8 +151,11 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     text = mxgraph.mxUtils.htmlEntities(text, false);
-    console.info('@computeTextBbox label after htmlEntities', text);
-    div.innerHTML = text.replace(/\n/g, '<br/>');
+    console.info(`@@@@computeTextBbox label after htmlEntities ##${text}##`);
+    text = text.replace(/\n/g, '<br/>').trim();
+
+    text = text.length > 0 ? text : '&nbsp;&nbsp;';
+    div.innerHTML = text;
 
     document.body.appendChild(div);
     let w = div.offsetWidth;
