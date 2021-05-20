@@ -98,12 +98,7 @@ function getCustomCssClassName(bpmnKind) {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function getOverlay(bpmnKind) {
   if (ShapeUtil.isActivity(bpmnKind)) {
-    return {
-      position: 'top-left',
-      label: '    ',
-      // label: '30 👌',
-      // label: '30 🎈'
-      // label: '30\nnext line',
+    const overlayTemplate = {
       style: {
         font: {
           color: 'Chartreuse',
@@ -115,6 +110,26 @@ function getOverlay(bpmnKind) {
         },
       },
     };
+
+    return [
+      { ...overlayTemplate, position: 'top-left', label: '30 👌' },
+      // TODO remove duplication in overlay definition
+      {
+        position: 'bottom-left',
+        style: {
+          font: {
+            color: 'Chartreuse',
+            size: 25,
+          },
+          fill: {
+            color: 'DimGray',
+            opacity: 80,
+          },
+        },
+      },
+      { ...overlayTemplate, position: 'top-right', label: '    ' },
+      { ...overlayTemplate, position: 'bottom-right', label: '30\nnext line 🎈' },
+    ];
   } else if (bpmnKind.includes('Gateway')) {
     return {
       position: 'top-right',

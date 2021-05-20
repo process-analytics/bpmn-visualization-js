@@ -93,8 +93,8 @@ export function removeCssClasses(bpmnElementId: string | string[], classNames: s
 /**
  * @internal
  */
-export function addOverlays(bpmnElementId: string, overlay: Overlay): void {
-  return bpmnVisualization.bpmnElementsRegistry.addOverlays(bpmnElementId, [overlay]);
+export function addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
+  return bpmnVisualization.bpmnElementsRegistry.addOverlays(bpmnElementId, overlays);
 }
 
 /**
