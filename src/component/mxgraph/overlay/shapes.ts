@@ -116,7 +116,7 @@ export class OverlayBadgeShape extends mxgraph.mxText {
   }
 
   // implementation inspired of mxSvgCanvas2D.prototype.addTextBackground
-  // TODO do we need to use mxShape.augmentBoundingBox
+  // TODO do we need to use mxShape.augmentBoundingBox?
   private computeTextBbox(): mxRectangle {
     // Scale is passed-through to canvas
     const s = this.scale;
@@ -154,10 +154,13 @@ export class OverlayBadgeShape extends mxgraph.mxText {
     console.info(`@@@@computeTextBbox label after htmlEntities ##${text}##`);
     text = text.replace(/\n/g, '<br/>').trim();
 
-    text = text.length > 0 ? text : '&nbsp;&nbsp;';
+    const isBoxForEmptyText = text.length > 0;
+    text = isBoxForEmptyText ? text : '&nbsp;&nbsp;';
     div.innerHTML = text;
 
     document.body.appendChild(div);
+    // TODO find a better way to ensure we have square dimension for empty text
+    // in this case, we also don't need padding/spacing
     let w = div.offsetWidth;
     const h = div.offsetHeight;
     div.parentNode.removeChild(div);
