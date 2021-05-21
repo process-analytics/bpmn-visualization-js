@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-
 import { documentReady, startBpmnVisualization, fit, FitType } from '../../index.es.js';
 import { configureControlsPanel, configureMousePointer } from './test.js';
 
