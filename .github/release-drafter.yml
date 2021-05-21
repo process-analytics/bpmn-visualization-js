@@ -11,6 +11,15 @@ categories:
   - title: 🧲 BPMN diagram usability
     labels:
       - 'BPMN diagram usability'
+  - title: ⛵ BPMN diagram navigation
+    labels:
+      - 'BPMN diagram navigation'
+  - title: ✍ BPMN diagram overlays
+    labels:
+      - 'BPMN diagram overlays'
+  - title: 🌈 BPMN diagram styling
+    labels:
+      - 'BPMN diagram styling'
   - title: 🐛 Bug Fixes
     labels:
       - bug
