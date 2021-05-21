@@ -119,9 +119,9 @@ The example of Process Data for different tasks can be as follows.
 
 "user task":
 
-- time of the execution
-- percentage of the time spent in this task in the scope of whole time to finish the process instance
-- data related to list of activities done to complete this task:
+* time of the execution
+* percentage of the time spent in this task in the scope of whole time to finish the process instance
+* data related to list of activities done to complete this task:
     * SAP data manipulations
     * messaging system data
     * Microsoft Excel entries (reporting)
@@ -129,8 +129,8 @@ The example of Process Data for different tasks can be as follows.
 
 "service task":
 
-- time of the execution
-- data related to list of activities done to complete this task:
+* time of the execution
+* data related to list of activities done to complete this task:
     * RPA robot data
     * external API call
     * ...
