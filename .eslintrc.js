@@ -48,8 +48,5 @@ module.exports = {
         ],
       },
     },
-    {
-      files: ['NOTICE'],
-    },
   ],
 };
