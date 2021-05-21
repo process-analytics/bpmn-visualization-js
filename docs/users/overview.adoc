@@ -103,3 +103,31 @@ After navigating around, you may want to reset the zoom level and go back to a f
 image::images/bpmn-diagram_navigation_C.2.0.gif[BPMN Diagram Navigation]
 
 _Navigation with the https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/cc75e467fd2b3009e67d4b24943591c66ce91a23/Reference/C.2.0.bpmn[migw-test-suite C.2.0] BPMN diagram_
+
+=== Purpose
+Process Analytics gives you the opportunity to visualize the Process Data on top of the BPMN diagram.
+The purpose of the library is to gain the visibility on what happens in your processes.
+
+Process Data consists of two major data sets:
+
+* Execution Data - data that accompany the process instance (case) through the execution flow. All the events occurring along this workflow, contractual data and every other bits of information related to this particular instance from start to the end.
+* Derived Data - data that derives from the execution data: predictions, analysis, statistics. The other data that can be associated with the process instance can also be a part of this set.
+
+
+The example of Process Data for different tasks can be as follows.
+
+"user task":
+
+- time of the execution
+- percentage of the time spent in this task in the scope of whole time to finish the process instance
+- data related to list of activities done to complete this task:
+    * SAP data manipulations
+    * messaging system data
+    * excel entries (reporting)
+    * other proprietary systems data
+
+"service task":
+
+- time of the execution
+- data related to list of activities done to complete this task:
+    * RPA robot data
