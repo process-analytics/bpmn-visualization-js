@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { ElementHandle } from 'playwright-core';
 import 'jest-playwright-preset';
 import { join } from 'path';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { chromiumZoom, getContainerCenter, itMouseWheel, mousePanning, Point } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/PageTester';
-import { ElementHandle } from 'playwright';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
