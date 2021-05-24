@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * @internal
- */
 export function documentReady(callbackFunction: () => void): void {
   // see if DOM is already available
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
@@ -32,16 +29,10 @@ function _log(header: string, message: unknown, ...optionalParams: unknown[]): v
   console.info(header + ' ' + message, ...optionalParams);
 }
 
-/**
- * @internal
- */
 export function logStartup(message?: string, ...optionalParams: unknown[]): void {
   _log('[DEMO STARTUP]', message, ...optionalParams);
 }
 
-/**
- * @internal
- */
 export function log(message?: string, ...optionalParams: unknown[]): void {
   _log('[DEMO]', message, ...optionalParams);
 }

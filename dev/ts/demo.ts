@@ -14,30 +14,24 @@
  * limitations under the License.
  */
 
-import BpmnVisualization from '../component/BpmnVisualization';
-import { GlobalOptions, FitOptions, FitType, LoadOptions } from '../component/options';
+import BpmnVisualization from '../../src/component/BpmnVisualization';
+import { GlobalOptions, FitOptions, FitType, LoadOptions } from '../../src/component/options';
 import { log, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { BpmnElement, Overlay } from '../component/registry';
-import { BpmnElementKind } from '../model/bpmn/internal/api';
+import { BpmnElement, Overlay } from '../../src/component/registry';
+import { BpmnElementKind } from '../../src/model/bpmn/internal/api';
 
 export * from './helper';
 
 let bpmnVisualization: BpmnVisualization;
 let loadOptions: LoadOptions = {};
 
-/**
- * @internal
- */
 export function updateLoadOptions(fitOptions: FitOptions): void {
   log('Updating load options', fitOptions);
   loadOptions.fit = fitOptions;
   log('Load options updated!', stringify(loadOptions));
 }
 
-/**
- * @internal
- */
 export function getCurrentLoadOptions(): LoadOptions {
   return { ...loadOptions };
 }
@@ -53,53 +47,32 @@ function loadBpmn(bpmn: string): void {
   document.dispatchEvent(new CustomEvent('diagramLoaded'));
 }
 
-/**
- * @internal
- */
 export function fit(fitOptions: FitOptions): void {
   log('Fitting....');
   bpmnVisualization.fit(fitOptions);
   log('Fit done with configuration', stringify(fitOptions));
 }
 
-/**
- * @internal
- */
 export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
   return bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(bpmnKinds);
 }
 
-/**
- * @internal
- */
 export function getElementsByIds(bpmnId: string | string[]): BpmnElement[] {
   return bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnId);
 }
 
-/**
- * @internal
- */
 export function addCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
   return bpmnVisualization.bpmnElementsRegistry.addCssClasses(bpmnElementId, classNames);
 }
 
-/**
- * @internal
- */
 export function removeCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
   return bpmnVisualization.bpmnElementsRegistry.removeCssClasses(bpmnElementId, classNames);
 }
 
-/**
- * @internal
- */
 export function addOverlays(bpmnElementId: string, overlay: Overlay): void {
   return bpmnVisualization.bpmnElementsRegistry.addOverlays(bpmnElementId, [overlay]);
 }
 
-/**
- * @internal
- */
 export function removeAllOverlays(bpmnElementId: string): void {
   return bpmnVisualization.bpmnElementsRegistry.removeAllOverlays(bpmnElementId);
 }
@@ -116,7 +89,6 @@ function readAndLoadFile(f: File): void {
 // TODO: make File Open Button a self contained component
 /**
  * <b>IMPORTANT</b>: be sure to have call the `startBpmnVisualization` function prior calling this function as it relies on resources that must be initialized first.
- * @internal
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types
 export function handleFileSelect(evt: any): void {
@@ -151,9 +123,6 @@ function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) 
     });
 }
 
-/**
- * @internal
- */
 export interface BpmnVisualizationDemoConfiguration {
   statusFetchKoNotifier?: (errorMsg: string) => void;
   globalOptions: GlobalOptions;
@@ -178,9 +147,6 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
   return fitOptions;
 }
 
-/**
- * @internal
- */
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
   const container = config.globalOptions.container;
