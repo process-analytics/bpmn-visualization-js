@@ -29,7 +29,6 @@ updateVersionInSonarFile('./sonar-project.properties', newVersion);
 
 log('Configuration files have been updated');
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 function log(...data) {
   // eslint-disable-next-line no-console
   console.info(...data);
