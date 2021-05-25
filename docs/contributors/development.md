@@ -29,12 +29,8 @@ Typescript have been chosen as it's strongly typed and we believe it adds some s
 More information here:  [Typescript](development.md#typescript) 
 
 To enforce best practices we use ESLint and husky.
-The later performs ```eslint --fix``` on pre-commit event to make sure that committed code meets standards.
+The latter performs ```eslint --fix``` on pre-commit event to make sure that committed code meets standards.
 
-ESLint configuration extends:
-- plugin:@typescript-eslint/recommended
-- prettier/@typescript-eslint
-- plugin:prettier/recommended
 
 ## Typescript
 Although Linting, Sonar and Tests keeps the code in a good shape
