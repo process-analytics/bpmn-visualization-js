@@ -17,7 +17,7 @@
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
 
 /**
- * @category Interaction
+ * @category Custom Behavior
  */
 export interface BpmnSemantic {
   id: string;
@@ -28,7 +28,7 @@ export interface BpmnSemantic {
 }
 
 /**
- * @category Interaction
+ * @category Custom Behavior
  */
 export interface BpmnElement {
   bpmnSemantic: BpmnSemantic;
