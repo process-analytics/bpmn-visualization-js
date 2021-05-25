@@ -1,9 +1,3 @@
 {
   "extends": "./tsconfig.json",
-  // TODO remove the file when typed-mxgraph is fixed
-  // Error: node_modules/@typed-mxgraph/typed-mxgraph/lib/shape/mxText.d.ts:13:9 - error TS2415: Class 'mxText' incorrectly extends base class 'mxShape'.
-  // Error: node_modules/@typed-mxgraph/typed-mxgraph/lib/util/mxDictionary.d.ts:8:13 - error TS1023: An index signature parameter type must be either 'string' or 'number'.
-  "compilerOptions": {
-    "skipLibCheck": true
-  }
 }

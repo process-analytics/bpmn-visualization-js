@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { ChromiumBrowserContext, ElementHandle } from 'playwright-core';
 import 'jest-playwright-preset';
-import { ChromiumBrowserContext, ElementHandle } from 'playwright';
 import { Point } from '../test-utils';
 
 export interface PanningOptions {
