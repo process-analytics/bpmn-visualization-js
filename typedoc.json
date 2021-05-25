@@ -1,10 +1,10 @@
 {
-  "name": "BpmnVisualization API Documentation",
+  "name": "bpmn-visualization API Documentation",
   "readme": "none",
   "out": "./build/docs/api",
   "excludeInternal": true,
   "excludeExternals": true,
   "excludePrivate": true,
-  "categoryOrder": ["Initialization", "Interaction", "BPMN", "*"],
+  "categoryOrder": ["Initialization", "BPMN", "Custom Behavior", "Overlays", "*"],
   "categorizeByGroup": false
 }

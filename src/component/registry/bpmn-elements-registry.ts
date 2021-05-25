@@ -29,7 +29,7 @@ export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, gr
 }
 
 /**
- * @category Interaction
+ * @category Custom Behavior
  * @experimental subject to change, feedback welcome.
  *
  * > BpmnElementRegistry is a public API that permits to find the BpmnElements present in the diagram.

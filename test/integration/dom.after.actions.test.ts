@@ -32,7 +32,7 @@ function initializeBpmnVisualization(): BpmnVisualization {
   return new BpmnVisualization({ container: bpmnContainerId });
 }
 
-describe('DOM only checks', () => {
+describe('Resulting DOM after diagram load', () => {
   it('DOM should contains BPMN elements when loading simple-start-task-end.bpmn', async () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
 
@@ -84,7 +84,7 @@ function expectPoolBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseB
   expectSvgPool(bpmnElement.htmlElement);
 }
 
-describe('Bpmn Elements registry', () => {
+describe('Bpmn Elements registry - retrieve BPMN elements', () => {
   describe('Get by ids', () => {
     it('Pass several existing ids', async () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));

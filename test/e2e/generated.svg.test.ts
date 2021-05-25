@@ -19,8 +19,8 @@ import { BpmnPage } from './helpers/visu/bpmn-page-utils';
 
 let bpmnPage = new BpmnPage('bpmn-container', page);
 
-describe('demo page', () => {
-  it('should display page title', async () => {
+describe('Check generated SVG in demo page', () => {
+  it('should display demo home page title', async () => {
     await page.goto('http://localhost:10002');
     await bpmnPage.expectPageTitle('BPMN Visualization Demo');
     await bpmnPage.expectAvailableBpmnContainer();
@@ -37,7 +37,7 @@ describe('demo page', () => {
   });
 });
 
-describe('lib-integration page', () => {
+describe('Check generated SVG in lib-integration page', () => {
   it('should display diagram in page', async () => {
     bpmnPage = new BpmnPage('bpmn-container-custom', page);
 

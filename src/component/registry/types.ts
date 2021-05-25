@@ -17,7 +17,7 @@
 import { BpmnElementKind } from '../../model/bpmn/internal/api';
 
 /**
- * @category Interaction
+ * @category Custom Behavior
  */
 export interface BpmnSemantic {
   id: string;
@@ -28,7 +28,7 @@ export interface BpmnSemantic {
 }
 
 /**
- * @category Interaction
+ * @category Custom Behavior
  */
 export interface BpmnElement {
   bpmnSemantic: BpmnSemantic;
@@ -36,20 +36,20 @@ export interface BpmnElement {
 }
 
 /**
- * @category Interaction
+ * @category Overlays
  */
 export type OverlayShapePosition = 'top-left' | 'top-right' | 'top-center' | 'bottom-left' | 'bottom-right' | 'bottom-center' | 'middle-left' | 'middle-right';
 /**
- * @category Interaction
+ * @category Overlays
  */
 export type OverlayEdgePosition = 'start' | 'middle' | 'end';
 /**
- * @category Interaction
+ * @category Overlays
  */
 export type OverlayPosition = OverlayShapePosition | OverlayEdgePosition;
 
 /**
- * @category Interaction
+ * @category Overlays
  */
 export interface OverlayStyle {
   font?: OverlayFont;
@@ -59,7 +59,7 @@ export interface OverlayStyle {
 
 /**
  * The font family is {@link StyleDefault.DEFAULT_FONT_FAMILY}.
- * @category Interaction
+ * @category Overlays
  */
 export interface OverlayFont {
   /** @default {@link StyleDefault.DEFAULT_OVERLAY_FONT_COLOR} */
@@ -69,7 +69,7 @@ export interface OverlayFont {
 }
 
 /**
- * @category Interaction
+ * @category Overlays
  */
 export interface OverlayFill {
   /** @default {@link StyleDefault.DEFAULT_OVERLAY_FILL_COLOR} */
@@ -84,7 +84,7 @@ export interface OverlayFill {
 }
 
 /**
- * @category Interaction
+ * @category Overlays
  */
 export interface OverlayStroke {
   /**
@@ -103,7 +103,7 @@ export interface OverlayStroke {
 }
 
 /**
- * @category Interaction
+ * @category Overlays
  */
 export interface Overlay {
   position: OverlayPosition;

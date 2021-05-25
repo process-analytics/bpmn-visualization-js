@@ -2,11 +2,23 @@
 
 ## Minimal check list
 
-- check the mxGraph changelog to see what could impact the lib: https://github.com/jgraph/mxgraph2/blob/master/ChangeLog
+- check the mxGraph changelog to see what could impact the lib: https://github.com/jgraph/mxgraph/blob/master/ChangeLog
 - review issues list, in particular in the [BPMN Rendering Improvements milestone](https://github.com/process-analytics/bpmn-visualization-js/milestone/14) which could be impacted or fixed by the version bump
 - apply the version bump
+- review the overridden mxgraph code, generally, we redefine prototype, so search for the `prototype` string   
 - ensure we have enough visual tests to cover any regression or changes introduced
-- perform manual testing using BPMN diagrams from `bpmn-visualization-examples` or `miwg-test-suite`
+- run the [performance tests](./testing.md#performance-tests) on all OS, ensure we don't see any performance regressions and save the results
+
+
+### Manual tests
+
+In addition to e2e tests, it is safer to perform manual testing using BPMN diagrams from `bpmn-visualization-examples` or `miwg-test-suite`.
+
+`bpmn-visualization-examples` provides usage examples that can be used for such tests
+  - diagram load and navigation
+  - custom behavior and css styling
+
+In the `bpmn-visualization` repository, test pages are also available (some are not used by e2e tests).
 
 
 ## Resources

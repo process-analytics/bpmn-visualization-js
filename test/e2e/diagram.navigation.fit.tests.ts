@@ -139,7 +139,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   }
 }
 
-describe('no diagram visual regression', () => {
+describe('diagram navigation - fit', () => {
   const imageSnapshotThresholds = new ImageSnapshotThresholds();
   const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'fit', imageSnapshotThresholds.getDefault());
 
