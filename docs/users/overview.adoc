@@ -166,5 +166,5 @@ a task as in error, warn that an activity has been started for a while and seems
 This example shows how to see which path in a process is the current running activity.
 
 [.thumb]
-image::images/custom-behavior-path-hightlighting.gif[]
+image::images/custom-behavior-path-highlighting.gif[]
 _Path highlighting with the https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/cc75e467fd2b3009e67d4b24943591c66ce91a23/Reference/C.1.1.bpmn[miwg-test-suite C.1.1] BPMN diagram_
