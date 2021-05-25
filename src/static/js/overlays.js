@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-
 import { documentReady, startBpmnVisualization, addOverlays, removeAllOverlays, getElementsByIds } from '../../index.es.js';
 import { configureControlsPanel, configureMousePointer } from './test.js';
 

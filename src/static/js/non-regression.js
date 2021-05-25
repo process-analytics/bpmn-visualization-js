@@ -15,7 +15,6 @@
  */
 import { documentReady, startBpmnVisualization } from '../../index.es.js';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function statusFetchKO(errorMsg) {
   const statusElt = document.getElementById('fetch-status');
   statusElt.innerText = errorMsg;
