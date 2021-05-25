@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types */
-
 // @see https://github.com/puppeteer/puppeteer/issues/374
 // @see https://github.com/puppeteer/puppeteer/blob/4fdb1e3cab34310b4a1012c3024a94bc422b3b92/test/assets/input/mouse-helper.js
 function showMousePointer() {
@@ -85,7 +83,6 @@ function showMousePointer() {
     },
     true,
   );
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   function updateButtons(buttons) {
     for (let i = 0; i < 5; i++) box.classList.toggle('button-' + i, buttons & (1 << i));
   }

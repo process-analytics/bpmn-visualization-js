@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-/* eslint-disable @typescript-eslint/no-var-requires */
+function log(...data) {
+  // eslint-disable-next-line no-console
+  console.info(...data);
+}
+
 const fs = require('fs');
 const fse = require('fs-extra');
 const Asciidoctor = require('asciidoctor');
 
 const docsOutput = 'build/docs';
 
-// eslint-disable-next-line no-console
-console.info('Building bpmn-visualization html documentation');
+log('Building bpmn-visualization html documentation');
 
 // clean existing docs
 fse.removeSync(docsOutput);
@@ -43,5 +46,4 @@ fse.copySync('docs/users/images', `${docsOutput}/images`);
 fse.copySync('docs/users/architecture/images', `${docsOutput}/images`);
 fse.copySync('src/static/img/favicon.ico', `${docsOutput}/favicon.ico`);
 
-// eslint-disable-next-line no-console
-console.info(`Documentation is now available in ${docsOutput}`);
+log(`Documentation is now available in ${docsOutput}`);
