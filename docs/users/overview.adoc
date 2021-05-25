@@ -1,5 +1,5 @@
 == Overview
-:favicon:
+:icons: font
 
 === Live Examples
 
@@ -104,6 +104,8 @@ image::images/bpmn-diagram_navigation_C.2.0.gif[BPMN Diagram Navigation]
 
 _Navigation with the https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/cc75e467fd2b3009e67d4b24943591c66ce91a23/Reference/C.2.0.bpmn[migw-test-suite C.2.0] BPMN diagram_
 
+
+[#process_data]
 === Process data
 
 `bpmn-visualization` gives you the opportunity to visualize the Process Data on top of the BPMN diagrams.
@@ -135,3 +137,34 @@ The example of Process Data for different tasks can be as follows.
 ** RPA robot data
 ** external API call
 ** ...
+
+
+=== Custom behavior
+
+`bpmn-visualization` provides API to interact with the BPMN elements and their representation as DOM Element.
+
+Fore more examples about `Custom Behavior`, see the https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html[**icon:forward[] examples live environment**]
+
+==== BPMN semantic and DOM Element
+
+A BPMN element contains BPMN semantic information that can be matched with <<process_data>>. The DOM Element let you manipulate the representation and allow enriching its behavior
+by adding https://developer.mozilla.org/en-US/docs/Web/API/EventListener[event listeners] for instance.
+
+The following example demonstrates how to let users interact with a BPMN diagram when clicking on a task, passing the mouse over another task or a transition between two elements. +
+Here, it displays BPMN information only, but it could use this feature to display execution data related to the current BPMN element:  execution time and details, pending user
+of an activity, current error at this stage of the process, and more.
+
+[.thumb]
+image::images/custom-behavior-popovers.gif[Display popovers on over or click]
+_Display popovers on over or click_
+
+==== Style
+
+The style of BPMN elements can be modified at runtime allowing to mark, hide, change appearance of one or several specific elements. For instance, this feature can be used to mark
+a task as in error, warn that an activity has been started for a while and seems stuck, ... 
+
+This example shows how to see which path in a process is the current running activity.
+
+[.thumb]
+image::images/custom-behavior-path-hightlighting.gif[]
+_Path highlighting with the https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/cc75e467fd2b3009e67d4b24943591c66ce91a23/Reference/C.1.1.bpmn[miwg-test-suite C.1.1] BPMN diagram_
