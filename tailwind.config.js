@@ -16,7 +16,7 @@
 module.exports = {
   purge: {
     enabled: true,
-    content: ['./src/index.html'],
+    content: ['./dev/index.html'],
   },
   darkMode: false, // or 'media' or 'class'
   theme: {
