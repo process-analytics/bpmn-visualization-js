@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 import debugLogger from 'debug';
-import { findFiles } from '../../helpers/file-helper';
-import { join } from 'path';
+import { ElementHandle } from 'playwright-core';
 import 'jest-playwright-preset';
+import { join } from 'path';
+import { findFiles } from '../../helpers/file-helper';
 import { chromiumMouseWheel, PanningOptions, webkitMousePanning } from './visu/playwright-utils';
-import { ElementHandle } from 'playwright';
 
 export interface Point {
   x: number;

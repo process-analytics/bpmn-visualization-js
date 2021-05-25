@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ElementHandle } from 'playwright';
+import { ElementHandle } from 'playwright-core';
 import 'jest-playwright-preset';
 import { FitType, LoadOptions } from '../../../../src/component/options';
 import { BpmnPage } from './bpmn-page-utils';
