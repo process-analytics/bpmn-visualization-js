@@ -19,7 +19,7 @@ import BpmnVisualization from '../../component/BpmnVisualization';
 export { BpmnVisualization };
 export { GlobalOptions, NavigationConfiguration, FitOptions, FitType, LoadOptions, ZoomConfiguration } from '../../component/options';
 
-// Interaction
+// Custom Behaviors
 export { BpmnElement, BpmnElementsRegistry, BpmnSemantic } from '../../component/registry';
 export * from '../../component/registry/types';
 export * from '../../model/bpmn/internal/api';

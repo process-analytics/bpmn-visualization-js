@@ -107,7 +107,7 @@ tests are supposed to fail in that case).
 `bpmn.rendering.test.ts` drives all visual tests for this part. A visual test only requires a BPMN diagram as input, stored in the
 `test/fixtures/bpmn/non-regression` folder. It is automatically considered and use as test input.
 <br/><br/>
-* You have added an interface for handling interactions that manipulates the visible diagram.
+* You have added an interface for handling custom behaviors that manipulates the visible diagram.
 <br/><br/>
 `diagram.navigation.zoom.pan.tests.ts` drives all visual tests for that part. A visual test only requires a BPMN diagram as input.
 * You have changed the fit mechanism.
