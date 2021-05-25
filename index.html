@@ -450,6 +450,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_usage">2.2. Usage</a></li>
 <li><a href="#_glossary">2.3. Glossary</a></li>
 <li><a href="#_bpmn_diagrams">2.4. BPMN Diagrams</a></li>
+<li><a href="#_process_data">2.5. Process data</a></li>
 </ul>
 </li>
 <li><a href="#supported-bpmn-elements">3. Supported BPMN Elements</a>
@@ -642,6 +643,90 @@ After navigating around, you may want to reset the zoom level and go back to a f
 </div>
 <div class="paragraph">
 <p><em>Navigation with the <a href="https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/cc75e467fd2b3009e67d4b24943591c66ce91a23/Reference/C.2.0.bpmn">migw-test-suite C.2.0</a> BPMN diagram</em></p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_process_data"><a class="anchor" href="#_process_data"></a><a class="link" href="#_process_data">2.5. Process data</a></h3>
+<div class="paragraph">
+<p><code>bpmn-visualization</code> gives you the opportunity to visualize the Process Data on top of the BPMN diagrams.
+The purpose of the library is to gain the visibility on what happens in your processes.</p>
+</div>
+<div class="paragraph">
+<p>Process Data consists of two main data sets:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Execution Data - data that accompanies the process instance (case) through the execution flow. All the events occurring along this workflow, contractual data and every other bits of information related to this particular instance from start to the end.</p>
+</li>
+<li>
+<p>Derived Data - data that derives from the execution data: predictions, analysis, statistics. The other data that can be associated with the process instance can also be a part of this set.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_process_data_examples"><a class="anchor" href="#_process_data_examples"></a><a class="link" href="#_process_data_examples">2.5.1. Process data examples</a></h4>
+<div class="paragraph">
+<p>The example of Process Data for different tasks can be as follows.</p>
+</div>
+<div class="paragraph">
+<p><strong><em>user task</em></strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>time of the execution</p>
+</li>
+<li>
+<p>percentage of the time spent in this task in the scope of whole time to finish the process instance</p>
+</li>
+<li>
+<p>data related to list of activities done to complete this task:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>SAP data manipulations</p>
+</li>
+<li>
+<p>messaging system data</p>
+</li>
+<li>
+<p>Microsoft Excel entries (reporting)</p>
+</li>
+<li>
+<p>other proprietary systems data</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong><em>service task</em></strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>time of the execution</p>
+</li>
+<li>
+<p>data related to list of activities done to complete this task:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>RPA robot data</p>
+</li>
+<li>
+<p>external API call</p>
+</li>
+<li>
+<p>&#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1547,7 +1632,7 @@ We have different <em>converters</em> (in the <strong>converter</strong> folder 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-23 22:23:28 UTC
+Last updated 2021-05-25 07:45:13 UTC
 </div>
 </div>
 </body>
