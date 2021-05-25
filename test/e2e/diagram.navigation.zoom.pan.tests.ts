@@ -65,7 +65,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   }
 }
 
-describe('diagram navigation', () => {
+describe('diagram navigation - zoom and pan', () => {
   const imageSnapshotThresholds = new ImageSnapshotThresholds();
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'navigation', imageSnapshotThresholds.getDefault());
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
