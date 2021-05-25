@@ -18,7 +18,6 @@ import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, upda
 let fitOnLoad = true;
 let fitOptions = {};
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureFitOnLoadCheckBox() {
   const fitOnLoadElt = document.getElementById('fitOnLoad');
   fitOnLoadElt.onchange = event => {
@@ -29,7 +28,6 @@ function configureFitOnLoadCheckBox() {
   fitOnLoadElt.checked = fitOnLoad;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function updateFitConfig(config) {
   log('Updating fit config', config);
 
@@ -44,7 +42,6 @@ function updateFitConfig(config) {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureFitTypeSelect() {
   const fitTypeSelectedElt = document.getElementById('fitType-selected');
   fitTypeSelectedElt.onchange = event => {
@@ -59,7 +56,6 @@ function configureFitTypeSelect() {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureFitMarginInput() {
   const fitMarginElt = document.getElementById('fit-margin');
   fitMarginElt.onchange = event => {
@@ -74,7 +70,6 @@ function configureFitMarginInput() {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureControlPanel() {
   const parameters = new URLSearchParams(window.location.search);
   if (parameters.get('hideControls') === 'true') {
@@ -87,7 +82,6 @@ function configureControlPanel() {
 // The following function `preventZoomingPage` serves to block the page content zoom.
 // It is to make zooming of the actual diagram area more convenient for the user.
 // Without that function, the zooming performed out of the diagram area can mess up the page layout.
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function preventZoomingPage() {
   document.addEventListener(
     'wheel',
@@ -98,7 +92,6 @@ function preventZoomingPage() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function setupFixedDiagramContainerSize(containerId) {
   const containerElt = document.getElementById(containerId);
   const height = containerElt.parentNode.parentNode.getBoundingClientRect().height;
@@ -106,7 +99,6 @@ function setupFixedDiagramContainerSize(containerId) {
   containerElt.style = `overflow: hidden; height:${height - 2 * 20}px`;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startDemo() {
   preventZoomingPage();
   const bpmnContainerId = 'bpmn-container';

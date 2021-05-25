@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { ElementHandle } from 'playwright-core';
 import 'jest-playwright-preset';
+import { join } from 'path';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { PageTester } from './helpers/visu/PageTester';
-import { join } from 'path';
-import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
 import { chromiumZoom, clickOnButton, getContainerCenter, itMouseWheel, mousePanning, Point } from './helpers/test-utils';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
+import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
-import { ElementHandle } from 'playwright';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -366,7 +366,7 @@ describe('Overlay style', () => {
           {
             linux: 0.0031, // 0.3048495736480361%
             macos: 0.0018, // 0.1730781727336872%
-            windows: 0.00032, // 0.03129199556292095%
+            windows: 0.00034, // 0.0339070556146015%
           },
         ],
       ]);

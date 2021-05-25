@@ -30,7 +30,6 @@ import {
 let lastIdentifiedBpmnIds = [];
 let lastCssClassName = '';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function updateSelectedBPMNElements(textArea, bpmnKind) {
   log(`Searching for Bpmn elements of '${bpmnKind}' kind`);
   const elementsByKinds = getElementsByKinds(bpmnKind);
@@ -60,7 +59,6 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
   lastCssClassName = newlyCssClassName;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function configureControls() {
   const textArea = document.getElementById('elements-result');
 
@@ -79,7 +77,6 @@ function configureControls() {
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function getCustomCssClassName(bpmnKind) {
   if (ShapeUtil.isActivity(bpmnKind)) {
     return 'detection-activity';
@@ -95,7 +92,6 @@ function getCustomCssClassName(bpmnKind) {
   return 'detection';
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function getOverlay(bpmnKind) {
   if (ShapeUtil.isActivity(bpmnKind)) {
     return {

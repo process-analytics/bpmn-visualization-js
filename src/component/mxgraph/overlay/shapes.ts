@@ -18,11 +18,6 @@ import { mxRectangle } from 'mxgraph';
 import { MxGraphCustomOverlayStyle } from './custom-overlay';
 
 export class OverlayBadgeShape extends mxgraph.mxText {
-  // TODO to remove when typed-mxgraph@1.0.1 mxText definitions won't declare these fields as protected (prevent assign OverlayBadgeShape instances as mxShape)
-  spacing: number;
-  bounds: mxRectangle;
-  // end of typed-mxgraph issue
-
   constructor(value: string, bounds: mxRectangle, style: MxGraphCustomOverlayStyle) {
     super(
       value,
