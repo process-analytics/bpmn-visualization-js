@@ -114,10 +114,11 @@ Process Data consists of two main data sets:
 * Execution Data - data that accompanies the process instance (case) through the execution flow. All the events occurring along this workflow, contractual data and every other bits of information related to this particular instance from start to the end.
 * Derived Data - data that derives from the execution data: predictions, analysis, statistics. The other data that can be associated with the process instance can also be a part of this set.
 
+==== Process data examples
 
 The example of Process Data for different tasks can be as follows.
 
-"user task":
+*_user task_*:
 
 * time of the execution
 * percentage of the time spent in this task in the scope of whole time to finish the process instance
@@ -127,7 +128,7 @@ The example of Process Data for different tasks can be as follows.
 ** Microsoft Excel entries (reporting)
 ** other proprietary systems data
 
-"service task":
+*_service task_*:
 
 * time of the execution
 * data related to list of activities done to complete this task:
