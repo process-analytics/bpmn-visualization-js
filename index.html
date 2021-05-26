@@ -450,7 +450,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_usage">2.2. Usage</a></li>
 <li><a href="#_glossary">2.3. Glossary</a></li>
 <li><a href="#_bpmn_diagrams">2.4. BPMN Diagrams</a></li>
-<li><a href="#_process_data">2.5. Process data</a></li>
+<li><a href="#process_data">2.5. Process data</a></li>
+<li><a href="#_custom_behavior">2.6. Custom behavior</a></li>
 </ul>
 </li>
 <li><a href="#supported-bpmn-elements">3. Supported BPMN Elements</a>
@@ -647,7 +648,7 @@ After navigating around, you may want to reset the zoom level and go back to a f
 </div>
 </div>
 <div class="sect2">
-<h3 id="_process_data"><a class="anchor" href="#_process_data"></a><a class="link" href="#_process_data">2.5. Process data</a></h3>
+<h3 id="process_data"><a class="anchor" href="#process_data"></a><a class="link" href="#process_data">2.5. Process data</a></h3>
 <div class="paragraph">
 <p><code>bpmn-visualization</code> gives you the opportunity to visualize the Process Data on top of the BPMN diagrams.
 The purpose of the library is to gain the visibility on what happens in your processes.</p>
@@ -730,6 +731,53 @@ The purpose of the library is to gain the visibility on what happens in your pro
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_custom_behavior"><a class="anchor" href="#_custom_behavior"></a><a class="link" href="#_custom_behavior">2.6. Custom behavior</a></h3>
+<div class="paragraph">
+<p><code>bpmn-visualization</code> provides API to interact with the BPMN elements and their representation as DOM Element.</p>
+</div>
+<div class="paragraph">
+<p>Fore more examples about <code>Custom Behavior</code>, see the <a href="https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html"><strong><span class="icon"><i class="fa fa-forward"></i></span> examples live environment</strong></a></p>
+</div>
+<div class="sect3">
+<h4 id="_bpmn_semantic_and_dom_element"><a class="anchor" href="#_bpmn_semantic_and_dom_element"></a><a class="link" href="#_bpmn_semantic_and_dom_element">2.6.1. BPMN semantic and DOM Element</a></h4>
+<div class="paragraph">
+<p>A BPMN element contains BPMN semantic information that can be matched with <a href="#process_data">Process data</a>. The DOM Element let you manipulate the representation and allow enriching its behavior
+by adding <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventListener">event listeners</a> for instance.</p>
+</div>
+<div class="paragraph">
+<p>The following example demonstrates how to let users interact with a BPMN diagram when clicking on a task, passing the mouse over another task or a transition between two elements.<br>
+Here, it displays BPMN information only, but it could use this feature to display execution data related to the current BPMN element:  execution time and details, pending user
+of an activity, current error at this stage of the process, and more.</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="images/custom-behavior-popovers.gif" alt="Display popovers on over or click">
+</div>
+</div>
+<div class="paragraph">
+<p><em>Display popovers on over or click</em></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_style"><a class="anchor" href="#_style"></a><a class="link" href="#_style">2.6.2. Style</a></h4>
+<div class="paragraph">
+<p>The style of BPMN elements can be modified at runtime allowing to mark, hide, change appearance of one or several specific elements. For instance, this feature can be used to mark
+a task as in error, warn that an activity has been started for a while and seems stuck, &#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>This example shows how to see which path in a process is the current running activity.</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="images/custom-behavior-path-highlighting.gif" alt="custom behavior path highlighting">
+</div>
+</div>
+<div class="paragraph">
+<p><em>Path highlighting with the <a href="https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/cc75e467fd2b3009e67d4b24943591c66ce91a23/Reference/C.1.1.bpmn">miwg-test-suite C.1.1</a> BPMN diagram</em></p>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -765,7 +813,7 @@ the BPMN elements are rendered with their final shapes.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><span class="icon"><i class="fa fa-check-circle"></i></span> considered as stable (only minor changes may occurred)</p>
+<p><span class="icon"><i class="fa fa-check-circle"></i></span> considered as stable (only minor changes may occur)</p>
 </li>
 <li>
 <p><span class="icon"><i class="fa fa-check-circle-o"></i></span> early access (1st attempt)</p>
@@ -1632,7 +1680,7 @@ We have different <em>converters</em> (in the <strong>converter</strong> folder 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-25 19:51:57 UTC
+Last updated 2021-05-26 13:23:09 UTC
 </div>
 </div>
 </body>
