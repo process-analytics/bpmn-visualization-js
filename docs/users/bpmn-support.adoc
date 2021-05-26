@@ -20,7 +20,7 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 [TIP]
 .Legend for rendering status
 ====
-* icon:check-circle[] considered as stable (only minor changes may occurred)
+* icon:check-circle[] considered as stable (only minor changes may occur)
 * icon:check-circle-o[] early access (1st attempt)
 * icon:flask[] experimental (subject to change)
 * no status means that are arbitrary rendering is used (i.e. not following the BPMN specification requirements), generally using a dedicated color to identify the shape among others
