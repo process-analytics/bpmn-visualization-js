@@ -187,6 +187,5 @@ _Simple overlay example._
 
 For the more complete example, please go to https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/monitoring-all-process-instances/index.html[**icon:forward[] Monitoring of all process instances - live demo**]. This demo shows how to add execution time and frequency data on diagram elements.
 
-[.thumb]
 image::images/monitoring.gif[Monitoring,695]
 _Monitoring of all process instances demo, execution time and frequency displayed on BPMN elements._
