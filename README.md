@@ -54,9 +54,7 @@ The `bpmn-visualization` is in early development stage and is subject to change 
 Already available features:
 - [Supported BPMN Elements](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements).
 - [Navigate through the BPMN diagram](https://process-analytics.github.io/bpmn-visualization-js/#diagram-navigation)
-
-In progress:
-- Display options for execution data with interactive capacities
+- [Display options for execution data with interactive capacities](https://process-analytics.github.io/bpmn-visualization-js/#process_data)
 
 Planned features:
 - Library extension points
