@@ -181,12 +181,12 @@ There are various use cases concerning overlays. For example the aforementioned 
 To see overlays simple examples, go to the https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#overlays[**icon:forward[] Simple examples - live demo**] You will find out how to add overlays to BPMN elements and how to apply style to them.
 
 [.thumb]
-image::images/simple-overlay-example.png[]
+image::images/simple-overlay-example.png[Overlay,695]
 _Simple overlay example._
 
 
 For the more complete example, please go to https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/monitoring-all-process-instances/index.html[**icon:forward[] Monitoring of all process instances - live demo**]. This demo shows how to add execution time and frequency data on diagram elements.
 
 [.thumb]
-image::images/monitoring.gif[]
+image::images/monitoring.gif[Monitoring,695]
 _Monitoring of all process instances demo, execution time and frequency displayed on BPMN elements._
