@@ -452,6 +452,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_bpmn_diagrams">2.4. BPMN Diagrams</a></li>
 <li><a href="#process_data">2.5. Process data</a></li>
 <li><a href="#_custom_behavior">2.6. Custom behavior</a></li>
+<li><a href="#_overlays">2.7. Overlays</a></li>
 </ul>
 </li>
 <li><a href="#supported-bpmn-elements">3. Supported BPMN Elements</a>
@@ -775,6 +776,43 @@ a task as in error, warn that an activity has been started for a while and seems
 </div>
 <div class="paragraph">
 <p><em>Path highlighting with the <a href="https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/cc75e467fd2b3009e67d4b24943591c66ce91a23/Reference/C.1.1.bpmn">miwg-test-suite C.1.1</a> BPMN diagram</em></p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_overlays"><a class="anchor" href="#_overlays"></a><a class="link" href="#_overlays">2.7. Overlays</a></h3>
+<div class="paragraph">
+<p><code>bpmn-visualization</code> provides <a href="./api/classes/bpmnelementsregistry.html#addoverlays" target="_blank" rel="noopener">API to add overlays</a> on top of BPMN elements. This additional overlays layer permits you to show whatever data you want and enrich your diagrams.</p>
+</div>
+<div class="sect3">
+<h4 id="_use_case"><a class="anchor" href="#_use_case"></a><a class="link" href="#_use_case">2.7.1. Use case</a></h4>
+<div class="paragraph">
+<p>There are various use cases concerning overlays. For example the aforementioned <a href="#process_data">Process data</a> can be easily displayed in rectangular shapes on top of the edges and tasks. Whether you would like to show a path frequency or probability for the next step, the overlays are here to help you achieve this.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_overlays_examples"><a class="anchor" href="#_overlays_examples"></a><a class="link" href="#_overlays_examples">2.7.2. Overlays examples</a></h4>
+<div class="paragraph">
+<p>To see overlays simple examples, go to the <a href="https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#overlays"><strong><span class="icon"><i class="fa fa-forward"></i></span> Simple examples - live demo</strong></a> You will find out how to add overlays to BPMN elements and how to apply style to them.</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="images/simple-overlay-example.png" alt="Overlay">
+</div>
+</div>
+<div class="paragraph">
+<p><em>Simple overlay example.</em></p>
+</div>
+<div class="paragraph">
+<p>For the more complete example, please go to <a href="https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/monitoring-all-process-instances/index.html"><strong><span class="icon"><i class="fa fa-forward"></i></span> Monitoring of all process instances - live demo</strong></a>. This demo shows how to add execution time and frequency data on diagram elements.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/monitoring.gif" alt="Monitoring" width="695">
+</div>
+</div>
+<div class="paragraph">
+<p><em>Monitoring of all process instances demo, execution time and frequency displayed on BPMN elements.</em></p>
 </div>
 </div>
 </div>
@@ -1680,7 +1718,7 @@ We have different <em>converters</em> (in the <strong>converter</strong> folder 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-26 13:23:09 UTC
+Last updated 2021-05-27 10:12:09 UTC
 </div>
 </div>
 </body>
