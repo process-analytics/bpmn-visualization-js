@@ -168,3 +168,24 @@ This example shows how to see which path in a process is the current running act
 [.thumb]
 image::images/custom-behavior-path-highlighting.gif[]
 _Path highlighting with the https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/cc75e467fd2b3009e67d4b24943591c66ce91a23/Reference/C.1.1.bpmn[miwg-test-suite C.1.1] BPMN diagram_
+
+=== Overlays
+
+`bpmn-visualization` provides link:./api/classes/bpmnelementsregistry.html#addoverlays[API to add overlays, window="_blank"] on top of BPMN elements. This additional overlays layer permits you to show whatever data you want and enrich your diagrams.
+
+==== Use case
+
+There are various use cases concerning overlays. For example the aforementioned <<process_data>> can be easily displayed in rectangular shapes on top of the edges and tasks. Whether you would like to show a path frequency or probability for the next step, the overlays are here to help you achieve this.
+
+==== Overlays examples
+To see overlays simple examples, go to the https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#overlays[**icon:forward[] Simple examples - live demo**] You will find out how to add overlays to BPMN elements and how to apply style to them.
+
+[.thumb]
+image::images/simple-overlay-example.png[Overlay]
+_Simple overlay example._
+
+
+For the more complete example, please go to https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/demo/monitoring-all-process-instances/index.html[**icon:forward[] Monitoring of all process instances - live demo**]. This demo shows how to add execution time and frequency data on diagram elements.
+
+image::images/monitoring.gif[Monitoring,695]
+_Monitoring of all process instances demo, execution time and frequency displayed on BPMN elements._
