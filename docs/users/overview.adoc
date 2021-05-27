@@ -173,6 +173,10 @@ _Path highlighting with the https://github.com/bpmn-miwg/bpmn-miwg-test-suite/bl
 
 `bpmn-visualization` provides link:./api/classes/bpmnelementsregistry.html#addoverlays[API to add overlays, window="_blank"] on top of BPMN elements. This additional overlays layer permits you to show whatever data you want and enrich your diagrams.
 
+==== Use case
+
+There are various use cases concerning overlays. For example the aforementioned process data can be easily displayed in rectangular shapes on top of the edges and tasks. Whether you would like to show a path frequency or probability for the next step, the overlays are here to help you achieve this.
+
 ==== Overlays examples
 To see overlays simple examples, go to the https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#overlays[**icon:forward[] Simple examples - live demo**] You will find out how to add overlays to BPMN elements and how to apply style to them.
 
