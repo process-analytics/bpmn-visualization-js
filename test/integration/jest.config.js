@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   rootDir: '../..',
   roots: ['./test/integration', './src'],
@@ -20,6 +22,11 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src'],
   transform: {
     '^.+\\.ts?$': 'ts-jest',
+  },
+  globals: {
+    'ts-jest': {
+      tsconfig: '<rootDir>/tsconfig.jest.json',
+    },
   },
   collectCoverageFrom: ['**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src/demo', 'src/model', 'test'],

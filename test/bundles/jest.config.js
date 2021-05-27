@@ -15,6 +15,7 @@
  */
 process.env.JEST_PLAYWRIGHT_CONFIG = './test/bundles/jest-playwright.config.js';
 
+/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   rootDir: '../..',
   roots: ['./test/bundles', './src'],
@@ -24,6 +25,11 @@ module.exports = {
   testTimeout: 20000,
   transform: {
     '^.+\\.ts?$': 'ts-jest',
+  },
+  globals: {
+    'ts-jest': {
+      tsconfig: '<rootDir>/tsconfig.jest.json',
+    },
   },
   reporters: [
     'default',
