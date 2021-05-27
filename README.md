@@ -1,6 +1,6 @@
 <h1 align="center">BPMN Visualization</h1>
 <div align="center">
-    <p align="center"> <img title="BPMN Visualization" src="docs/users/images/diagram-example.png" alt="BPMN Visualization diagram example"></p>
+    <p align="center"> <img title="BPMN Visualization" src="docs/users/images/custom-behavior-path-highlighting.gif" alt="BPMN Visualization example"></p>
     <p align="center"> 
         <a href="https://npmjs.org/package/bpmn-visualization">
           <img alt="npm package" src="https://img.shields.io/npm/v/bpmn-visualization.svg?color=orange"> 
@@ -156,7 +156,7 @@ You can find more detail in our [Contributing guide](CONTRIBUTING.md). Participa
 ## 📃 License
 
 `bpmn-visualization` is released under the [Apache 2.0](LICENSE) license. \
-Copyright &copy; 2020, Bonitasoft S.A.
+Copyright &copy; 2020-2021, Bonitasoft S.A.
 
 Some BPMN icons used by `bpmn-visualization` are derived from existing projects. See the [BPMN Support page](docs/users/bpmn-support.adoc)
 for more details:
