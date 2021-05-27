@@ -15,7 +15,7 @@
  */
 
 import { documentReady, startBpmnVisualization, fit, FitType } from '../../index.es.js';
-import { configureControlsPanel, configureMousePointer } from './test.js';
+import { configureControlsPanel, configureMousePointer } from './helpers/controls.js';
 
 function fitOnClick(fitType) {
   document.getElementById(fitType).onclick = () => fit({ type: fitType });

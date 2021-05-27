@@ -21,7 +21,7 @@ module.exports = {
   roots: ['./test/bundles', './src'],
   preset: 'jest-playwright-preset',
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
+  testPathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src'],
   testTimeout: 20000,
   transform: {
     '^.+\\.ts?$': 'ts-jest',
