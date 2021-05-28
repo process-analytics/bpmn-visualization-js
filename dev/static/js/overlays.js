@@ -15,7 +15,7 @@
  */
 
 import { documentReady, startBpmnVisualization, addOverlays, removeAllOverlays, getElementsByIds } from '../../index.es.js';
-import { configureControlsPanel, configureMousePointer } from './test.js';
+import { configureControlsPanel, configureMousePointer } from './helpers/controls.js';
 
 function addOverlay(overlay) {
   const bpmnId = document.getElementById('bpmn-id-input').value;

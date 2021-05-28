@@ -19,7 +19,7 @@ module.exports = {
   rootDir: '../..',
   roots: ['./test/integration', './src'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
+  testPathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src'],
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
@@ -29,7 +29,7 @@ module.exports = {
     },
   },
   collectCoverageFrom: ['**/*.{ts,js}'],
-  coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static', 'src/model'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src/demo', 'src/model', 'test'],
   coverageReporters: ['lcov', 'text-summary'],
   coverageDirectory: 'build/test-report/integration',
   reporters: [

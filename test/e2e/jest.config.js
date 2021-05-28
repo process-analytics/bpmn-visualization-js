@@ -21,7 +21,7 @@ module.exports = {
   roots: ['./test/e2e', './src'],
   preset: 'jest-playwright-preset',
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
+  testPathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src'],
   testTimeout: 200000,
   transform: {
     '^.+\\.ts?$': 'ts-jest',
@@ -32,7 +32,7 @@ module.exports = {
     },
   },
   collectCoverageFrom: ['**/*.{ts,js}'],
-  coveragePathIgnorePatterns: ['/node_modules/', 'dist', 'test', 'src/demo', 'src/static', 'src/model'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src/demo', 'src/model', 'test'],
   coverageReporters: ['lcov', 'text-summary'],
   coverageDirectory: 'build/test-report/e2e',
   setupFiles: ['./test/e2e/config/copy.bpmn.diagram.ts'],
