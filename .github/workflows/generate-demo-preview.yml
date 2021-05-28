@@ -17,7 +17,23 @@ on:
       - 'tsconfig.json'
 
 jobs:
+  # inspired from https://github.com/process-analytics/github-actions-playground/pull/23
+  check_secrets:
+    runs-on: ubuntu-20.04
+    outputs:
+      is_SURGE_TOKEN_set: ${{ steps.secret_availability.outputs.is_SURGE_TOKEN_set }}
+    steps:
+      - name: Compute secrets availability
+        id: secret_availability
+        env:
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+        run: |
+          echo "is_SURGE_TOKEN_set: ${{ env.SURGE_TOKEN != '' }}"
+          echo "::set-output name=is_SURGE_TOKEN_set::${{ env.SURGE_TOKEN != '' }}"
+
   demo_preview:
+    needs: [check_secrets]
+    if: needs.check_secrets.outputs.is_SURGE_TOKEN_set == 'true'
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
