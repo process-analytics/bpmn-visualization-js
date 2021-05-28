@@ -154,7 +154,7 @@ You can find more detail in our [Contributing guide](CONTRIBUTING.md). Participa
 ## 📃 License
 
 `bpmn-visualization` is released under the [Apache 2.0](LICENSE) license. \
-Copyright &copy; 2020-2021, Bonitasoft S.A.
+Copyright &copy; from 2020, Bonitasoft S.A.
 
 Some BPMN icons used by `bpmn-visualization` are derived from existing projects. See the [BPMN Support page](docs/users/bpmn-support.adoc)
 for more details:
