@@ -33,11 +33,6 @@ export * from './component/mxgraph/StyleUtils';
 export * from './component/mxgraph/shape/render';
 export * from './component/registry';
 
-// TODO restore 'alias export' to avoid any name clash with the demo code, when esLint parsing error is fixed: "Parsing error: Cannot read property 'map' of undefined"
-// bug: https://github.com/typescript-eslint/typescript-eslint/issues/1653
-// enhancement: https://github.com/typescript-eslint/typescript-eslint/issues/1436
-// export * as bpmnVisualizationDemo from './demo';
-export * from './demo';
 export * from './model/bpmn/internal/shape';
 
 export const mxConstants = mxgraph.mxConstants;

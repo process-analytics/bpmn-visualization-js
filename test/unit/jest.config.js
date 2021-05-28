@@ -29,7 +29,7 @@ module.exports = {
     },
   },
   collectCoverageFrom: ['**/*.{ts,js}'],
-  coveragePathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src/demo', 'src/model', 'test'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src/model', 'test'],
   coverageReporters: ['lcov', 'text-summary'],
   coverageDirectory: 'build/test-report/unit',
   reporters: [

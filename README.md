@@ -105,7 +105,7 @@ bpmnVisualization.load(bpmnContent);
 You can set the BPMN content using one of the following ways:
   * Copy/Paste directly the XML content in a variable
   * Load it from an url, like this [example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/display-bpmn-diagram/load-remote-bpmn-diagrams/index.html)
-  * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-js/blob/master/src/demo/index.ts)
+  * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-examples/tree/master/examples/display-bpmn-diagram/load-local-bpmn-diagrams/index.html)
 
 
 ### 💠 Browser usage

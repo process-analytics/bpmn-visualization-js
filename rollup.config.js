@@ -41,7 +41,6 @@ const serverPort = process.env.SERVER_PORT || argv['config-server-port'] || 1000
 const buildBundles = argv['config-build-bundles'] || false;
 
 const outputDir = demoMode ? 'build/demo' : 'build/public';
-const libInput = 'src/bpmn-visualization.ts';
 let rollupConfigs;
 
 // internal lib development
@@ -49,7 +48,7 @@ if (!buildBundles) {
   const sourceMap = !demoMode;
   rollupConfigs = [
     {
-      input: libInput,
+      input: 'dev/ts/internal-dev-bundle-index.ts',
       output: [
         {
           file: `${outputDir}/index.es.js`,
@@ -62,6 +61,7 @@ if (!buildBundles) {
     },
   ];
 } else {
+  const libInput = 'src/bpmn-visualization.ts';
   const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjs(), json()];
   const outputIIFE = {
     file: pkg.browser.replace('.min.js', '.js'),

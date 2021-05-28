@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * @internal
- */
 export class DropFileUserInterface {
   private document: Document;
   private head: Element;
