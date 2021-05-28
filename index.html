@@ -443,51 +443,44 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_introduction">1. Introduction</a></li>
-<li><a href="#_overview">2. Overview</a>
+<li><a href="#_overview">1. Overview</a>
 <ul class="sectlevel2">
-<li><a href="#_live_examples">2.1. Live Examples</a></li>
-<li><a href="#_usage">2.2. Usage</a></li>
-<li><a href="#_glossary">2.3. Glossary</a></li>
-<li><a href="#_bpmn_diagrams">2.4. BPMN Diagrams</a></li>
-<li><a href="#process_data">2.5. Process data</a></li>
-<li><a href="#_custom_behavior">2.6. Custom behavior</a></li>
-<li><a href="#_overlays">2.7. Overlays</a></li>
+<li><a href="#_live_examples">1.1. Live Examples</a></li>
+<li><a href="#_usage">1.2. Usage</a></li>
+<li><a href="#_glossary">1.3. Glossary</a></li>
+<li><a href="#_bpmn_diagrams">1.4. BPMN Diagrams</a></li>
+<li><a href="#process_data">1.5. Process data</a></li>
+<li><a href="#_custom_behavior">1.6. Custom behavior</a></li>
+<li><a href="#_overlays">1.7. Overlays</a></li>
 </ul>
 </li>
-<li><a href="#supported-bpmn-elements">3. Supported BPMN Elements</a>
+<li><a href="#supported-bpmn-elements">2. Supported BPMN Elements</a>
 <ul class="sectlevel2">
-<li><a href="#_containers">3.1. Containers</a></li>
-<li><a href="#_activities">3.2. Activities</a></li>
-<li><a href="#_events">3.3. Events</a></li>
-<li><a href="#_flows">3.4. Flows</a></li>
-<li><a href="#_gateways">3.5. Gateways</a></li>
-<li><a href="#_labels">3.6. Labels</a></li>
-<li><a href="#_artifacts">3.7. Artifacts</a></li>
-<li><a href="#_associations">3.8. Associations</a></li>
+<li><a href="#_containers">2.1. Containers</a></li>
+<li><a href="#_activities">2.2. Activities</a></li>
+<li><a href="#_events">2.3. Events</a></li>
+<li><a href="#_flows">2.4. Flows</a></li>
+<li><a href="#_gateways">2.5. Gateways</a></li>
+<li><a href="#_labels">2.6. Labels</a></li>
+<li><a href="#_artifacts">2.7. Artifacts</a></li>
+<li><a href="#_associations">2.8. Associations</a></li>
 </ul>
 </li>
-<li><a href="#_architecture_and_development">4. Architecture and Development</a>
+<li><a href="#_architecture_and_development">3. Architecture and Development</a>
 <ul class="sectlevel2">
-<li><a href="#_architecture_overview">4.1. Architecture Overview</a></li>
-<li><a href="#bpmn-internal-model">4.2. BPMN Internal Model</a></li>
-<li><a href="#_bpmn_parsing">4.3. BPMN Parsing</a></li>
-<li><a href="#_mxgraph_integration">4.4. mxGraph Integration</a></li>
-<li><a href="#_development">4.5. Development</a></li>
+<li><a href="#_architecture_overview">3.1. Architecture Overview</a></li>
+<li><a href="#bpmn-internal-model">3.2. BPMN Internal Model</a></li>
+<li><a href="#_bpmn_parsing">3.3. BPMN Parsing</a></li>
+<li><a href="#_mxgraph_integration">3.4. mxGraph Integration</a></li>
+<li><a href="#_development">3.5. Development</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_introduction"><a class="anchor" href="#_introduction"></a><a class="link" href="#_introduction">1. Introduction</a></h2>
+<div id="preamble">
 <div class="sectionbody">
-<div class="imageblock">
-<div class="content">
-<img src="images/diagram-example.png" alt="diagram example">
-</div>
-</div>
 <div class="paragraph">
 <p><code>bpmn-visualization</code> is a TypeScript library for visualizing process execution data on <a href="https://www.omg.org/spec/BPMN/2.0.2/">BPMN</a>
 diagrams. It is in early development stages and is subject to change prior to the <code>1.0.0</code> release.</p>
@@ -495,33 +488,33 @@ diagrams. It is in early development stages and is subject to change prior to th
 </div>
 </div>
 <div class="sect1">
-<h2 id="_overview"><a class="anchor" href="#_overview"></a><a class="link" href="#_overview">2. Overview</a></h2>
+<h2 id="_overview"><a class="anchor" href="#_overview"></a><a class="link" href="#_overview">1. Overview</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_live_examples"><a class="anchor" href="#_live_examples"></a><a class="link" href="#_live_examples">2.1. Live Examples</a></h3>
+<h3 id="_live_examples"><a class="anchor" href="#_live_examples"></a><a class="link" href="#_live_examples">1.1. Live Examples</a></h3>
 <div class="paragraph">
 <p>To see <code>bpmn-visualization</code> in action, give a try to the <a href="https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html"><strong><span class="icon"><i class="fa fa-forward"></i></span> examples live environment</strong></a>.<br>
 You will quickly have an overview of the <code>bpmn-visualization</code> capabilities.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_usage"><a class="anchor" href="#_usage"></a><a class="link" href="#_usage">2.2. Usage</a></h3>
+<h3 id="_usage"><a class="anchor" href="#_usage"></a><a class="link" href="#_usage">1.2. Usage</a></h3>
 <div class="sect3">
-<h4 id="_bundles"><a class="anchor" href="#_bundles"></a><a class="link" href="#_bundles">2.2.1. Bundles</a></h4>
+<h4 id="_bundles"><a class="anchor" href="#_bundles"></a><a class="link" href="#_bundles">1.2.1. Bundles</a></h4>
 <div class="paragraph">
 <p><code>bpmn-visualization</code> can be directly used in HTML pages or integrated in Javascript and TypeScript applications. It is distributed as a <a href="https://npmjs.org/package/bpmn-visualization">npm package</a>
 in various bundle formats.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_api"><a class="anchor" href="#_api"></a><a class="link" href="#_api">2.2.2. API</a></h4>
+<h4 id="_api"><a class="anchor" href="#_api"></a><a class="link" href="#_api">1.2.2. API</a></h4>
 <div class="paragraph">
 <p>The API documentation is provided directly in the package thanks to the TypeScript declaration files that can be used in IDE for code assist.<br>
 There is also an HTML version which is available in the <a href="./api/index.html" target="_blank" rel="noopener">API HTML documentation</a>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_more_technical_details"><a class="anchor" href="#_more_technical_details"></a><a class="link" href="#_more_technical_details">2.2.3. More technical details</a></h4>
+<h4 id="_more_technical_details"><a class="anchor" href="#_more_technical_details"></a><a class="link" href="#_more_technical_details">1.2.3. More technical details</a></h4>
 <div class="paragraph">
 <p>For more technical details and how-to, go to the <a href="https://github.com/process-analytics/bpmn-visualization-examples/">bpmn-visualization-examples</a>
 repository.</p>
@@ -529,7 +522,7 @@ repository.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_glossary"><a class="anchor" href="#_glossary"></a><a class="link" href="#_glossary">2.3. Glossary</a></h3>
+<h3 id="_glossary"><a class="anchor" href="#_glossary"></a><a class="link" href="#_glossary">1.3. Glossary</a></h3>
 <div class="paragraph">
 <p>Here are a list of terms and concepts we are using in the <code>bpmn-visualization</code> documentation, issues, examples&#8230;&#8203;</p>
 </div>
@@ -590,7 +583,7 @@ repository.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_bpmn_diagrams"><a class="anchor" href="#_bpmn_diagrams"></a><a class="link" href="#_bpmn_diagrams">2.4. BPMN Diagrams</a></h3>
+<h3 id="_bpmn_diagrams"><a class="anchor" href="#_bpmn_diagrams"></a><a class="link" href="#_bpmn_diagrams">1.4. BPMN Diagrams</a></h3>
 <div class="paragraph">
 <p><a href="https://www.omg.org/spec/BPMN/2.0.2/">BPMN diagrams</a> are at the foundation of the <code>bpmn-visualization</code> capabilities.</p>
 </div>
@@ -598,7 +591,7 @@ repository.</p>
 <p>Go to <a href="#supported-bpmn-elements">Supported BPMN Elements</a> section to better now what is the current BPMN support.</p>
 </div>
 <div class="sect3">
-<h4 id="_bpmn_rendering"><a class="anchor" href="#_bpmn_rendering"></a><a class="link" href="#_bpmn_rendering">2.4.1. BPMN rendering</a></h4>
+<h4 id="_bpmn_rendering"><a class="anchor" href="#_bpmn_rendering"></a><a class="link" href="#_bpmn_rendering">1.4.1. BPMN rendering</a></h4>
 <div class="paragraph">
 <p>The first goal of <code>bpmn-visualization</code> is to render BPMN diagrams but this is up to the integration (i.e. the application that uses it) to provide the BPMN diagram
 content. <br>
@@ -609,7 +602,7 @@ For instance, it can be retrieved from a local file, by pulling a REST API, made
 </div>
 </div>
 <div class="sect3">
-<h4 id="diagram-navigation"><a class="anchor" href="#diagram-navigation"></a><a class="link" href="#diagram-navigation">2.4.2. Diagram Navigation</a></h4>
+<h4 id="diagram-navigation"><a class="anchor" href="#diagram-navigation"></a><a class="link" href="#diagram-navigation">1.4.2. Diagram Navigation</a></h4>
 <div class="paragraph">
 <p>In addition to BPMN rendering, <code>bpmn-visualization</code> provides several ways to explore and navigate through the BPMN diagrams.
 This is made available at load time or at runtime, through user interactions or API calls.</p>
@@ -637,7 +630,7 @@ After navigating around, you may want to reset the zoom level and go back to a f
 </div>
 </div>
 <div class="sect3">
-<h4 id="_bpmn_rendering_and_diagram_navigation_in_action"><a class="anchor" href="#_bpmn_rendering_and_diagram_navigation_in_action"></a><a class="link" href="#_bpmn_rendering_and_diagram_navigation_in_action">2.4.3. BPMN rendering and Diagram Navigation in Action</a></h4>
+<h4 id="_bpmn_rendering_and_diagram_navigation_in_action"><a class="anchor" href="#_bpmn_rendering_and_diagram_navigation_in_action"></a><a class="link" href="#_bpmn_rendering_and_diagram_navigation_in_action">1.4.3. BPMN rendering and Diagram Navigation in Action</a></h4>
 <div class="imageblock">
 <div class="content">
 <img src="images/bpmn-diagram_navigation_C.2.0.gif" alt="BPMN Diagram Navigation">
@@ -649,7 +642,7 @@ After navigating around, you may want to reset the zoom level and go back to a f
 </div>
 </div>
 <div class="sect2">
-<h3 id="process_data"><a class="anchor" href="#process_data"></a><a class="link" href="#process_data">2.5. Process data</a></h3>
+<h3 id="process_data"><a class="anchor" href="#process_data"></a><a class="link" href="#process_data">1.5. Process data</a></h3>
 <div class="paragraph">
 <p><code>bpmn-visualization</code> gives you the opportunity to visualize the Process Data on top of the BPMN diagrams.
 The purpose of the library is to gain the visibility on what happens in your processes.</p>
@@ -668,7 +661,7 @@ The purpose of the library is to gain the visibility on what happens in your pro
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_process_data_examples"><a class="anchor" href="#_process_data_examples"></a><a class="link" href="#_process_data_examples">2.5.1. Process data examples</a></h4>
+<h4 id="_process_data_examples"><a class="anchor" href="#_process_data_examples"></a><a class="link" href="#_process_data_examples">1.5.1. Process data examples</a></h4>
 <div class="paragraph">
 <p>The example of Process Data for different tasks can be as follows.</p>
 </div>
@@ -733,7 +726,7 @@ The purpose of the library is to gain the visibility on what happens in your pro
 </div>
 </div>
 <div class="sect2">
-<h3 id="_custom_behavior"><a class="anchor" href="#_custom_behavior"></a><a class="link" href="#_custom_behavior">2.6. Custom behavior</a></h3>
+<h3 id="_custom_behavior"><a class="anchor" href="#_custom_behavior"></a><a class="link" href="#_custom_behavior">1.6. Custom behavior</a></h3>
 <div class="paragraph">
 <p><code>bpmn-visualization</code> provides API to interact with the BPMN elements and their representation as DOM Element.</p>
 </div>
@@ -741,7 +734,7 @@ The purpose of the library is to gain the visibility on what happens in your pro
 <p>Fore more examples about <code>Custom Behavior</code>, see the <a href="https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html"><strong><span class="icon"><i class="fa fa-forward"></i></span> examples live environment</strong></a></p>
 </div>
 <div class="sect3">
-<h4 id="_bpmn_semantic_and_dom_element"><a class="anchor" href="#_bpmn_semantic_and_dom_element"></a><a class="link" href="#_bpmn_semantic_and_dom_element">2.6.1. BPMN semantic and DOM Element</a></h4>
+<h4 id="_bpmn_semantic_and_dom_element"><a class="anchor" href="#_bpmn_semantic_and_dom_element"></a><a class="link" href="#_bpmn_semantic_and_dom_element">1.6.1. BPMN semantic and DOM Element</a></h4>
 <div class="paragraph">
 <p>A BPMN element contains BPMN semantic information that can be matched with <a href="#process_data">Process data</a>. The DOM Element let you manipulate the representation and allow enriching its behavior
 by adding <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventListener">event listeners</a> for instance.</p>
@@ -761,7 +754,7 @@ of an activity, current error at this stage of the process, and more.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_style"><a class="anchor" href="#_style"></a><a class="link" href="#_style">2.6.2. Style</a></h4>
+<h4 id="_style"><a class="anchor" href="#_style"></a><a class="link" href="#_style">1.6.2. Style</a></h4>
 <div class="paragraph">
 <p>The style of BPMN elements can be modified at runtime allowing to mark, hide, change appearance of one or several specific elements. For instance, this feature can be used to mark
 a task as in error, warn that an activity has been started for a while and seems stuck, &#8230;&#8203;</p>
@@ -780,18 +773,18 @@ a task as in error, warn that an activity has been started for a while and seems
 </div>
 </div>
 <div class="sect2">
-<h3 id="_overlays"><a class="anchor" href="#_overlays"></a><a class="link" href="#_overlays">2.7. Overlays</a></h3>
+<h3 id="_overlays"><a class="anchor" href="#_overlays"></a><a class="link" href="#_overlays">1.7. Overlays</a></h3>
 <div class="paragraph">
 <p><code>bpmn-visualization</code> provides <a href="./api/classes/bpmnelementsregistry.html#addoverlays" target="_blank" rel="noopener">API to add overlays</a> on top of BPMN elements. This additional overlays layer permits you to show whatever data you want and enrich your diagrams.</p>
 </div>
 <div class="sect3">
-<h4 id="_use_case"><a class="anchor" href="#_use_case"></a><a class="link" href="#_use_case">2.7.1. Use case</a></h4>
+<h4 id="_use_case"><a class="anchor" href="#_use_case"></a><a class="link" href="#_use_case">1.7.1. Use case</a></h4>
 <div class="paragraph">
 <p>There are various use cases concerning overlays. For example the aforementioned <a href="#process_data">Process data</a> can be easily displayed in rectangular shapes on top of the edges and tasks. Whether you would like to show a path frequency or probability for the next step, the overlays are here to help you achieve this.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_overlays_examples"><a class="anchor" href="#_overlays_examples"></a><a class="link" href="#_overlays_examples">2.7.2. Overlays examples</a></h4>
+<h4 id="_overlays_examples"><a class="anchor" href="#_overlays_examples"></a><a class="link" href="#_overlays_examples">1.7.2. Overlays examples</a></h4>
 <div class="paragraph">
 <p>To see overlays simple examples, go to the <a href="https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#overlays"><strong><span class="icon"><i class="fa fa-forward"></i></span> Simple examples - live demo</strong></a> You will find out how to add overlays to BPMN elements and how to apply style to them.</p>
 </div>
@@ -819,7 +812,7 @@ a task as in error, warn that an activity has been started for a while and seems
 </div>
 </div>
 <div class="sect1">
-<h2 id="supported-bpmn-elements"><a class="anchor" href="#supported-bpmn-elements"></a><a class="link" href="#supported-bpmn-elements">3. Supported BPMN Elements</a></h2>
+<h2 id="supported-bpmn-elements"><a class="anchor" href="#supported-bpmn-elements"></a><a class="link" href="#supported-bpmn-elements">2. Supported BPMN Elements</a></h2>
 <div class="sectionbody">
 <div class="admonitionblock note">
 <table>
@@ -869,7 +862,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_containers"><a class="anchor" href="#_containers"></a><a class="link" href="#_containers">3.1. Containers</a></h3>
+<h3 id="_containers"><a class="anchor" href="#_containers"></a><a class="link" href="#_containers">2.1. Containers</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 2. Containers</caption>
 <colgroup>
@@ -901,7 +894,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_activities"><a class="anchor" href="#_activities"></a><a class="link" href="#_activities">3.2. Activities</a></h3>
+<h3 id="_activities"><a class="anchor" href="#_activities"></a><a class="link" href="#_activities">2.2. Activities</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 3. Activities</caption>
 <colgroup>
@@ -1026,7 +1019,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_events"><a class="anchor" href="#_events"></a><a class="link" href="#_events">3.3. Events</a></h3>
+<h3 id="_events"><a class="anchor" href="#_events"></a><a class="link" href="#_events">2.3. Events</a></h3>
 <div class="paragraph">
 <p>The event definition can be defined on the event or on the definitions.</p>
 </div>
@@ -1432,7 +1425,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_flows"><a class="anchor" href="#_flows"></a><a class="link" href="#_flows">3.4. Flows</a></h3>
+<h3 id="_flows"><a class="anchor" href="#_flows"></a><a class="link" href="#_flows">2.4. Flows</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 13. Flows</caption>
 <colgroup>
@@ -1498,7 +1491,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_gateways"><a class="anchor" href="#_gateways"></a><a class="link" href="#_gateways">3.5. Gateways</a></h3>
+<h3 id="_gateways"><a class="anchor" href="#_gateways"></a><a class="link" href="#_gateways">2.5. Gateways</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 14. Gateways</caption>
 <colgroup>
@@ -1538,7 +1531,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_labels"><a class="anchor" href="#_labels"></a><a class="link" href="#_labels">3.6. Labels</a></h3>
+<h3 id="_labels"><a class="anchor" href="#_labels"></a><a class="link" href="#_labels">2.6. Labels</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 15. Labels</caption>
 <colgroup>
@@ -1568,7 +1561,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_artifacts"><a class="anchor" href="#_artifacts"></a><a class="link" href="#_artifacts">3.7. Artifacts</a></h3>
+<h3 id="_artifacts"><a class="anchor" href="#_artifacts"></a><a class="link" href="#_artifacts">2.7. Artifacts</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 16. Artifacts</caption>
 <colgroup>
@@ -1593,7 +1586,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_associations"><a class="anchor" href="#_associations"></a><a class="link" href="#_associations">3.8. Associations</a></h3>
+<h3 id="_associations"><a class="anchor" href="#_associations"></a><a class="link" href="#_associations">2.8. Associations</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 17. Associations</caption>
 <colgroup>
@@ -1620,10 +1613,10 @@ the BPMN elements are rendered with their final shapes.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_architecture_and_development"><a class="anchor" href="#_architecture_and_development"></a><a class="link" href="#_architecture_and_development">4. Architecture and Development</a></h2>
+<h2 id="_architecture_and_development"><a class="anchor" href="#_architecture_and_development"></a><a class="link" href="#_architecture_and_development">3. Architecture and Development</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_architecture_overview"><a class="anchor" href="#_architecture_overview"></a><a class="link" href="#_architecture_overview">4.1. Architecture Overview</a></h3>
+<h3 id="_architecture_overview"><a class="anchor" href="#_architecture_overview"></a><a class="link" href="#_architecture_overview">3.1. Architecture Overview</a></h3>
 <div class="paragraph">
 <p><code>bpmn-visualization</code> consists on 2 main modules:</p>
 </div>
@@ -1644,7 +1637,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="bpmn-internal-model"><a class="anchor" href="#bpmn-internal-model"></a><a class="link" href="#bpmn-internal-model">4.2. BPMN Internal Model</a></h3>
+<h3 id="bpmn-internal-model"><a class="anchor" href="#bpmn-internal-model"></a><a class="link" href="#bpmn-internal-model">3.2. BPMN Internal Model</a></h3>
 <div class="paragraph">
 <p>Our internal model is based on the <a href="https://www.omg.org/spec/BPMN/2.0.2/PDF">BPMN specification</a>.</p>
 </div>
@@ -1655,9 +1648,9 @@ the BPMN elements are rendered with their final shapes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_bpmn_parsing"><a class="anchor" href="#_bpmn_parsing"></a><a class="link" href="#_bpmn_parsing">4.3. BPMN Parsing</a></h3>
+<h3 id="_bpmn_parsing"><a class="anchor" href="#_bpmn_parsing"></a><a class="link" href="#_bpmn_parsing">3.3. BPMN Parsing</a></h3>
 <div class="sect3">
-<h4 id="_xml_parser"><a class="anchor" href="#_xml_parser"></a><a class="link" href="#_xml_parser">4.3.1. XML Parser</a></h4>
+<h4 id="_xml_parser"><a class="anchor" href="#_xml_parser"></a><a class="link" href="#_xml_parser">3.3.1. XML Parser</a></h4>
 <div class="paragraph">
 <p>To parse XML data, we use the <a href="https://github.com/NaturalIntelligence/fast-xml-parser">fast-xml-parser</a> library.</p>
 </div>
@@ -1666,7 +1659,7 @@ the BPMN elements are rendered with their final shapes.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_json_parser"><a class="anchor" href="#_json_parser"></a><a class="link" href="#_json_parser">4.3.2. Json Parser</a></h4>
+<h4 id="_json_parser"><a class="anchor" href="#_json_parser"></a><a class="link" href="#_json_parser">3.3.2. Json Parser</a></h4>
 <div class="paragraph">
 <p>To parse a JSON data, we use a custom parser.</p>
 </div>
@@ -1677,7 +1670,7 @@ We have different <em>converters</em> (in the <strong>converter</strong> folder 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_mxgraph_integration"><a class="anchor" href="#_mxgraph_integration"></a><a class="link" href="#_mxgraph_integration">4.4. mxGraph Integration</a></h3>
+<h3 id="_mxgraph_integration"><a class="anchor" href="#_mxgraph_integration"></a><a class="link" href="#_mxgraph_integration">3.4. mxGraph Integration</a></h3>
 <div class="paragraph">
 <p>The <a href="https://jgraph.github.io/mxgraph/">mxGraph</a> integration is in charge of rendering the BPMN diagrams, by filling the
 <a href="https://jgraph.github.io/mxgraph/docs/manual.html#3.1.1">mxGraph model</a> from the BPMN model.</p>
@@ -1690,7 +1683,7 @@ We have different <em>converters</em> (in the <strong>converter</strong> folder 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_development"><a class="anchor" href="#_development"></a><a class="link" href="#_development">4.5. Development</a></h3>
+<h3 id="_development"><a class="anchor" href="#_development"></a><a class="link" href="#_development">3.5. Development</a></h3>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -1718,7 +1711,7 @@ We have different <em>converters</em> (in the <strong>converter</strong> folder 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-27 12:53:07 UTC
+Last updated 2021-05-28 08:00:23 UTC
 </div>
 </div>
 </body>
