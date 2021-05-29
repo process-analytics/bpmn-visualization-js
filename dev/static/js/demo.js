@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions } from '../../index.es.js';
+import { documentReady, downloadPng, downloadSvg, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions } from '../../index.es.js';
 
 let fitOnLoad = true;
 let fitOptions = {};
@@ -99,6 +99,11 @@ function setupFixedDiagramContainerSize(containerId) {
   containerElt.style = `overflow: hidden; height:${height - 2 * 20}px`;
 }
 
+function configureDownloadButtons() {
+  document.getElementById('btn-dl-svg').addEventListener('click', downloadSvg, false);
+  document.getElementById('btn-dl-png').addEventListener('click', downloadPng, false);
+}
+
 function startDemo() {
   preventZoomingPage();
   const bpmnContainerId = 'bpmn-container';
@@ -137,6 +142,8 @@ function startDemo() {
   configureFitMarginInput();
   configureFitOnLoadCheckBox();
   configureControlPanel();
+
+  configureDownloadButtons();
 }
 
 // Start

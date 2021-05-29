@@ -36,3 +36,7 @@ export function logStartup(message?: string, ...optionalParams: unknown[]): void
 export function log(message?: string, ...optionalParams: unknown[]): void {
   _log('[DEMO]', message, ...optionalParams);
 }
+
+export function logDownload(message?: unknown, ...optionalParams: unknown[]): void {
+  _log('[DEMO DOWNLOAD]', message, ...optionalParams);
+}

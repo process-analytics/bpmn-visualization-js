@@ -15,6 +15,8 @@
  */
 import {
   documentReady,
+  downloadPng,
+  downloadSvg,
   FitType,
   getElementsByKinds,
   addCssClasses,
@@ -137,6 +139,11 @@ function getOverlay(bpmnKind) {
   return { position: 'top-left', label: '40' };
 }
 
+function configureDownloadButtons() {
+  document.getElementById('btn-dl-svg').addEventListener('click', downloadSvg, false);
+  document.getElementById('btn-dl-png').addEventListener('click', downloadPng, false);
+}
+
 documentReady(() => {
   startBpmnVisualization({
     globalOptions: {
@@ -148,4 +155,5 @@ documentReady(() => {
   });
   updateLoadOptions({ type: FitType.Center, margin: 20 });
   configureControls();
+  configureDownloadButtons();
 });
