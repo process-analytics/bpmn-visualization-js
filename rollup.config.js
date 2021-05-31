@@ -123,6 +123,11 @@ function typescriptPlugin() {
   const tsDeclarationFiles = !demoMode || buildBundles;
   const tsSourceMap = !demoMode && !buildBundles; // TODO logic duplicated with build selection
   const tsconfigOverride = { compilerOptions: { sourceMap: tsSourceMap, declaration: tsDeclarationFiles } };
+
+  if (devMode) {
+    tsconfigOverride.include = ['src/**/*', 'dev/ts/**/*'];
+  }
+
   return typescript({
     typescript: require('typescript'),
     tsconfigOverride: tsconfigOverride,
