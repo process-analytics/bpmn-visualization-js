@@ -29,8 +29,10 @@ export class BpmnMxGraph extends mxgraph.mxGraph {
    */
   constructor(readonly container: HTMLElement) {
     super(container);
-    // ensure we don't have a select text cursor on label hover, see #294
-    this.container.style.cursor = 'default';
+    if (this.container) {
+      // ensure we don't have a select text cursor on label hover, see #294
+      this.container.style.cursor = 'default';
+    }
   }
 
   /**
