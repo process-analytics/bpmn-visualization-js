@@ -29,7 +29,10 @@ export class BpmnPage {
   }
 
   async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<ElementHandle<SVGElement | HTMLElement>> {
-    return await this.currentPage.waitForSelector(`#${this.bpmnContainerId}`, options);
+    const bpmnContainer = await this.currentPage.waitForSelector(`#${this.bpmnContainerId}`, options);
+    const style = await bpmnContainer.getAttribute('style');
+    expect(style).toContain('cursor: default');
+    return bpmnContainer;
   }
 
   async expectPageTitle(title: string): Promise<void> {
