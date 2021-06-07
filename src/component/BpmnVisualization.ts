@@ -24,6 +24,11 @@ import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { BpmnModelRegistry } from './registry/bpmn-model-registry';
 import { htmlElement } from './helpers/dom-utils';
 
+// CHANGE in svg2roughjs require to: import units from 'units-css';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { Svg2Roughjs } from 'svg2roughjs';
+
 /**
  * @category Initialization
  */
@@ -50,6 +55,14 @@ export default class BpmnVisualization {
       const bpmnModel = newBpmnParser().parse(xml);
       const renderedModel = this.bpmnModelRegistry.computeRenderedModel(bpmnModel);
       newMxGraphRenderer(this.graph).render(renderedModel, options);
+      setTimeout(() => {
+        if (document.getElementById('sketch-container').querySelector('svg')) {
+          document.getElementById('sketch-container').removeChild(document.getElementById('sketch-container').querySelector('svg'));
+        }
+        const svg2roughjs = new Svg2Roughjs('#sketch-container');
+        const svg = document.getElementById('bpmn-container').querySelector('svg');
+        svg2roughjs.svg = svg; // or maybe use the DOMParser to load an SVG file instead
+      }, 1000);
     } catch (e) {
       // TODO error handling
       window.alert(`Cannot load bpmn diagram: ${e.message}`);

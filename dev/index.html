@@ -39,6 +39,17 @@
               </div>
             </li>
             <li class="mr-3 flex-1">
+              <div class="py-1 md:py-5 pl-1 align-middle border-b-2 border-gray-800">
+                <div class="bg-gradient-to-b from-blue-200 to-blue-100 border-b-4 border-blue-600 rounded-lg shadow-xl hover:border-blue-900">
+                  <div class="flex flex-row items-center cursor-pointer text-blue-500 hover:text-blue-900">
+                    <div class="flex-1 text-right md:text-center">
+                      <label id="svg-to-sketch" class="font-bold text-3xl cursor-pointer"><span><em class="fas fa-file"></em>sketch<em class="fas fa-edit"></em></span></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="mr-3 flex-1">
               <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline border-b-2 border-gray-800 border-purple-500">
                 <label for="fitOnLoad">Fit on load:
                   <input type="checkbox" id="fitOnLoad" name="fitOnLoad" checked>
@@ -97,6 +108,8 @@
               <div>
                   <div id="bpmn-container"></div>
               </div>
+              <!-- svg2roughjs container-->
+              <div id="sketch-container" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;"></div>
             </div>
             <!-- /BPMN container Space -->
           </div>

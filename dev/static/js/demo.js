@@ -137,6 +137,18 @@ function startDemo() {
   configureFitMarginInput();
   configureFitOnLoadCheckBox();
   configureControlPanel();
+  document.getElementById('svg-to-sketch').addEventListener('mouseup', function (e) {
+    log('TEST', e);
+    if (document.getElementById('bpmn-container').classList.contains('hidden')) {
+      document.getElementById('bpmn-container').classList.remove('hidden');
+      document.getElementById('sketch-container').classList.add('hidden');
+    } else {
+      document.getElementById('bpmn-container').classList.add('hidden');
+      document.getElementById('sketch-container').querySelector('svg').setAttribute('width', '100%');
+      document.getElementById('sketch-container').querySelector('svg').setAttribute('height', '100%');
+      document.getElementById('sketch-container').classList.remove('hidden');
+    }
+  });
 }
 
 // Start
