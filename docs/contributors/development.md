@@ -7,7 +7,7 @@
 ## Requirements
 
 - `Node.js` 12.16.x and 14.11.x (may work with other versions but without any guarantee)
-- `Supported OS` Windows/Linux/MacOs (see the Github Build workflow for more details)
+- `Supported OS` Windows/Linux/macOS (see the GitHub Build workflow for more details)
 
 ## Build
 
@@ -26,10 +26,23 @@ Your patch should follow the same conventions & pass the same code quality check
 Project, in major line, follows the code style suggested by [airbnb](https://github.com/airbnb/javascript) which is explicit and well documented.
 
 Typescript have been chosen as it's strongly typed and we believe it adds some syntactical benefits to the JavaScript language
-More information here:  [Typescript](development.md#typescript) 
+More information here: [Typescript](development.md#typescript) 
 
 To enforce best practices we use ESLint and husky.
 The latter performs ```eslint --fix``` on pre-commit event to make sure that committed code meets standards.
+
+### Husky settings for nvm user
+
+On commit, if the pre-commit hook generates an `Command not found` error, create a `.huskyrc` file in your home
+directory and add the following content:
+```bash
+# This loads nvm.sh and sets the correct PATH before running hook
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+```
+For more details, see
+- https://typicode.github.io/husky/#/?id=command-not-found
+- https://github.com/typicode/husky/issues/912
 
 
 ## Typescript
