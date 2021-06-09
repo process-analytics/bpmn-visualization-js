@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import debugLogger from "debug";
+import debugLogger from 'debug';
 import 'jest-playwright-preset';
 
 // Allow to get browser console logs
