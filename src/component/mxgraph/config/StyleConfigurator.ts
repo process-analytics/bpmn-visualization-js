@@ -309,7 +309,7 @@ export default class StyleConfigurator {
       .join(';');
   }
 
-  private computeShapeStyle(shape: Shape): Map<string, string | number>{
+  private computeShapeStyle(shape: Shape): Map<string, string | number> {
     const styleValues = new Map<string, string | number>();
     const bpmnElement = shape.bpmnElement;
 
@@ -342,7 +342,7 @@ export default class StyleConfigurator {
     return styleValues;
   }
 
-  private computeEdgeStyle(edge: Edge): string[]{
+  private computeEdgeStyle(edge: Edge): string[] {
     const styles: string[] = [];
 
     const bpmnElement = edge.bpmnElement;

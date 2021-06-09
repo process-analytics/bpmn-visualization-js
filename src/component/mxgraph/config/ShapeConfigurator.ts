@@ -15,7 +15,7 @@
  */
 
 import { mxgraph } from '../initializer';
-import { mxCellOverlay, mxCellState, mxImageShape, mxShape } from 'mxgraph'; // for types
+import { mxCellState, mxImageShape, mxShape } from 'mxgraph'; // for types
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
 import { BoundaryEventShape, CatchIntermediateEventShape, EndEventShape, StartEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
 import { EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
@@ -104,7 +104,7 @@ export default class ShapeConfigurator {
         const cell = this.state.cell;
         // dialect = strictHtml is set means that current node holds an html label
         let allBpmnClassNames = computeAllBpmnClassNames(extractBpmnKindFromStyle(cell), this.dialect === mxgraph.mxConstants.DIALECT_STRICTHTML);
-        const extraCssClasses =  this.state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES];
+        const extraCssClasses = this.state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES];
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
         }
@@ -127,7 +127,7 @@ export default class ShapeConfigurator {
   }
 
   initMxCellRendererCreateCellOverlays(): void {
-    mxgraph.mxCellRenderer.prototype.createCellOverlays = function(state: mxCellState) {
+    mxgraph.mxCellRenderer.prototype.createCellOverlays = function (state: mxCellState) {
       const graph = state.view.graph;
       const overlays = graph.getCellOverlays(state.cell);
       let dict = null;
@@ -135,8 +135,8 @@ export default class ShapeConfigurator {
       if (overlays != null) {
         dict = new mxgraph.mxDictionary<mxShape>();
 
-        for (let currentOverlay of overlays) {
-          const shape = (state.overlays != null) ? state.overlays.remove(currentOverlay) : null;
+        for (const currentOverlay of overlays) {
+          const shape = state.overlays != null ? state.overlays.remove(currentOverlay) : null;
           if (shape != null) {
             dict.put(currentOverlay, shape);
             continue;
@@ -177,7 +177,7 @@ export default class ShapeConfigurator {
 
       // Removes unused
       if (state.overlays != null) {
-        state.overlays.visit(function(id: string, shape: mxShape) {
+        state.overlays.visit(function (id: string, shape: mxShape) {
           shape.destroy();
         });
       }
