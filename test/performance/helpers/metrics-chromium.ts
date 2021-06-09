@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { CDPSession, ChromiumBrowserContext, Page } from 'playwright';
+import { CDPSession, ChromiumBrowserContext, Page } from 'playwright-core';
 import { Protocol } from 'playwright/types/protocol';
 
 // Workarounds no Metrics API in Playwright: https://github.com/microsoft/playwright/issues/590
