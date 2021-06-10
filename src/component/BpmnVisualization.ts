@@ -24,7 +24,7 @@ import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { BpmnModelRegistry } from './registry/bpmn-model-registry';
 import { htmlElement } from './helpers/dom-utils';
 
-// CHANGE in svg2roughjs require to: import units from 'units-css';
+// CHANGE in node_modules/svg2roughjs/index.js require to: import units from 'units-css';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { Svg2Roughjs } from 'svg2roughjs';
