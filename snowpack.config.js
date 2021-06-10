@@ -15,7 +15,7 @@
  */
 module.exports = {
   buildOptions: {
-    out: 'build-snowpack',
+    out: 'build/snowpack',
   },
   root: 'src/',
   mount: {
@@ -23,9 +23,9 @@ module.exports = {
     src: { url: '/lib' },
     // dev: { url: '/lib' },
   },
-  // optimize: {
-  //   bundle: true,
-  //   minify: true,
-  //   target: 'es2018',
-  // },
+  optimize: {
+    bundle: true,
+    minify: true,
+    target: 'es2018',
+  },
 };

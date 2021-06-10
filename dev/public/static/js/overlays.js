@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { documentReady, startBpmnVisualization, addOverlays, removeAllOverlays, getElementsByIds } from '../../index.es.js';
+import { documentReady, startBpmnVisualization, addOverlays, removeAllOverlays, getElementsByIds } from '/lib/dev/internal-dev-bundle-index.js';
+// import { documentReady, startBpmnVisualization, addOverlays, removeAllOverlays, getElementsByIds } from '../../index.es.js';
 import { configureControlsPanel, configureMousePointer } from './helpers/controls.js';
 
 function addOverlay(overlay) {

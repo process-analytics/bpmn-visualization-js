@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, startBpmnVisualization } from '../../index.es.js';
+import { documentReady, startBpmnVisualization } from '/lib/dev/internal-dev-bundle-index.js';
+// import { documentReady, startBpmnVisualization } from '../../index.es.js';
 
 function statusFetchKO(errorMsg) {
   const statusElt = document.getElementById('fetch-status');

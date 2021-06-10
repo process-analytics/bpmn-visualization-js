@@ -46,6 +46,8 @@
     "dist"
   ],
   "scripts": {
+    "start-dev": "snowpack dev",
+    "build-snowpack": "snowpack build",
     "all": "run-s clean lint lint-check build test",
     "clean": "rimraf build dist",
     "build": "rollup -c",
@@ -60,7 +62,6 @@
     "docs:user": "node scripts/docs.js",
     "docs:api": "typedoc --tsconfig ./tsconfig.typedoc.json src/bpmn-visualization.ts",
     "start": "rollup -c --silent --environment devMode:true",
-    "start-dev": "snowpack dev",
     "watch": "rollup -cw --environment devLiveReloadMode:true",
     "watch:css": "chokidar \"dev/public/static/css/styles.css\" \"dev/public/*.html\" --command \"npm run demo:css\" --verbose",
     "lint": "eslint \"*/**/*.{js,ts}\" NOTICE --max-warnings 0 --quiet --fix",
