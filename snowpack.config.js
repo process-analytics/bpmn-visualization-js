@@ -20,7 +20,8 @@ module.exports = {
   root: 'src/',
   mount: {
     public: { url: '/', static: true },
-    src: { url: '/build-snowpack' },
+    src: { url: '/lib' },
+    dev: { url: '/lib' },
   },
   // optimize: {
   //   bundle: true,

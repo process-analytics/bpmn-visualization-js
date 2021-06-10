@@ -27,7 +27,7 @@ import {
   ShapeUtil,
   addOverlays,
   removeAllOverlays,
-} from '../../index.es.js';
+} from '/lib/dev/internal-dev-bundle-index.js';
 
 let lastIdentifiedBpmnIds = [];
 const cssClassName = 'detection';

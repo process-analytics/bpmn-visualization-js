@@ -110,3 +110,6 @@ export interface Overlay {
   label?: string;
   style?: OverlayStyle;
 }
+
+// fake for esbuild, otherwise no js file is generated because it only contains types
+export class Fake {}

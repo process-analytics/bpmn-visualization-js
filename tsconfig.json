@@ -15,6 +15,8 @@
     "sourceMap": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    // TODO not sure we need it
+    "isolatedModules": false, // for esbuild, see https://esbuild.github.io/content-types/#isolated-modules
     "typeRoots": [
       "node_modules/@types",
       "node_modules/@typed-mxgraph"

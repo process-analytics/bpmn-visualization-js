@@ -54,3 +54,6 @@ export interface IconConfiguration {
   styleConfig: IconStyleConfiguration;
   setIconOriginFunct: (canvas: BpmnCanvas) => void;
 }
+
+// fake for esbuild, otherwise no js file is generated because it only contains types
+export class Fake {}
