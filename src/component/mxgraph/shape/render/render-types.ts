@@ -56,4 +56,5 @@ export interface IconConfiguration {
 }
 
 // fake for esbuild, otherwise no js file is generated because it only contains types
-export class Fake {}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+class Fake {}
