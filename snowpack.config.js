@@ -21,7 +21,7 @@ module.exports = {
   mount: {
     public: { url: '/', static: true },
     src: { url: '/lib' },
-    dev: { url: '/lib' },
+    // dev: { url: '/lib' },
   },
   // optimize: {
   //   bundle: true,
