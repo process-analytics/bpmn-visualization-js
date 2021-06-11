@@ -18,23 +18,23 @@ SegmentConnector:function (state, b, c, d, e) {
   function pushPoint(b) {
     b.x = Math.round(b.x * state.view.scale * 10) / 10;
     b.y = Math.round(b.y * state.view.scale * 10) / 10;
-    if (null == m || 1 <= Math.abs(m.x - b.x) || Math.abs(m.y - b.y) >= Math.max(1, state.view.scale)) e.push(b), m = b;
-    return m
+    if (null == lastPushed || 1 <= Math.abs(lastPushed.x - b.x) || Math.abs(lastPushed.y - b.y) >= Math.max(1, state.view.scale)) e.push(b), lastPushed = b;
+    return lastPushed
   }
 
-  var g = mxEdgeStyle.scalePointArray(state.absolutePoints, state.view.scale), k = mxEdgeStyle.scaleCellState(b, state.view.scale), l = mxEdgeStyle.scaleCellState(c, state.view.scale),
-    m = 0 < e.length ? e[0] : null, n = !0, p = null, q = g[0];
+  var pts = mxEdgeStyle.scalePointArray(state.absolutePoints, state.view.scale), k = mxEdgeStyle.scaleCellState(b, state.view.scale), l = mxEdgeStyle.scaleCellState(c, state.view.scale),
+    lastPushed = 0 < e.length ? e[0] : null, n = !0, p = null, q = pts[0];
   null == q && null != k ? q = new mxPoint(state.view.getRoutingCenterX(k), state.view.getRoutingCenterY(k)) : null != q && (q = q.clone());
-  var t = g.length - 1;
+  var lastInx = pts.length - 1;
   if (null != d && 0 < d.length) {
     for (var r = [], u = 0; u < d.length; u++) p = state.view.transformControlPoint(state, d[u], !0), null != p && r.push(p);
     if (0 == r.length) return;
     null != q && null != r[0] && (1 > Math.abs(r[0].x - q.x) && (r[0].x = q.x), 1 > Math.abs(r[0].y - q.y) && (r[0].y = q.y));
-    var x = g[t];
+    var x = pts[lastInx];
     null != x && null != r[r.length - 1] && (1 > Math.abs(r[r.length - 1].x - x.x) && (r[r.length - 1].x = x.x),
     1 > Math.abs(r[r.length - 1].y - x.y) && (r[r.length - 1].y = x.y));
     var p = r[0], y = k;
-    d = g[0];
+    d = pts[0];
     var B = !1, A = !1, B = p;
     null != d && (y = null);
     for (u = 0; 2 > u; u++) {
@@ -52,22 +52,22 @@ SegmentConnector:function (state, b, c, d, e) {
         }
       }
       y = l;
-      d = g[t];
+      d = pts[lastInx];
       null != d && (y = null);
       B = r[r.length - 1];
       z && C && (r = r.slice(1))
     }
-    n && (null != g[0] && g[0].y != p.y || null ==
-      g[0] && null != k && (p.y < k.y || p.y > k.y + k.height)) ? pushPoint(new mxPoint(q.x, p.y)) : !n && (null != g[0] && g[0].x != p.x || null == g[0] && null != k && (p.x < k.x || p.x > k.x + k.width)) && pushPoint(new mxPoint(p.x, q.y));
+    n && (null != pts[0] && pts[0].y != p.y || null ==
+      pts[0] && null != k && (p.y < k.y || p.y > k.y + k.height)) ? pushPoint(new mxPoint(q.x, p.y)) : !n && (null != pts[0] && pts[0].x != p.x || null == pts[0] && null != k && (p.x < k.x || p.x > k.x + k.width)) && pushPoint(new mxPoint(p.x, q.y));
     n ? q.y = p.y : q.x = p.x;
     for (u = 0; u < r.length; u++) n = !n, p = r[u], n ? q.y = p.y : q.x = p.x, pushPoint(q.clone())
   } else p = q, n = !0;
-  q = g[t];
+  q = pts[lastInx];
   null == q && null != l && (q = new mxPoint(state.view.getRoutingCenterX(l), state.view.getRoutingCenterY(l)));
-  null != q && null != p && (n && (null != g[t] && g[t].y != p.y || null == g[t] && null != l && (p.y < l.y || p.y > l.y + l.height)) ? pushPoint(new mxPoint(q.x, p.y)) : !n && (null !=
-    g[t] && g[t].x != p.x || null == g[t] && null != l && (p.x < l.x || p.x > l.x + l.width)) && pushPoint(new mxPoint(p.x, q.y)));
-  if (null == g[0] && null != b) for (; 1 < e.length && null != e[1] && mxUtils.contains(b, e[1].x, e[1].y);) e.splice(1, 1);
-  if (null == g[t] && null != c) for (; 1 < e.length && null != e[e.length - 1] && mxUtils.contains(c, e[e.length - 1].x, e[e.length - 1].y);) e.splice(e.length - 1, 1);
+  null != q && null != p && (n && (null != pts[lastInx] && pts[lastInx].y != p.y || null == pts[lastInx] && null != l && (p.y < l.y || p.y > l.y + l.height)) ? pushPoint(new mxPoint(q.x, p.y)) : !n && (null !=
+    pts[lastInx] && pts[lastInx].x != p.x || null == pts[lastInx] && null != l && (p.x < l.x || p.x > l.x + l.width)) && pushPoint(new mxPoint(p.x, q.y)));
+  if (null == pts[0] && null != b) for (; 1 < e.length && null != e[1] && mxUtils.contains(b, e[1].x, e[1].y);) e.splice(1, 1);
+  if (null == pts[lastInx] && null != c) for (; 1 < e.length && null != e[e.length - 1] && mxUtils.contains(c, e[e.length - 1].x, e[e.length - 1].y);) e.splice(e.length - 1, 1);
   null != x && null != e[e.length - 1] && 1 >= Math.abs(x.x - e[e.length - 1].x) && 1 >= Math.abs(x.y - e[e.length - 1].y) && (e.splice(e.length - 1, 1), null != e[e.length - 1] && (1 > Math.abs(e[e.length - 1].x -
     x.x) && (e[e.length - 1].x = x.x), 1 > Math.abs(e[e.length - 1].y - x.y) && (e[e.length - 1].y = x.y)))
 }
