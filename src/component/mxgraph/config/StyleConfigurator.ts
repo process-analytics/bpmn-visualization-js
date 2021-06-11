@@ -36,7 +36,8 @@ import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge
 import { AssociationDirectionKind } from '../../../model/bpmn/internal/edge/AssociationDirectionKind';
 import { BpmnMxGraph } from '../BpmnMxGraph';
 import { mxgraph } from '../initializer';
-import { mxStylesheet, StyleMap } from 'mxgraph'; // for types
+import { mxCellState, mxEdgeStyle, mxPoint, mxStylesheet, StyleMap } from 'mxgraph';
+import { customSegmentConnector } from './custom-edge-connectors'; // for types
 
 /**
  * @internal
@@ -115,6 +116,8 @@ export default class StyleConfigurator {
   constructor(private graph: BpmnMxGraph) {}
 
   public configureStyles(): void {
+    StyleConfigurator.configureMxGraphSettings();
+
     mxgraph.mxConstants.RECTANGLE_ROUNDING_FACTOR = 0.1;
     this.configureDefaultVertexStyle();
 
@@ -128,6 +131,26 @@ export default class StyleConfigurator {
 
     this.configureDefaultEdgeStyle();
     this.configureFlowStyles();
+  }
+
+  private static configureMxGraphSettings(): void {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    mxgraph.mxGraphView.prototype.transformControlPoint = function (state: mxCellState, pt: mxPoint, ignoreScale: true): mxPoint {
+      // eslint-disable-next-line no-console
+      console.info('@@@called custom mxGraphView.prototype.transformControlPoint');
+      if (state != null && pt != null) {
+        const orig = state.origin;
+        const scale = ignoreScale ? 1 : this.scale;
+
+        return new mxgraph.mxPoint(scale * (pt.x + this.translate.x + orig.x), scale * (pt.y + this.translate.y + orig.y));
+      }
+      return null;
+    };
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore error in typed-mxgraph, should be static as mxStyleRegistry is a singleton
+    mxgraph.mxStyleRegistry.putValue(mxgraph.mxConstants.EDGESTYLE_SEGMENT, customSegmentConnector);
   }
 
   private getStylesheet(): mxStylesheet {
