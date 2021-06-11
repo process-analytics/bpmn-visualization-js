@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-SegmentConnector:function (state, b, c, d, e) {
-  function pushPoint(b) {
-    b.x = Math.round(b.x * state.view.scale * 10) / 10;
-    b.y = Math.round(b.y * state.view.scale * 10) / 10;
-    if (null == lastPushed || 1 <= Math.abs(lastPushed.x - b.x) || Math.abs(lastPushed.y - b.y) >= Math.max(1, state.view.scale)) e.push(b), lastPushed = b;
+SegmentConnector:function (state, sourceScaled, targetScaled, d, result) {
+  function pushPoint(pt) {
+    pt.x = Math.round(pt.x * state.view.scale * 10) / 10;
+    pt.y = Math.round(pt.y * state.view.scale * 10) / 10;
+    if (null == lastPushed || 1 <= Math.abs(lastPushed.x - pt.x) || Math.abs(lastPushed.y - pt.y) >= Math.max(1, state.view.scale)) result.push(pt), lastPushed = pt;
     return lastPushed
   }
 
-  var pts = mxEdgeStyle.scalePointArray(state.absolutePoints, state.view.scale), k = mxEdgeStyle.scaleCellState(b, state.view.scale), l = mxEdgeStyle.scaleCellState(c, state.view.scale),
-    lastPushed = 0 < e.length ? e[0] : null, n = !0, p = null, q = pts[0];
-  null == q && null != k ? q = new mxPoint(state.view.getRoutingCenterX(k), state.view.getRoutingCenterY(k)) : null != q && (q = q.clone());
+  var pts = mxEdgeStyle.scalePointArray(state.absolutePoints, state.view.scale), source = mxEdgeStyle.scaleCellState(sourceScaled, state.view.scale), target = mxEdgeStyle.scaleCellState(targetScaled, state.view.scale),
+    lastPushed = 0 < result.length ? result[0] : null, n = !0, p = null, pt = pts[0];
+  null == pt && null != source ? pt = new mxPoint(state.view.getRoutingCenterX(source), state.view.getRoutingCenterY(source)) : null != pt && (pt = pt.clone());
   var lastInx = pts.length - 1;
   if (null != d && 0 < d.length) {
     for (var r = [], u = 0; u < d.length; u++) p = state.view.transformControlPoint(state, d[u], !0), null != p && r.push(p);
     if (0 == r.length) return;
-    null != q && null != r[0] && (1 > Math.abs(r[0].x - q.x) && (r[0].x = q.x), 1 > Math.abs(r[0].y - q.y) && (r[0].y = q.y));
+    null != pt && null != r[0] && (1 > Math.abs(r[0].x - pt.x) && (r[0].x = pt.x), 1 > Math.abs(r[0].y - pt.y) && (r[0].y = pt.y));
     var x = pts[lastInx];
     null != x && null != r[r.length - 1] && (1 > Math.abs(r[r.length - 1].x - x.x) && (r[r.length - 1].x = x.x),
     1 > Math.abs(r[r.length - 1].y - x.y) && (r[r.length - 1].y = x.y));
-    var p = r[0], y = k;
+    var p = r[0], y = source;
     d = pts[0];
     var B = !1, A = !1, B = p;
     null != d && (y = null);
@@ -51,23 +51,23 @@ SegmentConnector:function (state, b, c, d, e) {
           break
         }
       }
-      y = l;
+      y = target;
       d = pts[lastInx];
       null != d && (y = null);
       B = r[r.length - 1];
       z && C && (r = r.slice(1))
     }
     n && (null != pts[0] && pts[0].y != p.y || null ==
-      pts[0] && null != k && (p.y < k.y || p.y > k.y + k.height)) ? pushPoint(new mxPoint(q.x, p.y)) : !n && (null != pts[0] && pts[0].x != p.x || null == pts[0] && null != k && (p.x < k.x || p.x > k.x + k.width)) && pushPoint(new mxPoint(p.x, q.y));
-    n ? q.y = p.y : q.x = p.x;
-    for (u = 0; u < r.length; u++) n = !n, p = r[u], n ? q.y = p.y : q.x = p.x, pushPoint(q.clone())
-  } else p = q, n = !0;
-  q = pts[lastInx];
-  null == q && null != l && (q = new mxPoint(state.view.getRoutingCenterX(l), state.view.getRoutingCenterY(l)));
-  null != q && null != p && (n && (null != pts[lastInx] && pts[lastInx].y != p.y || null == pts[lastInx] && null != l && (p.y < l.y || p.y > l.y + l.height)) ? pushPoint(new mxPoint(q.x, p.y)) : !n && (null !=
-    pts[lastInx] && pts[lastInx].x != p.x || null == pts[lastInx] && null != l && (p.x < l.x || p.x > l.x + l.width)) && pushPoint(new mxPoint(p.x, q.y)));
-  if (null == pts[0] && null != b) for (; 1 < e.length && null != e[1] && mxUtils.contains(b, e[1].x, e[1].y);) e.splice(1, 1);
-  if (null == pts[lastInx] && null != c) for (; 1 < e.length && null != e[e.length - 1] && mxUtils.contains(c, e[e.length - 1].x, e[e.length - 1].y);) e.splice(e.length - 1, 1);
-  null != x && null != e[e.length - 1] && 1 >= Math.abs(x.x - e[e.length - 1].x) && 1 >= Math.abs(x.y - e[e.length - 1].y) && (e.splice(e.length - 1, 1), null != e[e.length - 1] && (1 > Math.abs(e[e.length - 1].x -
-    x.x) && (e[e.length - 1].x = x.x), 1 > Math.abs(e[e.length - 1].y - x.y) && (e[e.length - 1].y = x.y)))
+      pts[0] && null != source && (p.y < source.y || p.y > source.y + source.height)) ? pushPoint(new mxPoint(pt.x, p.y)) : !n && (null != pts[0] && pts[0].x != p.x || null == pts[0] && null != source && (p.x < source.x || p.x > source.x + source.width)) && pushPoint(new mxPoint(p.x, pt.y));
+    n ? pt.y = p.y : pt.x = p.x;
+    for (u = 0; u < r.length; u++) n = !n, p = r[u], n ? pt.y = p.y : pt.x = p.x, pushPoint(pt.clone())
+  } else p = pt, n = !0;
+  pt = pts[lastInx];
+  null == pt && null != target && (pt = new mxPoint(state.view.getRoutingCenterX(target), state.view.getRoutingCenterY(target)));
+  null != pt && null != p && (n && (null != pts[lastInx] && pts[lastInx].y != p.y || null == pts[lastInx] && null != target && (p.y < target.y || p.y > target.y + target.height)) ? pushPoint(new mxPoint(pt.x, p.y)) : !n && (null !=
+    pts[lastInx] && pts[lastInx].x != p.x || null == pts[lastInx] && null != target && (p.x < target.x || p.x > target.x + target.width)) && pushPoint(new mxPoint(p.x, pt.y)));
+  if (null == pts[0] && null != sourceScaled) for (; 1 < result.length && null != result[1] && mxUtils.contains(sourceScaled, result[1].x, result[1].y);) result.splice(1, 1);
+  if (null == pts[lastInx] && null != targetScaled) for (; 1 < result.length && null != result[result.length - 1] && mxUtils.contains(targetScaled, result[result.length - 1].x, result[result.length - 1].y);) result.splice(result.length - 1, 1);
+  null != x && null != result[result.length - 1] && 1 >= Math.abs(x.x - result[result.length - 1].x) && 1 >= Math.abs(x.y - result[result.length - 1].y) && (result.splice(result.length - 1, 1), null != result[result.length - 1] && (1 > Math.abs(result[result.length - 1].x -
+    x.x) && (result[result.length - 1].x = x.x), 1 > Math.abs(result[result.length - 1].y - x.y) && (result[result.length - 1].y = x.y)))
 }
