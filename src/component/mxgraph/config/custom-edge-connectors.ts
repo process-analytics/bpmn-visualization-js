@@ -27,7 +27,26 @@ function log(msg: string): void {
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-export function customSegmentConnector(state: mxCellState, sourceScaled: mxCellState, targetScaled: mxCellState, controlHints: mxPoint[], result: mxPoint[]): void {
+export function configureCustomEdgeConnector(): void {
+  // @ts-ignore not the same signature in mxgraph@4.1.0
+  mxgraph.mxGraphView.prototype.transformControlPoint = function (state: mxCellState, pt: mxPoint, ignoreScale: true): mxPoint {
+    // eslint-disable-next-line no-console
+    console.info('@@@called custom mxGraphView.prototype.transformControlPoint');
+    if (state != null && pt != null) {
+      const orig = state.origin;
+      const scale = ignoreScale ? 1 : this.scale;
+
+      return new mxgraph.mxPoint(scale * (pt.x + this.translate.x + orig.x), scale * (pt.y + this.translate.y + orig.y));
+    }
+    return null;
+  };
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore error in typed-mxgraph, should be static as mxStyleRegistry is a singleton
+  mxgraph.mxStyleRegistry.putValue(mxgraph.mxConstants.EDGESTYLE_SEGMENT, customSegmentConnector);
+}
+
+function customSegmentConnector(state: mxCellState, sourceScaled: mxCellState, targetScaled: mxCellState, controlHints: mxPoint[], result: mxPoint[]): void {
   log('start');
   // Creates array of all way- and terminalpoints
   // START bpmn-visualization customization (functions not available in mxgraph@4.1.0)
