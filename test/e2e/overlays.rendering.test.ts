@@ -39,13 +39,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.0003, // 0.025623788967854555%
         },
       ],
-      [
-        'overlays.edges.message.flows.complex.paths',
-        {
-          linux: 0.0002, // 0.012292700871674445%
-          macos: 0.009, // 0.08719999889645891%
-        },
-      ],
+      // [
+      //   'overlays.edges.message.flows.complex.paths',
+      //   {
+      //     linux: 0.0002, // 0.012292700871674445%
+      //     macos: 0.009, // 0.08719999889645891%
+      //   },
+      // ],
       [
         'overlays.edges.associations.complex.paths',
         {
@@ -72,14 +72,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           macos: 0.0061, // 0.6026399523082704%
         },
       ],
-      [
-        'overlays.edges.message.flows.complex.paths',
-        {
-          linux: 0.0032, // 0.31451721857130854%
-          macos: 0.004, // 0.36700887485542344%
-          windows: 0.004, // 0.38563259095634184%
-        },
-      ],
+      // [
+      //   'overlays.edges.message.flows.complex.paths',
+      //   {
+      //     linux: 0.0032, // 0.31451721857130854%
+      //     macos: 0.004, // 0.36700887485542344%
+      //     windows: 0.004, // 0.38563259095634184%
+      //   },
+      // ],
       [
         'overlays.edges.associations.complex.paths',
         {
@@ -106,12 +106,12 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           macos: 0.0051, // max 0.5021666239539258%
         },
       ],
-      [
-        'overlays.edges.message.flows.complex.paths',
-        {
-          macos: 0.0028, // max 0.2757481729149802%
-        },
-      ],
+      // [
+      //   'overlays.edges.message.flows.complex.paths',
+      //   {
+      //     macos: 0.0028, // max 0.2757481729149802%
+      //   },
+      // ],
       [
         'overlays.edges.associations.complex.paths',
         {
