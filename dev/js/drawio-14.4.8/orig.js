@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-SegmentConnector:function (state, sourceScaled, targetScaled, d, result) {
+SegmentConnector:function (state, sourceScaled, targetScaled, controlHints, result) {
   function pushPoint(pt) {
     pt.x = Math.round(pt.x * state.view.scale * 10) / 10;
     pt.y = Math.round(pt.y * state.view.scale * 10) / 10;
@@ -25,12 +25,12 @@ SegmentConnector:function (state, sourceScaled, targetScaled, d, result) {
   var pts = mxEdgeStyle.scalePointArray(state.absolutePoints, state.view.scale);
   var source = mxEdgeStyle.scaleCellState(sourceScaled, state.view.scale);
   var target = mxEdgeStyle.scaleCellState(targetScaled, state.view.scale);
-  var lastPushed = 0 < result.length ? result[0] : null, l = !0, m = null, pt = pts[0];
+  var lastPushed = 0 < result.length ? result[0] : null, horizontal = !0, m = null, pt = pts[0];
   null == pt && null != source ? pt = new mxPoint(state.view.getRoutingCenterX(source), state.view.getRoutingCenterY(source)) : null != pt && (pt = pt.clone());
   var lastInx = pts.length - 1;
-  if (null != d && 0 < d.length) {
-    for (var q = [], r = 0; r < d.length; r++) {
-      var t = state.view.transformControlPoint(state, d[r], !0);
+  if (null != controlHints && 0 < controlHints.length) {
+    for (var q = [], r = 0; r < controlHints.length; r++) {
+      var t = state.view.transformControlPoint(state, controlHints[r], !0);
       null != t && q.push(t)
     }
     if (0 == q.length) return;
@@ -39,37 +39,37 @@ SegmentConnector:function (state, sourceScaled, targetScaled, d, result) {
     null != t && null != q[q.length - 1] && (1 > Math.abs(q[q.length - 1].x - t.x) && (q[q.length - 1].x =
       t.x), 1 > Math.abs(q[q.length - 1].y - t.y) && (q[q.length - 1].y = t.y));
     var m = q[0], u = source;
-    d = pts[0];
+    controlHints = pts[0];
     var x = !1, y = !1, x = m;
-    null != d && (u = null);
+    null != controlHints && (u = null);
     for (r = 0; 2 > r; r++) {
-      var B = null != d && d.x == x.x, A = null != d && d.y == x.y, z = null != u && x.y >= u.y && x.y <= u.y + u.height, u = null != u && x.x >= u.x && x.x <= u.x + u.width,
-        x = A || null == d && z, y = B || null == d && u;
+      var B = null != controlHints && controlHints.x == x.x, A = null != controlHints && controlHints.y == x.y, z = null != u && x.y >= u.y && x.y <= u.y + u.height, u = null != u && x.x >= u.x && x.x <= u.x + u.width,
+        x = A || null == controlHints && z, y = B || null == controlHints && u;
       if (0 != r || !(x && y || B && A)) {
-        if (null != d && !A && !B && (z || u)) {
-          l = z ? !1 : !0;
+        if (null != controlHints && !A && !B && (z || u)) {
+          horizontal = z ? !1 : !0;
           break
         }
         if (y || x) {
-          l = x;
-          1 == r && (l = 0 == q.length % 2 ? x : y);
+          horizontal = x;
+          1 == r && (horizontal = 0 == q.length % 2 ? x : y);
           break
         }
       }
       u = target;
-      d = pts[lastInx];
-      null != d && (u = null);
+      controlHints = pts[lastInx];
+      null != controlHints && (u = null);
       x = q[q.length - 1];
       B && A && (q = q.slice(1))
     }
-    l && (null != pts[0] && pts[0].y != m.y || null ==
-      pts[0] && null != source && (m.y < source.y || m.y > source.y + source.height)) ? pushPoint(new mxPoint(pt.x, m.y)) : !l && (null != pts[0] && pts[0].x != m.x || null == pts[0] && null != source && (m.x < source.x || m.x > source.x + source.width)) && pushPoint(new mxPoint(m.x, pt.y));
-    l ? pt.y = m.y : pt.x = m.x;
-    for (r = 0; r < q.length; r++) l = !l, m = q[r], l ? pt.y = m.y : pt.x = m.x, pushPoint(pt.clone())
-  } else m = pt, l = !0;
+    horizontal && (null != pts[0] && pts[0].y != m.y || null ==
+      pts[0] && null != source && (m.y < source.y || m.y > source.y + source.height)) ? pushPoint(new mxPoint(pt.x, m.y)) : !horizontal && (null != pts[0] && pts[0].x != m.x || null == pts[0] && null != source && (m.x < source.x || m.x > source.x + source.width)) && pushPoint(new mxPoint(m.x, pt.y));
+    horizontal ? pt.y = m.y : pt.x = m.x;
+    for (r = 0; r < q.length; r++) horizontal = !horizontal, m = q[r], horizontal ? pt.y = m.y : pt.x = m.x, pushPoint(pt.clone())
+  } else m = pt, horizontal = !0;
   pt = pts[lastInx];
   null == pt && null != target && (pt = new mxPoint(state.view.getRoutingCenterX(target), state.view.getRoutingCenterY(target)));
-  null != pt && null != m && (l && (null != pts[lastInx] && pts[lastInx].y != m.y || null == pts[lastInx] && null != target && (m.y < target.y || m.y > target.y + target.height)) ? pushPoint(new mxPoint(pt.x, m.y)) : !l && (null !=
+  null != pt && null != m && (horizontal && (null != pts[lastInx] && pts[lastInx].y != m.y || null == pts[lastInx] && null != target && (m.y < target.y || m.y > target.y + target.height)) ? pushPoint(new mxPoint(pt.x, m.y)) : !horizontal && (null !=
     pts[lastInx] && pts[lastInx].x != m.x || null == pts[lastInx] && null != target && (m.x < target.x || m.x > target.x + target.width)) && pushPoint(new mxPoint(m.x, pt.y)));
   if (null == pts[0] && null != source) for (; 1 < result.length && null != result[1] && mxUtils.contains(source, result[1].x, result[1].y);) result.splice(1, 1);
   if (null == pts[lastInx] && null != target) for (; 1 < result.length && null != result[result.length - 1] && mxUtils.contains(target, result[result.length - 1].x, result[result.length - 1].y);) result.splice(result.length - 1, 1);
