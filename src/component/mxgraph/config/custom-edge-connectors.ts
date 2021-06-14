@@ -273,8 +273,8 @@ export function customSegmentConnector(state: mxCellState, sourceScaled: mxCellS
  *
  */
 function scalePointArray(points: mxPoint[], scale: number): mxPoint[] {
-  // required as introduced in mxgraph@4.1.1 and we are still using 4.1.0
-  // missing in typed-mxgraph@1.0.2 mxEdgeStyle
+  // We must have the implementation here as it has been introduced in mxgraph@4.1.1 and we are still using 4.1.0
+  // It is also missing in typed-mxgraph@1.0.2 mxEdgeStyle
   let result: mxPoint[] = [];
 
   if (points != null) {
@@ -304,8 +304,8 @@ function scalePointArray(points: mxPoint[], scale: number): mxPoint[] {
  *
  */
 function scaleCellState(state: mxCellState, scale: number): mxCellState {
-  // required as introduced in mxgraph@4.1.1 and we are still using 4.1.0
-  // missing in typed-mxgraph@1.0.2 mxEdgeStyle
+  // We must have the implementation here as it has been  introduced in mxgraph@4.1.1 and we are still using 4.1.0
+  // It is also missing in typed-mxgraph@1.0.2 mxEdgeStyle
   let result: mxCellState = null;
 
   if (state != null) {
