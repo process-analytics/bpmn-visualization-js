@@ -231,18 +231,24 @@ export function customSegmentConnector(state: mxCellState, sourceScaled: mxCellS
   }
 
   // Removes bends inside the source terminal for floating ports
-  if (pts[0] == null && source != null) {
-    while (result.length > 1 && result[1] != null && mxgraph.mxUtils.contains(source, result[1].x, result[1].y)) {
+  // START bpmn-visualization customization
+  // Fix attempt: source --> sourceScaled
+  if (pts[0] == null && sourceScaled != null) {
+    while (result.length > 1 && result[1] != null && mxgraph.mxUtils.contains(sourceScaled, result[1].x, result[1].y)) {
       result.splice(1, 1);
     }
   }
+  // END bpmn-visualization customization
 
   // Removes bends inside the target terminal
-  if (pts[lastInx] == null && target != null) {
-    while (result.length > 1 && result[result.length - 1] != null && mxgraph.mxUtils.contains(target, result[result.length - 1].x, result[result.length - 1].y)) {
+  // START bpmn-visualization customization
+  // Fix attempt: target --> targetScaled
+  if (pts[lastInx] == null && targetScaled != null) {
+    while (result.length > 1 && result[result.length - 1] != null && mxgraph.mxUtils.contains(targetScaled, result[result.length - 1].x, result[result.length - 1].y)) {
       result.splice(result.length - 1, 1);
     }
   }
+  // END bpmn-visualization customization
 
   // Removes last point if inside tolerance with end point
   if (pe != null && result[result.length - 1] != null && Math.abs(pe.x - result[result.length - 1].x) <= tol && Math.abs(pe.y - result[result.length - 1].y) <= tol) {
