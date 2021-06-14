@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-function SegmentConnector(a, b, c, d, e) {
+function SegmentConnector(state, sourceScaled, targetScaled, controlHints, result) {
   function f(b) {
-    b.x = Math.round(b.x * a.view.scale * 10) / 10;
-    b.y = Math.round(b.y * a.view.scale * 10) / 10;
-    if (null == m || 1 <= Math.abs(m.x - b.x) || Math.abs(m.y - b.y) >= Math.max(1, a.view.scale)) e.push(b), (m = b);
+    b.x = Math.round(b.x * state.view.scale * 10) / 10;
+    b.y = Math.round(b.y * state.view.scale * 10) / 10;
+    if (null == m || 1 <= Math.abs(m.x - b.x) || Math.abs(m.y - b.y) >= Math.max(1, state.view.scale)) result.push(b), (m = b);
     return m;
   }
-  var g = mxEdgeStyle.scalePointArray(a.absolutePoints, a.view.scale),
-    k = mxEdgeStyle.scaleCellState(b, a.view.scale),
-    l = mxEdgeStyle.scaleCellState(c, a.view.scale),
-    m = 0 < e.length ? e[0] : null,
+  var g = mxEdgeStyle.scalePointArray(state.absolutePoints, state.view.scale),
+    k = mxEdgeStyle.scaleCellState(sourceScaled, state.view.scale),
+    l = mxEdgeStyle.scaleCellState(targetScaled, state.view.scale),
+    m = 0 < result.length ? result[0] : null,
     n = !0,
     p = null,
     q = g[0];
-  null == q && null != k ? (q = new mxPoint(a.view.getRoutingCenterX(k), a.view.getRoutingCenterY(k))) : null != q && (q = q.clone());
+  null == q && null != k ? (q = new mxPoint(state.view.getRoutingCenterX(k), state.view.getRoutingCenterY(k))) : null != q && (q = q.clone());
   var t = g.length - 1;
-  if (null != d && 0 < d.length) {
-    for (var r = [], u = 0; u < d.length; u++) (p = a.view.transformControlPoint(a, d[u], !0)), null != p && r.push(p);
+  if (null != controlHints && 0 < controlHints.length) {
+    for (var r = [], u = 0; u < controlHints.length; u++) (p = state.view.transformControlPoint(state, controlHints[u], !0)), null != p && r.push(p);
     if (0 == r.length) return;
     null != q && null != r[0] && (1 > Math.abs(r[0].x - q.x) && (r[0].x = q.x), 1 > Math.abs(r[0].y - q.y) && (r[0].y = q.y));
     var x = g[t];
@@ -40,20 +40,20 @@ function SegmentConnector(a, b, c, d, e) {
       (1 > Math.abs(r[r.length - 1].x - x.x) && (r[r.length - 1].x = x.x), 1 > Math.abs(r[r.length - 1].y - x.y) && (r[r.length - 1].y = x.y));
     var p = r[0],
       y = k;
-    d = g[0];
+    controlHints = g[0];
     var B = !1,
       A = !1,
       B = p;
-    null != d && (y = null);
+    null != controlHints && (y = null);
     for (u = 0; 2 > u; u++) {
-      var z = null != d && d.x == B.x,
-        C = null != d && d.y == B.y,
+      var z = null != controlHints && controlHints.x == B.x,
+        C = null != controlHints && controlHints.y == B.y,
         v = null != y && B.y >= y.y && B.y <= y.y + y.height,
         y = null != y && B.x >= y.x && B.x <= y.x + y.width,
-        B = C || (null == d && v),
-        A = z || (null == d && y);
+        B = C || (null == controlHints && v),
+        A = z || (null == controlHints && y);
       if (0 != u || !((B && A) || (z && C))) {
-        if (null != d && !C && !z && (v || y)) {
+        if (null != controlHints && !C && !z && (v || y)) {
           n = v ? !1 : !0;
           break;
         }
@@ -64,8 +64,8 @@ function SegmentConnector(a, b, c, d, e) {
         }
       }
       y = l;
-      d = g[t];
-      null != d && (y = null);
+      controlHints = g[t];
+      null != controlHints && (y = null);
       B = r[r.length - 1];
       z && C && (r = r.slice(1));
     }
@@ -76,18 +76,22 @@ function SegmentConnector(a, b, c, d, e) {
     for (u = 0; u < r.length; u++) (n = !n), (p = r[u]), n ? (q.y = p.y) : (q.x = p.x), f(q.clone());
   } else (p = q), (n = !0);
   q = g[t];
-  null == q && null != l && (q = new mxPoint(a.view.getRoutingCenterX(l), a.view.getRoutingCenterY(l)));
+  null == q && null != l && (q = new mxPoint(state.view.getRoutingCenterX(l), state.view.getRoutingCenterY(l)));
   null != q &&
     null != p &&
     (n && ((null != g[t] && g[t].y != p.y) || (null == g[t] && null != l && (p.y < l.y || p.y > l.y + l.height)))
       ? f(new mxPoint(q.x, p.y))
       : !n && ((null != g[t] && g[t].x != p.x) || (null == g[t] && null != l && (p.x < l.x || p.x > l.x + l.width))) && f(new mxPoint(p.x, q.y)));
-  if (null == g[0] && null != b) for (; 1 < e.length && null != e[1] && mxUtils.contains(b, e[1].x, e[1].y); ) e.splice(1, 1);
-  if (null == g[t] && null != c) for (; 1 < e.length && null != e[e.length - 1] && mxUtils.contains(c, e[e.length - 1].x, e[e.length - 1].y); ) e.splice(e.length - 1, 1);
+  if (null == g[0] && null != sourceScaled) for (; 1 < result.length && null != result[1] && mxUtils.contains(sourceScaled, result[1].x, result[1].y); ) result.splice(1, 1);
+  if (null == g[t] && null != targetScaled)
+    for (; 1 < result.length && null != result[result.length - 1] && mxUtils.contains(targetScaled, result[result.length - 1].x, result[result.length - 1].y); )
+      result.splice(result.length - 1, 1);
   null != x &&
-    null != e[e.length - 1] &&
-    1 >= Math.abs(x.x - e[e.length - 1].x) &&
-    1 >= Math.abs(x.y - e[e.length - 1].y) &&
-    (e.splice(e.length - 1, 1),
-    null != e[e.length - 1] && (1 > Math.abs(e[e.length - 1].x - x.x) && (e[e.length - 1].x = x.x), 1 > Math.abs(e[e.length - 1].y - x.y) && (e[e.length - 1].y = x.y)));
+    null != result[result.length - 1] &&
+    1 >= Math.abs(x.x - result[result.length - 1].x) &&
+    1 >= Math.abs(x.y - result[result.length - 1].y) &&
+    (result.splice(result.length - 1, 1),
+    null != result[result.length - 1] &&
+      (1 > Math.abs(result[result.length - 1].x - x.x) && (result[result.length - 1].x = x.x),
+      1 > Math.abs(result[result.length - 1].y - x.y) && (result[result.length - 1].y = x.y)));
 }
