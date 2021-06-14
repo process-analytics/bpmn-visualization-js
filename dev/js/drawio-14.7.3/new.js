@@ -15,15 +15,15 @@
  */
 
 function SegmentConnector(state, sourceScaled, targetScaled, controlHints, result) {
-  var f = mxEdgeStyle.scalePointArray(state.absolutePoints, state.view.scale);
+  var pts = mxEdgeStyle.scalePointArray(state.absolutePoints, state.view.scale);
   sourceScaled = mxEdgeStyle.scaleCellState(sourceScaled, state.view.scale);
-  var g = mxEdgeStyle.scaleCellState(targetScaled, state.view.scale);
+  var target = mxEdgeStyle.scaleCellState(targetScaled, state.view.scale);
   targetScaled = [];
   var k = 0 < result.length ? result[0] : null,
     l = !0,
-    m = f[0];
+    m = pts[0];
   null == m && null != sourceScaled ? (m = new mxPoint(state.view.getRoutingCenterX(sourceScaled), state.view.getRoutingCenterY(sourceScaled))) : null != m && (m = m.clone());
-  var n = f.length - 1;
+  var n = pts.length - 1;
   if (null != controlHints && 0 < controlHints.length) {
     for (var p = [], q = 0; q < controlHints.length; q++) {
       var r = state.view.transformControlPoint(state, controlHints[q], !0);
@@ -31,13 +31,13 @@ function SegmentConnector(state, sourceScaled, targetScaled, controlHints, resul
     }
     if (0 == p.length) return;
     null != m && null != p[0] && (1 > Math.abs(p[0].x - m.x) && (p[0].x = m.x), 1 > Math.abs(p[0].y - m.y) && (p[0].y = m.y));
-    r = f[n];
+    r = pts[n];
     null != r &&
       null != p[p.length - 1] &&
       (1 > Math.abs(p[p.length - 1].x - r.x) && (p[p.length - 1].x = r.x), 1 > Math.abs(p[p.length - 1].y - r.y) && (p[p.length - 1].y = r.y));
     controlHints = p[0];
     var t = sourceScaled,
-      u = f[0],
+      u = pts[0],
       x;
     x = controlHints;
     null != u && (t = null);
@@ -59,51 +59,51 @@ function SegmentConnector(state, sourceScaled, targetScaled, controlHints, resul
           break;
         }
       }
-      t = g;
-      u = f[n];
+      t = target;
+      u = pts[n];
       null != u && (t = null);
       x = p[p.length - 1];
       y && B && (p = p.slice(1));
     }
     l &&
-    ((null != f[0] && f[0].y != controlHints.y) ||
-      (null == f[0] && null != sourceScaled && (controlHints.y < sourceScaled.y || controlHints.y > sourceScaled.y + sourceScaled.height)))
+    ((null != pts[0] && pts[0].y != controlHints.y) ||
+      (null == pts[0] && null != sourceScaled && (controlHints.y < sourceScaled.y || controlHints.y > sourceScaled.y + sourceScaled.height)))
       ? targetScaled.push(new mxPoint(m.x, controlHints.y))
       : !l &&
-        ((null != f[0] && f[0].x != controlHints.x) ||
-          (null == f[0] && null != sourceScaled && (controlHints.x < sourceScaled.x || controlHints.x > sourceScaled.x + sourceScaled.width))) &&
+        ((null != pts[0] && pts[0].x != controlHints.x) ||
+          (null == pts[0] && null != sourceScaled && (controlHints.x < sourceScaled.x || controlHints.x > sourceScaled.x + sourceScaled.width))) &&
         targetScaled.push(new mxPoint(controlHints.x, m.y));
     l ? (m.y = controlHints.y) : (m.x = controlHints.x);
     for (q = 0; q < p.length; q++) (l = !l), (controlHints = p[q]), l ? (m.y = controlHints.y) : (m.x = controlHints.x), targetScaled.push(m.clone());
   } else (controlHints = m), (l = !0);
-  m = f[n];
-  null == m && null != g && (m = new mxPoint(state.view.getRoutingCenterX(g), state.view.getRoutingCenterY(g)));
+  m = pts[n];
+  null == m && null != target && (m = new mxPoint(state.view.getRoutingCenterX(target), state.view.getRoutingCenterY(target)));
   null != m &&
     null != controlHints &&
-    (l && ((null != f[n] && f[n].y != controlHints.y) || (null == f[n] && null != g && (controlHints.y < g.y || controlHints.y > g.y + g.height)))
+    (l && ((null != pts[n] && pts[n].y != controlHints.y) || (null == pts[n] && null != target && (controlHints.y < target.y || controlHints.y > target.y + target.height)))
       ? targetScaled.push(new mxPoint(m.x, controlHints.y))
       : !l &&
-        ((null != f[n] && f[n].x != controlHints.x) || (null == f[n] && null != g && (controlHints.x < g.x || controlHints.x > g.x + g.width))) &&
+        ((null != pts[n] && pts[n].x != controlHints.x) || (null == pts[n] && null != target && (controlHints.x < target.x || controlHints.x > target.x + target.width))) &&
         targetScaled.push(new mxPoint(controlHints.x, m.y)));
-  if (null == f[0] && null != sourceScaled)
+  if (null == pts[0] && null != sourceScaled)
     for (; 0 < targetScaled.length && null != targetScaled[0] && mxUtils.contains(sourceScaled, targetScaled[0].x, targetScaled[0].y); ) targetScaled.splice(0, 1);
-  if (null == f[n] && null != g)
+  if (null == pts[n] && null != target)
     for (
       ;
       0 < targetScaled.length &&
       null != targetScaled[targetScaled.length - 1] &&
-      mxUtils.contains(g, targetScaled[targetScaled.length - 1].x, targetScaled[targetScaled.length - 1].y);
+      mxUtils.contains(target, targetScaled[targetScaled.length - 1].x, targetScaled[targetScaled.length - 1].y);
 
     )
       targetScaled.splice(targetScaled.length - 1, 1);
   for (q = 0; q < targetScaled.length; q++)
     if (
-      ((f = targetScaled[q]),
-      (f.x = Math.round(f.x * state.view.scale * 10) / 10),
-      (f.y = Math.round(f.y * state.view.scale * 10) / 10),
-      null == k || 1 <= Math.abs(k.x - f.x) || Math.abs(k.y - f.y) >= Math.max(1, state.view.scale))
+      ((pts = targetScaled[q]),
+      (pts.x = Math.round(pts.x * state.view.scale * 10) / 10),
+      (pts.y = Math.round(pts.y * state.view.scale * 10) / 10),
+      null == k || 1 <= Math.abs(k.x - pts.x) || Math.abs(k.y - pts.y) >= Math.max(1, state.view.scale))
     )
-      result.push(f), (k = f);
+      result.push(pts), (k = pts);
   null != r &&
     null != result[result.length - 1] &&
     1 >= Math.abs(r.x - result[result.length - 1].x) &&
