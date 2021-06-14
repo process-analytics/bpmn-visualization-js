@@ -53,6 +53,10 @@ export enum StyleDefault {
   DEFAULT_OVERLAY_STROKE_WIDTH = 1,
   DEFAULT_OVERLAY_FONT_SIZE = DEFAULT_FONT_SIZE,
   DEFAULT_OVERLAY_FONT_COLOR = DEFAULT_FONT_COLOR,
+  // Edge
+  SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR = 'White',
+  MESSAGE_FLOW_MARKER_START_FILL_COLOR = 'transparent',
+  MESSAGE_FLOW_MARKER_END_FILL_COLOR = 'transparent',
 }
 
 export enum StyleIdentifier {
@@ -65,6 +69,10 @@ export enum StyleIdentifier {
   BPMN_STYLE_MESSAGE_FLOW_ICON = 'bpmn.messageFlowIcon',
   BPMN_STYLE_EVENT_BASED_GATEWAY_KIND = 'bpmn.gatewayKind',
   BPMN_STYLE_EXTRA_CSS_CLASSES = 'bpmn.extra.css.classes',
+  // for edge
+  EDGE = 'bpmn.edge',
+  EDGE_START_FILL_COLOR = 'bpmn.edge.startFillColor',
+  EDGE_END_FILL_COLOR = 'bpmn.edge.endFillColor',
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
