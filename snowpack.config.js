@@ -31,6 +31,8 @@ module.exports = {
     'dev/public': { url: '/', static: true },
     src: { url: '/lib' },
     'dev/ts': { url: '/lib/dev' },
+    // TODO this should be only mount when running tests (otherwise we may have it when building the demo)
+    'test/fixtures/bpmn': { url: '/static/diagrams', static: true },
   },
   optimize: {
     bundle: true,

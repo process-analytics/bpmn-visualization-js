@@ -183,9 +183,6 @@ To load a diagram, just pass a relative path to the diagram as query parameter. 
 as the diagrams are served by the dev server.
 Convenient methods exist to only pass the name of the diagram without having to manage the folder tree to the file.
 
-If you add a new sub-folder of BPMN files and want the test pages to be able to fetch them, you need to update test configuration
-in `test/e2e/config/copy.bpmn.diagram.ts`.
-
 
 ### Performance tests
 For now these tests are defined under `/test/performance/` as the performance is being measured for complex (end-to-end) tasks:
