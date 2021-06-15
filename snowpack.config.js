@@ -18,6 +18,7 @@
 module.exports = {
   buildOptions: {
     out: 'build/snowpack',
+    sourcemap: false, // TODO still generate sourcemap with snowpack@3.5.6, require manual clean when build demo
   },
   devOptions: {
     open: 'none',
