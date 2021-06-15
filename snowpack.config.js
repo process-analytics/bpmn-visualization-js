@@ -13,12 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/** @type {import('snowpack/lib/types').SnowpackConfig} */
 module.exports = {
   buildOptions: {
     out: 'build/snowpack',
   },
   devOptions: {
     open: 'none',
+    port: 10001,
   },
   root: 'src/',
   mount: {
