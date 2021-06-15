@@ -17,7 +17,7 @@ import { readFileSync as fsReadFileSync, mkdirSync, copyFileSync as fsCopyFileSy
 import { join } from 'path';
 import debugLogger from 'debug';
 
-const debug = debugLogger('test');
+const debug = debugLogger('bv:test:file');
 
 export function readFileSync(relPathToSourceFile: string, encoding = 'utf8', dirName = __dirname): string {
   return fsReadFileSync(join(dirName, relPathToSourceFile), encoding);
