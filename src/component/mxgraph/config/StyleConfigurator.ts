@@ -56,9 +56,11 @@ export default class StyleConfigurator {
         style[mxgraph.mxConstants.STYLE_DASH_PATTERN] = '8 5';
         style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_OVAL;
         style[mxgraph.mxConstants.STYLE_STARTSIZE] = 8;
-        style[mxgraph.mxConstants.STYLE_STARTFILL] = false;
+        style[mxgraph.mxConstants.STYLE_STARTFILL] = true;
+        style[StyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
         style[mxgraph.mxConstants.STYLE_ENDARROW] = mxgraph.mxConstants.ARROW_BLOCK_THIN;
-        style[mxgraph.mxConstants.STYLE_ENDFILL] = false;
+        style[mxgraph.mxConstants.STYLE_ENDFILL] = true;
+        style[StyleIdentifier.EDGE_END_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
       },
     ],
     [
@@ -84,7 +86,8 @@ export default class StyleConfigurator {
       (style: StyleMap) => {
         style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_DIAMOND_THIN;
         style[mxgraph.mxConstants.STYLE_STARTSIZE] = 18;
-        style[mxgraph.mxConstants.STYLE_STARTFILL] = false;
+        style[mxgraph.mxConstants.STYLE_STARTFILL] = true;
+        style[StyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
       },
     ],
   ]);
@@ -238,6 +241,7 @@ export default class StyleConfigurator {
 
   private configureDefaultEdgeStyle(): void {
     const style = this.getDefaultEdgeStyle();
+    style[mxgraph.mxConstants.STYLE_SHAPE] = StyleIdentifier.EDGE;
     style[mxgraph.mxConstants.STYLE_EDGE] = mxgraph.mxConstants.EDGESTYLE_SEGMENT;
     style[mxgraph.mxConstants.STYLE_ENDSIZE] = 12;
     style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = 1.5;

@@ -37,6 +37,7 @@ import { StyleIdentifier } from '../StyleUtils';
 import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
 import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
+import { BpmnConnector } from '../shape/edges';
 
 /**
  * @internal
@@ -76,6 +77,7 @@ export default class ShapeConfigurator {
     mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
 
     // shapes for flows
+    mxgraph.mxCellRenderer.registerShape(StyleIdentifier.EDGE, BpmnConnector);
     mxgraph.mxCellRenderer.registerShape(StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON, MessageFlowIconShape);
   }
 
