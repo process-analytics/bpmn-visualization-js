@@ -55,7 +55,7 @@ export default class StyleConfigurator {
         style[mxgraph.mxConstants.STYLE_DASHED] = true;
         style[mxgraph.mxConstants.STYLE_DASH_PATTERN] = '8 5';
         style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_OVAL;
-        style[mxgraph.mxConstants.STYLE_STARTSIZE] = 10;
+        style[mxgraph.mxConstants.STYLE_STARTSIZE] = 8;
         style[mxgraph.mxConstants.STYLE_STARTFILL] = true;
         style[StyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
         style[mxgraph.mxConstants.STYLE_ENDARROW] = mxgraph.mxConstants.ARROW_BLOCK_THIN;
