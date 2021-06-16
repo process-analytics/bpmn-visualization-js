@@ -174,12 +174,21 @@ The threshold can be configured by test and by os, we generally find the thresho
 - then using a threshold just above the value detected during the failing test   
 
 
-##### BPMN diagram load method
+##### Loading BPMN diagrams
 
-At the initialization of the HTML, the configured BPMN Diagram file is load from `dist/static/diagrams`.
+The diagrams used by tests are located in the `test/fixtures/bpmn` folder and sub-folders. In practice, the pages used
+by tests are in charge of loading the BPMN diagrams.
 
-All the files from the directories `test/fixtures/bpmn/diagram`, `test/fixtures/bpmn/navigation`, `test/fixtures/bpmn/non-regression` & `test/fixtures/bpmn/performance` are copied to `dist/static/diagrams` at the Jest setup, if they don't exist.
-If you add a new directory of BPMN files, you need to add its configuration in `test/e2e/config/copy.bpmn.diagram.ts`.
+The first way to load diagrams is to pass the xml content as query parameter. Convenient functions exist to manage it.
+However, this only allows small diagrams. In case of the diagram is too large, the dev server responds with an `HTTP 400 error`.
+That's why this method is rarely used.
+
+The second way is to pass a relative path to the diagram as query parameter. The page is able to fetch the diagram content
+as the diagrams are served by the dev server.
+Convenient methods exist to only pass the name of the diagram without having to manage the folder tree to the file.
+
+If you add a new sub-folder of BPMN files and want the test pages to be able to fetch them, you need to update test configuration
+in `test/e2e/config/copy.bpmn.diagram.ts`.
 
 
 ### Performance tests
