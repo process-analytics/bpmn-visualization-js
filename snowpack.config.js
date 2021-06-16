@@ -23,9 +23,9 @@ module.exports = {
   devOptions: {
     open: 'none',
     port: 10001,
-    tailwindConfig: './tailwind.config.js',
+    tailwindConfig: './tailwind.config.js', //TODO postcss/tailwind not called
   },
-  plugins: ['@snowpack/plugin-postcss'],
+  plugins: ['@snowpack/plugin-postcss'], //TODO postcss/tailwind not called
   root: 'src/',
   mount: {
     'dev/public': { url: '/', static: true },
