@@ -33,14 +33,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     // if no dedicated information, set minimal threshold to make test pass on Github Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
-      // [
-      //   'flows.message.02.labels.and.complex.paths',
-      //   {
-      //     linux: 0.000002, // 0.00018742700883533914%
-      //     macos: 0.0011, // 0.10865713972554311%
-      //     windows: 0.004, // 0.3963857943718785%
-      //   },
-      // ],
+      [
+        'flows.message.02.labels.and.complex.paths',
+        {
+          macos: 0.0011, // 0.10876549756859696%
+          // windows: 0.004, // 0.3963857943718785%
+        },
+      ],
       [
         'labels.01.general',
         {
