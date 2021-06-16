@@ -223,12 +223,12 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
   protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
-      // [
-      //   'flows.message.02.labels.and.complex.paths',
-      //   {
-      //     macos: 0.0059, // 0.587504762739699%
-      //   },
-      // ],
+      [
+        'flows.message.02.labels.and.complex.paths',
+        {
+          macos: 0.0059, // 0.5877773370643435%
+        },
+      ],
       [
         'labels.01.general',
         {
