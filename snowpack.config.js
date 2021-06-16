@@ -16,6 +16,7 @@
 
 /** @type {import('snowpack/lib/types').SnowpackConfig} */
 module.exports = {
+  root: 'src/', // TODO try to use the project root to simplify paths
   buildOptions: {
     out: 'build/snowpack',
     sourcemap: false, // TODO still generate sourcemap with snowpack@3.5.6, require manual clean when build demo
@@ -23,15 +24,22 @@ module.exports = {
   devOptions: {
     open: 'none',
     port: 10001,
-    tailwindConfig: './tailwind.config.js', //TODO postcss/tailwind not called
+    tailwindConfig: '../tailwind.config.js', //TODO postcss/tailwind not called
   },
-  plugins: ['@snowpack/plugin-postcss'], //TODO postcss/tailwind not called
-  root: 'src/',
+  // ['plugin-2', {'plugin-option': false}],
+  plugins: [
+    ['@snowpack/plugin-postcss', { config: '../postcss.config.js' }], //TODO postcss/tailwind not called
+    // ['@snowpack/plugin-postcss', 'sfsqfsf'], //TODO postcss/tailwind not called
+  ],
   mount: {
     'dev/public': { url: '/', static: true },
     src: { url: '/lib' },
     'dev/ts': { url: '/lib/dev' },
     // TODO this should be only mount when running tests (otherwise we may have it when building the demo)
+    // use the extends options and a dedicated file
+    // Type: string
+    // Inherit from a separate "base" config.
+    // Can be a relative file path, an npm package, or a file within an npm package. Your configuration will be merged on top of the extended base config.
     'test/fixtures/bpmn': { url: '/static/diagrams', static: true },
   },
   optimize: {
