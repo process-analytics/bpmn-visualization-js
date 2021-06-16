@@ -37,7 +37,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         'flows.message.02.labels.and.complex.paths',
         {
           macos: 0.0011, // 0.10876549756859696%
-          // windows: 0.004, // 0.3963857943718785%
+          windows: 0.004, // 0.39686093001266576%
         },
       ],
       [
