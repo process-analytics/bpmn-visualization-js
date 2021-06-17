@@ -91,7 +91,18 @@ export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
     // middle point for middle position
     else if (this.align == mxgraph.mxConstants.ALIGN_CENTER) {
       if (pts.length % 2 == 1) {
-        return pts[Math.floor(pts.length / 2)];
+        const pFirst = pts[0];
+        const pLast = pts[pts.length - 1];
+        const centerGeometric = new mxgraph.mxPoint(pFirst.x + (pLast.x - pFirst.x) / 2, pFirst.y + (pLast.y - pFirst.y) / 2);
+        const middlePoint = pts[Math.floor(pts.length / 2)];
+        // eslint-disable-next-line no-console
+        console.log(state.absolutePoints, centerGeometric, 'diff: ', middlePoint.x / centerGeometric.x);
+        // TODO: replace with formula that verifies the accuracy of the geometrical center - if accuracy good enough we can use the middlePoint,
+        // if accuracy is poor than centerGeometric should be used
+        if (middlePoint.x / centerGeometric.x < 0.95) {
+          return centerGeometric;
+        }
+        return middlePoint;
       } else {
         const idx = pts.length / 2;
         const p0 = pts[idx - 1];
