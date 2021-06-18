@@ -56,7 +56,7 @@
     "build-utils": "rollup --config utils.rollup.config.mjs",
     "demo": "run-s demo:*",
     "demo:css": "postcss dev/public/static/css/styles.css -o dev/public/static/css/tailwind.css",
-    "demo:build": "snowpack build --out ../build/demo",
+    "demo:build": "snowpack build --out build/demo",
     "demo:clean": "rimraf build/demo/lib build/demo/static/diagrams build/demo/static/js/*.js.map",
     "docs": "run-s docs:*",
     "docs:user": "node scripts/docs.js",

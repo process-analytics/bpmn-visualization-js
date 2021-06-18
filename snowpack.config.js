@@ -16,7 +16,6 @@
 
 /** @type {import('snowpack/lib/types').SnowpackConfig} */
 module.exports = {
-  root: 'src/', // TODO try to use the project root to simplify paths
   buildOptions: {
     out: 'build/snowpack',
     sourcemap: false, // TODO still generate sourcemap with snowpack@3.5.6, require manual clean when build demo
@@ -24,11 +23,12 @@ module.exports = {
   devOptions: {
     open: 'none',
     port: 10001,
-    tailwindConfig: '../tailwind.config.js', //TODO postcss/tailwind not called
+    tailwindConfig: './tailwind.config.js', //TODO postcss/tailwind not called
   },
   // ['plugin-2', {'plugin-option': false}],
   plugins: [
-    ['@snowpack/plugin-postcss', { config: '../postcss.config.js' }], //TODO postcss/tailwind not called
+    '@snowpack/plugin-postcss',
+    // ['@snowpack/plugin-postcss', { config: '../postcss.config.js' }], //TODO postcss/tailwind not called
     // ['@snowpack/plugin-postcss', 'sfsqfsf'], //TODO postcss/tailwind not called
   ],
   mount: {
