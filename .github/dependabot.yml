@@ -10,6 +10,5 @@ updates:
       prefix: "[INFRA]"
       prefix-development: "[INFRA] dev -"
     reviewers:
-      - "aibcmars"
       - "csouchet"
       - "tbouffard"
