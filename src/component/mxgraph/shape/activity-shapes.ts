@@ -46,7 +46,7 @@ export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
   public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
     // 0 is used for ratioParent as if we pass undefined to builder function the default 0.25 value will be used instead
-    this.paintMarkerIcons(buildPaintParameter(c, x, y, w, h, this, 0, false, 1.5));
+    this.paintMarkerIcons(buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 0, iconStrokeWidth: 1.5 }));
   }
 
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
@@ -103,7 +103,7 @@ abstract class BaseTaskShape extends BaseActivityShape {
 
   public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
-    this.paintTaskIcon(buildPaintParameter(c, x, y, w, h, this));
+    this.paintTaskIcon(buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this }));
   }
 
   protected abstract paintTaskIcon(paintParameter: PaintParameter): void;

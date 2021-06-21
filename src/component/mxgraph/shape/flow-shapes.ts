@@ -32,7 +32,7 @@ export class MessageFlowIconShape extends mxgraph.mxRectangleShape {
 
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const withFilledIcon = StyleUtils.getBpmnIsInitiating(this.style) === MessageVisibleKind.NON_INITIATING;
-    const paintParameter = buildPaintParameter(c, x, y, w, h, this, 1, withFilledIcon);
+    const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 1, isFilled: withFilledIcon });
 
     this.iconPainter.paintEnvelopeIcon(paintParameter);
   }

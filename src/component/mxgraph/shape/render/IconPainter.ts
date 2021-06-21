@@ -27,21 +27,34 @@ export interface PaintParameter {
   setIconOriginFunct: (canvas: BpmnCanvas) => void;
 }
 
-export function buildPaintParameter(
-  canvas: mxAbstractCanvas2D,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  shape: mxShape,
-  ratioFromParent = 0.25,
-  isFilled = false,
-  iconStrokeWidth = 0,
-): PaintParameter {
+export function buildPaintParameter({
+  canvas,
+  x,
+  y,
+  width,
+  height,
+  shape,
+  ratioFromParent,
+  isFilled,
+  iconStrokeWidth,
+}: {
+  canvas: mxAbstractCanvas2D;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  shape: mxShape;
+  ratioFromParent?: number;
+  isFilled?: boolean;
+  iconStrokeWidth?: number;
+}): PaintParameter {
   const shapeStrokeWidth = shape.strokewidth || StyleUtils.getStrokeWidth(shape.style);
   const fillColor = shape.fill || StyleUtils.getFillColor(shape.style);
   const strokeColor = shape.stroke || StyleUtils.getStrokeColor(shape.style);
   const margin = StyleUtils.getMargin(shape.style);
+  ratioFromParent ??= 0.25;
+  isFilled ??= false;
+  iconStrokeWidth ??= 0;
 
   return {
     canvas,
