@@ -18,7 +18,6 @@ import { mxgraph } from '../initializer';
 import { mxAbstractCanvas2D, mxPoint } from 'mxgraph';
 import { StyleIdentifier } from '../StyleUtils'; // for types
 
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 export class BpmnConnector extends mxgraph.mxConnector {
   constructor(points: mxPoint[], stroke: string, strokewidth?: number) {
     super(points, stroke, strokewidth);
@@ -28,10 +27,8 @@ export class BpmnConnector extends mxgraph.mxConnector {
     // The indirection via functions for markers is needed in
     // order to apply the offsets before painting the line and
     // paint the markers after painting the line.
-    // @ts-ignore wrong type returned by typed-mxgraph@1.0.2
-    const sourceMarker: () => void = this.createMarker(c, pts, true);
-    // @ts-ignore  wrong type returned by typed-mxgraph@1.0.2
-    const targetMarker: () => void = this.createMarker(c, pts, false);
+    const sourceMarker = this.createMarker(c, pts, true);
+    const targetMarker = this.createMarker(c, pts, false);
 
     this.paintEdgeLine(c, pts);
 

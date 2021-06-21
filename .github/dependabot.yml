@@ -10,6 +10,4 @@ updates:
       prefix: "[INFRA]"
       prefix-development: "[INFRA] dev -"
     reviewers:
-      - "aibcmars"
-      - "csouchet"
-      - "tbouffard"
+      - process-analytics/js-lib-collaborators

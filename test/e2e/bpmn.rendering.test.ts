@@ -36,9 +36,8 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'flows.message.02.labels.and.complex.paths',
         {
-          linux: 0.000002, // 0.00018742700883533914%
-          macos: 0.0011, // 0.10865713972554311%
-          windows: 0.004, // 0.3963857943718785%
+          macos: 0.0011, // 0.10876549756859696%
+          windows: 0.004, // 0.39686093001266576%
         },
       ],
       [
@@ -118,10 +117,10 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'flows.message.02.labels.and.complex.paths',
         {
-          linux: 0.0058, // 0.5735938633560478%
-          macos: 0.0066, // 0.6594568058992278%
+          linux: 0.0058, // 0.5661158485707474%
+          macos: 0.0066, // 0.6597408179179087%
           // TODO possible rendering issue so high threshold value
-          windows: 0.0139, // 1.3835961661211371%
+          windows: 0.0139, // 1.3843493898232695%
         },
       ],
       [
@@ -227,7 +226,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'flows.message.02.labels.and.complex.paths',
         {
-          macos: 0.0059, // 0.587504762739699%
+          macos: 0.0059, // 0.5877773370643435%
         },
       ],
       [
