@@ -19,9 +19,9 @@ import { IconConfiguration, IconStyleConfiguration, ShapeConfiguration, Size } f
 import { mxAbstractCanvas2D } from 'mxgraph'; // for types
 
 export interface BpmnCanvasConfiguration {
-  mxCanvas: mxAbstractCanvas2D;
-  shapeConfiguration: ShapeConfiguration;
-  iconConfiguration: IconConfiguration;
+  canvas: mxAbstractCanvas2D;
+  shapeConfig: ShapeConfiguration;
+  iconConfig: IconConfiguration;
 }
 
 /**
@@ -30,12 +30,12 @@ export interface BpmnCanvasConfiguration {
 export function computeScaledIconSize(initialIconSize: Size, iconStyleConfiguration: IconStyleConfiguration, shapeConfiguration: ShapeConfiguration, ratioFromShape: number): Size {
   let iconWidthProportionalToShape;
   let iconHeightProportionalToShape;
-  if (initialIconSize.height < initialIconSize.width || (initialIconSize.height == initialIconSize.width && shapeConfiguration.w <= shapeConfiguration.h)) {
-    iconWidthProportionalToShape = shapeConfiguration.w;
-    iconHeightProportionalToShape = (shapeConfiguration.w * initialIconSize.height) / initialIconSize.width;
+  if (initialIconSize.height < initialIconSize.width || (initialIconSize.height == initialIconSize.width && shapeConfiguration.width <= shapeConfiguration.height)) {
+    iconWidthProportionalToShape = shapeConfiguration.width;
+    iconHeightProportionalToShape = (shapeConfiguration.width * initialIconSize.height) / initialIconSize.width;
   } else {
-    iconWidthProportionalToShape = (shapeConfiguration.h * initialIconSize.width) / initialIconSize.height;
-    iconHeightProportionalToShape = shapeConfiguration.h;
+    iconWidthProportionalToShape = (shapeConfiguration.height * initialIconSize.width) / initialIconSize.height;
+    iconHeightProportionalToShape = shapeConfiguration.height;
   }
 
   const inset = iconStyleConfiguration.strokeWidth ? (iconStyleConfiguration.strokeWidth - 1) * 2 : 0;
@@ -61,7 +61,7 @@ export function computeScaledIconSize(initialIconSize: Size, iconStyleConfigurat
  * canvas.lineTo(12, 25);
  */
 export default class BpmnCanvas {
-  private c: mxAbstractCanvas2D;
+  private canvas: mxAbstractCanvas2D;
 
   private readonly iconOriginalSize: Size;
   private readonly scaleX: number;
@@ -72,15 +72,15 @@ export default class BpmnCanvas {
 
   private readonly shapeConfiguration: ShapeConfiguration;
 
-  constructor({ mxCanvas, shapeConfiguration, iconConfiguration }: BpmnCanvasConfiguration) {
-    this.c = mxCanvas;
-    this.shapeConfiguration = shapeConfiguration; // TODO clone?
+  constructor({ canvas, shapeConfig, iconConfig }: BpmnCanvasConfiguration) {
+    this.canvas = canvas;
+    this.shapeConfiguration = shapeConfig; // TODO clone?
 
-    this.iconOriginalSize = iconConfiguration.originalSize;
+    this.iconOriginalSize = iconConfig.originalSize;
 
-    const ratioFromShape = iconConfiguration.ratioFromShape;
+    const ratioFromShape = iconConfig.ratioFromParent;
     if (ratioFromShape) {
-      const scaledIconSize = computeScaledIconSize(this.iconOriginalSize, iconConfiguration.style, this.shapeConfiguration, ratioFromShape);
+      const scaledIconSize = computeScaledIconSize(this.iconOriginalSize, iconConfig.styleConfig, this.shapeConfiguration, ratioFromShape);
       this.scaleX = scaledIconSize.width / this.iconOriginalSize.width;
       this.scaleY = scaledIconSize.height / this.iconOriginalSize.height;
     } else {
@@ -88,8 +88,8 @@ export default class BpmnCanvas {
       this.scaleY = 1;
     }
 
-    this.updateCanvasStyle(iconConfiguration.style);
-    iconConfiguration.setIconOrigin(this);
+    this.updateCanvasStyle(iconConfig.styleConfig);
+    iconConfig.setIconOriginFunct(this);
   }
 
   /**
@@ -100,8 +100,8 @@ export default class BpmnCanvas {
    */
   setIconOriginToShapeTopLeftProportionally(shapeDimensionProportion: number): void {
     const shape = this.shapeConfiguration;
-    this.iconPaintingOriginX = shape.x + shape.w / shapeDimensionProportion;
-    this.iconPaintingOriginY = shape.y + shape.h / shapeDimensionProportion;
+    this.iconPaintingOriginX = shape.x + shape.width / shapeDimensionProportion;
+    this.iconPaintingOriginY = shape.y + shape.height / shapeDimensionProportion;
   }
 
   /**
@@ -118,8 +118,8 @@ export default class BpmnCanvas {
    */
   setIconOriginForIconCentered(): void {
     const shape = this.shapeConfiguration;
-    this.iconPaintingOriginX = shape.x + (shape.w - this.iconOriginalSize.width * this.scaleX) / 2;
-    this.iconPaintingOriginY = shape.y + (shape.h - this.iconOriginalSize.height * this.scaleY) / 2;
+    this.iconPaintingOriginX = shape.x + (shape.width - this.iconOriginalSize.width * this.scaleX) / 2;
+    this.iconPaintingOriginY = shape.y + (shape.height - this.iconOriginalSize.height * this.scaleY) / 2;
   }
 
   /**
@@ -127,8 +127,8 @@ export default class BpmnCanvas {
    */
   setIconOriginForIconBottomCentered(bottomMargin: number = StyleDefault.SHAPE_ACTIVITY_BOTTOM_MARGIN): void {
     const shape = this.shapeConfiguration;
-    this.iconPaintingOriginX = shape.x + (shape.w - this.iconOriginalSize.width * this.scaleX) / 2;
-    this.iconPaintingOriginY = shape.y + (shape.h - this.iconOriginalSize.height * this.scaleY - bottomMargin);
+    this.iconPaintingOriginX = shape.x + (shape.width - this.iconOriginalSize.width * this.scaleX) / 2;
+    this.iconPaintingOriginY = shape.y + (shape.height - this.iconOriginalSize.height * this.scaleY - bottomMargin);
   }
 
   /**
@@ -139,8 +139,8 @@ export default class BpmnCanvas {
     fromCenterMargin: number = StyleDefault.SHAPE_ACTIVITY_FROM_CENTER_MARGIN,
   ): void {
     const shape = this.shapeConfiguration;
-    this.iconPaintingOriginX = shape.x + (shape.w - this.iconOriginalSize.width * this.scaleX) / 3 - fromCenterMargin;
-    this.iconPaintingOriginY = shape.y + (shape.h - this.iconOriginalSize.height * this.scaleY - bottomMargin);
+    this.iconPaintingOriginX = shape.x + (shape.width - this.iconOriginalSize.width * this.scaleX) / 3 - fromCenterMargin;
+    this.iconPaintingOriginY = shape.y + (shape.height - this.iconOriginalSize.height * this.scaleY - bottomMargin);
   }
 
   /**
@@ -166,28 +166,28 @@ export default class BpmnCanvas {
 
   private updateCanvasStyle({ isFilled, strokeColor, fillColor, strokeWidth }: IconStyleConfiguration): void {
     if (isFilled) {
-      this.c.setFillColor(strokeColor);
+      this.canvas.setFillColor(strokeColor);
     } else {
-      this.c.setFillColor(fillColor);
+      this.canvas.setFillColor(fillColor);
     }
 
-    this.c.setStrokeWidth(strokeWidth);
+    this.canvas.setStrokeWidth(strokeWidth);
   }
 
   arcTo(rx: number, ry: number, angle: number, largeArcFlag: number, sweepFlag: number, x: number, y: number): void {
-    this.c.arcTo(rx * this.scaleX, ry * this.scaleY, angle, largeArcFlag, sweepFlag, this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y));
+    this.canvas.arcTo(rx * this.scaleX, ry * this.scaleY, angle, largeArcFlag, sweepFlag, this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y));
   }
 
   begin(): void {
-    this.c.begin();
+    this.canvas.begin();
   }
 
   close(): void {
-    this.c.close();
+    this.canvas.close();
   }
 
   curveTo(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): void {
-    this.c.curveTo(
+    this.canvas.curveTo(
       this.computeScaleFromOriginX(x1),
       this.computeScaleFromOriginY(y1),
       this.computeScaleFromOriginX(x2),
@@ -198,52 +198,52 @@ export default class BpmnCanvas {
   }
 
   fill(): void {
-    this.c.fill();
+    this.canvas.fill();
   }
 
   fillAndStroke(): void {
-    this.c.fillAndStroke();
+    this.canvas.fillAndStroke();
   }
 
   public setFillColor(fillColor: string): void {
-    this.c.setFillColor(fillColor);
+    this.canvas.setFillColor(fillColor);
   }
 
   stroke(): void {
-    this.c.stroke();
+    this.canvas.stroke();
   }
 
   setStrokeColor(color: string): void {
-    this.c.setStrokeColor(color);
+    this.canvas.setStrokeColor(color);
   }
 
   setRoundLineJoin(): void {
-    this.c.setLineJoin('round');
+    this.canvas.setLineJoin('round');
   }
 
   lineTo(x: number, y: number): void {
-    this.c.lineTo(this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y));
+    this.canvas.lineTo(this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y));
   }
 
   moveTo(x: number, y: number): void {
-    this.c.moveTo(this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y));
+    this.canvas.moveTo(this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y));
   }
 
   rect(x: number, y: number, w: number, h: number): void {
-    this.c.rect(this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y), w * this.scaleX, h * this.scaleY);
+    this.canvas.rect(this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y), w * this.scaleX, h * this.scaleY);
   }
 
   roundrect(x: number, y: number, w: number, h: number, dx: number, dy: number): void {
-    this.c.roundrect(this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y), w * this.scaleX, h * this.scaleY, dx, dy);
+    this.canvas.roundrect(this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y), w * this.scaleX, h * this.scaleY, dx, dy);
   }
 
   ellipse(x: number, y: number, w: number, h: number): void {
-    this.c.ellipse(this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y), w * this.scaleX, h * this.scaleY);
+    this.canvas.ellipse(this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y), w * this.scaleX, h * this.scaleY);
   }
 
   rotateOnIconCenter(theta: number): void {
     const rotationCenterX = this.iconPaintingOriginX + (this.iconOriginalSize.width / 2) * this.scaleX;
     const rotationCenterY = this.iconPaintingOriginY + (this.iconOriginalSize.height / 2) * this.scaleY;
-    this.c.rotate(theta, false, false, rotationCenterX, rotationCenterY);
+    this.canvas.rotate(theta, false, false, rotationCenterX, rotationCenterY);
   }
 }

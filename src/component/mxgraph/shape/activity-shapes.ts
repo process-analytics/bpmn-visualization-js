@@ -15,7 +15,7 @@
  */
 
 import StyleUtils, { StyleDefault } from '../StyleUtils';
-import { buildPaintParameter, IconPainterProvider, PaintParameter } from './render';
+import { buildPaintParameter, IconPainterProvider, PaintParameter, ShapeConfiguration } from './render';
 import { ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal/shape';
 import BpmnCanvas from './render/BpmnCanvas';
 import { orderActivityMarkers } from './render/utils';
@@ -25,9 +25,9 @@ import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph'; // for types
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
   IconPainterProvider.get().paintEnvelopeIcon({
     ...paintParameter,
-    setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(),
+    setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(),
     ratioFromParent: 0.2,
-    icon: { ...paintParameter.icon, isFilled: isFilled },
+    iconStyleConfig: { ...paintParameter.iconStyleConfig, isFilled: isFilled },
   });
 }
 
@@ -55,9 +55,9 @@ export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
       orderActivityMarkers(markers.split(',')).forEach((marker, idx, allMarkers) => {
         paintParameter = {
           ...paintParameter,
-          setIconOrigin: this.getIconOriginForMarkerIcon(allMarkers.length, idx + 1),
+          setIconOriginFunct: this.getIconOriginForMarkerIcon(allMarkers.length, idx + 1),
         };
-        paintParameter.c.save(); // ensure we can later restore the configuration
+        paintParameter.canvas.save(); // ensure we can later restore the configuration
         switch (marker) {
           case ShapeBpmnMarkerKind.LOOP:
             this.iconPainter.paintLoopIcon(paintParameter);
@@ -73,17 +73,17 @@ export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
             break;
         }
         // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
-        paintParameter.c.restore();
+        paintParameter.canvas.restore();
       });
     }
   }
 
   private getIconOriginForMarkerIcon(allMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
-    let setIconOrigin: (canvas: BpmnCanvas) => void;
+    let setIconOriginFunct: (canvas: BpmnCanvas) => void;
     if (allMarkers === 1) {
-      setIconOrigin = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
+      setIconOriginFunct = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
     } else if (allMarkers === 2) {
-      setIconOrigin = (canvas: BpmnCanvas) => {
+      setIconOriginFunct = (canvas: BpmnCanvas) => {
         canvas.setIconOriginForIconBottomCentered();
         const xTranslation = Math.pow(-1, markerOrder) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
         canvas.translateIconOrigin(xTranslation, 0);
@@ -92,7 +92,7 @@ export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
       // TODO: once we support 3 markers in a group
       throw new Error('NOT_IMPLEMENTED - to have a group of >2 markers in a row, centered in the task, implement this piece of code');
     }
-    return setIconOrigin;
+    return setIconOriginFunct;
   }
 }
 
@@ -133,7 +133,7 @@ export class ServiceTaskShape extends BaseTaskShape {
   }
 
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    this.iconPainter.paintGearIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
+    this.iconPainter.paintGearIcon({ ...paintParameter, setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
   }
 }
 
@@ -146,7 +146,7 @@ export class UserTaskShape extends BaseTaskShape {
   }
 
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    this.iconPainter.paintPersonIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
+    this.iconPainter.paintPersonIcon({ ...paintParameter, setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
   }
 }
 
@@ -168,25 +168,25 @@ export class ReceiveTaskShape extends BaseTaskShape {
     const topMargin = 4;
 
     // paint a fixed size circle
-    const circleShapeConfiguration = { ...paintParameter.shape, w: 20, h: 20 };
+    const circleShapeConfig: ShapeConfiguration = { ...paintParameter.shapeConfig, width: 20, height: 20 };
     this.iconPainter.paintCircleIcon({
-      c: paintParameter.c,
-      shape: circleShapeConfiguration,
-      icon: { ...paintParameter.icon, isFilled: false },
+      canvas: paintParameter.canvas,
+      shapeConfig: circleShapeConfig,
+      iconStyleConfig: { ...paintParameter.iconStyleConfig, isFilled: false },
       ratioFromParent: undefined, // ensure we will paint the icon with its original size
-      setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(topMargin, leftMargin),
+      setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(topMargin, leftMargin),
     });
 
     // paint an envelope centered inside the circle, with dimensions proportional to the circle dimensions
     // set the actual origin of the circle icon: this is what 'setIconOriginToShapeTopLeft' has done prior painting the circle icon
-    circleShapeConfiguration.x += leftMargin;
-    circleShapeConfiguration.y += topMargin;
+    circleShapeConfig.x += leftMargin;
+    circleShapeConfig.y += topMargin;
 
     this.iconPainter.paintEnvelopeIcon({
       ...paintParameter,
-      shape: circleShapeConfiguration,
+      shapeConfig: circleShapeConfig,
       ratioFromParent: 0.65,
-      setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginForIconCentered(),
+      setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginForIconCentered(),
     });
   }
 }
@@ -213,7 +213,7 @@ export class ManualTaskShape extends BaseTaskShape {
   }
 
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    this.iconPainter.paintHandIcon({ ...paintParameter, ratioFromParent: 0.18, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
+    this.iconPainter.paintHandIcon({ ...paintParameter, ratioFromParent: 0.18, setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
   }
 }
 
@@ -226,7 +226,11 @@ export class ScriptTaskShape extends BaseTaskShape {
   }
 
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    this.iconPainter.paintScriptIcon({ ...paintParameter, ratioFromParent: 0.22, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
+    this.iconPainter.paintScriptIcon({
+      ...paintParameter,
+      ratioFromParent: 0.22,
+      setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20),
+    });
   }
 }
 
@@ -274,7 +278,7 @@ export class BusinessRuleTaskShape extends BaseTaskShape {
     this.iconPainter.paintTableIcon({
       ...paintParameter,
       ratioFromParent: 0.6,
-      setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(15),
+      setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(15),
     });
   }
 }
