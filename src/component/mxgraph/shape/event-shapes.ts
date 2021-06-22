@@ -31,7 +31,7 @@ abstract class EventShape extends mxgraph.mxEllipse {
     [
       ShapeBpmnEventKind.TIMER,
       (paintParameter: PaintParameter) =>
-        this.iconPainter.paintClockIcon({ ...paintParameter, setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(5) }),
+        this.iconPainter.paintClockIcon({ ...paintParameter, setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(5) }),
     ],
     [
       ShapeBpmnEventKind.SIGNAL,
@@ -39,22 +39,24 @@ abstract class EventShape extends mxgraph.mxEllipse {
         this.iconPainter.paintTriangleIcon({
           ...paintParameter,
           ratioFromParent: 0.55,
-          icon: { ...paintParameter.icon, strokeWidth: StyleDefault.STROKE_WIDTH_THIN.valueOf() },
-          setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(4),
+          iconStyleConfig: { ...paintParameter.iconStyleConfig, strokeWidth: StyleDefault.STROKE_WIDTH_THIN.valueOf() },
+          setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(4),
         }),
     ],
     [
       ShapeBpmnEventKind.LINK,
-      (paintParameter: PaintParameter) => this.iconPainter.paintRightArrowIcon({ ...paintParameter, ratioFromParent: 0.55, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
+      (paintParameter: PaintParameter) =>
+        this.iconPainter.paintRightArrowIcon({ ...paintParameter, ratioFromParent: 0.55, iconStyleConfig: { ...paintParameter.iconStyleConfig, strokeWidth: 1.5 } }),
     ],
     [
       ShapeBpmnEventKind.ERROR,
-      (paintParameter: PaintParameter) => this.iconPainter.paintErrorIcon({ ...paintParameter, ratioFromParent: 0.55, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
+      (paintParameter: PaintParameter) =>
+        this.iconPainter.paintErrorIcon({ ...paintParameter, ratioFromParent: 0.55, iconStyleConfig: { ...paintParameter.iconStyleConfig, strokeWidth: 1.5 } }),
     ],
     [
       ShapeBpmnEventKind.COMPENSATION,
       (paintParameter: PaintParameter) =>
-        this.iconPainter.paintDoubleLeftArrowheadsIcon({ ...paintParameter, ratioFromParent: 0.7, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
+        this.iconPainter.paintDoubleLeftArrowheadsIcon({ ...paintParameter, ratioFromParent: 0.7, iconStyleConfig: { ...paintParameter.iconStyleConfig, strokeWidth: 1.5 } }),
     ],
     [ShapeBpmnEventKind.CANCEL, (paintParameter: PaintParameter) => this.iconPainter.paintXCrossIcon({ ...paintParameter, ratioFromParent: 0.78 })],
     [
@@ -63,12 +65,13 @@ abstract class EventShape extends mxgraph.mxEllipse {
         this.iconPainter.paintUpArrowheadIcon({
           ...paintParameter,
           ratioFromParent: 0.55,
-          icon: { ...paintParameter.icon, strokeWidth: StyleDefault.STROKE_WIDTH_THIN.valueOf() },
+          iconStyleConfig: { ...paintParameter.iconStyleConfig, strokeWidth: StyleDefault.STROKE_WIDTH_THIN.valueOf() },
         }),
     ],
     [
       ShapeBpmnEventKind.CONDITIONAL,
-      (paintParameter: PaintParameter) => this.iconPainter.paintListIcon({ ...paintParameter, ratioFromParent: 0.6, icon: { ...paintParameter.icon, strokeWidth: 1.5 } }),
+      (paintParameter: PaintParameter) =>
+        this.iconPainter.paintListIcon({ ...paintParameter, ratioFromParent: 0.6, iconStyleConfig: { ...paintParameter.iconStyleConfig, strokeWidth: 1.5 } }),
     ],
   ]);
 
@@ -80,7 +83,7 @@ abstract class EventShape extends mxgraph.mxEllipse {
 
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     this.markNonFullyRenderedEvents(c);
-    const paintParameter = buildPaintParameter(c, x, y, w, h, this, 0.25, this.withFilledIcon);
+    const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, isFilled: this.withFilledIcon });
 
     EventShape.setDashedOuterShapePattern(paintParameter, StyleUtils.getBpmnIsInterrupting(this.style));
     this.paintOuterShape(paintParameter);
@@ -99,8 +102,8 @@ abstract class EventShape extends mxgraph.mxEllipse {
     // }
   }
 
-  protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {
-    super.paintVertexShape(c, x, y, w, h);
+  protected paintOuterShape({ canvas, shapeConfig: { x, y, width, height } }: PaintParameter): void {
+    super.paintVertexShape(canvas, x, y, width, height);
   }
 
   private paintInnerShape(paintParameter: PaintParameter): void {
@@ -109,15 +112,15 @@ abstract class EventShape extends mxgraph.mxEllipse {
   }
 
   private static setDashedOuterShapePattern(paintParameter: PaintParameter, isInterrupting: string): void {
-    paintParameter.c.save(); // ensure we can later restore the configuration
+    paintParameter.canvas.save(); // ensure we can later restore the configuration
     if (isInterrupting === 'false') {
-      paintParameter.c.setDashed(true, false);
-      paintParameter.c.setDashPattern('3 2');
+      paintParameter.canvas.setDashed(true, false);
+      paintParameter.canvas.setDashPattern('3 2');
     }
   }
 
   private static restoreOriginalOuterShapePattern(paintParameter: PaintParameter): void {
-    paintParameter.c.restore();
+    paintParameter.canvas.restore();
   }
 }
 
@@ -147,13 +150,13 @@ abstract class IntermediateEventShape extends EventShape {
 
   // this implementation is adapted from the draw.io BPMN 'throwing' outlines
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L431
-  protected paintOuterShape({ c, shape: { x, y, w, h, strokeWidth } }: PaintParameter): void {
-    c.ellipse(x, y, w, h);
-    c.fillAndStroke();
+  protected paintOuterShape({ canvas, shapeConfig: { x, y, width, height, strokeWidth } }: PaintParameter): void {
+    canvas.ellipse(x, y, width, height);
+    canvas.fillAndStroke();
 
     const inset = strokeWidth * 1.5;
-    c.ellipse(w * 0.02 + inset + x, h * 0.02 + inset + y, w * 0.96 - 2 * inset, h * 0.96 - 2 * inset);
-    c.stroke();
+    canvas.ellipse(width * 0.02 + inset + x, height * 0.02 + inset + y, width * 0.96 - 2 * inset, height * 0.96 - 2 * inset);
+    canvas.stroke();
   }
 }
 

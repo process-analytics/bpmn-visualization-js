@@ -16,11 +16,9 @@
 
 import BpmnCanvas from './BpmnCanvas';
 
-export interface ShapeConfiguration {
+export interface ShapeConfiguration extends Size {
   x: number;
   y: number;
-  w: number;
-  h: number;
   strokeWidth?: number;
 }
 
@@ -40,7 +38,7 @@ export interface Size {
 export interface IconConfiguration {
   originalSize: Size;
   /** If `undefined`, no scaling will be done in {@link BpmnCanvas}. */
-  ratioFromShape?: number;
-  style: IconStyleConfiguration;
-  setIconOrigin: (canvas: BpmnCanvas) => void;
+  ratioFromParent?: number;
+  styleConfig: IconStyleConfiguration;
+  setIconOriginFunct: (canvas: BpmnCanvas) => void;
 }

@@ -29,8 +29,8 @@ describe('compute scaled icon size', () => {
     return {
       x: -1, // not relevant here
       y: -1, // not relevant here
-      w: w,
-      h: h,
+      width: w,
+      height: h,
     };
   }
   // TODO add expect size helper function

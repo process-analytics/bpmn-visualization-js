@@ -29,13 +29,13 @@ abstract class GatewayShape extends mxgraph.mxRhombus {
   protected abstract paintInnerShape(paintParameter: PaintParameter): void;
 
   public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const paintParameter = buildPaintParameter(c, x, y, w, h, this);
+    const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);
   }
 
-  protected paintOuterShape({ c, shape: { x, y, w, h } }: PaintParameter): void {
-    super.paintVertexShape(c, x, y, w, h);
+  protected paintOuterShape({ canvas, shapeConfig: { x, y, width, height } }: PaintParameter): void {
+    super.paintVertexShape(canvas, x, y, width, height);
   }
 }
 
@@ -50,7 +50,7 @@ export class ExclusiveGatewayShape extends GatewayShape {
   protected paintInnerShape(paintParameter: PaintParameter): void {
     this.iconPainter.paintXCrossIcon({
       ...paintParameter,
-      icon: { ...paintParameter.icon, isFilled: true },
+      iconStyleConfig: { ...paintParameter.iconStyleConfig, isFilled: true },
       ratioFromParent: 0.5,
     });
   }
@@ -67,7 +67,7 @@ export class ParallelGatewayShape extends GatewayShape {
   protected paintInnerShape(paintParameter: PaintParameter): void {
     this.iconPainter.paintPlusCrossIcon({
       ...paintParameter,
-      icon: { ...paintParameter.icon, isFilled: true },
+      iconStyleConfig: { ...paintParameter.iconStyleConfig, isFilled: true },
       ratioFromParent: 0.5,
     });
   }
@@ -85,7 +85,7 @@ export class InclusiveGatewayShape extends GatewayShape {
     this.iconPainter.paintCircleIcon({
       ...paintParameter,
       ratioFromParent: 0.62,
-      icon: { ...paintParameter.icon, isFilled: false, strokeWidth: StyleDefault.STROKE_WIDTH_THICK.valueOf() },
+      iconStyleConfig: { ...paintParameter.iconStyleConfig, isFilled: false, strokeWidth: StyleDefault.STROKE_WIDTH_THICK.valueOf() },
     });
   }
 }
@@ -99,7 +99,7 @@ export class EventBasedGatewayShape extends GatewayShape {
   }
 
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    paintParameter = { ...paintParameter, icon: { ...paintParameter.icon, strokeWidth: 1 } };
+    paintParameter = { ...paintParameter, iconStyleConfig: { ...paintParameter.iconStyleConfig, strokeWidth: 1 } };
 
     // circle (simple or double)
     this.iconPainter.paintCircleIcon({

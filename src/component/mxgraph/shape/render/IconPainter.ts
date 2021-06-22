@@ -20,35 +20,48 @@ import { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types
 import { mxAbstractCanvas2D, mxShape } from 'mxgraph'; // for types
 
 export interface PaintParameter {
-  c: mxAbstractCanvas2D;
-  shape: ShapeConfiguration;
-  icon: IconStyleConfiguration;
+  canvas: mxAbstractCanvas2D;
+  shapeConfig: ShapeConfiguration;
+  iconStyleConfig: IconStyleConfiguration;
   ratioFromParent?: number;
-  setIconOrigin: (canvas: BpmnCanvas) => void;
+  setIconOriginFunct: (canvas: BpmnCanvas) => void;
 }
 
-export function buildPaintParameter(
-  c: mxAbstractCanvas2D,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  shape: mxShape,
-  ratioFromParent = 0.25,
-  isFilled = false,
-  iconStrokeWidth = 0,
-): PaintParameter {
+export function buildPaintParameter({
+  canvas,
+  x,
+  y,
+  width,
+  height,
+  shape,
+  ratioFromParent,
+  isFilled,
+  iconStrokeWidth,
+}: {
+  canvas: mxAbstractCanvas2D;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  shape: mxShape;
+  ratioFromParent?: number;
+  isFilled?: boolean;
+  iconStrokeWidth?: number;
+}): PaintParameter {
   const shapeStrokeWidth = shape.strokewidth || StyleUtils.getStrokeWidth(shape.style);
   const fillColor = shape.fill || StyleUtils.getFillColor(shape.style);
   const strokeColor = shape.stroke || StyleUtils.getStrokeColor(shape.style);
   const margin = StyleUtils.getMargin(shape.style);
+  ratioFromParent ??= 0.25;
+  isFilled ??= false;
+  iconStrokeWidth ??= 0;
 
   return {
-    c,
+    canvas,
     ratioFromParent,
-    setIconOrigin: (canvas: BpmnCanvas) => canvas.setIconOriginForIconCentered(),
-    shape: { x, y, w: width, h: height, strokeWidth: shapeStrokeWidth },
-    icon: { isFilled, fillColor, strokeColor, strokeWidth: iconStrokeWidth, margin },
+    setIconOriginFunct: (internalCanvas: BpmnCanvas) => internalCanvas.setIconOriginForIconCentered(),
+    shapeConfig: { x, y, width: width, height: height, strokeWidth: shapeStrokeWidth },
+    iconStyleConfig: { isFilled, fillColor, strokeColor, strokeWidth: iconStrokeWidth, margin },
   };
 }
 
@@ -62,21 +75,21 @@ export default class IconPainter {
    *
    * @param c                       mxgraph `mxAbstractCanvas2D` in charge of performing the paint operations.
    * @param ratioFromParent         the actual size of the icon will be computed from the shape dimensions using this ratio.
-   * @param setIconOrigin           called function to set the origin of the icon. Generally, it calls a method of {@link BpmnCanvas}.
+   * @param setIconOriginFunct           called function to set the origin of the icon. Generally, it calls a method of {@link BpmnCanvas}.
    * @param shape                   dimension and style of the shape where the icon is painted.
    * @param icon                    style of the icon.
    * @param originalIconSize        original size of the icon used to compute the scaling/ratio in {@link BpmnCanvas}.
    * @protected
    */
-  protected newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }: PaintParameter, originalIconSize: Size): BpmnCanvas {
+  protected newBpmnCanvas({ canvas, ratioFromParent, setIconOriginFunct, shapeConfig, iconStyleConfig }: PaintParameter, originalIconSize: Size): BpmnCanvas {
     return new BpmnCanvas({
-      mxCanvas: c,
-      shapeConfiguration: shape,
-      iconConfiguration: {
+      canvas,
+      shapeConfig,
+      iconConfig: {
         originalSize: originalIconSize,
-        style: icon,
-        ratioFromShape: ratioFromParent,
-        setIconOrigin,
+        styleConfig: iconStyleConfig,
+        ratioFromParent,
+        setIconOriginFunct,
       },
     });
   }
@@ -97,10 +110,10 @@ export default class IconPainter {
     canvas.rect(0, 0, w, h);
     canvas.fillAndStroke();
 
-    const { icon } = paintParameter;
-    if (icon.isFilled) {
+    const { iconStyleConfig } = paintParameter;
+    if (iconStyleConfig.isFilled) {
       // Choose light color for envelope closure
-      canvas.setStrokeColor(icon.fillColor);
+      canvas.setStrokeColor(iconStyleConfig.fillColor);
     }
 
     // Paint the envelope closure
@@ -127,7 +140,7 @@ export default class IconPainter {
    */
   paintCircleIcon(paintParameter: PaintParameter): void {
     // highly inspired from mxDoubleEllipse
-    const originalIconSize = { width: paintParameter.shape.w, height: paintParameter.shape.h };
+    const originalIconSize = { width: paintParameter.shapeConfig.width, height: paintParameter.shapeConfig.height };
     const canvas = this.newBpmnCanvas(paintParameter, originalIconSize);
 
     const w = originalIconSize.width;
@@ -136,7 +149,7 @@ export default class IconPainter {
       canvas.ellipse(0, 0, w, h);
     }
 
-    if (paintParameter.icon.isFilled) {
+    if (paintParameter.iconStyleConfig.isFilled) {
       canvas.fillAndStroke();
     } else {
       canvas.stroke();
@@ -374,7 +387,7 @@ export default class IconPainter {
   paintPersonIcon(paintParameter: PaintParameter): void {
     // implementation adapted from https://www.flaticon.com/free-icon/employees_554768
     // use https://github.com/process-analytics/mxgraph-svg2shape to generate the xml stencil and port it to code
-    const canvas = this.newBpmnCanvas({ ...paintParameter, icon: { ...paintParameter.icon, isFilled: true } }, { height: 239.68, width: 143.61 });
+    const canvas = this.newBpmnCanvas({ ...paintParameter, iconStyleConfig: { ...paintParameter.iconStyleConfig, isFilled: true } }, { height: 239.68, width: 143.61 });
 
     canvas.begin();
     canvas.moveTo(124.31, 150.29);
@@ -598,8 +611,8 @@ export default class IconPainter {
   paintLoopIcon(paintParameter: PaintParameter): void {
     // this implementation is adapted from the draw.io BPMN 'Loop'
     // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L543
-    const { icon } = paintParameter;
-    icon.fillColor = icon.strokeColor;
+    const { iconStyleConfig } = paintParameter;
+    iconStyleConfig.fillColor = iconStyleConfig.strokeColor;
     const canvas = this.newBpmnCanvas(paintParameter, { width: 22.49, height: 21.62 });
 
     // Loop
@@ -622,18 +635,18 @@ export default class IconPainter {
    */
   paintSequentialMultiInstanceIcon(paintParameter: PaintParameter): void {
     const originalIconSize = { width: 16, height: 16 };
-    const canvas = this.newBpmnCanvas(paintParameter, originalIconSize);
-    const { c, icon } = paintParameter;
-    c.setFillColor(icon.strokeColor);
+    const bpmnCanvas = this.newBpmnCanvas(paintParameter, originalIconSize);
+    const { canvas, iconStyleConfig } = paintParameter;
+    canvas.setFillColor(iconStyleConfig.strokeColor);
 
     const barWidth = originalIconSize.width;
     const barHeight = originalIconSize.height / 5; // 3 bars + 2 interspaces
-    canvas.rect(0, 0, barWidth, barHeight);
-    canvas.fill();
-    canvas.rect(0, 2 * barHeight, barWidth, barHeight);
-    canvas.fill();
-    canvas.rect(0, 4 * barHeight, barWidth, barHeight);
-    canvas.fill();
+    bpmnCanvas.rect(0, 0, barWidth, barHeight);
+    bpmnCanvas.fill();
+    bpmnCanvas.rect(0, 2 * barHeight, barWidth, barHeight);
+    bpmnCanvas.fill();
+    bpmnCanvas.rect(0, 4 * barHeight, barWidth, barHeight);
+    bpmnCanvas.fill();
   }
 
   /**
@@ -641,19 +654,19 @@ export default class IconPainter {
    */
   paintParallelMultiInstanceIcon(paintParameter: PaintParameter): void {
     const originalIconSize = { width: 16, height: 16 };
-    const canvas = this.newBpmnCanvas(paintParameter, originalIconSize);
-    const { c, icon } = paintParameter;
-    c.setFillColor(icon.strokeColor);
+    const bpmnCanvas = this.newBpmnCanvas(paintParameter, originalIconSize);
+    const { canvas, iconStyleConfig } = paintParameter;
+    canvas.setFillColor(iconStyleConfig.strokeColor);
 
     const barWidth = originalIconSize.width / 5; // 3 bars + 2 interspaces
     const barHeight = originalIconSize.height;
-    canvas.begin();
-    canvas.rect(0, 0, barWidth, barHeight);
-    canvas.fill();
-    canvas.rect(2 * barWidth, 0, barWidth, barHeight);
-    canvas.fill();
-    canvas.rect(4 * barWidth, 0, barWidth, barHeight);
-    canvas.fill();
+    bpmnCanvas.begin();
+    bpmnCanvas.rect(0, 0, barWidth, barHeight);
+    bpmnCanvas.fill();
+    bpmnCanvas.rect(2 * barWidth, 0, barWidth, barHeight);
+    bpmnCanvas.fill();
+    bpmnCanvas.rect(4 * barWidth, 0, barWidth, barHeight);
+    bpmnCanvas.fill();
   }
 
   /**
@@ -739,7 +752,7 @@ export default class IconPainter {
   paintScriptIcon(paintParameter: PaintParameter): void {
     // this implementation is adapted from the noun project 'script' icon
     // https://thenounproject.com/term/script/2331578/
-    paintParameter.icon.fillColor = paintParameter.icon.strokeColor;
+    paintParameter.iconStyleConfig.fillColor = paintParameter.iconStyleConfig.strokeColor;
     const canvas = this.newBpmnCanvas(paintParameter, { width: 458.75, height: 461.64 });
 
     // Shape
@@ -850,7 +863,7 @@ export default class IconPainter {
     canvas.close();
     canvas.fillAndStroke();
 
-    canvas.setFillColor(paintParameter.icon.strokeColor);
+    canvas.setFillColor(paintParameter.iconStyleConfig.strokeColor);
     canvas.begin();
     canvas.moveTo(0, 0);
     canvas.lineTo(298.78, 0);
