@@ -160,19 +160,19 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.0174, // 1.730192454959012%
         },
       ],
-      // [
-      //   'pools.01.labels.and.lanes',
-      //   {
-      //     linux: 0.0021, // 0.2005349024704728%
-      //     macos: 0.0016, // 0.1551411970842409%
-      //     windows: 0.0058, // 0.5719640300611561%
-      //   },
-      // ],
+      [
+        'pools.01.labels.and.lanes',
+        {
+          linux: 0.0003, // 0.024310386980885834%
+          macos: 0.0013, // 0.12676895564825985%
+          windows: 0.0059, // 0.5890989610360386%
+        },
+      ],
       [
         'pools.02.vertical.with.lanes',
         {
-          macos: 0.0013, // 0.12998660434810907%
-          windows: 0.007, // 0.6925002379168488%
+          macos: 0.0015, // 0.14753246729929392%
+          // windows: 0.007, // 0.6925002379168488% // TODO update
         },
       ],
       [
