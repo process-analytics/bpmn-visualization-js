@@ -36,7 +36,7 @@ function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): Expe
   expectedStateStyle.strokeWidth = undefined;
 
   expectedStateStyle.fillColor = [ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION].includes(expectedModel.kind)
-    ? 'none'
+    ? 'transparent'
     : expectedStateStyle.fillColor;
 
   if ('isHorizontal' in expectedModel) {
