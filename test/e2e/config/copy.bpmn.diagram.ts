@@ -22,5 +22,6 @@ function copyDirectoryContentIfNotExists(dirName: string): void {
 copyDirectoryContentIfNotExists('diagram');
 copyDirectoryContentIfNotExists('navigation');
 copyDirectoryContentIfNotExists('non-regression');
-copyDirectoryContentIfNotExists('performance');
 copyDirectoryContentIfNotExists('overlays');
+copyDirectoryContentIfNotExists('performance');
+copyDirectoryContentIfNotExists('svg');

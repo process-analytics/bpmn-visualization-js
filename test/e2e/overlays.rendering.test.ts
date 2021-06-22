@@ -17,7 +17,7 @@ import { ElementHandle } from 'playwright-core';
 import 'jest-playwright-preset';
 import { join } from 'path';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { PageTester } from './helpers/visu/PageTester';
+import { PageTester } from './helpers/visu/bpmn-page-utils';
 import { chromiumZoom, clickOnButton, getContainerCenter, itMouseWheel, mousePanning, Point } from './helpers/test-utils';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';

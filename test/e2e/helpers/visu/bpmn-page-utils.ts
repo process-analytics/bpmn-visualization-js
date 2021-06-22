@@ -15,13 +15,15 @@
  */
 import { ElementHandle, Page } from 'playwright-core';
 import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
+import 'jest-playwright-preset';
+import { FitType, LoadOptions } from '../../../../src/component/options';
 
 // PageWaitForSelectorOptions is not exported by playwright
 export interface PageWaitForSelectorOptions {
   timeout?: number;
 }
 
-export class BpmnPage {
+class BpmnPage {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
   constructor(private bpmnContainerId: string, private currentPage: Page) {
@@ -45,6 +47,80 @@ export class BpmnPage {
   async expectExistingBpmnElement(options?: PageWaitForSelectorOptions): Promise<void> {
     await this.currentPage.waitForSelector(this.bpmnQuerySelectors.existingElement(), options);
   }
+}
+
+export interface TargetedPage {
+  /** the name of the page file without extension */
+  pageFileName: string;
+  /** the expected of the page title after the page loading */
+  expectedPageTitle: string;
+  /**
+   * Id of the container in the page attached to bpmn-visualization
+   * @default bpmn-container
+   */
+  bpmnContainerId?: string;
+  /**
+   * Set to `true` to display the mouse pointer after the page loading
+   * @default false
+   */
+  showMousePointer?: boolean;
+}
+
+export class PageTester {
+  private readonly baseUrl: string;
+  private bpmnPage: BpmnPage;
+  protected bpmnContainerId: string;
+
+  /**
+   * Configure how the BPMN file is loaded by the test page.
+   */
+  constructor(readonly targetedPage: TargetedPage) {
+    const showMousePointer = targetedPage.showMousePointer ?? false;
+    this.baseUrl = `http://localhost:10002/${targetedPage.pageFileName}.html?showMousePointer=${showMousePointer}`;
+    this.bpmnContainerId = targetedPage.bpmnContainerId ?? 'bpmn-container';
+    this.bpmnPage = new BpmnPage(this.bpmnContainerId, page);
+  }
+
+  async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, loadOptions?: LoadOptions): Promise<ElementHandle<SVGElement | HTMLElement>> {
+    const url = this.getPageUrl(bpmnDiagramName, loadOptions);
+    const response = await page.goto(url);
+    // Uncomment the following in case of http error 400 (probably because of a too large bpmn file)
+    // eslint-disable-next-line no-console
+    // await page.evaluate(() => console.log(`url is ${location.href}`));
+
+    expect(response.status()).toBe(200);
+    await this.bpmnPage.expectPageTitle(this.targetedPage.expectedPageTitle);
+
+    const waitForSelectorOptions = { timeout: 5_000 };
+    const elementHandle = await this.bpmnPage.expectAvailableBpmnContainer(waitForSelectorOptions);
+    await this.bpmnPage.expectExistingBpmnElement(waitForSelectorOptions);
+    return elementHandle;
+  }
+
+  /**
+   * @param bpmnDiagramName the name of the BPMN file without extension
+   * @param loadOptions optional fit options
+   */
+  private getPageUrl(bpmnDiagramName: string, loadOptions: LoadOptions = { fit: { type: FitType.HorizontalVertical } }): string {
+    let url = this.baseUrl;
+    url += `&fitTypeOnLoad=${loadOptions.fit?.type}&fitMargin=${loadOptions.fit?.margin}`;
+    url += `&url=./static/diagrams/${bpmnDiagramName}.bpmn`;
+    return url;
+  }
+}
+
+export class BpmnPageSvgTester extends PageTester {
+  private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
+
+  constructor(targetedPage: TargetedPage, private currentPage: Page) {
+    super(targetedPage);
+    // TODO duplicated with PageTester
+    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
+  }
+
+  async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, loadOptions: LoadOptions = { fit: { type: FitType.None } }): Promise<ElementHandle<SVGElement | HTMLElement>> {
+    return super.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, loadOptions);
+  }
 
   async expectLabel(bpmnId: string, expectedText?: string): Promise<void> {
     if (!expectedText) {
@@ -59,26 +135,18 @@ export class BpmnPage {
     const svgElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.element(bpmnId));
     await expectClassAttribute(svgElementHandle, isStartEvent ? 'bpmn-start-event' : 'bpmn-end-event');
     await expectFirstChildNodeName(svgElementHandle, 'ellipse');
-    await this.expectFirstChildAttribute(svgElementHandle, 'rx', '18');
-    await this.expectFirstChildAttribute(svgElementHandle, 'ry', '18');
+    await expectFirstChildAttribute(svgElementHandle, 'rx', '18');
+    await expectFirstChildAttribute(svgElementHandle, 'ry', '18');
 
     await this.expectLabel(bpmnId, expectedText);
-  }
-
-  private async expectFirstChildAttribute(svgElementHandle: ElementHandle, attributeName: string, value: string): Promise<void> {
-    expect(
-      await svgElementHandle.evaluate((node: Element, attribute: string) => {
-        return (node.firstChild as SVGGElement).getAttribute(attribute);
-      }, attributeName),
-    ).toBe(value);
   }
 
   async expectTask(bpmnId: string, expectedText: string): Promise<void> {
     const svgElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.element(bpmnId));
     await expectClassAttribute(svgElementHandle, 'bpmn-task');
     await expectFirstChildNodeName(svgElementHandle, 'rect');
-    await this.expectFirstChildAttribute(svgElementHandle, 'width', '100');
-    await this.expectFirstChildAttribute(svgElementHandle, 'height', '80');
+    await expectFirstChildAttribute(svgElementHandle, 'width', '100');
+    await expectFirstChildAttribute(svgElementHandle, 'height', '80');
     await this.expectLabel(bpmnId, expectedText);
   }
 
@@ -96,4 +164,8 @@ async function expectClassAttribute(svgElementHandle: ElementHandle<Element>, va
 
 async function expectFirstChildNodeName(svgElementHandle: ElementHandle, nodeName: string): Promise<void> {
   expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe(nodeName);
+}
+
+async function expectFirstChildAttribute(svgElementHandle: ElementHandle, attributeName: string, value: string): Promise<void> {
+  expect(await svgElementHandle.evaluate((node: Element, attribute: string) => (node.firstChild as SVGGElement).getAttribute(attribute), attributeName)).toBe(value);
 }
