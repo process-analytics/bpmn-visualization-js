@@ -155,6 +155,7 @@ export default class StyleConfigurator {
 
     // TODO manage pool text area rendering. Maybe we can calculate it from the label size/bounds
     style[mxgraph.mxConstants.STYLE_STARTSIZE] = StyleDefault.POOL_LABEL_SIZE;
+    style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.POOL_LABEL_FILL_COLOR;
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.POOL, style);
   }
@@ -172,6 +173,7 @@ export default class StyleConfigurator {
     // TODO manage lane text area rendering. there is no Label neither the size available (we have only attribute name="Text of the Label")
     // perhaps it can be calculated as a difference of starting point (either x or y) between pool, lane, sub-lane ?
     style[mxgraph.mxConstants.STYLE_STARTSIZE] = StyleDefault.LANE_LABEL_SIZE;
+    style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.LANE_LABEL_FILL_COLOR;
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.LANE, style);
   }
@@ -192,6 +194,7 @@ export default class StyleConfigurator {
     style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
     style[mxgraph.mxConstants.STYLE_ALIGN] = mxgraph.mxConstants.ALIGN_LEFT;
     style[mxgraph.mxConstants.STYLE_SPACING_LEFT] = 5;
+    style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
   }
 
