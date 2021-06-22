@@ -171,8 +171,9 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'pools.02.vertical.with.lanes',
         {
+          linux: 0.0003, // 0.024310386980885834%
           macos: 0.0015, // 0.14753246729929392%
-          // windows: 0.007, // 0.6925002379168488% // TODO update
+          windows: 0.007, // 0.6917918122653188%
         },
       ],
       [
