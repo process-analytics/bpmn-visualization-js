@@ -137,35 +137,16 @@ export default class StyleConfigurator {
     return this.graph.getStylesheet();
   }
 
-  private getDefaultVertexStyle(): StyleMap {
-    return this.getStylesheet().getDefaultVertexStyle();
-  }
-
-  private getDefaultEdgeStyle(): StyleMap {
-    return this.getStylesheet().getDefaultEdgeStyle();
-  }
-
-  private cloneDefaultVertexStyle(): StyleMap {
-    const defaultStyle = this.getDefaultVertexStyle();
-    return mxgraph.mxUtils.clone(defaultStyle);
-  }
-
-  private cloneDefaultEdgeStyle(): StyleMap {
-    const defaultStyle = this.getDefaultEdgeStyle();
-    return mxgraph.mxUtils.clone(defaultStyle);
-  }
-
   private putCellStyle(name: ShapeBpmnElementKind, style: StyleMap): void {
     this.getStylesheet().putCellStyle(name, style);
   }
 
   private configureDefaultVertexStyle(): void {
-    const style = this.getDefaultVertexStyle();
-    this.configureCommonDefaultStyle(style);
+    StyleConfigurator.configureCommonDefaultStyle(this.getStylesheet().getDefaultVertexStyle());
   }
 
   private configurePoolStyle(): void {
-    const style = this.cloneDefaultVertexStyle();
+    const style: StyleMap = {};
     style[mxgraph.mxConstants.STYLE_SHAPE] = mxgraph.mxConstants.SHAPE_SWIMLANE;
 
     // TODO Remove when the bounds of the pool label is implemented
@@ -173,14 +154,13 @@ export default class StyleConfigurator {
     style[mxgraph.mxConstants.STYLE_ALIGN] = mxgraph.mxConstants.ALIGN_CENTER;
 
     // TODO manage pool text area rendering. Maybe we can calculate it from the label size/bounds
-    // most of BPMN pool are ok when setting it to 30
     style[mxgraph.mxConstants.STYLE_STARTSIZE] = StyleDefault.POOL_LABEL_SIZE;
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.POOL, style);
   }
 
   private configureLaneStyle(): void {
-    const style = this.cloneDefaultVertexStyle();
+    const style: StyleMap = {};
     style[mxgraph.mxConstants.STYLE_SHAPE] = mxgraph.mxConstants.SHAPE_SWIMLANE;
 
     // TODO Remove when the bounds of the lane label is implemented
@@ -198,7 +178,7 @@ export default class StyleConfigurator {
 
   private configureEventStyles(): void {
     ShapeUtil.topLevelBpmnEventKinds().forEach(kind => {
-      const style = this.cloneDefaultVertexStyle();
+      const style: StyleMap = {};
       style[mxgraph.mxConstants.STYLE_SHAPE] = kind;
       style[mxgraph.mxConstants.STYLE_PERIMETER] = mxgraph.mxPerimeter.EllipsePerimeter;
       style[mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxgraph.mxConstants.ALIGN_BOTTOM;
@@ -207,7 +187,7 @@ export default class StyleConfigurator {
   }
 
   private configureTextAnnotationStyle(): void {
-    const style = this.cloneDefaultVertexStyle();
+    const style: StyleMap = {};
     style[mxgraph.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TEXT_ANNOTATION;
     style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
     style[mxgraph.mxConstants.STYLE_ALIGN] = mxgraph.mxConstants.ALIGN_LEFT;
@@ -217,7 +197,7 @@ export default class StyleConfigurator {
 
   private configureActivityStyles(): void {
     ShapeUtil.activityKinds().forEach(kind => {
-      const style = this.cloneDefaultVertexStyle();
+      const style: StyleMap = {};
       style[mxgraph.mxConstants.STYLE_SHAPE] = kind;
       style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
       this.putCellStyle(kind, style);
@@ -226,7 +206,7 @@ export default class StyleConfigurator {
 
   private configureGatewayStyles(): void {
     ShapeUtil.gatewayKinds().forEach(kind => {
-      const style = this.cloneDefaultVertexStyle();
+      const style: StyleMap = {};
       style[mxgraph.mxConstants.STYLE_SHAPE] = kind;
       style[mxgraph.mxConstants.STYLE_PERIMETER] = mxgraph.mxPerimeter.RhombusPerimeter;
       style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_TOP;
@@ -240,7 +220,7 @@ export default class StyleConfigurator {
   }
 
   private configureDefaultEdgeStyle(): void {
-    const style = this.getDefaultEdgeStyle();
+    const style = this.getStylesheet().getDefaultEdgeStyle();
     style[mxgraph.mxConstants.STYLE_SHAPE] = StyleIdentifier.EDGE;
     style[mxgraph.mxConstants.STYLE_EDGE] = mxgraph.mxConstants.EDGESTYLE_SEGMENT;
     style[mxgraph.mxConstants.STYLE_ENDSIZE] = 12;
@@ -251,10 +231,10 @@ export default class StyleConfigurator {
 
     delete style[mxgraph.mxConstants.STYLE_ENDARROW];
 
-    this.configureCommonDefaultStyle(style);
+    StyleConfigurator.configureCommonDefaultStyle(style);
   }
 
-  private configureCommonDefaultStyle(style: StyleMap): void {
+  private static configureCommonDefaultStyle(style: StyleMap): void {
     style[mxgraph.mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
     style[mxgraph.mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
     style[mxgraph.mxConstants.STYLE_FONTCOLOR] = StyleDefault.DEFAULT_FONT_COLOR;
@@ -268,7 +248,7 @@ export default class StyleConfigurator {
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: StyleMap) => void>): void {
     styleKinds.forEach(kind => {
-      const style = this.cloneDefaultEdgeStyle();
+      const style: StyleMap = {};
       const updateEdgeStyle =
         specificStyles.get(kind) ||
         (() => {
