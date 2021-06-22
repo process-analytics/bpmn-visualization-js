@@ -72,14 +72,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.0022, // 0.21203992685594475%
         },
       ],
-      [
-        'pools.01.labels.and.lanes',
-        {
-          linux: 0.002, // 0.19665548561466073%
-          macos: 0.0016, // 0.15006201878846603%
-          windows: 0.002, // 0.12200021675353723%
-        },
-      ],
+      // [
+      //   'pools.01.labels.and.lanes',
+      //   {
+      //     linux: 0.002, // 0.19665548561466073%
+      //     macos: 0.0016, // 0.15006201878846603%
+      //     windows: 0.002, // 0.12200021675353723%
+      //   },
+      // ],
       [
         'pools.02.vertical.with.lanes',
         {
@@ -161,14 +161,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.0174, // 1.730192454959012%
         },
       ],
-      [
-        'pools.01.labels.and.lanes',
-        {
-          linux: 0.0021, // 0.2005349024704728%
-          macos: 0.0016, // 0.1551411970842409%
-          windows: 0.0058, // 0.5719640300611561%
-        },
-      ],
+      // [
+      //   'pools.01.labels.and.lanes',
+      //   {
+      //     linux: 0.0021, // 0.2005349024704728%
+      //     macos: 0.0016, // 0.1551411970842409%
+      //     windows: 0.0058, // 0.5719640300611561%
+      //   },
+      // ],
       [
         'pools.02.vertical.with.lanes',
         {
@@ -255,12 +255,12 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           macos: 0.00625, // 0.6239949108655218%
         },
       ],
-      [
-        'pools.01.labels.and.lanes',
-        {
-          macos: 0.0027, // 0.2698812341275669%
-        },
-      ],
+      // [
+      //   'pools.01.labels.and.lanes',
+      //   {
+      //     macos: 0.0027, // 0.2698812341275669%
+      //   },
+      // ],
       [
         'pools.02.vertical.with.lanes',
         {
