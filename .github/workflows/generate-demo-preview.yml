@@ -9,6 +9,7 @@ on:
     paths:
       - '.github/workflows/generate-demo-preview.yml'
       - 'config/**/*'
+      - 'dev/**/*'
       - 'src/**/*'
       - 'package.json'
       - 'postcss.config.js'
