@@ -18,5 +18,5 @@ module.exports = {
     headless: process.env.HEADLESS !== 'false',
     slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
   },
-  browsers: ['chromium'],
+  browsers: ['chromium', 'firefox', 'webkit'],
 };
