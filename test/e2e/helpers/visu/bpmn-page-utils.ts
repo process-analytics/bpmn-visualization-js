@@ -17,6 +17,7 @@ import { ElementHandle, Page } from 'playwright-core';
 import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
 import 'jest-playwright-preset';
 import { FitType, LoadOptions } from '../../../../src/component/options';
+import { resolve } from 'path';
 
 // PageWaitForSelectorOptions is not exported by playwright
 export interface PageWaitForSelectorOptions {
@@ -68,7 +69,7 @@ export interface TargetedPage {
 
 export class PageTester {
   private readonly baseUrl: string;
-  private bpmnPage: BpmnPage;
+  protected bpmnPage: BpmnPage;
   protected bpmnContainerId: string;
 
   /**
@@ -168,4 +169,35 @@ async function expectFirstChildNodeName(svgElementHandle: ElementHandle, nodeNam
 
 async function expectFirstChildAttribute(svgElementHandle: ElementHandle, attributeName: string, value: string): Promise<void> {
   expect(await svgElementHandle.evaluate((node: Element, attribute: string) => (node.firstChild as SVGGElement).getAttribute(attribute), attributeName)).toBe(value);
+}
+
+export class BpmnStaticPageSvgTester extends BpmnPageSvgTester {
+  constructor(targetedPage: TargetedPage, currentPage: Page) {
+    super(targetedPage, currentPage);
+  }
+
+  async loadBPMNDiagramInRefreshedPage(): Promise<ElementHandle<SVGElement | HTMLElement>> {
+    //const pagePath = resolve(__dirname, 'static/lib-integration-iife.html');
+    //await page.goto(`file://${pagePath}`);
+
+    const bpmnPage = new BpmnPage('bpmn-container-for-iife-bundle', page);
+    await bpmnPage.expectPageTitle('BPMN Visualization IIFE bundle');
+    await bpmnPage.expectAvailableBpmnContainer();
+
+    const pagePath = resolve(__dirname, 'static/lib-integration-iife.html');
+
+    const url = `file://${pagePath}`;
+    const response = await page.goto(url);
+    // Uncomment the following in case of http error 400 (probably because of a too large bpmn file)
+    // eslint-disable-next-line no-console
+    // await page.evaluate(() => console.log(`url is ${location.href}`));
+
+    expect(response.status()).toBe(200);
+    await this.bpmnPage.expectPageTitle(this.targetedPage.expectedPageTitle);
+
+    const waitForSelectorOptions = { timeout: 5_000 };
+    const elementHandle = await this.bpmnPage.expectAvailableBpmnContainer(waitForSelectorOptions);
+    await this.bpmnPage.expectExistingBpmnElement(waitForSelectorOptions);
+    return elementHandle;
+  }
 }
