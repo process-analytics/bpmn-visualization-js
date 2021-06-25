@@ -16,7 +16,8 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import 'jest-playwright-preset';
-import { BpmnStaticPageSvgTester } from '../e2e/helpers/visu/bpmn-page-utils';
+import { BpmnPageSvgTester, TargetedPage } from '../e2e/helpers/visu/bpmn-page-utils';
+import { ElementHandle, Page } from 'playwright-core';
 
 describe('bundles', () => {
   describe('All bundles have been generated', () => {
@@ -60,3 +61,37 @@ describe('bundles', () => {
     await pageTester.expectEvent('EndEvent_1', 'End Event 1', false);
   });
 });
+
+class BpmnStaticPageSvgTester extends BpmnPageSvgTester {
+  constructor(targetedPage: TargetedPage, currentPage: Page) {
+    super(targetedPage, currentPage);
+  }
+
+  async loadBPMNDiagramInRefreshedPage(): Promise<ElementHandle<SVGElement | HTMLElement>> {
+    //const pagePath = resolve(__dirname, 'static/lib-integration-iife.html');
+    //await page.goto(`file://${pagePath}`);
+
+    // const bpmnPage = new BpmnPage('bpmn-container-for-iife-bundle', page);
+    // await bpmnPage.expectPageTitle('BPMN Visualization IIFE bundle');
+    // await bpmnPage.expectAvailableBpmnContainer();
+
+    // from test/e2e/helpers/visu/static/lib-integration-iife.html
+    // to
+    const pagePath = resolve(__dirname, 'static/lib-integration-iife.html');
+
+    const url = `file://${pagePath}`;
+    //console.info('@@url', url);
+    // const response = await page.goto(url);
+    await page.goto(url);
+
+    // no response status with file access
+    //expect(response.status()).toBe(200);
+
+    await this.bpmnPage.expectPageTitle(this.targetedPage.expectedPageTitle);
+
+    const waitForSelectorOptions = { timeout: 5_000 };
+    const elementHandle = await this.bpmnPage.expectAvailableBpmnContainer(waitForSelectorOptions);
+    await this.bpmnPage.expectExistingBpmnElement(waitForSelectorOptions);
+    return elementHandle;
+  }
+}
