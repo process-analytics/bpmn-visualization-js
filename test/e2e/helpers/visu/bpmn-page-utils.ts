@@ -83,9 +83,15 @@ export class PageTester {
 
   async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, loadOptions?: LoadOptions): Promise<ElementHandle<SVGElement | HTMLElement>> {
     const url = this.getPageUrl(bpmnDiagramName, loadOptions);
-    const response = await page.goto(url);
+    return this.doLoadBPMNDiagramInRefreshedPage(url);
+  }
 
-    expect(response.status()).toBe(200);
+  protected async doLoadBPMNDiagramInRefreshedPage(url: string, checkResponseStatus = true): Promise<ElementHandle<SVGElement | HTMLElement>> {
+    const response = await page.goto(url);
+    if (checkResponseStatus) {
+      expect(response.status()).toBe(200);
+    }
+
     await this.bpmnPage.expectPageTitle(this.targetedPage.expectedPageTitle);
 
     const waitForSelectorOptions = { timeout: 5_000 };

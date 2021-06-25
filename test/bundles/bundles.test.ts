@@ -68,30 +68,8 @@ class BpmnStaticPageSvgTester extends BpmnPageSvgTester {
   }
 
   async loadBPMNDiagramInRefreshedPage(): Promise<ElementHandle<SVGElement | HTMLElement>> {
-    //const pagePath = resolve(__dirname, 'static/lib-integration-iife.html');
-    //await page.goto(`file://${pagePath}`);
-
-    // const bpmnPage = new BpmnPage('bpmn-container-for-iife-bundle', page);
-    // await bpmnPage.expectPageTitle('BPMN Visualization IIFE bundle');
-    // await bpmnPage.expectAvailableBpmnContainer();
-
-    // from test/e2e/helpers/visu/static/lib-integration-iife.html
-    // to
-    const pagePath = resolve(__dirname, 'static/lib-integration-iife.html');
-
+    const pagePath = resolve(__dirname, `static/${this.targetedPage.pageFileName}.html`);
     const url = `file://${pagePath}`;
-    //console.info('@@url', url);
-    // const response = await page.goto(url);
-    await page.goto(url);
-
-    // no response status with file access
-    //expect(response.status()).toBe(200);
-
-    await this.bpmnPage.expectPageTitle(this.targetedPage.expectedPageTitle);
-
-    const waitForSelectorOptions = { timeout: 5_000 };
-    const elementHandle = await this.bpmnPage.expectAvailableBpmnContainer(waitForSelectorOptions);
-    await this.bpmnPage.expectExistingBpmnElement(waitForSelectorOptions);
-    return elementHandle;
+    return super.doLoadBPMNDiagramInRefreshedPage(url, false);
   }
 }
