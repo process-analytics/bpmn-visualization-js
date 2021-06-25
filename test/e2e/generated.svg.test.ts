@@ -35,7 +35,7 @@ describe('Check generated SVG in lib-integration page', () => {
       { pageFileName: 'lib-integration', expectedPageTitle: 'BPMN Visualization Lib Integration', bpmnContainerId: 'bpmn-container-custom' },
       page,
     );
-    await pageTester.loadBPMNDiagramInRefreshedPage('not-used-dedicated-diagram-loaded-by-the-page');
+    await pageTester.loadBPMNDiagramInRefreshedPage();
 
     await pageTester.expectEvent('StartEvent_1', 'Start Event Only');
   });
