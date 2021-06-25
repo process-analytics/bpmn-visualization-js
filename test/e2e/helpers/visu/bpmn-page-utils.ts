@@ -114,12 +114,12 @@ export class BpmnPageSvgTester extends PageTester {
 
   constructor(targetedPage: TargetedPage, private currentPage: Page) {
     super(targetedPage);
-    // TODO duplicated with PageTester
+    // TODO duplicated with BpmnPage
     this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
   }
 
-  async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, loadOptions: LoadOptions = { fit: { type: FitType.None } }): Promise<ElementHandle<SVGElement | HTMLElement>> {
-    return super.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, loadOptions);
+  async loadBPMNDiagramInRefreshedPage(bpmnDiagramName?: string): Promise<ElementHandle<SVGElement | HTMLElement>> {
+    return super.loadBPMNDiagramInRefreshedPage(bpmnDiagramName ?? 'not-used-dedicated-diagram-loaded-by-the-page', { fit: { type: FitType.None } });
   }
 
   async expectLabel(bpmnId: string, expectedText?: string): Promise<void> {
