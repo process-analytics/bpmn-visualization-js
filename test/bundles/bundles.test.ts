@@ -47,13 +47,6 @@ describe('bundles', () => {
     );
     await pageTester.loadBPMNDiagramInRefreshedPage();
 
-    // const pagePath = resolve(__dirname, 'static/lib-integration-iife.html');
-    // await page.goto(`file://${pagePath}`);
-    //
-    // const bpmnPage = new BpmnPage('bpmn-container-for-iife-bundle', page);
-    // await bpmnPage.expectPageTitle('BPMN Visualization IIFE bundle');
-    // await bpmnPage.expectAvailableBpmnContainer();
-
     await pageTester.expectEvent('StartEvent_1', 'Start Event 1');
     await pageTester.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
     await pageTester.expectTask('Activity_1', 'Task 1');
