@@ -163,19 +163,6 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   loadOptions = config.loadOptions || {};
   loadOptions.fit = getFitOptionsFromParameters(config, parameters);
 
-  log("Checking if 'BPMN content' is provided as query parameter");
-  const bpmnParameterValue = parameters.get('bpmn');
-  if (bpmnParameterValue) {
-    const bpmn = decodeURIComponent(bpmnParameterValue);
-    log(`Received bpmn length: ${bpmn.length}`);
-    log(`Received bpmn content: ${bpmn}`);
-    log('BPMN auto loading');
-    loadBpmn(bpmn);
-    log('BPMN content loading completed');
-    return;
-  }
-  log("No 'BPMN content' provided");
-
   log("Checking if an 'url to fetch BPMN content' is provided as query parameter");
   const urlParameterValue = parameters.get('url');
   if (urlParameterValue) {
