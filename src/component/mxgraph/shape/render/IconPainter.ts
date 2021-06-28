@@ -60,7 +60,7 @@ export function buildPaintParameter({
     canvas,
     ratioFromParent,
     setIconOriginFunct: (internalCanvas: BpmnCanvas) => internalCanvas.setIconOriginForIconCentered(),
-    shapeConfig: { x, y, width: width, height: height, strokeWidth: shapeStrokeWidth },
+    shapeConfig: { x, y, width, height, strokeWidth: shapeStrokeWidth },
     iconStyleConfig: { isFilled, fillColor, strokeColor, strokeWidth: iconStrokeWidth, margin },
   };
 }
