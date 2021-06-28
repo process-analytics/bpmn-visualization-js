@@ -15,9 +15,6 @@
  */
 import { BpmnVisualization } from '../../index.es.js';
 
-const parameters = new URLSearchParams(window.location.search);
-const bpmnParameterValue = parameters.get('bpmn');
-
 const bpmnVisualizationIntegration = new BpmnVisualization({ container: 'bpmn-container-custom' });
 bpmnVisualizationIntegration.load(bpmnDefaultContent());
 
