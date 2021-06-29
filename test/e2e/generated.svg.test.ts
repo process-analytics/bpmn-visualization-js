@@ -14,37 +14,29 @@
  * limitations under the License.
  */
 import 'jest-playwright-preset';
-import { loadBpmnContentForUrlQueryParam } from '../helpers/file-helper';
-import { BpmnPage } from './helpers/visu/bpmn-page-utils';
-
-let bpmnPage = new BpmnPage('bpmn-container', page);
+import { BpmnPageSvgTester } from './helpers/visu/bpmn-page-utils';
 
 describe('Check generated SVG in demo page', () => {
-  it('should display demo home page title', async () => {
-    await page.goto('http://localhost:10002');
-    await bpmnPage.expectPageTitle('BPMN Visualization Demo');
-    await bpmnPage.expectAvailableBpmnContainer();
-  });
-
   it('should display diagram in page', async () => {
-    await page.goto(`http://localhost:10002?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-task-end.bpmn')}`);
+    const pageTester = new BpmnPageSvgTester({ pageFileName: 'index', expectedPageTitle: 'BPMN Visualization Demo' }, page);
+    await pageTester.loadBPMNDiagramInRefreshedPage('simple-start-task-end');
 
-    await bpmnPage.expectEvent('StartEvent_1', 'Start Event 1');
-    await bpmnPage.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
-    await bpmnPage.expectTask('Activity_1', 'Task 1');
-    await bpmnPage.expectSequenceFlow('Flow_2');
-    await bpmnPage.expectEvent('EndEvent_1', 'End Event 1', false);
+    await pageTester.expectEvent('StartEvent_1', 'Start Event 1');
+    await pageTester.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
+    await pageTester.expectTask('Activity_1', 'Task 1');
+    await pageTester.expectSequenceFlow('Flow_2');
+    await pageTester.expectEvent('EndEvent_1', 'End Event 1', false);
   });
 });
 
 describe('Check generated SVG in lib-integration page', () => {
   it('should display diagram in page', async () => {
-    bpmnPage = new BpmnPage('bpmn-container-custom', page);
+    const pageTester = new BpmnPageSvgTester(
+      { pageFileName: 'lib-integration', expectedPageTitle: 'BPMN Visualization Lib Integration', bpmnContainerId: 'bpmn-container-custom' },
+      page,
+    );
+    await pageTester.loadBPMNDiagramInRefreshedPage();
 
-    await page.goto(`http://localhost:10002/lib-integration.html?bpmn=${loadBpmnContentForUrlQueryParam('../fixtures/bpmn/simple-start-only.bpmn')}`);
-    await bpmnPage.expectPageTitle('BPMN Visualization Lib Integration');
-    await bpmnPage.expectAvailableBpmnContainer();
-
-    await bpmnPage.expectEvent('StartEvent_1', 'Start Event Only');
+    await pageTester.expectEvent('StartEvent_1', 'Start Event Only');
   });
 });

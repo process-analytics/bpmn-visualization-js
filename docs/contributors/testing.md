@@ -179,11 +179,7 @@ The threshold can be configured by test and by os, we generally find the thresho
 The diagrams used by tests are located in the `test/fixtures/bpmn` folder and sub-folders. In practice, the pages used
 by tests are in charge of loading the BPMN diagrams.
 
-The first way to load diagrams is to pass the xml content as query parameter. Convenient functions exist to manage it.
-However, this only allows small diagrams. In case of the diagram is too large, the dev server responds with an `HTTP 400 error`.
-That's why this method is rarely used.
-
-The second way is to pass a relative path to the diagram as query parameter. The page is able to fetch the diagram content
+To load a diagram, just pass a relative path to the diagram as query parameter. The page is able to fetch the diagram content
 as the diagrams are served by the dev server.
 Convenient methods exist to only pass the name of the diagram without having to manage the folder tree to the file.
 
