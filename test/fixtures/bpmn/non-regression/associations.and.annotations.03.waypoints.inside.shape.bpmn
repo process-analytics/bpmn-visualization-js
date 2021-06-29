@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <semantic:definitions xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns:trisobpmn="http://www.trisotech.com/2014/triso/bpmn" xmlns:triso="http://www.trisotech.com/2015/triso/modeling" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:rss="http://purl.org/rss/2.0/" xmlns:trisofeed="http://trisotech.com/feed" xmlns:drools="http://www.jboss.org/drools" xmlns:openapi="https://openapis.org/omg/extension/1.0" xmlns="http://www.trisotech.com/definitions/_af3cbf6a-9c69-460b-9a1d-276711d30213" id="_af3cbf6a-9c69-460b-9a1d-276711d30213" name="Travel Booking with Event Subprocess" targetNamespace="http://www.trisotech.com/definitions/_af3cbf6a-9c69-460b-9a1d-276711d30213" trisobpmn:logoChoice="Default">
   <semantic:process id="_898aa942-9a96-4405-ae71-22b5e2e3d235" name="Simulate C.6.0" isClosed="false">
-    <semantic:subProcess id="_c38139c7-a2d1-47c7-b75a-19e14c7212c8">
       <semantic:task id="_3a2f133c-3ae1-4e21-94b5-6e8cf51acd74" />
       <semantic:task id="_b595ec43-0769-4864-8f2e-403c405c8217" />
       <semantic:task id="_ea5cc55d-bfce-49c6-8a1a-a8a41a85da12" />
@@ -14,13 +13,9 @@
       </semantic:boundaryEvent>
       <semantic:association id="_651344ad-d784-4ef2-9655-4bc6393ac323" associationDirection="One" sourceRef="_b25ecc7c-4eff-4a70-96f2-6b2f94cf19b1" targetRef="_3a2f133c-3ae1-4e21-94b5-6e8cf51acd74" />
       <semantic:association id="_98b2bd26-e113-4d19-b6a8-bcda781a823b" associationDirection="One" sourceRef="_fe3f9094-097b-416d-adeb-4b7e7e753f3c" targetRef="_0198160d-b56c-4919-9920-db5f32d16b3f" />
-    </semantic:subProcess>
   </semantic:process>
   <bpmndi:BPMNDiagram id="_f1aecfc3-a3da-4bde-bece-87786e25273d" name="Simple Travel Booking">
     <bpmndi:BPMNPlane id="_f1aecfc3-a3da-4bde-bece-87786e25273d_plane" bpmnElement="_898aa942-9a96-4405-ae71-22b5e2e3d235" trisobpmn:diagramWidth="2031.3859249319685" trisobpmn:diagramHeight="892.2783205633923">
-      <bpmndi:BPMNShape id="_2822d817-4645-4b60-8389-daf235f520f2" bpmnElement="_c38139c7-a2d1-47c7-b75a-19e14c7212c8" isExpanded="true" color:background-color="#ffffff" color:border-color="#000000">
-        <dc:Bounds x="161" y="120" width="748" height="400" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_2ade6242-6c43-4635-a3ce-c3bfa4c9221a" bpmnElement="_3a2f133c-3ae1-4e21-94b5-6e8cf51acd74" color:background-color="#ffffff" color:border-color="#000000">
         <dc:Bounds x="554" y="394" width="96" height="76" />
       </bpmndi:BPMNShape>
