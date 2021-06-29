@@ -20,7 +20,7 @@ import {
   ImageSnapshotThresholdConfig,
   MultiBrowserImageSnapshotThresholds,
 } from './helpers/visu/image-snapshot-config';
-import { PageTester } from './helpers/visu/PageTester';
+import { PageTester } from './helpers/visu/bpmn-page-utils';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
