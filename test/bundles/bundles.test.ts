@@ -16,7 +16,8 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import 'jest-playwright-preset';
-import { BpmnPage } from '../e2e/helpers/visu/bpmn-page-utils';
+import { BpmnPageSvgTester, TargetedPage } from '../e2e/helpers/visu/bpmn-page-utils';
+import { ElementHandle, Page } from 'playwright-core';
 
 describe('bundles', () => {
   describe('All bundles have been generated', () => {
@@ -40,17 +41,27 @@ describe('bundles', () => {
   });
 
   it('IIFE bundle - should generate BPMN Diagram SVG', async () => {
-    const pagePath = resolve(__dirname, 'static/lib-integration-iife.html');
-    await page.goto(`file://${pagePath}`);
+    const pageTester = new BpmnStaticPageSvgTester(
+      { pageFileName: 'lib-integration-iife', expectedPageTitle: 'BPMN Visualization IIFE bundle', bpmnContainerId: 'bpmn-container-for-iife-bundle' },
+      page,
+    );
+    await pageTester.loadBPMNDiagramInRefreshedPage();
 
-    const bpmnPage = new BpmnPage('bpmn-container-for-iife-bundle', page);
-    await bpmnPage.expectPageTitle('BPMN Visualization IIFE bundle');
-    await bpmnPage.expectAvailableBpmnContainer();
-
-    await bpmnPage.expectEvent('StartEvent_1', 'Start Event 1');
-    await bpmnPage.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
-    await bpmnPage.expectTask('Activity_1', 'Task 1');
-    await bpmnPage.expectSequenceFlow('Flow_2');
-    await bpmnPage.expectEvent('EndEvent_1', 'End Event 1', false);
+    await pageTester.expectEvent('StartEvent_1', 'Start Event 1');
+    await pageTester.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
+    await pageTester.expectTask('Activity_1', 'Task 1');
+    await pageTester.expectSequenceFlow('Flow_2');
+    await pageTester.expectEvent('EndEvent_1', 'End Event 1', false);
   });
 });
+
+class BpmnStaticPageSvgTester extends BpmnPageSvgTester {
+  constructor(targetedPage: TargetedPage, currentPage: Page) {
+    super(targetedPage, currentPage);
+  }
+
+  async loadBPMNDiagramInRefreshedPage(): Promise<ElementHandle<SVGElement | HTMLElement>> {
+    const url = `file://${resolve(__dirname, `static/${this.targetedPage.pageFileName}.html`)}`;
+    return super.doLoadBPMNDiagramInRefreshedPage(url, false);
+  }
+}

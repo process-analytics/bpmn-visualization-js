@@ -18,7 +18,7 @@ import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import 'jest-playwright-preset';
 import { FitType } from '../../src/component/options';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { PageTester } from './helpers/visu/PageTester';
+import { PageTester } from './helpers/visu/bpmn-page-utils';
 import { clickOnButton, getBpmnDiagramNames } from './helpers/test-utils';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
