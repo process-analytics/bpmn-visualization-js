@@ -103,7 +103,9 @@ export class PageTester {
   protected async doLoadBPMNDiagramInRefreshedPage(url: string, checkResponseStatus = true): Promise<void> {
     const response = await this.page.goto(url);
     if (checkResponseStatus) {
-      expect(response.status()).toBe(200);
+      // TODO fix inverted condition that also check 304 response, use https://www.npmjs.com/package/jest-extended#tobeoneofmembers
+      //expect(response.status()).toBe(200);
+      expect([200, 304]).toContain(response.status());
     }
 
     await this.bpmnPage.expectPageTitle(this.targetedPage.expectedPageTitle);
