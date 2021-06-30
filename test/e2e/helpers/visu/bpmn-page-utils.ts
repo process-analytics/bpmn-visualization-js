@@ -66,6 +66,17 @@ export interface TargetedPage {
   showMousePointer?: boolean;
 }
 
+export interface StyleOptions {
+  sequenceFlow?: {
+    useLightColors?: boolean;
+  };
+}
+
+export interface PageOptions {
+  loadOptions?: LoadOptions;
+  styleOptions?: StyleOptions;
+}
+
 export class PageTester {
   private readonly baseUrl: string;
   protected bpmnPage: BpmnPage;
@@ -81,8 +92,8 @@ export class PageTester {
     this.bpmnPage = new BpmnPage(this.bpmnContainerId, page);
   }
 
-  async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, loadOptions?: LoadOptions): Promise<ElementHandle<SVGElement | HTMLElement>> {
-    const url = this.getPageUrl(bpmnDiagramName, loadOptions);
+  async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, pageOptions?: PageOptions): Promise<ElementHandle<SVGElement | HTMLElement>> {
+    const url = this.getPageUrl(bpmnDiagramName, pageOptions?.loadOptions ?? { fit: { type: FitType.HorizontalVertical } }, pageOptions?.styleOptions);
     return this.doLoadBPMNDiagramInRefreshedPage(url);
   }
 
@@ -103,11 +114,13 @@ export class PageTester {
   /**
    * @param bpmnDiagramName the name of the BPMN file without extension
    * @param loadOptions optional fit options
+   * @param styleOptions optional style options
    */
-  private getPageUrl(bpmnDiagramName: string, loadOptions: LoadOptions = { fit: { type: FitType.HorizontalVertical } }): string {
+  private getPageUrl(bpmnDiagramName: string, loadOptions: LoadOptions, styleOptions?: StyleOptions): string {
     let url = this.baseUrl;
     url += `&fitTypeOnLoad=${loadOptions.fit?.type}&fitMargin=${loadOptions.fit?.margin}`;
     url += `&url=./static/diagrams/${bpmnDiagramName}.bpmn`;
+    url += `&style.seqFlow.light.colors=${styleOptions?.sequenceFlow?.useLightColors}`;
     return url;
   }
 }
@@ -122,7 +135,13 @@ export class BpmnPageSvgTester extends PageTester {
   }
 
   async loadBPMNDiagramInRefreshedPage(bpmnDiagramName?: string): Promise<ElementHandle<SVGElement | HTMLElement>> {
-    return super.loadBPMNDiagramInRefreshedPage(bpmnDiagramName ?? 'not-used-dedicated-diagram-loaded-by-the-page', { fit: { type: FitType.None } });
+    return super.loadBPMNDiagramInRefreshedPage(bpmnDiagramName ?? 'not-used-dedicated-diagram-loaded-by-the-page', {
+      loadOptions: {
+        fit: {
+          type: FitType.None,
+        },
+      },
+    });
   }
 
   async expectLabel(bpmnId: string, expectedText?: string): Promise<void> {

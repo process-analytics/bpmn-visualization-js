@@ -149,7 +149,13 @@ describe('diagram navigation - fit', () => {
   describe.each(fitTypes)('load options - fit %s', (onLoadFitType: FitType) => {
     describe.each(bpmnDiagramNames)('diagram %s', (bpmnDiagramName: string) => {
       it('load', async () => {
-        await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, { fit: { type: onLoadFitType } });
+        await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+          loadOptions: {
+            fit: {
+              type: onLoadFitType,
+            },
+          },
+        });
 
         const image = await page.screenshot({ fullPage: true });
 
@@ -162,7 +168,13 @@ describe('diagram navigation - fit', () => {
       });
 
       it.each(fitTypes)(`load + fit %s`, async (afterLoadFitType: FitType) => {
-        await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, { fit: { type: onLoadFitType } });
+        await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+          loadOptions: {
+            fit: {
+              type: onLoadFitType,
+            },
+          },
+        });
         await clickOnButton(afterLoadFitType);
 
         const image = await page.screenshot({ fullPage: true });
@@ -181,7 +193,14 @@ describe('diagram navigation - fit', () => {
         (onLoadFitType === FitType.Vertical && bpmnDiagramName === 'vertical')
       ) {
         it.each([-100, 0, 20, 50, null])('load with margin %s', async (margin: number) => {
-          await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, { fit: { type: onLoadFitType, margin: margin } });
+          await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+            loadOptions: {
+              fit: {
+                type: onLoadFitType,
+                margin: margin,
+              },
+            },
+          });
 
           const image = await page.screenshot({ fullPage: true });
 
