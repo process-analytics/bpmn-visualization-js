@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
+import { mxgraph } from '../../src/component/mxgraph/initializer';
 import BpmnVisualization from '../../src/component/BpmnVisualization';
 import { FitOptions, FitType, GlobalOptions, LoadOptions } from '../../src/component/options';
 import { log, logDownload, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { BpmnElement, Overlay } from '../../src/component/registry';
-import { BpmnElementKind } from '../../src/model/bpmn/internal/api';
+import { BpmnElementKind, FlowKind } from '../../src/model/bpmn/internal/api';
 import { SvgExporter } from './component/SvgExporter';
 import { downloadAsPng, downloadAsSvg } from './component/download';
 
@@ -149,6 +150,25 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
   return fitOptions;
 }
 
+function configureStyleFromParameters(parameters: URLSearchParams): void {
+  const seqFlowColorsLight = parameters.get('style.seqFlow.light.colors');
+
+  if (seqFlowColorsLight == 'true') {
+    const color = '#E9E9E9';
+    logStartup('Use light colors for sequence flows, color', color);
+
+    const graph = bpmnVisualization.graph;
+    const stylesheet = graph.getStylesheet();
+
+    // directly access the 'styles' map to update values. Using stylesheet.getCellStyle returns a copy of the style
+    const seqFlowStyle = stylesheet.styles[FlowKind.SEQUENCE_FLOW];
+    seqFlowStyle[mxgraph.mxConstants.STYLE_STROKECOLOR] = color;
+    seqFlowStyle[mxgraph.mxConstants.STYLE_FILLCOLOR] = color;
+
+    logStartup('Sequence flows style updated');
+  }
+}
+
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
   const container = config.globalOptions.container;
@@ -164,6 +184,8 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   log('Configuring Load Options');
   loadOptions = config.loadOptions || {};
   loadOptions.fit = getFitOptionsFromParameters(config, parameters);
+
+  configureStyleFromParameters(parameters);
 
   log("Checking if an 'url to fetch BPMN content' is provided as query parameter");
   const urlParameterValue = parameters.get('url');

@@ -285,6 +285,8 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   }
 }
 
+const useSequenceFlowLightColorOptions = new Map<string, boolean>([['associations.and.annotations.04.target.edges', true]]);
+
 describe('BPMN rendering', () => {
   const imageSnapshotThresholds = new ImageSnapshotThresholds();
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'bpmn', imageSnapshotThresholds.getDefault());
@@ -297,7 +299,9 @@ describe('BPMN rendering', () => {
   });
 
   it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+      styleOptions: { sequenceFlow: { useLightColors: useSequenceFlowLightColorOptions.get(bpmnDiagramName) ?? false } },
+    });
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
