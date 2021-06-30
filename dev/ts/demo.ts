@@ -15,11 +15,13 @@
  */
 
 import BpmnVisualization from '../../src/component/BpmnVisualization';
-import { GlobalOptions, FitOptions, FitType, LoadOptions } from '../../src/component/options';
-import { log, logStartup } from './helper';
+import { FitOptions, FitType, GlobalOptions, LoadOptions } from '../../src/component/options';
+import { log, logDownload, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { BpmnElement, Overlay } from '../../src/component/registry';
 import { BpmnElementKind } from '../../src/model/bpmn/internal/api';
+import { SvgExporter } from './component/SvgExporter';
+import { downloadAsPng, downloadAsSvg } from './component/download';
 
 export * from './helper';
 
@@ -172,4 +174,14 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
     return;
   }
   log("No 'url to fetch BPMN content' provided");
+}
+
+export function downloadSvg(): void {
+  logDownload('Trigger SVG Download');
+  downloadAsSvg(new SvgExporter(bpmnVisualization.graph).exportSvg());
+}
+
+export function downloadPng(): void {
+  logDownload('Trigger PNG Download');
+  downloadAsPng(new SvgExporter(bpmnVisualization.graph).exportSvgForPng());
 }

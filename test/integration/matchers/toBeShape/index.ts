@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ExpectedStateStyle, ExpectedCell, buildCommonExpectedStateStyle, buildCellMatcher, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
-import MatcherContext = jest.MatcherContext;
-import CustomMatcherResult = jest.CustomMatcherResult;
+import { buildCellMatcher, buildCommonExpectedStateStyle, buildReceivedCellWithCommonAttributes, ExpectedCell, ExpectedStateStyle } from '../matcher-utils';
 import {
   ExpectedBoundaryEventModelElement,
   ExpectedEventBasedGatewayModelElement,
@@ -27,6 +25,8 @@ import {
 } from '../../helpers/model-expect';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal/shape';
 import { mxgraph } from '../../../../src/component/mxgraph/initializer';
+import MatcherContext = jest.MatcherContext;
+import CustomMatcherResult = jest.CustomMatcherResult;
 
 function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): ExpectedStateStyle {
   const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
@@ -34,6 +34,10 @@ function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): Expe
   expectedStateStyle.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'middle';
   expectedStateStyle.align = expectedModel.align ? expectedModel.align : 'center';
   expectedStateStyle.strokeWidth = undefined;
+
+  expectedStateStyle.fillColor = [ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION].includes(expectedModel.kind)
+    ? 'none'
+    : expectedStateStyle.fillColor;
 
   if ('isHorizontal' in expectedModel) {
     expectedStateStyle.horizontal = expectedModel.isHorizontal ? 0 : 1;

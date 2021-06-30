@@ -36,7 +36,10 @@ export enum StyleDefault {
   SHAPE_ACTIVITY_MARKER_ICON_MARGIN = 5,
   SHAPE_ACTIVITY_MARKER_ICON_SIZE = 20, //TODO: this may be adjusted once #465 will be implemented see @https://github.com/process-analytics/bpmn-visualization-js/issues/465
   POOL_LABEL_SIZE = 30, // most of BPMN pool are ok when setting it to 30
+  POOL_LABEL_FILL_COLOR = 'none',
   LANE_LABEL_SIZE = 30, // most of BPMN lane are ok when setting it to 30
+  LANE_LABEL_FILL_COLOR = 'none',
+  TEXT_ANNOTATION_FILL_COLOR = 'none',
   // General
   DEFAULT_FILL_COLOR = 'White',
   DEFAULT_STROKE_COLOR = 'Black',
