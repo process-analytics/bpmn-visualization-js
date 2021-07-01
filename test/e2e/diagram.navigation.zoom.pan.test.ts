@@ -63,7 +63,7 @@ describe('diagram navigation - zoom and pan', () => {
   let containerCenter: Point;
 
   beforeEach(async () => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    await pageTester.loadBPMNDiagramInRefreshedPage(`navigation/${bpmnDiagramName}`);
     containerCenter = await pageTester.getContainerCenter();
   });
 

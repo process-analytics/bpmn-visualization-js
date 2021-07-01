@@ -338,14 +338,15 @@ describe('BPMN rendering', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'bpmn');
 
   const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' }, <Page>page);
-  const bpmnDiagramNames = getBpmnDiagramNames('non-regression');
+  const diagramSubfolderName = 'non-regression';
+  const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolderName).filter(n => n.startsWith('gateways'));
 
   it('check bpmn non-regression files availability', () => {
     expect(bpmnDiagramNames).toContain('gateways');
   });
 
   it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+    await pageTester.loadBPMNDiagramInRefreshedPage(`${diagramSubfolderName}/${bpmnDiagramName}`, {
       styleOptions: styleOptionsPerDiagram.get(bpmnDiagramName),
     });
 

@@ -36,7 +36,7 @@ describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
   let containerCenter: Point;
 
   beforeEach(async () => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
+    await pageTester.loadBPMNDiagramInRefreshedPage(`performance/${fileName}`);
     containerCenter = await pageTester.getContainerCenter();
   });
 

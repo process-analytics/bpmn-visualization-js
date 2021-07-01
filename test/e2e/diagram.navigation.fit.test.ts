@@ -19,8 +19,9 @@ import { join } from 'path';
 import { Page } from 'playwright';
 import { FitType } from '../../src/component/options';
 import { clickOnButton, getBpmnDiagramNames } from './helpers/test-utils';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { PageOptions, PageTester } from './helpers/visu/bpmn-page-utils';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+import { ElementHandle } from 'playwright';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   override getConfig(param: {
@@ -56,7 +57,8 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   }
 }
 
-const bpmnDiagramNames = getBpmnDiagramNames('diagram');
+const diagramSubfolderName = 'diagram';
+const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolderName);
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -142,11 +144,15 @@ describe('diagram navigation - fit', () => {
 
   const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
 
+  async function loadBPMNDiagramInRefreshedPage(diagram: string, pageOptions?: PageOptions): Promise<ElementHandle<SVGElement | HTMLElement>> {
+    return pageTester.loadBPMNDiagramInRefreshedPage(`${diagramSubfolderName}/${diagram}`, pageOptions);
+  }
+
   const fitTypes: FitType[] = [FitType.None, FitType.HorizontalVertical, FitType.Horizontal, FitType.Vertical, FitType.Center];
   describe.each(fitTypes)('load options - fit %s', (onLoadFitType: FitType) => {
     describe.each(bpmnDiagramNames)('diagram %s', (bpmnDiagramName: string) => {
       it('load', async () => {
-        await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+        await loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
           loadOptions: {
             fit: {
               type: onLoadFitType,
@@ -165,7 +171,7 @@ describe('diagram navigation - fit', () => {
       });
 
       it.each(fitTypes)(`load + fit %s`, async (afterLoadFitType: FitType) => {
-        await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+        await loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
           loadOptions: {
             fit: {
               type: onLoadFitType,
@@ -190,7 +196,7 @@ describe('diagram navigation - fit', () => {
         (onLoadFitType === FitType.Vertical && bpmnDiagramName === 'vertical')
       ) {
         it.each([-100, 0, 20, 50, null])('load with margin %s', async (margin: number) => {
-          await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+          await loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
             loadOptions: {
               fit: {
                 type: onLoadFitType,

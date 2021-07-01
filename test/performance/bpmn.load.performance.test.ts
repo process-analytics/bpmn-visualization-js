@@ -35,7 +35,7 @@ describe.each([1, 2, 3, 4, 5])('load performance', run => {
 
   it('check performance for file loading and displaying diagram with FitType.HorizontalVertical', async () => {
     const metricsStart = await metricsCollector.metrics();
-    await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
+    await pageTester.loadBPMNDiagramInRefreshedPage(`performance/${fileName}`);
     const metricsEnd = await metricsCollector.metrics();
 
     const metric = { ...calculateMetrics(metricsStart, metricsEnd), run: run };
