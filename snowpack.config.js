@@ -17,11 +17,14 @@ module.exports = {
   buildOptions: {
     out: 'build/snowpack',
   },
+  devOptions: {
+    open: false,
+  },
   root: 'src/',
   mount: {
     public: { url: '/', static: true },
     src: { url: '/lib' },
-    // dev: { url: '/lib' },
+    'dev/ts': { url: '/lib/dev' },
   },
   optimize: {
     bundle: true,
