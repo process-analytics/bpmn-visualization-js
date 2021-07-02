@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-// eslint-disable-next-line no-console
-console.info('called tailwind config');
 module.exports = {
   content: ['./dev/public/index.html'],
   theme: {

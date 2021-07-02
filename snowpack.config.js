@@ -23,16 +23,11 @@ module.exports = {
   devOptions: {
     open: 'none',
     port: 10001,
-    tailwindConfig: './tailwind.config.js', //TODO postcss/tailwind not called
+    tailwindConfig: './tailwind.config.js',
   },
-  // ['plugin-2', {'plugin-option': false}],
-  plugins: [
-    '@snowpack/plugin-postcss',
-    // ['@snowpack/plugin-postcss', { config: '../postcss.config.js' }], //TODO postcss/tailwind not called
-    // ['@snowpack/plugin-postcss', 'sfsqfsf'], //TODO postcss/tailwind not called
-  ],
+  plugins: ['@snowpack/plugin-postcss'],
   mount: {
-    'dev/public': { url: '/', static: true },
+    'dev/public': { url: '/', static: false }, // static must be false, otherwise postcss is not triggered
     src: { url: '/lib' },
     'dev/ts': { url: '/lib/dev' },
     // TODO this should be only mount when running tests (otherwise we may have it when building the demo)
