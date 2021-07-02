@@ -15,7 +15,7 @@
  */
 
 import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
-import { newMxGraphRenderer } from './mxgraph/MxGraphRenderer';
+import { newBpmnRenderer } from './mxgraph/BpmnRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
 import { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
 import { FitOptions, GlobalOptions, LoadOptions } from './options';
@@ -49,7 +49,7 @@ export default class BpmnVisualization {
     try {
       const bpmnModel = newBpmnParser().parse(xml);
       const renderedModel = this.bpmnModelRegistry.computeRenderedModel(bpmnModel);
-      newMxGraphRenderer(this.graph).render(renderedModel, options);
+      newBpmnRenderer(this.graph).render(renderedModel, options);
     } catch (e) {
       // TODO error handling
       window.alert(`Cannot load bpmn diagram: ${e.message}`);

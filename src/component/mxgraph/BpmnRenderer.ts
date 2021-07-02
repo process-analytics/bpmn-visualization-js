@@ -21,7 +21,7 @@ import Waypoint from '../../model/bpmn/internal/edge/Waypoint';
 import Bounds from '../../model/bpmn/internal/Bounds';
 import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
-import StyleConfigurator from './config/StyleConfigurator';
+import StyleComputer from './renderer/StyleComputer';
 import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
 import { BpmnMxGraph } from './BpmnMxGraph';
@@ -33,8 +33,8 @@ import { mxCell } from 'mxgraph'; // for types
 /**
  * @internal
  */
-export default class MxGraphRenderer {
-  constructor(readonly graph: BpmnMxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleConfigurator: StyleConfigurator) {}
+export class BpmnRenderer {
+  constructor(readonly graph: BpmnMxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleComputer: StyleComputer) {}
 
   public render(renderedModel: RenderedModel, loadOptions?: LoadOptions): void {
     this.insertShapesAndEdges(renderedModel);
@@ -89,7 +89,7 @@ export default class MxGraphRenderer {
       let labelBounds = shape.label?.bounds;
       // pool/lane label bounds are not managed for now (use hard coded values)
       labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
-      const style = this.styleConfigurator.computeStyle(shape, labelBounds);
+      const style = this.styleComputer.computeStyle(shape, labelBounds);
 
       this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
     }
@@ -103,7 +103,7 @@ export default class MxGraphRenderer {
         const source = this.getCell(bpmnElement.sourceRefId);
         const target = this.getCell(bpmnElement.targetRefId);
         const labelBounds = edge.label?.bounds;
-        const style = this.styleConfigurator.computeStyle(edge, labelBounds);
+        const style = this.styleComputer.computeStyle(edge, labelBounds);
         const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
         this.insertWaypoints(edge.waypoints, mxEdge);
 
@@ -129,7 +129,7 @@ export default class MxGraphRenderer {
 
   private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: mxCell): void {
     if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
-      const cell = this.graph.insertVertex(mxEdge, `messageFlowIcon_of_${mxEdge.id}`, undefined, 0, 0, 20, 14, this.styleConfigurator.computeMessageFlowIconStyle(edge));
+      const cell = this.graph.insertVertex(mxEdge, `messageFlowIcon_of_${mxEdge.id}`, undefined, 0, 0, 20, 14, this.styleComputer.computeMessageFlowIconStyle(edge));
       cell.geometry.relative = true;
       cell.geometry.offset = new mxgraph.mxPoint(-10, -7);
     }
@@ -164,6 +164,6 @@ export default class MxGraphRenderer {
 /**
  * @internal
  */
-export function newMxGraphRenderer(graph: BpmnMxGraph): MxGraphRenderer {
-  return new MxGraphRenderer(graph, new CoordinatesTranslator(graph), new StyleConfigurator(graph));
+export function newBpmnRenderer(graph: BpmnMxGraph): BpmnRenderer {
+  return new BpmnRenderer(graph, new CoordinatesTranslator(graph), new StyleComputer());
 }
