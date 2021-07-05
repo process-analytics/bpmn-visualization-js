@@ -14,25 +14,11 @@
  * limitations under the License.
  */
 
-import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../model/bpmn/internal/shape';
+import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../model/bpmn/internal/shape/ShapeUtil';
 import { SequenceFlowKind } from '../../../model/bpmn/internal/edge/SequenceFlowKind';
 import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
-import Shape from '../../../model/bpmn/internal/shape/Shape';
-import Edge from '../../../model/bpmn/internal/edge/Edge';
-import Bounds from '../../../model/bpmn/internal/Bounds';
-import {
-  ShapeBpmnActivity,
-  ShapeBpmnBoundaryEvent,
-  ShapeBpmnCallActivity,
-  ShapeBpmnEvent,
-  ShapeBpmnEventBasedGateway,
-  ShapeBpmnStartEvent,
-  ShapeBpmnSubProcess,
-} from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { Font } from '../../../model/bpmn/internal/Label';
 import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
-import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
 import { AssociationDirectionKind } from '../../../model/bpmn/internal/edge/AssociationDirectionKind';
 import { BpmnMxGraph } from '../BpmnMxGraph';
 import { mxgraph } from '../initializer';
