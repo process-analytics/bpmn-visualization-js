@@ -105,7 +105,7 @@
     "clipboardy": "^2.3.0",
     "cross-env": "^7.0.3",
     "cssnano": "^5.0.6",
-    "debug": "^4.3.1",
+    "debug": "^4.3.2",
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-notice": "^0.9.10",
