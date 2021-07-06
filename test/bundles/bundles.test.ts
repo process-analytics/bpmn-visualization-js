@@ -60,7 +60,7 @@ class BpmnStaticPageSvgTester extends BpmnPageSvgTester {
     super(targetedPage, currentPage);
   }
 
-  async loadBPMNDiagramInRefreshedPage(): Promise<ElementHandle<SVGElement | HTMLElement>> {
+  override async loadBPMNDiagramInRefreshedPage(): Promise<ElementHandle<SVGElement | HTMLElement>> {
     const url = `file://${resolve(__dirname, `static/${this.targetedPage.pageFileName}.html`)}`;
     return super.doLoadBPMNDiagramInRefreshedPage(url, false);
   }
