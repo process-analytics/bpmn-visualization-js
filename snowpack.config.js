@@ -22,7 +22,9 @@ module.exports = {
   devOptions: {
     open: 'none',
     port: 10001,
+    tailwindConfig: './tailwind.config.js',
   },
+  plugins: ['@snowpack/plugin-postcss'],
   root: 'src/',
   mount: {
     'dev/public': { url: '/', static: true },

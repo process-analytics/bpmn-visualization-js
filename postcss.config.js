@@ -18,7 +18,11 @@ const defaultPlugins = {
   autoprefixer: {},
 };
 
-const plugins = process.env.devLiveReloadMode
+// eslint-disable-next-line no-console
+console.info('called postcss config');
+// TODO use the env var set by snowpack
+const devCss = true; // process.env.devLiveReloadMode
+const plugins = devCss
   ? defaultPlugins
   : {
       ...defaultPlugins,
