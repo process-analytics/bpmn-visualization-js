@@ -28,7 +28,7 @@ abstract class GatewayShape extends mxgraph.mxRhombus {
 
   protected abstract paintInnerShape(paintParameter: PaintParameter): void;
 
-  public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);
@@ -43,7 +43,7 @@ abstract class GatewayShape extends mxgraph.mxRhombus {
  * @internal
  */
 export class ExclusiveGatewayShape extends GatewayShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -60,7 +60,7 @@ export class ExclusiveGatewayShape extends GatewayShape {
  * @internal
  */
 export class ParallelGatewayShape extends GatewayShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -77,7 +77,7 @@ export class ParallelGatewayShape extends GatewayShape {
  * @internal
  */
 export class InclusiveGatewayShape extends GatewayShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -94,7 +94,7 @@ export class InclusiveGatewayShape extends GatewayShape {
  * @internal
  */
 export class EventBasedGatewayShape extends GatewayShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 

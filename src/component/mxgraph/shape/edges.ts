@@ -23,7 +23,7 @@ export class BpmnConnector extends mxgraph.mxConnector {
     super(points, stroke, strokewidth);
   }
 
-  paintEdgeShape(c: mxAbstractCanvas2D, pts: mxPoint[]): void {
+  override paintEdgeShape(c: mxAbstractCanvas2D, pts: mxPoint[]): void {
     // The indirection via functions for markers is needed in
     // order to apply the offsets before painting the line and
     // paint the markers after painting the line.
