@@ -102,6 +102,7 @@ export function buildCellMatcher<R>(
   return { message: (): string => messagePrefix + messageSuffix, pass };
 }
 
+// TODO test code duplicated from the code under test StyleComputer.getFontStyleValue
 export function getFontStyleValue(expectedFont: ExpectedFont): number {
   let value = 0;
   if (expectedFont) {
