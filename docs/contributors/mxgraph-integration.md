@@ -9,7 +9,7 @@ are inserted into the `mxGraph` model:
 - `vertex` for BPMN Shapes
 - `edge` for BPMN Edges
 
-The main entry point for `mxGraph` rendering is `MxGraphRenderer`.
+The main entry point for `mxGraph` rendering is `BpmnRenderer`.
 
 If you are new to `mxGraph` or want to know more about it, please have a look at the [mxGraph tutorial](https://jgraph.github.io/mxgraph/docs/tutorial.html)
 and [mxGraph manual](https://jgraph.github.io/mxgraph/docs/manual.html).
@@ -37,7 +37,7 @@ The default mxGraph parent is the parent of
 
 The bpmn input source coordinates are absolute whereas mxgraph uses coordinates in the referential of the parent cell.
 As we define a parent-child relationship when inserting BPMN elements in the mxGraph model, a coordinate transformation
-layer is required. See `MxGraphRenderer` for more details.
+layer is required. See `BpmnRenderer` for more details.
 
 
 ## BPMN elements rendering

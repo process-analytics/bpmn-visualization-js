@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import StyleConfigurator from '../../../../../src/component/mxgraph/config/StyleConfigurator';
+import StyleComputer from '../../../../../src/component/mxgraph/renderer/StyleComputer';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, {
   ShapeBpmnActivity,
@@ -54,7 +54,6 @@ function newLabel(font: ExpectedFont, bounds?: Bounds): Label {
 
 /**
  * Returns a new `Shape` instance with arbitrary id and `undefined` bounds.
- * @param kind the `ShapeBpmnElementKind` to set in the new `ShapeBpmnElement` instance
  */
 function newShape(bpmnElement: ShapeBpmnElement, label?: Label, isHorizontal?: boolean): Shape {
   return new Shape('id', bpmnElement, undefined, label, isHorizontal);
@@ -112,12 +111,12 @@ function newAssociationFlow(kind: AssociationDirectionKind): AssociationFlow {
   return new AssociationFlow('id', 'name', undefined, undefined, kind);
 }
 
-describe('mxgraph renderer', () => {
-  const styleConfigurator = new StyleConfigurator(null); // we don't care of mxgraph graph here
+describe('Style Computer', () => {
+  const styleComputer = new StyleComputer();
 
   // shortcut as the current computeStyle implementation requires to pass the BPMN label bounds as extra argument
   function computeStyle(bpmnCell: Shape | Edge): string {
-    return styleConfigurator.computeStyle(bpmnCell, bpmnCell.label?.bounds);
+    return styleComputer.computeStyle(bpmnCell, bpmnCell.label?.bounds);
   }
 
   describe('compute style - shape label', () => {
@@ -217,7 +216,7 @@ describe('mxgraph renderer', () => {
     [MessageVisibleKind.INITIATING, 'initiating'],
   ]).it('compute style - message flow icon: %s', (messageVisibleKind, expected) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
-    expect(styleConfigurator.computeMessageFlowIconStyle(edge)).toEqual(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=${expected}`);
+    expect(styleComputer.computeMessageFlowIconStyle(edge)).toEqual(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=${expected}`);
   });
 
   describe('compute style - events kind', () => {
