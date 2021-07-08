@@ -27,7 +27,7 @@ export class BpmnMxGraph extends mxgraph.mxGraph {
   /**
    * @internal
    */
-  constructor(readonly container: HTMLElement) {
+  constructor(container: HTMLElement) {
     super(container);
     if (this.container) {
       // ensure we don't have a select text cursor on label hover, see #294
@@ -39,7 +39,7 @@ export class BpmnMxGraph extends mxgraph.mxGraph {
    * Overridden to set initial cumulativeZoomFactor
    * @internal
    */
-  fit(border: number, keepOrigin?: boolean, margin?: number, enabled?: boolean, ignoreWidth?: boolean, ignoreHeight?: boolean, maxHeight?: number): number {
+  override fit(border: number, keepOrigin?: boolean, margin?: number, enabled?: boolean, ignoreWidth?: boolean, ignoreHeight?: boolean, maxHeight?: number): number {
     const scale = super.fit(border, keepOrigin, margin, enabled, ignoreWidth, ignoreHeight, maxHeight);
     this.cumulativeZoomFactor = scale;
     return scale;
@@ -49,7 +49,7 @@ export class BpmnMxGraph extends mxgraph.mxGraph {
    * Overridden to set initial cumulativeZoomFactor
    * @internal
    */
-  zoomActual(): void {
+  override zoomActual(): void {
     super.zoomActual();
     this.cumulativeZoomFactor = this.view.scale;
   }
@@ -57,7 +57,7 @@ export class BpmnMxGraph extends mxgraph.mxGraph {
   /**
    * @internal
    */
-  public customFit(fitOptions: FitOptions): void {
+  customFit(fitOptions: FitOptions): void {
     // TODO avoid extra zoom/fit reset
     // see https://github.com/process-analytics/bpmn-visualization-js/issues/888
     this.zoomActual();
@@ -105,7 +105,7 @@ export class BpmnMxGraph extends mxgraph.mxGraph {
   /**
    * @internal
    */
-  zoomTo(scale: number, center?: boolean, up?: boolean, offsetX?: number, offsetY?: number, performScaling?: boolean): void {
+  override zoomTo(scale: number, center?: boolean, up?: boolean, offsetX?: number, offsetY?: number, performScaling?: boolean): void {
     if (scale === null) {
       const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(up, offsetX, offsetY);
       if (performScaling) {

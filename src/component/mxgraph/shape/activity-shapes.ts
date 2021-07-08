@@ -43,7 +43,7 @@ export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
     this.isRounded = true;
   }
 
-  public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
     // 0 is used for ratioParent as if we pass undefined to builder function the default 0.25 value will be used instead
     this.paintMarkerIcons(buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 0, iconStrokeWidth: 1.5 }));
@@ -101,7 +101,7 @@ abstract class BaseTaskShape extends BaseActivityShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  public paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
     this.paintTaskIcon(buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this }));
   }
@@ -113,7 +113,7 @@ abstract class BaseTaskShape extends BaseActivityShape {
  * @internal
  */
 export class TaskShape extends BaseTaskShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -128,7 +128,7 @@ export class TaskShape extends BaseTaskShape {
  * @internal
  */
 export class ServiceTaskShape extends BaseTaskShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -141,7 +141,7 @@ export class ServiceTaskShape extends BaseTaskShape {
  * @internal
  */
 export class UserTaskShape extends BaseTaskShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -154,7 +154,7 @@ export class UserTaskShape extends BaseTaskShape {
  * @internal
  */
 export class ReceiveTaskShape extends BaseTaskShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -195,7 +195,7 @@ export class ReceiveTaskShape extends BaseTaskShape {
  * @internal
  */
 export class SendTaskShape extends BaseTaskShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -208,7 +208,7 @@ export class SendTaskShape extends BaseTaskShape {
  * @internal
  */
 export class ManualTaskShape extends BaseTaskShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -221,7 +221,7 @@ export class ManualTaskShape extends BaseTaskShape {
  * @internal
  */
 export class ScriptTaskShape extends BaseTaskShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
@@ -238,7 +238,7 @@ export class ScriptTaskShape extends BaseTaskShape {
  * @internal
  */
 export class CallActivityShape extends BaseActivityShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
   }
 }
@@ -247,11 +247,11 @@ export class CallActivityShape extends BaseActivityShape {
  * @internal
  */
 export class SubProcessShape extends BaseActivityShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  public paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const subProcessKind = StyleUtils.getBpmnSubProcessKind(this.style);
     c.save(); // ensure we can later restore the configuration
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
@@ -270,7 +270,7 @@ export class SubProcessShape extends BaseActivityShape {
  * @internal
  */
 export class BusinessRuleTaskShape extends BaseTaskShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 

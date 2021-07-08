@@ -81,7 +81,7 @@ abstract class EventShape extends mxgraph.mxEllipse {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     this.markNonFullyRenderedEvents(c);
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, isFilled: this.withFilledIcon });
 
@@ -128,7 +128,7 @@ abstract class EventShape extends mxgraph.mxEllipse {
  * @internal
  */
 export class StartEventShape extends EventShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
     super(bounds, fill, stroke, strokewidth);
   }
 }
@@ -137,7 +137,7 @@ export class StartEventShape extends EventShape {
  * @internal
  */
 export class EndEventShape extends EventShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
     this.withFilledIcon = true;
   }
@@ -150,7 +150,7 @@ abstract class IntermediateEventShape extends EventShape {
 
   // this implementation is adapted from the draw.io BPMN 'throwing' outlines
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L431
-  protected paintOuterShape({ canvas, shapeConfig: { x, y, width, height, strokeWidth } }: PaintParameter): void {
+  protected override paintOuterShape({ canvas, shapeConfig: { x, y, width, height, strokeWidth } }: PaintParameter): void {
     canvas.ellipse(x, y, width, height);
     canvas.fillAndStroke();
 
@@ -164,7 +164,7 @@ abstract class IntermediateEventShape extends EventShape {
  * @internal
  */
 export class CatchIntermediateEventShape extends IntermediateEventShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 }
@@ -173,7 +173,7 @@ export class CatchIntermediateEventShape extends IntermediateEventShape {
  * @internal
  */
 export class ThrowIntermediateEventShape extends IntermediateEventShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
     this.withFilledIcon = true;
   }
@@ -183,7 +183,7 @@ export class ThrowIntermediateEventShape extends IntermediateEventShape {
  * @internal
  */
 export class BoundaryEventShape extends IntermediateEventShape {
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 }

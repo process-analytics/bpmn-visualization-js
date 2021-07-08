@@ -33,7 +33,7 @@ export interface MxGraphCustomOverlayPosition {
 export type MxGraphCustomOverlayStyle = Required<OverlayStyle>;
 
 export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
-  public readonly style: MxGraphCustomOverlayStyle;
+  readonly style: MxGraphCustomOverlayStyle;
 
   constructor(public label: string, options: MxGraphCustomOverlayOptions) {
     super(null, '', options.position.horizontalAlign, options.position.verticalAlign, null, 'default');
@@ -41,7 +41,7 @@ export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
   }
 
   // Based on original method from mxCellOverlay (mxCellOverlay.prototype.getBounds)
-  getBounds(state: mxCellState): mxRectangle {
+  override getBounds(state: mxCellState): mxRectangle {
     const isEdge = state.view.graph.getModel().isEdge(state.cell);
     const s = state.view.scale;
     let pt;

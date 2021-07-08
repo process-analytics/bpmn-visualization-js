@@ -19,7 +19,8 @@
       "node_modules/@types",
       "node_modules/@typed-mxgraph"
     ],
-    "stripInternal": true
+    "stripInternal": true,
+    "noImplicitOverride": true,
   },
   "include": [
     "src/**/*"
