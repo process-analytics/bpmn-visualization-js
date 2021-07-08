@@ -56,7 +56,7 @@ describe('bundles', () => {
 });
 
 class BpmnStaticPageSvgTester extends BpmnPageSvgTester {
-  override async loadBPMNDiagramInRefreshedPage(): Promise<void> {
+  async loadBPMNDiagramInRefreshedPage(): Promise<void> {
     const url = `file://${resolve(__dirname, `static/${this.targetedPage.pageFileName}.html`)}`;
     super.doLoadBPMNDiagramInRefreshedPage(url, false);
   }

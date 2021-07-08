@@ -84,7 +84,7 @@ export class EventShape extends mxgraph.mxEllipse {
     super(undefined, undefined, undefined); // the configuration is passed with the styles at runtime
   }
 
-  override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, isFilled: this.withFilledIcon });
 
     EventShape.setDashedOuterShapePattern(paintParameter, StyleUtils.getBpmnIsInterrupting(this.style));
@@ -132,7 +132,7 @@ export class EndEventShape extends EventShape {
 export class IntermediateEventShape extends EventShape {
   // this implementation is adapted from the draw.io BPMN 'throwing' outlines
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L431
-  protected override paintOuterShape({ canvas, shapeConfig: { x, y, width, height, strokeWidth } }: PaintParameter): void {
+  protected paintOuterShape({ canvas, shapeConfig: { x, y, width, height, strokeWidth } }: PaintParameter): void {
     canvas.ellipse(x, y, width, height);
     canvas.fillAndStroke();
 

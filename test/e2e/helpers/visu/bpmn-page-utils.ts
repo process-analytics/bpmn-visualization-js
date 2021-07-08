@@ -145,7 +145,7 @@ export class BpmnPageSvgTester extends PageTester {
     this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
   }
 
-  override async loadBPMNDiagramInRefreshedPage(bpmnDiagramName?: string): Promise<void> {
+  async loadBPMNDiagramInRefreshedPage(bpmnDiagramName?: string): Promise<void> {
     await super.loadBPMNDiagramInRefreshedPage(bpmnDiagramName ?? 'not-used-dedicated-diagram-loaded-by-the-page', {
       loadOptions: {
         fit: {
