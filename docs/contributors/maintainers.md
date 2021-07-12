@@ -26,7 +26,7 @@ are automated once the release is triggered but manual actions are required for:
 
 **Note:** This step triggers the release automation process.
 
-- Open [github actions](https://github.com/process-analytics/bpmn-visualization-js/actions?query=workflow%3ARelease)
+- Open [github actions](https://github.com/process-analytics/bpmn-visualization-js/actions/workflows/release.yml)
 - Click on the 'Run workflow' dropdown located on the right side of the page
 - Provide parameter value for New version type (default is patch, but you can choose one of the [new-version | major | minor | patch])
 - Click on the button 'Run workflow'
