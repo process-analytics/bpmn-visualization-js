@@ -100,7 +100,7 @@
     "@typescript-eslint/eslint-plugin": "^4.28.3",
     "@typescript-eslint/parser": "^4.28.3",
     "asciidoctor": "^2.2.4",
-    "autoprefixer": "^10.3.0",
+    "autoprefixer": "^10.3.1",
     "chokidar-cli": "^2.1.0",
     "clipboardy": "^2.3.0",
     "cross-env": "^7.0.3",
