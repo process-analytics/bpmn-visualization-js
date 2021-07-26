@@ -1,6 +1,6 @@
 {
   "name": "bpmn-visualization",
-  "version": "0.17.2",
+  "version": "0.17.2-post",
   "description": "A TypeScript library for visualizing process execution data on BPMN diagrams",
   "keywords": [
     "bpmn2",
