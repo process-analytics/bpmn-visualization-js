@@ -25,6 +25,10 @@ describe('array helper functions', () => {
     expect(filter(['lane', 'pool', 'callActivity', 'subProcess', 'task', 'userTask', 'serviceTask'], 'Task', false)).toEqual(['userTask', 'serviceTask']);
   });
 
+  it('filter an array of string with no case sensitive parameter', () => {
+    expect(filter(['lane', 'pool', 'callActivity', 'subProcess', 'task', 'userTask', 'serviceTask'], 'Task')).toEqual(['userTask', 'serviceTask']);
+  });
+
   it('filter an array of string enum with a case insensitive regex', () => {
     expect(filter(Object.values(ShapeBpmnElementKind), 'Task', true)).toEqual([
       'task',
@@ -48,5 +52,9 @@ describe('array helper functions', () => {
       'scriptTask',
       'businessRuleTask',
     ]);
+  });
+
+  it('filter an array of string enum with no case sensitive parameter', () => {
+    expect(filter(Object.values(ShapeBpmnElementKind), 'Task')).toEqual(['userTask', 'serviceTask', 'receiveTask', 'sendTask', 'manualTask', 'scriptTask', 'businessRuleTask']);
   });
 });
