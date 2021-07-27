@@ -15,7 +15,7 @@
  */
 
 import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
-import { filter } from '../../../../component/helpers/array-utils';
+import { filter, FilterParameter } from '../../../../component/helpers/array-utils';
 
 /**
  * @internal
@@ -36,8 +36,8 @@ export default class ShapeUtil {
   private static readonly EVENT_KINDS = ShapeUtil.filterKind('Event');
   private static readonly GATEWAY_KINDS = ShapeUtil.filterKind('Gateway');
 
-  // TODO : To modify when we will support globalTask (They are not considered as Task in the BPMN Semantic)
-  private static TASK_KINDS = ShapeUtil.filterKind('Task', true);
+  private static TASK_KINDS = ShapeUtil.filterKind('Task', { ignoreCase: true, notStartingWith: 'global' });
+  private static GLOBAL_TASK_KINDS = ShapeUtil.filterKind('Task', { startingWith: 'global' });
 
   private static ACTIVITY_KINDS = [...ShapeUtil.TASK_KINDS, ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.SUB_PROCESS];
   private static FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = [
@@ -49,8 +49,8 @@ export default class ShapeUtil {
     // ShapeBpmnElementKind.GATEWAY_COMPLEX,
   ];
 
-  private static filterKind(suffix: string, ignoreCase = false): ShapeBpmnElementKind[] {
-    return filter(Object.values(ShapeBpmnElementKind), suffix, ignoreCase);
+  private static filterKind(suffix: string, options?: FilterParameter): ShapeBpmnElementKind[] {
+    return filter(Object.values(ShapeBpmnElementKind), suffix, options);
   }
 
   public static isEvent(kind: ShapeBpmnElementKind): boolean {
