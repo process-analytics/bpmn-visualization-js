@@ -25,7 +25,7 @@ import { MessageVisibleKind } from '../../../../model/bpmn/internal/edge/Message
 import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
 import { Point } from '../../../../model/bpmn/json/DC';
 import { ConvertedElements } from './utils';
-import { ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
+import { ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { ensureIsArray } from '../../../helpers/array-utils';
 
@@ -115,7 +115,11 @@ export default class DiagramConverter {
         }
       }
 
-      if ((bpmnElement instanceof ShapeBpmnSubProcess || bpmnElement instanceof ShapeBpmnCallActivity) && !shape.isExpanded) {
+      if (
+        (bpmnElement instanceof ShapeBpmnSubProcess ||
+          (bpmnElement instanceof ShapeBpmnCallActivity && bpmnElement.callActivityKind === ShapeBpmnCallActivityKind.CALLING_PROCESS)) &&
+        !shape.isExpanded
+      ) {
         bpmnElement.markers.push(ShapeBpmnMarkerKind.EXPAND);
       }
 

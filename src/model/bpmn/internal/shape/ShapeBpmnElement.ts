@@ -16,7 +16,7 @@
 
 import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
 import { ShapeBpmnEventKind } from './ShapeBpmnEventKind';
-import { BpmnEventKind } from './ShapeUtil';
+import { BpmnEventKind, GlobalTaskKind } from './ShapeUtil';
 import { ShapeBpmnSubProcessKind } from './ShapeBpmnSubProcessKind';
 import { ShapeBpmnMarkerKind } from './ShapeBpmnMarkerKind';
 import { ShapeBpmnCallActivityKind } from './ShapeBpmnCallActivityKind';
@@ -42,7 +42,14 @@ export class ShapeBpmnActivity extends ShapeBpmnElement {
  * @internal
  */
 export class ShapeBpmnCallActivity extends ShapeBpmnActivity {
-  constructor(id: string, name: string, readonly callActivityKind: ShapeBpmnCallActivityKind, parentId: string, markers?: ShapeBpmnMarkerKind[]) {
+  constructor(
+    id: string,
+    name: string,
+    readonly callActivityKind: ShapeBpmnCallActivityKind,
+    parentId: string,
+    markers?: ShapeBpmnMarkerKind[],
+    readonly globalTaskKind?: GlobalTaskKind,
+  ) {
     super(id, name, ShapeBpmnElementKind.CALL_ACTIVITY, parentId, undefined, markers);
   }
 }

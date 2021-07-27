@@ -17,6 +17,7 @@
 import ShapeBpmnElement, { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
 import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../model/bpmn/internal/shape';
+import { GlobalTaskKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
 
 /**
  * @internal
@@ -108,11 +109,11 @@ export class ConvertedElements {
     this.eventDefinitionsOfDefinitions.set(id, eventDefinition);
   }
 
-  private globalTaskIds: string[] = [];
-  isGlobalTask(id: string): boolean {
-    return this.globalTaskIds.includes(id);
+  private globalTasks: Map<string, GlobalTaskKind> = new Map();
+  findGlobalTask(id: string): GlobalTaskKind {
+    return this.globalTasks.get(id);
   }
-  registerGlobalTask(id: string): void {
-    this.globalTaskIds.push(id);
+  registerGlobalTask(id: string, kind: GlobalTaskKind): void {
+    this.globalTasks.set(id, kind);
   }
 }

@@ -19,5 +19,5 @@
  */
 export enum ShapeBpmnCallActivityKind {
   CALLING_PROCESS = 'process',
-  // CALLING_GLOBAL_TASK = 'global task',
+  CALLING_GLOBAL_TASK = 'global task',
 }

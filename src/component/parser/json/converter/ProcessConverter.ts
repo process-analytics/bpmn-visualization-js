@@ -140,10 +140,15 @@ export default class ProcessConverter {
       // @ts-ignore
       return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate, markers);
     }
+    return this.buildShapeBpmnCallActivity(bpmnElement, processId, markers);
+  }
 
-    if (!this.convertedElements.isGlobalTask((bpmnElement as TCallActivity).calledElement)) {
+  private buildShapeBpmnCallActivity(bpmnElement: TActivity, processId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnCallActivity {
+    const globalTaskKind = this.convertedElements.findGlobalTask((bpmnElement as TCallActivity).calledElement);
+    if (!globalTaskKind) {
       return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, processId, markers);
     }
+    return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK, processId, markers, globalTaskKind);
   }
 
   private buildMarkers(bpmnElement: TActivity): ShapeBpmnMarkerKind[] {
@@ -212,7 +217,7 @@ export default class ProcessConverter {
     });
 
     ensureIsArray<string>(bpmnElement.eventDefinitionRef).forEach(eventDefinitionRef => {
-      const kind = this.convertedElements.findEventDefinitionOfDefinitions(eventDefinitionRef);
+      const kind = this.convertedElements.findEventDefinitionOfDefinition(eventDefinitionRef);
       eventDefinitions.set(kind, eventDefinitions.get(kind) + 1);
     });
 

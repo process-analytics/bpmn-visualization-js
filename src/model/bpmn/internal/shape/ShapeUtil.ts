@@ -27,6 +27,16 @@ export type BpmnEventKind =
   | ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW
   | ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH;
 
+/**
+ * @internal
+ */
+export type GlobalTaskKind =
+  | ShapeBpmnElementKind.GLOBAL_TASK
+  | ShapeBpmnElementKind.GLOBAL_TASK_MANUAL
+  | ShapeBpmnElementKind.GLOBAL_TASK_SCRIPT
+  | ShapeBpmnElementKind.GLOBAL_TASK_USER
+  | ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE;
+
 // TODO move to ShapeBpmnElementKind? and rename into ShapeBpmnElementKindUtil?
 // TODO bpmnEventKinds currently hosted in ProcessConverter may be hosted here
 /**
@@ -37,7 +47,6 @@ export default class ShapeUtil {
   private static readonly GATEWAY_KINDS = ShapeUtil.filterKind('Gateway');
 
   private static TASK_KINDS = ShapeUtil.filterKind('Task', { ignoreCase: true, notStartingWith: 'global' });
-  private static GLOBAL_TASK_KINDS = ShapeUtil.filterKind('Task', { startingWith: 'global' });
 
   private static ACTIVITY_KINDS = [...ShapeUtil.TASK_KINDS, ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.SUB_PROCESS];
   private static FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = [
