@@ -101,10 +101,10 @@ export class ConvertedElements {
   }
 
   private eventDefinitionsOfDefinitions: Map<string, ShapeBpmnEventKind> = new Map();
-  findEventDefinitionOfDefinitions(id: string): ShapeBpmnEventKind {
+  findEventDefinitionOfDefinition(id: string): ShapeBpmnEventKind {
     return this.eventDefinitionsOfDefinitions.get(id);
   }
-  registerEventDefinitionsOfDefinitions(id: string, eventDefinition: ShapeBpmnEventKind): void {
+  registerEventDefinitionsOfDefinition(id: string, eventDefinition: ShapeBpmnEventKind): void {
     this.eventDefinitionsOfDefinitions.set(id, eventDefinition);
   }
 

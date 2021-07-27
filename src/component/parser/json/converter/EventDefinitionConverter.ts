@@ -31,7 +31,7 @@ export default class EventDefinitionConverter {
       // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
       const eventDefinitions: string | TEventDefinition | (string | TEventDefinition)[] = definitions[eventKind + 'EventDefinition'];
       ensureIsArray<TEventDefinition>(eventDefinitions, true).forEach(eventDefinition => {
-        this.convertedElements.registerEventDefinitionsOfDefinitions(eventDefinition.id, eventKind);
+        this.convertedElements.registerEventDefinitionsOfDefinition(eventDefinition.id, eventKind);
       });
     });
   }
