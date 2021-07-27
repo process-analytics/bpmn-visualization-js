@@ -37,3 +37,12 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
   }
   return returnedArray.filter(value => value);
 }
+
+/**
+ * @internal
+ */
+export function filter<T extends string>(arrayToFilter: Array<T>, suffix: string, ignoreCase = false): Array<T> {
+  const caseInsensitiveRegExp = new RegExp(`${suffix}$`, 'i');
+  const caseSensitiveRegExp = new RegExp(`${suffix}$`);
+  return arrayToFilter.filter(element => (ignoreCase ? caseInsensitiveRegExp.test(element) : caseSensitiveRegExp.test(element)));
+}
