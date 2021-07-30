@@ -28,7 +28,7 @@ import {
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { StyleIdentifier } from '../StyleUtils';
-import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../model/bpmn/internal/shape';
+import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../model/bpmn/internal/shape/ShapeUtil';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
 import { Font } from '../../../model/bpmn/internal/Label';
@@ -72,6 +72,8 @@ export default class StyleComputer {
         styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
       } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
         styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, String(bpmnElement.instantiate));
+      } else if (bpmnElement instanceof ShapeBpmnCallActivity) {
+        styleValues.set(StyleIdentifier.BPMN_STYLE_GLOBAL_TASK_KIND, bpmnElement.globalTaskKind);
       }
 
       const markers: ShapeBpmnMarkerKind[] = bpmnElement.markers;
@@ -138,7 +140,8 @@ export default class StyleComputer {
     // when no label bounds, adjust the default style dynamically
     else if (
       bpmnCell instanceof Shape &&
-      (bpmnElement instanceof ShapeBpmnSubProcess || bpmnElement instanceof ShapeBpmnCallActivity) &&
+      (bpmnElement instanceof ShapeBpmnSubProcess ||
+        (bpmnElement instanceof ShapeBpmnCallActivity && bpmnElement.callActivityKind === ShapeBpmnCallActivityKind.CALLING_PROCESS)) &&
       !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)
     ) {
       styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_ALIGN, mxgraph.mxConstants.ALIGN_TOP);
