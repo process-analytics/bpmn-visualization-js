@@ -17,44 +17,105 @@ import { filter } from '../../../../src/component/helpers/array-utils';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal/shape';
 
 describe('array helper functions', () => {
-  it('filter an array of string with a case insensitive regex', () => {
-    expect(filter(['lane', 'pool', 'callActivity', 'subProcess', 'task', 'userTask', 'serviceTask'], 'Task', true)).toEqual(['task', 'userTask', 'serviceTask']);
+  describe('filter an array of string', () => {
+    it('filter an array of string with a case insensitive regex', () => {
+      expect(filter(['lane', 'pool', 'callActivity', 'subProcess', 'task', 'userTask', 'serviceTask'], 'Task', { ignoreCase: true })).toEqual(['task', 'userTask', 'serviceTask']);
+    });
+
+    it('filter an array of string with a case sensitive regex', () => {
+      expect(filter(['lane', 'pool', 'callActivity', 'subProcess', 'task', 'userTask', 'serviceTask'], 'Task', { ignoreCase: false })).toEqual(['userTask', 'serviceTask']);
+    });
+
+    it('filter an array of string with no case sensitive parameter', () => {
+      expect(filter(['lane', 'pool', 'callActivity', 'subProcess', 'task', 'userTask', 'serviceTask'], 'Task')).toEqual(['userTask', 'serviceTask']);
+    });
+
+    it('filter an array of string starting with', () => {
+      expect(filter(['subProcess', 'task', 'userTask', 'globalTask', 'globalUserTask', 'globalManualTask'], 'Task', { startingWith: 'global' })).toEqual([
+        'globalTask',
+        'globalUserTask',
+        'globalManualTask',
+      ]);
+    });
+
+    it('filter an array of string not starting with', () => {
+      expect(filter(['subProcess', 'task', 'userTask', 'globalTask', 'globalUserTask', 'globalManualTask'], 'Task', { notStartingWith: 'global' })).toEqual(['userTask']);
+    });
   });
 
-  it('filter an array of string with a case sensitive regex', () => {
-    expect(filter(['lane', 'pool', 'callActivity', 'subProcess', 'task', 'userTask', 'serviceTask'], 'Task', false)).toEqual(['userTask', 'serviceTask']);
-  });
+  describe('filter an array of string enum', () => {
+    it('filter an array of string enum with a case insensitive regex', () => {
+      expect(filter(Object.values(ShapeBpmnElementKind), 'Task', { ignoreCase: true })).toEqual([
+        'task',
+        'userTask',
+        'serviceTask',
+        'receiveTask',
+        'sendTask',
+        'manualTask',
+        'scriptTask',
+        'businessRuleTask',
+        'globalTask',
+        'globalUserTask',
+        'globalManualTask',
+        'globalScriptTask',
+        'globalBusinessRuleTask',
+      ]);
+    });
 
-  it('filter an array of string with no case sensitive parameter', () => {
-    expect(filter(['lane', 'pool', 'callActivity', 'subProcess', 'task', 'userTask', 'serviceTask'], 'Task')).toEqual(['userTask', 'serviceTask']);
-  });
+    it('filter an array of string enum with a case sensitive regex', () => {
+      expect(filter(Object.values(ShapeBpmnElementKind), 'Task', { ignoreCase: false })).toEqual([
+        'userTask',
+        'serviceTask',
+        'receiveTask',
+        'sendTask',
+        'manualTask',
+        'scriptTask',
+        'businessRuleTask',
+        'globalTask',
+        'globalUserTask',
+        'globalManualTask',
+        'globalScriptTask',
+        'globalBusinessRuleTask',
+      ]);
+    });
 
-  it('filter an array of string enum with a case insensitive regex', () => {
-    expect(filter(Object.values(ShapeBpmnElementKind), 'Task', true)).toEqual([
-      'task',
-      'userTask',
-      'serviceTask',
-      'receiveTask',
-      'sendTask',
-      'manualTask',
-      'scriptTask',
-      'businessRuleTask',
-    ]);
-  });
+    it('filter an array of string enum with no case sensitive parameter', () => {
+      expect(filter(Object.values(ShapeBpmnElementKind), 'Task')).toEqual([
+        'userTask',
+        'serviceTask',
+        'receiveTask',
+        'sendTask',
+        'manualTask',
+        'scriptTask',
+        'businessRuleTask',
+        'globalTask',
+        'globalUserTask',
+        'globalManualTask',
+        'globalScriptTask',
+        'globalBusinessRuleTask',
+      ]);
+    });
 
-  it('filter an array of string enum with a case sensitive regex', () => {
-    expect(filter(Object.values(ShapeBpmnElementKind), 'Task', false)).toEqual([
-      'userTask',
-      'serviceTask',
-      'receiveTask',
-      'sendTask',
-      'manualTask',
-      'scriptTask',
-      'businessRuleTask',
-    ]);
-  });
+    it('filter an array of string starting with', () => {
+      expect(filter(Object.values(ShapeBpmnElementKind), 'Task', { startingWith: 'global' })).toEqual([
+        'globalTask',
+        'globalUserTask',
+        'globalManualTask',
+        'globalScriptTask',
+        'globalBusinessRuleTask',
+      ]);
+    });
 
-  it('filter an array of string enum with no case sensitive parameter', () => {
-    expect(filter(Object.values(ShapeBpmnElementKind), 'Task')).toEqual(['userTask', 'serviceTask', 'receiveTask', 'sendTask', 'manualTask', 'scriptTask', 'businessRuleTask']);
+    it('filter an array of string not starting with', () => {
+      expect(filter(Object.values(ShapeBpmnElementKind), 'Task', { notStartingWith: 'global' })).toEqual([
+        'userTask',
+        'serviceTask',
+        'receiveTask',
+        'sendTask',
+        'manualTask',
+        'scriptTask',
+        'businessRuleTask',
+      ]);
+    });
   });
 });

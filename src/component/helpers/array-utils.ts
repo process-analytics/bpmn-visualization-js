@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
+/**
+ * @internal
+ *
+ * Not possible to use **startWith** and **notStartWith** in the same time
+ */
+export interface FilterParameter {
+  startingWith?: string;
+  notStartingWith?: string;
+  ignoreCase?: boolean;
+}
+
 function convertEmptyStringAndObject<T>(element: string | T, acceptEmptyString: boolean): T {
   if (element === '') {
     return acceptEmptyString ? ({} as T) : undefined;
@@ -41,7 +52,14 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
 /**
  * @internal
  */
-export function filter<T extends string>(arrayToFilter: Array<T>, suffix: string, ignoreCase = false): Array<T> {
-  const pattern = `${suffix}$`;
-  return arrayToFilter.filter(element => (ignoreCase ? new RegExp(pattern, 'i').test(element) : new RegExp(pattern).test(element)));
+export function filter<T extends string>(arrayToFilter: Array<T>, suffix: string, options?: FilterParameter): Array<T> {
+  let pattern = '';
+  if (options?.startingWith) {
+    pattern = pattern.concat(`^(${options.startingWith}).*`);
+  } else if (options?.notStartingWith) {
+    pattern = pattern.concat(`^(?!(${options.notStartingWith})).*`);
+  }
+  pattern = pattern.concat(`${suffix}$`);
+
+  return arrayToFilter.filter(element => (options?.ignoreCase ? new RegExp(pattern, 'i').test(element) : new RegExp(pattern).test(element)));
 }
