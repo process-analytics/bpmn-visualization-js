@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<semantic:definitions xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" id="definitions_id" targetNamespace="http://www.trisotech.com/definitions/_1373649849716">
+  <semantic:globalTask id="global_task_id" />
+  <semantic:globalBusinessRuleTask id="global_business_rule_task_id" />
+  <semantic:globalManualTask id="global_manual_task_id" />
+  <semantic:globalScriptTask id="global_script_task_id" />
+  <semantic:globalUserTask id="global_user_task_id" />
+  <semantic:process id="process_1_id" isExecutable="false">
+    <semantic:callActivity id="call_activity_calling_global_task_id" calledElement="global_task_id" />
+    <semantic:callActivity id="call_activity_calling_global_business_rule_task_id" calledElement="global_business_rule_task_id" />
+    <semantic:callActivity id="call_activity_calling_global_manual_task_id" calledElement="global_manual_task_id" />
+    <semantic:callActivity id="call_activity_calling_global_script_task_id" calledElement="global_script_task_id" />
+    <semantic:callActivity id="call_activity_calling_global_user_task_id" calledElement="global_user_task_id" />
+  </semantic:process>
+  <bpmndi:BPMNDiagram id="diagram_id" documentation="" resolution="96.00000267028808">
+    <bpmndi:BPMNPlane bpmnElement="process_1_id">
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_task_id" bpmnElement="call_activity_calling_global_task_id" isExpanded="true">
+        <dc:Bounds x="160" y="80" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_business_rule_task_id" bpmnElement="call_activity_calling_global_business_rule_task_id" isExpanded="true">
+        <dc:Bounds x="540" y="135" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_manual_task_id" bpmnElement="call_activity_calling_global_manual_task_id" isExpanded="true">
+        <dc:Bounds x="350" y="195" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_script_task_id" bpmnElement="call_activity_calling_global_script_task_id" isExpanded="true">
+        <dc:Bounds x="160" y="195" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_user_task_id" bpmnElement="call_activity_calling_global_user_task_id" isExpanded="true">
+        <dc:Bounds x="350" y="80" width="160" height="90" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</semantic:definitions>
