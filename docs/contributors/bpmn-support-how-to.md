@@ -175,11 +175,11 @@ The height and width in the comments should be used as original icon size when c
 the following. The values may differ from the svg viewport as `Svg2Js` resize the SVG source.
 ```typescript
 const originalIconSize = { width: 70, height: 50 };
-const canvas = this.newBpmnCanvas({ c, ratioFromParent, setIconOrigin, shape, icon }, originalIconSize);
+const canvas = this.newBpmnCanvas(paintParameter, originalIconSize);
 ```
 
 **Note**: The canvas used in the `IconPainter` may not support all mxGraph drawing functions. In that case, please open
-a Pull Request or an Issue to add the missing functions. 
+a Pull Request, or an Issue to add the missing functions. 
 
 
 #### <a name="icons-license"></a> Reusing existing icons
