@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
-<semantic:definitions id="definitions_id" name="A.1.0" targetNamespace="http://www.trisotech.com/definitions/_1373649849716" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
-                      xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL"
-                      xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<semantic:definitions xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                      xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="definitions_id" name="A.1.0" targetNamespace="http://www.trisotech.com/definitions/_1373649849716">
   <semantic:message id="message_id" />
   <semantic:collaboration id="collaboration_id">
     <!-- Participant -->
@@ -29,6 +29,13 @@
   <semantic:cancelEventDefinition id="top_cancel_definition_id" />
   <semantic:conditionalEventDefinition id="top_conditional_definition_id" />
   <semantic:escalationEventDefinition id="top_escalation_definition_id" />
+
+  <!-- Global task -->
+  <semantic:globalTask id="global_task_id" />
+  <semantic:globalBusinessRuleTask id="global_business_rule_task_id" />
+  <semantic:globalManualTask id="global_manual_task_id" />
+  <semantic:globalScriptTask id="global_script_task_id" />
+  <semantic:globalUserTask id="global_user_task_id" />
 
   <!-- Process -->
   <semantic:process id="process_2_id" isExecutable="false">
@@ -64,6 +71,67 @@
       <semantic:multiInstanceLoopCharacteristics isSequential="true" />
     </semantic:callActivity>
     <semantic:callActivity id="collapsed_call_activity_with_parallel_multi_instance_id" name="Collapsed Call Activity With Parallel Multi-instance" calledElement="process_2_id">
+      <semantic:multiInstanceLoopCharacteristics />
+    </semantic:callActivity>
+
+    <!-- Call Activity calling Global Task-->
+    <!-- Calling Global Task -->
+    <semantic:callActivity id="call_activity_calling_global_task_id" name="Call Activity Calling Global Task" calledElement="global_task_id" />
+    <semantic:callActivity id="call_activity_calling_global_task_with_loop_id" name="Call Activity Calling Global Task With Loop" calledElement="global_task_id">
+      <semantic:standardLoopCharacteristics />
+    </semantic:callActivity>
+    <semantic:callActivity id="call_activity_calling_global_task_with_sequential_multi_instance_id" name="Call Activity Calling Global Task With Sequential Multi-instance" calledElement="global_task_id">
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
+    </semantic:callActivity>
+    <semantic:callActivity id="call_activity_calling_global_task_with_parallel_multi_instance_id" name="Call Activity Calling Global Task With Parallel Multi-instance" calledElement="global_task_id">
+      <semantic:multiInstanceLoopCharacteristics />
+    </semantic:callActivity>
+
+    <!-- Calling Global Business Rule Task -->
+    <semantic:callActivity id="call_activity_calling_global_business_rule_task_id" name="Call Activity Calling Global Business Rule Task" calledElement="global_business_rule_task_id" />
+    <semantic:callActivity id="call_activity_calling_global_business_rule_task_with_loop_id" name="Call Activity Calling Global Business Rule Task With Loop" calledElement="global_business_rule_task_id">
+      <semantic:standardLoopCharacteristics />
+    </semantic:callActivity>
+    <semantic:callActivity id="call_activity_calling_global_business_rule_task_with_sequential_multi_instance_id" name="Call Activity Calling Global Business Rule Task With Sequential Multi-instance" calledElement="global_business_rule_task_id">
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
+    </semantic:callActivity>
+    <semantic:callActivity id="call_activity_calling_global_business_rule_task_with_parallel_multi_instance_id" name="Call Activity Calling Global Business Rule Task With Parallel Multi-instance" calledElement="global_business_rule_task_id">
+      <semantic:multiInstanceLoopCharacteristics />
+    </semantic:callActivity>
+
+    <!-- Calling Global Manual Task -->
+    <semantic:callActivity id="call_activity_calling_global_manual_task_id" name="Call Activity Calling Global Manual Task" calledElement="global_manual_task_id" />
+    <semantic:callActivity id="call_activity_calling_global_manual_task_with_loop_id" name="Call Activity Calling Global Manual Task With Loop" calledElement="global_manual_task_id">
+      <semantic:standardLoopCharacteristics />
+    </semantic:callActivity>
+    <semantic:callActivity id="call_activity_calling_global_manual_task_with_sequential_multi_instance_id" name="Call Activity Calling Global Manual Task With Sequential Multi-instance" calledElement="global_manual_task_id">
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
+    </semantic:callActivity>
+    <semantic:callActivity id="call_activity_calling_global_manual_task_with_parallel_multi_instance_id" name="Call Activity Calling Global Manual Task With Parallel Multi-instance" calledElement="global_manual_task_id">
+      <semantic:multiInstanceLoopCharacteristics />
+    </semantic:callActivity>
+
+    <!-- Calling Global Script Task -->
+    <semantic:callActivity id="call_activity_calling_global_script_task_id" name="Call Activity Calling Global Script Task" calledElement="global_script_task_id" />
+    <semantic:callActivity id="call_activity_calling_global_script_task_with_loop_id" name="Call Activity Calling Global Script Task With Loop" calledElement="global_script_task_id">
+      <semantic:standardLoopCharacteristics />
+    </semantic:callActivity>
+    <semantic:callActivity id="call_activity_calling_global_script_task_with_sequential_multi_instance_id" name="Call Activity Calling Global Script Task With Sequential Multi-instance" calledElement="global_script_task_id">
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
+    </semantic:callActivity>
+    <semantic:callActivity id="call_activity_calling_global_script_task_with_parallel_multi_instance_id" name="Call Activity Calling Global Script Task With Parallel Multi-instance" calledElement="global_script_task_id">
+      <semantic:multiInstanceLoopCharacteristics />
+    </semantic:callActivity>
+
+    <!-- Calling Global User Task -->
+    <semantic:callActivity id="call_activity_calling_global_user_task_id" name="Call Activity Calling Global User Task" calledElement="global_user_task_id" />
+    <semantic:callActivity id="call_activity_calling_global_user_task_with_loop_id" name="Call Activity Calling Global User Task With Loop" calledElement="global_user_task_id">
+      <semantic:standardLoopCharacteristics />
+    </semantic:callActivity>
+    <semantic:callActivity id="call_activity_calling_global_user_task_with_sequential_multi_instance_id" name="Call Activity Calling Global User Task With Sequential Multi-instance" calledElement="global_user_task_id">
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
+    </semantic:callActivity>
+    <semantic:callActivity id="call_activity_calling_global_user_task_with_parallel_multi_instance_id" name="Call Activity Calling Global User Task With Parallel Multi-instance" calledElement="global_user_task_id">
       <semantic:multiInstanceLoopCharacteristics />
     </semantic:callActivity>
 
@@ -207,8 +275,8 @@
     </semantic:subProcess>
 
     <!-- Collapsed -->
-    <semantic:subProcess id="collapsed_embedded_sub_process_id" name="Collapsed Embedded Sub-Process" >
-      <semantic:task id="task_in_collapsed_sub_process_id" name="Task In Collapsed Sub-Process"/>
+    <semantic:subProcess id="collapsed_embedded_sub_process_id" name="Collapsed Embedded Sub-Process">
+      <semantic:task id="task_in_collapsed_sub_process_id" name="Task In Collapsed Sub-Process" />
     </semantic:subProcess>
     <semantic:boundaryEvent id="message_boundary_event_attached_to_collapsed_embedded_sub_process_id" name="Interrupting Message Boundary Event attached to collapsed Sub-Process"
                             attachedToRef="collapsed_embedded_sub_process_id">
@@ -409,19 +477,19 @@
 
     <!-- Non-interrupting Boundary Event -->
     <semantic:boundaryEvent id="boundary_event_non_interrupting_message_id" name="Non-interrupting Message Boundary Intermediate Event" cancelActivity="false"
-                            attachedToRef="expanded_embedded_sub_process_id">
+                            attachedToRef="collapsed_embedded_sub_process_with_loop_id">
       <semantic:messageEventDefinition />
     </semantic:boundaryEvent>
     <semantic:boundaryEvent id="boundary_event_non_interrupting_message_on_top_id" name="Non-interrupting Message Boundary Intermediate Event On Top" cancelActivity="false"
-                            attachedToRef="expanded_embedded_sub_process_id">
+                            attachedToRef="collapsed_embedded_sub_process_with_parallel_multi_instance_id">
       <semantic:eventDefinitionRef>top_message_definition_id</semantic:eventDefinitionRef>
     </semantic:boundaryEvent>
     <semantic:boundaryEvent id="boundary_event_non_interrupting_timer_id" name="Non-interrupting Timer Boundary Intermediate Event" cancelActivity="false"
-                            attachedToRef="expanded_embedded_sub_process_id">
+                            attachedToRef="collapsed_call_activity_with_parallel_multi_instance_id">
       <semantic:timerEventDefinition />
     </semantic:boundaryEvent>
     <semantic:boundaryEvent id="boundary_event_non_interrupting_timer_on_top_id" name="Non-interrupting Timer Boundary Intermediate Event On Top" cancelActivity="false"
-                            attachedToRef="expanded_embedded_sub_process_id">
+                            attachedToRef="collapsed_embedded_sub_process_with_sequential_multi_instance_id">
       <semantic:eventDefinitionRef>top_timer_definition_id</semantic:eventDefinitionRef>
     </semantic:boundaryEvent>
     <semantic:boundaryEvent id="boundary_event_non_interrupting_signal_id" name="Non-interrupting Signal Boundary Intermediate Event" cancelActivity="false"
@@ -569,8 +637,8 @@
       <semantic:outgoing>conditional_sequence_flow_from_gateway_id</semantic:outgoing>
     </semantic:inclusiveGateway>
     <semantic:eventBasedGateway id="gateway_event_based_id" name="Event-Based Gateway" />
-    <semantic:eventBasedGateway id="gateway_event_based_instantiate_id" instantiate="true" name="Event-Based Gateway Instantiate" />
-    <semantic:eventBasedGateway id="gateway_event_based_instantiate_parallel_id" instantiate="true" eventGatewayType="Parallel" name="Event-Based Gateway Instantiate Parallel" />
+    <semantic:eventBasedGateway id="gateway_event_based_instantiate_id" name="Event-Based Gateway Instantiate" instantiate="true" />
+    <semantic:eventBasedGateway id="gateway_event_based_instantiate_parallel_id" name="Event-Based Gateway Instantiate Parallel" instantiate="true" eventGatewayType="Parallel" />
 
     <!-- Artifact -->
     <semantic:textAnnotation id="text_annotation_id">
@@ -606,45 +674,129 @@
     <bpmndi:BPMNPlane bpmnElement="collaboration_id">
       <!-- 1rst Process -->
       <bpmndi:BPMNShape id="shape_participant_1_id" bpmnElement="participant_1_id" isHorizontal="true">
-        <dc:Bounds x="160" y="580" width="3954" height="2200" />
+        <dc:Bounds x="160" y="580" width="5360" height="2200" />
       </bpmndi:BPMNShape>
 
       <!-- Activity -->
       <!-- Call Activity calling process-->
       <!-- Expanded -->
       <bpmndi:BPMNShape id="shape_expanded_call_activity_id" bpmnElement="expanded_call_activity_id" isExpanded="true">
-        <dc:Bounds x="2855" y="1400" width="370" height="200" />
+        <dc:Bounds x="3955" y="1270" width="370" height="200" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2910" y="1410" width="200" height="50" />
+          <dc:Bounds x="4040" y="1280" width="200" height="180" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_expanded_call_activity_with_loop_id" bpmnElement="expanded_call_activity_with_loop_id" isExpanded="true">
-        <dc:Bounds x="2855" y="1150" width="370" height="200" />
+        <dc:Bounds x="3565" y="1270" width="370" height="200" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_expanded_call_activity_with_sequential_multi_instance_id" bpmnElement="expanded_call_activity_with_sequential_multi_instance_id"
-                        isExpanded="true">
-        <dc:Bounds x="2855" y="910" width="370" height="200" />
+      <bpmndi:BPMNShape id="shape_expanded_call_activity_with_sequential_multi_instance_id" bpmnElement="expanded_call_activity_with_sequential_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="3175" y="1270" width="370" height="200" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_expanded_call_activity_with_parallel_multi_instance_id" bpmnElement="expanded_call_activity_with_parallel_multi_instance_id" isExpanded="true">
-        <dc:Bounds x="2855" y="660" width="370" height="200" />
+        <dc:Bounds x="2775" y="1270" width="370" height="200" />
       </bpmndi:BPMNShape>
 
       <!-- Collapsed -->
       <bpmndi:BPMNShape id="shape_collapsed_call_activity_id" bpmnElement="collapsed_call_activity_id" isExpanded="false">
-        <dc:Bounds x="2970" y="2275" width="140" height="90" />
+        <dc:Bounds x="5220" y="1325" width="140" height="90" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3000" y="2300" width="100" height="70" />
+          <dc:Bounds x="5240" y="1340" width="100" height="70" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_collapsed_call_activity_with_loop_id" bpmnElement="collapsed_call_activity_with_loop_id" isExpanded="false">
-        <dc:Bounds x="2970" y="2085" width="140" height="90" />
+        <dc:Bounds x="4970" y="1325" width="140" height="90" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_collapsed_call_activity_with_sequential_multi_instance_id" bpmnElement="collapsed_call_activity_with_sequential_multi_instance_id"
-                        isExpanded="false">
-        <dc:Bounds x="2970" y="1905" width="140" height="90" />
+      <bpmndi:BPMNShape id="shape_collapsed_call_activity_with_sequential_multi_instance_id" bpmnElement="collapsed_call_activity_with_sequential_multi_instance_id" isExpanded="false">
+        <dc:Bounds x="4730" y="1325" width="140" height="90" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_collapsed_call_activity_with_parallel_multi_instance_id" bpmnElement="collapsed_call_activity_with_parallel_multi_instance_id" isExpanded="false">
-        <dc:Bounds x="2970" y="1768" width="140" height="90" />
+        <dc:Bounds x="4530" y="1325" width="140" height="90" />
+      </bpmndi:BPMNShape>
+
+      <!-- Call Activity calling Global Task-->
+      <!-- Calling Global Task -->
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_task_id" bpmnElement="call_activity_calling_global_task_id" isExpanded="true">
+        <dc:Bounds x="4070" y="1500" width="160" height="90" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4090" y="1530" width="120" height="50" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_task_with_loop_id" bpmnElement="call_activity_calling_global_task_with_loop_id" isExpanded="true">
+        <dc:Bounds x="3670" y="1500" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_task_with_sequential_multi_instance_id" bpmnElement="call_activity_calling_global_task_with_sequential_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="3275" y="1500" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_task_with_parallel_multi_instance_id" bpmnElement="call_activity_calling_global_task_with_parallel_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="2880" y="1500" width="160" height="90" />
+      </bpmndi:BPMNShape>
+
+      <!-- Calling Global Business Rule Task -->
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_business_rule_task_id" bpmnElement="call_activity_calling_global_business_rule_task_id" isExpanded="true">
+        <dc:Bounds x="4070" y="1945" width="160" height="90" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4090" y="1985" width="120" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_business_rule_task_with_loop_id" bpmnElement="call_activity_calling_global_business_rule_task_with_loop_id" isExpanded="true">
+        <dc:Bounds x="3670" y="1945" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_business_rule_task_with_sequential_multi_instance_id" bpmnElement="call_activity_calling_global_business_rule_task_with_sequential_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="3275" y="1945" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_business_rule_task_with_parallel_multi_instance_id" bpmnElement="call_activity_calling_global_business_rule_task_with_parallel_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="2880" y="1945" width="160" height="90" />
+      </bpmndi:BPMNShape>
+
+      <!-- Calling Global Manual Task -->
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_manual_task_id" bpmnElement="call_activity_calling_global_manual_task_id" isExpanded="true">
+        <dc:Bounds x="4070" y="1835" width="160" height="90" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4090" y="1875" width="120" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_manual_task_with_loop_id" bpmnElement="call_activity_calling_global_manual_task_with_loop_id" isExpanded="true">
+        <dc:Bounds x="3670" y="1835" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_manual_task_with_sequential_multi_instance_id" bpmnElement="call_activity_calling_global_manual_task_with_sequential_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="3275" y="1835" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_manual_task_with_parallel_multi_instance_id" bpmnElement="call_activity_calling_global_manual_task_with_parallel_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="2880" y="1835" width="160" height="90" />
+      </bpmndi:BPMNShape>
+
+      <!-- Calling Global Script Task -->
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_script_task_id" bpmnElement="call_activity_calling_global_script_task_id" isExpanded="true">
+        <dc:Bounds x="4070" y="1725" width="160" height="90" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4090" y="1765" width="120" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_script_task_with_loop_id" bpmnElement="call_activity_calling_global_script_task_with_loop_id" isExpanded="true">
+        <dc:Bounds x="3670" y="1725" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_script_task_with_sequential_multi_instance_id" bpmnElement="call_activity_calling_global_script_task_with_sequential_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="3275" y="1725" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_script_task_with_parallel_multi_instance_id" bpmnElement="call_activity_calling_global_script_task_with_parallel_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="2880" y="1725" width="160" height="90" />
+      </bpmndi:BPMNShape>
+
+      <!-- Calling Global User Task -->
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_user_task_id" bpmnElement="call_activity_calling_global_user_task_id" isExpanded="true">
+        <dc:Bounds x="4070" y="1611" width="160" height="90" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4090" y="1651" width="120" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_user_task_with_loop_id" bpmnElement="call_activity_calling_global_user_task_with_loop_id" isExpanded="true">
+        <dc:Bounds x="3670" y="1611" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_user_task_with_sequential_multi_instance_id" bpmnElement="call_activity_calling_global_user_task_with_sequential_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="3275" y="1611" width="160" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_call_activity_calling_global_user_task_with_parallel_multi_instance_id" bpmnElement="call_activity_calling_global_user_task_with_parallel_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="2880" y="1611" width="160" height="90" />
       </bpmndi:BPMNShape>
 
       <!-- Task -->
@@ -801,71 +953,67 @@
       <!-- Expanded -->
       <!-- Expanded with elements -->
       <bpmndi:BPMNShape id="shape_expanded_embedded_sub_process_id" bpmnElement="expanded_embedded_sub_process_id" isExpanded="true">
-        <dc:Bounds x="3300" y="1400" width="370" height="200" />
+        <dc:Bounds x="3955" y="1040" width="370" height="200" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="edge_sequence_flow_in_sub_process_1_id" bpmnElement="sequence_flow_in_sub_process_1_id">
-        <di:waypoint x="3376" y="1500" />
-        <di:waypoint x="3430" y="1500" />
+        <di:waypoint x="4031" y="1140" />
+        <di:waypoint x="4085" y="1140" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="edge_sequence_flow_in_sub_process_2_id" bpmnElement="sequence_flow_in_sub_process_2_id">
-        <di:waypoint x="3530" y="1500" />
-        <di:waypoint x="3592" y="1500" />
+        <di:waypoint x="4185" y="1140" />
+        <di:waypoint x="4247" y="1140" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="shape_start_event_in_sub_process_id" bpmnElement="start_event_in_sub_process_id">
-        <dc:Bounds x="3340" y="1482" width="36" height="36" />
+        <dc:Bounds x="3995" y="1122" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3325" y="1525" width="67" height="27" />
+          <dc:Bounds x="3980" y="1165" width="67" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_task_in_sub_process_id" bpmnElement="task_in_sub_process_id">
-        <dc:Bounds x="3430" y="1460" width="100" height="80" />
+        <dc:Bounds x="4085" y="1100" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_end_event_in_sub_process_id" bpmnElement="end_event_in_sub_process_id">
-        <dc:Bounds x="3592" y="1482" width="36" height="36" />
+        <dc:Bounds x="4247" y="1122" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3579" y="1525" width="63" height="27" />
+          <dc:Bounds x="4234" y="1165" width="63" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <!-- END OF "Expanded with elements" -->
 
       <bpmndi:BPMNShape id="shape_expanded_embedded_sub_process_with_loop_id" bpmnElement="expanded_embedded_sub_process_with_loop_id" isExpanded="true">
-        <dc:Bounds x="3300" y="1150" width="370" height="200" />
+        <dc:Bounds x="3565" y="1040" width="370" height="200" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_expanded_embedded_sub_process_with_sequential_multi_instance_id" bpmnElement="expanded_embedded_sub_process_with_sequential_multi_instance_id"
-                        isExpanded="true">
-        <dc:Bounds x="3300" y="910" width="370" height="200" />
+      <bpmndi:BPMNShape id="shape_expanded_embedded_sub_process_with_sequential_multi_instance_id" bpmnElement="expanded_embedded_sub_process_with_sequential_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="3170" y="1040" width="370" height="200" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_expanded_embedded_sub_process_with_parallel_multi_instance_id" bpmnElement="expanded_embedded_sub_process_with_parallel_multi_instance_id"
-                        isExpanded="true">
-        <dc:Bounds x="3300" y="675" width="370" height="200" />
+      <bpmndi:BPMNShape id="shape_expanded_embedded_sub_process_with_parallel_multi_instance_id" bpmnElement="expanded_embedded_sub_process_with_parallel_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="2775" y="1040" width="370" height="200" />
       </bpmndi:BPMNShape>
 
       <!-- Collapsed -->
       <!-- Expanded with elements -->
       <bpmndi:BPMNShape id="shape_collapsed_embedded_sub_process_id" bpmnElement="collapsed_embedded_sub_process_id" isExpanded="false">
-        <dc:Bounds x="3415" y="2175" width="140" height="90" />
+        <dc:Bounds x="5220" y="1095" width="140" height="90" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_task_in_collapsed_sub_process_id" bpmnElement="task_in_collapsed_sub_process_id">
-        <dc:Bounds x="3435" y="2180" width="100" height="80" />
+        <dc:Bounds x="5240" y="1100" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_message_boundary_event_attached_to_collapsed_embedded_sub_process_id" bpmnElement="message_boundary_event_attached_to_collapsed_embedded_sub_process_id">
-        <dc:Bounds x="3539" y="2230" width="32" height="32" />
+        <dc:Bounds x="5344" y="1150" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3580" y="2200" width="100" height="53" />
+          <dc:Bounds x="5396" y="1120" width="79" height="80" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <!-- END OF "Expanded with elements" -->
 
       <bpmndi:BPMNShape id="shape_collapsed_embedded_sub_process_with_loop_id" bpmnElement="collapsed_embedded_sub_process_with_loop_id" isExpanded="false">
-        <dc:Bounds x="3415" y="2035" width="140" height="90" />
+        <dc:Bounds x="4970" y="1095" width="140" height="90" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_collapsed_embedded_sub_process_with_sequential_multi_instance_id" bpmnElement="collapsed_embedded_sub_process_with_sequential_multi_instance_id"
-                        isExpanded="false">
-        <dc:Bounds x="3415" y="1905" width="140" height="90" />
+      <bpmndi:BPMNShape id="shape_collapsed_embedded_sub_process_with_sequential_multi_instance_id" bpmnElement="collapsed_embedded_sub_process_with_sequential_multi_instance_id" isExpanded="false">
+        <dc:Bounds x="4730" y="1095" width="140" height="90" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_collapsed_embedded_sub_process_with_parallel_multi_instance_id" bpmnElement="collapsed_embedded_sub_process_with_parallel_multi_instance_id"
-                        isExpanded="false">
-        <dc:Bounds x="3415" y="1768" width="140" height="90" />
+      <bpmndi:BPMNShape id="shape_collapsed_embedded_sub_process_with_parallel_multi_instance_id" bpmnElement="collapsed_embedded_sub_process_with_parallel_multi_instance_id" isExpanded="false">
+        <dc:Bounds x="4530" y="1095" width="140" height="90" />
       </bpmndi:BPMNShape>
 
       <!-- Event Sub-Process -->
@@ -1025,34 +1173,32 @@
       <!-- END OF "Expanded with elements" -->
 
       <bpmndi:BPMNShape id="shape_expanded_event_sub_process_id" bpmnElement="expanded_event_sub_process_id" isExpanded="true">
-        <dc:Bounds x="3720" y="1410" width="370" height="200" />
+        <dc:Bounds x="3965" y="810" width="370" height="200" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_expanded_event_sub_process_with_loop_id" bpmnElement="expanded_event_sub_process_with_loop_id" isExpanded="true">
-        <dc:Bounds x="3720" y="1150" width="370" height="200" />
+        <dc:Bounds x="3570" y="810" width="370" height="200" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_expanded_event_sub_process_with_sequential_multi_instance_id" bpmnElement="expanded_event_sub_process_with_sequential_multi_instance_id"
                         isExpanded="true">
-        <dc:Bounds x="3720" y="910" width="370" height="200" />
+        <dc:Bounds x="3175" y="810" width="370" height="200" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_expanded_event_sub_process_with_parallel_multi_instance_id" bpmnElement="expanded_event_sub_process_with_parallel_multi_instance_id"
                         isExpanded="true">
-        <dc:Bounds x="3720" y="675" width="370" height="200" />
+        <dc:Bounds x="2775" y="810" width="370" height="200" />
       </bpmndi:BPMNShape>
 
       <!-- Collapsed -->
       <bpmndi:BPMNShape id="shape_collapsed_event_sub_process_id" bpmnElement="collapsed_event_sub_process_id" isExpanded="false">
-        <dc:Bounds x="3835" y="2175" width="140" height="90" />
+        <dc:Bounds x="5220" y="865" width="140" height="90" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_collapsed_event_sub_process_with_loop_id" bpmnElement="collapsed_event_sub_process_with_loop_id" isExpanded="false">
-        <dc:Bounds x="3835" y="2035" width="140" height="90" />
+        <dc:Bounds x="4970" y="865" width="140" height="90" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_collapsed_event_sub_process_with_sequential_multi_instance_id" bpmnElement="collapsed_event_sub_process_with_sequential_multi_instance_id"
-                        isExpanded="false">
-        <dc:Bounds x="3835" y="1905" width="140" height="90" />
+      <bpmndi:BPMNShape id="shape_collapsed_event_sub_process_with_sequential_multi_instance_id" bpmnElement="collapsed_event_sub_process_with_sequential_multi_instance_id" isExpanded="false">
+        <dc:Bounds x="4730" y="865" width="140" height="90" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="shape_collapsed_event_sub_process_with_parallel_multi_instance_id" bpmnElement="collapsed_event_sub_process_with_parallel_multi_instance_id"
-                        isExpanded="false">
-        <dc:Bounds x="3830" y="1768" width="140" height="90" />
+      <bpmndi:BPMNShape id="shape_collapsed_event_sub_process_with_parallel_multi_instance_id" bpmnElement="collapsed_event_sub_process_with_parallel_multi_instance_id" isExpanded="false">
+        <dc:Bounds x="4530" y="865" width="140" height="90" />
       </bpmndi:BPMNShape>
 
       <!-- Event -->
@@ -1428,63 +1574,63 @@
 
       <!-- Non-interrupting Boundary Event -->
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_message_id" bpmnElement="boundary_event_non_interrupting_message_id">
-        <dc:Bounds x="3654" y="1584" width="32" height="32" />
+        <dc:Bounds x="4954" y="1169" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3631" y="1627" width="79" height="66" />
+          <dc:Bounds x="4920" y="1217" width="79" height="66" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_message_on_top_id" bpmnElement="boundary_event_non_interrupting_message_on_top_id">
-        <dc:Bounds x="2839" y="1584" width="32" height="32" />
+        <dc:Bounds x="4514" y="1079" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2816" y="1627" width="79" height="66" />
+          <dc:Bounds x="4425" y="1074" width="79" height="66" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_timer_id" bpmnElement="boundary_event_non_interrupting_timer_id">
-        <dc:Bounds x="2839" y="644" width="32" height="32" />
+        <dc:Bounds x="4514" y="1309" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2751" y="653" width="79" height="53" />
+          <dc:Bounds x="4426" y="1318" width="79" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_timer_on_top_id" bpmnElement="boundary_event_non_interrupting_timer_on_top_id">
-        <dc:Bounds x="3654" y="659" width="32" height="32" />
+        <dc:Bounds x="4854" y="1079" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3621" y="597" width="79" height="53" />
+          <dc:Bounds x="4831" y="1013" width="79" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_signal_id" bpmnElement="boundary_event_non_interrupting_signal_id">
-        <dc:Bounds x="3094" y="2349" width="32" height="32" />
+        <dc:Bounds x="5344" y="1399" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3070" y="2381" width="81" height="53" />
+          <dc:Bounds x="5320" y="1431" width="81" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_signal_on_top_id" bpmnElement="boundary_event_non_interrupting_signal_on_top_id">
-        <dc:Bounds x="2954" y="2349" width="32" height="32" />
+        <dc:Bounds x="5204" y="1399" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2930" y="2381" width="81" height="53" />
+          <dc:Bounds x="5180" y="1431" width="81" height="53" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_conditional_id" bpmnElement="boundary_event_non_interrupting_conditional_id">
-        <dc:Bounds x="3094" y="2159" width="32" height="32" />
+        <dc:Bounds x="5094" y="1399" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3070" y="2191" width="81" height="53" />
+          <dc:Bounds x="5071" y="1431" width="79" height="66" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_conditional_on_top_id" bpmnElement="boundary_event_non_interrupting_conditional_on_top_id">
-        <dc:Bounds x="2954" y="2159" width="32" height="32" />
+        <dc:Bounds x="4954" y="1399" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2930" y="2191" width="81" height="53" />
+          <dc:Bounds x="4931" y="1431" width="79" height="66" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_escalation_id" bpmnElement="boundary_event_non_interrupting_escalation_id">
-        <dc:Bounds x="3094" y="1979" width="32" height="32" />
+        <dc:Bounds x="4854" y="1399" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="3070" y="2011" width="81" height="53" />
+          <dc:Bounds x="4831" y="1431" width="79" height="66" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_boundary_event_non_interrupting_escalation_on_top_id" bpmnElement="boundary_event_non_interrupting_escalation_on_top_id">
-        <dc:Bounds x="2954" y="1979" width="32" height="32" />
+        <dc:Bounds x="4714" y="1399" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2930" y="2011" width="81" height="53" />
+          <dc:Bounds x="4691" y="1431" width="79" height="66" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
@@ -1560,7 +1706,7 @@
         <di:waypoint x="1220" y="1040" />
         <di:waypoint x="1220" y="790" />
         <di:waypoint x="1093" y="790" />
-        <bpmndi:BPMNLabel/>
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="edge_conditional_sequence_flow_from_gateway_id" bpmnElement="conditional_sequence_flow_from_gateway_id">
         <di:waypoint x="1068" y="765" />
@@ -1568,7 +1714,7 @@
         <di:waypoint x="1360" y="680" />
         <di:waypoint x="1360" y="1090" />
         <di:waypoint x="1118" y="1090" />
-        <bpmndi:BPMNLabel/>
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="edge_message_flow_initiating_message_id" bpmnElement="message_flow_initiating_message_id" messageVisibleKind="initiating" />
       <bpmndi:BPMNEdge id="edge_message_flow_non_initiating_message_id" bpmnElement="message_flow_non_initiating_message_id" messageVisibleKind="non_initiating" />

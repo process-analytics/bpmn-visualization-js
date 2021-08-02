@@ -108,6 +108,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           macos: 0.000006, // 0.0005804554357724534%
         },
       ],
+      [
+        'call.activities',
+        {
+          macos: 0.000013, // 0.0012877039801018064%
+          windows: 0.000013, // 0.0012877039801018064%
+          linux: 0.000013, // 0.0012877039801018064%
+        },
+      ],
     ]);
   }
 
