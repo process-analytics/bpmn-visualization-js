@@ -290,7 +290,7 @@ describe('Style Computer', () => {
     });
   });
 
-  describe('compute style - call activities calling process', () => {
+  describe('compute style - call activities', () => {
     describe('compute style - call activities calling process', () => {
       describe.each([
         ['expanded', []],
