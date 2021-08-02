@@ -23,6 +23,7 @@ export enum ShapeBpmnElementKind {
   POOL = 'pool',
   CALL_ACTIVITY = 'callActivity',
   SUB_PROCESS = 'subProcess',
+
   TASK = 'task',
   TASK_USER = 'userTask',
   TASK_SERVICE = 'serviceTask',
@@ -31,6 +32,12 @@ export enum ShapeBpmnElementKind {
   TASK_MANUAL = 'manualTask',
   TASK_SCRIPT = 'scriptTask',
   TASK_BUSINESS_RULE = 'businessRuleTask',
+
+  GLOBAL_TASK = 'globalTask',
+  GLOBAL_TASK_USER = 'globalUserTask',
+  GLOBAL_TASK_MANUAL = 'globalManualTask',
+  GLOBAL_TASK_SCRIPT = 'globalScriptTask',
+  GLOBAL_TASK_BUSINESS_RULE = 'globalBusinessRuleTask',
 
   TEXT_ANNOTATION = 'textAnnotation',
 

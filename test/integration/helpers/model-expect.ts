@@ -19,30 +19,30 @@ import { MessageVisibleKind } from '../../../src/model/bpmn/internal/edge/Messag
 import { SequenceFlowKind } from '../../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import BpmnVisualization from '../../../src/component/BpmnVisualization';
 import {
+  toBeAssociationFlow,
+  toBeBoundaryEvent,
+  toBeBusinessRuleTask,
+  toBeCallActivity,
   toBeCell,
   toBeCellWithParentAndGeometry,
-  toBeSequenceFlow,
-  toBeMessageFlow,
-  toBeAssociationFlow,
-  toBeShape,
-  toBeCallActivity,
-  toBeTask,
-  toBeServiceTask,
-  toBeUserTask,
-  toBeReceiveTask,
-  toBeSendTask,
-  toBeManualTask,
-  toBeScriptTask,
-  toBeBusinessRuleTask,
-  toBeStartEvent,
   toBeEndEvent,
-  toBeIntermediateThrowEvent,
-  toBeIntermediateCatchEvent,
-  toBeBoundaryEvent,
   toBeEventBasedGateway,
-  toBeSubProcess,
-  toBePool,
+  toBeIntermediateCatchEvent,
+  toBeIntermediateThrowEvent,
   toBeLane,
+  toBeManualTask,
+  toBeMessageFlow,
+  toBePool,
+  toBeReceiveTask,
+  toBeScriptTask,
+  toBeSendTask,
+  toBeSequenceFlow,
+  toBeServiceTask,
+  toBeShape,
+  toBeStartEvent,
+  toBeSubProcess,
+  toBeTask,
+  toBeUserTask,
 } from '../matchers';
 import { mxGeometry } from 'mxgraph'; // for types
 import { ExpectedOverlay } from '../matchers/matcher-utils';
@@ -57,7 +57,7 @@ declare global {
       toBeMessageFlow(modelElement: ExpectedEdgeModelElement): R;
       toBeAssociationFlow(modelElement: ExpectedEdgeModelElement): R;
       toBeShape(modelElement: ExpectedShapeModelElement): R;
-      toBeCallActivity(modelElement: ExpectedShapeModelElement): R;
+      toBeCallActivity(modelElement: ExpectedCallActivityModelElement): R;
       toBeTask(modelElement: ExpectedShapeModelElement): R;
       toBeServiceTask(modelElement: ExpectedShapeModelElement): R;
       toBeUserTask(modelElement: ExpectedShapeModelElement): R;
@@ -141,6 +141,10 @@ export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
 
 export interface ExpectedSubProcessModelElement extends ExpectedShapeModelElement {
   subProcessKind: ShapeBpmnSubProcessKind;
+}
+
+export interface ExpectedCallActivityModelElement extends ExpectedShapeModelElement {
+  globalTaskKind?: ShapeBpmnElementKind;
 }
 
 export interface ExpectedEdgeModelElement {

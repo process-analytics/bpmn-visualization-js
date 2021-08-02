@@ -18,6 +18,8 @@ import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
 import { ConvertedElements } from './utils';
 import { TGlobalTask } from '../../../../model/bpmn/json/baseElement/rootElement/globalTask';
 import { ensureIsArray } from '../../../helpers/array-utils';
+import { GlobalTaskKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
+import { ShapeBpmnElementKind } from '../../../../model/bpmn/internal/shape';
 
 /**
  * @internal
@@ -26,16 +28,16 @@ export default class GlobalTaskConverter {
   constructor(readonly convertedElements: ConvertedElements) {}
 
   deserialize(definitions: TDefinitions): void {
-    this.parseGlobalTasks(definitions.globalTask);
-    this.parseGlobalTasks(definitions.globalBusinessRuleTask);
-    this.parseGlobalTasks(definitions.globalManualTask);
-    this.parseGlobalTasks(definitions.globalScriptTask);
-    this.parseGlobalTasks(definitions.globalUserTask);
+    this.parseGlobalTasks(definitions.globalTask, ShapeBpmnElementKind.GLOBAL_TASK);
+    this.parseGlobalTasks(definitions.globalBusinessRuleTask, ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE);
+    this.parseGlobalTasks(definitions.globalManualTask, ShapeBpmnElementKind.GLOBAL_TASK_MANUAL);
+    this.parseGlobalTasks(definitions.globalScriptTask, ShapeBpmnElementKind.GLOBAL_TASK_SCRIPT);
+    this.parseGlobalTasks(definitions.globalUserTask, ShapeBpmnElementKind.GLOBAL_TASK_USER);
   }
 
-  private parseGlobalTasks<T extends TGlobalTask>(globalTasks: T | T[]): void {
+  private parseGlobalTasks<T extends TGlobalTask>(globalTasks: T | T[], kind: GlobalTaskKind): void {
     ensureIsArray<T>(globalTasks).forEach(globalTask => {
-      this.convertedElements.registerGlobalTask(globalTask.id);
+      this.convertedElements.registerGlobalTask(globalTask.id, kind);
     });
   }
 }

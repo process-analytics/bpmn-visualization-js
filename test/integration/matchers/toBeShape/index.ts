@@ -16,6 +16,7 @@
 import { buildCellMatcher, buildCommonExpectedStateStyle, buildReceivedCellWithCommonAttributes, ExpectedCell, ExpectedStateStyle } from '../matcher-utils';
 import {
   ExpectedBoundaryEventModelElement,
+  ExpectedCallActivityModelElement,
   ExpectedEventBasedGatewayModelElement,
   ExpectedEventModelElement,
   ExpectedShapeModelElement,
@@ -53,7 +54,8 @@ function buildExpectedStyle(
     | ExpectedEventModelElement
     | ExpectedStartEventModelElement
     | ExpectedBoundaryEventModelElement
-    | ExpectedEventBasedGatewayModelElement,
+    | ExpectedEventBasedGatewayModelElement
+    | ExpectedCallActivityModelElement,
 ): string {
   let expectedStyle: string = expectedModel.kind;
   if ('eventKind' in expectedModel) {
@@ -61,6 +63,9 @@ function buildExpectedStyle(
   }
   if ('subProcessKind' in expectedModel) {
     expectedStyle = expectedStyle + `.*bpmn.subProcessKind=${expectedModel.subProcessKind}`;
+  }
+  if ('globalTaskKind' in expectedModel) {
+    expectedStyle = expectedStyle + `.*bpmn.globalTaskKind=${expectedModel.globalTaskKind}`;
   }
   if (expectedModel.isInstantiating !== undefined) {
     expectedStyle = expectedStyle + `.*bpmn.isInstantiating=${expectedModel.isInstantiating}`;
@@ -113,16 +118,8 @@ export function toBeLane(this: MatcherContext, received: string, expected: Expec
   return buildShapeMatcher('toBeLane', this, received, { ...expected, kind: ShapeBpmnElementKind.LANE, styleShape: mxgraph.mxConstants.SHAPE_SWIMLANE, isHorizontal });
 }
 
-export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildCellMatcher(
-    'toBeCallActivity',
-    this,
-    received,
-    { ...expected, kind: ShapeBpmnElementKind.CALL_ACTIVITY },
-    'Shape',
-    buildExpectedCell,
-    buildReceivedCellWithCommonAttributes,
-  );
+export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedCallActivityModelElement): CustomMatcherResult {
+  return buildShapeMatcher('toBeCallActivity', this, received, { ...expected, kind: ShapeBpmnElementKind.CALL_ACTIVITY });
 }
 
 export function toBeSubProcess(this: MatcherContext, received: string, expected: ExpectedSubProcessModelElement): CustomMatcherResult {

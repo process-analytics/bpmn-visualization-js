@@ -17,6 +17,7 @@
 import { ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal/shape';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
 import { mxgraph } from './initializer';
+import { GlobalTaskKind } from '../../model/bpmn/internal/shape/ShapeUtil';
 
 export enum MarkerIdentifier {
   ARROW_DASH = 'bpmn.dash',
@@ -73,6 +74,8 @@ export enum StyleIdentifier {
   BPMN_STYLE_MESSAGE_FLOW_ICON = 'bpmn.messageFlowIcon',
   BPMN_STYLE_EVENT_BASED_GATEWAY_KIND = 'bpmn.gatewayKind',
   BPMN_STYLE_EXTRA_CSS_CLASSES = 'bpmn.extra.css.classes',
+  BPMN_STYLE_GLOBAL_TASK_KIND = 'bpmn.globalTaskKind',
+
   // for edge
   EDGE = 'bpmn.edge',
   EDGE_START_FILL_COLOR = 'bpmn.edge.startFillColor',
@@ -137,6 +140,10 @@ export default class StyleUtils {
     return (
       mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel
     );
+  }
+
+  public static getBpmnGlobalTaskKind(style: any): GlobalTaskKind {
+    return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_GLOBAL_TASK_KIND, undefined);
   }
 }
 /* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */

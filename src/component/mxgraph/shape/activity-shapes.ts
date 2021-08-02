@@ -16,7 +16,7 @@
 
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { buildPaintParameter, IconPainterProvider, PaintParameter, ShapeConfiguration } from './render';
-import { ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal/shape';
+import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal/shape';
 import BpmnCanvas from './render/BpmnCanvas';
 import { orderActivityMarkers } from './render/utils';
 import { mxgraph } from '../initializer';
@@ -240,6 +240,29 @@ export class ScriptTaskShape extends BaseTaskShape {
 export class CallActivityShape extends BaseActivityShape {
   constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
     super(bounds, fill, stroke, strokewidth);
+  }
+
+  override paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+    switch (StyleUtils.getBpmnGlobalTaskKind(this.style)) {
+      case ShapeBpmnElementKind.GLOBAL_TASK_MANUAL:
+        c.setFillColor('LightSalmon');
+        break;
+      case ShapeBpmnElementKind.GLOBAL_TASK_SCRIPT:
+        c.setFillColor('HotPink');
+        break;
+      case ShapeBpmnElementKind.GLOBAL_TASK_USER:
+        c.setFillColor('LemonChiffon');
+        break;
+      case ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE:
+        c.setFillColor('PaleGreen');
+        break;
+      case ShapeBpmnElementKind.GLOBAL_TASK:
+      default:
+        // No symbol for the Call Activity calling a Global Task or calling a Process
+        this.iconPainter.paintEmptyIcon();
+    }
+
+    super.paintBackground(c, x, y, w, h);
   }
 }
 
