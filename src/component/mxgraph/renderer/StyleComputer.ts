@@ -62,24 +62,9 @@ export default class StyleComputer {
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
-      styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
-
-      if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
-        styleValues.set(StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
-      }
+      this.computeEventShapeStyle(bpmnElement, styleValues);
     } else if (bpmnElement instanceof ShapeBpmnActivity) {
-      if (bpmnElement instanceof ShapeBpmnSubProcess) {
-        styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
-      } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
-        styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, String(bpmnElement.instantiate));
-      } else if (bpmnElement instanceof ShapeBpmnCallActivity) {
-        styleValues.set(StyleIdentifier.BPMN_STYLE_GLOBAL_TASK_KIND, bpmnElement.globalTaskKind);
-      }
-
-      const markers: ShapeBpmnMarkerKind[] = bpmnElement.markers;
-      if (markers.length > 0) {
-        styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
-      }
+      this.computeActivityShapeStyle(bpmnElement, styleValues);
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
       // mxgraph.mxConstants.STYLE_HORIZONTAL is for the label
       // In BPMN, isHorizontal is for the Shape
@@ -90,6 +75,29 @@ export default class StyleComputer {
     }
 
     return styleValues;
+  }
+
+  private static computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, styleValues: Map<string, string | number>): void {
+    styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
+
+    if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
+      styleValues.set(StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
+    }
+  }
+
+  private static computeActivityShapeStyle(bpmnElement: ShapeBpmnActivity, styleValues: Map<string, string | number>): void {
+    if (bpmnElement instanceof ShapeBpmnSubProcess) {
+      styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
+    } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
+      styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, String(bpmnElement.instantiate));
+    } else if (bpmnElement instanceof ShapeBpmnCallActivity) {
+      styleValues.set(StyleIdentifier.BPMN_STYLE_GLOBAL_TASK_KIND, bpmnElement.globalTaskKind);
+    }
+
+    const markers: ShapeBpmnMarkerKind[] = bpmnElement.markers;
+    if (markers.length > 0) {
+      styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
+    }
   }
 
   private static computeEdgeStyle(edge: Edge): string[] {
