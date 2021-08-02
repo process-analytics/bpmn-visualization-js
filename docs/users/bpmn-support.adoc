@@ -92,6 +92,25 @@ The default rendering uses `white` as fill color and `black` as stroke color.
 |icon:check-circle-o[]
 |
 
+|Call Activity calling a Global Task
+|icon:check-circle-o[]
+|
+
+|Call Activity calling a Global User Task
+|icon:check-circle-o[]
+|
+
+|Call Activity calling a Global Manual Task
+|icon:check-circle-o[]
+|
+
+|Call Activity calling a Global Script Task
+|icon:check-circle-o[]
+|
+
+|Call Activity calling a Global Business Rule Task
+|icon:check-circle-o[]
+|
 
 |Business Rule Task
 |icon:check-circle-o[]

@@ -39,7 +39,7 @@ import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import Bounds from '../../../../../src/model/bpmn/internal/Bounds';
-import { BpmnEventKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
+import { BpmnEventKind, GlobalTaskKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import each from 'jest-each';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { AssociationDirectionKind } from '../../../../../src/model/bpmn/internal/edge/AssociationDirectionKind';
@@ -71,8 +71,12 @@ function newShapeBpmnActivity(kind: ShapeBpmnElementKind, markers?: ShapeBpmnMar
   return new ShapeBpmnActivity('id', 'name', kind, undefined, instantiate, markers);
 }
 
-function newShapeBpmnCallActivity(markers?: ShapeBpmnMarkerKind[]): ShapeBpmnElement {
+function newShapeBpmnCallActivityCallingProcess(markers?: ShapeBpmnMarkerKind[]): ShapeBpmnElement {
   return new ShapeBpmnCallActivity('id', 'name', ShapeBpmnCallActivityKind.CALLING_PROCESS, undefined, markers);
+}
+
+function newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind: GlobalTaskKind, markers?: ShapeBpmnMarkerKind[]): ShapeBpmnElement {
+  return new ShapeBpmnCallActivity('id', 'name', ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK, undefined, markers, globalTaskKind);
 }
 
 function newShapeBpmnEvent(bpmnElementKind: BpmnEventKind, eventKind: ShapeBpmnEventKind): ShapeBpmnEvent {
@@ -287,23 +291,47 @@ describe('Style Computer', () => {
   });
 
   describe('compute style - call activities', () => {
-    describe.each([
-      ['expanded', []],
-      ['collapsed', [ShapeBpmnMarkerKind.EXPAND]],
-    ])(`compute style - %s call activities`, (expandKind, markers: ShapeBpmnMarkerKind[]) => {
-      it(`${expandKind} call activity without label bounds`, () => {
-        const shape = newShape(newShapeBpmnCallActivity(markers), newLabel({ name: 'Arial' }));
-        const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-        const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
-        expect(computeStyle(shape)).toEqual(`callActivity${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
-      });
+    describe('compute style - call activities calling process', () => {
+      describe.each([
+        ['expanded', []],
+        ['collapsed', [ShapeBpmnMarkerKind.EXPAND]],
+      ])(`compute style - %s call activities`, (expandKind, markers: ShapeBpmnMarkerKind[]) => {
+        it(`${expandKind} call activity without label bounds`, () => {
+          const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'Arial' }));
+          const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
+          const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
+          expect(computeStyle(shape)).toEqual(`callActivity${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
+        });
 
-      it(`${expandKind} call activity with label bounds`, () => {
-        const shape = newShape(newShapeBpmnCallActivity(markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-        const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-        expect(computeStyle(shape)).toEqual(
-          `callActivity${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
-        );
+        it(`${expandKind} call activity with label bounds`, () => {
+          const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
+          const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
+          expect(computeStyle(shape)).toEqual(
+            `callActivity${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
+          );
+        });
+      });
+    });
+
+    describe('compute style - call activities calling global task', () => {
+      describe.each([
+        [ShapeBpmnElementKind.GLOBAL_TASK as GlobalTaskKind],
+        [ShapeBpmnElementKind.GLOBAL_TASK_MANUAL as GlobalTaskKind],
+        [ShapeBpmnElementKind.GLOBAL_TASK_SCRIPT as GlobalTaskKind],
+        [ShapeBpmnElementKind.GLOBAL_TASK_USER as GlobalTaskKind],
+        [ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE as GlobalTaskKind],
+      ])(`compute style - call activities calling %s`, (globalTaskKind: GlobalTaskKind) => {
+        it(`call activity calling ${globalTaskKind} without label bounds`, () => {
+          const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind), newLabel({ name: 'Arial' }));
+          expect(computeStyle(shape)).toEqual(`callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=Arial`);
+        });
+
+        it(`call activity calling ${globalTaskKind} with label bounds`, () => {
+          const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
+          expect(computeStyle(shape)).toEqual(
+            `callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
+          );
+        });
       });
     });
   });
@@ -382,9 +410,20 @@ describe('Style Computer', () => {
         }
 
         if (bpmnKind == ShapeBpmnElementKind.CALL_ACTIVITY) {
-          it(`${bpmnKind} with Loop & Expand (collapsed) markers`, () => {
-            const shape = newShape(newShapeBpmnCallActivity([markerKind, ShapeBpmnMarkerKind.EXPAND]));
+          it(`${bpmnKind} calling process with ${markerKind} & Expand (collapsed) markers`, () => {
+            const shape = newShape(newShapeBpmnCallActivityCallingProcess([markerKind, ShapeBpmnMarkerKind.EXPAND]));
             expect(computeStyle(shape)).toEqual(`callActivity;bpmn.markers=${markerKind},expand`);
+          });
+
+          it.each([
+            [ShapeBpmnElementKind.GLOBAL_TASK as GlobalTaskKind],
+            [ShapeBpmnElementKind.GLOBAL_TASK_MANUAL as GlobalTaskKind],
+            [ShapeBpmnElementKind.GLOBAL_TASK_SCRIPT as GlobalTaskKind],
+            [ShapeBpmnElementKind.GLOBAL_TASK_USER as GlobalTaskKind],
+            [ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE as GlobalTaskKind],
+          ])(`${bpmnKind} calling global task with ${markerKind} marker`, (globalTaskKind: GlobalTaskKind) => {
+            const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind, [markerKind]));
+            expect(computeStyle(shape)).toEqual(`callActivity;bpmn.globalTaskKind=${globalTaskKind};bpmn.markers=${markerKind}`);
           });
         }
       },

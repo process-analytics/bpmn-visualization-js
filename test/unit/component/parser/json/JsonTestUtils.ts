@@ -26,6 +26,7 @@ import { SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
 import { FlowKind } from '../../../../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
+import { GlobalTaskKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -42,6 +43,7 @@ export interface ExpectedActivityShape extends ExpectedShape {
 }
 
 export interface ExpectedCallActivityShape extends ExpectedActivityShape {
+  bpmnElementGlobalTaskKind?: GlobalTaskKind;
   bpmnElementCallActivityKind?: ShapeBpmnCallActivityKind;
 }
 
@@ -142,6 +144,7 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape | Expecte
 
     if (bpmnElement instanceof ShapeBpmnCallActivity) {
       expect(bpmnElement.callActivityKind).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementCallActivityKind);
+      expect(bpmnElement.globalTaskKind).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementGlobalTaskKind);
     }
   }
 

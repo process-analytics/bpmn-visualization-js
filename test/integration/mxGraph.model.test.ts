@@ -405,25 +405,25 @@ describe('mxGraph model', () => {
       eventKind: ShapeBpmnEventKind.MESSAGE,
       isInterrupting: false,
       label: 'Non-interrupting Message Boundary Intermediate Event',
-      parentId: 'expanded_embedded_sub_process_id',
+      parentId: 'collapsed_embedded_sub_process_with_loop_id',
     });
     expect('boundary_event_non_interrupting_message_on_top_id').toBeBoundaryEvent({
       eventKind: ShapeBpmnEventKind.MESSAGE,
       isInterrupting: false,
       label: 'Non-interrupting Message Boundary Intermediate Event On Top',
-      parentId: 'expanded_embedded_sub_process_id',
+      parentId: 'collapsed_embedded_sub_process_with_parallel_multi_instance_id',
     });
     expect('boundary_event_non_interrupting_timer_id').toBeBoundaryEvent({
       eventKind: ShapeBpmnEventKind.TIMER,
       isInterrupting: false,
       label: 'Non-interrupting Timer Boundary Intermediate Event',
-      parentId: 'expanded_embedded_sub_process_id',
+      parentId: 'collapsed_call_activity_with_parallel_multi_instance_id',
     });
     expect('boundary_event_non_interrupting_timer_on_top_id').toBeBoundaryEvent({
       eventKind: ShapeBpmnEventKind.TIMER,
       isInterrupting: false,
       label: 'Non-interrupting Timer Boundary Intermediate Event On Top',
-      parentId: 'expanded_embedded_sub_process_id',
+      parentId: 'collapsed_embedded_sub_process_with_sequential_multi_instance_id',
     });
     expect('boundary_event_non_interrupting_signal_id').toBeBoundaryEvent({
       eventKind: ShapeBpmnEventKind.SIGNAL,
@@ -801,6 +801,137 @@ describe('mxGraph model', () => {
       label: 'Collapsed Call Activity With Parallel Multi-instance',
       markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
       parentId: 'participant_1_id',
+    });
+
+    // Call Activity calling Global Task
+    // Calling Global Task
+    expect('call_activity_calling_global_task_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Task',
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
+      verticalAlign: 'top',
+    });
+    expect('call_activity_calling_global_task_with_loop_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Task With Loop',
+      markers: [ShapeBpmnMarkerKind.LOOP],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
+    });
+    expect('call_activity_calling_global_task_with_sequential_multi_instance_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Task With Sequential Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
+    });
+    expect('call_activity_calling_global_task_with_parallel_multi_instance_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Task With Parallel Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
+    });
+
+    // Calling Global Business Rule Task
+    expect('call_activity_calling_global_business_rule_task_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Business Rule Task',
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE,
+      verticalAlign: 'top',
+    });
+    expect('call_activity_calling_global_business_rule_task_with_loop_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Business Rule Task With Loop',
+      markers: [ShapeBpmnMarkerKind.LOOP],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE,
+    });
+    expect('call_activity_calling_global_business_rule_task_with_sequential_multi_instance_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Business Rule Task With Sequential Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE,
+    });
+    expect('call_activity_calling_global_business_rule_task_with_parallel_multi_instance_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Business Rule Task With Parallel Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE,
+    });
+
+    // Calling Global Manual Task
+    expect('call_activity_calling_global_manual_task_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Manual Task',
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_MANUAL,
+      verticalAlign: 'top',
+    });
+    expect('call_activity_calling_global_manual_task_with_loop_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Manual Task With Loop',
+      markers: [ShapeBpmnMarkerKind.LOOP],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_MANUAL,
+    });
+    expect('call_activity_calling_global_manual_task_with_sequential_multi_instance_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Manual Task With Sequential Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_MANUAL,
+    });
+    expect('call_activity_calling_global_manual_task_with_parallel_multi_instance_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Manual Task With Parallel Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_MANUAL,
+    });
+
+    // Calling Global Script Task
+    expect('call_activity_calling_global_script_task_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Script Task',
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_SCRIPT,
+      verticalAlign: 'top',
+    });
+    expect('call_activity_calling_global_script_task_with_loop_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Script Task With Loop',
+      markers: [ShapeBpmnMarkerKind.LOOP],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_SCRIPT,
+    });
+    expect('call_activity_calling_global_script_task_with_sequential_multi_instance_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Script Task With Sequential Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_SCRIPT,
+    });
+    expect('call_activity_calling_global_script_task_with_parallel_multi_instance_id').toBeCallActivity({
+      label: 'Call Activity Calling Global Script Task With Parallel Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_SCRIPT,
+    });
+
+    // Calling Global User Task
+    expect('call_activity_calling_global_user_task_id').toBeCallActivity({
+      label: 'Call Activity Calling Global User Task',
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_USER,
+      verticalAlign: 'top',
+    });
+    expect('call_activity_calling_global_user_task_with_loop_id').toBeCallActivity({
+      label: 'Call Activity Calling Global User Task With Loop',
+      markers: [ShapeBpmnMarkerKind.LOOP],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_USER,
+    });
+    expect('call_activity_calling_global_user_task_with_sequential_multi_instance_id').toBeCallActivity({
+      label: 'Call Activity Calling Global User Task With Sequential Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_USER,
+    });
+    expect('call_activity_calling_global_user_task_with_parallel_multi_instance_id').toBeCallActivity({
+      label: 'Call Activity Calling Global User Task With Parallel Multi-instance',
+      markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+      parentId: 'participant_1_id',
+      globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_USER,
     });
 
     // activity
