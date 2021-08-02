@@ -150,8 +150,7 @@ async function removeAllOverlays(bpmnElementId: string): Promise<void> {
   await clickOnButton('clear');
 }
 
-const imageSnapshotThresholds = new ImageSnapshotThresholds();
-const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'overlays', imageSnapshotThresholds.getDefault());
+const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'overlays');
 
 // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
 const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' });
@@ -396,8 +395,7 @@ describe('Overlay style', () => {
     }
   }
 
-  const imageSnapshotThresholds = new OverlayStylesImageSnapshotThresholds();
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'overlays', imageSnapshotThresholds.getDefault());
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new OverlayStylesImageSnapshotThresholds(), 'overlays');
 
   it.each(['fill', 'font', 'stroke'])(`add overlay with custom %s`, async (style: string) => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
