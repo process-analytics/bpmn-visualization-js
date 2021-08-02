@@ -15,6 +15,7 @@
  */
 
 import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
+import { filter } from '../../../../component/helpers/array-utils';
 
 /**
  * @internal
@@ -49,12 +50,7 @@ export default class ShapeUtil {
   ];
 
   private static filterKind(suffix: string, ignoreCase = false): ShapeBpmnElementKind[] {
-    return Object.values(ShapeBpmnElementKind).filter(kind => {
-      if (ignoreCase) {
-        return kind.endsWith(suffix) || kind.toLowerCase().endsWith(suffix.toLowerCase());
-      }
-      return kind.endsWith(suffix);
-    });
+    return filter(Object.values(ShapeBpmnElementKind), suffix, ignoreCase);
   }
 
   public static isEvent(kind: ShapeBpmnElementKind): boolean {
