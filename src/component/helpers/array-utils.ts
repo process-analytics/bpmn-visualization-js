@@ -17,7 +17,7 @@
 /**
  * @internal
  *
- * Not possible to use **startWith** and **notStartWith** in the same time
+ * Not possible to use **startWith** and **notStartWith** at the same time
  */
 export interface FilterParameter {
   startingWith?: string;
