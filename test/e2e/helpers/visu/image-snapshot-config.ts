@@ -38,17 +38,14 @@ const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
 export const defaultChromiumFailureThreshold = 0.000004;
 
 export class ImageSnapshotConfigurator {
+  private readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>;
+  private readonly defaultFailureThreshold: number;
   protected readonly defaultCustomDiffDir: string;
   protected readonly defaultCustomSnapshotsDir: string;
-  /**
-   * <b>About `thresholdConfig`</b> (configure threshold by bpmn files)
-   *
-   * When introducing a new test, please don't add threshold until you get failures when running
-   * on GitHub Workflow because of discrepancies depending of OS/machine and browser (few pixels) and that are not visible by a human.
-   * This is generally only required for diagram containing labels. If you are not testing the labels (value, position, ...) as part of the use case you want to cover, remove labels
-   * from the BPMN diagram to avoid such discrepancies.
-   */
-  constructor(readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>, snapshotsSubDirName: string, readonly defaultFailureThreshold: number) {
+
+  constructor(imageSnapshotThresholds: MultiBrowserImageSnapshotThresholds, snapshotsSubDirName: string) {
+    this.thresholdConfig = imageSnapshotThresholds.getThresholds();
+    this.defaultFailureThreshold = imageSnapshotThresholds.getDefault();
     this.defaultCustomDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), snapshotsSubDirName);
     this.defaultCustomSnapshotsDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), snapshotsSubDirName);
   }
@@ -100,6 +97,14 @@ interface ThresholdDefaults {
   webkit: number;
 }
 
+/**
+ * <b>About subclassing, for the `threshold` methods </b> (configure threshold by bpmn files)
+ *
+ * When introducing a new test, please don't add threshold until you get failures when running
+ * on GitHub Workflow because of discrepancies depending of OS/machine and browser (few pixels) and that are not visible by a human.
+ * This is generally only required for diagram containing labels. If you are not testing the labels (value, position, ...) as part of the use case you want to cover, remove labels
+ * from the BPMN diagram to avoid such discrepancies.
+ */
 export abstract class MultiBrowserImageSnapshotThresholds {
   private readonly chromiumDefault: number;
   private readonly firefoxDefault: number;

@@ -66,8 +66,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 }
 
 describe('diagram navigation - zoom and pan', () => {
-  const imageSnapshotThresholds = new ImageSnapshotThresholds();
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(imageSnapshotThresholds.getThresholds(), 'navigation', imageSnapshotThresholds.getDefault());
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'navigation');
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
   const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' });
 
