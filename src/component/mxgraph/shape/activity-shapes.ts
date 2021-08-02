@@ -242,27 +242,43 @@ export class CallActivityShape extends BaseActivityShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  override paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+    super.paintForeground(c, x, y, w, h);
+
+    const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
+
     switch (StyleUtils.getBpmnGlobalTaskKind(this.style)) {
       case ShapeBpmnElementKind.GLOBAL_TASK_MANUAL:
-        c.setFillColor('LightSalmon');
+        this.iconPainter.paintHandIcon({
+          ...paintParameter,
+          ratioFromParent: 0.18,
+          setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20),
+        });
+
         break;
       case ShapeBpmnElementKind.GLOBAL_TASK_SCRIPT:
-        c.setFillColor('HotPink');
+        this.iconPainter.paintScriptIcon({
+          ...paintParameter,
+          ratioFromParent: 0.22,
+          setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20),
+        });
+
         break;
       case ShapeBpmnElementKind.GLOBAL_TASK_USER:
-        c.setFillColor('LemonChiffon');
+        this.iconPainter.paintPersonIcon({ ...paintParameter, setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
         break;
       case ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE:
-        c.setFillColor('PaleGreen');
+        this.iconPainter.paintTableIcon({
+          ...paintParameter,
+          ratioFromParent: 0.6,
+          setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(15),
+        });
         break;
       case ShapeBpmnElementKind.GLOBAL_TASK:
       default:
         // No symbol for the Call Activity calling a Global Task or calling a Process
         this.iconPainter.paintEmptyIcon();
     }
-
-    super.paintBackground(c, x, y, w, h);
   }
 }
 
