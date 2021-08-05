@@ -16,7 +16,7 @@
 // number parts of a book
 :partnums:
 // include a link to a favicon
-:favicon:
+:favicon: ./favicon.png
 // enable font-awesome icons
 :icons: font
 // enable link attributes
