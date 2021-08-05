@@ -16,52 +16,48 @@
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes } from './JsonTestUtils';
 import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeUtil } from '../../../../../src/bpmn-visualization';
 
-describe('parse bpmn as json for label font', () => {
-  each([
-    ['exclusiveGateway'],
-    ['inclusiveGateway'],
-    ['parallelGateway'],
-    ['task'],
-    ['userTask'],
-    ['serviceTask'],
-    ['receiveTask'],
-    ['sendTask'],
-    ['manualTask'],
-    ['scriptTask'],
-    ['callActivity'],
-    ['subProcess'],
-    ['textAnnotation'],
-    // TODO: To uncomment when we support complex gateway
-    //['complexGateway'],
-    ['businessRuleTask'],
-  ]).it("should convert as Shape without Label, when a BPMNShape (attached to %s & with empty BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)", sourceKind => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        process: {
-          id: 'Process_1',
-        },
-        BPMNDiagram: {
-          id: 'BpmnDiagram_1',
-          BPMNPlane: {
-            id: 'BpmnPlane_1',
-            BPMNShape: {
-              id: 'shape_source_id_0',
-              bpmnElement: 'source_id_0',
-              Bounds: { x: 362, y: 232, width: 36, height: 45 },
-              BPMNLabel: '',
+export const shapeBpmnElementKindForLabelTests = Object.values(ShapeBpmnElementKind)
+  .filter(kind => !ShapeUtil.isPoolOrLane(kind))
+  // group as label is managed by category
+  .filter(kind => kind != ShapeBpmnElementKind.GROUP)
+  // intermediate catch and boundary events require extra property no managed here
+  .filter(kind => ![ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH].includes(kind))
+  .map(kind => [kind]);
+
+describe('parse bpmn as json for label', () => {
+  each(shapeBpmnElementKindForLabelTests).it(
+    "should convert as Shape without Label, when a BPMNShape (attached to %s & with empty BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)",
+    sourceKind => {
+      const json = {
+        definitions: {
+          targetNamespace: '',
+          process: {
+            id: 'Process_1',
+          },
+          BPMNDiagram: {
+            id: 'BpmnDiagram_1',
+            BPMNPlane: {
+              id: 'BpmnPlane_1',
+              BPMNShape: {
+                id: 'shape_source_id_0',
+                bpmnElement: 'source_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                BPMNLabel: '',
+              },
             },
           },
         },
-      },
-    };
-    (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
+      };
+      (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+      const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    expect(model.flowNodes[0].label).toBeUndefined();
-  });
+      expect(model.flowNodes[0].label).toBeUndefined();
+    },
+  );
 
   it("should convert as Edge without Label, when a BPMNEdge (with empty BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
     const json = {

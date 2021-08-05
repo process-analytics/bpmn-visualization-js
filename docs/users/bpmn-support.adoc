@@ -526,6 +526,10 @@ The event definition can be defined on the event or on the definitions.
 |Rendering
 |Comments
 
+|Group
+|icon:check-circle[]
+|
+
 |Text Annotation
 |icon:check-circle-o[]
 |By default the size of the font is: 11 and family is set to : 'Arial, Helvetica, sans-serif' +

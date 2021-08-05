@@ -22,12 +22,14 @@ import DiagramConverter from './converter/DiagramConverter';
 import EventDefinitionConverter from './converter/EventDefinitionConverter';
 import GlobalTaskConverter from './converter/GlobalTaskConverter';
 import { ConvertedElements } from './converter/utils';
+import CategoryConverter from './converter/CategoryConverter';
 
 /**
  * @internal
  */
 export default class BpmnJsonParser {
   constructor(
+    readonly categoryConverter: CategoryConverter,
     readonly collaborationConverter: CollaborationConverter,
     readonly eventDefinitionConverter: EventDefinitionConverter,
     readonly globalTaskConverter: GlobalTaskConverter,
@@ -38,6 +40,7 @@ export default class BpmnJsonParser {
   public parse(json: BpmnJsonModel): BpmnModel {
     const definitions: TDefinitions = json.definitions;
 
+    this.categoryConverter.deserialize(definitions);
     this.collaborationConverter.deserialize(definitions.collaboration);
     this.eventDefinitionConverter.deserialize(definitions);
     this.globalTaskConverter.deserialize(definitions);
@@ -52,6 +55,7 @@ export default class BpmnJsonParser {
 export function newBpmnJsonParser(): BpmnJsonParser {
   const convertedElements = new ConvertedElements();
   return new BpmnJsonParser(
+    new CategoryConverter(convertedElements),
     new CollaborationConverter(convertedElements),
     new EventDefinitionConverter(convertedElements),
     new GlobalTaskConverter(convertedElements),

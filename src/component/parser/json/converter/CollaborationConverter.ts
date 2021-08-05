@@ -21,6 +21,7 @@ import { TParticipant } from '../../../../model/bpmn/json/baseElement/participan
 import { TMessageFlow } from '../../../../model/bpmn/json/baseElement/baseElement';
 import { ConvertedElements } from './utils';
 import { ensureIsArray } from '../../../helpers/array-utils';
+import { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
 
 /**
  * @internal
@@ -35,6 +36,7 @@ export default class CollaborationConverter {
   private parseCollaboration(collaboration: TCollaboration): void {
     this.buildParticipant(collaboration.participant);
     this.buildMessageFlows(collaboration.messageFlow);
+    this.buildGroups(collaboration.group);
   }
 
   private buildParticipant(bpmnElements: Array<TParticipant> | TParticipant): void {
@@ -46,6 +48,13 @@ export default class CollaborationConverter {
   private buildMessageFlows(bpmnElements: Array<TMessageFlow> | TMessageFlow): void {
     ensureIsArray(bpmnElements).forEach(messageFlow => {
       this.convertedElements.registerMessageFlow(new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef));
+    });
+  }
+
+  private buildGroups(bpmnElements: Array<TGroup> | TGroup): void {
+    ensureIsArray(bpmnElements).forEach(groupBpmnElement => {
+      const shapeBpmnElement = this.convertedElements.toGroupShapeBpmnElement(groupBpmnElement);
+      shapeBpmnElement && this.convertedElements.registerFlowNode(shapeBpmnElement);
     });
   }
 }

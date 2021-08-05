@@ -18,6 +18,7 @@ import ShapeBpmnElement, { Participant } from '../../../../model/bpmn/internal/s
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
 import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../model/bpmn/internal/shape';
 import { GlobalTaskKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
+import { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
 
 /**
  * @internal
@@ -116,4 +117,24 @@ export class ConvertedElements {
   registerGlobalTask(id: string, kind: GlobalTaskKind): void {
     this.globalTasks.set(id, kind);
   }
+
+  private categoryValues: Map<string, CategoryValueData> = new Map();
+  registerCategoryValues(id: string, value: string): void {
+    this.categoryValues.set(id, { value });
+  }
+
+  // Special case: create the ShapeBpmnElement instance here to avoid duplication in CollaborationConverter and CollaborationConverter
+  toGroupShapeBpmnElement(groupBpmnElement: TGroup, processId?: string): ShapeBpmnElement | undefined {
+    const categoryValueData = this.categoryValues.get(groupBpmnElement.categoryValueRef);
+    if (categoryValueData) {
+      return new ShapeBpmnElement(groupBpmnElement.id, categoryValueData.value, ShapeBpmnElementKind.GROUP, processId);
+    }
+    // TODO decide how to manage elements not found during parsing as part of #35
+    console.warn('Group json deserialization: unable to find category value ref %s for bpmn element %s', groupBpmnElement.categoryValueRef, groupBpmnElement.id);
+    return undefined;
+  }
+}
+
+export interface CategoryValueData {
+  value?: string;
 }

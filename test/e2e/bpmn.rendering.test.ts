@@ -41,6 +41,20 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
+        'group.01.in.process.with.label',
+        {
+          macos: 0.0002, // 0.017014812909055266%
+          windows: 0.0003, // 0.026260389475118995%
+        },
+      ],
+      [
+        'group.02.in.collaboration.with.label',
+        {
+          macos: 0.0002, // 0.011733173038031008%
+          windows: 0.0004, // 0.030760508478666626%
+        },
+      ],
+      [
         'labels.01.general',
         {
           linux: 0.0047, // 0.46065520175824215%
@@ -128,6 +142,20 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           macos: 0.0066, // 0.6597408179179087%
           // TODO possible rendering issue so high threshold value
           windows: 0.0139, // 1.3843493898232695%
+        },
+      ],
+      [
+        'group.01.in.process.with.label',
+        {
+          macos: 0.0002, // 0.017539672871980105%
+          windows: 0.0022, // 0.21161062086058058%
+        },
+      ],
+      [
+        'group.02.in.collaboration.with.label',
+        {
+          macos: 0.0002, // 0.015546117401621373%
+          windows: 0.0019, // 0.18223382519321207%
         },
       ],
       [

@@ -19,15 +19,31 @@ import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/sha
 
 describe('ShapeUtil', () => {
   it('top level bpmn event kinds', () => {
-    const tasks = ShapeUtil.topLevelBpmnEventKinds();
-
-    expect(tasks).toContain(ShapeBpmnElementKind.EVENT_END);
+    const events = ShapeUtil.topLevelBpmnEventKinds();
+    expect(events).toContain(ShapeBpmnElementKind.EVENT_END);
+    expect(events).toContain(ShapeBpmnElementKind.EVENT_START);
   });
 
   it('task kinds', () => {
     const tasks = ShapeUtil.taskKinds();
-
     expect(tasks).toContain(ShapeBpmnElementKind.TASK);
     expect(tasks).toContain(ShapeBpmnElementKind.TASK_USER);
+  });
+
+  describe('Is pool or lane?', () => {
+    it.each([
+      [ShapeBpmnElementKind.CALL_ACTIVITY],
+      [ShapeBpmnElementKind.SUB_PROCESS],
+      [ShapeBpmnElementKind.TASK],
+      [ShapeBpmnElementKind.TASK_SERVICE],
+      [ShapeBpmnElementKind.EVENT_START],
+      [ShapeBpmnElementKind.EVENT_BOUNDARY],
+      [ShapeBpmnElementKind.GATEWAY_PARALLEL],
+      [ShapeBpmnElementKind.GATEWAY_EVENT_BASED],
+      [ShapeBpmnElementKind.GROUP],
+      [ShapeBpmnElementKind.TEXT_ANNOTATION],
+    ])('%s', (bpmnKind: ShapeBpmnElementKind) => {
+      expect(ShapeUtil.isPoolOrLane(bpmnKind)).toBeFalsy();
+    });
   });
 });

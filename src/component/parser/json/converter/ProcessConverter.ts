@@ -43,7 +43,7 @@ import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../model/bpmn
 import { TActivity, TCallActivity, TSubProcess } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';
 import { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseElement';
 import { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
-import { TAssociation, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
+import { TAssociation, TGroup, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
 import { AssociationDirectionKind } from '../../../../model/bpmn/internal/edge/AssociationDirectionKind';
 import { ConvertedElements } from './utils';
 import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
@@ -110,6 +110,8 @@ export default class ProcessConverter {
           eventBasedGatewayBpmnElement.instantiate,
           ShapeBpmnEventBasedGatewayKind[eventBasedGatewayBpmnElement.eventGatewayType],
         );
+      } else if (kind == ShapeBpmnElementKind.GROUP) {
+        shapeBpmnElement = this.convertedElements.toGroupShapeBpmnElement(bpmnElement as TGroup, processId);
       } else {
         // @ts-ignore We know that the text & name fields are not on all types, but it's already tested
         const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;

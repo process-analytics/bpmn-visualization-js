@@ -41,6 +41,7 @@ export enum StyleDefault {
   LANE_LABEL_SIZE = 30, // most of BPMN lane are ok when setting it to 30
   LANE_LABEL_FILL_COLOR = 'none',
   TEXT_ANNOTATION_FILL_COLOR = 'none',
+  GROUP_FILL_COLOR = 'none',
   // General
   DEFAULT_FILL_COLOR = 'White',
   DEFAULT_STROKE_COLOR = 'Black',
@@ -51,6 +52,8 @@ export enum StyleDefault {
   DEFAULT_DASHED = 0, // it means 'false'
   DEFAULT_FIX_DASH = 0, // it means 'false'
   DEFAULT_DASH_PATTERN = '3 3',
+  // Shape defaults
+  SHAPE_ARC_SIZE = 20,
   // Overlay defaults
   DEFAULT_OVERLAY_FILL_COLOR = DEFAULT_FILL_COLOR,
   DEFAULT_OVERLAY_FILL_OPACITY = 100,

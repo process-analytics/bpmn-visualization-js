@@ -85,10 +85,12 @@ Overview:
 
 * Add json parsing tests related to the new BPMN element to ensure that the parser is able to make it available to the
 `ProcessConverter`. The convention is to have a test file per BPMN element, please follow the existing file name scheme.
+  * If you want to use a given BPMN xml diagram as input for the test, you can use an utils script to generate the json representation.
+  See [the dedicated README](../../scripts/utils/README.md) file.
 * Depending on the BPMN element, you may also have to add tests about `default sequence flow` and/or `conditional sequence
 flow` support (see `ShapeBpmnElementKind` for more details)
-* No need to create specific XML tests, the XML parsing is tested globally using BPMN files for various BPMN vendors.
-* The `mxGraph` style for the shape must be tested as well, see `StyleConfigurator`
+* No need to create specific XML parsing tests. The XML parsing is tested globally using BPMN files for various BPMN vendors.
+* The `mxGraph` style for the shape must be tested as well, see `StyleComputer` test
 
 #### Integration tests
 

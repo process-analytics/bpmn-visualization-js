@@ -111,6 +111,8 @@ export default class StyleConfigurator {
     this.configureLaneStyle();
 
     this.configureTextAnnotationStyle();
+    this.configureGroupStyle();
+
     this.configureActivityStyles();
     this.configureEventStyles();
     this.configureGatewayStyles();
@@ -184,6 +186,22 @@ export default class StyleConfigurator {
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
   }
 
+  private configureGroupStyle(): void {
+    const style: StyleMap = {};
+    style[mxgraph.mxConstants.STYLE_ROUNDED] = true;
+    style[mxgraph.mxConstants.STYLE_ABSOLUTE_ARCSIZE] = true;
+    style[mxgraph.mxConstants.STYLE_ARCSIZE] = StyleDefault.SHAPE_ARC_SIZE;
+    style[mxgraph.mxConstants.STYLE_DASHED] = true;
+    style[mxgraph.mxConstants.STYLE_DASH_PATTERN] = '7 4 1 4';
+    style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
+    style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.GROUP_FILL_COLOR;
+    // Default label positioning
+    style[mxgraph.mxConstants.STYLE_ALIGN] = mxgraph.mxConstants.ALIGN_CENTER;
+    style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_TOP;
+
+    this.putCellStyle(ShapeBpmnElementKind.GROUP, style);
+  }
+
   private configureActivityStyles(): void {
     ShapeUtil.activityKinds().forEach(kind => {
       const style: StyleMap = {};
@@ -200,7 +218,7 @@ export default class StyleConfigurator {
       style[mxgraph.mxConstants.STYLE_PERIMETER] = mxgraph.mxPerimeter.RhombusPerimeter;
       style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_TOP;
 
-      // Default positioning in case there is no BPMN LabelStyle
+      // Default label positioning
       style[mxgraph.mxConstants.STYLE_LABEL_POSITION] = mxgraph.mxConstants.ALIGN_LEFT;
       style[mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxgraph.mxConstants.ALIGN_TOP;
 

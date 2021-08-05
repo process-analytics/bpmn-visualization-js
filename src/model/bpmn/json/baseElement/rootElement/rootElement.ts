@@ -37,7 +37,7 @@ export interface TCallableElement extends TRootElement {
 }
 
 export interface TCategory extends TRootElement {
-  categoryValue?: TCategoryValue[];
+  categoryValue?: TCategoryValue | TCategoryValue[];
   name?: string;
 }
 
