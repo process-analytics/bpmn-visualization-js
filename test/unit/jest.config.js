@@ -19,8 +19,10 @@ module.exports = {
   rootDir: '../..',
   roots: ['./test/unit', './src'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  testPathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src'],
+  // TODO temp removed but useless and has side effect if the path of project contains 'development' for instance
+  //testPathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src'],
   transform: {
+    // TODO check if we can limit the path to src and test/unit to speedup the JS transpilation or update the ts-jest configuration
     '^.+\\.ts?$': 'ts-jest',
   },
   globals: {
