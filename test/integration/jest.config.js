@@ -19,7 +19,8 @@ module.exports = {
   rootDir: '../..',
   roots: ['./test/integration', './src'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  testPathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src'],
+  // TODO temp removed but useless and has side effect if the path of project contains 'development' for instance
+  // testPathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src'],
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
