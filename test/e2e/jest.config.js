@@ -21,8 +21,6 @@ module.exports = {
   roots: ['./test/e2e', './src'],
   preset: 'jest-playwright-preset',
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  // TODO temp removed but useless and has side effect if the path of project contains 'development' for instance
-  // testPathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src'],
   testTimeout: 200000,
   transform: {
     '^.+\\.ts?$': 'ts-jest',
@@ -32,8 +30,8 @@ module.exports = {
       tsconfig: '<rootDir>/tsconfig.jest.json',
     },
   },
-  collectCoverageFrom: ['**/*.{ts,js}'],
-  coveragePathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src/model', 'test'],
+  collectCoverageFrom: ['src/**/*.{ts,js}'],
+  coveragePathIgnorePatterns: ['/src/model'],
   coverageReporters: ['lcov', 'text-summary'],
   coverageDirectory: 'build/test-report/e2e',
   setupFiles: ['./test/e2e/config/copy.bpmn.diagram.ts'],
