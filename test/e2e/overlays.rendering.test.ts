@@ -33,10 +33,19 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
+        // also use for navigation tests
         'overlays.start.flow.task.gateway',
         {
-          linux: 0.001, // 0.09368089665046096%
-          windows: 0.0003, // 0.025623788967854555%
+          macos: 0.001, // max 0.09371109158465839%
+          windows: 0.0015, // max 0.11569306287013695%
+        },
+      ],
+      [
+        'overlays.edges.associations.complex.paths',
+        {
+          linux: 0.0012, // 0.11107953745526089%
+          macos: 0.0011, // max 0.10450139836080119%
+          windows: 0.001, // max 0.09070811014064706%
         },
       ],
       [
@@ -47,17 +56,11 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
-        'overlays.edges.associations.complex.paths',
-        {
-          linux: 0.0003, // 0.02042994297090095% / 0.028687210421007858% / 0.022131767755118048%
-          macos: 0.002, // 0.013972840122933317%
-        },
-      ],
-      [
         'overlays.edges.sequence.flows.complex.paths',
         {
-          linux: 0.00023, // 0.022730494717471128% / 0.01857098860091888% / 0.010326307039609794%
-          macos: 0.0002, // 0.010791806455801023%
+          linux: 0.0008, // max 0.07684414701126795%
+          macos: 0.0007, // max 0.06361357947514133%
+          windows: 0.0006, // max 0.05408166283820126%
         },
       ],
     ]);
@@ -66,10 +69,20 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
+        // also use for navigation tests
         'overlays.start.flow.task.gateway',
         {
-          linux: 0.0053, // 0.5229417116423329%
-          macos: 0.0061, // 0.6026399523082704%
+          linux: 0.0044, // max 0.43536497668036356%
+          macos: 0.0071, // max 0.7027949859673144%
+          windows: 0.0014, // max 0.1362976442493502%
+        },
+      ],
+      [
+        'overlays.edges.associations.complex.paths',
+        {
+          linux: 0.0012, // max 0.11544442258832888%
+          macos: 0.0029, // max 0.2883299813273288%
+          windows: 0.0038, // max 0.37867717015809266%
         },
       ],
       [
@@ -81,18 +94,11 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
-        'overlays.edges.associations.complex.paths',
-        {
-          windows: 0.004, // 0.3607039279524549%
-          macos: 0.003, // 0.27327763334737964%
-        },
-      ],
-      [
         'overlays.edges.sequence.flows.complex.paths',
         {
-          linux: 0.0014, // 0.08228072459832703% / 0.13226428690803482% / 0.05865724301086228%
-          windows: 0.0024, // 0.23601194547107074%
-          macos: 0.0026, // 0.25655896127774197%
+          linux: 0.0014, // max 0.13950493094400107%
+          macos: 0.0027, // max 0.26624249108074816%
+          windows: 0.0026, // max 0.25710970853788373%
         },
       ],
     ]);
@@ -100,10 +106,17 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
   protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
+      // also use for navigation tests
       [
         'overlays.start.flow.task.gateway',
         {
-          macos: 0.0051, // max 0.5021666239539258%
+          macos: 0.0059, // max 0.5852809894618671%
+        },
+      ],
+      [
+        'overlays.edges.associations.complex.paths',
+        {
+          macos: 0.0035, // max 0.3442305874630902%
         },
       ],
       [
@@ -113,15 +126,9 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
-        'overlays.edges.associations.complex.paths',
-        {
-          macos: 0.0028, // max 0.2757481729149802%
-        },
-      ],
-      [
         'overlays.edges.sequence.flows.complex.paths',
         {
-          macos: 0.00049, // max 0.048499647723088124%
+          macos: 0.0011, // max 0.10016873792552117%
         },
       ],
     ]);
@@ -317,25 +324,25 @@ describe('Overlay style', () => {
         [
           'fill',
           {
-            linux: 0.00016, // 0.015068122418016028%
-            macos: 0.000006, // 0.0005215592635332555%
-            windows: 0.0001, // 0.009102728217447176%
+            linux: 0.0000001, // 0.000008711582011322605%
+            macos: 0.0002, // 0.015144311713777281%
+            windows: 0.0003, // 0.021176489211183203%
           },
         ],
         [
           'font',
           {
-            linux: 0.0056, // 0.551258767924101%
-            macos: 0.000002, // 0.00013412837215343032%
-            windows: 0.0019, // 0.1837913233883048%
+            linux: 0.00001, // 0.0003248438377401186%
+            macos: 0.0055, // 0.549934185640244%
+            windows: 0.0033, // 0.3214844457131605%
           },
         ],
         [
           'stroke',
           {
-            linux: 0.0018, // 0.17850987617574754%
-            macos: 0.000006, // 0.0005241394361643614%
-            windows: 0.00028, // 0.02743892318561869%
+            linux: 0.000001, // 0.000015809905229424714%
+            macos: 0.0018, // 0.1787779478926499%
+            windows: 0.0022, // 0.21848079010937665%
           },
         ],
       ]);
@@ -346,26 +353,26 @@ describe('Overlay style', () => {
         [
           'fill',
           {
-            linux: 0.0018, // 0.17274440837963256
-            macos: 0.0036, // 0.35628465895451983%
-            windows: 0.0024, // 0.023193217953598744%
+            linux: 0.0016, // 0.15729572870969433
+            macos: 0.0038, // 0.3723534417182983%
+            windows: 0.0036, // 0.03575426016920735%
           },
         ],
         [
           // TODO very large thresholds on Firefox linux/macOS for font overlay styles
           'font',
           {
-            linux: 0.0179, // 1.7851679094800676%
-            macos: 0.0193, // 1.926162542254506%
-            windows: 0.0074, // 0.7365585865893864%
+            linux: 0.0125, // 1.2469257287752389%
+            macos: 0.0256, // 2.550083023327932%
+            windows: 0.0088, // 0.8742520092084982%
           },
         ],
         [
           'stroke',
           {
-            linux: 0.0031, // 0.3048495736480361%
-            macos: 0.0018, // 0.1730781727336872%
-            windows: 0.00034, // 0.0339070556146015%
+            linux: 0.0013, // 0.1259742349527526%
+            macos: 0.0036, // 0.35056620525392157%
+            windows: 0.0024, // 0.23796610634385656%
           },
         ],
       ]);
@@ -376,19 +383,19 @@ describe('Overlay style', () => {
         [
           'fill',
           {
-            macos: 0.0015, // 0.1454447604660958%
+            macos: 0.0017, // 0.16625642718750555%
           },
         ],
         [
           'font',
           {
-            macos: 0.001, // 0.09974937844267062%
+            macos: 0.007, // 0.6973031829030196%
           },
         ],
         [
           'stroke',
           {
-            macos: 0.0013, // 0.12270105834573108%
+            macos: 0.0033, // 0.3243565433802331%
           },
         ],
       ]);

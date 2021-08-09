@@ -51,6 +51,8 @@ export enum StyleDefault {
   DEFAULT_DASHED = 0, // it means 'false'
   DEFAULT_FIX_DASH = 0, // it means 'false'
   DEFAULT_DASH_PATTERN = '3 3',
+  // Shape defaults
+  SHAPE_ARC_SIZE = 20,
   // Overlay defaults
   DEFAULT_OVERLAY_FILL_COLOR = DEFAULT_FILL_COLOR,
   DEFAULT_OVERLAY_FILL_OPACITY = 100,
