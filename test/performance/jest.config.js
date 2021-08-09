@@ -21,7 +21,6 @@ module.exports = {
   roots: ['./test/performance', './src'],
   preset: 'jest-playwright-preset',
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  testPathIgnorePatterns: ['/node_modules/', 'dist', 'src'],
   testTimeout: 200000,
   transform: {
     '^.+\\.ts?$': 'ts-jest',
