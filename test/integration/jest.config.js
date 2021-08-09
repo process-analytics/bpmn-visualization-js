@@ -19,8 +19,6 @@ module.exports = {
   rootDir: '../..',
   roots: ['./test/integration', './src'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  // TODO temp removed but useless and has side effect if the path of project contains 'development' for instance
-  // testPathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src'],
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
@@ -29,8 +27,8 @@ module.exports = {
       tsconfig: '<rootDir>/tsconfig.jest.json',
     },
   },
-  collectCoverageFrom: ['**/*.{ts,js}'],
-  coveragePathIgnorePatterns: ['/node_modules/', 'dev', 'dist', 'src/model', 'test'],
+  collectCoverageFrom: ['src/**/*.{ts,js}'],
+  coveragePathIgnorePatterns: ['/src/model/'],
   coverageReporters: ['lcov', 'text-summary'],
   coverageDirectory: 'build/test-report/integration',
   reporters: [
