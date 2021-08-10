@@ -123,7 +123,7 @@ export class ConvertedElements {
     this.categoryValues.set(id, { value });
   }
 
-  // Special case: create the ShapeBpmnElement instance here to avoid duplication in CollaborationConverter and CollaborationConverter
+  // Special case: create the ShapeBpmnElement instance here to avoid duplication in CollaborationConverter and ProcessConverter
   toGroupShapeBpmnElement(groupBpmnElement: TGroup, processId?: string): ShapeBpmnElement | undefined {
     const categoryValueData = this.categoryValues.get(groupBpmnElement.categoryValueRef);
     if (categoryValueData) {
