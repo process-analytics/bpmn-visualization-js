@@ -16,26 +16,10 @@
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelBounds } from './JsonTestUtils';
 import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import { shapeBpmnElementKindForLabelTests } from './BpmnJsonParser.label.test';
 
 describe('parse bpmn as json for label bounds', () => {
-  each([
-    ['exclusiveGateway'],
-    ['inclusiveGateway'],
-    ['parallelGateway'],
-    ['task'],
-    ['userTask'],
-    ['serviceTask'],
-    ['receiveTask'],
-    ['sendTask'],
-    ['manualTask'],
-    ['scriptTask'],
-    ['callActivity'],
-    ['subProcess'],
-    ['textAnnotation'],
-    // TODO: To uncomment when we support complex gateway
-    //['complexGateway'],
-    ['businessRuleTask'],
-  ]).describe('parse bpmn as json for label bounds on %s', sourceKind => {
+  each(shapeBpmnElementKindForLabelTests).describe('parse bpmn as json for label bounds on %s', sourceKind => {
     it(`should convert as Shape, when a BPMNShape (attached to ${sourceKind} & with bounds with all attributes) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
       const json = {
         definitions: {

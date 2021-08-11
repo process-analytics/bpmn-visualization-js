@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_0vjswv9" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="8.7.1">
+  <bpmn:collaboration id="Collaboration_0kzs9xw">
+    <bpmn:participant id="Participant_0slo3sp" processRef="Process_0tzle75" />
+    <bpmn:group id="Group_013qcsh" categoryValueRef="CategoryValue_1xvkj4y" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_0tzle75" isExecutable="false" />
+  <bpmn:category id="Category_1qha2x0">
+    <bpmn:categoryValue id="CategoryValue_1xvkj4y" value="label inside group" />
+  </bpmn:category>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0kzs9xw">
+      <bpmndi:BPMNShape id="Participant_0slo3sp_di" bpmnElement="Participant_0slo3sp" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="890" height="650" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Group_013qcsh_di" bpmnElement="Group_013qcsh">
+        <dc:Bounds x="350" y="160" width="480" height="400" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="438" y="413" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

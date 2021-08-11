@@ -357,6 +357,17 @@ describe('Style Computer', () => {
     });
   });
 
+  describe('compute style - group', () => {
+    it('without label', () => {
+      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.GROUP));
+      expect(computeStyle(shape)).toEqual('group');
+    });
+    it('with label bounds', () => {
+      const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.GROUP), newLabel({ name: 'Roboto' }, new Bounds(50, 50, 100, 100)));
+      expect(computeStyle(shape)).toEqual('group;fontFamily=Roboto;verticalAlign=top;align=center;labelWidth=101;labelPosition=top;verticalLabelPosition=left');
+    });
+  });
+
   describe('compute style - pool references a Process', () => {
     it.each([
       ['vertical', false, '1'],

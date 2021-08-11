@@ -16,6 +16,7 @@
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelFont } from './JsonTestUtils';
 import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import { shapeBpmnElementKindForLabelTests } from './BpmnJsonParser.label.test';
 
 describe('parse bpmn as json for label font', () => {
   jest.spyOn(console, 'warn');
@@ -24,24 +25,7 @@ describe('parse bpmn as json for label font', () => {
     jest.clearAllMocks();
   });
 
-  each([
-    ['exclusiveGateway'],
-    ['inclusiveGateway'],
-    ['parallelGateway'],
-    ['task'],
-    ['userTask'],
-    ['serviceTask'],
-    ['receiveTask'],
-    ['sendTask'],
-    ['manualTask'],
-    ['scriptTask'],
-    ['callActivity'],
-    ['subProcess'],
-    ['textAnnotation'],
-    // TODO: To uncomment when we support complex gateway
-    //['complexGateway'],
-    ['businessRuleTask'],
-  ]).it(
+  each(shapeBpmnElementKindForLabelTests).it(
     "should convert as Shape with Font, when a BPMNShape (attached to %s & who references a BPMNLabelStyle with font) is an attribute (as object) of 'BPMNPlane' (as object)",
     sourceKind => {
       const json = {

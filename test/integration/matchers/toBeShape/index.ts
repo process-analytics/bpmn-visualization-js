@@ -34,9 +34,11 @@ function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): Expe
   expectedStateStyle.shape = !expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape;
   expectedStateStyle.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'middle';
   expectedStateStyle.align = expectedModel.align ? expectedModel.align : 'center';
-  expectedStateStyle.strokeWidth = undefined;
+  expectedStateStyle.strokeWidth = expectedModel.kind == ShapeBpmnElementKind.GROUP ? 2 : undefined;
 
-  expectedStateStyle.fillColor = [ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION].includes(expectedModel.kind)
+  expectedStateStyle.fillColor = [ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION, ShapeBpmnElementKind.GROUP].includes(
+    expectedModel.kind,
+  )
     ? 'none'
     : expectedStateStyle.fillColor;
 

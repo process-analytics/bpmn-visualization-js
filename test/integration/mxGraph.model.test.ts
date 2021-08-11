@@ -1152,6 +1152,15 @@ describe('mxGraph model', () => {
       align: 'left',
     });
 
+    // group
+    expect('Group_0_in_collaboration').toBeShape({
+      kind: ShapeBpmnElementKind.GROUP,
+      label: 'Group in collaboration',
+      styleShape: 'rectangle',
+      verticalAlign: 'top',
+      align: 'center',
+    });
+
     // gateways
     expect('inclusive_gateway_id').toBeShape({ kind: ShapeBpmnElementKind.GATEWAY_INCLUSIVE, label: 'Inclusive Gateway', parentId: 'participant_1_id', verticalAlign: 'top' });
     expect('parallel_gateway_id').toBeShape({ kind: ShapeBpmnElementKind.GATEWAY_PARALLEL, label: 'Parallel Gateway', parentId: 'participant_1_id', verticalAlign: 'top' });

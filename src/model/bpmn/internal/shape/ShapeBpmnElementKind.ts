@@ -39,6 +39,7 @@ export enum ShapeBpmnElementKind {
   GLOBAL_TASK_SCRIPT = 'globalScriptTask',
   GLOBAL_TASK_BUSINESS_RULE = 'globalBusinessRuleTask',
 
+  GROUP = 'group',
   TEXT_ANNOTATION = 'textAnnotation',
 
   GATEWAY_PARALLEL = 'parallelGateway',

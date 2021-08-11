@@ -16,6 +16,9 @@
     <semantic:messageFlow id="message_flow_non_initiating_message_id" name="Message Flow with non-initiating message" sourceRef="boundary_event_interrupting_message_id"
                           targetRef="start_event_message_2_1_id" messageRef="message_id" />
     <semantic:messageFlow id="message_flow_no_visible_id" name="Message Flow without message" sourceRef="start_event_message_2_1_id" targetRef="shape_task_with_flows_id" />
+
+    <!-- Groups -->
+    <semantic:group id="Group_0_in_collaboration" categoryValueRef="CategoryValue_0" />
   </semantic:collaboration>
 
   <!-- Event Definition -->
@@ -36,6 +39,11 @@
   <semantic:globalManualTask id="global_manual_task_id" />
   <semantic:globalScriptTask id="global_script_task_id" />
   <semantic:globalUserTask id="global_user_task_id" />
+
+  <!-- Category -->
+  <semantic:category id="Category_0">
+    <semantic:categoryValue id="CategoryValue_0" value="Group in collaboration" />
+  </semantic:category>
 
   <!-- Process -->
   <semantic:process id="process_2_id" isExecutable="false">
@@ -1681,6 +1689,10 @@
       <!-- Artifact -->
       <bpmndi:BPMNShape id="shape_text_annotation_id" bpmnElement="text_annotation_id">
         <dc:Bounds x="1030" y="1210" width="102" height="23" />
+        <bpmndi:BPMNLabel/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_Group_0_in_collaboration" bpmnElement="Group_0_in_collaboration">
+        <dc:Bounds x="3190" y="80" width="600" height="400" />
         <bpmndi:BPMNLabel/>
       </bpmndi:BPMNShape>
 

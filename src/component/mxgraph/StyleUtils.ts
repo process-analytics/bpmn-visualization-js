@@ -41,6 +41,7 @@ export enum StyleDefault {
   LANE_LABEL_SIZE = 30, // most of BPMN lane are ok when setting it to 30
   LANE_LABEL_FILL_COLOR = 'none',
   TEXT_ANNOTATION_FILL_COLOR = 'none',
+  GROUP_FILL_COLOR = 'none',
   // General
   DEFAULT_FILL_COLOR = 'White',
   DEFAULT_STROKE_COLOR = 'Black',
