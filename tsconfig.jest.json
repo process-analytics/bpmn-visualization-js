@@ -2,5 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "sourceMap": true
-  }
+  },
+  "include": [
+    "test/unit2/**/*"
+  ]
 }
