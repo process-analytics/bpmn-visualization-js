@@ -15,7 +15,7 @@
  */
 import * as fs from 'fs';
 import { delay, getSimplePlatformName } from '../e2e/helpers/test-utils';
-import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
+import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils2'; // TODO fix tmp compilation error (use to check compilation error detection with GH WF)
 import { chromiumMouseWheel } from '../e2e/helpers/visu/playwright-utils';
 import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
