@@ -26,7 +26,7 @@ export interface PanningOptions {
 // workaround for https://github.com/microsoft/playwright/issues/1115 that only works with chromium
 // inspired from https://github.com/microsoft/playwright/issues/2642#issuecomment-647846972
 // https://github.com/microsoft/playwright/blob/v1.8.1/docs/src/api/class-cdpsession.md
-export async function chromiumMouseWheel(x: number, y: number, deltaX: number): Promise<void> {
+export async function chromiumMouseZoom(x: number, y: number, deltaX: number): Promise<void> {
   // possible improvement to investigate: can we access to the chromium server directly?
   // page._channel Proxy where Target is an EventEmitter
   // server Mouse https://github.com/microsoft/playwright/blob/v1.8.0/src/server/input.ts#L171

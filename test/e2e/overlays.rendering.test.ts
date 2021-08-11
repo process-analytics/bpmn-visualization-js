@@ -18,7 +18,7 @@ import 'jest-playwright-preset';
 import { join } from 'path';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
-import { chromiumZoom, clickOnButton, getContainerCenter, itMouseWheel, mousePanning, Point } from './helpers/test-utils';
+import { clickOnButton, getContainerCenter, itMouseZoom, mousePanning, mouseZoom, Point } from './helpers/test-utils';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
@@ -294,8 +294,8 @@ describe('Overlay navigation', () => {
     });
   });
 
-  itMouseWheel(`zoom out`, async () => {
-    await chromiumZoom(1, { x: containerCenter.x + 200, y: containerCenter.y }, 100);
+  itMouseZoom(`zoom out`, async () => {
+    await mouseZoom(1, { x: containerCenter.x + 200, y: containerCenter.y }, 100);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
