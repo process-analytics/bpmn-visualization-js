@@ -86,7 +86,14 @@ async function chromiumAndFirefoxMousePanning({ originPoint, destinationPoint }:
   await page.mouse.up();
 }
 
-export async function chromiumZoom(xTimes: number, point: Point, deltaX: number): Promise<void> {
+export async function mouseZoom(xTimes: number, point: Point, deltaX: number): Promise<void> {
+  if (!isMouseZoomSupportedByTest) {
+    throw new Error(`Mouse zoom is not supported with ${getTestedBrowserFamily()}`);
+  }
+  await chromiumMouseZoom(xTimes, point, deltaX);
+}
+
+async function chromiumMouseZoom(xTimes: number, point: Point, deltaX: number): Promise<void> {
   for (let i = 0; i < xTimes; i++) {
     await chromiumMouseWheel(point.x, point.y, deltaX);
     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
@@ -94,7 +101,8 @@ export async function chromiumZoom(xTimes: number, point: Point, deltaX: number)
   }
 }
 
+const isMouseZoomSupportedByTest = getTestedBrowserFamily() === 'chromium';
 // TODO activate tests relying on mousewheel events on non Chromium browsers when playwright will support it natively: https://github.com/microsoft/playwright/issues/1115
 // inspired from https://github.com/xtermjs/xterm.js/commit/7400b888df698d15864ab2c41ad0ed0262f812fb#diff-23460af115aa97331c36c0ce462cbc4dd8067c0ddbca1e9d3de560ebf44024ee
 // Wheel events are hacked using private API that is only available in Chromium
-export const itMouseWheel = getTestedBrowserFamily() === 'chromium' ? it : it.skip;
+export const itMouseZoom = isMouseZoomSupportedByTest ? it : it.skip;
