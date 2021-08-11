@@ -111,7 +111,7 @@ export default class ProcessConverter {
           ShapeBpmnEventBasedGatewayKind[eventBasedGatewayBpmnElement.eventGatewayType],
         );
       } else if (kind == ShapeBpmnElementKind.GROUP) {
-        shapeBpmnElement = this.convertedElements.toGroupShapeBpmnElement(bpmnElement as TGroup, processId);
+        shapeBpmnElement = this.convertedElements.buildShapeBpmnGroup(bpmnElement as TGroup, processId);
       } else {
         // @ts-ignore We know that the text & name fields are not on all types, but it's already tested
         const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;

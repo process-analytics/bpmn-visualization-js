@@ -53,7 +53,7 @@ export default class CollaborationConverter {
 
   private buildGroups(bpmnElements: Array<TGroup> | TGroup): void {
     ensureIsArray(bpmnElements).forEach(groupBpmnElement => {
-      const shapeBpmnElement = this.convertedElements.toGroupShapeBpmnElement(groupBpmnElement);
+      const shapeBpmnElement = this.convertedElements.buildShapeBpmnGroup(groupBpmnElement);
       shapeBpmnElement && this.convertedElements.registerFlowNode(shapeBpmnElement);
     });
   }
