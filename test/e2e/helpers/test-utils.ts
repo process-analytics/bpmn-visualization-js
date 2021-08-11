@@ -18,7 +18,7 @@ import { ElementHandle } from 'playwright-core';
 import 'jest-playwright-preset';
 import { join } from 'path';
 import { findFiles } from '../../helpers/file-helper';
-import { chromiumMouseWheel, PanningOptions, webkitMousePanning } from './visu/playwright-utils';
+import { chromiumMouseZoom, PanningOptions, webkitMousePanning } from './visu/playwright-utils';
 
 export interface Point {
   x: number;
@@ -90,12 +90,12 @@ export async function mouseZoom(xTimes: number, point: Point, deltaX: number): P
   if (!isMouseZoomSupportedByTest) {
     throw new Error(`Mouse zoom is not supported with ${getTestedBrowserFamily()}`);
   }
-  await chromiumMouseZoom(xTimes, point, deltaX);
+  await doChromiumMouseZoom(xTimes, point, deltaX);
 }
 
-async function chromiumMouseZoom(xTimes: number, point: Point, deltaX: number): Promise<void> {
+async function doChromiumMouseZoom(xTimes: number, point: Point, deltaX: number): Promise<void> {
   for (let i = 0; i < xTimes; i++) {
-    await chromiumMouseWheel(point.x, point.y, deltaX);
+    await chromiumMouseZoom(point.x, point.y, deltaX);
     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
     await delay(100);
   }
