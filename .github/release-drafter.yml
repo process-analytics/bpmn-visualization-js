@@ -36,10 +36,6 @@ categories:
     label: documentation
   - title: 🎮 Demo and Examples
     label: example
-  - title: 📦 Dependency updates
-    labels:
-      # Default label used by dependabot
-      - dependencies
   - title: 👻 Maintenance
     labels:
       - infra:build
@@ -47,6 +43,9 @@ categories:
       - infra:repo
       - chore
       - internal
+  - title: 📦 Dependency updates
+    labels:
+      - dependencies
 exclude-labels:
   - invalid
   - no-changelog

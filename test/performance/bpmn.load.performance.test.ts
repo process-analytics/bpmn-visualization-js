@@ -15,7 +15,7 @@
  */
 import * as fs from 'fs';
 import { getSimplePlatformName } from '../e2e/helpers/test-utils';
-import { PageTester } from '../e2e/helpers/visu/PageTester';
+import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
 import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
 
