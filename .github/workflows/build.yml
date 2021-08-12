@@ -113,6 +113,8 @@ jobs:
         with:
           name: bundles-test-results-${{matrix.os.name}}-${{github.sha}}
           path: build/test-report/bundles
+      - name: Check performance tests compilation
+        run: npm run test:perf:compile
 
       # No need to run the analysis from all environments
       - name: SonarCloud Scan
