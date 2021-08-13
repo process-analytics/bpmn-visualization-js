@@ -89,6 +89,7 @@ class ParsingMessageCollectorTester extends ParsingMessageCollector {
     this.warnings = [];
   }
 
+  // TODO why not putting public?
   getWarnings(): Array<ParsingWarning> {
     return this.warnings;
   }
@@ -96,7 +97,9 @@ class ParsingMessageCollectorTester extends ParsingMessageCollector {
 
 export const parsingMessageCollector = new ParsingMessageCollectorTester();
 
-// TODO add function expectNoParsingWarnings
+function checkParsingWarnings(expectWarnings = false): void {
+  expectWarnings ? expect(parsingMessageCollector.getWarnings()).not.toHaveLength(0) : expect(parsingMessageCollector.getWarnings()).toHaveLength(0);
+}
 
 export function parseJson(json: BpmnJsonModel): BpmnModel {
   // TODO purge warnings
@@ -109,12 +112,14 @@ export function parseJsonAndExpect(
   numberOfExpectedLanes: number,
   numberOfExpectedFlowNodes: number,
   numberOfExpectedEdges: number,
+  expectWarnings = false,
 ): BpmnModel {
   const model = parseJson(json);
   expect(model.lanes).toHaveLength(numberOfExpectedLanes);
   expect(model.pools).toHaveLength(numberOfExpectedPools);
   expect(model.flowNodes).toHaveLength(numberOfExpectedFlowNodes);
   expect(model.edges).toHaveLength(numberOfExpectedEdges);
+  checkParsingWarnings(expectWarnings);
   return model;
 }
 
