@@ -19,11 +19,15 @@ import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bp
 import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../model/bpmn/internal/shape';
 import { GlobalTaskKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
+import { EventBus } from '../../parsing-errors-management';
+import { GroupMissingCategoryValueWarning } from '../warnings';
 
 /**
  * @internal
  */
 export class ConvertedElements {
+  constructor(private eventBus: EventBus) {}
+
   private participantsById: Map<string, Participant> = new Map();
   private findParticipantById(id: string): Participant {
     return this.participantsById.get(id);
@@ -129,8 +133,7 @@ export class ConvertedElements {
     if (categoryValueData) {
       return new ShapeBpmnElement(groupBpmnElement.id, categoryValueData.value, ShapeBpmnElementKind.GROUP, processId);
     }
-    // TODO decide how to manage elements not found during parsing as part of #35
-    console.warn('Group json deserialization: unable to find category value ref %s for bpmn element %s', groupBpmnElement.categoryValueRef, groupBpmnElement.id);
+    this.eventBus.warning(new GroupMissingCategoryValueWarning(groupBpmnElement.id, groupBpmnElement.categoryValueRef));
     return undefined;
   }
 }
