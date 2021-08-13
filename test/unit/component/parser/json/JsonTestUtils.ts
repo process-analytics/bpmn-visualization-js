@@ -85,7 +85,7 @@ class ParsingMessageCollectorTester extends ParsingMessageCollector {
     this.warnings.push(warning);
   }
 
-  purgeWarnings(): void {
+  purge(): void {
     this.warnings = [];
   }
 
@@ -102,7 +102,7 @@ function checkParsingWarnings(numberOfWarnings: number): void {
 }
 
 export function parseJson(json: BpmnJsonModel): BpmnModel {
-  // TODO purge warnings
+  parsingMessageCollector.purge();
   return newBpmnJsonParser(parsingMessageCollector).parse(json);
 }
 
@@ -131,8 +131,8 @@ export function parseJsonAndExpectOnlyPoolsAndLanes(json: BpmnJsonModel, numberO
   return parseJsonAndExpect(json, numberOfExpectedPools, numberOfExpectedLanes, 0, 0);
 }
 
-export function parseJsonAndExpectOnlyPools(json: BpmnJsonModel, numberOfExpectedPools: number): BpmnModel {
-  return parseJsonAndExpect(json, numberOfExpectedPools, 0, 0, 0);
+export function parseJsonAndExpectOnlyPools(json: BpmnJsonModel, numberOfExpectedPools: number, numberOfWarnings = 0): BpmnModel {
+  return parseJsonAndExpect(json, numberOfExpectedPools, 0, 0, 0, numberOfWarnings);
 }
 
 export function parseJsonAndExpectOnlyPoolsAndFlowNodes(json: BpmnJsonModel, numberOfExpectedPools: number, numberOfExpectedFlowNodes: number): BpmnModel {
