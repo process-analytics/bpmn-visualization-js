@@ -78,7 +78,7 @@ export interface ExpectedBounds {
   height: number;
 }
 
-export class ParsingMessageCollectorTester extends ParsingMessageCollector {
+class ParsingMessageCollectorTester extends ParsingMessageCollector {
   private warnings: Array<ParsingWarning> = [];
 
   override warning(warning: ParsingWarning): void {
@@ -96,7 +96,10 @@ export class ParsingMessageCollectorTester extends ParsingMessageCollector {
 
 export const parsingMessageCollector = new ParsingMessageCollectorTester();
 
+// TODO add function expectNoParsingWarnings
+
 export function parseJson(json: BpmnJsonModel): BpmnModel {
+  // TODO purge warnings
   return newBpmnJsonParser(parsingMessageCollector).parse(json);
 }
 

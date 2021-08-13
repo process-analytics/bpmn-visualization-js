@@ -16,7 +16,7 @@
 import { JsonParsingWarning } from '../parsing-messages-management';
 
 export class GroupMissingCategoryValueWarning extends JsonParsingWarning {
-  constructor(private groupBpmnElementId: string, private missingCategoryValueRef: string) {
+  constructor(readonly groupBpmnElementId: string, readonly missingCategoryValueRef: string) {
     super();
   }
 
