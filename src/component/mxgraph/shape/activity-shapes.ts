@@ -206,7 +206,7 @@ export class ScriptTaskShape extends BaseTaskShape {
  * @internal
  */
 export class CallActivityShape extends BaseActivityShape {
-  override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
 
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
