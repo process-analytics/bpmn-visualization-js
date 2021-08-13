@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 export abstract class ParsingWarning {
+  // TODO simply: keep a single method that returns an object
   abstract getMessageTemplate(): string;
   abstract getMessageArguments(): Array<string>;
 }
