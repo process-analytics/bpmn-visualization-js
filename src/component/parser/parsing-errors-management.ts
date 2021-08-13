@@ -20,8 +20,7 @@ export abstract class ParsingWarning {
 
 export abstract class JsonParsingWarning extends ParsingWarning {}
 
-// TODO find a better class name ParsingMessageCollector
-export class EventBus {
+export class ParsingMessageCollector {
   warning(warning: ParsingWarning): void {
     // TODO decide how to manage elements not found during parsing as part of #35
     console.warn(warning.getMessageTemplate(), ...warning.getMessageArguments());

@@ -19,14 +19,14 @@ import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bp
 import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../model/bpmn/internal/shape';
 import { GlobalTaskKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
-import { EventBus } from '../../parsing-errors-management';
+import { ParsingMessageCollector } from '../../parsing-errors-management';
 import { GroupMissingCategoryValueWarning } from '../warnings';
 
 /**
  * @internal
  */
 export class ConvertedElements {
-  constructor(private eventBus: EventBus) {}
+  constructor(private parsingMessageCollector: ParsingMessageCollector) {}
 
   private participantsById: Map<string, Participant> = new Map();
   private findParticipantById(id: string): Participant {
@@ -133,7 +133,7 @@ export class ConvertedElements {
     if (categoryValueData) {
       return new ShapeBpmnElement(groupBpmnElement.id, categoryValueData.value, ShapeBpmnElementKind.GROUP, processId);
     }
-    this.eventBus.warning(new GroupMissingCategoryValueWarning(groupBpmnElement.id, groupBpmnElement.categoryValueRef));
+    this.parsingMessageCollector.warning(new GroupMissingCategoryValueWarning(groupBpmnElement.id, groupBpmnElement.categoryValueRef));
     return undefined;
   }
 }
