@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
-import { parseJsonAndExpectOnlyFlowNodes, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parsingMessageCollector, verifyShape } from './JsonTestUtils';
+import {
+  parseJsonAndExpectOnlyFlowNodes,
+  parseJsonAndExpectOnlyPools,
+  parseJsonAndExpectOnlyPoolsAndFlowNodes,
+  parseJsonAndExpectOnlyWarnings,
+  parsingMessageCollector,
+  verifyShape,
+} from './JsonTestUtils';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
 import { GroupMissingCategoryValueWarning, ShapeMissingBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
 
@@ -263,10 +270,9 @@ describe('parse bpmn as json for group', () => {
         },
       };
 
-      parseJsonAndExpectOnlyFlowNodes(json, 0);
+      parseJsonAndExpectOnlyWarnings(json, 2);
       // TODO check the warning class
       const warnings = parsingMessageCollector.getWarnings();
-      expect(warnings).toHaveLength(2);
       const parsingWarning0 = warnings[0] as GroupMissingCategoryValueWarning;
       expect(parsingWarning0.groupBpmnElementId).toEqual('Group_0');
       expect(parsingWarning0.missingCategoryValueRef).toEqual('CategoryValue_0');
@@ -328,7 +334,9 @@ describe('parse bpmn as json for group', () => {
         },
       };
 
+      // TODO check warnings
       parseJsonAndExpectOnlyPools(json, 1);
+      // parseJsonAndExpectOnlyWarnings(json, 2);
     });
   });
 });
