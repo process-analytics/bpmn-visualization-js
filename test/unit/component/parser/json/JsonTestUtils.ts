@@ -27,6 +27,7 @@ import { FlowKind } from '../../../../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import { GlobalTaskKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
+import { ParsingMessageCollector, ParsingWarning } from '../../../../../src/component/parser/parsing-messages-management';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -77,8 +78,26 @@ export interface ExpectedBounds {
   height: number;
 }
 
+export class ParsingMessageCollectorTester extends ParsingMessageCollector {
+  private warnings: Array<ParsingWarning> = [];
+
+  override warning(warning: ParsingWarning): void {
+    this.warnings.push(warning);
+  }
+
+  purgeWarnings(): void {
+    this.warnings = [];
+  }
+
+  getWarnings(): Array<ParsingWarning> {
+    return this.warnings;
+  }
+}
+
+export const parsingMessageCollector = new ParsingMessageCollectorTester();
+
 export function parseJson(json: BpmnJsonModel): BpmnModel {
-  return newBpmnJsonParser().parse(json);
+  return newBpmnJsonParser(parsingMessageCollector).parse(json);
 }
 
 export function parseJsonAndExpect(

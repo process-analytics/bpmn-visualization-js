@@ -53,9 +53,7 @@ export default class BpmnJsonParser {
 /**
  * @internal
  */
-export function newBpmnJsonParser(): BpmnJsonParser {
-  const parsingMessageCollector = new ParsingMessageCollector();
-
+export function newBpmnJsonParser(parsingMessageCollector: ParsingMessageCollector): BpmnJsonParser {
   const convertedElements = new ConvertedElements(parsingMessageCollector);
   return new BpmnJsonParser(
     new CategoryConverter(convertedElements),

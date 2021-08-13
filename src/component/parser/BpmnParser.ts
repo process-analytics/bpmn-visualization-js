@@ -17,6 +17,7 @@
 import BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import BpmnXmlParser from './xml/BpmnXmlParser';
 import BpmnJsonParser, { newBpmnJsonParser } from './json/BpmnJsonParser';
+import { ParsingMessageCollector } from './parsing-messages-management';
 
 /**
  * @internal
@@ -25,16 +26,14 @@ class BpmnParser {
   constructor(readonly jsonParser: BpmnJsonParser, readonly xmlParser: BpmnXmlParser) {}
 
   parse(bpmnAsXml: string): BpmnModel {
-    // TODO decide how to manage parsing errors as part of #35
     const json = this.xmlParser.parse(bpmnAsXml);
     return this.jsonParser.parse(json);
   }
 }
 
-// TODO review usage when introducing dependency injection, see #110
 /**
  * @internal
  */
 export function newBpmnParser(): BpmnParser {
-  return new BpmnParser(newBpmnJsonParser(), new BpmnXmlParser());
+  return new BpmnParser(newBpmnJsonParser(new ParsingMessageCollector()), new BpmnXmlParser());
 }
