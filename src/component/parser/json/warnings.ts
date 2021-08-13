@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { JsonParsingWarning } from '../parsing-errors-management';
+import { JsonParsingWarning } from '../parsing-messages-management';
 
 export class GroupMissingCategoryValueWarning extends JsonParsingWarning {
   constructor(private groupBpmnElementId: string, private missingCategoryValueRef: string) {
