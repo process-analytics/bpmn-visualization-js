@@ -28,3 +28,17 @@ export class GroupMissingCategoryValueWarning extends JsonParsingWarning {
     return [this.missingCategoryValueRef, this.groupBpmnElementId];
   }
 }
+
+export class ShapeMissingBpmnElementWarning extends JsonParsingWarning {
+  constructor(readonly bpmnElementId: string) {
+    super();
+  }
+
+  getMessageArguments(): Array<string> {
+    return [this.bpmnElementId];
+  }
+
+  getMessageTemplate(): string {
+    return 'Shape json deserialization: unable to find bpmn element with id %s';
+  }
+}

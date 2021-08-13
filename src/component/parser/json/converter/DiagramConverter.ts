@@ -28,12 +28,14 @@ import { ConvertedElements } from './utils';
 import { ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { ensureIsArray } from '../../../helpers/array-utils';
+import { ParsingMessageCollector } from '../../parsing-messages-management';
+import { ShapeMissingBpmnElementWarning } from '../warnings';
 
 /**
  * @internal
  */
 export default class DiagramConverter {
-  constructor(private convertedElements: ConvertedElements) {}
+  constructor(private convertedElements: ConvertedElements, private parsingMessageCollector: ParsingMessageCollector) {}
 
   private convertedFonts: Map<string, Font> = new Map();
 
@@ -87,8 +89,7 @@ export default class DiagramConverter {
         return;
       }
       // not found
-      // TODO decide how to manage elements not found during parsing as part of #35
-      console.warn('Shape json deserialization: unable to find bpmn element with id %s', shape.bpmnElement);
+      this.parsingMessageCollector.warning(new ShapeMissingBpmnElementWarning(shape.bpmnElement));
     });
 
     return convertedShapes;

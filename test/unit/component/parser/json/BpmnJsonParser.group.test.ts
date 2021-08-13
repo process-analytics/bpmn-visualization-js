@@ -16,7 +16,7 @@
 
 import { parseJsonAndExpectOnlyFlowNodes, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parsingMessageCollector, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
-import { GroupMissingCategoryValueWarning } from '../../../../../src/component/parser/json/warnings';
+import { GroupMissingCategoryValueWarning, ShapeMissingBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
 
 describe('parse bpmn as json for group', () => {
   it('Single Group with label in process', () => {
@@ -264,11 +264,14 @@ describe('parse bpmn as json for group', () => {
       };
 
       parseJsonAndExpectOnlyFlowNodes(json, 0);
+      // TODO check the warning class
       const warnings = parsingMessageCollector.getWarnings();
-      expect(warnings).toHaveLength(1); // TODO should be 2
+      expect(warnings).toHaveLength(2);
       const parsingWarning0 = warnings[0] as GroupMissingCategoryValueWarning;
       expect(parsingWarning0.groupBpmnElementId).toEqual('Group_0');
       expect(parsingWarning0.missingCategoryValueRef).toEqual('CategoryValue_0');
+      const parsingWarning1 = warnings[1] as ShapeMissingBpmnElementWarning;
+      expect(parsingWarning1.bpmnElementId).toEqual('Group_0');
     });
 
     it('Single Group in collaboration without matching categoryValueRef', () => {

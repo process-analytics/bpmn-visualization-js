@@ -61,6 +61,6 @@ export function newBpmnJsonParser(parsingMessageCollector: ParsingMessageCollect
     new EventDefinitionConverter(convertedElements),
     new GlobalTaskConverter(convertedElements),
     new ProcessConverter(convertedElements),
-    new DiagramConverter(convertedElements),
+    new DiagramConverter(convertedElements, parsingMessageCollector),
   );
 }
