@@ -15,6 +15,7 @@
  */
 
 import {
+  expectAsWarning,
   parseJsonAndExpectOnlyFlowNodes,
   parseJsonAndExpectOnlyPools,
   parseJsonAndExpectOnlyPoolsAndFlowNodes,
@@ -273,19 +274,13 @@ describe('parse bpmn as json for group', () => {
       parseJsonAndExpectOnlyWarnings(json, 2);
       const warnings = parsingMessageCollector.getWarnings();
 
-      const parsingWarning0 = expectAs<GroupMissingCategoryValueWarning>(warnings[0], GroupMissingCategoryValueWarning);
+      const parsingWarning0 = expectAsWarning<GroupMissingCategoryValueWarning>(warnings[0], GroupMissingCategoryValueWarning);
       expect(parsingWarning0.groupBpmnElementId).toEqual('Group_0');
       expect(parsingWarning0.missingCategoryValueRef).toEqual('CategoryValue_0');
 
-      const parsingWarning1 = expectAs<ShapeMissingBpmnElementWarning>(warnings[1], ShapeMissingBpmnElementWarning);
+      const parsingWarning1 = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[1], ShapeMissingBpmnElementWarning);
       expect(parsingWarning1.bpmnElementId).toEqual('Group_0');
     });
-
-    // TODO implement generic check
-    function expectAs<T>(instance: any, constructor: new (...args: any) => T): T {
-      expect(instance).toBeInstanceOf(constructor);
-      return instance as T;
-    }
 
     it('Single Group in collaboration without matching categoryValueRef', () => {
       const json = {
@@ -340,11 +335,11 @@ describe('parse bpmn as json for group', () => {
       parseJsonAndExpectOnlyPools(json, 1, 2);
       const warnings = parsingMessageCollector.getWarnings();
 
-      const parsingWarning0 = expectAs<GroupMissingCategoryValueWarning>(warnings[0], GroupMissingCategoryValueWarning);
+      const parsingWarning0 = expectAsWarning<GroupMissingCategoryValueWarning>(warnings[0], GroupMissingCategoryValueWarning);
       expect(parsingWarning0.groupBpmnElementId).toEqual('Group_0');
       expect(parsingWarning0.missingCategoryValueRef).toEqual('missing_category_value');
 
-      const parsingWarning1 = expectAs<ShapeMissingBpmnElementWarning>(warnings[1], ShapeMissingBpmnElementWarning);
+      const parsingWarning1 = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[1], ShapeMissingBpmnElementWarning);
       expect(parsingWarning1.bpmnElementId).toEqual('Group_0');
     });
   });

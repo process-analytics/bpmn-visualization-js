@@ -139,8 +139,8 @@ export function parseJsonAndExpectOnlyPoolsAndFlowNodes(json: BpmnJsonModel, num
   return parseJsonAndExpect(json, numberOfExpectedPools, 0, numberOfExpectedFlowNodes, 0);
 }
 
-export function parseJsonAndExpectOnlyFlowNodes(json: BpmnJsonModel, numberOfExpectedFlowNodes: number): BpmnModel {
-  return parseJsonAndExpect(json, 0, 0, numberOfExpectedFlowNodes, 0);
+export function parseJsonAndExpectOnlyFlowNodes(json: BpmnJsonModel, numberOfExpectedFlowNodes: number, numberOfWarnings = 0): BpmnModel {
+  return parseJsonAndExpect(json, 0, 0, numberOfExpectedFlowNodes, 0, numberOfWarnings);
 }
 
 export function parseJsonAndExpectOnlyWarnings(json: BpmnJsonModel, numberOfWarnings: number): BpmnModel {
@@ -278,4 +278,10 @@ export function parseJsonAndExpectOnlySubProcess(json: BpmnJsonModel, kind: Shap
   verifySubProcess(model, kind, expectedNumber);
 
   return model;
+}
+
+// TODO implement generic check
+export function expectAsWarning<T>(instance: any, constructor: new (...args: any) => T): T {
+  expect(instance).toBeInstanceOf(constructor);
+  return instance as T;
 }
