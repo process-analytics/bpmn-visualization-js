@@ -42,3 +42,17 @@ export class ShapeMissingBpmnElementWarning extends JsonParsingWarning {
     return 'Shape json deserialization: unable to find bpmn element with id %s';
   }
 }
+
+export class EdgeMissingBpmnElementWarning extends JsonParsingWarning {
+  constructor(readonly bpmnElementId: string) {
+    super();
+  }
+
+  getMessageArguments(): Array<string> {
+    return [this.bpmnElementId];
+  }
+
+  getMessageTemplate(): string {
+    return 'Edge json deserialization: unable to find bpmn element with id %s';
+  }
+}

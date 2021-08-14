@@ -29,7 +29,7 @@ import { ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind } from '../../../../mode
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { ensureIsArray } from '../../../helpers/array-utils';
 import { ParsingMessageCollector } from '../../parsing-messages-management';
-import { ShapeMissingBpmnElementWarning } from '../warnings';
+import { EdgeMissingBpmnElementWarning, ShapeMissingBpmnElementWarning } from '../warnings';
 
 /**
  * @internal
@@ -150,8 +150,7 @@ export default class DiagramConverter {
           this.convertedElements.findAssociationFlow(edge.bpmnElement);
 
         if (!flow) {
-          // TODO decide how to manage elements not found during parsing as part of #35
-          console.warn('Edge json deserialization: unable to find bpmn element with id %s', edge.bpmnElement);
+          this.parsingMessageCollector.warning(new EdgeMissingBpmnElementWarning(edge.bpmnElement));
           return;
         }
 

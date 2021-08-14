@@ -13,15 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { parseJsonAndExpectOnlyEdges } from './JsonTestUtils';
+import { expectAsWarning, parseJsonAndExpectOnlyWarnings, parsingMessageCollector } from './JsonTestUtils';
+import { EdgeMissingBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
 
 describe('parse bpmn as json for edges', () => {
-  jest.spyOn(console, 'warn');
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   // this also covers unsupported bpmn element types that are then not retrieved during the parsing
   it('should not convert as Edge without related BPMN element', () => {
     console.warn = jest.fn();
@@ -43,7 +38,10 @@ describe('parse bpmn as json for edges', () => {
       },
     };
 
-    parseJsonAndExpectOnlyEdges(json, 0);
-    expect(console.warn).toHaveBeenCalledWith('Edge json deserialization: unable to find bpmn element with id %s', 'edge-bpmnElement-unknown');
+    parseJsonAndExpectOnlyWarnings(json, 1);
+    const warnings = parsingMessageCollector.getWarnings();
+
+    const parsingWarning0 = expectAsWarning<EdgeMissingBpmnElementWarning>(warnings[0], EdgeMissingBpmnElementWarning);
+    expect(parsingWarning0.bpmnElementId).toEqual('edge-bpmnElement-unknown');
   });
 });
