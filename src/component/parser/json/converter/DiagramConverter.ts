@@ -186,6 +186,10 @@ export default class DiagramConverter {
       font = this.convertedFonts.get(labelStyle);
 
       if (!font) {
+        // MissingFontInLabelStyle
+        // warning id --> shapeOrEdgeId
+        // labelStyle --> labelStyleId
+
         // TODO decide how to manage elements not found during parsing as part of #35
         console.warn('Unable to assign font from style %s to shape/edge %s', labelStyle, id);
       }
