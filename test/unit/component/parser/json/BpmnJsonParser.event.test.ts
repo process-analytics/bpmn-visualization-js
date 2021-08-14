@@ -233,8 +233,12 @@ function executeEventCommonTests(
           };
           addEvent(json, 'boundaryEvent', buildEventDefinitionParameter, { ...specificBuildEventParameter, attachedToRef: 'not_activity_id_0' });
 
-          const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 1);
+          // TODO duplication
+          const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 1, 1);
           expect(getEventShapes(bpmnModel)).toHaveLength(0);
+          const warnings = parsingMessageCollector.getWarnings();
+          const parsingWarning = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[0], ShapeMissingBpmnElementWarning);
+          expect(parsingWarning.bpmnElementId).toEqual('event_id_0');
         });
 
         it(`should NOT convert, when 'boundaryEvent' is ${boundaryEventKind} & attached to unexisting activity, ${titleForEventDefinitionIsAttributeOf}`, () => {
@@ -250,7 +254,13 @@ function executeEventCommonTests(
           };
           addEvent(json, 'boundaryEvent', buildEventDefinitionParameter, { ...specificBuildEventParameter, attachedToRef: 'unexisting_activity_id_0' });
 
-          parseJsonAndExpectOnlyFlowNodes(json, 0);
+          // TODO duplication
+          // we could use the warnings only function
+          const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 0, 1);
+          expect(getEventShapes(bpmnModel)).toHaveLength(0);
+          const warnings = parsingMessageCollector.getWarnings();
+          const parsingWarning = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[0], ShapeMissingBpmnElementWarning);
+          expect(parsingWarning.bpmnElementId).toEqual('event_id_0');
         });
       }
     }
