@@ -283,10 +283,11 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 2, 1);
 
     verifyLabelFont(model.flowNodes[0].label, { name: 'Arial', size: 11.0, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false });
     expect(model.flowNodes[1].label).toBeUndefined();
+    // TODO check warning
   });
 
   it("should convert as Edge[] without Font, when BPMNEdges (which reference a BPMNLabelStyle) are an attribute (as array) of 'BPMNPlane' (as object) & BPMNLabelStyle (with font with/without all attributes) is an attribute (as array) of 'BPMNDiagram' (as object)", () => {
@@ -358,6 +359,7 @@ describe('parse bpmn as json for label font', () => {
 
     verifyLabelFont(model.edges[0].label, { name: 'Arial', size: 11.0, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false });
     expect(model.edges[1].label).toBeUndefined();
+    // TODO check font warning
   });
 
   it("should convert as Shape without Font, when a BPMNShape (who references a BPMNLabelStyle without font) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
@@ -391,9 +393,10 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1, 1);
 
     expect(model.flowNodes[0].label).toBeUndefined();
+    // TODO check warning
   });
 
   it("should convert as Edge without Font, when a BPMNEdge (which references a BPMNLabelStyle without font) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
@@ -431,6 +434,7 @@ describe('parse bpmn as json for label font', () => {
     const model = parseJsonAndExpectOnlyEdges(json, 1);
 
     expect(model.edges[0].label).toBeUndefined();
+    // TODO check warning
   });
 
   it("should convert as Shape without Font, when a BPMNShape (who references a non-existing BPMNLabelStyle) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
@@ -462,10 +466,11 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+    const model = parseJsonAndExpectOnlyFlowNodes(json, 1, 1);
 
     expect(model.flowNodes[0].label).toBeUndefined();
     expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNShape_id_0');
+    // TODO check warning
   });
 
   it("should convert as Edge without Font, when a BPMNEdge (which references a non-existing BPMNLabelStyle) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
@@ -502,5 +507,6 @@ describe('parse bpmn as json for label font', () => {
 
     expect(model.edges[0].label).toBeUndefined();
     expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNEdge_id_0');
+    // TODO check warning
   });
 });

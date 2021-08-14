@@ -29,7 +29,7 @@ import { ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind } from '../../../../mode
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { ensureIsArray } from '../../../helpers/array-utils';
 import { ParsingMessageCollector } from '../../parsing-messages-management';
-import { EdgeMissingBpmnElementWarning, ShapeMissingBpmnElementWarning } from '../warnings';
+import { EdgeMissingBpmnElementWarning, MissingFontInLabelStyleWarning, ShapeMissingBpmnElementWarning } from '../warnings';
 
 /**
  * @internal
@@ -186,8 +186,7 @@ export default class DiagramConverter {
       font = this.convertedFonts.get(labelStyle);
 
       if (!font) {
-        // TODO decide how to manage elements not found during parsing as part of #35
-        console.warn('Unable to assign font from style %s to shape/edge %s', labelStyle, id);
+        this.parsingMessageCollector.warning(new MissingFontInLabelStyleWarning(id, labelStyle));
       }
     }
 
