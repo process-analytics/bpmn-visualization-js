@@ -33,7 +33,7 @@ import { ensureIsArray } from '../../../helpers/array-utils';
  * @internal
  */
 export default class DiagramConverter {
-  constructor(readonly convertedElements: ConvertedElements) {}
+  constructor(private convertedElements: ConvertedElements) {}
 
   private convertedFonts: Map<string, Font> = new Map();
 
@@ -71,31 +71,22 @@ export default class DiagramConverter {
   }
 
   private deserializeShapes(shapes: Array<BPMNShape> | BPMNShape): Shapes {
-    // TODO find a way to avoid shape management duplication
-    // common pattern:
-    //    deserialize  shape base on custom function to find a bpmn element
-    //    if found push in an array and process next element
     const convertedShapes: Shapes = { flowNodes: [], lanes: [], pools: [] };
 
     ensureIsArray(shapes).forEach(shape => {
-      const flowNode = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findFlowNode(bpmnElement));
-      if (flowNode) {
-        convertedShapes.flowNodes.push(flowNode);
+      // flow nodes
+      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.flowNodes, (bpmnElement: string) => this.convertedElements.findFlowNode(bpmnElement))) {
         return;
       }
-
-      const lane = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findLane(bpmnElement));
-      if (lane) {
-        convertedShapes.lanes.push(lane);
+      // lane
+      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.lanes, (bpmnElement: string) => this.convertedElements.findLane(bpmnElement))) {
         return;
       }
-
-      const pool = this.deserializeShape(shape, (bpmnElement: string) => this.convertedElements.findProcess(bpmnElement));
-      if (pool) {
-        convertedShapes.pools.push(pool);
+      // pool
+      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.pools, (bpmnElement: string) => this.convertedElements.findProcess(bpmnElement))) {
         return;
       }
-
+      // not found
       // TODO decide how to manage elements not found during parsing as part of #35
       console.warn('Shape json deserialization: unable to find bpmn element with id %s', shape.bpmnElement);
     });
@@ -103,10 +94,19 @@ export default class DiagramConverter {
     return convertedShapes;
   }
 
+  private deserializeShapeAndStoreIfFound(shape: BPMNShape, storage: Array<Shape>, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): boolean {
+    const element = this.deserializeShape(shape, findShapeElement);
+    if (element) {
+      storage.push(element);
+      return true;
+    }
+    return false;
+  }
+
   private deserializeShape(shape: BPMNShape, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
     const bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
-      const bounds = this.deserializeBounds(shape);
+      const bounds = DiagramConverter.deserializeBounds(shape);
 
       if (bpmnElement.parentId) {
         const participant = this.convertedElements.findParticipantByProcessRef(bpmnElement.parentId);
@@ -133,7 +133,7 @@ export default class DiagramConverter {
     }
   }
 
-  private deserializeBounds(boundedElement: BPMNShape | BPMNLabel): Bounds {
+  private static deserializeBounds(boundedElement: BPMNShape | BPMNLabel): Bounds {
     const bounds = boundedElement.Bounds;
     if (bounds) {
       return new Bounds(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -172,7 +172,7 @@ export default class DiagramConverter {
   private deserializeLabel(bpmnLabel: string | BPMNLabel, id: string): Label {
     if (bpmnLabel && typeof bpmnLabel === 'object') {
       const font = this.findFont(bpmnLabel.labelStyle, id);
-      const bounds = this.deserializeBounds(bpmnLabel);
+      const bounds = DiagramConverter.deserializeBounds(bpmnLabel);
 
       if (font || bounds) {
         return new Label(font, bounds);

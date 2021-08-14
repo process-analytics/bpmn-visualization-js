@@ -25,7 +25,7 @@ import { ShapeBpmnElementKind } from '../../../../model/bpmn/internal/shape';
  * @internal
  */
 export default class GlobalTaskConverter {
-  constructor(readonly convertedElements: ConvertedElements) {}
+  constructor(private convertedElements: ConvertedElements) {}
 
   deserialize(definitions: TDefinitions): void {
     this.parseGlobalTasks(definitions.globalTask, ShapeBpmnElementKind.GLOBAL_TASK);

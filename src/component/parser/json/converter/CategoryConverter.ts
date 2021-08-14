@@ -23,7 +23,7 @@ import { TCategory } from '../../../../model/bpmn/json/baseElement/rootElement/r
  * @internal
  */
 export default class CategoryConverter {
-  constructor(readonly convertedElements: ConvertedElements) {}
+  constructor(private convertedElements: ConvertedElements) {}
 
   deserialize(definitions: TDefinitions): void {
     ensureIsArray<TCategory>(definitions.category).forEach(category => {
