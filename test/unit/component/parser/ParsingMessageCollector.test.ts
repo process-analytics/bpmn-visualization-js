@@ -15,7 +15,7 @@
  */
 
 import { ParsingMessageCollector } from '../../../../src/component/parser/parsing-messages-management';
-import { EdgeMissingBpmnElementWarning } from '../../../../src/component/parser/json/warnings';
+import { EdgeMissingBpmnElementWarning, MissingFontInLabelStyleWarning } from '../../../../src/component/parser/json/warnings';
 
 describe('parsing message collector', () => {
   jest.spyOn(console, 'warn');
@@ -30,6 +30,10 @@ describe('parsing message collector', () => {
     it('edge missing bpmn element', () => {
       parsingMessageCollector.warning(new EdgeMissingBpmnElementWarning('edge-bpmnElement-unknown'));
       expect(console.warn).toHaveBeenCalledWith('Edge json deserialization: unable to find bpmn element with id %s', 'edge-bpmnElement-unknown');
+    });
+    it('Missing font in label style', () => {
+      parsingMessageCollector.warning(new MissingFontInLabelStyleWarning('BPMNEdge_id_0', 'non-existing_style_id'));
+      expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNEdge_id_0');
     });
   });
 });
