@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import { ParsingMessageCollector } from '../../../../src/component/parser/parsing-messages-management';
+import { EdgeMissingBpmnElementWarning } from '../../../../src/component/parser/json/warnings';
+
 describe('parsing message collector', () => {
   jest.spyOn(console, 'warn');
 
@@ -21,8 +24,12 @@ describe('parsing message collector', () => {
     jest.clearAllMocks();
   });
 
-  //  TODO implement dedicated test of the collector about console warn
-  it.skip('log warnings with console.warn', () => {
-    expect(console.warn).toHaveBeenCalledWith('Edge json deserialization: unable to find bpmn element with id %s', 'edge-bpmnElement-unknown');
+  const parsingMessageCollector = new ParsingMessageCollector();
+
+  describe('console.warn when warning is registered', () => {
+    it('edge missing bpmn element', () => {
+      parsingMessageCollector.warning(new EdgeMissingBpmnElementWarning('edge-bpmnElement-unknown'));
+      expect(console.warn).toHaveBeenCalledWith('Edge json deserialization: unable to find bpmn element with id %s', 'edge-bpmnElement-unknown');
+    });
   });
 });
