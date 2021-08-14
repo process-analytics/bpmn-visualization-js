@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
-import { parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
-import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnEventKind';
+import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector, verifyShape } from './JsonTestUtils';
+import { ShapeBpmnEventKind, ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { TEventDefinition } from '../../../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
 import { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
@@ -25,6 +24,8 @@ import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import ShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { addEvent, buildDefinitionsAndProcessWithTask, BuildEventDefinitionParameter, BuildEventParameter, EventDefinitionOn } from './JsonBuilder';
+import { ShapeMissingBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
+import { BpmnJsonModel } from '../../../../../dist/model/bpmn/json/BPMN20';
 
 interface TestParameter {
   bpmnKind: string;
@@ -142,6 +143,15 @@ function executeEventCommonTests(
       },
     );
 
+    // TODO make it work
+    function parseAndExpectNoEvents(json: BpmnJsonModel): void {
+      const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 1, 1);
+      expect(getEventShapes(bpmnModel)).toHaveLength(0);
+      const warnings = parsingMessageCollector.getWarnings();
+      const parsingWarning = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[0], ShapeMissingBpmnElementWarning);
+      expect(parsingWarning.bpmnElementId).toEqual('event_id_0');
+    }
+
     it.each([
       ["'name'", 'event name'],
       ["no 'name'", undefined],
@@ -154,16 +164,25 @@ function executeEventCommonTests(
         const json = buildDefinitionsAndProcessWithTask({ eventDefinitionKind });
         addEvent(json, bpmnKind, { ...buildEventDefinitionParameter, withDifferentDefinition: true }, specificBuildEventParameter);
 
-        const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 1);
+        // TODO duplication
+        const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 1, 1);
         expect(getEventShapes(bpmnModel)).toHaveLength(0);
+        const warnings = parsingMessageCollector.getWarnings();
+        const parsingWarning = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[0], ShapeMissingBpmnElementWarning);
+        expect(parsingWarning.bpmnElementId).toEqual('event_id_0');
       });
 
       it(`should NOT convert, when there are several '${eventDefinitionKind}EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
         const json = buildDefinitionsAndProcessWithTask();
         addEvent(json, bpmnKind, { ...buildEventDefinitionParameter, withMultipleDefinitions: true }, specificBuildEventParameter);
 
-        const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 1);
+        // parseAndExpectNoEvents(json);
+        // TODO duplication
+        const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 1, 1);
         expect(getEventShapes(bpmnModel)).toHaveLength(0);
+        const warnings = parsingMessageCollector.getWarnings();
+        const parsingWarning = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[0], ShapeMissingBpmnElementWarning);
+        expect(parsingWarning.bpmnElementId).toEqual('event_id_0');
       });
 
       if (expectedShapeBpmnElementKind !== ShapeBpmnElementKind.EVENT_BOUNDARY) {
@@ -241,8 +260,13 @@ function executeEventCommonTests(
         const json = buildDefinitionsAndProcessWithTask();
         addEvent(json, bpmnKind, { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.BOTH }, specificBuildEventParameter);
 
-        const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 1);
+        // parseAndExpectNoEvents(json);
+        // TODO duplication
+        const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 1, 1);
         expect(getEventShapes(bpmnModel)).toHaveLength(0);
+        const warnings = parsingMessageCollector.getWarnings();
+        const parsingWarning = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[0], ShapeMissingBpmnElementWarning);
+        expect(parsingWarning.bpmnElementId).toEqual('event_id_0');
       });
     }
   });
