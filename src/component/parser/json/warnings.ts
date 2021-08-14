@@ -56,3 +56,17 @@ export class EdgeMissingBpmnElementWarning extends JsonParsingWarning {
     return 'Edge json deserialization: unable to find bpmn element with id %s';
   }
 }
+
+export class MissingFontInLabelStyleWarning extends JsonParsingWarning {
+  constructor(readonly shapeOrEdgeId: string, readonly labelStyleId: string) {
+    super();
+  }
+
+  getMessageArguments(): Array<string> {
+    return [this.labelStyleId, this.shapeOrEdgeId];
+  }
+
+  getMessageTemplate(): string {
+    return 'Unable to assign font from style %s to shape/edge %s';
+  }
+}
