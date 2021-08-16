@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+export interface MessageDetails {
+  template: string;
+  arguments: Array<string>;
+}
+
 export abstract class ParsingWarning {
-  // TODO simply: keep a single method that returns an object
-  abstract getMessageTemplate(): string;
-  abstract getMessageArguments(): Array<string>;
+  abstract getMessage(): MessageDetails;
 }
 
 // TODO explain why we have this (class hierarchy + identification)
@@ -24,7 +28,8 @@ export abstract class JsonParsingWarning extends ParsingWarning {}
 
 export class ParsingMessageCollector {
   warning(warning: ParsingWarning): void {
+    const message = warning.getMessage();
     // TODO decide how to manage elements not found during parsing as part of #35
-    console.warn(warning.getMessageTemplate(), ...warning.getMessageArguments());
+    console.warn(message.template, ...message.arguments);
   }
 }

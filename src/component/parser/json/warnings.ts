@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { JsonParsingWarning } from '../parsing-messages-management';
+import { JsonParsingWarning, MessageDetails } from '../parsing-messages-management';
 
 export class GroupMissingCategoryValueWarning extends JsonParsingWarning {
   constructor(readonly groupBpmnElementId: string, readonly missingCategoryValueRef: string) {
     super();
   }
 
-  getMessageTemplate(): string {
-    return 'Group json deserialization: unable to find category value ref %s for bpmn element %s';
-  }
-
-  getMessageArguments(): Array<string> {
-    return [this.missingCategoryValueRef, this.groupBpmnElementId];
+  override getMessage(): { template: string; arguments: Array<string> } {
+    return {
+      arguments: [this.missingCategoryValueRef, this.groupBpmnElementId],
+      template: 'Group json deserialization: unable to find category value ref %s for bpmn element %s',
+    };
   }
 }
 
@@ -34,12 +33,11 @@ export class ShapeMissingBpmnElementWarning extends JsonParsingWarning {
     super();
   }
 
-  getMessageArguments(): Array<string> {
-    return [this.bpmnElementId];
-  }
-
-  getMessageTemplate(): string {
-    return 'Shape json deserialization: unable to find bpmn element with id %s';
+  override getMessage(): { template: string; arguments: Array<string> } {
+    return {
+      arguments: [this.bpmnElementId],
+      template: 'Shape json deserialization: unable to find bpmn element with id %s',
+    };
   }
 }
 
@@ -48,12 +46,11 @@ export class EdgeMissingBpmnElementWarning extends JsonParsingWarning {
     super();
   }
 
-  getMessageArguments(): Array<string> {
-    return [this.bpmnElementId];
-  }
-
-  getMessageTemplate(): string {
-    return 'Edge json deserialization: unable to find bpmn element with id %s';
+  override getMessage(): { template: string; arguments: Array<string> } {
+    return {
+      arguments: [this.bpmnElementId],
+      template: 'Edge json deserialization: unable to find bpmn element with id %s',
+    };
   }
 }
 
@@ -62,12 +59,11 @@ export class MissingFontInLabelStyleWarning extends JsonParsingWarning {
     super();
   }
 
-  getMessageArguments(): Array<string> {
-    return [this.labelStyleId, this.shapeOrEdgeId];
-  }
-
-  getMessageTemplate(): string {
-    return 'Unable to assign font from style %s to shape/edge %s';
+  override getMessage(): { template: string; arguments: Array<string> } {
+    return {
+      arguments: [this.labelStyleId, this.shapeOrEdgeId],
+      template: 'Unable to assign font from style %s to shape/edge %s',
+    };
   }
 }
 
@@ -76,11 +72,10 @@ export class LaneUnknownFlowNodeRefWarning extends JsonParsingWarning {
     super();
   }
 
-  getMessageArguments(): Array<string> {
-    return [this.flowNodeRef, this.laneId];
-  }
-
-  getMessageTemplate(): string {
-    return 'Unable to assign lane %s as parent: flow node %s is not found';
+  override getMessage(): MessageDetails {
+    return {
+      arguments: [this.flowNodeRef, this.laneId],
+      template: 'Unable to assign lane %s as parent: flow node %s is not found',
+    };
   }
 }
