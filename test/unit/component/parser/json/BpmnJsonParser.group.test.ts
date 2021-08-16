@@ -251,7 +251,7 @@ describe('parse bpmn as json for group', () => {
             id: 'process_0',
             group: {
               id: 'Group_0',
-              categoryValueRef: 'CategoryValue_0',
+              categoryValueRef: 'unknown_CategoryValue_0',
             },
           },
           BPMNDiagram: {
@@ -272,15 +272,19 @@ describe('parse bpmn as json for group', () => {
       };
 
       parseJsonAndExpectOnlyWarnings(json, 2);
+      expectWarnings();
+    });
+
+    function expectWarnings(): void {
       const warnings = parsingMessageCollector.getWarnings();
 
-      const parsingWarning0 = expectAsWarning<GroupMissingCategoryValueWarning>(warnings[0], GroupMissingCategoryValueWarning);
-      expect(parsingWarning0.groupBpmnElementId).toEqual('Group_0');
-      expect(parsingWarning0.missingCategoryValueRef).toEqual('CategoryValue_0');
+      const warning0 = expectAsWarning<GroupMissingCategoryValueWarning>(warnings[0], GroupMissingCategoryValueWarning);
+      expect(warning0.groupBpmnElementId).toEqual('Group_0');
+      expect(warning0.missingCategoryValueRef).toEqual('unknown_CategoryValue_0');
 
-      const parsingWarning1 = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[1], ShapeMissingBpmnElementWarning);
-      expect(parsingWarning1.bpmnElementId).toEqual('Group_0');
-    });
+      const warning1 = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[1], ShapeMissingBpmnElementWarning);
+      expect(warning1.bpmnElementId).toEqual('Group_0');
+    }
 
     it('Single Group in collaboration without matching categoryValueRef', () => {
       const json = {
@@ -294,7 +298,7 @@ describe('parse bpmn as json for group', () => {
             },
             group: {
               id: 'Group_0',
-              categoryValueRef: 'missing_category_value',
+              categoryValueRef: 'unknown_CategoryValue_0',
             },
           },
           process: {
@@ -333,14 +337,7 @@ describe('parse bpmn as json for group', () => {
       };
 
       parseJsonAndExpectOnlyPools(json, 1, 2);
-      const warnings = parsingMessageCollector.getWarnings();
-
-      const warning0 = expectAsWarning<GroupMissingCategoryValueWarning>(warnings[0], GroupMissingCategoryValueWarning);
-      expect(warning0.groupBpmnElementId).toEqual('Group_0');
-      expect(warning0.missingCategoryValueRef).toEqual('missing_category_value');
-
-      const warning1 = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[1], ShapeMissingBpmnElementWarning);
-      expect(warning1.bpmnElementId).toEqual('Group_0');
+      expectWarnings();
     });
   });
 });
