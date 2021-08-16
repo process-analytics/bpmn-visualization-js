@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import arrayContaining = jasmine.arrayContaining;
-import anything = jasmine.anything;
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { BPMNDiagram } from '../../../../../src/model/bpmn/json/BPMNDI';
 import { readFileSync } from '../../../../helpers/file-helper';
@@ -39,15 +37,15 @@ describe('parse bpmn as xml for Activiti Designer 5.14.1', () => {
             id: 'endevent1',
             name: 'End',
           },
-          userTask: arrayContaining([anything()]),
-          exclusiveGateway: arrayContaining([anything()]),
-          sequenceFlow: arrayContaining([anything()]),
-          textAnnotation: anything(),
+          userTask: expect.arrayContaining([expect.anything()]),
+          exclusiveGateway: expect.arrayContaining([expect.anything()]),
+          sequenceFlow: expect.arrayContaining([expect.anything()]),
+          textAnnotation: expect.anything(),
         },
         BPMNDiagram: {
           BPMNPlane: {
-            BPMNShape: arrayContaining([anything()]),
-            BPMNEdge: arrayContaining([{ id: 'BPMNEdge_flow9', bpmnElement: 'flow9', waypoint: [anything(), anything(), anything()] }]),
+            BPMNShape: expect.arrayContaining([expect.anything()]),
+            BPMNEdge: expect.arrayContaining([{ id: 'BPMNEdge_flow9', bpmnElement: 'flow9', waypoint: [expect.anything(), expect.anything(), expect.anything()] }]),
           },
         },
       },
