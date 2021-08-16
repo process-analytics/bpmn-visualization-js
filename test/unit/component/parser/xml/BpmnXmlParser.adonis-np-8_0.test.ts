@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import arrayContaining = jasmine.arrayContaining;
-import anything = jasmine.anything;
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { BPMNDiagram } from '../../../../../src/model/bpmn/json/BPMNDI';
 import { readFileSync } from '../../../../helpers/file-helper';
@@ -34,8 +32,8 @@ describe('parse bpmn as xml for ADONIS NP 8.0', () => {
           processType: 'None',
           extensionElements: {
             modelattributes: {
-              attribute: anything(),
-              record: anything(),
+              attribute: expect.anything(),
+              record: expect.anything(),
             },
           },
           startEvent: {
@@ -43,8 +41,8 @@ describe('parse bpmn as xml for ADONIS NP 8.0', () => {
             name: 'Start Event',
             extensionElements: {
               instance: {
-                attribute: anything(),
-                record: anything(),
+                attribute: expect.anything(),
+                record: expect.anything(),
               },
             },
             outgoing: '_ab1dbc48-3851-440e-bee0-ef1af884a1a5',
@@ -52,21 +50,21 @@ describe('parse bpmn as xml for ADONIS NP 8.0', () => {
           endEvent: {
             id: '_e8302d6f-0ef9-4b95-9b23-96de2c175589',
             name: 'End Event',
-            extensionElements: anything(),
+            extensionElements: expect.anything(),
             incoming: ['_91a75c3f-7a0d-44a4-a1ba-ba6064187a9f', '_eeddf2a4-a7f0-415b-b154-a98f64d411c2'],
           },
-          task: arrayContaining([anything()]),
-          exclusiveGateway: arrayContaining([anything()]),
-          sequenceFlow: arrayContaining([anything()]),
+          task: expect.arrayContaining([expect.anything()]),
+          exclusiveGateway: expect.arrayContaining([expect.anything()]),
+          sequenceFlow: expect.arrayContaining([expect.anything()]),
         },
         BPMNDiagram: {
           BPMNPlane: {
-            BPMNShape: arrayContaining([anything()]),
-            BPMNEdge: arrayContaining([
+            BPMNShape: expect.arrayContaining([expect.anything()]),
+            BPMNEdge: expect.arrayContaining([
               {
                 id: 'BPMN_Edge_107fb1c6-cf96-45a1-934e-e9a74f0ccb0c',
                 bpmnElement: '_107fb1c6-cf96-45a1-934e-e9a74f0ccb0c',
-                waypoint: [anything(), anything(), anything()],
+                waypoint: [expect.anything(), expect.anything(), expect.anything()],
                 BPMNLabel: {
                   Bounds: {
                     height: 0,
