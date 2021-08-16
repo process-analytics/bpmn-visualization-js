@@ -281,7 +281,7 @@ export function parseJsonAndExpectOnlySubProcess(json: BpmnJsonModel, kind: Shap
 }
 
 // TODO implement generic check
-export function expectAsWarning<T>(instance: any, constructor: new (...args: any) => T): T {
+export function expectAsWarning<T>(instance: unknown, constructor: new (...args: never) => T): T {
   expect(instance).toBeInstanceOf(constructor);
   return instance as T;
 }
