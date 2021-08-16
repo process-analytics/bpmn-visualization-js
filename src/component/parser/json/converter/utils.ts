@@ -20,7 +20,7 @@ import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../model/bpmn
 import { GlobalTaskKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
 import { ParsingMessageCollector } from '../../parsing-messages-management';
-import { GroupMissingCategoryValueWarning } from '../warnings';
+import { GroupUnknownCategoryValueWarning } from '../warnings';
 
 /**
  * @internal
@@ -133,7 +133,7 @@ export class ConvertedElements {
     if (categoryValueData) {
       return new ShapeBpmnElement(groupBpmnElement.id, categoryValueData.value, ShapeBpmnElementKind.GROUP, processId);
     }
-    this.parsingMessageCollector.warning(new GroupMissingCategoryValueWarning(groupBpmnElement.id, groupBpmnElement.categoryValueRef));
+    this.parsingMessageCollector.warning(new GroupUnknownCategoryValueWarning(groupBpmnElement.id, groupBpmnElement.categoryValueRef));
     return undefined;
   }
 }

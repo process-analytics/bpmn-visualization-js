@@ -15,19 +15,20 @@
  */
 import { JsonParsingWarning, MessageDetails } from '../parsing-messages-management';
 
-export class GroupMissingCategoryValueWarning extends JsonParsingWarning {
-  constructor(readonly groupBpmnElementId: string, readonly missingCategoryValueRef: string) {
+export class GroupUnknownCategoryValueWarning extends JsonParsingWarning {
+  constructor(readonly groupBpmnElementId: string, readonly categoryValueRef: string) {
     super();
   }
 
   override getMessage(): { template: string; arguments: Array<string> } {
     return {
-      arguments: [this.missingCategoryValueRef, this.groupBpmnElementId],
+      arguments: [this.categoryValueRef, this.groupBpmnElementId],
       template: 'Group json deserialization: unable to find category value ref %s for bpmn element %s',
     };
   }
 }
 
+// TODO rename missing --> unknown
 export class ShapeMissingBpmnElementWarning extends JsonParsingWarning {
   constructor(readonly bpmnElementId: string) {
     super();
@@ -41,6 +42,7 @@ export class ShapeMissingBpmnElementWarning extends JsonParsingWarning {
   }
 }
 
+// TODO rename missing --> unknown
 export class EdgeMissingBpmnElementWarning extends JsonParsingWarning {
   constructor(readonly bpmnElementId: string) {
     super();
@@ -54,6 +56,7 @@ export class EdgeMissingBpmnElementWarning extends JsonParsingWarning {
   }
 }
 
+// TODO rename missing --> unknown
 export class MissingFontInLabelStyleWarning extends JsonParsingWarning {
   constructor(readonly shapeOrEdgeId: string, readonly labelStyleId: string) {
     super();

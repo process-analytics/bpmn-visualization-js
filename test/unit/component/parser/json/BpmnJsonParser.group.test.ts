@@ -24,7 +24,7 @@ import {
   verifyShape,
 } from './JsonTestUtils';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
-import { GroupMissingCategoryValueWarning, ShapeMissingBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
+import { GroupUnknownCategoryValueWarning, ShapeMissingBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
 
 describe('parse bpmn as json for group', () => {
   it('Single Group with label in process', () => {
@@ -278,9 +278,9 @@ describe('parse bpmn as json for group', () => {
     function expectWarnings(): void {
       const warnings = parsingMessageCollector.getWarnings();
 
-      const warning0 = expectAsWarning<GroupMissingCategoryValueWarning>(warnings[0], GroupMissingCategoryValueWarning);
+      const warning0 = expectAsWarning<GroupUnknownCategoryValueWarning>(warnings[0], GroupUnknownCategoryValueWarning);
       expect(warning0.groupBpmnElementId).toEqual('Group_0');
-      expect(warning0.missingCategoryValueRef).toEqual('unknown_CategoryValue_0');
+      expect(warning0.categoryValueRef).toEqual('unknown_CategoryValue_0');
 
       const warning1 = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[1], ShapeMissingBpmnElementWarning);
       expect(warning1.bpmnElementId).toEqual('Group_0');

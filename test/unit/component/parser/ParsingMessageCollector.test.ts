@@ -17,7 +17,7 @@
 import { ParsingMessageCollector } from '../../../../src/component/parser/parsing-messages-management';
 import {
   EdgeMissingBpmnElementWarning,
-  GroupMissingCategoryValueWarning,
+  GroupUnknownCategoryValueWarning,
   LaneUnknownFlowNodeRefWarning,
   MissingFontInLabelStyleWarning,
   ShapeMissingBpmnElementWarning,
@@ -55,7 +55,7 @@ describe('parsing message collector', () => {
     });
 
     it('unknown category value ref in group', () => {
-      parsingMessageCollector.warning(new GroupMissingCategoryValueWarning('Group_0', 'non-existing_category_value_ref'));
+      parsingMessageCollector.warning(new GroupUnknownCategoryValueWarning('Group_0', 'non-existing_category_value_ref'));
       expect(console.warn).toHaveBeenCalledWith(
         'Group json deserialization: unable to find category value ref %s for bpmn element %s',
         'non-existing_category_value_ref',
