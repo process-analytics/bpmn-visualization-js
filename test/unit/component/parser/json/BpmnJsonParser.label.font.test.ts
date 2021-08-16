@@ -29,12 +29,6 @@ function expectMissingFontWarning(shapeOrEdgeId: string, labelStyleId: string): 
 }
 
 describe('parse bpmn as json for label font', () => {
-  jest.spyOn(console, 'warn');
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   each(shapeBpmnElementKindForLabelTests).it(
     "should convert as Shape with Font, when a BPMNShape (attached to %s & who references a BPMNLabelStyle with font) is an attribute (as object) of 'BPMNPlane' (as object)",
     sourceKind => {
