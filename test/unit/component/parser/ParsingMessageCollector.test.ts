@@ -15,7 +15,13 @@
  */
 
 import { ParsingMessageCollector } from '../../../../src/component/parser/parsing-messages-management';
-import { EdgeMissingBpmnElementWarning, MissingFontInLabelStyleWarning } from '../../../../src/component/parser/json/warnings';
+import {
+  EdgeMissingBpmnElementWarning,
+  GroupMissingCategoryValueWarning,
+  LaneUnknownFlowNodeRefWarning,
+  MissingFontInLabelStyleWarning,
+  ShapeMissingBpmnElementWarning,
+} from '../../../../src/component/parser/json/warnings';
 
 describe('parsing message collector', () => {
   jest.spyOn(console, 'warn').mockImplementation(() => {
@@ -29,13 +35,32 @@ describe('parsing message collector', () => {
   const parsingMessageCollector = new ParsingMessageCollector();
 
   describe('console.warn when warning is registered', () => {
-    it('edge missing bpmn element', () => {
+    it('unknown edge bpmn element', () => {
       parsingMessageCollector.warning(new EdgeMissingBpmnElementWarning('edge-bpmnElement-unknown'));
       expect(console.warn).toHaveBeenCalledWith('Edge json deserialization: unable to find bpmn element with id %s', 'edge-bpmnElement-unknown');
     });
-    it('Missing font in label style', () => {
+    it('unknown shape bpmn element', () => {
+      parsingMessageCollector.warning(new ShapeMissingBpmnElementWarning('shape-bpmnElement-unknown'));
+      expect(console.warn).toHaveBeenCalledWith('Shape json deserialization: unable to find bpmn element with id %s', 'shape-bpmnElement-unknown');
+    });
+
+    it('unknown font in label style', () => {
       parsingMessageCollector.warning(new MissingFontInLabelStyleWarning('BPMNEdge_id_0', 'non-existing_style_id'));
       expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNEdge_id_0');
+    });
+
+    it('unknown flow node ref in lane', () => {
+      parsingMessageCollector.warning(new LaneUnknownFlowNodeRefWarning('lane_id', 'non-existing_flow_node_ref'));
+      expect(console.warn).toHaveBeenCalledWith('Unable to assign lane %s as parent: flow node %s is not found', 'non-existing_flow_node_ref', 'lane_id');
+    });
+
+    it('unknown category value ref in group', () => {
+      parsingMessageCollector.warning(new GroupMissingCategoryValueWarning('Group_0', 'non-existing_category_value_ref'));
+      expect(console.warn).toHaveBeenCalledWith(
+        'Group json deserialization: unable to find category value ref %s for bpmn element %s',
+        'non-existing_category_value_ref',
+        'Group_0',
+      );
     });
   });
 });
