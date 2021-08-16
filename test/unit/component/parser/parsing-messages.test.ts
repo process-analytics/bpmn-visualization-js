@@ -20,7 +20,7 @@ import {
   EdgeUnknownBpmnElementWarning,
   GroupUnknownCategoryValueWarning,
   LaneUnknownFlowNodeRefWarning,
-  LabelStyleUnknownFontWarning,
+  LabelStyleMissingFontWarning,
   ShapeUnknownBpmnElementWarning,
   BoundaryEventNotAttachedToActivityWarning,
 } from '../../../../src/component/parser/json/warnings';
@@ -46,8 +46,8 @@ describe('parsing message collector', () => {
       expect(console.warn).toHaveBeenCalledWith('Shape json deserialization: unable to find bpmn element with id %s', 'shape-bpmnElement-unknown');
     });
 
-    it('unknown font in label style', () => {
-      parsingMessageCollector.warning(new LabelStyleUnknownFontWarning('BPMNEdge_id_0', 'non-existing_style_id'));
+    it('missing font in label style', () => {
+      parsingMessageCollector.warning(new LabelStyleMissingFontWarning('BPMNEdge_id_0', 'non-existing_style_id'));
       expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNEdge_id_0');
     });
 

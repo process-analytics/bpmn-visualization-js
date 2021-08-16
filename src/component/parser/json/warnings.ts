@@ -55,7 +55,7 @@ export class EdgeUnknownBpmnElementWarning extends JsonParsingWarning {
   }
 }
 
-export class LabelStyleUnknownFontWarning extends JsonParsingWarning {
+export class LabelStyleMissingFontWarning extends JsonParsingWarning {
   constructor(readonly shapeOrEdgeId: string, readonly labelStyleId: string) {
     super();
   }

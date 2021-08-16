@@ -29,7 +29,7 @@ import { ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind } from '../../../../mode
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { ensureIsArray } from '../../../helpers/array-utils';
 import { ParsingMessageCollector } from '../../parsing-messages';
-import { EdgeUnknownBpmnElementWarning, LabelStyleUnknownFontWarning, ShapeUnknownBpmnElementWarning } from '../warnings';
+import { EdgeUnknownBpmnElementWarning, LabelStyleMissingFontWarning, ShapeUnknownBpmnElementWarning } from '../warnings';
 
 /**
  * @internal
@@ -186,7 +186,7 @@ export default class DiagramConverter {
       font = this.convertedFonts.get(labelStyle);
 
       if (!font) {
-        this.parsingMessageCollector.warning(new LabelStyleUnknownFontWarning(id, labelStyle));
+        this.parsingMessageCollector.warning(new LabelStyleMissingFontWarning(id, labelStyle));
       }
     }
 
