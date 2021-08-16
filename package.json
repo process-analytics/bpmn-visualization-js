@@ -82,7 +82,7 @@
     "postpublish": "pinst --enable"
   },
   "dependencies": {
-    "entities": "^3.0.0",
+    "entities": "^3.0.1",
     "fast-xml-parser": "^3.19.0",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
