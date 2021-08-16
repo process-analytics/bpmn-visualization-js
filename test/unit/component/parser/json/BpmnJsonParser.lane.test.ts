@@ -15,7 +15,7 @@
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
 import { expectAsWarning, parseJson, parseJsonAndExpectOnlyLanes, parsingMessageCollector, verifyShape } from './JsonTestUtils';
-import { LaneUnknownFlowNodeRefWarning, MissingFontInLabelStyleWarning } from '../../../../../src/component/parser/json/warnings';
+import { LaneUnknownFlowNodeRefWarning } from '../../../../../src/component/parser/json/warnings';
 
 describe('parse bpmn as json for lane', () => {
   it('json containing one process with a single lane without flowNodeRef', () => {
