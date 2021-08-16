@@ -19,15 +19,12 @@ export interface MessageDetails {
   arguments: Array<string>;
 }
 
-export abstract class ParsingWarning {
+export abstract class JsonParsingWarning {
   abstract getMessage(): MessageDetails;
 }
 
-// TODO explain why we have this (class hierarchy + identification)
-export abstract class JsonParsingWarning extends ParsingWarning {}
-
 export class ParsingMessageCollector {
-  warning(warning: ParsingWarning): void {
+  warning(warning: JsonParsingWarning): void {
     const message = warning.getMessage();
     // TODO decide how to manage elements not found during parsing as part of #35
     console.warn(message.template, ...message.arguments);
