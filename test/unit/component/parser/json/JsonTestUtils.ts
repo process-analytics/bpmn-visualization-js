@@ -147,8 +147,8 @@ export function parseJsonAndExpectOnlyWarnings(json: BpmnJsonModel, numberOfWarn
   return parseJsonAndExpect(json, 0, 0, 0, 0, numberOfWarnings);
 }
 
-export function parseJsonAndExpectOnlyEdges(json: BpmnJsonModel, numberOfExpectedEdges: number): BpmnModel {
-  return parseJsonAndExpect(json, 0, 0, 0, numberOfExpectedEdges);
+export function parseJsonAndExpectOnlyEdges(json: BpmnJsonModel, numberOfExpectedEdges: number, numberOfWarnings = 0): BpmnModel {
+  return parseJsonAndExpect(json, 0, 0, 0, numberOfExpectedEdges, numberOfWarnings);
 }
 
 export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: BpmnJsonModel, numberOfExpectedEdges: number, numberOfExpectedFlowNodes: number): BpmnModel {

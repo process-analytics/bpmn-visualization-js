@@ -39,9 +39,7 @@ describe('parse bpmn as json for edges', () => {
     };
 
     parseJsonAndExpectOnlyWarnings(json, 1);
-    const warnings = parsingMessageCollector.getWarnings();
-
-    const parsingWarning0 = expectAsWarning<EdgeMissingBpmnElementWarning>(warnings[0], EdgeMissingBpmnElementWarning);
-    expect(parsingWarning0.bpmnElementId).toEqual('edge-bpmnElement-unknown');
+    const warning = expectAsWarning<EdgeMissingBpmnElementWarning>(parsingMessageCollector.getWarnings()[0], EdgeMissingBpmnElementWarning);
+    expect(warning.bpmnElementId).toEqual('edge-bpmnElement-unknown');
   });
 });

@@ -335,12 +335,12 @@ describe('parse bpmn as json for group', () => {
       parseJsonAndExpectOnlyPools(json, 1, 2);
       const warnings = parsingMessageCollector.getWarnings();
 
-      const parsingWarning0 = expectAsWarning<GroupMissingCategoryValueWarning>(warnings[0], GroupMissingCategoryValueWarning);
-      expect(parsingWarning0.groupBpmnElementId).toEqual('Group_0');
-      expect(parsingWarning0.missingCategoryValueRef).toEqual('missing_category_value');
+      const warning0 = expectAsWarning<GroupMissingCategoryValueWarning>(warnings[0], GroupMissingCategoryValueWarning);
+      expect(warning0.groupBpmnElementId).toEqual('Group_0');
+      expect(warning0.missingCategoryValueRef).toEqual('missing_category_value');
 
-      const parsingWarning1 = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[1], ShapeMissingBpmnElementWarning);
-      expect(parsingWarning1.bpmnElementId).toEqual('Group_0');
+      const warning1 = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[1], ShapeMissingBpmnElementWarning);
+      expect(warning1.bpmnElementId).toEqual('Group_0');
     });
   });
 });

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector, verifyShape } from './JsonTestUtils';
-import { ShapeBpmnEventKind, ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { TEventDefinition } from '../../../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
 import { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
@@ -147,9 +147,8 @@ function executeEventCommonTests(
     function parseAndExpectNoEvents(json: BpmnJsonModel, numberOfExpectedFlowNodes = 1): void {
       const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, numberOfExpectedFlowNodes, 1);
       expect(getEventShapes(bpmnModel)).toHaveLength(0);
-      const warnings = parsingMessageCollector.getWarnings();
-      const parsingWarning = expectAsWarning<ShapeMissingBpmnElementWarning>(warnings[0], ShapeMissingBpmnElementWarning);
-      expect(parsingWarning.bpmnElementId).toEqual('event_id_0');
+      const warning = expectAsWarning<ShapeMissingBpmnElementWarning>(parsingMessageCollector.getWarnings()[0], ShapeMissingBpmnElementWarning);
+      expect(warning.bpmnElementId).toEqual('event_id_0');
     }
 
     it.each([

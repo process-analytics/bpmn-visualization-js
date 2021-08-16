@@ -355,7 +355,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    const model = parseJsonAndExpectOnlyEdges(json, 2);
+    const model = parseJsonAndExpectOnlyEdges(json, 2, 1);
 
     verifyLabelFont(model.edges[0].label, { name: 'Arial', size: 11.0, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false });
     expect(model.edges[1].label).toBeUndefined();
@@ -431,7 +431,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    const model = parseJsonAndExpectOnlyEdges(json, 1);
+    const model = parseJsonAndExpectOnlyEdges(json, 1, 1);
 
     expect(model.edges[0].label).toBeUndefined();
     // TODO check warning
@@ -503,7 +503,7 @@ describe('parse bpmn as json for label font', () => {
       },
     };
 
-    const model = parseJsonAndExpectOnlyEdges(json, 1);
+    const model = parseJsonAndExpectOnlyEdges(json, 1, 1);
 
     expect(model.edges[0].label).toBeUndefined();
     expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNEdge_id_0');
