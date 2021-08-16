@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import arrayContaining = jasmine.arrayContaining;
-import anything = jasmine.anything;
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { BPMNDiagram } from '../../../../../src/model/bpmn/json/BPMNDI';
 import { readFileSync } from '../../../../helpers/file-helper';
@@ -41,20 +39,20 @@ describe('parse bpmn as xml for Camunda Eclipse Plugin 3.0.0', () => {
             name: 'End Event',
             incoming: ['SequenceFlow_8', 'SequenceFlow_9'],
           },
-          task: arrayContaining([anything()]),
-          exclusiveGateway: arrayContaining([anything()]),
-          sequenceFlow: arrayContaining([anything()]),
+          task: expect.arrayContaining([expect.anything()]),
+          exclusiveGateway: expect.arrayContaining([expect.anything()]),
+          sequenceFlow: expect.arrayContaining([expect.anything()]),
         },
         BPMNDiagram: {
           BPMNPlane: {
-            BPMNShape: arrayContaining([anything()]),
-            BPMNEdge: arrayContaining([
+            BPMNShape: expect.arrayContaining([expect.anything()]),
+            BPMNEdge: expect.arrayContaining([
               {
                 id: 'BPMNEdge_SequenceFlow_7',
                 bpmnElement: 'SequenceFlow_7',
                 sourceElement: '_BPMNShape_Task_7',
                 targetElement: '_BPMNShape_ExclusiveGateway_3',
-                waypoint: [anything(), anything(), anything(), anything()],
+                waypoint: [expect.anything(), expect.anything(), expect.anything(), expect.anything()],
                 BPMNLabel: {
                   Bounds: {
                     height: 6.0,
