@@ -23,7 +23,7 @@ import EventDefinitionConverter from './converter/EventDefinitionConverter';
 import GlobalTaskConverter from './converter/GlobalTaskConverter';
 import { ConvertedElements } from './converter/utils';
 import CategoryConverter from './converter/CategoryConverter';
-import { ParsingMessageCollector } from '../parsing-messages-management';
+import { ParsingMessageCollector } from '../parsing-messages';
 
 /**
  * @internal

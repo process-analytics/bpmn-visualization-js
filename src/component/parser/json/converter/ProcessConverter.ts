@@ -49,7 +49,7 @@ import { ConvertedElements } from './utils';
 import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
 import { ensureIsArray } from '../../../helpers/array-utils';
-import { ParsingMessageCollector } from '../../parsing-messages-management';
+import { ParsingMessageCollector } from '../../parsing-messages';
 import { LaneUnknownFlowNodeRefWarning } from '../warnings';
 
 interface EventDefinition {

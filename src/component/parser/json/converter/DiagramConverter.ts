@@ -28,7 +28,7 @@ import { ConvertedElements } from './utils';
 import { ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { ensureIsArray } from '../../../helpers/array-utils';
-import { ParsingMessageCollector } from '../../parsing-messages-management';
+import { ParsingMessageCollector } from '../../parsing-messages';
 import { EdgeUnknownBpmnElementWarning, LabelStyleUnknownFontWarning, ShapeUnknownBpmnElementWarning } from '../warnings';
 
 /**

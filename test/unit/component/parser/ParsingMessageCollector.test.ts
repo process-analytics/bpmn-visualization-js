@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ParsingMessageCollector } from '../../../../src/component/parser/parsing-messages-management';
+import { ParsingMessageCollector } from '../../../../src/component/parser/parsing-messages';
 import {
   EdgeUnknownBpmnElementWarning,
   GroupUnknownCategoryValueWarning,

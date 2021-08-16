@@ -27,7 +27,7 @@ import { FlowKind } from '../../../../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import { GlobalTaskKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
-import { ParsingMessageCollector, ParsingWarning } from '../../../../../src/component/parser/parsing-messages-management';
+import { ParsingMessageCollector, ParsingWarning } from '../../../../../src/component/parser/parsing-messages';
 
 export interface ExpectedShape {
   shapeId: string;

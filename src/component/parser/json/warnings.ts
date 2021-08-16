@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { JsonParsingWarning, MessageDetails } from '../parsing-messages-management';
+import { JsonParsingWarning, MessageDetails } from '../parsing-messages';
 
 export class GroupUnknownCategoryValueWarning extends JsonParsingWarning {
   constructor(readonly groupBpmnElementId: string, readonly categoryValueRef: string) {

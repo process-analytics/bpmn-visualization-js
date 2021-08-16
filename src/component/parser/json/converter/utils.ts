@@ -19,7 +19,7 @@ import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bp
 import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../model/bpmn/internal/shape';
 import { GlobalTaskKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
-import { ParsingMessageCollector } from '../../parsing-messages-management';
+import { ParsingMessageCollector } from '../../parsing-messages';
 import { GroupUnknownCategoryValueWarning } from '../warnings';
 
 /**
