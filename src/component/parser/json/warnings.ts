@@ -54,8 +54,7 @@ export class EdgeUnknownBpmnElementWarning extends JsonParsingWarning {
   }
 }
 
-// TODO rename missing --> unknown
-export class MissingFontInLabelStyleWarning extends JsonParsingWarning {
+export class LabelStyleUnknownFontWarning extends JsonParsingWarning {
   constructor(readonly shapeOrEdgeId: string, readonly labelStyleId: string) {
     super();
   }

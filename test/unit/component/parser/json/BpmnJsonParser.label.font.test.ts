@@ -20,10 +20,10 @@ import { expectAsWarning, parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlo
 import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { shapeBpmnElementKindForLabelTests } from './BpmnJsonParser.label.test';
-import { MissingFontInLabelStyleWarning } from '../../../../../src/component/parser/json/warnings';
+import { LabelStyleUnknownFontWarning } from '../../../../../src/component/parser/json/warnings';
 
 function expectMissingFontWarning(shapeOrEdgeId: string, labelStyleId: string): void {
-  const warning = expectAsWarning<MissingFontInLabelStyleWarning>(parsingMessageCollector.getWarnings()[0], MissingFontInLabelStyleWarning);
+  const warning = expectAsWarning<LabelStyleUnknownFontWarning>(parsingMessageCollector.getWarnings()[0], LabelStyleUnknownFontWarning);
   expect(warning.shapeOrEdgeId).toEqual(shapeOrEdgeId);
   expect(warning.labelStyleId).toEqual(labelStyleId);
 }

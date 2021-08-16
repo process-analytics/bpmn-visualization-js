@@ -19,7 +19,7 @@ import {
   EdgeUnknownBpmnElementWarning,
   GroupUnknownCategoryValueWarning,
   LaneUnknownFlowNodeRefWarning,
-  MissingFontInLabelStyleWarning,
+  LabelStyleUnknownFontWarning,
   ShapeUnknownBpmnElementWarning,
 } from '../../../../src/component/parser/json/warnings';
 
@@ -45,7 +45,7 @@ describe('parsing message collector', () => {
     });
 
     it('unknown font in label style', () => {
-      parsingMessageCollector.warning(new MissingFontInLabelStyleWarning('BPMNEdge_id_0', 'non-existing_style_id'));
+      parsingMessageCollector.warning(new LabelStyleUnknownFontWarning('BPMNEdge_id_0', 'non-existing_style_id'));
       expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNEdge_id_0');
     });
 
