@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import debugLogger from 'debug';
-import { ElementHandle } from 'playwright-core';
+import { ElementHandle } from 'playwright';
 import 'jest-playwright-preset';
 import { join } from 'path';
 import { findFiles } from '../../helpers/file-helper';
