@@ -18,7 +18,9 @@ import { ParsingMessageCollector } from '../../../../src/component/parser/parsin
 import { EdgeMissingBpmnElementWarning, MissingFontInLabelStyleWarning } from '../../../../src/component/parser/json/warnings';
 
 describe('parsing message collector', () => {
-  jest.spyOn(console, 'warn');
+  jest.spyOn(console, 'warn').mockImplementation(() => {
+    // do not display actual console outputs during tests
+  });
 
   afterEach(() => {
     jest.clearAllMocks();
