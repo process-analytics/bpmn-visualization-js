@@ -17,9 +17,10 @@ import * as path from 'path';
 import clipboardy from 'clipboardy';
 import parseArgs from 'minimist';
 import BpmnModel from '../../src/model/bpmn/internal/BpmnModel';
-import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
 import { BpmnJsonModel } from '../../src/model/bpmn/json/BPMN20';
+import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
 import { newBpmnJsonParser } from '../../src/component/parser/json/BpmnJsonParser';
+import { ParsingMessageCollector } from '../../src/component/parser/parsing-messages';
 import { readFileSync } from '../../test/helpers/file-helper';
 
 const __dirname = path.resolve();
@@ -42,7 +43,7 @@ let result = '';
 if (outputType === 'json') {
   result = prettyString(json);
 } else {
-  result = prettyString(newBpmnJsonParser().parse(json));
+  result = prettyString(newBpmnJsonParser(new ParsingMessageCollector()).parse(json));
 }
 
 // copy to clipboard
