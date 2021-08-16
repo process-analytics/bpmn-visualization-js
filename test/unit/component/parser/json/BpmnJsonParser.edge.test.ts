@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { expectAsWarning, parseJsonAndExpectOnlyWarnings, parsingMessageCollector } from './JsonTestUtils';
-import { EdgeMissingBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
+import { EdgeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
 
 describe('parse bpmn as json for edges', () => {
   // this also covers unsupported bpmn element types that are then not retrieved during the parsing
@@ -39,7 +39,7 @@ describe('parse bpmn as json for edges', () => {
     };
 
     parseJsonAndExpectOnlyWarnings(json, 1);
-    const warning = expectAsWarning<EdgeMissingBpmnElementWarning>(parsingMessageCollector.getWarnings()[0], EdgeMissingBpmnElementWarning);
+    const warning = expectAsWarning<EdgeUnknownBpmnElementWarning>(parsingMessageCollector.getWarnings()[0], EdgeUnknownBpmnElementWarning);
     expect(warning.bpmnElementId).toEqual('edge-bpmnElement-unknown');
   });
 });

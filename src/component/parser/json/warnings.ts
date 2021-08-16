@@ -28,8 +28,7 @@ export class GroupUnknownCategoryValueWarning extends JsonParsingWarning {
   }
 }
 
-// TODO rename missing --> unknown
-export class ShapeMissingBpmnElementWarning extends JsonParsingWarning {
+export class ShapeUnknownBpmnElementWarning extends JsonParsingWarning {
   constructor(readonly bpmnElementId: string) {
     super();
   }
@@ -42,8 +41,7 @@ export class ShapeMissingBpmnElementWarning extends JsonParsingWarning {
   }
 }
 
-// TODO rename missing --> unknown
-export class EdgeMissingBpmnElementWarning extends JsonParsingWarning {
+export class EdgeUnknownBpmnElementWarning extends JsonParsingWarning {
   constructor(readonly bpmnElementId: string) {
     super();
   }

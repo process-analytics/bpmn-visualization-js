@@ -29,7 +29,7 @@ import { ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind } from '../../../../mode
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { ensureIsArray } from '../../../helpers/array-utils';
 import { ParsingMessageCollector } from '../../parsing-messages-management';
-import { EdgeMissingBpmnElementWarning, MissingFontInLabelStyleWarning, ShapeMissingBpmnElementWarning } from '../warnings';
+import { EdgeUnknownBpmnElementWarning, MissingFontInLabelStyleWarning, ShapeUnknownBpmnElementWarning } from '../warnings';
 
 /**
  * @internal
@@ -89,7 +89,7 @@ export default class DiagramConverter {
         return;
       }
       // not found
-      this.parsingMessageCollector.warning(new ShapeMissingBpmnElementWarning(shape.bpmnElement));
+      this.parsingMessageCollector.warning(new ShapeUnknownBpmnElementWarning(shape.bpmnElement));
     });
 
     return convertedShapes;
@@ -150,7 +150,7 @@ export default class DiagramConverter {
           this.convertedElements.findAssociationFlow(edge.bpmnElement);
 
         if (!flow) {
-          this.parsingMessageCollector.warning(new EdgeMissingBpmnElementWarning(edge.bpmnElement));
+          this.parsingMessageCollector.warning(new EdgeUnknownBpmnElementWarning(edge.bpmnElement));
           return;
         }
 

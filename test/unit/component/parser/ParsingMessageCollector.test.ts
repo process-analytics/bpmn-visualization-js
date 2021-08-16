@@ -16,11 +16,11 @@
 
 import { ParsingMessageCollector } from '../../../../src/component/parser/parsing-messages-management';
 import {
-  EdgeMissingBpmnElementWarning,
+  EdgeUnknownBpmnElementWarning,
   GroupUnknownCategoryValueWarning,
   LaneUnknownFlowNodeRefWarning,
   MissingFontInLabelStyleWarning,
-  ShapeMissingBpmnElementWarning,
+  ShapeUnknownBpmnElementWarning,
 } from '../../../../src/component/parser/json/warnings';
 
 describe('parsing message collector', () => {
@@ -36,11 +36,11 @@ describe('parsing message collector', () => {
 
   describe('console.warn when warning is registered', () => {
     it('unknown edge bpmn element', () => {
-      parsingMessageCollector.warning(new EdgeMissingBpmnElementWarning('edge-bpmnElement-unknown'));
+      parsingMessageCollector.warning(new EdgeUnknownBpmnElementWarning('edge-bpmnElement-unknown'));
       expect(console.warn).toHaveBeenCalledWith('Edge json deserialization: unable to find bpmn element with id %s', 'edge-bpmnElement-unknown');
     });
     it('unknown shape bpmn element', () => {
-      parsingMessageCollector.warning(new ShapeMissingBpmnElementWarning('shape-bpmnElement-unknown'));
+      parsingMessageCollector.warning(new ShapeUnknownBpmnElementWarning('shape-bpmnElement-unknown'));
       expect(console.warn).toHaveBeenCalledWith('Shape json deserialization: unable to find bpmn element with id %s', 'shape-bpmnElement-unknown');
     });
 

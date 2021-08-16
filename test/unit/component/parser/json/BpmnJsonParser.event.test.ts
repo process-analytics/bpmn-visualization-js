@@ -24,7 +24,7 @@ import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import ShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { addEvent, buildDefinitionsAndProcessWithTask, BuildEventDefinitionParameter, BuildEventParameter, EventDefinitionOn } from './JsonBuilder';
-import { ShapeMissingBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
+import { ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
 import { BpmnJsonModel } from '../../../../../dist/model/bpmn/json/BPMN20';
 
 interface TestParameter {
@@ -147,7 +147,7 @@ function executeEventCommonTests(
     function parseAndExpectNoEvents(json: BpmnJsonModel, numberOfExpectedFlowNodes = 1): void {
       const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, numberOfExpectedFlowNodes, 1);
       expect(getEventShapes(bpmnModel)).toHaveLength(0);
-      const warning = expectAsWarning<ShapeMissingBpmnElementWarning>(parsingMessageCollector.getWarnings()[0], ShapeMissingBpmnElementWarning);
+      const warning = expectAsWarning<ShapeUnknownBpmnElementWarning>(parsingMessageCollector.getWarnings()[0], ShapeUnknownBpmnElementWarning);
       expect(warning.bpmnElementId).toEqual('event_id_0');
     }
 
