@@ -19,6 +19,7 @@ export abstract class ParsingWarning {
   abstract getMessageArguments(): Array<string>;
 }
 
+// TODO explain why we have this (class hierarchy + identification)
 export abstract class JsonParsingWarning extends ParsingWarning {}
 
 export class ParsingMessageCollector {
