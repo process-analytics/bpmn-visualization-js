@@ -21,6 +21,7 @@ import {
   LaneUnknownFlowNodeRefWarning,
   LabelStyleUnknownFontWarning,
   ShapeUnknownBpmnElementWarning,
+  BoundaryEventNotAttachedToActivityWarning,
 } from '../../../../src/component/parser/json/warnings';
 
 describe('parsing message collector', () => {
@@ -61,6 +62,11 @@ describe('parsing message collector', () => {
         'non-existing_category_value_ref',
         'Group_0',
       );
+    });
+
+    it('boundary event not attached to activity', () => {
+      parsingMessageCollector.warning(new BoundaryEventNotAttachedToActivityWarning('boundary_event_0', 'lane_id'));
+      expect(console.warn).toHaveBeenCalledWith('The boundary event %s must be attached to an activity, and not to %s', 'boundary_event_0', 'lane_id');
     });
   });
 });
