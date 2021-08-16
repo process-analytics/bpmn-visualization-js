@@ -18,6 +18,7 @@ import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../../src/mod
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { TEventDefinition } from '../../../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
 import { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
+import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import { BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
 import { ShapeBpmnBoundaryEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
@@ -25,7 +26,6 @@ import ShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { addEvent, buildDefinitionsAndProcessWithTask, BuildEventDefinitionParameter, BuildEventParameter, EventDefinitionOn } from './JsonBuilder';
 import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
-import { BpmnJsonModel } from '../../../../../dist/model/bpmn/json/BPMN20';
 
 interface TestParameter {
   bpmnKind: string;
@@ -143,7 +143,6 @@ function executeEventCommonTests(
       },
     );
 
-    // TODO fix compile error from caller
     function parseAndExpectNoEvents(json: BpmnJsonModel, numberOfExpectedFlowNodes = 1): void {
       const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, numberOfExpectedFlowNodes, 1);
       expect(getEventShapes(bpmnModel)).toHaveLength(0);
@@ -177,9 +176,6 @@ function executeEventCommonTests(
         const json = buildDefinitionsAndProcessWithTask({ eventDefinitionKind });
         addEvent(json, bpmnKind, { ...buildEventDefinitionParameter, withDifferentDefinition: true }, specificBuildEventParameter);
 
-        // TODO remove compilation error
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         parseAndExpectNoEvents(json);
       });
 
@@ -187,9 +183,6 @@ function executeEventCommonTests(
         const json = buildDefinitionsAndProcessWithTask();
         addEvent(json, bpmnKind, { ...buildEventDefinitionParameter, withMultipleDefinitions: true }, specificBuildEventParameter);
 
-        // TODO remove compilation error
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         parseAndExpectNoEvents(json);
       });
 
@@ -241,9 +234,6 @@ function executeEventCommonTests(
           };
           addEvent(json, 'boundaryEvent', buildEventDefinitionParameter, { ...specificBuildEventParameter, attachedToRef: 'not_activity_id_0' });
 
-          // TODO remove compilation error
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           parseAndExpectNoBoundaryEvents(json);
         });
 
@@ -260,9 +250,6 @@ function executeEventCommonTests(
           };
           addEvent(json, 'boundaryEvent', buildEventDefinitionParameter, { ...specificBuildEventParameter, attachedToRef: 'unexisting_activity_id_0' });
 
-          // TODO remove compilation error
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           parseAndExpectNoBoundaryEvents(json, 0);
         });
       }
@@ -273,9 +260,6 @@ function executeEventCommonTests(
         const json = buildDefinitionsAndProcessWithTask();
         addEvent(json, bpmnKind, { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.BOTH }, specificBuildEventParameter);
 
-        // TODO remove compilation error
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         parseAndExpectNoEvents(json);
       });
     }
