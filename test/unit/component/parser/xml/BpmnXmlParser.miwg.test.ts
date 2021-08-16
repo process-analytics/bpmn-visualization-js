@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import arrayContaining = jasmine.arrayContaining;
-import objectContaining = jasmine.objectContaining;
-import anything = jasmine.anything;
 import { BPMNDiagram } from '../../../../../src/model/bpmn/json/BPMNDI';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { readFileSync } from '../../../../helpers/file-helper';
@@ -35,14 +32,14 @@ describe('parse bpmn as xml for MIWG', () => {
           processType: 'None',
           extensionElements: {
             graphStyle: {
-              basic: anything(),
+              basic: expect.anything(),
               root: {
                 gridVisible: true,
                 snapToGrid: true,
                 rulerVisible: true,
                 snapToGuide: true,
                 rulerUnit: 'Pixels',
-                Grid: { spacing: anything(), color: anything() },
+                Grid: { spacing: expect.anything(), color: expect.anything() },
                 VerticalRuler: '',
                 HorizontalRuler: '',
               },
@@ -73,19 +70,21 @@ describe('parse bpmn as xml for MIWG', () => {
           endEvent: {
             id: '_To9ZsTOCEeSknpIVFCxNIQ',
             name: 'End Event',
-            extensionElements: anything(),
+            extensionElements: expect.anything(),
             incoming: ['_To9Z7TOCEeSknpIVFCxNIQ', '_To9Z9jOCEeSknpIVFCxNIQ'],
           },
-          task: arrayContaining([anything()]),
-          exclusiveGateway: arrayContaining([anything()]),
-          sequenceFlow: arrayContaining([anything()]),
+          task: expect.arrayContaining([expect.anything()]),
+          exclusiveGateway: expect.arrayContaining([expect.anything()]),
+          sequenceFlow: expect.arrayContaining([expect.anything()]),
         },
         BPMNDiagram: {
           BPMNPlane: {
-            BPMNShape: arrayContaining([anything()]),
-            BPMNEdge: arrayContaining([{ id: '_To-AzjOCEeSknpIVFCxNIQ', bpmnElement: '_To9Z8DOCEeSknpIVFCxNIQ', waypoint: [anything(), anything(), anything()] }]),
+            BPMNShape: expect.arrayContaining([expect.anything()]),
+            BPMNEdge: expect.arrayContaining([
+              { id: '_To-AzjOCEeSknpIVFCxNIQ', bpmnElement: '_To9Z8DOCEeSknpIVFCxNIQ', waypoint: [expect.anything(), expect.anything(), expect.anything()] },
+            ]),
           },
-          BPMNLabelStyle: arrayContaining([{ id: '_cVFcQTOCEeSknpIVFCxNIQ', Font: { name: 'Segoe UI', size: 12 } }]),
+          BPMNLabelStyle: expect.arrayContaining([{ id: '_cVFcQTOCEeSknpIVFCxNIQ', Font: { name: 'Segoe UI', size: 12 } }]),
         },
       },
     });
@@ -112,7 +111,7 @@ describe('parse bpmn as xml for MIWG', () => {
           task: [{ startQuantity: 1 }, expect.anything(), expect.anything()],
         },
         BPMNDiagram: {
-          BPMNPlane: { BPMNShape: arrayContaining([objectContaining({ Bounds: { x: 186.0, y: 336.0, width: 30.0, height: 30.0 } })]) },
+          BPMNPlane: { BPMNShape: expect.arrayContaining([expect.objectContaining({ Bounds: { x: 186.0, y: 336.0, width: 30.0, height: 30.0 } })]) },
           BPMNLabelStyle: { Font: { size: 11.0 } },
         },
       },
