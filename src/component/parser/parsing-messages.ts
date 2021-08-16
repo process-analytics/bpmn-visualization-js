@@ -26,7 +26,6 @@ export abstract class JsonParsingWarning {
 export class ParsingMessageCollector {
   warning(warning: JsonParsingWarning): void {
     const message = warning.getMessage();
-    // TODO decide how to manage elements not found during parsing as part of #35
     console.warn(message.template, ...message.arguments);
   }
 }
