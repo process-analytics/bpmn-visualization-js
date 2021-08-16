@@ -70,3 +70,17 @@ export class MissingFontInLabelStyleWarning extends JsonParsingWarning {
     return 'Unable to assign font from style %s to shape/edge %s';
   }
 }
+
+export class LaneUnknownFlowNodeRefWarning extends JsonParsingWarning {
+  constructor(readonly laneId: string, readonly flowNodeRef: string) {
+    super();
+  }
+
+  getMessageArguments(): Array<string> {
+    return [this.flowNodeRef, this.laneId];
+  }
+
+  getMessageTemplate(): string {
+    return 'Unable to assign lane %s as parent: flow node %s is not found';
+  }
+}

@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
-import { parseJson, parseJsonAndExpectOnlyLanes, verifyShape } from './JsonTestUtils';
+import { expectAsWarning, parseJson, parseJsonAndExpectOnlyLanes, parsingMessageCollector, verifyShape } from './JsonTestUtils';
+import { LaneUnknownFlowNodeRefWarning, MissingFontInLabelStyleWarning } from '../../../../../src/component/parser/json/warnings';
 
 describe('parse bpmn as json for lane', () => {
   it('json containing one process with a single lane without flowNodeRef', () => {
@@ -123,7 +124,7 @@ describe('parse bpmn as json for lane', () => {
       },
     };
 
-    const model = parseJsonAndExpectOnlyLanes(json, 1);
+    const model = parseJsonAndExpectOnlyLanes(json, 1, 1);
 
     verifyShape(model.lanes[0], {
       shapeId: 'Lane_1h5yeu4_di',
@@ -138,6 +139,10 @@ describe('parse bpmn as json for lane', () => {
       },
       isHorizontal: true,
     });
+
+    const warning = expectAsWarning<LaneUnknownFlowNodeRefWarning>(parsingMessageCollector.getWarnings()[0], LaneUnknownFlowNodeRefWarning);
+    expect(warning.laneId).toEqual('Lane_12u5n6x');
+    expect(warning.flowNodeRef).toEqual('event_id_0');
   });
 
   it('json containing one process with a single lane with flowNodeRef as object & flowNode not parsed', () => {

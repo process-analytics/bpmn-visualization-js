@@ -123,8 +123,8 @@ export function parseJsonAndExpect(
   return model;
 }
 
-export function parseJsonAndExpectOnlyLanes(json: BpmnJsonModel, numberOfExpectedLanes: number): BpmnModel {
-  return parseJsonAndExpect(json, 0, numberOfExpectedLanes, 0, 0);
+export function parseJsonAndExpectOnlyLanes(json: BpmnJsonModel, numberOfExpectedLanes: number, numberOfWarnings = 0): BpmnModel {
+  return parseJsonAndExpect(json, 0, numberOfExpectedLanes, 0, 0, numberOfWarnings);
 }
 
 export function parseJsonAndExpectOnlyPoolsAndLanes(json: BpmnJsonModel, numberOfExpectedPools: number, numberOfExpectedLanes: number): BpmnModel {
