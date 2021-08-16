@@ -89,7 +89,6 @@ class ParsingMessageCollectorTester extends ParsingMessageCollector {
     this.warnings = [];
   }
 
-  // TODO why not putting public?
   getWarnings(): Array<JsonParsingWarning> {
     return this.warnings;
   }
@@ -280,7 +279,6 @@ export function parseJsonAndExpectOnlySubProcess(json: BpmnJsonModel, kind: Shap
   return model;
 }
 
-// TODO implement generic check
 export function expectAsWarning<T>(instance: unknown, constructor: new (...args: never) => T): T {
   expect(instance).toBeInstanceOf(constructor);
   return instance as T;
