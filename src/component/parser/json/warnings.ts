@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { JsonParsingWarning, MessageDetails } from '../parsing-messages';
+import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
 
 export class GroupUnknownCategoryValueWarning extends JsonParsingWarning {
   constructor(readonly groupBpmnElementId: string, readonly categoryValueRef: string) {
@@ -81,13 +82,13 @@ export class LaneUnknownFlowNodeRefWarning extends JsonParsingWarning {
 }
 
 export class BoundaryEventNotAttachedToActivityWarning extends JsonParsingWarning {
-  constructor(readonly bpmnElementId: string, readonly attachedToBpmnElementId: string) {
+  constructor(readonly bpmnElementId: string, readonly parentKind: ShapeBpmnElementKind) {
     super();
   }
 
   override getMessage(): MessageDetails {
     return {
-      arguments: [this.bpmnElementId, this.attachedToBpmnElementId],
+      arguments: [this.bpmnElementId, this.parentKind],
       template: 'The boundary event %s must be attached to an activity, and not to %s',
     };
   }

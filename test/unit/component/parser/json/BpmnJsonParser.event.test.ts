@@ -24,7 +24,7 @@ import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import ShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { addEvent, buildDefinitionsAndProcessWithTask, BuildEventDefinitionParameter, BuildEventParameter, EventDefinitionOn } from './JsonBuilder';
-import { ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
+import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
 import { BpmnJsonModel } from '../../../../../dist/model/bpmn/json/BPMN20';
 
 interface TestParameter {
@@ -151,6 +151,19 @@ function executeEventCommonTests(
       expect(warning.bpmnElementId).toEqual('event_id_0');
     }
 
+    function parseAndExpectNoBoundaryEvents(json: BpmnJsonModel, numberOfExpectedFlowNodes = 1): void {
+      const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, numberOfExpectedFlowNodes, 2);
+      expect(getEventShapes(bpmnModel)).toHaveLength(0);
+      const warnings = parsingMessageCollector.getWarnings();
+
+      const warning0 = expectAsWarning<BoundaryEventNotAttachedToActivityWarning>(warnings[0], BoundaryEventNotAttachedToActivityWarning);
+      expect(warning0.bpmnElementId).toEqual('event_id_0');
+      expect(warning0.parentKind).toEqual(numberOfExpectedFlowNodes == 0 ? undefined : ShapeBpmnElementKind.GATEWAY_EXCLUSIVE);
+
+      const warning1 = expectAsWarning<ShapeUnknownBpmnElementWarning>(warnings[1], ShapeUnknownBpmnElementWarning);
+      expect(warning1.bpmnElementId).toEqual('event_id_0');
+    }
+
     it.each([
       ["'name'", 'event name'],
       ["no 'name'", undefined],
@@ -230,7 +243,7 @@ function executeEventCommonTests(
           // TODO remove compilation error
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          parseAndExpectNoEvents(json);
+          parseAndExpectNoBoundaryEvents(json);
         });
 
         it(`should NOT convert, when 'boundaryEvent' is ${boundaryEventKind} & attached to unexisting activity, ${titleForEventDefinitionIsAttributeOf}`, () => {
@@ -249,7 +262,7 @@ function executeEventCommonTests(
           // TODO remove compilation error
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          parseAndExpectNoEvents(json, 0);
+          parseAndExpectNoBoundaryEvents(json, 0);
         });
       }
     }

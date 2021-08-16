@@ -15,6 +15,7 @@
  */
 
 import { ParsingMessageCollector } from '../../../../src/component/parser/parsing-messages';
+import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal/shape';
 import {
   EdgeUnknownBpmnElementWarning,
   GroupUnknownCategoryValueWarning,
@@ -65,7 +66,7 @@ describe('parsing message collector', () => {
     });
 
     it('boundary event not attached to activity', () => {
-      parsingMessageCollector.warning(new BoundaryEventNotAttachedToActivityWarning('boundary_event_0', 'lane_id'));
+      parsingMessageCollector.warning(new BoundaryEventNotAttachedToActivityWarning('boundary_event_0', ShapeBpmnElementKind.LANE));
       expect(console.warn).toHaveBeenCalledWith('The boundary event %s must be attached to an activity, and not to %s', 'boundary_event_0', 'lane_id');
     });
   });
