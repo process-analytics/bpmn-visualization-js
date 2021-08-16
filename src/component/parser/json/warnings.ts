@@ -82,14 +82,14 @@ export class LaneUnknownFlowNodeRefWarning extends JsonParsingWarning {
 }
 
 export class BoundaryEventNotAttachedToActivityWarning extends JsonParsingWarning {
-  constructor(readonly bpmnElementId: string, readonly parentKind: ShapeBpmnElementKind) {
+  constructor(readonly bpmnElementId: string, readonly attachedToRef: string, readonly attachedToKind: ShapeBpmnElementKind) {
     super();
   }
 
   override getMessage(): MessageDetails {
     return {
-      arguments: [this.bpmnElementId, this.parentKind],
-      template: 'The boundary event %s must be attached to an activity, and not to %s',
+      arguments: [this.bpmnElementId, this.attachedToRef, this.attachedToKind],
+      template: 'The boundary event %s must be attached to an activity, and not to %s of kind %s',
     };
   }
 }
