@@ -27,7 +27,7 @@ import { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
  * @internal
  */
 export default class CollaborationConverter {
-  constructor(readonly convertedElements: ConvertedElements) {}
+  constructor(private convertedElements: ConvertedElements) {}
 
   deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): void {
     ensureIsArray(collaborations).forEach(collaboration => this.parseCollaboration(collaboration));

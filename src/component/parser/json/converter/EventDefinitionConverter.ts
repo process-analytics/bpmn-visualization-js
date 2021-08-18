@@ -24,7 +24,7 @@ import { ensureIsArray } from '../../../helpers/array-utils';
  * @internal
  */
 export default class EventDefinitionConverter {
-  constructor(readonly convertedElements: ConvertedElements) {}
+  constructor(private convertedElements: ConvertedElements) {}
 
   deserialize(definitions: TDefinitions): void {
     bpmnEventKinds.forEach(eventKind => {
