@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import arrayContaining = jasmine.arrayContaining;
-import anything = jasmine.anything;
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { BPMNDiagram } from '../../../../../src/model/bpmn/json/BPMNDI';
 import { readFileSync } from '../../../../helpers/file-helper';
@@ -50,23 +48,23 @@ describe('parse bpmn as xml for Bizagi Modeler 2.8.0.8', () => {
             endEvent: {
               id: '_258f51eb-b764-4a71-b681-3a01cca14143',
               name: 'End Event',
-              extensionElements: anything(),
+              extensionElements: expect.anything(),
               incoming: ['_a3d40a56-9b7f-417e-911e-d39e7f18b90c', '_d4ce87c6-1373-45d6-a3b4-fbb2a04ee2e5'],
             },
-            task: arrayContaining([anything()]),
-            exclusiveGateway: arrayContaining([anything()]),
-            sequenceFlow: arrayContaining([anything()]),
+            task: expect.arrayContaining([expect.anything()]),
+            exclusiveGateway: expect.arrayContaining([expect.anything()]),
+            sequenceFlow: expect.arrayContaining([expect.anything()]),
           },
-          anything(),
+          expect.anything(),
         ],
         BPMNDiagram: {
           BPMNPlane: {
-            BPMNShape: arrayContaining([anything()]),
-            BPMNEdge: arrayContaining([
+            BPMNShape: expect.arrayContaining([expect.anything()]),
+            BPMNEdge: expect.arrayContaining([
               {
                 id: 'DiagramElement_59ed7a00-ed2f-4885-bba7-ccc9367a9459',
                 bpmnElement: '_b50f530c-3450-4e1a-b81f-ea346dc6e1cb',
-                waypoint: [anything(), anything(), anything()],
+                waypoint: [expect.anything(), expect.anything(), expect.anything()],
                 BPMNLabel: {
                   Bounds: {
                     height: 0,
@@ -82,7 +80,7 @@ describe('parse bpmn as xml for Bizagi Modeler 2.8.0.8', () => {
               },
             ]),
           },
-          BPMNLabelStyle: arrayContaining([
+          BPMNLabelStyle: expect.arrayContaining([
             { id: 'Style_6b41969d-9f3b-4d41-be89-6b5b6a905a1d', Font: { name: 'Arial', size: 8, isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false } },
           ]),
         },

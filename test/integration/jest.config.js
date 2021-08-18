@@ -19,6 +19,7 @@ module.exports = {
   rootDir: '../..',
   roots: ['./test/integration', './src'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
+  testEnvironment: 'jsdom', // mxgraph initialization needs to access to the window object
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
