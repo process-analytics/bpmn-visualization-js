@@ -1,4 +1,7 @@
 /**
+ * @jest-environment jsdom
+ */
+/**
  * Copyright 2020 Bonitasoft S.A.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

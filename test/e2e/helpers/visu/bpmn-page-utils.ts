@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ElementHandle, Page } from 'playwright-core';
+import { ElementHandle, Page } from 'playwright';
 import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
 import 'jest-playwright-preset';
 import { FitType, LoadOptions } from '../../../../src/component/options';
