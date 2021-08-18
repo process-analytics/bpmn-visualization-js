@@ -63,7 +63,7 @@ type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTex
 export default class ProcessConverter {
   private defaultSequenceFlowIds: string[] = [];
 
-  constructor(readonly convertedElements: ConvertedElements) {}
+  constructor(private convertedElements: ConvertedElements) {}
 
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     ensureIsArray(processes).forEach(process => this.parseProcess(process));
@@ -132,7 +132,7 @@ export default class ProcessConverter {
   }
 
   private buildShapeBpmnActivity(bpmnElement: TActivity, kind: ShapeBpmnElementKind, processId: string): ShapeBpmnActivity {
-    const markers = this.buildMarkers(bpmnElement);
+    const markers = ProcessConverter.buildMarkers(bpmnElement);
 
     if (ShapeUtil.isSubProcess(kind)) {
       return this.buildShapeBpmnSubProcess(bpmnElement, processId, markers);
@@ -153,7 +153,7 @@ export default class ProcessConverter {
     return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK, processId, markers, globalTaskKind);
   }
 
-  private buildMarkers(bpmnElement: TActivity): ShapeBpmnMarkerKind[] {
+  private static buildMarkers(bpmnElement: TActivity): ShapeBpmnMarkerKind[] {
     const markers: ShapeBpmnMarkerKind[] = [];
     // @ts-ignore We know that the standardLoopCharacteristics field is not on all types, but it's already tested
     const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
