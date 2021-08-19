@@ -14,8 +14,17 @@
  * limitations under the License.
  */
 
-import { parseJsonAndExpectOnlyFlowNodes, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, verifyShape } from './JsonTestUtils';
+import {
+  expectAsWarning,
+  parseJsonAndExpectOnlyFlowNodes,
+  parseJsonAndExpectOnlyPools,
+  parseJsonAndExpectOnlyPoolsAndFlowNodes,
+  parseJsonAndExpectOnlyWarnings,
+  parsingMessageCollector,
+  verifyShape,
+} from './JsonTestUtils';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
+import { GroupUnknownCategoryValueWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
 
 describe('parse bpmn as json for group', () => {
   it('Single Group with label in process', () => {
@@ -242,7 +251,7 @@ describe('parse bpmn as json for group', () => {
             id: 'process_0',
             group: {
               id: 'Group_0',
-              categoryValueRef: 'CategoryValue_0',
+              categoryValueRef: 'unknown_CategoryValue_0',
             },
           },
           BPMNDiagram: {
@@ -262,8 +271,20 @@ describe('parse bpmn as json for group', () => {
         },
       };
 
-      parseJsonAndExpectOnlyFlowNodes(json, 0);
+      parseJsonAndExpectOnlyWarnings(json, 2);
+      expectWarnings();
     });
+
+    function expectWarnings(): void {
+      const warnings = parsingMessageCollector.getWarnings();
+
+      const warning0 = expectAsWarning<GroupUnknownCategoryValueWarning>(warnings[0], GroupUnknownCategoryValueWarning);
+      expect(warning0.groupBpmnElementId).toEqual('Group_0');
+      expect(warning0.categoryValueRef).toEqual('unknown_CategoryValue_0');
+
+      const warning1 = expectAsWarning<ShapeUnknownBpmnElementWarning>(warnings[1], ShapeUnknownBpmnElementWarning);
+      expect(warning1.bpmnElementId).toEqual('Group_0');
+    }
 
     it('Single Group in collaboration without matching categoryValueRef', () => {
       const json = {
@@ -277,7 +298,7 @@ describe('parse bpmn as json for group', () => {
             },
             group: {
               id: 'Group_0',
-              categoryValueRef: 'CategoryValue_0',
+              categoryValueRef: 'unknown_CategoryValue_0',
             },
           },
           process: {
@@ -285,10 +306,6 @@ describe('parse bpmn as json for group', () => {
           },
           category: {
             id: 'Category_without_id_0',
-            // categoryValue: {
-            //   id: 'CategoryValue_0',
-            //   value: 'Group as collaboration',
-            // },
           },
           BPMNDiagram: {
             BPMNPlane: {
@@ -319,7 +336,8 @@ describe('parse bpmn as json for group', () => {
         },
       };
 
-      parseJsonAndExpectOnlyPools(json, 1);
+      parseJsonAndExpectOnlyPools(json, 1, 2);
+      expectWarnings();
     });
   });
 });

@@ -28,12 +28,14 @@ import { ConvertedElements } from './utils';
 import { ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
 import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
 import { ensureIsArray } from '../../../helpers/array-utils';
+import { ParsingMessageCollector } from '../../parsing-messages';
+import { EdgeUnknownBpmnElementWarning, LabelStyleMissingFontWarning, ShapeUnknownBpmnElementWarning } from '../warnings';
 
 /**
  * @internal
  */
 export default class DiagramConverter {
-  constructor(private convertedElements: ConvertedElements) {}
+  constructor(private convertedElements: ConvertedElements, private parsingMessageCollector: ParsingMessageCollector) {}
 
   private convertedFonts: Map<string, Font> = new Map();
 
@@ -87,8 +89,7 @@ export default class DiagramConverter {
         return;
       }
       // not found
-      // TODO decide how to manage elements not found during parsing as part of #35
-      console.warn('Shape json deserialization: unable to find bpmn element with id %s', shape.bpmnElement);
+      this.parsingMessageCollector.warning(new ShapeUnknownBpmnElementWarning(shape.bpmnElement));
     });
 
     return convertedShapes;
@@ -149,8 +150,7 @@ export default class DiagramConverter {
           this.convertedElements.findAssociationFlow(edge.bpmnElement);
 
         if (!flow) {
-          // TODO decide how to manage elements not found during parsing as part of #35
-          console.warn('Edge json deserialization: unable to find bpmn element with id %s', edge.bpmnElement);
+          this.parsingMessageCollector.warning(new EdgeUnknownBpmnElementWarning(edge.bpmnElement));
           return;
         }
 
@@ -186,8 +186,7 @@ export default class DiagramConverter {
       font = this.convertedFonts.get(labelStyle);
 
       if (!font) {
-        // TODO decide how to manage elements not found during parsing as part of #35
-        console.warn('Unable to assign font from style %s to shape/edge %s', labelStyle, id);
+        this.parsingMessageCollector.warning(new LabelStyleMissingFontWarning(id, labelStyle));
       }
     }
 

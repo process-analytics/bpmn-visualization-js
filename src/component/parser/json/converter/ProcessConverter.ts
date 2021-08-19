@@ -49,6 +49,8 @@ import { ConvertedElements } from './utils';
 import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
 import { ensureIsArray } from '../../../helpers/array-utils';
+import { ParsingMessageCollector } from '../../parsing-messages';
+import { BoundaryEventNotAttachedToActivityWarning, LaneUnknownFlowNodeRefWarning } from '../warnings';
 
 interface EventDefinition {
   kind: ShapeBpmnEventKind;
@@ -63,7 +65,7 @@ type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTex
 export default class ProcessConverter {
   private defaultSequenceFlowIds: string[] = [];
 
-  constructor(private convertedElements: ConvertedElements) {}
+  constructor(private convertedElements: ConvertedElements, private parsingMessageCollector: ParsingMessageCollector) {}
 
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     ensureIsArray(processes).forEach(process => this.parseProcess(process));
@@ -198,8 +200,7 @@ export default class ProcessConverter {
     if (ShapeUtil.isActivity(parent?.kind)) {
       return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity);
     } else {
-      // TODO decide how to manage elements not found during parsing as part of #35
-      console.warn('The boundary event %s must be attach to an activity, and not to %s', bpmnElement.id, parent?.kind);
+      this.parsingMessageCollector.warning(new BoundaryEventNotAttachedToActivityWarning(bpmnElement.id, bpmnElement.attachedToRef, parent?.kind));
     }
   }
 
@@ -269,8 +270,7 @@ export default class ProcessConverter {
           shapeBpmnElement.parentId = laneId;
         }
       } else {
-        // TODO decide how to manage elements not found during parsing as part of #35
-        console.warn('Unable to assign lane %s as parent: flow node %s is not found', laneId, flowNodeRef);
+        this.parsingMessageCollector.warning(new LaneUnknownFlowNodeRefWarning(laneId, flowNodeRef));
       }
     });
   }

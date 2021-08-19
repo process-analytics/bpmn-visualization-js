@@ -27,6 +27,7 @@ import { FlowKind } from '../../../../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import { GlobalTaskKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
+import { ParsingMessageCollector, JsonParsingWarning } from '../../../../../src/component/parser/parsing-messages';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -77,8 +78,31 @@ export interface ExpectedBounds {
   height: number;
 }
 
+class ParsingMessageCollectorTester extends ParsingMessageCollector {
+  private warnings: Array<JsonParsingWarning> = [];
+
+  override warning(warning: JsonParsingWarning): void {
+    this.warnings.push(warning);
+  }
+
+  purge(): void {
+    this.warnings = [];
+  }
+
+  getWarnings(): Array<JsonParsingWarning> {
+    return this.warnings;
+  }
+}
+
+export const parsingMessageCollector = new ParsingMessageCollectorTester();
+
+function checkParsingWarnings(numberOfWarnings: number): void {
+  expect(parsingMessageCollector.getWarnings()).toHaveLength(numberOfWarnings);
+}
+
 export function parseJson(json: BpmnJsonModel): BpmnModel {
-  return newBpmnJsonParser().parse(json);
+  parsingMessageCollector.purge();
+  return newBpmnJsonParser(parsingMessageCollector).parse(json);
 }
 
 export function parseJsonAndExpect(
@@ -87,37 +111,43 @@ export function parseJsonAndExpect(
   numberOfExpectedLanes: number,
   numberOfExpectedFlowNodes: number,
   numberOfExpectedEdges: number,
+  numberOfWarnings = 0,
 ): BpmnModel {
   const model = parseJson(json);
   expect(model.lanes).toHaveLength(numberOfExpectedLanes);
   expect(model.pools).toHaveLength(numberOfExpectedPools);
   expect(model.flowNodes).toHaveLength(numberOfExpectedFlowNodes);
   expect(model.edges).toHaveLength(numberOfExpectedEdges);
+  checkParsingWarnings(numberOfWarnings);
   return model;
 }
 
-export function parseJsonAndExpectOnlyLanes(json: BpmnJsonModel, numberOfExpectedLanes: number): BpmnModel {
-  return parseJsonAndExpect(json, 0, numberOfExpectedLanes, 0, 0);
+export function parseJsonAndExpectOnlyLanes(json: BpmnJsonModel, numberOfExpectedLanes: number, numberOfWarnings = 0): BpmnModel {
+  return parseJsonAndExpect(json, 0, numberOfExpectedLanes, 0, 0, numberOfWarnings);
 }
 
 export function parseJsonAndExpectOnlyPoolsAndLanes(json: BpmnJsonModel, numberOfExpectedPools: number, numberOfExpectedLanes: number): BpmnModel {
   return parseJsonAndExpect(json, numberOfExpectedPools, numberOfExpectedLanes, 0, 0);
 }
 
-export function parseJsonAndExpectOnlyPools(json: BpmnJsonModel, numberOfExpectedPools: number): BpmnModel {
-  return parseJsonAndExpect(json, numberOfExpectedPools, 0, 0, 0);
+export function parseJsonAndExpectOnlyPools(json: BpmnJsonModel, numberOfExpectedPools: number, numberOfWarnings = 0): BpmnModel {
+  return parseJsonAndExpect(json, numberOfExpectedPools, 0, 0, 0, numberOfWarnings);
 }
 
 export function parseJsonAndExpectOnlyPoolsAndFlowNodes(json: BpmnJsonModel, numberOfExpectedPools: number, numberOfExpectedFlowNodes: number): BpmnModel {
   return parseJsonAndExpect(json, numberOfExpectedPools, 0, numberOfExpectedFlowNodes, 0);
 }
 
-export function parseJsonAndExpectOnlyFlowNodes(json: BpmnJsonModel, numberOfExpectedFlowNodes: number): BpmnModel {
-  return parseJsonAndExpect(json, 0, 0, numberOfExpectedFlowNodes, 0);
+export function parseJsonAndExpectOnlyFlowNodes(json: BpmnJsonModel, numberOfExpectedFlowNodes: number, numberOfWarnings = 0): BpmnModel {
+  return parseJsonAndExpect(json, 0, 0, numberOfExpectedFlowNodes, 0, numberOfWarnings);
 }
 
-export function parseJsonAndExpectOnlyEdges(json: BpmnJsonModel, numberOfExpectedEdges: number): BpmnModel {
-  return parseJsonAndExpect(json, 0, 0, 0, numberOfExpectedEdges);
+export function parseJsonAndExpectOnlyWarnings(json: BpmnJsonModel, numberOfWarnings: number): BpmnModel {
+  return parseJsonAndExpect(json, 0, 0, 0, 0, numberOfWarnings);
+}
+
+export function parseJsonAndExpectOnlyEdges(json: BpmnJsonModel, numberOfExpectedEdges: number, numberOfWarnings = 0): BpmnModel {
+  return parseJsonAndExpect(json, 0, 0, 0, numberOfExpectedEdges, numberOfWarnings);
 }
 
 export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: BpmnJsonModel, numberOfExpectedEdges: number, numberOfExpectedFlowNodes: number): BpmnModel {
@@ -247,4 +277,9 @@ export function parseJsonAndExpectOnlySubProcess(json: BpmnJsonModel, kind: Shap
   verifySubProcess(model, kind, expectedNumber);
 
   return model;
+}
+
+export function expectAsWarning<T>(instance: unknown, constructor: new (...args: never) => T): T {
+  expect(instance).toBeInstanceOf(constructor);
+  return instance as T;
 }
