@@ -23,6 +23,7 @@ import EventDefinitionConverter from './converter/EventDefinitionConverter';
 import GlobalTaskConverter from './converter/GlobalTaskConverter';
 import { ConvertedElements } from './converter/utils';
 import CategoryConverter from './converter/CategoryConverter';
+import { ParsingMessageCollector } from '../parsing-messages';
 
 /**
  * @internal
@@ -52,14 +53,14 @@ export default class BpmnJsonParser {
 /**
  * @internal
  */
-export function newBpmnJsonParser(): BpmnJsonParser {
-  const convertedElements = new ConvertedElements();
+export function newBpmnJsonParser(parsingMessageCollector: ParsingMessageCollector): BpmnJsonParser {
+  const convertedElements = new ConvertedElements(parsingMessageCollector);
   return new BpmnJsonParser(
     new CategoryConverter(convertedElements),
     new CollaborationConverter(convertedElements),
     new EventDefinitionConverter(convertedElements),
     new GlobalTaskConverter(convertedElements),
-    new ProcessConverter(convertedElements),
-    new DiagramConverter(convertedElements),
+    new ProcessConverter(convertedElements, parsingMessageCollector),
+    new DiagramConverter(convertedElements, parsingMessageCollector),
   );
 }
