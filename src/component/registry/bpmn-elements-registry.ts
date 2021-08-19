@@ -89,8 +89,7 @@ export class BpmnElementsRegistry {
    * ```
    */
   getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
-    const bpmnElements: BpmnElement[] = [];
-    ensureIsArray<BpmnElementKind>(bpmnKinds)
+    return ensureIsArray<BpmnElementKind>(bpmnKinds)
       .map(kind =>
         // TODO when implementing #953, use the model to search for Bpmn elements matching kinds instead of css selectors
         this.htmlElementRegistry.getBpmnHtmlElements(kind).map(
@@ -101,10 +100,10 @@ export class BpmnElementsRegistry {
             } as BpmnElement),
         ),
       )
-      // We will be able to use flatmap instead when targeting es2019+
-      .forEach(innerBpmnElements => bpmnElements.push(...innerBpmnElements));
-
-    return bpmnElements;
+      .reduce((accumulator, bpmnElements) => {
+        accumulator.push(...bpmnElements);
+        return accumulator;
+      }, []);
   }
 
   /**
