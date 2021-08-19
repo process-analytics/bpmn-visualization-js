@@ -78,6 +78,7 @@ export class BpmnRenderer {
 
   private insertShape(shape: Shape): void {
     const bpmnElement = shape.bpmnElement;
+    // TODO extra defensive check
     if (bpmnElement) {
       const parent = this.getParent(bpmnElement);
       if (!parent) {
@@ -98,6 +99,7 @@ export class BpmnRenderer {
   private insertEdges(edges: Edge[]): void {
     edges.forEach(edge => {
       const bpmnElement = edge.bpmnElement;
+      // TODO extra defensive check
       if (bpmnElement) {
         const parent = this.graph.getDefaultParent();
         const source = this.getCell(bpmnElement.sourceRefId);
