@@ -7,7 +7,7 @@
 ## Requirements
 
 - `Node.js` 14.x (may work with other versions but without any guarantee)
-- `npm` 6 (may work with other versions but without any guarantee)
+- `npm` 6 (may work with other versions but without any guarantee). In particular, we use [lockfileVersion: 1](https://docs.npmjs.com/cli/v7/configuring-npm/package-lock-json#lockfileversion)
 - `Supported OS` Windows/Linux/macOS (see the GitHub Build workflow for more details)
 
 ## Build
