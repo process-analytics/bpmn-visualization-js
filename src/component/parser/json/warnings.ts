@@ -21,7 +21,7 @@ export class GroupUnknownCategoryValueWarning extends JsonParsingWarning {
     super();
   }
 
-  override getMessage(): { template: string; arguments: Array<string> } {
+  getMessage(): { template: string; arguments: Array<string> } {
     return {
       arguments: [this.categoryValueRef, this.groupBpmnElementId],
       template: 'Group json deserialization: unable to find category value ref %s for bpmn element %s',
@@ -34,7 +34,7 @@ export class ShapeUnknownBpmnElementWarning extends JsonParsingWarning {
     super();
   }
 
-  override getMessage(): { template: string; arguments: Array<string> } {
+  getMessage(): { template: string; arguments: Array<string> } {
     return {
       arguments: [this.bpmnElementId],
       template: 'Shape json deserialization: unable to find bpmn element with id %s',
@@ -47,7 +47,7 @@ export class EdgeUnknownBpmnElementWarning extends JsonParsingWarning {
     super();
   }
 
-  override getMessage(): { template: string; arguments: Array<string> } {
+  getMessage(): { template: string; arguments: Array<string> } {
     return {
       arguments: [this.bpmnElementId],
       template: 'Edge json deserialization: unable to find bpmn element with id %s',
@@ -60,7 +60,7 @@ export class LabelStyleMissingFontWarning extends JsonParsingWarning {
     super();
   }
 
-  override getMessage(): { template: string; arguments: Array<string> } {
+  getMessage(): { template: string; arguments: Array<string> } {
     return {
       arguments: [this.labelStyleId, this.shapeOrEdgeId],
       template: 'Unable to assign font from style %s to shape/edge %s',
@@ -73,7 +73,7 @@ export class LaneUnknownFlowNodeRefWarning extends JsonParsingWarning {
     super();
   }
 
-  override getMessage(): MessageDetails {
+  getMessage(): MessageDetails {
     return {
       arguments: [this.flowNodeRef, this.laneId],
       template: 'Unable to assign lane %s as parent: flow node %s is not found',
@@ -86,7 +86,7 @@ export class BoundaryEventNotAttachedToActivityWarning extends JsonParsingWarnin
     super();
   }
 
-  override getMessage(): MessageDetails {
+  getMessage(): MessageDetails {
     return {
       arguments: [this.bpmnElementId, this.attachedToRef, this.attachedToKind],
       template: 'The boundary event %s must be attached to an activity, and not to %s of kind %s',
