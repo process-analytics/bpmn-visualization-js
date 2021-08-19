@@ -78,54 +78,48 @@ export class BpmnRenderer {
 
   private insertShape(shape: Shape): void {
     const bpmnElement = shape.bpmnElement;
-    // TODO extra defensive check
-    if (bpmnElement) {
-      const parent = this.getParent(bpmnElement);
-      if (!parent) {
-        // TODO error management
-        console.warn('Not possible to insert shape %s: parent cell %s is not found', bpmnElement.id, bpmnElement.parentId);
-        return;
-      }
-      const bounds = shape.bounds;
-      let labelBounds = shape.label?.bounds;
-      // pool/lane label bounds are not managed for now (use hard coded values)
-      labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
-      const style = this.styleComputer.computeStyle(shape, labelBounds);
-
-      this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
+    const parent = this.getParent(bpmnElement);
+    if (!parent) {
+      // TODO error management
+      console.warn('Not possible to insert shape %s: parent cell %s is not found', bpmnElement.id, bpmnElement.parentId);
+      return;
     }
+    const bounds = shape.bounds;
+    let labelBounds = shape.label?.bounds;
+    // pool/lane label bounds are not managed for now (use hard coded values)
+    labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
+    const style = this.styleComputer.computeStyle(shape, labelBounds);
+
+    this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
   }
 
   private insertEdges(edges: Edge[]): void {
     edges.forEach(edge => {
       const bpmnElement = edge.bpmnElement;
-      // TODO extra defensive check
-      if (bpmnElement) {
-        const parent = this.graph.getDefaultParent();
-        const source = this.getCell(bpmnElement.sourceRefId);
-        const target = this.getCell(bpmnElement.targetRefId);
-        const labelBounds = edge.label?.bounds;
-        const style = this.styleComputer.computeStyle(edge, labelBounds);
-        const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
-        this.insertWaypoints(edge.waypoints, mxEdge);
+      const parent = this.graph.getDefaultParent();
+      const source = this.getCell(bpmnElement.sourceRefId);
+      const target = this.getCell(bpmnElement.targetRefId);
+      const labelBounds = edge.label?.bounds;
+      const style = this.styleComputer.computeStyle(edge, labelBounds);
+      const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
+      this.insertWaypoints(edge.waypoints, mxEdge);
 
-        if (labelBounds) {
-          mxEdge.geometry.width = labelBounds.width;
-          mxEdge.geometry.height = labelBounds.height;
+      if (labelBounds) {
+        mxEdge.geometry.width = labelBounds.width;
+        mxEdge.geometry.height = labelBounds.height;
 
-          const edgeCenterCoordinate = this.coordinatesTranslator.computeEdgeCenter(mxEdge);
-          if (edgeCenterCoordinate) {
-            mxEdge.geometry.relative = false;
+        const edgeCenterCoordinate = this.coordinatesTranslator.computeEdgeCenter(mxEdge);
+        if (edgeCenterCoordinate) {
+          mxEdge.geometry.relative = false;
 
-            const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxgraph.mxPoint(labelBounds.x, labelBounds.y));
-            const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
-            const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
-            mxEdge.geometry.offset = new mxgraph.mxPoint(relativeLabelX, relativeLabelY);
-          }
+          const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxgraph.mxPoint(labelBounds.x, labelBounds.y));
+          const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
+          const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
+          mxEdge.geometry.offset = new mxgraph.mxPoint(relativeLabelX, relativeLabelY);
         }
-
-        this.insertMessageFlowIconIfNeeded(edge, mxEdge);
       }
+
+      this.insertMessageFlowIconIfNeeded(edge, mxEdge);
     });
   }
 
