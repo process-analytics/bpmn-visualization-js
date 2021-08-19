@@ -35,11 +35,11 @@ jobs:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        os: [macos-10.15, ubuntu-20.04, windows-2019]
+        os: [macos-11, ubuntu-20.04, windows-2019]
         browser: [chromium, firefox]
         include:
           # only test webkit on macos
-          - os: macos-10.15
+          - os: macos-11
             browser: webkit
     steps:
       - name: Checkout
