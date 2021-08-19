@@ -7,19 +7,6 @@ If you are new to `mxGraph` or want to know more about it, please have a look at
 and [mxGraph manual](https://jgraph.github.io/mxgraph/docs/manual.html).
 
 
-## BPMN Elements rendering and style
-
-The main entry point for `mxGraph` rendering is `BpmnRenderer`.
-
-`StyleConfigurator` defines the [BPMN styles](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.1) including dedicated BPMN shapes
-which are associated to the `mxGraph` [mxCell](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.4) when the elements
-are inserted into the `mxGraph` model:
-- `vertex` for BPMN Shapes
-- `edge` for BPMN Edges
-
-For more details, see [BPMN Support - How To](./bpmn-support-how-to.md).
-
-
 ## Logical Groups of BPMN Elements
 
 [mxGraph Group Structure](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.4) allows to define a parent-child relationship
@@ -45,16 +32,22 @@ As we define a parent-child relationship when inserting BPMN elements in the mxG
 layer is required. See `BpmnRenderer` for more details.
 
 
-## BPMN elements rendering
+## BPMN Elements rendering and style
 
-When inserting an element on the `mxGraph` graph, a style is passed to identify the way it will be rendered.
+Each BPMN Element is transformed into a `mxGraph` [mxCell](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.4) and then inserted into the `mxGraph` model:
+- `vertex` for BPMN Shapes
+- `edge` for BPMN Edges
 
-The [style](https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html) is defined and registered in
-`StyleConfigurator`. In particular, it refers to the name of a [mxShape](https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html)
+At insertion, a style is passed to configure how the BPMN Element is rendered.
+
+The [style](https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html) (see also the [mxGraph manual](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.1))
+is defined and registered in `StyleConfigurator`. In particular, it refers to the name of a [mxShape](https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html)
 used for the rendering.
 
 The `mxShape` can be a standard `mxGraph` class or a custom BPMN `mxShape` defined by the `bpmn-visualization`. The custom `mxShapes` are registered by `ShapeConfigurator`
 which associates the `mxShape` name (used in style definition) with the `mxShape` class to be used.
+
+For more details, see [BPMN Support - How To](./bpmn-support-how-to.md).
 
 
 ### Resources
