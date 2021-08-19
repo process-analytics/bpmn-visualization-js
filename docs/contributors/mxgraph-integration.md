@@ -3,16 +3,20 @@
 The [mxGraph](https://jgraph.github.io/mxgraph/) integration is in charge of displaying the BPMN diagrams, by filling the
 [mxGraph model](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.1) from the BPMN model.
 
-It defines the [BPMN styles](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.1) including dedicated BPMN shapes
+If you are new to `mxGraph` or want to know more about it, please have a look at the [mxGraph tutorial](https://jgraph.github.io/mxgraph/docs/tutorial.html)
+and [mxGraph manual](https://jgraph.github.io/mxgraph/docs/manual.html).
+
+## BPMN Elements rendering and style
+
+TODO where? StyleConfigurator + cf doc how-to
+
+The main entry point for `mxGraph` rendering is `BpmnRenderer`.
+
+`StyleConfigurator` defines the [BPMN styles](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.1) including dedicated BPMN shapes
 which are associated to the `mxGraph` [mxCell](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.4) when the elements
 are inserted into the `mxGraph` model:
 - `vertex` for BPMN Shapes
 - `edge` for BPMN Edges
-
-The main entry point for `mxGraph` rendering is `BpmnRenderer`.
-
-If you are new to `mxGraph` or want to know more about it, please have a look at the [mxGraph tutorial](https://jgraph.github.io/mxgraph/docs/tutorial.html)
-and [mxGraph manual](https://jgraph.github.io/mxgraph/docs/manual.html).
 
 
 ## Logical Groups of BPMN Elements
