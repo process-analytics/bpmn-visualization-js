@@ -6,9 +6,8 @@ The [mxGraph](https://jgraph.github.io/mxgraph/) integration is in charge of dis
 If you are new to `mxGraph` or want to know more about it, please have a look at the [mxGraph tutorial](https://jgraph.github.io/mxgraph/docs/tutorial.html)
 and [mxGraph manual](https://jgraph.github.io/mxgraph/docs/manual.html).
 
-## BPMN Elements rendering and style
 
-TODO where? StyleConfigurator + cf doc how-to
+## BPMN Elements rendering and style
 
 The main entry point for `mxGraph` rendering is `BpmnRenderer`.
 
@@ -17,6 +16,8 @@ which are associated to the `mxGraph` [mxCell](https://jgraph.github.io/mxgraph/
 are inserted into the `mxGraph` model:
 - `vertex` for BPMN Shapes
 - `edge` for BPMN Edges
+
+For more details, see [BPMN Support - How To](./bpmn-support-how-to.md).
 
 
 ## Logical Groups of BPMN Elements
