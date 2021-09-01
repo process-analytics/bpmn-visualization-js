@@ -101,6 +101,12 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
       const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByIds('unknown');
       expect(bpmnElements).toHaveLength(0);
     });
+
+    it('Pass existing and non existing ids', async () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+      const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['StartEvent_1', 'unknown', 'Flow_1', 'another_unknown']);
+      expect(bpmnElements).toHaveLength(2);
+    });
   });
 
   describe('Get by kinds', () => {
