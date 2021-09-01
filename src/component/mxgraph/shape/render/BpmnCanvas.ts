@@ -74,7 +74,7 @@ export default class BpmnCanvas {
 
   constructor({ canvas, shapeConfig, iconConfig }: BpmnCanvasConfiguration) {
     this.canvas = canvas;
-    this.shapeConfiguration = shapeConfig; // TODO clone?
+    this.shapeConfiguration = shapeConfig;
 
     this.iconOriginalSize = iconConfig.originalSize;
 

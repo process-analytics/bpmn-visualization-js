@@ -36,7 +36,6 @@ describe('compute scaled icon size', () => {
       height: h,
     };
   }
-  // TODO add expect size helper function
   function expectSize(actual: Size, expected: Size): void {
     expect(actual.width).toEqual(expected.width);
     expect(actual.height).toEqual(expected.height);

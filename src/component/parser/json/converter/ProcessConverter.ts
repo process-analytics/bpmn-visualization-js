@@ -32,7 +32,6 @@ import {
   ShapeBpmnEventKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
-  supportedBpmnEventKinds,
 } from '../../../../model/bpmn/internal/shape';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
 import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
@@ -182,15 +181,13 @@ export default class ProcessConverter {
 
     if (numberOfEventDefinitions == 1) {
       const eventKind = eventDefinitions[0].kind;
-      if (supportedBpmnEventKinds.includes(eventKind)) {
-        if (ShapeUtil.isBoundaryEvent(elementKind)) {
-          return this.buildShapeBpmnBoundaryEvent(bpmnElement as TBoundaryEvent, eventKind);
-        }
-        if (ShapeUtil.isStartEvent(elementKind)) {
-          return new ShapeBpmnStartEvent(bpmnElement.id, bpmnElement.name, eventKind, processId, bpmnElement.isInterrupting);
-        }
-        return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventKind, processId);
+      if (ShapeUtil.isBoundaryEvent(elementKind)) {
+        return this.buildShapeBpmnBoundaryEvent(bpmnElement as TBoundaryEvent, eventKind);
       }
+      if (ShapeUtil.isStartEvent(elementKind)) {
+        return new ShapeBpmnStartEvent(bpmnElement.id, bpmnElement.name, eventKind, processId, bpmnElement.isInterrupting);
+      }
+      return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventKind, processId);
     }
   }
 

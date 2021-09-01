@@ -394,6 +394,9 @@ describe('Style Computer', () => {
   describe.each([
     [ShapeBpmnElementKind.CALL_ACTIVITY],
     [ShapeBpmnElementKind.SUB_PROCESS],
+    // To uncomment when it's supported
+    // [ShapeBpmnElementKind.SUB_PROCESS_AD_HOC], // this is a special case, as an additional marker should be added
+    // [ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION],
     [ShapeBpmnElementKind.TASK],
     [ShapeBpmnElementKind.TASK_SERVICE],
     [ShapeBpmnElementKind.TASK_USER],
@@ -402,10 +405,6 @@ describe('Style Computer', () => {
     [ShapeBpmnElementKind.TASK_MANUAL],
     [ShapeBpmnElementKind.TASK_SCRIPT],
     [ShapeBpmnElementKind.TASK_BUSINESS_RULE],
-
-    // TODO: To uncomment when it's supported
-    //[ShapeBpmnElementKind.AD_HOC_SUB_PROCESS],
-    //[ShapeBpmnElementKind.TRANSACTION],
   ])('compute style - markers for %s', (bpmnKind: ShapeBpmnElementKind) => {
     describe.each([[ShapeBpmnMarkerKind.LOOP], [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL], [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL]])(
       `compute style - %s marker for ${bpmnKind}`,

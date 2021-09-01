@@ -196,7 +196,7 @@ describe('Bpmn Elements registry - CSS class management', () => {
 
       // remove a single class from a single element
       bpmnVisualization.bpmnElementsRegistry.addCssClasses('userTask_0', 'class1');
-      htmlElementLookup.expectUserTask('userTask_0', ['class1']); // TODO do we keep this check
+      htmlElementLookup.expectUserTask('userTask_0', ['class1']);
       bpmnVisualization.bpmnElementsRegistry.removeCssClasses('userTask_0', 'class1');
       htmlElementLookup.expectUserTask('userTask_0');
 

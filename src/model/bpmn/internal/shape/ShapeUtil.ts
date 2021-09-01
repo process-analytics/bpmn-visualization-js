@@ -37,8 +37,6 @@ export type GlobalTaskKind =
   | ShapeBpmnElementKind.GLOBAL_TASK_USER
   | ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE;
 
-// TODO move to ShapeBpmnElementKind? and rename into ShapeBpmnElementKindUtil?
-// TODO bpmnEventKinds currently hosted in ProcessConverter may be hosted here
 /**
  * @internal
  */
@@ -53,8 +51,7 @@ export default class ShapeUtil {
     ...ShapeUtil.ACTIVITY_KINDS,
     ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
     ShapeBpmnElementKind.GATEWAY_INCLUSIVE,
-
-    // TODO: Uncomment when complex gateway are supported
+    // Uncomment when supported
     // ShapeBpmnElementKind.GATEWAY_COMPLEX,
   ];
 
@@ -94,8 +91,7 @@ export default class ShapeUtil {
     return this.FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS.includes(kind);
   }
 
-  // TODO should we clone the array to avoid modifications of this ref array by client code?
-  // topLevelBpmnEventKinds to not mixed with the bpmnEventKinds that currently are the list of non None event subtypes
+  // use the 'top level' wording to not mix with the bpmnEventKinds that currently are the list of non None event subtypes
   public static topLevelBpmnEventKinds(): ShapeBpmnElementKind[] {
     return this.EVENT_KINDS;
   }

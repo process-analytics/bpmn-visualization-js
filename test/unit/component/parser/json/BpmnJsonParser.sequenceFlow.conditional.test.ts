@@ -24,6 +24,8 @@ describe('parse bpmn as json for conditional sequence flow', () => {
   each([
     ['exclusiveGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
     ['inclusiveGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
+    // To uncomment when we support complex gateway
+    // ['complexGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
     ['task', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['userTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['serviceTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
@@ -31,11 +33,9 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     ['sendTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['manualTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['scriptTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
+    ['businessRuleTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['callActivity', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['subProcess', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-    // TODO: To uncomment when we support complex gateway
-    //['complexGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
-    ['businessRuleTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
   ]).it(
     `should convert as Edge, when an sequence flow (defined as conditional in %s) is an attribute (as object) of 'process' (as object)`,
     (sourceKind, expectedSequenceFlowKind) => {
