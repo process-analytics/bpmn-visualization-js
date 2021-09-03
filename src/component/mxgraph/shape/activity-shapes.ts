@@ -89,7 +89,7 @@ export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
         canvas.translateIconOrigin(xTranslation, 0);
       };
     } else {
-      // TODO: once we support 3 markers in a group
+      // to remove once we support 3 markers in a group
       throw new Error('NOT_IMPLEMENTED - to have a group of >2 markers in a row, centered in the task, implement this piece of code');
     }
     return setIconOriginFunct;

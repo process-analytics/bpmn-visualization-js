@@ -24,7 +24,7 @@ import { mxgraph } from '../initializer'; // for types
 abstract class EventShape extends mxgraph.mxEllipse {
   protected iconPainter = IconPainterProvider.get();
 
-  // TODO: when all/more event types will be supported, we could move to a Record/MappedType
+  // refactor: when all/more event types will be supported, we could move to a Record/MappedType
   private iconPainters: Map<ShapeBpmnEventKind, (paintParameter: PaintParameter) => void> = new Map([
     [ShapeBpmnEventKind.MESSAGE, (paintParameter: PaintParameter) => this.iconPainter.paintEnvelopeIcon({ ...paintParameter, ratioFromParent: 0.5 })],
     [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => this.iconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],

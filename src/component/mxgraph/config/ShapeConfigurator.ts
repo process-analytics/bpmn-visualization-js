@@ -88,7 +88,7 @@ export default class ShapeConfigurator {
       const canvas = new mxgraph.mxSvgCanvas2D(this.node, false);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
       canvas.pointerEventsValue = this.svgPointerEvents;
-      // TODO remove this commented code (has been removed in mxgraph@4.1.1
+      // When bumping mxgraph to 4.1.1, remove this commented code. It has been removed in mxgraph@4.1.1
       //((canvas as unknown) as mxgraph.mxSvgCanvas2D).blockImagePointerEvents = isFF;
       const off = this.getSvgScreenOffset();
 

@@ -23,6 +23,9 @@ import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/interna
 describe.each([
   ['callActivity', ShapeBpmnElementKind.CALL_ACTIVITY],
   ['subProcess', ShapeBpmnElementKind.SUB_PROCESS],
+  // Uncomment when it's supported
+  // ['adHocSubProcess', ShapeBpmnElementKind.SUB_PROCESS_AD_HOC],
+  // ['transaction', ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION],
   ['task', ShapeBpmnElementKind.TASK],
   ['serviceTask', ShapeBpmnElementKind.TASK_SERVICE],
   ['userTask', ShapeBpmnElementKind.TASK_USER],
@@ -30,11 +33,7 @@ describe.each([
   ['sendTask', ShapeBpmnElementKind.TASK_SEND],
   ['manualTask', ShapeBpmnElementKind.TASK_MANUAL],
   ['scriptTask', ShapeBpmnElementKind.TASK_SCRIPT],
-
-  // TODO: To uncomment when it's supported
   ['businessRuleTask', ShapeBpmnElementKind.TASK_BUSINESS_RULE],
-  //['adHocSubProcess', ShapeBpmnElementKind.AD_HOC_SUB_PROCESS],
-  //['transaction', ShapeBpmnElementKind.TRANSACTION],
 ])(`parse bpmn as json for '%s'`, (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
   describe.each([
     ['standardLoopCharacteristics', ShapeBpmnMarkerKind.LOOP],

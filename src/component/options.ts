@@ -72,16 +72,18 @@ export interface LoadOptions {
  * @category Initialization
  */
 export interface FitOptions {
-  type?: FitType; // TODO mandatory?
+  /**
+   * @default {@link FitType.None}
+   */
+  type?: FitType;
   /**
    * Negative values fallback to default.
-   * @default 0 */
+   * @default 0
+   */
   margin?: number;
 }
 
 /**
- * @default {@link FitType.None}
- *
  * @category Initialization
  */
 export enum FitType {

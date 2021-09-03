@@ -58,8 +58,7 @@ export class BpmnMxGraph extends mxgraph.mxGraph {
    * @internal
    */
   customFit(fitOptions: FitOptions): void {
-    // TODO avoid extra zoom/fit reset
-    // see https://github.com/process-analytics/bpmn-visualization-js/issues/888
+    // We should avoid extra zoom/fit reset. See https://github.com/process-analytics/bpmn-visualization-js/issues/888
     this.zoomActual();
 
     const type = fitOptions?.type;

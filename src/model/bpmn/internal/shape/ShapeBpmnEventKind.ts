@@ -41,23 +41,3 @@ export enum ShapeBpmnEventKind {
 export const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
   return kind != ShapeBpmnEventKind.NONE;
 });
-
-/**
- * List supported events in addition to the NONE event.
- *
- * Temporarily used until we support all events
- * @internal
- */
-// TODO When a new kind is supported, uncomment the corresponding line in test/unit/component/parser/json/BpmnJsonParser.event.test.ts
-export const supportedBpmnEventKinds = [
-  ShapeBpmnEventKind.TERMINATE,
-  ShapeBpmnEventKind.TIMER,
-  ShapeBpmnEventKind.MESSAGE,
-  ShapeBpmnEventKind.SIGNAL,
-  ShapeBpmnEventKind.LINK,
-  ShapeBpmnEventKind.ERROR,
-  ShapeBpmnEventKind.COMPENSATION,
-  ShapeBpmnEventKind.CANCEL,
-  ShapeBpmnEventKind.CONDITIONAL,
-  ShapeBpmnEventKind.ESCALATION,
-];

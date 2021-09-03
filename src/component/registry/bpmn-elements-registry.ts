@@ -56,9 +56,10 @@ export class BpmnElementsRegistry {
     private mxGraphCellUpdater: MxGraphCellUpdater,
   ) {}
 
-  // TODO doc, not found elements are not present in the return array
   /**
-   * Get all elements by ids.
+   * Get all elements by ids. The returned array contains elements in the order of the `bpmnElementIds` parameter.
+   *
+   * Not found elements are not returned as undefined in the array, so the returned array contains at most as much elements as the `bpmnElementIds` parameter.
    *
    * ```javascript
    * ...
@@ -91,7 +92,6 @@ export class BpmnElementsRegistry {
   getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
     return ensureIsArray<BpmnElementKind>(bpmnKinds)
       .map(kind =>
-        // TODO when implementing #953, use the model to search for Bpmn elements matching kinds instead of css selectors
         this.htmlElementRegistry.getBpmnHtmlElements(kind).map(
           htmlElement =>
             ({
@@ -252,7 +252,6 @@ class HtmlElementRegistry {
    * @param bpmnElementId the id of the BPMN element represented by the searched Html Element.
    */
   getBpmnHtmlElement(bpmnElementId: string): HTMLElement | null {
-    // TODO error management, for now we return null
     return document.querySelector<HTMLElement>(this.selectors.element(bpmnElementId));
   }
 

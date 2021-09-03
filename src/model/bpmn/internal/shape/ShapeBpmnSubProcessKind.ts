@@ -21,6 +21,7 @@
 export enum ShapeBpmnSubProcessKind {
   EMBEDDED = 'embedded',
   EVENT = 'event',
+  // The following may be only needed for rendering, as we have special types for adHoc and transaction subprocess in ShapeBpmnElementKind
   // TRANSACTION = 'transaction',
   // AD_HOC = 'ad_hoc',
 }

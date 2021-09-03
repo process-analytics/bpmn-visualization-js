@@ -356,7 +356,7 @@ describe('parse bpmn as json for all events', () => {
       }
     });
 
-    //TODO We can delete it when all kind of event definition are implemented
+    // Only for events that support the NONE event kind
     if (expectedShapeBpmnElementKind !== ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH && expectedShapeBpmnElementKind !== ShapeBpmnElementKind.EVENT_BOUNDARY) {
       it(`should convert as NONE Shape only the '${bpmnKind}' without 'eventDefinition' & without 'eventDefinitionRef', when an array of '${bpmnKind}' (without/with one or several event definition) is an attribute of 'process'`, () => {
         const json = {

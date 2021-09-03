@@ -51,7 +51,6 @@ export default class BpmnVisualization {
       const renderedModel = this.bpmnModelRegistry.computeRenderedModel(bpmnModel);
       newBpmnRenderer(this.graph).render(renderedModel, options);
     } catch (e) {
-      // TODO error handling
       window.alert(`Cannot load bpmn diagram: ${e.message}`);
       throw e;
     }

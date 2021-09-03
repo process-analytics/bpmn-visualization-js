@@ -23,6 +23,13 @@ export enum ShapeBpmnElementKind {
   POOL = 'pool',
   CALL_ACTIVITY = 'callActivity',
   SUB_PROCESS = 'subProcess',
+  // When adding support, uncomment related content in tests
+  // test/unit/component/mxgraph/renderer/StyleComputer.test.ts
+  // test/unit/component/parser/json/BpmnJsonParser.marker.test.ts (adhoc requires special checks as an additional marker should be present)
+  // Generalize test/unit/component/parser/json/BpmnJsonParser.sub.process.test.ts
+  // See also, ShapeBpmnSubProcessKind
+  // SUB_PROCESS_AD_HOC = 'adHocSubProcess',
+  // SUB_PROCESS_TRANSACTION = 'transaction',
 
   TASK = 'task',
   TASK_USER = 'userTask',
@@ -47,13 +54,14 @@ export enum ShapeBpmnElementKind {
   GATEWAY_INCLUSIVE = 'inclusiveGateway',
   GATEWAY_EVENT_BASED = 'eventBasedGateway',
 
-  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
-  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
-  // TODO : Uncomment corresponding line in src/model/bpmn/shape/ShapeUtil.ts
-  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.flowNode.test.ts
-  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.bounds.test.ts
-  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
-  // TODO: Uncomment corresponding test in test/unit/component/parser/json/BpmnJsonParser.label.test.ts
+  // When adding support for GATEWAY_COMPLEX, uncomment corresponding test in the following files
+  // test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
+  // test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
+  // test/unit/component/parser/json/BpmnJsonParser.flowNode.test.ts
+  // test/unit/component/parser/json/BpmnJsonParser.label.bounds.test.ts
+  // test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
+  // test/unit/component/parser/json/BpmnJsonParser.label.test.ts
+  // Uncomment corresponding line in src/model/bpmn/shape/ShapeUtil.ts FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS
   // GATEWAY_COMPLEX = 'complexGateway',
 
   EVENT_START = 'startEvent',
