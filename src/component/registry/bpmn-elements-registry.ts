@@ -92,13 +92,10 @@ export class BpmnElementsRegistry {
   getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
     return ensureIsArray<BpmnElementKind>(bpmnKinds)
       .map(kind =>
-        this.htmlElementRegistry.getBpmnHtmlElements(kind).map(
-          htmlElement =>
-            ({
-              htmlElement: htmlElement,
-              bpmnSemantic: this.bpmnModelRegistry.getBpmnSemantic(htmlElement.getAttribute('data-bpmn-id')),
-            } as BpmnElement),
-        ),
+        this.htmlElementRegistry.getBpmnHtmlElements(kind).map(htmlElement => ({
+          htmlElement: htmlElement,
+          bpmnSemantic: this.bpmnModelRegistry.getBpmnSemantic(htmlElement.getAttribute('data-bpmn-id')),
+        })),
       )
       .reduce((accumulator, bpmnElements) => {
         accumulator.push(...bpmnElements);

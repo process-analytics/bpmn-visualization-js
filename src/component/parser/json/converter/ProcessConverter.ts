@@ -222,9 +222,7 @@ export default class ProcessConverter {
     });
 
     return Array.from(eventDefinitions.keys())
-      .map(kind => {
-        return { kind, counter: eventDefinitions.get(kind) };
-      }) // TODO no return in map
+      .map(kind => ({ kind, counter: eventDefinitions.get(kind) }))
       .filter(eventDefinition => eventDefinition.counter > 0);
   }
 

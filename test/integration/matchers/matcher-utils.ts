@@ -173,14 +173,12 @@ export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCel
 
   const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as MxGraphCustomOverlay[];
   if (cellOverlays) {
-    receivedCell.overlays = cellOverlays.map(cellOverlay => {
-      return {
-        label: cellOverlay.label,
-        horizontalAlign: cellOverlay.align,
-        verticalAlign: cellOverlay.verticalAlign,
-        style: cellOverlay.style,
-      };
-    });
+    receivedCell.overlays = cellOverlays.map(cellOverlay => ({
+      label: cellOverlay.label,
+      horizontalAlign: cellOverlay.align,
+      verticalAlign: cellOverlay.verticalAlign,
+      style: cellOverlay.style,
+    }));
   } else {
     receivedCell.overlays = undefined;
   }
@@ -188,14 +186,12 @@ export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCel
   if (cell.edge) {
     const children = cell.children;
     if (children && children[0]) {
-      receivedCell.children = children.map((child: mxCell) => {
-        return {
-          value: child.value,
-          style: child.style,
-          id: child.id,
-          vertex: child.vertex,
-        };
-      });
+      receivedCell.children = children.map((child: mxCell) => ({
+        value: child.value,
+        style: child.style,
+        id: child.id,
+        vertex: child.vertex,
+      }));
     }
   }
 
