@@ -55,6 +55,7 @@ export function delay(time: number): Promise<unknown> {
 export function getBpmnDiagramNames(directoryName: string): string[] {
   return findFiles(join('../fixtures/bpmn/', directoryName))
     .filter(filename => {
+      // TODO filter no return
       return filename.endsWith('.bpmn');
     })
     .map(filename => {

@@ -31,6 +31,7 @@ const referenceOrderedMarkers = [
 export function orderActivityMarkers(markers: string[]): string[] {
   const orderedMarkers: string[] = [];
 
+  // TODO use filter instead of each if + reduce instead of forEach
   referenceOrderedMarkers.forEach(marker => {
     if (markers.includes(marker)) {
       orderedMarkers.push(marker);
@@ -39,9 +40,11 @@ export function orderActivityMarkers(markers: string[]): string[] {
 
   // Put extra remaining at the end of the ordered markers, in the order they appear in the original array
   markers
+    // TODO review filter (no return)
     .filter(marker => {
       return !orderedMarkers.includes(marker);
     })
+    // TODO check if we can use reduce here
     .forEach(marker => {
       orderedMarkers.push(marker);
     });

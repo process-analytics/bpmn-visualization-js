@@ -162,7 +162,7 @@ export default class DiagramConverter {
 
         return new Edge(edge.id, flow, waypoints, label, messageVisibleKind);
       })
-      .filter(edge => edge);
+      .filter(edge => edge); // TODO filter Boolean
   }
 
   private deserializeWaypoints(waypoints: Point[]): Waypoint[] {

@@ -227,7 +227,7 @@ export default class ProcessConverter {
       })
       .filter(eventDefinition => {
         return eventDefinition.counter > 0;
-      });
+      }); // TODO filter no return
   }
 
   private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {

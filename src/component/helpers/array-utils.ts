@@ -46,6 +46,7 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
   } else {
     returnedArray = elements.map(element => convertEmptyStringAndObject(element, acceptEmptyString));
   }
+  // TODO filter Boolean
   return returnedArray.filter(value => value);
 }
 
