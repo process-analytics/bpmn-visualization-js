@@ -225,9 +225,7 @@ export default class ProcessConverter {
       .map(kind => {
         return { kind, counter: eventDefinitions.get(kind) };
       })
-      .filter(eventDefinition => {
-        return eventDefinition.counter > 0;
-      }); // TODO filter no return
+      .filter(eventDefinition => eventDefinition.counter > 0);
   }
 
   private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
