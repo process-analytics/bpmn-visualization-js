@@ -38,7 +38,4 @@ export enum ShapeBpmnEventKind {
  * Elements that are effectively used in BPMN diagram as base for eventDefinition i.e all {@link ShapeBpmnEventKind} elements except {@link ShapeBpmnEventKind.NONE}
  * @internal
  */
-// TODO filter no return
-export const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => {
-  return kind != ShapeBpmnEventKind.NONE;
-});
+export const bpmnEventKinds = Object.values(ShapeBpmnEventKind).filter(kind => kind != ShapeBpmnEventKind.NONE);
