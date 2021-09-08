@@ -136,11 +136,9 @@ export default class StyleConfigurator {
     const style: StyleMap = {};
     style[mxgraph.mxConstants.STYLE_SHAPE] = mxgraph.mxConstants.SHAPE_SWIMLANE;
 
-    // TODO Remove when the bounds of the pool label is implemented
+    // label style
     style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
     style[mxgraph.mxConstants.STYLE_ALIGN] = mxgraph.mxConstants.ALIGN_CENTER;
-
-    // TODO manage pool text area rendering. Maybe we can calculate it from the label size/bounds
     style[mxgraph.mxConstants.STYLE_STARTSIZE] = StyleDefault.POOL_LABEL_SIZE;
     style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.POOL_LABEL_FILL_COLOR;
 
@@ -151,14 +149,10 @@ export default class StyleConfigurator {
     const style: StyleMap = {};
     style[mxgraph.mxConstants.STYLE_SHAPE] = mxgraph.mxConstants.SHAPE_SWIMLANE;
 
-    // TODO Remove when the bounds of the lane label is implemented
+    // label style
     style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
     style[mxgraph.mxConstants.STYLE_ALIGN] = mxgraph.mxConstants.ALIGN_CENTER;
-
     style[mxgraph.mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
-
-    // TODO manage lane text area rendering. there is no Label neither the size available (we have only attribute name="Text of the Label")
-    // perhaps it can be calculated as a difference of starting point (either x or y) between pool, lane, sub-lane ?
     style[mxgraph.mxConstants.STYLE_STARTSIZE] = StyleDefault.LANE_LABEL_SIZE;
     style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.LANE_LABEL_FILL_COLOR;
 
