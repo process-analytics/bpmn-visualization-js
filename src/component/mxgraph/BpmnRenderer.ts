@@ -133,9 +133,7 @@ export class BpmnRenderer {
 
   private insertWaypoints(waypoints: Waypoint[], mxEdge: mxCell): void {
     if (waypoints) {
-      mxEdge.geometry.points = waypoints.map(waypoint => {
-        return this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxgraph.mxPoint(waypoint.x, waypoint.y));
-      });
+      mxEdge.geometry.points = waypoints.map(waypoint => this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxgraph.mxPoint(waypoint.x, waypoint.y)));
     }
   }
 
