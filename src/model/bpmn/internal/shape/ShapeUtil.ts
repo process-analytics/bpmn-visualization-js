@@ -109,10 +109,7 @@ export default class ShapeUtil {
   }
 
   public static flowNodeKinds(): ShapeBpmnElementKind[] {
-    // TODO filter no return
-    return Object.values(ShapeBpmnElementKind).filter(kind => {
-      return !ShapeUtil.isPoolOrLane(kind);
-    });
+    return Object.values(ShapeBpmnElementKind).filter(kind => !ShapeUtil.isPoolOrLane(kind));
   }
 
   public static isPoolOrLane(kind: ShapeBpmnElementKind): boolean {
