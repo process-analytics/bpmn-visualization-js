@@ -40,15 +40,13 @@ export default class CollaborationConverter {
   }
 
   private buildParticipant(bpmnElements: Array<TParticipant> | TParticipant): void {
-    ensureIsArray(bpmnElements).forEach(participant => {
-      this.convertedElements.registerParticipant(new Participant(participant.id, participant.name, participant.processRef));
-    });
+    ensureIsArray(bpmnElements).forEach(participant => this.convertedElements.registerParticipant(new Participant(participant.id, participant.name, participant.processRef)));
   }
 
   private buildMessageFlows(bpmnElements: Array<TMessageFlow> | TMessageFlow): void {
-    ensureIsArray(bpmnElements).forEach(messageFlow => {
-      this.convertedElements.registerMessageFlow(new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef));
-    });
+    ensureIsArray(bpmnElements).forEach(messageFlow =>
+      this.convertedElements.registerMessageFlow(new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef)),
+    );
   }
 
   private buildGroups(bpmnElements: Array<TGroup> | TGroup): void {

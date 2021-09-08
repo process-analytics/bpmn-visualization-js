@@ -81,9 +81,7 @@ class SearchableModel {
     ([] as Array<Edge | Shape>)
       .concat(bpmnModel.pools, bpmnModel.lanes, bpmnModel.flowNodes, bpmnModel.edges)
       // use the bpmn element id and not the bpmn shape id
-      .forEach(e => {
-        this.elements.set(e.bpmnElement.id, e);
-      });
+      .forEach(e => this.elements.set(e.bpmnElement.id, e));
   }
 
   elementById(id: string): Shape | Edge | undefined {

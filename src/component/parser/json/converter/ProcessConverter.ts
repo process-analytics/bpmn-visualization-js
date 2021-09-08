@@ -239,9 +239,7 @@ export default class ProcessConverter {
   }
 
   private buildLaneSetBpmnElements(processId: string, laneSets: Array<TLaneSet> | TLaneSet): void {
-    ensureIsArray(laneSets).forEach(laneSet => {
-      this.buildLaneBpmnElements(processId, laneSet.lane);
-    });
+    ensureIsArray(laneSets).forEach(laneSet => this.buildLaneBpmnElements(processId, laneSet.lane));
   }
 
   private buildLaneBpmnElements(processId: string, lanes: Array<TLane> | TLane): void {

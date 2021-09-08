@@ -60,9 +60,7 @@ export class BpmnRenderer {
   }
 
   private insertShapes(shapes: Shape[]): void {
-    shapes.forEach(shape => {
-      this.insertShape(shape);
-    });
+    shapes.forEach(shape => this.insertShape(shape));
   }
 
   private getParent(bpmnElement: ShapeBpmnElement): mxCell {
