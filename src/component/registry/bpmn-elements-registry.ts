@@ -73,7 +73,7 @@ export class BpmnElementsRegistry {
   getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[] {
     return ensureIsArray<string>(bpmnElementIds)
       .map(id => this.bpmnModelRegistry.getBpmnSemantic(id))
-      .filter(e => e) // TODO filter Boolean
+      .filter(Boolean)
       .map(bpmnSemantic => ({ bpmnSemantic: bpmnSemantic, htmlElement: this.htmlElementRegistry.getBpmnHtmlElement(bpmnSemantic.id) }));
   }
 
