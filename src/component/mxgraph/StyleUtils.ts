@@ -49,9 +49,6 @@ export enum StyleDefault {
   DEFAULT_FONT_SIZE = 11,
   DEFAULT_FONT_COLOR = 'Black',
   DEFAULT_MARGIN = 0,
-  DEFAULT_DASHED = 0, // it means 'false'
-  DEFAULT_FIX_DASH = 0, // it means 'false'
-  DEFAULT_DASH_PATTERN = '3 3',
   // Shape defaults
   SHAPE_ARC_SIZE = 20,
   // Overlay defaults
@@ -101,18 +98,6 @@ export default class StyleUtils {
 
   public static getMargin(style: any): number {
     return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
-  }
-
-  public static isDashed(style: any): boolean {
-    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_DASHED, StyleDefault.DEFAULT_DASHED);
-  }
-
-  public static isFixDash(style: any): boolean {
-    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_FIX_DASH, StyleDefault.DEFAULT_FIX_DASH);
-  }
-
-  public static getDashPattern(style: any): string {
-    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_DASH_PATTERN, StyleDefault.DEFAULT_DASH_PATTERN);
   }
 
   public static getBpmnEventKind(style: any): ShapeBpmnEventKind {
