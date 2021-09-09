@@ -54,12 +54,8 @@ export function delay(time: number): Promise<unknown> {
 
 export function getBpmnDiagramNames(directoryName: string): string[] {
   return findFiles(join('../fixtures/bpmn/', directoryName))
-    .filter(filename => {
-      return filename.endsWith('.bpmn');
-    })
-    .map(filename => {
-      return filename.split('.').slice(0, -1).join('.');
-    });
+    .filter(filename => filename.endsWith('.bpmn'))
+    .map(filename => filename.split('.').slice(0, -1).join('.'));
 }
 
 export async function getContainerCenter(containerElement: ElementHandle<SVGElement | HTMLElement>): Promise<Point> {

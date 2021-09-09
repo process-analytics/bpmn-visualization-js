@@ -36,8 +36,6 @@ export default class GlobalTaskConverter {
   }
 
   private parseGlobalTasks<T extends TGlobalTask>(globalTasks: T | T[], kind: GlobalTaskKind): void {
-    ensureIsArray<T>(globalTasks).forEach(globalTask => {
-      this.convertedElements.registerGlobalTask(globalTask.id, kind);
-    });
+    ensureIsArray<T>(globalTasks).forEach(globalTask => this.convertedElements.registerGlobalTask(globalTask.id, kind));
   }
 }

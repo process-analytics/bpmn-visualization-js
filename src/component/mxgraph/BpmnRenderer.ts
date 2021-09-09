@@ -60,9 +60,7 @@ export class BpmnRenderer {
   }
 
   private insertShapes(shapes: Shape[]): void {
-    shapes.forEach(shape => {
-      this.insertShape(shape);
-    });
+    shapes.forEach(shape => this.insertShape(shape));
   }
 
   private getParent(bpmnElement: ShapeBpmnElement): mxCell {
@@ -133,9 +131,7 @@ export class BpmnRenderer {
 
   private insertWaypoints(waypoints: Waypoint[], mxEdge: mxCell): void {
     if (waypoints) {
-      mxEdge.geometry.points = waypoints.map(waypoint => {
-        return this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxgraph.mxPoint(waypoint.x, waypoint.y));
-      });
+      mxEdge.geometry.points = waypoints.map(waypoint => this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxgraph.mxPoint(waypoint.x, waypoint.y)));
     }
   }
 

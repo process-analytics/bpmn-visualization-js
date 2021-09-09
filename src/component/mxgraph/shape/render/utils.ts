@@ -31,20 +31,10 @@ const referenceOrderedMarkers = [
 export function orderActivityMarkers(markers: string[]): string[] {
   const orderedMarkers: string[] = [];
 
-  referenceOrderedMarkers.forEach(marker => {
-    if (markers.includes(marker)) {
-      orderedMarkers.push(marker);
-    }
-  });
+  referenceOrderedMarkers.filter(marker => markers.includes(marker)).forEach(marker => orderedMarkers.push(marker));
 
   // Put extra remaining at the end of the ordered markers, in the order they appear in the original array
-  markers
-    .filter(marker => {
-      return !orderedMarkers.includes(marker);
-    })
-    .forEach(marker => {
-      orderedMarkers.push(marker);
-    });
+  markers.filter(marker => !orderedMarkers.includes(marker)).forEach(marker => orderedMarkers.push(marker));
 
   return orderedMarkers;
 }

@@ -65,11 +65,11 @@ export default class DiagramConverter {
   private deserializeFonts(bpmnLabelStyle: Array<BPMNLabelStyle> | BPMNLabelStyle): void {
     this.convertedFonts = new Map();
 
-    ensureIsArray(bpmnLabelStyle).forEach(labelStyle => {
-      ensureIsArray(labelStyle.Font).forEach(font => {
-        this.convertedFonts.set(labelStyle.id, new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough));
-      });
-    });
+    ensureIsArray(bpmnLabelStyle).forEach(labelStyle =>
+      ensureIsArray(labelStyle.Font).forEach(font =>
+        this.convertedFonts.set(labelStyle.id, new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough)),
+      ),
+    );
   }
 
   private deserializeShapes(shapes: Array<BPMNShape> | BPMNShape): Shapes {
@@ -162,7 +162,7 @@ export default class DiagramConverter {
 
         return new Edge(edge.id, flow, waypoints, label, messageVisibleKind);
       })
-      .filter(edge => edge);
+      .filter(Boolean);
   }
 
   private deserializeWaypoints(waypoints: Point[]): Waypoint[] {
