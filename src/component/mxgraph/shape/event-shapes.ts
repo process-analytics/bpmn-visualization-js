@@ -18,10 +18,13 @@ import { ShapeBpmnEventKind } from '../../../model/bpmn/internal/shape';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import BpmnCanvas from './render/BpmnCanvas';
-import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph';
+import { mxAbstractCanvas2D } from 'mxgraph';
 import { mxgraph } from '../initializer'; // for types
 
-abstract class EventShape extends mxgraph.mxEllipse {
+/**
+ * @internal
+ */
+export class EventShape extends mxgraph.mxEllipse {
   protected iconPainter = IconPainterProvider.get();
 
   // refactor: when all/more event types will be supported, we could move to a Record/MappedType
@@ -77,8 +80,8 @@ abstract class EventShape extends mxgraph.mxEllipse {
 
   protected withFilledIcon = false;
 
-  protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
-    super(bounds, fill, stroke, strokewidth);
+  constructor() {
+    super(undefined, undefined, undefined); // the configuration is passed with the styles at runtime
   }
 
   override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
@@ -127,27 +130,17 @@ abstract class EventShape extends mxgraph.mxEllipse {
 /**
  * @internal
  */
-export class StartEventShape extends EventShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
-    super(bounds, fill, stroke, strokewidth);
+export class EndEventShape extends EventShape {
+  constructor() {
+    super();
+    this.withFilledIcon = true;
   }
 }
 
 /**
  * @internal
  */
-export class EndEventShape extends EventShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
-    super(bounds, fill, stroke, strokewidth);
-    this.withFilledIcon = true;
-  }
-}
-
-abstract class IntermediateEventShape extends EventShape {
-  protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
+export class IntermediateEventShape extends EventShape {
   // this implementation is adapted from the draw.io BPMN 'throwing' outlines
   // https://github.com/jgraph/drawio/blob/0e19be6b42755790a749af30450c78c0d83be765/src/main/webapp/shapes/bpmn/mxBpmnShape2.js#L431
   protected override paintOuterShape({ canvas, shapeConfig: { x, y, width, height, strokeWidth } }: PaintParameter): void {
@@ -163,27 +156,9 @@ abstract class IntermediateEventShape extends EventShape {
 /**
  * @internal
  */
-export class CatchIntermediateEventShape extends IntermediateEventShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-}
-
-/**
- * @internal
- */
 export class ThrowIntermediateEventShape extends IntermediateEventShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
-    super(bounds, fill, stroke, strokewidth);
+  constructor() {
+    super();
     this.withFilledIcon = true;
-  }
-}
-
-/**
- * @internal
- */
-export class BoundaryEventShape extends IntermediateEventShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth?: number) {
-    super(bounds, fill, stroke, strokewidth);
   }
 }

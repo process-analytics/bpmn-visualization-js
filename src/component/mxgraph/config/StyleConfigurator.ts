@@ -164,6 +164,7 @@ export default class StyleConfigurator {
       const style: StyleMap = {};
       style[mxgraph.mxConstants.STYLE_SHAPE] = kind;
       style[mxgraph.mxConstants.STYLE_PERIMETER] = mxgraph.mxPerimeter.EllipsePerimeter;
+      style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
       style[mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxgraph.mxConstants.ALIGN_BOTTOM;
       this.putCellStyle(kind, style);
     });
@@ -176,6 +177,7 @@ export default class StyleConfigurator {
     style[mxgraph.mxConstants.STYLE_ALIGN] = mxgraph.mxConstants.ALIGN_LEFT;
     style[mxgraph.mxConstants.STYLE_SPACING_LEFT] = 5;
     style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
+    style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
   }
 
@@ -202,6 +204,7 @@ export default class StyleConfigurator {
       style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
       style[mxgraph.mxConstants.STYLE_ABSOLUTE_ARCSIZE] = true;
       style[mxgraph.mxConstants.STYLE_ARCSIZE] = StyleDefault.SHAPE_ARC_SIZE;
+      style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
       this.putCellStyle(kind, style);
     });
   }
@@ -211,6 +214,7 @@ export default class StyleConfigurator {
       const style: StyleMap = {};
       style[mxgraph.mxConstants.STYLE_SHAPE] = kind;
       style[mxgraph.mxConstants.STYLE_PERIMETER] = mxgraph.mxPerimeter.RhombusPerimeter;
+      style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
       style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_TOP;
 
       // Default label positioning

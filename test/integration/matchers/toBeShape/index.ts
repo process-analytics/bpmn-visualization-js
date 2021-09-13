@@ -29,12 +29,40 @@ import { mxgraph } from '../../../../src/component/mxgraph/initializer';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
+function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
+  return [
+    ShapeBpmnElementKind.EVENT_BOUNDARY,
+    ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+    ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
+    ShapeBpmnElementKind.EVENT_START,
+    ShapeBpmnElementKind.GATEWAY_EVENT_BASED,
+    ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
+    ShapeBpmnElementKind.GATEWAY_INCLUSIVE,
+    ShapeBpmnElementKind.GATEWAY_PARALLEL,
+    ShapeBpmnElementKind.GROUP,
+    ShapeBpmnElementKind.SUB_PROCESS,
+    ShapeBpmnElementKind.TASK,
+    ShapeBpmnElementKind.TASK_BUSINESS_RULE,
+    ShapeBpmnElementKind.TASK_MANUAL,
+    ShapeBpmnElementKind.TASK_RECEIVE,
+    ShapeBpmnElementKind.TASK_SCRIPT,
+    ShapeBpmnElementKind.TASK_SERVICE,
+    ShapeBpmnElementKind.TASK_SEND,
+    ShapeBpmnElementKind.TASK_USER,
+    ShapeBpmnElementKind.TEXT_ANNOTATION,
+  ].includes(kind)
+    ? 2
+    : [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.EVENT_END].includes(kind)
+    ? 5
+    : undefined;
+}
+
 function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): ExpectedStateStyle {
   const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
   expectedStateStyle.shape = !expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape;
   expectedStateStyle.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'middle';
   expectedStateStyle.align = expectedModel.align ? expectedModel.align : 'center';
-  expectedStateStyle.strokeWidth = expectedModel.kind == ShapeBpmnElementKind.GROUP ? 2 : undefined;
+  expectedStateStyle.strokeWidth = expectedStrokeWidth(expectedModel.kind);
 
   expectedStateStyle.fillColor = [ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION, ShapeBpmnElementKind.GROUP].includes(
     expectedModel.kind,

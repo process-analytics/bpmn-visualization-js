@@ -16,24 +16,19 @@
 
 import { StyleDefault } from '../StyleUtils';
 import { mxgraph } from '../initializer';
-import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph'; // for types
+import { mxAbstractCanvas2D } from 'mxgraph'; // for types
 
 /**
  * @internal
  */
 export class TextAnnotationShape extends mxgraph.mxRectangleShape {
-  private readonly TEXT_ANNOTATION_BORDER_LENGTH = 10;
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   override paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     // paint sort of left square bracket shape - for text annotation
     c.begin();
-    c.moveTo(x + this.TEXT_ANNOTATION_BORDER_LENGTH, y);
+    c.moveTo(x + StyleDefault.TEXT_ANNOTATION_BORDER_LENGTH, y);
     c.lineTo(x, y);
     c.lineTo(x, y + h);
-    c.lineTo(x + this.TEXT_ANNOTATION_BORDER_LENGTH, y + h);
+    c.lineTo(x + StyleDefault.TEXT_ANNOTATION_BORDER_LENGTH, y + h);
 
     c.fillAndStroke();
   }

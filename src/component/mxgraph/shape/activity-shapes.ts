@@ -20,7 +20,7 @@ import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } fr
 import BpmnCanvas from './render/BpmnCanvas';
 import { orderActivityMarkers } from './render/utils';
 import { mxgraph } from '../initializer';
-import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph'; // for types
+import { mxAbstractCanvas2D } from 'mxgraph'; // for types
 
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
   IconPainterProvider.get().paintEnvelopeIcon({
@@ -37,8 +37,8 @@ function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): v
 export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
-  protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
-    super(bounds, fill, stroke, strokewidth);
+  public constructor() {
+    super(undefined, undefined, undefined); // the configuration is passed with the styles at runtime
     // enforced by BPMN
     this.isRounded = true;
   }
@@ -97,10 +97,6 @@ export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
 }
 
 abstract class BaseTaskShape extends BaseActivityShape {
-  protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
     this.paintTaskIcon(buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this }));
@@ -113,10 +109,6 @@ abstract class BaseTaskShape extends BaseActivityShape {
  * @internal
  */
 export class TaskShape extends BaseTaskShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected paintTaskIcon(paintParameter: PaintParameter): void {
     // No symbol for the BPMN Task
@@ -128,10 +120,6 @@ export class TaskShape extends BaseTaskShape {
  * @internal
  */
 export class ServiceTaskShape extends BaseTaskShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   protected paintTaskIcon(paintParameter: PaintParameter): void {
     this.iconPainter.paintGearIcon({ ...paintParameter, setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
   }
@@ -141,10 +129,6 @@ export class ServiceTaskShape extends BaseTaskShape {
  * @internal
  */
 export class UserTaskShape extends BaseTaskShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   protected paintTaskIcon(paintParameter: PaintParameter): void {
     this.iconPainter.paintPersonIcon({ ...paintParameter, setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
   }
@@ -154,10 +138,6 @@ export class UserTaskShape extends BaseTaskShape {
  * @internal
  */
 export class ReceiveTaskShape extends BaseTaskShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   protected paintTaskIcon(paintParameter: PaintParameter): void {
     if (!StyleUtils.getBpmnIsInstantiating(this.style)) {
       paintEnvelopeIcon(paintParameter, false);
@@ -195,10 +175,6 @@ export class ReceiveTaskShape extends BaseTaskShape {
  * @internal
  */
 export class SendTaskShape extends BaseTaskShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   protected paintTaskIcon(paintParameter: PaintParameter): void {
     paintEnvelopeIcon(paintParameter, true);
   }
@@ -208,10 +184,6 @@ export class SendTaskShape extends BaseTaskShape {
  * @internal
  */
 export class ManualTaskShape extends BaseTaskShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   protected paintTaskIcon(paintParameter: PaintParameter): void {
     this.iconPainter.paintHandIcon({ ...paintParameter, ratioFromParent: 0.18, setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
   }
@@ -221,10 +193,6 @@ export class ManualTaskShape extends BaseTaskShape {
  * @internal
  */
 export class ScriptTaskShape extends BaseTaskShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   protected paintTaskIcon(paintParameter: PaintParameter): void {
     this.iconPainter.paintScriptIcon({
       ...paintParameter,
@@ -238,10 +206,6 @@ export class ScriptTaskShape extends BaseTaskShape {
  * @internal
  */
 export class CallActivityShape extends BaseActivityShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THICK) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
 
@@ -286,10 +250,6 @@ export class CallActivityShape extends BaseActivityShape {
  * @internal
  */
 export class SubProcessShape extends BaseActivityShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   override paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const subProcessKind = StyleUtils.getBpmnSubProcessKind(this.style);
     c.save(); // ensure we can later restore the configuration
@@ -309,10 +269,6 @@ export class SubProcessShape extends BaseActivityShape {
  * @internal
  */
 export class BusinessRuleTaskShape extends BaseTaskShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   protected paintTaskIcon(paintParameter: PaintParameter): void {
     this.iconPainter.paintTableIcon({
       ...paintParameter,

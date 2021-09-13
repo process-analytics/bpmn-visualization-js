@@ -17,14 +17,10 @@
 import StyleUtils, { StyleDefault } from '../StyleUtils';
 import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
 import { mxgraph } from '../initializer';
-import { mxAbstractCanvas2D, mxRectangle } from 'mxgraph'; // for types
+import { mxAbstractCanvas2D } from 'mxgraph'; // for types
 
 abstract class GatewayShape extends mxgraph.mxRhombus {
   protected iconPainter = IconPainterProvider.get();
-
-  protected constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
-    super(bounds, fill, stroke, strokewidth);
-  }
 
   protected abstract paintInnerShape(paintParameter: PaintParameter): void;
 
@@ -43,10 +39,6 @@ abstract class GatewayShape extends mxgraph.mxRhombus {
  * @internal
  */
 export class ExclusiveGatewayShape extends GatewayShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   protected paintInnerShape(paintParameter: PaintParameter): void {
     this.iconPainter.paintXCrossIcon({
       ...paintParameter,
@@ -60,10 +52,6 @@ export class ExclusiveGatewayShape extends GatewayShape {
  * @internal
  */
 export class ParallelGatewayShape extends GatewayShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   protected paintInnerShape(paintParameter: PaintParameter): void {
     this.iconPainter.paintPlusCrossIcon({
       ...paintParameter,
@@ -77,10 +65,6 @@ export class ParallelGatewayShape extends GatewayShape {
  * @internal
  */
 export class InclusiveGatewayShape extends GatewayShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   protected paintInnerShape(paintParameter: PaintParameter): void {
     this.iconPainter.paintCircleIcon({
       ...paintParameter,
@@ -94,10 +78,6 @@ export class InclusiveGatewayShape extends GatewayShape {
  * @internal
  */
 export class EventBasedGatewayShape extends GatewayShape {
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number = StyleDefault.STROKE_WIDTH_THIN) {
-    super(bounds, fill, stroke, strokewidth);
-  }
-
   protected paintInnerShape(paintParameter: PaintParameter): void {
     paintParameter = { ...paintParameter, iconStyleConfig: { ...paintParameter.iconStyleConfig, strokeWidth: 1 } };
 
