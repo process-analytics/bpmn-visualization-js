@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { documentReady, startBpmnVisualization } from '/lib/dev/internal-dev-bundle-index.js';
-// import { documentReady, startBpmnVisualization } from '../../index.es.js';
 
 function statusFetchKO(errorMsg) {
   const statusElt = document.getElementById('fetch-status');
