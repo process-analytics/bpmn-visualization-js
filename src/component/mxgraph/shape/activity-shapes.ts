@@ -37,7 +37,7 @@ function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): v
 export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
-  public constructor() {
+  constructor() {
     super(undefined, undefined, undefined); // the configuration is passed with the styles at runtime
     // enforced by BPMN
     this.isRounded = true;
