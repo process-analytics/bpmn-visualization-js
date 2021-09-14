@@ -40,6 +40,7 @@ export enum StyleDefault {
   POOL_LABEL_FILL_COLOR = 'none',
   LANE_LABEL_SIZE = 30, // most of BPMN lane are ok when setting it to 30
   LANE_LABEL_FILL_COLOR = 'none',
+  TEXT_ANNOTATION_BORDER_LENGTH = 10,
   TEXT_ANNOTATION_FILL_COLOR = 'none',
   GROUP_FILL_COLOR = 'none',
   // General
