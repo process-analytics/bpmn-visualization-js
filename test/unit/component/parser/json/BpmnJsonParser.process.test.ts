@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind } from '../../../../../src/bpmn-visualization';
 import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 

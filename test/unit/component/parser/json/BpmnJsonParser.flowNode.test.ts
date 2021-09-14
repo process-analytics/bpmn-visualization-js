@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind } from '../../../../../src/bpmn-visualization';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { ShapeBpmnEventBasedGateway } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';

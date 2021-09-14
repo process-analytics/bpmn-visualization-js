@@ -17,7 +17,7 @@ import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKin
 import { FlowKind } from '../../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { SequenceFlowKind } from '../../../src/model/bpmn/internal/edge/SequenceFlowKind';
-import BpmnVisualization from '../../../src/component/BpmnVisualization';
+import { BpmnVisualization } from '../../../src/bpmn-visualization';
 import {
   toBeAssociationFlow,
   toBeBoundaryEvent,

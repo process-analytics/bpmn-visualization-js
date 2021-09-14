@@ -13,9 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../src/model/bpmn/internal/shape';
+import {
+  MarkerIdentifier,
+  ShapeBpmnElementKind,
+  ShapeBpmnEventBasedGatewayKind,
+  ShapeBpmnEventKind,
+  ShapeBpmnMarkerKind,
+  ShapeBpmnSubProcessKind,
+} from '../../src/bpmn-visualization';
 import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
-import { MarkerIdentifier } from '../../src/bpmn-visualization';
 import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { readFileSync } from '../helpers/file-helper';
 import { bpmnVisualization, ExpectedShapeModelElement } from './helpers/model-expect';

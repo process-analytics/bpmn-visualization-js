@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { OverlayEdgePosition, OverlayShapePosition } from '../../src/component/registry';
+import { OverlayEdgePosition, OverlayShapePosition } from '../../src/bpmn-visualization';
 
 export const overlayEdgePositionValues = <Array<OverlayEdgePosition>>['start', 'middle', 'end'];
 

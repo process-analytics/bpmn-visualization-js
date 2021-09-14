@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { filter } from '../../../../src/component/helpers/array-utils';
-import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind } from '../../../../src/bpmn-visualization';
 
 describe('array helper functions', () => {
   describe('filter an array of string', () => {

@@ -18,8 +18,7 @@
  */
 import { OverlayConverter } from '../../../../../src/component/mxgraph/overlay/OverlayConverter';
 import { MxGraphCustomOverlayPosition } from '../../../../../src/component/mxgraph/overlay/custom-overlay';
-import { Overlay, OverlayPosition } from '../../../../../src/component/registry';
-import { StyleDefault } from '../../../../../src/component/mxgraph/StyleUtils';
+import { Overlay, OverlayPosition, StyleDefault } from '../../../../../src/bpmn-visualization';
 
 describe('overlay converter', () => {
   const overlayConverter = new OverlayConverter();

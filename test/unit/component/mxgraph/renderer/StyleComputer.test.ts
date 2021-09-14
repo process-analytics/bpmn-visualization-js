@@ -35,7 +35,7 @@ import {
   ShapeBpmnEventKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
-} from '../../../../../src/model/bpmn/internal/shape';
+} from '../../../../../src/bpmn-visualization';
 import Label, { Font } from '../../../../../src/model/bpmn/internal/Label';
 import { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
