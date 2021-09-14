@@ -44,6 +44,6 @@ fse.ensureDirSync(`${docsOutput}/images`);
 
 fse.copySync('docs/users/images', `${docsOutput}/images`);
 fse.copySync('docs/users/architecture/images', `${docsOutput}/images`);
-fse.copySync('dev/static/img/favicon.png', `${docsOutput}/favicon.png`);
+fse.copySync('dev/public/static/img/favicon.png', `${docsOutput}/favicon.png`);
 
 log(`Documentation is now available in ${docsOutput}`);

@@ -154,12 +154,12 @@ function pluginsForDevelopment() {
     }
 
     const copyTargets = [];
-    copyTargets.push({ src: 'dev/*.html', dest: `${outputDir}/` });
-    copyTargets.push({ src: 'dev/static', dest: outputDir });
+    copyTargets.push({ src: 'dev/public/*.html', dest: `${outputDir}/` });
+    copyTargets.push({ src: 'dev/public/static', dest: outputDir });
     let copyPlugin;
     if (devLiveReloadMode) {
       copyPlugin = copyWatch({
-        watch: ['dev/static/**', 'dev/*.html'],
+        watch: ['dev/public/static/**', 'dev/public/*.html'],
         targets: copyTargets,
       });
     } else {

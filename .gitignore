@@ -14,4 +14,4 @@
 # npm build
 *.tgz
 # tailwind css generated for demo
-/dev/static/css/tailwind.css
+/dev/public/static/css/tailwind.css
