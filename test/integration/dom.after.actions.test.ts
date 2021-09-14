@@ -20,10 +20,11 @@ import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask, Ht
 import { ExpectedBaseBpmnElement, expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '../unit/helpers/bpmn-semantic-utils';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 
-const bpmnContainerId = 'bpmn-visualization-container';
 const bpmnVisualization = initializeBpmnVisualization();
 
+// use container id
 function initializeBpmnVisualization(): BpmnVisualization {
+  const bpmnContainerId = 'bpmn-visualization-container';
   // insert bpmn container
   const containerDiv = document.createElement('div');
   containerDiv.id = bpmnContainerId;
@@ -32,20 +33,33 @@ function initializeBpmnVisualization(): BpmnVisualization {
   return new BpmnVisualization({ container: bpmnContainerId });
 }
 
-describe('Resulting DOM after diagram load', () => {
-  it('DOM should contains BPMN elements when loading simple-start-task-end.bpmn', async () => {
-    bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+function initializeBpmnVisualizationWithHtmlElement(): BpmnVisualization {
+  // insert bpmn container
+  const containerDiv = document.createElement('div');
+  containerDiv.id = 'bpmn-visualization-container-alternative';
+  document.body.insertBefore(containerDiv, document.body.firstChild);
+  // initialize bpmn-visualization
+  return new BpmnVisualization({ container: containerDiv });
+}
 
-    const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+describe.each`
+  bv                                              | type
+  ${bpmnVisualization}                            | ${'html id'}
+  ${initializeBpmnVisualizationWithHtmlElement()} | ${'html element'}
+`('Resulting DOM after diagram load - container set with "$type"', ({ bv }) => {
+  it('DOM should contains BPMN elements when loading simple-start-task-end.bpmn', async () => {
+    bv.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+
+    const htmlElementLookup = new HtmlElementLookup(bv);
     htmlElementLookup.expectStartEvent('StartEvent_1');
     htmlElementLookup.expectTask('Activity_1');
     htmlElementLookup.expectEndEvent('EndEvent_1');
   });
 
   it('DOM should contains BPMN elements when loading model-complete-semantic.bpmn', async () => {
-    bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
+    bv.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
 
-    const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+    const htmlElementLookup = new HtmlElementLookup(bv);
     htmlElementLookup.expectPool('participant_1_id');
     htmlElementLookup.expectLane('lane_4_1_id');
 
