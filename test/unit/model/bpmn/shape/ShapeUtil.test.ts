@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import ShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
+import { ShapeUtil } from '../../../../../src/model/bpmn/internal/shape/shape-utils';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
 
 describe('ShapeUtil', () => {

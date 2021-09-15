@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import StyleConfigurator from './config/StyleConfigurator';
+import { StyleConfigurator } from './config/StyleConfigurator';
 import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import { GlobalOptions } from '../options';

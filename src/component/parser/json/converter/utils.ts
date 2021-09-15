@@ -17,7 +17,7 @@
 import ShapeBpmnElement, { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
 import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../model/bpmn/internal/shape';
-import { GlobalTaskKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
+import { GlobalTaskKind } from '../../../../model/bpmn/internal/shape/shape-utils';
 import { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
 import { ParsingMessageCollector } from '../../parsing-messages';
 import { GroupUnknownCategoryValueWarning } from '../warnings';

@@ -26,7 +26,7 @@ import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../
 import { Point } from '../../../../model/bpmn/json/DC';
 import { ConvertedElements } from './utils';
 import { ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind } from '../../../../model/bpmn/internal/shape';
-import ShapeUtil from '../../../../model/bpmn/internal/shape/ShapeUtil';
+import { ShapeUtil } from '../../../../model/bpmn/internal/shape/shape-utils';
 import { ensureIsArray } from '../../../helpers/array-utils';
 import { ParsingMessageCollector } from '../../parsing-messages';
 import { EdgeUnknownBpmnElementWarning, LabelStyleMissingFontWarning, ShapeUnknownBpmnElementWarning } from '../warnings';

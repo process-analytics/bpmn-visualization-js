@@ -65,7 +65,7 @@ export function buildPaintParameter({
   };
 }
 
-export default class IconPainter {
+export class IconPainter {
   paintEmptyIcon(): void {
     // empty by nature
   }
