@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector, verifyShape } from './JsonTestUtils';
-import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { TEventDefinition } from '../../../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
 import { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import { BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
+import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
+import ShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import { ShapeBpmnBoundaryEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
-import ShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { addEvent, buildDefinitionsAndProcessWithTask, BuildEventDefinitionParameter, BuildEventParameter, EventDefinitionOn } from './JsonBuilder';
 import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';

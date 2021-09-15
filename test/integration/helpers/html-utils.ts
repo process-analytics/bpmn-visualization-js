@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnVisualization from '../../../src/component/BpmnVisualization';
+import { BpmnVisualization } from '../../../src/bpmn-visualization';
 import { BpmnQuerySelectorsForTests } from '../../helpers/query-selectors';
 
 export class HtmlElementLookup {

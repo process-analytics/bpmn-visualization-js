@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/bpmn-visualization';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { newBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';

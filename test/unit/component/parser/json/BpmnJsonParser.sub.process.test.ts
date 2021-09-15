@@ -13,15 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
 import { ExpectedShape, parseJson, parseJsonAndExpectOnlySubProcess, verifyEdge, verifyShape, verifySubProcess } from './JsonTestUtils';
-import each from 'jest-each';
-import { ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnSubProcessKind';
-import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerKind';
-import { ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnEventKind';
-import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import { getEventShapes } from './BpmnJsonParser.event.test';
+import each from 'jest-each';
+import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
+import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal/shape';
 import { ShapeBpmnEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 

@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElementKind';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../../../../src/model/bpmn/json/baseElement/loopCharacteristics';
-import { ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnMarkerKind';
-import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnCallActivityKind';
+import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal/shape';
 
 describe.each([
   ['callActivity', ShapeBpmnElementKind.CALL_ACTIVITY],
