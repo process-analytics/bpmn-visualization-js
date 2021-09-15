@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../../src/bpmn-visualization';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TCallActivity } from '../../../../../src/model/bpmn/json/baseElement/flowNode/activity/activity';
-import { ShapeBpmnCallActivityKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal/shape';
 import { GlobalTaskKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
 
 describe('parse bpmn as json for callActivity', () => {

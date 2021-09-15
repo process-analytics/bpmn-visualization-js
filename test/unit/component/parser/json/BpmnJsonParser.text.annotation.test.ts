@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/bpmn-visualization';
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for text annotation', () => {

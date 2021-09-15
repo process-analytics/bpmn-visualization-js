@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { FlowKind } from '../../../../../src/model/bpmn/internal/edge/FlowKind';
-import { ShapeBpmnElementKind } from '../../../../../src/bpmn-visualization';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
 import { computeBpmnBaseClassName, computeAllBpmnClassNames } from '../../../../../src/component/mxgraph/style-helper';
 
 describe('compute base css class names of BPMN elements', () => {

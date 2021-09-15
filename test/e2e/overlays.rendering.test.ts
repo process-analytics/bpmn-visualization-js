@@ -20,7 +20,7 @@ import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserIm
 import { PageTester } from './helpers/visu/bpmn-page-utils';
 import { clickOnButton, getContainerCenter, itMouseZoom, mousePanning, mouseZoom, Point } from './helpers/test-utils';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
-import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/bpmn-visualization';
+import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
