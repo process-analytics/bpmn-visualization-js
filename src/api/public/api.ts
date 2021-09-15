@@ -15,7 +15,11 @@
  */
 
 // Initialization and configuration options
-export { BpmnVisualization } from '../../component/BpmnVisualization';
+// issue with typedoc html generation: when using a direct export of'BpmnVisualization'
+// it is placed in the 'Others' category, and doc of the classes is replaced by the source file header
+// so for now, workaround it by using import/export
+import { BpmnVisualization } from '../../component/BpmnVisualization';
+export { BpmnVisualization };
 export { GlobalOptions, NavigationConfiguration, FitOptions, FitType, LoadOptions, ZoomConfiguration } from '../../component/options';
 
 export { BpmnElement, BpmnElementsRegistry, BpmnSemantic } from '../../component/registry';
