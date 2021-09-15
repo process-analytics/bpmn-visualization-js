@@ -20,7 +20,7 @@ import { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json/bas
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import { BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
 import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../../src/model/bpmn/internal/shape';
-import ShapeUtil from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
+import { ShapeUtil } from '../../../../../src/model/bpmn/internal/shape/shape-utils';
 import { ShapeBpmnBoundaryEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
