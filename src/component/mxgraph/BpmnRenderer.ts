@@ -19,7 +19,7 @@ import Edge from '../../model/bpmn/internal/edge/Edge';
 import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import Waypoint from '../../model/bpmn/internal/edge/Waypoint';
 import Bounds from '../../model/bpmn/internal/Bounds';
-import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
+import { ShapeUtil } from '../../model/bpmn/internal/shape/shape-utils';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleComputer from './renderer/StyleComputer';
 import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';

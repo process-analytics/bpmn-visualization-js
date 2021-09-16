@@ -16,7 +16,7 @@
 
 import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
 import { ShapeBpmnEventKind } from './ShapeBpmnEventKind';
-import { BpmnEventKind, GlobalTaskKind } from './ShapeUtil';
+import { BpmnEventKind, GlobalTaskKind } from './shape-utils';
 import { ShapeBpmnSubProcessKind } from './ShapeBpmnSubProcessKind';
 import { ShapeBpmnMarkerKind } from './ShapeBpmnMarkerKind';
 import { ShapeBpmnCallActivityKind } from './ShapeBpmnCallActivityKind';

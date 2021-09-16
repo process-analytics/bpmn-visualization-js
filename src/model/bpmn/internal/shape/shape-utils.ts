@@ -40,7 +40,7 @@ export type GlobalTaskKind =
 /**
  * @internal
  */
-export default class ShapeUtil {
+export class ShapeUtil {
   private static readonly EVENT_KINDS = ShapeUtil.filterKind('Event');
   private static readonly GATEWAY_KINDS = ShapeUtil.filterKind('Gateway');
 

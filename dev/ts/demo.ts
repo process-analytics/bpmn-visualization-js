@@ -15,7 +15,7 @@
  */
 
 import { mxgraph } from '../../src/component/mxgraph/initializer';
-import BpmnVisualization from '../../src/component/BpmnVisualization';
+import { BpmnVisualization } from '../../src/component/BpmnVisualization';
 import { FitOptions, FitType, GlobalOptions, LoadOptions } from '../../src/component/options';
 import { log, logDownload, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';

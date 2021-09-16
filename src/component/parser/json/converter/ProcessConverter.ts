@@ -34,7 +34,7 @@ import {
   ShapeBpmnSubProcessKind,
 } from '../../../../model/bpmn/internal/shape';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
-import ShapeUtil, { BpmnEventKind } from '../../../../model/bpmn/internal/shape/ShapeUtil';
+import { BpmnEventKind, ShapeUtil } from '../../../../model/bpmn/internal/shape/shape-utils';
 import { SequenceFlowKind } from '../../../../model/bpmn/internal/edge/SequenceFlowKind';
 import { FlowKind } from '../../../../model/bpmn/internal/edge/FlowKind';
 import { TProcess } from '../../../../model/bpmn/json/baseElement/rootElement/rootElement';

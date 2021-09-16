@@ -15,7 +15,7 @@
  */
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
-import ShapeUtil from '../../../model/bpmn/internal/shape/ShapeUtil';
+import { ShapeUtil } from '../../../model/bpmn/internal/shape/shape-utils';
 import { SequenceFlowKind } from '../../../model/bpmn/internal/edge/SequenceFlowKind';
 import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
 import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
@@ -27,7 +27,7 @@ import { mxStylesheet, StyleMap } from 'mxgraph'; // for types
 /**
  * @internal
  */
-export default class StyleConfigurator {
+export class StyleConfigurator {
   private specificFlowStyles: Map<FlowKind, (style: StyleMap) => void> = new Map([
     [
       FlowKind.SEQUENCE_FLOW,

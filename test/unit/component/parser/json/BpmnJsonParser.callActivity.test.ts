@@ -16,7 +16,7 @@
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { TCallActivity } from '../../../../../src/model/bpmn/json/baseElement/flowNode/activity/activity';
 import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal/shape';
-import { GlobalTaskKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
+import { GlobalTaskKind } from '../../../../../src/model/bpmn/internal/shape/shape-utils';
 
 describe('parse bpmn as json for callActivity', () => {
   describe('parse bpmn as json for callActivity calling process', () => {

@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-// TODO remove dedicated import/export
-// this is currently needed, otherwise module default exports are not exported in bundle js
-import BpmnVisualization from './component/BpmnVisualization';
-import IconPainter from './component/mxgraph/shape/render/IconPainter';
-import StyleConfigurator from './component/mxgraph/config/StyleConfigurator';
-import ShapeUtil from './model/bpmn/internal/shape/ShapeUtil';
-import { mxgraph } from './component/mxgraph/initializer';
-
-export { BpmnVisualization };
-export { IconPainter };
-export { StyleConfigurator };
-export { ShapeUtil };
-// end of 'TO DO remove dedicated import/export'
-
+export { BpmnVisualization } from './component/BpmnVisualization';
 export * from './component/options';
-export * from './component/mxgraph/StyleUtils';
-export * from './component/mxgraph/shape/render';
 export * from './component/registry';
-
 export * from './model/bpmn/internal/shape';
 
+// not part of the public API but needed for the custom theme examples
+export { IconPainter } from './component/mxgraph/shape/render/icon-painter';
+export { StyleConfigurator } from './component/mxgraph/config/StyleConfigurator';
+export { ShapeUtil } from './model/bpmn/internal/shape/shape-utils';
+export * from './component/mxgraph/StyleUtils';
+export * from './component/mxgraph/shape/render';
+
+// TODO remove mxgraph export, this is only needed by custom theme examples using the IIFE bundle to get mxgraph constants
+// we should not export it and provide another ways in such examples
+import { mxgraph } from './component/mxgraph/initializer';
 export const mxConstants = mxgraph.mxConstants;
