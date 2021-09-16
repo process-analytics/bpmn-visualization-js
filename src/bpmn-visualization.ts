@@ -25,8 +25,3 @@ export { StyleConfigurator } from './component/mxgraph/config/StyleConfigurator'
 export { ShapeUtil } from './model/bpmn/internal/shape/shape-utils';
 export * from './component/mxgraph/StyleUtils';
 export * from './component/mxgraph/shape/render';
-
-// TODO remove mxgraph export, this is only needed by custom theme examples using the IIFE bundle to get mxgraph constants
-// we should not export it and provide another ways in such examples
-import { mxgraph } from './component/mxgraph/initializer';
-export const mxConstants = mxgraph.mxConstants;
