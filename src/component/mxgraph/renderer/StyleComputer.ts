@@ -29,7 +29,7 @@ import {
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { StyleIdentifier } from '../StyleUtils';
 import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../model/bpmn/internal/shape';
-import ShapeUtil from '../../../model/bpmn/internal/shape/ShapeUtil';
+import { ShapeUtil } from '../../../model/bpmn/internal/shape/shape-utils';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
 import { Font } from '../../../model/bpmn/internal/Label';
 

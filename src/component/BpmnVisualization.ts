@@ -27,7 +27,7 @@ import { htmlElement } from './helpers/dom-utils';
 /**
  * @category Initialization
  */
-export default class BpmnVisualization {
+export class BpmnVisualization {
   public readonly graph: BpmnMxGraph;
 
   /**

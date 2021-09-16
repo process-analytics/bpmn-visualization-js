@@ -17,7 +17,7 @@
 import { ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal/shape';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
 import { mxgraph } from './initializer';
-import { GlobalTaskKind } from '../../model/bpmn/internal/shape/ShapeUtil';
+import { GlobalTaskKind } from '../../model/bpmn/internal/shape/shape-utils';
 
 export enum MarkerIdentifier {
   ARROW_DASH = 'bpmn.dash',

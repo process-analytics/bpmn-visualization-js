@@ -26,7 +26,7 @@ import { SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
 import { FlowKind } from '../../../../../src/model/bpmn/internal/edge/FlowKind';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
-import { GlobalTaskKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
+import { GlobalTaskKind } from '../../../../../src/model/bpmn/internal/shape/shape-utils';
 import { ParsingMessageCollector, JsonParsingWarning } from '../../../../../src/component/parser/parsing-messages';
 
 export interface ExpectedShape {

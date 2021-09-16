@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 export * from './BpmnCanvas';
-export * from './IconPainter';
+export * from './icon-painter';
 export * from './render-types';

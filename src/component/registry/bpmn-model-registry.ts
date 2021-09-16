@@ -17,7 +17,7 @@ import BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import Shape from '../../model/bpmn/internal/shape/Shape';
 import Edge from '../../model/bpmn/internal/edge/Edge';
 import { BpmnSemantic } from './types';
-import ShapeUtil from '../../model/bpmn/internal/shape/ShapeUtil';
+import { ShapeUtil } from '../../model/bpmn/internal/shape/shape-utils';
 import ShapeBpmnElement, { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { ShapeBpmnMarkerKind } from '../../model/bpmn/internal/shape';
 

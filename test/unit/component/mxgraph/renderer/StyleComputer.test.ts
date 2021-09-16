@@ -42,7 +42,7 @@ import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import Bounds from '../../../../../src/model/bpmn/internal/Bounds';
-import { BpmnEventKind, GlobalTaskKind } from '../../../../../src/model/bpmn/internal/shape/ShapeUtil';
+import { BpmnEventKind, GlobalTaskKind } from '../../../../../src/model/bpmn/internal/shape/shape-utils';
 import each from 'jest-each';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
 import { AssociationDirectionKind } from '../../../../../src/model/bpmn/internal/edge/AssociationDirectionKind';
