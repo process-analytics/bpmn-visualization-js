@@ -15,8 +15,7 @@
  */
 
 import { BpmnSemantic } from '../../../src/component/registry';
-import { FlowKind } from '../../../src/model/bpmn/internal/edge/FlowKind';
-import { ShapeBpmnElementKind } from '../../../src/model/bpmn/internal/shape';
+import { FlowKind, ShapeBpmnElementKind } from '../../../src/model/bpmn/internal';
 
 export interface ExpectedBaseBpmnElement {
   id: string;

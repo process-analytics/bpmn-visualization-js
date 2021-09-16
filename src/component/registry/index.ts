@@ -14,5 +14,6 @@
  * limitations under the License.
  */
 
-export { BpmnElementsRegistry } from './bpmn-elements-registry';
+// export types first, otherwise typedoc doesn't generate the subsequent doc correctly (no category and uses the file header instead of the actual TSDoc)
 export * from './types';
+export { BpmnElementsRegistry } from './bpmn-elements-registry';

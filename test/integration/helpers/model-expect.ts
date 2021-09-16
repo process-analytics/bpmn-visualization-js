@@ -13,11 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../src/model/bpmn/internal/shape';
-import { FlowKind } from '../../../src/model/bpmn/internal/edge/FlowKind';
-import { MessageVisibleKind } from '../../../src/model/bpmn/internal/edge/MessageVisibleKind';
-import { SequenceFlowKind } from '../../../src/model/bpmn/internal/edge/SequenceFlowKind';
-import { BpmnVisualization } from '../../../src/bpmn-visualization';
+import { MessageVisibleKind, SequenceFlowKind } from '../../../src/model/bpmn/internal/edge/kinds';
+import {
+  BpmnVisualization,
+  FlowKind,
+  ShapeBpmnElementKind,
+  ShapeBpmnEventBasedGatewayKind,
+  ShapeBpmnEventKind,
+  ShapeBpmnMarkerKind,
+  ShapeBpmnSubProcessKind,
+} from '../../../src/bpmn-visualization';
 import {
   toBeAssociationFlow,
   toBeBoundaryEvent,

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
 import { expectAsWarning, parseJson, parseJsonAndExpectOnlyLanes, parsingMessageCollector, verifyShape } from './JsonTestUtils';
 import { LaneUnknownFlowNodeRefWarning } from '../../../../../src/component/parser/json/warnings';
 

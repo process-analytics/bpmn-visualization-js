@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-export { BpmnVisualization } from './component/BpmnVisualization';
+// export types first, otherwise typedoc doesn't generate the subsequent doc correctly (no category and uses the file header instead of the actual TSDoc)
 export * from './component/options';
+export { BpmnVisualization } from './component/BpmnVisualization';
 export * from './component/registry';
-export * from './model/bpmn/internal/shape';
+export * from './model/bpmn/internal';
 
 // not part of the public API but needed for the custom theme examples
 export { IconPainter } from './component/mxgraph/shape/render/icon-painter';
 export { StyleConfigurator } from './component/mxgraph/config/StyleConfigurator';
-export { ShapeUtil } from './model/bpmn/internal/shape/shape-utils';
 export * from './component/mxgraph/StyleUtils';
 export * from './component/mxgraph/shape/render';

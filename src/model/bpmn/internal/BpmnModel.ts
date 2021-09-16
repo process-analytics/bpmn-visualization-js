@@ -15,7 +15,7 @@
  */
 
 import Shape from './shape/Shape';
-import Edge from './edge/Edge';
+import { Edge } from './edge/edge';
 
 /**
  * @internal

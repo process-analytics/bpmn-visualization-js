@@ -19,7 +19,7 @@
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes } from './JsonTestUtils';
 import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
 import { ShapeUtil } from '../../../../../src/bpmn-visualization';
 
 export const shapeBpmnElementKindForLabelTests = Object.values(ShapeBpmnElementKind)

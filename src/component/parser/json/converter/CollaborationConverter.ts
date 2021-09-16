@@ -15,7 +15,7 @@
  */
 
 import { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { MessageFlow } from '../../../../model/bpmn/internal/edge/Flow';
+import { MessageFlow } from '../../../../model/bpmn/internal/edge/flows';
 import { TCollaboration } from '../../../../model/bpmn/json/baseElement/rootElement/collaboration';
 import { TParticipant } from '../../../../model/bpmn/json/baseElement/participant';
 import { TMessageFlow } from '../../../../model/bpmn/json/baseElement/baseElement';

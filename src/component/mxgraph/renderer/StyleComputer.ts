@@ -16,7 +16,7 @@
 
 import { mxgraph } from '../initializer';
 import Shape from '../../../model/bpmn/internal/shape/Shape';
-import Edge from '../../../model/bpmn/internal/edge/Edge';
+import { Edge } from '../../../model/bpmn/internal/edge/edge';
 import Bounds from '../../../model/bpmn/internal/Bounds';
 import {
   ShapeBpmnActivity,
@@ -28,9 +28,8 @@ import {
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { StyleIdentifier } from '../StyleUtils';
-import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../model/bpmn/internal/shape';
-import { ShapeUtil } from '../../../model/bpmn/internal/shape/shape-utils';
-import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/Flow';
+import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
+import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import { Font } from '../../../model/bpmn/internal/Label';
 
 /**

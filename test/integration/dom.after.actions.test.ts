@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 import { readFileSync } from '../helpers/file-helper';
-import { BpmnElement, BpmnVisualization, OverlayEdgePosition, OverlayShapePosition, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
-import { FlowKind } from '../../src/model/bpmn/internal/edge/FlowKind';
+import { BpmnElement, BpmnVisualization, FlowKind, OverlayEdgePosition, OverlayShapePosition, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
 import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask, HtmlElementLookup } from './helpers/html-utils';
 import { ExpectedBaseBpmnElement, expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '../unit/helpers/bpmn-semantic-utils';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';

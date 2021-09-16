@@ -18,6 +18,10 @@ import { StyleDefault } from '../../StyleUtils';
 import { IconConfiguration, IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 import { mxAbstractCanvas2D } from 'mxgraph'; // for types
 
+/**
+ * @category BPMN Theme
+ * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
+ */
 export interface BpmnCanvasConfiguration {
   canvas: mxAbstractCanvas2D;
   shapeConfig: ShapeConfiguration;
@@ -26,6 +30,7 @@ export interface BpmnCanvasConfiguration {
 
 /**
  * Compute the icon size proportionally to a ratio of the shape size. The proportions of the icon are left untouched.
+ * @internal
  */
 export function computeScaledIconSize(initialIconSize: Size, iconStyleConfiguration: IconStyleConfiguration, shapeConfiguration: ShapeConfiguration, ratioFromShape: number): Size {
   let iconWidthProportionalToShape;
@@ -59,8 +64,11 @@ export function computeScaledIconSize(initialIconSize: Size, iconStyleConfigurat
  * const canvas = new BpmnCanvas(c, 0.26, 0.35);
  * canvas.moveTo(8, 39);
  * canvas.lineTo(12, 25);
+ *
+ * @category BPMN Theme
+ * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
  */
-export default class BpmnCanvas {
+export class BpmnCanvas {
   private canvas: mxAbstractCanvas2D;
 
   private readonly iconOriginalSize: Size;

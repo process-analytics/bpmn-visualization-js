@@ -23,7 +23,7 @@ import {
   parsingMessageCollector,
   verifyShape,
 } from './JsonTestUtils';
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
 import { GroupUnknownCategoryValueWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
 
 describe('parse bpmn as json for group', () => {

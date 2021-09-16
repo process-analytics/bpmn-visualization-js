@@ -14,9 +14,5 @@
  * limitations under the License.
  */
 
-export * from './ShapeBpmnCallActivityKind';
-export * from './ShapeBpmnElementKind';
-export * from './ShapeBpmnEventBasedGatewayKind';
-export * from './ShapeBpmnEventKind';
-export * from './ShapeBpmnMarkerKind';
-export * from './ShapeBpmnSubProcessKind';
+export * from './kinds';
+export { ShapeUtil } from './utils';

@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export * from './BpmnCanvas';
-export * from './icon-painter';
+
+// export types first, otherwise typedoc doesn't generate the subsequent doc correctly (no category and uses the file header instead of the actual TSDoc)
 export * from './render-types';
+export { BpmnCanvas, BpmnCanvasConfiguration } from './BpmnCanvas';
+export { IconPainter, IconPainterProvider, PaintParameter } from './icon-painter';

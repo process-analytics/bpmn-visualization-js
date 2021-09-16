@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-import { SequenceFlowKind } from './SequenceFlowKind';
-import { FlowKind } from './FlowKind';
-import { AssociationDirectionKind } from './AssociationDirectionKind';
+import { AssociationDirectionKind, FlowKind, SequenceFlowKind } from './kinds';
 
 /**
  * @internal
  */
-export default abstract class Flow {
-  constructor(readonly id: string, readonly name: string, readonly kind: FlowKind, readonly sourceRefId?: string, readonly targetRefId?: string) {}
+export abstract class Flow {
+  protected constructor(readonly id: string, readonly name: string, readonly kind: FlowKind, readonly sourceRefId?: string, readonly targetRefId?: string) {}
 }
 
 /**

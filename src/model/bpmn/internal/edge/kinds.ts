@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Bonitasoft S.A.
+ * Copyright 2021 Bonitasoft S.A.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,4 +22,34 @@ export enum AssociationDirectionKind {
   NONE = 'None',
   ONE = 'One',
   BOTH = 'Both',
+}
+
+/**
+ * The real name of the field in the BPMN XSD.
+ * @category BPMN
+ */
+export enum FlowKind {
+  SEQUENCE_FLOW = 'sequenceFlow',
+  MESSAGE_FLOW = 'messageFlow',
+  ASSOCIATION_FLOW = 'association',
+}
+
+/**
+ * The real value of the visible message field in the BPMN XSD, except 'None'.
+ * @category BPMN
+ */
+export enum MessageVisibleKind {
+  NONE = 'none',
+  INITIATING = 'initiating',
+  NON_INITIATING = 'non_initiating',
+}
+
+/**
+ * @internal
+ */
+export enum SequenceFlowKind {
+  NORMAL = 'normal',
+  DEFAULT = 'default',
+  CONDITIONAL_FROM_ACTIVITY = 'conditional_from_activity',
+  CONDITIONAL_FROM_GATEWAY = 'conditional_from_gateway',
 }

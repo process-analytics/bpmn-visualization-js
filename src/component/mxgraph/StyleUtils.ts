@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-import { ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal/shape';
-import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
+import { GlobalTaskKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal';
+import { MessageVisibleKind } from '../../model/bpmn/internal/edge/kinds';
 import { mxgraph } from './initializer';
-import { GlobalTaskKind } from '../../model/bpmn/internal/shape/shape-utils';
 
+/**
+ * @category BPMN Theme
+ * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
+ */
 export enum MarkerIdentifier {
   ARROW_DASH = 'bpmn.dash',
 }
 
 /**
  * Store all rendering defaults used by `bpmn-visualization`.
- * @experimental The way we store and allow to change the defaults in the current form is subject to change without prior any notice.
+ * @category BPMN Theme
+ * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
  */
 export enum StyleDefault {
   STROKE_WIDTH_THIN = 2,
@@ -65,6 +69,10 @@ export enum StyleDefault {
   MESSAGE_FLOW_MARKER_END_FILL_COLOR = 'White',
 }
 
+/**
+ * @category BPMN Theme
+ * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
+ */
 export enum StyleIdentifier {
   BPMN_STYLE_EVENT_KIND = 'bpmn.eventKind',
   BPMN_STYLE_SUB_PROCESS_KIND = 'bpmn.subProcessKind',
@@ -84,6 +92,10 @@ export enum StyleIdentifier {
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
+/**
+ * @category BPMN Theme
+ * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
+ */
 export default class StyleUtils {
   static getFillColor(style: any): string {
     return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);

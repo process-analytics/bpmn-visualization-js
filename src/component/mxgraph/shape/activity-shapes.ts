@@ -15,9 +15,9 @@
  */
 
 import StyleUtils, { StyleDefault } from '../StyleUtils';
-import { buildPaintParameter, IconPainterProvider, PaintParameter, ShapeConfiguration } from './render';
-import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal/shape';
-import BpmnCanvas from './render/BpmnCanvas';
+import { BpmnCanvas, IconPainterProvider, PaintParameter, ShapeConfiguration } from './render';
+import { buildPaintParameter } from './render/icon-painter';
+import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { orderActivityMarkers } from './render/utils';
 import { mxgraph } from '../initializer';
 import { mxAbstractCanvas2D } from 'mxgraph'; // for types

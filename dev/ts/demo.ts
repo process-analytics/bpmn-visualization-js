@@ -15,12 +15,9 @@
  */
 
 import { mxgraph } from '../../src/component/mxgraph/initializer';
-import { BpmnVisualization } from '../../src/component/BpmnVisualization';
-import { FitOptions, FitType, GlobalOptions, LoadOptions } from '../../src/component/options';
+import { BpmnVisualization, FitOptions, FitType, GlobalOptions, LoadOptions, BpmnElement, Overlay, BpmnElementKind, FlowKind } from '../../src/bpmn-visualization';
 import { log, logDownload, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { BpmnElement, Overlay } from '../../src/component/registry';
-import { BpmnElementKind, FlowKind } from '../../src/model/bpmn/internal/api';
 import { SvgExporter } from './component/SvgExporter';
 import { downloadAsPng, downloadAsSvg } from './component/download';
 

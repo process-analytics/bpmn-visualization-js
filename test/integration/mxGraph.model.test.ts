@@ -21,8 +21,7 @@ import {
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
 } from '../../src/bpmn-visualization';
-import { SequenceFlowKind } from '../../src/model/bpmn/internal/edge/SequenceFlowKind';
-import { MessageVisibleKind } from '../../src/model/bpmn/internal/edge/MessageVisibleKind';
+import { MessageVisibleKind, SequenceFlowKind } from '../../src/model/bpmn/internal/edge/kinds';
 import { readFileSync } from '../helpers/file-helper';
 import { bpmnVisualization, ExpectedShapeModelElement } from './helpers/model-expect';
 import { mxgraph } from '../../src/component/mxgraph/initializer';
