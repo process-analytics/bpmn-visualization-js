@@ -22,4 +22,4 @@ import { ShapeBpmnElementKind } from './shape';
  */
 export type BpmnElementKind = FlowKind | ShapeBpmnElementKind;
 export { FlowKind } from './edge/FlowKind';
-export { ShapeBpmnElementKind } from './shape';
+export { ShapeBpmnElementKind };
