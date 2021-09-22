@@ -55,7 +55,7 @@ export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
       orderActivityMarkers(markers.split(',')).forEach((marker, idx, allMarkers) => {
         paintParameter = {
           ...paintParameter,
-          setIconOriginFunct: this.getIconOriginForMarkerIcon(allMarkers.length, idx + 1),
+          setIconOriginFunct: this.getMarkerIconOriginFunction(allMarkers.length, idx + 1),
         };
         paintParameter.canvas.save(); // ensure we can later restore the configuration
         switch (marker) {
@@ -78,21 +78,21 @@ export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
     }
   }
 
-  private getIconOriginForMarkerIcon(allMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
-    let setIconOriginFunct: (canvas: BpmnCanvas) => void;
+  private getMarkerIconOriginFunction(allMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
+    let setIconOriginFunction: (canvas: BpmnCanvas) => void;
     if (allMarkers === 1) {
-      setIconOriginFunct = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
-    } else if (allMarkers === 2) {
-      setIconOriginFunct = (canvas: BpmnCanvas) => {
+      setIconOriginFunction = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
+    }
+    // Here we suppose that we have 'allMarkers === 2'
+    // More markers will be supported when implementing adhoc subprocess or compensation marker
+    else {
+      setIconOriginFunction = (canvas: BpmnCanvas) => {
         canvas.setIconOriginForIconBottomCentered();
         const xTranslation = Math.pow(-1, markerOrder) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
         canvas.translateIconOrigin(xTranslation, 0);
       };
-    } else {
-      // to remove once we support 3 markers in a group
-      throw new Error('NOT_IMPLEMENTED - to have a group of >2 markers in a row, centered in the task, implement this piece of code');
     }
-    return setIconOriginFunct;
+    return setIconOriginFunction;
   }
 }
 
