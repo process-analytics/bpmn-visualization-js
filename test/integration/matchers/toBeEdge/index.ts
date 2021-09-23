@@ -19,7 +19,7 @@ import CustomMatcherResult = jest.CustomMatcherResult;
 import { FlowKind } from '../../../../src/model/bpmn/internal';
 import { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement, getDefaultParentId } from '../../helpers/model-expect';
 import { MessageVisibleKind } from '../../../../src/model/bpmn/internal/edge/kinds';
-import { StyleIdentifier } from '../../../../src/component/mxgraph/StyleUtils';
+import { BpmnStyleIdentifier } from '../../../../src/component/mxgraph/StyleUtils';
 import { mxgraph } from '../../../../src/component/mxgraph/initializer';
 
 function buildExpectedStateStyle(expectedModel: ExpectedEdgeModelElement): ExpectedStateStyle {
@@ -62,7 +62,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
     expectedCell.children = [
       {
         value: undefined,
-        style: `shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${expectedModel.messageVisibleKind}`,
+        style: `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${expectedModel.messageVisibleKind}`,
         id: `messageFlowIcon_of_${id}`,
         vertex: true,
       },

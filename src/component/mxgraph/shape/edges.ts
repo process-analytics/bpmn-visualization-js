@@ -16,7 +16,7 @@
 
 import { mxgraph } from '../initializer';
 import { mxAbstractCanvas2D, mxPoint } from 'mxgraph';
-import { StyleIdentifier } from '../StyleUtils'; // for types
+import { BpmnStyleIdentifier } from '../StyleUtils'; // for types
 
 export class BpmnConnector extends mxgraph.mxConnector {
   constructor(points: mxPoint[], stroke: string, strokewidth?: number) {
@@ -37,12 +37,12 @@ export class BpmnConnector extends mxgraph.mxConnector {
     c.setDashed(false, false);
 
     if (sourceMarker != null) {
-      c.setFillColor(mxgraph.mxUtils.getValue(this.style, StyleIdentifier.EDGE_START_FILL_COLOR, this.stroke));
+      c.setFillColor(mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_START_FILL_COLOR, this.stroke));
       sourceMarker();
     }
 
     if (targetMarker != null) {
-      c.setFillColor(mxgraph.mxUtils.getValue(this.style, StyleIdentifier.EDGE_END_FILL_COLOR, this.stroke));
+      c.setFillColor(mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_END_FILL_COLOR, this.stroke));
       targetMarker();
     }
   }

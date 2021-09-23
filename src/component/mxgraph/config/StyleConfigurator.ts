@@ -16,7 +16,7 @@
 
 import { FlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { AssociationDirectionKind, SequenceFlowKind } from '../../../model/bpmn/internal/edge/kinds';
-import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
+import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../StyleUtils';
 import { BpmnMxGraph } from '../BpmnMxGraph';
 import { mxgraph } from '../initializer';
 import { mxStylesheet, StyleMap } from 'mxgraph'; // for types
@@ -42,10 +42,10 @@ export class StyleConfigurator {
         style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_OVAL;
         style[mxgraph.mxConstants.STYLE_STARTSIZE] = 8;
         style[mxgraph.mxConstants.STYLE_STARTFILL] = true;
-        style[StyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
+        style[BpmnStyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
         style[mxgraph.mxConstants.STYLE_ENDARROW] = mxgraph.mxConstants.ARROW_BLOCK_THIN;
         style[mxgraph.mxConstants.STYLE_ENDFILL] = true;
-        style[StyleIdentifier.EDGE_END_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
+        style[BpmnStyleIdentifier.EDGE_END_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
       },
     ],
     [
@@ -72,7 +72,7 @@ export class StyleConfigurator {
         style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_DIAMOND_THIN;
         style[mxgraph.mxConstants.STYLE_STARTSIZE] = 18;
         style[mxgraph.mxConstants.STYLE_STARTFILL] = true;
-        style[StyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
+        style[BpmnStyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
       },
     ],
   ]);
@@ -226,7 +226,7 @@ export class StyleConfigurator {
 
   private configureDefaultEdgeStyle(): void {
     const style = this.getStylesheet().getDefaultEdgeStyle();
-    style[mxgraph.mxConstants.STYLE_SHAPE] = StyleIdentifier.EDGE;
+    style[mxgraph.mxConstants.STYLE_SHAPE] = BpmnStyleIdentifier.EDGE;
     style[mxgraph.mxConstants.STYLE_EDGE] = mxgraph.mxConstants.EDGESTYLE_SEGMENT;
     style[mxgraph.mxConstants.STYLE_ENDSIZE] = 12;
     style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = 1.5;

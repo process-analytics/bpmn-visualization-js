@@ -70,25 +70,31 @@ export enum StyleDefault {
 }
 
 /**
+ * Define BPMN specific keys used in mxGraph styles. Use constants defined in this class instead of hard coded string values.
  * @category BPMN Theme
  * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
  */
-export enum StyleIdentifier {
-  BPMN_STYLE_EVENT_DEFINITION_KIND = 'bpmn.eventDefinitionKind',
-  BPMN_STYLE_SUB_PROCESS_KIND = 'bpmn.subProcessKind',
-  BPMN_STYLE_IS_INTERRUPTING = 'bpmn.isInterrupting',
-  BPMN_STYLE_MARKERS = 'bpmn.markers',
-  BPMN_STYLE_INSTANTIATING = 'bpmn.isInstantiating',
-  BPMN_STYLE_IS_INITIATING = 'bpmn.isInitiating',
-  BPMN_STYLE_MESSAGE_FLOW_ICON = 'bpmn.messageFlowIcon',
-  BPMN_STYLE_EVENT_BASED_GATEWAY_KIND = 'bpmn.gatewayKind',
-  BPMN_STYLE_EXTRA_CSS_CLASSES = 'bpmn.extra.css.classes',
-  BPMN_STYLE_GLOBAL_TASK_KIND = 'bpmn.globalTaskKind',
+export class BpmnStyleIdentifier {
+  // edge
+  static readonly EDGE = 'bpmn.edge';
+  static readonly EDGE_START_FILL_COLOR = 'bpmn.edge.startFillColor';
+  static readonly EDGE_END_FILL_COLOR = 'bpmn.edge.endFillColor';
 
-  // for edge
-  EDGE = 'bpmn.edge',
-  EDGE_START_FILL_COLOR = 'bpmn.edge.startFillColor',
-  EDGE_END_FILL_COLOR = 'bpmn.edge.endFillColor',
+  // kind
+  static readonly EVENT_BASED_GATEWAY_KIND = 'bpmn.gatewayKind';
+  static readonly EVENT_DEFINITION_KIND = 'bpmn.eventDefinitionKind';
+  static readonly GLOBAL_TASK_KIND = 'bpmn.globalTaskKind';
+  static readonly SUB_PROCESS_KIND = 'bpmn.subProcessKind';
+
+  // state
+  static readonly IS_INITIATING = 'bpmn.isInitiating';
+  static readonly IS_INSTANTIATING = 'bpmn.isInstantiating';
+  static readonly IS_INTERRUPTING = 'bpmn.isInterrupting';
+
+  // other identifiers
+  static readonly EXTRA_CSS_CLASSES = 'bpmn.extra.css.classes';
+  static readonly MARKERS = 'bpmn.markers';
+  static readonly MESSAGE_FLOW_ICON = 'bpmn.messageFlowIcon';
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
@@ -114,37 +120,35 @@ export default class StyleUtils {
   }
 
   static getBpmnEventDefinitionKind(style: any): ShapeBpmnEventDefinitionKind {
-    return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE);
+    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE);
   }
 
   static getBpmnSubProcessKind(style: any): ShapeBpmnSubProcessKind {
-    return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, undefined);
+    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.SUB_PROCESS_KIND, undefined);
   }
 
   static getBpmnIsInterrupting(style: any): string {
-    return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, undefined);
+    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INTERRUPTING, undefined);
   }
 
   static getBpmnMarkers(style: any): string {
-    return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_MARKERS, undefined);
+    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.MARKERS, undefined);
   }
 
   static getBpmnIsInstantiating(style: any): boolean {
-    return JSON.parse(mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_INSTANTIATING, false));
+    return JSON.parse(mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, false));
   }
 
   static getBpmnIsInitiating(style: any): MessageVisibleKind {
-    return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_INITIATING, undefined);
+    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INITIATING, undefined);
   }
 
   static getBpmnIsParallelEventBasedGateway(style: any): boolean {
-    return (
-      mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel
-    );
+    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel;
   }
 
   static getBpmnGlobalTaskKind(style: any): GlobalTaskKind {
-    return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_GLOBAL_TASK_KIND, undefined);
+    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.GLOBAL_TASK_KIND, undefined);
   }
 }
 /* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
