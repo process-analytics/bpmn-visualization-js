@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ChromiumBrowserContext, ElementHandle, Page } from 'playwright';
+import { ChromiumBrowserContext, Page } from 'playwright';
 import 'jest-playwright-preset';
 import { Point } from '../test-utils';
 
 export interface PanningOptions {
-  containerElement: ElementHandle<SVGElement | HTMLElement>;
   originPoint: Point;
   destinationPoint: Point;
 }

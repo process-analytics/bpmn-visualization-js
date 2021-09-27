@@ -270,11 +270,10 @@ describe('BPMN Edges with overlays', () => {
 
 describe('Overlay navigation', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
-  let bpmnContainerElementHandle: ElementHandle<SVGElement | HTMLElement>;
   let containerCenter: Point;
 
   beforeEach(async () => {
-    bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
     containerCenter = await getContainerCenter(bpmnContainerElementHandle);
 
     await addOverlays('StartEvent_1', 'bottom-center');
@@ -284,7 +283,7 @@ describe('Overlay navigation', () => {
   });
 
   it('panning', async () => {
-    await mousePanning({ containerElement: bpmnContainerElementHandle, originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
+    await mousePanning({ originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
