@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import * as fs from 'fs';
+import { Page } from 'playwright';
 import { delay, getSimplePlatformName } from '../e2e/helpers/test-utils';
 import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
 import { chromiumMouseZoom } from '../e2e/helpers/visu/playwright-utils';
@@ -26,7 +27,7 @@ const metricsArray: Array<PerformanceMetric> = [];
 
 let metricsCollector: ChromiumMetricsCollector;
 beforeAll(async () => {
-  metricsCollector = await ChromiumMetricsCollector.create(page);
+  metricsCollector = await ChromiumMetricsCollector.create(<Page>page);
 });
 describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
