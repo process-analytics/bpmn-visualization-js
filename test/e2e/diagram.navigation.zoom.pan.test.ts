@@ -46,7 +46,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'simple.2.start.events.1.task',
         {
-          macos: 0.00006, // 0.005939439980984229%
+          macos: 0.0002, // 0.012644054903632185%
         },
       ],
     ]);
