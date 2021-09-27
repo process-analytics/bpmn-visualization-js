@@ -16,7 +16,7 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import 'jest-playwright-preset';
-import { BpmnPageSvgTester, TargetedPage } from '../e2e/helpers/visu/bpmn-page-utils';
+import { BpmnPageSvgTester } from '../e2e/helpers/visu/bpmn-page-utils';
 import { ElementHandle, Page } from 'playwright';
 
 describe('bundles', () => {
@@ -43,7 +43,7 @@ describe('bundles', () => {
   it('IIFE bundle - should generate BPMN Diagram SVG', async () => {
     const pageTester = new BpmnStaticPageSvgTester(
       { pageFileName: 'lib-integration-iife', expectedPageTitle: 'BPMN Visualization IIFE bundle', bpmnContainerId: 'bpmn-container-for-iife-bundle' },
-      page,
+      <Page>page,
     );
     await pageTester.loadBPMNDiagramInRefreshedPage();
 
@@ -56,10 +56,6 @@ describe('bundles', () => {
 });
 
 class BpmnStaticPageSvgTester extends BpmnPageSvgTester {
-  constructor(targetedPage: TargetedPage, currentPage: Page) {
-    super(targetedPage, currentPage);
-  }
-
   override async loadBPMNDiagramInRefreshedPage(): Promise<ElementHandle<SVGElement | HTMLElement>> {
     const url = `file://${resolve(__dirname, `static/${this.targetedPage.pageFileName}.html`)}`;
     return super.doLoadBPMNDiagramInRefreshedPage(url, false);

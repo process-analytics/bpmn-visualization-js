@@ -89,7 +89,7 @@ export class PageTester {
     const showMousePointer = targetedPage.showMousePointer ?? false;
     this.baseUrl = `http://localhost:10002/${targetedPage.pageFileName}.html?showMousePointer=${showMousePointer}`;
     this.bpmnContainerId = targetedPage.bpmnContainerId ?? 'bpmn-container';
-    this.bpmnPage = new BpmnPage(this.bpmnContainerId, page);
+    this.bpmnPage = new BpmnPage(this.bpmnContainerId, <Page>page);
   }
 
   async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, pageOptions?: PageOptions): Promise<ElementHandle<SVGElement | HTMLElement>> {
