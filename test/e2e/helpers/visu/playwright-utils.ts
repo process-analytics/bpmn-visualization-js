@@ -48,36 +48,3 @@ export async function chromiumMouseZoom(x: number, y: number, deltaX: number): P
   // detach is it not reused outside this function
   await client.detach();
 }
-
-// TODO To remove when https://github.com/microsoft/playwright/issues/1094 is fixed
-export async function webkitMousePanning(panningOptions: PanningOptions): Promise<void> {
-  await page.evaluate(panningOptions => {
-    function getMouseEventInit(point: Point): MouseEventInit {
-      return {
-        bubbles: true,
-        cancelable: true,
-        clientX: point.x,
-        clientY: point.y,
-        screenX: point.x,
-        screenY: point.y,
-        button: 0,
-        buttons: 1,
-      };
-    }
-
-    const originMouseEventInit = getMouseEventInit(panningOptions.originPoint);
-    const destinationMouseEventInit = getMouseEventInit(panningOptions.destinationPoint);
-
-    // simulate mouse panning
-    const containerElement = panningOptions.containerElement;
-    containerElement.dispatchEvent('mousemove', originMouseEventInit);
-    containerElement.dispatchEvent('mousedown', originMouseEventInit);
-    setTimeout(() => {
-      // Nothing to do
-    }, 2000);
-    containerElement.dispatchEvent('mousemove', destinationMouseEventInit);
-    containerElement.dispatchEvent('mouseup', destinationMouseEventInit);
-
-    return Promise.resolve({ x: destinationMouseEventInit.clientX, y: destinationMouseEventInit.clientY });
-  }, panningOptions);
-}
