@@ -69,14 +69,14 @@ export async function webkitMousePanning(panningOptions: PanningOptions): Promis
     const destinationMouseEventInit = getMouseEventInit(panningOptions.destinationPoint);
 
     // simulate mouse panning
-    const containerElement: SVGElement | HTMLElement = panningOptions.containerElement;
-    containerElement.dispatchEvent(new MouseEvent('mousemove', originMouseEventInit));
-    containerElement.dispatchEvent(new MouseEvent('mousedown', originMouseEventInit));
+    const containerElement = panningOptions.containerElement;
+    containerElement.dispatchEvent('mousemove', originMouseEventInit);
+    containerElement.dispatchEvent('mousedown', originMouseEventInit);
     setTimeout(() => {
       // Nothing to do
     }, 2000);
-    containerElement.dispatchEvent(new MouseEvent('mousemove', destinationMouseEventInit));
-    containerElement.dispatchEvent(new MouseEvent('mouseup', destinationMouseEventInit));
+    containerElement.dispatchEvent('mousemove', destinationMouseEventInit);
+    containerElement.dispatchEvent('mouseup', destinationMouseEventInit);
 
     return Promise.resolve({ x: destinationMouseEventInit.clientX, y: destinationMouseEventInit.clientY });
   }, panningOptions);
