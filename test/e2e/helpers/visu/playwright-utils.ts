@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ChromiumBrowserContext, ElementHandle } from 'playwright';
+import { ChromiumBrowserContext, ElementHandle, Page } from 'playwright';
 import 'jest-playwright-preset';
 import { Point } from '../test-utils';
 
@@ -33,7 +33,7 @@ export async function chromiumMouseZoom(x: number, y: number, deltaX: number): P
   // chromium server RawMouse: https://github.com/microsoft/playwright/blob/v1.8.0/src/server/chromium/crInput.ts#L95
   // RawMouse as a _client field
 
-  const client = await (page.context() as ChromiumBrowserContext).newCDPSession(page);
+  const client = await (page.context() as ChromiumBrowserContext).newCDPSession(<Page>page);
   // for troubleshooting, see playwright protocol debug logs
   // example when performing panning (set DEBUG=pw:protocol env var)
   await client.send('Input.dispatchMouseEvent', {
