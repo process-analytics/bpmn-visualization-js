@@ -18,7 +18,7 @@ import { ElementHandle } from 'playwright';
 import 'jest-playwright-preset';
 import { join } from 'path';
 import { findFiles } from '../../helpers/file-helper';
-import { chromiumMouseZoom, PanningOptions, webkitMousePanning } from './visu/playwright-utils';
+import { chromiumMouseZoom, PanningOptions } from './visu/playwright-utils';
 
 export interface Point {
   x: number;
@@ -69,12 +69,7 @@ export async function clickOnButton(buttonId: string): Promise<void> {
   await page.mouse.click(0, 0);
 }
 
-export async function mousePanning(panningOptions: PanningOptions): Promise<void> {
-  const testedBrowserFamily = getTestedBrowserFamily();
-  testedBrowserFamily === 'webkit' ? await webkitMousePanning(panningOptions) : await chromiumAndFirefoxMousePanning(panningOptions);
-}
-
-async function chromiumAndFirefoxMousePanning({ originPoint, destinationPoint }: PanningOptions): Promise<void> {
+export async function mousePanning({ originPoint, destinationPoint }: PanningOptions): Promise<void> {
   // simulate mouse panning
   await page.mouse.move(originPoint.x, originPoint.y);
   await page.mouse.down();
