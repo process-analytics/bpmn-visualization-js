@@ -15,7 +15,7 @@
  */
 import * as fs from 'fs';
 import { Page } from 'playwright';
-import { delay, getSimplePlatformName, mouseZoomSingle } from '../e2e/helpers/test-utils';
+import { delay, getSimplePlatformName, mouseZoomNoDelay } from '../e2e/helpers/test-utils';
 import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
 import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
@@ -48,14 +48,14 @@ describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
     const metricsStart = await metricsCollector.metrics();
 
     for (let i = 0; i < xTimes; i++) {
-      await mouseZoomSingle({ x: containerCenterX + 200, y: containerCenterY }, deltaX);
+      await mouseZoomNoDelay({ x: containerCenterX + 200, y: containerCenterY }, deltaX);
       if (i % 5 === 0) {
         await delay(30);
       }
     }
     await delay(100);
     for (let i = 0; i < xTimes; i++) {
-      await mouseZoomSingle({ x: containerCenterX + 200, y: containerCenterY }, -deltaX);
+      await mouseZoomNoDelay({ x: containerCenterX + 200, y: containerCenterY }, -deltaX);
       if (i % 5 === 0) {
         await delay(30);
       }

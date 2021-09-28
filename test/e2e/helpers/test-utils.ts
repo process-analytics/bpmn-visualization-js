@@ -83,13 +83,13 @@ export async function mousePanning({ originPoint, destinationPoint }: PanningOpt
 
 export async function mouseZoom(xTimes: number, point: Point, deltaX: number): Promise<void> {
   for (let i = 0; i < xTimes; i++) {
-    await mouseZoomSingle(point, deltaX);
+    await mouseZoomNoDelay(point, deltaX);
     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
     await delay(150);
   }
 }
 
-export async function mouseZoomSingle(point: Point, deltaX: number): Promise<void> {
+export async function mouseZoomNoDelay(point: Point, deltaX: number): Promise<void> {
   await page.mouse.move(point.x, point.y);
   await page.keyboard.down('Control');
   await (page.mouse as Mouse).wheel(deltaX, 0);
