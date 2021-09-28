@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ChromiumBrowserContext, ElementHandle } from 'playwright';
+import { ChromiumBrowserContext, Page } from 'playwright';
 import 'jest-playwright-preset';
 import { Point } from '../test-utils';
 
 export interface PanningOptions {
-  containerElement: ElementHandle<SVGElement | HTMLElement>;
   originPoint: Point;
   destinationPoint: Point;
 }
@@ -33,7 +32,7 @@ export async function chromiumMouseZoom(x: number, y: number, deltaX: number): P
   // chromium server RawMouse: https://github.com/microsoft/playwright/blob/v1.8.0/src/server/chromium/crInput.ts#L95
   // RawMouse as a _client field
 
-  const client = await (page.context() as ChromiumBrowserContext).newCDPSession(page);
+  const client = await (page.context() as ChromiumBrowserContext).newCDPSession(<Page>page);
   // for troubleshooting, see playwright protocol debug logs
   // example when performing panning (set DEBUG=pw:protocol env var)
   await client.send('Input.dispatchMouseEvent', {
@@ -47,37 +46,4 @@ export async function chromiumMouseZoom(x: number, y: number, deltaX: number): P
   // TODO try to find a way to use the same session
   // detach is it not reused outside this function
   await client.detach();
-}
-
-// TODO To remove when https://github.com/microsoft/playwright/issues/1094 is fixed
-export async function webkitMousePanning(panningOptions: PanningOptions): Promise<void> {
-  await page.evaluate(panningOptions => {
-    function getMouseEventInit(point: Point): MouseEventInit {
-      return {
-        bubbles: true,
-        cancelable: true,
-        clientX: point.x,
-        clientY: point.y,
-        screenX: point.x,
-        screenY: point.y,
-        button: 0,
-        buttons: 1,
-      };
-    }
-
-    const originMouseEventInit = getMouseEventInit(panningOptions.originPoint);
-    const destinationMouseEventInit = getMouseEventInit(panningOptions.destinationPoint);
-
-    // simulate mouse panning
-    const containerElement: SVGElement | HTMLElement = panningOptions.containerElement;
-    containerElement.dispatchEvent(new MouseEvent('mousemove', originMouseEventInit));
-    containerElement.dispatchEvent(new MouseEvent('mousedown', originMouseEventInit));
-    setTimeout(() => {
-      // Nothing to do
-    }, 2000);
-    containerElement.dispatchEvent(new MouseEvent('mousemove', destinationMouseEventInit));
-    containerElement.dispatchEvent(new MouseEvent('mouseup', destinationMouseEventInit));
-
-    return Promise.resolve({ x: destinationMouseEventInit.clientX, y: destinationMouseEventInit.clientY });
-  }, panningOptions);
 }

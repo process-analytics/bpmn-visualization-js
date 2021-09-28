@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ElementHandle } from 'playwright';
 import 'jest-playwright-preset';
 import { join } from 'path';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
@@ -270,11 +269,10 @@ describe('BPMN Edges with overlays', () => {
 
 describe('Overlay navigation', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
-  let bpmnContainerElementHandle: ElementHandle<SVGElement | HTMLElement>;
   let containerCenter: Point;
 
   beforeEach(async () => {
-    bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
     containerCenter = await getContainerCenter(bpmnContainerElementHandle);
 
     await addOverlays('StartEvent_1', 'bottom-center');
@@ -284,7 +282,7 @@ describe('Overlay navigation', () => {
   });
 
   it('panning', async () => {
-    await mousePanning({ containerElement: bpmnContainerElementHandle, originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
+    await mousePanning({ originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -324,7 +322,7 @@ describe('Overlay style', () => {
         [
           'fill',
           {
-            linux: 0.0000001, // 0.000008711582011322605%
+            linux: 0.000005, // 0.00041653196235502676%
             macos: 0.0002, // 0.015144311713777281%
             windows: 0.0003, // 0.021176489211183203%
           },
@@ -340,7 +338,7 @@ describe('Overlay style', () => {
         [
           'stroke',
           {
-            linux: 0.000001, // 0.000015809905229424714%
+            linux: 0.000005, // 0.00041653196235502676%
             macos: 0.0018, // 0.1787779478926499%
             windows: 0.0022, // 0.21848079010937665%
           },
