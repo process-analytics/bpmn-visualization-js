@@ -18,7 +18,6 @@ import { ElementHandle, Mouse } from 'playwright';
 import 'jest-playwright-preset';
 import { join } from 'path';
 import { findFiles } from '../../helpers/file-helper';
-import { PanningOptions } from './visu/playwright-utils';
 
 export interface Point {
   x: number;
@@ -67,6 +66,11 @@ export async function clickOnButton(buttonId: string): Promise<void> {
   await page.click(`#${buttonId}`);
   // To unselect the button
   await page.mouse.click(0, 0);
+}
+
+export interface PanningOptions {
+  originPoint: Point;
+  destinationPoint: Point;
 }
 
 export async function mousePanning({ originPoint, destinationPoint }: PanningOptions): Promise<void> {
