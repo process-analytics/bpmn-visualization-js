@@ -88,3 +88,10 @@ export async function mouseZoom(xTimes: number, point: Point, deltaX: number): P
     await delay(150);
   }
 }
+
+export async function mouseZoomSingle(point: Point, deltaX: number): Promise<void> {
+  await page.mouse.move(point.x, point.y);
+  await page.keyboard.down('Control');
+  await (page.mouse as Mouse).wheel(deltaX, 0);
+  await page.keyboard.up('Control');
+}
