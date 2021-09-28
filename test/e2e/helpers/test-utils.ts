@@ -83,7 +83,6 @@ export async function mouseZoom(xTimes: number, point: Point, deltaX: number): P
     await page.keyboard.down('Control');
     await (page.mouse as Mouse).wheel(deltaX, 0);
 
-    //  await chromiumMouseZoom(point.x, point.y, deltaX);
     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
     await delay(150);
     await page.keyboard.up('Control');
