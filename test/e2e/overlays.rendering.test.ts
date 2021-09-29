@@ -17,7 +17,7 @@ import 'jest-playwright-preset';
 import { join } from 'path';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
-import { clickOnButton, getContainerCenter, itMouseZoom, mousePanning, mouseZoom, Point } from './helpers/test-utils';
+import { clickOnButton, getContainerCenter, mousePanning, mouseZoom, Point } from './helpers/test-utils';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
@@ -73,7 +73,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.0044, // max 0.43536497668036356%
           macos: 0.0071, // max 0.7027949859673144%
-          windows: 0.0014, // max 0.1362976442493502%
+          windows: 0.0027, // max 0.26051371171855736%
         },
       ],
       [
@@ -292,7 +292,7 @@ describe('Overlay navigation', () => {
     });
   });
 
-  itMouseZoom(`zoom out`, async () => {
+  it(`zoom out`, async () => {
     await mouseZoom(1, { x: containerCenter.x + 200, y: containerCenter.y }, 100);
 
     const image = await page.screenshot({ fullPage: true });

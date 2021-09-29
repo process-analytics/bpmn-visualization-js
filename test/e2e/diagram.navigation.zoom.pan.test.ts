@@ -16,7 +16,7 @@
 import 'jest-playwright-preset';
 import { join } from 'path';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { getContainerCenter, itMouseZoom, mousePanning, mouseZoom, Point } from './helpers/test-utils';
+import { getContainerCenter, mousePanning, mouseZoom, Point } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
@@ -46,7 +46,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'simple.2.start.events.1.task',
         {
-          macos: 0.00006, // 0.005939439980984229%
+          macos: 0.0002, // 0.012644054903632185%
         },
       ],
     ]);
@@ -77,7 +77,7 @@ describe('diagram navigation - zoom and pan', () => {
     });
   });
 
-  itMouseZoom.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
+  it.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
     const deltaX = zoomMode === 'zoom in' ? -100 : 100;
     await mouseZoom(1, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
 
@@ -89,7 +89,7 @@ describe('diagram navigation - zoom and pan', () => {
     });
   });
 
-  itMouseZoom.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
+  it.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
     const deltaX = -100;
     // simulate mouse+ctrl zoom
     await page.mouse.move(containerCenter.x + 200, containerCenter.y);

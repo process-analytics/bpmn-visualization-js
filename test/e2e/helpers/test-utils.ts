@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 import debugLogger from 'debug';
-import { ElementHandle } from 'playwright';
+import { ElementHandle, Mouse } from 'playwright';
 import 'jest-playwright-preset';
 import { join } from 'path';
 import { findFiles } from '../../helpers/file-helper';
-import { chromiumMouseZoom, PanningOptions } from './visu/playwright-utils';
 
 export interface Point {
   x: number;
@@ -69,6 +68,11 @@ export async function clickOnButton(buttonId: string): Promise<void> {
   await page.mouse.click(0, 0);
 }
 
+export interface PanningOptions {
+  originPoint: Point;
+  destinationPoint: Point;
+}
+
 export async function mousePanning({ originPoint, destinationPoint }: PanningOptions): Promise<void> {
   // simulate mouse panning
   await page.mouse.move(originPoint.x, originPoint.y);
@@ -78,22 +82,16 @@ export async function mousePanning({ originPoint, destinationPoint }: PanningOpt
 }
 
 export async function mouseZoom(xTimes: number, point: Point, deltaX: number): Promise<void> {
-  if (!isMouseZoomSupportedByTest) {
-    throw new Error(`Mouse zoom is not supported with ${getTestedBrowserFamily()}`);
-  }
-  await doChromiumMouseZoom(xTimes, point, deltaX);
-}
-
-async function doChromiumMouseZoom(xTimes: number, point: Point, deltaX: number): Promise<void> {
   for (let i = 0; i < xTimes; i++) {
-    await chromiumMouseZoom(point.x, point.y, deltaX);
+    await mouseZoomNoDelay(point, deltaX);
     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
-    await delay(100);
+    await delay(150);
   }
 }
 
-const isMouseZoomSupportedByTest = getTestedBrowserFamily() === 'chromium';
-// TODO activate tests relying on mousewheel events on non Chromium browsers when playwright will support it natively: https://github.com/microsoft/playwright/issues/1115
-// inspired from https://github.com/xtermjs/xterm.js/commit/7400b888df698d15864ab2c41ad0ed0262f812fb#diff-23460af115aa97331c36c0ce462cbc4dd8067c0ddbca1e9d3de560ebf44024ee
-// Wheel events are hacked using private API that is only available in Chromium
-export const itMouseZoom = isMouseZoomSupportedByTest ? it : it.skip;
+export async function mouseZoomNoDelay(point: Point, deltaX: number): Promise<void> {
+  await page.mouse.move(point.x, point.y);
+  await page.keyboard.down('Control');
+  await (page.mouse as Mouse).wheel(deltaX, 0);
+  await page.keyboard.up('Control');
+}
