@@ -28,7 +28,7 @@ import { htmlElement } from './helpers/dom-utils';
  * @category Initialization
  */
 export class BpmnVisualization {
-  public readonly graph: BpmnMxGraph;
+  readonly graph: BpmnMxGraph;
 
   /**
    * @experimental subject to change, feedback welcome
@@ -45,7 +45,7 @@ export class BpmnVisualization {
     this.bpmnElementsRegistry = newBpmnElementsRegistry(this.bpmnModelRegistry, this.graph);
   }
 
-  public load(xml: string, options?: LoadOptions): void {
+  load(xml: string, options?: LoadOptions): void {
     try {
       const bpmnModel = newBpmnParser().parse(xml);
       const renderedModel = this.bpmnModelRegistry.computeRenderedModel(bpmnModel);
@@ -56,7 +56,7 @@ export class BpmnVisualization {
     }
   }
 
-  public fit(options?: FitOptions): void {
+  fit(options?: FitOptions): void {
     this.graph.customFit(options);
   }
 }

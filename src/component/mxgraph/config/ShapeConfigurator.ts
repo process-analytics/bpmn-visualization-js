@@ -43,7 +43,7 @@ import { BpmnConnector } from '../shape/edges';
  * @internal
  */
 export default class ShapeConfigurator {
-  public configureShapes(): void {
+  configureShapes(): void {
     this.initMxShapePrototype();
     this.registerShapes();
     this.initMxCellRendererCreateCellOverlays();

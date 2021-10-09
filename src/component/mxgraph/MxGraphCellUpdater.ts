@@ -31,7 +31,7 @@ export function newMxGraphCellUpdater(graph: BpmnMxGraph): MxGraphCellUpdater {
 export default class MxGraphCellUpdater {
   constructor(readonly graph: BpmnMxGraph, readonly overlayConverter: OverlayConverter) {}
 
-  public updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
+  updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
     const mxCell = this.graph.getModel().getCell(bpmnElementId);
     if (!mxCell) {
       return;
@@ -43,7 +43,7 @@ export default class MxGraphCellUpdater {
     state.shape.redraw();
   }
 
-  public addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
+  addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
     const mxCell = this.graph.getModel().getCell(bpmnElementId);
     if (!mxCell) {
       return;
@@ -54,7 +54,7 @@ export default class MxGraphCellUpdater {
     });
   }
 
-  public removeAllOverlays(bpmnElementId: string): void {
+  removeAllOverlays(bpmnElementId: string): void {
     const mxCell = this.graph.getModel().getCell(bpmnElementId);
     if (!mxCell) {
       return;

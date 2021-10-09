@@ -38,7 +38,7 @@ export default class BpmnJsonParser {
     readonly diagramConverter: DiagramConverter,
   ) {}
 
-  public parse(json: BpmnJsonModel): BpmnModel {
+  parse(json: BpmnJsonModel): BpmnModel {
     const definitions: TDefinitions = json.definitions;
 
     this.categoryConverter.deserialize(definitions);

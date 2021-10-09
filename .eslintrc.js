@@ -40,10 +40,16 @@ module.exports = {
       rules: {
         // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
         '@typescript-eslint/explicit-function-return-type': [
-          'warn',
+          'error',
           {
             allowExpressions: true,
             allowTypedFunctionExpressions: true,
+          },
+        ],
+        '@typescript-eslint/explicit-member-accessibility': [
+          'error',
+          {
+            accessibility: 'no-public',
           },
         ],
       },

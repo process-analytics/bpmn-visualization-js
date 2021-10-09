@@ -85,53 +85,53 @@ export enum StyleIdentifier {
 
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
 export default class StyleUtils {
-  public static getFillColor(style: any): string {
+  static getFillColor(style: any): string {
     return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
   }
 
-  public static getStrokeColor(style: any): string {
+  static getStrokeColor(style: any): string {
     return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
   }
 
-  public static getStrokeWidth(style: any): number {
+  static getStrokeWidth(style: any): number {
     return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
   }
 
-  public static getMargin(style: any): number {
+  static getMargin(style: any): number {
     return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
   }
 
-  public static getBpmnEventKind(style: any): ShapeBpmnEventKind {
+  static getBpmnEventKind(style: any): ShapeBpmnEventKind {
     return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
   }
 
-  public static getBpmnSubProcessKind(style: any): ShapeBpmnSubProcessKind {
+  static getBpmnSubProcessKind(style: any): ShapeBpmnSubProcessKind {
     return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, undefined);
   }
 
-  public static getBpmnIsInterrupting(style: any): string {
+  static getBpmnIsInterrupting(style: any): string {
     return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, undefined);
   }
 
-  public static getBpmnMarkers(style: any): string {
+  static getBpmnMarkers(style: any): string {
     return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_MARKERS, undefined);
   }
 
-  public static getBpmnIsInstantiating(style: any): boolean {
+  static getBpmnIsInstantiating(style: any): boolean {
     return JSON.parse(mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_INSTANTIATING, false));
   }
 
-  public static getBpmnIsInitiating(style: any): MessageVisibleKind {
+  static getBpmnIsInitiating(style: any): MessageVisibleKind {
     return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_IS_INITIATING, undefined);
   }
 
-  public static getBpmnIsParallelEventBasedGateway(style: any): boolean {
+  static getBpmnIsParallelEventBasedGateway(style: any): boolean {
     return (
       mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel
     );
   }
 
-  public static getBpmnGlobalTaskKind(style: any): GlobalTaskKind {
+  static getBpmnGlobalTaskKind(style: any): GlobalTaskKind {
     return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_GLOBAL_TASK_KIND, undefined);
   }
 }
