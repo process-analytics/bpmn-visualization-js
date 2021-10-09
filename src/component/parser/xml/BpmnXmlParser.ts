@@ -33,7 +33,6 @@ export default class BpmnXmlParser {
     },
   };
 
-  // disable eslint as it comes from 3rd party
   parse(xml: string): BpmnJsonModel {
     return parse(xml, this.options);
   }
