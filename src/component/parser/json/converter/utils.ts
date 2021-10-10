@@ -16,7 +16,7 @@
 
 import ShapeBpmnElement, { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
-import { GlobalTaskKind, ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../model/bpmn/internal';
+import { GlobalTaskKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../../model/bpmn/internal';
 import { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
 import { ParsingMessageCollector } from '../../parsing-messages';
 import { GroupUnknownCategoryValueWarning } from '../warnings';
@@ -105,11 +105,11 @@ export class ConvertedElements {
     this.associationFlows.set(associationFlow.id, associationFlow);
   }
 
-  private eventDefinitionsOfDefinitions: Map<string, ShapeBpmnEventKind> = new Map();
-  findEventDefinitionOfDefinition(id: string): ShapeBpmnEventKind {
+  private eventDefinitionsOfDefinitions: Map<string, ShapeBpmnEventDefinitionKind> = new Map();
+  findEventDefinitionOfDefinition(id: string): ShapeBpmnEventDefinitionKind {
     return this.eventDefinitionsOfDefinitions.get(id);
   }
-  registerEventDefinitionsOfDefinition(id: string, eventDefinition: ShapeBpmnEventKind): void {
+  registerEventDefinitionsOfDefinition(id: string, eventDefinition: ShapeBpmnEventDefinitionKind): void {
     this.eventDefinitionsOfDefinitions.set(id, eventDefinition);
   }
 

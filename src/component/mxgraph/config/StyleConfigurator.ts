@@ -159,7 +159,7 @@ export class StyleConfigurator {
   }
 
   private configureEventStyles(): void {
-    ShapeUtil.topLevelBpmnEventKinds().forEach(kind => {
+    ShapeUtil.eventKinds().forEach(kind => {
       const style: StyleMap = {};
       style[mxgraph.mxConstants.STYLE_SHAPE] = kind;
       style[mxgraph.mxConstants.STYLE_PERIMETER] = mxgraph.mxPerimeter.EllipsePerimeter;

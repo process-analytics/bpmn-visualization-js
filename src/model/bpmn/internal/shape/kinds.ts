@@ -118,7 +118,7 @@ export enum ShapeBpmnEventBasedGatewayKind {
  * For instance, TERMINATE --> terminateEventDefinition
  * @category BPMN
  */
-export enum ShapeBpmnEventKind {
+export enum ShapeBpmnEventDefinitionKind {
   NONE = 'none',
   TERMINATE = 'terminate',
   CANCEL = 'cancel',

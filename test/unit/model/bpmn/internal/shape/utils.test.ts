@@ -18,7 +18,7 @@ import { ShapeBpmnElementKind, ShapeUtil } from '../../../../../../src/model/bpm
 
 describe('ShapeUtil', () => {
   it('top level bpmn event kinds', () => {
-    const events = ShapeUtil.topLevelBpmnEventKinds();
+    const events = ShapeUtil.eventKinds();
     expect(events).toContain(ShapeBpmnElementKind.EVENT_END);
     expect(events).toContain(ShapeBpmnElementKind.EVENT_START);
   });

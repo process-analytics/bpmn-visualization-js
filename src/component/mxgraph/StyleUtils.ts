@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { GlobalTaskKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal';
+import { GlobalTaskKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/kinds';
 import { mxgraph } from './initializer';
 
@@ -74,7 +74,7 @@ export enum StyleDefault {
  * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
  */
 export enum StyleIdentifier {
-  BPMN_STYLE_EVENT_KIND = 'bpmn.eventKind',
+  BPMN_STYLE_EVENT_DEFINITION_KIND = 'bpmn.eventDefinitionKind',
   BPMN_STYLE_SUB_PROCESS_KIND = 'bpmn.subProcessKind',
   BPMN_STYLE_IS_INTERRUPTING = 'bpmn.isInterrupting',
   BPMN_STYLE_MARKERS = 'bpmn.markers',
@@ -113,8 +113,8 @@ export default class StyleUtils {
     return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
   }
 
-  static getBpmnEventKind(style: any): ShapeBpmnEventKind {
-    return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_KIND, ShapeBpmnEventKind.NONE);
+  static getBpmnEventDefinitionKind(style: any): ShapeBpmnEventDefinitionKind {
+    return mxgraph.mxUtils.getValue(style, StyleIdentifier.BPMN_STYLE_EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE);
   }
 
   static getBpmnSubProcessKind(style: any): ShapeBpmnSubProcessKind {

@@ -20,7 +20,7 @@ import {
   ShapeBpmnCallActivityKind,
   ShapeBpmnElementKind,
   ShapeBpmnEventBasedGatewayKind,
-  ShapeBpmnEventKind,
+  ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
 } from './kinds';
@@ -70,7 +70,7 @@ export class ShapeBpmnSubProcess extends ShapeBpmnActivity {
  * @internal
  */
 export class ShapeBpmnEvent extends ShapeBpmnElement {
-  constructor(id: string, name: string, elementKind: BpmnEventKind, readonly eventKind: ShapeBpmnEventKind, parentId: string) {
+  constructor(id: string, name: string, elementKind: BpmnEventKind, readonly eventDefinitionKind: ShapeBpmnEventDefinitionKind, parentId: string) {
     super(id, name, elementKind, parentId);
   }
 }
@@ -79,8 +79,8 @@ export class ShapeBpmnEvent extends ShapeBpmnElement {
  * @internal
  */
 export class ShapeBpmnStartEvent extends ShapeBpmnEvent {
-  constructor(id: string, name: string, eventKind: ShapeBpmnEventKind, parentId: string, readonly isInterrupting?: boolean) {
-    super(id, name, ShapeBpmnElementKind.EVENT_START, eventKind, parentId);
+  constructor(id: string, name: string, eventDefinitionKind: ShapeBpmnEventDefinitionKind, parentId: string, readonly isInterrupting?: boolean) {
+    super(id, name, ShapeBpmnElementKind.EVENT_START, eventDefinitionKind, parentId);
   }
 }
 
@@ -88,8 +88,8 @@ export class ShapeBpmnStartEvent extends ShapeBpmnEvent {
  * @internal
  */
 export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
-  constructor(id: string, name: string, eventKind: ShapeBpmnEventKind, parentId: string, readonly isInterrupting: boolean = true) {
-    super(id, name, ShapeBpmnElementKind.EVENT_BOUNDARY, eventKind, parentId);
+  constructor(id: string, name: string, eventDefinitionKind: ShapeBpmnEventDefinitionKind, parentId: string, readonly isInterrupting: boolean = true) {
+    super(id, name, ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind, parentId);
   }
 }
 
