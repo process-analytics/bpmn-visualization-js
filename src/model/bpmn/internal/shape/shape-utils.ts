@@ -59,60 +59,60 @@ export class ShapeUtil {
     return filter(Object.values(ShapeBpmnElementKind), suffix, options);
   }
 
-  public static isEvent(kind: ShapeBpmnElementKind): boolean {
+  static isEvent(kind: ShapeBpmnElementKind): boolean {
     return this.EVENT_KINDS.includes(kind);
   }
 
-  public static isCallActivity(kind: ShapeBpmnElementKind): boolean {
+  static isCallActivity(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.CALL_ACTIVITY === kind;
   }
 
-  public static isSubProcess(kind: ShapeBpmnElementKind): boolean {
+  static isSubProcess(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.SUB_PROCESS === kind;
   }
 
-  public static isBoundaryEvent(kind: ShapeBpmnElementKind): boolean {
+  static isBoundaryEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_BOUNDARY === kind;
   }
 
-  public static isStartEvent(kind: ShapeBpmnElementKind): boolean {
+  static isStartEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_START === kind;
   }
 
-  public static canHaveNoneEvent(kind: ShapeBpmnElementKind): boolean {
+  static canHaveNoneEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW === kind || ShapeBpmnElementKind.EVENT_END === kind || ShapeBpmnElementKind.EVENT_START === kind;
   }
 
-  public static isActivity(kind: ShapeBpmnElementKind): boolean {
+  static isActivity(kind: ShapeBpmnElementKind): boolean {
     return this.ACTIVITY_KINDS.includes(kind);
   }
 
-  public static isWithDefaultSequenceFlow(kind: ShapeBpmnElementKind): boolean {
+  static isWithDefaultSequenceFlow(kind: ShapeBpmnElementKind): boolean {
     return this.FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS.includes(kind);
   }
 
   // use the 'top level' wording to not mix with the bpmnEventKinds that currently are the list of non None event subtypes
-  public static topLevelBpmnEventKinds(): ShapeBpmnElementKind[] {
+  static topLevelBpmnEventKinds(): ShapeBpmnElementKind[] {
     return this.EVENT_KINDS;
   }
 
-  public static activityKinds(): ShapeBpmnElementKind[] {
+  static activityKinds(): ShapeBpmnElementKind[] {
     return this.ACTIVITY_KINDS;
   }
 
-  public static taskKinds(): ShapeBpmnElementKind[] {
+  static taskKinds(): ShapeBpmnElementKind[] {
     return this.TASK_KINDS;
   }
 
-  public static gatewayKinds(): ShapeBpmnElementKind[] {
+  static gatewayKinds(): ShapeBpmnElementKind[] {
     return this.GATEWAY_KINDS;
   }
 
-  public static flowNodeKinds(): ShapeBpmnElementKind[] {
+  static flowNodeKinds(): ShapeBpmnElementKind[] {
     return Object.values(ShapeBpmnElementKind).filter(kind => !ShapeUtil.isPoolOrLane(kind));
   }
 
-  public static isPoolOrLane(kind: ShapeBpmnElementKind): boolean {
+  static isPoolOrLane(kind: ShapeBpmnElementKind): boolean {
     return kind == ShapeBpmnElementKind.POOL || kind == ShapeBpmnElementKind.LANE;
   }
 }

@@ -37,7 +37,7 @@ export default class MxGraphConfigurator {
     this.graph = new BpmnMxGraph(container);
   }
 
-  public configure(options: GlobalOptions): BpmnMxGraph {
+  configure(options: GlobalOptions): BpmnMxGraph {
     this.configureGraph();
     this.configureNavigationSupport(options);
     new StyleConfigurator(this.graph).configureStyles();

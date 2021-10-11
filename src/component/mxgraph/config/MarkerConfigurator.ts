@@ -22,7 +22,7 @@ import { mxAbstractCanvas2D, mxCell, mxPoint, mxShape } from 'mxgraph'; // for t
  * @internal
  */
 export default class MarkerConfigurator {
-  public configureMarkers(): void {
+  configureMarkers(): void {
     this.registerArrowDashMarker();
   }
 
