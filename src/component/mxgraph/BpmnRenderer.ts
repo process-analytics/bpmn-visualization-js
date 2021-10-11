@@ -36,7 +36,7 @@ import { mxCell } from 'mxgraph'; // for types
 export class BpmnRenderer {
   constructor(readonly graph: BpmnMxGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleComputer: StyleComputer) {}
 
-  public render(renderedModel: RenderedModel, loadOptions?: LoadOptions): void {
+  render(renderedModel: RenderedModel, loadOptions?: LoadOptions): void {
     this.insertShapesAndEdges(renderedModel);
     this.graph.customFit(loadOptions?.fit);
   }

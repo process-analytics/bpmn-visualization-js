@@ -103,7 +103,7 @@ export class StyleConfigurator {
 
   constructor(private graph: BpmnMxGraph) {}
 
-  public configureStyles(): void {
+  configureStyles(): void {
     this.configureDefaultVertexStyle();
 
     this.configurePoolStyle();

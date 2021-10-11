@@ -205,7 +205,7 @@ export default class BpmnCanvas {
     this.canvas.fillAndStroke();
   }
 
-  public setFillColor(fillColor: string): void {
+  setFillColor(fillColor: string): void {
     this.canvas.setFillColor(fillColor);
   }
 

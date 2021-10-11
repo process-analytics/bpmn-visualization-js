@@ -29,7 +29,7 @@ export default class CoordinatesTranslator {
    * @param parent the cell to use for the new coordinate referential
    * @param absoluteCoordinate
    */
-  public computeRelativeCoordinates(parent: mxCell, absoluteCoordinate: mxPoint): mxPoint {
+  computeRelativeCoordinates(parent: mxCell, absoluteCoordinate: mxPoint): mxPoint {
     const translateForRoot = this.getTranslateForRoot(parent);
     const relativeX = absoluteCoordinate.x + translateForRoot.x;
     const relativeY = absoluteCoordinate.y + translateForRoot.y;
@@ -64,7 +64,7 @@ export default class CoordinatesTranslator {
    *
    * The center coordinates are given in the same referential as the `mxCell`, so relative to its parent.
    */
-  public computeEdgeCenter(mxEdge: mxCell): mxPoint {
+  computeEdgeCenter(mxEdge: mxCell): mxPoint {
     const points: mxPoint[] = mxEdge.geometry.points;
 
     const p0 = points[0];
