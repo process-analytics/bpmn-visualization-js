@@ -16,10 +16,10 @@
 
 import { BpmnModelRegistry } from '../../../../src/component/registry/bpmn-model-registry';
 import BpmnModel from '../../../../src/model/bpmn/internal/BpmnModel';
-import Edge from '../../../../src/model/bpmn/internal/edge/Edge';
-import { SequenceFlow } from '../../../../src/model/bpmn/internal/edge/Flow';
+import { Edge } from '../../../../src/model/bpmn/internal/edge/edge';
+import { SequenceFlow } from '../../../../src/model/bpmn/internal/edge/flows';
 import Shape from '../../../../src/model/bpmn/internal/shape/Shape';
-import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../src/model/bpmn/internal';
 import ShapeBpmnElement, { ShapeBpmnStartEvent } from '../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import { expectLane, expectPool, expectSequenceFlow, expectStartEvent } from '../../helpers/bpmn-semantic-utils';
 

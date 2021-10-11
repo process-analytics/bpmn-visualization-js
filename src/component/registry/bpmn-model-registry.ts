@@ -15,11 +15,10 @@
  */
 import BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import Shape from '../../model/bpmn/internal/shape/Shape';
-import Edge from '../../model/bpmn/internal/edge/Edge';
+import { Edge } from '../../model/bpmn/internal/edge/edge';
 import { BpmnSemantic } from './types';
-import { ShapeUtil } from '../../model/bpmn/internal/shape/shape-utils';
+import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import ShapeBpmnElement, { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { ShapeBpmnMarkerKind } from '../../model/bpmn/internal/shape';
 
 export class BpmnModelRegistry {
   private searchableModel: SearchableModel;

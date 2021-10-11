@@ -14,12 +14,26 @@
  * limitations under the License.
  */
 
+import Label from '../Label';
+import { Flow } from './flows';
+import { MessageVisibleKind } from './kinds';
+
 /**
- * The real name of the field in the BPMN XSD.
- * @category BPMN
+ * @internal
  */
-export enum FlowKind {
-  SEQUENCE_FLOW = 'sequenceFlow',
-  MESSAGE_FLOW = 'messageFlow',
-  ASSOCIATION_FLOW = 'association',
+export class Edge {
+  constructor(
+    readonly id: string,
+    readonly bpmnElement: Flow,
+    readonly waypoints?: Waypoint[],
+    readonly label?: Label,
+    readonly messageVisibleKind: MessageVisibleKind = MessageVisibleKind.NONE,
+  ) {}
+}
+
+/**
+ * @internal
+ */
+export class Waypoint {
+  constructor(readonly x: number, readonly y: number) {}
 }

@@ -15,15 +15,14 @@
  */
 
 import Shape from '../../model/bpmn/internal/shape/Shape';
-import Edge from '../../model/bpmn/internal/edge/Edge';
+import { Edge, Waypoint } from '../../model/bpmn/internal/edge/edge';
 import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
-import Waypoint from '../../model/bpmn/internal/edge/Waypoint';
 import Bounds from '../../model/bpmn/internal/Bounds';
-import { ShapeUtil } from '../../model/bpmn/internal/shape/shape-utils';
+import { ShapeUtil } from '../../model/bpmn/internal';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleComputer from './renderer/StyleComputer';
-import { MessageFlow } from '../../model/bpmn/internal/edge/Flow';
-import { MessageVisibleKind } from '../../model/bpmn/internal/edge/MessageVisibleKind';
+import { MessageFlow } from '../../model/bpmn/internal/edge/flows';
+import { MessageVisibleKind } from '../../model/bpmn/internal/edge/kinds';
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { LoadOptions } from '../options';
 import { RenderedModel } from '../registry/bpmn-model-registry';

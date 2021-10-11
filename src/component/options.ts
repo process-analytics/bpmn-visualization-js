@@ -15,24 +15,22 @@
  */
 
 /**
- * Options to configure `bpmn-visualization` at initialization.
- *
+ * Options to configure the `bpmn-visualization` initialization.
  * @category Initialization
  */
 export interface GlobalOptions {
   /** The id of a DOM element or an HTML node where the BPMN diagram is rendered. */
   container: string | HTMLElement;
-  /** Control the BPMN diagram navigation i.e. panning and zoom. */
+  /** Configure the BPMN diagram navigation (panning and zoom). */
   navigation?: NavigationConfiguration;
 }
 
 /**
+ * Configure the BPMN diagram navigation (panning and zoom).
  * @category Initialization
  */
 export interface NavigationConfiguration {
-  /**
-   * @default false
-   */
+  /** @default false */
   enabled: boolean;
   /** Tune how the zoom behaves when using the mouse wheel or with gesture/pinch on touch devices. */
   zoom?: ZoomConfiguration;
@@ -40,19 +38,18 @@ export interface NavigationConfiguration {
 
 /**
  * Zoom specific options.
- *
  * @category Initialization
  */
 export interface ZoomConfiguration {
   /**
-   * throttleDelay [ms] responsible for throttling the mouse scroll event (not every event is firing the function handler, only limited number can lunch handler). A smaller value
+   * Value in `milliseconds` responsible for throttling the mouse scroll event (not every event is firing the function handler, only limited number can lunch handler). A smaller value
    * results in more events fired, bigger gain in zoom factor.
    * Values must be in the [0, 100] interval, values outside of this interval are set to the interval bounds.
    * @default 50
    */
   throttleDelay?: number;
   /**
-   * debounceDelay [ms] responsible for debouncing the zoom function - the actual scaling. A bigger value results in bigger gain in zoom factor before actual scaling takes place.
+   * Value in `milliseconds` responsible for debouncing the zoom function - the actual scaling. A bigger value results in bigger gain in zoom factor before actual scaling takes place.
    * Values must be in the [0, 100] interval, values outside of this interval are set to the interval bounds.
    * @default 50
    */
@@ -61,7 +58,6 @@ export interface ZoomConfiguration {
 
 /**
  * Options when loading a BPMN Diagram.
- *
  * @category Initialization
  */
 export interface LoadOptions {
@@ -72,9 +68,7 @@ export interface LoadOptions {
  * @category Initialization
  */
 export interface FitOptions {
-  /**
-   * @default {@link FitType.None}
-   */
+  /** @default {@link FitType.None} */
   type?: FitType;
   /**
    * Negative values fallback to default.

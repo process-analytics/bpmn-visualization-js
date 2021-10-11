@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Bonitasoft S.A.
+ * Copyright 2021 Bonitasoft S.A.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
+export * from './shape';
+
+import { FlowKind } from './edge/kinds';
+export { FlowKind };
+import { ShapeBpmnElementKind } from './shape';
 /**
- * @internal
+ * @category BPMN
  */
-export enum SequenceFlowKind {
-  NORMAL = 'normal',
-  DEFAULT = 'default',
-  CONDITIONAL_FROM_ACTIVITY = 'conditional_from_activity',
-  CONDITIONAL_FROM_GATEWAY = 'conditional_from_gateway',
-}
+export type BpmnElementKind = FlowKind | ShapeBpmnElementKind;

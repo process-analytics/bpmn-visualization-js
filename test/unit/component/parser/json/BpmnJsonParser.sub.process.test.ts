@@ -18,7 +18,7 @@ import { getEventShapes } from './BpmnJsonParser.event.test';
 import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
-import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal';
 import { ShapeBpmnEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 

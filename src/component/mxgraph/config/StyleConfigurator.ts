@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-import { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
-import { ShapeUtil } from '../../../model/bpmn/internal/shape/shape-utils';
-import { SequenceFlowKind } from '../../../model/bpmn/internal/edge/SequenceFlowKind';
+import { FlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
+import { AssociationDirectionKind, SequenceFlowKind } from '../../../model/bpmn/internal/edge/kinds';
 import { MarkerIdentifier, StyleDefault, StyleIdentifier } from '../StyleUtils';
-import { FlowKind } from '../../../model/bpmn/internal/edge/FlowKind';
-import { AssociationDirectionKind } from '../../../model/bpmn/internal/edge/AssociationDirectionKind';
 import { BpmnMxGraph } from '../BpmnMxGraph';
 import { mxgraph } from '../initializer';
 import { mxStylesheet, StyleMap } from 'mxgraph'; // for types
 
 /**
- * @internal
+ * Configure the styles used for BPMN rendering.
+ * @category BPMN Theme
+ * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
  */
 export class StyleConfigurator {
   private specificFlowStyles: Map<FlowKind, (style: StyleMap) => void> = new Map([

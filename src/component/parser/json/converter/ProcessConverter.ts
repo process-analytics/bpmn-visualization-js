@@ -25,25 +25,24 @@ import ShapeBpmnElement, {
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import {
-  bpmnEventKinds,
+  BpmnEventKind,
   ShapeBpmnCallActivityKind,
   ShapeBpmnElementKind,
   ShapeBpmnEventBasedGatewayKind,
   ShapeBpmnEventKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
-} from '../../../../model/bpmn/internal/shape';
-import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/Flow';
-import { BpmnEventKind, ShapeUtil } from '../../../../model/bpmn/internal/shape/shape-utils';
-import { SequenceFlowKind } from '../../../../model/bpmn/internal/edge/SequenceFlowKind';
-import { FlowKind } from '../../../../model/bpmn/internal/edge/FlowKind';
+  ShapeUtil,
+} from '../../../../model/bpmn/internal';
+import { bpmnEventDefinitionKinds } from '../../../../model/bpmn/internal/shape/utils';
+import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
+import { AssociationDirectionKind, FlowKind, SequenceFlowKind } from '../../../../model/bpmn/internal/edge/kinds';
 import { TProcess } from '../../../../model/bpmn/json/baseElement/rootElement/rootElement';
 import { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../model/bpmn/json/baseElement/flowNode/event';
 import { TActivity, TCallActivity, TSubProcess } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';
 import { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseElement';
 import { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
 import { TAssociation, TGroup, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
-import { AssociationDirectionKind } from '../../../../model/bpmn/internal/edge/AssociationDirectionKind';
 import { ConvertedElements } from './utils';
 import { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
 import { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
@@ -209,7 +208,7 @@ export default class ProcessConverter {
   private getEventDefinitions(bpmnElement: TCatchEvent | TThrowEvent): EventDefinition[] {
     const eventDefinitions = new Map<ShapeBpmnEventKind, number>();
 
-    bpmnEventKinds.forEach(eventKind => {
+    bpmnEventDefinitionKinds.forEach(eventKind => {
       // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
       const eventDefinition = bpmnElement[eventKind + 'EventDefinition'];
       const counter = ensureIsArray(eventDefinition, true).length;

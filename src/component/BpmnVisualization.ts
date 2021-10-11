@@ -25,15 +25,28 @@ import { BpmnModelRegistry } from './registry/bpmn-model-registry';
 import { htmlElement } from './helpers/dom-utils';
 
 /**
+ * Let initialize `bpmn-visualization`. It requires at minimum to pass the HTMLElement in the page where the BPMN diagram is rendered.
+ * ```javascript
+ * const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container' });
+ * ```
+ * For more options, see {@link GlobalOptions}
+ *
  * @category Initialization
  */
 export class BpmnVisualization {
+  /**
+   * Direct access to the `mxGraph` instance that powers `bpmn-visualization`.
+   * It is for **advanced users**, so please use the lib API first and access to the `mxGraph` instance only when there is no alternative.
+   * @experimental subject to change, could be removed or made available in another way.
+   */
   readonly graph: BpmnMxGraph;
 
   /**
-   * @experimental subject to change, feedback welcome
+   * Interact with BPMN diagram elements rendered in the page.
+   * @experimental subject to change, feedback welcome.
    */
   readonly bpmnElementsRegistry: BpmnElementsRegistry;
+
   private readonly bpmnModelRegistry: BpmnModelRegistry;
 
   constructor(options: GlobalOptions) {
@@ -45,6 +58,12 @@ export class BpmnVisualization {
     this.bpmnElementsRegistry = newBpmnElementsRegistry(this.bpmnModelRegistry, this.graph);
   }
 
+  /**
+   * Load and render the BPMN diagram.
+   * @param xml The BPMN content as xml string
+   * @param options Let decide how to render the diagram
+   * @throws `Error` when loading fails. This is generally due to a parsing error caused by a malformed bpmn content
+   */
   load(xml: string, options?: LoadOptions): void {
     try {
       const bpmnModel = newBpmnParser().parse(xml);

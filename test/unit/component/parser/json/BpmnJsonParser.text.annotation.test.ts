@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for text annotation', () => {

@@ -15,7 +15,8 @@
  */
 
 import StyleUtils, { StyleDefault } from '../StyleUtils';
-import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
+import { PaintParameter, IconPainterProvider } from './render';
+import { buildPaintParameter } from './render/icon-painter';
 import { mxgraph } from '../initializer';
 import { mxAbstractCanvas2D } from 'mxgraph'; // for types
 

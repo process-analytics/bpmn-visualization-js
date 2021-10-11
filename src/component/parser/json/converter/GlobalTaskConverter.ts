@@ -18,8 +18,7 @@ import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
 import { ConvertedElements } from './utils';
 import { TGlobalTask } from '../../../../model/bpmn/json/baseElement/rootElement/globalTask';
 import { ensureIsArray } from '../../../helpers/array-utils';
-import { GlobalTaskKind } from '../../../../model/bpmn/internal/shape/shape-utils';
-import { ShapeBpmnElementKind } from '../../../../model/bpmn/internal/shape';
+import { GlobalTaskKind, ShapeBpmnElementKind } from '../../../../model/bpmn/internal';
 
 /**
  * @internal

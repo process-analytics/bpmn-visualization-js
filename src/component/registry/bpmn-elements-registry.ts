@@ -22,7 +22,7 @@ import MxGraphCellUpdater, { newMxGraphCellUpdater } from '../mxgraph/MxGraphCel
 import { BpmnQuerySelectors } from './query-selectors';
 import { BpmnElement, Overlay } from './types';
 import { BpmnModelRegistry } from './bpmn-model-registry';
-import { BpmnElementKind } from '../../model/bpmn/internal/api';
+import { BpmnElementKind } from '../../model/bpmn/internal';
 
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnMxGraph): BpmnElementsRegistry {
   return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), newMxGraphCellUpdater(graph));
@@ -37,7 +37,7 @@ export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, gr
  *
  * ```javascript
  * // 1. Initialize the BpmnVisualization.
- * const bpmnVisualization = new bpmnvisu.BpmnVisualization(document.getElementById('bpmn-container'));
+ * const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container' });
  * // 2. Get diagram and load it.
  * const bpmn = 'BPMN diagram string - whether coming from bpmn.xml file or some API call';
  * bpmnVisualization.load(bpmn);
@@ -83,8 +83,8 @@ export class BpmnElementsRegistry {
    * ```javascript
    * ...
    * // Find all elements by desired type or types
-   * const bpmnTaskElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(bpmnvisu.ShapeBpmnElementKind.TASK);
-   * const bpmnEndEventAndPoolElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds([bpmnvisu.ShapeBpmnElementKind.EVENT_END, bpmnvisu.ShapeBpmnElementKind.POOL]);
+   * const bpmnTaskElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(ShapeBpmnElementKind.TASK);
+   * const bpmnEndEventAndPoolElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds([ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.POOL]);
    * // now you can do whatever you want with the elements
    * ...
    * ```

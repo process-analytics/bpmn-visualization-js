@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
-import { ShapeBpmnEventKind } from './ShapeBpmnEventKind';
-import { BpmnEventKind, GlobalTaskKind } from './shape-utils';
-import { ShapeBpmnSubProcessKind } from './ShapeBpmnSubProcessKind';
-import { ShapeBpmnMarkerKind } from './ShapeBpmnMarkerKind';
-import { ShapeBpmnCallActivityKind } from './ShapeBpmnCallActivityKind';
-import { ShapeBpmnEventBasedGatewayKind } from './ShapeBpmnEventBasedGatewayKind';
+import {
+  BpmnEventKind,
+  GlobalTaskKind,
+  ShapeBpmnCallActivityKind,
+  ShapeBpmnElementKind,
+  ShapeBpmnEventBasedGatewayKind,
+  ShapeBpmnEventKind,
+  ShapeBpmnMarkerKind,
+  ShapeBpmnSubProcessKind,
+} from './kinds';
 
 /**
  * @internal

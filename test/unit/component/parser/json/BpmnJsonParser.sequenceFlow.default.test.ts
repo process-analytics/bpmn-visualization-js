@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdgesAndFlowNodes, verifyEdge } from './JsonTestUtils';
-import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
+import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/kinds';
 import each from 'jest-each';
-import Waypoint from '../../../../../src/model/bpmn/internal/edge/Waypoint';
+import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for default sequence flow', () => {

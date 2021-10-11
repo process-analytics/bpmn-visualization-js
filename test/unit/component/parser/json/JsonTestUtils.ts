@@ -13,20 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ShapeBpmnElementKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventKind } from '../../../../../src/bpmn-visualization';
+import {
+  ShapeBpmnElementKind,
+  ShapeBpmnCallActivityKind,
+  ShapeBpmnMarkerKind,
+  ShapeBpmnSubProcessKind,
+  ShapeBpmnEventKind,
+  GlobalTaskKind,
+  FlowKind,
+} from '../../../../../src/model/bpmn/internal';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { newBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
-import Edge from '../../../../../src/model/bpmn/internal/edge/Edge';
+import { Edge, Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
 import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
-import Waypoint from '../../../../../src/model/bpmn/internal/edge/Waypoint';
 import { ShapeBpmnActivity, ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/SequenceFlowKind';
 import Label from '../../../../../src/model/bpmn/internal/Label';
-import { SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/Flow';
-import { FlowKind } from '../../../../../src/model/bpmn/internal/edge/FlowKind';
-import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/MessageVisibleKind';
+import { SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/flows';
+import { MessageVisibleKind, SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/kinds';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
-import { GlobalTaskKind } from '../../../../../src/model/bpmn/internal/shape/shape-utils';
 import { ParsingMessageCollector, JsonParsingWarning } from '../../../../../src/component/parser/parsing-messages';
 
 export interface ExpectedShape {

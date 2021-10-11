@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import { ShapeUtil } from '../../../../../src/model/bpmn/internal/shape/shape-utils';
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal/shape';
+import { ShapeBpmnElementKind, ShapeUtil } from '../../../../../../src/model/bpmn/internal';
 
 describe('ShapeUtil', () => {
   it('top level bpmn event kinds', () => {

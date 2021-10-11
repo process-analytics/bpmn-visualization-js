@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-import BpmnCanvas from './BpmnCanvas';
+import { BpmnCanvas } from './BpmnCanvas';
 
+/**
+ * @category BPMN Theme
+ */
 export interface ShapeConfiguration extends Size {
   x: number;
   y: number;
   strokeWidth?: number;
 }
 
+/**
+ * @category BPMN Theme
+ */
 export interface IconStyleConfiguration {
   isFilled: boolean;
   fillColor: string;
@@ -30,11 +36,17 @@ export interface IconStyleConfiguration {
   margin: number;
 }
 
+/**
+ * @category BPMN Theme
+ */
 export interface Size {
   width: number;
   height: number;
 }
 
+/**
+ * @category BPMN Theme
+ */
 export interface IconConfiguration {
   originalSize: Size;
   /** If `undefined`, no scaling will be done in {@link BpmnCanvas}. */

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { ShapeBpmnEventKind } from '../../../model/bpmn/internal/shape';
-import { PaintParameter, buildPaintParameter, IconPainterProvider } from './render';
+import { ShapeBpmnEventKind } from '../../../model/bpmn/internal';
+import { BpmnCanvas, PaintParameter, IconPainterProvider } from './render';
+import { buildPaintParameter } from './render/icon-painter';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
-import BpmnCanvas from './render/BpmnCanvas';
 import { mxAbstractCanvas2D } from 'mxgraph';
 import { mxgraph } from '../initializer'; // for types
 

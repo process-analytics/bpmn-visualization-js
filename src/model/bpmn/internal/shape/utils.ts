@@ -14,53 +14,17 @@
  * limitations under the License.
  */
 
-import { ShapeBpmnElementKind } from './ShapeBpmnElementKind';
+import { ShapeBpmnElementKind, ShapeBpmnEventKind } from './kinds';
 import { filter, FilterParameter } from '../../../../component/helpers/array-utils';
 
 /**
- * @internal
- */
-export type BpmnEventKind =
-  | ShapeBpmnElementKind.EVENT_BOUNDARY
-  | ShapeBpmnElementKind.EVENT_START
-  | ShapeBpmnElementKind.EVENT_END
-  | ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW
-  | ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH;
-
-/**
- * @internal
- */
-export type GlobalTaskKind =
-  | ShapeBpmnElementKind.GLOBAL_TASK
-  | ShapeBpmnElementKind.GLOBAL_TASK_MANUAL
-  | ShapeBpmnElementKind.GLOBAL_TASK_SCRIPT
-  | ShapeBpmnElementKind.GLOBAL_TASK_USER
-  | ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE;
-
-/**
- * @internal
+ * Utils to simplify the management of {@link ShapeBpmnElementKind}.
+ * @category BPMN
+ * @experimental This class is mainly used for internal purpose. You may use it to customize the BPMN theme as proposed in the examples but be aware it is subject to change.
  */
 export class ShapeUtil {
-  private static readonly EVENT_KINDS = ShapeUtil.filterKind('Event');
-  private static readonly GATEWAY_KINDS = ShapeUtil.filterKind('Gateway');
-
-  private static TASK_KINDS = ShapeUtil.filterKind('Task', { ignoreCase: true, notStartingWith: 'global' });
-
-  private static ACTIVITY_KINDS = [...ShapeUtil.TASK_KINDS, ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.SUB_PROCESS];
-  private static FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = [
-    ...ShapeUtil.ACTIVITY_KINDS,
-    ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
-    ShapeBpmnElementKind.GATEWAY_INCLUSIVE,
-    // Uncomment when supported
-    // ShapeBpmnElementKind.GATEWAY_COMPLEX,
-  ];
-
-  private static filterKind(suffix: string, options?: FilterParameter): ShapeBpmnElementKind[] {
-    return filter(Object.values(ShapeBpmnElementKind), suffix, options);
-  }
-
   static isEvent(kind: ShapeBpmnElementKind): boolean {
-    return this.EVENT_KINDS.includes(kind);
+    return EVENT_KINDS.includes(kind);
   }
 
   static isCallActivity(kind: ShapeBpmnElementKind): boolean {
@@ -84,28 +48,28 @@ export class ShapeUtil {
   }
 
   static isActivity(kind: ShapeBpmnElementKind): boolean {
-    return this.ACTIVITY_KINDS.includes(kind);
+    return ACTIVITY_KINDS.includes(kind);
   }
 
   static isWithDefaultSequenceFlow(kind: ShapeBpmnElementKind): boolean {
-    return this.FLOWNODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS.includes(kind);
+    return FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS.includes(kind);
   }
 
-  // use the 'top level' wording to not mix with the bpmnEventKinds that currently are the list of non None event subtypes
+  // use the 'top level' wording to not mix with the bpmnEventDefinitionKinds that currently are the list of non None event subtypes
   static topLevelBpmnEventKinds(): ShapeBpmnElementKind[] {
-    return this.EVENT_KINDS;
+    return EVENT_KINDS;
   }
 
   static activityKinds(): ShapeBpmnElementKind[] {
-    return this.ACTIVITY_KINDS;
+    return ACTIVITY_KINDS;
   }
 
   static taskKinds(): ShapeBpmnElementKind[] {
-    return this.TASK_KINDS;
+    return TASK_KINDS;
   }
 
   static gatewayKinds(): ShapeBpmnElementKind[] {
-    return this.GATEWAY_KINDS;
+    return GATEWAY_KINDS;
   }
 
   static flowNodeKinds(): ShapeBpmnElementKind[] {
@@ -116,3 +80,27 @@ export class ShapeUtil {
     return kind == ShapeBpmnElementKind.POOL || kind == ShapeBpmnElementKind.LANE;
   }
 }
+
+function filterKind(suffix: string, options?: FilterParameter): ShapeBpmnElementKind[] {
+  return filter(Object.values(ShapeBpmnElementKind), suffix, options);
+}
+
+const EVENT_KINDS = filterKind('Event');
+const GATEWAY_KINDS = filterKind('Gateway');
+
+const TASK_KINDS = filterKind('Task', { ignoreCase: true, notStartingWith: 'global' });
+
+const ACTIVITY_KINDS = [...TASK_KINDS, ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.SUB_PROCESS];
+const FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = [
+  ...ACTIVITY_KINDS,
+  ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
+  ShapeBpmnElementKind.GATEWAY_INCLUSIVE,
+  // Uncomment when supported
+  // ShapeBpmnElementKind.GATEWAY_COMPLEX,
+];
+
+/**
+ * Elements that are effectively used in BPMN diagram as base for eventDefinition i.e all {@link ShapeBpmnEventKind} elements except {@link ShapeBpmnEventKind.NONE}
+ * @internal
+ */
+export const bpmnEventDefinitionKinds = Object.values(ShapeBpmnEventKind).filter(kind => kind != ShapeBpmnEventKind.NONE);

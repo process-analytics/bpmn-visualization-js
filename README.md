@@ -98,7 +98,7 @@ import { BpmnVisualization } from 'bpmn-visualization';
 let bpmnContent; // your BPMN 2.0 XML content
 // initialize BpmnVisualization and load the diagram
 // 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
-const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container'});
+const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container' });
 bpmnVisualization.load(bpmnContent);
 ```
 

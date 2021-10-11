@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-import BpmnCanvas from './BpmnCanvas';
+import { BpmnCanvas } from './BpmnCanvas';
 import StyleUtils from '../../StyleUtils';
 import { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 import { mxAbstractCanvas2D, mxShape } from 'mxgraph'; // for types
 
+/**
+ * @category BPMN Theme
+ * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
+ */
 export interface PaintParameter {
   canvas: mxAbstractCanvas2D;
   shapeConfig: ShapeConfiguration;
@@ -27,6 +31,9 @@ export interface PaintParameter {
   setIconOriginFunct: (canvas: BpmnCanvas) => void;
 }
 
+/**
+ * @internal
+ */
 export function buildPaintParameter({
   canvas,
   x,
@@ -65,6 +72,11 @@ export function buildPaintParameter({
   };
 }
 
+/**
+ * Default implementation for the icons.
+ * @category BPMN Theme
+ * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that it is subject to change.
+ */
 export class IconPainter {
   paintEmptyIcon(): void {
     // empty by nature
@@ -73,11 +85,11 @@ export class IconPainter {
   /**
    * Utility paint icon methods to easily instantiate a {@link BpmnCanvas} from a {@link PaintParameter}.
    *
-   * @param c                       mxgraph `mxAbstractCanvas2D` in charge of performing the paint operations.
+   * @param canvas                  mxgraph `mxAbstractCanvas2D` in charge of performing the paint operations.
    * @param ratioFromParent         the actual size of the icon will be computed from the shape dimensions using this ratio.
    * @param setIconOriginFunct      called function to set the origin of the icon. Generally, it calls a method of {@link BpmnCanvas}.
-   * @param shape                   dimension and style of the shape where the icon is painted.
-   * @param icon                    style of the icon.
+   * @param shapeConfig             dimension and style of the shape where the icon is painted.
+   * @param iconStyleConfig         style of the icon.
    * @param originalIconSize        original size of the icon used to compute the scaling/ratio in {@link BpmnCanvas}.
    * @protected
    */
@@ -893,6 +905,11 @@ export class IconPainter {
   }
 }
 
+/**
+ * Hold the instance of {@link IconPainter} used by the BPMN Theme.
+ * @category BPMN Theme
+ * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that it is subject to change.
+ */
 export class IconPainterProvider {
   private static instance = new IconPainter();
 
