@@ -21,15 +21,15 @@ jobs:
           enforce_admins: false
           branch: master
 
+      - name: Setup checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_RELEASE_TOKEN }}
       - name: Setup node
         uses: actions/setup-node@v2
         with:
           node-version: '14'
           cache: 'npm'
-      - name: Setup checkout
-        uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GH_RELEASE_TOKEN }}
       - name: Config git
         run: |
           git config --local user.email "62586190+process-analytics-bot@users.noreply.github.com"
