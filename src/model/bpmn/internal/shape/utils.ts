@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ShapeBpmnElementKind, ShapeBpmnEventKind } from './kinds';
+import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from './kinds';
 import { filter, FilterParameter } from '../../../../component/helpers/array-utils';
 
 /**
@@ -55,8 +55,7 @@ export class ShapeUtil {
     return FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS.includes(kind);
   }
 
-  // use the 'top level' wording to not mix with the bpmnEventDefinitionKinds that currently are the list of non None event subtypes
-  static topLevelBpmnEventKinds(): ShapeBpmnElementKind[] {
+  static eventKinds(): ShapeBpmnElementKind[] {
     return EVENT_KINDS;
   }
 
@@ -100,7 +99,7 @@ const FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = [
 ];
 
 /**
- * Elements that are effectively used in BPMN diagram as base for eventDefinition i.e all {@link ShapeBpmnEventKind} elements except {@link ShapeBpmnEventKind.NONE}
+ * Elements that are effectively used in BPMN diagram as base for eventDefinition i.e all {@link ShapeBpmnEventDefinitionKind} elements except {@link ShapeBpmnEventDefinitionKind.NONE}
  * @internal
  */
-export const bpmnEventDefinitionKinds = Object.values(ShapeBpmnEventKind).filter(kind => kind != ShapeBpmnEventKind.NONE);
+export const eventDefinitionKinds = Object.values(ShapeBpmnEventDefinitionKind).filter(kind => kind != ShapeBpmnEventDefinitionKind.NONE);

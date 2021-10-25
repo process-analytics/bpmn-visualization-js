@@ -18,7 +18,7 @@ import {
   ShapeBpmnCallActivityKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
-  ShapeBpmnEventKind,
+  ShapeBpmnEventDefinitionKind,
   GlobalTaskKind,
   FlowKind,
 } from '../../../../../src/model/bpmn/internal';
@@ -255,7 +255,7 @@ export function verifyLabelBounds(label: Label, expectedBounds?: ExpectedBounds)
   }
 }
 
-export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventKind: ShapeBpmnEventKind, expectedNumber: number): BpmnModel {
+export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventDefinitionKind: ShapeBpmnEventDefinitionKind, expectedNumber: number): BpmnModel {
   const model = parseJson(json);
 
   expect(model.lanes).toHaveLength(0);
@@ -264,7 +264,7 @@ export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventKind: ShapeBpm
 
   const events = model.flowNodes.filter(shape => {
     const bpmnElement = shape.bpmnElement;
-    return bpmnElement instanceof ShapeBpmnEvent && (bpmnElement as ShapeBpmnEvent).eventKind === eventKind;
+    return bpmnElement instanceof ShapeBpmnEvent && (bpmnElement as ShapeBpmnEvent).eventDefinitionKind === eventDefinitionKind;
   });
   expect(events).toHaveLength(expectedNumber);
 

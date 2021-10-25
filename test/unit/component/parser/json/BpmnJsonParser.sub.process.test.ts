@@ -18,7 +18,7 @@ import { getEventShapes } from './BpmnJsonParser.event.test';
 import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
-import { ShapeBpmnElementKind, ShapeBpmnEventKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal';
+import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal';
 import { ShapeBpmnEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 
@@ -32,9 +32,9 @@ function expectNoEdgePoolLane(model: BpmnModel): void {
   expect(model.edges).toHaveLength(0);
 }
 
-function verifyEventShape(shape: Shape, expectedShape: ExpectedShape, expectedEventKind: ShapeBpmnEventKind): void {
+function verifyEventShape(shape: Shape, expectedShape: ExpectedShape, expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind): void {
   verifyShape(shape, expectedShape);
-  expect((shape.bpmnElement as ShapeBpmnEvent).eventKind).toEqual(expectedEventKind);
+  expect((shape.bpmnElement as ShapeBpmnEvent).eventDefinitionKind).toEqual(expectedEventDefinitionKind);
 }
 
 describe('parse bpmn as json for sub-process', () => {
@@ -323,7 +323,7 @@ describe('parse bpmn as json for sub-process', () => {
           bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
           bounds: { x: 465, y: 335, width: 10, height: 10 },
         },
-        ShapeBpmnEventKind.TIMER,
+        ShapeBpmnEventDefinitionKind.TIMER,
       );
       verifyEventShape(
         eventShapes[1],
@@ -335,7 +335,7 @@ describe('parse bpmn as json for sub-process', () => {
           bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
           bounds: { x: 565, y: 335, width: 20, height: 20 },
         },
-        ShapeBpmnEventKind.TERMINATE,
+        ShapeBpmnEventDefinitionKind.TERMINATE,
       );
 
       verifyShape(model.flowNodes[2], {
@@ -424,7 +424,7 @@ describe('parse bpmn as json for sub-process', () => {
             bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
             bounds: { x: 465, y: 335, width: 10, height: 10 },
           },
-          ShapeBpmnEventKind.ERROR,
+          ShapeBpmnEventDefinitionKind.ERROR,
         );
       });
     }

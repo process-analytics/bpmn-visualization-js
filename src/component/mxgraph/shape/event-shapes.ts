@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ShapeBpmnEventKind } from '../../../model/bpmn/internal';
+import { ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
 import { BpmnCanvas, PaintParameter, IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import StyleUtils, { StyleDefault } from '../StyleUtils';
@@ -28,16 +28,16 @@ export class EventShape extends mxgraph.mxEllipse {
   protected iconPainter = IconPainterProvider.get();
 
   // refactor: when all/more event types will be supported, we could move to a Record/MappedType
-  private iconPainters: Map<ShapeBpmnEventKind, (paintParameter: PaintParameter) => void> = new Map([
-    [ShapeBpmnEventKind.MESSAGE, (paintParameter: PaintParameter) => this.iconPainter.paintEnvelopeIcon({ ...paintParameter, ratioFromParent: 0.5 })],
-    [ShapeBpmnEventKind.TERMINATE, (paintParameter: PaintParameter) => this.iconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
+  private iconPainters: Map<ShapeBpmnEventDefinitionKind, (paintParameter: PaintParameter) => void> = new Map([
+    [ShapeBpmnEventDefinitionKind.MESSAGE, (paintParameter: PaintParameter) => this.iconPainter.paintEnvelopeIcon({ ...paintParameter, ratioFromParent: 0.5 })],
+    [ShapeBpmnEventDefinitionKind.TERMINATE, (paintParameter: PaintParameter) => this.iconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
     [
-      ShapeBpmnEventKind.TIMER,
+      ShapeBpmnEventDefinitionKind.TIMER,
       (paintParameter: PaintParameter) =>
         this.iconPainter.paintClockIcon({ ...paintParameter, setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(5) }),
     ],
     [
-      ShapeBpmnEventKind.SIGNAL,
+      ShapeBpmnEventDefinitionKind.SIGNAL,
       (paintParameter: PaintParameter) =>
         this.iconPainter.paintTriangleIcon({
           ...paintParameter,
@@ -47,23 +47,23 @@ export class EventShape extends mxgraph.mxEllipse {
         }),
     ],
     [
-      ShapeBpmnEventKind.LINK,
+      ShapeBpmnEventDefinitionKind.LINK,
       (paintParameter: PaintParameter) =>
         this.iconPainter.paintRightArrowIcon({ ...paintParameter, ratioFromParent: 0.55, iconStyleConfig: { ...paintParameter.iconStyleConfig, strokeWidth: 1.5 } }),
     ],
     [
-      ShapeBpmnEventKind.ERROR,
+      ShapeBpmnEventDefinitionKind.ERROR,
       (paintParameter: PaintParameter) =>
         this.iconPainter.paintErrorIcon({ ...paintParameter, ratioFromParent: 0.55, iconStyleConfig: { ...paintParameter.iconStyleConfig, strokeWidth: 1.5 } }),
     ],
     [
-      ShapeBpmnEventKind.COMPENSATION,
+      ShapeBpmnEventDefinitionKind.COMPENSATION,
       (paintParameter: PaintParameter) =>
         this.iconPainter.paintDoubleLeftArrowheadsIcon({ ...paintParameter, ratioFromParent: 0.7, iconStyleConfig: { ...paintParameter.iconStyleConfig, strokeWidth: 1.5 } }),
     ],
-    [ShapeBpmnEventKind.CANCEL, (paintParameter: PaintParameter) => this.iconPainter.paintXCrossIcon({ ...paintParameter, ratioFromParent: 0.78 })],
+    [ShapeBpmnEventDefinitionKind.CANCEL, (paintParameter: PaintParameter) => this.iconPainter.paintXCrossIcon({ ...paintParameter, ratioFromParent: 0.78 })],
     [
-      ShapeBpmnEventKind.ESCALATION,
+      ShapeBpmnEventDefinitionKind.ESCALATION,
       (paintParameter: PaintParameter) =>
         this.iconPainter.paintUpArrowheadIcon({
           ...paintParameter,
@@ -72,7 +72,7 @@ export class EventShape extends mxgraph.mxEllipse {
         }),
     ],
     [
-      ShapeBpmnEventKind.CONDITIONAL,
+      ShapeBpmnEventDefinitionKind.CONDITIONAL,
       (paintParameter: PaintParameter) =>
         this.iconPainter.paintListIcon({ ...paintParameter, ratioFromParent: 0.6, iconStyleConfig: { ...paintParameter.iconStyleConfig, strokeWidth: 1.5 } }),
     ],
@@ -98,8 +98,8 @@ export class EventShape extends mxgraph.mxEllipse {
   // This will be removed after implementation of all supported events
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private markNonFullyRenderedEvents(c: mxAbstractCanvas2D): void {
-    // const eventKind = StyleUtils.getBpmnEventKind(this.style);
-    // if (eventKind == ShapeBpmnEventKind.CONDITIONAL) {
+    // const eventDefinitionKind = StyleUtils.getBpmnEventDefinitionKind(this.style);
+    // if (eventDefinitionKind == ShapeBpmnEventDefinitionKind.CONDITIONAL) {
     //   c.setFillColor('deeppink');
     //   c.setFillAlpha(0.3);
     // }
@@ -110,7 +110,7 @@ export class EventShape extends mxgraph.mxEllipse {
   }
 
   private paintInnerShape(paintParameter: PaintParameter): void {
-    const paintIcon = this.iconPainters.get(StyleUtils.getBpmnEventKind(this.style)) || (() => this.iconPainter.paintEmptyIcon());
+    const paintIcon = this.iconPainters.get(StyleUtils.getBpmnEventDefinitionKind(this.style)) || (() => this.iconPainter.paintEmptyIcon());
     paintIcon(paintParameter);
   }
 

@@ -88,8 +88,8 @@ function buildExpectedStyle(
     | ExpectedCallActivityModelElement,
 ): string {
   let expectedStyle: string = expectedModel.kind;
-  if ('eventKind' in expectedModel) {
-    expectedStyle = expectedStyle + `.*bpmn.eventKind=${expectedModel.eventKind}`;
+  if ('eventDefinitionKind' in expectedModel) {
+    expectedStyle = expectedStyle + `.*bpmn.eventDefinitionKind=${expectedModel.eventDefinitionKind}`;
   }
   if ('subProcessKind' in expectedModel) {
     expectedStyle = expectedStyle + `.*bpmn.subProcessKind=${expectedModel.subProcessKind}`;

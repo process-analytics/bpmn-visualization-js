@@ -19,7 +19,7 @@ import {
   FlowKind,
   ShapeBpmnElementKind,
   ShapeBpmnEventBasedGatewayKind,
-  ShapeBpmnEventKind,
+  ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
 } from '../../../src/bpmn-visualization';
@@ -141,7 +141,7 @@ export interface ExpectedShapeModelElement {
 }
 
 export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
-  eventKind: ShapeBpmnEventKind;
+  eventDefinitionKind: ShapeBpmnEventDefinitionKind;
 }
 
 export interface ExpectedSubProcessModelElement extends ExpectedShapeModelElement {

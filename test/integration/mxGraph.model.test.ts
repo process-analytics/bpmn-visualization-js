@@ -17,7 +17,7 @@ import {
   MarkerIdentifier,
   ShapeBpmnElementKind,
   ShapeBpmnEventBasedGatewayKind,
-  ShapeBpmnEventKind,
+  ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
 } from '../../src/bpmn-visualization';
@@ -56,55 +56,55 @@ describe('mxGraph model', () => {
 
     // start event
     expect('start_event_none_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.NONE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
       font: expectedBoldFont,
       label: 'None Start Event',
       parentId: 'participant_1_id',
     });
     expect('start_event_timer_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.TIMER,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
       label: 'Timer Start Event',
       parentId: 'participant_1_id',
     });
     expect('start_event_timer_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.TIMER,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
       label: 'Timer Start Event On Top',
       parentId: 'participant_1_id',
     });
     expect('start_event_message_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       label: 'Message Start Event',
       parentId: 'participant_1_id',
     });
     expect('start_event_message_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       label: 'Message Start Event On Top',
       parentId: 'participant_1_id',
     });
     expect('start_event_signal_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       label: 'Signal Start Event',
       parentId: 'participant_1_id',
     });
     expect('start_event_signal_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       label: 'Signal Start Event On Top',
       parentId: 'participant_1_id',
     });
     expect('start_event_conditional_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL,
       label: 'Conditional Start Event',
       parentId: 'participant_1_id',
     });
     expect('start_event_conditional_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL,
       label: 'Conditional Start Event On Top',
       parentId: 'participant_1_id',
     });
 
     // end event
     expect('end_event_terminate_id').toBeEndEvent({
-      eventKind: ShapeBpmnEventKind.TERMINATE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TERMINATE,
       font: {
         isBold: false,
         isItalic: true,
@@ -117,7 +117,7 @@ describe('mxGraph model', () => {
       parentId: 'participant_1_id',
     });
     expect('end_event_terminate_on_top_id').toBeEndEvent({
-      eventKind: ShapeBpmnEventKind.TERMINATE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TERMINATE,
       font: {
         isBold: false,
         isItalic: true,
@@ -130,69 +130,69 @@ describe('mxGraph model', () => {
       parentId: 'participant_1_id',
     });
     expect('end_event_message_id').toBeEndEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       label: 'Message End Event',
       parentId: 'participant_1_id',
     });
     expect('end_event_message_on_top_id').toBeEndEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       label: 'Message End Event On Top',
       parentId: 'participant_1_id',
     });
     expect('end_event_signal_id').toBeEndEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       label: 'Signal End Event',
       parentId: 'participant_1_id',
     });
     expect('end_event_signal_on_top_id').toBeEndEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       label: 'Signal End Event On Top',
       parentId: 'participant_1_id',
     });
     expect('end_event_error_id').toBeEndEvent({
-      eventKind: ShapeBpmnEventKind.ERROR,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ERROR,
       label: 'Error End Event',
       parentId: 'participant_1_id',
     });
     expect('end_event_error_on_top_id').toBeEndEvent({
-      eventKind: ShapeBpmnEventKind.ERROR,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ERROR,
       label: 'Error End Event On Top',
       parentId: 'participant_1_id',
     });
     expect('end_event_compensate_id').toBeEndEvent({
-      eventKind: ShapeBpmnEventKind.COMPENSATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.COMPENSATION,
       label: 'Compensate End Event',
       parentId: 'participant_1_id',
     });
     expect('end_event_compensate_on_top_id').toBeEndEvent({
-      eventKind: ShapeBpmnEventKind.COMPENSATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.COMPENSATION,
       label: 'Compensate End Event On Top',
       parentId: 'participant_1_id',
     });
     expect('end_event_cancel_id').toBeEndEvent({
-      eventKind: ShapeBpmnEventKind.CANCEL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CANCEL,
       label: 'Cancel End Event',
       parentId: 'participant_1_id',
     });
     expect('end_event_cancel_on_top_id').toBeEndEvent({
-      eventKind: ShapeBpmnEventKind.CANCEL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CANCEL,
       label: 'Cancel End Event On Top',
       parentId: 'participant_1_id',
     });
     expect('end_event_escalation_id').toBeEndEvent({
-      eventKind: ShapeBpmnEventKind.ESCALATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ESCALATION,
       label: 'Escalation End Event',
       parentId: 'participant_1_id',
     });
     expect('end_event_escalation_on_top_id').toBeEndEvent({
-      eventKind: ShapeBpmnEventKind.ESCALATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ESCALATION,
       label: 'Escalation End Event On Top',
       parentId: 'participant_1_id',
     });
 
     // throw intermediate event
     expect('intermediate_throw_event_none_id').toBeIntermediateThrowEvent({
-      eventKind: ShapeBpmnEventKind.NONE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
       font: {
         isBold: false,
         isItalic: false,
@@ -205,201 +205,201 @@ describe('mxGraph model', () => {
       parentId: 'participant_1_id',
     });
     expect('intermediate_throw_event_message_id').toBeIntermediateThrowEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       label: 'Throw Message Intermediate Event',
       parentId: 'participant_1_id',
     });
     expect('intermediate_throw_event_message_on_top_id').toBeIntermediateThrowEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       label: 'Throw Message Intermediate Event On Top',
       parentId: 'participant_1_id',
     });
     expect('intermediate_throw_event_signal_id').toBeIntermediateThrowEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       label: 'Throw Signal Intermediate Event',
       parentId: 'participant_1_id',
     });
     expect('intermediate_throw_event_signal_on_top_id').toBeIntermediateThrowEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       label: 'Throw Signal Intermediate Event On Top',
       parentId: 'participant_1_id',
     });
     expect('intermediate_throw_event_link_id').toBeIntermediateThrowEvent({
-      eventKind: ShapeBpmnEventKind.LINK,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.LINK,
       label: 'Throw Link Intermediate Event',
       parentId: 'participant_1_id',
     });
     expect('intermediate_throw_event_link_on_top_id').toBeIntermediateThrowEvent({
-      eventKind: ShapeBpmnEventKind.LINK,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.LINK,
       label: 'Throw Link Intermediate Event On Top',
       parentId: 'participant_1_id',
     });
     expect('intermediate_throw_event_compensate_id').toBeIntermediateThrowEvent({
-      eventKind: ShapeBpmnEventKind.COMPENSATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.COMPENSATION,
       label: 'Throw Compensate Intermediate Event',
       parentId: 'participant_1_id',
     });
     expect('intermediate_throw_event_compensate_on_top_id').toBeIntermediateThrowEvent({
-      eventKind: ShapeBpmnEventKind.COMPENSATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.COMPENSATION,
       label: 'Throw Compensate Intermediate Event On Top',
       parentId: 'participant_1_id',
     });
     expect('intermediate_throw_event_escalation_id').toBeIntermediateThrowEvent({
-      eventKind: ShapeBpmnEventKind.ESCALATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ESCALATION,
       label: 'Throw Escalation Intermediate Event',
       parentId: 'participant_1_id',
     });
     expect('intermediate_throw_event_escalation_on_top_id').toBeIntermediateThrowEvent({
-      eventKind: ShapeBpmnEventKind.ESCALATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ESCALATION,
       label: 'Throw Escalation Intermediate Event On Top',
       parentId: 'participant_1_id',
     });
 
     // catch intermediate event
     expect('intermediate_catch_event_message_id').toBeIntermediateCatchEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       label: 'Catch Message Intermediate Event',
       parentId: 'participant_1_id',
     });
     expect('intermediate_catch_event_message_on_top_id').toBeIntermediateCatchEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       label: 'Catch Message Intermediate Event On Top',
       parentId: 'participant_1_id',
     });
     expect('intermediate_catch_event_timer_id').toBeIntermediateCatchEvent({
-      eventKind: ShapeBpmnEventKind.TIMER,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
       label: 'Catch Timer Intermediate Event',
       parentId: 'participant_1_id',
     });
     expect('intermediate_catch_event_timer_on_top_id').toBeIntermediateCatchEvent({
-      eventKind: ShapeBpmnEventKind.TIMER,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
       label: 'Catch Timer Intermediate Event On Top',
       parentId: 'participant_1_id',
     });
     expect('intermediate_catch_event_signal_id').toBeIntermediateCatchEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       label: 'Catch Signal Intermediate Event',
       parentId: 'participant_1_id',
     });
     expect('intermediate_catch_event_signal_on_top_id').toBeIntermediateCatchEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       label: 'Catch Signal Intermediate Event On Top',
       parentId: 'participant_1_id',
     });
     expect('intermediate_catch_event_link_id').toBeIntermediateCatchEvent({
-      eventKind: ShapeBpmnEventKind.LINK,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.LINK,
       label: 'Catch Link Intermediate Event',
       parentId: 'participant_1_id',
     });
     expect('intermediate_catch_event_link_on_top_id').toBeIntermediateCatchEvent({
-      eventKind: ShapeBpmnEventKind.LINK,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.LINK,
       label: 'Catch Link Intermediate Event On Top',
       parentId: 'participant_1_id',
     });
     expect('intermediate_catch_event_conditional_id').toBeIntermediateCatchEvent({
-      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL,
       label: 'Catch Conditional Intermediate Event',
       parentId: 'participant_1_id',
     });
     expect('intermediate_catch_event_conditional_on_top_id').toBeIntermediateCatchEvent({
-      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL,
       label: 'Catch Conditional Intermediate Event On Top',
       parentId: 'participant_1_id',
     });
 
     // boundary event: interrupting
     expect('boundary_event_interrupting_message_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       isInterrupting: true,
       label: 'Interrupting Message Boundary Intermediate Event',
       parentId: 'user_task_id',
     });
     expect('boundary_event_interrupting_message_on_top_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       isInterrupting: true,
       label: 'Interrupting Message Boundary Intermediate Event On Top',
       parentId: 'user_task_id',
     });
     expect('boundary_event_interrupting_timer_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.TIMER,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
       isInterrupting: true,
       label: 'Interrupting Timer Boundary Intermediate Event',
       parentId: 'send_task_id',
     });
     expect('boundary_event_interrupting_timer_on_top_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.TIMER,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
       isInterrupting: true,
       label: 'Interrupting Timer Boundary Intermediate Event On Top',
       parentId: 'send_task_id',
     });
     expect('boundary_event_interrupting_signal_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       isInterrupting: true,
       label: 'Interrupting Signal Boundary Intermediate Event',
       parentId: 'service_task_id',
     });
     expect('boundary_event_interrupting_signal_on_top_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       isInterrupting: true,
       label: 'Interrupting Signal Boundary Intermediate Event On Top',
       parentId: 'service_task_id',
     });
     expect('boundary_event_interrupting_error_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.ERROR,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ERROR,
       isInterrupting: true,
       label: 'Interrupting Error Boundary Intermediate Event',
       parentId: 'task_id',
     });
     expect('boundary_event_interrupting_error_on_top_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.ERROR,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ERROR,
       isInterrupting: true,
       label: 'Interrupting Error Boundary Intermediate Event On Top',
       parentId: 'task_id',
     });
     expect('boundary_event_interrupting_compensate_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.COMPENSATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.COMPENSATION,
       isInterrupting: true,
       label: 'Interrupting Compensate Boundary Intermediate Event',
       parentId: 'business_rule_task_id',
     });
     expect('boundary_event_interrupting_compensate_on_top_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.COMPENSATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.COMPENSATION,
       isInterrupting: true,
       label: 'Interrupting Compensate Boundary Intermediate Event On Top',
       parentId: 'business_rule_task_id',
     });
     expect('boundary_event_interrupting_cancel_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.CANCEL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CANCEL,
       isInterrupting: true,
       label: 'Interrupting Cancel Boundary Intermediate Event',
       parentId: 'receive_task_non_instantiating_id',
     });
     expect('boundary_event_interrupting_cancel_on_top_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.CANCEL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CANCEL,
       isInterrupting: true,
       label: 'Interrupting Cancel Boundary Intermediate Event On Top',
       parentId: 'receive_task_non_instantiating_id',
     });
     expect('boundary_event_interrupting_conditional_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL,
       isInterrupting: true,
       label: 'Interrupting Conditional Boundary Intermediate Event',
       parentId: 'receive_task_instantiating_id',
     });
     expect('boundary_event_interrupting_conditional_on_top_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL,
       isInterrupting: true,
       label: 'Interrupting Conditional Boundary Intermediate Event On Top',
       parentId: 'receive_task_instantiating_id',
     });
     expect('boundary_event_interrupting_escalation_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.ESCALATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ESCALATION,
       isInterrupting: true,
       label: 'Interrupting Escalation Boundary Intermediate Event',
       parentId: 'receive_task_non_instantiating_with_loop_id',
     });
     expect('boundary_event_interrupting_escalation_on_top_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.ESCALATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ESCALATION,
       isInterrupting: true,
       label: 'Interrupting Escalation Boundary Intermediate Event On Top',
       parentId: 'receive_task_non_instantiating_with_loop_id',
@@ -407,61 +407,61 @@ describe('mxGraph model', () => {
 
     // boundary event: non-interrupting
     expect('boundary_event_non_interrupting_message_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       isInterrupting: false,
       label: 'Non-interrupting Message Boundary Intermediate Event',
       parentId: 'collapsed_embedded_sub_process_with_loop_id',
     });
     expect('boundary_event_non_interrupting_message_on_top_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       isInterrupting: false,
       label: 'Non-interrupting Message Boundary Intermediate Event On Top',
       parentId: 'collapsed_embedded_sub_process_with_parallel_multi_instance_id',
     });
     expect('boundary_event_non_interrupting_timer_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.TIMER,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
       isInterrupting: false,
       label: 'Non-interrupting Timer Boundary Intermediate Event',
       parentId: 'collapsed_call_activity_with_parallel_multi_instance_id',
     });
     expect('boundary_event_non_interrupting_timer_on_top_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.TIMER,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
       isInterrupting: false,
       label: 'Non-interrupting Timer Boundary Intermediate Event On Top',
       parentId: 'collapsed_embedded_sub_process_with_sequential_multi_instance_id',
     });
     expect('boundary_event_non_interrupting_signal_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       isInterrupting: false,
       label: 'Non-interrupting Signal Boundary Intermediate Event',
       parentId: 'collapsed_call_activity_id',
     });
     expect('boundary_event_non_interrupting_signal_on_top_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       isInterrupting: false,
       label: 'Non-interrupting Signal Boundary Intermediate Event On Top',
       parentId: 'collapsed_call_activity_id',
     });
     expect('boundary_event_non_interrupting_conditional_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL,
       isInterrupting: false,
       label: 'Non-interrupting Conditional Boundary Intermediate Event',
       parentId: 'collapsed_call_activity_with_loop_id',
     });
     expect('boundary_event_non_interrupting_conditional_on_top_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL,
       isInterrupting: false,
       label: 'Non-interrupting Conditional Boundary Intermediate Event On Top',
       parentId: 'collapsed_call_activity_with_loop_id',
     });
     expect('boundary_event_non_interrupting_escalation_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.ESCALATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ESCALATION,
       isInterrupting: false,
       label: 'Non-interrupting Escalation Boundary Intermediate Event',
       parentId: 'collapsed_call_activity_with_sequential_multi_instance_id',
     });
     expect('boundary_event_non_interrupting_escalation_on_top_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.ESCALATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ESCALATION,
       isInterrupting: false,
       label: 'Non-interrupting Escalation Boundary Intermediate Event On Top',
       parentId: 'collapsed_call_activity_with_sequential_multi_instance_id',
@@ -604,7 +604,7 @@ describe('mxGraph model', () => {
 
     // Elements of collapsed Sub Process
     expect('message_boundary_event_attached_to_collapsed_embedded_sub_process_id').toBeBoundaryEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       label: 'Interrupting Message Boundary Event attached to collapsed Sub-Process',
       parentId: 'collapsed_embedded_sub_process_id',
       isInterrupting: true,
@@ -614,85 +614,85 @@ describe('mxGraph model', () => {
     // Start Event in Event Sub Process
     // Interrupting Start Event
     expect('start_event_interrupting_message_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       label: 'Interrupting Message Start Event In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
     expect('start_event_interrupting_message_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       label: 'Interrupting Message Start Event On Top In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
     expect('start_event_interrupting_timer_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.TIMER,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
       label: 'Interrupting Timer Start Event In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
     expect('start_event_interrupting_timer_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.TIMER,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
       label: 'Interrupting Timer Start Event On Top In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
     expect('start_event_interrupting_signal_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       label: 'Interrupting Signal Start Event In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
     expect('start_event_interrupting_signal_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       label: 'Interrupting Signal Start Event On Top In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
     expect('start_event_interrupting_error_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.ERROR,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ERROR,
       label: 'Interrupting Error Start Event In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
     expect('start_event_interrupting_error_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.ERROR,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ERROR,
       label: 'Interrupting Error Start Event On Top In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
     expect('start_event_interrupting_compensate_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.COMPENSATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.COMPENSATION,
       label: 'Interrupting Compensate Start Event In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
     expect('start_event_interrupting_compensate_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.COMPENSATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.COMPENSATION,
       label: 'Interrupting Compensate Start Event On Top In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
     expect('start_event_interrupting_conditional_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL,
       label: 'Interrupting Conditional Start Event In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
     expect('start_event_interrupting_conditional_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL,
       label: 'Interrupting Conditional Start Event On Top In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
     expect('start_event_interrupting_escalation_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.ESCALATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ESCALATION,
       label: 'Interrupting Escalation Start Event In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
     });
     expect('start_event_interrupting_escalation_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.ESCALATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ESCALATION,
       label: 'Interrupting Escalation Start Event On Top In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: true,
@@ -700,61 +700,61 @@ describe('mxGraph model', () => {
 
     // Non-interrupting Start Event
     expect('start_event_non_interrupting_message_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       label: 'Non-interrupting Message Start Event In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: false,
     });
     expect('start_event_non_interrupting_message_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.MESSAGE,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       label: 'Non-interrupting Message Start Event On Top In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: false,
     });
     expect('start_event_non_interrupting_timer_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.TIMER,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
       label: 'Non-interrupting Timer Start Event In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: false,
     });
     expect('start_event_non_interrupting_timer_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.TIMER,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
       label: 'Non-interrupting Timer Start Event On Top In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: false,
     });
     expect('start_event_non_interrupting_signal_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       label: 'Non-interrupting Signal Start Event In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: false,
     });
     expect('start_event_non_interrupting_signal_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.SIGNAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       label: 'Non-interrupting Signal Start Event On Top In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: false,
     });
     expect('start_event_non_interrupting_conditional_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL,
       label: 'Non-interrupting Conditional Start Event In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: false,
     });
     expect('start_event_non_interrupting_conditional_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.CONDITIONAL,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL,
       label: 'Non-interrupting Conditional Start Event On Top In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: false,
     });
     expect('start_event_non_interrupting_escalation_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.ESCALATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ESCALATION,
       label: 'Non-interrupting Escalation Start Event In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: false,
     });
     expect('start_event_non_interrupting_escalation_on_top_id').toBeStartEvent({
-      eventKind: ShapeBpmnEventKind.ESCALATION,
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.ESCALATION,
       label: 'Non-interrupting Escalation Start Event On Top In Sub-Process',
       parentId: 'expanded_event_sub_process_with_start_events_id',
       isInterrupting: false,
@@ -1382,7 +1382,7 @@ describe('mxGraph model', () => {
         expect('endEvent_message_1').toBeEndEvent({
           label: 'message end 2',
           parentId: 'lane_02',
-          eventKind: ShapeBpmnEventKind.MESSAGE,
+          eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
           overlays: [
             { label: '7', horizontalAlign: 'right', verticalAlign: 'top' },
             { label: '8', horizontalAlign: 'left', verticalAlign: 'bottom' },

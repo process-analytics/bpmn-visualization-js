@@ -15,7 +15,7 @@
  */
 
 import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
-import { bpmnEventDefinitionKinds } from '../../../../model/bpmn/internal/shape/utils';
+import { eventDefinitionKinds } from '../../../../model/bpmn/internal/shape/utils';
 import { TEventDefinition } from '../../../../model/bpmn/json/baseElement/rootElement/eventDefinition';
 import { ConvertedElements } from './utils';
 import { ensureIsArray } from '../../../helpers/array-utils';
@@ -27,11 +27,11 @@ export default class EventDefinitionConverter {
   constructor(private convertedElements: ConvertedElements) {}
 
   deserialize(definitions: TDefinitions): void {
-    bpmnEventDefinitionKinds.forEach(eventKind => {
+    eventDefinitionKinds.forEach(eventDefinitionKind => {
       // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
-      const eventDefinitions: string | TEventDefinition | (string | TEventDefinition)[] = definitions[eventKind + 'EventDefinition'];
+      const eventDefinitions: string | TEventDefinition | (string | TEventDefinition)[] = definitions[eventDefinitionKind + 'EventDefinition'];
       ensureIsArray<TEventDefinition>(eventDefinitions, true).forEach(eventDefinition =>
-        this.convertedElements.registerEventDefinitionsOfDefinition(eventDefinition.id, eventKind),
+        this.convertedElements.registerEventDefinitionsOfDefinition(eventDefinition.id, eventDefinitionKind),
       );
     });
   }

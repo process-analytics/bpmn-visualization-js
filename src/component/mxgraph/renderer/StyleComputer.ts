@@ -77,7 +77,7 @@ export default class StyleComputer {
   }
 
   private static computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, styleValues: Map<string, string | number>): void {
-    styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_KIND, bpmnElement.eventKind);
+    styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_DEFINITION_KIND, bpmnElement.eventDefinitionKind);
 
     if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
       styleValues.set(StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));

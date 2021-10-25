@@ -19,7 +19,7 @@ import BpmnModel from '../../../../src/model/bpmn/internal/BpmnModel';
 import { Edge } from '../../../../src/model/bpmn/internal/edge/edge';
 import { SequenceFlow } from '../../../../src/model/bpmn/internal/edge/flows';
 import Shape from '../../../../src/model/bpmn/internal/shape/Shape';
-import { ShapeBpmnElementKind, ShapeBpmnEventKind } from '../../../../src/model/bpmn/internal';
+import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../../src/model/bpmn/internal';
 import ShapeBpmnElement, { ShapeBpmnStartEvent } from '../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import { expectLane, expectPool, expectSequenceFlow, expectStartEvent } from '../../helpers/bpmn-semantic-utils';
 
@@ -42,7 +42,7 @@ function sequenceFlowInModel(id: string, name: string): BpmnModel {
 
 function startEventInModel(id: string, name: string): BpmnModel {
   const bpmnModel = newBpmnModel();
-  bpmnModel.flowNodes.push(new Shape(`Shape_${id}`, new ShapeBpmnStartEvent(id, name, ShapeBpmnEventKind.TIMER, 'parentId')));
+  bpmnModel.flowNodes.push(new Shape(`Shape_${id}`, new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, 'parentId')));
   return bpmnModel;
 }
 
