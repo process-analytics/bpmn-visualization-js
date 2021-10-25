@@ -143,7 +143,7 @@
     "tailwindcss": "^2.2.17",
     "ts-jest": "^27.0.7",
     "typedoc": "^0.22.6",
-    "typescript": "^4.4.3"
+    "typescript": "^4.4.4"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
