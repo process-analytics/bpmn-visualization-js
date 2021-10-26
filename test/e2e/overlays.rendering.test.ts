@@ -44,7 +44,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.0026, // max 0.2541247067242236%
           macos: 0.0025, // max 0.2456999041707375%
-          windows: 0.001, // max 0.09070811014064706%
+          windows: 0.0024, // max 0.2350932032529674%
         },
       ],
       [
@@ -52,7 +52,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.0013, // 0.12872847155422917%
           macos: 0.0031, // 0.3000623172666472%
-          windows: 0.0002, // 0.017926897177755752%
+          windows: 0.0013, // 0.12965038147577657%
         },
       ],
       [
@@ -60,7 +60,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.0021, // max 0.20566996103513757%
           macos: 0.0019, // max 0.18540603435701633%
-          windows: 0.0006, // max 0.05408166283820126%
+          windows: 0.0018, // max 0.17718145021319295%
         },
       ],
     ]);
@@ -333,7 +333,7 @@ describe('Overlay style', () => {
           {
             linux: 0.00001, // 0.0003248438377401186%
             macos: 0.006, // 0.5500536579274629%
-            windows: 0.0033, // 0.3214844457131605%
+            windows: 0.0086, // 0.8581313833777582%
           },
         ],
         [
