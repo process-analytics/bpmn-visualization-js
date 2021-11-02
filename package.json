@@ -99,7 +99,7 @@
     "@types/lodash.debounce": "^4.0.6",
     "@types/lodash.throttle": "^4.1.6",
     "@types/minimist": "^1.2.2",
-    "@typescript-eslint/eslint-plugin": "^5.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
     "@typescript-eslint/parser": "^5.1.0",
     "asciidoctor": "^2.2.5",
     "autoprefixer": "^10.4.0",
