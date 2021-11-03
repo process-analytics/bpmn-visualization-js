@@ -15,7 +15,7 @@
  */
 
 import { BpmnMxGraph } from './BpmnMxGraph';
-import { StyleIdentifier } from './StyleUtils';
+import { BpmnStyleIdentifier } from './StyleUtils';
 import { Overlay } from '../registry';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { ensureIsArray } from '../helpers/array-utils';
@@ -38,7 +38,7 @@ export default class MxGraphCellUpdater {
     }
     const view = this.graph.getView();
     const state = view.getState(mxCell);
-    state.style[StyleIdentifier.BPMN_STYLE_EXTRA_CSS_CLASSES] = cssClasses;
+    state.style[BpmnStyleIdentifier.EXTRA_CSS_CLASSES] = cssClasses;
     state.shape.apply(state);
     state.shape.redraw();
   }
