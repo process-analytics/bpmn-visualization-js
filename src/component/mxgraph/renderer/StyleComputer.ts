@@ -27,7 +27,7 @@ import {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { StyleIdentifier } from '../StyleUtils';
+import { BpmnStyleIdentifier } from '../StyleUtils';
 import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import { Font } from '../../../model/bpmn/internal/Label';
@@ -69,33 +69,33 @@ export default class StyleComputer {
       // In BPMN, isHorizontal is for the Shape
       styleValues.set(mxgraph.mxConstants.STYLE_HORIZONTAL, shape.isHorizontal ? '0' : '1');
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
-      styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, String(bpmnElement.instantiate));
-      styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
+      styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
+      styleValues.set(BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
     }
 
     return styleValues;
   }
 
   private static computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, styleValues: Map<string, string | number>): void {
-    styleValues.set(StyleIdentifier.BPMN_STYLE_EVENT_DEFINITION_KIND, bpmnElement.eventDefinitionKind);
+    styleValues.set(BpmnStyleIdentifier.EVENT_DEFINITION_KIND, bpmnElement.eventDefinitionKind);
 
     if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
-      styleValues.set(StyleIdentifier.BPMN_STYLE_IS_INTERRUPTING, String(bpmnElement.isInterrupting));
+      styleValues.set(BpmnStyleIdentifier.IS_INTERRUPTING, String(bpmnElement.isInterrupting));
     }
   }
 
   private static computeActivityShapeStyle(bpmnElement: ShapeBpmnActivity, styleValues: Map<string, string | number>): void {
     if (bpmnElement instanceof ShapeBpmnSubProcess) {
-      styleValues.set(StyleIdentifier.BPMN_STYLE_SUB_PROCESS_KIND, bpmnElement.subProcessKind);
+      styleValues.set(BpmnStyleIdentifier.SUB_PROCESS_KIND, bpmnElement.subProcessKind);
     } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
-      styleValues.set(StyleIdentifier.BPMN_STYLE_INSTANTIATING, String(bpmnElement.instantiate));
+      styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
     } else if (bpmnElement instanceof ShapeBpmnCallActivity) {
-      styleValues.set(StyleIdentifier.BPMN_STYLE_GLOBAL_TASK_KIND, bpmnElement.globalTaskKind);
+      styleValues.set(BpmnStyleIdentifier.GLOBAL_TASK_KIND, bpmnElement.globalTaskKind);
     }
 
     const markers: ShapeBpmnMarkerKind[] = bpmnElement.markers;
     if (markers.length > 0) {
-      styleValues.set(StyleIdentifier.BPMN_STYLE_MARKERS, markers.join(','));
+      styleValues.set(BpmnStyleIdentifier.MARKERS, markers.join(','));
     }
   }
 
@@ -158,7 +158,7 @@ export default class StyleComputer {
   }
 
   computeMessageFlowIconStyle(edge: Edge): string {
-    return `shape=${StyleIdentifier.BPMN_STYLE_MESSAGE_FLOW_ICON};${StyleIdentifier.BPMN_STYLE_IS_INITIATING}=${edge.messageVisibleKind}`;
+    return `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${edge.messageVisibleKind}`;
   }
 
   private static getFontStyleValue(font: Font): number {
