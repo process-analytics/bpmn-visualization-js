@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { CDPSession, ChromiumBrowserContext, Page } from 'playwright';
-import { Protocol } from 'playwright/types/protocol';
 
 // Workarounds no Metrics API in Playwright: https://github.com/microsoft/playwright/issues/590
 // inspired from https://github.com/puppeteer/puppeteer/blob/v7.0.4/src/common/Page.ts
@@ -33,6 +32,22 @@ export interface Metrics {
   TaskDuration?: number;
   JSHeapUsedSize?: number;
   JSHeapTotalSize?: number;
+}
+
+/**
+ * Run-time execution metric.
+ *
+ * Workaround: redefined here as the Protocol module, that defines the Performance.Metric interface, is no more exported in playwright@1.16.0
+ */
+interface Metric {
+  /**
+   * Metric name.
+   */
+  name: string;
+  /**
+   * Metric value.
+   */
+  value: number;
 }
 
 export class ChromiumMetricsCollector {
@@ -76,7 +91,7 @@ const supportedMetrics = new Set<string>([
   'JSHeapTotalSize',
 ]);
 
-function buildMetricsObject(metrics?: Array<Protocol.Performance.Metric>): Metrics {
+function buildMetricsObject(metrics?: Array<Metric>): Metrics {
   const result: Metrics = {};
   for (const metric of metrics || []) {
     if (supportedMetrics.has(metric.name)) {

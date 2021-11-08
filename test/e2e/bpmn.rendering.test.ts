@@ -36,8 +36,9 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'flows.message.02.labels.and.complex.paths',
         {
-          macos: 0.0011, // 0.10876549756859696%
-          windows: 0.004, // 0.39686093001266576%
+          linux: 0.0007, // 0.06668052776724888%
+          macos: 0.0018, // 0.17219315784514633%
+          windows: 0.0047, // 0.46994372519594263%
         },
       ],
       [
@@ -57,25 +58,23 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.01.general',
         {
-          linux: 0.00001, // 0.0004582915575812585%
-          macos: 0.0065, // 0.6444562128298581%
-          windows: 0.0051, // 0.5038352359842735%
+          linux: 0.0063, // 0.6220830831694446%
+          windows: 0.0095, // 0.9454259810923071%
         },
       ],
       [
         'labels.02.position.and.line.breaks',
         {
-          linux: 0.0001, // 0.009454284793986023%
-          macos: 0.008, // 0.7007987011546701%
-          windows: 0.006, // 0.5723265544613665%
+          linux: 0.0086, // 0.8530261049808807%
+          windows: 0.082, // 0.8197899179969159%
         },
       ],
       [
         'labels.03.default.position',
         {
-          linux: 0.00001, // 0.0008459985669673209%
-          macos: 0.005, // 0.4666976128188338%
-          windows: 0.0032, // 0.3130780811589351%
+          linux: 0.0033, // 0.3274740999744119%
+          macos: 0.0073, // 0.7297300805459317%
+          windows: 0.0064, // 0.6332698717012919%
         },
       ],
       [
@@ -103,9 +102,9 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'pools.03.black.box',
         {
-          linux: 0.00005, // 0.0043243364134193385%
-          macos: 0.0008, // 0.07646269456225152%
-          windows: 0.0013, // 0.12511544978087707%
+          linux: 0.0017, // 0.16083207782319198%
+          macos: 0.0018, // 0.17300897532621654%
+          windows: 0.0026, // 0.25283466417285183%
         },
       ],
       // tests without labels
@@ -161,20 +160,20 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         'labels.01.general',
         {
           // TODO possible rendering issue so high threshold value
-          linux: 0.0236, // 2.3545757111724908%
+          linux: 0.0253, // 2.5290364964082106%
           macos: 0.0283, // 2.828212392182683%
           // very high threshold
-          windows: 0.1344, // 13.436805827534704%
+          windows: 0.128, // 12.78746528557091%
         },
       ],
       [
         'labels.02.position.and.line.breaks',
         {
           // TODO possible rendering issue so high threshold value
-          linux: 0.0608, // 6.072971674918715%
-          macos: 0.0659, // 6.584324708503564%
+          linux: 0.031, // 3.08975009972805%
+          macos: 0.025, // 2.478877395928847%
           // very high threshold
-          windows: 0.1528, // 15.27597238917916%
+          windows: 0.156, // 15.594367802739583%
         },
       ],
       [
@@ -259,14 +258,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         'labels.01.general',
         {
           // TODO possible rendering issue so high threshold value
-          macos: 0.0222, // 2.218685776981677%
+          macos: 0.0225, // 2.2494371693738913%
         },
       ],
       [
         'labels.02.position.and.line.breaks',
         {
           // TODO possible rendering issue so high threshold value
-          macos: 0.011, // 1.0292172082576045%
+          macos: 0.059, // 5.875189976297179%
         },
       ],
       [

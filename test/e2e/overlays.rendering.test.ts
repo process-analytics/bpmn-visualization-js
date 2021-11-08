@@ -32,7 +32,6 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
-        // also use for navigation tests
         'overlays.start.flow.task.gateway',
         {
           macos: 0.001, // max 0.09371109158465839%
@@ -42,24 +41,25 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.edges.associations.complex.paths',
         {
-          linux: 0.0012, // 0.11107953745526089%
-          macos: 0.0011, // max 0.10450139836080119%
-          windows: 0.001, // max 0.09070811014064706%
+          linux: 0.0026, // max 0.2541247067242236%
+          macos: 0.0025, // max 0.2456999041707375%
+          windows: 0.0024, // max 0.2350932032529674%
         },
       ],
       [
         'overlays.edges.message.flows.complex.paths',
         {
-          macos: 0.002, // 0.19008048545454678%
-          windows: 0.0002, // 0.017926897177755752%
+          linux: 0.0013, // 0.12872847155422917%
+          macos: 0.0031, // 0.3000623172666472%
+          windows: 0.0013, // 0.12965038147577657%
         },
       ],
       [
         'overlays.edges.sequence.flows.complex.paths',
         {
-          linux: 0.0008, // max 0.07684414701126795%
-          macos: 0.0007, // max 0.06361357947514133%
-          windows: 0.0006, // max 0.05408166283820126%
+          linux: 0.0021, // max 0.20566996103513757%
+          macos: 0.0019, // max 0.18540603435701633%
+          windows: 0.0018, // max 0.17718145021319295%
         },
       ],
     ]);
@@ -68,7 +68,6 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
-        // also use for navigation tests
         'overlays.start.flow.task.gateway',
         {
           linux: 0.0044, // max 0.43536497668036356%
@@ -105,7 +104,6 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
   protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
-      // also use for navigation tests
       [
         'overlays.start.flow.task.gateway',
         {
@@ -271,6 +269,52 @@ describe('Overlay navigation', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
   let containerCenter: Point;
 
+  class OverlayNavigationImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
+    constructor() {
+      // don't set defaults as we defined thresholds for all style variants
+      super({ chromium: 0, firefox: 0, webkit: 0 });
+    }
+
+    protected getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+      return new Map<string, ImageSnapshotThresholdConfig>([
+        [
+          'overlays.start.flow.task.gateway',
+          {
+            linux: 0.16, // max 0.1564279230663268%
+            macos: 0.0024, // max 0.23276321559646546%
+            windows: 0.0027, // max 0.26345999990737834%
+          },
+        ],
+      ]);
+    }
+
+    protected getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+      return new Map<string, ImageSnapshotThresholdConfig>([
+        [
+          'overlays.start.flow.task.gateway',
+          {
+            linux: 0.0044, // max 0.43536497668036356%
+            macos: 0.0071, // max 0.7027949859673144%
+            windows: 0.0027, // max 0.26051371171855736%
+          },
+        ],
+      ]);
+    }
+
+    protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+      return new Map<string, ImageSnapshotThresholdConfig>([
+        [
+          'overlays.start.flow.task.gateway',
+          {
+            macos: 0.0059, // max 0.5852809894618671%
+          },
+        ],
+      ]);
+    }
+  }
+
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new OverlayNavigationImageSnapshotThresholds(), 'overlays');
+
   beforeEach(async () => {
     const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
     containerCenter = await getContainerCenter(bpmnContainerElementHandle);
@@ -330,9 +374,9 @@ describe('Overlay style', () => {
         [
           'font',
           {
-            linux: 0.00001, // 0.0003248438377401186%
-            macos: 0.006, // 0.5500536579274629%
-            windows: 0.0033, // 0.3214844457131605%
+            linux: 0.0056, // 0.5527510139290981%
+            macos: 0.0004, // 0.5500536579274629%
+            windows: 0.0086, // 0.8581313833777582%
           },
         ],
         [
@@ -360,9 +404,9 @@ describe('Overlay style', () => {
           // TODO very large thresholds on Firefox linux/macOS for font overlay styles
           'font',
           {
-            linux: 0.0125, // 1.2469257287752389%
-            macos: 0.0256, // 2.550083023327932%
-            windows: 0.0088, // 0.8742520092084982%
+            linux: 0.013, // 1.233008755632492%
+            macos: 0.014, // 1.3766390291200084%
+            windows: 0.002, // 0.1956705895781785%
           },
         ],
         [
@@ -387,7 +431,7 @@ describe('Overlay style', () => {
         [
           'font',
           {
-            macos: 0.007, // 0.6973031829030196%
+            macos: 0.0064, // 0.6363172807824835%
           },
         ],
         [
