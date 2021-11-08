@@ -404,9 +404,9 @@ describe('Overlay style', () => {
           // TODO very large thresholds on Firefox linux/macOS for font overlay styles
           'font',
           {
-            linux: 0.0004, // 1.2469257287752389%
+            linux: 0.013, // 1.233008755632492%
             macos: 0.014, // 1.3766390291200084%
-            windows: 0.0004, // 0.8742520092084982%
+            windows: 0.002, // 0.1956705895781785%
           },
         ],
         [
@@ -431,7 +431,7 @@ describe('Overlay style', () => {
         [
           'font',
           {
-            macos: 0.0007, // 0.6973031829030196%
+            macos: 0.0064, // 0.6363172807824835%
           },
         ],
         [
