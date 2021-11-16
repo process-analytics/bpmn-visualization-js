@@ -77,7 +77,6 @@
     "test:bundles": "jest --runInBand --detectOpenHandles --config=./test/bundles/jest.config.js",
     "version-prepare": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for release\"",
     "postversion": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for new developments\"",
-    "postinstall": "husky install",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable",
     "prepare": "husky install"
