@@ -154,8 +154,6 @@ export default class DiagramConverter {
 
         const waypoints = this.deserializeWaypoints(edge.waypoint);
         const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
-
-        // TODO Remove messageVisibleKind conversion type when we merge/simplify internal model with BPMN json model
         const messageVisibleKind = edge.messageVisibleKind ? (edge.messageVisibleKind as unknown as MessageVisibleKind) : MessageVisibleKind.NONE;
 
         return new Edge(edge.id, flow, waypoints, label, messageVisibleKind);

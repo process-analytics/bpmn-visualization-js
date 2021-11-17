@@ -274,7 +274,6 @@ export default class ProcessConverter {
 
   private buildAssociationFlows(bpmnElements: Array<TAssociation> | TAssociation): void {
     ensureIsArray(bpmnElements).forEach(association => {
-      // TODO Remove associationDirection conversion type when we merge/simplify internal model with BPMN json model
       const direction = association.associationDirection as unknown as AssociationDirectionKind;
       this.convertedElements.registerAssociationFlow(new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction));
     });
