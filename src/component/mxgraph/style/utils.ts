@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 
-import { GlobalTaskKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal';
-import { MessageVisibleKind } from '../../model/bpmn/internal/edge/kinds';
-import { mxgraph } from './initializer';
-
-/**
- * @category BPMN Theme
- * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
- */
-export enum MarkerIdentifier {
-  ARROW_DASH = 'bpmn.dash',
-}
+import { GlobalTaskKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
+import { MessageVisibleKind } from '../../../model/bpmn/internal/edge/kinds';
+import { mxgraph } from '../initializer';
+import { BpmnStyleIdentifier } from './identifiers';
 
 /**
  * Store all rendering defaults used by `bpmn-visualization`.
@@ -69,40 +62,12 @@ export enum StyleDefault {
   MESSAGE_FLOW_MARKER_END_FILL_COLOR = 'White',
 }
 
-/**
- * Define BPMN specific keys used in mxGraph styles. Use constants defined in this class instead of hard coded string values.
- * @category BPMN Theme
- * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
- */
-export class BpmnStyleIdentifier {
-  // edge
-  static readonly EDGE = 'bpmn.edge';
-  static readonly EDGE_START_FILL_COLOR = 'bpmn.edge.startFillColor';
-  static readonly EDGE_END_FILL_COLOR = 'bpmn.edge.endFillColor';
-
-  // kind
-  static readonly EVENT_BASED_GATEWAY_KIND = 'bpmn.gatewayKind';
-  static readonly EVENT_DEFINITION_KIND = 'bpmn.eventDefinitionKind';
-  static readonly GLOBAL_TASK_KIND = 'bpmn.globalTaskKind';
-  static readonly SUB_PROCESS_KIND = 'bpmn.subProcessKind';
-
-  // state
-  static readonly IS_INITIATING = 'bpmn.isInitiating';
-  static readonly IS_INSTANTIATING = 'bpmn.isInstantiating';
-  static readonly IS_INTERRUPTING = 'bpmn.isInterrupting';
-
-  // other identifiers
-  static readonly EXTRA_CSS_CLASSES = 'bpmn.extra.css.classes';
-  static readonly MARKERS = 'bpmn.markers';
-  static readonly MESSAGE_FLOW_ICON = 'bpmn.messageFlowIcon';
-}
-
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
 /**
  * @category BPMN Theme
  * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
  */
-export default class StyleUtils {
+export class StyleUtils {
   static getFillColor(style: any): string {
     return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
   }

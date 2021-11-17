@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { StyleDefault } from '../StyleUtils';
+import { StyleDefault } from '../style';
 import { mxgraph } from '../initializer';
 import { mxAbstractCanvas2D } from 'mxgraph'; // for types
 

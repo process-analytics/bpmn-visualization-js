@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import StyleUtils, { StyleDefault } from '../StyleUtils';
+import { StyleDefault, StyleUtils } from '../style';
 import { PaintParameter, IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import { mxgraph } from '../initializer';

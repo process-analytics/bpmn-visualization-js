@@ -15,7 +15,7 @@
  */
 
 import { BpmnMxGraph } from './BpmnMxGraph';
-import { BpmnStyleIdentifier } from './StyleUtils';
+import { BpmnStyleIdentifier } from './style';
 import { Overlay } from '../registry';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { ensureIsArray } from '../helpers/array-utils';
