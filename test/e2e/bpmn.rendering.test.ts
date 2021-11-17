@@ -134,6 +134,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
+        'elements-that-may-fill-colors',
+        {
+          linux: 0.00054, // 0.05379319393775671%
+          macos: 0.00054, // 0.05379319393775671%
+          windows: 0.00054, // 0.05379319393775671%
+        },
+      ],
+      [
         'flows.message.02.labels.and.complex.paths',
         {
           linux: 0.0058, // 0.5661158485707474%
