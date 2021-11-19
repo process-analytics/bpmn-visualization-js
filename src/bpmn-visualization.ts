@@ -23,5 +23,5 @@ export * from './model/bpmn/internal';
 // not part of the public API but needed for the custom theme examples
 export { IconPainter } from './component/mxgraph/shape/render/icon-painter';
 export { StyleConfigurator } from './component/mxgraph/config/StyleConfigurator';
-export * from './component/mxgraph/StyleUtils';
+export * from './component/mxgraph/style';
 export * from './component/mxgraph/shape/render';

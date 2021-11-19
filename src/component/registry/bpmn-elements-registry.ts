@@ -16,7 +16,7 @@
 
 import { ensureIsArray } from '../helpers/array-utils';
 import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
-import { computeBpmnBaseClassName } from '../mxgraph/style-helper';
+import { computeBpmnBaseClassName } from '../mxgraph/renderer/style-utils';
 import { CssRegistry } from './css-registry';
 import MxGraphCellUpdater, { newMxGraphCellUpdater } from '../mxgraph/MxGraphCellUpdater';
 import { BpmnQuerySelectors } from './query-selectors';

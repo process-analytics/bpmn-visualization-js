@@ -19,7 +19,7 @@ import CustomMatcherResult = jest.CustomMatcherResult;
 import { FlowKind } from '../../../../src/model/bpmn/internal';
 import { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement, getDefaultParentId } from '../../helpers/model-expect';
 import { MessageVisibleKind } from '../../../../src/model/bpmn/internal/edge/kinds';
-import { BpmnStyleIdentifier } from '../../../../src/component/mxgraph/StyleUtils';
+import { BpmnStyleIdentifier } from '../../../../src/component/mxgraph/style';
 import { mxgraph } from '../../../../src/component/mxgraph/initializer';
 
 function buildExpectedStateStyle(expectedModel: ExpectedEdgeModelElement): ExpectedStateStyle {
