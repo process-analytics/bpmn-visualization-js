@@ -64,8 +64,8 @@ export class BpmnElementsRegistry {
    * ```javascript
    * ...
    * // Find all elements by specified id or ids
-   * const bpmnElementsSet1 = bpmnVisualization.bpmnElementsRegistry.getElementsByIds('userTask_1');
-   * const bpmnElementsSet2 = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['startEvent_3', 'userTask_2']);
+   * const bpmnElements1 = bpmnVisualization.bpmnElementsRegistry.getElementsByIds('userTask_1');
+   * const bpmnElements2 = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['startEvent_3', 'userTask_2']);
    * // now you can do whatever you want with the elements
    * ...
    * ```
