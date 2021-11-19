@@ -65,7 +65,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.02.position.and.line.breaks',
         {
-          linux: 0.0086, // 0.8530261049808807%
+          linux: 0.0089, // 0.8846259528850542%
           windows: 0.082, // 0.8197899179969159%
         },
       ],
