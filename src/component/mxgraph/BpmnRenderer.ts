@@ -64,23 +64,12 @@ export class BpmnRenderer {
 
   private getParent(bpmnElement: ShapeBpmnElement): mxCell {
     const bpmnElementParent = this.getCell(bpmnElement.parentId);
-    if (bpmnElementParent) {
-      return bpmnElementParent;
-    }
-
-    if (!ShapeUtil.isBoundaryEvent(bpmnElement.kind)) {
-      return this.graph.getDefaultParent();
-    }
+    return bpmnElementParent ?? this.graph.getDefaultParent();
   }
 
   private insertShape(shape: Shape): void {
     const bpmnElement = shape.bpmnElement;
     const parent = this.getParent(bpmnElement);
-    if (!parent) {
-      // TODO error management
-      console.warn('Not possible to insert shape %s: parent cell %s is not found', bpmnElement.id, bpmnElement.parentId);
-      return;
-    }
     const bounds = shape.bounds;
     let labelBounds = shape.label?.bounds;
     // pool/lane label bounds are not managed for now (use hard coded values)
