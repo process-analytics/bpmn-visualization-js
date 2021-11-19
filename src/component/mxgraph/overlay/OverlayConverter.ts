@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Overlay, OverlayFont, OverlayPosition, OverlayFill, OverlayStroke } from '../../registry';
-import { StyleDefault } from '../StyleUtils';
+import { StyleDefault } from '../style';
 import { MxGraphCustomOverlayOptions, MxGraphCustomOverlayPosition, MxGraphCustomOverlayStyle } from './custom-overlay';
 
 export class OverlayConverter {

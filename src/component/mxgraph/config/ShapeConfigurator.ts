@@ -33,8 +33,8 @@ import {
 } from '../shape/activity-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
-import { BpmnStyleIdentifier } from '../StyleUtils';
-import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../style-helper';
+import { BpmnStyleIdentifier } from '../style';
+import { computeAllBpmnClassNames, extractBpmnKindFromStyle } from '../renderer/style-utils';
 import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 import { BpmnConnector } from '../shape/edges';
