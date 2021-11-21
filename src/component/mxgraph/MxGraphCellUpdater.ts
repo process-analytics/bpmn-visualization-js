@@ -32,7 +32,13 @@ export default class MxGraphCellUpdater {
   constructor(readonly graph: BpmnMxGraph, readonly overlayConverter: OverlayConverter) {}
 
   updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
-    const mxCell = this.graph.getModel().getCell(bpmnElementId);
+    this.updateAndRefreshCssClassesOfElement(bpmnElementId, cssClasses);
+    // special case: message flow icon is stored in a dedicated mxCell, so it must be kept in sync
+    this.updateAndRefreshCssClassesOfElement(`messageFlowIcon_of_${bpmnElementId}`, cssClasses);
+  }
+
+  private updateAndRefreshCssClassesOfElement(elementId: string, cssClasses: string[]): void {
+    const mxCell = this.graph.getModel().getCell(elementId);
     if (!mxCell) {
       return;
     }

@@ -21,6 +21,10 @@ export interface RequestedChecks {
   readonly overlayLabel?: string;
 }
 
+export interface MessageFlowRequestedChecks extends RequestedChecks {
+  readonly hasIcon?: boolean;
+}
+
 export class HtmlElementLookup {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
@@ -125,6 +129,22 @@ export class HtmlElementLookup {
 
     this.expectSvgOverlay(bpmnId, checks?.overlayLabel);
   }
+
+  expectMessageFlow(bpmnId: string, checks?: MessageFlowRequestedChecks): void {
+    const svgGroupElement = this.findSvgElement(bpmnId);
+    expectSvgMessageFlow(svgGroupElement);
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-message-flow', checks?.additionalClasses));
+
+    // message flow icon
+    const iconId = `messageFlowIcon_of_${bpmnId}`;
+    const msgFlowIconSvgGroupElement = document.querySelector<HTMLElement>(this.bpmnQuerySelectors.element(iconId));
+    if (checks?.hasIcon) {
+      expectSvgMessageFlowIcon(msgFlowIconSvgGroupElement);
+      expectSvgElementClassAttribute(msgFlowIconSvgGroupElement, HtmlElementLookup.computeClassValue('bpmn-message-flow-icon', checks?.additionalClasses));
+    } else {
+      expect(msgFlowIconSvgGroupElement).toBeNull();
+    }
+  }
 }
 
 export function expectSvgEvent(svgGroupElement: HTMLElement): void {
@@ -149,6 +169,14 @@ export function expectSvgPool(svgGroupElement: HTMLElement): void {
 
 export function expectSvgSequenceFlow(svgGroupElement: HTMLElement): void {
   expectSvgFirstChildNodeName(svgGroupElement, 'path');
+}
+
+export function expectSvgMessageFlow(svgGroupElement: HTMLElement): void {
+  expectSvgFirstChildNodeName(svgGroupElement, 'path');
+}
+
+export function expectSvgMessageFlowIcon(svgGroupElement: HTMLElement): void {
+  expectSvgFirstChildNodeName(svgGroupElement, 'rect');
 }
 
 export function expectSvgAssociation(svgGroupElement: HTMLElement): void {

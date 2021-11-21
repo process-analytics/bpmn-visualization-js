@@ -258,6 +258,28 @@ describe('Bpmn Elements registry - CSS class management', () => {
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(nonExistingBpmnId, 'class1');
     });
   });
+
+  describe('Classes for Message Flow element and icon', () => {
+    it('Add one or several classes to message flows with and without icon', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/message-flows-with-and-without-icon.bpmn'));
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
+
+      // default classes
+      htmlElementLookup.expectMessageFlow('MessageFlow_1');
+      htmlElementLookup.expectMessageFlow('MessageFlow_2_msgVisibilityKind_initiating', { hasIcon: true });
+      htmlElementLookup.expectMessageFlow('MessageFlow_3_msgVisibilityKind_non_initiating', { hasIcon: true });
+
+      // // add several classes to several message flows
+      const additionalClasses = ['class1', 'class2'];
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses(
+        ['MessageFlow_1', 'MessageFlow_2_msgVisibilityKind_initiating', 'MessageFlow_3_msgVisibilityKind_non_initiating'],
+        additionalClasses,
+      );
+      htmlElementLookup.expectMessageFlow('MessageFlow_1', { additionalClasses: additionalClasses });
+      htmlElementLookup.expectMessageFlow('MessageFlow_2_msgVisibilityKind_initiating', { hasIcon: true, additionalClasses: additionalClasses });
+      htmlElementLookup.expectMessageFlow('MessageFlow_3_msgVisibilityKind_non_initiating', { hasIcon: true, additionalClasses: additionalClasses });
+    });
+  });
 });
 
 describe('Bpmn Elements registry - Overlay management', () => {

@@ -53,21 +53,26 @@
         fill: palevioletred;
       }
       /* sequence flow arrow */
-      .detection-flow > path:nth-child(3),
+      .bpmn-sequence-flow.detection-flow > path:nth-child(3),
       /* message flow start */
-      .detection-flow > ellipse:nth-child(3),
+      .bpmn-message-flow.detection-flow > ellipse,
       /* message flow arrow */
-      .detection-flow > path:nth-child(4) {
+      .bpmn-message-flow.detection-flow > path:nth-child(4) {
         fill: dodgerblue;
       }
-      /* sequence flow arrow */
-      .detection-flow > path:nth-child(3),
-        /* message flow start */
-      .detection-flow > ellipse:nth-child(3),
+       /* sequence flow line */
+      .bpmn-sequence-flow.detection-flow > path:nth-child(2),
+       /* sequence flow arrow */
+      .bpmn-sequence-flow.detection-flow > path:nth-child(3),
+        /* message flow start marker */
+      .bpmn-message-flow.detection-flow > ellipse,
+        /* message flow line */
+      .bpmn-message-flow.detection-flow > path:nth-child(2),
         /* message flow arrow */
-      .detection-flow > path:nth-child(4),
-      /* edge line */
-      .detection-flow > path:nth-child(2) {
+      .bpmn-message-flow.detection-flow> path:nth-child(4),
+        /* message flow icon */
+      .detection-flow.bpmn-message-flow-icon > rect,
+      .detection-flow.bpmn-message-flow-icon > path {
         stroke: dodgerblue;
         stroke-width: 4px;
       }
@@ -94,7 +99,10 @@
       <button id="clear-btn">Clear</button>
       <textarea id="elements-result"></textarea>
     </div>
-    <div id="download-controls" style="margin-top: 10px;">
+    <div id="display-options" style="margin-top: 1em;">
+      <label for="checkbox-display-overlays">Display overlays</label><input id="checkbox-display-overlays" type="checkbox" />
+    </div>
+    <div id="download-controls" style="margin-top: 1em;">
       <button id="btn-dl-svg">Download SVG</button>
       <button id="btn-dl-png">Download PNG</button>
     </div>
