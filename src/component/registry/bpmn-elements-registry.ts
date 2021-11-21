@@ -242,18 +242,18 @@ export class BpmnElementsRegistry {
 }
 
 class HtmlElementRegistry {
-  constructor(private selectors: BpmnQuerySelectors) {}
+  constructor(private querySelectors: BpmnQuerySelectors) {}
 
   /**
    * Returns `null` if no element is found.
    * @param bpmnElementId the id of the BPMN element represented by the searched Html Element.
    */
   getBpmnHtmlElement(bpmnElementId: string): HTMLElement | null {
-    return document.querySelector<HTMLElement>(this.selectors.element(bpmnElementId));
+    return document.querySelector<HTMLElement>(this.querySelectors.element(bpmnElementId));
   }
 
   getBpmnHtmlElements(bpmnElementKind: BpmnElementKind): HTMLElement[] {
-    const selectors = this.selectors.elementsOfKind(computeBpmnBaseClassName(bpmnElementKind));
+    const selectors = this.querySelectors.elementsOfKind(computeBpmnBaseClassName(bpmnElementKind));
     return [...document.querySelectorAll<HTMLElement>(selectors)];
   }
 }
