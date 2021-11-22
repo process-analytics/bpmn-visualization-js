@@ -16,6 +16,11 @@
 import { BpmnVisualization } from '../../../src/bpmn-visualization';
 import { BpmnQuerySelectorsForTests } from '../../helpers/query-selectors';
 
+export interface RequestedChecks {
+  readonly additionalClasses?: string[];
+  readonly overlayLabel?: string;
+}
+
 export class HtmlElementLookup {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
@@ -45,10 +50,10 @@ export class HtmlElementLookup {
     expectSvgElementClassAttribute(svgGroupElement, 'bpmn-intermediate-throw-event');
   }
 
-  expectEndEvent(bpmnId: string, additionalClasses?: string[]): void {
+  expectEndEvent(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgEvent(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-end-event', additionalClasses));
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-end-event', checks?.additionalClasses));
   }
 
   expectTask(bpmnId: string): void {
@@ -57,12 +62,12 @@ export class HtmlElementLookup {
     expectSvgElementClassAttribute(svgGroupElement, 'bpmn-task');
   }
 
-  expectServiceTask(bpmnId: string, options?: { additionalClasses?: string[]; overlayLabel?: string }): void {
+  expectServiceTask(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgTask(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-service-task', options?.additionalClasses));
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-service-task', checks?.additionalClasses));
 
-    this.expectSvgOverlay(bpmnId, options?.overlayLabel);
+    this.expectSvgOverlay(bpmnId, checks?.overlayLabel);
   }
 
   private expectSvgOverlay(bpmnId: string, overlayLabel?: string): void {
@@ -75,16 +80,16 @@ export class HtmlElementLookup {
     }
   }
 
-  expectUserTask(bpmnId: string, additionalClasses?: string[]): void {
+  expectUserTask(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgTask(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-user-task', additionalClasses));
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-user-task', checks?.additionalClasses));
   }
 
-  expectLane(bpmnId: string, additionalClasses?: string[]): void {
+  expectLane(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgLane(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-lane', additionalClasses));
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-lane', checks?.additionalClasses));
   }
 
   expectPool(bpmnId: string): void {
@@ -93,32 +98,32 @@ export class HtmlElementLookup {
     expectSvgElementClassAttribute(svgGroupElement, 'bpmn-pool');
   }
 
-  expectExclusiveGateway(bpmnId: string, options?: { additionalClasses?: string[]; overlayLabel?: string }): void {
+  expectExclusiveGateway(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgGateway(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-exclusive-gateway', options?.additionalClasses));
+    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-exclusive-gateway', checks?.additionalClasses));
 
-    this.expectSvgOverlay(bpmnId, options?.overlayLabel);
+    this.expectSvgOverlay(bpmnId, checks?.overlayLabel);
   }
 
   private static computeClassValue(bpmnClass: string, additionalClasses?: string[]): string {
     return [bpmnClass].concat(additionalClasses).filter(Boolean).join(' ');
   }
 
-  expectAssociation(bpmnId: string, options?: { overlayLabel?: string }): void {
+  expectAssociation(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgAssociation(svgGroupElement);
     expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-association'));
 
-    this.expectSvgOverlay(bpmnId, options?.overlayLabel);
+    this.expectSvgOverlay(bpmnId, checks?.overlayLabel);
   }
 
-  expectSequenceFlow(bpmnId: string, options?: { overlayLabel?: string }): void {
+  expectSequenceFlow(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgSequenceFlow(svgGroupElement);
     expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-sequence-flow'));
 
-    this.expectSvgOverlay(bpmnId, options?.overlayLabel);
+    this.expectSvgOverlay(bpmnId, checks?.overlayLabel);
   }
 }
 
