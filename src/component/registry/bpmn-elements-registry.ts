@@ -54,7 +54,9 @@ export class BpmnElementsRegistry {
     private htmlElementRegistry: HtmlElementRegistry,
     private cssRegistry: CssRegistry,
     private mxGraphCellUpdater: MxGraphCellUpdater,
-  ) {}
+  ) {
+    this.bpmnModelRegistry.onSearchableModelLoad(this.cssRegistry.clear.bind(this.cssRegistry));
+  }
 
   /**
    * Get all elements by ids. The returned array contains elements in the order of the `bpmnElementIds` parameter.

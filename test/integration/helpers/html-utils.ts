@@ -42,10 +42,10 @@ export class HtmlElementLookup {
     expect(svgGroupElement).toBeUndefined();
   }
 
-  expectStartEvent(bpmnId: string): void {
+  expectStartEvent(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgEvent(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, 'bpmn-start-event');
+    expectSvgElementClassAttribute(svgGroupElement, computeClassValue('bpmn-start-event', checks?.additionalClasses));
   }
 
   expectIntermediateThrowEvent(bpmnId: string): void {
