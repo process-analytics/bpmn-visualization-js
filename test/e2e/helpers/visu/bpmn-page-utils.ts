@@ -67,6 +67,9 @@ export interface TargetedPage {
 }
 
 export interface StyleOptions {
+  bpmnContainer?: {
+    useAlternativeBackgroundColor?: boolean;
+  };
   sequenceFlow?: {
     useLightColors?: boolean;
   };
@@ -121,6 +124,7 @@ export class PageTester {
     url += `&fitTypeOnLoad=${loadOptions.fit?.type}&fitMargin=${loadOptions.fit?.margin}`;
     url += `&url=./static/diagrams/${bpmnDiagramName}.bpmn`;
     url += `&style.seqFlow.light.colors=${styleOptions?.sequenceFlow?.useLightColors}`;
+    url += `&style.container.alternative.background.color=${styleOptions?.bpmnContainer?.useAlternativeBackgroundColor}`;
     return url;
   }
 }
