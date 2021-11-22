@@ -149,7 +149,6 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
 
 function configureStyleFromParameters(parameters: URLSearchParams): void {
   const seqFlowColorsLight = parameters.get('style.seqFlow.light.colors');
-
   if (seqFlowColorsLight == 'true') {
     const color = '#E9E9E9';
     logStartup('Use light colors for sequence flows, color', color);
@@ -163,6 +162,17 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
     seqFlowStyle[mxgraph.mxConstants.STYLE_FILLCOLOR] = color;
 
     logStartup('Sequence flows style updated');
+  }
+
+  const bpmnContainerAlternativeColor = parameters.get('style.container.alternative.background.color');
+  if (bpmnContainerAlternativeColor == 'true') {
+    const color = 'yellow';
+    logStartup('Use alternative color for the bpmn container background, color', color);
+
+    const bpmnContainer = bpmnVisualization.graph.container;
+    bpmnContainer.style.backgroundColor = color;
+
+    logStartup('Bpmn container style updated');
   }
 }
 

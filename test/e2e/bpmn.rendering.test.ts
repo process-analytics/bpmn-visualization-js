@@ -20,7 +20,7 @@ import {
   ImageSnapshotThresholdConfig,
   MultiBrowserImageSnapshotThresholds,
 } from './helpers/visu/image-snapshot-config';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { PageTester, StyleOptions } from './helpers/visu/bpmn-page-utils';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
@@ -133,6 +133,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
   getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'all.elements.fill.color',
+        {
+          linux: 0.00054, // 0.05379319393775671%
+          macos: 0.00054, // 0.05379319393775671%
+          windows: 0.00054, // 0.05379319393775671%
+        },
+      ],
       [
         'flows.message.02.labels.and.complex.paths',
         {
@@ -310,7 +318,20 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   }
 }
 
-const useSequenceFlowLightColorOptions = new Map<string, boolean>([['associations.and.annotations.04.target.edges', true]]);
+const styleOptionsPerDiagram = new Map<string, StyleOptions>([
+  [
+    'all.elements.fill.color',
+    {
+      bpmnContainer: { useAlternativeBackgroundColor: true },
+    },
+  ],
+  [
+    'associations.and.annotations.04.target.edges',
+    {
+      sequenceFlow: { useLightColors: true },
+    },
+  ],
+]);
 
 describe('BPMN rendering', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'bpmn');
@@ -324,7 +345,7 @@ describe('BPMN rendering', () => {
 
   it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
-      styleOptions: { sequenceFlow: { useLightColors: useSequenceFlowLightColorOptions.get(bpmnDiagramName) ?? false } },
+      styleOptions: styleOptionsPerDiagram.get(bpmnDiagramName),
     });
 
     const image = await page.screenshot({ fullPage: true });
