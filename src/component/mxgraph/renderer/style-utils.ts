@@ -17,15 +17,29 @@
 import { mxCell } from 'mxgraph'; // for types
 
 /**
- * Compute the all class names associated to a given bpmn element kind in an hyphen case form.
+ * Compute the all class names associated to a cell in an hyphen case form.
  *
- * @param bpmnElementKind the string representation of a BPMN element kind i.e {@link ShapeBpmnElementKind} and {@link FlowKind}.
+ * @param cell the `mxCell` related to the BPMN element.
  * @param isLabel the boolean that indicates if class must be computed for label.
  * @internal
  */
-export function computeAllBpmnClassNames(bpmnElementKind: string, isLabel: boolean): string[] {
+export function computeAllBpmnClassNamesOfCell(cell: mxCell, isLabel: boolean): string[] {
+  const style = cell.style.split(';')[0];
+  return computeAllBpmnClassNames(style, isLabel);
+}
+
+/**
+ * Compute the all class names associated to a given bpmn element in an hyphen case form.
+ *
+ * @param style the part of the mxCell style related to a {@link BpmnElementKind}. Message flow icon is a special case, as it is not related to `BpmnElementKind`.
+ * @param isLabel the boolean that indicates if class must be computed for label.
+ * @internal exported for testing purpose
+ */
+export function computeAllBpmnClassNames(style: string, isLabel: boolean): string[] {
   const classes: string[] = [];
-  classes.push(computeBpmnBaseClassName(bpmnElementKind));
+  // shape=bpmn.message-flow-icon --> message-flow-icon
+  const cleanedStyle = style.replace(/shape=bpmn./g, '');
+  classes.push(computeBpmnBaseClassName(cleanedStyle));
   if (isLabel) {
     classes.push('bpmn-label');
   }
@@ -41,13 +55,4 @@ export function computeAllBpmnClassNames(bpmnElementKind: string, isLabel: boole
  */
 export function computeBpmnBaseClassName(bpmnElementKind: string): string {
   return !bpmnElementKind ? '' : 'bpmn-' + bpmnElementKind.replace(/([A-Z])/g, g => '-' + g[0].toLowerCase());
-}
-
-/**
- * Extract the BPMN kind from the style of the cell. It is the string representation of the BPMN element kind i.e {@link ShapeBpmnElementKind} and {@link FlowKind}.
- * @param cell the mxCell whose style is checked.
- * @internal
- */
-export function extractBpmnKindFromStyle(cell: mxCell): string {
-  return cell.style.split(';')[0];
 }

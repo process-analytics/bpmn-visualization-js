@@ -111,7 +111,7 @@ export class BpmnRenderer {
 
   private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: mxCell): void {
     if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
-      const cell = this.graph.insertVertex(mxEdge, `messageFlowIcon_of_${mxEdge.id}`, undefined, 0, 0, 20, 14, this.styleComputer.computeMessageFlowIconStyle(edge));
+      const cell = this.graph.insertVertex(mxEdge, messageFowIconId(mxEdge.id), undefined, 0, 0, 20, 14, this.styleComputer.computeMessageFlowIconStyle(edge));
       cell.geometry.relative = true;
       cell.geometry.offset = new mxgraph.mxPoint(-10, -7);
     }
@@ -146,4 +146,8 @@ export class BpmnRenderer {
  */
 export function newBpmnRenderer(graph: BpmnMxGraph): BpmnRenderer {
   return new BpmnRenderer(graph, new CoordinatesTranslator(graph), new StyleComputer());
+}
+
+export function messageFowIconId(messageFlowId: string): string {
+  return `messageFlowIcon_of_${messageFlowId}`;
 }
