@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { readFileSync as fsReadFileSync, readdirSync } from 'fs';
+import { readdirSync, readFileSync as fsReadFileSync } from 'fs';
 import { join } from 'path';
 
-export function readFileSync(relPathToSourceFile: string, encoding = 'utf8', dirName = __dirname): string {
-  return fsReadFileSync(join(dirName, relPathToSourceFile), encoding);
+export function readFileSync(relPathToSourceFile: string, encoding: BufferEncoding = 'utf-8', dirName = __dirname): string {
+  return fsReadFileSync(join(dirName, relPathToSourceFile), { encoding });
 }
 
 /** Returns the files in the given directory. The function doesn't do any recursion in sub directories. */
