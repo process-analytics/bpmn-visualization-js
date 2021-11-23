@@ -20,6 +20,7 @@ import { Overlay } from '../registry';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
+import { messageFowIconId } from './BpmnRenderer';
 
 export function newMxGraphCellUpdater(graph: BpmnMxGraph): MxGraphCellUpdater {
   return new MxGraphCellUpdater(graph, new OverlayConverter());
@@ -32,7 +33,13 @@ export default class MxGraphCellUpdater {
   constructor(readonly graph: BpmnMxGraph, readonly overlayConverter: OverlayConverter) {}
 
   updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
-    const mxCell = this.graph.getModel().getCell(bpmnElementId);
+    this.updateAndRefreshCssClassesOfElement(bpmnElementId, cssClasses);
+    // special case: message flow icon is stored in a dedicated mxCell, so it must be kept in sync
+    this.updateAndRefreshCssClassesOfElement(messageFowIconId(bpmnElementId), cssClasses);
+  }
+
+  private updateAndRefreshCssClassesOfElement(elementId: string, cssClasses: string[]): void {
+    const mxCell = this.graph.getModel().getCell(elementId);
     if (!mxCell) {
       return;
     }
