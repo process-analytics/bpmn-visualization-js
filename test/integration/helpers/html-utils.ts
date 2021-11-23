@@ -57,7 +57,7 @@ export class HtmlElementLookup {
   expectEndEvent(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgEvent(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-end-event', checks?.additionalClasses));
+    expectSvgElementClassAttribute(svgGroupElement, computeClassValue('bpmn-end-event', checks?.additionalClasses));
   }
 
   expectTask(bpmnId: string): void {
@@ -69,7 +69,7 @@ export class HtmlElementLookup {
   expectServiceTask(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgTask(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-service-task', checks?.additionalClasses));
+    expectSvgElementClassAttribute(svgGroupElement, computeClassValue('bpmn-service-task', checks?.additionalClasses));
 
     this.expectSvgOverlay(bpmnId, checks?.overlayLabel);
   }
@@ -87,13 +87,13 @@ export class HtmlElementLookup {
   expectUserTask(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgTask(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-user-task', checks?.additionalClasses));
+    expectSvgElementClassAttribute(svgGroupElement, computeClassValue('bpmn-user-task', checks?.additionalClasses));
   }
 
   expectLane(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgLane(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-lane', checks?.additionalClasses));
+    expectSvgElementClassAttribute(svgGroupElement, computeClassValue('bpmn-lane', checks?.additionalClasses));
   }
 
   expectPool(bpmnId: string): void {
@@ -105,19 +105,15 @@ export class HtmlElementLookup {
   expectExclusiveGateway(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgGateway(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-exclusive-gateway', checks?.additionalClasses));
+    expectSvgElementClassAttribute(svgGroupElement, computeClassValue('bpmn-exclusive-gateway', checks?.additionalClasses));
 
     this.expectSvgOverlay(bpmnId, checks?.overlayLabel);
-  }
-
-  private static computeClassValue(bpmnClass: string, additionalClasses?: string[]): string {
-    return [bpmnClass].concat(additionalClasses).filter(Boolean).join(' ');
   }
 
   expectAssociation(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgAssociation(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-association'));
+    expectSvgElementClassAttribute(svgGroupElement, computeClassValue('bpmn-association'));
 
     this.expectSvgOverlay(bpmnId, checks?.overlayLabel);
   }
@@ -125,7 +121,7 @@ export class HtmlElementLookup {
   expectSequenceFlow(bpmnId: string, checks?: RequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgSequenceFlow(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-sequence-flow'));
+    expectSvgElementClassAttribute(svgGroupElement, computeClassValue('bpmn-sequence-flow'));
 
     this.expectSvgOverlay(bpmnId, checks?.overlayLabel);
   }
@@ -133,17 +129,21 @@ export class HtmlElementLookup {
   expectMessageFlow(bpmnId: string, checks?: MessageFlowRequestedChecks): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expectSvgMessageFlow(svgGroupElement);
-    expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-message-flow', checks?.additionalClasses));
+    expectSvgElementClassAttribute(svgGroupElement, computeClassValue('bpmn-message-flow', checks?.additionalClasses));
 
     // message flow icon
     const msgFlowIconSvgGroupElement = document.querySelector<HTMLElement>(this.bpmnQuerySelectors.element(`messageFlowIcon_of_${bpmnId}`));
     if (checks?.hasIcon) {
       expectSvgMessageFlowIcon(msgFlowIconSvgGroupElement);
-      expectSvgElementClassAttribute(msgFlowIconSvgGroupElement, HtmlElementLookup.computeClassValue('bpmn-message-flow-icon', checks?.additionalClasses));
+      expectSvgElementClassAttribute(msgFlowIconSvgGroupElement, computeClassValue('bpmn-message-flow-icon', checks?.additionalClasses));
     } else {
       expect(msgFlowIconSvgGroupElement).toBeNull();
     }
   }
+}
+
+function computeClassValue(bpmnClass: string, additionalClasses?: string[]): string {
+  return [bpmnClass].concat(additionalClasses).filter(Boolean).join(' ');
 }
 
 export function expectSvgEvent(svgGroupElement: HTMLElement): void {

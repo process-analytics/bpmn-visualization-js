@@ -14,12 +14,20 @@
  * limitations under the License.
  */
 import { readFileSync } from '../helpers/file-helper';
-import { BpmnElement, BpmnVisualization, FlowKind, OverlayEdgePosition, OverlayShapePosition, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
-import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask, HtmlElementLookup } from './helpers/html-utils';
-import { ExpectedBaseBpmnElement, expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '../unit/helpers/bpmn-semantic-utils';
+import { BpmnVisualization, FlowKind, OverlayEdgePosition, OverlayShapePosition, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
+import { HtmlElementLookup } from './helpers/html-utils';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
+import {
+  expectEndEventBpmnElement,
+  expectPoolBpmnElement,
+  expectSequenceFlowBpmnElement,
+  expectServiceTaskBpmnElement,
+  expectStartEventBpmnElement,
+  expectTaskBpmnElement,
+} from './helpers/semantic-with-svg-utils';
 
 const bpmnVisualization = initializeBpmnVisualization();
+const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
 // use container id
 function initializeBpmnVisualization(containerId?: string): BpmnVisualization {
@@ -46,10 +54,11 @@ describe.each`
   ${bpmnVisualization}                            | ${'html id'}
   ${initializeBpmnVisualizationWithHtmlElement()} | ${'html element'}
 `('Resulting DOM after diagram load - container set with "$type"', ({ bv }) => {
+  const htmlElementLookup = new HtmlElementLookup(bv);
+
   it('DOM should contains BPMN elements when loading simple-start-task-end.bpmn', async () => {
     bv.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
 
-    const htmlElementLookup = new HtmlElementLookup(bv);
     htmlElementLookup.expectStartEvent('StartEvent_1');
     htmlElementLookup.expectTask('Activity_1');
     htmlElementLookup.expectEndEvent('EndEvent_1');
@@ -58,7 +67,6 @@ describe.each`
   it('DOM should contains BPMN elements when loading model-complete-semantic.bpmn', async () => {
     bv.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
 
-    const htmlElementLookup = new HtmlElementLookup(bv);
     htmlElementLookup.expectPool('participant_1_id');
     htmlElementLookup.expectLane('lane_4_1_id');
 
@@ -66,36 +74,6 @@ describe.each`
     htmlElementLookup.expectIntermediateThrowEvent('intermediate_throw_event_message_id');
   });
 });
-
-function expectStartEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  expectStartEvent(bpmnElement.bpmnSemantic, expected);
-  expectSvgEvent(bpmnElement.htmlElement);
-}
-
-function expectEndEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  expectEndEvent(bpmnElement.bpmnSemantic, expected);
-  expectSvgEvent(bpmnElement.htmlElement);
-}
-
-function expectSequenceFlowBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  expectSequenceFlow(bpmnElement.bpmnSemantic, expected);
-  expectSvgSequenceFlow(bpmnElement.htmlElement);
-}
-
-function expectTaskBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  expectTask(bpmnElement.bpmnSemantic, expected);
-  expectSvgTask(bpmnElement.htmlElement);
-}
-
-function expectServiceTaskBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  expectServiceTask(bpmnElement.bpmnSemantic, expected);
-  expectSvgTask(bpmnElement.htmlElement);
-}
-
-function expectPoolBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  expectPool(bpmnElement.bpmnSemantic, expected);
-  expectSvgPool(bpmnElement.htmlElement);
-}
 
 describe('Bpmn Elements registry - retrieve BPMN elements', () => {
   describe('Get by ids', () => {
@@ -171,7 +149,6 @@ describe('Bpmn Elements registry - CSS class management', () => {
   describe('Add classes', () => {
     it('Add one or several classes to one or several BPMN elements', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
       // default classes
       htmlElementLookup.expectServiceTask('serviceTask_1_2');
@@ -189,7 +166,6 @@ describe('Bpmn Elements registry - CSS class management', () => {
 
     it('BPMN element does not exist', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
       const nonExistingBpmnId = 'i-do-not-exist-for-add';
       htmlElementLookup.expectNoElement(nonExistingBpmnId);
@@ -201,7 +177,6 @@ describe('Bpmn Elements registry - CSS class management', () => {
   describe('Remove classes', () => {
     it('Remove one or several classes to one or several BPMN elements', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
       // default classes
       htmlElementLookup.expectUserTask('userTask_0');
@@ -222,7 +197,6 @@ describe('Bpmn Elements registry - CSS class management', () => {
 
     it('BPMN element does not exist', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
       const nonExistingBpmnId = 'i-do-not-exist-for-removal';
       htmlElementLookup.expectNoElement(nonExistingBpmnId);
@@ -234,7 +208,6 @@ describe('Bpmn Elements registry - CSS class management', () => {
   describe('Toggle classes', () => {
     it('Toggle one or several classes to one or several BPMN elements', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
       // toggle a classes for a single element
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('gateway_01', 'class1');
@@ -250,7 +223,6 @@ describe('Bpmn Elements registry - CSS class management', () => {
 
     it('BPMN element does not exist', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
       const nonExistingBpmnId = 'i-do-not-exist-for-toggle';
       htmlElementLookup.expectNoElement(nonExistingBpmnId);
@@ -336,7 +308,6 @@ describe('Bpmn Elements registry - Overlay management', () => {
   describe('BPMN Shape', () => {
     it('Add one overlay to a BPMN shape', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
       htmlElementLookup.expectServiceTask('serviceTask_1_2');
 
       // add a single overlay
@@ -348,7 +319,6 @@ describe('Bpmn Elements registry - Overlay management', () => {
 
     it.each(overlayShapePositionValues)("Ensure no issue when adding one overlay at position '%s' to a BPMN Shape", (position: OverlayShapePosition) => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.start.flow.task.gateway.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
       htmlElementLookup.expectExclusiveGateway('Gateway_1');
 
       bpmnVisualization.bpmnElementsRegistry.addOverlays('Gateway_1', { label: 'Yes', position: position });
@@ -357,7 +327,6 @@ describe('Bpmn Elements registry - Overlay management', () => {
 
     it('Remove all overlays from a BPMN shape', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
       htmlElementLookup.expectServiceTask('serviceTask_1_2');
 
       // remove all overlays
@@ -371,7 +340,6 @@ describe('Bpmn Elements registry - Overlay management', () => {
   describe('BPMN Edge', () => {
     it.each(overlayEdgePositionValues)("Ensure no issue when adding one overlay at position '%s' to a BPMN Edge without waypoints", (position: OverlayEdgePosition) => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.start.flow.task.gateway.no.waypoints.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
       htmlElementLookup.expectSequenceFlow('Flow_1');
 
       bpmnVisualization.bpmnElementsRegistry.addOverlays('Flow_1', { label: 'important', position: position });
@@ -379,7 +347,6 @@ describe('Bpmn Elements registry - Overlay management', () => {
     });
     it.each(overlayEdgePositionValues)("Ensure no issue when adding one overlay at position '%s' to a BPMN Edge with waypoints", (position: OverlayEdgePosition) => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/overlays/overlays.edges.associations.complex.paths.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
       htmlElementLookup.expectAssociation('Association_3_waypoints');
 
       bpmnVisualization.bpmnElementsRegistry.addOverlays('Association_3_waypoints', { label: 'warning', position: position });
