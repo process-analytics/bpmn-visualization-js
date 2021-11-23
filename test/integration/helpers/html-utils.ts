@@ -136,8 +136,7 @@ export class HtmlElementLookup {
     expectSvgElementClassAttribute(svgGroupElement, HtmlElementLookup.computeClassValue('bpmn-message-flow', checks?.additionalClasses));
 
     // message flow icon
-    const iconId = `messageFlowIcon_of_${bpmnId}`;
-    const msgFlowIconSvgGroupElement = document.querySelector<HTMLElement>(this.bpmnQuerySelectors.element(iconId));
+    const msgFlowIconSvgGroupElement = document.querySelector<HTMLElement>(this.bpmnQuerySelectors.element(`messageFlowIcon_of_${bpmnId}`));
     if (checks?.hasIcon) {
       expectSvgMessageFlowIcon(msgFlowIconSvgGroupElement);
       expectSvgElementClassAttribute(msgFlowIconSvgGroupElement, HtmlElementLookup.computeClassValue('bpmn-message-flow-icon', checks?.additionalClasses));
