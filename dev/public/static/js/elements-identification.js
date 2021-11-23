@@ -31,6 +31,7 @@ import {
 
 let lastIdentifiedBpmnIds = [];
 let lastCssClassName = '';
+let isOverlaysDisplayed = true;
 
 function updateSelectedBPMNElements(textArea, bpmnKind) {
   log(`Searching for Bpmn elements of '${bpmnKind}' kind`);
@@ -54,7 +55,11 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
 
   // Overlays update
   lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
-  newlyIdentifiedBpmnIds.forEach(id => addOverlays(id, getOverlay(bpmnKind)));
+  if (isOverlaysDisplayed) {
+    newlyIdentifiedBpmnIds.forEach(id => addOverlays(id, getOverlay(bpmnKind)));
+  } else {
+    log('Do not display overlays');
+  }
 
   // keep track of newly identified elements and values
   lastIdentifiedBpmnIds = newlyIdentifiedBpmnIds;
@@ -77,6 +82,16 @@ function configureControls() {
     lastIdentifiedBpmnIds = [];
     lastCssClassName = '';
   };
+
+  // display options
+  const checkboxDisplayOverlaysElt = document.getElementById('checkbox-display-overlays');
+  checkboxDisplayOverlaysElt.addEventListener('change', function () {
+    isOverlaysDisplayed = this.checked;
+    log('Request overlays display:', isOverlaysDisplayed);
+    updateSelectedBPMNElements(textArea, selectedKindElt.value);
+  });
+
+  checkboxDisplayOverlaysElt.checked = true;
 }
 
 function getCustomCssClassName(bpmnKind) {

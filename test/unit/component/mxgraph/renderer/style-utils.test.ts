@@ -41,14 +41,15 @@ describe('compute base css class names of BPMN elements', () => {
   });
 });
 
-describe('compute all css class names of BPMN elements', () => {
+describe('compute all css class names based on style input', () => {
   it.each`
-    kind                                       | isLabel  | expectedClassName
+    style                                      | isLabel  | expectedClassNames
     ${FlowKind.ASSOCIATION_FLOW}               | ${true}  | ${['bpmn-association', 'bpmn-label']}
     ${FlowKind.MESSAGE_FLOW}                   | ${false} | ${['bpmn-message-flow']}
     ${ShapeBpmnElementKind.CALL_ACTIVITY}      | ${true}  | ${['bpmn-call-activity', 'bpmn-label']}
     ${ShapeBpmnElementKind.TASK_BUSINESS_RULE} | ${false} | ${['bpmn-business-rule-task']}
-  `('$kind all classes when isLabel $isLabel', ({ kind, isLabel, expectedClassName }) => {
-    expect(computeAllBpmnClassNames(kind, isLabel)).toEqual(expectedClassName);
+    ${'shape=bpmn.message-flow-icon'}          | ${false} | ${['bpmn-message-flow-icon']}
+  `('style="$style" / isLabel=$isLabel', ({ style, isLabel, expectedClassNames }: { style: string; isLabel: boolean; expectedClassNames: string[] }) => {
+    expect(computeAllBpmnClassNames(style, isLabel)).toEqual(expectedClassNames);
   });
 });
