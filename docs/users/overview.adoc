@@ -15,7 +15,9 @@ in various bundle formats.
 
 ==== API
 The API documentation is provided directly in the package thanks to the TypeScript declaration files that can be used in IDE for code assist. +
-There is also an HTML version which is available in the link:./api/index.html[API HTML documentation, window="_blank"].
+
+[sidebar]
+There is also an HTML version which is available in link:./api/index.html[the API HTML documentation, window="_blank"].
 
 ==== More technical details
 For more technical details and how-to, go to the https://github.com/process-analytics/bpmn-visualization-examples/[bpmn-visualization-examples]
