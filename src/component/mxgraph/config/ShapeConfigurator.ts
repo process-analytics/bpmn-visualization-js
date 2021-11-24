@@ -82,136 +82,49 @@ export default class ShapeConfigurator {
     mxgraph.mxCellRenderer.registerShape(BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
   }
 
-  // TODO hack
   private initMxSvgCanvasPrototype(): void {
-    // Implementation taken from https://github.com/jgraph/mxgraph/blob/v4.1.0/javascript/src/js/util/mxSvgCanvas2D.js#L1615 and adapted with the fix provided in mxgraph@4.2.1
-    // "Fixes ignored pointerEvents flag for text in SVG"
-    // To remove when upgrading to mxgraph@4.2.1
-    // See https://github.com/process-analytics/bpmn-visualization-js/issues/920 and https://github.com/process-analytics/bpmn-visualization-js/issues/919
-    mxgraph.mxSvgCanvas2D.prototype.plainText = function (x, y, w, h, str, align, valign, wrap, overflow, clip, rotation, dir) {
-      rotation = rotation != null ? rotation : 0;
+    // getTextCss is only used when creating foreignObject for label, so there is no impact on svg text that we use for Overlays.
+    // Analysis done for mxgraph@4.1.1, still apply to mxgraph@4.2.2
+    mxgraph.mxSvgCanvas2D.prototype.getTextCss = function () {
       const s = this.state;
-      const size = s.fontSize;
-      const node = this.createElement('g');
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore if transform doesn't exist, default to ''. Possible missing type in typed-mxgraph?
-      let tr: string = s.transform || '';
-      this.updateFont(node);
+      const lh = mxgraph.mxConstants.ABSOLUTE_LINE_HEIGHT ? s.fontSize * mxgraph.mxConstants.LINE_HEIGHT + 'px' : mxgraph.mxConstants.LINE_HEIGHT * this.lineHeightCorrection;
+      let css =
+        'display: inline-block; font-size: ' +
+        s.fontSize +
+        'px; ' +
+        'font-family: ' +
+        s.fontFamily +
+        '; color: ' +
+        s.fontColor +
+        '; line-height: ' +
+        lh +
+        // START Fix for issue #920 (https://github.com/process-analytics/bpmn-visualization-js/issues/920)
+        // This cannot be generalize for all mxgraph use cases. For instance, in an editor mode, we should be able to edit the text by clicking on it.
+        // Setting to 'none' prevent to capture click.
+        '; pointer-events: none' +
+        // (this.pointerEvents ? this.pointerEventsValue : 'none') +
+        // END OF Fix for issue #920
+        '; ';
 
-      // Ignores pointer events
-      // eslint-disable-next-line no-console
-      console.info('@@Called overridden mxSvgCanvas2D.prototype.plainText@@ custom fix cherry-pick from 4.2.1');
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore this.originalRoot not in typed-mxgraph
-      if (!this.pointerEvents && this.originalRoot == null) {
-        node.setAttribute('pointer-events', 'none');
+      if ((s.fontStyle & mxgraph.mxConstants.FONT_BOLD) == mxgraph.mxConstants.FONT_BOLD) {
+        css += 'font-weight: bold; ';
+      }
+      if ((s.fontStyle & mxgraph.mxConstants.FONT_ITALIC) == mxgraph.mxConstants.FONT_ITALIC) {
+        css += 'font-style: italic; ';
       }
 
-      // Non-rotated text
-      if (rotation != 0) {
-        tr += 'rotate(' + rotation + ',' + this.format(x * s.scale) + ',' + this.format(y * s.scale) + ')';
+      const deco = [];
+      if ((s.fontStyle & mxgraph.mxConstants.FONT_UNDERLINE) == mxgraph.mxConstants.FONT_UNDERLINE) {
+        deco.push('underline');
+      }
+      if ((s.fontStyle & mxgraph.mxConstants.FONT_STRIKETHROUGH) == mxgraph.mxConstants.FONT_STRIKETHROUGH) {
+        deco.push('line-through');
+      }
+      if (deco.length > 0) {
+        css += 'text-decoration: ' + deco.join(' ') + '; ';
       }
 
-      if (dir != null) {
-        node.setAttribute('direction', dir);
-      }
-
-      if (clip && w > 0 && h > 0) {
-        let cx = x;
-        let cy = y;
-
-        if (align == mxgraph.mxConstants.ALIGN_CENTER) {
-          cx -= w / 2;
-        } else if (align == mxgraph.mxConstants.ALIGN_RIGHT) {
-          cx -= w;
-        }
-
-        if (overflow != 'fill') {
-          if (valign == mxgraph.mxConstants.ALIGN_MIDDLE) {
-            cy -= h / 2;
-          } else if (valign == mxgraph.mxConstants.ALIGN_BOTTOM) {
-            cy -= h;
-          }
-        }
-
-        // LATER: Remove spacing from clip rectangle
-        const c = this.createClip(cx * s.scale - 2, cy * s.scale - 2, w * s.scale + 4, h * s.scale + 4);
-
-        if (this.defs != null) {
-          this.defs.appendChild(c);
-        } else {
-          // Makes sure clip is removed with referencing node
-          this.root.appendChild(c);
-        }
-
-        if (!mxgraph.mxClient.IS_CHROMEAPP && !mxgraph.mxClient.IS_IE && !mxgraph.mxClient.IS_IE11 && !mxgraph.mxClient.IS_EDGE && this.root.ownerDocument == document) {
-          // Workaround for potential base tag
-          const base = this.getBaseUrl().replace(/([\(\)])/g, '\\$1');
-          node.setAttribute('clip-path', 'url(' + base + '#' + c.getAttribute('id') + ')');
-        } else {
-          node.setAttribute('clip-path', 'url(#' + c.getAttribute('id') + ')');
-        }
-      }
-
-      // Default is left
-      const anchor = align == mxgraph.mxConstants.ALIGN_RIGHT ? 'end' : align == mxgraph.mxConstants.ALIGN_CENTER ? 'middle' : 'start';
-
-      // Text-anchor start is default in SVG
-      if (anchor != 'start') {
-        node.setAttribute('text-anchor', anchor);
-      }
-
-      if (!this.styleEnabled || size != mxgraph.mxConstants.DEFAULT_FONTSIZE) {
-        node.setAttribute('font-size', size * s.scale + 'px');
-      }
-
-      if (tr.length > 0) {
-        node.setAttribute('transform', tr);
-      }
-
-      if (s.alpha < 1) {
-        node.setAttribute('opacity', String(s.alpha));
-      }
-
-      const lines = str.split('\n');
-      const lh = Math.round(size * mxgraph.mxConstants.LINE_HEIGHT);
-      const textHeight = size + (lines.length - 1) * lh;
-
-      let cy = y + size - 1;
-
-      if (valign == mxgraph.mxConstants.ALIGN_MIDDLE) {
-        if (overflow == 'fill') {
-          cy -= h / 2;
-        } else {
-          const dy = (this.matchHtmlAlignment && clip && h > 0 ? Math.min(textHeight, h) : textHeight) / 2;
-          cy -= dy;
-        }
-      } else if (valign == mxgraph.mxConstants.ALIGN_BOTTOM) {
-        if (overflow == 'fill') {
-          cy -= h;
-        } else {
-          const dy = this.matchHtmlAlignment && clip && h > 0 ? Math.min(textHeight, h) : textHeight;
-          cy -= dy + 1;
-        }
-      }
-
-      for (let i = 0; i < lines.length; i++) {
-        // Workaround for bounding box of empty lines and spaces
-        if (lines[i].length > 0 && mxgraph.mxUtils.trim(lines[i]).length > 0) {
-          const text = this.createElement('text');
-          // LATER: Match horizontal HTML alignment
-          text.setAttribute('x', String(this.format(x * s.scale) + this.textOffset));
-          text.setAttribute('y', String(this.format(cy * s.scale) + this.textOffset));
-
-          mxgraph.mxUtils.write(text, lines[i]);
-          node.appendChild(text);
-        }
-
-        cy += lh;
-      }
-
-      this.root.appendChild(node);
-      this.addTextBackground(node, str, x, y, w, overflow == 'fill' ? h : textHeight, align, valign, overflow);
+      return css;
     };
   }
 
