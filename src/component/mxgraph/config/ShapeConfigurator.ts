@@ -81,6 +81,8 @@ export default class ShapeConfigurator {
     mxgraph.mxCellRenderer.registerShape(BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
   }
 
+  // TODO hack Fixes ignored pointerEvents flag for text in SVG
+
   private initMxShapePrototype(): void {
     // The following is copied from the mxgraph mxShape implementation then converted to TypeScript and enriched for bpmn-visualization
     // It is needed for adding the custom attributes that permits identification of the BPMN elements in the DOM
