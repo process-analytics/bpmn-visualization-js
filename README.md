@@ -120,7 +120,7 @@ You can set the BPMN content using one of the following ways:
 ```
 * Put this Javascript snippet within the HTML page
 ```javascript
-    let bpmnContent; // your BPMN 2.0 XML content, see tips below
+    let bpmnContent; // your BPMN 2.0 XML content
     // initialize BpmnVisualization and load the diagram
     const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: 'bpmn-container'});
     bpmnVisualization.load(bpmnContent);
@@ -154,7 +154,7 @@ You can find more detail in our [Contributing guide](CONTRIBUTING.md). Participa
 ## 📃 License
 
 `bpmn-visualization` is released under the [Apache 2.0](LICENSE) license. \
-Copyright &copy; from 2020, Bonitasoft S.A.
+Copyright &copy; 2020-present, Bonitasoft S.A.
 
 Some BPMN icons used by `bpmn-visualization` are derived from existing projects. See the [BPMN Support page](docs/users/bpmn-support.adoc)
 for more details:
