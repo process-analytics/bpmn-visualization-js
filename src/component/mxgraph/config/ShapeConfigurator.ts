@@ -99,7 +99,7 @@ export default class ShapeConfigurator {
         '; line-height: ' +
         lh +
         // START Fix for issue #920 (https://github.com/process-analytics/bpmn-visualization-js/issues/920)
-        // This cannot be generalize for all mxgraph use cases. For instance, in an editor mode, we should be able to edit the text by clicking on it.
+        // This cannot be generalized for all mxgraph use cases. For instance, in an editor mode, we should be able to edit the text by clicking on it.
         // Setting to 'none' prevent to capture click.
         '; pointer-events: none' +
         // (this.pointerEvents ? this.pointerEventsValue : 'none') +
