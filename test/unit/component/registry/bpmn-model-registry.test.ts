@@ -62,7 +62,7 @@ describe('Bpmn Model registry', () => {
   it('callback is called on model load', () => {
     const bpmnModelRegistry = new BpmnModelRegistry();
     const callback = jest.fn();
-    bpmnModelRegistry.onSearchableModelLoad(callback);
+    bpmnModelRegistry.registerOnLoadCallback(callback);
     bpmnModelRegistry.computeRenderedModel(startEventInModel('id', 'name'));
     expect(callback).toHaveBeenCalledTimes(1);
   });

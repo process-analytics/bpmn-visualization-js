@@ -22,16 +22,16 @@ import ShapeBpmnElement, { ShapeBpmnSubProcess } from '../../model/bpmn/internal
 
 export class BpmnModelRegistry {
   private searchableModel: SearchableModel;
-  private loadedSearchableModelCallback: () => void;
+  private onLoadCallback: () => void;
 
   computeRenderedModel(bpmnModel: BpmnModel): RenderedModel {
     this.searchableModel = new SearchableModel(bpmnModel);
-    this.loadedSearchableModelCallback?.();
+    this.onLoadCallback?.();
     return toRenderedModel(bpmnModel);
   }
 
-  onSearchableModelLoad(callback: () => void): void {
-    this.loadedSearchableModelCallback = callback;
+  registerOnLoadCallback(callback: () => void): void {
+    this.onLoadCallback = callback;
   }
 
   getBpmnSemantic(bpmnElementId: string): BpmnSemantic | undefined {
