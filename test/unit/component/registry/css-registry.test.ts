@@ -15,9 +15,9 @@
  */
 import { CssRegistry } from '../../../../src/component/registry/css-registry';
 
-let cssRegistry: CssRegistry;
+const cssRegistry = new CssRegistry();
 beforeEach(() => {
-  cssRegistry = new CssRegistry();
+  cssRegistry.clear();
 });
 
 describe('manage css classes for BPMN cells', () => {
@@ -25,8 +25,29 @@ describe('manage css classes for BPMN cells', () => {
     it('getClassNames should return a empty array, when no class is registered at all', () => {
       expect(cssRegistry.getClassNames('bpmn-id-1')).toHaveLength(0);
     });
+
     it('getClassNames should return a empty array, when no class name is registered for the BPMN element', () => {
       cssRegistry.addClassNames('bpmn-id-1', ['class-name']);
+      expect(cssRegistry.getClassNames('bpmn-id-2')).toHaveLength(0);
+    });
+
+    it('getClassNames should not let modify the stored class names except when using the API', () => {
+      const bpmnElementId = 'bpmn-id-1';
+      cssRegistry.addClassNames(bpmnElementId, ['class-name']);
+      const classNames = cssRegistry.getClassNames('bpmn-id-1');
+      expect(classNames).toEqual(['class-name']);
+      classNames.push('new-class-1', 'new-class-2');
+      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class-name']);
+    });
+
+    it('getClassNames after clearing the whole registry', () => {
+      cssRegistry.addClassNames('bpmn-id-1', ['class1']);
+      cssRegistry.addClassNames('bpmn-id-2', ['class1', 'class2']);
+      expect(cssRegistry.getClassNames('bpmn-id-1')).toEqual(['class1']);
+      expect(cssRegistry.getClassNames('bpmn-id-2')).toEqual(['class1', 'class2']);
+
+      cssRegistry.clear();
+      expect(cssRegistry.getClassNames('bpmn-id-1')).toHaveLength(0);
       expect(cssRegistry.getClassNames('bpmn-id-2')).toHaveLength(0);
     });
   });

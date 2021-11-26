@@ -172,6 +172,26 @@ describe('Bpmn Elements registry - CSS class management', () => {
       // this call ensures that there is not issue on the rendering part
       bpmnVisualization.bpmnElementsRegistry.addCssClasses(nonExistingBpmnId, 'class1');
     });
+
+    it('Css classes are cleaned between 2 diagram loads', () => {
+      const bpmnVisualizationMultipleLoads = initializeBpmnVisualization('bpmn-container-multiple-loads');
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualizationMultipleLoads);
+
+      const bpmnDiagramContent = readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn');
+      const startEventId = 'StartEvent_1';
+
+      // first load
+      bpmnVisualizationMultipleLoads.load(bpmnDiagramContent);
+      htmlElementLookup.expectStartEvent(startEventId);
+      bpmnVisualizationMultipleLoads.bpmnElementsRegistry.addCssClasses(startEventId, 'class1-added-on-first-load');
+      htmlElementLookup.expectStartEvent(startEventId, { additionalClasses: ['class1-added-on-first-load'] });
+
+      // second load
+      bpmnVisualizationMultipleLoads.load(bpmnDiagramContent);
+      htmlElementLookup.expectStartEvent(startEventId);
+      bpmnVisualizationMultipleLoads.bpmnElementsRegistry.addCssClasses(startEventId, 'class2-added-on-second-load');
+      htmlElementLookup.expectStartEvent(startEventId, { additionalClasses: ['class2-added-on-second-load'] });
+    });
   });
 
   describe('Remove classes', () => {
@@ -232,16 +252,8 @@ describe('Bpmn Elements registry - CSS class management', () => {
   });
 
   describe('Classes for Message Flow element and icon', () => {
-    // NOTE: temporary use a dedicated `BpmnVisualization` instance in each test
-    // Prevent bug to appear: classes are not purged from the internal CssRegistry on diagram load, so css classes added in a test are still present in the subsequent tests
-    function generateContainerId(testNumber: number): string {
-      return `bpmn-visualization-container-${testNumber}`;
-    }
-
     it('Add one or several classes to message flows with and without icon', () => {
-      const bpmnVisualization = initializeBpmnVisualization(generateContainerId(1));
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/message-flows-with-and-without-icon.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
       // default classes
       htmlElementLookup.expectMessageFlow('MessageFlow_1');
@@ -260,9 +272,7 @@ describe('Bpmn Elements registry - CSS class management', () => {
     });
 
     it('Remove one or several classes to one or several message flows with icon', () => {
-      const bpmnVisualization = initializeBpmnVisualization(generateContainerId(2));
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/message-flows-with-and-without-icon.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
       // remove a single class from a single element
       bpmnVisualization.bpmnElementsRegistry.addCssClasses('MessageFlow_1', 'class1');
@@ -284,9 +294,7 @@ describe('Bpmn Elements registry - CSS class management', () => {
     });
 
     it('Toggle one or several classes to one or several message flows with icon', () => {
-      const bpmnVisualization = initializeBpmnVisualization(generateContainerId(3));
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/message-flows-with-and-without-icon.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
       // toggle a classes for a single element
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('MessageFlow_2_msgVisibilityKind_initiating', 'class1');

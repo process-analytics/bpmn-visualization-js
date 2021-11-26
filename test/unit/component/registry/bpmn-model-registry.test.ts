@@ -59,21 +59,32 @@ function poolInModel(id: string, name: string): BpmnModel {
 }
 
 describe('Bpmn Model registry', () => {
+  it('callback is called on model load', () => {
+    const bpmnModelRegistry = new BpmnModelRegistry();
+    const callback = jest.fn();
+    bpmnModelRegistry.registerOnLoadCallback(callback);
+    bpmnModelRegistry.computeRenderedModel(startEventInModel('id', 'name'));
+    expect(callback).toHaveBeenCalledTimes(1);
+  });
+
   it('search edge', () => {
     bpmnModelRegistry.computeRenderedModel(sequenceFlowInModel('seq flow id', 'seq flow name'));
     const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('seq flow id');
     expectSequenceFlow(bpmnSemantic, { id: 'seq flow id', name: 'seq flow name' });
   });
+
   it('search flownode', () => {
     bpmnModelRegistry.computeRenderedModel(startEventInModel('start event id', 'start event name'));
     const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('start event id');
     expectStartEvent(bpmnSemantic, { id: 'start event id', name: 'start event name' });
   });
+
   it('search lane', () => {
     bpmnModelRegistry.computeRenderedModel(laneInModel('lane id', 'lane name'));
     const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('lane id');
     expectLane(bpmnSemantic, { id: 'lane id', name: 'lane name' });
   });
+
   it('search pool', () => {
     bpmnModelRegistry.computeRenderedModel(poolInModel('pool id', 'pool name'));
     const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('pool id');
