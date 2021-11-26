@@ -40,24 +40,24 @@ export class CssRegistry {
    * @return true if at least one class name from parameters has been added; false otherwise
    */
   addClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    return this.updateClassNames(bpmnElementId, classNames, (element, list) => list.add(element));
+    return this.updateClassNames(bpmnElementId, classNames, (classNames, className) => classNames.add(className));
   }
 
   // return `true` if at least one class has been removed
   removeClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    return this.updateClassNames(bpmnElementId, classNames, (element, list) => list.delete(element));
+    return this.updateClassNames(bpmnElementId, classNames, (classNames, className) => classNames.delete(className));
   }
 
   // return true if passed classes array has at least one element - as toggle will always trigger changes in that case
   toggleClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    this.updateClassNames(bpmnElementId, classNames, (element, list) => (list.has(element) ? list.delete(element) : list.add(element)));
+    this.updateClassNames(bpmnElementId, classNames, (classNames, className) => (classNames.has(className) ? classNames.delete(className) : classNames.add(className)));
     return classNames && classNames.length > 0;
   }
 
-  private updateClassNames(bpmnElementId: string, classNames: string[], performActionInListForElement: (element: string, list: Set<string>) => void): boolean {
+  private updateClassNames(bpmnElementId: string, classNames: string[], manageClassNames: (classNames: Set<string>, className: string) => void): boolean {
     const currentClassNames = this.getOrInitializeClassNames(bpmnElementId);
     const initialClassNamesNumber = currentClassNames.size;
-    ensureIsArray(classNames).forEach(className => performActionInListForElement(className, currentClassNames));
+    ensureIsArray(classNames).forEach(className => manageClassNames(currentClassNames, className));
     return currentClassNames.size != initialClassNamesNumber;
   }
 
