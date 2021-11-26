@@ -44,6 +44,7 @@ import { BpmnConnector } from '../shape/edges';
  */
 export default class ShapeConfigurator {
   configureShapes(): void {
+    this.initMxSvgCanvasPrototype();
     this.initMxShapePrototype();
     this.registerShapes();
     this.initMxCellRendererCreateCellOverlays();
@@ -79,6 +80,52 @@ export default class ShapeConfigurator {
     // shapes for flows
     mxgraph.mxCellRenderer.registerShape(BpmnStyleIdentifier.EDGE, BpmnConnector);
     mxgraph.mxCellRenderer.registerShape(BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
+  }
+
+  private initMxSvgCanvasPrototype(): void {
+    // getTextCss is only used when creating foreignObject for label, so there is no impact on svg text that we use for Overlays.
+    // Analysis done for mxgraph@4.1.1, still apply to mxgraph@4.2.2
+    mxgraph.mxSvgCanvas2D.prototype.getTextCss = function () {
+      const s = this.state;
+      const lh = mxgraph.mxConstants.ABSOLUTE_LINE_HEIGHT ? s.fontSize * mxgraph.mxConstants.LINE_HEIGHT + 'px' : mxgraph.mxConstants.LINE_HEIGHT * this.lineHeightCorrection;
+      let css =
+        'display: inline-block; font-size: ' +
+        s.fontSize +
+        'px; ' +
+        'font-family: ' +
+        s.fontFamily +
+        '; color: ' +
+        s.fontColor +
+        '; line-height: ' +
+        lh +
+        // START Fix for issue #920 (https://github.com/process-analytics/bpmn-visualization-js/issues/920)
+        // This cannot be generalized for all mxgraph use cases. For instance, in an editor mode, we should be able to edit the text by clicking on it.
+        // Setting to 'none' prevent to capture click.
+        '; pointer-events: none' +
+        // (this.pointerEvents ? this.pointerEventsValue : 'none') +
+        // END OF Fix for issue #920
+        '; ';
+
+      if ((s.fontStyle & mxgraph.mxConstants.FONT_BOLD) == mxgraph.mxConstants.FONT_BOLD) {
+        css += 'font-weight: bold; ';
+      }
+      if ((s.fontStyle & mxgraph.mxConstants.FONT_ITALIC) == mxgraph.mxConstants.FONT_ITALIC) {
+        css += 'font-style: italic; ';
+      }
+
+      const deco = [];
+      if ((s.fontStyle & mxgraph.mxConstants.FONT_UNDERLINE) == mxgraph.mxConstants.FONT_UNDERLINE) {
+        deco.push('underline');
+      }
+      if ((s.fontStyle & mxgraph.mxConstants.FONT_STRIKETHROUGH) == mxgraph.mxConstants.FONT_STRIKETHROUGH) {
+        deco.push('line-through');
+      }
+      if (deco.length > 0) {
+        css += 'text-decoration: ' + deco.join(' ') + '; ';
+      }
+
+      return css;
+    };
   }
 
   private initMxShapePrototype(): void {
