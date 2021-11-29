@@ -28,9 +28,11 @@
  *   </svg>
  * </div>
  * ```
- * mxGraph generates the following SVG groups
+ * mxGraph generates the following SVG groups (see https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L2862)
+ *   - 1st: for background image
  *   - 2nd: elements of the graph (shapes and edges)
  *   - 3rd: overlays
+ *   - 4th: decorators
  *
  * After loading, the DOM looks like:
  * ```html

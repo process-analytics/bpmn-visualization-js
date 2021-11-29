@@ -25,6 +25,13 @@ import {
   expectStartEventBpmnElement,
   expectTaskBpmnElement,
 } from './helpers/semantic-with-svg-utils';
+import { mxgraph } from '../../src/component/mxgraph/initializer';
+
+beforeAll(() => {
+  // Force usage of ForeignObject
+  // By default, mxGraph detects no ForeignObject support when running tests in jsdom environment
+  mxgraph.mxClient.NO_FO = false;
+});
 
 const bpmnVisualization = initializeBpmnVisualization();
 const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
@@ -151,17 +158,19 @@ describe('Bpmn Elements registry - CSS class management', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
 
       // default classes
-      htmlElementLookup.expectServiceTask('serviceTask_1_2');
-      htmlElementLookup.expectEndEvent('endEvent_message_1');
+      htmlElementLookup.expectServiceTask('serviceTask_1_2', { label: 'Service Task 1.2' });
+      htmlElementLookup.expectEndEvent('endEvent_message_1', { label: 'message end 2' });
+      htmlElementLookup.expectSequenceFlow('Flow_1bewc4s', { label: 'link' });
 
       // add a single class to a single element
       bpmnVisualization.bpmnElementsRegistry.addCssClasses('serviceTask_1_2', 'class1');
-      htmlElementLookup.expectServiceTask('serviceTask_1_2', { additionalClasses: ['class1'] });
+      htmlElementLookup.expectServiceTask('serviceTask_1_2', { label: 'Service Task 1.2', additionalClasses: ['class1'] });
 
       // add several classes to several elements
-      bpmnVisualization.bpmnElementsRegistry.addCssClasses(['endEvent_message_1', 'serviceTask_1_2'], ['class2', 'class3']);
-      htmlElementLookup.expectServiceTask('serviceTask_1_2', { additionalClasses: ['class1', 'class2', 'class3'] });
-      htmlElementLookup.expectEndEvent('endEvent_message_1', { additionalClasses: ['class2', 'class3'] });
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses(['endEvent_message_1', 'serviceTask_1_2', 'Flow_1bewc4s'], ['class2', 'class3']);
+      htmlElementLookup.expectServiceTask('serviceTask_1_2', { label: 'Service Task 1.2', additionalClasses: ['class1', 'class2', 'class3'] });
+      htmlElementLookup.expectEndEvent('endEvent_message_1', { label: 'message end 2', additionalClasses: ['class2', 'class3'] });
+      htmlElementLookup.expectSequenceFlow('Flow_1bewc4s', { label: 'link', additionalClasses: ['class2', 'class3'] });
     });
 
     it('BPMN element does not exist', () => {
@@ -199,20 +208,20 @@ describe('Bpmn Elements registry - CSS class management', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
 
       // default classes
-      htmlElementLookup.expectUserTask('userTask_0');
-      htmlElementLookup.expectLane('lane_01');
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+      htmlElementLookup.expectLane('lane_01', { label: 'Lane 3' });
 
       // remove a single class from a single element
       bpmnVisualization.bpmnElementsRegistry.addCssClasses('userTask_0', 'class1');
-      htmlElementLookup.expectUserTask('userTask_0', { additionalClasses: ['class1'] });
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0', additionalClasses: ['class1'] });
       bpmnVisualization.bpmnElementsRegistry.removeCssClasses('userTask_0', 'class1');
-      htmlElementLookup.expectUserTask('userTask_0');
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
 
       // remove several classes from several elements
       bpmnVisualization.bpmnElementsRegistry.addCssClasses(['lane_01', 'userTask_0'], ['class1', 'class2', 'class3']);
       bpmnVisualization.bpmnElementsRegistry.removeCssClasses(['lane_01', 'userTask_0'], ['class1', 'class3']);
-      htmlElementLookup.expectLane('lane_01', { additionalClasses: ['class2'] });
-      htmlElementLookup.expectUserTask('userTask_0', { additionalClasses: ['class2'] });
+      htmlElementLookup.expectLane('lane_01', { label: 'Lane 3', additionalClasses: ['class2'] });
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0', additionalClasses: ['class2'] });
     });
 
     it('BPMN element does not exist', () => {
@@ -232,13 +241,13 @@ describe('Bpmn Elements registry - CSS class management', () => {
       // toggle a classes for a single element
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('gateway_01', 'class1');
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('gateway_01', ['class1', 'class2']);
-      htmlElementLookup.expectExclusiveGateway('gateway_01', { additionalClasses: ['class2'] });
+      htmlElementLookup.expectExclusiveGateway('gateway_01', { label: 'gateway 1', additionalClasses: ['class2'] });
 
       // toggle a classes for several elements
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_02', 'gateway_01'], ['class1', 'class2', 'class3']);
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_02', 'gateway_01'], ['class1', 'class3', 'class4']);
-      htmlElementLookup.expectLane('lane_02', { additionalClasses: ['class2', 'class4'] });
-      htmlElementLookup.expectExclusiveGateway('gateway_01', { additionalClasses: ['class4'] });
+      htmlElementLookup.expectLane('lane_02', { label: 'Lane 2', additionalClasses: ['class2', 'class4'] });
+      htmlElementLookup.expectExclusiveGateway('gateway_01', { label: 'gateway 1', additionalClasses: ['class4'] });
     });
 
     it('BPMN element does not exist', () => {

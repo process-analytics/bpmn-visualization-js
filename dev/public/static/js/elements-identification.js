@@ -103,6 +103,8 @@ function getCustomCssClassName(bpmnKind) {
     return 'detection-event';
   } else if (bpmnKind.includes('lane')) {
     return 'detection-lane';
+  } else if (bpmnKind.includes('pool')) {
+    return 'detection-pool';
   } else if (bpmnKind.includes('Flow')) {
     return 'detection-flow';
   }
@@ -137,7 +139,7 @@ function getOverlay(bpmnKind) {
     };
   } else if (bpmnKind.includes('Event')) {
     return { position: 'bottom-left', label: '15' };
-  } else if (bpmnKind.includes('lane')) {
+  } else if (bpmnKind.includes('lane') || bpmnKind.includes('pool')) {
     return { position: 'bottom-right', label: '100' };
   } else if (bpmnKind.includes('Flow')) {
     return {

@@ -23,8 +23,12 @@ export class BpmnQuerySelectorsForTests extends BpmnQuerySelectors {
     return `#${this.containerId} > svg > g > g > g[data-bpmn-id]`;
   }
 
-  labelOfElement(bpmnElementId: string): string {
-    return `#${this.containerId} > svg > g > g > g[data-bpmn-id="${bpmnElementId}"].bpmn-label > g > foreignObject`;
+  labelLastDiv(bpmnElementId: string): string {
+    return `${this.labelSvgGroup(bpmnElementId)} > g > foreignObject > div > div > div`;
+  }
+
+  labelSvgGroup(bpmnElementId: string): string {
+    return `#${this.containerId} > svg > g > g > g[data-bpmn-id="${bpmnElementId}"].bpmn-label`;
   }
 
   /**
