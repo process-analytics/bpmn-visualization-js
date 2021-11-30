@@ -24,7 +24,7 @@ export class BpmnModelRegistry {
   private searchableModel: SearchableModel;
   private onLoadCallback: () => void;
 
-  computeRenderedModel(bpmnModel: BpmnModel): RenderedModel {
+  load(bpmnModel: BpmnModel): RenderedModel {
     this.searchableModel = new SearchableModel(bpmnModel);
     this.onLoadCallback?.();
     return toRenderedModel(bpmnModel);
