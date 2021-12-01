@@ -34,6 +34,10 @@
         width: 70%;
       }
 
+      :root {
+        --color-flow: dodgerblue;
+      }
+
       /* activity */
       .detection-activity > rect:nth-child(1) {
         fill: aquamarine;
@@ -48,8 +52,11 @@
         stroke: red;
       }
       /* lane */
-      .detection-lane > path:nth-child(2), /* label */
-      .detection-lane > path:nth-child(4) {
+      .detection-lane > path:nth-child(2), /* label zone */
+      .detection-lane > path:nth-child(4),
+      /* pool */
+      .detection-pool > path:nth-child(2), /* label zone */
+      .detection-pool > path:nth-child(4) {
         fill: palevioletred;
       }
       /* sequence flow arrow */
@@ -58,7 +65,7 @@
       .bpmn-message-flow.detection-flow > ellipse,
       /* message flow arrow */
       .bpmn-message-flow.detection-flow > path:nth-child(4) {
-        fill: dodgerblue;
+        fill: var(--color-flow);
       }
        /* sequence flow line */
       .bpmn-sequence-flow.detection-flow > path:nth-child(2),
@@ -73,18 +80,32 @@
         /* message flow icon */
       .detection-flow.bpmn-message-flow-icon > rect,
       .detection-flow.bpmn-message-flow-icon > path {
-        stroke: dodgerblue;
+        stroke: var(--color-flow);
         stroke-width: 4px;
       }
 
-      /*apply shadow on hover*/
+      /* apply shadow on hover */
       .detection-activity:hover,
+      .detection-event:hover,
       .detection-gateway:hover,
       .detection-lane:hover,
-      .detection-event:hover {
+      .detection-pool:hover {
         filter: drop-shadow(0 0 2em rgba(0, 0, 0));
       }
 
+      /* for labels */
+      .detection-activity.bpmn-label > g div,
+      .detection-event.bpmn-label > g div,
+      .detection-gateway.bpmn-label > g div {
+        color: red !important;
+      }
+      .detection-lane.bpmn-label > g div,
+      .detection-pool.bpmn-label > g div {
+        color: white !important;
+      }
+      .detection-flow.bpmn-label > g div {
+        color: var(--color-flow) !important;
+      }
     </style>
 
     <!-- load app -->
@@ -105,6 +126,7 @@
         <option value="inclusiveGateway">Inclusive Gateway</option>
         <option value="parallelGateway">Parallel Gateway</option>
         <option value="lane">Lane</option>
+        <option value="pool">Pool</option>
         <option value="messageFlow">Message Flow</option>
         <option value="sequenceFlow">Sequence Flow</option>
       </select>
