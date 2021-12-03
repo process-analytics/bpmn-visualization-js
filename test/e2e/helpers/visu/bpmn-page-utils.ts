@@ -152,9 +152,8 @@ export class BpmnPageSvgTester extends PageTester {
     if (!expectedText) {
       return;
     }
-    const svgElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.labelOfElement(bpmnId));
-    // contains 3 div
-    expect(await svgElementHandle.evaluate(node => (node.firstChild.firstChild.firstChild as HTMLElement).innerHTML)).toBe(expectedText);
+    const labelLastDivElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.labelLastDiv(bpmnId));
+    expect(await labelLastDivElementHandle.evaluate(node => node.innerHTML)).toBe(expectedText);
   }
 
   async expectEvent(bpmnId: string, expectedText: string, isStartEvent = true): Promise<void> {

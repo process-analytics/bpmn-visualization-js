@@ -23,6 +23,13 @@ export class CssRegistry {
   private classNamesByBPMNId = new Map<string, Set<string>>();
 
   /**
+   * Clear all classes that were registered.
+   */
+  clear(): void {
+    this.classNamesByBPMNId.clear();
+  }
+
+  /**
    * Get the CSS class names for a specific HTML element
    *
    * @param bpmnElementId the BPMN id of the HTML element from the DOM

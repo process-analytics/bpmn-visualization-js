@@ -46,8 +46,9 @@ export default class MxGraphCellUpdater {
     const view = this.graph.getView();
     const state = view.getState(mxCell);
     state.style[BpmnStyleIdentifier.EXTRA_CSS_CLASSES] = cssClasses;
-    state.shape.apply(state);
     state.shape.redraw();
+    // Ensure that label classes are also updated. When there is no label, state.text is null
+    state.text?.redraw();
   }
 
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {

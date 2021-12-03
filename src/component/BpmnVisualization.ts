@@ -67,7 +67,7 @@ export class BpmnVisualization {
   load(xml: string, options?: LoadOptions): void {
     try {
       const bpmnModel = newBpmnParser().parse(xml);
-      const renderedModel = this.bpmnModelRegistry.computeRenderedModel(bpmnModel);
+      const renderedModel = this.bpmnModelRegistry.load(bpmnModel);
       newBpmnRenderer(this.graph).render(renderedModel, options);
     } catch (e) {
       window.alert(`Cannot load bpmn diagram: ${e.message}`);

@@ -25,6 +25,13 @@ import {
   expectStartEventBpmnElement,
   expectTaskBpmnElement,
 } from './helpers/semantic-with-svg-utils';
+import { mxgraph } from '../../src/component/mxgraph/initializer';
+
+beforeAll(() => {
+  // Force usage of ForeignObject
+  // By default, mxGraph detects no ForeignObject support when running tests in jsdom environment
+  mxgraph.mxClient.NO_FO = false;
+});
 
 const bpmnVisualization = initializeBpmnVisualization();
 const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
@@ -151,17 +158,19 @@ describe('Bpmn Elements registry - CSS class management', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
 
       // default classes
-      htmlElementLookup.expectServiceTask('serviceTask_1_2');
-      htmlElementLookup.expectEndEvent('endEvent_message_1');
+      htmlElementLookup.expectServiceTask('serviceTask_1_2', { label: 'Service Task 1.2' });
+      htmlElementLookup.expectEndEvent('endEvent_message_1', { label: 'message end 2' });
+      htmlElementLookup.expectSequenceFlow('Flow_1bewc4s', { label: 'link' });
 
       // add a single class to a single element
       bpmnVisualization.bpmnElementsRegistry.addCssClasses('serviceTask_1_2', 'class1');
-      htmlElementLookup.expectServiceTask('serviceTask_1_2', { additionalClasses: ['class1'] });
+      htmlElementLookup.expectServiceTask('serviceTask_1_2', { label: 'Service Task 1.2', additionalClasses: ['class1'] });
 
       // add several classes to several elements
-      bpmnVisualization.bpmnElementsRegistry.addCssClasses(['endEvent_message_1', 'serviceTask_1_2'], ['class2', 'class3']);
-      htmlElementLookup.expectServiceTask('serviceTask_1_2', { additionalClasses: ['class1', 'class2', 'class3'] });
-      htmlElementLookup.expectEndEvent('endEvent_message_1', { additionalClasses: ['class2', 'class3'] });
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses(['endEvent_message_1', 'serviceTask_1_2', 'Flow_1bewc4s'], ['class2', 'class3']);
+      htmlElementLookup.expectServiceTask('serviceTask_1_2', { label: 'Service Task 1.2', additionalClasses: ['class1', 'class2', 'class3'] });
+      htmlElementLookup.expectEndEvent('endEvent_message_1', { label: 'message end 2', additionalClasses: ['class2', 'class3'] });
+      htmlElementLookup.expectSequenceFlow('Flow_1bewc4s', { label: 'link', additionalClasses: ['class2', 'class3'] });
     });
 
     it('BPMN element does not exist', () => {
@@ -172,6 +181,26 @@ describe('Bpmn Elements registry - CSS class management', () => {
       // this call ensures that there is not issue on the rendering part
       bpmnVisualization.bpmnElementsRegistry.addCssClasses(nonExistingBpmnId, 'class1');
     });
+
+    it('Css classes are cleaned between 2 diagram loads', () => {
+      const bpmnVisualizationMultipleLoads = initializeBpmnVisualization('bpmn-container-multiple-loads');
+      const htmlElementLookup = new HtmlElementLookup(bpmnVisualizationMultipleLoads);
+
+      const bpmnDiagramContent = readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn');
+      const startEventId = 'StartEvent_1';
+
+      // first load
+      bpmnVisualizationMultipleLoads.load(bpmnDiagramContent);
+      htmlElementLookup.expectStartEvent(startEventId);
+      bpmnVisualizationMultipleLoads.bpmnElementsRegistry.addCssClasses(startEventId, 'class1-added-on-first-load');
+      htmlElementLookup.expectStartEvent(startEventId, { additionalClasses: ['class1-added-on-first-load'] });
+
+      // second load
+      bpmnVisualizationMultipleLoads.load(bpmnDiagramContent);
+      htmlElementLookup.expectStartEvent(startEventId);
+      bpmnVisualizationMultipleLoads.bpmnElementsRegistry.addCssClasses(startEventId, 'class2-added-on-second-load');
+      htmlElementLookup.expectStartEvent(startEventId, { additionalClasses: ['class2-added-on-second-load'] });
+    });
   });
 
   describe('Remove classes', () => {
@@ -179,20 +208,20 @@ describe('Bpmn Elements registry - CSS class management', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
 
       // default classes
-      htmlElementLookup.expectUserTask('userTask_0');
-      htmlElementLookup.expectLane('lane_01');
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+      htmlElementLookup.expectLane('lane_01', { label: 'Lane 3' });
 
       // remove a single class from a single element
       bpmnVisualization.bpmnElementsRegistry.addCssClasses('userTask_0', 'class1');
-      htmlElementLookup.expectUserTask('userTask_0', { additionalClasses: ['class1'] });
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0', additionalClasses: ['class1'] });
       bpmnVisualization.bpmnElementsRegistry.removeCssClasses('userTask_0', 'class1');
-      htmlElementLookup.expectUserTask('userTask_0');
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
 
       // remove several classes from several elements
       bpmnVisualization.bpmnElementsRegistry.addCssClasses(['lane_01', 'userTask_0'], ['class1', 'class2', 'class3']);
       bpmnVisualization.bpmnElementsRegistry.removeCssClasses(['lane_01', 'userTask_0'], ['class1', 'class3']);
-      htmlElementLookup.expectLane('lane_01', { additionalClasses: ['class2'] });
-      htmlElementLookup.expectUserTask('userTask_0', { additionalClasses: ['class2'] });
+      htmlElementLookup.expectLane('lane_01', { label: 'Lane 3', additionalClasses: ['class2'] });
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0', additionalClasses: ['class2'] });
     });
 
     it('BPMN element does not exist', () => {
@@ -212,13 +241,13 @@ describe('Bpmn Elements registry - CSS class management', () => {
       // toggle a classes for a single element
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('gateway_01', 'class1');
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('gateway_01', ['class1', 'class2']);
-      htmlElementLookup.expectExclusiveGateway('gateway_01', { additionalClasses: ['class2'] });
+      htmlElementLookup.expectExclusiveGateway('gateway_01', { label: 'gateway 1', additionalClasses: ['class2'] });
 
       // toggle a classes for several elements
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_02', 'gateway_01'], ['class1', 'class2', 'class3']);
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_02', 'gateway_01'], ['class1', 'class3', 'class4']);
-      htmlElementLookup.expectLane('lane_02', { additionalClasses: ['class2', 'class4'] });
-      htmlElementLookup.expectExclusiveGateway('gateway_01', { additionalClasses: ['class4'] });
+      htmlElementLookup.expectLane('lane_02', { label: 'Lane 2', additionalClasses: ['class2', 'class4'] });
+      htmlElementLookup.expectExclusiveGateway('gateway_01', { label: 'gateway 1', additionalClasses: ['class4'] });
     });
 
     it('BPMN element does not exist', () => {
@@ -232,16 +261,8 @@ describe('Bpmn Elements registry - CSS class management', () => {
   });
 
   describe('Classes for Message Flow element and icon', () => {
-    // NOTE: temporary use a dedicated `BpmnVisualization` instance in each test
-    // Prevent bug to appear: classes are not purged from the internal CssRegistry on diagram load, so css classes added in a test are still present in the subsequent tests
-    function generateContainerId(testNumber: number): string {
-      return `bpmn-visualization-container-${testNumber}`;
-    }
-
     it('Add one or several classes to message flows with and without icon', () => {
-      const bpmnVisualization = initializeBpmnVisualization(generateContainerId(1));
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/message-flows-with-and-without-icon.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
       // default classes
       htmlElementLookup.expectMessageFlow('MessageFlow_1');
@@ -260,9 +281,7 @@ describe('Bpmn Elements registry - CSS class management', () => {
     });
 
     it('Remove one or several classes to one or several message flows with icon', () => {
-      const bpmnVisualization = initializeBpmnVisualization(generateContainerId(2));
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/message-flows-with-and-without-icon.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
       // remove a single class from a single element
       bpmnVisualization.bpmnElementsRegistry.addCssClasses('MessageFlow_1', 'class1');
@@ -284,9 +303,7 @@ describe('Bpmn Elements registry - CSS class management', () => {
     });
 
     it('Toggle one or several classes to one or several message flows with icon', () => {
-      const bpmnVisualization = initializeBpmnVisualization(generateContainerId(3));
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/message-flows-with-and-without-icon.bpmn'));
-      const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
       // toggle a classes for a single element
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('MessageFlow_2_msgVisibilityKind_initiating', 'class1');
