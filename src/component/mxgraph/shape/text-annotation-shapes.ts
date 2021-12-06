@@ -22,7 +22,7 @@ import type { mxAbstractCanvas2D } from 'mxgraph';
  * @internal
  */
 export class TextAnnotationShape extends mxgraph.mxRectangleShape {
-  override paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     // paint sort of left square bracket shape - for text annotation
     c.begin();
     c.moveTo(x + StyleDefault.TEXT_ANNOTATION_BORDER_LENGTH, y);

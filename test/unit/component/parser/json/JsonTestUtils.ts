@@ -85,7 +85,7 @@ export interface ExpectedBounds {
 class ParsingMessageCollectorTester extends ParsingMessageCollector {
   private warnings: Array<JsonParsingWarning> = [];
 
-  override warning(warning: JsonParsingWarning): void {
+  warning(warning: JsonParsingWarning): void {
     this.warnings.push(warning);
   }
 

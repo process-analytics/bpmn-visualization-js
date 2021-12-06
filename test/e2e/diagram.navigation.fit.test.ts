@@ -24,7 +24,7 @@ import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserIm
 import { ElementHandle } from 'playwright';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
-  override getConfig(param: {
+  getConfig(param: {
     fileName: string;
     buildCustomDiffDir: (config: MatchImageSnapshotOptions, fitType: FitType, margin?: number) => string;
     fitType: FitType;
