@@ -15,9 +15,9 @@
  */
 
 export * from './shape';
+export * from './edge/kinds';
 
 import { FlowKind } from './edge/kinds';
-export { FlowKind };
 import { ShapeBpmnElementKind } from './shape';
 /**
  * @category BPMN
