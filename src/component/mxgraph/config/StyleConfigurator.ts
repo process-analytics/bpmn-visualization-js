@@ -19,7 +19,7 @@ import { AssociationDirectionKind, SequenceFlowKind } from '../../../model/bpmn/
 import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 import { BpmnMxGraph } from '../BpmnMxGraph';
 import { mxgraph } from '../initializer';
-import { mxStylesheet, StyleMap } from 'mxgraph'; // for types
+import type { mxStylesheet, StyleMap } from 'mxgraph';
 
 /**
  * Configure the styles used for BPMN rendering.

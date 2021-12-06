@@ -15,7 +15,7 @@
  */
 
 import { mxgraph } from '../initializer';
-import { mxCellState, mxImageShape, mxShape } from 'mxgraph'; // for types
+import type { mxCellState, mxImageShape, mxShape } from 'mxgraph';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
 import { EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';

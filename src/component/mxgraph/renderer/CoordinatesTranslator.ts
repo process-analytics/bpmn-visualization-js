@@ -16,7 +16,7 @@
 
 import { BpmnMxGraph } from '../BpmnMxGraph';
 import { mxgraph } from '../initializer';
-import { mxCell, mxPoint } from 'mxgraph'; // for types
+import type { mxCell, mxPoint } from 'mxgraph';
 
 /**
  * @internal
