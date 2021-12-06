@@ -115,7 +115,7 @@
     "fs-extra": "^10.0.0",
     "husky": "^7.0.4",
     "jest": "^27.3.1",
-    "jest-html-reporter": "^3.4.1",
+    "jest-html-reporter": "^3.4.2",
     "jest-image-snapshot": "^4.5.1",
     "jest-playwright-preset": "^1.7.0",
     "jest-sonar": "^0.2.12",
