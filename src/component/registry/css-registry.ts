@@ -36,7 +36,7 @@ export class CssRegistry {
    * @return the registered CSS class names
    */
   getClassNames(bpmnElementId: string): string[] {
-    return Array.from(this.classNamesByBPMNId.get(bpmnElementId) || []);
+    return Array.from(this.classNamesByBPMNId.get(bpmnElementId) ?? []);
   }
 
   /**
@@ -47,24 +47,26 @@ export class CssRegistry {
    * @return true if at least one class name from parameters has been added; false otherwise
    */
   addClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    return this.updateClassNames(bpmnElementId, classNames, (element, set) => set.add(element));
+    return this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) => currentClassNames.add(className));
   }
 
   // return `true` if at least one class has been removed
   removeClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    return this.updateClassNames(bpmnElementId, classNames, (element, set) => set.delete(element));
+    return this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) => currentClassNames.delete(className));
   }
 
   // return true if passed classes array has at least one element - as toggle will always trigger changes in that case
   toggleClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    this.updateClassNames(bpmnElementId, classNames, (element, set) => (set.has(element) ? set.delete(element) : set.add(element)));
+    this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) =>
+      currentClassNames.has(className) ? currentClassNames.delete(className) : currentClassNames.add(className),
+    );
     return classNames && classNames.length > 0;
   }
 
-  private updateClassNames(bpmnElementId: string, classNames: string[], updateSet: (element: string, set: Set<string>) => void): boolean {
+  private updateClassNames(bpmnElementId: string, classNames: string[], manageClassNames: (currentClassNames: Set<string>, className: string) => void): boolean {
     const currentClassNames = this.getOrInitializeClassNames(bpmnElementId);
     const initialClassNamesNumber = currentClassNames.size;
-    ensureIsArray(classNames).forEach(className => updateSet(className, currentClassNames));
+    ensureIsArray(classNames).forEach(className => manageClassNames(currentClassNames, className));
     return currentClassNames.size != initialClassNamesNumber;
   }
 

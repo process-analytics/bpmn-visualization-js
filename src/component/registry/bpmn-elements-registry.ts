@@ -66,8 +66,8 @@ export class BpmnElementsRegistry {
    * ```javascript
    * ...
    * // Find all elements by specified id or ids
-   * const bpmnElementsSet1 = bpmnVisualization.bpmnElementsRegistry.getElementsByIds('userTask_1');
-   * const bpmnElementsSet2 = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['startEvent_3', 'userTask_2']);
+   * const bpmnElements1 = bpmnVisualization.bpmnElementsRegistry.getElementsByIds('userTask_1');
+   * const bpmnElements2 = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['startEvent_3', 'userTask_2']);
    * // now you can do whatever you want with the elements
    * ...
    * ```
@@ -244,18 +244,18 @@ export class BpmnElementsRegistry {
 }
 
 class HtmlElementRegistry {
-  constructor(private selectors: BpmnQuerySelectors) {}
+  constructor(private querySelectors: BpmnQuerySelectors) {}
 
   /**
    * Returns `null` if no element is found.
    * @param bpmnElementId the id of the BPMN element represented by the searched Html Element.
    */
   getBpmnHtmlElement(bpmnElementId: string): HTMLElement | null {
-    return document.querySelector<HTMLElement>(this.selectors.element(bpmnElementId));
+    return document.querySelector<HTMLElement>(this.querySelectors.element(bpmnElementId));
   }
 
   getBpmnHtmlElements(bpmnElementKind: BpmnElementKind): HTMLElement[] {
-    const selectors = this.selectors.elementsOfKind(computeBpmnBaseClassName(bpmnElementKind));
+    const selectors = this.querySelectors.elementsOfKind(computeBpmnBaseClassName(bpmnElementKind));
     return [...document.querySelectorAll<HTMLElement>(selectors)];
   }
 }
