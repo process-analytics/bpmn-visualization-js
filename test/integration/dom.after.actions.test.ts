@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { readFileSync } from '../helpers/file-helper';
-import { BpmnVisualization, FlowKind, OverlayEdgePosition, OverlayShapePosition, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
+import { BpmnVisualization, FlowKind, OverlayEdgePosition, OverlayShapePosition, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../src/bpmn-visualization';
 import { HtmlElementLookup } from './helpers/html-utils';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import {
@@ -66,9 +66,9 @@ describe.each`
   it('DOM should contains BPMN elements when loading simple-start-task-end.bpmn', async () => {
     bv.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
 
-    htmlElementLookup.expectStartEvent('StartEvent_1');
+    htmlElementLookup.expectStartEvent('StartEvent_1', ShapeBpmnEventDefinitionKind.NONE);
     htmlElementLookup.expectTask('Activity_1');
-    htmlElementLookup.expectEndEvent('EndEvent_1');
+    htmlElementLookup.expectEndEvent('EndEvent_1', ShapeBpmnEventDefinitionKind.NONE);
   });
 
   it('DOM should contains BPMN elements when loading model-complete-semantic.bpmn', async () => {
@@ -77,8 +77,8 @@ describe.each`
     htmlElementLookup.expectPool('participant_1_id');
     htmlElementLookup.expectLane('lane_4_1_id');
 
-    htmlElementLookup.expectStartEvent('start_event_signal_id');
-    htmlElementLookup.expectIntermediateThrowEvent('intermediate_throw_event_message_id');
+    htmlElementLookup.expectStartEvent('start_event_signal_id', ShapeBpmnEventDefinitionKind.SIGNAL);
+    htmlElementLookup.expectIntermediateThrowEvent('intermediate_throw_event_message_id', ShapeBpmnEventDefinitionKind.MESSAGE);
   });
 });
 
@@ -159,7 +159,7 @@ describe('Bpmn Elements registry - CSS class management', () => {
 
       // default classes
       htmlElementLookup.expectServiceTask('serviceTask_1_2', { label: 'Service Task 1.2' });
-      htmlElementLookup.expectEndEvent('endEvent_message_1', { label: 'message end 2' });
+      htmlElementLookup.expectEndEvent('endEvent_message_1', ShapeBpmnEventDefinitionKind.MESSAGE, { label: 'message end 2' });
       htmlElementLookup.expectSequenceFlow('Flow_1bewc4s', { label: 'link' });
 
       // add a single class to a single element
@@ -169,7 +169,7 @@ describe('Bpmn Elements registry - CSS class management', () => {
       // add several classes to several elements
       bpmnVisualization.bpmnElementsRegistry.addCssClasses(['endEvent_message_1', 'serviceTask_1_2', 'Flow_1bewc4s'], ['class2', 'class3']);
       htmlElementLookup.expectServiceTask('serviceTask_1_2', { label: 'Service Task 1.2', additionalClasses: ['class1', 'class2', 'class3'] });
-      htmlElementLookup.expectEndEvent('endEvent_message_1', { label: 'message end 2', additionalClasses: ['class2', 'class3'] });
+      htmlElementLookup.expectEndEvent('endEvent_message_1', ShapeBpmnEventDefinitionKind.MESSAGE, { label: 'message end 2', additionalClasses: ['class2', 'class3'] });
       htmlElementLookup.expectSequenceFlow('Flow_1bewc4s', { label: 'link', additionalClasses: ['class2', 'class3'] });
     });
 
@@ -191,15 +191,15 @@ describe('Bpmn Elements registry - CSS class management', () => {
 
       // first load
       bpmnVisualizationMultipleLoads.load(bpmnDiagramContent);
-      htmlElementLookup.expectStartEvent(startEventId);
+      htmlElementLookup.expectStartEvent(startEventId, ShapeBpmnEventDefinitionKind.NONE);
       bpmnVisualizationMultipleLoads.bpmnElementsRegistry.addCssClasses(startEventId, 'class1-added-on-first-load');
-      htmlElementLookup.expectStartEvent(startEventId, { additionalClasses: ['class1-added-on-first-load'] });
+      htmlElementLookup.expectStartEvent(startEventId, ShapeBpmnEventDefinitionKind.NONE, { additionalClasses: ['class1-added-on-first-load'] });
 
       // second load
       bpmnVisualizationMultipleLoads.load(bpmnDiagramContent);
-      htmlElementLookup.expectStartEvent(startEventId);
+      htmlElementLookup.expectStartEvent(startEventId, ShapeBpmnEventDefinitionKind.NONE);
       bpmnVisualizationMultipleLoads.bpmnElementsRegistry.addCssClasses(startEventId, 'class2-added-on-second-load');
-      htmlElementLookup.expectStartEvent(startEventId, { additionalClasses: ['class2-added-on-second-load'] });
+      htmlElementLookup.expectStartEvent(startEventId, ShapeBpmnEventDefinitionKind.NONE, { additionalClasses: ['class2-added-on-second-load'] });
     });
   });
 
@@ -266,8 +266,8 @@ describe('Bpmn Elements registry - CSS class management', () => {
 
       // default classes
       htmlElementLookup.expectMessageFlow('MessageFlow_1');
-      htmlElementLookup.expectMessageFlow('MessageFlow_2_msgVisibilityKind_initiating', { hasIcon: true });
-      htmlElementLookup.expectMessageFlow('MessageFlow_3_msgVisibilityKind_non_initiating', { hasIcon: true });
+      htmlElementLookup.expectMessageFlow('MessageFlow_2_msgVisibilityKind_initiating', { hasIcon: true, isInitiatingIcon: true });
+      htmlElementLookup.expectMessageFlow('MessageFlow_3_msgVisibilityKind_non_initiating', { hasIcon: true, isInitiatingIcon: false });
 
       // // add several classes to several message flows
       const additionalClasses = ['class1', 'class2'];
@@ -276,8 +276,8 @@ describe('Bpmn Elements registry - CSS class management', () => {
         additionalClasses,
       );
       htmlElementLookup.expectMessageFlow('MessageFlow_1', { additionalClasses: additionalClasses });
-      htmlElementLookup.expectMessageFlow('MessageFlow_2_msgVisibilityKind_initiating', { hasIcon: true, additionalClasses: additionalClasses });
-      htmlElementLookup.expectMessageFlow('MessageFlow_3_msgVisibilityKind_non_initiating', { hasIcon: true, additionalClasses: additionalClasses });
+      htmlElementLookup.expectMessageFlow('MessageFlow_2_msgVisibilityKind_initiating', { hasIcon: true, isInitiatingIcon: true, additionalClasses: additionalClasses });
+      htmlElementLookup.expectMessageFlow('MessageFlow_3_msgVisibilityKind_non_initiating', { hasIcon: true, isInitiatingIcon: false, additionalClasses: additionalClasses });
     });
 
     it('Remove one or several classes to one or several message flows with icon', () => {
@@ -298,8 +298,8 @@ describe('Bpmn Elements registry - CSS class management', () => {
         ['MessageFlow_2_msgVisibilityKind_initiating', 'MessageFlow_3_msgVisibilityKind_non_initiating'],
         ['class1', 'class3'],
       );
-      htmlElementLookup.expectMessageFlow('MessageFlow_2_msgVisibilityKind_initiating', { hasIcon: true, additionalClasses: ['class2'] });
-      htmlElementLookup.expectMessageFlow('MessageFlow_3_msgVisibilityKind_non_initiating', { hasIcon: true, additionalClasses: ['class2'] });
+      htmlElementLookup.expectMessageFlow('MessageFlow_2_msgVisibilityKind_initiating', { hasIcon: true, isInitiatingIcon: true, additionalClasses: ['class2'] });
+      htmlElementLookup.expectMessageFlow('MessageFlow_3_msgVisibilityKind_non_initiating', { hasIcon: true, isInitiatingIcon: false, additionalClasses: ['class2'] });
     });
 
     it('Toggle one or several classes to one or several message flows with icon', () => {
@@ -308,15 +308,23 @@ describe('Bpmn Elements registry - CSS class management', () => {
       // toggle a classes for a single element
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('MessageFlow_2_msgVisibilityKind_initiating', 'class1');
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('MessageFlow_2_msgVisibilityKind_initiating', ['class1', 'class2']);
-      htmlElementLookup.expectMessageFlow('MessageFlow_2_msgVisibilityKind_initiating', { hasIcon: true, additionalClasses: ['class2'] });
+      htmlElementLookup.expectMessageFlow('MessageFlow_2_msgVisibilityKind_initiating', { hasIcon: true, isInitiatingIcon: true, additionalClasses: ['class2'] });
 
       // toggle a classes for several elements
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(
         ['MessageFlow_2_msgVisibilityKind_initiating', 'MessageFlow_3_msgVisibilityKind_non_initiating'],
         ['class1', 'class3', 'class4'],
       );
-      htmlElementLookup.expectMessageFlow('MessageFlow_2_msgVisibilityKind_initiating', { hasIcon: true, additionalClasses: ['class2', 'class1', 'class3', 'class4'] });
-      htmlElementLookup.expectMessageFlow('MessageFlow_3_msgVisibilityKind_non_initiating', { hasIcon: true, additionalClasses: ['class1', 'class3', 'class4'] });
+      htmlElementLookup.expectMessageFlow('MessageFlow_2_msgVisibilityKind_initiating', {
+        hasIcon: true,
+        isInitiatingIcon: true,
+        additionalClasses: ['class2', 'class1', 'class3', 'class4'],
+      });
+      htmlElementLookup.expectMessageFlow('MessageFlow_3_msgVisibilityKind_non_initiating', {
+        hasIcon: true,
+        isInitiatingIcon: false,
+        additionalClasses: ['class1', 'class3', 'class4'],
+      });
     });
   });
 });

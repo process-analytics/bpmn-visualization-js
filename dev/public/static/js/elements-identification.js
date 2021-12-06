@@ -30,7 +30,7 @@ import {
 } from '../../index.es.js';
 
 let lastIdentifiedBpmnIds = [];
-let lastCssClassName = '';
+const cssClassName = 'detection';
 let isOverlaysDisplayed = true;
 
 function updateSelectedBPMNElements(textArea, bpmnKind) {
@@ -47,11 +47,10 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
 
   // newly identified elements and values
   const newlyIdentifiedBpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
-  const newlyCssClassName = getCustomCssClassName(bpmnKind);
 
   // CSS classes update
-  removeCssClasses(lastIdentifiedBpmnIds, lastCssClassName);
-  addCssClasses(newlyIdentifiedBpmnIds, newlyCssClassName);
+  removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
+  addCssClasses(newlyIdentifiedBpmnIds, cssClassName);
 
   // Overlays update
   lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
@@ -63,7 +62,6 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
 
   // keep track of newly identified elements and values
   lastIdentifiedBpmnIds = newlyIdentifiedBpmnIds;
-  lastCssClassName = newlyCssClassName;
 }
 
 function configureControls() {
@@ -75,12 +73,11 @@ function configureControls() {
 
   document.getElementById('clear-btn').onclick = function () {
     textArea.value = '';
-    removeCssClasses(lastIdentifiedBpmnIds, lastCssClassName);
+    removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
     lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
 
     // reset identified elements and values
     lastIdentifiedBpmnIds = [];
-    lastCssClassName = '';
   };
 
   // display options
@@ -92,23 +89,6 @@ function configureControls() {
   });
 
   checkboxDisplayOverlaysElt.checked = true;
-}
-
-function getCustomCssClassName(bpmnKind) {
-  if (ShapeUtil.isActivity(bpmnKind)) {
-    return 'detection-activity';
-  } else if (bpmnKind.includes('Gateway')) {
-    return 'detection-gateway';
-  } else if (bpmnKind.includes('Event')) {
-    return 'detection-event';
-  } else if (bpmnKind.includes('lane')) {
-    return 'detection-lane';
-  } else if (bpmnKind.includes('pool')) {
-    return 'detection-pool';
-  } else if (bpmnKind.includes('Flow')) {
-    return 'detection-flow';
-  }
-  return 'detection';
 }
 
 function getOverlay(bpmnKind) {
