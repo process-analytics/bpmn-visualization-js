@@ -20,7 +20,7 @@ import MarkerConfigurator from './config/MarkerConfigurator';
 import { GlobalOptions } from '../options';
 import { BpmnMxGraph } from './BpmnMxGraph';
 import { mxgraph } from './initializer';
-import { mxMouseEvent } from 'mxgraph'; // for types
+import type { mxMouseEvent } from 'mxgraph';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib

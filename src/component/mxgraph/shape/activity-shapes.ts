@@ -20,7 +20,7 @@ import { buildPaintParameter } from './render/icon-painter';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { orderActivityMarkers } from './render/utils';
 import { mxgraph } from '../initializer';
-import { mxAbstractCanvas2D } from 'mxgraph'; // for types
+import type { mxAbstractCanvas2D } from 'mxgraph';
 
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
   IconPainterProvider.get().paintEnvelopeIcon({
