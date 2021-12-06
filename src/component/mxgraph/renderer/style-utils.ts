@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { mxCell } from 'mxgraph'; // for types
+import type { mxCell } from 'mxgraph';
 
 /**
  * Compute the all class names associated to a cell in an hyphen case form.

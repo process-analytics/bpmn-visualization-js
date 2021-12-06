@@ -19,7 +19,7 @@ import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/va
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 import { mxgraph } from './initializer';
-import { mxMouseEvent } from 'mxgraph'; // for types
+import type { mxMouseEvent } from 'mxgraph';
 
 export class BpmnMxGraph extends mxgraph.mxGraph {
   private cumulativeZoomFactor = 1;

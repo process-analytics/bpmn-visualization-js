@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { mxgraph } from '../initializer';
-import { mxRectangle } from 'mxgraph';
+import type { mxRectangle } from 'mxgraph';
 import { MxGraphCustomOverlayStyle } from './custom-overlay';
 
 export class OverlayBadgeShape extends mxgraph.mxText {
