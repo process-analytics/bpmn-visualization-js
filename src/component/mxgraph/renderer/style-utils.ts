@@ -45,20 +45,20 @@ export function computeAllBpmnClassNames(style: string, isLabel: boolean): strin
   // shape=bpmn.message-flow-icon --> message-flow-icon
   const bpmnElementKind = pseudoBpmnElementKind.replace(/shape=bpmn./g, '');
 
-  const kindClasses = new Map<string, boolean>();
-  kindClasses.set('bpmn-type-activity', ShapeUtil.isActivity(bpmnElementKind));
-  kindClasses.set('bpmn-type-container', ShapeUtil.isPoolOrLane(bpmnElementKind));
-  kindClasses.set('bpmn-type-event', ShapeUtil.isEvent(bpmnElementKind));
-  kindClasses.set('bpmn-type-flow', isFlowKind(bpmnElementKind));
-  kindClasses.set('bpmn-type-gateway', ShapeUtil.isGateway(bpmnElementKind));
-  kindClasses.set('bpmn-type-task', ShapeUtil.isTask(bpmnElementKind));
-  [...kindClasses].filter(([, isType]) => isType).forEach(([className]) => classes.push(className));
+  const typeClasses = new Map<string, boolean>();
+  typeClasses.set('bpmn-type-activity', ShapeUtil.isActivity(bpmnElementKind));
+  typeClasses.set('bpmn-type-container', ShapeUtil.isPoolOrLane(bpmnElementKind));
+  typeClasses.set('bpmn-type-event', ShapeUtil.isEvent(bpmnElementKind));
+  typeClasses.set('bpmn-type-flow', isFlowKind(bpmnElementKind));
+  typeClasses.set('bpmn-type-gateway', ShapeUtil.isGateway(bpmnElementKind));
+  typeClasses.set('bpmn-type-task', ShapeUtil.isTask(bpmnElementKind));
+  [...typeClasses].filter(([, isType]) => isType).forEach(([className]) => classes.push(className));
 
   classes.push(computeBpmnBaseClassName(bpmnElementKind));
 
   styleElements
-    .map(style => {
-      const elements = style.split('=');
+    .map(entry => {
+      const elements = entry.split('=');
       return [elements[0], elements[1]];
     })
     .forEach(([key, value]) => {
