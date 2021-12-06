@@ -49,10 +49,10 @@ class BpmnPage {
   }
 }
 
-export interface TargetedPage {
+export interface TargetedPageConfiguration {
   /** the name of the page file without extension */
   pageFileName: string;
-  /** the expected of the page title after the page loading */
+  /** the expected page title, checked after page loading */
   expectedPageTitle: string;
   /**
    * Id of the container in the page attached to bpmn-visualization
@@ -88,7 +88,7 @@ export class PageTester {
   /**
    * Configure how the BPMN file is loaded by the test page.
    */
-  constructor(readonly targetedPage: TargetedPage, protected page: Page) {
+  constructor(readonly targetedPage: TargetedPageConfiguration, protected page: Page) {
     const showMousePointer = targetedPage.showMousePointer ?? false;
     this.baseUrl = `http://localhost:10002/${targetedPage.pageFileName}.html?showMousePointer=${showMousePointer}`;
     this.bpmnContainerId = targetedPage.bpmnContainerId ?? 'bpmn-container';
@@ -139,7 +139,7 @@ export class PageTester {
 export class BpmnPageSvgTester extends PageTester {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
-  constructor(targetedPage: TargetedPage, page: Page) {
+  constructor(targetedPage: TargetedPageConfiguration, page: Page) {
     super(targetedPage, page);
     // TODO duplicated with BpmnPage
     this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
