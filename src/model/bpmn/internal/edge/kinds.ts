@@ -15,8 +15,8 @@
  */
 
 /**
- * The real name of the field in the BPMN XSD
- * @internal
+ * Enum values are using the real name of the field in the BPMN XSD.
+ * @category BPMN
  */
 export enum AssociationDirectionKind {
   NONE = 'None',
@@ -25,7 +25,7 @@ export enum AssociationDirectionKind {
 }
 
 /**
- * The real name of the field in the BPMN XSD.
+ * Enum values are using the real name of the field in the BPMN XSD.
  * @category BPMN
  */
 export enum FlowKind {
@@ -35,7 +35,7 @@ export enum FlowKind {
 }
 
 /**
- * The real value of the visible message field in the BPMN XSD, except 'None'.
+ * Enum values are using the real name of the `visible message` field in the BPMN XSD, except for `none` that is not present in the specification.
  * @category BPMN
  */
 export enum MessageVisibleKind {
@@ -45,7 +45,8 @@ export enum MessageVisibleKind {
 }
 
 /**
- * @internal
+ * Enum values are used internally to identify sequence the flow markers and to manage their related style.
+ * @category BPMN
  */
 export enum SequenceFlowKind {
   NORMAL = 'normal',

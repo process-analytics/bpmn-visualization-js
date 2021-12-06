@@ -15,13 +15,14 @@
  */
 import {
   MarkerIdentifier,
+  MessageVisibleKind,
+  SequenceFlowKind,
   ShapeBpmnElementKind,
   ShapeBpmnEventBasedGatewayKind,
   ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
 } from '../../src/bpmn-visualization';
-import { MessageVisibleKind, SequenceFlowKind } from '../../src/model/bpmn/internal/edge/kinds';
 import { readFileSync } from '../helpers/file-helper';
 import { bpmnVisualization, ExpectedShapeModelElement } from './helpers/model-expect';
 import { mxgraph } from '../../src/component/mxgraph/initializer';
