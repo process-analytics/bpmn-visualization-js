@@ -27,11 +27,11 @@ import type { mxAbstractCanvas2D, mxRectangle } from 'mxgraph';
 export class MessageFlowIconShape extends mxgraph.mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
-  public constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  public paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const withFilledIcon = StyleUtils.getBpmnIsInitiating(this.style) === MessageVisibleKind.NON_INITIATING;
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 1, isFilled: withFilledIcon });
 

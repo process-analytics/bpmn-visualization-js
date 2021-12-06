@@ -33,7 +33,7 @@ export interface MxGraphCustomOverlayPosition {
 export type MxGraphCustomOverlayStyle = Required<OverlayStyle>;
 
 export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
-  public readonly style: MxGraphCustomOverlayStyle;
+  readonly style: MxGraphCustomOverlayStyle;
 
   constructor(public label: string, options: MxGraphCustomOverlayOptions) {
     super(null, '', options.position.horizontalAlign, options.position.verticalAlign, null, 'default');

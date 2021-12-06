@@ -32,11 +32,11 @@ interface SvgExportOptions {
 export class SvgExporter {
   constructor(private graph: mxGraph) {}
 
-  public exportSvg(): string {
+  exportSvg(): string {
     return this.doSvgExport(true);
   }
 
-  public exportSvgForPng(): string {
+  exportSvgForPng(): string {
     // chrome and webkit: tainted canvas when svg contains foreignObject
     // also on brave --> probably fail on chromium based browsers
     // so disable foreign objects for such browsers
