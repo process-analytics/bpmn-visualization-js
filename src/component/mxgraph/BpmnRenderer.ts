@@ -27,7 +27,7 @@ import { BpmnMxGraph } from './BpmnMxGraph';
 import { LoadOptions } from '../options';
 import { RenderedModel } from '../registry/bpmn-model-registry';
 import { mxgraph } from './initializer';
-import { mxCell } from 'mxgraph'; // for types
+import type { mxCell } from 'mxgraph';
 
 /**
  * @internal

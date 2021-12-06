@@ -15,7 +15,7 @@
  */
 
 import { mxgraph } from '../initializer';
-import { mxAbstractCanvas2D, mxPoint } from 'mxgraph';
+import type { mxAbstractCanvas2D, mxPoint } from 'mxgraph';
 import { BpmnStyleIdentifier } from '../style';
 
 export class BpmnConnector extends mxgraph.mxConnector {

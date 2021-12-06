@@ -17,7 +17,7 @@ import { buildCellMatcher, ExpectedCell, getCell } from '../matcher-utils';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import { ExpectedCellWithGeometry, getDefaultParentId } from '../../helpers/model-expect';
-import { mxCell } from 'mxgraph'; // for types
+import type { mxCell } from 'mxgraph';
 
 export function toBeCell(this: MatcherContext, received: string): CustomMatcherResult {
   const pass = getCell(received) ? true : false;

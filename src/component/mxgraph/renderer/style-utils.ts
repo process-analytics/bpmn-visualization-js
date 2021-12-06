@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+import type { mxCell } from 'mxgraph';
 import { FlowKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { MessageVisibleKind } from '../../../model/bpmn/internal/edge/kinds';
 import { BpmnStyleIdentifier } from '../style/identifiers';
-import { mxCell } from 'mxgraph'; // for types
 
 /**
  * Compute the all class names associated to a cell in a hyphen case form.

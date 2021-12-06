@@ -16,7 +16,7 @@
 
 import { StyleDefault } from '../../style';
 import { IconConfiguration, IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
-import { mxAbstractCanvas2D } from 'mxgraph'; // for types
+import type { mxAbstractCanvas2D } from 'mxgraph';
 
 /**
  * @category BPMN Theme
