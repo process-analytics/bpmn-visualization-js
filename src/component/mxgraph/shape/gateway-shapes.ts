@@ -18,7 +18,7 @@ import { StyleDefault, StyleUtils } from '../style';
 import { PaintParameter, IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import { mxgraph } from '../initializer';
-import { mxAbstractCanvas2D } from 'mxgraph'; // for types
+import type { mxAbstractCanvas2D } from 'mxgraph';
 
 abstract class GatewayShape extends mxgraph.mxRhombus {
   protected iconPainter = IconPainterProvider.get();

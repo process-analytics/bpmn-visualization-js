@@ -49,7 +49,7 @@ import {
   toBeTask,
   toBeUserTask,
 } from '../matchers';
-import { mxGeometry } from 'mxgraph'; // for types
+import type { mxGeometry } from 'mxgraph';
 import { ExpectedOverlay } from '../matchers/matcher-utils';
 
 declare global {

@@ -18,8 +18,8 @@ import { ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
 import { BpmnCanvas, PaintParameter, IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import { StyleDefault, StyleUtils } from '../style';
-import { mxAbstractCanvas2D } from 'mxgraph';
-import { mxgraph } from '../initializer'; // for types
+import type { mxAbstractCanvas2D } from 'mxgraph';
+import { mxgraph } from '../initializer';
 
 /**
  * @internal
