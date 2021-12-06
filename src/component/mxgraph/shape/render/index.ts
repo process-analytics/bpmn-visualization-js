@@ -16,5 +16,7 @@
 
 // export types first, otherwise typedoc doesn't generate the subsequent doc correctly (no category and uses the file header instead of the actual TSDoc)
 export * from './render-types';
-export { BpmnCanvas, BpmnCanvasConfiguration } from './BpmnCanvas';
-export { IconPainter, IconPainterProvider, PaintParameter } from './icon-painter';
+export { BpmnCanvas } from './BpmnCanvas';
+export type { BpmnCanvasConfiguration } from './BpmnCanvas';
+export { IconPainter, IconPainterProvider } from './icon-painter';
+export type { PaintParameter } from './icon-painter';
