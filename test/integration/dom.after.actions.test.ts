@@ -26,6 +26,7 @@ import {
   expectTaskBpmnElement,
 } from './helpers/semantic-with-svg-utils';
 import { mxgraph } from '../../src/component/mxgraph/initializer';
+import { insertBpmnContainer } from './helpers/dom-utils';
 
 beforeAll(() => {
   // Force usage of ForeignObject
@@ -39,20 +40,12 @@ const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 // use container id
 function initializeBpmnVisualization(containerId?: string): BpmnVisualization {
   const bpmnContainerId = containerId ?? 'bpmn-visualization-container';
-  // insert bpmn container
-  const containerDiv = document.createElement('div');
-  containerDiv.id = bpmnContainerId;
-  document.body.insertBefore(containerDiv, document.body.firstChild);
-  // initialize bpmn-visualization
+  insertBpmnContainer(bpmnContainerId);
   return new BpmnVisualization({ container: bpmnContainerId });
 }
 
 function initializeBpmnVisualizationWithHtmlElement(): BpmnVisualization {
-  // insert bpmn container
-  const containerDiv = document.createElement('div');
-  containerDiv.id = 'bpmn-visualization-container-alternative';
-  document.body.insertBefore(containerDiv, document.body.firstChild);
-  // initialize bpmn-visualization
+  const containerDiv = insertBpmnContainer('bpmn-visualization-container-alternative');
   return new BpmnVisualization({ container: containerDiv });
 }
 
