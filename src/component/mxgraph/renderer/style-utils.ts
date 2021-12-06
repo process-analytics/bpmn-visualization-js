@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-import { mxCell } from 'mxgraph'; // for types
+import type { mxCell } from 'mxgraph';
+import { FlowKind, ShapeUtil } from '../../../model/bpmn/internal';
+import { MessageVisibleKind } from '../../../model/bpmn/internal/edge/kinds';
+import { BpmnStyleIdentifier } from '../style/identifiers';
 
 /**
- * Compute the all class names associated to a cell in an hyphen case form.
+ * Compute the all class names associated to a cell in a hyphen case form.
  *
  * @param cell the `mxCell` related to the BPMN element.
  * @param isLabel the boolean that indicates if class must be computed for label.
  * @internal
  */
 export function computeAllBpmnClassNamesOfCell(cell: mxCell, isLabel: boolean): string[] {
-  const style = cell.style.split(';')[0];
-  return computeAllBpmnClassNames(style, isLabel);
+  return computeAllBpmnClassNames(cell.style, isLabel);
 }
 
 /**
- * Compute the all class names associated to a given bpmn element in an hyphen case form.
+ * Compute the all class names associated to a given bpmn element in a hyphen case form.
  *
  * @param style the part of the mxCell style related to a {@link BpmnElementKind}. Message flow icon is a special case, as it is not related to `BpmnElementKind`.
  * @param isLabel the boolean that indicates if class must be computed for label.
@@ -37,20 +39,65 @@ export function computeAllBpmnClassNamesOfCell(cell: mxCell, isLabel: boolean): 
  */
 export function computeAllBpmnClassNames(style: string, isLabel: boolean): string[] {
   const classes: string[] = [];
+
+  const styleElements = style.split(';');
+  const pseudoBpmnElementKind = styleElements[0];
   // shape=bpmn.message-flow-icon --> message-flow-icon
-  const cleanedStyle = style.replace(/shape=bpmn./g, '');
-  classes.push(computeBpmnBaseClassName(cleanedStyle));
+  const bpmnElementKind = pseudoBpmnElementKind.replace(/shape=bpmn./g, '');
+
+  const typeClasses = new Map<string, boolean>();
+  typeClasses.set('bpmn-type-activity', ShapeUtil.isActivity(bpmnElementKind));
+  typeClasses.set('bpmn-type-container', ShapeUtil.isPoolOrLane(bpmnElementKind));
+  typeClasses.set('bpmn-type-event', ShapeUtil.isEvent(bpmnElementKind));
+  typeClasses.set('bpmn-type-flow', isFlowKind(bpmnElementKind));
+  typeClasses.set('bpmn-type-gateway', ShapeUtil.isGateway(bpmnElementKind));
+  typeClasses.set('bpmn-type-task', ShapeUtil.isTask(bpmnElementKind));
+  [...typeClasses].filter(([, isType]) => isType).forEach(([className]) => classes.push(className));
+
+  classes.push(computeBpmnBaseClassName(bpmnElementKind));
+
+  styleElements
+    .map(entry => {
+      const elements = entry.split('=');
+      return [elements[0], elements[1]];
+    })
+    .forEach(([key, value]) => {
+      switch (key) {
+        case BpmnStyleIdentifier.EVENT_DEFINITION_KIND:
+          classes.push(`bpmn-event-def-${value}`);
+          break;
+        case BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND:
+          classes.push(`bpmn-gateway-kind-${value.toLowerCase()}`);
+          break;
+        case BpmnStyleIdentifier.IS_INITIATING: // message flow icon
+          classes.push(value == MessageVisibleKind.NON_INITIATING ? 'bpmn-icon-non-initiating' : 'bpmn-icon-initiating');
+          break;
+        case BpmnStyleIdentifier.SUB_PROCESS_KIND:
+          classes.push(`bpmn-sub-process-${value.toLowerCase()}`);
+          break;
+        case BpmnStyleIdentifier.GLOBAL_TASK_KIND:
+          classes.push(computeBpmnBaseClassName(value));
+          break;
+      }
+    });
+
   if (isLabel) {
     classes.push('bpmn-label');
   }
   return classes;
 }
 
+function isFlowKind(kind: string): boolean {
+  return Object.values(FlowKind)
+    .map(value => value as string)
+    .includes(kind);
+}
+
 /**
- * Compute the class name in an hyphen case form.
+ * Compute the class name in a hyphen case form.
  * For instance, `userTask` returns `bpmn-user-task`
  *
- * @param bpmnElementKind the string representation of a BPMN element kind i.e {@link ShapeBpmnElementKind} and {@link FlowKind}.
+ * @param bpmnElementKind usually, the string representation of a BPMN element kind i.e {@link ShapeBpmnElementKind} and {@link FlowKind}.
  * @internal
  */
 export function computeBpmnBaseClassName(bpmnElementKind: string): string {

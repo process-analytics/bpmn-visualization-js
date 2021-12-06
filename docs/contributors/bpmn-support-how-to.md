@@ -94,7 +94,7 @@ flow` support (see `ShapeBpmnElementKind` for more details)
 
 #### Integration tests
 
-* Update model test, mainly to ensure that the new BPMN element is now stored in the `mxGraph model`, see `mxGraph.model.test.ts`.
+* Update model test, mainly to ensure that the new BPMN element is now stored in the `mxGraph model`, see `mxGraph.model.bpmn.elements.test.ts`.
 * Fixtures bpmn diagrams used by model tests:
   * Name starts with `model-`
   * Generally, update the `test/fixtures/model-complete-semantic.bpmn` file with the newly introduced file and update the model expectation accordingly. \

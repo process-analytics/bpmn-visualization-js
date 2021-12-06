@@ -158,7 +158,7 @@ export class BpmnPageSvgTester extends PageTester {
 
   async expectEvent(bpmnId: string, expectedText: string, isStartEvent = true): Promise<void> {
     const svgElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.element(bpmnId));
-    await expectClassAttribute(svgElementHandle, isStartEvent ? 'bpmn-start-event' : 'bpmn-end-event');
+    await expectClassAttribute(svgElementHandle, `bpmn-type-event ${isStartEvent ? 'bpmn-start-event' : 'bpmn-end-event'} bpmn-event-def-none`);
     await expectFirstChildNodeName(svgElementHandle, 'ellipse');
     await expectFirstChildAttribute(svgElementHandle, 'rx', '18');
     await expectFirstChildAttribute(svgElementHandle, 'ry', '18');
@@ -168,7 +168,7 @@ export class BpmnPageSvgTester extends PageTester {
 
   async expectTask(bpmnId: string, expectedText: string): Promise<void> {
     const svgElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.element(bpmnId));
-    await expectClassAttribute(svgElementHandle, 'bpmn-task');
+    await expectClassAttribute(svgElementHandle, 'bpmn-type-activity bpmn-type-task bpmn-task');
     await expectFirstChildNodeName(svgElementHandle, 'rect');
     await expectFirstChildAttribute(svgElementHandle, 'width', '100');
     await expectFirstChildAttribute(svgElementHandle, 'height', '80');
@@ -177,7 +177,7 @@ export class BpmnPageSvgTester extends PageTester {
 
   async expectSequenceFlow(bpmnId: string, expectedText?: string): Promise<void> {
     const svgElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.element(bpmnId));
-    await expectClassAttribute(svgElementHandle, 'bpmn-sequence-flow');
+    await expectClassAttribute(svgElementHandle, 'bpmn-type-flow bpmn-sequence-flow');
     await expectFirstChildNodeName(svgElementHandle, 'path');
     await this.expectLabel(bpmnId, expectedText);
   }

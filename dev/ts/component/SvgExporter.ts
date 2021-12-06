@@ -15,7 +15,7 @@
  */
 
 import { mxgraph } from '../../../src/component/mxgraph/initializer';
-import { mxGraph, mxSvgCanvas2D } from 'mxgraph'; // for types
+import type { mxGraph, mxSvgCanvas2D } from 'mxgraph';
 
 interface SvgExportOptions {
   scale: number;

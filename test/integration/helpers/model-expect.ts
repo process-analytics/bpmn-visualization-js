@@ -49,7 +49,7 @@ import {
   toBeTask,
   toBeUserTask,
 } from '../matchers';
-import { mxGeometry } from 'mxgraph'; // for types
+import type { mxGeometry } from 'mxgraph';
 import { ExpectedOverlay } from '../matchers/matcher-utils';
 
 declare global {
@@ -179,7 +179,7 @@ export interface ExpectedEventBasedGatewayModelElement extends ExpectedShapeMode
   gatewayKind?: ShapeBpmnEventBasedGatewayKind;
 }
 
-export const bpmnVisualization = new BpmnVisualization({ container: null });
+export const bpmnVisualization = new BpmnVisualization(null);
 
 export function getDefaultParentId(): string {
   return bpmnVisualization.graph.getDefaultParent().id;
