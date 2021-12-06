@@ -39,71 +39,71 @@
       }
 
       /* activity */
-      .detection-activity > rect:nth-child(1) {
+      .detection.bpmn-type-activity > rect:nth-child(1) {
         fill: aquamarine;
       }
       /* gateway */
-      .detection-gateway > path:nth-child(1) {
+      .detection.bpmn-type-gateway > path:nth-child(1) {
         stroke: chartreuse;
         stroke-width: 4;
       }
       /* event */
-      .detection-event > ellipse {
+      .detection.bpmn-type-event > ellipse {
         stroke: red;
       }
-      /* lane */
-      .detection-lane > path:nth-child(2), /* label zone */
-      .detection-lane > path:nth-child(4),
-      /* pool */
-      .detection-pool > path:nth-child(2), /* label zone */
-      .detection-pool > path:nth-child(4) {
+      /* pool and lane */
+      .detection.bpmn-type-container > path:nth-child(2), /* label zone */
+      .detection.bpmn-type-container > path:nth-child(4) {
         fill: palevioletred;
       }
       /* sequence flow arrow */
-      .bpmn-sequence-flow.detection-flow > path:nth-child(3),
+      .bpmn-sequence-flow.detection > path:nth-child(3),
       /* message flow start */
-      .bpmn-message-flow.detection-flow > ellipse,
+      .bpmn-message-flow.detection > ellipse,
       /* message flow arrow */
-      .bpmn-message-flow.detection-flow > path:nth-child(4) {
+      .bpmn-message-flow.detection > path:nth-child(4) {
         fill: var(--color-flow);
       }
        /* sequence flow line */
-      .bpmn-sequence-flow.detection-flow > path:nth-child(2),
+      .bpmn-sequence-flow.detection > path:nth-child(2),
        /* sequence flow arrow */
-      .bpmn-sequence-flow.detection-flow > path:nth-child(3),
+      .bpmn-sequence-flow.detection > path:nth-child(3),
         /* message flow start marker */
-      .bpmn-message-flow.detection-flow > ellipse,
+      .bpmn-message-flow.detection > ellipse,
         /* message flow line */
-      .bpmn-message-flow.detection-flow > path:nth-child(2),
+      .bpmn-message-flow.detection > path:nth-child(2),
         /* message flow arrow */
-      .bpmn-message-flow.detection-flow> path:nth-child(4),
+      .bpmn-message-flow.detection> path:nth-child(4),
         /* message flow icon */
-      .detection-flow.bpmn-message-flow-icon > rect,
-      .detection-flow.bpmn-message-flow-icon > path {
+      .detection.bpmn-message-flow-icon > rect,
+      .detection.bpmn-message-flow-icon > path {
         stroke: var(--color-flow);
         stroke-width: 4px;
       }
+      /* special for msg flow icon non-initiating */
+      .detection.bpmn-message-flow-icon.bpmn-icon-non-initiating > rect {
+        fill: var(--color-flow) !important;
+      }
+      .detection.bpmn-message-flow-icon.bpmn-icon-non-initiating > path {
+        stroke: white !important;
+      }
 
       /* apply shadow on hover */
-      .detection-activity:hover,
-      .detection-event:hover,
-      .detection-gateway:hover,
-      .detection-lane:hover,
-      .detection-pool:hover {
-        filter: drop-shadow(0 0 2em rgba(0, 0, 0));
+      .detection:not(.bpmn-type-flow):hover {
+        filter: drop-shadow(0 0 1rem rgba(0, 0, 0));
+      }
+      .detection.bpmn-type-flow:hover > path {
+        stroke-width: 6px !important;
       }
 
       /* for labels */
-      .detection-activity.bpmn-label > g div,
-      .detection-event.bpmn-label > g div,
-      .detection-gateway.bpmn-label > g div {
+      .detection.bpmn-label > g div {
         color: red !important;
       }
-      .detection-lane.bpmn-label > g div,
-      .detection-pool.bpmn-label > g div {
+      .detection.bpmn-type-container.bpmn-label > g div {
         color: white !important;
       }
-      .detection-flow.bpmn-label > g div {
+      .detection.bpmn-type-flow.bpmn-label > g div {
         color: var(--color-flow) !important;
       }
     </style>

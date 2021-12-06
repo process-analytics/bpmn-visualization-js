@@ -43,12 +43,30 @@ describe('compute base css class names of BPMN elements', () => {
 
 describe('compute all css class names based on style input', () => {
   it.each`
-    style                                      | isLabel  | expectedClassNames
-    ${FlowKind.ASSOCIATION_FLOW}               | ${true}  | ${['bpmn-association', 'bpmn-label']}
-    ${FlowKind.MESSAGE_FLOW}                   | ${false} | ${['bpmn-message-flow']}
-    ${ShapeBpmnElementKind.CALL_ACTIVITY}      | ${true}  | ${['bpmn-call-activity', 'bpmn-label']}
-    ${ShapeBpmnElementKind.TASK_BUSINESS_RULE} | ${false} | ${['bpmn-business-rule-task']}
-    ${'shape=bpmn.message-flow-icon'}          | ${false} | ${['bpmn-message-flow-icon']}
+    style                                                                                | isLabel  | expectedClassNames
+    ${ShapeBpmnElementKind.LANE}                                                         | ${true}  | ${['bpmn-type-container', 'bpmn-lane', 'bpmn-label']}
+    ${ShapeBpmnElementKind.POOL}                                                         | ${false} | ${['bpmn-type-container', 'bpmn-pool']}
+    ${ShapeBpmnElementKind.CALL_ACTIVITY}                                                | ${false} | ${['bpmn-type-activity', 'bpmn-call-activity']}
+    ${'callActivity;bpmn.globalTaskKind=globalTask'}                                     | ${false} | ${['bpmn-type-activity', 'bpmn-call-activity', 'bpmn-global-task']}
+    ${'callActivity;bpmn.globalTaskKind=globalManualTask'}                               | ${true}  | ${['bpmn-type-activity', 'bpmn-call-activity', 'bpmn-global-manual-task', 'bpmn-label']}
+    ${ShapeBpmnElementKind.EVENT_BOUNDARY}                                               | ${true}  | ${['bpmn-type-event', 'bpmn-boundary-event', 'bpmn-label']}
+    ${'boundaryEvent;bpmn.eventDefinitionKind=cancel;bpmn.isInterrupting=true'}          | ${true}  | ${['bpmn-type-event', 'bpmn-boundary-event', 'bpmn-event-def-cancel', 'bpmn-label']}
+    ${ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW}                                     | ${false} | ${['bpmn-type-event', 'bpmn-intermediate-throw-event']}
+    ${'startEvent;bpmn.eventDefinitionKind=timer;bpmn.isInterrupting=false;fontStyle=2'} | ${false} | ${['bpmn-type-event', 'bpmn-start-event', 'bpmn-event-def-timer']}
+    ${ShapeBpmnElementKind.GATEWAY_EVENT_BASED}                                          | ${true}  | ${['bpmn-type-gateway', 'bpmn-event-based-gateway', 'bpmn-label']}
+    ${'eventBasedGateway;bpmn.isInstantiating=true;bpmn.gatewayKind=Parallel'}           | ${false} | ${['bpmn-type-gateway', 'bpmn-event-based-gateway', 'bpmn-gateway-kind-parallel']}
+    ${ShapeBpmnElementKind.GATEWAY_EXCLUSIVE}                                            | ${true}  | ${['bpmn-type-gateway', 'bpmn-exclusive-gateway', 'bpmn-label']}
+    ${ShapeBpmnElementKind.TASK}                                                         | ${true}  | ${['bpmn-type-activity', 'bpmn-type-task', 'bpmn-task', 'bpmn-label']}
+    ${ShapeBpmnElementKind.TASK_BUSINESS_RULE}                                           | ${false} | ${['bpmn-type-activity', 'bpmn-type-task', 'bpmn-business-rule-task']}
+    ${ShapeBpmnElementKind.SUB_PROCESS}                                                  | ${false} | ${['bpmn-type-activity', 'bpmn-sub-process']}
+    ${'subProcess;bpmn.subProcessKind=embedded'}                                         | ${false} | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-embedded']}
+    ${'subProcess;bpmn.subProcessKind=event'}                                            | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-event', 'bpmn-label']}
+    ${FlowKind.ASSOCIATION_FLOW}                                                         | ${true}  | ${['bpmn-type-flow', 'bpmn-association', 'bpmn-label']}
+    ${FlowKind.MESSAGE_FLOW}                                                             | ${false} | ${['bpmn-type-flow', 'bpmn-message-flow']}
+    ${'sequenceFlow;default;fontStyle=4'}                                                | ${false} | ${['bpmn-type-flow', 'bpmn-sequence-flow']}
+    ${'shape=bpmn.message-flow-icon'}                                                    | ${false} | ${['bpmn-message-flow-icon']}
+    ${'shape=bpmn.message-flow-icon;bpmn.isInitiating=non_initiating'}                   | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
+    ${'shape=bpmn.message-flow-icon;bpmn.isInitiating=initiating'}                       | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
   `('style="$style" / isLabel=$isLabel', ({ style, isLabel, expectedClassNames }: { style: string; isLabel: boolean; expectedClassNames: string[] }) => {
     expect(computeAllBpmnClassNames(style, isLabel)).toEqual(expectedClassNames);
   });
