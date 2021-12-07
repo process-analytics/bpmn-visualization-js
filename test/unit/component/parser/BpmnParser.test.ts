@@ -18,12 +18,29 @@ import { readFileSync } from '../../../helpers/file-helper';
 
 describe('parse xml to model', () => {
   it('Single process with no participant', () => {
-    const parser = newBpmnParser();
-    const model = parser.parse(readFileSync('../fixtures/bpmn/xml-parsing/miwg-A.1.0.bpmn'));
+    const model = newBpmnParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/miwg-A.1.0.bpmn'));
 
     expect(model.flowNodes).toHaveLength(5);
     expect(model.edges).toHaveLength(4);
     expect(model.lanes).toHaveLength(0);
     expect(model.pools).toHaveLength(0);
+  });
+
+  describe('error management', () => {
+    const parsingErrorMessage = `XML parsing failed. Unable to retrieve 'definitions' for the BPMN source.`;
+    it('Parse a text file', () => {
+      expect(() => newBpmnParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrowError(parsingErrorMessage);
+    });
+    it('Parse a truncated diagram file', () => {
+      // we don't have xml validation so the parsing is done. The parser tries to extract the most it can from the xml.
+      const model = newBpmnParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_truncated.bpmn'));
+      expect(model.flowNodes).toHaveLength(2);
+      // This element is truncated in the source xml file
+      const activities = model.flowNodes.filter(shape => shape.id == 'BPMNShape_Activity_1');
+      expect(activities[0].bpmnElement.id).toEqual('Activity_1');
+    });
+    it('Parse a xml file which is not a BPMN diagram', () => {
+      expect(() => newBpmnParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/xml-but-not-bpmn.xml'))).toThrowError(parsingErrorMessage);
+    });
   });
 });

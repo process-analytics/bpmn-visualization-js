@@ -20,8 +20,10 @@ import { insertBpmnContainer } from './helpers/dom-utils';
 export const bpmnVisualization = new BpmnVisualization({ container: insertBpmnContainer('bpmn-container'), navigation: { enabled: true } });
 
 describe('BpmnVisualization', () => {
-  it('Load malformed file', async () => {
-    expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/malformed-bpmn-diagram.txt'))).toThrowError(`Cannot read properties of undefined (reading 'category')`);
+  it('Load invalid diagram (text file)', async () => {
+    expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrowError(
+      `XML parsing failed. Unable to retrieve 'definitions' for the BPMN source.`,
+    );
   });
 
   describe('Fit', () => {
