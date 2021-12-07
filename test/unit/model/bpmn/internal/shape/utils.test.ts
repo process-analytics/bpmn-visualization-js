@@ -45,4 +45,37 @@ describe('ShapeUtil', () => {
       expect(ShapeUtil.isPoolOrLane(bpmnKind)).toBeFalsy();
     });
   });
+
+  describe('Reference kinds cannot be modified', () => {
+    it.each`
+      kind            | kindsFunction
+      ${'activities'} | ${() => ShapeUtil.activityKinds()}
+      ${'events'}     | ${() => ShapeUtil.eventKinds()}
+      ${'flow nodes'} | ${() => ShapeUtil.flowNodeKinds()}
+      ${'gateways'}   | ${() => ShapeUtil.gatewayKinds()}
+      ${'tasks'}      | ${() => ShapeUtil.taskKinds()}
+    `(
+      '$kind',
+      (
+        // kind is used to generate the function name
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        { kind, kindsFunction }: { kind: string; kindsFunction: () => string[] },
+      ) => {
+        const kinds = kindsFunction();
+
+        const initialKinds = [...kinds];
+        expect(kinds).toEqual(initialKinds);
+        expect(kinds).not.toBe(initialKinds);
+
+        // ensure the reference kinds is modified
+        const initialLength = kinds.length;
+        expect(kinds.push(null)).toEqual(initialLength + 1);
+        expect(kinds).not.toEqual(initialKinds);
+
+        const newKinds = kindsFunction();
+        expect(newKinds).not.toBe(kinds);
+        expect(newKinds).toEqual(initialKinds);
+      },
+    );
+  });
 });
