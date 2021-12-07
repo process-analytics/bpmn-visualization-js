@@ -36,6 +36,7 @@
 
       :root {
         --color-flow: dodgerblue;
+        --color-msg-flow-icon: orange;
       }
 
       /* activity */
@@ -73,19 +74,23 @@
         /* message flow line */
       .bpmn-message-flow.detection > path:nth-child(2),
         /* message flow arrow */
-      .bpmn-message-flow.detection> path:nth-child(4),
-        /* message flow icon */
-      .detection.bpmn-message-flow-icon > rect,
-      .detection.bpmn-message-flow-icon > path {
+      .bpmn-message-flow.detection> path:nth-child(4) {
         stroke: var(--color-flow);
         stroke-width: 4px;
       }
+
+      /* message flow icon */
+      .detection.bpmn-message-flow-icon > rect,
+      .detection.bpmn-message-flow-icon > path {
+        stroke: var(--color-msg-flow-icon);
+        stroke-width: 3px;
+      }
       /* special for msg flow icon non-initiating */
       .detection.bpmn-message-flow-icon.bpmn-icon-non-initiating > rect {
-        fill: var(--color-flow) !important;
+        fill: var(--color-msg-flow-icon);
       }
       .detection.bpmn-message-flow-icon.bpmn-icon-non-initiating > path {
-        stroke: white !important;
+        stroke: white;
       }
 
       /* apply shadow on hover */
