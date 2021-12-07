@@ -28,7 +28,7 @@ export class ShapeUtil {
   }
 
   static eventKinds(): ShapeBpmnElementKind[] {
-    return EVENT_KINDS;
+    return [...EVENT_KINDS];
   }
 
   static isBoundaryEvent(kind: ShapeBpmnElementKind): boolean {
@@ -56,7 +56,7 @@ export class ShapeUtil {
   }
 
   static activityKinds(): ShapeBpmnElementKind[] {
-    return ACTIVITY_KINDS;
+    return [...ACTIVITY_KINDS];
   }
 
   static isWithDefaultSequenceFlow(kind: ShapeBpmnElementKind): boolean {
@@ -73,11 +73,11 @@ export class ShapeUtil {
    * Returns all kinds related to a task, for instance {@link ShapeBpmnElementKind.TASK}, {@link ShapeBpmnElementKind.TASK_SEND}, but not a {@link ShapeBpmnElementKind.GLOBAL_TASK}.
    */
   static taskKinds(): ShapeBpmnElementKind[] {
-    return TASK_KINDS;
+    return [...TASK_KINDS];
   }
 
   static gatewayKinds(): ShapeBpmnElementKind[] {
-    return GATEWAY_KINDS;
+    return [...GATEWAY_KINDS];
   }
 
   static isGateway(kind: ShapeBpmnElementKind | string): boolean {
