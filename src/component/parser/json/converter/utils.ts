@@ -22,6 +22,8 @@ import { ShapeBpmnElementKind } from '../../../../model/bpmn/internal';
 import type { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
 import type { ParsingMessageCollector } from '../../parsing-messages';
 import { GroupUnknownCategoryValueWarning } from '../warnings';
+import { err, ok, Result } from 'neverthrow';
+import { Failure, invalidGroupDeserializationError, UserError } from '../error';
 
 /**
  * @internal
@@ -129,13 +131,13 @@ export class ConvertedElements {
   }
 
   // Special case: create the ShapeBpmnElement instance here to avoid duplication in CollaborationConverter and ProcessConverter
-  buildShapeBpmnGroup(groupBpmnElement: TGroup, processId?: string): ShapeBpmnElement | undefined {
+  buildShapeBpmnGroup(groupBpmnElement: TGroup, processId?: string): Result<ShapeBpmnElement, Failure<UserError.InvalidGroupDeserialization>> {
     const categoryValueData = this.categoryValues.get(groupBpmnElement.categoryValueRef);
     if (categoryValueData) {
-      return new ShapeBpmnElement(groupBpmnElement.id, categoryValueData.value, ShapeBpmnElementKind.GROUP, processId);
+      return ok(new ShapeBpmnElement(groupBpmnElement.id, categoryValueData.value, ShapeBpmnElementKind.GROUP, processId));
     }
     this.parsingMessageCollector.warning(new GroupUnknownCategoryValueWarning(groupBpmnElement.id, groupBpmnElement.categoryValueRef));
-    return undefined;
+    return err(invalidGroupDeserializationError(groupBpmnElement.id, groupBpmnElement.categoryValueRef));
   }
 }
 

@@ -22,12 +22,13 @@ import type { TMessageFlow } from '../../../../model/bpmn/json/baseElement/baseE
 import type { ConvertedElements } from './utils';
 import { ensureIsArray } from '../../../helpers/array-utils';
 import type { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
+import type { ParsingMessageCollector } from '../../parsing-messages';
 
 /**
  * @internal
  */
 export default class CollaborationConverter {
-  constructor(private convertedElements: ConvertedElements) {}
+  constructor(private convertedElements: ConvertedElements, private parsingMessageCollector: ParsingMessageCollector) {}
 
   deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): void {
     ensureIsArray(collaborations).forEach(collaboration => this.parseCollaboration(collaboration));
@@ -52,7 +53,7 @@ export default class CollaborationConverter {
   private buildGroups(bpmnElements: Array<TGroup> | TGroup): void {
     ensureIsArray(bpmnElements).forEach(groupBpmnElement => {
       const shapeBpmnElement = this.convertedElements.buildShapeBpmnGroup(groupBpmnElement);
-      shapeBpmnElement && this.convertedElements.registerFlowNode(shapeBpmnElement);
+      shapeBpmnElement.isOk() && this.convertedElements.registerFlowNode(shapeBpmnElement.value);
     });
   }
 }

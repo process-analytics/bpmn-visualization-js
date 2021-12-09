@@ -16,6 +16,7 @@
 
 module.exports = {
   root: true,
+  /*plugins: ['notice', 'neverthrow'],*/
   plugins: ['notice'],
   parser: '@typescript-eslint/parser', // Specifies the ESLint parser
   extends: [
@@ -28,6 +29,7 @@ module.exports = {
   rules: {
     'notice/notice': ['error', { templateFile: 'config/license-header.js', onNonMatchingHeader: 'replace' }],
     'no-console': ['error', { allow: ['warn', 'error'] }],
+    /*'neverthrow/must-use-result': 'error',*/
   },
   overrides: [
     // typescript

@@ -57,7 +57,7 @@ export function newBpmnJsonParser(parsingMessageCollector: ParsingMessageCollect
   const convertedElements = new ConvertedElements(parsingMessageCollector);
   return new BpmnJsonParser(
     new CategoryConverter(convertedElements),
-    new CollaborationConverter(convertedElements),
+    new CollaborationConverter(convertedElements, parsingMessageCollector),
     new EventDefinitionConverter(convertedElements),
     new GlobalTaskConverter(convertedElements),
     new ProcessConverter(convertedElements, parsingMessageCollector),

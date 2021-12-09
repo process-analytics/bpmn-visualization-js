@@ -96,7 +96,7 @@ export default class ProcessConverter {
 
   private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<FlowNode> | FlowNode, kind: ShapeBpmnElementKind): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
-      let shapeBpmnElement;
+      let shapeBpmnElement: ShapeBpmnElement;
 
       if (ShapeUtil.isEvent(kind)) {
         shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, processId);
@@ -112,7 +112,8 @@ export default class ProcessConverter {
           ShapeBpmnEventBasedGatewayKind[eventBasedGatewayBpmnElement.eventGatewayType],
         );
       } else if (kind == ShapeBpmnElementKind.GROUP) {
-        shapeBpmnElement = this.convertedElements.buildShapeBpmnGroup(bpmnElement as TGroup, processId);
+        const shapeBpmnElementResult = this.convertedElements.buildShapeBpmnGroup(bpmnElement as TGroup, processId);
+        shapeBpmnElement = shapeBpmnElementResult.isOk() && shapeBpmnElementResult.value;
       } else {
         // @ts-ignore We know that the text & name fields are not on all types, but it's already tested
         const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
