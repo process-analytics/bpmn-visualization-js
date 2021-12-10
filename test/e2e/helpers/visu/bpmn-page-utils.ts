@@ -32,8 +32,7 @@ class BpmnPage {
 
   async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<ElementHandle<SVGElement | HTMLElement>> {
     const bpmnContainer = await this.currentPage.waitForSelector(`#${this.bpmnContainerId}`, options);
-    const style = await bpmnContainer.getAttribute('style');
-    expect(style).toContain('cursor: default');
+    await expect(bpmnContainer.getAttribute('style')).resolves.toContain('cursor: default');
     return bpmnContainer;
   }
 
