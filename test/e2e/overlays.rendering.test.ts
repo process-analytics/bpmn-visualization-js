@@ -34,6 +34,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.start.flow.task.gateway',
         {
+          linux: 0.000006, // 0.0005352733299934798%
           macos: 0.001, // max 0.09371109158465839%
           windows: 0.0015, // max 0.11569306287013695%
         },
@@ -366,7 +367,7 @@ describe('Overlay style', () => {
         [
           'fill',
           {
-            linux: 0.000005, // 0.00041653196235502676%
+            linux: 0.000008, // 0.0007321333538534702%
             macos: 0.0002, // 0.015144311713777281%
             windows: 0.0003, // 0.021176489211183203%
           },
@@ -382,7 +383,7 @@ describe('Overlay style', () => {
         [
           'stroke',
           {
-            linux: 0.000005, // 0.00041653196235502676%
+            linux: 0.000008, // 0.0007579143449953918%
             macos: 0.0018, // 0.1787779478926499%
             windows: 0.0022, // 0.21848079010937665%
           },
