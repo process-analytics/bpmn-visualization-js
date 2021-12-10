@@ -21,7 +21,7 @@ export const bpmnVisualization = new BpmnVisualization({ container: insertBpmnCo
 
 describe('BpmnVisualization', () => {
   it('Load malformed file', async () => {
-    expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/malformed-bpmn-diagram.txt'))).toThrowError(`Cannot read property 'category' of undefined`);
+    expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/malformed-bpmn-diagram.txt'))).toThrowError(`Cannot read properties of undefined (reading 'category')`);
   });
 
   describe('Fit', () => {
