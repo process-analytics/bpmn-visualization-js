@@ -59,7 +59,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '16'
           cache: 'npm'
       # playwright browsers are needed for the bundle tests, so no special configuration as in other workflows
       - name: Install dependencies

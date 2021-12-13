@@ -6,8 +6,8 @@
 
 ## Requirements
 
-- `Node.js` 14.x (may work with other versions but without any guarantee)
-- `npm` 6 (may work with other versions but without any guarantee). In particular, we use [lockfileVersion: 1](https://docs.npmjs.com/cli/v7/configuring-npm/package-lock-json#lockfileversion). To ensure you use the (latest) npm 6 version, run `npm i -g npm@6`
+- `Node.js` 16.x (may work with higher versions but without any guarantee). For [nvm](https://github.com/nvm-sh/nvm) users, just run `nvm use` for the repository root
+- `npm` 8 (may work with other versions but without any guarantee). In particular, we use [lockfileVersion: 2](https://docs.npmjs.com/cli/v8/configuring-npm/package-lock-json#lockfileversion). To ensure you use the (latest) npm 8 version, run `npm i -g npm@8`
 - `Supported OS` Windows/Linux/macOS (see the GitHub Build workflow for more details)
 
 ## Build
