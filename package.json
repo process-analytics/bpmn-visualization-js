@@ -125,7 +125,7 @@
     "pinst": "^2.1.4",
     "playwright": "^1.17.1",
     "postcss": "^8.4.4",
-    "postcss-cli": "^9.0.2",
+    "postcss-cli": "^9.1.0",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.60.2",
