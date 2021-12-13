@@ -16,7 +16,7 @@ on:
       - 'rollup.config.js'
       - 'tailwind.config.js'
       - 'tsconfig.json'
-      - 'utils.rollup.config.js'
+      - 'utils.rollup.config.mjs'
   pull_request:
     branches:
       - master
@@ -32,7 +32,7 @@ on:
       - 'rollup.config.js'
       - 'tailwind.config.js'
       - 'tsconfig.json'
-      - 'utils.rollup.config.js'
+      - 'utils.rollup.config.mjs'
 
 jobs:
   build:

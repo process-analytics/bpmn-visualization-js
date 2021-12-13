@@ -18,10 +18,11 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import json from '@rollup/plugin-json';
 import externals from 'rollup-plugin-node-externals';
+import ts from 'typescript';
 
 const plugins = [
   typescript({
-    typescript: require('typescript'),
+    typescript: ts,
   }),
   // rollup-plugin-node-externals declares NodeJS built-in modules as external
   externals(),
