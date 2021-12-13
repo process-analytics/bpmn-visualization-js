@@ -51,7 +51,7 @@
     "build": "rollup -c",
     "build-bundles": "rollup -c --config-build-bundles true",
     "prepack": "run-s clean build-bundles",
-    "build-utils": "rollup --config utils.rollup.config.js",
+    "build-utils": "rollup --config utils.rollup.config.mjs",
     "demo": "run-s demo:*",
     "demo:clean": "rimraf build/demo",
     "demo:css": "postcss dev/public/static/css/styles.css -o dev/public/static/css/tailwind.css",
