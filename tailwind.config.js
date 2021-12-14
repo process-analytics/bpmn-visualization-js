@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 module.exports = {
-  purge: {
-    enabled: true,
-    content: ['./dev/public/index.html'],
-  },
-  darkMode: false, // or 'media' or 'class'
+  content: ['./dev/public/index.html'],
   theme: {
     extend: {},
   },
