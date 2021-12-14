@@ -112,6 +112,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^25.3.0",
     "eslint-plugin-notice": "^0.9.10",
+    "eslint-plugin-playwright": "^0.6.0",
     "eslint-plugin-prettier": "^4.0.0",
     "fs-extra": "^10.0.0",
     "husky": "^7.0.4",
