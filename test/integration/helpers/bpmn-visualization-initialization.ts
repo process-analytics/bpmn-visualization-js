@@ -23,7 +23,8 @@ export function initializeBpmnVisualization(containerId?: string): BpmnVisualiza
   return new BpmnVisualization({ container: bpmnContainerId });
 }
 
-export function initializeBpmnVisualizationWithHtmlElement(): BpmnVisualization {
-  const containerDiv = insertBpmnContainer('bpmn-visualization-container-alternative');
-  return new BpmnVisualization({ container: containerDiv });
+export function initializeBpmnVisualizationWithHtmlElement(containerId?: string, withNavigation = false): BpmnVisualization {
+  const bpmnContainerId = containerId ?? 'bpmn-visualization-container-alternative';
+  const options = { container: insertBpmnContainer(bpmnContainerId), navigation: { enabled: withNavigation } };
+  return new BpmnVisualization(options);
 }

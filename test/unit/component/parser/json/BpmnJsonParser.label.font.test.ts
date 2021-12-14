@@ -17,7 +17,6 @@
  * limitations under the License.
  */
 import { expectAsWarning, parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector, verifyLabelFont } from './JsonTestUtils';
-import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { shapeBpmnElementKindForLabelTests } from './BpmnJsonParser.label.test';
 import { LabelStyleMissingFontWarning } from '../../../../../src/component/parser/json/warnings';
@@ -29,7 +28,7 @@ function expectMissingFontWarning(shapeOrEdgeId: string, labelStyleId: string): 
 }
 
 describe('parse bpmn as json for label font', () => {
-  each(shapeBpmnElementKindForLabelTests).it(
+  it.each(shapeBpmnElementKindForLabelTests)(
     "should convert as Shape with Font, when a BPMNShape (attached to %s & who references a BPMNLabelStyle with font) is an attribute (as object) of 'BPMNPlane' (as object)",
     sourceKind => {
       const json = {

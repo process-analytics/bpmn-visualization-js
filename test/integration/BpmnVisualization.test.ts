@@ -15,9 +15,9 @@
  */
 import { BpmnVisualization, FitType } from '../../src/bpmn-visualization';
 import { readFileSync } from '../helpers/file-helper';
-import { insertBpmnContainer } from './helpers/dom-utils';
+import { initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visualization-initialization';
 
-export const bpmnVisualization = new BpmnVisualization({ container: insertBpmnContainer('bpmn-container'), navigation: { enabled: true } });
+const bpmnVisualization = initializeBpmnVisualizationWithHtmlElement('bpmn-container', true);
 
 describe('BpmnVisualization', () => {
   it('Load malformed file', async () => {

@@ -19,12 +19,12 @@ import { TEventDefinition } from '../../../../../src/model/bpmn/json/baseElement
 import { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import { BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
-import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeUtil } from '../../../../../src/model/bpmn/internal';
+import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../../../src/model/bpmn/internal';
 import { ShapeBpmnBoundaryEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { addEvent, buildDefinitionsAndProcessWithTask, BuildEventDefinitionParameter, BuildEventParameter, EventDefinitionOn } from './JsonBuilder';
 import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
+import { getEventShapes } from './TestUtils';
 
 interface TestParameter {
   bpmnKind: string;
@@ -33,10 +33,6 @@ interface TestParameter {
   expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind;
   expectedShapeBpmnElementKind: ShapeBpmnElementKind;
   process?: TProcess | TProcess[];
-}
-
-export function getEventShapes(model: BpmnModel): Shape[] {
-  return model.flowNodes.filter(shape => ShapeUtil.isEvent(shape.bpmnElement.kind));
 }
 
 function verifyEventShape(

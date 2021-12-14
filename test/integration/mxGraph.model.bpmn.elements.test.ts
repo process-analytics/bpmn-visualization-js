@@ -633,7 +633,7 @@ describe('mxGraph model - BPMN elements', () => {
         expect('task_in_collapsed_sub_process_id').not.toBeCell();
       });
 
-      describe('Start Event in Event Sub Process ', () => {
+      describe('Start Event in Event Sub Process', () => {
         it('Interrupting Start Event', async () => {
           expect('start_event_interrupting_message_id').toBeStartEvent({
             eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
@@ -786,7 +786,7 @@ describe('mxGraph model - BPMN elements', () => {
       });
     });
 
-    describe('Call Activities ', () => {
+    describe('Call Activities', () => {
       describe('Call Activity calling process', () => {
         it('Expanded', async () => {
           expect('expanded_call_activity_id').toBeCallActivity({

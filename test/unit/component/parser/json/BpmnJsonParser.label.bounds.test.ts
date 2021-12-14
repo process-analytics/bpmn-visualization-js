@@ -17,12 +17,11 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelBounds } from './JsonTestUtils';
-import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import { shapeBpmnElementKindForLabelTests } from './BpmnJsonParser.label.test';
+import { shapeBpmnElementKindForLabelTests } from './TestUtils';
 
 describe('parse bpmn as json for label bounds', () => {
-  each(shapeBpmnElementKindForLabelTests).describe('parse bpmn as json for label bounds on %s', sourceKind => {
+  describe.each(shapeBpmnElementKindForLabelTests)('parse bpmn as json for label bounds on %s', sourceKind => {
     it(`should convert as Shape, when a BPMNShape (attached to ${sourceKind} & with bounds with all attributes) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
       const json = {
         definitions: {
