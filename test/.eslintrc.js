@@ -24,16 +24,11 @@ module.exports = {
       version: require('jest/package.json').version,
     },
   },
-  extends: [
-    'plugin:jest/recommended',
-    /* 'plugin:jest/style',*/
-    /* 'plugin:jest/all',*/
-  ],
+  extends: ['plugin:jest/recommended', 'plugin:jest/style'],
   rules: {
-    /*    'jest/no-disabled-tests': 'warn',
-    'jest/no-focused-tests': 'error',
-    'jest/no-identical-title': 'error',
-    'jest/prefer-to-have-length': 'warn',
-    'jest/valid-expect': 'error',*/
+    /* The rule list: https://github.com/jest-community/eslint-plugin-jest#rules */
+    'jest/prefer-expect-resolves': 'warn',
+    'jest/prefer-spy-on': 'warn',
+    'jest/prefer-todo': 'warn',
   },
 };
