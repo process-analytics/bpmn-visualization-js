@@ -40,6 +40,11 @@ describe('Special parsing cases', () => {
     // decimals are rounded
     expect(getShape('BPMNShape_StartEvent_1').Bounds).toEqual(new Bounds(156.10001, 81.34500000000001, 36.0003450001, 36.0000001));
 
+    // negative values and string instead of number
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore x and y are parsed as string as defined in the BPMN diagram
+    expect(getShape('BPMNShape_Activity_1').Bounds).toEqual(new Bounds('not_a_number', 'not a number too', -100, -80));
+
     // large numbers use scientific notation
     const endEventShape = getShape('BPMNShape_EndEvent_1');
     // width in bpmn file: 20000000000000000009 (ESLint: This number literal will lose precision at runtime)

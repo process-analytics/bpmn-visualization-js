@@ -30,7 +30,7 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_Activity_1" bpmnElement="Activity_1">
-        <dc:Bounds x="250" y="59" width="100" height="80" />
+        <dc:Bounds x="not_a_number" y="not a number too" width="-100" height="-80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_1">
         <dc:Bounds x="412" y="81" width="36" height="36" />
