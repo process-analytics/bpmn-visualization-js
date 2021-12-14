@@ -28,9 +28,11 @@ describe('parse xml to model', () => {
 
   describe('error management', () => {
     const parsingErrorMessage = `XML parsing failed. Unable to retrieve 'definitions' for the BPMN source.`;
+
     it('Parse a text file', () => {
       expect(() => newBpmnParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrowError(parsingErrorMessage);
     });
+
     it('Parse a truncated diagram file', () => {
       // we don't have xml validation so the parsing is done. The parser tries to extract the most it can from the xml.
       const model = newBpmnParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_truncated.bpmn'));
@@ -39,6 +41,7 @@ describe('parse xml to model', () => {
       const activities = model.flowNodes.filter(shape => shape.id == 'BPMNShape_Activity_1');
       expect(activities[0].bpmnElement.id).toEqual('Activity_1');
     });
+
     it('Parse a xml file which is not a BPMN diagram', () => {
       expect(() => newBpmnParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/xml-but-not-bpmn.xml'))).toThrowError(parsingErrorMessage);
     });
