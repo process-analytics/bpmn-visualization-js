@@ -30,5 +30,7 @@ module.exports = {
     'jest/prefer-expect-resolves': 'warn',
     'jest/prefer-spy-on': 'warn',
     'jest/prefer-todo': 'warn',
+    /* The rule didn't find the 'expect' in the called methods */
+    'jest/expect-expect': 'off',
   },
 };

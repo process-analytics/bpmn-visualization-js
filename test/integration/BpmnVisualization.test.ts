@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnVisualization, FitType } from '../../src/bpmn-visualization';
+import { FitType } from '../../src/bpmn-visualization';
 import { readFileSync } from '../helpers/file-helper';
 import { initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visualization-initialization';
 
@@ -21,7 +21,7 @@ const bpmnVisualization = initializeBpmnVisualizationWithHtmlElement('bpmn-conta
 
 describe('BpmnVisualization', () => {
   it('Load malformed file', async () => {
-    expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/malformed-bpmn-diagram.txt'))).toThrowError(`Cannot read properties of undefined (reading 'category')`);
+    expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/malformed-bpmn-diagram.txt'))).toThrow(`Cannot read properties of undefined (reading 'category')`);
   });
 
   describe('Fit', () => {
