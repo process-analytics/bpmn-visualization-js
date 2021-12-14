@@ -37,7 +37,7 @@ export default class BpmnXmlParser {
     const model = parse(xml, this.options);
     if (!model.definitions) {
       // We currently don't validate the xml, so we don't detect xml validation error
-      // if 'definitions' is undefined, this throw an Error later in the parsing code without explicit information
+      // if 'definitions' is undefined, there is an Error later in the parsing code without explicit information
       // So for now, throw a generic error that better explains the problem.
       // See https://github.com/process-analytics/bpmn-visualization-js/issues/21 for improvement
       throw new Error(`XML parsing failed. Unable to retrieve 'definitions' for the BPMN source.`);
