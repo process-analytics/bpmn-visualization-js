@@ -17,7 +17,6 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes } from './JsonTestUtils';
-import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
 import { ShapeUtil } from '../../../../../src/bpmn-visualization';
@@ -31,7 +30,7 @@ export const shapeBpmnElementKindForLabelTests = Object.values(ShapeBpmnElementK
   .map(kind => [kind]);
 
 describe('parse bpmn as json for label', () => {
-  each(shapeBpmnElementKindForLabelTests).it(
+  it.each(shapeBpmnElementKindForLabelTests)(
     "should convert as Shape without Label, when a BPMNShape (attached to %s & with empty BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)",
     sourceKind => {
       const json = {

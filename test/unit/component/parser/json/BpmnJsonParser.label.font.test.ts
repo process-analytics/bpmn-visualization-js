@@ -439,7 +439,7 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it("should convert as Shape without Font, when a BPMNShape (who references a non-existing BPMNLabelStyle) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
-    console.warn = jest.fn();
+    jest.spyOn(console, 'warn').mockImplementation();
     const json = {
       definitions: {
         targetNamespace: '',
@@ -474,7 +474,7 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it("should convert as Edge without Font, when a BPMNEdge (which references a non-existing BPMNLabelStyle) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
-    console.warn = jest.fn();
+    jest.spyOn(console, 'warn').mockImplementation();
     const json = {
       definitions: {
         targetNamespace: '',

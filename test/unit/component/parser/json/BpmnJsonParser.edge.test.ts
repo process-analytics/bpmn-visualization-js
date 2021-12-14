@@ -19,7 +19,7 @@ import { EdgeUnknownBpmnElementWarning } from '../../../../../src/component/pars
 describe('parse bpmn as json for edges', () => {
   // this also covers unsupported bpmn element types that are then not retrieved during the parsing
   it('should not convert as Edge without related BPMN element', () => {
-    console.warn = jest.fn();
+    jest.spyOn(console, 'warn').mockImplementation();
     const json = {
       definitions: {
         targetNamespace: '',
@@ -40,6 +40,6 @@ describe('parse bpmn as json for edges', () => {
 
     parseJsonAndExpectOnlyWarnings(json, 1);
     const warning = expectAsWarning<EdgeUnknownBpmnElementWarning>(parsingMessageCollector.getWarnings()[0], EdgeUnknownBpmnElementWarning);
-    expect(warning.bpmnElementId).toEqual('edge-bpmnElement-unknown');
+    expect(warning.bpmnElementId).toBe('edge-bpmnElement-unknown');
   });
 });

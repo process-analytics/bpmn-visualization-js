@@ -146,7 +146,7 @@ function executeEventCommonTests(
       const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, numberOfExpectedFlowNodes, 1);
       expect(getEventShapes(bpmnModel)).toHaveLength(0);
       const warning = expectAsWarning<ShapeUnknownBpmnElementWarning>(parsingMessageCollector.getWarnings()[0], ShapeUnknownBpmnElementWarning);
-      expect(warning.bpmnElementId).toEqual('event_id_0');
+      expect(warning.bpmnElementId).toBe('event_id_0');
     }
 
     function parseAndExpectNoBoundaryEvents(json: BpmnJsonModel, numberOfExpectedFlowNodes = 1): void {
@@ -155,12 +155,12 @@ function executeEventCommonTests(
       const warnings = parsingMessageCollector.getWarnings();
 
       const warning0 = expectAsWarning<BoundaryEventNotAttachedToActivityWarning>(warnings[0], BoundaryEventNotAttachedToActivityWarning);
-      expect(warning0.bpmnElementId).toEqual('event_id_0');
+      expect(warning0.bpmnElementId).toBe('event_id_0');
       expect(warning0.attachedToRef).toEqual(numberOfExpectedFlowNodes == 0 ? 'unexisting_activity_id_0' : 'not_activity_id_0');
       expect(warning0.attachedToKind).toEqual(numberOfExpectedFlowNodes == 0 ? undefined : ShapeBpmnElementKind.GATEWAY_EXCLUSIVE);
 
       const warning1 = expectAsWarning<ShapeUnknownBpmnElementWarning>(warnings[1], ShapeUnknownBpmnElementWarning);
-      expect(warning1.bpmnElementId).toEqual('event_id_0');
+      expect(warning1.bpmnElementId).toBe('event_id_0');
     }
 
     it.each([
