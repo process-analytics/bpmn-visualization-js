@@ -773,6 +773,6 @@ describe('parse bpmn as json for process/pool', () => {
 
     const model = parseJsonAndExpect(json, 0, 0, 5, 4);
 
-    model.flowNodes.map(flowNode => flowNode.bpmnElement).forEach(bpmnElement => expect(bpmnElement.parentId).toBeUndefined());
+    model.flowNodes.map(flowNode => flowNode.bpmnElement).forEach(bpmnElement => expect(bpmnElement.parentId).toBe('WFP-6-'));
   });
 });
