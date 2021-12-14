@@ -15,10 +15,21 @@
  */
 
 module.exports = {
-  plugins: ['notice'],
+  plugins: ['notice', 'jest'],
+  env: {
+    'jest/globals': true,
+  },
+  settings: {
+    jest: {
+      version: require('jest/package.json').version,
+    },
+  },
   parser: '@typescript-eslint/parser', // Specifies the ESLint parser
   extends: [
     'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
+    /*    'plugin:jest/recommended',*/
+    /* 'plugin:jest/style',*/
+    /* 'plugin:jest/all',*/
   ],
   parserOptions: {
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
@@ -27,8 +38,12 @@ module.exports = {
   rules: {
     'notice/notice': ['error', { templateFile: 'config/license-header.js', onNonMatchingHeader: 'replace' }],
     'no-console': ['error', { allow: ['warn', 'error'] }],
+    /*    'jest/no-disabled-tests': 'warn',
+    'jest/no-focused-tests': 'error',
+    'jest/no-identical-title': 'error',
+    'jest/prefer-to-have-length': 'warn',
+    'jest/valid-expect': 'error',*/
   },
-
   overrides: [
     // typescript
     {
