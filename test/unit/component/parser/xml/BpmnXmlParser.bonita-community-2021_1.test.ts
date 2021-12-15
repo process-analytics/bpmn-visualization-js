@@ -26,8 +26,8 @@ describe('parse bpmn as xml for Bonita Community 2021.1', () => {
 
     // Bonita generates a single object, most Modeler generates an array with a single element
     const process: TProcess = json.definitions.process as TProcess;
-    expect(process.id).toEqual('_GW8mAGJcEeuag9wrqgia1Q');
-    expect(process.name).toEqual('WFP-6-');
+    expect(process.id).toBe('_GW8mAGJcEeuag9wrqgia1Q');
+    expect(process.name).toBe('WFP-6-');
 
     expect(process.task).toHaveLength(4);
     expect(process.exclusiveGateway).toHaveLength(2);
@@ -36,6 +36,6 @@ describe('parse bpmn as xml for Bonita Community 2021.1', () => {
     const bpmnDiagram: BPMNDiagram = json.definitions.BPMNDiagram as BPMNDiagram;
     expect(bpmnDiagram.BPMNPlane.BPMNShape).toHaveLength(9);
     expect(bpmnDiagram.BPMNPlane.BPMNEdge).toHaveLength(9);
-    expect(bpmnDiagram.BPMNLabelStyle).not.toBeUndefined();
+    expect(bpmnDiagram.BPMNLabelStyle).toBeDefined();
   });
 });

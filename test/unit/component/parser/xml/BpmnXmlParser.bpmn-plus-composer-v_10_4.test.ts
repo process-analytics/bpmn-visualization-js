@@ -28,7 +28,7 @@ describe('parse bpmn as xml for BPMN+ Composer V.10.4', () => {
     expect(processes).toHaveLength(2);
 
     const process: TProcess = processes[0];
-    expect(process.name).toEqual('A.4.0 Process');
+    expect(process.name).toBe('A.4.0 Process');
     expect(process.subProcess).toHaveLength(2);
     expect(process.exclusiveGateway).toBeUndefined();
     expect(process.task).toHaveLength(2);

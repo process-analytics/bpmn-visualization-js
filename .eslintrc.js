@@ -15,6 +15,7 @@
  */
 
 module.exports = {
+  root: true,
   plugins: ['notice'],
   parser: '@typescript-eslint/parser', // Specifies the ESLint parser
   extends: [
@@ -28,7 +29,6 @@ module.exports = {
     'notice/notice': ['error', { templateFile: 'config/license-header.js', onNonMatchingHeader: 'replace' }],
     'no-console': ['error', { allow: ['warn', 'error'] }],
   },
-
   overrides: [
     // typescript
     {

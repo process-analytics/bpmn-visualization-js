@@ -18,6 +18,8 @@ import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
 import 'jest-playwright-preset';
 import { FitType, LoadOptions } from '../../../../src/component/options';
 
+/* eslint-disable jest/no-standalone-expect */
+
 // PageWaitForSelectorOptions is not exported by playwright
 export interface PageWaitForSelectorOptions {
   timeout?: number;
@@ -32,6 +34,7 @@ class BpmnPage {
 
   async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<ElementHandle<SVGElement | HTMLElement>> {
     const bpmnContainer = await this.currentPage.waitForSelector(`#${this.bpmnContainerId}`, options);
+
     await expect(bpmnContainer.getAttribute('style')).resolves.toContain('cursor: default');
     return bpmnContainer;
   }
@@ -152,7 +155,7 @@ export class BpmnPageSvgTester extends PageTester {
       return;
     }
     const labelLastDivElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.labelLastDiv(bpmnId));
-    expect(await labelLastDivElementHandle.evaluate(node => node.innerHTML)).toBe(expectedText);
+    await expect(labelLastDivElementHandle.evaluate(node => node.innerHTML)).resolves.toBe(expectedText);
   }
 
   async expectEvent(bpmnId: string, expectedText: string, isStartEvent = true): Promise<void> {
@@ -183,13 +186,14 @@ export class BpmnPageSvgTester extends PageTester {
 }
 
 async function expectClassAttribute(svgElementHandle: ElementHandle<Element>, value: string): Promise<void> {
-  expect(await svgElementHandle.evaluate(node => node.getAttribute('class'))).toBe(value);
+  await expect(svgElementHandle.evaluate(node => node.getAttribute('class'))).resolves.toBe(value);
 }
 
 async function expectFirstChildNodeName(svgElementHandle: ElementHandle, nodeName: string): Promise<void> {
-  expect(await svgElementHandle.evaluate(node => node.firstChild.nodeName)).toBe(nodeName);
+  await expect(svgElementHandle.evaluate(node => node.firstChild.nodeName)).resolves.toBe(nodeName);
 }
 
 async function expectFirstChildAttribute(svgElementHandle: ElementHandle, attributeName: string, value: string): Promise<void> {
-  expect(await svgElementHandle.evaluate((node: Element, attribute: string) => (node.firstChild as SVGGElement).getAttribute(attribute), attributeName)).toBe(value);
+  await expect(svgElementHandle.evaluate((node: Element, attribute: string) => (node.firstChild as SVGGElement).getAttribute(attribute), attributeName)).resolves.toBe(value);
 }
+/* eslint-enable jest/no-standalone-expect */

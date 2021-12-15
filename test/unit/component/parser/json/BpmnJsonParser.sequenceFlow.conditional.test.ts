@@ -15,13 +15,12 @@
  */
 import { parseJsonAndExpectOnlyEdgesAndFlowNodes, verifyEdge } from './JsonTestUtils';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/kinds';
-import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { TSequenceFlow } from '../../../../../src/model/bpmn/json/baseElement/flowElement';
 import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
 
 describe('parse bpmn as json for conditional sequence flow', () => {
-  each([
+  it.each([
     ['exclusiveGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
     ['inclusiveGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
     // To uncomment when we support complex gateway
@@ -36,7 +35,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
     ['businessRuleTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['callActivity', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['subProcess', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
-  ]).it(
+  ])(
     `should convert as Edge, when an sequence flow (defined as conditional in %s) is an attribute (as object) of 'process' (as object)`,
     (sourceKind, expectedSequenceFlowKind) => {
       const json = {

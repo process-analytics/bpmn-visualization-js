@@ -16,6 +16,8 @@
 import { BpmnVisualization, ShapeBpmnEventDefinitionKind } from '../../../src/bpmn-visualization';
 import { BpmnQuerySelectorsForTests } from '../../helpers/query-selectors';
 
+/* eslint-disable jest/no-standalone-expect */
+
 export interface RequestedChecks {
   readonly additionalClasses?: string[];
   readonly label?: string;
@@ -209,12 +211,14 @@ export function expectSvgAssociation(svgGroupElement: HTMLElement): void {
 // TODO duplication with BpmnPage
 // we expect a SVGGElement as HTMLElement parameter
 function expectSvgFirstChildNodeName(svgGroupElement: HTMLElement, name: string): void {
-  expect(svgGroupElement).not.toBeUndefined();
+  expect(svgGroupElement).toBeDefined();
   const firstChild = svgGroupElement.firstChild as SVGGeometryElement;
   expect(firstChild.nodeName).toEqual(name);
 }
 
 function expectClassAttribute(svgElement: HTMLElement | SVGElement, value: string): void {
-  expect(svgElement).not.toBeUndefined();
+  expect(svgElement).toBeDefined();
   expect(svgElement.getAttribute('class')).toEqual(value);
 }
+
+/* eslint-enable jest/no-standalone-expect */

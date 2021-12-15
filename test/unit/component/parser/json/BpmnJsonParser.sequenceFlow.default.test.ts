@@ -15,12 +15,11 @@
  */
 import { parseJsonAndExpectOnlyEdgesAndFlowNodes, verifyEdge } from './JsonTestUtils';
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/kinds';
-import each from 'jest-each';
 import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for default sequence flow', () => {
-  each([
+  it.each([
     ['exclusiveGateway'],
     ['inclusiveGateway'],
     // To uncomment when we support complex gateway
@@ -35,7 +34,7 @@ describe('parse bpmn as json for default sequence flow', () => {
     ['businessRuleTask'],
     ['callActivity'],
     ['subProcess'],
-  ]).it(`should convert as Edge, when an sequence flow (defined as default in %s) is an attribute (as object) of 'process' (as object)`, sourceKind => {
+  ])(`should convert as Edge, when an sequence flow (defined as default in %s) is an attribute (as object) of 'process' (as object)`, sourceKind => {
     const json = {
       definitions: {
         targetNamespace: '',
