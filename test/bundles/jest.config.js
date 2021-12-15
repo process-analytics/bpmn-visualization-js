@@ -30,6 +30,7 @@ module.exports = {
       tsconfig: '<rootDir>/tsconfig.jest.json',
     },
   },
+  setupFilesAfterEnv: ['expect-playwright'],
   reporters: [
     'default',
     [
