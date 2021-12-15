@@ -20,8 +20,10 @@ import { initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visua
 const bpmnVisualization = initializeBpmnVisualizationWithHtmlElement('bpmn-container', true);
 
 describe('BpmnVisualization', () => {
-  it('Load malformed file', async () => {
-    expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/malformed-bpmn-diagram.txt'))).toThrow(`Cannot read properties of undefined (reading 'category')`);
+  it('Load invalid diagram (text file)', async () => {
+    expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(
+      `XML parsing failed. Unable to retrieve 'definitions' for the BPMN source.`,
+    );
   });
 
   describe('Fit', () => {
