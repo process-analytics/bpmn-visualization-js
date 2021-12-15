@@ -93,7 +93,8 @@ jobs:
       - name: Build bundles
         run: npm run build-bundles
       # install OS dependencies required by browsers on the GitHub runner
-      - uses: microsoft/playwright-github-action@v1.5.0
+      - name: Install the dependencies for all browsers
+        run: npx playwright install-deps
       - name: Test bundles
         id: 'test_bundles'
         run: npm run test:bundles
