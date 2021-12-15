@@ -17,21 +17,11 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes } from './JsonTestUtils';
-import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
-import { ShapeUtil } from '../../../../../src/bpmn-visualization';
-
-export const shapeBpmnElementKindForLabelTests = Object.values(ShapeBpmnElementKind)
-  .filter(kind => !ShapeUtil.isPoolOrLane(kind))
-  // group as label is managed by category
-  .filter(kind => kind != ShapeBpmnElementKind.GROUP)
-  // intermediate catch and boundary events require extra property no managed here
-  .filter(kind => ![ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH].includes(kind))
-  .map(kind => [kind]);
+import { shapeBpmnElementKindForLabelTests } from './TestUtils';
 
 describe('parse bpmn as json for label', () => {
-  each(shapeBpmnElementKindForLabelTests).it(
+  it.each(shapeBpmnElementKindForLabelTests)(
     "should convert as Shape without Label, when a BPMNShape (attached to %s & with empty BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)",
     sourceKind => {
       const json = {

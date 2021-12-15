@@ -28,7 +28,7 @@ describe('parse bpmn as xml for OMNITRACKER BPMN 11.5', () => {
     expect(processes).toHaveLength(3);
 
     const process: TProcess = processes[2];
-    expect(process.name).toEqual('Pool2_Pool');
+    expect(process.name).toBe('Pool2_Pool');
     expect(process.subProcess).toHaveLength(2);
     expect(process.exclusiveGateway).toBeUndefined();
     expect(process.task).toHaveLength(2);

@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 import { ExpectedShape, parseJson, parseJsonAndExpectOnlySubProcess, verifyEdge, verifyShape, verifySubProcess } from './JsonTestUtils';
-import { getEventShapes } from './BpmnJsonParser.event.test';
-import each from 'jest-each';
 import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal';
 import { ShapeBpmnEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
+import { getEventShapes } from './TestUtils';
 
 function expectNoPoolLane(model: BpmnModel): void {
   expect(model.lanes).toHaveLength(0);
@@ -38,14 +37,14 @@ function verifyEventShape(shape: Shape, expectedShape: ExpectedShape, expectedEv
 }
 
 describe('parse bpmn as json for sub-process', () => {
-  each([
+  describe.each([
     ['embedded', false, ShapeBpmnSubProcessKind.EMBEDDED],
     ['event', true, ShapeBpmnSubProcessKind.EVENT],
-  ]).describe('parse bpmn as json for %s sub-process', (bpmnSubProcessKind: string, triggeredByEvent: boolean, expectedShapeBpmnSubProcessKind: ShapeBpmnSubProcessKind) => {
-    each([
+  ])('parse bpmn as json for %s sub-process', (bpmnSubProcessKind: string, triggeredByEvent: boolean, expectedShapeBpmnSubProcessKind: ShapeBpmnSubProcessKind) => {
+    describe.each([
       ['expanded', true, []],
       ['collapsed', false, [ShapeBpmnMarkerKind.EXPAND]],
-    ]).describe(`parse bpmn as json for %s ${bpmnSubProcessKind} sub-process`, (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: ShapeBpmnMarkerKind[]) => {
+    ])(`parse bpmn as json for %s ${bpmnSubProcessKind} sub-process`, (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: ShapeBpmnMarkerKind[]) => {
       const processWithSubProcessAsObject = {} as TProcess;
       processWithSubProcessAsObject['subProcess'] = {
         id: `sub-process_id_0`,

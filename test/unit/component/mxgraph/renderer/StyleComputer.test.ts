@@ -44,7 +44,6 @@ import { Edge } from '../../../../../src/model/bpmn/internal/edge/edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/flows';
 import { AssociationDirectionKind, MessageVisibleKind, SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/kinds';
 import Bounds from '../../../../../src/model/bpmn/internal/Bounds';
-import each from 'jest-each';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
@@ -128,12 +127,12 @@ describe('Style Computer', () => {
   describe('compute style - shape label', () => {
     it('compute style of shape with no label', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_USER));
-      expect(computeStyle(shape)).toEqual('userTask');
+      expect(computeStyle(shape)).toBe('userTask');
     });
 
     it('compute style of shape with a no font label', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_END), undefined, new Label(undefined, undefined));
-      expect(computeStyle(shape)).toEqual('endEvent');
+      expect(computeStyle(shape)).toBe('endEvent');
     });
     it('compute style of shape with label including bold font', () => {
       const shape = new Shape(
@@ -142,44 +141,44 @@ describe('Style Computer', () => {
         undefined,
         new Label(toFont({ name: 'Courier', size: 9, isBold: true }), undefined),
       );
-      expect(computeStyle(shape)).toEqual('exclusiveGateway;fontFamily=Courier;fontSize=9;fontStyle=1');
+      expect(computeStyle(shape)).toBe('exclusiveGateway;fontFamily=Courier;fontSize=9;fontStyle=1');
     });
 
     it('compute style of shape with label including italic font', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH), undefined, new Label(toFont({ name: 'Arial', isItalic: true }), undefined));
-      expect(computeStyle(shape)).toEqual('intermediateCatchEvent;fontFamily=Arial;fontStyle=2');
+      expect(computeStyle(shape)).toBe('intermediateCatchEvent;fontFamily=Arial;fontStyle=2');
     });
 
     it('compute style of shape with label including bold/italic font', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW), undefined, new Label(toFont({ isBold: true, isItalic: true }), undefined));
-      expect(computeStyle(shape)).toEqual('intermediateThrowEvent;fontStyle=3');
+      expect(computeStyle(shape)).toBe('intermediateThrowEvent;fontStyle=3');
     });
 
     it('compute style of shape with label bounds', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.CALL_ACTIVITY), undefined, new Label(undefined, new Bounds(40, 200, 80, 140)));
-      expect(computeStyle(shape)).toEqual('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=top;verticalLabelPosition=left');
+      expect(computeStyle(shape)).toBe('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=top;verticalLabelPosition=left');
     });
   });
 
   describe('compute style - edge label', () => {
     it('compute style of edge with no label', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_GATEWAY));
-      expect(computeStyle(edge)).toEqual('sequenceFlow;conditional_from_gateway');
+      expect(computeStyle(edge)).toBe('sequenceFlow;conditional_from_gateway');
     });
 
     it('compute style of edge with a no font label', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(undefined, undefined));
-      expect(computeStyle(edge)).toEqual('sequenceFlow;normal');
+      expect(computeStyle(edge)).toBe('sequenceFlow;normal');
     });
 
     it('compute style of edge with label including strike-through font', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
-      expect(computeStyle(edge)).toEqual('sequenceFlow;conditional_from_activity;fontSize=14.2;fontStyle=8');
+      expect(computeStyle(edge)).toBe('sequenceFlow;conditional_from_activity;fontSize=14.2;fontStyle=8');
     });
 
     it('compute style of edge with label including underline font', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
-      expect(computeStyle(edge)).toEqual('sequenceFlow;default;fontStyle=4');
+      expect(computeStyle(edge)).toBe('sequenceFlow;default;fontStyle=4');
     });
 
     it('compute style of edge with label including bold/italic/strike-through/underline font', () => {
@@ -189,38 +188,38 @@ describe('Style Computer', () => {
         undefined,
         new Label(toFont({ isBold: true, isItalic: true, isStrikeThrough: true, isUnderline: true }), undefined),
       );
-      expect(computeStyle(edge)).toEqual('sequenceFlow;normal;fontStyle=15');
+      expect(computeStyle(edge)).toBe('sequenceFlow;normal;fontStyle=15');
     });
 
     it('compute style of edge with label bounds', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), new Bounds(20, 20, 30, 120)));
-      expect(computeStyle(edge)).toEqual('sequenceFlow;normal;fontFamily=Helvetica;verticalAlign=top;align=center');
+      expect(computeStyle(edge)).toBe('sequenceFlow;normal;fontFamily=Helvetica;verticalAlign=top;align=center');
     });
   });
 
-  each([
+  it.each([
     [SequenceFlowKind.CONDITIONAL_FROM_GATEWAY, 'conditional_from_gateway'],
     [SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY, 'conditional_from_activity'],
     [SequenceFlowKind.DEFAULT, 'default'],
     [SequenceFlowKind.NORMAL, 'normal'],
-  ]).it('compute style - sequence flows: %s', (kind, expected) => {
+  ])('compute style - sequence flows: %s', (kind, expected) => {
     const edge = new Edge('id', newSequenceFlow(kind));
     expect(computeStyle(edge)).toEqual(`sequenceFlow;${expected}`);
   });
 
-  each([
+  it.each([
     [AssociationDirectionKind.NONE, 'None'],
     [AssociationDirectionKind.ONE, 'One'],
     [AssociationDirectionKind.BOTH, 'Both'],
-  ]).it('compute style - association flows: %s', (kind, expected) => {
+  ])('compute style - association flows: %s', (kind, expected) => {
     const edge = new Edge('id', newAssociationFlow(kind));
     expect(computeStyle(edge)).toEqual(`association;${expected}`);
   });
 
-  each([
+  it.each([
     [MessageVisibleKind.NON_INITIATING, 'non_initiating'],
     [MessageVisibleKind.INITIATING, 'initiating'],
-  ]).it('compute style - message flow icon: %s', (messageVisibleKind, expected) => {
+  ])('compute style - message flow icon: %s', (messageVisibleKind, expected) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
     expect(styleComputer.computeMessageFlowIconStyle(edge)).toEqual(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=${expected}`);
   });
@@ -228,45 +227,45 @@ describe('Style Computer', () => {
   describe('compute style - events kind', () => {
     it('intermediate catch conditional', () => {
       const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventDefinitionKind.CONDITIONAL), newLabel({ name: 'Ubuntu' }));
-      expect(computeStyle(shape)).toEqual('intermediateCatchEvent;bpmn.eventDefinitionKind=conditional;fontFamily=Ubuntu');
+      expect(computeStyle(shape)).toBe('intermediateCatchEvent;bpmn.eventDefinitionKind=conditional;fontFamily=Ubuntu');
     });
 
     it('start signal', () => {
       const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventDefinitionKind.SIGNAL), newLabel({ isBold: true }));
-      expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventDefinitionKind=signal;fontStyle=1');
+      expect(computeStyle(shape)).toBe('startEvent;bpmn.eventDefinitionKind=signal;fontStyle=1');
     });
   });
   describe('compute style - boundary events', () => {
     it('interrupting message', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventDefinitionKind.MESSAGE, true), newLabel({ name: 'Arial' }));
-      expect(computeStyle(shape)).toEqual('boundaryEvent;bpmn.eventDefinitionKind=message;bpmn.isInterrupting=true;fontFamily=Arial');
+      expect(computeStyle(shape)).toBe('boundaryEvent;bpmn.eventDefinitionKind=message;bpmn.isInterrupting=true;fontFamily=Arial');
     });
 
     it('non interrupting timer', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventDefinitionKind.TIMER, false), newLabel({ isItalic: true }));
-      expect(computeStyle(shape)).toEqual('boundaryEvent;bpmn.eventDefinitionKind=timer;bpmn.isInterrupting=false;fontStyle=2');
+      expect(computeStyle(shape)).toBe('boundaryEvent;bpmn.eventDefinitionKind=timer;bpmn.isInterrupting=false;fontStyle=2');
     });
 
     it('cancel with undefined interrupting value', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventDefinitionKind.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
-      expect(computeStyle(shape)).toEqual('boundaryEvent;bpmn.eventDefinitionKind=cancel;bpmn.isInterrupting=true;fontStyle=8');
+      expect(computeStyle(shape)).toBe('boundaryEvent;bpmn.eventDefinitionKind=cancel;bpmn.isInterrupting=true;fontStyle=8');
     });
   });
 
   describe('compute style - event sub-process start event', () => {
     it('interrupting message', () => {
       const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventDefinitionKind.MESSAGE, true), newLabel({ name: 'Arial' }));
-      expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventDefinitionKind=message;bpmn.isInterrupting=true;fontFamily=Arial');
+      expect(computeStyle(shape)).toBe('startEvent;bpmn.eventDefinitionKind=message;bpmn.isInterrupting=true;fontFamily=Arial');
     });
 
     it('non interrupting timer', () => {
       const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventDefinitionKind.TIMER, false), newLabel({ isItalic: true }));
-      expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventDefinitionKind=timer;bpmn.isInterrupting=false;fontStyle=2');
+      expect(computeStyle(shape)).toBe('startEvent;bpmn.eventDefinitionKind=timer;bpmn.isInterrupting=false;fontStyle=2');
     });
 
     it('cancel with undefined interrupting value', () => {
       const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventDefinitionKind.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
-      expect(computeStyle(shape)).toEqual('startEvent;bpmn.eventDefinitionKind=cancel;fontStyle=8');
+      expect(computeStyle(shape)).toBe('startEvent;bpmn.eventDefinitionKind=cancel;fontStyle=8');
     });
   });
 
@@ -351,22 +350,22 @@ describe('Style Computer', () => {
   describe('compute style - text annotation', () => {
     it('without label', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION));
-      expect(computeStyle(shape)).toEqual('textAnnotation');
+      expect(computeStyle(shape)).toBe('textAnnotation');
     });
     it('with label bounds', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION), newLabel({ name: 'Segoe UI' }, new Bounds(50, 50, 100, 100)));
-      expect(computeStyle(shape)).toEqual('textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=top;verticalLabelPosition=left');
+      expect(computeStyle(shape)).toBe('textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=top;verticalLabelPosition=left');
     });
   });
 
   describe('compute style - group', () => {
     it('without label', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.GROUP));
-      expect(computeStyle(shape)).toEqual('group');
+      expect(computeStyle(shape)).toBe('group');
     });
     it('with label bounds', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.GROUP), newLabel({ name: 'Roboto' }, new Bounds(50, 50, 100, 100)));
-      expect(computeStyle(shape)).toEqual('group;fontFamily=Roboto;verticalAlign=top;align=center;labelWidth=101;labelPosition=top;verticalLabelPosition=left');
+      expect(computeStyle(shape)).toBe('group;fontFamily=Roboto;verticalAlign=top;align=center;labelWidth=101;labelPosition=top;verticalLabelPosition=left');
     });
   });
 

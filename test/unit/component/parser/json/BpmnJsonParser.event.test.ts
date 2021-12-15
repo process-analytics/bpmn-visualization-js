@@ -19,12 +19,12 @@ import { TEventDefinition } from '../../../../../src/model/bpmn/json/baseElement
 import { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
 import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import { BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
-import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeUtil } from '../../../../../src/model/bpmn/internal';
+import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../../../src/model/bpmn/internal';
 import { ShapeBpmnBoundaryEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { addEvent, buildDefinitionsAndProcessWithTask, BuildEventDefinitionParameter, BuildEventParameter, EventDefinitionOn } from './JsonBuilder';
 import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
+import { getEventShapes } from './TestUtils';
 
 interface TestParameter {
   bpmnKind: string;
@@ -33,10 +33,6 @@ interface TestParameter {
   expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind;
   expectedShapeBpmnElementKind: ShapeBpmnElementKind;
   process?: TProcess | TProcess[];
-}
-
-export function getEventShapes(model: BpmnModel): Shape[] {
-  return model.flowNodes.filter(shape => ShapeUtil.isEvent(shape.bpmnElement.kind));
 }
 
 function verifyEventShape(
@@ -146,7 +142,7 @@ function executeEventCommonTests(
       const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, numberOfExpectedFlowNodes, 1);
       expect(getEventShapes(bpmnModel)).toHaveLength(0);
       const warning = expectAsWarning<ShapeUnknownBpmnElementWarning>(parsingMessageCollector.getWarnings()[0], ShapeUnknownBpmnElementWarning);
-      expect(warning.bpmnElementId).toEqual('event_id_0');
+      expect(warning.bpmnElementId).toBe('event_id_0');
     }
 
     function parseAndExpectNoBoundaryEvents(json: BpmnJsonModel, numberOfExpectedFlowNodes = 1): void {
@@ -155,12 +151,12 @@ function executeEventCommonTests(
       const warnings = parsingMessageCollector.getWarnings();
 
       const warning0 = expectAsWarning<BoundaryEventNotAttachedToActivityWarning>(warnings[0], BoundaryEventNotAttachedToActivityWarning);
-      expect(warning0.bpmnElementId).toEqual('event_id_0');
+      expect(warning0.bpmnElementId).toBe('event_id_0');
       expect(warning0.attachedToRef).toEqual(numberOfExpectedFlowNodes == 0 ? 'unexisting_activity_id_0' : 'not_activity_id_0');
       expect(warning0.attachedToKind).toEqual(numberOfExpectedFlowNodes == 0 ? undefined : ShapeBpmnElementKind.GATEWAY_EXCLUSIVE);
 
       const warning1 = expectAsWarning<ShapeUnknownBpmnElementWarning>(warnings[1], ShapeUnknownBpmnElementWarning);
-      expect(warning1.bpmnElementId).toEqual('event_id_0');
+      expect(warning1.bpmnElementId).toBe('event_id_0');
     }
 
     it.each([

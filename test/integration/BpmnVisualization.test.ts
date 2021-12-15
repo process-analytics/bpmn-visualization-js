@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnVisualization, FitType } from '../../src/bpmn-visualization';
+import { FitType } from '../../src/bpmn-visualization';
 import { readFileSync } from '../helpers/file-helper';
-import { insertBpmnContainer } from './helpers/dom-utils';
+import { initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visualization-initialization';
 
-export const bpmnVisualization = new BpmnVisualization({ container: insertBpmnContainer('bpmn-container'), navigation: { enabled: true } });
+const bpmnVisualization = initializeBpmnVisualizationWithHtmlElement('bpmn-container', true);
 
 describe('BpmnVisualization', () => {
   it('Load invalid diagram (text file)', async () => {
-    expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrowError(
+    expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(
       `XML parsing failed. Unable to retrieve 'definitions' for the BPMN source.`,
     );
   });
