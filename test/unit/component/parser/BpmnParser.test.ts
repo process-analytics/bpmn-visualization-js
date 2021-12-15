@@ -30,7 +30,7 @@ describe('parse xml to model', () => {
     const parsingErrorMessage = `XML parsing failed. Unable to retrieve 'definitions' for the BPMN source.`;
 
     it('Parse a text file', () => {
-      expect(() => newBpmnParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrowError(parsingErrorMessage);
+      expect(() => newBpmnParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(parsingErrorMessage);
     });
 
     it('Parse a truncated diagram file', () => {
@@ -39,11 +39,11 @@ describe('parse xml to model', () => {
       expect(model.flowNodes).toHaveLength(2);
       // This element is truncated in the source xml file
       const activities = model.flowNodes.filter(shape => shape.id == 'BPMNShape_Activity_1');
-      expect(activities[0].bpmnElement.id).toEqual('Activity_1');
+      expect(activities[0].bpmnElement.id).toBe('Activity_1');
     });
 
     it('Parse a xml file which is not a BPMN diagram', () => {
-      expect(() => newBpmnParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/xml-but-not-bpmn.xml'))).toThrowError(parsingErrorMessage);
+      expect(() => newBpmnParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/xml-but-not-bpmn.xml'))).toThrow(parsingErrorMessage);
     });
   });
 });
