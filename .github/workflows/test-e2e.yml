@@ -52,7 +52,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
       # install OS dependencies required by browsers on the GitHub runner
-      - uses: microsoft/playwright-github-action@v1.5.0
+      - name: Install the dependencies for ${{matrix.browser}} only
+        run: npx playwright install-deps ${{matrix.browser}}
       - name: Test Application End to End
         id: 'test_e2e'
         env:
