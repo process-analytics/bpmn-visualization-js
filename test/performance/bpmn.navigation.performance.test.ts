@@ -15,10 +15,10 @@
  */
 import * as fs from 'fs';
 import { Page } from 'playwright';
-import { delay, getSimplePlatformName, mouseZoomNoDelay } from '../e2e/helpers/test-utils';
+import { delay, getContainerCenter, getSimplePlatformName, mouseZoomNoDelay, Point } from '../e2e/helpers/test-utils';
 import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
-import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
+import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
 
 const platform = getSimplePlatformName();
 const performanceDataFilePath = './test/performance/data/' + platform + '/data.js';
@@ -33,14 +33,11 @@ describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
   const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' });
 
   const fileName = 'B.2.0';
-  let containerCenterX: number;
-  let containerCenterY: number;
+  let containerCenter: Point;
 
   beforeEach(async () => {
-    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
-    const bounding_box = await bpmnContainerElementHandle.boundingBox();
-    containerCenterX = bounding_box.x + bounding_box.width / 2;
-    containerCenterY = bounding_box.y + bounding_box.height / 2;
+    await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
+    containerCenter = await getContainerCenter();
   });
 
   it.each([30])(`ctrl + mouse: check performance while performing zoom in and zoom out [%s times]`, async (xTimes: number) => {
@@ -48,14 +45,14 @@ describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
     const metricsStart = await metricsCollector.metrics();
 
     for (let i = 0; i < xTimes; i++) {
-      await mouseZoomNoDelay({ x: containerCenterX + 200, y: containerCenterY }, deltaX);
+      await mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
       if (i % 5 === 0) {
         await delay(30);
       }
     }
     await delay(100);
     for (let i = 0; i < xTimes; i++) {
-      await mouseZoomNoDelay({ x: containerCenterX + 200, y: containerCenterY }, -deltaX);
+      await mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
       if (i % 5 === 0) {
         await delay(30);
       }

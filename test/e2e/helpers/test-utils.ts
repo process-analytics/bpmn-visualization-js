@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import debugLogger from 'debug';
-import { ElementHandle, Mouse } from 'playwright';
 import 'jest-playwright-preset';
 import { join } from 'path';
+import { ElementHandle, Mouse } from 'playwright';
 import { findFiles } from '../../helpers/file-helper';
 
 export interface Point {
@@ -57,7 +57,8 @@ export function getBpmnDiagramNames(directoryName: string): string[] {
     .map(filename => filename.split('.').slice(0, -1).join('.'));
 }
 
-export async function getContainerCenter(containerElement: ElementHandle<SVGElement | HTMLElement>): Promise<Point> {
+export async function getContainerCenter(): Promise<Point> {
+  const containerElement: ElementHandle<SVGElement | HTMLElement> = await page.waitForSelector('#bpmn-container');
   const rect = await containerElement.boundingBox();
   return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
 }

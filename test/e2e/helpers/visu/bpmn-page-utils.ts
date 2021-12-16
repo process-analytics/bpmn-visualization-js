@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ElementHandle, Page } from 'playwright';
-import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
+import 'expect-playwright';
 import 'jest-playwright-preset';
+import { Page } from 'playwright';
 import { FitType, LoadOptions } from '../../../../src/component/options';
+import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
 
 /* eslint-disable jest/no-standalone-expect */
 
@@ -32,11 +33,8 @@ class BpmnPage {
     this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
   }
 
-  async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<ElementHandle<SVGElement | HTMLElement>> {
-    const bpmnContainer = await this.currentPage.waitForSelector(`#${this.bpmnContainerId}`, options);
-
-    await expect(bpmnContainer.getAttribute('style')).resolves.toContain('cursor: default');
-    return bpmnContainer;
+  async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<void> {
+    await expect(this.currentPage).toMatchAttribute(`#${this.bpmnContainerId}`, 'style', /cursor: default/, options);
   }
 
   async expectPageTitle(title: string): Promise<void> {
@@ -47,7 +45,7 @@ class BpmnPage {
    * This checks that a least one BPMN element is available in the DOM as a SVG element. This ensure that the mxGraph rendering has been done.
    */
   async expectExistingBpmnElement(options?: PageWaitForSelectorOptions): Promise<void> {
-    await this.currentPage.waitForSelector(this.bpmnQuerySelectors.existingElement(), options);
+    await expect(this.currentPage).toHaveSelector(this.bpmnQuerySelectors.existingElement(), options);
   }
 }
 
@@ -97,12 +95,12 @@ export class PageTester {
     this.bpmnPage = new BpmnPage(this.bpmnContainerId, <Page>page);
   }
 
-  async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, pageOptions?: PageOptions): Promise<ElementHandle<SVGElement | HTMLElement>> {
+  async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, pageOptions?: PageOptions): Promise<void> {
     const url = this.getPageUrl(bpmnDiagramName, pageOptions?.loadOptions ?? { fit: { type: FitType.HorizontalVertical } }, pageOptions?.styleOptions);
-    return this.doLoadBPMNDiagramInRefreshedPage(url);
+    await this.doLoadBPMNDiagramInRefreshedPage(url);
   }
 
-  protected async doLoadBPMNDiagramInRefreshedPage(url: string, checkResponseStatus = true): Promise<ElementHandle<SVGElement | HTMLElement>> {
+  protected async doLoadBPMNDiagramInRefreshedPage(url: string, checkResponseStatus = true): Promise<void> {
     const response = await page.goto(url);
     if (checkResponseStatus) {
       expect(response.status()).toBe(200);
@@ -111,9 +109,8 @@ export class PageTester {
     await this.bpmnPage.expectPageTitle(this.targetedPage.expectedPageTitle);
 
     const waitForSelectorOptions = { timeout: 5_000 };
-    const elementHandle = await this.bpmnPage.expectAvailableBpmnContainer(waitForSelectorOptions);
+    await this.bpmnPage.expectAvailableBpmnContainer(waitForSelectorOptions);
     await this.bpmnPage.expectExistingBpmnElement(waitForSelectorOptions);
-    return elementHandle;
   }
 
   /**
@@ -140,8 +137,8 @@ export class BpmnPageSvgTester extends PageTester {
     this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
   }
 
-  override async loadBPMNDiagramInRefreshedPage(bpmnDiagramName?: string): Promise<ElementHandle<SVGElement | HTMLElement>> {
-    return super.loadBPMNDiagramInRefreshedPage(bpmnDiagramName ?? 'not-used-dedicated-diagram-loaded-by-the-page', {
+  override async loadBPMNDiagramInRefreshedPage(bpmnDiagramName?: string): Promise<void> {
+    await super.loadBPMNDiagramInRefreshedPage(bpmnDiagramName ?? 'not-used-dedicated-diagram-loaded-by-the-page', {
       loadOptions: {
         fit: {
           type: FitType.None,
@@ -150,50 +147,46 @@ export class BpmnPageSvgTester extends PageTester {
     });
   }
 
-  async expectLabel(bpmnId: string, expectedText?: string): Promise<void> {
-    if (!expectedText) {
-      return;
-    }
-    const labelLastDivElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.labelLastDiv(bpmnId));
-    await expect(labelLastDivElementHandle.evaluate(node => node.innerHTML)).resolves.toBe(expectedText);
+  async expectLabel(bpmnId: string, expectedText: string): Promise<void> {
+    await expect(this.currentPage).toMatchText(this.bpmnQuerySelectors.labelLastDiv(bpmnId), expectedText);
   }
 
   async expectEvent(bpmnId: string, expectedText: string, isStartEvent = true): Promise<void> {
-    const svgElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.element(bpmnId));
-    await expectClassAttribute(svgElementHandle, `bpmn-type-event ${isStartEvent ? 'bpmn-start-event' : 'bpmn-end-event'} bpmn-event-def-none`);
-    await expectFirstChildNodeName(svgElementHandle, 'ellipse');
-    await expectFirstChildAttribute(svgElementHandle, 'rx', '18');
-    await expectFirstChildAttribute(svgElementHandle, 'ry', '18');
+    const selector = this.bpmnQuerySelectors.element(bpmnId);
+    await expectClassAttribute(this.currentPage, selector, `bpmn-type-event ${isStartEvent ? 'bpmn-start-event' : 'bpmn-end-event'} bpmn-event-def-none`);
+    await expectFirstChildNodeName(this.currentPage, selector, 'ellipse');
+    await expectFirstChildAttribute(this.currentPage, selector, 'rx', '18');
+    await expectFirstChildAttribute(this.currentPage, selector, 'ry', '18');
 
     await this.expectLabel(bpmnId, expectedText);
   }
 
   async expectTask(bpmnId: string, expectedText: string): Promise<void> {
-    const svgElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.element(bpmnId));
-    await expectClassAttribute(svgElementHandle, 'bpmn-type-activity bpmn-type-task bpmn-task');
-    await expectFirstChildNodeName(svgElementHandle, 'rect');
-    await expectFirstChildAttribute(svgElementHandle, 'width', '100');
-    await expectFirstChildAttribute(svgElementHandle, 'height', '80');
+    const selector = this.bpmnQuerySelectors.element(bpmnId);
+    await expectClassAttribute(this.currentPage, selector, 'bpmn-type-activity bpmn-type-task bpmn-task');
+    await expectFirstChildNodeName(this.currentPage, selector, 'rect');
+    await expectFirstChildAttribute(this.currentPage, selector, 'width', '100');
+    await expectFirstChildAttribute(this.currentPage, selector, 'height', '80');
     await this.expectLabel(bpmnId, expectedText);
   }
 
   async expectSequenceFlow(bpmnId: string, expectedText?: string): Promise<void> {
-    const svgElementHandle = await this.currentPage.waitForSelector(this.bpmnQuerySelectors.element(bpmnId));
-    await expectClassAttribute(svgElementHandle, 'bpmn-type-flow bpmn-sequence-flow');
-    await expectFirstChildNodeName(svgElementHandle, 'path');
-    await this.expectLabel(bpmnId, expectedText);
+    const selector = this.bpmnQuerySelectors.element(bpmnId);
+    await expectClassAttribute(this.currentPage, selector, 'bpmn-type-flow bpmn-sequence-flow');
+    await expectFirstChildNodeName(this.currentPage, selector, 'path');
+    expectedText && (await this.expectLabel(bpmnId, expectedText));
   }
 }
 
-async function expectClassAttribute(svgElementHandle: ElementHandle<Element>, value: string): Promise<void> {
-  await expect(svgElementHandle.evaluate(node => node.getAttribute('class'))).resolves.toBe(value);
+async function expectClassAttribute(currentPage: Page, selector: string, value: string): Promise<void> {
+  await expect(currentPage).toMatchAttribute(selector, 'class', value);
 }
 
-async function expectFirstChildNodeName(svgElementHandle: ElementHandle, nodeName: string): Promise<void> {
-  await expect(svgElementHandle.evaluate(node => node.firstChild.nodeName)).resolves.toBe(nodeName);
+async function expectFirstChildNodeName(currentPage: Page, selector: string, nodeName: string): Promise<void> {
+  await expect(currentPage).toHaveSelectorCount(`${selector} > ${nodeName}:first-child`, 1);
 }
 
-async function expectFirstChildAttribute(svgElementHandle: ElementHandle, attributeName: string, value: string): Promise<void> {
-  await expect(svgElementHandle.evaluate((node: Element, attribute: string) => (node.firstChild as SVGGElement).getAttribute(attribute), attributeName)).resolves.toBe(value);
+async function expectFirstChildAttribute(currentPage: Page, selector: string, attributeName: string, value: string): Promise<void> {
+  await expect(currentPage).toMatchAttribute(`${selector} > :first-child`, attributeName, value);
 }
 /* eslint-enable jest/no-standalone-expect */
