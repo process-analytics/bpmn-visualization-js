@@ -27,7 +27,7 @@ module.exports = {
   },
   globals: {
     'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.jest.json',
+      tsconfig: '<rootDir>/tsconfig.test.json',
     },
   },
   collectCoverageFrom: ['src/**/*.{ts,js}'],
