@@ -147,10 +147,6 @@ export class BpmnPageSvgTester extends PageTester {
     });
   }
 
-  async expectLabel(bpmnId: string, expectedText: string): Promise<void> {
-    await expect(this.currentPage).toMatchText(this.bpmnQuerySelectors.labelLastDiv(bpmnId), expectedText);
-  }
-
   async expectEvent(bpmnId: string, expectedText: string, isStartEvent = true): Promise<void> {
     const selector = this.bpmnQuerySelectors.element(bpmnId);
     await expectClassAttribute(this.currentPage, selector, `bpmn-type-event ${isStartEvent ? 'bpmn-start-event' : 'bpmn-end-event'} bpmn-event-def-none`);
@@ -158,7 +154,7 @@ export class BpmnPageSvgTester extends PageTester {
     await expectFirstChildAttribute(this.currentPage, selector, 'rx', '18');
     await expectFirstChildAttribute(this.currentPage, selector, 'ry', '18');
 
-    await this.expectLabel(bpmnId, expectedText);
+    await expectLabel(this.currentPage, this.bpmnQuerySelectors, bpmnId, expectedText);
   }
 
   async expectTask(bpmnId: string, expectedText: string): Promise<void> {
@@ -167,14 +163,14 @@ export class BpmnPageSvgTester extends PageTester {
     await expectFirstChildNodeName(this.currentPage, selector, 'rect');
     await expectFirstChildAttribute(this.currentPage, selector, 'width', '100');
     await expectFirstChildAttribute(this.currentPage, selector, 'height', '80');
-    await this.expectLabel(bpmnId, expectedText);
+    await expectLabel(this.currentPage, this.bpmnQuerySelectors, bpmnId, expectedText);
   }
 
   async expectSequenceFlow(bpmnId: string, expectedText?: string): Promise<void> {
     const selector = this.bpmnQuerySelectors.element(bpmnId);
     await expectClassAttribute(this.currentPage, selector, 'bpmn-type-flow bpmn-sequence-flow');
     await expectFirstChildNodeName(this.currentPage, selector, 'path');
-    expectedText && (await this.expectLabel(bpmnId, expectedText));
+    expectedText && (await expectLabel(this.currentPage, this.bpmnQuerySelectors, bpmnId, expectedText));
   }
 }
 
@@ -188,5 +184,9 @@ async function expectFirstChildNodeName(currentPage: Page, selector: string, nod
 
 async function expectFirstChildAttribute(currentPage: Page, selector: string, attributeName: string, value: string): Promise<void> {
   await expect(currentPage).toMatchAttribute(`${selector} > :first-child`, attributeName, value);
+}
+
+async function expectLabel(currentPage: Page, bpmnQuerySelectors: BpmnQuerySelectorsForTests, bpmnId: string, expectedText: string): Promise<void> {
+  await expect(currentPage).toMatchText(bpmnQuerySelectors.labelLastDiv(bpmnId), expectedText);
 }
 /* eslint-enable jest/no-standalone-expect */
