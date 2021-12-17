@@ -38,16 +38,22 @@ function buildReceivedCell(cell: mxCell): ExpectedCell {
 function buildExpectedCell(id: string, expected: ExpectedCellWithGeometry): ExpectedCell {
   const parentId = expected.parentId;
   const geometry = expected.geometry;
+  const expectedObject = {
+    x: geometry.x,
+    y: geometry.y,
+    width: geometry.width,
+    height: geometry.height,
+    points: geometry.points,
+    offset: geometry.offset,
+  };
+  if (!expectedObject.offset) {
+    delete expectedObject.offset;
+  }
+
   return {
     id,
     parent: { id: parentId ? parentId : getDefaultParentId() },
-    geometry: expect.objectContaining({
-      x: geometry.x,
-      y: geometry.y,
-      width: geometry.width,
-      height: geometry.height,
-      points: geometry.points,
-    }),
+    geometry: expect.objectContaining(expectedObject),
   };
 }
 

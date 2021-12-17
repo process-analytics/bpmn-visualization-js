@@ -24,18 +24,18 @@
         <di:waypoint x="412" y="99" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="StartEvent_1">
-        <dc:Bounds x="156.10001" y="81.345000000000009" width="36.0003450001000002" height="36.0000001" />
+        <dc:Bounds x="156" y="81" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="158" y="124" width="33" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_Activity_1" bpmnElement="Activity_1">
-        <dc:Bounds x="250" y="59" width="100" height="80" />-->
+        <dc:Bounds x="not_a_number" y="not a number too" width="-100" height="-80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_1">
         <dc:Bounds x="412" y="81" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="41600000000000000000000005" y="124000000003000000000000000045" width="20000000000000000009" height="1400000000000000000091" />
+          <dc:Bounds x="416" y="124" width="29" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
