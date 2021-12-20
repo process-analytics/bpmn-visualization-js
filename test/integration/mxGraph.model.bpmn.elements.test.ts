@@ -1426,7 +1426,7 @@ describe('mxGraph model - BPMN elements', () => {
           156.10001,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          '81.3450000000000090', // '81.345000000000009' in the diagram
+          '81.3450000000000090', // 81.345000000000009 in the diagram
           '36.0003450001000002',
           36.0000001,
         ),
