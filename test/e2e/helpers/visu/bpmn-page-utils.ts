@@ -160,8 +160,7 @@ export class BpmnPageSvgTester extends PageTester {
     await expectFirstChildNodeName(this.currentPage, selector, 'ellipse');
     await expectFirstChildAttribute(this.currentPage, selector, 'rx', '18');
     await expectFirstChildAttribute(this.currentPage, selector, 'ry', '18');
-
-    await expectLabel(this.currentPage, this.bpmnQuerySelectors, bpmnId, expectedText);
+    await this.checkLabel(bpmnId, expectedText);
   }
 
   async expectTask(bpmnId: string, expectedText: string): Promise<void> {
@@ -170,30 +169,33 @@ export class BpmnPageSvgTester extends PageTester {
     await expectFirstChildNodeName(this.currentPage, selector, 'rect');
     await expectFirstChildAttribute(this.currentPage, selector, 'width', '100');
     await expectFirstChildAttribute(this.currentPage, selector, 'height', '80');
-    await expectLabel(this.currentPage, this.bpmnQuerySelectors, bpmnId, expectedText);
+    await this.checkLabel(bpmnId, expectedText);
   }
 
   async expectSequenceFlow(bpmnId: string, expectedText?: string): Promise<void> {
     const selector = this.bpmnQuerySelectors.element(bpmnId);
     await expectClassAttribute(this.currentPage, selector, 'bpmn-type-flow bpmn-sequence-flow');
     await expectFirstChildNodeName(this.currentPage, selector, 'path');
-    expectedText && (await expectLabel(this.currentPage, this.bpmnQuerySelectors, bpmnId, expectedText));
+    await this.checkLabel(bpmnId, expectedText);
+  }
+
+  async checkLabel(bpmnId: string, expectedText?: string): Promise<void> {
+    if (!expectedText) {
+      return;
+    }
+    await expect(this.currentPage).toMatchText(this.bpmnQuerySelectors.labelLastDiv(bpmnId), expectedText);
   }
 }
 
-async function expectClassAttribute(currentPage: Page, selector: string, value: string): Promise<void> {
-  await expect(currentPage).toMatchAttribute(selector, 'class', value);
+async function expectClassAttribute(page: Page, selector: string, value: string): Promise<void> {
+  await expect(page).toMatchAttribute(selector, 'class', value);
 }
 
-async function expectFirstChildNodeName(currentPage: Page, selector: string, nodeName: string): Promise<void> {
-  await expect(currentPage).toHaveSelectorCount(`${selector} > ${nodeName}:first-child`, 1);
+async function expectFirstChildNodeName(page: Page, selector: string, nodeName: string): Promise<void> {
+  await expect(page).toHaveSelectorCount(`${selector} > ${nodeName}:first-child`, 1);
 }
 
-async function expectFirstChildAttribute(currentPage: Page, selector: string, attributeName: string, value: string): Promise<void> {
-  await expect(currentPage).toMatchAttribute(`${selector} > :first-child`, attributeName, value);
-}
-
-async function expectLabel(currentPage: Page, bpmnQuerySelectors: BpmnQuerySelectorsForTests, bpmnId: string, expectedText: string): Promise<void> {
-  await expect(currentPage).toMatchText(bpmnQuerySelectors.labelLastDiv(bpmnId), expectedText);
+async function expectFirstChildAttribute(page: Page, selector: string, attributeName: string, value: string): Promise<void> {
+  await expect(page).toMatchAttribute(`${selector} > :first-child`, attributeName, value);
 }
 /* eslint-enable jest/no-standalone-expect */
