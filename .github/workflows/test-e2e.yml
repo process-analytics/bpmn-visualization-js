@@ -50,10 +50,16 @@ jobs:
           node-version: '16'
           cache: 'npm'
       - name: Install dependencies
+        env:
+          # https://playwright.dev/docs/installation/#skip-browser-downloads
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         run: npm ci
       # install OS dependencies required by browsers on the GitHub runner
-      - name: Install the dependencies for ${{matrix.browser}} only
-        run: npx playwright install-deps ${{matrix.browser}}
+      # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
+      - name: Install ${{matrix.browser}} and its dependencies only
+        run: |
+          npx playwright install ${{matrix.browser}}
+          npx playwright install-deps ${{matrix.browser}}
       - name: Test Application End to End
         id: 'test_e2e'
         env:

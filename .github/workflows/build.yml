@@ -63,6 +63,9 @@ jobs:
           cache: 'npm'
       # playwright browsers are needed for the bundle tests, so no special configuration as in other workflows
       - name: Install dependencies
+        env:
+          # https://playwright.dev/docs/installation/#skip-browser-downloads
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         run: npm ci
       - name: Lint check
         run: npm run lint-check
@@ -93,8 +96,11 @@ jobs:
       - name: Build bundles
         run: npm run build-bundles
       # install OS dependencies required by browsers on the GitHub runner
-      - name: Install the dependencies for all browsers
-        run: npx playwright install-deps
+      # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
+      - name: Install all browsers and their dependencies
+        run: |
+          npx playwright install
+          npx playwright install-deps
       - name: Test bundles
         id: 'test_bundles'
         run: npm run test:bundles
