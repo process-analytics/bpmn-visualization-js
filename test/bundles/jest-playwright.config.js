@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-const log = (message, ...optionalParams) => {
-  // TODO use the 'debug' lib for logging
-  // eslint-disable-next-line no-console
-  console.info(`bv:test:config:pw ${message}`, ...optionalParams);
-};
+const configLog = require('debug')('bv:test:config:pw');
 
 const isMacOs = () => {
   const isMacOS = process.platform.startsWith('darwin');
-  log('platform?', process.platform);
-  log('isMacOS?', isMacOS);
+  configLog('platform?', process.platform);
+  configLog('isMacOS?', isMacOS);
   return isMacOS;
 };
 // running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
 const isRunningOnCi = () => {
-  log('isRunningOnCi?', process.env.CI);
-  return process.env.CI === 'true';
+  const isRunningOnCi = process.env.CI === 'true';
+  configLog('isRunningOnCi?', isRunningOnCi);
+  return isRunningOnCi;
 };
 
 /** @type {import('playwright-core/types/types').LaunchOptions} */
@@ -38,9 +35,9 @@ const launchOptions = {
   slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
 };
 if (isRunningOnCi() && isMacOs()) {
-  log('Overriding default playwright launch timeout');
-  // TODO always fail on macOS to ensure this is considered on gh actions
-  launchOptions.timeout = 5 * 1000; // default is 30 seconds
+  const timeoutInSeconds = 1; // TODO always fail on macOS to ensure this is considered on gh actions
+  configLog('Overriding default playwright launch timeout to %s seconds', timeoutInSeconds);
+  launchOptions.timeout = timeoutInSeconds * 1000; // default is 30 seconds
 }
 
 module.exports = {
