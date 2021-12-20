@@ -17,6 +17,7 @@ module.exports = {
   launchOptions: {
     headless: process.env.HEADLESS !== 'false',
     slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
+    timeout: 1500, // TEMP generate errors
   },
   browsers: ['chromium', 'firefox', 'webkit'],
 };
