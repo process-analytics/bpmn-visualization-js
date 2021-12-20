@@ -74,7 +74,7 @@
     "test:e2e:coverage": "npm run test:e2e -- --coverage",
     "test:perf": "jest --runInBand --detectOpenHandles --config=./test/performance/jest.config.js",
     "test:perf:compile": "tsc -p test/performance/",
-    "test:bundles": "jest --runInBand --detectOpenHandles --config=./test/bundles/jest.config.js",
+    "test:bundles": "cross-env DEBUG=pw:browser* jest --runInBand --detectOpenHandles --config=./test/bundles/jest.config.js",
     "version-prepare": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for release\"",
     "postversion": "node scripts/manage-version-suffix.mjs && git commit --no-verify -a -m \"[RELEASE] prepare version for new developments\"",
     "prepublishOnly": "pinst --disable",
