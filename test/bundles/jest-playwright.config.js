@@ -18,8 +18,7 @@ const configLog = require('debug')('bv:test:config:pw');
 
 const isMacOs = () => {
   const isMacOS = process.platform.startsWith('darwin');
-  configLog('platform?', process.platform);
-  configLog('isMacOS?', isMacOS);
+  configLog('platform: %s / isMacOS? %s', process.platform, isMacOS);
   return isMacOS;
 };
 // running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
@@ -29,6 +28,7 @@ const isRunningOnCi = () => {
   return isRunningOnCi;
 };
 
+configLog('Configuring jest-playwright settings');
 /** @type {import('playwright-core/types/types').LaunchOptions} */
 const launchOptions = {
   headless: process.env.HEADLESS !== 'false',
