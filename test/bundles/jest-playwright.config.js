@@ -19,15 +19,13 @@ const configLog = require('debug')('bv:test:config:pw');
 const computeBrowsersAndChannelConfiguration = () => {
   const rawBrowsers = (process.env.BROWSERS || 'chromium,firefox,webkit').split(',');
   configLog('Passed Browsers list', rawBrowsers);
-  let browsers = [];
+  let browsers;
   let channel;
 
-  if (rawBrowsers.includes('chrome')) {
-    browsers.push('chromium');
-    channel = 'chrome';
-  } else if (rawBrowsers.includes('msedge')) {
-    browsers.push('chromium');
-    channel = 'msedge';
+  const isChromeIncluded = rawBrowsers.includes('chrome');
+  if (isChromeIncluded || rawBrowsers.includes('msedge')) {
+    browsers = ['chromium'];
+    channel = isChromeIncluded ? 'chrome' : 'msedge';
   } else {
     browsers = rawBrowsers;
   }
