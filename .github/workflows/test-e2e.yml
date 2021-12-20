@@ -36,11 +36,14 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-11, ubuntu-20.04, windows-2019]
-        browser: [chromium, firefox]
+        browser: [chromium, firefox, chrome]
         include:
           # only test webkit on macos
           - os: macos-11
             browser: webkit
+          # only test msedge on windows
+          - os: windows-2019
+            browser: msedge
     steps:
       - name: Checkout
         uses: actions/checkout@v2
