@@ -38,10 +38,10 @@ jobs:
         os: [macos-11, ubuntu-20.04, windows-2019]
         browser: [chromium, firefox, chrome]
         include:
-          # only test webkit on macos
+          # only test WebKit on macOS
           - os: macos-11
             browser: webkit
-          # only test msedge on windows
+          # only test Edge on Windows
           - os: windows-2019
             browser: msedge
     steps:
