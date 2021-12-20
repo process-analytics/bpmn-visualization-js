@@ -35,7 +35,7 @@ const launchOptions = {
   slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
 };
 if (isRunningOnCi() && isMacOs()) {
-  const timeoutInSeconds = 1; // TODO always fail on macOS to ensure this is considered on gh actions
+  const timeoutInSeconds = 60;
   configLog('Overriding default playwright launch timeout to %s seconds', timeoutInSeconds);
   launchOptions.timeout = timeoutInSeconds * 1000; // default is 30 seconds
 }
