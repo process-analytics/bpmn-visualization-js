@@ -15,12 +15,12 @@
  */
 import 'jest-playwright-preset';
 import { join } from 'path';
-import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
-import { clickOnButton, getContainerCenter, mousePanning, mouseZoom, Point } from './helpers/test-utils';
-import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
-import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
+import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
+import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
+import { clickOnButton, mousePanning, mouseZoom, Point } from './helpers/test-utils';
+import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -317,8 +317,8 @@ describe('Overlay navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new OverlayNavigationImageSnapshotThresholds(), 'overlays');
 
   beforeEach(async () => {
-    const bpmnContainerElementHandle = await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
-    containerCenter = await getContainerCenter(bpmnContainerElementHandle);
+    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    containerCenter = await pageTester.getContainerCenter();
 
     await addOverlays('StartEvent_1', 'bottom-center');
     await addOverlays('Activity_1', 'middle-right');
