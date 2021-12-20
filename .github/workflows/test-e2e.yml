@@ -56,7 +56,7 @@ jobs:
         run: npm ci
       # install OS dependencies required by browsers on the GitHub runner
       # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
-      - name: Install the dependencies for ${{matrix.browser}} only
+      - name: Install ${{matrix.browser}} and its dependencies only
         run: |
           npx playwright install ${{matrix.browser}}
           npx playwright install-deps ${{matrix.browser}}
