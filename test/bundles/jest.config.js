@@ -27,9 +27,10 @@ module.exports = {
   },
   globals: {
     'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.jest.json',
+      tsconfig: '<rootDir>/tsconfig.test.json',
     },
   },
+  setupFilesAfterEnv: ['expect-playwright'],
   reporters: [
     'default',
     [

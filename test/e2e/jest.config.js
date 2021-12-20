@@ -27,7 +27,7 @@ module.exports = {
   },
   globals: {
     'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.jest.json',
+      tsconfig: '<rootDir>/tsconfig.test.json',
     },
   },
   collectCoverageFrom: ['src/**/*.{ts,js}'],
@@ -36,6 +36,7 @@ module.exports = {
   coverageDirectory: 'build/test-report/e2e',
   setupFiles: ['./test/e2e/config/copy.bpmn.diagram.ts'],
   setupFilesAfterEnv: [
+    'expect-playwright',
     // jest-image-snapshot configuration doesn't work with setupFiles, fix with setupFilesAfterEnv: see https://github.com/testing-library/jest-dom/issues/122#issuecomment-650520461
     './test/e2e/config/jest.image.ts',
     // need playwright globals to be available, so after environment

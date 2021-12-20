@@ -27,8 +27,9 @@ module.exports = {
   },
   globals: {
     'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.jest.json',
+      tsconfig: '<rootDir>/tsconfig.test.json',
     },
   },
   setupFiles: ['./test/e2e/config/copy.bpmn.diagram.ts'],
+  setupFilesAfterEnv: ['expect-playwright'],
 };

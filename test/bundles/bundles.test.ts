@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import { existsSync } from 'fs';
-import { resolve } from 'path';
 import 'jest-playwright-preset';
+import { resolve } from 'path';
+import { Page } from 'playwright';
 import { BpmnPageSvgTester } from '../e2e/helpers/visu/bpmn-page-utils';
-import { ElementHandle, Page } from 'playwright';
 
 describe('bundles', () => {
   describe('All bundles have been generated', () => {
@@ -56,8 +56,8 @@ describe('bundles', () => {
 });
 
 class BpmnStaticPageSvgTester extends BpmnPageSvgTester {
-  override async loadBPMNDiagramInRefreshedPage(): Promise<ElementHandle<SVGElement | HTMLElement>> {
+  override async loadBPMNDiagramInRefreshedPage(): Promise<void> {
     const url = `file://${resolve(__dirname, `static/${this.targetedPage.pageFileName}.html`)}`;
-    return super.doLoadBPMNDiagramInRefreshedPage(url, false);
+    super.doLoadBPMNDiagramInRefreshedPage(url, false);
   }
 }
