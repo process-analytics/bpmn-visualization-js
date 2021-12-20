@@ -30,7 +30,7 @@ on:
 jobs:
   # inspired from https://github.com/process-analytics/github-actions-playground/pull/23
   check_secrets:
-    if: github.event_name == 'pull_request_not_run' # fake to skip execution
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-20.04
     outputs:
       is_SURGE_TOKEN_set: ${{ steps.secret_availability.outputs.is_SURGE_TOKEN_set }}
