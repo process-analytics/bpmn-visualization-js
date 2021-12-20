@@ -24,7 +24,8 @@ const launchOptions = {
   slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
 };
 if (isMacOs() && isRunningOnCi()) {
-  launchOptions.timeout = 60 * 1000; // default is 30 seconds
+  // TODO always fail on macOS to ensure this is considered on gh actions
+  launchOptions.timeout = 5 * 1000; // default is 30 seconds
 }
 
 module.exports = {
