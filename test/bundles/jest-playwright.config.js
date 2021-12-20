@@ -13,11 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+const isMacOs = () => process.platform.startsWith('darwin');
+// running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
+const isRunningOnCi = () => process.env.CI;
+
+/** @type {import('playwright-core/types/types').LaunchOptions} */
+const launchOptions = {
+  headless: process.env.HEADLESS !== 'false',
+  slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
+};
+if (isMacOs() && isRunningOnCi()) {
+  launchOptions.timeout = 60 * 1000; // default is 30 seconds
+}
+
 module.exports = {
-  launchOptions: {
-    headless: process.env.HEADLESS !== 'false',
-    slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
-    timeout: 1500, // TEMP generate errors
-  },
+  launchOptions: launchOptions,
   browsers: ['chromium', 'firefox', 'webkit'],
 };
