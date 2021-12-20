@@ -30,6 +30,7 @@ on:
 
 jobs:
   test_e2e:
+    if: ${{ matrix.os = 'do-not-run' }} # fake to skip tests
     runs-on: ${{ matrix.os }}
     strategy:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
