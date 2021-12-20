@@ -15,9 +15,10 @@
  */
 import 'expect-playwright';
 import 'jest-playwright-preset';
-import { Page } from 'playwright';
+import { ElementHandle, Page } from 'playwright';
 import { FitType, LoadOptions } from '../../../../src/component/options';
 import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
+import { Point } from '../test-utils';
 
 /* eslint-disable jest/no-standalone-expect */
 
@@ -125,6 +126,12 @@ export class PageTester {
     url += `&style.seqFlow.light.colors=${styleOptions?.sequenceFlow?.useLightColors}`;
     url += `&style.container.alternative.background.color=${styleOptions?.bpmnContainer?.useAlternativeBackgroundColor}`;
     return url;
+  }
+
+  async getContainerCenter(): Promise<Point> {
+    const containerElement: ElementHandle<SVGElement | HTMLElement> = await page.waitForSelector(`#${this.bpmnContainerId}`);
+    const rect = await containerElement.boundingBox();
+    return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
   }
 }
 

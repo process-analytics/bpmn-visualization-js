@@ -15,7 +15,7 @@
  */
 import 'jest-playwright-preset';
 import { join } from 'path';
-import { getContainerCenter, mousePanning, mouseZoom, Point } from './helpers/test-utils';
+import { mousePanning, mouseZoom, Point } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
@@ -63,7 +63,7 @@ describe('diagram navigation - zoom and pan', () => {
 
   beforeEach(async () => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
-    containerCenter = await getContainerCenter();
+    containerCenter = await pageTester.getContainerCenter();
   });
 
   it('mouse panning', async () => {

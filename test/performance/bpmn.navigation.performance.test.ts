@@ -15,7 +15,7 @@
  */
 import * as fs from 'fs';
 import { Page } from 'playwright';
-import { delay, getContainerCenter, getSimplePlatformName, mouseZoomNoDelay, Point } from '../e2e/helpers/test-utils';
+import { delay, getSimplePlatformName, mouseZoomNoDelay, Point } from '../e2e/helpers/test-utils';
 import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
 import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
@@ -37,7 +37,7 @@ describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
 
   beforeEach(async () => {
     await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
-    containerCenter = await getContainerCenter();
+    containerCenter = await pageTester.getContainerCenter();
   });
 
   it.each([30])(`ctrl + mouse: check performance while performing zoom in and zoom out [%s times]`, async (xTimes: number) => {

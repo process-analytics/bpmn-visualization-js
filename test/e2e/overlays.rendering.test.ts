@@ -18,7 +18,7 @@ import { join } from 'path';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
-import { clickOnButton, getContainerCenter, mousePanning, mouseZoom, Point } from './helpers/test-utils';
+import { clickOnButton, mousePanning, mouseZoom, Point } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
@@ -318,7 +318,7 @@ describe('Overlay navigation', () => {
 
   beforeEach(async () => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
-    containerCenter = await getContainerCenter();
+    containerCenter = await pageTester.getContainerCenter();
 
     await addOverlays('StartEvent_1', 'bottom-center');
     await addOverlays('Activity_1', 'middle-right');
