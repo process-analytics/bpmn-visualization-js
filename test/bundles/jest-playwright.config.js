@@ -16,6 +16,27 @@
 
 const configLog = require('debug')('bv:test:config:pw');
 
+const computeBrowsersAndChannelConfiguration = () => {
+  const rawBrowsers = (process.env.BROWSERS || 'chromium,firefox,webkit').split(',');
+  configLog('Passed Browsers list', rawBrowsers);
+  let browsers = [];
+  let channel;
+
+  if (rawBrowsers.includes('chrome')) {
+    browsers.push('chromium');
+    channel = 'chrome';
+  } else if (rawBrowsers.includes('msedge')) {
+    browsers.push('chromium');
+    channel = 'msedge';
+  } else {
+    browsers = rawBrowsers;
+  }
+
+  const config = { browsers: browsers, channel: channel };
+  configLog('Computed browsers and channel configuration', config);
+  return config;
+};
+
 const isMacOs = () => {
   const isMacOS = process.platform.startsWith('darwin');
   configLog('platform: %s / isMacOS? %s', process.platform, isMacOS);
@@ -40,7 +61,12 @@ if (isRunningOnCi() && isMacOs()) {
   launchOptions.timeout = timeoutInSeconds * 1000; // default is 30 seconds
 }
 
+const browsersAndChannelConfig = computeBrowsersAndChannelConfiguration();
+if (browsersAndChannelConfig.channel) {
+  launchOptions.channel = browsersAndChannelConfig.channel;
+}
+
 module.exports = {
   launchOptions: launchOptions,
-  browsers: ['chromium', 'firefox', 'webkit'],
+  browsers: browsersAndChannelConfig.browsers,
 };
