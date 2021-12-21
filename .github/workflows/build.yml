@@ -89,24 +89,6 @@ jobs:
         with:
           name: integration-test-results-${{matrix.os.name}}-${{github.sha}}
           path: build/test-report/integration
-      # Ensure we can build working bundles
-      - name: Build bundles
-        run: npm run build-bundles
-      # install OS dependencies required by browsers on the GitHub runner
-      # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
-      - name: Install all browsers and their dependencies
-        run: |
-          npx playwright install
-          npx playwright install-deps
-      - name: Test bundles
-        id: 'test_bundles'
-        run: npm run test:bundles
-      - name: Upload bundles test results
-        if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: bundles-test-results-${{matrix.os.name}}-${{github.sha}}
-          path: build/test-report/bundles
       # Ensure we don't break scripts
       - name: Build utils
         run: npm run build-utils
@@ -123,16 +105,19 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 
-# Extra bundle tests for OS/browsers not tested as part of the regular build
   test_bundles:
+    needs: build
     runs-on: ${{ matrix.os }}
     strategy:
       # don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
         os: [macos-11, ubuntu-20.04, windows-2019]
-        browser: [chrome]
+        browser: [chromium, firefox, chrome]
         include:
+          # only test WebKit on macOS
+          - os: macos-11
+            browser: webkit
           # only test Edge on Windows
           - os: windows-2019
             browser: msedge
