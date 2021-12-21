@@ -42,7 +42,7 @@ Tests change frequency:
 ### End-to-end tests
 
 We use the [playwright library](https://playwright.dev/) with the [jest-playwright integration](https://github.com/playwright-community/jest-playwright) to handle
-tests requiring a web browser. Chromium and Firefox can be used when running tests.
+tests requiring a web browser. See the paragraph dedicated to [web browsers](#web-browsers) for more details.
 
 We have the following types of end-to-end tests:
 - `generated svg`:
@@ -230,9 +230,12 @@ Html reports are generated for test execution and coverage in
 - `build/test-report/e2e` for end-to-end tests
 
 
+<a name="web-browsers"></a>
 ### Web Browser choice for end-to-end and bundle tests
 
-Web browsers are installed by `playwright` when running `npm install`. By default, 
+Web browsers are installed by `playwright` when running `npm install`. For more details about browsers management, see the [Playwright documentation](https://playwright.dev/docs/browsers#installing-browsers).
+
+By default, 
 - end-to-end tests use Chromium.
 - bundle tests use both Chromium, Firefox and WebKit.
 
