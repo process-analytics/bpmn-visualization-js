@@ -13,10 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+const configLog = require('debug')('bv:test:config:pw');
+
+const isMacOs = () => {
+  const isMacOS = process.platform.startsWith('darwin');
+  configLog('platform: %s / isMacOS? %s', process.platform, isMacOS);
+  return isMacOS;
+};
+// running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
+const isRunningOnCi = () => {
+  const isRunningOnCi = process.env.CI === 'true';
+  configLog('isRunningOnCi?', isRunningOnCi);
+  return isRunningOnCi;
+};
+
+configLog('Configuring jest-playwright settings');
+/** @type {import('playwright-core/types/types').LaunchOptions} */
+const launchOptions = {
+  headless: process.env.HEADLESS !== 'false',
+  slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
+};
+if (isRunningOnCi() && isMacOs()) {
+  const timeoutInSeconds = 60;
+  configLog('Overriding default playwright launch timeout to %s seconds', timeoutInSeconds);
+  launchOptions.timeout = timeoutInSeconds * 1000; // default is 30 seconds
+}
+
 module.exports = {
-  launchOptions: {
-    headless: process.env.HEADLESS !== 'false',
-    slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
-  },
+  launchOptions: launchOptions,
   browsers: ['chromium', 'firefox', 'webkit'],
 };
