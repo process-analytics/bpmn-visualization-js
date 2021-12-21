@@ -43,8 +43,12 @@ categories:
       - infra:repo
       - chore
       - internal
-  - title: 📦 Dependency updates
+  - title: 🎁 Production dependency updates
     labels:
+      - dependencies::production
+  - title: 📦 Development dependency updates
+    labels:
+      - dependencies::development
       - dependencies
 exclude-labels:
   - invalid
