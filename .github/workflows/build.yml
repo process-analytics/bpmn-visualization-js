@@ -64,7 +64,7 @@ jobs:
       # playwright browsers are needed for the bundle tests, so no special configuration as in other workflows
       - name: Install dependencies
         env:
-          # https://playwright.dev/docs/installation/#skip-browser-downloads
+          # https://playwright.dev/docs/browsers#installing-browsers
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         run: npm ci
       - name: Lint check
@@ -131,7 +131,7 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         env:
-          # https://playwright.dev/docs/installation/#skip-browser-downloads
+          # https://playwright.dev/docs/browsers#installing-browsers
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         run: npm ci
       # Ensure we can build working bundles

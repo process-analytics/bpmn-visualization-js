@@ -16,7 +16,7 @@ jobs:
           node-version: '16'
           cache: 'npm'
       - name: Install dependencies
-        # https://playwright.dev/docs/installation/#skip-browser-downloads
+        # https://playwright.dev/docs/browsers#installing-browsers
         run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm ci
       - name: Build Demo
         run: npm run demo

@@ -54,7 +54,7 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         env:
-          # https://playwright.dev/docs/installation/#skip-browser-downloads
+          # https://playwright.dev/docs/browsers#installing-browsers
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         run: npm ci
       # install OS dependencies required by browsers on the GitHub runner
