@@ -5,9 +5,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 2
     versioning-strategy: increase
     commit-message:
-      prefix: "[INFRA]"
+      prefix: "[INFRA] "
       prefix-development: "[INFRA] dev -"
     reviewers:
       - process-analytics/js-lib-collaborators
