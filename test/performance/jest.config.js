@@ -27,7 +27,7 @@ module.exports = {
   },
   globals: {
     'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.test.json',
+      tsconfig: './tsconfig.json',
     },
   },
   setupFiles: ['./test/e2e/config/copy.bpmn.diagram.ts'],
