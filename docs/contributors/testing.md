@@ -230,9 +230,11 @@ Html reports are generated for test execution and coverage in
 - `build/test-report/e2e` for end-to-end tests
 
 
-### Web Browser choice for end-to-end tests
+### Web Browser choice for end-to-end and bundle tests
 
-Web browsers are installed by `playwright` when running `npm install` and by default, tests use Chromium. 
+Web browsers are installed by `playwright` when running `npm install`. By default, 
+- end-to-end tests use Chromium.
+- bundle tests use both Chromium, Firefox and WebKit.
 
 To use Firefox instead, use a `BROWSERS` environment variable:
 - on Linux or macOS
@@ -250,13 +252,17 @@ It is also possible to make tests use several browsers, pass the list of browser
 BROWSERS=chromium,firefox
 ```
 
-### Debugging end-to-end, performance and bundles tests
+Chrome and Edge can also be used to run tests. Configure the `BROWSERS` environment variable with `chrome` or `msedge`
+respectively. If you configure several browsers, only one is taken into account with first `chrome` then` msedge`.
+
+### Debugging end-to-end, performance and bundle tests
 
 To see what is happening in your local web browser used by the tests
 - disable the `headless` mode by setting the `HEADLESS` environment variable to `false`
 - set the `SLOWMO` environment variable to a positive millisecond value (between `200` and `500` should be enough). This
 slows Playwright down by milliseconds that we specify. So we will be able to observe what it actually does.
-  
+
+For more debugging tools, see the [Playwright documentation](https://playwright.dev/docs/debug).
 
 ### Logs
 
