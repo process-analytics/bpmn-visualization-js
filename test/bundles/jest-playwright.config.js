@@ -14,26 +14,8 @@
  * limitations under the License.
  */
 
-const configLog = require('debug')('bv:test:config:pw');
-
-const computeBrowsersAndChannelConfiguration = () => {
-  const rawBrowsers = (process.env.BROWSERS || 'chromium,firefox,webkit').split(',');
-  configLog('Passed Browsers list', rawBrowsers);
-  let browsers;
-  let channel;
-
-  const isChromeIncluded = rawBrowsers.includes('chrome');
-  if (isChromeIncluded || rawBrowsers.includes('msedge')) {
-    browsers = ['chromium'];
-    channel = isChromeIncluded ? 'chrome' : 'msedge';
-  } else {
-    browsers = rawBrowsers;
-  }
-
-  const config = { browsers: browsers, channel: channel };
-  configLog('Computed browsers and channel configuration', config);
-  return config;
-};
+const configLog = require('../helpers/config/jest-playwright').log;
+const { browsers, launchOptions } = require('../helpers/config/jest-playwright').computeLaunchOptionsAndBrowsersConfiguration();
 
 const isMacOs = () => {
   const isMacOS = process.platform.startsWith('darwin');
@@ -47,24 +29,14 @@ const isRunningOnCi = () => {
   return isRunningOnCi;
 };
 
-configLog('Configuring jest-playwright settings');
-/** @type {import('playwright-core/types/types').LaunchOptions} */
-const launchOptions = {
-  headless: process.env.HEADLESS !== 'false',
-  slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
-};
 if (isRunningOnCi() && isMacOs()) {
   const timeoutInSeconds = 60;
-  configLog('Overriding default playwright launch timeout to %s seconds', timeoutInSeconds);
+  configLog('Overriding default playwright launchOptions timeout to %s seconds', timeoutInSeconds);
   launchOptions.timeout = timeoutInSeconds * 1000; // default is 30 seconds
 }
-
-const browsersAndChannelConfig = computeBrowsersAndChannelConfiguration();
-if (browsersAndChannelConfig.channel) {
-  launchOptions.channel = browsersAndChannelConfig.channel;
-}
+configLog('Final launch options', launchOptions);
 
 module.exports = {
   launchOptions: launchOptions,
-  browsers: browsersAndChannelConfig.browsers,
+  browsers: browsers,
 };
