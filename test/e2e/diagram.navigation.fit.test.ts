@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { join } from 'path';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import 'jest-playwright-preset';
+import { join } from 'path';
+import { Page } from 'playwright';
 import { FitType } from '../../src/component/options';
-import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
 import { clickOnButton, getBpmnDiagramNames } from './helpers/test-utils';
+import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   override getConfig(param: {
@@ -139,7 +140,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 describe('diagram navigation - fit', () => {
   const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'fit');
 
-  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' });
+  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
 
   const fitTypes: FitType[] = [FitType.None, FitType.HorizontalVertical, FitType.Horizontal, FitType.Vertical, FitType.Center];
   describe.each(fitTypes)('load options - fit %s', (onLoadFitType: FitType) => {
