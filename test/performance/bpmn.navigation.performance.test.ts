@@ -40,7 +40,8 @@ describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
     containerCenter = await pageTester.getContainerCenter();
   });
 
-  it.each([30])(`ctrl + mouse: check performance while performing zoom in and zoom out [%s times]`, async (xTimes: number) => {
+  it(`ctrl + mouse: check performance while performing zoom in and zoom out [30 times]`, async () => {
+    const xTimes = 30;
     const deltaX = -100;
     const metricsStart = await metricsCollector.metrics();
 
