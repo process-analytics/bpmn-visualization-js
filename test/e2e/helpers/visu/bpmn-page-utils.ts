@@ -29,23 +29,23 @@ export interface PageWaitForSelectorOptions {
 class BpmnPage {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
-  constructor(private bpmnContainerId: string, private currentPage: Page) {
+  constructor(private bpmnContainerId: string, private page: Page) {
     this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
   }
 
   async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<void> {
-    await expect(this.currentPage).toMatchAttribute(`#${this.bpmnContainerId}`, 'style', /cursor: default/, options);
+    await expect(this.page).toMatchAttribute(`#${this.bpmnContainerId}`, 'style', /cursor: default/, options);
   }
 
   async expectPageTitle(title: string): Promise<void> {
-    await expect(this.currentPage.title()).resolves.toEqual(title);
+    await expect(this.page.title()).resolves.toEqual(title);
   }
 
   /**
    * This checks that a least one BPMN element is available in the DOM as a SVG element. This ensure that the mxGraph rendering has been done.
    */
   async expectExistingBpmnElement(options?: PageWaitForSelectorOptions): Promise<void> {
-    await expect(this.currentPage).toHaveSelector(this.bpmnQuerySelectors.existingElement(), options);
+    await expect(this.page).toHaveSelector(this.bpmnQuerySelectors.existingElement(), options);
   }
 }
 

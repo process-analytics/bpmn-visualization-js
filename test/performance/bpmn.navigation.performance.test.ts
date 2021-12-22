@@ -46,14 +46,14 @@ describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
     const metricsStart = await metricsCollector.metrics();
 
     for (let i = 0; i < xTimes; i++) {
-      await mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
+      await mouseZoomNoDelay(page, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
       if (i % 5 === 0) {
         await delay(30);
       }
     }
     await delay(100);
     for (let i = 0; i < xTimes; i++) {
-      await mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
+      await mouseZoomNoDelay(page, { x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
       if (i % 5 === 0) {
         await delay(30);
       }
