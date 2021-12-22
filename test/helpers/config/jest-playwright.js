@@ -16,6 +16,18 @@
 
 const log = require('debug')('bv:test:config:pw');
 
+const isMacOs = () => {
+  const isMacOS = process.platform.startsWith('darwin');
+  log('platform: %s / isMacOS? %s', process.platform, isMacOS);
+  return isMacOS;
+};
+// running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
+const isRunningOnCi = () => {
+  const isRunningOnCi = process.env.CI === 'true';
+  log('isRunningOnCi?', isRunningOnCi);
+  return isRunningOnCi;
+};
+
 const computeBrowsersAndChannelConfiguration = defaultBrowsers => {
   log('Default browsers list', defaultBrowsers);
   const rawBrowsers = (process.env.BROWSERS || defaultBrowsers).split(',');
@@ -50,6 +62,12 @@ const computeLaunchOptionsAndBrowsersConfiguration = (defaultBrowsers = 'chromiu
     launchOptions.channel = browsersAndChannelConfig.channel;
   }
 
+  if (isRunningOnCi() && isMacOs()) {
+    const timeoutInSeconds = 60;
+    log('Overriding default playwright launchOptions timeout to %s seconds', timeoutInSeconds);
+    launchOptions.timeout = timeoutInSeconds * 1000; // default is 30 seconds
+  }
+
   const config = { launchOptions: launchOptions, browsers: browsersAndChannelConfig.browsers };
   log('Computed launch options and browsers configuration', config);
   return config;
@@ -63,6 +81,14 @@ const computeServerOptions = () => {
     launchTimeout: 60000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
     debug: true,
     usedPortAction: 'ignore', // your tests are executed, we assume that the server is already started
+  };
+};
+
+const computeConfigurationForStaticUsage = () => {
+  const { browsers, launchOptions } = computeLaunchOptionsAndBrowsersConfiguration();
+  return {
+    launchOptions: launchOptions,
+    browsers: browsers,
   };
 };
 
@@ -82,6 +108,5 @@ const computeConfigurationForDevServerUsage = defaultBrowsers => {
   };
 };
 
-exports.log = log;
-exports.computeLaunchOptionsAndBrowsersConfiguration = computeLaunchOptionsAndBrowsersConfiguration;
+exports.computeConfigurationForStaticUsage = computeConfigurationForStaticUsage;
 exports.computeConfigurationForDevServerUsage = computeConfigurationForDevServerUsage;

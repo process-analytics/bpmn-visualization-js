@@ -14,29 +14,4 @@
  * limitations under the License.
  */
 
-const configLog = require('../helpers/config/jest-playwright').log;
-const { browsers, launchOptions } = require('../helpers/config/jest-playwright').computeLaunchOptionsAndBrowsersConfiguration();
-
-const isMacOs = () => {
-  const isMacOS = process.platform.startsWith('darwin');
-  configLog('platform: %s / isMacOS? %s', process.platform, isMacOS);
-  return isMacOS;
-};
-// running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
-const isRunningOnCi = () => {
-  const isRunningOnCi = process.env.CI === 'true';
-  configLog('isRunningOnCi?', isRunningOnCi);
-  return isRunningOnCi;
-};
-
-if (isRunningOnCi() && isMacOs()) {
-  const timeoutInSeconds = 60;
-  configLog('Overriding default playwright launchOptions timeout to %s seconds', timeoutInSeconds);
-  launchOptions.timeout = timeoutInSeconds * 1000; // default is 30 seconds
-}
-configLog('Final launch options', launchOptions);
-
-module.exports = {
-  launchOptions: launchOptions,
-  browsers: browsers,
-};
+module.exports = require('../helpers/config/jest-playwright').computeConfigurationForStaticUsage();
