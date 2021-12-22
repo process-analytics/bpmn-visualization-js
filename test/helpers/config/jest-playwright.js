@@ -16,16 +16,24 @@
 
 const log = require('debug')('bv:test:config:pw');
 
-const isMacOs = () => {
+const isMacOS = () => {
   const isMacOS = process.platform.startsWith('darwin');
   log('platform: %s / isMacOS? %s', process.platform, isMacOS);
   return isMacOS;
+};
+const isWindowsOS = () => {
+  const isWindowsOS = process.platform.startsWith('win');
+  log('platform: %s / isWindowsOS? %s', process.platform, isWindowsOS);
+  return isWindowsOS;
 };
 // running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
 const isRunningOnCi = () => {
   const isRunningOnCi = process.env.CI === 'true';
   log('isRunningOnCi?', isRunningOnCi);
   return isRunningOnCi;
+};
+const isRunningOnCISlowOS = () => {
+  return isRunningOnCi() && (isMacOS() || isWindowsOS());
 };
 
 const computeBrowsersAndChannelConfiguration = defaultBrowsers => {
@@ -49,7 +57,7 @@ const computeBrowsersAndChannelConfiguration = defaultBrowsers => {
 };
 
 const computeLaunchOptionsAndBrowsersConfiguration = (defaultBrowsers = 'chromium,firefox,webkit') => {
-  log('Configuring jest-playwright settings');
+  log('Computing launchOptions and browsers configuration');
 
   /** @type {import('playwright-core/types/types').LaunchOptions} */
   const launchOptions = {
@@ -62,26 +70,36 @@ const computeLaunchOptionsAndBrowsersConfiguration = (defaultBrowsers = 'chromiu
     launchOptions.channel = browsersAndChannelConfig.channel;
   }
 
-  if (isRunningOnCi() && isMacOs()) {
+  if (isRunningOnCISlowOS()) {
     const timeoutInSeconds = 60;
     log('Overriding default playwright launchOptions timeout to %s seconds', timeoutInSeconds);
     launchOptions.timeout = timeoutInSeconds * 1000; // default is 30 seconds
   }
 
   const config = { launchOptions: launchOptions, browsers: browsersAndChannelConfig.browsers };
-  log('Computed launch options and browsers configuration', config);
+  log('Computed launchOptions and browsers configuration', config);
   return config;
 };
 
 const computeServerOptions = () => {
-  return {
+  log('Computing serverOptions');
+  const options = {
     command: `npm run start -- --config-server-port 10002`,
     port: 10002,
     protocol: 'http', // if default or tcp, the test starts right await whereas the dev server is not available on http
-    launchTimeout: 60000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
     debug: true,
     usedPortAction: 'ignore', // your tests are executed, we assume that the server is already started
   };
+
+  if (isRunningOnCISlowOS()) {
+    // high value mainly because slow machines take time to build the bundle before the test start
+    const timeoutInSeconds = 60;
+    log('Overriding default playwright serverOptions timeout to %s seconds', timeoutInSeconds);
+    options.launchTimeout = timeoutInSeconds * 1000; // default is 30 seconds
+  }
+
+  log('Computed serverOptions', options);
+  return options;
 };
 
 const computeConfigurationForStaticUsage = () => {
