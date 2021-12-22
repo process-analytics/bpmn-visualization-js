@@ -15,6 +15,7 @@
  */
 import 'jest-playwright-preset';
 import { join } from 'path';
+import { Page } from 'playwright';
 import { mousePanning, mouseZoom, Point } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
@@ -56,7 +57,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 describe('diagram navigation - zoom and pan', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'navigation');
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
-  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' });
+  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
 
   const bpmnDiagramName = 'simple.2.start.events.1.task';
   let containerCenter: Point;

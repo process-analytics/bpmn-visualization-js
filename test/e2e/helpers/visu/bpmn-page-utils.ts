@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import 'expect-playwright';
-import 'jest-playwright-preset';
 import { ElementHandle, Page } from 'playwright';
 import { FitType, LoadOptions } from '../../../../src/component/options';
 import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
@@ -89,11 +88,11 @@ export class PageTester {
   /**
    * Configure how the BPMN file is loaded by the test page.
    */
-  constructor(readonly targetedPage: TargetedPage) {
+  constructor(readonly targetedPage: TargetedPage, protected currentPage: Page) {
     const showMousePointer = targetedPage.showMousePointer ?? false;
     this.baseUrl = `http://localhost:10002/${targetedPage.pageFileName}.html?showMousePointer=${showMousePointer}`;
     this.bpmnContainerId = targetedPage.bpmnContainerId ?? 'bpmn-container';
-    this.bpmnPage = new BpmnPage(this.bpmnContainerId, <Page>page);
+    this.bpmnPage = new BpmnPage(this.bpmnContainerId, this.currentPage);
   }
 
   async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, pageOptions?: PageOptions): Promise<void> {
@@ -102,7 +101,7 @@ export class PageTester {
   }
 
   protected async doLoadBPMNDiagramInRefreshedPage(url: string, checkResponseStatus = true): Promise<void> {
-    const response = await page.goto(url);
+    const response = await this.currentPage.goto(url);
     if (checkResponseStatus) {
       expect(response.status()).toBe(200);
     }
@@ -129,7 +128,7 @@ export class PageTester {
   }
 
   async getContainerCenter(): Promise<Point> {
-    const containerElement: ElementHandle<SVGElement | HTMLElement> = await page.waitForSelector(`#${this.bpmnContainerId}`);
+    const containerElement: ElementHandle<SVGElement | HTMLElement> = await this.currentPage.waitForSelector(`#${this.bpmnContainerId}`);
     const rect = await containerElement.boundingBox();
     return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
   }
@@ -138,8 +137,8 @@ export class PageTester {
 export class BpmnPageSvgTester extends PageTester {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
-  constructor(targetedPage: TargetedPage, private currentPage: Page) {
-    super(targetedPage);
+  constructor(targetedPage: TargetedPage, currentPage: Page) {
+    super(targetedPage, currentPage);
     // TODO duplicated with BpmnPage
     this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
   }

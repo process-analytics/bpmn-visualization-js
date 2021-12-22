@@ -15,6 +15,7 @@
  */
 import 'jest-playwright-preset';
 import { join } from 'path';
+import { Page } from 'playwright';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
 import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
@@ -158,7 +159,7 @@ async function removeAllOverlays(bpmnElementId: string): Promise<void> {
 const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'overlays');
 
 // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
-const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' });
+const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' }, <Page>page);
 
 describe('BPMN Shapes with overlays', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
