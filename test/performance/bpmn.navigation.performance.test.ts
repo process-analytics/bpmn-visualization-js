@@ -30,7 +30,7 @@ beforeAll(async () => {
 });
 describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
-  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' });
+  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
 
   const fileName = 'B.2.0';
   let containerCenter: Point;
