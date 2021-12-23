@@ -16,7 +16,7 @@
 import debugLogger from 'debug';
 import 'jest-playwright-preset';
 
-// Allow to get browser console logs
+// Allow getting browser console logs
 // this is from https://playwright.dev/docs/api/class-page#pageonconsole
 // see https://github.com/microsoft/playwright/issues/4498 and https://github.com/microsoft/playwright/issues/4125
 const browserLog = debugLogger('bv:test:browser');

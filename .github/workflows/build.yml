@@ -64,7 +64,7 @@ jobs:
       # playwright browsers are needed for the bundle tests, so no special configuration as in other workflows
       - name: Install dependencies
         env:
-          # https://playwright.dev/docs/installation/#skip-browser-downloads
+          # https://playwright.dev/docs/browsers#installing-browsers
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         run: npm ci
       - name: Lint check
@@ -92,24 +92,7 @@ jobs:
       # Ensure we don't break scripts
       - name: Build utils
         run: npm run build-utils
-      # Ensure we can build working bundles
-      - name: Build bundles
-        run: npm run build-bundles
-      # install OS dependencies required by browsers on the GitHub runner
-      # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
-      - name: Install all browsers and their dependencies
-        run: |
-          npx playwright install
-          npx playwright install-deps
-      - name: Test bundles
-        id: 'test_bundles'
-        run: npm run test:bundles
-      - name: Upload bundles test results
-        if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: bundles-test-results-${{matrix.os.name}}-${{github.sha}}
-          path: build/test-report/bundles
+      # Ensure we don't break performance tests code
       - name: Check performance tests compilation
         run: npm run test:perf:compile
 
@@ -120,3 +103,54 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+
+  test_bundles:
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # don't cancel running jobs even if one fails
+      fail-fast: false
+      matrix:
+        os: [macos-11, ubuntu-20.04, windows-2019]
+        browser: [chromium, firefox, chrome]
+        include:
+          # only test WebKit on macOS
+          - os: macos-11
+            browser: webkit
+          # only test Edge on Windows
+          - os: windows-2019
+            browser: msedge
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'npm'
+      - name: Install dependencies
+        env:
+          # https://playwright.dev/docs/browsers#installing-browsers
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+        run: npm ci
+      # Ensure we can build working bundles
+      - name: Build bundles
+        run: npm run build-bundles
+      # install OS dependencies required by browsers on the GitHub runner
+      # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
+      - name: Install ${{matrix.browser}} and its dependencies only
+        run: |
+          npx playwright install ${{matrix.browser}}
+          npx playwright install-deps ${{matrix.browser}}
+      - name: Test bundles
+        id: 'test_bundles'
+        env:
+          BROWSERS: ${{matrix.browser}}
+        run: npm run test:bundles
+      - name: Upload bundles test results
+        if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: bundles-${{matrix.browser}}-test-results-${{matrix.os}}-${{github.sha}}
+          path: build/test-report/bundles
