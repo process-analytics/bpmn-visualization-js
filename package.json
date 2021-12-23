@@ -73,7 +73,7 @@
     "test:e2e": "cross-env JEST_IMAGE_SNAPSHOT_TRACK_OBSOLETE=1 jest --runInBand --detectOpenHandles --config=./test/e2e/jest.config.js",
     "test:e2e:verbose": "cross-env DEBUG=bv:test:*,pw:browser* npm run test:e2e",
     "test:e2e:coverage": "npm run test:e2e -- --coverage",
-    "test:perf": "npx playwright test --config=test/performance/playwright.config.ts",
+    "test:perf": "npx playwright test --config=test/performance/playwright.config.ts --project=chromium",
     "test:perf:verbose": "cross-env DEBUG=bv:test:*,pw:browser* npm run test:perf",
     "test:perf:compile": "tsc -p test/performance/",
     "test:perf:show-report": "npx playwright show-report build/test-report/performance",
