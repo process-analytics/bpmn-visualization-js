@@ -19,7 +19,6 @@ import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/va
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 import { mxgraph } from './initializer';
-import type { mxMouseEvent } from 'mxgraph';
 
 export class BpmnMxGraph extends mxgraph.mxGraph {
   private cumulativeZoomFactor = 1;
@@ -135,11 +134,10 @@ export class BpmnMxGraph extends mxgraph.mxGraph {
 
   private getZoomHandler(calculateFactorOnly: boolean) {
     return (event: Event, up: boolean) => {
-      // TODO review type: this hack is due to typed-mxgraph
-      const evt = event as unknown as MouseEvent;
-      if (mxgraph.mxEvent.isConsumed(evt as unknown as mxMouseEvent)) {
+      if (mxgraph.mxEvent.isConsumed(event)) {
         return;
       }
+      const evt = event as MouseEvent;
       // only the ctrl key
       const isZoomWheelEvent = evt.ctrlKey && !evt.altKey && !evt.shiftKey && !evt.metaKey;
       if (isZoomWheelEvent) {

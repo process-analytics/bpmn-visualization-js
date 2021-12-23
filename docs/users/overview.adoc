@@ -82,6 +82,39 @@ For instance, it can be retrieved from a local file, by pulling a REST API, made
 Once the integration gets the BPMN diagram input source, it just has to pass it to `bpmn-visualization` which is then in charge of rendering the diagram.
 
 
+===== Default BPMN Theme
+
+By default, the rendering uses the following settings:
+
+* fill color: `white`
+* stroke color: `black`
+* font:
+** family: `Arial, Helvetica, sans-serif`
+** color: `black`
+** size: `11`
+
+
+image::images/bpmn-theme-default.png[Default BPMN Theme]
+
+_Default BPMN Theme_
+
+
+===== Customizing the BPMN Theme
+
+It is possible to change the default them by configuring CSS in page holding the diagram or extending `bpmn-visualization`.
+
+* Extending gives the full control on the theme customization, including colors, size, icons, and more.
+* CSS is the fastest to implement but provides less feature. For instance, you cannot change the icons or precisely control the size of the strokes.
+
+IMPORTANT: the current extension mechanism is experimental and subject to change.
+
+For more details, see the https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#custom-bpmn-theme[**icon:forward[] Custom BPMN Theme examples**].
+
+image::images/bpmn-theme-custom-colors.png[Custom BPMN Theme]
+
+_Custom BPMN Theme_
+
+
 [[diagram-navigation]]
 ==== Diagram Navigation
 
@@ -104,7 +137,7 @@ After navigating around, you may want to reset the zoom level and go back to a f
 
 image::images/bpmn-diagram_navigation_C.2.0.gif[BPMN Diagram Navigation]
 
-_Navigation with the https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/cc75e467fd2b3009e67d4b24943591c66ce91a23/Reference/C.2.0.bpmn[migw-test-suite C.2.0] BPMN diagram_
+_Navigation with the https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/cc75e467fd2b3009e67d4b24943591c66ce91a23/Reference/C.2.0.bpmn[miwg-test-suite C.2.0] BPMN diagram_
 
 
 [#process_data]
