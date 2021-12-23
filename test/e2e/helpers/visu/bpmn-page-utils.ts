@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import 'expect-playwright';
-import 'jest-playwright-preset';
 import { ElementHandle, Page } from 'playwright';
 import { FitType, LoadOptions } from '../../../../src/component/options';
 import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
@@ -30,23 +29,23 @@ export interface PageWaitForSelectorOptions {
 class BpmnPage {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
-  constructor(private bpmnContainerId: string, private currentPage: Page) {
+  constructor(private bpmnContainerId: string, private page: Page) {
     this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
   }
 
   async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<void> {
-    await expect(this.currentPage).toMatchAttribute(`#${this.bpmnContainerId}`, 'style', /cursor: default/, options);
+    await expect(this.page).toMatchAttribute(`#${this.bpmnContainerId}`, 'style', /cursor: default/, options);
   }
 
   async expectPageTitle(title: string): Promise<void> {
-    await expect(this.currentPage.title()).resolves.toEqual(title);
+    await expect(this.page.title()).resolves.toEqual(title);
   }
 
   /**
    * This checks that a least one BPMN element is available in the DOM as a SVG element. This ensure that the mxGraph rendering has been done.
    */
   async expectExistingBpmnElement(options?: PageWaitForSelectorOptions): Promise<void> {
-    await expect(this.currentPage).toHaveSelector(this.bpmnQuerySelectors.existingElement(), options);
+    await expect(this.page).toHaveSelector(this.bpmnQuerySelectors.existingElement(), options);
   }
 }
 
@@ -89,11 +88,11 @@ export class PageTester {
   /**
    * Configure how the BPMN file is loaded by the test page.
    */
-  constructor(readonly targetedPage: TargetedPage) {
+  constructor(readonly targetedPage: TargetedPage, protected page: Page) {
     const showMousePointer = targetedPage.showMousePointer ?? false;
     this.baseUrl = `http://localhost:10002/${targetedPage.pageFileName}.html?showMousePointer=${showMousePointer}`;
     this.bpmnContainerId = targetedPage.bpmnContainerId ?? 'bpmn-container';
-    this.bpmnPage = new BpmnPage(this.bpmnContainerId, <Page>page);
+    this.bpmnPage = new BpmnPage(this.bpmnContainerId, this.page);
   }
 
   async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, pageOptions?: PageOptions): Promise<void> {
@@ -102,7 +101,7 @@ export class PageTester {
   }
 
   protected async doLoadBPMNDiagramInRefreshedPage(url: string, checkResponseStatus = true): Promise<void> {
-    const response = await page.goto(url);
+    const response = await this.page.goto(url);
     if (checkResponseStatus) {
       expect(response.status()).toBe(200);
     }
@@ -129,7 +128,7 @@ export class PageTester {
   }
 
   async getContainerCenter(): Promise<Point> {
-    const containerElement: ElementHandle<SVGElement | HTMLElement> = await page.waitForSelector(`#${this.bpmnContainerId}`);
+    const containerElement: ElementHandle<SVGElement | HTMLElement> = await this.page.waitForSelector(`#${this.bpmnContainerId}`);
     const rect = await containerElement.boundingBox();
     return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
   }
@@ -138,8 +137,8 @@ export class PageTester {
 export class BpmnPageSvgTester extends PageTester {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
-  constructor(targetedPage: TargetedPage, private currentPage: Page) {
-    super(targetedPage);
+  constructor(targetedPage: TargetedPage, page: Page) {
+    super(targetedPage, page);
     // TODO duplicated with BpmnPage
     this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
   }
@@ -156,26 +155,26 @@ export class BpmnPageSvgTester extends PageTester {
 
   async expectEvent(bpmnId: string, expectedText: string, isStartEvent = true): Promise<void> {
     const selector = this.bpmnQuerySelectors.element(bpmnId);
-    await expectClassAttribute(this.currentPage, selector, `bpmn-type-event ${isStartEvent ? 'bpmn-start-event' : 'bpmn-end-event'} bpmn-event-def-none`);
-    await expectFirstChildNodeName(this.currentPage, selector, 'ellipse');
-    await expectFirstChildAttribute(this.currentPage, selector, 'rx', '18');
-    await expectFirstChildAttribute(this.currentPage, selector, 'ry', '18');
+    await expectClassAttribute(this.page, selector, `bpmn-type-event ${isStartEvent ? 'bpmn-start-event' : 'bpmn-end-event'} bpmn-event-def-none`);
+    await expectFirstChildNodeName(this.page, selector, 'ellipse');
+    await expectFirstChildAttribute(this.page, selector, 'rx', '18');
+    await expectFirstChildAttribute(this.page, selector, 'ry', '18');
     await this.checkLabel(bpmnId, expectedText);
   }
 
   async expectTask(bpmnId: string, expectedText: string): Promise<void> {
     const selector = this.bpmnQuerySelectors.element(bpmnId);
-    await expectClassAttribute(this.currentPage, selector, 'bpmn-type-activity bpmn-type-task bpmn-task');
-    await expectFirstChildNodeName(this.currentPage, selector, 'rect');
-    await expectFirstChildAttribute(this.currentPage, selector, 'width', '100');
-    await expectFirstChildAttribute(this.currentPage, selector, 'height', '80');
+    await expectClassAttribute(this.page, selector, 'bpmn-type-activity bpmn-type-task bpmn-task');
+    await expectFirstChildNodeName(this.page, selector, 'rect');
+    await expectFirstChildAttribute(this.page, selector, 'width', '100');
+    await expectFirstChildAttribute(this.page, selector, 'height', '80');
     await this.checkLabel(bpmnId, expectedText);
   }
 
   async expectSequenceFlow(bpmnId: string, expectedText?: string): Promise<void> {
     const selector = this.bpmnQuerySelectors.element(bpmnId);
-    await expectClassAttribute(this.currentPage, selector, 'bpmn-type-flow bpmn-sequence-flow');
-    await expectFirstChildNodeName(this.currentPage, selector, 'path');
+    await expectClassAttribute(this.page, selector, 'bpmn-type-flow bpmn-sequence-flow');
+    await expectFirstChildNodeName(this.page, selector, 'path');
     await this.checkLabel(bpmnId, expectedText);
   }
 
@@ -183,7 +182,7 @@ export class BpmnPageSvgTester extends PageTester {
     if (!expectedText) {
       return;
     }
-    await expect(this.currentPage).toMatchText(this.bpmnQuerySelectors.labelLastDiv(bpmnId), expectedText);
+    await expect(this.page).toMatchText(this.bpmnQuerySelectors.labelLastDiv(bpmnId), expectedText);
   }
 }
 
