@@ -22,7 +22,6 @@ import { overlayEdgePositionValues, overlayShapePositionValues } from '../helper
 import { clickOnButton, mousePanning, mouseZoom, Point } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { ElementHandle } from 'playwright';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -162,7 +161,7 @@ const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapsho
 // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
 const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' }, <Page>page);
 
-async function loadBPMNDiagramInRefreshedPage(diagram: string): Promise<ElementHandle<SVGElement | HTMLElement>> {
+async function loadBPMNDiagramInRefreshedPage(diagram: string): Promise<void> {
   return pageTester.loadBPMNDiagramInRefreshedPage(`overlays/${diagram}`);
 }
 

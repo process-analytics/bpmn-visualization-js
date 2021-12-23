@@ -21,7 +21,6 @@ import { FitType } from '../../src/component/options';
 import { clickOnButton, getBpmnDiagramNames } from './helpers/test-utils';
 import { PageOptions, PageTester } from './helpers/visu/bpmn-page-utils';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { ElementHandle } from 'playwright';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   getConfig(param: {
@@ -144,7 +143,7 @@ describe('diagram navigation - fit', () => {
 
   const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
 
-  async function loadBPMNDiagramInRefreshedPage(diagram: string, pageOptions?: PageOptions): Promise<ElementHandle<SVGElement | HTMLElement>> {
+  async function loadBPMNDiagramInRefreshedPage(diagram: string, pageOptions?: PageOptions): Promise<void> {
     return pageTester.loadBPMNDiagramInRefreshedPage(`${diagramSubfolderName}/${diagram}`, pageOptions);
   }
 
