@@ -85,7 +85,6 @@ export class EventShape extends mxgraph.mxEllipse {
   }
 
   override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    this.markNonFullyRenderedEvents(c);
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, isFilled: this.withFilledIcon });
 
     EventShape.setDashedOuterShapePattern(paintParameter, StyleUtils.getBpmnIsInterrupting(this.style));
@@ -93,16 +92,6 @@ export class EventShape extends mxgraph.mxEllipse {
     EventShape.restoreOriginalOuterShapePattern(paintParameter);
 
     this.paintInnerShape(paintParameter);
-  }
-
-  // This will be removed after implementation of all supported events
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private markNonFullyRenderedEvents(c: mxAbstractCanvas2D): void {
-    // const eventDefinitionKind = StyleUtils.getBpmnEventDefinitionKind(this.style);
-    // if (eventDefinitionKind == ShapeBpmnEventDefinitionKind.CONDITIONAL) {
-    //   c.setFillColor('deeppink');
-    //   c.setFillAlpha(0.3);
-    // }
   }
 
   protected paintOuterShape({ canvas, shapeConfig: { x, y, width, height } }: PaintParameter): void {
