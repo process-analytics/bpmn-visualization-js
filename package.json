@@ -87,7 +87,7 @@
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "mxgraph": "4.1.0",
-    "strnum": "1.0.4"
+    "strnum": "1.0.5"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^4.1.0",
@@ -106,7 +106,7 @@
     "chokidar-cli": "^3.0.0",
     "clipboardy": "^3.0.0",
     "cross-env": "^7.0.3",
-    "cssnano": "^5.0.12",
+    "cssnano": "^5.0.14",
     "debug": "^4.3.3",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
