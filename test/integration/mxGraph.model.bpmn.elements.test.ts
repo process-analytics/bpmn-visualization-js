@@ -1412,4 +1412,53 @@ describe('mxGraph model - BPMN elements', () => {
     expect('SubLane_Vertical_1').toBeLane({ ...minimalPoolModelElement, label: 'Sub-Lane 1', parentId: 'Lane_Vertical_With_Sub_Lane' });
     expect('SubLane_Vertical_2').toBeLane({ ...minimalPoolModelElement, label: 'Sub-Lane 2', parentId: 'Lane_Vertical_With_Sub_Lane' });
   });
+
+  describe('Special cases', () => {
+    // There is no pool in the diagram so in the mxGraph model, the parent of cells is the default cell. mxGraph geometry and BPMN coordinates are the same.
+    const defaultParentId = '1';
+
+    it('Parse a diagram with large numbers and large decimals', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_large_numbers_and_large_decimals.bpmn'));
+
+      expect('StartEvent_1').toBeCellWithParentAndGeometry({
+        parentId: defaultParentId,
+        geometry: new mxgraph.mxGeometry(
+          156.10001,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          '81.3450000000000090', // 81.345000000000009 in the diagram
+          '36.0003450001000002',
+          36.0000001,
+        ),
+      });
+
+      expect('Activity_1').toBeCellWithParentAndGeometry({
+        parentId: defaultParentId,
+        geometry: new mxgraph.mxGeometry(250, 59, 100, 80),
+      });
+
+      const mxGeometry = new mxgraph.mxGeometry(412, 81, 36, 36);
+      mxGeometry.offset = new mxgraph.mxPoint(4.16e25, 1.24000000003e29);
+      expect('EndEvent_1').toBeCellWithParentAndGeometry({
+        parentId: defaultParentId,
+        geometry: mxGeometry,
+      });
+    });
+
+    it('Parse a diagram with numbers not parsable as number', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_numbers_not_parsable_as_number.bpmn'));
+
+      expect('Activity_1').toBeCellWithParentAndGeometry({
+        parentId: defaultParentId,
+        geometry: new mxgraph.mxGeometry(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore malformed source, conversion result
+          'not_a_number0', // from 'not_a_number'
+          'not a number too0', // from 'not a number too'
+          -100,
+          -80,
+        ),
+      });
+    });
+  });
 });
