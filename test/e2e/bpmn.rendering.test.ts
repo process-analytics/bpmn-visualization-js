@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 import 'jest-playwright-preset';
+import { Page } from 'playwright';
+import { getBpmnDiagramNames } from './helpers/test-utils';
+import { PageTester, StyleOptions } from './helpers/visu/bpmn-page-utils';
 import {
   defaultChromiumFailureThreshold,
   ImageSnapshotConfigurator,
   ImageSnapshotThresholdConfig,
   MultiBrowserImageSnapshotThresholds,
 } from './helpers/visu/image-snapshot-config';
-import { PageTester, StyleOptions } from './helpers/visu/bpmn-page-utils';
-import { getBpmnDiagramNames } from './helpers/test-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   // threshold for webkit is taken from macOS only
@@ -336,7 +337,7 @@ const styleOptionsPerDiagram = new Map<string, StyleOptions>([
 describe('BPMN rendering', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'bpmn');
 
-  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' });
+  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' }, <Page>page);
   const bpmnDiagramNames = getBpmnDiagramNames('non-regression');
 
   it('check bpmn non-regression files availability', () => {
