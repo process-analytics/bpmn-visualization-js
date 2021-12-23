@@ -172,7 +172,7 @@ describe('diagram navigation - fit', () => {
             },
           },
         });
-        await clickOnButton(afterLoadFitType);
+        await clickOnButton(page, afterLoadFitType);
 
         const image = await page.screenshot({ fullPage: true });
 
