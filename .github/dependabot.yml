@@ -20,7 +20,6 @@ updates:
       interval: "weekly"
       day: wednesday
     open-pull-requests-limit: 2
-    versioning-strategy: increase
     commit-message:
       prefix: "[INFRA] gha -"
     reviewers:
