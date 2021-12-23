@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { expect, Page, test } from '@playwright/test';
 import * as fs from 'fs';
-import { Page } from 'playwright';
 import { delay, getSimplePlatformName, mouseZoomNoDelay, Point } from '../e2e/helpers/test-utils';
 import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
@@ -24,59 +24,62 @@ const platform = getSimplePlatformName();
 const performanceDataFilePath = './test/performance/data/' + platform + '/data.js';
 const metricsArray: Array<PerformanceMetric> = [];
 
+// to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
+let pageTester: PageTester;
 let metricsCollector: ChromiumMetricsCollector;
-beforeAll(async () => {
-  metricsCollector = await ChromiumMetricsCollector.create(<Page>page);
-});
-describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
-  // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
-  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
+let containerCenter: Point;
 
-  const fileName = 'B.2.0';
-  let containerCenter: Point;
+const fileName = 'B.2.0';
 
-  beforeEach(async () => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
-    containerCenter = await pageTester.getContainerCenter();
-  });
+for (const run of [1, 2, 3, 4, 5]) {
+  test.describe(`zoom performance [${run} times]`, () => {
+    test.beforeEach(async ({ page }: { page: Page }) => {
+      pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, page);
+      await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
+      containerCenter = await pageTester.getContainerCenter();
+      metricsCollector = await ChromiumMetricsCollector.create(page);
+    });
 
-  it(`ctrl + mouse: check performance while performing zoom in and zoom out [30 times]`, async () => {
-    const xTimes = 30;
-    const deltaX = -100;
-    const metricsStart = await metricsCollector.metrics();
+    // eslint-disable-next-line jest/no-done-callback
+    test(`ctrl + mouse: check performance while performing zoom in and zoom out [${run} times]`, async ({ page }: { page: Page }) => {
+      const xTimes = 30;
+      const deltaX = -100;
+      const metricsStart = await metricsCollector.metrics();
 
-    for (let i = 0; i < xTimes; i++) {
-      await mouseZoomNoDelay(page, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
-      if (i % 5 === 0) {
-        await delay(30);
+      for (let i = 0; i < xTimes; i++) {
+        await mouseZoomNoDelay(page, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
+        if (i % 5 === 0) {
+          await delay(30);
+        }
       }
-    }
-    await delay(100);
-    for (let i = 0; i < xTimes; i++) {
-      await mouseZoomNoDelay(page, { x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
-      if (i % 5 === 0) {
-        await delay(30);
+      await delay(100);
+      for (let i = 0; i < xTimes; i++) {
+        await mouseZoomNoDelay(page, { x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
+        if (i % 5 === 0) {
+          await delay(30);
+        }
       }
-    }
-    await delay(100);
-    const metricsEnd = await metricsCollector.metrics();
+      await delay(100);
+      const metricsEnd = await metricsCollector.metrics();
 
-    const metric = { ...calculateMetrics(metricsStart, metricsEnd), run: run };
-    metricsArray.push(metric);
-    expect(true).toBe(true);
+      const metric = { ...calculateMetrics(metricsStart, metricsEnd), run: run };
+      metricsArray.push(metric);
+      expect(true).toBe(true);
+    });
+
+    test.afterEach(async () => {
+      await metricsCollector.destroy();
+      try {
+        const oldDataString = fs.readFileSync(performanceDataFilePath, 'utf8');
+        const oldData = JSON.parse(oldDataString.substring('const data = '.length, oldDataString.length)) as ChartData;
+        const data = {
+          zoom: oldData.zoom.concat(metricsArray),
+          load: oldData.load,
+        };
+        fs.writeFileSync(performanceDataFilePath, 'const data = ' + JSON.stringify(data));
+      } catch (err) {
+        console.error(err);
+      }
+    });
   });
-});
-afterAll(() => {
-  metricsCollector.destroy();
-  try {
-    const oldDataString = fs.readFileSync(performanceDataFilePath, 'utf8');
-    const oldData = JSON.parse(oldDataString.substring('const data = '.length, oldDataString.length)) as ChartData;
-    const data = {
-      zoom: oldData.zoom.concat(metricsArray),
-      load: oldData.load,
-    };
-    fs.writeFileSync(performanceDataFilePath, 'const data = ' + JSON.stringify(data));
-  } catch (err) {
-    console.error(err);
-  }
-});
+}
