@@ -37,17 +37,30 @@ describe('Special parsing cases', () => {
     const shapes = bpmnDiagram.BPMNPlane.BPMNShape as BPMNShape[];
     const getShape = (id: string): BPMNShape => shapes.filter(s => s.id == id)[0];
 
-    // decimals are rounded
-    expect(getShape('BPMNShape_StartEvent_1').Bounds).toEqual(new Bounds(156.10001, 81.34500000000001, 36.0003450001, 36.0000001));
+    // string instead of number
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore width and y are parsed as string. They have too many decimals
+    expect(getShape('BPMNShape_StartEvent_1').Bounds).toEqual(new Bounds(156.10001, '81.345000000000009', '36.0003450001000002', 36.0000001));
 
-    // negative values and string instead of number
+    expect(getShape('BPMNShape_Activity_1').Bounds).toEqual(new Bounds(250, 59, 100, 80));
+
+    // large numbers use scientific notation or converted as string
+    const endEventShape = getShape('BPMNShape_EndEvent_1');
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore width converted to string to not get a truncated number at runtime
+    expect((endEventShape.BPMNLabel as BPMNLabel).Bounds).toEqual(new Bounds(4.16e25, 1.24000000003e29, '20000000000000000009', 1.4e21));
+  });
+
+  it('Parse a diagram with numbers not parsable as number', () => {
+    const json = new BpmnXmlParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_numbers_not_parsable_as_number.bpmn'));
+
+    const bpmnDiagram = json.definitions.BPMNDiagram as BPMNDiagram;
+    const shapes = bpmnDiagram.BPMNPlane.BPMNShape as BPMNShape[];
+    const getShape = (id: string): BPMNShape => shapes.filter(s => s.id == id)[0];
+
+    // x and y values are string instead of number in the source diagram
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore x and y are parsed as string as defined in the BPMN diagram
     expect(getShape('BPMNShape_Activity_1').Bounds).toEqual(new Bounds('not_a_number', 'not a number too', -100, -80));
-
-    // large numbers use scientific notation
-    const endEventShape = getShape('BPMNShape_EndEvent_1');
-    // width in bpmn file: 20000000000000000009 (ESLint: This number literal will lose precision at runtime)
-    expect((endEventShape.BPMNLabel as BPMNLabel).Bounds).toEqual(new Bounds(4.16e25, 1.24000000003e29, 20000000000000000000, 1.4e21));
   });
 });
