@@ -16,7 +16,7 @@
 import debugLogger from 'debug';
 import 'jest-playwright-preset';
 import { join } from 'path';
-import { Mouse } from 'playwright';
+import { Mouse, Page } from 'playwright';
 import { findFiles } from '../../helpers/file-helper';
 
 export interface Point {
@@ -57,7 +57,7 @@ export function getBpmnDiagramNames(directoryName: string): string[] {
     .map(filename => filename.split('.').slice(0, -1).join('.'));
 }
 
-export async function clickOnButton(buttonId: string): Promise<void> {
+export async function clickOnButton(page: Page, buttonId: string): Promise<void> {
   await page.click(`#${buttonId}`);
   // To unselect the button
   await page.mouse.click(0, 0);
@@ -68,7 +68,7 @@ export interface PanningOptions {
   destinationPoint: Point;
 }
 
-export async function mousePanning({ originPoint, destinationPoint }: PanningOptions): Promise<void> {
+export async function mousePanning(page: Page, { originPoint, destinationPoint }: PanningOptions): Promise<void> {
   // simulate mouse panning
   await page.mouse.move(originPoint.x, originPoint.y);
   await page.mouse.down();
@@ -76,15 +76,15 @@ export async function mousePanning({ originPoint, destinationPoint }: PanningOpt
   await page.mouse.up();
 }
 
-export async function mouseZoom(xTimes: number, point: Point, deltaX: number): Promise<void> {
+export async function mouseZoom(page: Page, xTimes: number, point: Point, deltaX: number): Promise<void> {
   for (let i = 0; i < xTimes; i++) {
-    await mouseZoomNoDelay(point, deltaX);
+    await mouseZoomNoDelay(page, point, deltaX);
     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
     await delay(150);
   }
 }
 
-export async function mouseZoomNoDelay(point: Point, deltaX: number): Promise<void> {
+export async function mouseZoomNoDelay(page: Page, point: Point, deltaX: number): Promise<void> {
   await page.mouse.move(point.x, point.y);
   await page.keyboard.down('Control');
   await (page.mouse as Mouse).wheel(deltaX, 0);

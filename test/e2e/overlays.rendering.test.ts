@@ -139,7 +139,7 @@ async function addOverlays(bpmnElementIds: string | string[], positions: Overlay
   for (const bpmnElementId of ensureIsArray<string>(bpmnElementIds)) {
     await page.fill('#bpmn-id-input', bpmnElementId);
     for (const position of positions) {
-      await clickOnButton(position);
+      await clickOnButton(page, position);
     }
   }
 }
@@ -147,13 +147,13 @@ async function addOverlays(bpmnElementIds: string | string[], positions: Overlay
 async function addStylingOverlay(bpmnElementIds: string[], style: string): Promise<void> {
   for (const bpmnElementId of bpmnElementIds) {
     await page.fill('#bpmn-id-input', bpmnElementId);
-    await clickOnButton(style);
+    await clickOnButton(page, style);
   }
 }
 
 async function removeAllOverlays(bpmnElementId: string): Promise<void> {
   await page.fill('#bpmn-id-input', bpmnElementId);
-  await clickOnButton('clear');
+  await clickOnButton(page, 'clear');
 }
 
 const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'overlays');
@@ -328,7 +328,7 @@ describe('Overlay navigation', () => {
   });
 
   it('panning', async () => {
-    await mousePanning({ originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
+    await mousePanning(page, { originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -339,7 +339,7 @@ describe('Overlay navigation', () => {
   });
 
   it(`zoom out`, async () => {
-    await mouseZoom(1, { x: containerCenter.x + 200, y: containerCenter.y }, 100);
+    await mouseZoom(page, 1, { x: containerCenter.x + 200, y: containerCenter.y }, 100);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
