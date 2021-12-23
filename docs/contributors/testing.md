@@ -256,7 +256,7 @@ BROWSERS=chromium,firefox
 ```
 
 Chrome and Edge can also be used to run tests. Configure the `BROWSERS` environment variable with `chrome` or `msedge`
-respectively. If you configure several browsers, only one is taken into account with first `chrome` then` msedge`.
+respectively. If you configure several browsers, only one is taken into account with first `chrome` then `msedge`.
 
 ### Debugging end-to-end, performance and bundle tests
 
