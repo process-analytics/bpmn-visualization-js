@@ -42,7 +42,7 @@ jobs:
         id: publish_demo_preview
         uses: afc163/surge-preview@v1
         env:
-          # https://playwright.dev/docs/installation/#skip-browser-downloads
+          # https://playwright.dev/docs/browsers#installing-browsers
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}

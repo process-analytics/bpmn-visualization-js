@@ -13,10 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-module.exports = {
-  launchOptions: {
-    headless: process.env.HEADLESS !== 'false',
-    slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
-  },
-  browsers: ['chromium', 'firefox', 'webkit'],
-};
+
+module.exports = require('../helpers/config/jest-playwright').computeConfigurationForStaticUsage();
