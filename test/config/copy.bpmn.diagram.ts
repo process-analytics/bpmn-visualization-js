@@ -15,14 +15,19 @@
  */
 import { copySync } from 'fs-extra';
 
-function copyDirectoryContentIfNotExists(dirName: string): void {
+const copyDirectoryContentIfNotExists = (dirName: string): void => {
   copySync(`${__dirname}/../fixtures/bpmn/${dirName}`, `${__dirname}/../../build/public/static/diagrams/`, { overwrite: true });
-}
+};
 
-copyDirectoryContentIfNotExists('diagram');
-copyDirectoryContentIfNotExists('navigation');
-copyDirectoryContentIfNotExists('non-regression');
-copyDirectoryContentIfNotExists('overlays');
-copyDirectoryContentIfNotExists('performance');
-copyDirectoryContentIfNotExists('svg');
-copyDirectoryContentIfNotExists('theme');
+//  globalSetup file must export a single function.
+const globalSetup = (): void => {
+  copyDirectoryContentIfNotExists('diagram');
+  copyDirectoryContentIfNotExists('navigation');
+  copyDirectoryContentIfNotExists('non-regression');
+  copyDirectoryContentIfNotExists('overlays');
+  copyDirectoryContentIfNotExists('performance');
+  copyDirectoryContentIfNotExists('svg');
+  copyDirectoryContentIfNotExists('theme');
+};
+
+export default globalSetup;
