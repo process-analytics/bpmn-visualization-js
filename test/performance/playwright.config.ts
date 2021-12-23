@@ -15,17 +15,20 @@
  */
 import { devices, PlaywrightTestConfig } from '@playwright/test';
 
+const testReportDir = 'build/test-report/performance';
+
 const config: PlaywrightTestConfig = {
   forbidOnly: Boolean(process.env.CI),
   globalSetup: '../config/copy.bpmn.diagram.ts',
   retries: process.env.CI ? 2 : 1,
   testIgnore: '(data|helpers)/**',
   timeout: 200000,
+  outputDir: testReportDir,
   use: {
     trace: 'on-first-retry',
     viewport: { width: 800, height: 600 },
     baseURL: 'http://localhost:10002',
-    /* screenshot: 'only-on-failure',*/
+    screenshot: 'only-on-failure',
     launchOptions: {
       headless: process.env.HEADLESS !== 'false',
       slowMo: process.env.SLOWMO ? Number(process.env.SLOWMO) : 0,
@@ -36,23 +39,14 @@ const config: PlaywrightTestConfig = {
     port: 10002,
     timeout: 60000,
     reuseExistingServer: !process.env.CI,
-    // , cwd: string, env: object
   },
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    /*    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },*/
   ],
-  /* snapshotDir: 'build/test-report/performance',*/
-  reporter: [['html', { outputFolder: 'build/test-report/performance', open: 'never' }], [process.env.CI ? 'github' : 'list']],
+  snapshotDir: `${testReportDir}/screenshots`,
+  reporter: [['html', { outputFolder: testReportDir, open: 'never' }], [process.env.CI ? 'github' : 'list']],
 };
 export default config;
