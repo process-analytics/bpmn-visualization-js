@@ -24,18 +24,6 @@ the BPMN elements are rendered with their final shapes.
 * no status means that are arbitrary rendering is used (i.e. not following the BPMN specification requirements), generally using a dedicated color to identify the shape among others
 ====
 
-.Default rendering style
-****
-By default, the rendering uses the following settings:
-
-* fill color: `white` 
-* stroke color: `black` 
-* font:
-** family: `Arial, Helvetica, sans-serif`
-** color: `black`
-** size: `11`
-
-****
 
 === Containers
 

@@ -33,7 +33,7 @@ describe.each([1, 2, 3, 4, 5])('load performance', run => {
   const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
   const fileName = 'B.2.0';
 
-  it.each([1])('check performance for file loading and displaying diagram with FitType.HorizontalVertical', async () => {
+  it('check performance for file loading and displaying diagram with FitType.HorizontalVertical', async () => {
     const metricsStart = await metricsCollector.metrics();
     await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
     const metricsEnd = await metricsCollector.metrics();
