@@ -53,5 +53,6 @@ const config: PlaywrightTestConfig = {
     },*/
   ],
   /* snapshotDir: 'build/test-report/performance',*/
+  reporter: [['html', { outputFolder: 'build/test-report/performance', open: 'never' }], [process.env.CI ? 'github' : 'list']],
 };
 export default config;
