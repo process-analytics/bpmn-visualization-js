@@ -16,7 +16,7 @@ jobs:
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
-        # https://playwright.dev/docs/installation/#skip-browser-downloads
+        # https://playwright.dev/docs/browsers#installing-browsers
         run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm ci
       - run: npm publish
         env:

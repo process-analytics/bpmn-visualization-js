@@ -42,7 +42,7 @@ Tests change frequency:
 ### End-to-end tests
 
 We use the [playwright library](https://playwright.dev/) with the [jest-playwright integration](https://github.com/playwright-community/jest-playwright) to handle
-tests requiring a web browser. Chromium and Firefox can be used when running tests.
+tests requiring a web browser. See the paragraph dedicated to [web browsers](#web-browsers) for more details.
 
 We have the following types of end-to-end tests:
 - `generated svg`:
@@ -230,9 +230,14 @@ Html reports are generated for test execution and coverage in
 - `build/test-report/e2e` for end-to-end tests
 
 
-### Web Browser choice for end-to-end tests
+<a name="web-browsers"></a>
+### Web Browser choice for end-to-end and bundle tests
 
-Web browsers are installed by `playwright` when running `npm install` and by default, tests use Chromium. 
+Web browsers are installed by `playwright` when running `npm install`. For more details about browsers management, see the [Playwright documentation](https://playwright.dev/docs/browsers#installing-browsers).
+
+By default, 
+- end-to-end tests use Chromium.
+- bundle tests use both Chromium, Firefox and WebKit.
 
 To use Firefox instead, use a `BROWSERS` environment variable:
 - on Linux or macOS
@@ -250,13 +255,17 @@ It is also possible to make tests use several browsers, pass the list of browser
 BROWSERS=chromium,firefox
 ```
 
-### Debugging end-to-end, performance and bundles tests
+Chrome and Edge can also be used to run tests. Configure the `BROWSERS` environment variable with `chrome` or `msedge`
+respectively. If you configure several browsers, only one is taken into account with first `chrome` then `msedge`.
+
+### Debugging end-to-end, performance and bundle tests
 
 To see what is happening in your local web browser used by the tests
 - disable the `headless` mode by setting the `HEADLESS` environment variable to `false`
 - set the `SLOWMO` environment variable to a positive millisecond value (between `200` and `500` should be enough). This
 slows Playwright down by milliseconds that we specify. So we will be able to observe what it actually does.
-  
+
+For more debugging tools, see the [Playwright documentation](https://playwright.dev/docs/debug).
 
 ### Logs
 

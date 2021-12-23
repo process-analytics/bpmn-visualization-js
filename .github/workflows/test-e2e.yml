@@ -36,11 +36,14 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-11, ubuntu-20.04, windows-2019]
-        browser: [chromium, firefox]
+        browser: [chromium, firefox, chrome]
         include:
-          # only test webkit on macos
+          # only test WebKit on macOS
           - os: macos-11
             browser: webkit
+          # only test Edge on Windows
+          - os: windows-2019
+            browser: msedge
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -51,7 +54,7 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         env:
-          # https://playwright.dev/docs/installation/#skip-browser-downloads
+          # https://playwright.dev/docs/browsers#installing-browsers
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         run: npm ci
       # install OS dependencies required by browsers on the GitHub runner
