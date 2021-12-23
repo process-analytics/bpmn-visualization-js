@@ -84,10 +84,11 @@ const computeLaunchOptionsAndBrowsersConfiguration = (defaultBrowsers = 'chromiu
 const computeServerOptions = () => {
   log('Computing serverOptions');
   const options = {
-    command: `npm run start -- --config-server-port 10002`,
+    command: `npm run start-dev -- --port 10002`,
     port: 10002,
     protocol: 'http', // if default or tcp, the test starts right await whereas the dev server is not available on http
-    launchTimeout: 60000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
+    // TODO check if we can reduce this value
+    launchTimeout: 20000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
     debug: true,
     usedPortAction: 'ignore', // your tests are executed, we assume that the server is already started
   };
