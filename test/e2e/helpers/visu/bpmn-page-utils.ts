@@ -45,7 +45,7 @@ class BpmnPage {
    * This checks that a least one BPMN element is available in the DOM as a SVG element. This ensure that the mxGraph rendering has been done.
    */
   async expectExistingBpmnElement(options?: PageWaitForSelectorOptions): Promise<void> {
-    const locator = this.page.locator(`${this.bpmnQuerySelectors.existingElement()}:first-child`);
+    const locator = this.page.locator(this.bpmnQuerySelectors.existingElement()).first();
     await expect(locator).toBeVisible(options);
   }
 }
@@ -162,6 +162,7 @@ export class BpmnPageSvgTester extends PageTester {
 
   async expectEvent(bpmnId: string, expectedText: string, isStartEvent = true): Promise<void> {
     const selector = this.bpmnQuerySelectors.element(bpmnId);
+
     await expectClassAttribute(this.page, selector, `bpmn-type-event ${isStartEvent ? 'bpmn-start-event' : 'bpmn-end-event'} bpmn-event-def-none`);
     await expectFirstChildNodeName(this.page, selector, 'ellipse');
     await expectFirstChildAttribute(this.page, selector, 'rx', '18');
@@ -189,19 +190,19 @@ export class BpmnPageSvgTester extends PageTester {
     if (!expectedText) {
       return;
     }
-    await expect(this.page.locator(this.bpmnQuerySelectors.labelLastDiv(bpmnId))).toHaveValue(expectedText);
+    await expect(this.page.locator(this.bpmnQuerySelectors.labelLastDiv(bpmnId))).toHaveText(expectedText);
   }
 }
 
 async function expectClassAttribute(page: Page, selector: string, value: string): Promise<void> {
-  await expect(page.locator(selector)).toHaveAttribute('class', value);
+  await expect(page.locator(selector).first()).toHaveAttribute('class', value);
 }
 
 async function expectFirstChildNodeName(page: Page, selector: string, nodeName: string): Promise<void> {
-  await expect(page.locator(`${selector} > ${nodeName}:first-child`)).toHaveCount(1);
+  await expect(page.locator(selector).first().locator(`${nodeName}:first-child`)).toHaveCount(1);
 }
 
 async function expectFirstChildAttribute(page: Page, selector: string, attributeName: string, value: string): Promise<void> {
-  await expect(page.locator(`${selector} > :first-child`)).toHaveAttribute(attributeName, value);
+  await expect(page.locator(selector).first().locator(`:first-child`)).toHaveAttribute(attributeName, value);
 }
 /* eslint-enable jest/no-standalone-expect */
