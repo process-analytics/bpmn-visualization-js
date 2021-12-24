@@ -30,15 +30,12 @@ test.describe('bundles', () => {
       { file: 'bpmn-visualization.js', bundleType: 'IIFE' },
       { file: 'bpmn-visualization.min.js', bundleType: 'IIFE minified' },
     ]) {
-      // eslint-disable-next-line jest/valid-title
       test(bundleType, () => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         expect(existsSync(resolve(bundlesDirectoryPath, file))).toBe(true);
       });
     }
   });
 
-  // eslint-disable-next-line jest/no-done-callback
   test('IIFE bundle - should generate BPMN Diagram SVG', async ({ page }: PlaywrightTestArgs) => {
     const pageTester = new BpmnStaticPageSvgTester(
       { pageFileName: 'lib-integration-iife', expectedPageTitle: 'BPMN Visualization IIFE bundle', bpmnContainerId: 'bpmn-container-for-iife-bundle' },

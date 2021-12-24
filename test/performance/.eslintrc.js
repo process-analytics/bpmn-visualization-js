@@ -15,5 +15,5 @@
  */
 
 module.exports = {
-  extends: ['plugin:playwright/jest-playwright'],
+  extends: ['plugin:playwright/playwright-test'],
 };

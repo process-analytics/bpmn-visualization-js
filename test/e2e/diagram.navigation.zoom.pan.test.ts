@@ -64,7 +64,6 @@ test.describe('diagram navigation - zoom and pan', () => {
     containerCenter = await pageTester.getContainerCenter();
   });
 
-  // eslint-disable-next-line jest/no-done-callback
   test('mouse panning', async ({ page }: PlaywrightTestArgs) => {
     await mousePanning(page, { originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
@@ -77,7 +76,6 @@ test.describe('diagram navigation - zoom and pan', () => {
   });
 
   for (const zoomMode of ['zoom in', 'zoom out']) {
-    // eslint-disable-next-line jest/no-done-callback
     test(`ctrl + mouse: ${zoomMode}`, async ({ page }: PlaywrightTestArgs) => {
       const deltaX = zoomMode === 'zoom in' ? -100 : 100;
       await mouseZoom(page, 1, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
@@ -92,7 +90,6 @@ test.describe('diagram navigation - zoom and pan', () => {
   }
 
   for (const xTimes of [3, 5]) {
-    // eslint-disable-next-line jest/no-done-callback
     test(`ctrl + mouse: initial scale after zoom in and zoom out [${xTimes} times]`, async ({ page }: PlaywrightTestArgs) => {
       const deltaX = -100;
       // simulate mouse+ctrl zoom

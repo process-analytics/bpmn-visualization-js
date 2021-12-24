@@ -149,7 +149,6 @@ test.describe('diagram navigation - fit', () => {
     test.describe(`load options - fit ${onLoadFitType}`, () => {
       for (const bpmnDiagramName of bpmnDiagramNames) {
         test.describe(`diagram ${bpmnDiagramName}`, () => {
-          // eslint-disable-next-line jest/no-done-callback
           test('load', async ({ page }: PlaywrightTestArgs) => {
             await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
               loadOptions: {
@@ -170,7 +169,6 @@ test.describe('diagram navigation - fit', () => {
           });
 
           for (const afterLoadFitType of fitTypes) {
-            // eslint-disable-next-line jest/no-done-callback
             test(`load + fit ${afterLoadFitType}`, async ({ page }: PlaywrightTestArgs) => {
               await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
                 loadOptions: {
@@ -198,7 +196,6 @@ test.describe('diagram navigation - fit', () => {
             (onLoadFitType === FitType.Vertical && bpmnDiagramName === 'vertical')
           ) {
             for (const margin of [-100, 0, 20, 50, null]) {
-              // eslint-disable-next-line jest/no-done-callback
               test(`load with margin ${margin}`, async ({ page }: PlaywrightTestArgs) => {
                 await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
                   loadOptions: {

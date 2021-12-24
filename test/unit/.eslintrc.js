@@ -15,5 +15,22 @@
  */
 
 module.exports = {
-  extends: ['plugin:playwright/playwright-test'],
+  plugins: ['jest'],
+  env: {
+    'jest/globals': true,
+  },
+  settings: {
+    jest: {
+      version: require('jest/package.json').version,
+    },
+  },
+  extends: ['plugin:jest/recommended', 'plugin:jest/style'],
+  rules: {
+    /* The rule list: https://github.com/jest-community/eslint-plugin-jest#rules */
+    'jest/prefer-expect-resolves': 'warn',
+    'jest/prefer-spy-on': 'warn',
+    'jest/prefer-todo': 'warn',
+    /* The rule didn't find the 'expect' in the called methods */
+    'jest/expect-expect': 'off',
+  },
 };

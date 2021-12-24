@@ -40,7 +40,6 @@ for (const run of [1, 2, 3, 4, 5]) {
       metricsCollector = await ChromiumMetricsCollector.create(page);
     });
 
-    // eslint-disable-next-line jest/no-done-callback
     test(`ctrl + mouse: check performance while performing zoom in and zoom out [${run} times]`, async ({ page }: PlaywrightTestArgs) => {
       const xTimes = 30;
       const deltaX = -100;

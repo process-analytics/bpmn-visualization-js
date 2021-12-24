@@ -17,7 +17,6 @@ import { PlaywrightTestArgs, test } from '@playwright/test';
 import { BpmnPageSvgTester } from './helpers/visu/bpmn-page-utils';
 
 test.describe('Check generated SVG in demo page', () => {
-  // eslint-disable-next-line jest/no-done-callback
   test('should display diagram in page', async ({ page }: PlaywrightTestArgs) => {
     const pageTester = new BpmnPageSvgTester({ pageFileName: 'index', expectedPageTitle: 'BPMN Visualization Demo' }, page);
     await pageTester.loadBPMNDiagramInRefreshedPage('simple-start-task-end');
@@ -31,7 +30,6 @@ test.describe('Check generated SVG in demo page', () => {
 });
 
 test.describe('Check generated SVG in lib-integration page', () => {
-  // eslint-disable-next-line jest/no-done-callback,jest/no-identical-title
   test('should display diagram in page', async ({ page }: PlaywrightTestArgs) => {
     const pageTester = new BpmnPageSvgTester(
       { pageFileName: 'lib-integration', expectedPageTitle: 'BPMN Visualization Lib Integration', bpmnContainerId: 'bpmn-container-custom' },

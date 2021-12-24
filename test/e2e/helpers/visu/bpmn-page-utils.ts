@@ -19,8 +19,6 @@ import { FitType, LoadOptions } from '../../../../src/component/options';
 import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
 import { Point } from '../test-utils';
 
-/* eslint-disable jest/no-standalone-expect */
-
 // PageWaitForSelectorOptions is not exported by playwright
 export interface PageWaitForSelectorOptions {
   timeout?: number;
@@ -205,4 +203,3 @@ async function expectFirstChildNodeName(page: Page, selector: string, nodeName: 
 async function expectFirstChildAttribute(page: Page, selector: string, attributeName: string, value: string): Promise<void> {
   await expect(page.locator(selector).first().locator(`:first-child`)).toHaveAttribute(attributeName, value);
 }
-/* eslint-enable jest/no-standalone-expect */

@@ -342,7 +342,6 @@ test.describe('BPMN rendering', () => {
   });
 
   for (const bpmnDiagramName of bpmnDiagramNames) {
-    // eslint-disable-next-line jest/no-done-callback,jest/valid-title
     test(bpmnDiagramName, async ({ page }: PlaywrightTestArgs) => {
       await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
         styleOptions: styleOptionsPerDiagram.get(bpmnDiagramName),

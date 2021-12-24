@@ -171,7 +171,6 @@ test.describe('BPMN Shapes with overlays', () => {
   }
 
   for (const position of overlayShapePositionValues) {
-    // eslint-disable-next-line jest/no-done-callback
     test(`add overlay on StartEvent, Gateway and Task on ${position}`, async ({ page }: PlaywrightTestArgs) => {
       await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
@@ -188,7 +187,6 @@ test.describe('BPMN Shapes with overlays', () => {
     });
   }
 
-  // eslint-disable-next-line jest/no-done-callback
   test(`remove all overlays of Shape`, async ({ page }: PlaywrightTestArgs) => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
@@ -248,7 +246,6 @@ test.describe('BPMN Edges with overlays', () => {
   ]) {
     test.describe(`diagram ${bpmnDiagramName}`, () => {
       for (const position of overlayEdgePositionValues) {
-        // eslint-disable-next-line jest/no-done-callback
         test(`add overlay on ${edgeKind} flow on ${position}`, async ({ page }: PlaywrightTestArgs) => {
           await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
@@ -265,7 +262,6 @@ test.describe('BPMN Edges with overlays', () => {
         });
       }
 
-      // eslint-disable-next-line jest/no-done-callback
       test(`remove all overlays of ${edgeKind} flow`, async ({ page }: PlaywrightTestArgs) => {
         await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
@@ -347,7 +343,6 @@ test.describe('Overlay navigation', () => {
     await addOverlays('Flow_1', 'start');
   });
 
-  // eslint-disable-next-line jest/no-done-callback
   test('panning', async ({ page }: PlaywrightTestArgs) => {
     await mousePanning(page, { originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
@@ -359,7 +354,6 @@ test.describe('Overlay navigation', () => {
     });
   });
 
-  // eslint-disable-next-line jest/no-done-callback
   test(`zoom out`, async ({ page }: PlaywrightTestArgs) => {
     await mouseZoom(page, 1, { x: containerCenter.x + 200, y: containerCenter.y }, 100);
 
@@ -471,7 +465,6 @@ test.describe('Overlay style', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new OverlayStylesImageSnapshotThresholds(), 'overlays');
 
   for (const style of ['fill', 'font', 'stroke']) {
-    // eslint-disable-next-line jest/no-done-callback
     test(`add overlay with custom ${style}`, async ({ page }: PlaywrightTestArgs) => {
       await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
