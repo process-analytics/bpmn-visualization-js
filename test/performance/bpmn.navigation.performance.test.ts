@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { expect, Page, test } from '@playwright/test';
+import { expect, PlaywrightTestArgs, test } from '@playwright/test';
 import * as fs from 'fs';
 import { delay, getSimplePlatformName, mouseZoomNoDelay, Point } from '../e2e/helpers/test-utils';
 import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
@@ -33,7 +33,7 @@ const fileName = 'B.2.0';
 
 for (const run of [1, 2, 3, 4, 5]) {
   test.describe(`zoom performance [${run} times]`, () => {
-    test.beforeEach(async ({ page }: { page: Page }) => {
+    test.beforeEach(async ({ page }: PlaywrightTestArgs) => {
       pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, page);
       await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
       containerCenter = await pageTester.getContainerCenter();
@@ -41,7 +41,7 @@ for (const run of [1, 2, 3, 4, 5]) {
     });
 
     // eslint-disable-next-line jest/no-done-callback
-    test(`ctrl + mouse: check performance while performing zoom in and zoom out [${run} times]`, async ({ page }: { page: Page }) => {
+    test(`ctrl + mouse: check performance while performing zoom in and zoom out [${run} times]`, async ({ page }: PlaywrightTestArgs) => {
       const xTimes = 30;
       const deltaX = -100;
       const metricsStart = await metricsCollector.metrics();

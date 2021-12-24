@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Page, test } from '@playwright/test';
+import { PlaywrightTestArgs, test } from '@playwright/test';
 import * as fs from 'fs';
 import { getSimplePlatformName } from '../e2e/helpers/test-utils';
 import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
@@ -32,7 +32,7 @@ const fileName = 'B.2.0';
 
 for (const run of [1, 2, 3, 4, 5]) {
   test.describe(`load performance [${run} times]`, () => {
-    test.beforeEach(async ({ page }: { page: Page }) => {
+    test.beforeEach(async ({ page }: PlaywrightTestArgs) => {
       pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, page);
       metricsCollector = await ChromiumMetricsCollector.create(page);
     });
