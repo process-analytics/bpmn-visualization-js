@@ -238,28 +238,39 @@ Html reports are generated for test execution and coverage in
 
 Web browsers are installed by `playwright` when running `npm install`. For more details about browsers management, see the [Playwright documentation](https://playwright.dev/docs/browsers#installing-browsers).
 
-By default, 
-- end-to-end tests use Chromium.
-- bundle tests use both Chromium, Firefox and WebKit.
+By default, the tests run, locally, with:
+- Chromium and Firefox on Linux
+- Chromium, Firefox and Edge on Microsoft Windows
+- Chromium, Firefox and WebKit on macOS
 
-To use Firefox instead, use a `BROWSERS` environment variable:
-- on Linux or macOS
+On CI, they run with the same browsers as locally and Chrome in addition.
+
+To use single browser instead, specify which Playwright project you want to use. 
+The project are defined in the file `test/config/playwright.config.ts`, following the Playwright [documentation](https://playwright.dev/docs/test-advanced#projects).
+
+#### Chromium
 ```bash
-BROWSERS=firefox npm run test:e2e
+npm run test:e2e -- --project=chromium
 ```
-- on Windows using `cmd` ⚠️ there is no space between `firefox` and `&&`
-```batch
-set BROWSERS=firefox&& npm run test:e2e
-```
-
-It is also possible to make tests use several browsers, pass the list of browsers separated by a comma when setting the
-`BROWSERS` environment variable. For instance, on Linux or macOS:
+#### Firefox
 ```bash
-BROWSERS=chromium,firefox
+npm run test:e2e -- --project=firefox
 ```
 
-Chrome and Edge can also be used to run tests. Configure the `BROWSERS` environment variable with `chrome` or `msedge`
-respectively. If you configure several browsers, only one is taken into account with first `chrome` then `msedge`.
+#### Chrome
+```bash
+npm run test:e2e -- --project=chrome
+```
+
+#### Edge
+```bash
+npm run test:e2e -- --project=msedge
+```
+
+#### WebKit
+```bash
+npm run test:e2e -- --project=webkit
+```
 
 ### Debugging end-to-end, performance and bundle tests
 
