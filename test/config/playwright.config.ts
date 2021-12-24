@@ -13,35 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { devices, PlaywrightTestConfig } from '@playwright/test';
+import { devices, PlaywrightTestConfig, PlaywrightTestOptions, PlaywrightWorkerOptions, Project } from '@playwright/test';
+import { isMacOS, isRunningOnCi, isWindowsOS, log } from '../helpers/environment';
 
-const testReportDir = 'build/test-report/performance';
+const onCi = isRunningOnCi();
 
-const config: PlaywrightTestConfig = {
-  forbidOnly: Boolean(process.env.CI),
-  globalSetup: '../config/copy.bpmn.diagram.ts',
-  retries: process.env.CI ? 2 : 1,
-  testIgnore: '(data|helpers)/**',
-  timeout: 200000,
-  outputDir: testReportDir,
-  use: {
-    trace: 'on-first-retry',
-    viewport: { width: 800, height: 600 },
-    baseURL: 'http://localhost:10002',
-    actionTimeout: 60000,
-    screenshot: 'only-on-failure',
-    launchOptions: {
-      headless: process.env.HEADLESS !== 'false',
-      slowMo: process.env.SLOWMO ? Number(process.env.SLOWMO) : 0,
-    },
-  },
-  webServer: {
-    command: `npm run start -- --config-server-port 10002`,
-    port: 10002,
-    timeout: 60000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
-    reuseExistingServer: !process.env.CI, // your tests are executed, we assume that the server is already started
-  },
-  projects: [
+const computeProjectsConfiguration = (): Project<PlaywrightTestOptions, PlaywrightWorkerOptions>[] => {
+  log('Computing projects configuration');
+
+  const projects: Project<PlaywrightTestOptions, PlaywrightWorkerOptions>[] = [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
@@ -50,12 +30,64 @@ const config: PlaywrightTestConfig = {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
-    {
+  ];
+
+  if (onCi) {
+    projects.push({
+      name: 'chrome',
+      use: { channel: 'chrome' },
+    });
+  }
+
+  if (isMacOS()) {
+    projects.push({
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-    },
-  ],
-  snapshotDir: `${testReportDir}/screenshots`,
-  reporter: [['html', { outputFolder: testReportDir, open: 'never' }], [process.env.CI ? 'github' : 'list']],
+    });
+  } else if (isWindowsOS()) {
+    projects.push({
+      name: 'msedge',
+      use: { channel: 'msedge' },
+    });
+  }
+
+  log(
+    'Computed projects configuration',
+    projects.map(project => project.name),
+  );
+  return projects;
 };
-export default config;
+
+export const computeConfiguration = (resultDirName: string): PlaywrightTestConfig => {
+  const resultDirPath = `build/test/${resultDirName}`;
+
+  return {
+    forbidOnly: onCi,
+    globalSetup: resultDirName !== 'bundles' ? '../config/copy.bpmn.diagram.ts' : undefined,
+    retries: onCi ? 2 : 1,
+    testIgnore: '(data|helpers)/**',
+    timeout: 200000,
+    outputDir: `../../${resultDirPath}/results`,
+    use: {
+      trace: 'on-first-retry',
+      viewport: { width: 800, height: 600 },
+      baseURL: 'http://localhost:10002',
+      actionTimeout: 60000,
+      screenshot: 'only-on-failure',
+      launchOptions: {
+        headless: process.env.HEADLESS !== 'false',
+        slowMo: process.env.SLOWMO ? Number(process.env.SLOWMO) : 0,
+        timeout: onCi ? 60000 : 30000, // default is 30 seconds,
+      },
+    },
+    webServer: {
+      command: `npm run start -- --config-server-port 10002`,
+      port: 10002,
+      timeout: 60000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
+      reuseExistingServer: !onCi, // your tests are executed, we assume that the server is already started
+    },
+    projects: computeProjectsConfiguration(),
+    // snapshotDir: `./snapshot`,
+    reporter: [['html', { outputFolder: `${resultDirPath}/report`, open: 'never' }], [onCi ? 'github' : 'list']],
+  };
+};

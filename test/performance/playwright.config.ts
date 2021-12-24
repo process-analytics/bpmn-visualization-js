@@ -13,6 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import config from '../config/playwright.config';
+import { computeConfiguration } from '../config/playwright.config';
 
-export default config;
+export default computeConfiguration('performance');
