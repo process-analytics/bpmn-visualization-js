@@ -151,4 +151,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: bundles-${{matrix.browser}}-test-results-${{matrix.os}}-${{github.sha}}
-          path: build/test/bundles/report
+          path: build/test/bundles

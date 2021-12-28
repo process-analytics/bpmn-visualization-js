@@ -71,4 +71,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: e2e-${{matrix.browser}}-test-results-${{matrix.os}}-${{github.sha}}
-          path: build/test/e2e/report
+          path: build/test/e2e
