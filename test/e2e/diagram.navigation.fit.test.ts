@@ -18,31 +18,28 @@ import { FitType } from '../../src/component/options';
 import { clickOnButton, getBpmnDiagramNames } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
 
-function buildFitSnapshotPath(parentDir: string, fitType: FitType, withMargin = false, margin?: number): string[] {
-  const snapshotPath = [parentDir, `type-${fitType}`];
+function buildFitPath(prefix: string, fitType: FitType): string {
+  return `${prefix}_type-${fitType}`;
+}
 
+function buildOnLoadSnapshotPath(bpmnDiagramName: string, fitType: FitType, withMargin = false, margin?: number): string[] {
+  const snapshotPath = [buildFitPath('on-load', fitType)];
   if (withMargin) {
     snapshotPath.push(`margin-${margin == null || margin < 0 ? 0 : margin}`);
+  } else {
+    snapshotPath.push(bpmnDiagramName);
   }
-  return snapshotPath;
-}
-
-function buildOnLoadDiffPath(bpmnDiagramName: string, fitType: FitType, withMargin = false, margin?: number): string[] {
-  const snapshotPath = buildFitSnapshotPath('on-load', fitType, withMargin, margin);
   snapshotPath.push(`${bpmnDiagramName}.png`);
   return snapshotPath;
 }
 
-function buildAfterLoadDiffPath(bpmnDiagramName: string, afterLoadFitType: FitType, onLoadFitType: FitType): string[] {
-  const snapshotPath = buildFitSnapshotPath('after-load', afterLoadFitType);
-  snapshotPath.push(`on-load_type-${onLoadFitType}`);
-  snapshotPath.push(`${bpmnDiagramName}.png`);
-  return snapshotPath;
+function buildAfterLoadSnapshotPath(bpmnDiagramName: string, afterLoadFitType: FitType, onLoadFitType: FitType): string[] {
+  return [buildFitPath('on-load', onLoadFitType), buildFitPath('after-load', afterLoadFitType), bpmnDiagramName, `${bpmnDiagramName}.png`];
 }
 
 const bpmnDiagramNames = getBpmnDiagramNames('diagram');
 
-test.describe('diagram navigation - fit', () => {
+test.describe.parallel('diagram navigation - fit', () => {
   let pageTester: PageTester;
   test.beforeEach(async ({ page }: PlaywrightTestArgs) => {
     pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, page);
@@ -50,9 +47,9 @@ test.describe('diagram navigation - fit', () => {
 
   const fitTypes: FitType[] = [FitType.None, FitType.HorizontalVertical, FitType.Horizontal, FitType.Vertical, FitType.Center];
   for (const onLoadFitType of fitTypes) {
-    test.describe(`load options - fit ${onLoadFitType}`, () => {
+    test.describe.parallel(`load options - fit ${onLoadFitType}`, () => {
       for (const bpmnDiagramName of bpmnDiagramNames) {
-        test.describe(`diagram ${bpmnDiagramName}`, () => {
+        test.describe.parallel(`diagram ${bpmnDiagramName}`, () => {
           test('load', async ({ page }: PlaywrightTestArgs) => {
             await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
               loadOptions: {
@@ -63,7 +60,7 @@ test.describe('diagram navigation - fit', () => {
             });
 
             const image = await page.screenshot({ fullPage: true });
-            await expect(image).toMatchSnapshot(buildOnLoadDiffPath(bpmnDiagramName, onLoadFitType));
+            await expect(image).toMatchSnapshot(buildOnLoadSnapshotPath(bpmnDiagramName, onLoadFitType));
           });
 
           for (const afterLoadFitType of fitTypes) {
@@ -78,7 +75,7 @@ test.describe('diagram navigation - fit', () => {
               await clickOnButton(page, afterLoadFitType);
 
               const image = await page.screenshot({ fullPage: true });
-              await expect(image).toMatchSnapshot(buildAfterLoadDiffPath(bpmnDiagramName, afterLoadFitType, onLoadFitType));
+              await expect(image).toMatchSnapshot(buildAfterLoadSnapshotPath(bpmnDiagramName, afterLoadFitType, onLoadFitType));
             });
           }
 
@@ -99,7 +96,7 @@ test.describe('diagram navigation - fit', () => {
                 });
 
                 const image = await page.screenshot({ fullPage: true });
-                await expect(image).toMatchSnapshot(buildOnLoadDiffPath(bpmnDiagramName, onLoadFitType, true, margin));
+                await expect(image).toMatchSnapshot(buildOnLoadSnapshotPath(bpmnDiagramName, onLoadFitType, true, margin));
               });
             }
           }
