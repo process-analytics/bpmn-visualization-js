@@ -17,7 +17,11 @@ import { expect, PlaywrightTestArgs, test } from '@playwright/test';
 import { mousePanning, mouseZoom, Point } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
 
-test.describe('diagram navigation - zoom and pan', () => {
+function buildNavigationSnapshotPath(imageName: string): string[] {
+  return [imageName, `${imageName}.png`];
+}
+
+test.describe.parallel('diagram navigation - zoom and pan', () => {
   const bpmnDiagramName = 'simple.2.start.events.1.task';
 
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
@@ -34,7 +38,7 @@ test.describe('diagram navigation - zoom and pan', () => {
     await mousePanning(page, { originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
     const image = await page.screenshot({ fullPage: true });
-    await expect(image).toMatchSnapshot('mouse.panning.png');
+    await expect(image).toMatchSnapshot(buildNavigationSnapshotPath('mouse.panning'));
   });
 
   for (const zoomMode of ['zoom in', 'zoom out']) {
@@ -44,7 +48,7 @@ test.describe('diagram navigation - zoom and pan', () => {
 
       const image = await page.screenshot({ fullPage: true });
       const snapshotName = zoomMode === 'zoom in' ? 'mouse.zoom.in' : 'mouse.zoom.out';
-      await expect(image).toMatchSnapshot(`${snapshotName}.png`);
+      await expect(image).toMatchSnapshot(buildNavigationSnapshotPath(snapshotName));
     });
   }
 
@@ -57,7 +61,7 @@ test.describe('diagram navigation - zoom and pan', () => {
       await mouseZoom(page, xTimes, { x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
 
       const image = await page.screenshot({ fullPage: true });
-      await expect(image).toMatchSnapshot(`${xTimes}.mouse.zoom.in.out.png`);
+      await expect(image).toMatchSnapshot(buildNavigationSnapshotPath(`${xTimes}.mouse.zoom.in.out`));
     });
   }
 });
