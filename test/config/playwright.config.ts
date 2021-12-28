@@ -79,6 +79,15 @@ export const computeConfiguration = (resultDirName: string): PlaywrightTestConfi
         headless: process.env.HEADLESS !== 'false',
         slowMo: process.env.SLOWMO ? Number(process.env.SLOWMO) : 0,
         timeout: onCi ? 60000 : 30000, // default is 30 seconds,
+        logger: {
+          isEnabled: () => true,
+          log: (name: string, severity: 'verbose' | 'info' | 'warning' | 'error', message: string | Error) => {
+            if (name === 'bv:test:browser') {
+              // eslint-disable-next-line no-console
+              console.log(`${severity} - ${name}: ${message}`);
+            }
+          },
+        },
       },
     },
     webServer: {
