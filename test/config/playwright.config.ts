@@ -64,9 +64,10 @@ export const computeConfiguration = (resultDirName: string): PlaywrightTestConfi
   return {
     forbidOnly: onCi,
     globalSetup: resultDirName !== 'bundles' ? '../config/copy.bpmn.diagram.ts' : undefined,
-    retries: onCi ? 2 : 1,
-    testIgnore: '(data|helpers)/**',
+    retries: onCi ? 2 : undefined,
+    testIgnore: '(data|helpers|static|**-snapshots|config)/**',
     timeout: 200000,
+    maxFailures: onCi ? 10 : undefined,
     outputDir: `../../${resultDirPath}/results`,
     use: {
       trace: 'on-first-retry',
@@ -87,11 +88,10 @@ export const computeConfiguration = (resultDirName: string): PlaywrightTestConfi
       reuseExistingServer: !onCi, // your tests are executed, we assume that the server is already started
     },
     projects: computeProjectsConfiguration(),
-    // snapshotDir: `./snapshot`,
     expect: {
       timeout: 10000, // defaults to 5000ms
       toMatchSnapshot: {
-        threshold: 0.000004, // between zero (strict) and one (lax)
+        threshold: 0.005, // between zero (strict) and one (lax)
       },
     },
     reporter: [['html', { outputFolder: `${resultDirPath}/report`, open: 'never' }], [onCi ? 'github' : 'list']],
