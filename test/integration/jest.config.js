@@ -31,7 +31,7 @@ module.exports = {
   collectCoverageFrom: ['src/**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/src/model/'],
   coverageReporters: ['lcov', 'text-summary'],
-  coverageDirectory: 'build/test-report/integration',
+  coverageDirectory: 'build/test/integration/report',
   setupFilesAfterEnv: ['./test/integration/config/mxgraph-config.ts'],
   reporters: [
     'default',

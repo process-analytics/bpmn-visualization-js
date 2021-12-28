@@ -30,7 +30,7 @@ module.exports = {
   collectCoverageFrom: ['src/**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/src/model/'],
   coverageReporters: ['lcov', 'text-summary'],
-  coverageDirectory: 'build/test-report/unit',
+  coverageDirectory: 'build/test/unit/report',
   setupFilesAfterEnv: ['jest-extended/all'],
   reporters: [
     'default',
