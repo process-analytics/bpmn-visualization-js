@@ -26,7 +26,7 @@ const styleOptionsPerDiagram = new Map<string, StyleOptions>([
   ],
 ]);
 
-test.describe('BPMN rendering', () => {
+test.describe.parallel('BPMN rendering', () => {
   let pageTester: PageTester;
   const bpmnDiagramNames = getBpmnDiagramNames('non-regression');
 
@@ -45,7 +45,7 @@ test.describe('BPMN rendering', () => {
       });
 
       const image = await page.screenshot({ fullPage: true });
-      await expect(image).toMatchSnapshot(`${bpmnDiagramName}.png`);
+      await expect(image).toMatchSnapshot([bpmnDiagramName, `${bpmnDiagramName}.png`]);
     });
   }
 });
