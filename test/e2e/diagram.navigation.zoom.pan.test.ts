@@ -14,44 +14,10 @@
  * limitations under the License.
  */
 import { expect, PlaywrightTestArgs, test } from '@playwright/test';
-import { join } from 'path';
 import { mousePanning, mouseZoom, Point } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
-import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-
-class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
-  constructor() {
-    super({ chromium: 0.000005, firefox: 0.0004, webkit: 0 });
-  }
-
-  // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
-  // linux threshold are set for Ubuntu
-  protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'simple.2.start.events.1.task',
-        {
-          macos: 0.00001, // 0.0009247488045871499%
-        },
-      ],
-    ]);
-  }
-
-  protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'simple.2.start.events.1.task',
-        {
-          macos: 0.0002, // 0.012644054903632185%
-        },
-      ],
-    ]);
-  }
-}
 
 test.describe('diagram navigation - zoom and pan', () => {
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'navigation');
-
   const bpmnDiagramName = 'simple.2.start.events.1.task';
 
   // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
@@ -68,11 +34,7 @@ test.describe('diagram navigation - zoom and pan', () => {
     await mousePanning(page, { originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: 'mouse.panning',
-    });
+    await expect(image).toMatchSnapshot('mouse.panning.png');
   });
 
   for (const zoomMode of ['zoom in', 'zoom out']) {
@@ -81,11 +43,8 @@ test.describe('diagram navigation - zoom and pan', () => {
       await mouseZoom(page, 1, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
 
       const image = await page.screenshot({ fullPage: true });
-      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-      expect(image).toMatchImageSnapshot({
-        ...config,
-        customSnapshotIdentifier: zoomMode === 'zoom in' ? 'mouse.zoom.in' : 'mouse.zoom.out',
-      });
+      const snapshotName = zoomMode === 'zoom in' ? 'mouse.zoom.in' : 'mouse.zoom.out';
+      await expect(image).toMatchSnapshot(`${snapshotName}.png`);
     });
   }
 
@@ -98,12 +57,7 @@ test.describe('diagram navigation - zoom and pan', () => {
       await mouseZoom(page, xTimes, { x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
 
       const image = await page.screenshot({ fullPage: true });
-      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-      expect(image).toMatchImageSnapshot({
-        ...config,
-        customSnapshotIdentifier: 'initial.zoom',
-        customDiffDir: join(config.customDiffDir, `${xTimes}-zoom-in-out`),
-      });
+      await expect(image).toMatchSnapshot(`${xTimes}.mouse.zoom.in.out.png`);
     });
   }
 });

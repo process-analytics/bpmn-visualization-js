@@ -88,6 +88,12 @@ export const computeConfiguration = (resultDirName: string): PlaywrightTestConfi
     },
     projects: computeProjectsConfiguration(),
     // snapshotDir: `./snapshot`,
+    expect: {
+      timeout: 10000, // defaults to 5000ms
+      toMatchSnapshot: {
+        threshold: 0.000004, // between zero (strict) and one (lax)
+      },
+    },
     reporter: [['html', { outputFolder: `${resultDirPath}/report`, open: 'never' }], [onCi ? 'github' : 'list']],
   };
 };
