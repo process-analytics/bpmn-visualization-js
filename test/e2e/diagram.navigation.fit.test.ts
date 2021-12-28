@@ -16,7 +16,7 @@
 import { expect, PlaywrightTestArgs, test } from '@playwright/test';
 import { FitType } from '../../src/component/options';
 import { clickOnButton, getBpmnDiagramNames } from './helpers/test-utils';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { PageTester } from './helpers/bpmn-page-utils';
 
 function buildFitPath(prefix: string, fitType: FitType): string {
   return `${prefix}_type-${fitType}`;

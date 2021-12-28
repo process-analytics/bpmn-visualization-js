@@ -16,7 +16,7 @@
 import { expect, PlaywrightTestArgs, test } from '@playwright/test';
 import { existsSync } from 'fs';
 import { resolve } from 'path';
-import { BpmnPageSvgTester } from '../e2e/helpers/visu/bpmn-page-utils';
+import { BpmnPageSvgTester } from '../e2e/helpers/bpmn-page-utils';
 
 test.describe('bundles', () => {
   test.describe('All bundles have been generated', () => {

@@ -15,7 +15,7 @@
  */
 import { expect, PlaywrightTestArgs, test } from '@playwright/test';
 import { getBpmnDiagramNames } from './helpers/test-utils';
-import { PageTester, StyleOptions } from './helpers/visu/bpmn-page-utils';
+import { PageTester, StyleOptions } from './helpers/bpmn-page-utils';
 
 const styleOptionsPerDiagram = new Map<string, StyleOptions>([
   [

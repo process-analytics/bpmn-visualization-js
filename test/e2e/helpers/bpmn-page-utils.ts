@@ -15,9 +15,9 @@
  */
 import { expect, Page } from '@playwright/test';
 import { ElementHandle } from 'playwright';
-import { FitType, LoadOptions } from '../../../../src/component/options';
-import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
-import { Point } from '../test-utils';
+import { FitType, LoadOptions } from '../../../src/component/options';
+import { BpmnQuerySelectorsForTests } from '../../helpers/query-selectors';
+import { Point } from './test-utils';
 
 // PageWaitForSelectorOptions is not exported by playwright
 export interface PageWaitForSelectorOptions {

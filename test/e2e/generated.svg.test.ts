@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { PlaywrightTestArgs, test } from '@playwright/test';
-import { BpmnPageSvgTester } from './helpers/visu/bpmn-page-utils';
+import { BpmnPageSvgTester } from './helpers/bpmn-page-utils';
 
 test.describe('Check generated SVG in demo page', () => {
   test('should display diagram in page', async ({ page }: PlaywrightTestArgs) => {

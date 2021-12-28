@@ -15,7 +15,7 @@
  */
 import { expect, PlaywrightTestArgs, test } from '@playwright/test';
 import { mousePanning, mouseZoom, Point } from './helpers/test-utils';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { PageTester } from './helpers/bpmn-page-utils';
 
 function buildNavigationSnapshotPath(imageName: string): string[] {
   return [imageName, `${imageName}.png`];

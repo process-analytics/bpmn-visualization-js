@@ -17,7 +17,7 @@ import { expect, PlaywrightTestArgs, test, Page } from '@playwright/test';
 import type { OverlayPosition } from '../../src/component/registry';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { clickOnButton, mousePanning, mouseZoom, Point } from './helpers/test-utils';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { PageTester } from './helpers/bpmn-page-utils';
 
 async function addOverlays(page: Page, bpmnElementIds: string | string[], positions: OverlayPosition | OverlayPosition[]): Promise<void> {
   positions = Array.isArray(positions) ? positions : [positions];
