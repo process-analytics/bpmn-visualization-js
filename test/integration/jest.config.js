@@ -39,7 +39,7 @@ module.exports = {
       'jest-html-reporter',
       {
         pageTitle: 'bpmn-visualization Integration Test Report',
-        outputPath: 'build/test-report/integration/index.html',
+        outputPath: 'build/test/integration/report/index.html',
         includeFailureMsg: true,
         includeSuiteFailure: true,
       },
@@ -47,7 +47,7 @@ module.exports = {
     [
       'jest-sonar',
       {
-        outputDirectory: 'build/test-report/integration',
+        outputDirectory: 'build/test/integration/report',
       },
     ],
   ],

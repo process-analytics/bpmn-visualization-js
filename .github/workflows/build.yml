@@ -79,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: unit-test-results-${{matrix.os.name}}-${{github.sha}}
-          path: build/test-report/unit
+          path: build/test/unit/report
       - name: Test Application Integration
         id: 'test_integration'
         run: npm run test:integration ${{ matrix.os.coverage }}
@@ -88,7 +88,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: integration-test-results-${{matrix.os.name}}-${{github.sha}}
-          path: build/test-report/integration
+          path: build/test/integration/report
       # Ensure we don't break scripts
       - name: Build utils
         run: npm run build-utils
@@ -151,4 +151,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: bundles-${{matrix.browser}}-test-results-${{matrix.os}}-${{github.sha}}
-          path: build/test-report/bundles
+          path: build/test/bundles/report
