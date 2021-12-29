@@ -69,6 +69,7 @@ export const computeConfiguration = (resultDirName: string): PlaywrightTestConfi
     timeout: 200000,
     maxFailures: onCi ? 10 : undefined,
     outputDir: `../../${resultDirPath}/results`,
+    snapshotDir: 'snapshots',
     use: {
       trace: 'on-first-retry',
       viewport: { width: 800, height: 600 },
