@@ -101,7 +101,7 @@ export class PageTester {
   }
 
   protected async doLoadBPMNDiagramInRefreshedPage(url: string, checkResponseStatus = true): Promise<void> {
-    const response = await this.page.goto(url);
+    const response = await this.page.goto(url, { waitUntil: 'load' });
     if (checkResponseStatus) {
       expect(response.status()).toBe(200);
     }
