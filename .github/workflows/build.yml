@@ -140,11 +140,15 @@ jobs:
       # install OS dependencies required by browsers on the GitHub runner
       # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
       - name: Install ${{matrix.browser}} and its dependencies only
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: $HOME/pw-browsers
         run: |
           npx playwright install ${{matrix.browser}}
           npx playwright install-deps ${{matrix.browser}}
       - name: Test bundles
         id: 'test_bundles'
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: $HOME/pw-browsers
         run: npm run test:bundles:verbose -- --project=${{matrix.browser}}
       - name: Upload bundles test results
         if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
