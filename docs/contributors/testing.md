@@ -227,10 +227,7 @@ See `package.json` for extra available scripts
 
 ### Test reports
 
-Html reports are generated for test execution and coverage in
-- `build/test-report/unit` for unit tests
-- `build/test-report/integration` for integration tests
-- `build/test-report/e2e` for end-to-end tests
+Html reports are generated for test execution and coverage in `build/test/<test_type>/report`
 
 
 <a name="web-browsers"></a>
