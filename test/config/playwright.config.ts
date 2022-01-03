@@ -58,10 +58,10 @@ const computeProjectsConfiguration = (): Project<PlaywrightTestOptions, Playwrig
   return projects;
 };
 
-export const computeConfiguration = (resultDirName: string): PlaywrightTestConfig => {
+export const computeConfiguration = (resultDirName: string, startWebServer = true): PlaywrightTestConfig => {
   const resultDirPath = `build/test/${resultDirName}`;
 
-  return {
+  const configuration: PlaywrightTestConfig = {
     forbidOnly: onCi,
     globalSetup: '../config/global.setup.ts',
     retries: onCi ? 2 : undefined,
@@ -94,12 +94,6 @@ export const computeConfiguration = (resultDirName: string): PlaywrightTestConfi
         },
       },
     },
-    webServer: {
-      command: `npm run start -- --config-server-port 10002`,
-      port: 10002,
-      timeout: 60_000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
-      reuseExistingServer: !onCi, // your tests are executed, we assume that the server is already started
-    },
     projects: computeProjectsConfiguration(),
     expect: {
       timeout: 10_000, // defaults to 5000ms
@@ -109,4 +103,17 @@ export const computeConfiguration = (resultDirName: string): PlaywrightTestConfi
     },
     reporter: [['html', { outputFolder: `${resultDirPath}/report`, open: 'never' }], [onCi ? 'github' : 'list']],
   };
+
+  if (startWebServer) {
+    configuration.webServer = {
+      command: `npm run start -- --config-server-port 10002`,
+      port: 10002,
+      timeout: 60_000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
+      reuseExistingServer: !onCi, // your tests are executed, we assume that the server is already started
+    };
+    log('Use a webserver');
+  }
+
+  log('Computed Playwright configuration', configuration);
+  return configuration;
 };

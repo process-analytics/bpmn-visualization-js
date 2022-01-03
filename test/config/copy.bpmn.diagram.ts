@@ -19,7 +19,6 @@ const copyDirectoryContentIfNotExists = (dirName: string): void => {
   copySync(`${__dirname}/../fixtures/bpmn/${dirName}`, `${__dirname}/../../build/public/static/diagrams/`, { overwrite: true });
 };
 
-//  globalSetup file must export a single function.
 const copyBpmnDiagrams = (): void => {
   copyDirectoryContentIfNotExists('diagram');
   copyDirectoryContentIfNotExists('navigation');

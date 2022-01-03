@@ -25,7 +25,6 @@ async function waitFor200Response(page: Page, url: string, maxTimeout: number): 
   }
 }
 
-//  globalSetup file must export a single function.
 const checkServer = async (config: FullConfig): Promise<void> => {
   const baseURL = config.projects[0].use.baseURL;
 

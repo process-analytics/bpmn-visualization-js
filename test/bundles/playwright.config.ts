@@ -15,4 +15,4 @@
  */
 import { computeConfiguration } from '../config/playwright.config';
 
-export default computeConfiguration('bundles');
+export default computeConfiguration('bundles', false);

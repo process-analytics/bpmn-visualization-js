@@ -21,8 +21,8 @@ import { FullConfig } from '@playwright/test';
 const globalSetup = async (config: FullConfig): Promise<void> => {
   if (!config.rootDir.endsWith('bundles')) {
     copyBpmnDiagrams();
+    await checkServer(config);
   }
-  await checkServer(config);
 };
 
 export default globalSetup;
