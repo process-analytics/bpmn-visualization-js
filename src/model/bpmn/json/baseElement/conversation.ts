@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TBaseElement } from './baseElement';
-import { TCorrelationKey } from './correlation';
-import { TParticipantAssociation } from './participant';
+import type { TBaseElement } from './baseElement';
+import type { TCorrelationKey } from './correlation';
+import type { TParticipantAssociation } from './participant';
 
 // abstract="true"
 export interface TConversationNode extends TBaseElement {

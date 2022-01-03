@@ -20,7 +20,7 @@
 
 import { readFileSync } from '../../../../helpers/file-helper';
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import { BPMNDiagram, BPMNLabel, BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
+import type { BPMNDiagram, BPMNLabel, BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
 import Bounds from '../../../../../src/model/bpmn/internal/Bounds';
 
 describe('Special parsing cases', () => {

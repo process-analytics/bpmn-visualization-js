@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import { BPMNDiagram } from '../../../../../src/model/bpmn/json/BPMNDI';
+import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { BPMNDiagram } from '../../../../../src/model/bpmn/json/BPMNDI';
 import { readFileSync } from '../../../../helpers/file-helper';
 
 describe('parse bpmn as xml for Bonita Community 2021.1', () => {

@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes } from './JsonTestUtils';
-import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { shapeBpmnElementKindForLabelTests } from './TestUtils';
 
 describe('parse bpmn as json for label', () => {

@@ -15,13 +15,15 @@
  */
 import 'jest-playwright-preset';
 import { join } from 'path';
-import { Page } from 'playwright';
+import type { Page } from 'playwright';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
-import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
+import type { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
-import { clickOnButton, mousePanning, mouseZoom, Point } from './helpers/test-utils';
+import type { Point } from './helpers/test-utils';
+import { clickOnButton, mousePanning, mouseZoom } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
-import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {

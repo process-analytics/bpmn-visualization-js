@@ -15,10 +15,12 @@
  */
 import 'jest-playwright-preset';
 import { join } from 'path';
-import { Page } from 'playwright';
-import { mousePanning, mouseZoom, Point } from './helpers/test-utils';
+import type { Page } from 'playwright';
+import type { Point } from './helpers/test-utils';
+import { mousePanning, mouseZoom } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
-import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {

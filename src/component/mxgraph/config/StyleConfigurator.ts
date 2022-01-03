@@ -16,7 +16,7 @@
 
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
-import { BpmnMxGraph } from '../BpmnMxGraph';
+import type { BpmnMxGraph } from '../BpmnMxGraph';
 import { mxgraph } from '../initializer';
 import type { mxStylesheet, StyleMap } from 'mxgraph';
 

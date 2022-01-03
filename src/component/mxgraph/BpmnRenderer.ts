@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import Shape from '../../model/bpmn/internal/shape/Shape';
-import { Edge, Waypoint } from '../../model/bpmn/internal/edge/edge';
-import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
-import Bounds from '../../model/bpmn/internal/Bounds';
+import type Shape from '../../model/bpmn/internal/shape/Shape';
+import type { Edge, Waypoint } from '../../model/bpmn/internal/edge/edge';
+import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import type Bounds from '../../model/bpmn/internal/Bounds';
 import { ShapeUtil } from '../../model/bpmn/internal';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleComputer from './renderer/StyleComputer';
 import { MessageFlow } from '../../model/bpmn/internal/edge/flows';
 import { MessageVisibleKind } from '../../model/bpmn/internal/edge/kinds';
-import { BpmnMxGraph } from './BpmnMxGraph';
-import { LoadOptions } from '../options';
-import { RenderedModel } from '../registry/bpmn-model-registry';
+import type { BpmnMxGraph } from './BpmnMxGraph';
+import type { LoadOptions } from '../options';
+import type { RenderedModel } from '../registry/bpmn-model-registry';
 import { mxgraph } from './initializer';
 import type { mxCell } from 'mxgraph';
 

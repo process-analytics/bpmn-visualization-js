@@ -16,7 +16,7 @@
 
 import { parse, type X2jOptions } from 'fast-xml-parser/src/parser';
 import { decodeXML } from 'entities/lib/decode';
-import { BpmnJsonModel } from '../../../model/bpmn/json/BPMN20';
+import type { BpmnJsonModel } from '../../../model/bpmn/json/BPMN20';
 
 /**
  * Parse bpmn xml source

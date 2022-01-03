@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
+import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import 'jest-playwright-preset';
 import { join } from 'path';
-import { Page } from 'playwright';
+import type { Page } from 'playwright';
 import { FitType } from '../../src/component/options';
 import { clickOnButton, getBpmnDiagramNames } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
-import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   override getConfig(param: {

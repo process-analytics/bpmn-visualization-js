@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TCallableElement } from './rootElement';
-import { THumanPerformer, TPerformer, TPotentialOwner, TResourceRole } from '../resource';
-import { TScript } from '../../Semantic';
-import { TRendering } from '../baseElement';
+import type { TCallableElement } from './rootElement';
+import type { THumanPerformer, TPerformer, TPotentialOwner, TResourceRole } from '../resource';
+import type { TScript } from '../../Semantic';
+import type { TRendering } from '../baseElement';
 
 export interface TGlobalTask extends TCallableElement {
   // resourceRole

@@ -15,7 +15,7 @@
  */
 
 import { StyleDefault } from '../../style';
-import { IconConfiguration, IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
+import type { IconConfiguration, IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 import type { mxAbstractCanvas2D } from 'mxgraph';
 
 /**

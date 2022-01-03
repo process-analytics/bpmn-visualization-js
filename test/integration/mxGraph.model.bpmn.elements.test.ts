@@ -24,7 +24,8 @@ import {
   ShapeBpmnSubProcessKind,
 } from '../../src/bpmn-visualization';
 import { readFileSync } from '../helpers/file-helper';
-import { bpmnVisualization, ExpectedShapeModelElement } from './helpers/model-expect';
+import type { ExpectedShapeModelElement } from './helpers/model-expect';
+import { bpmnVisualization } from './helpers/model-expect';
 import { mxgraph } from '../../src/component/mxgraph/initializer';
 
 describe('mxGraph model - BPMN elements', () => {

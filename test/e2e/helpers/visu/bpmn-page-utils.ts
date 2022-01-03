@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 import 'expect-playwright';
-import { ElementHandle, Page } from 'playwright';
-import { FitType, LoadOptions } from '../../../../src/component/options';
+import type { ElementHandle, Page } from 'playwright';
+import type { LoadOptions } from '../../../../src/component/options';
+import { FitType } from '../../../../src/component/options';
 import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
-import { Point } from '../test-utils';
+import type { Point } from '../test-utils';
 
 /* eslint-disable jest/no-standalone-expect */
 

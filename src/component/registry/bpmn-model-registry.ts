@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BpmnModel from '../../model/bpmn/internal/BpmnModel';
-import Shape from '../../model/bpmn/internal/shape/Shape';
-import { Edge } from '../../model/bpmn/internal/edge/edge';
-import { BpmnSemantic } from './types';
+import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
+import type Shape from '../../model/bpmn/internal/shape/Shape';
+import type { Edge } from '../../model/bpmn/internal/edge/edge';
+import type { BpmnSemantic } from './types';
 import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
-import ShapeBpmnElement, { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import type { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 
 export class BpmnModelRegistry {
   private searchableModel: SearchableModel;

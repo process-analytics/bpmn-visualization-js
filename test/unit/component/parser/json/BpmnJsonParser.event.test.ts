@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector, verifyShape } from './JsonTestUtils';
-import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import { TEventDefinition } from '../../../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
-import { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
-import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
-import { BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
+import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { TEventDefinition } from '../../../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
+import type { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
+import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
+import type { BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../../../src/model/bpmn/internal';
 import { ShapeBpmnBoundaryEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
-import { addEvent, buildDefinitionsAndProcessWithTask, BuildEventDefinitionParameter, BuildEventParameter, EventDefinitionOn } from './JsonBuilder';
+import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
+import type { BuildEventDefinitionParameter, BuildEventParameter } from './JsonBuilder';
+import { addEvent, buildDefinitionsAndProcessWithTask, EventDefinitionOn } from './JsonBuilder';
 import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
 import { getEventShapes } from './TestUtils';
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import Bounds from './Bounds';
+import type Bounds from './Bounds';
 
 /**
  * @internal

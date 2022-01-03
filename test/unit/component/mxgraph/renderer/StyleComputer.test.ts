@@ -28,9 +28,8 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
+import type { BpmnEventKind, GlobalTaskKind } from '../../../../../src/bpmn-visualization';
 import {
-  BpmnEventKind,
-  GlobalTaskKind,
   ShapeBpmnCallActivityKind,
   ShapeBpmnElementKind,
   ShapeBpmnEventBasedGatewayKind,
@@ -39,7 +38,7 @@ import {
   ShapeBpmnSubProcessKind,
 } from '../../../../../src/bpmn-visualization';
 import Label, { Font } from '../../../../../src/model/bpmn/internal/Label';
-import { ExpectedFont } from '../../parser/json/JsonTestUtils';
+import type { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import { Edge } from '../../../../../src/model/bpmn/internal/edge/edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/flows';
 import { AssociationDirectionKind, MessageVisibleKind, SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/kinds';

@@ -16,7 +16,7 @@
 import debugLogger from 'debug';
 import 'jest-playwright-preset';
 import { join } from 'path';
-import { Mouse, Page } from 'playwright';
+import type { Mouse, Page } from 'playwright';
 import { findFiles } from '../../helpers/file-helper';
 
 export interface Point {
