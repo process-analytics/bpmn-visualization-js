@@ -10,25 +10,13 @@
             "request": "launch",
             "program": "${workspaceFolder}/node_modules/jest/bin/jest",
             "args": [
-                "--runInBand", "--config=./test/unit/jest.config.js"
+                "--runInBand",
+                "--config=./test/unit/jest.config.js"
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "disableOptimisticBPs": true
         },
-        {
-            "type": "node",
-            "name": "test:e2e",
-            "request": "launch",
-            "program": "${workspaceFolder}/node_modules/jest/bin/jest",
-            "args": [
-                "--runInBand", "--detectOpenHandles", "--config=./test/e2e/jest.config.js"
-            ],
-            "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "disableOptimisticBPs": true
-        }
     ]
 }
