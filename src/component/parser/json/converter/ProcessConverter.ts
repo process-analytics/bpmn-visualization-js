@@ -24,8 +24,10 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import type { BpmnEventKind } from '../../../../model/bpmn/internal';
+import type { AssociationDirectionKind, BpmnEventKind } from '../../../../model/bpmn/internal';
 import {
+  FlowKind,
+  SequenceFlowKind,
   ShapeBpmnCallActivityKind,
   ShapeBpmnElementKind,
   ShapeBpmnEventBasedGatewayKind,
@@ -36,8 +38,6 @@ import {
 } from '../../../../model/bpmn/internal';
 import { eventDefinitionKinds } from '../../../../model/bpmn/internal/shape/utils';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
-import type { AssociationDirectionKind } from '../../../../model/bpmn/internal/edge/kinds';
-import { FlowKind, SequenceFlowKind } from '../../../../model/bpmn/internal/edge/kinds';
 import type { TProcess } from '../../../../model/bpmn/json/baseElement/rootElement/rootElement';
 import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../model/bpmn/json/baseElement/flowNode/event';
 import type { TActivity, TCallActivity, TSubProcess } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';

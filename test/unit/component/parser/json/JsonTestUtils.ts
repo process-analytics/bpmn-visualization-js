@@ -21,7 +21,7 @@ import type {
   ShapeBpmnEventDefinitionKind,
   GlobalTaskKind,
 } from '../../../../../src/model/bpmn/internal';
-import { FlowKind } from '../../../../../src/model/bpmn/internal';
+import { FlowKind, MessageVisibleKind, SequenceFlowKind } from '../../../../../src/model/bpmn/internal';
 import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { newBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import type { Edge, Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
@@ -29,7 +29,6 @@ import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import { ShapeBpmnActivity, ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import type Label from '../../../../../src/model/bpmn/internal/Label';
 import { SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/flows';
-import { MessageVisibleKind, SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/kinds';
 import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import type { JsonParsingWarning } from '../../../../../src/component/parser/parsing-messages';
 import { ParsingMessageCollector } from '../../../../../src/component/parser/parsing-messages';
