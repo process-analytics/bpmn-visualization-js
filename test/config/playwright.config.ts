@@ -63,7 +63,7 @@ export const computeConfiguration = (resultDirName: string): PlaywrightTestConfi
 
   return {
     forbidOnly: onCi,
-    globalSetup: resultDirName !== 'bundles' ? '../config/copy.bpmn.diagram.ts' : undefined,
+    globalSetup: '../config/global.setup.ts',
     retries: onCi ? 2 : undefined,
     testIgnore: '(data|helpers|static|**-snapshots|config)/**',
     timeout: 200000,

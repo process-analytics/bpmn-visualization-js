@@ -13,21 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { copySync } from 'fs-extra';
-
-const copyDirectoryContentIfNotExists = (dirName: string): void => {
-  copySync(`${__dirname}/../fixtures/bpmn/${dirName}`, `${__dirname}/../../build/public/static/diagrams/`, { overwrite: true });
-};
+import checkServer from './check.server';
+import copyBpmnDiagrams from './copy.bpmn.diagram';
+import { FullConfig } from '@playwright/test';
 
 //  globalSetup file must export a single function.
-const copyBpmnDiagrams = (): void => {
-  copyDirectoryContentIfNotExists('diagram');
-  copyDirectoryContentIfNotExists('navigation');
-  copyDirectoryContentIfNotExists('non-regression');
-  copyDirectoryContentIfNotExists('overlays');
-  copyDirectoryContentIfNotExists('performance');
-  copyDirectoryContentIfNotExists('svg');
-  copyDirectoryContentIfNotExists('theme');
+const globalSetup = async (config: FullConfig): Promise<void> => {
+  if (!config.rootDir.endsWith('bundles')) {
+    copyBpmnDiagrams();
+  }
+  await checkServer(config);
 };
 
-export default copyBpmnDiagrams;
+export default globalSetup;
