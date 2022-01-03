@@ -70,6 +70,7 @@ export const computeConfiguration = (resultDirName: string, startWebServer = tru
     maxFailures: onCi ? 10 : undefined,
     outputDir: `../../${resultDirPath}/results`,
     snapshotDir: 'snapshots',
+    updateSnapshots: onCi ? 'none' : 'missing',
     use: {
       trace: onCi ? 'on-first-retry' : 'retain-on-failure',
       viewport: { width: 800, height: 600 },
