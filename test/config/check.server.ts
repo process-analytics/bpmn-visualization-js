@@ -22,7 +22,7 @@ const checkServer = (config: FullConfig): void => {
 
   if (baseURL) {
     const opts = {
-      resources: [baseURL],
+      resources: [baseURL, `${baseURL}/diagram-navigation.html`, `${baseURL}/non-regression.html`, `${baseURL}/overlays.html`],
       timeout: config.webServer.timeout, // timeout in ms, default Infinity
       interval: 100, // poll interval in ms, default 250ms
     };
