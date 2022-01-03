@@ -37,6 +37,11 @@ module.exports = {
         'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
         'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
       ],
+      parserOptions: {
+        // This setting is required if you want to use rules which require type information
+        // https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser#parseroptionsproject
+        project: ['./tsconfig.json', './tsconfig.test.json', './tsconfig.utils.json'],
+      },
       rules: {
         '@typescript-eslint/explicit-function-return-type': [
           'error',
@@ -49,6 +54,12 @@ module.exports = {
           'error',
           {
             accessibility: 'no-public',
+          },
+        ],
+        '@typescript-eslint/consistent-type-exports': [
+          'error',
+          {
+            fixMixedExportsWithInlineTypeSpecifier: true,
           },
         ],
         '@typescript-eslint/consistent-type-imports': ['error'],
