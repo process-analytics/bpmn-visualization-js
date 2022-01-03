@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import checkServer from './check.server';
+import checkWebServer from './playwright.check.webserver';
 import copyBpmnDiagrams from './copy.bpmn.diagram';
 import { FullConfig } from '@playwright/test';
 
@@ -21,7 +21,7 @@ import { FullConfig } from '@playwright/test';
 const globalSetup = (config: FullConfig): void => {
   if (!config.rootDir.endsWith('bundles')) {
     copyBpmnDiagrams();
-    checkServer(config);
+    checkWebServer(config);
   }
 };
 

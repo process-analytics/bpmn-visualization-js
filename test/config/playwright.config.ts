@@ -63,7 +63,7 @@ export const computeConfiguration = (resultDirName: string, startWebServer = tru
 
   const configuration: PlaywrightTestConfig = {
     forbidOnly: onCi,
-    globalSetup: '../config/global.setup.ts',
+    globalSetup: '../config/playwright.global.setup.ts',
     retries: onCi ? 2 : undefined,
     testIgnore: '(data|helpers|static|**-snapshots|config)/**',
     timeout: 200_000, // TODO seems to large

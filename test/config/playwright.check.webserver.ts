@@ -16,8 +16,7 @@
 import { FullConfig } from '@playwright/test';
 import waitOn from 'wait-on';
 
-//  globalSetup file must export a single function.
-const checkServer = (config: FullConfig): void => {
+const checkWebServer = (config: FullConfig): void => {
   const baseURL = config.projects[0].use.baseURL;
 
   if (baseURL) {
@@ -36,4 +35,4 @@ const checkServer = (config: FullConfig): void => {
   }
 };
 
-export default checkServer;
+export default checkWebServer;
