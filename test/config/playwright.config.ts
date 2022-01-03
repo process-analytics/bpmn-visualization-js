@@ -66,7 +66,7 @@ export const computeConfiguration = (resultDirName: string): PlaywrightTestConfi
     globalSetup: '../config/global.setup.ts',
     retries: onCi ? 2 : undefined,
     testIgnore: '(data|helpers|static|**-snapshots|config)/**',
-    timeout: 200000,
+    timeout: 200_000, // TODO seems to large
     maxFailures: onCi ? 10 : undefined,
     outputDir: `../../${resultDirPath}/results`,
     snapshotDir: 'snapshots',
@@ -74,12 +74,15 @@ export const computeConfiguration = (resultDirName: string): PlaywrightTestConfi
       trace: 'on-first-retry',
       viewport: { width: 800, height: 600 },
       baseURL: 'http://localhost:10002',
-      actionTimeout: 60000,
+      // TODO to large actionTimeout
+      // Default timeout for each Playwright action in milliseconds, defaults to 0 (no timeout).
+      // This is a default timeout for all Playwright actions, same as configured via page.setDefaultTimeout(timeout)
+      actionTimeout: 60_000,
       screenshot: 'only-on-failure',
       launchOptions: {
         headless: process.env.HEADLESS !== 'false',
         slowMo: process.env.SLOWMO ? Number(process.env.SLOWMO) : 0,
-        timeout: onCi ? 60000 : 30000, // default is 30 seconds,
+        timeout: onCi ? 60_000 : 30_000, // default is 30 seconds,
         logger: {
           isEnabled: () => true,
           log: (name: string, severity: 'verbose' | 'info' | 'warning' | 'error', message: string | Error) => {
@@ -94,12 +97,12 @@ export const computeConfiguration = (resultDirName: string): PlaywrightTestConfi
     webServer: {
       command: `npm run start -- --config-server-port 10002`,
       port: 10002,
-      timeout: 60000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
+      timeout: 60_000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
       reuseExistingServer: !onCi, // your tests are executed, we assume that the server is already started
     },
     projects: computeProjectsConfiguration(),
     expect: {
-      timeout: 10000, // defaults to 5000ms
+      timeout: 10_000, // defaults to 5000ms
       toMatchSnapshot: {
         threshold: 0.005, // between zero (strict) and one (lax)
       },
