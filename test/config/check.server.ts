@@ -13,26 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { chromium, expect, FullConfig, Page } from '@playwright/test';
+import { FullConfig } from '@playwright/test';
+import waitOn from 'wait-on';
 
-async function waitFor200Response(page: Page, url: string, maxTimeout: number): Promise<void> {
-  const response = await page.goto(url);
-  if (response.status() !== 200 && maxTimeout > 0) {
-    await page.waitForTimeout(100); // 100ms
-    await waitFor200Response(page, url, maxTimeout - 100);
-  } else {
-    expect(response.status()).toBe(200);
-  }
-}
-
-const checkServer = async (config: FullConfig): Promise<void> => {
+//  globalSetup file must export a single function.
+const checkServer = (config: FullConfig): void => {
   const baseURL = config.projects[0].use.baseURL;
 
   if (baseURL) {
-    const browser = await chromium.launch();
-    const page = await browser.newPage();
-    await waitFor200Response(page, baseURL, config.webServer.timeout);
-    await browser.close();
+    const opts = {
+      resources: [baseURL],
+      timeout: config.webServer.timeout, // timeout in ms, default Infinity
+      interval: 100, // poll interval in ms, default 250ms
+    };
+
+    waitOn(opts).catch(function (err: Error) {
+      // Following https://developer.mozilla.org/en-US/docs/web/javascript/reference/global_objects/error/error, this constructor should exist.
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      throw new Error(`Server has taken more than ${config.webServer.timeout}ms to start.`, { cause: err });
+    });
   }
 };
 

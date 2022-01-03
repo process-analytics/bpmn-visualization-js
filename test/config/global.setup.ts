@@ -18,10 +18,10 @@ import copyBpmnDiagrams from './copy.bpmn.diagram';
 import { FullConfig } from '@playwright/test';
 
 //  globalSetup file must export a single function.
-const globalSetup = async (config: FullConfig): Promise<void> => {
+const globalSetup = (config: FullConfig): void => {
   if (!config.rootDir.endsWith('bundles')) {
     copyBpmnDiagrams();
-    await checkServer(config);
+    checkServer(config);
   }
 };
 
