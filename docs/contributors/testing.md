@@ -227,7 +227,9 @@ See `package.json` for extra available scripts
 
 ### Test reports
 
-Html reports are generated for test execution and coverage in `build/test/<test_type>/report`
+HTML reports are generated for test execution and coverage in `build/test/<test_type>/report`
+
+You can open the report for bundle, e2e and performance tests in a web browser by running `npm run test:<test_type>:show-report`.
 
 
 <a name="web-browsers"></a>
