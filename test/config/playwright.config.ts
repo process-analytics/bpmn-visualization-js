@@ -71,7 +71,7 @@ export const computeConfiguration = (resultDirName: string, startWebServer = tru
     outputDir: `../../${resultDirPath}/results`,
     snapshotDir: 'snapshots',
     use: {
-      trace: 'on-first-retry',
+      trace: onCi ? 'on-first-retry' : 'retain-on-failure',
       viewport: { width: 800, height: 600 },
       baseURL: 'http://localhost:10002',
       // TODO to large actionTimeout
