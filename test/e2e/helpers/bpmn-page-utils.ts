@@ -90,7 +90,7 @@ export class PageTester {
    */
   constructor(readonly targetedPage: TargetedPage, protected page: Page) {
     const showMousePointer = targetedPage.showMousePointer ?? false;
-    this.baseUrl = `http://localhost:10002/${targetedPage.pageFileName}.html?showMousePointer=${showMousePointer}`;
+    this.baseUrl = `/${targetedPage.pageFileName}.html?showMousePointer=${showMousePointer}`;
     this.bpmnContainerId = targetedPage.bpmnContainerId ?? 'bpmn-container';
     this.bpmnPage = new BpmnPage(this.bpmnContainerId, this.page);
   }
