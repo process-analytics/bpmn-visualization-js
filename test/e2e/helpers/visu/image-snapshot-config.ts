@@ -101,7 +101,7 @@ interface ThresholdDefaults {
  * <b>About subclassing, for the `threshold` methods </b> (configure threshold by bpmn files)
  *
  * When introducing a new test, please don't add threshold until you get failures when running
- * on GitHub Workflow because of discrepancies depending of OS/machine and browser (few pixels) and that are not visible by a human.
+ * on GitHub Workflow because of discrepancies depending on OS/machine and browser (few pixels) and that are not visible by a human.
  * This is generally only required for diagram containing labels. If you are not testing the labels (value, position, ...) as part of the use case you want to cover, remove labels
  * from the BPMN diagram to avoid such discrepancies.
  */
