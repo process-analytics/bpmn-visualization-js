@@ -123,10 +123,13 @@ export class PageTester {
     let url = this.baseUrl;
     url += `&fitTypeOnLoad=${loadOptions.fit?.type}&fitMargin=${loadOptions.fit?.margin}`;
     url += `&url=./static/diagrams/${bpmnDiagramName}.bpmn`;
+
+    // style query parameters
     // TODO only add parameter if available
     url += `&style.seqFlow.light.colors=${styleOptions?.sequenceFlow?.useLightColors}`;
-    url += `&style.container.alternative.background.color=${styleOptions?.bpmnContainer?.useAlternativeBackgroundColor}`;
 
+    styleOptions?.bpmnContainer?.useAlternativeBackgroundColor &&
+      (url += `&style.container.alternative.background.color=${styleOptions?.bpmnContainer?.useAlternativeBackgroundColor}`);
     styleOptions?.theme && (url += `&style.theme=${styleOptions?.theme}`);
 
     return url;
