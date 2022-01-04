@@ -31,6 +31,12 @@ const styleOptionsPerUseCase = new Map<string, StyleOptions>([
       theme: 'dark',
     },
   ],
+  [
+    'theme-brown',
+    {
+      theme: 'brown',
+    },
+  ],
 ]);
 
 class NoSpecificThresholds extends MultiBrowserImageSnapshotThresholds {
