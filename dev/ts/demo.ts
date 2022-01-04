@@ -15,27 +15,16 @@
  */
 
 import { mxgraph } from '../../src/component/mxgraph/initializer';
-import {
-  BpmnElement,
-  BpmnElementKind,
-  BpmnVisualization,
-  FitOptions,
-  FitType,
-  FlowKind,
-  GlobalOptions,
-  LoadOptions,
-  Overlay,
-  ShapeBpmnElementKind,
-  ShapeUtil,
-} from '../../src/bpmn-visualization';
+import { BpmnElement, BpmnElementKind, FitOptions, FitType, FlowKind, GlobalOptions, LoadOptions, Overlay } from '../../src/bpmn-visualization';
 import { log, logDownload, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';
 import { downloadAsPng, downloadAsSvg } from './component/download';
+import { ThemedBpmnVisualization } from './component/ThemedBpmnVisualization';
 
 export * from './helper';
 
-let bpmnVisualization: BpmnVisualization;
+let bpmnVisualization: ThemedBpmnVisualization;
 let loadOptions: LoadOptions = {};
 
 export function updateLoadOptions(fitOptions: FitOptions): void {
@@ -173,11 +162,12 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
 
   const bpmnTheme = parameters.get('style.theme');
   if (bpmnTheme) {
-    configureBpmnTheme(bpmnTheme);
+    bpmnVisualization.configureTheme(bpmnTheme);
   }
 
   const useSequenceFlowColorsLight = parameters.get('style.seqFlow.light.colors');
   if (useSequenceFlowColorsLight == 'true') {
+    // TODO move to ThemedBpmnVisualization configureFlowColor(color: string)
     const color = '#E9E9E9';
     logStartup('Use light colors for sequence flows, color', color);
 
@@ -192,190 +182,189 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
   }
 }
 
-// TODO use mxgraph constants?
-const configureDarkTheme = (): void => {
-  logStartup(`Configuring the 'dark' BPMN theme`);
-
-  // dark theme
-  const defaultStrokeColor = '#c0ddeb';
-  const defaultFontColor = 'white';
-  const backgroundColor = '#334352';
-
-  const endEventFillColor = 'pink';
-  const endEventStrokeColor = 'FireBrick';
-  const startEventFillColor = 'DarkSeaGreen';
-  const startEventStrokeColor = 'DarkGreen';
-  const taskFillColor = '#5c8599';
-  const laneFillColor = '#2b3742';
-  const poolFillColor = '#232b33';
-
-  const catchAndThrowEventStrokeColor = defaultStrokeColor;
-  const flowNodeColor = defaultStrokeColor;
-
-  const styleSheet = bpmnVisualization.graph.getStylesheet();
-
-  // EVENTS
-  ShapeUtil.eventKinds().forEach(kind => {
-    let fillColor;
-    let strokeColor;
-    switch (kind) {
-      case 'endEvent':
-        fillColor = endEventFillColor;
-        strokeColor = endEventStrokeColor;
-        break;
-      case 'startEvent':
-        fillColor = startEventFillColor;
-        strokeColor = startEventStrokeColor;
-        break;
-      case 'intermediateCatchEvent':
-      case 'intermediateThrowEvent':
-      case 'boundaryEvent':
-        fillColor = backgroundColor;
-        strokeColor = catchAndThrowEventStrokeColor;
-        break;
-      default:
-        fillColor = backgroundColor;
-        strokeColor = defaultStrokeColor;
-        break;
-    }
-    const style = styleSheet.styles[kind];
-    style['fillColor'] = fillColor;
-    style['strokeColor'] = strokeColor;
-  });
-
-  // TASKS
-  ShapeUtil.taskKinds().forEach(kind => {
-    const style = styleSheet.styles[kind];
-    style['fillColor'] = taskFillColor;
-    style['fontColor'] = defaultFontColor;
-  });
-
-  // CALL ACTIVITIES
-  const callActivityStyle = styleSheet.styles[ShapeBpmnElementKind.CALL_ACTIVITY];
-  callActivityStyle['fillColor'] = taskFillColor;
-  callActivityStyle['fontColor'] = defaultFontColor;
-
-  // POOL
-  const poolStyle = styleSheet.styles[ShapeBpmnElementKind.POOL];
-  poolStyle['fillColor'] = poolFillColor;
-  poolStyle['swimlaneFillColor'] = backgroundColor;
-
-  // LANE
-  const laneStyle = styleSheet.styles[ShapeBpmnElementKind.LANE];
-  laneStyle['fillColor'] = laneFillColor;
-
-  const defaultVertexStyle = styleSheet.getDefaultVertexStyle();
-  defaultVertexStyle['fontColor'] = defaultFontColor;
-  defaultVertexStyle['fillColor'] = backgroundColor;
-  defaultVertexStyle['strokeColor'] = defaultStrokeColor;
-
-  const defaultEdgeStyle = styleSheet.getDefaultEdgeStyle();
-  defaultEdgeStyle['fontColor'] = defaultFontColor;
-  defaultEdgeStyle['fillColor'] = backgroundColor;
-  defaultEdgeStyle['strokeColor'] = flowNodeColor;
-};
-
-const configureBrownTheme = (): void => {
-  logStartup(`Configuring the 'brown' BPMN theme`);
-
-  // brown theme
-  const defaultStrokeColor = '#414666';
-  const defaultFontColor = '#414666';
-  const backgroundColor = '#ede7e1';
-
-  const flowNodeColor = '#666666';
-  const endEventFillColor = 'pink';
-  const endEventStrokeColor = 'FireBrick';
-  const startEventFillColor = 'DarkSeaGreen';
-  const startEventStrokeColor = 'DarkGreen';
-  const taskFillColor = '#dadce8';
-  const laneFillColor = '#d4c3b2';
-  const poolFillColor = '#d1b9a1';
-  const catchAndThrowEventStrokeColor = '#377f87';
-
-  // TODO duplicated with configureDarkTheme
-  const styleSheet = bpmnVisualization.graph.getStylesheet();
-
-  // EVENTS
-  ShapeUtil.eventKinds().forEach(kind => {
-    let fillColor;
-    let strokeColor;
-    switch (kind) {
-      case 'endEvent':
-        fillColor = endEventFillColor;
-        strokeColor = endEventStrokeColor;
-        break;
-      case 'startEvent':
-        fillColor = startEventFillColor;
-        strokeColor = startEventStrokeColor;
-        break;
-      case 'intermediateCatchEvent':
-      case 'intermediateThrowEvent':
-      case 'boundaryEvent':
-        fillColor = backgroundColor;
-        strokeColor = catchAndThrowEventStrokeColor;
-        break;
-      default:
-        fillColor = backgroundColor;
-        strokeColor = defaultStrokeColor;
-        break;
-    }
-    const style = styleSheet.styles[kind];
-    style['fillColor'] = fillColor;
-    style['strokeColor'] = strokeColor;
-  });
-
-  // TASKS
-  ShapeUtil.taskKinds().forEach(kind => {
-    const style = styleSheet.styles[kind];
-    style['fillColor'] = taskFillColor;
-    style['fontColor'] = defaultFontColor;
-  });
-
-  // CALL ACTIVITIES
-  const callActivityStyle = styleSheet.styles[ShapeBpmnElementKind.CALL_ACTIVITY];
-  callActivityStyle['fillColor'] = taskFillColor;
-  callActivityStyle['fontColor'] = defaultFontColor;
-
-  // POOL
-  const poolStyle = styleSheet.styles[ShapeBpmnElementKind.POOL];
-  poolStyle['fillColor'] = poolFillColor;
-  poolStyle['swimlaneFillColor'] = backgroundColor;
-
-  // LANE
-  const laneStyle = styleSheet.styles[ShapeBpmnElementKind.LANE];
-  laneStyle['fillColor'] = laneFillColor;
-
-  const defaultVertexStyle = styleSheet.getDefaultVertexStyle();
-  defaultVertexStyle['fontColor'] = defaultFontColor;
-  defaultVertexStyle['fillColor'] = backgroundColor;
-  defaultVertexStyle['strokeColor'] = defaultStrokeColor;
-
-  const defaultEdgeStyle = styleSheet.getDefaultEdgeStyle();
-  defaultEdgeStyle['fontColor'] = defaultFontColor;
-  defaultEdgeStyle['fillColor'] = backgroundColor;
-  defaultEdgeStyle['strokeColor'] = flowNodeColor;
-};
-
-// TODO move theme logic in a dedicated ThemedBpmnVisualization class
-const configureBpmnTheme = (bpmnTheme: string): void => {
-  if (bpmnTheme) {
-    if (bpmnTheme == 'dark') {
-      configureDarkTheme();
-    } else if (bpmnTheme == 'brown') {
-      configureBrownTheme();
-    } else {
-      logStartup(`Unknown '${bpmnTheme}' BPMN theme, skipping configuration`);
-    }
-  }
-};
+// const configureDarkTheme = (): void => {
+//   logStartup(`Configuring the 'dark' BPMN theme`);
+//
+//   // dark theme
+//   const defaultStrokeColor = '#c0ddeb';
+//   const defaultFontColor = 'white';
+//   const backgroundColor = '#334352';
+//
+//   const endEventFillColor = 'pink';
+//   const endEventStrokeColor = 'FireBrick';
+//   const startEventFillColor = 'DarkSeaGreen';
+//   const startEventStrokeColor = 'DarkGreen';
+//   const taskFillColor = '#5c8599';
+//   const laneFillColor = '#2b3742';
+//   const poolFillColor = '#232b33';
+//
+//   const catchAndThrowEventStrokeColor = defaultStrokeColor;
+//   const flowNodeColor = defaultStrokeColor;
+//
+//   const styleSheet = bpmnVisualization.graph.getStylesheet();
+//
+//   // EVENTS
+//   ShapeUtil.eventKinds().forEach(kind => {
+//     let fillColor;
+//     let strokeColor;
+//     switch (kind) {
+//       case 'endEvent':
+//         fillColor = endEventFillColor;
+//         strokeColor = endEventStrokeColor;
+//         break;
+//       case 'startEvent':
+//         fillColor = startEventFillColor;
+//         strokeColor = startEventStrokeColor;
+//         break;
+//       case 'intermediateCatchEvent':
+//       case 'intermediateThrowEvent':
+//       case 'boundaryEvent':
+//         fillColor = backgroundColor;
+//         strokeColor = catchAndThrowEventStrokeColor;
+//         break;
+//       default:
+//         fillColor = backgroundColor;
+//         strokeColor = defaultStrokeColor;
+//         break;
+//     }
+//     const style = styleSheet.styles[kind];
+//     style['fillColor'] = fillColor;
+//     style['strokeColor'] = strokeColor;
+//   });
+//
+//   // TASKS
+//   ShapeUtil.taskKinds().forEach(kind => {
+//     const style = styleSheet.styles[kind];
+//     style['fillColor'] = taskFillColor;
+//     style['fontColor'] = defaultFontColor;
+//   });
+//
+//   // CALL ACTIVITIES
+//   const callActivityStyle = styleSheet.styles[ShapeBpmnElementKind.CALL_ACTIVITY];
+//   callActivityStyle['fillColor'] = taskFillColor;
+//   callActivityStyle['fontColor'] = defaultFontColor;
+//
+//   // POOL
+//   const poolStyle = styleSheet.styles[ShapeBpmnElementKind.POOL];
+//   poolStyle['fillColor'] = poolFillColor;
+//   poolStyle['swimlaneFillColor'] = backgroundColor;
+//
+//   // LANE
+//   const laneStyle = styleSheet.styles[ShapeBpmnElementKind.LANE];
+//   laneStyle['fillColor'] = laneFillColor;
+//
+//   const defaultVertexStyle = styleSheet.getDefaultVertexStyle();
+//   defaultVertexStyle['fontColor'] = defaultFontColor;
+//   defaultVertexStyle['fillColor'] = backgroundColor;
+//   defaultVertexStyle['strokeColor'] = defaultStrokeColor;
+//
+//   const defaultEdgeStyle = styleSheet.getDefaultEdgeStyle();
+//   defaultEdgeStyle['fontColor'] = defaultFontColor;
+//   defaultEdgeStyle['fillColor'] = backgroundColor;
+//   defaultEdgeStyle['strokeColor'] = flowNodeColor;
+// };
+//
+// const configureBrownTheme = (): void => {
+//   logStartup(`Configuring the 'brown' BPMN theme`);
+//
+//   // brown theme
+//   const defaultStrokeColor = '#414666';
+//   const defaultFontColor = '#414666';
+//   const backgroundColor = '#ede7e1';
+//
+//   const flowNodeColor = '#666666';
+//   const endEventFillColor = 'pink';
+//   const endEventStrokeColor = 'FireBrick';
+//   const startEventFillColor = 'DarkSeaGreen';
+//   const startEventStrokeColor = 'DarkGreen';
+//   const taskFillColor = '#dadce8';
+//   const laneFillColor = '#d4c3b2';
+//   const poolFillColor = '#d1b9a1';
+//   const catchAndThrowEventStrokeColor = '#377f87';
+//
+//   // TODO duplicated with configureDarkTheme
+//   const styleSheet = bpmnVisualization.graph.getStylesheet();
+//
+//   // EVENTS
+//   ShapeUtil.eventKinds().forEach(kind => {
+//     let fillColor;
+//     let strokeColor;
+//     switch (kind) {
+//       case 'endEvent':
+//         fillColor = endEventFillColor;
+//         strokeColor = endEventStrokeColor;
+//         break;
+//       case 'startEvent':
+//         fillColor = startEventFillColor;
+//         strokeColor = startEventStrokeColor;
+//         break;
+//       case 'intermediateCatchEvent':
+//       case 'intermediateThrowEvent':
+//       case 'boundaryEvent':
+//         fillColor = backgroundColor;
+//         strokeColor = catchAndThrowEventStrokeColor;
+//         break;
+//       default:
+//         fillColor = backgroundColor;
+//         strokeColor = defaultStrokeColor;
+//         break;
+//     }
+//     const style = styleSheet.styles[kind];
+//     style['fillColor'] = fillColor;
+//     style['strokeColor'] = strokeColor;
+//   });
+//
+//   // TASKS
+//   ShapeUtil.taskKinds().forEach(kind => {
+//     const style = styleSheet.styles[kind];
+//     style['fillColor'] = taskFillColor;
+//     style['fontColor'] = defaultFontColor;
+//   });
+//
+//   // CALL ACTIVITIES
+//   const callActivityStyle = styleSheet.styles[ShapeBpmnElementKind.CALL_ACTIVITY];
+//   callActivityStyle['fillColor'] = taskFillColor;
+//   callActivityStyle['fontColor'] = defaultFontColor;
+//
+//   // POOL
+//   const poolStyle = styleSheet.styles[ShapeBpmnElementKind.POOL];
+//   poolStyle['fillColor'] = poolFillColor;
+//   poolStyle['swimlaneFillColor'] = backgroundColor;
+//
+//   // LANE
+//   const laneStyle = styleSheet.styles[ShapeBpmnElementKind.LANE];
+//   laneStyle['fillColor'] = laneFillColor;
+//
+//   const defaultVertexStyle = styleSheet.getDefaultVertexStyle();
+//   defaultVertexStyle['fontColor'] = defaultFontColor;
+//   defaultVertexStyle['fillColor'] = backgroundColor;
+//   defaultVertexStyle['strokeColor'] = defaultStrokeColor;
+//
+//   const defaultEdgeStyle = styleSheet.getDefaultEdgeStyle();
+//   defaultEdgeStyle['fontColor'] = defaultFontColor;
+//   defaultEdgeStyle['fillColor'] = backgroundColor;
+//   defaultEdgeStyle['strokeColor'] = flowNodeColor;
+// };
+//
+// // TODO move theme logic in a dedicated ThemedBpmnVisualization class
+// const configureBpmnTheme = (bpmnTheme: string): void => {
+//   if (bpmnTheme) {
+//     if (bpmnTheme == 'dark') {
+//       configureDarkTheme();
+//     } else if (bpmnTheme == 'brown') {
+//       configureBrownTheme();
+//     } else {
+//       logStartup(`Unknown '${bpmnTheme}' BPMN theme, skipping configuration`);
+//     }
+//   }
+// };
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
   const container = config.globalOptions.container;
 
   log(`Initializing BpmnVisualization with container '${container}'...`);
-  bpmnVisualization = new BpmnVisualization(config.globalOptions);
+  bpmnVisualization = new ThemedBpmnVisualization(config.globalOptions);
   log('Initialization completed');
   new DropFileUserInterface(window, 'drop-container', container as string, readAndLoadFile);
   log('Drag&Drop support initialized');
