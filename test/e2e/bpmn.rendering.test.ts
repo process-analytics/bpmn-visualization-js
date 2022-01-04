@@ -321,12 +321,6 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
 const styleOptionsPerDiagram = new Map<string, StyleOptions>([
   [
-    'all.elements.fill.color',
-    {
-      bpmnContainer: { useAlternativeBackgroundColor: true },
-    },
-  ],
-  [
     'associations.and.annotations.04.target.edges',
     {
       sequenceFlow: { useLightColors: true },

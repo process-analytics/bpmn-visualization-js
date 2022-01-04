@@ -25,3 +25,4 @@ copyDirectoryContentIfNotExists('non-regression');
 copyDirectoryContentIfNotExists('overlays');
 copyDirectoryContentIfNotExists('performance');
 copyDirectoryContentIfNotExists('svg');
+copyDirectoryContentIfNotExists('theme');
