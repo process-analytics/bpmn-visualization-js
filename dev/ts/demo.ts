@@ -200,20 +200,36 @@ const configureDarkTheme = (): void => {
   logStartup(`Configuring a the BPMN theme 'dark'`);
   const styleSheet = bpmnVisualization.graph.getStylesheet(); // mxStylesheet
 
-  // COLORS
-  const defaultStrokeColor = '#414666';
-  const defaultFontColor = '#414666';
-  const backgroundColor = '#ede7e1';
+  // brown theme
+  // const defaultStrokeColor = '#414666';
+  // const defaultFontColor = '#414666';
+  // const backgroundColor = '#ede7e1';
+  //
+  // const flowNodeColor = '#666666';
+  // const endEventFillColor = 'pink';
+  // const endEventStrokeColor = 'FireBrick';
+  // const startEventFillColor = 'DarkSeaGreen';
+  // const startEventStrokeColor = 'DarkGreen';
+  // const taskFillColor = '#dadce8';
+  // const laneFillColor = '#d4c3b2';
+  // const poolFillColor = '#d1b9a1';
+  // const catchAndThrowEventStrokeColor = '#377f87';
 
-  const flowNodeColor = '#666666';
+  // dark theme
+  const defaultStrokeColor = '#c0ddeb';
+  const defaultFontColor = 'white';
+  const backgroundColor = '#334352';
+
   const endEventFillColor = 'pink';
   const endEventStrokeColor = 'FireBrick';
   const startEventFillColor = 'DarkSeaGreen';
   const startEventStrokeColor = 'DarkGreen';
-  const taskFillColor = '#dadce8';
-  const laneFillColor = '#d4c3b2';
-  const poolFillColor = '#d1b9a1';
-  const catchAndThrowEventStrokeColor = '#377f87';
+  const taskFillColor = '#5c8599';
+  const laneFillColor = '#2b3742';
+  const poolFillColor = '#232b33';
+
+  const catchAndThrowEventStrokeColor = defaultStrokeColor;
+  const flowNodeColor = defaultStrokeColor;
 
   // EVENTS
   ShapeUtil.eventKinds().forEach(kind => {
