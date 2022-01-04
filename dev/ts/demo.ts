@@ -15,7 +15,19 @@
  */
 
 import { mxgraph } from '../../src/component/mxgraph/initializer';
-import { BpmnVisualization, FitOptions, FitType, GlobalOptions, LoadOptions, BpmnElement, Overlay, BpmnElementKind, FlowKind } from '../../src/bpmn-visualization';
+import {
+  BpmnElement,
+  BpmnElementKind,
+  BpmnVisualization,
+  FitOptions,
+  FitType,
+  FlowKind,
+  GlobalOptions,
+  LoadOptions,
+  Overlay,
+  ShapeBpmnElementKind,
+  ShapeUtil,
+} from '../../src/bpmn-visualization';
 import { log, logDownload, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';
@@ -153,8 +165,7 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
     const color = '#E9E9E9';
     logStartup('Use light colors for sequence flows, color', color);
 
-    const graph = bpmnVisualization.graph;
-    const stylesheet = graph.getStylesheet();
+    const stylesheet = bpmnVisualization.graph.getStylesheet();
 
     // directly access the 'styles' map to update values. Using stylesheet.getCellStyle returns a copy of the style
     const seqFlowStyle = stylesheet.styles[FlowKind.SEQUENCE_FLOW];
@@ -174,7 +185,96 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
 
     logStartup('Bpmn container style updated');
   }
+
+  const bpmnTheme = parameters.get('style.theme');
+  if (bpmnTheme) {
+    if (bpmnTheme == 'dark') {
+      configureDarkTheme();
+    }
+    logStartup(`Unknown '${bpmnTheme}' BPMN theme name, skipping configuration`);
+  }
 }
+
+// TODO use mxgraph constants?
+const configureDarkTheme = (): void => {
+  logStartup(`Configuring a the BPMN theme 'dark'`);
+  const styleSheet = bpmnVisualization.graph.getStylesheet(); // mxStylesheet
+
+  // COLORS
+  const defaultStrokeColor = '#414666';
+  const defaultFontColor = '#414666';
+  const backgroundColor = '#ede7e1';
+
+  const flowNodeColor = '#666666';
+  const endEventFillColor = 'pink';
+  const endEventStrokeColor = 'FireBrick';
+  const startEventFillColor = 'DarkSeaGreen';
+  const startEventStrokeColor = 'DarkGreen';
+  const taskFillColor = '#dadce8';
+  const laneFillColor = '#d4c3b2';
+  const poolFillColor = '#d1b9a1';
+  const catchAndThrowEventStrokeColor = '#377f87';
+
+  // EVENTS
+  ShapeUtil.eventKinds().forEach(kind => {
+    let fillColor;
+    let strokeColor;
+    switch (kind) {
+      case 'endEvent':
+        fillColor = endEventFillColor;
+        strokeColor = endEventStrokeColor;
+        break;
+      case 'startEvent':
+        fillColor = startEventFillColor;
+        strokeColor = startEventStrokeColor;
+        break;
+      case 'intermediateCatchEvent':
+      case 'intermediateThrowEvent':
+      case 'boundaryEvent':
+        fillColor = backgroundColor;
+        strokeColor = catchAndThrowEventStrokeColor;
+        break;
+      default:
+        fillColor = backgroundColor;
+        strokeColor = defaultStrokeColor;
+        break;
+    }
+    const style = styleSheet.styles[kind];
+    style['fillColor'] = fillColor;
+    style['strokeColor'] = strokeColor;
+  });
+
+  // TASKS
+  ShapeUtil.taskKinds().forEach(kind => {
+    const style = styleSheet.styles[kind];
+    style['fillColor'] = taskFillColor;
+    style['fontColor'] = defaultFontColor;
+  });
+
+  // CALL ACTIVITIES
+  const callActivityStyle = styleSheet.styles[ShapeBpmnElementKind.CALL_ACTIVITY];
+  callActivityStyle['fillColor'] = taskFillColor;
+  callActivityStyle['fontColor'] = defaultFontColor;
+
+  // POOL
+  const poolStyle = styleSheet.styles[ShapeBpmnElementKind.POOL];
+  poolStyle['fillColor'] = poolFillColor;
+  poolStyle['swimlaneFillColor'] = backgroundColor;
+
+  // LANE
+  const laneStyle = styleSheet.styles[ShapeBpmnElementKind.LANE];
+  laneStyle['fillColor'] = laneFillColor;
+
+  const defaultVertexStyle = styleSheet.getDefaultVertexStyle();
+  defaultVertexStyle['fontColor'] = defaultFontColor;
+  defaultVertexStyle['fillColor'] = backgroundColor;
+  defaultVertexStyle['strokeColor'] = defaultStrokeColor;
+
+  const defaultEdgeStyle = styleSheet.getDefaultEdgeStyle();
+  defaultEdgeStyle['fontColor'] = defaultFontColor;
+  defaultEdgeStyle['fillColor'] = backgroundColor;
+  defaultEdgeStyle['strokeColor'] = flowNodeColor;
+};
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
