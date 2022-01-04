@@ -160,23 +160,8 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
 }
 
 function configureStyleFromParameters(parameters: URLSearchParams): void {
-  const seqFlowColorsLight = parameters.get('style.seqFlow.light.colors');
-  if (seqFlowColorsLight == 'true') {
-    const color = '#E9E9E9';
-    logStartup('Use light colors for sequence flows, color', color);
-
-    const stylesheet = bpmnVisualization.graph.getStylesheet();
-
-    // directly access the 'styles' map to update values. Using stylesheet.getCellStyle returns a copy of the style
-    const seqFlowStyle = stylesheet.styles[FlowKind.SEQUENCE_FLOW];
-    seqFlowStyle[mxgraph.mxConstants.STYLE_STROKECOLOR] = color;
-    seqFlowStyle[mxgraph.mxConstants.STYLE_FILLCOLOR] = color;
-
-    logStartup('Sequence flows style updated');
-  }
-
-  const bpmnContainerAlternativeColor = parameters.get('style.container.alternative.background.color');
-  if (bpmnContainerAlternativeColor == 'true') {
+  const useBpmnContainerAlternativeColor = parameters.get('style.container.alternative.background.color');
+  if (useBpmnContainerAlternativeColor == 'true') {
     const color = 'yellow';
     logStartup('Use alternative color for the bpmn container background, color', color);
 
@@ -192,6 +177,21 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
       configureDarkTheme();
     }
     logStartup(`Unknown '${bpmnTheme}' BPMN theme name, skipping configuration`);
+  }
+
+  const useSequenceFlowColorsLight = parameters.get('style.seqFlow.light.colors');
+  if (useSequenceFlowColorsLight == 'true') {
+    const color = '#E9E9E9';
+    logStartup('Use light colors for sequence flows, color', color);
+
+    const stylesheet = bpmnVisualization.graph.getStylesheet();
+
+    // directly access the 'styles' map to update values. Using stylesheet.getCellStyle returns a copy of the style
+    const seqFlowStyle = stylesheet.styles[FlowKind.SEQUENCE_FLOW];
+    seqFlowStyle[mxgraph.mxConstants.STYLE_STROKECOLOR] = color;
+    seqFlowStyle[mxgraph.mxConstants.STYLE_FILLCOLOR] = color;
+
+    logStartup('Sequence flows style updated');
   }
 }
 
