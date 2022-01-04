@@ -19,12 +19,17 @@ import { getBpmnDiagramNames } from './helpers/test-utils';
  * limitations under the License.
  */
 
-// TODO change to do it per use case
-const styleOptionsPerDiagram = new Map<string, StyleOptions>([
+const styleOptionsPerUseCase = new Map<string, StyleOptions>([
   [
-    'all.elements.fill.color',
+    'container-background',
     {
       bpmnContainer: { useAlternativeBackgroundColor: true },
+    },
+  ],
+  [
+    'theme-dark',
+    {
+      theme: 'dark',
     },
   ],
 ]);
@@ -50,15 +55,18 @@ describe('BPMN theme', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new NoSpecificThresholds(), 'bpmn');
 
   const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' }, <Page>page);
-  const bpmnDiagramNames = getBpmnDiagramNames('theme');
+  // TODO from configuration
+  // const useCases = styleOptionsPerUseCase.keys().
+  const useCases = ['container-background'];
 
-  it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
-      styleOptions: styleOptionsPerDiagram.get(bpmnDiagramName),
+  it.each(useCases)(`Use case %s`, async (useCase: string) => {
+    // TODO rename diagram
+    await pageTester.loadBPMNDiagramInRefreshedPage('all.elements.fill.color', {
+      styleOptions: styleOptionsPerUseCase.get(useCase),
     });
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    const config = imageSnapshotConfigurator.getConfig(useCase);
     expect(image).toMatchImageSnapshot(config);
   });
 });
