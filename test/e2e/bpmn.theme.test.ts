@@ -57,8 +57,7 @@ describe('BPMN theme', () => {
   const useCases = Array.from(styleOptionsPerUseCase.keys());
 
   it.each(useCases)(`Use case %s`, async (useCase: string) => {
-    // TODO rename diagram
-    await pageTester.loadBPMNDiagramInRefreshedPage('all.elements.fill.color', {
+    await pageTester.loadBPMNDiagramInRefreshedPage('01.no.labels.most.bpmn.types', {
       styleOptions: styleOptionsPerUseCase.get(useCase),
     });
 
