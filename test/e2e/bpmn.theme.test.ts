@@ -1,5 +1,5 @@
 import { PageTester, StyleOptions } from './helpers/visu/bpmn-page-utils';
-import { ImageSnapshotConfigurator } from './helpers/visu/image-snapshot-config';
+import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { Page } from 'playwright';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 
@@ -29,10 +29,25 @@ const styleOptionsPerDiagram = new Map<string, StyleOptions>([
   ],
 ]);
 
-// eslint-disable-next-line jest/no-disabled-tests
-describe.skip('BPMN theme', () => {
-  // TODO thresholds
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(null, 'bpmn');
+class NoSpecificThresholds extends MultiBrowserImageSnapshotThresholds {
+  constructor() {
+    super({ chromium: 0, firefox: 0, webkit: 0 });
+  }
+  protected getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return undefined;
+  }
+
+  protected getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return undefined;
+  }
+
+  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return undefined;
+  }
+}
+
+describe('BPMN theme', () => {
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new NoSpecificThresholds(), 'bpmn');
 
   const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' }, <Page>page);
   const bpmnDiagramNames = getBpmnDiagramNames('theme');

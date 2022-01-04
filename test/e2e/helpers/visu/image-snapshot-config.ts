@@ -66,7 +66,7 @@ export class ImageSnapshotConfigurator {
   private getFailureThreshold(fileName: string): number {
     let failureThreshold = this.defaultFailureThreshold;
 
-    const config = this.thresholdConfig.get(fileName);
+    const config = this.thresholdConfig?.get(fileName);
     if (config) {
       configLog(`Using dedicated image snapshot threshold for '${fileName}'`);
       const simplePlatformName = getSimplePlatformName();
