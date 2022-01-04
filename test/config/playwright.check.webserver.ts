@@ -15,14 +15,19 @@
  */
 import { FullConfig } from '@playwright/test';
 import waitOn from 'wait-on';
+import { log } from '../helpers/environment';
 
+// playwright 1.17.1 only test if a tcp connection can be established with the server.
+// The dev web server accepts tcp connection even if it is not ready to serve http requests, in particular while the dev bundle is being built.
+// So do the http check here to prevent playwright tests from starting prior the http server is up and running.
+// See https://github.com/process-analytics/bpmn-visualization-js/pull/1056 for more details
 const checkWebServer = async (config: FullConfig): Promise<void> => {
   // we need sync code here to block playwright prior test can start
   try {
     const baseURL = config.projects[0].use.baseURL;
 
     if (baseURL) {
-      // const timeout = 1_000;
+      log('Checking the web server, url', baseURL);
       const timeout = config.webServer.timeout;
       const opts: waitOn.WaitOnOptions = {
         resources: [baseURL, `${baseURL}/diagram-navigation.html`, `${baseURL}/non-regression.html`, `${baseURL}/overlays.html`],
@@ -32,7 +37,7 @@ const checkWebServer = async (config: FullConfig): Promise<void> => {
       };
 
       await waitOn(opts);
-      // once here, all resources are available
+      log('The web server is ready');
     }
   } catch (err: unknown) {
     throw new Error(`The webserver takes more than ${timeout}ms to start. ${err}`);
