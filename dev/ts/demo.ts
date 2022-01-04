@@ -173,10 +173,7 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
 
   const bpmnTheme = parameters.get('style.theme');
   if (bpmnTheme) {
-    if (bpmnTheme == 'dark') {
-      configureDarkTheme();
-    }
-    logStartup(`Unknown '${bpmnTheme}' BPMN theme name, skipping configuration`);
+    configureBpmnTheme(bpmnTheme);
   }
 
   const useSequenceFlowColorsLight = parameters.get('style.seqFlow.light.colors');
@@ -197,7 +194,7 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
 
 // TODO use mxgraph constants?
 const configureDarkTheme = (): void => {
-  logStartup(`Configuring a the BPMN theme 'dark'`);
+  logStartup(`Configuring the 'dark' BPMN theme`);
   const styleSheet = bpmnVisualization.graph.getStylesheet(); // mxStylesheet
 
   // brown theme
@@ -290,6 +287,17 @@ const configureDarkTheme = (): void => {
   defaultEdgeStyle['fontColor'] = defaultFontColor;
   defaultEdgeStyle['fillColor'] = backgroundColor;
   defaultEdgeStyle['strokeColor'] = flowNodeColor;
+};
+
+// TODO move theme logic in a dedicated ThemedBpmnVisualization class
+const configureBpmnTheme = (bpmnTheme: string): void => {
+  if (bpmnTheme) {
+    if (bpmnTheme == 'dark') {
+      configureDarkTheme();
+    } else {
+      logStartup(`Unknown '${bpmnTheme}' BPMN theme, skipping configuration`);
+    }
+  }
 };
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
