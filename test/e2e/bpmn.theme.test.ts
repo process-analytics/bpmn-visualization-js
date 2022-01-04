@@ -39,10 +39,9 @@ const styleOptionsPerUseCase = new Map<string, StyleOptions>([
   ],
 ]);
 
-const miniThreshold = 0.000000002;
 class NoSpecificThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    super({ chromium: miniThreshold, firefox: 0.06 / 100, webkit: miniThreshold });
+    super({ chromium: 0, firefox: 0.06 / 100, webkit: 0.09 / 100 });
   }
   protected getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return undefined;
