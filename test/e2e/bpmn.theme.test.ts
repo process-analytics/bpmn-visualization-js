@@ -1,7 +1,6 @@
 import { PageTester, StyleOptions } from './helpers/visu/bpmn-page-utils';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { Page } from 'playwright';
-import { getBpmnDiagramNames } from './helpers/test-utils';
 
 /**
  * Copyright 2022 Bonitasoft S.A.
@@ -52,12 +51,10 @@ class NoSpecificThresholds extends MultiBrowserImageSnapshotThresholds {
 }
 
 describe('BPMN theme', () => {
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new NoSpecificThresholds(), 'bpmn');
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new NoSpecificThresholds(), 'theme');
 
   const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' }, <Page>page);
-  // TODO from configuration
-  // const useCases = styleOptionsPerUseCase.keys().
-  const useCases = ['container-background'];
+  const useCases = Array.from(styleOptionsPerUseCase.keys());
 
   it.each(useCases)(`Use case %s`, async (useCase: string) => {
     // TODO rename diagram
