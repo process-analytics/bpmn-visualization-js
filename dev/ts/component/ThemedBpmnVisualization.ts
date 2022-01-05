@@ -17,7 +17,7 @@ import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil } from '..
 import { logStartup } from '../helper';
 import { mxgraph } from '../../../src/component/mxgraph/initializer';
 
-interface ThemeColors {
+interface Theme {
   defaultStrokeColor: string;
   defaultFontColor: string;
   defaultFillColor: string;
@@ -33,7 +33,7 @@ interface ThemeColors {
   flowColor?: string;
 }
 
-const themeColors = new Map<string, ThemeColors>([
+const themes = new Map<string, Theme>([
   [
     'dark',
     {
@@ -70,15 +70,14 @@ const themeColors = new Map<string, ThemeColors>([
   ],
 ]);
 
-// TODO use mxgraph constants?
-// otherwise explain why
 export class ThemedBpmnVisualization extends BpmnVisualization {
-  configureTheme(theme: string): void {
-    logStartup(`Configuring the '${theme}' BPMN theme`);
+  configureTheme(name: string): void {
+    // we are not using mxgraph constants here to show another way to configure the style
+    logStartup(`Configuring the '${name}' BPMN theme`);
 
-    const themeColor = themeColors.get(theme);
-    if (!themeColor) {
-      logStartup(`Unknown '${theme}' BPMN theme, skipping configuration`);
+    const theme = themes.get(name);
+    if (!theme) {
+      logStartup(`Unknown '${name}' BPMN theme, skipping configuration`);
       return;
     }
 
@@ -90,22 +89,22 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
       let strokeColor;
       switch (kind) {
         case 'endEvent':
-          fillColor = themeColor.endEventFillColor;
-          strokeColor = themeColor.endEventStrokeColor;
+          fillColor = theme.endEventFillColor;
+          strokeColor = theme.endEventStrokeColor;
           break;
         case 'startEvent':
-          fillColor = themeColor.startEventFillColor;
-          strokeColor = themeColor.startEventStrokeColor;
+          fillColor = theme.startEventFillColor;
+          strokeColor = theme.startEventStrokeColor;
           break;
         case 'intermediateCatchEvent':
         case 'intermediateThrowEvent':
         case 'boundaryEvent':
-          fillColor = themeColor.defaultFillColor;
-          strokeColor = themeColor.catchAndThrowEventStrokeColor ?? themeColor.defaultStrokeColor;
+          fillColor = theme.defaultFillColor;
+          strokeColor = theme.catchAndThrowEventStrokeColor ?? theme.defaultStrokeColor;
           break;
         default:
-          fillColor = themeColor.defaultFillColor;
-          strokeColor = themeColor.defaultStrokeColor;
+          fillColor = theme.defaultFillColor;
+          strokeColor = theme.defaultStrokeColor;
           break;
       }
       const style = styleSheet.styles[kind];
@@ -116,34 +115,34 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
     // TASKS
     ShapeUtil.taskKinds().forEach(kind => {
       const style = styleSheet.styles[kind];
-      style['fillColor'] = themeColor.taskFillColor;
-      style['fontColor'] = themeColor.defaultFontColor; // TODO extra config
+      style['fillColor'] = theme.taskFillColor;
+      style['fontColor'] = theme.defaultFontColor; // TODO extra config
     });
 
     // CALL ACTIVITIES
     const callActivityStyle = styleSheet.styles[ShapeBpmnElementKind.CALL_ACTIVITY];
-    callActivityStyle['fillColor'] = themeColor.taskFillColor;
-    callActivityStyle['fontColor'] = themeColor.defaultFontColor;
+    callActivityStyle['fillColor'] = theme.taskFillColor;
+    callActivityStyle['fontColor'] = theme.defaultFontColor;
 
     // POOL
     const poolStyle = styleSheet.styles[ShapeBpmnElementKind.POOL];
-    poolStyle['fillColor'] = themeColor.poolFillColor;
-    poolStyle['swimlaneFillColor'] = themeColor.defaultFillColor;
+    poolStyle['fillColor'] = theme.poolFillColor;
+    poolStyle['swimlaneFillColor'] = theme.defaultFillColor;
 
     // LANE
     const laneStyle = styleSheet.styles[ShapeBpmnElementKind.LANE];
-    laneStyle['fillColor'] = themeColor.laneFillColor;
+    laneStyle['fillColor'] = theme.laneFillColor;
 
     // DEFAULTS
     const defaultVertexStyle = styleSheet.getDefaultVertexStyle();
-    defaultVertexStyle['fontColor'] = themeColor.defaultFontColor;
-    defaultVertexStyle['fillColor'] = themeColor.defaultFillColor;
-    defaultVertexStyle['strokeColor'] = themeColor.defaultStrokeColor;
+    defaultVertexStyle['fontColor'] = theme.defaultFontColor;
+    defaultVertexStyle['fillColor'] = theme.defaultFillColor;
+    defaultVertexStyle['strokeColor'] = theme.defaultStrokeColor;
 
     const defaultEdgeStyle = styleSheet.getDefaultEdgeStyle();
-    defaultEdgeStyle['fontColor'] = themeColor.defaultFontColor;
-    defaultEdgeStyle['fillColor'] = themeColor.defaultFillColor;
-    defaultEdgeStyle['strokeColor'] = themeColor.flowColor ?? themeColor.defaultStrokeColor;
+    defaultEdgeStyle['fontColor'] = theme.defaultFontColor;
+    defaultEdgeStyle['fillColor'] = theme.defaultFillColor;
+    defaultEdgeStyle['strokeColor'] = theme.flowColor ?? theme.defaultStrokeColor;
   }
 
   configureSequenceFlowColor(color: string): void {
