@@ -19,7 +19,7 @@ import { logStartup } from '../helper';
 interface ThemeColors {
   defaultStrokeColor: string;
   defaultFontColor: string;
-  backgroundColor: string;
+  defaultFillColor: string;
   endEventFillColor: string;
   endEventStrokeColor: string;
   startEventFillColor: string;
@@ -29,7 +29,7 @@ interface ThemeColors {
   poolFillColor: string;
 
   catchAndThrowEventStrokeColor?: string;
-  flowNodeColor?: string;
+  flowColor?: string;
 }
 
 const themeColors = new Map<string, ThemeColors>([
@@ -38,7 +38,7 @@ const themeColors = new Map<string, ThemeColors>([
     {
       defaultStrokeColor: '#c0ddeb',
       defaultFontColor: 'white',
-      backgroundColor: '#334352',
+      defaultFillColor: '#334352',
 
       endEventFillColor: 'pink',
       endEventStrokeColor: 'FireBrick',
@@ -53,10 +53,10 @@ const themeColors = new Map<string, ThemeColors>([
     'brown',
     {
       defaultStrokeColor: '#414666',
+      defaultFillColor: '#ede7e1',
       defaultFontColor: '#414666',
-      backgroundColor: '#ede7e1',
 
-      flowNodeColor: '#666666',
+      flowColor: '#666666',
       endEventFillColor: 'pink',
       endEventStrokeColor: 'FireBrick',
       startEventFillColor: 'DarkSeaGreen',
@@ -99,11 +99,11 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
         case 'intermediateCatchEvent':
         case 'intermediateThrowEvent':
         case 'boundaryEvent':
-          fillColor = themeColor.backgroundColor;
+          fillColor = themeColor.defaultFillColor;
           strokeColor = themeColor.catchAndThrowEventStrokeColor ?? themeColor.defaultStrokeColor;
           break;
         default:
-          fillColor = themeColor.backgroundColor;
+          fillColor = themeColor.defaultFillColor;
           strokeColor = themeColor.defaultStrokeColor;
           break;
       }
@@ -127,7 +127,7 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
     // POOL
     const poolStyle = styleSheet.styles[ShapeBpmnElementKind.POOL];
     poolStyle['fillColor'] = themeColor.poolFillColor;
-    poolStyle['swimlaneFillColor'] = themeColor.backgroundColor;
+    poolStyle['swimlaneFillColor'] = themeColor.defaultFillColor;
 
     // LANE
     const laneStyle = styleSheet.styles[ShapeBpmnElementKind.LANE];
@@ -136,12 +136,12 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
     // DEFAULTS
     const defaultVertexStyle = styleSheet.getDefaultVertexStyle();
     defaultVertexStyle['fontColor'] = themeColor.defaultFontColor;
-    defaultVertexStyle['fillColor'] = themeColor.backgroundColor;
+    defaultVertexStyle['fillColor'] = themeColor.defaultFillColor;
     defaultVertexStyle['strokeColor'] = themeColor.defaultStrokeColor;
 
     const defaultEdgeStyle = styleSheet.getDefaultEdgeStyle();
     defaultEdgeStyle['fontColor'] = themeColor.defaultFontColor;
-    defaultEdgeStyle['fillColor'] = themeColor.backgroundColor;
-    defaultEdgeStyle['strokeColor'] = themeColor.flowNodeColor ?? themeColor.defaultStrokeColor;
+    defaultEdgeStyle['fillColor'] = themeColor.defaultFillColor;
+    defaultEdgeStyle['strokeColor'] = themeColor.flowColor ?? themeColor.defaultStrokeColor;
   }
 }
