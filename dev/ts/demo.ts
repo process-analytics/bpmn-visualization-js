@@ -159,9 +159,9 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
     logStartup('Bpmn container style updated');
   }
 
-  const bpmnTheme = parameters.get('style.theme');
-  if (bpmnTheme) {
-    bpmnVisualization.configureTheme(bpmnTheme);
+  const theme = parameters.get('style.theme');
+  if (theme) {
+    bpmnVisualization.configureTheme(theme);
   }
 
   const useSequenceFlowColorsLight = parameters.get('style.seqFlow.light.colors');
