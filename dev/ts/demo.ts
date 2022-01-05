@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import { mxgraph } from '../../src/component/mxgraph/initializer';
-import { BpmnElement, BpmnElementKind, FitOptions, FitType, FlowKind, GlobalOptions, LoadOptions, Overlay } from '../../src/bpmn-visualization';
+import { BpmnElement, BpmnElementKind, FitOptions, FitType, GlobalOptions, LoadOptions, Overlay } from '../../src/bpmn-visualization';
 import { log, logDownload, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';
@@ -167,18 +166,7 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
 
   const useSequenceFlowColorsLight = parameters.get('style.seqFlow.light.colors');
   if (useSequenceFlowColorsLight == 'true') {
-    // TODO move to ThemedBpmnVisualization configureFlowColor(color: string)
-    const color = '#E9E9E9';
-    logStartup('Use light colors for sequence flows, color', color);
-
-    const stylesheet = bpmnVisualization.graph.getStylesheet();
-
-    // directly access the 'styles' map to update values. Using stylesheet.getCellStyle returns a copy of the style
-    const seqFlowStyle = stylesheet.styles[FlowKind.SEQUENCE_FLOW];
-    seqFlowStyle[mxgraph.mxConstants.STYLE_STROKECOLOR] = color;
-    seqFlowStyle[mxgraph.mxConstants.STYLE_FILLCOLOR] = color;
-
-    logStartup('Sequence flows style updated');
+    bpmnVisualization.configureSequenceFlowColor('#E9E9E9');
   }
 }
 

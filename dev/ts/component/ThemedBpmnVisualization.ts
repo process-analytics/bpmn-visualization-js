@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnVisualization, ShapeBpmnElementKind, ShapeUtil } from '../../../src/bpmn-visualization';
+import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../src/bpmn-visualization';
 import { logStartup } from '../helper';
+import { mxgraph } from '../../../src/component/mxgraph/initializer';
 
 interface ThemeColors {
   defaultStrokeColor: string;
@@ -143,5 +144,18 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
     defaultEdgeStyle['fontColor'] = themeColor.defaultFontColor;
     defaultEdgeStyle['fillColor'] = themeColor.defaultFillColor;
     defaultEdgeStyle['strokeColor'] = themeColor.flowColor ?? themeColor.defaultStrokeColor;
+  }
+
+  configureSequenceFlowColor(color: string): void {
+    logStartup(`Use dedicated ${color} color for sequence flows`);
+
+    const stylesheet = this.graph.getStylesheet();
+
+    // directly access the 'styles' map to update values. Using stylesheet.getCellStyle returns a copy of the style
+    const seqFlowStyle = stylesheet.styles[FlowKind.SEQUENCE_FLOW];
+    seqFlowStyle[mxgraph.mxConstants.STYLE_STROKECOLOR] = color;
+    seqFlowStyle[mxgraph.mxConstants.STYLE_FILLCOLOR] = color;
+
+    logStartup('Sequence flows style updated');
   }
 }
