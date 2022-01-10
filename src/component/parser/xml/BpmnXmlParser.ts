@@ -35,12 +35,8 @@ export default class BpmnXmlParser {
   };
   private xmlParser: XMLParser = new XMLParser(this.x2jOptions);
 
-  private validationOptions: Partial<validationOptions> = {
-    allowBooleanAttributes: true,
-  };
-
   parse(xml: string): BpmnJsonModel {
-    const model = this.xmlParser.parse(xml, this.validationOptions);
+    const model = this.xmlParser.parse(xml);
     if (!model.definitions) {
       // We currently don't validate the xml, so we don't detect xml validation error
       // if 'definitions' is undefined, there is an Error later in the parsing code without explicit information
