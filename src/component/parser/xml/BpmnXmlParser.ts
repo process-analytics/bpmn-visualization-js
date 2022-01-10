@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { parse, type X2jOptions } from 'fast-xml-parser/src/parser';
+import { validationOptions } from 'fast-xml-parser';
+import { XMLParser, type X2jOptions } from 'fast-xml-parser';
 import { decodeXML } from 'entities/lib/decode';
 import { BpmnJsonModel } from '../../../model/bpmn/json/BPMN20';
 
@@ -23,18 +24,23 @@ import { BpmnJsonModel } from '../../../model/bpmn/json/BPMN20';
  * @internal
  */
 export default class BpmnXmlParser {
-  private options: Partial<X2jOptions> = {
+  private x2jOptions: Partial<X2jOptions> = {
     attributeNamePrefix: '', // default to '@_'
-    ignoreNameSpace: true,
+    removeNSPrefix: true,
     ignoreAttributes: false,
     parseAttributeValue: true, // ensure numbers are parsed as number, not as string
-    attrValueProcessor: (val: string) => {
+    attributeValueProcessor: (val: string) => {
       return decodeXML(val);
     },
   };
+  private xmlParser: XMLParser = new XMLParser(this.x2jOptions);
+
+  private validationOptions: Partial<validationOptions> = {
+    allowBooleanAttributes: true,
+  };
 
   parse(xml: string): BpmnJsonModel {
-    const model = parse(xml, this.options);
+    const model = this.xmlParser.parse(xml, this.validationOptions);
     if (!model.definitions) {
       // We currently don't validate the xml, so we don't detect xml validation error
       // if 'definitions' is undefined, there is an Error later in the parsing code without explicit information
