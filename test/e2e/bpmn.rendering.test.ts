@@ -30,7 +30,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     super({ chromium: defaultChromiumFailureThreshold, firefox: 0.00012, webkit: 0.001 });
   }
 
-  override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     // if no dedicated information, set minimal threshold to make test pass on Github Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
@@ -132,7 +132,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     ]);
   }
 
-  override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'all.elements.fill.color',

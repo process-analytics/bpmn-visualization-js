@@ -27,7 +27,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
   // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
   // linux threshold are set for Ubuntu
-  override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'simple.2.start.events.1.task',
