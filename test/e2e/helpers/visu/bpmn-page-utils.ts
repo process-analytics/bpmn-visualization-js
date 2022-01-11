@@ -125,12 +125,10 @@ export class PageTester {
     url += `&url=./static/diagrams/${bpmnDiagramName}.bpmn`;
 
     // style query parameters
-    // TODO only add parameter if available
-    url += `&style.seqFlow.light.colors=${styleOptions?.sequenceFlow?.useLightColors}`;
-
+    styleOptions?.sequenceFlow?.useLightColors && (url += `&style.seqFlow.light.colors=${styleOptions.sequenceFlow.useLightColors}`);
     styleOptions?.bpmnContainer?.useAlternativeBackgroundColor &&
-      (url += `&style.container.alternative.background.color=${styleOptions?.bpmnContainer?.useAlternativeBackgroundColor}`);
-    styleOptions?.theme && (url += `&style.theme=${styleOptions?.theme}`);
+      (url += `&style.container.alternative.background.color=${styleOptions.bpmnContainer.useAlternativeBackgroundColor}`);
+    styleOptions?.theme && (url += `&style.theme=${styleOptions.theme}`);
 
     return url;
   }
