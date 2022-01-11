@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { PageTester, StyleOptions } from './helpers/visu/bpmn-page-utils';
-import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { Page } from 'playwright';
 
 const styleOptionsPerUseCase = new Map<string, StyleOptions>([
@@ -38,25 +38,8 @@ const styleOptionsPerUseCase = new Map<string, StyleOptions>([
   ],
 ]);
 
-class NoSpecificThresholds extends MultiBrowserImageSnapshotThresholds {
-  constructor() {
-    super({ chromium: 0, firefox: 0.06 / 100, webkit: 0.09 / 100 });
-  }
-  protected getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return undefined;
-  }
-
-  protected getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return undefined;
-  }
-
-  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return undefined;
-  }
-}
-
 describe('BPMN theme', () => {
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new NoSpecificThresholds(), 'theme');
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new MultiBrowserImageSnapshotThresholds({ chromium: 0, firefox: 0.06 / 100, webkit: 0.09 / 100 }), 'theme');
 
   const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' }, <Page>page);
   const useCases = Array.from(styleOptionsPerUseCase.keys());
