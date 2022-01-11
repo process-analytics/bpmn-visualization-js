@@ -1,7 +1,3 @@
-import { PageTester, StyleOptions } from './helpers/visu/bpmn-page-utils';
-import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { Page } from 'playwright';
-
 /**
  * Copyright 2022 Bonitasoft S.A.
  *
@@ -17,6 +13,9 @@ import { Page } from 'playwright';
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { PageTester, StyleOptions } from './helpers/visu/bpmn-page-utils';
+import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+import { Page } from 'playwright';
 
 const styleOptionsPerUseCase = new Map<string, StyleOptions>([
   [
