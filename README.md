@@ -156,7 +156,7 @@ You can find more detail in our [Contributing guide](CONTRIBUTING.md). Participa
 `bpmn-visualization` is released under the [Apache 2.0](LICENSE) license. \
 Copyright &copy; 2020-present, Bonitasoft S.A.
 
-Some BPMN icons used by `bpmn-visualization` are derived from existing projects. See the [BPMN Support page](docs/users/bpmn-support.adoc)
+Some BPMN icons used by `bpmn-visualization` are derived from existing projects. See the [BPMN Support documentation](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements)
 for more details:
 - [draw.io](https://github.com/jgraph/drawio) (Apache-2.0)
 - [flaticon](https://www.flaticon.com) ([freepikcompany license](https://www.freepikcompany.com/legal#nav-flaticon))

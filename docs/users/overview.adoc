@@ -101,12 +101,12 @@ _Default BPMN Theme_
 
 ===== Customizing the BPMN Theme
 
-It is possible to change the default them by configuring CSS in page holding the diagram or extending `bpmn-visualization`.
+It is possible to change the default theme by extending `bpmn-visualization` or by using CSS in the page displaying the diagram.
 
 * Extending gives the full control on the theme customization, including colors, size, icons, and more.
-* CSS is the fastest to implement but provides less feature. For instance, you cannot change the icons or precisely control the size of the strokes.
+* CSS is the fastest to implement but provides fewer features. For instance, you cannot change the icons or precisely control the size of the strokes.
 
-IMPORTANT: the current extension mechanism is experimental and subject to change.
+IMPORTANT: The current extension mechanism is experimental and subject to change.
 
 For more details, see the https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#custom-bpmn-theme[**icon:forward[] Custom BPMN Theme examples**].
 
