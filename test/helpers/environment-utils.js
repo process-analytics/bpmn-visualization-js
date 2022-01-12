@@ -13,30 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const log = require('debug')('bv:test:config:pw');
 
 const isMacOS = () => {
-  const isMacOS = process.platform.startsWith('darwin');
-  log('platform: %s / isMacOS? %s', process.platform, isMacOS);
-  return isMacOS;
+  return process.platform.startsWith('darwin');
 };
 
 const isWindowsOS = () => {
-  const isWindowsOS = process.platform.startsWith('win');
-  log('platform: %s / isWindowsOS? %s', process.platform, isWindowsOS);
-  return isWindowsOS;
+  return process.platform.startsWith('win');
 };
 
 // running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
 const isRunningOnCi = () => {
-  const isRunningOnCi = process.env.CI === 'true';
-  log('isRunningOnCi?', isRunningOnCi);
-  return isRunningOnCi;
+  return process.env.CI === 'true';
 };
 
 const isRunningOnCISlowOS = () => {
   return isRunningOnCi() && (isMacOS() || isWindowsOS());
 };
 
-exports.log = log;
 exports.isRunningOnCISlowOS = isRunningOnCISlowOS;

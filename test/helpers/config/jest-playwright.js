@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const { log, isRunningOnCISlowOS } = require('../environment-utils');
+const { isRunningOnCISlowOS } = require('../environment-utils');
+
+const log = require('debug')('bv:test:config:pw');
 
 const computeBrowsersAndChannelConfiguration = defaultBrowsers => {
   log('Default browsers list', defaultBrowsers);
