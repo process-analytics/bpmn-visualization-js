@@ -63,8 +63,8 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     const defaultFailureThreshold = 0.00006; // all OS 0.005379276499073438%
     super({ chromium: defaultFailureThreshold, firefox: defaultFailureThreshold, webkit: defaultFailureThreshold });
   }
-  getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    // if no dedicated information, set minimal threshold to make test pass on Github Workflow
+  protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
@@ -77,7 +77,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     ]);
   }
 
-  getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'horizontal',
@@ -107,7 +107,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     ]);
   }
 
-  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'horizontal',

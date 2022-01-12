@@ -28,8 +28,8 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     super({ chromium: 0.000005, firefox: 0.0004, webkit: 0 });
   }
 
-  getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    // if no dedicated information, set minimal threshold to make test pass on Github Workflow
+  protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
@@ -67,7 +67,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     ]);
   }
 
-  getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'overlays.start.flow.task.gateway',
@@ -104,7 +104,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     ]);
   }
 
-  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'overlays.start.flow.task.gateway',
@@ -277,7 +277,7 @@ describe('Overlay navigation', () => {
       super({ chromium: 0, firefox: 0, webkit: 0 });
     }
 
-    protected getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
         [
           'overlays.start.flow.task.gateway',
@@ -290,7 +290,7 @@ describe('Overlay navigation', () => {
       ]);
     }
 
-    protected getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
         [
           'overlays.start.flow.task.gateway',
@@ -303,7 +303,7 @@ describe('Overlay navigation', () => {
       ]);
     }
 
-    protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
         [
           'overlays.start.flow.task.gateway',
@@ -361,7 +361,7 @@ describe('Overlay style', () => {
       super({ chromium: 0, firefox: 0, webkit: 0 });
     }
 
-    getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       // if no dedicated information, set minimal threshold to make test pass on Github Workflow
       // linux threshold are set for Ubuntu
       return new Map<string, ImageSnapshotThresholdConfig>([
@@ -392,7 +392,7 @@ describe('Overlay style', () => {
       ]);
     }
 
-    getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
         [
           'fill',
@@ -422,7 +422,7 @@ describe('Overlay style', () => {
       ]);
     }
 
-    protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
         [
           'fill',
