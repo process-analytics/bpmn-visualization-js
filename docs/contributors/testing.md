@@ -217,10 +217,13 @@ See `package.json` for extra available scripts
 - `npm run test:unit:coverage`          *Run unit tests with coverage*
 - `npm run test:e2e`                    *Run end-to-end tests*.
 - `npm run test:e2e:coverage`           *Run end-to-end tests with coverage*
+- `npm run test:e2e:verbose`            *Run end-to-end tests with debug logs*
 - `npm run test:integration`            *Run integration tests*.
 - `npm run test:integration:coverage`   *Run integration tests with coverage*
 - `npm run test:perf`                   *Run performance tests*
+- `npm run test:perf:verbose`           *Run performance tests with debug logs*
 - `npm run test:bundles`                *Run bundles tests*
+- `npm run test:bundles:verbose`        *Run bundles tests with debug logs*
 
 ### Test reports
 
