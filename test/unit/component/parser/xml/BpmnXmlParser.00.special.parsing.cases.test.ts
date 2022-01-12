@@ -30,6 +30,10 @@ describe('Special parsing cases', () => {
     );
   });
 
+  it('Parse a binary file', () => {
+    expect(() => new BpmnXmlParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/path.png'))).toThrow(`XML parsing failed. Invalid BPMN source.`);
+  });
+
   it('Parse a diagram with large numbers and large decimals', () => {
     const json = new BpmnXmlParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_large_numbers_and_large_decimals.bpmn'));
 

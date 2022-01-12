@@ -34,7 +34,7 @@ export default class BpmnXmlParser {
   };
 
   parse(xml: string): BpmnJsonModel {
-    const model = parse(xml, this.options);
+    const model = this.doParsing(xml);
     if (!model.definitions) {
       // We currently don't validate the xml, so we don't detect xml validation error
       // if 'definitions' is undefined, there is an Error later in the parsing code without explicit information
@@ -43,5 +43,13 @@ export default class BpmnXmlParser {
       throw new Error(`XML parsing failed. Unable to retrieve 'definitions' for the BPMN source.`);
     }
     return model;
+  }
+
+  private doParsing(xml: string): BpmnJsonModel {
+    try {
+      return parse(xml, this.options);
+    } catch {
+      throw new Error('XML parsing failed. Invalid BPMN source.');
+    }
   }
 }
