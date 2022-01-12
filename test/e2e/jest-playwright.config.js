@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-module.exports = require('../helpers/config/jest-playwright').computeConfiguration({ defaultBrowsers: 'chromium' });
+module.exports = require('../config/jest-playwright').computeConfiguration({ defaultBrowsers: 'chromium' });

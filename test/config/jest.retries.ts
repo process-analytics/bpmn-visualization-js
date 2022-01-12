@@ -14,22 +14,9 @@
  * limitations under the License.
  */
 
-const isMacOS = () => {
-  return process.platform.startsWith('darwin');
-};
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore js file with commonjs export
+import envUtils = require('../helpers/environment-utils.js');
 
-const isWindowsOS = () => {
-  return process.platform.startsWith('win');
-};
-
-// running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
-const isRunningOnCi = () => {
-  return process.env.CI === 'true';
-};
-
-const isRunningOnCISlowOS = () => {
-  return isRunningOnCi() && (isMacOS() || isWindowsOS());
-};
-
-exports.isRunningOnCISlowOS = isRunningOnCISlowOS;
-exports.isRunningOnCi = isRunningOnCi;
+const onCi = envUtils.isRunningOnCi();
+jest.retryTimes(onCi ? 3 : 0);
