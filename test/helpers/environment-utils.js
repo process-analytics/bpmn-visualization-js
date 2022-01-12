@@ -32,3 +32,4 @@ const isRunningOnCISlowOS = () => {
 };
 
 exports.isRunningOnCISlowOS = isRunningOnCISlowOS;
+exports.isRunningOnCi = isRunningOnCi;
