@@ -19,7 +19,7 @@ import { join } from 'path';
 import { Mouse, Page } from 'playwright';
 import { findFiles } from '../../helpers/file-helper';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-ignore js file with commonjs export
 import envUtils = require('../../helpers/environment-utils.js');
 
 export interface Point {
