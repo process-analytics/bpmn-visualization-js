@@ -67,6 +67,7 @@ export interface TargetedPage {
 }
 
 export interface StyleOptions {
+  theme?: string;
   bpmnContainer?: {
     useAlternativeBackgroundColor?: boolean;
   };
@@ -122,8 +123,13 @@ export class PageTester {
     let url = this.baseUrl;
     url += `&fitTypeOnLoad=${loadOptions.fit?.type}&fitMargin=${loadOptions.fit?.margin}`;
     url += `&url=./static/diagrams/${bpmnDiagramName}.bpmn`;
-    url += `&style.seqFlow.light.colors=${styleOptions?.sequenceFlow?.useLightColors}`;
-    url += `&style.container.alternative.background.color=${styleOptions?.bpmnContainer?.useAlternativeBackgroundColor}`;
+
+    // style query parameters
+    styleOptions?.sequenceFlow?.useLightColors && (url += `&style.seqFlow.light.colors=${styleOptions.sequenceFlow.useLightColors}`);
+    styleOptions?.bpmnContainer?.useAlternativeBackgroundColor &&
+      (url += `&style.container.alternative.background.color=${styleOptions.bpmnContainer.useAlternativeBackgroundColor}`);
+    styleOptions?.theme && (url += `&style.theme=${styleOptions.theme}`);
+
     return url;
   }
 

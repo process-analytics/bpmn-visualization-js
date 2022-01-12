@@ -25,9 +25,9 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     super({ chromium: 0.000005, firefox: 0.0004, webkit: 0 });
   }
 
-  // if no dedicated information, set minimal threshold to make test pass on Github Workflow
+  // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
   // linux threshold are set for Ubuntu
-  getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'simple.2.start.events.1.task',
@@ -38,11 +38,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     ]);
   }
 
-  getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>([]);
-  }
-
-  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'simple.2.start.events.1.task',
