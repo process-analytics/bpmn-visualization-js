@@ -13,28 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+const { isRunningOnCISlowOS } = require('../environment-utils');
 
 const log = require('debug')('bv:test:config:pw');
-
-const isMacOS = () => {
-  const isMacOS = process.platform.startsWith('darwin');
-  log('platform: %s / isMacOS? %s', process.platform, isMacOS);
-  return isMacOS;
-};
-const isWindowsOS = () => {
-  const isWindowsOS = process.platform.startsWith('win');
-  log('platform: %s / isWindowsOS? %s', process.platform, isWindowsOS);
-  return isWindowsOS;
-};
-// running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
-const isRunningOnCi = () => {
-  const isRunningOnCi = process.env.CI === 'true';
-  log('isRunningOnCi?', isRunningOnCi);
-  return isRunningOnCi;
-};
-const isRunningOnCISlowOS = () => {
-  return isRunningOnCi() && (isMacOS() || isWindowsOS());
-};
 
 const computeBrowsersAndChannelConfiguration = defaultBrowsers => {
   log('Default browsers list', defaultBrowsers);

@@ -18,6 +18,9 @@ import 'jest-playwright-preset';
 import { join } from 'path';
 import { Mouse, Page } from 'playwright';
 import { findFiles } from '../../helpers/file-helper';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore js file with commonjs export
+import envUtils = require('../../helpers/environment-utils.js');
 
 export interface Point {
   x: number;
@@ -80,7 +83,7 @@ export async function mouseZoom(page: Page, xTimes: number, point: Point, deltaX
   for (let i = 0; i < xTimes; i++) {
     await mouseZoomNoDelay(page, point, deltaX);
     // delay here is needed to make the tests pass on MacOS, delay must be greater than debounce timing so it surely gets triggered
-    await delay(150);
+    await delay(envUtils.isRunningOnCISlowOS() ? 300 : 150);
   }
 }
 
