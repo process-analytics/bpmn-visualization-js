@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-ignore js file with commonjs export
 import envUtils = require('../helpers/environment-utils.js');
 
 const onCi = envUtils.isRunningOnCi();
