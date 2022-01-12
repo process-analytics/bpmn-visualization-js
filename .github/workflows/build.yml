@@ -147,7 +147,7 @@ jobs:
         id: 'test_bundles'
         env:
           BROWSERS: ${{matrix.browser}}
-        run: npm run test:bundles
+        run: npm run test:bundles:verbose
       - name: Upload bundles test results
         if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
         uses: actions/upload-artifact@v2
