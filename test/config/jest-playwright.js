@@ -84,18 +84,20 @@ const computeBaseConfiguration = defaultBrowsers => {
 
 const computeConfigurationForDevServerUsage = defaultBrowsers => {
   log('Computing configuration for dev server usage');
+  /** @type {import('jest-playwright-preset/types/global').ServerOptions} */
+  const serverOptions = {
+    command: `npm run start -- --config-server-port 10002`,
+    port: 10002,
+    // if default or tcp, the test starts right await whereas the dev server is not available on http
+    // for more details, see https://github.com/process-analytics/bpmn-visualization-js/pull/1056
+    protocol: 'http',
+    launchTimeout: 60_000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
+    debug: true,
+    usedPortAction: 'ignore', // your tests are executed, we assume that the server is already started
+  };
   return {
     ...computeBaseConfiguration(defaultBrowsers),
-    serverOptions: {
-      command: `npm run start -- --config-server-port 10002`,
-      port: 10002,
-      // if default or tcp, the test starts right await whereas the dev server is not available on http
-      // for more details, see https://github.com/process-analytics/bpmn-visualization-js/pull/1056
-      protocol: 'http',
-      launchTimeout: 60_000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
-      debug: true,
-      usedPortAction: 'ignore', // your tests are executed, we assume that the server is already started
-    },
+    serverOptions: serverOptions,
   };
 };
 
