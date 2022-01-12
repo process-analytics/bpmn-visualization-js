@@ -37,7 +37,7 @@ module.exports = {
   setupFiles: ['./test/config/copy.bpmn.diagram.ts'],
   setupFilesAfterEnv: [
     'expect-playwright',
-    './test/config/jest.setup.after.env.ts',
+    './test/config/jest.retries.ts',
     // jest-image-snapshot configuration doesn't work with setupFiles, fix with setupFilesAfterEnv: see https://github.com/testing-library/jest-dom/issues/122#issuecomment-650520461
     './test/config/jest.image.ts',
     // need playwright globals to be available, so after environment
