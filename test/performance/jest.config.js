@@ -30,6 +30,6 @@ module.exports = {
       tsconfig: './tsconfig.json',
     },
   },
-  setupFiles: ['./test/e2e/config/copy.bpmn.diagram.ts'],
+  setupFiles: ['./test/config/copy.bpmn.diagram.ts', './test/config/jest.retries.ts'],
   setupFilesAfterEnv: ['expect-playwright'],
 };
