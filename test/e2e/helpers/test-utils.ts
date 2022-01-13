@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import debugLogger from 'debug';
-import 'jest-playwright-preset';
 import { join } from 'path';
 import { Mouse, Page } from 'playwright';
 import { findFiles } from '../../helpers/file-helper';
@@ -38,12 +37,6 @@ export function getSimplePlatformName(): OsName {
   }
   // we don't support other platform than linux, so hardcode it
   return 'linux';
-}
-
-export type BrowserFamily = 'chromium' | 'firefox' | 'webkit';
-
-export function getTestedBrowserFamily(): BrowserFamily {
-  return browserName;
 }
 
 export function delay(time: number): Promise<unknown> {
