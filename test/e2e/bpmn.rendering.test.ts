@@ -339,7 +339,7 @@ describe('BPMN rendering', () => {
   });
 
   it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName, {
       styleOptions: styleOptionsPerDiagram.get(bpmnDiagramName),
     });
 

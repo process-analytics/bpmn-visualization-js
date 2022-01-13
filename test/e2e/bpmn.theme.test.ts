@@ -45,7 +45,7 @@ describe('BPMN theme', () => {
   const useCases = Array.from(styleOptionsPerUseCase.keys());
 
   it.each(useCases)(`Use case %s`, async (useCase: string) => {
-    await pageTester.loadBPMNDiagramInRefreshedPage('01.most.bpmn.types.without.label', {
+    await pageTester.gotoPageAndLoadBpmnDiagram('01.most.bpmn.types.without.label', {
       styleOptions: styleOptionsPerUseCase.get(useCase),
     });
 

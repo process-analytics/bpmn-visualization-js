@@ -15,8 +15,8 @@
  */
 import * as fs from 'fs';
 import { Page } from 'playwright';
-import { delay, getSimplePlatformName, mouseZoomNoDelay, Point } from '../e2e/helpers/test-utils';
-import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
+import { delay, getSimplePlatformName } from '../e2e/helpers/test-utils';
+import { PageTester, Point } from '../e2e/helpers/visu/bpmn-page-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
 import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
 
@@ -29,14 +29,13 @@ beforeAll(async () => {
   metricsCollector = await ChromiumMetricsCollector.create(<Page>page);
 });
 describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
-  // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
   const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
 
-  const fileName = 'B.2.0';
+  const bpmnDiagramName = 'B.2.0';
   let containerCenter: Point;
 
   beforeEach(async () => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
+    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
     containerCenter = await pageTester.getContainerCenter();
   });
 
@@ -46,14 +45,14 @@ describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
     const metricsStart = await metricsCollector.metrics();
 
     for (let i = 0; i < xTimes; i++) {
-      await mouseZoomNoDelay(page, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
+      await pageTester.mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
       if (i % 5 === 0) {
         await delay(30);
       }
     }
     await delay(100);
     for (let i = 0; i < xTimes; i++) {
-      await mouseZoomNoDelay(page, { x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
+      await pageTester.mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
       if (i % 5 === 0) {
         await delay(30);
       }
