@@ -150,7 +150,7 @@ function pluginsForDevelopment() {
   if (devMode || demoMode) {
     plugins.push(execute('npm run demo:css', true)); // sync to ensure the execution is linked to the main rollup process
     if (devLiveReloadMode) {
-      plugins.push(execute('npm run watch:css'));
+      plugins.push(execute('npm run demo:css -- --watch --verbose'));
     }
 
     const copyTargets = [];
