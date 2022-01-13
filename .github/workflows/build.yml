@@ -145,9 +145,7 @@ jobs:
           npx playwright install-deps ${{matrix.browser}}
       - name: Test bundles
         id: 'test_bundles'
-        env:
-          BROWSERS: ${{matrix.browser}}
-        run: npm run test:bundles:verbose
+        run: npm run test:bundles:verbose -- --project=${{matrix.browser}}
       - name: Upload bundles test results
         if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
         uses: actions/upload-artifact@v2

@@ -13,37 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { expect, PlaywrightTestArgs, test } from '@playwright/test';
 import { existsSync } from 'fs';
-import 'jest-playwright-preset';
 import { resolve } from 'path';
-import { Page } from 'playwright';
 import { BpmnPageSvgTester } from '../e2e/helpers/visu/bpmn-page-utils';
 
-describe('bundles', () => {
-  describe('All bundles have been generated', () => {
+test.describe('bundles', () => {
+  test.describe('All bundles have been generated', () => {
     const bundlesDirectoryPath = resolve(__dirname, '../../dist');
 
-    it.each`
-      file                               | bundleType
-      ${'bpmn-visualization.cjs.js'}     | ${'CommonJS'}
-      ${'bpmn-visualization.cjs.min.js'} | ${'CommonJS minified'}
-      ${'bpmn-visualization.esm.js'}     | ${'ESM'}
-      ${'bpmn-visualization.esm.min.js'} | ${'ESM minified'}
-      ${'bpmn-visualization.js'}         | ${'IIFE'}
-      ${'bpmn-visualization.min.js'}     | ${'IIFE minified'}
-    `(
-      '$bundleType',
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      ({ file, bundleType }) => {
+    for (const { file, bundleType } of [
+      { file: 'bpmn-visualization.cjs.js', bundleType: 'CommonJS' },
+      { file: 'bpmn-visualization.cjs.min.js', bundleType: 'CommonJS minified' },
+      { file: 'bpmn-visualization.esm.js', bundleType: 'ESM' },
+      { file: 'bpmn-visualization.esm.min.js', bundleType: 'ESM minified' },
+      { file: 'bpmn-visualization.js', bundleType: 'IIFE' },
+      { file: 'bpmn-visualization.min.js', bundleType: 'IIFE minified' },
+    ]) {
+      // eslint-disable-next-line jest/valid-title
+      test(bundleType, () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         expect(existsSync(resolve(bundlesDirectoryPath, file))).toBe(true);
-      },
-    );
+      });
+    }
   });
 
-  it('IIFE bundle - should generate BPMN Diagram SVG', async () => {
+  // eslint-disable-next-line jest/no-done-callback
+  test('IIFE bundle - should generate BPMN Diagram SVG', async ({ page }: PlaywrightTestArgs) => {
     const pageTester = new BpmnStaticPageSvgTester(
       { pageFileName: 'lib-integration-iife', expectedPageTitle: 'BPMN Visualization IIFE bundle', bpmnContainerId: 'bpmn-container-for-iife-bundle' },
-      <Page>page,
+      page,
     );
     await pageTester.loadBPMNDiagramInRefreshedPage();
 
@@ -58,6 +57,6 @@ describe('bundles', () => {
 class BpmnStaticPageSvgTester extends BpmnPageSvgTester {
   override async loadBPMNDiagramInRefreshedPage(): Promise<void> {
     const url = `file://${resolve(__dirname, `static/${this.targetedPage.pageFileName}.html`)}`;
-    super.doLoadBPMNDiagramInRefreshedPage(url, false);
+    await super.doLoadBPMNDiagramInRefreshedPage(url, false);
   }
 }
