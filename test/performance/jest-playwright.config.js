@@ -15,4 +15,4 @@
  */
 
 // only collect on chromium for now
-module.exports = module.exports = require('../config/jest-playwright').computeConfigurationForDevServerUsage('chromium');
+module.exports = module.exports = require('../config/jest-playwright').computeConfiguration({ defaultBrowsers: 'chromium' });
