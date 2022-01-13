@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { OverlayEdgePosition, OverlayShapePosition } from '../../src/component/registry';
+
+import type { OverlayEdgePosition, OverlayShapePosition } from '../../src/component/registry';
 
 export const overlayEdgePositionValues = <Array<OverlayEdgePosition>>['start', 'middle', 'end'];
 

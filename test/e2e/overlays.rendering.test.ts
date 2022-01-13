@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 import { expect, PlaywrightTestArgs, test, Page } from '@playwright/test';
-import { ensureIsArray } from '../../src/component/helpers/array-utils';
-import { OverlayPosition } from '../../src/component/registry';
+import type { OverlayPosition } from '../../src/component/registry';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { clickOnButton, mousePanning, mouseZoom, Point } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
 
 async function addOverlays(page: Page, bpmnElementIds: string | string[], positions: OverlayPosition | OverlayPosition[]): Promise<void> {
-  positions = ensureIsArray<OverlayPosition>(positions);
-  for (const bpmnElementId of ensureIsArray<string>(bpmnElementIds)) {
+  positions = Array.isArray(positions) ? positions : [positions];
+  for (const bpmnElementId of Array.isArray(bpmnElementIds) ? bpmnElementIds : [bpmnElementIds]) {
     await page.fill('#bpmn-id-input', bpmnElementId);
     for (const position of positions) {
       await clickOnButton(page, position);
@@ -49,17 +48,17 @@ function buildAddSnapshotPath(imageName: string, position?: OverlayPosition): st
   } else {
     snapshotPath.push('with.custom.style');
   }
-  snapshotPath.push(`${imageName}.png`);
+  snapshotPath.push(imageName, `${imageName}.png`);
 
   return snapshotPath;
 }
 
 function buildRemoveAllSnapshotPath(imageName: string): string[] {
-  return ['remove.all.overlays', `${imageName}.png`];
+  return ['remove.all.overlays', imageName, `${imageName}.png`];
 }
 
 function buildNavigationSnapshotPath(imageName: string): string[] {
-  return ['navigation', `${imageName}.png`];
+  return ['navigation', imageName, `${imageName}.png`];
 }
 
 // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
@@ -68,7 +67,7 @@ test.beforeEach(async ({ page }: PlaywrightTestArgs) => {
   pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' }, page);
 });
 
-test.describe('BPMN Shapes with overlays', () => {
+test.describe.parallel('BPMN Shapes with overlays', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
 
   for (const position of overlayShapePositionValues) {
@@ -89,11 +88,11 @@ test.describe('BPMN Shapes with overlays', () => {
     await removeAllOverlays(page, 'Activity_1');
 
     const image = await page.screenshot({ fullPage: true });
-    await expect(image).toMatchSnapshot(buildRemoveAllSnapshotPath('of.shape.png'));
+    await expect(image).toMatchSnapshot(buildRemoveAllSnapshotPath('of.shape'));
   });
 });
 
-test.describe('BPMN Edges with overlays', () => {
+test.describe.parallel('BPMN Edges with overlays', () => {
   for (const { bpmnDiagramName, edgeKind, bpmnElementIds } of [
     {
       bpmnDiagramName: 'overlays.edges.associations.complex.paths',
@@ -124,7 +123,7 @@ test.describe('BPMN Edges with overlays', () => {
       bpmnElementIds: ['Flow_039xs1c', 'Flow_0m2ldux', 'Flow_1r3oti3', 'Flow_1byeukq'],
     },
   ]) {
-    test.describe(`diagram ${bpmnDiagramName}`, () => {
+    test.describe.parallel(`diagram ${bpmnDiagramName}`, () => {
       for (const position of overlayEdgePositionValues) {
         test(`add overlay on ${edgeKind} flow on ${position}`, async ({ page }: PlaywrightTestArgs) => {
           await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
@@ -150,7 +149,7 @@ test.describe('BPMN Edges with overlays', () => {
   }
 });
 
-test.describe('Overlay navigation', () => {
+test.describe.parallel('Overlay navigation', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
   let containerCenter: Point;
 
@@ -179,7 +178,7 @@ test.describe('Overlay navigation', () => {
   });
 });
 
-test.describe('Overlay style', () => {
+test.describe.parallel('Overlay style', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
 
   for (const style of ['fill', 'font', 'stroke']) {
