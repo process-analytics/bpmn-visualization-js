@@ -15,7 +15,7 @@
  */
 import 'expect-playwright';
 import { PageWaitForSelectorOptions } from 'expect-playwright';
-import { ElementHandle, Mouse, Page } from 'playwright';
+import { ElementHandle, Page } from 'playwright';
 import { FitType, LoadOptions } from '../../../../src/component/options';
 import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
 import { delay } from '../test-utils';
