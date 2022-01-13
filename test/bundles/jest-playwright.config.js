@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-module.exports = require('../config/jest-playwright').computeConfigurationForStaticUsage();
+module.exports = require('../config/jest-playwright').computeConfiguration({ startWebServer: false, defaultBrowsers: 'chromium,firefox,webkit' });
