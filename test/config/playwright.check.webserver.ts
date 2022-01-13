@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Bonitasoft S.A.
+ * Copyright 2021 Bonitasoft S.A.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,26 @@
 import { FullConfig } from '@playwright/test';
 import waitOn from 'wait-on';
 
-const checkWebServer = (config: FullConfig): void => {
-  const baseURL = config.projects[0].use.baseURL;
+const checkWebServer = async (config: FullConfig): Promise<void> => {
+  // we need sync code here to block playwright prior test can start
+  try {
+    const baseURL = config.projects[0].use.baseURL;
 
-  if (baseURL) {
-    const opts = {
-      resources: [baseURL, `${baseURL}/diagram-navigation.html`, `${baseURL}/non-regression.html`, `${baseURL}/overlays.html`],
-      timeout: config.webServer.timeout, // timeout in ms, default Infinity
-      interval: 100, // poll interval in ms, default 250ms
-    };
+    if (baseURL) {
+      // const timeout = 1_000;
+      const timeout = config.webServer.timeout;
+      const opts: waitOn.WaitOnOptions = {
+        resources: [baseURL, `${baseURL}/diagram-navigation.html`, `${baseURL}/non-regression.html`, `${baseURL}/overlays.html`],
+        timeout: timeout,
+        verbose: false, // set to true to trace requests
+        log: true,
+      };
 
-    waitOn(opts).catch(function (err: Error) {
-      // Following https://developer.mozilla.org/en-US/docs/web/javascript/reference/global_objects/error/error, this constructor should exist.
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      throw new Error(`Server has taken more than ${config.webServer.timeout}ms to start.`, { cause: err });
-    });
+      await waitOn(opts);
+      // once here, all resources are available
+    }
+  } catch (err: unknown) {
+    throw new Error(`The webserver takes more than ${timeout}ms to start. ${err}`);
   }
 };
 
