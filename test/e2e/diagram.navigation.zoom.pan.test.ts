@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import 'jest-playwright-preset';
+import { expect, PlaywrightTestArgs, test } from '@playwright/test';
 import { join } from 'path';
-import { Page } from 'playwright';
 import { mousePanning, mouseZoom, Point } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
 import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
@@ -50,20 +49,23 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   }
 }
 
-describe('diagram navigation - zoom and pan', () => {
+test.describe('diagram navigation - zoom and pan', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'navigation');
-  // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
-  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
 
   const bpmnDiagramName = 'simple.2.start.events.1.task';
+
+  // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
+  let pageTester: PageTester;
   let containerCenter: Point;
 
-  beforeEach(async () => {
+  test.beforeEach(async ({ page }: PlaywrightTestArgs) => {
+    pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, page);
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
     containerCenter = await pageTester.getContainerCenter();
   });
 
-  it('mouse panning', async () => {
+  // eslint-disable-next-line jest/no-done-callback
+  test('mouse panning', async ({ page }: PlaywrightTestArgs) => {
     await mousePanning(page, { originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
     const image = await page.screenshot({ fullPage: true });
@@ -74,31 +76,37 @@ describe('diagram navigation - zoom and pan', () => {
     });
   });
 
-  it.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
-    const deltaX = zoomMode === 'zoom in' ? -100 : 100;
-    await mouseZoom(page, 1, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
+  for (const zoomMode of ['zoom in', 'zoom out']) {
+    // eslint-disable-next-line jest/no-done-callback
+    test(`ctrl + mouse: ${zoomMode}`, async ({ page }: PlaywrightTestArgs) => {
+      const deltaX = zoomMode === 'zoom in' ? -100 : 100;
+      await mouseZoom(page, 1, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
 
-    const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: zoomMode === 'zoom in' ? 'mouse.zoom.in' : 'mouse.zoom.out',
+      const image = await page.screenshot({ fullPage: true });
+      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+      expect(image).toMatchImageSnapshot({
+        ...config,
+        customSnapshotIdentifier: zoomMode === 'zoom in' ? 'mouse.zoom.in' : 'mouse.zoom.out',
+      });
     });
-  });
+  }
 
-  it.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
-    const deltaX = -100;
-    // simulate mouse+ctrl zoom
-    await page.mouse.move(containerCenter.x + 200, containerCenter.y);
-    await mouseZoom(page, xTimes, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
-    await mouseZoom(page, xTimes, { x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
+  for (const xTimes of [3, 5]) {
+    // eslint-disable-next-line jest/no-done-callback
+    test(`ctrl + mouse: initial scale after zoom in and zoom out [${xTimes} times]`, async ({ page }: PlaywrightTestArgs) => {
+      const deltaX = -100;
+      // simulate mouse+ctrl zoom
+      await page.mouse.move(containerCenter.x + 200, containerCenter.y);
+      await mouseZoom(page, xTimes, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
+      await mouseZoom(page, xTimes, { x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
 
-    const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: join(config.customDiffDir, `${xTimes}-zoom-in-out`),
+      const image = await page.screenshot({ fullPage: true });
+      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+      expect(image).toMatchImageSnapshot({
+        ...config,
+        customSnapshotIdentifier: 'initial.zoom',
+        customDiffDir: join(config.customDiffDir, `${xTimes}-zoom-in-out`),
+      });
     });
-  });
+  }
 });

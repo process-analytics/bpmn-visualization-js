@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { expect, PlaywrightTestArgs, test } from '@playwright/test';
 import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
-import 'jest-playwright-preset';
 import { join } from 'path';
-import { Page } from 'playwright';
 import { FitType } from '../../src/component/options';
 import { clickOnButton, getBpmnDiagramNames } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
@@ -137,79 +136,93 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   }
 }
 
-describe('diagram navigation - fit', () => {
+test.describe('diagram navigation - fit', () => {
   const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'fit');
 
-  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
+  let pageTester: PageTester;
+  test.beforeEach(async ({ page }: PlaywrightTestArgs) => {
+    pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, page);
+  });
 
   const fitTypes: FitType[] = [FitType.None, FitType.HorizontalVertical, FitType.Horizontal, FitType.Vertical, FitType.Center];
-  describe.each(fitTypes)('load options - fit %s', (onLoadFitType: FitType) => {
-    describe.each(bpmnDiagramNames)('diagram %s', (bpmnDiagramName: string) => {
-      it('load', async () => {
-        await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
-          loadOptions: {
-            fit: {
-              type: onLoadFitType,
-            },
-          },
-        });
-
-        const image = await page.screenshot({ fullPage: true });
-
-        const config = imageSnapshotConfigurator.getConfig({
-          fileName: bpmnDiagramName,
-          fitType: onLoadFitType,
-          buildCustomDiffDir: (config, fitType) => FitImageSnapshotConfigurator.buildOnLoadDiffDir(config, fitType),
-        });
-        expect(image).toMatchImageSnapshot(config);
-      });
-
-      it.each(fitTypes)(`load + fit %s`, async (afterLoadFitType: FitType) => {
-        await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
-          loadOptions: {
-            fit: {
-              type: onLoadFitType,
-            },
-          },
-        });
-        await clickOnButton(page, afterLoadFitType);
-
-        const image = await page.screenshot({ fullPage: true });
-
-        const config = imageSnapshotConfigurator.getConfig({
-          fileName: bpmnDiagramName,
-          fitType: afterLoadFitType,
-          buildCustomDiffDir: (config, fitType) => FitImageSnapshotConfigurator.buildAfterLoadDiffDir(config, fitType, onLoadFitType),
-        });
-        expect(image).toMatchImageSnapshot(config);
-      });
-
-      if (
-        (onLoadFitType === FitType.Center && bpmnDiagramName === 'with.outside.flows') ||
-        (onLoadFitType === FitType.Horizontal && bpmnDiagramName === 'horizontal') ||
-        (onLoadFitType === FitType.Vertical && bpmnDiagramName === 'vertical')
-      ) {
-        it.each([-100, 0, 20, 50, null])('load with margin %s', async (margin: number) => {
-          await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
-            loadOptions: {
-              fit: {
-                type: onLoadFitType,
-                margin: margin,
+  for (const onLoadFitType of fitTypes) {
+    test.describe(`load options - fit ${onLoadFitType}`, () => {
+      for (const bpmnDiagramName of bpmnDiagramNames) {
+        test.describe(`diagram ${bpmnDiagramName}`, () => {
+          // eslint-disable-next-line jest/no-done-callback
+          test('load', async ({ page }: PlaywrightTestArgs) => {
+            await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+              loadOptions: {
+                fit: {
+                  type: onLoadFitType,
+                },
               },
-            },
+            });
+
+            const image = await page.screenshot({ fullPage: true });
+
+            const config = imageSnapshotConfigurator.getConfig({
+              fileName: bpmnDiagramName,
+              fitType: onLoadFitType,
+              buildCustomDiffDir: (config, fitType) => FitImageSnapshotConfigurator.buildOnLoadDiffDir(config, fitType),
+            });
+            expect(image).toMatchImageSnapshot(config);
           });
 
-          const image = await page.screenshot({ fullPage: true });
+          for (const afterLoadFitType of fitTypes) {
+            // eslint-disable-next-line jest/no-done-callback
+            test(`load + fit ${afterLoadFitType}`, async ({ page }: PlaywrightTestArgs) => {
+              await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+                loadOptions: {
+                  fit: {
+                    type: onLoadFitType,
+                  },
+                },
+              });
+              await clickOnButton(page, afterLoadFitType);
 
-          const config = imageSnapshotConfigurator.getConfig({
-            fileName: bpmnDiagramName,
-            fitType: onLoadFitType,
-            margin,
-            buildCustomDiffDir: (config, fitType, margin) => FitImageSnapshotConfigurator.buildOnLoadDiffDir(config, fitType, true, margin),
-          });
-          expect(image).toMatchImageSnapshot(config);
+              const image = await page.screenshot({ fullPage: true });
+
+              const config = imageSnapshotConfigurator.getConfig({
+                fileName: bpmnDiagramName,
+                fitType: afterLoadFitType,
+                buildCustomDiffDir: (config, fitType) => FitImageSnapshotConfigurator.buildAfterLoadDiffDir(config, fitType, onLoadFitType),
+              });
+              expect(image).toMatchImageSnapshot(config);
+            });
+          }
+
+          if (
+            (onLoadFitType === FitType.Center && bpmnDiagramName === 'with.outside.flows') ||
+            (onLoadFitType === FitType.Horizontal && bpmnDiagramName === 'horizontal') ||
+            (onLoadFitType === FitType.Vertical && bpmnDiagramName === 'vertical')
+          ) {
+            for (const margin of [-100, 0, 20, 50, null]) {
+              // eslint-disable-next-line jest/no-done-callback
+              test(`load with margin ${margin}`, async ({ page }: PlaywrightTestArgs) => {
+                await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+                  loadOptions: {
+                    fit: {
+                      type: onLoadFitType,
+                      margin: margin,
+                    },
+                  },
+                });
+
+                const image = await page.screenshot({ fullPage: true });
+
+                const config = imageSnapshotConfigurator.getConfig({
+                  fileName: bpmnDiagramName,
+                  fitType: onLoadFitType,
+                  margin,
+                  buildCustomDiffDir: (config, fitType, margin) => FitImageSnapshotConfigurator.buildOnLoadDiffDir(config, fitType, true, margin),
+                });
+                expect(image).toMatchImageSnapshot(config);
+              });
+            }
+          }
         });
       }
     });
-  });
+  }
 });

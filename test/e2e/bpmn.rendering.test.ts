@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import 'jest-playwright-preset';
-import { Page } from 'playwright';
+import { expect, PlaywrightTestArgs, test } from '@playwright/test';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 import { PageTester, StyleOptions } from './helpers/visu/bpmn-page-utils';
 import {
@@ -328,23 +327,31 @@ const styleOptionsPerDiagram = new Map<string, StyleOptions>([
   ],
 ]);
 
-describe('BPMN rendering', () => {
+test.describe('BPMN rendering', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'bpmn');
 
-  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' }, <Page>page);
+  let pageTester: PageTester;
   const bpmnDiagramNames = getBpmnDiagramNames('non-regression');
 
-  it('check bpmn non-regression files availability', () => {
+  test.beforeEach(async ({ page }: PlaywrightTestArgs) => {
+    pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression' }, page);
+  });
+
+  test('check bpmn non-regression files availability', () => {
     expect(bpmnDiagramNames).toContain('gateways');
   });
 
-  it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
-      styleOptions: styleOptionsPerDiagram.get(bpmnDiagramName),
-    });
+  for (const bpmnDiagramName of bpmnDiagramNames) {
+    // eslint-disable-next-line jest/no-done-callback,jest/valid-title
+    test(bpmnDiagramName, async ({ page }: PlaywrightTestArgs) => {
+      await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+        styleOptions: styleOptionsPerDiagram.get(bpmnDiagramName),
+      });
 
-    const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot(config);
-  });
+      const image = await page.screenshot({ fullPage: true });
+      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+      expect(image).toMatchImageSnapshot(config);
+      await expect(image).toMatchSnapshot(config);
+    });
+  }
 });

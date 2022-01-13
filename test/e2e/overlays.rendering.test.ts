@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import 'jest-playwright-preset';
+import { expect, PlaywrightTestArgs, test } from '@playwright/test';
 import { join } from 'path';
-import { Page } from 'playwright';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
-import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
+import { OverlayEdgePosition, OverlayPosition } from '../../src/component/registry';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { clickOnButton, mousePanning, mouseZoom, Point } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
@@ -159,31 +158,38 @@ async function removeAllOverlays(bpmnElementId: string): Promise<void> {
 const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'overlays');
 
 // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
-const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' }, <Page>page);
+let pageTester: PageTester;
+test.beforeEach(async ({ page }: PlaywrightTestArgs) => {
+  pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' }, page);
+});
 
-describe('BPMN Shapes with overlays', () => {
+test.describe('BPMN Shapes with overlays', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
 
   function getShapeDir(dir: string): string {
     return join(dir, `on.shape`);
   }
 
-  it.each(overlayShapePositionValues)(`add overlay on StartEvent, Gateway and Task on %s`, async (position: OverlayShapePosition) => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+  for (const position of overlayShapePositionValues) {
+    // eslint-disable-next-line jest/no-done-callback
+    test(`add overlay on StartEvent, Gateway and Task on ${position}`, async ({ page }: PlaywrightTestArgs) => {
+      await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-    await addOverlays(['StartEvent_1', 'Activity_1', 'Gateway_1'], position);
+      await addOverlays(['StartEvent_1', 'Activity_1', 'Gateway_1'], position);
 
-    const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: `add.overlay.on.position.${position}`,
-      customSnapshotsDir: getShapeDir(config.customSnapshotsDir),
-      customDiffDir: getShapeDir(config.customDiffDir),
+      const image = await page.screenshot({ fullPage: true });
+      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+      expect(image).toMatchImageSnapshot({
+        ...config,
+        customSnapshotIdentifier: `add.overlay.on.position.${position}`,
+        customSnapshotsDir: getShapeDir(config.customSnapshotsDir),
+        customDiffDir: getShapeDir(config.customDiffDir),
+      });
     });
-  });
+  }
 
-  it(`remove all overlays of Shape`, async () => {
+  // eslint-disable-next-line jest/no-done-callback
+  test(`remove all overlays of Shape`, async ({ page }: PlaywrightTestArgs) => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
     await addOverlays('Activity_1', ['top-left', 'bottom-left', 'middle-right']);
@@ -201,13 +207,25 @@ describe('BPMN Shapes with overlays', () => {
   });
 });
 
-describe('BPMN Edges with overlays', () => {
-  describe.each([
-    ['overlays.edges.associations.complex.paths', 'association', ['Association_1opueuo', 'Association_0n43f9f', 'Association_01t0kyz']],
-    [
-      'overlays.edges.message.flows.complex.paths',
-      'message',
-      [
+test.describe('BPMN Edges with overlays', () => {
+  function getEdgeDir(dir: string): string {
+    return join(dir, `on.edge`);
+  }
+
+  function getEdgePositionDir(dir: string, position: OverlayEdgePosition): string {
+    return join(getEdgeDir(dir), `on-position-${position}`);
+  }
+
+  for (const { bpmnDiagramName, edgeKind, bpmnElementIds } of [
+    {
+      bpmnDiagramName: 'overlays.edges.associations.complex.paths',
+      edgeKind: 'association',
+      bpmnElementIds: ['Association_1opueuo', 'Association_0n43f9f', 'Association_01t0kyz'],
+    },
+    {
+      bpmnDiagramName: 'overlays.edges.message.flows.complex.paths',
+      edgeKind: 'message',
+      bpmnElementIds: [
         // incoming and outgoing flows of the 2 pools starting from the right
         'Flow_0skfnol',
         'Flow_0ssridu',
@@ -221,53 +239,55 @@ describe('BPMN Edges with overlays', () => {
         'Flow_0mmisr0',
         'Flow_1l8ze06',
       ],
-    ],
-    ['overlays.edges.sequence.flows.complex.paths', 'sequence', ['Flow_039xs1c', 'Flow_0m2ldux', 'Flow_1r3oti3', 'Flow_1byeukq']],
-  ])('diagram %s', (bpmnDiagramName: string, edgeKind: string, bpmnElementIds: string[]) => {
-    function getEdgeDir(dir: string): string {
-      return join(dir, `on.edge`);
-    }
+    },
+    {
+      bpmnDiagramName: 'overlays.edges.sequence.flows.complex.paths',
+      edgeKind: 'sequence',
+      bpmnElementIds: ['Flow_039xs1c', 'Flow_0m2ldux', 'Flow_1r3oti3', 'Flow_1byeukq'],
+    },
+  ]) {
+    test.describe(`diagram ${bpmnDiagramName}`, () => {
+      for (const position of overlayEdgePositionValues) {
+        // eslint-disable-next-line jest/no-done-callback
+        test(`add overlay on ${edgeKind} flow on ${position}`, async ({ page }: PlaywrightTestArgs) => {
+          await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-    function getEdgePositionDir(dir: string, position: OverlayEdgePosition): string {
-      return join(getEdgeDir(dir), `on-position-${position}`);
-    }
+          await addOverlays(bpmnElementIds, position);
 
-    it.each(overlayEdgePositionValues)(`add overlay on ${edgeKind} flow on %s`, async (position: OverlayEdgePosition) => {
-      await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+          const image = await page.screenshot({ fullPage: true });
+          const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+          expect(image).toMatchImageSnapshot({
+            ...config,
+            customSnapshotIdentifier: `add.overlay.on.${edgeKind}.flow`,
+            customSnapshotsDir: getEdgePositionDir(config.customSnapshotsDir, position),
+            customDiffDir: getEdgePositionDir(config.customDiffDir, position),
+          });
+        });
+      }
 
-      await addOverlays(bpmnElementIds, position);
+      // eslint-disable-next-line jest/no-done-callback
+      test(`remove all overlays of ${edgeKind} flow`, async ({ page }: PlaywrightTestArgs) => {
+        await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-      const image = await page.screenshot({ fullPage: true });
-      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-      expect(image).toMatchImageSnapshot({
-        ...config,
-        customSnapshotIdentifier: `add.overlay.on.${edgeKind}.flow`,
-        customSnapshotsDir: getEdgePositionDir(config.customSnapshotsDir, position),
-        customDiffDir: getEdgePositionDir(config.customDiffDir, position),
+        const id = bpmnElementIds.shift();
+        await addOverlays(id, ['start', 'middle', 'end']);
+
+        await removeAllOverlays(id);
+
+        const image = await page.screenshot({ fullPage: true });
+        const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+        expect(image).toMatchImageSnapshot({
+          ...config,
+          customSnapshotIdentifier: `remove.all.overlays.of.${edgeKind}.flow`,
+          customSnapshotsDir: getEdgeDir(config.customSnapshotsDir),
+          customDiffDir: getEdgeDir(config.customDiffDir),
+        });
       });
     });
-
-    it(`remove all overlays of ${edgeKind} flow`, async () => {
-      await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
-
-      const id = bpmnElementIds.shift();
-      await addOverlays(id, ['start', 'middle', 'end']);
-
-      await removeAllOverlays(id);
-
-      const image = await page.screenshot({ fullPage: true });
-      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-      expect(image).toMatchImageSnapshot({
-        ...config,
-        customSnapshotIdentifier: `remove.all.overlays.of.${edgeKind}.flow`,
-        customSnapshotsDir: getEdgeDir(config.customSnapshotsDir),
-        customDiffDir: getEdgeDir(config.customDiffDir),
-      });
-    });
-  });
+  }
 });
 
-describe('Overlay navigation', () => {
+test.describe('Overlay navigation', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
   let containerCenter: Point;
 
@@ -317,7 +337,7 @@ describe('Overlay navigation', () => {
 
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new OverlayNavigationImageSnapshotThresholds(), 'overlays');
 
-  beforeEach(async () => {
+  test.beforeEach(async () => {
     await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
     containerCenter = await pageTester.getContainerCenter();
 
@@ -327,7 +347,8 @@ describe('Overlay navigation', () => {
     await addOverlays('Flow_1', 'start');
   });
 
-  it('panning', async () => {
+  // eslint-disable-next-line jest/no-done-callback
+  test('panning', async ({ page }: PlaywrightTestArgs) => {
     await mousePanning(page, { originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
     const image = await page.screenshot({ fullPage: true });
@@ -338,7 +359,8 @@ describe('Overlay navigation', () => {
     });
   });
 
-  it(`zoom out`, async () => {
+  // eslint-disable-next-line jest/no-done-callback
+  test(`zoom out`, async ({ page }: PlaywrightTestArgs) => {
     await mouseZoom(page, 1, { x: containerCenter.x + 200, y: containerCenter.y }, 100);
 
     const image = await page.screenshot({ fullPage: true });
@@ -350,7 +372,7 @@ describe('Overlay navigation', () => {
   });
 });
 
-describe('Overlay style', () => {
+test.describe('Overlay style', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
   const snapshotPath = 'with.custom.style';
 
@@ -448,18 +470,21 @@ describe('Overlay style', () => {
 
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new OverlayStylesImageSnapshotThresholds(), 'overlays');
 
-  it.each(['fill', 'font', 'stroke'])(`add overlay with custom %s`, async (style: string) => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+  for (const style of ['fill', 'font', 'stroke']) {
+    // eslint-disable-next-line jest/no-done-callback
+    test(`add overlay with custom ${style}`, async ({ page }: PlaywrightTestArgs) => {
+      await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
 
-    await addStylingOverlay(['StartEvent_1', 'Activity_1', 'Gateway_1', 'Flow_1'], style);
+      await addStylingOverlay(['StartEvent_1', 'Activity_1', 'Gateway_1', 'Flow_1'], style);
 
-    const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(style);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: `add.overlay.with.custom.${style}`,
-      customSnapshotsDir: join(config.customSnapshotsDir, snapshotPath),
-      customDiffDir: join(config.customDiffDir, snapshotPath),
+      const image = await page.screenshot({ fullPage: true });
+      const config = imageSnapshotConfigurator.getConfig(style);
+      expect(image).toMatchImageSnapshot({
+        ...config,
+        customSnapshotIdentifier: `add.overlay.with.custom.${style}`,
+        customSnapshotsDir: join(config.customSnapshotsDir, snapshotPath),
+        customDiffDir: join(config.customDiffDir, snapshotPath),
+      });
     });
-  });
+  }
 });
