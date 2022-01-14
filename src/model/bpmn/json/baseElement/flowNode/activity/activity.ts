@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TInputOutputSpecification } from '../../input-output';
-import { TLaneSet, TProperty } from '../../baseElement';
-import { TDataInputAssociation, TDataObject, TDataObjectReference, TDataOutputAssociation, TDataStoreReference } from '../../data';
-import { THumanPerformer, TPerformer, TPotentialOwner, TResourceRole } from '../../resource';
-import { TLoopCharacteristics, TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../loopCharacteristics';
-import { TExpression } from '../../expression';
-import { TArtifact, TAssociation, TGroup, TTextAnnotation } from '../../artifact';
-import { TFlowElement, TFlowNode, TSequenceFlow } from '../../flowElement';
-import { TCallChoreography, TChoreographyTask, TSubChoreography } from '../choreographyActivity';
-import { TBoundaryEvent, TEndEvent, TEvent, TImplicitThrowEvent, TIntermediateCatchEvent, TIntermediateThrowEvent, TStartEvent } from '../event';
-import { TComplexGateway, TEventBasedGateway, TExclusiveGateway, TInclusiveGateway, TParallelGateway } from '../gateway';
-import { TBusinessRuleTask, TManualTask, TReceiveTask, TScriptTask, TSendTask, TServiceTask, TTask, TUserTask } from './task';
+import type { TInputOutputSpecification } from '../../input-output';
+import type { TLaneSet, TProperty } from '../../baseElement';
+import type { TDataInputAssociation, TDataObject, TDataObjectReference, TDataOutputAssociation, TDataStoreReference } from '../../data';
+import type { THumanPerformer, TPerformer, TPotentialOwner, TResourceRole } from '../../resource';
+import type { TLoopCharacteristics, TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../loopCharacteristics';
+import type { TExpression } from '../../expression';
+import type { TArtifact, TAssociation, TGroup, TTextAnnotation } from '../../artifact';
+import type { TFlowElement, TFlowNode, TSequenceFlow } from '../../flowElement';
+import type { TCallChoreography, TChoreographyTask, TSubChoreography } from '../choreographyActivity';
+import type { TBoundaryEvent, TEndEvent, TEvent, TImplicitThrowEvent, TIntermediateCatchEvent, TIntermediateThrowEvent, TStartEvent } from '../event';
+import type { TComplexGateway, TEventBasedGateway, TExclusiveGateway, TInclusiveGateway, TParallelGateway } from '../gateway';
+import type { TBusinessRuleTask, TManualTask, TReceiveTask, TScriptTask, TSendTask, TServiceTask, TTask, TUserTask } from './task';
 
 // abstract="true"
 export interface TActivity extends TFlowNode {

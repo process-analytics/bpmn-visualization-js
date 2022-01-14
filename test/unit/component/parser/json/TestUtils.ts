@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import { ShapeBpmnElementKind, ShapeUtil } from '../../../../../src/model/bpmn/internal';
-import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
-import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
+import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
+import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 
 export const shapeBpmnElementKindForLabelTests = Object.values(ShapeBpmnElementKind)
   .filter(kind => !ShapeUtil.isPoolOrLane(kind))

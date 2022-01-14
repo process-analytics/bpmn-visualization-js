@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import BpmnModel from '../../model/bpmn/internal/BpmnModel';
+import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import BpmnXmlParser from './xml/BpmnXmlParser';
-import BpmnJsonParser, { newBpmnJsonParser } from './json/BpmnJsonParser';
+import type BpmnJsonParser from './json/BpmnJsonParser';
+import { newBpmnJsonParser } from './json/BpmnJsonParser';
 import { ParsingMessageCollector } from './parsing-messages';
 
 /**

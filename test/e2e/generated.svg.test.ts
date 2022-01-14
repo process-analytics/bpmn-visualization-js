@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import 'jest-playwright-preset';
-import { Page } from 'playwright';
+import type { Page } from 'playwright';
 import { BpmnPageSvgTester } from './helpers/visu/bpmn-page-utils';
 
 describe('Check generated SVG in demo page', () => {

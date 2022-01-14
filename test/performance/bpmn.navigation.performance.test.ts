@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 import * as fs from 'fs';
-import { Page } from 'playwright';
+import type { Page } from 'playwright';
 import { delay, getSimplePlatformName } from '../e2e/helpers/test-utils';
-import { PageTester, Point } from '../e2e/helpers/visu/bpmn-page-utils';
+import type { Point } from '../e2e/helpers/visu/bpmn-page-utils';
+import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
-import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
+import type { ChartData, PerformanceMetric } from './helpers/perf-utils';
+import { calculateMetrics } from './helpers/perf-utils';
 
 const platform = getSimplePlatformName();
 const performanceDataFilePath = './test/performance/data/' + platform + '/data.js';

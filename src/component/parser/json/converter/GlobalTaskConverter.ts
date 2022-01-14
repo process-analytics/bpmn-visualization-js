@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
-import { ConvertedElements } from './utils';
-import { TGlobalTask } from '../../../../model/bpmn/json/baseElement/rootElement/globalTask';
+import type { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
+import type { ConvertedElements } from './utils';
+import type { TGlobalTask } from '../../../../model/bpmn/json/baseElement/rootElement/globalTask';
 import { ensureIsArray } from '../../../helpers/array-utils';
-import { GlobalTaskKind, ShapeBpmnElementKind } from '../../../../model/bpmn/internal';
+import type { GlobalTaskKind } from '../../../../model/bpmn/internal';
+import { ShapeBpmnElementKind } from '../../../../model/bpmn/internal';
 
 /**
  * @internal

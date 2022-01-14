@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TBaseElement } from './baseElement';
-import { TDataInput, TDataOutput } from './data';
+import type { TBaseElement } from './baseElement';
+import type { TDataInput, TDataOutput } from './data';
 
 export interface TInputOutputBinding extends TBaseElement {
   operationRef: string;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BpmnSemantic } from '../../../src/component/registry';
+import type { BpmnSemantic } from '../../../src/component/registry';
 import { FlowKind, ShapeBpmnElementKind } from '../../../src/model/bpmn/internal';
 
 export interface ExpectedBaseBpmnElement {

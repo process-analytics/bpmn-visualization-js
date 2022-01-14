@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { dirname, join } from 'path';
-import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
+import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { configLog, getSimplePlatformName, getTestedBrowserFamily } from '../test-utils';
 
 export interface ImageSnapshotThresholdConfig {

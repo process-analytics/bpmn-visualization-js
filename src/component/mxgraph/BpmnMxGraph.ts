@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { FitOptions, FitType, ZoomConfiguration } from '../options';
+import type { FitOptions, ZoomConfiguration } from '../options';
+import { FitType } from '../options';
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';

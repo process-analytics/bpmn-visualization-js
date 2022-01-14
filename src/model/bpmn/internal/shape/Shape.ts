@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import ShapeBpmnElement from './ShapeBpmnElement';
-import Bounds from '../Bounds';
-import Label from '../Label';
+import type ShapeBpmnElement from './ShapeBpmnElement';
+import type Bounds from '../Bounds';
+import type Label from '../Label';
 
 /**
  * @internal

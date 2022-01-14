@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnElement } from '../../../src/component/registry';
-import { ExpectedBaseBpmnElement, expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '../../unit/helpers/bpmn-semantic-utils';
+import type { BpmnElement } from '../../../src/component/registry';
+import type { ExpectedBaseBpmnElement } from '../../unit/helpers/bpmn-semantic-utils';
+import { expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '../../unit/helpers/bpmn-semantic-utils';
 import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask } from './html-utils';
 
 export function expectStartEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {

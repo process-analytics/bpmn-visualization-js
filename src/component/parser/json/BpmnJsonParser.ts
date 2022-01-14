@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import BpmnModel from '../../../model/bpmn/internal/BpmnModel';
-import { BpmnJsonModel, TDefinitions } from '../../../model/bpmn/json/BPMN20';
+import type BpmnModel from '../../../model/bpmn/internal/BpmnModel';
+import type { BpmnJsonModel, TDefinitions } from '../../../model/bpmn/json/BPMN20';
 import CollaborationConverter from './converter/CollaborationConverter';
 import ProcessConverter from './converter/ProcessConverter';
 import DiagramConverter from './converter/DiagramConverter';
@@ -23,7 +23,7 @@ import EventDefinitionConverter from './converter/EventDefinitionConverter';
 import GlobalTaskConverter from './converter/GlobalTaskConverter';
 import { ConvertedElements } from './converter/utils';
 import CategoryConverter from './converter/CategoryConverter';
-import { ParsingMessageCollector } from '../parsing-messages';
+import type { ParsingMessageCollector } from '../parsing-messages';
 
 /**
  * @internal

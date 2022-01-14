@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TBaseElement } from './baseElement';
-import { TRootElement } from './rootElement/rootElement';
-import { TFormalExpression } from './expression';
+import type { TBaseElement } from './baseElement';
+import type { TRootElement } from './rootElement/rootElement';
+import type { TFormalExpression } from './expression';
 
 export interface TCorrelationProperty extends TRootElement {
   correlationPropertyRetrievalExpression: TCorrelationPropertyRetrievalExpression | TCorrelationPropertyRetrievalExpression[];

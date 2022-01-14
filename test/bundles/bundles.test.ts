@@ -16,7 +16,7 @@
 import { existsSync } from 'fs';
 import 'jest-playwright-preset';
 import { resolve } from 'path';
-import { Page } from 'playwright';
+import type { Page } from 'playwright';
 import { BpmnPageSvgTester } from '../e2e/helpers/visu/bpmn-page-utils';
 
 describe('bundles', () => {

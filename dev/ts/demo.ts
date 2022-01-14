@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BpmnElement, BpmnElementKind, FitOptions, FitType, GlobalOptions, LoadOptions, Overlay } from '../../src/bpmn-visualization';
+import type { BpmnElement, BpmnElementKind, FitOptions, FitType, GlobalOptions, LoadOptions, Overlay } from '../../src/bpmn-visualization';
 import { log, logDownload, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';

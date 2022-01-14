@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TExpression } from './expression';
-import { TDataInput, TDataOutput } from './data';
-import { TBaseElement, TComplexBehaviorDefinition } from './baseElement';
+import type { TExpression } from './expression';
+import type { TDataInput, TDataOutput } from './data';
+import type { TBaseElement, TComplexBehaviorDefinition } from './baseElement';
 
 // abstract="true"
 export type TLoopCharacteristics = TBaseElement;

@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 import 'jest-playwright-preset';
-import { Page } from 'playwright';
+import type { Page } from 'playwright';
 import { getBpmnDiagramNames } from './helpers/test-utils';
-import { PageTester, StyleOptions } from './helpers/visu/bpmn-page-utils';
-import {
-  defaultChromiumFailureThreshold,
-  ImageSnapshotConfigurator,
-  ImageSnapshotThresholdConfig,
-  MultiBrowserImageSnapshotThresholds,
-} from './helpers/visu/image-snapshot-config';
+import type { StyleOptions } from './helpers/visu/bpmn-page-utils';
+import { PageTester } from './helpers/visu/bpmn-page-utils';
+import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   // threshold for webkit is taken from macOS only
