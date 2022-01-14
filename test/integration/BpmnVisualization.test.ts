@@ -22,7 +22,7 @@ const bpmnVisualization = initializeBpmnVisualizationWithHtmlElement('bpmn-conta
 describe('BpmnVisualization', () => {
   it('Load invalid diagram (text file)', async () => {
     expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(
-      `XML parsing failed. Unable to retrieve 'definitions' for the BPMN source.`,
+      `XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`,
     );
   });
 
