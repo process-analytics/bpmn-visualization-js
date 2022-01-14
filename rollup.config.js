@@ -124,8 +124,9 @@ function typescriptPlugin() {
   const tsSourceMap = !demoMode && !buildBundles; // TODO logic duplicated with build selection
   const tsconfigOverride = { compilerOptions: { sourceMap: tsSourceMap, declaration: tsDeclarationFiles } };
 
-  if (devMode) {
-    tsconfigOverride.include = ['src/**/*', 'dev/ts/**/*'];
+  // Ensure we only bundle production sources
+  if (!devMode) {
+    tsconfigOverride.include = ['src/**/*'];
   }
 
   return typescript({
