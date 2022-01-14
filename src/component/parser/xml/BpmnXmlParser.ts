@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { parse, type X2jOptions } from 'fast-xml-parser/src/parser';
+import { XMLParser, type X2jOptions } from 'fast-xml-parser';
 import { decodeXML } from 'entities/lib/decode';
 import type { BpmnJsonModel } from '../../../model/bpmn/json/BPMN20';
 
@@ -23,20 +23,21 @@ import type { BpmnJsonModel } from '../../../model/bpmn/json/BPMN20';
  * @internal
  */
 export default class BpmnXmlParser {
-  private options: Partial<X2jOptions> = {
+  private x2jOptions: Partial<X2jOptions> = {
     attributeNamePrefix: '', // default to '@_'
-    ignoreNameSpace: true,
+    removeNSPrefix: true,
     ignoreAttributes: false,
     parseAttributeValue: true, // ensure numbers are parsed as number, not as string
-    attrValueProcessor: (val: string) => {
+    attributeValueProcessor: (name: string, val: string) => {
       return decodeXML(val);
     },
   };
+  private xmlParser: XMLParser = new XMLParser(this.x2jOptions);
 
   parse(xml: string): BpmnJsonModel {
     let model: BpmnJsonModel;
     try {
-      model = parse(xml, this.options);
+      model = this.xmlParser.parse(xml);
     } catch {
       throw new Error('XML parsing failed. Invalid BPMN source.');
     }
