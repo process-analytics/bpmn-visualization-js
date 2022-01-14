@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TBaseElement } from './baseElement';
+import type { TBaseElement } from './baseElement';
 
 export interface TParticipant extends TBaseElement {
   participantMultiplicity?: TParticipantMultiplicity;

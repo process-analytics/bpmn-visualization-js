@@ -124,8 +124,9 @@ function typescriptPlugin() {
   const tsSourceMap = !demoMode && !buildBundles; // TODO logic duplicated with build selection
   const tsconfigOverride = { compilerOptions: { sourceMap: tsSourceMap, declaration: tsDeclarationFiles } };
 
-  if (devMode) {
-    tsconfigOverride.include = ['src/**/*', 'dev/ts/**/*'];
+  // Ensure we only bundle production sources
+  if (!devMode) {
+    tsconfigOverride.include = ['src/**/*'];
   }
 
   return typescript({
@@ -150,7 +151,7 @@ function pluginsForDevelopment() {
   if (devMode || demoMode) {
     plugins.push(execute('npm run demo:css', true)); // sync to ensure the execution is linked to the main rollup process
     if (devLiveReloadMode) {
-      plugins.push(execute('npm run watch:css'));
+      plugins.push(execute('npm run demo:css -- --watch --verbose'));
     }
 
     const copyTargets = [];

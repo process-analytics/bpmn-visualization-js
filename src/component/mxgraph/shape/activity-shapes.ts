@@ -15,7 +15,8 @@
  */
 
 import { StyleDefault, StyleUtils } from '../style';
-import { BpmnCanvas, IconPainterProvider, PaintParameter, ShapeConfiguration } from './render';
+import type { BpmnCanvas, PaintParameter, ShapeConfiguration } from './render';
+import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { orderActivityMarkers } from './render/utils';

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { BpmnMxGraph } from './BpmnMxGraph';
+import type { BpmnMxGraph } from './BpmnMxGraph';
 import { BpmnStyleIdentifier } from './style';
-import { Overlay } from '../registry';
+import type { Overlay } from '../registry';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';

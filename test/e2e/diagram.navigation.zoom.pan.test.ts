@@ -15,19 +15,20 @@
  */
 import 'jest-playwright-preset';
 import { join } from 'path';
-import { Page } from 'playwright';
-import { mousePanning, mouseZoom, Point } from './helpers/test-utils';
+import type { Page } from 'playwright';
+import type { Point } from './helpers/visu/bpmn-page-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
-import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
     super({ chromium: 0.000005, firefox: 0.0004, webkit: 0 });
   }
 
-  // if no dedicated information, set minimal threshold to make test pass on Github Workflow
+  // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
   // linux threshold are set for Ubuntu
-  getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'simple.2.start.events.1.task',
@@ -38,11 +39,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     ]);
   }
 
-  getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>([]);
-  }
-
-  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'simple.2.start.events.1.task',
@@ -56,19 +53,18 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
 describe('diagram navigation - zoom and pan', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'navigation');
-  // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
   const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
 
   const bpmnDiagramName = 'simple.2.start.events.1.task';
   let containerCenter: Point;
 
   beforeEach(async () => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
     containerCenter = await pageTester.getContainerCenter();
   });
 
   it('mouse panning', async () => {
-    await mousePanning(page, { originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
+    await pageTester.mousePanning({ originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -80,7 +76,7 @@ describe('diagram navigation - zoom and pan', () => {
 
   it.each(['zoom in', 'zoom out'])(`ctrl + mouse: %s`, async (zoomMode: string) => {
     const deltaX = zoomMode === 'zoom in' ? -100 : 100;
-    await mouseZoom(page, 1, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
+    await pageTester.mouseZoom(1, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -92,10 +88,9 @@ describe('diagram navigation - zoom and pan', () => {
 
   it.each([3, 5])(`ctrl + mouse: initial scale after zoom in and zoom out [%s times]`, async (xTimes: number) => {
     const deltaX = -100;
-    // simulate mouse+ctrl zoom
-    await page.mouse.move(containerCenter.x + 200, containerCenter.y);
-    await mouseZoom(page, xTimes, { x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
-    await mouseZoom(page, xTimes, { x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
+    const zoomPoint = { x: containerCenter.x + 200, y: containerCenter.y };
+    await pageTester.mouseZoom(xTimes, zoomPoint, deltaX);
+    await pageTester.mouseZoom(xTimes, zoomPoint, -deltaX);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);

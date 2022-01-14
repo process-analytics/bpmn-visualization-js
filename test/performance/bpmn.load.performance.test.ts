@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 import * as fs from 'fs';
-import { Page } from 'playwright';
+import type { Page } from 'playwright';
 import { getSimplePlatformName } from '../e2e/helpers/test-utils';
 import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
-import { calculateMetrics, ChartData, PerformanceMetric } from './helpers/perf-utils';
+import type { ChartData, PerformanceMetric } from './helpers/perf-utils';
+import { calculateMetrics } from './helpers/perf-utils';
 
 const platform = getSimplePlatformName();
 const performanceDataFilePath = './test/performance/data/' + platform + '/data.js';
@@ -29,13 +30,12 @@ beforeAll(async () => {
   metricsCollector = await ChromiumMetricsCollector.create(<Page>page);
 });
 describe.each([1, 2, 3, 4, 5])('load performance', run => {
-  // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
   const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
-  const fileName = 'B.2.0';
+  const bpmnDiagramName = 'B.2.0';
 
   it('check performance for file loading and displaying diagram with FitType.HorizontalVertical', async () => {
     const metricsStart = await metricsCollector.metrics();
-    await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
+    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
     const metricsEnd = await metricsCollector.metrics();
 
     const metric = { ...calculateMetrics(metricsStart, metricsEnd), run: run };

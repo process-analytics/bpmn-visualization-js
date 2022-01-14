@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import Shape from './shape/Shape';
-import { Edge } from './edge/edge';
+import type Shape from './shape/Shape';
+import type { Edge } from './edge/edge';
 
 /**
  * @internal

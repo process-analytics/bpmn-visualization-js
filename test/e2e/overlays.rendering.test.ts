@@ -15,21 +15,22 @@
  */
 import 'jest-playwright-preset';
 import { join } from 'path';
-import { Page } from 'playwright';
+import type { Page } from 'playwright';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
-import { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
+import type { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
-import { clickOnButton, mousePanning, mouseZoom, Point } from './helpers/test-utils';
+import type { Point } from './helpers/visu/bpmn-page-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
-import { ImageSnapshotConfigurator, ImageSnapshotThresholdConfig, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
     super({ chromium: 0.000005, firefox: 0.0004, webkit: 0 });
   }
 
-  getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    // if no dedicated information, set minimal threshold to make test pass on Github Workflow
+  protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
@@ -67,7 +68,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     ]);
   }
 
-  getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'overlays.start.flow.task.gateway',
@@ -104,7 +105,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     ]);
   }
 
-  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'overlays.start.flow.task.gateway',
@@ -134,32 +135,37 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   }
 }
 
-async function addOverlays(bpmnElementIds: string | string[], positions: OverlayPosition | OverlayPosition[]): Promise<void> {
-  positions = ensureIsArray<OverlayPosition>(positions);
-  for (const bpmnElementId of ensureIsArray<string>(bpmnElementIds)) {
-    await page.fill('#bpmn-id-input', bpmnElementId);
-    for (const position of positions) {
-      await clickOnButton(page, position);
-    }
-  }
-}
-
-async function addStylingOverlay(bpmnElementIds: string[], style: string): Promise<void> {
-  for (const bpmnElementId of bpmnElementIds) {
-    await page.fill('#bpmn-id-input', bpmnElementId);
-    await clickOnButton(page, style);
-  }
-}
-
-async function removeAllOverlays(bpmnElementId: string): Promise<void> {
-  await page.fill('#bpmn-id-input', bpmnElementId);
-  await clickOnButton(page, 'clear');
-}
-
 const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'overlays');
 
-// to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
-const pageTester = new PageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' }, <Page>page);
+class OverlaysPageTester extends PageTester {
+  async addOverlays(bpmnElementIds: string | string[], positions: OverlayPosition | OverlayPosition[]): Promise<void> {
+    positions = ensureIsArray<OverlayPosition>(positions);
+    for (const bpmnElementId of ensureIsArray<string>(bpmnElementIds)) {
+      await this.setBpmnElementId(bpmnElementId);
+      for (const position of positions) {
+        await this.clickOnButton(position);
+      }
+    }
+  }
+
+  async addStylingOverlay(bpmnElementIds: string[], style: string): Promise<void> {
+    for (const bpmnElementId of bpmnElementIds) {
+      await this.setBpmnElementId(bpmnElementId);
+      await this.clickOnButton(style);
+    }
+  }
+
+  async removeAllOverlays(bpmnElementId: string): Promise<void> {
+    await this.setBpmnElementId(bpmnElementId);
+    await this.clickOnButton('clear');
+  }
+
+  private async setBpmnElementId(id: string): Promise<void> {
+    await this.page.fill('#bpmn-id-input', id);
+  }
+}
+
+const pageTester = new OverlaysPageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' }, <Page>page);
 
 describe('BPMN Shapes with overlays', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
@@ -169,9 +175,9 @@ describe('BPMN Shapes with overlays', () => {
   }
 
   it.each(overlayShapePositionValues)(`add overlay on StartEvent, Gateway and Task on %s`, async (position: OverlayShapePosition) => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
 
-    await addOverlays(['StartEvent_1', 'Activity_1', 'Gateway_1'], position);
+    await pageTester.addOverlays(['StartEvent_1', 'Activity_1', 'Gateway_1'], position);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -184,11 +190,10 @@ describe('BPMN Shapes with overlays', () => {
   });
 
   it(`remove all overlays of Shape`, async () => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
 
-    await addOverlays('Activity_1', ['top-left', 'bottom-left', 'middle-right']);
-
-    await removeAllOverlays('Activity_1');
+    await pageTester.addOverlays('Activity_1', ['top-left', 'bottom-left', 'middle-right']);
+    await pageTester.removeAllOverlays('Activity_1');
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -233,9 +238,9 @@ describe('BPMN Edges with overlays', () => {
     }
 
     it.each(overlayEdgePositionValues)(`add overlay on ${edgeKind} flow on %s`, async (position: OverlayEdgePosition) => {
-      await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+      await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
 
-      await addOverlays(bpmnElementIds, position);
+      await pageTester.addOverlays(bpmnElementIds, position);
 
       const image = await page.screenshot({ fullPage: true });
       const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -248,12 +253,11 @@ describe('BPMN Edges with overlays', () => {
     });
 
     it(`remove all overlays of ${edgeKind} flow`, async () => {
-      await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+      await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
 
       const id = bpmnElementIds.shift();
-      await addOverlays(id, ['start', 'middle', 'end']);
-
-      await removeAllOverlays(id);
+      await pageTester.addOverlays(id, ['start', 'middle', 'end']);
+      await pageTester.removeAllOverlays(id);
 
       const image = await page.screenshot({ fullPage: true });
       const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -277,7 +281,7 @@ describe('Overlay navigation', () => {
       super({ chromium: 0, firefox: 0, webkit: 0 });
     }
 
-    protected getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
         [
           'overlays.start.flow.task.gateway',
@@ -290,7 +294,7 @@ describe('Overlay navigation', () => {
       ]);
     }
 
-    protected getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
         [
           'overlays.start.flow.task.gateway',
@@ -303,7 +307,7 @@ describe('Overlay navigation', () => {
       ]);
     }
 
-    protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
         [
           'overlays.start.flow.task.gateway',
@@ -318,17 +322,17 @@ describe('Overlay navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new OverlayNavigationImageSnapshotThresholds(), 'overlays');
 
   beforeEach(async () => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
     containerCenter = await pageTester.getContainerCenter();
 
-    await addOverlays('StartEvent_1', 'bottom-center');
-    await addOverlays('Activity_1', 'middle-right');
-    await addOverlays('Gateway_1', 'top-right');
-    await addOverlays('Flow_1', 'start');
+    await pageTester.addOverlays('StartEvent_1', 'bottom-center');
+    await pageTester.addOverlays('Activity_1', 'middle-right');
+    await pageTester.addOverlays('Gateway_1', 'top-right');
+    await pageTester.addOverlays('Flow_1', 'start');
   });
 
   it('panning', async () => {
-    await mousePanning(page, { originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
+    await pageTester.mousePanning({ originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -339,7 +343,7 @@ describe('Overlay navigation', () => {
   });
 
   it(`zoom out`, async () => {
-    await mouseZoom(page, 1, { x: containerCenter.x + 200, y: containerCenter.y }, 100);
+    await pageTester.mouseZoom(1, { x: containerCenter.x + 200, y: containerCenter.y }, 100);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
@@ -361,7 +365,7 @@ describe('Overlay style', () => {
       super({ chromium: 0, firefox: 0, webkit: 0 });
     }
 
-    getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       // if no dedicated information, set minimal threshold to make test pass on Github Workflow
       // linux threshold are set for Ubuntu
       return new Map<string, ImageSnapshotThresholdConfig>([
@@ -392,7 +396,7 @@ describe('Overlay style', () => {
       ]);
     }
 
-    getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
         [
           'fill',
@@ -422,7 +426,7 @@ describe('Overlay style', () => {
       ]);
     }
 
-    protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
         [
           'fill',
@@ -449,9 +453,9 @@ describe('Overlay style', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new OverlayStylesImageSnapshotThresholds(), 'overlays');
 
   it.each(['fill', 'font', 'stroke'])(`add overlay with custom %s`, async (style: string) => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName);
+    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
 
-    await addStylingOverlay(['StartEvent_1', 'Activity_1', 'Gateway_1', 'Flow_1'], style);
+    await pageTester.addStylingOverlay(['StartEvent_1', 'Activity_1', 'Gateway_1', 'Flow_1'], style);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(style);

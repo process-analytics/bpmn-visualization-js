@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { dirname, join } from 'path';
-import { MatchImageSnapshotOptions } from 'jest-image-snapshot';
+import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { configLog, getSimplePlatformName, getTestedBrowserFamily } from '../test-utils';
 
 export interface ImageSnapshotThresholdConfig {
@@ -66,7 +66,7 @@ export class ImageSnapshotConfigurator {
   private getFailureThreshold(fileName: string): number {
     let failureThreshold = this.defaultFailureThreshold;
 
-    const config = this.thresholdConfig.get(fileName);
+    const config = this.thresholdConfig?.get(fileName);
     if (config) {
       configLog(`Using dedicated image snapshot threshold for '${fileName}'`);
       const simplePlatformName = getSimplePlatformName();
@@ -101,26 +101,32 @@ interface ThresholdDefaults {
  * <b>About subclassing, for the `threshold` methods </b> (configure threshold by bpmn files)
  *
  * When introducing a new test, please don't add threshold until you get failures when running
- * on GitHub Workflow because of discrepancies depending of OS/machine and browser (few pixels) and that are not visible by a human.
+ * on GitHub Workflow because of discrepancies depending on OS/machine and browser (few pixels) and that are not visible by a human.
  * This is generally only required for diagram containing labels. If you are not testing the labels (value, position, ...) as part of the use case you want to cover, remove labels
  * from the BPMN diagram to avoid such discrepancies.
  */
-export abstract class MultiBrowserImageSnapshotThresholds {
+export class MultiBrowserImageSnapshotThresholds {
   private readonly chromiumDefault: number;
   private readonly firefoxDefault: number;
   private readonly webkitDefault: number;
 
-  protected constructor(thresholdDefaults: ThresholdDefaults) {
+  constructor(thresholdDefaults: ThresholdDefaults) {
     this.chromiumDefault = thresholdDefaults.chromium;
     this.firefoxDefault = thresholdDefaults.firefox;
     this.webkitDefault = thresholdDefaults.webkit;
   }
 
-  protected abstract getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig>;
+  protected getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return undefined;
+  }
 
-  protected abstract getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig>;
+  protected getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return undefined;
+  }
 
-  protected abstract getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig>;
+  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return undefined;
+  }
 
   getThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     const testedBrowserFamily = getTestedBrowserFamily();

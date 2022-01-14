@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { addEvent, buildDefinitionsAndProcessWithTask, BuildEventDefinitionParameter, EventDefinitionOn } from './JsonBuilder';
+import type { BuildEventDefinitionParameter } from './JsonBuilder';
+import { addEvent, buildDefinitionsAndProcessWithTask, EventDefinitionOn } from './JsonBuilder';
 
 describe('build json', () => {
   it(

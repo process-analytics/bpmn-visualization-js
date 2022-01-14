@@ -13,15 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { copySync } from 'fs-extra';
+import { toMatchImageSnapshot } from 'jest-image-snapshot';
 
-function copyDirectoryContentIfNotExists(dirName: string): void {
-  copySync(`${__dirname}/../../fixtures/bpmn/${dirName}`, `${__dirname}/../../../build/public/static/diagrams/`, { overwrite: true });
-}
-
-copyDirectoryContentIfNotExists('diagram');
-copyDirectoryContentIfNotExists('navigation');
-copyDirectoryContentIfNotExists('non-regression');
-copyDirectoryContentIfNotExists('overlays');
-copyDirectoryContentIfNotExists('performance');
-copyDirectoryContentIfNotExists('svg');
+expect.extend({ toMatchImageSnapshot });

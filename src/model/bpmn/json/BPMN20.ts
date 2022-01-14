@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BPMNDiagram } from './BPMNDI';
-import { TRelationship } from './baseElement/baseElement';
-import { TExtension } from './Semantic';
-import { TGlobalBusinessRuleTask, TGlobalManualTask, TGlobalScriptTask, TGlobalTask, TGlobalUserTask } from './baseElement/rootElement/globalTask';
-import { TCorrelationProperty } from './baseElement/correlation';
-import { TDataStore } from './baseElement/data';
-import {
+import type { BPMNDiagram } from './BPMNDI';
+import type { TRelationship } from './baseElement/baseElement';
+import type { TExtension } from './Semantic';
+import type { TGlobalBusinessRuleTask, TGlobalManualTask, TGlobalScriptTask, TGlobalTask, TGlobalUserTask } from './baseElement/rootElement/globalTask';
+import type { TCorrelationProperty } from './baseElement/correlation';
+import type { TDataStore } from './baseElement/data';
+import type {
   TCategory,
   TEndPoint,
   TError,
@@ -34,8 +34,8 @@ import {
   TRootElement,
   TSignal,
 } from './baseElement/rootElement/rootElement';
-import { TChoreography, TCollaboration, TGlobalChoreographyTask, TGlobalConversation } from './baseElement/rootElement/collaboration';
-import {
+import type { TChoreography, TCollaboration, TGlobalChoreographyTask, TGlobalConversation } from './baseElement/rootElement/collaboration';
+import type {
   TCancelEventDefinition,
   TCompensateEventDefinition,
   TConditionalEventDefinition,

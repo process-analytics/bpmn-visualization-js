@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BpmnElementKind } from '../../model/bpmn/internal';
+import type { BpmnElementKind } from '../../model/bpmn/internal';
 
 /**
  * @category Custom Behavior

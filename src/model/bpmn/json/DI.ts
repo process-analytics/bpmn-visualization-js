@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Bounds, Point } from './DC';
-import { BPMNEdge, BPMNLabel, BPMNShape } from './BPMNDI';
-import { TExtension } from './Semantic';
+import type { Bounds, Point } from './DC';
+import type { BPMNEdge, BPMNLabel, BPMNShape } from './BPMNDI';
+import type { TExtension } from './Semantic';
 
 // <xsd:any namespace="##other" minOccurs="0" maxOccurs="unbounded" />
 export interface DiagramElement {

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TAssignment, TBaseElement } from './baseElement';
-import { TRootElement } from './rootElement/rootElement';
-import { TFormalExpression } from './expression';
-import { TFlowElement } from './flowElement';
+import type { TAssignment, TBaseElement } from './baseElement';
+import type { TRootElement } from './rootElement/rootElement';
+import type { TFormalExpression } from './expression';
+import type { TFlowElement } from './flowElement';
 
 export type TDataInputAssociation = TDataAssociation;
 

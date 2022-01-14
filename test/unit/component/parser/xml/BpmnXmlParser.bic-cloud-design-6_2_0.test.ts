@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import { BPMNDiagram } from '../../../../../src/model/bpmn/json/BPMNDI';
-import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { BPMNDiagram } from '../../../../../src/model/bpmn/json/BPMNDI';
+import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { readFileSync } from '../../../../helpers/file-helper';
 
 describe('parse bpmn as xml for bic cloud design', () => {

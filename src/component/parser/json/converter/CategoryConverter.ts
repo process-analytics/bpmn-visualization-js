@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
-import { ConvertedElements } from './utils';
+import type { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
+import type { ConvertedElements } from './utils';
 import { ensureIsArray } from '../../../helpers/array-utils';
-import { TCategory } from '../../../../model/bpmn/json/baseElement/rootElement/rootElement';
+import type { TCategory } from '../../../../model/bpmn/json/baseElement/rootElement/rootElement';
 
 /**
  * @internal

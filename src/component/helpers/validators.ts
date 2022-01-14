@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ZoomConfiguration } from '../options';
+import type { ZoomConfiguration } from '../options';
 
 /**
  * @internal

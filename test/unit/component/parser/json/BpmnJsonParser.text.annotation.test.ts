@@ -15,7 +15,7 @@
  */
 import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
-import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for text annotation', () => {
   const processWithArtifactAsObject = {} as TProcess;

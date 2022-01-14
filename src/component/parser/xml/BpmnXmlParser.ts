@@ -16,7 +16,7 @@
 
 import { XMLParser, type X2jOptions } from 'fast-xml-parser';
 import { decodeXML } from 'entities/lib/decode';
-import { BpmnJsonModel } from '../../../model/bpmn/json/BPMN20';
+import type { BpmnJsonModel } from '../../../model/bpmn/json/BPMN20';
 
 /**
  * Parse bpmn xml source
@@ -35,13 +35,18 @@ export default class BpmnXmlParser {
   private xmlParser: XMLParser = new XMLParser(this.x2jOptions);
 
   parse(xml: string): BpmnJsonModel {
-    const model = this.xmlParser.parse(xml);
+    let model: BpmnJsonModel;
+    try {
+      model = this.xmlParser.parse(xml);
+    } catch {
+      throw new Error('XML parsing failed. Invalid BPMN source.');
+    }
     if (!model.definitions) {
       // We currently don't validate the xml, so we don't detect xml validation error
       // if 'definitions' is undefined, there is an Error later in the parsing code without explicit information
       // So for now, throw a generic error that better explains the problem.
       // See https://github.com/process-analytics/bpmn-visualization-js/issues/21 for improvement
-      throw new Error(`XML parsing failed. Unable to retrieve 'definitions' for the BPMN source.`);
+      throw new Error(`XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`);
     }
     return model;
   }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BpmnCanvas } from './BpmnCanvas';
+import type { BpmnCanvas } from './BpmnCanvas';
 
 /**
  * @category BPMN Theme

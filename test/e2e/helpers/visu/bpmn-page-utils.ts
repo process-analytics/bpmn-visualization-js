@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 import 'expect-playwright';
-import { ElementHandle, Page } from 'playwright';
-import { FitType, LoadOptions } from '../../../../src/component/options';
+import type { PageWaitForSelectorOptions } from 'expect-playwright';
+import type { ElementHandle, Page } from 'playwright';
+import type { LoadOptions } from '../../../../src/component/options';
+import { FitType } from '../../../../src/component/options';
 import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
-import { Point } from '../test-utils';
+import { delay } from '../test-utils';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore js file with commonjs export
+import envUtils = require('../../../helpers/environment-utils.js');
 
 /* eslint-disable jest/no-standalone-expect */
-
-// PageWaitForSelectorOptions is not exported by playwright
-export interface PageWaitForSelectorOptions {
-  timeout?: number;
-}
 
 class BpmnPage {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
@@ -49,10 +49,10 @@ class BpmnPage {
   }
 }
 
-export interface TargetedPage {
+export interface TargetedPageConfiguration {
   /** the name of the page file without extension */
   pageFileName: string;
-  /** the expected of the page title after the page loading */
+  /** the expected page title, checked after page loading */
   expectedPageTitle: string;
   /**
    * Id of the container in the page attached to bpmn-visualization
@@ -67,6 +67,7 @@ export interface TargetedPage {
 }
 
 export interface StyleOptions {
+  theme?: string;
   bpmnContainer?: {
     useAlternativeBackgroundColor?: boolean;
   };
@@ -80,6 +81,16 @@ export interface PageOptions {
   styleOptions?: StyleOptions;
 }
 
+export interface Point {
+  x: number;
+  y: number;
+}
+
+export interface PanningOptions {
+  originPoint: Point;
+  destinationPoint: Point;
+}
+
 export class PageTester {
   private readonly baseUrl: string;
   protected bpmnPage: BpmnPage;
@@ -88,25 +99,25 @@ export class PageTester {
   /**
    * Configure how the BPMN file is loaded by the test page.
    */
-  constructor(readonly targetedPage: TargetedPage, protected page: Page) {
-    const showMousePointer = targetedPage.showMousePointer ?? false;
-    this.baseUrl = `http://localhost:10002/${targetedPage.pageFileName}.html?showMousePointer=${showMousePointer}`;
-    this.bpmnContainerId = targetedPage.bpmnContainerId ?? 'bpmn-container';
+  constructor(protected targetedPageConfiguration: TargetedPageConfiguration, protected page: Page) {
+    const showMousePointer = targetedPageConfiguration.showMousePointer ?? false;
+    this.baseUrl = `http://localhost:10002/${targetedPageConfiguration.pageFileName}.html?showMousePointer=${showMousePointer}`;
+    this.bpmnContainerId = targetedPageConfiguration.bpmnContainerId ?? 'bpmn-container';
     this.bpmnPage = new BpmnPage(this.bpmnContainerId, this.page);
   }
 
-  async loadBPMNDiagramInRefreshedPage(bpmnDiagramName: string, pageOptions?: PageOptions): Promise<void> {
-    const url = this.getPageUrl(bpmnDiagramName, pageOptions?.loadOptions ?? { fit: { type: FitType.HorizontalVertical } }, pageOptions?.styleOptions);
-    await this.doLoadBPMNDiagramInRefreshedPage(url);
+  async gotoPageAndLoadBpmnDiagram(bpmnDiagramName: string, pageOptions?: PageOptions): Promise<void> {
+    const url = this.computePageUrl(bpmnDiagramName, pageOptions?.loadOptions ?? { fit: { type: FitType.HorizontalVertical } }, pageOptions?.styleOptions);
+    await this.doGotoPageAndLoadBpmnDiagram(url);
   }
 
-  protected async doLoadBPMNDiagramInRefreshedPage(url: string, checkResponseStatus = true): Promise<void> {
+  protected async doGotoPageAndLoadBpmnDiagram(url: string, checkResponseStatus = true): Promise<void> {
     const response = await this.page.goto(url);
     if (checkResponseStatus) {
       expect(response.status()).toBe(200);
     }
 
-    await this.bpmnPage.expectPageTitle(this.targetedPage.expectedPageTitle);
+    await this.bpmnPage.expectPageTitle(this.targetedPageConfiguration.expectedPageTitle);
 
     const waitForSelectorOptions = { timeout: 5_000 };
     await this.bpmnPage.expectAvailableBpmnContainer(waitForSelectorOptions);
@@ -118,12 +129,17 @@ export class PageTester {
    * @param loadOptions optional fit options
    * @param styleOptions optional style options
    */
-  private getPageUrl(bpmnDiagramName: string, loadOptions: LoadOptions, styleOptions?: StyleOptions): string {
+  private computePageUrl(bpmnDiagramName: string, loadOptions: LoadOptions, styleOptions?: StyleOptions): string {
     let url = this.baseUrl;
     url += `&fitTypeOnLoad=${loadOptions.fit?.type}&fitMargin=${loadOptions.fit?.margin}`;
     url += `&url=./static/diagrams/${bpmnDiagramName}.bpmn`;
-    url += `&style.seqFlow.light.colors=${styleOptions?.sequenceFlow?.useLightColors}`;
-    url += `&style.container.alternative.background.color=${styleOptions?.bpmnContainer?.useAlternativeBackgroundColor}`;
+
+    // style query parameters
+    styleOptions?.sequenceFlow?.useLightColors && (url += `&style.seqFlow.light.colors=${styleOptions.sequenceFlow.useLightColors}`);
+    styleOptions?.bpmnContainer?.useAlternativeBackgroundColor &&
+      (url += `&style.container.alternative.background.color=${styleOptions.bpmnContainer.useAlternativeBackgroundColor}`);
+    styleOptions?.theme && (url += `&style.theme=${styleOptions.theme}`);
+
     return url;
   }
 
@@ -132,19 +148,46 @@ export class PageTester {
     const rect = await containerElement.boundingBox();
     return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
   }
+
+  async clickOnButton(buttonId: string): Promise<void> {
+    await this.page.click(`#${buttonId}`);
+    await this.page.mouse.click(0, 0); // Unselect the button
+  }
+
+  async mousePanning({ originPoint, destinationPoint }: PanningOptions): Promise<void> {
+    await this.page.mouse.move(originPoint.x, originPoint.y);
+    await this.page.mouse.down();
+    await this.page.mouse.move(destinationPoint.x, destinationPoint.y);
+    await this.page.mouse.up();
+  }
+
+  async mouseZoomNoDelay(point: Point, deltaX: number): Promise<void> {
+    await this.page.mouse.move(point.x, point.y);
+    await this.page.keyboard.down('Control');
+    await this.page.mouse.wheel(deltaX, 0);
+    await this.page.keyboard.up('Control');
+  }
+
+  async mouseZoom(xTimes: number, point: Point, deltaX: number): Promise<void> {
+    for (let i = 0; i < xTimes; i++) {
+      await this.mouseZoomNoDelay(point, deltaX);
+      // delay here is needed to make the tests pass on macOS, delay must be greater than debounce timing, so it surely gets triggered
+      await delay(envUtils.isRunningOnCISlowOS() ? 300 : 150);
+    }
+  }
 }
 
 export class BpmnPageSvgTester extends PageTester {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
-  constructor(targetedPage: TargetedPage, page: Page) {
+  constructor(targetedPage: TargetedPageConfiguration, page: Page) {
     super(targetedPage, page);
     // TODO duplicated with BpmnPage
     this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
   }
 
-  override async loadBPMNDiagramInRefreshedPage(bpmnDiagramName?: string): Promise<void> {
-    await super.loadBPMNDiagramInRefreshedPage(bpmnDiagramName ?? 'not-used-dedicated-diagram-loaded-by-the-page', {
+  override async gotoPageAndLoadBpmnDiagram(bpmnDiagramName?: string): Promise<void> {
+    await super.gotoPageAndLoadBpmnDiagram(bpmnDiagramName ?? 'not-used-dedicated-diagram-loaded-by-the-page', {
       loadOptions: {
         fit: {
           type: FitType.None,

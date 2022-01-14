@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 import 'jest-playwright-preset';
-import { Page } from 'playwright';
+import type { Page } from 'playwright';
 import { getBpmnDiagramNames } from './helpers/test-utils';
-import { PageTester, StyleOptions } from './helpers/visu/bpmn-page-utils';
-import {
-  defaultChromiumFailureThreshold,
-  ImageSnapshotConfigurator,
-  ImageSnapshotThresholdConfig,
-  MultiBrowserImageSnapshotThresholds,
-} from './helpers/visu/image-snapshot-config';
+import type { StyleOptions } from './helpers/visu/bpmn-page-utils';
+import { PageTester } from './helpers/visu/bpmn-page-utils';
+import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   // threshold for webkit is taken from macOS only
@@ -30,7 +27,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     super({ chromium: defaultChromiumFailureThreshold, firefox: 0.00012, webkit: 0.001 });
   }
 
-  getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     // if no dedicated information, set minimal threshold to make test pass on Github Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
@@ -132,7 +129,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     ]);
   }
 
-  getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'all.elements.fill.color',
@@ -255,7 +252,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     ]);
   }
 
-  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'flows.message.02.labels.and.complex.paths',
@@ -321,12 +318,6 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
 const styleOptionsPerDiagram = new Map<string, StyleOptions>([
   [
-    'all.elements.fill.color',
-    {
-      bpmnContainer: { useAlternativeBackgroundColor: true },
-    },
-  ],
-  [
     'associations.and.annotations.04.target.edges',
     {
       sequenceFlow: { useLightColors: true },
@@ -345,7 +336,7 @@ describe('BPMN rendering', () => {
   });
 
   it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {
-    await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName, {
       styleOptions: styleOptionsPerDiagram.get(bpmnDiagramName),
     });
 

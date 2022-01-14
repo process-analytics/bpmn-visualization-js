@@ -15,7 +15,7 @@
  */
 import { mxgraph } from '../initializer';
 import type { mxCellState, mxPoint, mxRectangle } from 'mxgraph';
-import { OverlayStyle } from '../../registry';
+import type { OverlayStyle } from '../../registry';
 
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
 export type HorizontalAlignType = 'left' | 'center' | 'right';

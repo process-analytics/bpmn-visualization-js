@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { buildCellMatcher, buildCommonExpectedStateStyle, buildReceivedCellWithCommonAttributes, ExpectedCell, ExpectedStateStyle } from '../matcher-utils';
-import {
+import type { ExpectedCell, ExpectedStateStyle } from '../matcher-utils';
+import { buildCellMatcher, buildCommonExpectedStateStyle, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
+import type {
   ExpectedBoundaryEventModelElement,
   ExpectedCallActivityModelElement,
   ExpectedEventBasedGatewayModelElement,
@@ -22,8 +23,8 @@ import {
   ExpectedShapeModelElement,
   ExpectedStartEventModelElement,
   ExpectedSubProcessModelElement,
-  getDefaultParentId,
 } from '../../helpers/model-expect';
+import { getDefaultParentId } from '../../helpers/model-expect';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal';
 import { mxgraph } from '../../../../src/component/mxgraph/initializer';
 import MatcherContext = jest.MatcherContext;

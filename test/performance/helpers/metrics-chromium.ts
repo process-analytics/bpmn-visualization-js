@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { CDPSession, ChromiumBrowserContext, Page } from 'playwright';
+import type { CDPSession, ChromiumBrowserContext, Page } from 'playwright';
 
 // Workarounds no Metrics API in Playwright: https://github.com/microsoft/playwright/issues/590
 // inspired from https://github.com/puppeteer/puppeteer/blob/v7.0.4/src/common/Page.ts

@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import { FlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
-import { AssociationDirectionKind, SequenceFlowKind } from '../../../model/bpmn/internal/edge/kinds';
+import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
-import { BpmnMxGraph } from '../BpmnMxGraph';
+import type { BpmnMxGraph } from '../BpmnMxGraph';
 import { mxgraph } from '../initializer';
 import type { mxStylesheet, StyleMap } from 'mxgraph';
 

@@ -16,12 +16,12 @@
 
 import { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { MessageFlow } from '../../../../model/bpmn/internal/edge/flows';
-import { TCollaboration } from '../../../../model/bpmn/json/baseElement/rootElement/collaboration';
-import { TParticipant } from '../../../../model/bpmn/json/baseElement/participant';
-import { TMessageFlow } from '../../../../model/bpmn/json/baseElement/baseElement';
-import { ConvertedElements } from './utils';
+import type { TCollaboration } from '../../../../model/bpmn/json/baseElement/rootElement/collaboration';
+import type { TParticipant } from '../../../../model/bpmn/json/baseElement/participant';
+import type { TMessageFlow } from '../../../../model/bpmn/json/baseElement/baseElement';
+import type { ConvertedElements } from './utils';
 import { ensureIsArray } from '../../../helpers/array-utils';
-import { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
+import type { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
 
 /**
  * @internal
