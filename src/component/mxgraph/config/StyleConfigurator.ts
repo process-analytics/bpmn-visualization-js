@@ -16,7 +16,7 @@
 
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
-import type { BpmnMxGraph } from '../BpmnMxGraph';
+import type { BpmnGraph } from '../BpmnGraph';
 import { mxgraph } from '../initializer';
 import type { mxStylesheet, StyleMap } from 'mxgraph';
 
@@ -99,7 +99,7 @@ export class StyleConfigurator {
     ],
   ]);
 
-  constructor(private graph: BpmnMxGraph) {}
+  constructor(private graph: BpmnGraph) {}
 
   configureStyles(): void {
     this.configureDefaultVertexStyle();

@@ -21,7 +21,7 @@ import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 import { mxgraph } from './initializer';
 
-export class BpmnMxGraph extends mxgraph.mxGraph {
+export class BpmnGraph extends mxgraph.mxGraph {
   private cumulativeZoomFactor = 1;
 
   /**

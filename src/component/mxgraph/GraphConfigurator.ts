@@ -18,7 +18,7 @@ import { StyleConfigurator } from './config/StyleConfigurator';
 import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import type { GlobalOptions } from '../options';
-import { BpmnMxGraph } from './BpmnMxGraph';
+import { BpmnGraph } from './BpmnGraph';
 import { mxgraph } from './initializer';
 import type { mxMouseEvent } from 'mxgraph';
 
@@ -30,14 +30,14 @@ import type { mxMouseEvent } from 'mxgraph';
  *     <li>markers
  * @internal
  */
-export default class MxGraphConfigurator {
-  private readonly graph: BpmnMxGraph;
+export default class GraphConfigurator {
+  private readonly graph: BpmnGraph;
 
   constructor(readonly container: HTMLElement) {
-    this.graph = new BpmnMxGraph(container);
+    this.graph = new BpmnGraph(container);
   }
 
-  configure(options: GlobalOptions): BpmnMxGraph {
+  configure(options: GlobalOptions): BpmnGraph {
     this.configureGraph();
     this.configureNavigationSupport(options);
     new StyleConfigurator(this.graph).configureStyles();
@@ -87,12 +87,12 @@ export default class MxGraphConfigurator {
     }
   }
 
-  private getPanningHandler(cursor: 'grab' | 'default'): OmitThisParameter<(this: BpmnMxGraph) => void> {
+  private getPanningHandler(cursor: 'grab' | 'default'): OmitThisParameter<(this: BpmnGraph) => void> {
     return this.getPanningHandlerCallback(cursor).bind(this.graph);
   }
 
   private getPanningHandlerCallback(cursor: 'grab' | 'default'): () => void {
-    return function (this: BpmnMxGraph): void {
+    return function (this: BpmnGraph): void {
       this.isEnabled() && (this.container.style.cursor = cursor);
     };
   }

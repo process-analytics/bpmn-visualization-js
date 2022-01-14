@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { BpmnMxGraph } from './BpmnMxGraph';
+import type { BpmnGraph } from './BpmnGraph';
 import { BpmnStyleIdentifier } from './style';
 import type { Overlay } from '../registry';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
@@ -22,15 +22,15 @@ import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFowIconId } from './BpmnRenderer';
 
-export function newMxGraphCellUpdater(graph: BpmnMxGraph): MxGraphCellUpdater {
-  return new MxGraphCellUpdater(graph, new OverlayConverter());
+export function newGraphCellUpdater(graph: BpmnGraph): GraphCellUpdater {
+  return new GraphCellUpdater(graph, new OverlayConverter());
 }
 
 /**
  * @internal
  */
-export default class MxGraphCellUpdater {
-  constructor(readonly graph: BpmnMxGraph, readonly overlayConverter: OverlayConverter) {}
+export default class GraphCellUpdater {
+  constructor(readonly graph: BpmnGraph, readonly overlayConverter: OverlayConverter) {}
 
   updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
     this.updateAndRefreshCssClassesOfElement(bpmnElementId, cssClasses);
