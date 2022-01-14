@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import MxGraphConfigurator from './mxgraph/MxGraphConfigurator';
+import GraphConfigurator from './mxgraph/GraphConfigurator';
 import { newBpmnRenderer } from './mxgraph/BpmnRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
-import type { BpmnMxGraph } from './mxgraph/BpmnMxGraph';
+import type { BpmnGraph } from './mxgraph/BpmnGraph';
 import type { FitOptions, GlobalOptions, LoadOptions } from './options';
 import type { BpmnElementsRegistry } from './registry';
 import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
@@ -39,7 +39,7 @@ export class BpmnVisualization {
    * It is for **advanced users**, so please use the lib API first and access to the `mxGraph` instance only when there is no alternative.
    * @experimental subject to change, could be removed or made available in another way.
    */
-  readonly graph: BpmnMxGraph;
+  readonly graph: BpmnGraph;
 
   /**
    * Interact with BPMN diagram elements rendered in the page.
@@ -51,7 +51,7 @@ export class BpmnVisualization {
 
   constructor(options: GlobalOptions) {
     // mxgraph configuration
-    const configurator = new MxGraphConfigurator(htmlElement(options?.container));
+    const configurator = new GraphConfigurator(htmlElement(options?.container));
     this.graph = configurator.configure(options);
     // other configurations
     this.bpmnModelRegistry = new BpmnModelRegistry();

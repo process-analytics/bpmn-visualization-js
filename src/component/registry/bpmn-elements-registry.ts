@@ -15,18 +15,18 @@
  */
 
 import { ensureIsArray } from '../helpers/array-utils';
-import type { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
+import type { BpmnGraph } from '../mxgraph/BpmnGraph';
 import { computeBpmnBaseClassName } from '../mxgraph/renderer/style-utils';
 import { CssRegistry } from './css-registry';
-import type MxGraphCellUpdater from '../mxgraph/MxGraphCellUpdater';
-import { newMxGraphCellUpdater } from '../mxgraph/MxGraphCellUpdater';
+import type GraphCellUpdater from '../mxgraph/GraphCellUpdater';
+import { newGraphCellUpdater } from '../mxgraph/GraphCellUpdater';
 import { BpmnQuerySelectors } from './query-selectors';
 import type { BpmnElement, Overlay } from './types';
 import type { BpmnModelRegistry } from './bpmn-model-registry';
 import type { BpmnElementKind } from '../../model/bpmn/internal';
 
-export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnMxGraph): BpmnElementsRegistry {
-  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), newMxGraphCellUpdater(graph));
+export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnGraph): BpmnElementsRegistry {
+  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), newGraphCellUpdater(graph));
 }
 
 /**
@@ -54,7 +54,7 @@ export class BpmnElementsRegistry {
     private bpmnModelRegistry: BpmnModelRegistry,
     private htmlElementRegistry: HtmlElementRegistry,
     private cssRegistry: CssRegistry,
-    private mxGraphCellUpdater: MxGraphCellUpdater,
+    private graphCellUpdater: GraphCellUpdater,
   ) {
     this.bpmnModelRegistry.registerOnLoadCallback(this.cssRegistry.clear.bind(this.cssRegistry));
   }
@@ -174,7 +174,7 @@ export class BpmnElementsRegistry {
   private updateCellIfChanged(updateCell: boolean, bpmnElementId: string): void {
     if (updateCell) {
       const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
-      this.mxGraphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
+      this.graphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
     }
   }
 
@@ -223,7 +223,7 @@ export class BpmnElementsRegistry {
    * @param overlays The overlays to add to the BPMN element
    */
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
-    this.mxGraphCellUpdater.addOverlays(bpmnElementId, overlays);
+    this.graphCellUpdater.addOverlays(bpmnElementId, overlays);
   }
 
   /**
@@ -240,7 +240,7 @@ export class BpmnElementsRegistry {
    * @param bpmnElementId The BPMN id of the element where to remove the overlays
    */
   removeAllOverlays(bpmnElementId: string): void {
-    this.mxGraphCellUpdater.removeAllOverlays(bpmnElementId);
+    this.graphCellUpdater.removeAllOverlays(bpmnElementId);
   }
 }
 

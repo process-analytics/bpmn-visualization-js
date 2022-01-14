@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { BpmnMxGraph } from '../BpmnMxGraph';
+import type { BpmnGraph } from '../BpmnGraph';
 import { mxgraph } from '../initializer';
 import type { mxCell, mxPoint } from 'mxgraph';
 
@@ -22,7 +22,7 @@ import type { mxCell, mxPoint } from 'mxgraph';
  * @internal
  */
 export default class CoordinatesTranslator {
-  constructor(readonly graph: BpmnMxGraph) {}
+  constructor(readonly graph: BpmnGraph) {}
 
   /**
    * Compute an absolute coordinate in relative coordinates in the parent cell referential.
