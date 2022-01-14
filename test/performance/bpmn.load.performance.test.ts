@@ -30,13 +30,12 @@ beforeAll(async () => {
   metricsCollector = await ChromiumMetricsCollector.create(<Page>page);
 });
 describe.each([1, 2, 3, 4, 5])('load performance', run => {
-  // to have mouse pointer visible during headless test - add 'showMousePointer: true' as parameter
   const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
-  const fileName = 'B.2.0';
+  const bpmnDiagramName = 'B.2.0';
 
   it('check performance for file loading and displaying diagram with FitType.HorizontalVertical', async () => {
     const metricsStart = await metricsCollector.metrics();
-    await pageTester.loadBPMNDiagramInRefreshedPage(fileName);
+    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
     const metricsEnd = await metricsCollector.metrics();
 
     const metric = { ...calculateMetrics(metricsStart, metricsEnd), run: run };

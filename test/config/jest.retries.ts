@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Bonitasoft S.A.
+ * Copyright 2022 Bonitasoft S.A.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,4 +14,9 @@
  * limitations under the License.
  */
 
-module.exports = require('../config/jest-playwright').computeConfiguration({ defaultBrowsers: 'chromium' });
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore js file with commonjs export
+import envUtils = require('../helpers/environment-utils.js');
+
+const onCi = envUtils.isRunningOnCi();
+jest.retryTimes(onCi ? 3 : 0);

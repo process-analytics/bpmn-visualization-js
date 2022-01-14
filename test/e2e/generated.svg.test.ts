@@ -20,7 +20,7 @@ import { BpmnPageSvgTester } from './helpers/visu/bpmn-page-utils';
 describe('Check generated SVG in demo page', () => {
   it('should display diagram in page', async () => {
     const pageTester = new BpmnPageSvgTester({ pageFileName: 'index', expectedPageTitle: 'BPMN Visualization Demo' }, <Page>page);
-    await pageTester.loadBPMNDiagramInRefreshedPage('simple-start-task-end');
+    await pageTester.gotoPageAndLoadBpmnDiagram('simple-start-task-end');
 
     await pageTester.expectEvent('StartEvent_1', 'Start Event 1');
     await pageTester.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
@@ -36,7 +36,7 @@ describe('Check generated SVG in lib-integration page', () => {
       { pageFileName: 'lib-integration', expectedPageTitle: 'BPMN Visualization Lib Integration', bpmnContainerId: 'bpmn-container-custom' },
       <Page>page,
     );
-    await pageTester.loadBPMNDiagramInRefreshedPage();
+    await pageTester.gotoPageAndLoadBpmnDiagram();
 
     await pageTester.expectEvent('StartEvent_1', 'Start Event Only');
   });

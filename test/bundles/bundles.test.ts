@@ -45,7 +45,7 @@ describe('bundles', () => {
       { pageFileName: 'lib-integration-iife', expectedPageTitle: 'BPMN Visualization IIFE bundle', bpmnContainerId: 'bpmn-container-for-iife-bundle' },
       <Page>page,
     );
-    await pageTester.loadBPMNDiagramInRefreshedPage();
+    await pageTester.gotoPageAndLoadBpmnDiagram();
 
     await pageTester.expectEvent('StartEvent_1', 'Start Event 1');
     await pageTester.expectSequenceFlow('Flow_1', 'Sequence Flow 1');
@@ -56,8 +56,8 @@ describe('bundles', () => {
 });
 
 class BpmnStaticPageSvgTester extends BpmnPageSvgTester {
-  override async loadBPMNDiagramInRefreshedPage(): Promise<void> {
-    const url = `file://${resolve(__dirname, `static/${this.targetedPage.pageFileName}.html`)}`;
-    super.doLoadBPMNDiagramInRefreshedPage(url, false);
+  override async gotoPageAndLoadBpmnDiagram(): Promise<void> {
+    const url = `file://${resolve(__dirname, `static/${this.targetedPageConfiguration.pageFileName}.html`)}`;
+    await super.doGotoPageAndLoadBpmnDiagram(url, false);
   }
 }

@@ -67,7 +67,7 @@ jobs:
         id: 'test_e2e'
         env:
           BROWSERS: ${{matrix.browser}}
-        run: npm run test:e2e
+        run: npm run test:e2e:verbose
       - name: Upload e2e test results
         if: ${{ failure() && steps.test_e2e.outcome == 'failure' }}
         uses: actions/upload-artifact@v2

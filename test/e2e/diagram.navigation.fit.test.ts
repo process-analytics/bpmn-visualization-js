@@ -18,7 +18,7 @@ import 'jest-playwright-preset';
 import { join } from 'path';
 import type { Page } from 'playwright';
 import { FitType } from '../../src/component/options';
-import { clickOnButton, getBpmnDiagramNames } from './helpers/test-utils';
+import { getBpmnDiagramNames } from './helpers/test-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
@@ -64,8 +64,8 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     const defaultFailureThreshold = 0.00006; // all OS 0.005379276499073438%
     super({ chromium: defaultFailureThreshold, firefox: defaultFailureThreshold, webkit: defaultFailureThreshold });
   }
-  getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    // if no dedicated information, set minimal threshold to make test pass on Github Workflow
+  protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
@@ -78,7 +78,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     ]);
   }
 
-  getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'horizontal',
@@ -108,7 +108,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     ]);
   }
 
-  protected getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+  protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'horizontal',
@@ -147,7 +147,7 @@ describe('diagram navigation - fit', () => {
   describe.each(fitTypes)('load options - fit %s', (onLoadFitType: FitType) => {
     describe.each(bpmnDiagramNames)('diagram %s', (bpmnDiagramName: string) => {
       it('load', async () => {
-        await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+        await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName, {
           loadOptions: {
             fit: {
               type: onLoadFitType,
@@ -166,14 +166,14 @@ describe('diagram navigation - fit', () => {
       });
 
       it.each(fitTypes)(`load + fit %s`, async (afterLoadFitType: FitType) => {
-        await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+        await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName, {
           loadOptions: {
             fit: {
               type: onLoadFitType,
             },
           },
         });
-        await clickOnButton(page, afterLoadFitType);
+        await pageTester.clickOnButton(afterLoadFitType);
 
         const image = await page.screenshot({ fullPage: true });
 
@@ -191,7 +191,7 @@ describe('diagram navigation - fit', () => {
         (onLoadFitType === FitType.Vertical && bpmnDiagramName === 'vertical')
       ) {
         it.each([-100, 0, 20, 50, null])('load with margin %s', async (margin: number) => {
-          await pageTester.loadBPMNDiagramInRefreshedPage(bpmnDiagramName, {
+          await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName, {
             loadOptions: {
               fit: {
                 type: onLoadFitType,

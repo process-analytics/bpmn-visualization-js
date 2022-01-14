@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-import { mxgraph } from '../../src/component/mxgraph/initializer';
-import type { FitOptions, FitType, GlobalOptions, LoadOptions, BpmnElement, Overlay, BpmnElementKind } from '../../src/bpmn-visualization';
-import { BpmnVisualization, FlowKind } from '../../src/bpmn-visualization';
+import type { BpmnElement, BpmnElementKind, FitOptions, FitType, GlobalOptions, LoadOptions, Overlay } from '../../src/bpmn-visualization';
 import { log, logDownload, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';
 import { downloadAsPng, downloadAsSvg } from './component/download';
+import { ThemedBpmnVisualization } from './component/ThemedBpmnVisualization';
 
 export * from './helper';
 
-let bpmnVisualization: BpmnVisualization;
+let bpmnVisualization: ThemedBpmnVisualization;
 let loadOptions: LoadOptions = {};
 
 export function updateLoadOptions(fitOptions: FitOptions): void {
@@ -149,24 +148,8 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
 }
 
 function configureStyleFromParameters(parameters: URLSearchParams): void {
-  const seqFlowColorsLight = parameters.get('style.seqFlow.light.colors');
-  if (seqFlowColorsLight == 'true') {
-    const color = '#E9E9E9';
-    logStartup('Use light colors for sequence flows, color', color);
-
-    const graph = bpmnVisualization.graph;
-    const stylesheet = graph.getStylesheet();
-
-    // directly access the 'styles' map to update values. Using stylesheet.getCellStyle returns a copy of the style
-    const seqFlowStyle = stylesheet.styles[FlowKind.SEQUENCE_FLOW];
-    seqFlowStyle[mxgraph.mxConstants.STYLE_STROKECOLOR] = color;
-    seqFlowStyle[mxgraph.mxConstants.STYLE_FILLCOLOR] = color;
-
-    logStartup('Sequence flows style updated');
-  }
-
-  const bpmnContainerAlternativeColor = parameters.get('style.container.alternative.background.color');
-  if (bpmnContainerAlternativeColor == 'true') {
+  const useBpmnContainerAlternativeColor = parameters.get('style.container.alternative.background.color');
+  if (useBpmnContainerAlternativeColor == 'true') {
     const color = 'yellow';
     logStartup('Use alternative color for the bpmn container background, color', color);
 
@@ -175,6 +158,16 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
 
     logStartup('Bpmn container style updated');
   }
+
+  const theme = parameters.get('style.theme');
+  if (theme) {
+    bpmnVisualization.configureTheme(theme);
+  }
+
+  const useSequenceFlowColorsLight = parameters.get('style.seqFlow.light.colors');
+  if (useSequenceFlowColorsLight == 'true') {
+    bpmnVisualization.configureSequenceFlowColor('#E9E9E9');
+  }
 }
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
@@ -182,7 +175,7 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   const container = config.globalOptions.container;
 
   log(`Initializing BpmnVisualization with container '${container}'...`);
-  bpmnVisualization = new BpmnVisualization(config.globalOptions);
+  bpmnVisualization = new ThemedBpmnVisualization(config.globalOptions);
   log('Initialization completed');
   new DropFileUserInterface(window, 'drop-container', container as string, readAndLoadFile);
   log('Drag&Drop support initialized');

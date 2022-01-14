@@ -205,7 +205,7 @@ describe('Style Computer', () => {
     [SequenceFlowKind.NORMAL, 'normal'],
   ])('compute style - sequence flows: %s', (kind, expected) => {
     const edge = new Edge('id', newSequenceFlow(kind));
-    expect(computeStyle(edge)).toEqual(`sequenceFlow;${expected}`);
+    expect(computeStyle(edge)).toBe(`sequenceFlow;${expected}`);
   });
 
   it.each([
@@ -214,7 +214,7 @@ describe('Style Computer', () => {
     [AssociationDirectionKind.BOTH, 'Both'],
   ])('compute style - association flows: %s', (kind, expected) => {
     const edge = new Edge('id', newAssociationFlow(kind));
-    expect(computeStyle(edge)).toEqual(`association;${expected}`);
+    expect(computeStyle(edge)).toBe(`association;${expected}`);
   });
 
   it.each([
@@ -222,7 +222,7 @@ describe('Style Computer', () => {
     [MessageVisibleKind.INITIATING, 'initiating'],
   ])('compute style - message flow icon: %s', (messageVisibleKind, expected) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
-    expect(styleComputer.computeMessageFlowIconStyle(edge)).toEqual(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=${expected}`);
+    expect(styleComputer.computeMessageFlowIconStyle(edge)).toBe(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=${expected}`);
   });
 
   describe('compute style - events kind', () => {
@@ -279,13 +279,13 @@ describe('Style Computer', () => {
         const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'Arial' }));
         const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
         const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
-        expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
+        expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
       });
 
       it(`${expandKind} embedded sub-process with label bounds`, () => {
         const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
         const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-        expect(computeStyle(shape)).toEqual(
+        expect(computeStyle(shape)).toBe(
           `subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
         );
       });
@@ -302,13 +302,13 @@ describe('Style Computer', () => {
           const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'Arial' }));
           const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
           const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
-          expect(computeStyle(shape)).toEqual(`callActivity${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
+          expect(computeStyle(shape)).toBe(`callActivity${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
         });
 
         it(`${expandKind} call activity with label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
           const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-          expect(computeStyle(shape)).toEqual(
+          expect(computeStyle(shape)).toBe(
             `callActivity${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
           );
         });
@@ -325,12 +325,12 @@ describe('Style Computer', () => {
       ])(`compute style - call activities calling %s`, (globalTaskKind: GlobalTaskKind) => {
         it(`call activity calling ${globalTaskKind} without label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind), newLabel({ name: 'Arial' }));
-          expect(computeStyle(shape)).toEqual(`callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=Arial`);
+          expect(computeStyle(shape)).toBe(`callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=Arial`);
         });
 
         it(`call activity calling ${globalTaskKind} with label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-          expect(computeStyle(shape)).toEqual(
+          expect(computeStyle(shape)).toBe(
             `callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
           );
         });
@@ -344,7 +344,7 @@ describe('Style Computer', () => {
       ['instantiating', true],
     ])('%s receive task', (instantiatingKind: string, instantiate: boolean) => {
       const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK_RECEIVE, undefined, instantiate), newLabel({ name: 'Arial' }));
-      expect(computeStyle(shape)).toEqual(`receiveTask;bpmn.isInstantiating=${instantiate};fontFamily=Arial`);
+      expect(computeStyle(shape)).toBe(`receiveTask;bpmn.isInstantiating=${instantiate};fontFamily=Arial`);
     });
   });
 
@@ -376,7 +376,7 @@ describe('Style Computer', () => {
       ['horizontal', true, '0'],
     ])('%s pool references a Process', (title, isHorizontal: boolean, expected: string) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.POOL), undefined, isHorizontal);
-      expect(computeStyle(shape)).toEqual(`pool;horizontal=${expected}`);
+      expect(computeStyle(shape)).toBe(`pool;horizontal=${expected}`);
     });
   });
 
@@ -386,7 +386,7 @@ describe('Style Computer', () => {
       ['horizontal', true, '0'],
     ])('%s lane', (title, isHorizontal: boolean, expected: string) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.LANE), undefined, isHorizontal);
-      expect(computeStyle(shape)).toEqual(`lane;horizontal=${expected}`);
+      expect(computeStyle(shape)).toBe(`lane;horizontal=${expected}`);
     });
   });
 
@@ -411,20 +411,20 @@ describe('Style Computer', () => {
         it(`${bpmnKind} with ${markerKind} marker`, () => {
           const shape = newShape(newShapeBpmnActivity(bpmnKind, [markerKind]), newLabel({ name: 'Arial' }));
           const additionalReceiveTaskStyle = bpmnKind === ShapeBpmnElementKind.TASK_RECEIVE ? ';bpmn.isInstantiating=false' : '';
-          expect(computeStyle(shape)).toEqual(`${bpmnKind}${additionalReceiveTaskStyle};bpmn.markers=${markerKind};fontFamily=Arial`);
+          expect(computeStyle(shape)).toBe(`${bpmnKind}${additionalReceiveTaskStyle};bpmn.markers=${markerKind};fontFamily=Arial`);
         });
 
         if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
           it(`${bpmnKind} with Loop & Expand (collapsed) markers`, () => {
             const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, [markerKind, ShapeBpmnMarkerKind.EXPAND]));
-            expect(computeStyle(shape)).toEqual(`subProcess;bpmn.subProcessKind=embedded;bpmn.markers=${markerKind},expand`);
+            expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=embedded;bpmn.markers=${markerKind},expand`);
           });
         }
 
         if (bpmnKind == ShapeBpmnElementKind.CALL_ACTIVITY) {
           it(`${bpmnKind} calling process with ${markerKind} & Expand (collapsed) markers`, () => {
             const shape = newShape(newShapeBpmnCallActivityCallingProcess([markerKind, ShapeBpmnMarkerKind.EXPAND]));
-            expect(computeStyle(shape)).toEqual(`callActivity;bpmn.markers=${markerKind},expand`);
+            expect(computeStyle(shape)).toBe(`callActivity;bpmn.markers=${markerKind},expand`);
           });
 
           it.each([
@@ -435,7 +435,7 @@ describe('Style Computer', () => {
             [ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE as GlobalTaskKind],
           ])(`${bpmnKind} calling global task with ${markerKind} marker`, (globalTaskKind: GlobalTaskKind) => {
             const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind, [markerKind]));
-            expect(computeStyle(shape)).toEqual(`callActivity;bpmn.globalTaskKind=${globalTaskKind};bpmn.markers=${markerKind}`);
+            expect(computeStyle(shape)).toBe(`callActivity;bpmn.globalTaskKind=${globalTaskKind};bpmn.markers=${markerKind}`);
           });
         }
       },
@@ -453,7 +453,7 @@ describe('Style Computer', () => {
     `('event-based gateway when instantiate: $instantiate for gatewayKind: $gatewayKind', ({ instantiate, gatewayKind }) => {
       const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, gatewayKind), newLabel({ name: 'Arial' }));
       gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
-      expect(computeStyle(shape)).toEqual(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.gatewayKind=${gatewayKind};fontFamily=Arial`);
+      expect(computeStyle(shape)).toBe(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.gatewayKind=${gatewayKind};fontFamily=Arial`);
     });
   });
 });

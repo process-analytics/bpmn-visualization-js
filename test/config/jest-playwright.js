@@ -13,28 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+const { isRunningOnCISlowOS } = require('../helpers/environment-utils');
 
 const log = require('debug')('bv:test:config:pw');
-
-const isMacOS = () => {
-  const isMacOS = process.platform.startsWith('darwin');
-  log('platform: %s / isMacOS? %s', process.platform, isMacOS);
-  return isMacOS;
-};
-const isWindowsOS = () => {
-  const isWindowsOS = process.platform.startsWith('win');
-  log('platform: %s / isWindowsOS? %s', process.platform, isWindowsOS);
-  return isWindowsOS;
-};
-// running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
-const isRunningOnCi = () => {
-  const isRunningOnCi = process.env.CI === 'true';
-  log('isRunningOnCi?', isRunningOnCi);
-  return isRunningOnCi;
-};
-const isRunningOnCISlowOS = () => {
-  return isRunningOnCi() && (isMacOS() || isWindowsOS());
-};
 
 const computeBrowsersAndChannelConfiguration = defaultBrowsers => {
   log('Default browsers list', defaultBrowsers);
@@ -56,7 +37,7 @@ const computeBrowsersAndChannelConfiguration = defaultBrowsers => {
   return config;
 };
 
-const computeLaunchOptionsAndBrowsersConfiguration = (defaultBrowsers = 'chromium,firefox,webkit') => {
+const computeLaunchOptionsAndBrowsersConfiguration = defaultBrowsers => {
   log('Computing launchOptions and browsers configuration');
 
   /** @type {import('playwright-core/types/types').LaunchOptions} */
@@ -81,32 +62,14 @@ const computeLaunchOptionsAndBrowsersConfiguration = (defaultBrowsers = 'chromiu
   return config;
 };
 
-const computeServerOptions = () => {
-  log('Computing serverOptions');
-  const options = {
-    command: `npm run start -- --config-server-port 10002`,
-    port: 10002,
-    protocol: 'http', // if default or tcp, the test starts right await whereas the dev server is not available on http
-    launchTimeout: 60000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
-    debug: true,
-    usedPortAction: 'ignore', // your tests are executed, we assume that the server is already started
-  };
-  log('Computed serverOptions', options);
-  return options;
+const computeConfigurationForStaticUsage = defaultBrowsers => {
+  log('Computing configuration for static usage');
+  return computeBaseConfiguration(defaultBrowsers);
 };
 
-const computeConfigurationForStaticUsage = () => {
-  const { browsers, launchOptions } = computeLaunchOptionsAndBrowsersConfiguration();
-  return {
-    launchOptions: launchOptions,
-    browsers: browsers,
-  };
-};
-
-const computeConfigurationForDevServerUsage = defaultBrowsers => {
+const computeBaseConfiguration = defaultBrowsers => {
   const { browsers, launchOptions } = computeLaunchOptionsAndBrowsersConfiguration(defaultBrowsers);
   return {
-    serverOptions: computeServerOptions(),
     launchOptions: launchOptions,
     launchType: 'LAUNCH',
     contextOptions: {
@@ -119,5 +82,34 @@ const computeConfigurationForDevServerUsage = defaultBrowsers => {
   };
 };
 
-exports.computeConfigurationForStaticUsage = computeConfigurationForStaticUsage;
-exports.computeConfigurationForDevServerUsage = computeConfigurationForDevServerUsage;
+const computeConfigurationForDevServerUsage = defaultBrowsers => {
+  log('Computing configuration for dev server usage');
+  /** @type {import('jest-playwright-preset/types/global').ServerOptions} */
+  const serverOptions = {
+    command: `npm run start -- --config-server-port 10002`,
+    port: 10002,
+    // if default or tcp, the test starts right await whereas the dev server is not available on http
+    // for more details, see https://github.com/process-analytics/bpmn-visualization-js/pull/1056
+    protocol: 'http',
+    launchTimeout: 60_000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
+    debug: true,
+    usedPortAction: 'ignore', // your tests are executed, we assume that the server is already started
+  };
+  return {
+    ...computeBaseConfiguration(defaultBrowsers),
+    serverOptions: serverOptions,
+  };
+};
+
+const computeConfiguration = options => {
+  let configuration;
+  if (options.startWebServer ?? true) {
+    configuration = computeConfigurationForDevServerUsage(options.defaultBrowsers);
+  } else {
+    configuration = computeConfigurationForStaticUsage(options.defaultBrowsers);
+  }
+  log('Computed configuration', configuration);
+  return configuration;
+};
+
+exports.computeConfiguration = computeConfiguration;
