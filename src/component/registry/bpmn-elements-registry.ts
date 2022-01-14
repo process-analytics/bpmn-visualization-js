@@ -15,14 +15,15 @@
  */
 
 import { ensureIsArray } from '../helpers/array-utils';
-import { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
+import type { BpmnMxGraph } from '../mxgraph/BpmnMxGraph';
 import { computeBpmnBaseClassName } from '../mxgraph/renderer/style-utils';
 import { CssRegistry } from './css-registry';
-import MxGraphCellUpdater, { newMxGraphCellUpdater } from '../mxgraph/MxGraphCellUpdater';
+import type MxGraphCellUpdater from '../mxgraph/MxGraphCellUpdater';
+import { newMxGraphCellUpdater } from '../mxgraph/MxGraphCellUpdater';
 import { BpmnQuerySelectors } from './query-selectors';
-import { BpmnElement, Overlay } from './types';
-import { BpmnModelRegistry } from './bpmn-model-registry';
-import { BpmnElementKind } from '../../model/bpmn/internal';
+import type { BpmnElement, Overlay } from './types';
+import type { BpmnModelRegistry } from './bpmn-model-registry';
+import type { BpmnElementKind } from '../../model/bpmn/internal';
 
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnMxGraph): BpmnElementsRegistry {
   return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), newMxGraphCellUpdater(graph));

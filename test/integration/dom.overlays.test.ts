@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { OverlayEdgePosition, OverlayShapePosition } from '../../src/bpmn-visualization';
+import type { OverlayEdgePosition, OverlayShapePosition } from '../../src/bpmn-visualization';
 import { readFileSync } from '../helpers/file-helper';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import { initializeBpmnVisualization } from './helpers/bpmn-visualization-initialization';

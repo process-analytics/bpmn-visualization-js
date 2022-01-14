@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TRootElement } from './rootElement';
-import { TExpression } from '../expression';
+import type { TRootElement } from './rootElement';
+import type { TExpression } from '../expression';
 
 // abstract="true"
 export type TEventDefinition = TRootElement;

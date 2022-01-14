@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Metrics } from './metrics-chromium';
+import type { Metrics } from './metrics-chromium';
 
 export interface PerformanceMetric {
   run: number;

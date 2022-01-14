@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BpmnMxGraph } from '../BpmnMxGraph';
+import type { BpmnMxGraph } from '../BpmnMxGraph';
 import { mxgraph } from '../initializer';
 import type { mxCell, mxPoint } from 'mxgraph';
 

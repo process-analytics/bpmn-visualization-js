@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TBaseElement } from './baseElement';
-import { TText } from '../Semantic';
+import type { TBaseElement } from './baseElement';
+import type { TText } from '../Semantic';
 
 // abstract="true"
 export type TArtifact = TBaseElement;

@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {
+import type {
   ShapeBpmnElementKind,
   ShapeBpmnCallActivityKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
   ShapeBpmnEventDefinitionKind,
   GlobalTaskKind,
-  FlowKind,
 } from '../../../../../src/model/bpmn/internal';
-import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
+import { FlowKind, MessageVisibleKind, SequenceFlowKind } from '../../../../../src/model/bpmn/internal';
+import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { newBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
-import { Edge, Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
-import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
+import type { Edge, Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
+import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import { ShapeBpmnActivity, ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import Label from '../../../../../src/model/bpmn/internal/Label';
+import type Label from '../../../../../src/model/bpmn/internal/Label';
 import { SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/flows';
-import { MessageVisibleKind, SequenceFlowKind } from '../../../../../src/model/bpmn/internal/edge/kinds';
-import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
-import { ParsingMessageCollector, JsonParsingWarning } from '../../../../../src/component/parser/parsing-messages';
+import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
+import type { JsonParsingWarning } from '../../../../../src/component/parser/parsing-messages';
+import { ParsingMessageCollector } from '../../../../../src/component/parser/parsing-messages';
 
 export interface ExpectedShape {
   shapeId: string;

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 import 'expect-playwright';
-import { PageWaitForSelectorOptions } from 'expect-playwright';
-import { ElementHandle, Page } from 'playwright';
-import { FitType, LoadOptions } from '../../../../src/component/options';
+import type { PageWaitForSelectorOptions } from 'expect-playwright';
+import type { ElementHandle, Page } from 'playwright';
+import type { LoadOptions } from '../../../../src/component/options';
+import { FitType } from '../../../../src/component/options';
 import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
 import { delay } from '../test-utils';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

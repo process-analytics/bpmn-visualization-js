@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {
-  BpmnVisualization,
+import type {
   FlowKind,
   MessageVisibleKind,
   SequenceFlowKind,
@@ -24,6 +23,7 @@ import {
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
 } from '../../../src/bpmn-visualization';
+import { BpmnVisualization } from '../../../src/bpmn-visualization';
 import {
   toBeAssociationFlow,
   toBeBoundaryEvent,
@@ -51,7 +51,7 @@ import {
   toBeUserTask,
 } from '../matchers';
 import type { mxGeometry } from 'mxgraph';
-import { ExpectedOverlay } from '../matchers/matcher-utils';
+import type { ExpectedOverlay } from '../matchers/matcher-utils';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

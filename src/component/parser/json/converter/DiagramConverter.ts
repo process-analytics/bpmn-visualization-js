@@ -16,17 +16,19 @@
 
 import Shape from '../../../../model/bpmn/internal/shape/Shape';
 import Bounds from '../../../../model/bpmn/internal/Bounds';
-import ShapeBpmnElement, { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import type ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { Edge, Waypoint } from '../../../../model/bpmn/internal/edge/edge';
-import BpmnModel, { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
+import type { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
+import type BpmnModel from '../../../../model/bpmn/internal/BpmnModel';
 import Label, { Font } from '../../../../model/bpmn/internal/Label';
 import { MessageVisibleKind } from '../../../../model/bpmn/internal/edge/kinds';
-import { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
-import { Point } from '../../../../model/bpmn/json/DC';
-import { ConvertedElements } from './utils';
+import type { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
+import type { Point } from '../../../../model/bpmn/json/DC';
+import type { ConvertedElements } from './utils';
 import { ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../../model/bpmn/internal';
 import { ensureIsArray } from '../../../helpers/array-utils';
-import { ParsingMessageCollector } from '../../parsing-messages';
+import type { ParsingMessageCollector } from '../../parsing-messages';
 import { EdgeUnknownBpmnElementWarning, LabelStyleMissingFontWarning, ShapeUnknownBpmnElementWarning } from '../warnings';
 
 /**

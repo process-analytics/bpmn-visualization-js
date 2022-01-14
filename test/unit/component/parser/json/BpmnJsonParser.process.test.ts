@@ -15,7 +15,7 @@
  */
 import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes, verifyShape } from './JsonTestUtils';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
-import { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
+import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 
 describe('parse bpmn as json for process/pool', () => {
   describe.each([

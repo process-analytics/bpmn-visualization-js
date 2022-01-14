@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Overlay, OverlayFont, OverlayPosition, OverlayFill, OverlayStroke } from '../../registry';
+import type { Overlay, OverlayFont, OverlayPosition, OverlayFill, OverlayStroke } from '../../registry';
 import { StyleDefault } from '../style';
-import { MxGraphCustomOverlayOptions, MxGraphCustomOverlayPosition, MxGraphCustomOverlayStyle } from './custom-overlay';
+import type { MxGraphCustomOverlayOptions, MxGraphCustomOverlayPosition, MxGraphCustomOverlayStyle } from './custom-overlay';
 
 export class OverlayConverter {
   private overlayPositions: Map<OverlayPosition, MxGraphCustomOverlayPosition> = new Map([

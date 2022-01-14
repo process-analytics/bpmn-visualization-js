@@ -23,6 +23,7 @@
     "noImplicitOverride": true,
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "dev/ts/**/*"
   ]
 }

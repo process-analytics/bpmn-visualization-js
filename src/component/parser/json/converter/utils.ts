@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-import ShapeBpmnElement, { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
-import { GlobalTaskKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../../model/bpmn/internal';
-import { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
-import { ParsingMessageCollector } from '../../parsing-messages';
+import type { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import type { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
+import type { GlobalTaskKind, ShapeBpmnEventDefinitionKind } from '../../../../model/bpmn/internal';
+import { ShapeBpmnElementKind } from '../../../../model/bpmn/internal';
+import type { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
+import type { ParsingMessageCollector } from '../../parsing-messages';
 import { GroupUnknownCategoryValueWarning } from '../warnings';
 
 /**

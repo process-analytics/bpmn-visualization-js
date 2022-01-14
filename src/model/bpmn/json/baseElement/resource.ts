@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TBaseElement } from './baseElement';
-import { TExpression, TFormalExpression } from './expression';
+import type { TBaseElement } from './baseElement';
+import type { TExpression, TFormalExpression } from './expression';
 
 export interface TResourceAssignmentExpression extends TBaseElement {
   // expression

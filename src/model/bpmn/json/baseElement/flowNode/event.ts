@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TProperty } from '../baseElement';
-import { TDataInput, TDataInputAssociation, TDataOutput, TDataOutputAssociation } from '../data';
-import { TInputSet, TOutputSet } from '../input-output';
-import {
+import type { TProperty } from '../baseElement';
+import type { TDataInput, TDataInputAssociation, TDataOutput, TDataOutputAssociation } from '../data';
+import type { TInputSet, TOutputSet } from '../input-output';
+import type {
   TCancelEventDefinition,
   TCompensateEventDefinition,
   TConditionalEventDefinition,
@@ -29,7 +29,7 @@ import {
   TTerminateEventDefinition,
   TTimerEventDefinition,
 } from '../rootElement/eventDefinition';
-import { TFlowNode } from '../flowElement';
+import type { TFlowNode } from '../flowElement';
 
 // abstract="true"
 export interface TEvent extends TFlowNode {

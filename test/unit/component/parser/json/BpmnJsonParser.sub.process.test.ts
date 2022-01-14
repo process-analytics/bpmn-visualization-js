@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ExpectedShape, parseJson, parseJsonAndExpectOnlySubProcess, verifyEdge, verifyShape, verifySubProcess } from './JsonTestUtils';
-import { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
+import type { ExpectedShape } from './JsonTestUtils';
+import { parseJson, parseJsonAndExpectOnlySubProcess, verifyEdge, verifyShape, verifySubProcess } from './JsonTestUtils';
+import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal';
-import { ShapeBpmnEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
+import type { ShapeBpmnEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
+import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { getEventShapes } from './TestUtils';
 
 function expectNoPoolLane(model: BpmnModel): void {

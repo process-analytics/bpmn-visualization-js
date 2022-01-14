@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import Label from '../Label';
-import { Flow } from './flows';
+import type Label from '../Label';
+import type { Flow } from './flows';
 import { MessageVisibleKind } from './kinds';
 
 /**

@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { PageTester, StyleOptions } from './helpers/visu/bpmn-page-utils';
+import type { StyleOptions } from './helpers/visu/bpmn-page-utils';
+import { PageTester } from './helpers/visu/bpmn-page-utils';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { Page } from 'playwright';
+import type { Page } from 'playwright';
 
 const styleOptionsPerUseCase = new Map<string, StyleOptions>([
   [

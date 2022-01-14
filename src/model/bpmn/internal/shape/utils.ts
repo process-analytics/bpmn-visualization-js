@@ -15,7 +15,8 @@
  */
 
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from './kinds';
-import { filter, FilterParameter } from '../../../../component/helpers/array-utils';
+import type { FilterParameter } from '../../../../component/helpers/array-utils';
+import { filter } from '../../../../component/helpers/array-utils';
 
 /**
  * Utils to simplify the management of {@link ShapeBpmnElementKind}.

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnVisualization, ShapeBpmnEventDefinitionKind } from '../../../src/bpmn-visualization';
+import type { BpmnVisualization, ShapeBpmnEventDefinitionKind } from '../../../src/bpmn-visualization';
 import { BpmnQuerySelectorsForTests } from '../../helpers/query-selectors';
 
 /* eslint-disable jest/no-standalone-expect */

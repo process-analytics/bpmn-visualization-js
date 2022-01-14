@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TExpression } from '../expression';
-import { TFlowNode } from '../flowElement';
+import type { TExpression } from '../expression';
+import type { TFlowNode } from '../flowElement';
 
 // abstract="true"
 export interface TGateway extends TFlowNode {

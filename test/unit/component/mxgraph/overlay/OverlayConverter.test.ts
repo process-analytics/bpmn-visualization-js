@@ -17,8 +17,9 @@
  * limitations under the License.
  */
 import { OverlayConverter } from '../../../../../src/component/mxgraph/overlay/OverlayConverter';
-import { MxGraphCustomOverlayPosition } from '../../../../../src/component/mxgraph/overlay/custom-overlay';
-import { Overlay, OverlayPosition, StyleDefault } from '../../../../../src/bpmn-visualization';
+import type { MxGraphCustomOverlayPosition } from '../../../../../src/component/mxgraph/overlay/custom-overlay';
+import type { Overlay, OverlayPosition } from '../../../../../src/bpmn-visualization';
+import { StyleDefault } from '../../../../../src/bpmn-visualization';
 
 describe('overlay converter', () => {
   const overlayConverter = new OverlayConverter();
