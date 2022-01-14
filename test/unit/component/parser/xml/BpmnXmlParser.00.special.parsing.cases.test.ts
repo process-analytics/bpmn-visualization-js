@@ -26,7 +26,7 @@ import Bounds from '../../../../../src/model/bpmn/internal/Bounds';
 describe('Special parsing cases', () => {
   it('Parse a text file', () => {
     expect(() => new BpmnXmlParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(
-      `XML parsing failed. Unable to retrieve 'definitions' for the BPMN source.`,
+      `XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`,
     );
   });
 
