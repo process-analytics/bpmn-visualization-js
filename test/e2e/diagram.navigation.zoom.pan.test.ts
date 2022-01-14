@@ -53,7 +53,10 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
 describe('diagram navigation - zoom and pan', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'navigation');
-  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
+  const pageTester = new PageTester(
+    { pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation', diagramSubfolder: 'navigation' },
+    <Page>page,
+  );
 
   const bpmnDiagramName = 'simple.2.start.events.1.task';
   let containerCenter: Point;

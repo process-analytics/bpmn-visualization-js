@@ -17,6 +17,7 @@ import { existsSync } from 'fs';
 import 'jest-playwright-preset';
 import { resolve } from 'path';
 import type { Page } from 'playwright';
+import type { TargetedPageConfiguration } from '../e2e/helpers/visu/bpmn-page-utils';
 import { BpmnPageSvgTester } from '../e2e/helpers/visu/bpmn-page-utils';
 
 describe('bundles', () => {
@@ -55,7 +56,14 @@ describe('bundles', () => {
   });
 });
 
+type SvgTargetedPageConfiguration = Omit<TargetedPageConfiguration, 'diagramSubfolder'>;
+
 class BpmnStaticPageSvgTester extends BpmnPageSvgTester {
+  constructor(targetedPageConfiguration: SvgTargetedPageConfiguration, page: Page) {
+    // In the tests here, we are loading the diagram provided by the page, it is not possible to specify a diagram
+    // So the diagram configuration is useless, and we pass fake values
+    super({ ...targetedPageConfiguration, diagramSubfolder: 'none' }, page);
+  }
   override async gotoPageAndLoadBpmnDiagram(): Promise<void> {
     const url = `file://${resolve(__dirname, `static/${this.targetedPageConfiguration.pageFileName}.html`)}`;
     await super.doGotoPageAndLoadBpmnDiagram(url, false);

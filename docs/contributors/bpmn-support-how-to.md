@@ -12,12 +12,12 @@ So we proceed using several steps:
   - This ensures that the whole infrastructure is put in place for the newly introduced elements support, from parsing to rendering,
   and that tests have been added or updated.
 - `rendering`: 
-  - We setup the BPMN shape, styles, icons 
+  - We set up the BPMN shape, styles, icons 
   - We polish the display
 
 On the development flow side, this means that there is at least one Pull Request for the `detection` and another one for the `rendering`.
 
-Remember that we prefer small changes . So, `detection` can be splitted into several Pull Requests to cover
+Remember that we prefer small changes . So, `detection` can be split into several Pull Requests to cover
 various aspects of the BPMN elements. \
 For instance:
 - For a `Pool`, first detect horizontal elements, then vertical elements.
