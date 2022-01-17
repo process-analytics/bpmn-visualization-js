@@ -65,14 +65,9 @@ export class BpmnVisualization {
    * @throws `Error` when loading fails. This is generally due to a parsing error caused by a malformed BPMN content
    */
   load(xml: string, options?: LoadOptions): void {
-    try {
-      const bpmnModel = newBpmnParser().parse(xml);
-      const renderedModel = this.bpmnModelRegistry.load(bpmnModel);
-      newBpmnRenderer(this.graph).render(renderedModel, options);
-    } catch (e) {
-      window.alert(`Cannot load bpmn diagram: ${e.message}`);
-      throw e;
-    }
+    const bpmnModel = newBpmnParser().parse(xml);
+    const renderedModel = this.bpmnModelRegistry.load(bpmnModel);
+    newBpmnRenderer(this.graph).render(renderedModel, options);
   }
 
   fit(options?: FitOptions): void {

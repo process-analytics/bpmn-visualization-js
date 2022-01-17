@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { logErrorAndOpenAlert } from '../helper';
 
 export class DropFileUserInterface {
   private document: Document;
@@ -141,8 +142,7 @@ export class DropFileUserInterface {
         const files = dt.files;
         dropCallback(files[0]);
       } catch (e) {
-        // TODO error management
-        console.error(e as Error);
+        logErrorAndOpenAlert(e);
       } finally {
         isDocument ? (<Document>this).querySelector('#' + outerContainerId).classList.remove('dragging') : (<HTMLElement>this).classList.remove('dragging');
         containerToBeFaded.classList.remove('faded');
