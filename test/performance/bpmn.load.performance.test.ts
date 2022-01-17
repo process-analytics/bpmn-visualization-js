@@ -30,7 +30,10 @@ beforeAll(async () => {
   metricsCollector = await ChromiumMetricsCollector.create(<Page>page);
 });
 describe.each([1, 2, 3, 4, 5])('load performance', run => {
-  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation' }, <Page>page);
+  const pageTester = new PageTester(
+    { pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation', diagramSubfolder: 'performance' },
+    <Page>page,
+  );
   const bpmnDiagramName = 'B.2.0';
 
   it('check performance for file loading and displaying diagram with FitType.HorizontalVertical', async () => {

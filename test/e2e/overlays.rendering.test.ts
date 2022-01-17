@@ -165,7 +165,7 @@ class OverlaysPageTester extends PageTester {
   }
 }
 
-const pageTester = new OverlaysPageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays' }, <Page>page);
+const pageTester = new OverlaysPageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays', diagramSubfolder: 'overlays' }, <Page>page);
 
 describe('BPMN Shapes with overlays', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
