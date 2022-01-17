@@ -37,6 +37,11 @@ export function log(message?: string, ...optionalParams: unknown[]): void {
   _log('[DEMO]', message, ...optionalParams);
 }
 
+export function logErrorAndOpenAlert(error: unknown, alertMsg?: string): void {
+  console.error(`[DEMO]`, error);
+  window.alert(alertMsg ?? error);
+}
+
 export function logDownload(message?: unknown, ...optionalParams: unknown[]): void {
   _log('[DEMO DOWNLOAD]', message, ...optionalParams);
 }

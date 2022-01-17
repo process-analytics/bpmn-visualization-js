@@ -15,7 +15,7 @@
  */
 
 import type { BpmnElement, BpmnElementKind, FitOptions, FitType, GlobalOptions, LoadOptions, Overlay } from '../../src/bpmn-visualization';
-import { log, logDownload, logStartup } from './helper';
+import { log, logDownload, logErrorAndOpenAlert, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';
 import { downloadAsPng, downloadAsSvg } from './component/download';
@@ -42,9 +42,13 @@ function stringify(value: unknown): string {
 
 function loadBpmn(bpmn: string): void {
   log('Loading bpmn....');
-  bpmnVisualization.load(bpmn, loadOptions);
-  log('BPMN loaded with configuration', stringify(loadOptions));
-  document.dispatchEvent(new CustomEvent('diagramLoaded'));
+  try {
+    bpmnVisualization.load(bpmn, loadOptions);
+    log('BPMN loaded with configuration', stringify(loadOptions));
+    document.dispatchEvent(new CustomEvent('diagramLoaded'));
+  } catch (e) {
+    logErrorAndOpenAlert(e, `Cannot load the BPMN diagram: ${e.message}`);
+  }
 }
 
 export function fit(fitOptions: FitOptions): void {
@@ -120,6 +124,9 @@ function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) 
     .then(bpmn => {
       loadBpmn(bpmn);
       log(`Bpmn loaded from url ${url}`);
+    })
+    .catch(() => {
+      // do nothing here, error is already managed
     });
 }
 
@@ -130,7 +137,7 @@ export interface BpmnVisualizationDemoConfiguration {
 }
 
 function defaultStatusFetchKoNotifier(errorMsg: string): void {
-  console.error(errorMsg);
+  logErrorAndOpenAlert(errorMsg);
 }
 
 function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration, parameters: URLSearchParams): FitOptions {
