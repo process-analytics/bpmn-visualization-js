@@ -328,12 +328,9 @@ const styleOptionsPerDiagram = new Map<string, StyleOptions>([
 describe('BPMN rendering', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'bpmn');
 
-  const diagramsDirectoryName = 'non-regression';
-  const pageTester = new PageTester(
-    { pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression', diagramSubfolder: diagramsDirectoryName },
-    <Page>page,
-  );
-  const bpmnDiagramNames = getBpmnDiagramNames(diagramsDirectoryName);
+  const diagramSubfolder = 'non-regression';
+  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression', diagramSubfolder }, <Page>page);
+  const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
   it('check bpmn non-regression files availability', () => {
     expect(bpmnDiagramNames).toContain('gateways');

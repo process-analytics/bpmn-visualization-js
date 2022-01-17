@@ -57,8 +57,8 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   }
 }
 
-const diagramsDirectoryName = 'diagram';
-const bpmnDiagramNames = getBpmnDiagramNames(diagramsDirectoryName);
+const diagramSubfolder = 'diagram';
+const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -142,10 +142,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 describe('diagram navigation - fit', () => {
   const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'fit');
 
-  const pageTester = new PageTester(
-    { pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation', diagramSubfolder: diagramsDirectoryName },
-    <Page>page,
-  );
+  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation', diagramSubfolder }, <Page>page);
 
   const fitTypes: FitType[] = [FitType.None, FitType.HorizontalVertical, FitType.Horizontal, FitType.Vertical, FitType.Center];
   describe.each(fitTypes)('load options - fit %s', (onLoadFitType: FitType) => {
