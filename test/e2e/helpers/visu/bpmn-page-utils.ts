@@ -64,6 +64,8 @@ export interface TargetedPageConfiguration {
    * @default false
    */
   showMousePointer?: boolean;
+  /** subfolder storing the diagram used during the test */
+  diagramSubfolder: string;
 }
 
 export interface StyleOptions {
@@ -95,6 +97,7 @@ export class PageTester {
   private readonly baseUrl: string;
   protected bpmnPage: BpmnPage;
   protected bpmnContainerId: string;
+  private readonly diagramSubfolder: string;
 
   /**
    * Configure how the BPMN file is loaded by the test page.
@@ -103,6 +106,7 @@ export class PageTester {
     const showMousePointer = targetedPageConfiguration.showMousePointer ?? false;
     this.baseUrl = `http://localhost:10002/${targetedPageConfiguration.pageFileName}.html?showMousePointer=${showMousePointer}`;
     this.bpmnContainerId = targetedPageConfiguration.bpmnContainerId ?? 'bpmn-container';
+    this.diagramSubfolder = targetedPageConfiguration.diagramSubfolder;
     this.bpmnPage = new BpmnPage(this.bpmnContainerId, this.page);
   }
 
@@ -131,8 +135,11 @@ export class PageTester {
    */
   private computePageUrl(bpmnDiagramName: string, loadOptions: LoadOptions, styleOptions?: StyleOptions): string {
     let url = this.baseUrl;
-    url += `&fitTypeOnLoad=${loadOptions.fit?.type}&fitMargin=${loadOptions.fit?.margin}`;
-    url += `&url=./static/diagrams/${bpmnDiagramName}.bpmn`;
+    url += `&url=./static/bpmn/${this.diagramSubfolder}/${bpmnDiagramName}.bpmn`;
+
+    // load query parameters
+    loadOptions.fit?.type && (url += `&fitTypeOnLoad=${loadOptions.fit.type}`);
+    loadOptions.fit?.margin && (url += `&fitMargin=${loadOptions.fit.margin}`);
 
     // style query parameters
     styleOptions?.sequenceFlow?.useLightColors && (url += `&style.seqFlow.light.colors=${styleOptions.sequenceFlow.useLightColors}`);
