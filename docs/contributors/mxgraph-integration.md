@@ -137,6 +137,125 @@ Check the [GitHub Pull Request #291](https://github.com/process-analytics/bpmn-v
 to see various positioning methods in action.
 
 
+#### Terminal points and Perimeters
+
+**Note**: all SVG files from this paragraph are generated from this [draw.io file](resources/mxGraph-perimeter.drawio)
+
+##### Information from mxGrapĥ/maxGraph
+
+`mxGraph` doesn't provide details about the Perimeter concept in the documentation. However, it is available in the maxGraph documentation https://maxgraph.github.io/maxGraph/docs/usage/perimeters
+
+Here are some tips to switch from `maxGraph` to `mxGraph` concepts.
+
+The definition of the cell style is not the same in `mxGraph` and `maxGraph`. In `mxGraph`, the style is a string, whereas in `maxGraph`, it is an object.
+See the ["`mxGraph` to `maxGraph` migration guide" style paragraph](https://maxgraph.github.io/maxGraph/docs/usage/migrate-from-mxgraph/#styling) for more details 
+
+For example, about the orthogonal projection activation:
+- `mxGraph`: style[mxgraph.mxConstants.STYLE_ORTHOGONAL] = 1;
+- `maxGraph`: style.orthogonal = true;
+
+All `mxGraph` examples are listed in: https://jgraph.github.io/mxgraph/javascript/examples/index.html.
+In particular, the Orthogonal example is available at https://jgraph.github.io/mxgraph/javascript/examples/orthogonal.html.
+
+
+##### Usage of Perimeters in `bpmn-visualization`
+
+We always set a perimeter to the style of the shapes we configured. This is done in [StyleConfigurator](../../src/component/mxgraph/config/StyleConfigurator.ts).
+
+`mxGraph` provides various perimeters out of the box, in particular: rectangle, ellipse, diamond. This is everything we need for BPMN shapes, so we don't need to implement custom perimeters.
+
+We don't use orthogonal projection in bpmn-visualization because it introduced side effects in the past. For more information, see:
+- https://github.com/process-analytics/bpmn-visualization-js/issues/349
+- https://github.com/process-analytics/bpmn-visualization-js/issues/295
+- https://github.com/process-analytics/bpmn-visualization-js/issues/295#issuecomment-904336449
+- https://github.com/process-analytics/bpmn-visualization-js/pull/1399
+
+To ensure that the rendering matches our needs, we have a lot of non regression visual tests on associations, message and sequence flows for:
+- terminal waypoints inside and outside shapes
+- outside without intersection of the flow segment with the shape
+
+
+###### Impact of a Perimeter on last segment of the Edge and markers
+
+In the BPMN source, most of the time, the edge defined waypoints (this is highly recommended by the BPMN specification).
+Some modelers don't set the terminal points on the visual perimeters of the shapes. In this case, using the perimeter sometimes introduces a side effect on the final computed segment of the edge and its markers.
+
+The markers (generally an arrow) is not aligned with the original final segment of the edge.
+A new segment is created to connect the edge to the shape perimeter. This new segment is not always aligned with the original segment, which creates a visual glitch.
+The marker can be:
+- inside the shape, like the issue about ["Association Flow arrow sometimes displayed inside the terminal BPMN element"]( https://github.com/process-analytics/bpmn-visualization-js/issues/715).
+- outside the shape like in the following screenshots
+
+
+| positioning                                              | rendering                                              |
+|----------------------------------------------------------|--------------------------------------------------------|
+| ![](images/mxgraph-perimeter/markers-01-positioning.png) | ![](images/mxgraph-perimeter/markers-02-rendering.png) |
+
+
+###### Current implementation to fix the problem
+
+The current implementation has been done in [PR #1868](https://github.com/process-analytics/bpmn-visualization-js/pull/1868).
+It consists on not using the perimeter when the edge has waypoints and to use the perimeter only when the edge has no waypoints.
+
+This is done by a dedicated `BpmnGraphView` class (extending `mxGraphView`) injected in the `BpmnGraph` (extending `mxGraph`) which overrides the `getFloatingPoint` method.
+This method includes the logic to compute the terminal points of the edge.
+- if the edge has waypoints, the perimeter is not used. We take the last non-null points in the points array and use them directly as end points
+- if the edge has no waypoints, we fall back to the perimeter computation.
+
+**Reminder about `mxGraph` terminal waypoints**
+
+The points definition from the model are copied into the `abspoints` array property of the edge `state` instance.
+This copy process also adds `null` values at the beginning and the end of the array.
+They will later be replaced by the computed terminal points in [mxGraphView.updateFloatingTerminalPoints](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1547) which involves the perimeter if it is defined.
+
+So there is a special case when the edge has no waypoints: the array contains 2 `null` values.
+
+
+**Limitations of the current implementation**
+
+As the is no additional points computed to have connections on the target shape perimeter, the edge can be too short.
+
+The following screenshots demonstrates the problem. They were created without EdgeStyle (STYLE_EDGE not set) and taken from [Pull Request #1765](https://github.com/process-analytics/bpmn-visualization-js/pull/1765#issuecomment-1018508771) (2 screenshots at the end).
+They used the visualization test diagram `flows.sequence.04.waypoints.03.terminal.outside.shapes.02.segments.no.intersection.with.shapes.bpmn`.
+
+| Without Projection (no perimeter)                                                                                                                       | Default (Projection to center)                                                                                                                                                  | Orthogonal Projection (`STYLE_ORTHOGONAL` = 1)                                                                                                                           |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ![without projection](images/mxgraph-perimeter/flows.sequence.04.waypoints.03.terminal.outside.shapes.02.segments.no.intersection.with.shapes-snap.png) | ![seq_flow_outside_no_segment_connector_01_default_projection_to_center](https://user-images.githubusercontent.com/27200110/150537056-68d7410b-9675-4bcc-9d01-ce2562965ffc.png) | ![seq_flow_outside_no_segment_connector_02_orthogonal_projection](https://user-images.githubusercontent.com/27200110/150537058-65e645c1-fb80-4f54-8da9-b0c819bbbc7a.png) |
+
+
+###### Wish for the future
+
+The ideal solution would be to use the existing edge segment and to compute the final point at the intersection with the perimeter.
+This wouldn't create a new segment potentially not aligned with the previous one and would avoid the visual glitch. 
+
+![](images/mxgraph-perimeter/markers-03-projection-vs-intersection.png)
+_Edge Markers: comparison between projection and intersection with the shape perimeter_
+
+In case there is no intersection, the fallback to the `mxGraph` standard perimeter usage would be the best solution.
+
+![](images/mxgraph-perimeter/perimeter-no-intersection.png)
+_Usage of perimeter when no intersection with the shape perimeter_
+
+
+**Potential fixes**
+
+This solution would let implement the following issues:
+- ["Ensure that the terminal waypoints are on the shape perimeter"](https://github.com/process-analytics/bpmn-visualization-js/issues/1870)
+- ["Restore the experimental pools/subprocess live collapsing"](https://github.com/process-analytics/bpmn-visualization-js/issues/1871)
+
+
+**Alternatives and technical elements that could help for the implementation**
+
+`mxGraph` provides settings to position the shape and edge in the foreground or background. See links in [PR #1863](https://github.com/process-analytics/bpmn-visualization-js/pull/1863) and [issue #1870](https://github.com/process-analytics/bpmn-visualization-js/issues/1870).
+This is what bpmn-js does: the shapes are in the foreground and the edges are in the background.
+
+Information about SVG Q (quadratic) in needed.
+See [PR #1207](https://github.com/process-analytics/bpmn-visualization-js/pull/1207#issuecomment-810357733) which was dealing with a wrong position of an overlay on the edge center.
+The problem seemed introduced by `mxPolyline.paintLine` when rounded is true in the edge style, see `mxShape.addPoints`.
+
+Library that could be used to investigate for intersection: https://github.com/bpmn-io/path-intersection
+
+
 ## Overlays
 
 We are hacking mxCellOverlays which originally only supports image shape. This lets us use custom shapes.
