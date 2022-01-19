@@ -137,6 +137,16 @@ Check the [GitHub Pull Request #291](https://github.com/process-analytics/bpmn-v
 to see various positioning methods in action.
 
 
+#### Terminal points and perimeter
+
+
+TODO schema of various projection on perimeter
+
+TODO link to code in mxgraph 4.2.2 and even js code extract
+
+check if there is technical information about this topic in the txt file in mxgraph src/ 
+
+
 ## Overlays
 
 We are hacking mxCellOverlays which originally only supports image shape. This lets us use custom shapes.
