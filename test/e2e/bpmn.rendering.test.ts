@@ -31,14 +31,15 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     // if no dedicated information, set minimal threshold to make test pass on Github Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'flows.message.02.labels.and.complex.paths',
-        {
-          linux: 0.0007, // 0.06668052776724888%
-          macos: 0.0018, // 0.17219315784514633%
-          windows: 0.005, // 0.47025219816640995%
-        },
-      ],
+      // TODO retrieve new thresholds
+      // [
+      //   'flows.message.02.labels.and.complex.paths',
+      //   {
+      //     linux: 0.0007, // 0.06668052776724888%
+      //     macos: 0.0018, // 0.17219315784514633%
+      //     windows: 0.005, // 0.47025219816640995%
+      //   },
+      // ],
       [
         'group.01.in.process.with.label',
         {
@@ -139,15 +140,16 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.00054, // 0.05379319393775671%
         },
       ],
-      [
-        'flows.message.02.labels.and.complex.paths',
-        {
-          linux: 0.0058, // 0.5661158485707474%
-          macos: 0.0066, // 0.6597408179179087%
-          // TODO possible rendering issue so high threshold value
-          windows: 0.0139, // 1.3843493898232695%
-        },
-      ],
+      // TODO retrieve new thresholds
+      // [
+      //   'flows.message.02.labels.and.complex.paths',
+      //   {
+      //     linux: 0.0058, // 0.5661158485707474%
+      //     macos: 0.0066, // 0.6597408179179087%
+      //     // TODO possible rendering issue so high threshold value
+      //     windows: 0.0139, // 1.3843493898232695%
+      //   },
+      // ],
       [
         'group.01.in.process.with.label',
         {
@@ -254,12 +256,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
   protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'flows.message.02.labels.and.complex.paths',
-        {
-          macos: 0.0059, // 0.5877773370643435%
-        },
-      ],
+      // TODO retrieve new thresholds
+      // [
+      //   'flows.message.02.labels.and.complex.paths',
+      //   {
+      //     macos: 0.0059, // 0.5877773370643435%
+      //   },
+      // ],
       [
         'labels.01.general',
         {
