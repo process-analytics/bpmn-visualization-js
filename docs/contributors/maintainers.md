@@ -20,7 +20,7 @@ are automated once the release is triggered but manual actions are required for:
 
 #### Overview
 
-![release process examples repository update](./images/release_process_part-01_release_automation.png)
+![release process automation overview](./images/release_process_part-01_release_automation.png)
 
 #### Set the release version and create a git tag
 
@@ -125,7 +125,14 @@ Create a new GitHub release by following the [GitHub help](https://help.github.c
   available in the branch
   - in that case, choose a dedicated commit 
   - **important**: ensure that the build is passing on the chosen branch or commit used to create the release
+- Description
+  - add a link to the bpmn-visualization related release
+  - add a link to the live environment for the related tag
+  - make GitHub generates the [release notes automatically](https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes)
 
+You should have something like in release [v0.21.2](https://github.com/process-analytics/bpmn-visualization-examples/releases/tag/v0.21.2)
+
+![release process automation overview](./images/release_process_part-10_examples_release-notes.png)
 
 ## Communicate about the release
 
