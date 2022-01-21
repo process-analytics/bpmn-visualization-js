@@ -24,19 +24,18 @@ import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, MultiBrowse
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   // threshold for webkit is taken from macOS only
   constructor() {
-    super({ chromium: defaultChromiumFailureThreshold, firefox: 0.00012, webkit: 0.001 });
+    super({ chromium: defaultChromiumFailureThreshold, firefox: 0.00012, webkit: 0.12 / 100 });
   }
 
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    // if no dedicated information, set minimal threshold to make test pass on Github Workflow
+    // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
         'flows.message.02.labels.and.complex.paths',
         {
-          linux: 0.0007, // 0.06668052776724888%
-          macos: 0.0018, // 0.17219315784514633%
-          windows: 0.005, // 0.47025219816640995%
+          macos: 0.09 / 100, // 0.08112849466592742%
+          windows: 0.16 / 100, // 0.15541729138528473%
         },
       ],
       [
@@ -142,10 +141,9 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'flows.message.02.labels.and.complex.paths',
         {
-          linux: 0.0058, // 0.5661158485707474%
-          macos: 0.0066, // 0.6597408179179087%
-          // TODO possible rendering issue so high threshold value
-          windows: 0.0139, // 1.3843493898232695%
+          linux: 0.28 / 100, // 0.27204405317801106%
+          macos: 0.36 / 100, // 0.346358700018079%
+          windows: 0.77 / 100, // 0.7627326734721662%
         },
       ],
       [
@@ -257,7 +255,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'flows.message.02.labels.and.complex.paths',
         {
-          macos: 0.0059, // 0.5877773370643435%
+          macos: 0.5 / 100, // 0.4997496353783548%
         },
       ],
       [
