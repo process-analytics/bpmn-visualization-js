@@ -103,7 +103,7 @@
     "@types/minimist": "^1.2.2",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.9.1",
-    "asciidoctor": "^2.2.5",
+    "asciidoctor": "^2.2.6",
     "autoprefixer": "^10.4.2",
     "clipboardy": "^3.0.0",
     "cross-env": "^7.0.3",
