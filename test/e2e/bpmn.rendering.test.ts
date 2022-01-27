@@ -217,14 +217,15 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       ],
 
       // tests without labels
-      [
-        'associations.and.annotations.01.general',
-        {
-          linux: 0.00074, // 0.07374499414004586%
-          macos: 0.00074, // 0.07374499414004586%
-          windows: 0.00074, // 0.07374499414004586%
-        },
-      ],
+      // TODO configure thresholds
+      // [
+      //   'associations.and.annotations.01.general',
+      //   {
+      //     linux: 0.00074, // 0.07374499414004586%
+      //     macos: 0.00074, // 0.07374499414004586%
+      //     windows: 0.00074, // 0.07374499414004586%
+      //   },
+      // ],
       [
         'markers.01.positioning',
         {
