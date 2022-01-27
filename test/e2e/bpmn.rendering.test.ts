@@ -53,13 +53,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.0004, // 0.030760508478666626%
         },
       ],
-      [
-        'labels.01.general',
-        {
-          linux: 0.0063, // 0.6220830831694446%
-          windows: 0.0095, // 0.9454259810923071%
-        },
-      ],
+      // TODO configure thresholds
+      // [
+      //   'labels.01.general',
+      //   {
+      //     linux: 0.0063, // 0.6220830831694446%
+      //     windows: 0.0095, // 0.9454259810923071%
+      //   },
+      // ],
       [
         'labels.02.position.and.line.breaks',
         {
@@ -67,21 +68,23 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.082, // 0.8197899179969159%
         },
       ],
-      [
-        'labels.03.default.position',
-        {
-          linux: 0.0033, // 0.3274740999744119%
-          macos: 0.0073, // 0.7297300805459317%
-          windows: 0.0064, // 0.6332698717012919%
-        },
-      ],
-      [
-        'labels.04.fonts',
-        {
-          macos: 0.0019, // 0.18334725431882193%
-          windows: 0.0022, // 0.21203992685594475%
-        },
-      ],
+      // TODO configure thresholds
+      // [
+      //   'labels.03.default.position',
+      //   {
+      //     linux: 0.0033, // 0.3274740999744119%
+      //     macos: 0.0073, // 0.7297300805459317%
+      //     windows: 0.0064, // 0.6332698717012919%
+      //   },
+      // ],
+      // TODO configure thresholds
+      // [
+      //   'labels.04.fonts',
+      //   {
+      //     macos: 0.0019, // 0.18334725431882193%
+      //     windows: 0.0022, // 0.21203992685594475%
+      //   },
+      // ],
       [
         'pools.01.labels.and.lanes',
         {
@@ -154,16 +157,17 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.0019, // 0.18223382519321207%
         },
       ],
-      [
-        'labels.01.general',
-        {
-          // TODO possible rendering issue so high threshold value
-          linux: 0.0253, // 2.5290364964082106%
-          macos: 0.0283, // 2.828212392182683%
-          // very high threshold
-          windows: 0.128, // 12.78746528557091%
-        },
-      ],
+      // TODO configure thresholds
+      // [
+      //   'labels.01.general',
+      //   {
+      //     // TODO possible rendering issue so high threshold value
+      //     linux: 0.0253, // 2.5290364964082106%
+      //     macos: 0.0283, // 2.828212392182683%
+      //     // very high threshold
+      //     windows: 0.128, // 12.78746528557091%
+      //   },
+      // ],
       [
         'labels.02.position.and.line.breaks',
         {
@@ -174,24 +178,25 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.156, // 15.594367802739583%
         },
       ],
-      [
-        'labels.03.default.position',
-        {
-          linux: 0.004, // 0.3963655373407038%
-          macos: 0.0083, // 0.8247488633640443%
-          // TODO possible rendering issue so high threshold value
-          windows: 0.0249, // 2.4807342775750363%
-        },
-      ],
-      [
-        'labels.04.fonts',
-        {
-          // TODO possible rendering issue so high threshold value
-          linux: 0.0146, // 1.4532908422839719%
-          macos: 0.0091, // 0.9040360459040109%
-          windows: 0.0173, // 1.72613291189182%
-        },
-      ],
+      // TODO configure thresholds
+      // [
+      //   'labels.03.default.position',
+      //   {
+      //     linux: 0.004, // 0.3963655373407038%
+      //     macos: 0.0083, // 0.8247488633640443%
+      //     // TODO possible rendering issue so high threshold value
+      //     windows: 0.0249, // 2.4807342775750363%
+      //   },
+      // ],
+      // [
+      //   'labels.04.fonts',
+      //   {
+      //     // TODO possible rendering issue so high threshold value
+      //     linux: 0.0146, // 1.4532908422839719%
+      //     macos: 0.0091, // 0.9040360459040109%
+      //     windows: 0.0173, // 1.72613291189182%
+      //   },
+      // ],
       [
         'pools.01.labels.and.lanes',
         {
@@ -254,13 +259,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       //     macos: 0.5 / 100, // 0.4997496353783548%
       //   },
       // ],
-      [
-        'labels.01.general',
-        {
-          // TODO possible rendering issue so high threshold value
-          macos: 0.0225, // 2.2494371693738913%
-        },
-      ],
+      // TODO configure thresholds
+      // [
+      //   'labels.01.general',
+      //   {
+      //     // TODO possible rendering issue so high threshold value
+      //     macos: 0.0225, // 2.2494371693738913%
+      //   },
+      // ],
       [
         'labels.02.position.and.line.breaks',
         {
@@ -268,18 +274,19 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           macos: 0.059, // 5.875189976297179%
         },
       ],
-      [
-        'labels.03.default.position',
-        {
-          macos: 0.006, // 0.5967754875071174%
-        },
-      ],
-      [
-        'labels.04.fonts',
-        {
-          macos: 0.00625, // 0.6237033609582054%
-        },
-      ],
+      // TODO configure thresholds
+      // [
+      //   'labels.03.default.position',
+      //   {
+      //     macos: 0.006, // 0.5967754875071174%
+      //   },
+      // ],
+      // [
+      //   'labels.04.fonts',
+      //   {
+      //     macos: 0.00625, // 0.6237033609582054%
+      //   },
+      // ],
       [
         'pools.01.labels.and.lanes',
         {
