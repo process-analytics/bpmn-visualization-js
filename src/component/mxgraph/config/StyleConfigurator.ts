@@ -81,20 +81,12 @@ export class StyleConfigurator {
       (style: StyleMap) => {
         style[mxgraph.mxConstants.STYLE_STARTARROW] = undefined;
         style[mxgraph.mxConstants.STYLE_ENDARROW] = undefined;
-        style[mxgraph.mxConstants.STYLE_EDGE] = undefined; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
     [
       AssociationDirectionKind.ONE,
       (style: StyleMap) => {
         style[mxgraph.mxConstants.STYLE_STARTARROW] = undefined;
-        style[mxgraph.mxConstants.STYLE_EDGE] = undefined; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
-      },
-    ],
-    [
-      AssociationDirectionKind.BOTH,
-      (style: StyleMap) => {
-        style[mxgraph.mxConstants.STYLE_EDGE] = undefined; // ensure no orthogonal segments, see also https://github.com/process-analytics/bpmn-visualization-js/issues/295
       },
     ],
   ]);
@@ -226,7 +218,6 @@ export class StyleConfigurator {
   private configureDefaultEdgeStyle(): void {
     const style = this.getStylesheet().getDefaultEdgeStyle();
     style[mxgraph.mxConstants.STYLE_SHAPE] = BpmnStyleIdentifier.EDGE;
-    style[mxgraph.mxConstants.STYLE_EDGE] = mxgraph.mxConstants.EDGESTYLE_SEGMENT;
     style[mxgraph.mxConstants.STYLE_ENDSIZE] = 12;
     style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = 1.5;
     style[mxgraph.mxConstants.STYLE_ROUNDED] = 1;
