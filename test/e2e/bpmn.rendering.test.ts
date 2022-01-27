@@ -31,13 +31,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'flows.message.02.labels.and.complex.paths',
-        {
-          macos: 0.09 / 100, // 0.08112849466592742%
-          windows: 0.16 / 100, // 0.15541729138528473%
-        },
-      ],
+      // TODO configure thresholds
+      // [
+      //   'flows.message.02.labels.and.complex.paths',
+      //   {
+      //     macos: 0.09 / 100, // 0.08112849466592742%
+      //     windows: 0.16 / 100, // 0.15541729138528473%
+      //   },
+      // ],
       [
         'group.01.in.process.with.label',
         {
@@ -130,14 +131,15 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
   protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'flows.message.02.labels.and.complex.paths',
-        {
-          linux: 0.28 / 100, // 0.27204405317801106%
-          macos: 0.36 / 100, // 0.346358700018079%
-          windows: 0.77 / 100, // 0.7627326734721662%
-        },
-      ],
+      // TODO configure thresholds
+      // [
+      //   'flows.message.02.labels.and.complex.paths',
+      //   {
+      //     linux: 0.28 / 100, // 0.27204405317801106%
+      //     macos: 0.36 / 100, // 0.346358700018079%
+      //     windows: 0.77 / 100, // 0.7627326734721662%
+      //   },
+      // ],
       [
         'group.01.in.process.with.label',
         {
@@ -244,12 +246,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
   protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'flows.message.02.labels.and.complex.paths',
-        {
-          macos: 0.5 / 100, // 0.4997496353783548%
-        },
-      ],
+      // TODO configure thresholds
+      // [
+      //   'flows.message.02.labels.and.complex.paths',
+      //   {
+      //     macos: 0.5 / 100, // 0.4997496353783548%
+      //   },
+      // ],
       [
         'labels.01.general',
         {
