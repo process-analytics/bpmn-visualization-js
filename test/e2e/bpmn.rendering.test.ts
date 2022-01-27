@@ -85,13 +85,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       //     windows: 0.0022, // 0.21203992685594475%
       //   },
       // ],
-      [
-        'pools.01.labels.and.lanes',
-        {
-          macos: 0.0013, // 0.1232401834606045%
-          windows: 0.0025, // 0.2049348246286553%
-        },
-      ],
+      // TODO configure thresholds
+      // [
+      //   'pools.01.labels.and.lanes',
+      //   {
+      //     macos: 0.0013, // 0.1232401834606045%
+      //     windows: 0.0025, // 0.2049348246286553%
+      //   },
+      // ],
       [
         'pools.02.vertical.with.lanes',
         {
@@ -197,13 +198,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       //     windows: 0.0173, // 1.72613291189182%
       //   },
       // ],
-      [
-        'pools.01.labels.and.lanes',
-        {
-          macos: 0.0013, // 0.12722390111935544%
-          windows: 0.0059, // 0.5809509822745972%
-        },
-      ],
+      // TODO configure thresholds
+      // [
+      //   'pools.01.labels.and.lanes',
+      //   {
+      //     macos: 0.0013, // 0.12722390111935544%
+      //     windows: 0.0059, // 0.5809509822745972%
+      //   },
+      // ],
       [
         'pools.02.vertical.with.lanes',
         {
@@ -287,12 +289,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       //     macos: 0.00625, // 0.6237033609582054%
       //   },
       // ],
-      [
-        'pools.01.labels.and.lanes',
-        {
-          macos: 0.0025, // 0.24229404068003557%
-        },
-      ],
+      // TODO configure thresholds
+      // [
+      //   'pools.01.labels.and.lanes',
+      //   {
+      //     macos: 0.0025, // 0.24229404068003557%
+      //   },
+      // ],
       [
         'pools.02.vertical.with.lanes',
         {
