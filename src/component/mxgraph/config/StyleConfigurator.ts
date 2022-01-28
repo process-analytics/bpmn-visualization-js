@@ -267,7 +267,11 @@ export class StyleConfigurator {
 
 class MapWithDefault<T> extends Map<T, (style: StyleMap) => void> {
   override get(key: T): (style: StyleMap) => void {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    return super.get(key) ?? (() => {});
+    return (
+      super.get(key) ??
+      (() => {
+        // do nothing intentionally, there is no extra style to configure
+      })
+    );
   }
 }
