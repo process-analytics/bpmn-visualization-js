@@ -57,7 +57,7 @@ module.exports = {
     [
       'jest-html-reporters',
       {
-        // logoImgPath: '',
+        hideIcon: true,
         pageTitle: 'NEW bpmn-visualization E2E Test Report',
         publicPath: './build/test-report/e2e',
       },
@@ -66,7 +66,7 @@ module.exports = {
       'jest-stare',
       {
         coverageLink: '../lcov-report/index.html',
-        log: false,
+        log: true,
         resultDir: './build/test-report/e2e/jest-stare',
         reportHeadline: 'MY HEADLINE',
         reportTitle: 'NEW bpmn-visualization E2E Test Report',
