@@ -18,6 +18,7 @@ import { toMatchImageSnapshot } from 'jest-image-snapshot';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import { writeFileSync, copyFileSync } from 'fs';
+import { addAttach } from 'jest-html-reporters/helper';
 
 const toMatchImageSnapshotWithRealSignature = toMatchImageSnapshot as (received: unknown, options?: MatchImageSnapshotOptions) => CustomMatcherResult;
 
@@ -34,6 +35,19 @@ function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer, opti
     copyFileSync(originalImagePath, expectedImagePath);
     const actualImagePath = `${options.customDiffDir}/${options.customSnapshotIdentifier}-diff-02-actual.png`;
     writeFileSync(actualImagePath, received);
+    // register the images for jest-html-reports (jest-stare displays the jest snapshots out of the box, so the diff file)
+    addAttach({
+      attach: expectedImagePath,
+      description: 'expected',
+      bufferFormat: undefined,
+      context: undefined,
+    });
+    addAttach({
+      attach: actualImagePath,
+      description: 'actual',
+      bufferFormat: undefined,
+      context: undefined,
+    });
 
     // Add configured failure threshold in the error message
     const messages = result.message().split('\n');
