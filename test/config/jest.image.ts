@@ -17,7 +17,7 @@ import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { toMatchImageSnapshot } from 'jest-image-snapshot';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
-import { writeFileSync, copyFileSync } from 'fs';
+import { writeFileSync, copyFileSync, readFileSync } from 'fs';
 import { addAttach } from 'jest-html-reporters/helper';
 
 const toMatchImageSnapshotWithRealSignature = toMatchImageSnapshot as (received: unknown, options?: MatchImageSnapshotOptions) => CustomMatcherResult;
@@ -36,16 +36,23 @@ function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer, opti
     const actualImagePath = `${options.customDiffDir}/${options.customSnapshotIdentifier}-diff-02-actual.png`;
     writeFileSync(actualImagePath, received);
     // register the images for jest-html-reports (jest-stare displays the jest snapshots out of the box, so the diff file)
+    // copy the images for a report without external dependencies
     addAttach({
-      attach: expectedImagePath,
-      description: 'expected',
-      bufferFormat: undefined,
+      attach: readFileSync(`${options.customDiffDir}/${options.customSnapshotIdentifier}-diff.png`),
+      description: 'diff',
+      bufferFormat: 'png',
       context: undefined,
     });
     addAttach({
-      attach: actualImagePath,
+      attach: readFileSync(expectedImagePath),
+      description: 'expected',
+      bufferFormat: 'png',
+      context: undefined,
+    });
+    addAttach({
+      attach: readFileSync(actualImagePath),
       description: 'actual',
-      bufferFormat: undefined,
+      bufferFormat: 'png',
       context: undefined,
     });
 
