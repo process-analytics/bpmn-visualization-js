@@ -121,6 +121,7 @@
     "jest": "^27.4.7",
     "jest-extended": "^2.0.0",
     "jest-html-reporter": "^3.4.2",
+    "jest-html-reporters": "^3.0.5",
     "jest-image-snapshot": "^4.5.1",
     "jest-playwright-preset": "^1.7.0",
     "jest-sonar": "^0.2.12",

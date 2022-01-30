@@ -55,6 +55,14 @@ module.exports = {
       },
     ],
     [
+      'jest-html-reporters',
+      {
+        // logoImgPath: '',
+        pageTitle: 'NEW bpmn-visualization E2E Test Report',
+        publicPath: './build/test-report/e2e',
+      },
+    ],
+    [
       'jest-sonar',
       {
         outputDirectory: 'build/test-report/e2e',
