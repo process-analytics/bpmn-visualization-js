@@ -63,6 +63,16 @@ module.exports = {
       },
     ],
     [
+      'jest-stare',
+      {
+        coverageLink: '../lcov-report/index.html',
+        log: false,
+        resultDir: './build/test-report/e2e/jest-stare',
+        reportHeadline: 'MY HEADLINE',
+        reportTitle: 'NEW bpmn-visualization E2E Test Report',
+      },
+    ],
+    [
       'jest-sonar',
       {
         outputDirectory: 'build/test-report/e2e',
