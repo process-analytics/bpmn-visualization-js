@@ -26,7 +26,7 @@ import type { mxStylesheet, StyleMap } from 'mxgraph';
  * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
  */
 export class StyleConfigurator {
-  private specificFlowStyles: Map<FlowKind, (style: StyleMap) => void> = new Map([
+  private specificFlowStyles = new MapWithDefault<FlowKind>([
     [
       FlowKind.SEQUENCE_FLOW,
       (style: StyleMap) => {
@@ -58,7 +58,7 @@ export class StyleConfigurator {
       },
     ],
   ]);
-  private specificSequenceFlowStyles: Map<SequenceFlowKind, (style: StyleMap) => void> = new Map([
+  private specificSequenceFlowStyles = new MapWithDefault<SequenceFlowKind>([
     [
       SequenceFlowKind.DEFAULT,
       (style: StyleMap) => {
@@ -75,7 +75,7 @@ export class StyleConfigurator {
       },
     ],
   ]);
-  private specificAssociationFlowStyles: Map<AssociationDirectionKind, (style: StyleMap) => void> = new Map([
+  private specificAssociationFlowStyles = new MapWithDefault<AssociationDirectionKind>([
     [
       AssociationDirectionKind.NONE,
       (style: StyleMap) => {
@@ -246,34 +246,32 @@ export class StyleConfigurator {
     style[mxgraph.mxConstants.STYLE_STROKECOLOR] = StyleDefault.DEFAULT_STROKE_COLOR;
     style[mxgraph.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = mxgraph.mxConstants.NONE;
 
-    // only works with html labels (enabled by MxGraphConfigurator)
+    // only works with html labels (enabled by GraphConfigurator)
     style[mxgraph.mxConstants.STYLE_WHITE_SPACE] = 'wrap';
   }
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: StyleMap) => void>): void {
     styleKinds.forEach(kind => {
       const style: StyleMap = {};
-      const updateEdgeStyle =
-        specificStyles.get(kind) ||
-        (() => {
-          // Do nothing
-        });
-      updateEdgeStyle(style);
+      specificStyles.get(kind)(style);
       this.graph.getStylesheet().putCellStyle(kind.toString(), style);
     });
   }
 
-  private configureSequenceFlowStyles(): void {
-    this.configureEdgeStyles<SequenceFlowKind>(Object.values(SequenceFlowKind), this.specificSequenceFlowStyles);
-  }
-
-  private configureAssociationFlowStyles(): void {
-    this.configureEdgeStyles<AssociationDirectionKind>(Object.values(AssociationDirectionKind), this.specificAssociationFlowStyles);
-  }
-
   private configureFlowStyles(): void {
     this.configureEdgeStyles<FlowKind>(Object.values(FlowKind), this.specificFlowStyles);
-    this.configureSequenceFlowStyles();
-    this.configureAssociationFlowStyles();
+    this.configureEdgeStyles<SequenceFlowKind>(Object.values(SequenceFlowKind), this.specificSequenceFlowStyles);
+    this.configureEdgeStyles<AssociationDirectionKind>(Object.values(AssociationDirectionKind), this.specificAssociationFlowStyles);
+  }
+}
+
+class MapWithDefault<T> extends Map<T, (style: StyleMap) => void> {
+  override get(key: T): (style: StyleMap) => void {
+    return (
+      super.get(key) ??
+      (() => {
+        // do nothing intentionally, there is no extra style to configure
+      })
+    );
   }
 }
