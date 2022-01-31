@@ -15,12 +15,19 @@
  */
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { toMatchImageSnapshot } from 'jest-image-snapshot';
+import { copyFileSync, writeFileSync } from 'fs';
+import { addAttach } from 'jest-html-reporters/helper';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
-import { writeFileSync, copyFileSync, readFileSync } from 'fs';
-import { addAttach } from 'jest-html-reporters/helper';
 
 const toMatchImageSnapshotWithRealSignature = toMatchImageSnapshot as (received: unknown, options?: MatchImageSnapshotOptions) => CustomMatcherResult;
+
+// The path is related between the jest-html-reporters page and the folder storing the images
+function computeRelativePathFromReportToSnapshots(path: string): string {
+  const searchedPart = 'build/test-report/e2e/';
+  const indexOf = path.indexOf(searchedPart);
+  return './' + path.substring(indexOf + searchedPart.length);
+}
 
 // Improve jest-image-snapshot outputs to facilitate debug
 // The 'options' parameter is mandatory for us, and some properties must be set as well
@@ -38,19 +45,19 @@ function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer, opti
     // register the images for jest-html-reports (jest-stare displays the jest snapshots out of the box, so the diff file)
     // copy the images for a report without external dependencies
     addAttach({
-      attach: readFileSync(`${options.customDiffDir}/${options.customSnapshotIdentifier}-diff.png`),
+      attach: computeRelativePathFromReportToSnapshots(`${options.customDiffDir}/${options.customSnapshotIdentifier}-diff.png`),
       description: 'diff',
       bufferFormat: 'png',
       context: undefined,
     });
     addAttach({
-      attach: readFileSync(expectedImagePath),
+      attach: computeRelativePathFromReportToSnapshots(expectedImagePath),
       description: 'expected',
       bufferFormat: 'png',
       context: undefined,
     });
     addAttach({
-      attach: readFileSync(actualImagePath),
+      attach: computeRelativePathFromReportToSnapshots(actualImagePath),
       description: 'actual',
       bufferFormat: 'png',
       context: undefined,
