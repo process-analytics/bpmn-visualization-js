@@ -43,24 +43,29 @@ function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer, opti
     writeFileSync(actualImagePath, received);
     // register the images for jest-html-reports (jest-stare displays the jest snapshots out of the box, so the diff file)
     // copy the images for a report without external dependencies
+    // TODO async call but we are doing sync code here
     addAttach({
       attach: computeRelativePathFromReportToSnapshots(`${options.customDiffDir}/${options.customSnapshotIdentifier}-diff.png`),
       description: 'diff',
       bufferFormat: 'png',
       context: undefined,
-    });
-    addAttach({
-      attach: computeRelativePathFromReportToSnapshots(expectedImagePath),
-      description: 'expected',
-      bufferFormat: 'png',
-      context: undefined,
-    });
-    addAttach({
-      attach: computeRelativePathFromReportToSnapshots(actualImagePath),
-      description: 'actual',
-      bufferFormat: 'png',
-      context: undefined,
-    });
+    })
+      .then(() =>
+        addAttach({
+          attach: computeRelativePathFromReportToSnapshots(expectedImagePath),
+          description: 'expected',
+          bufferFormat: 'png',
+          context: undefined,
+        }),
+      )
+      .then(() => {
+        addAttach({
+          attach: computeRelativePathFromReportToSnapshots(actualImagePath),
+          description: 'actual',
+          bufferFormat: 'png',
+          context: undefined,
+        });
+      });
 
     // Add configured failure threshold in the error message
     const messages = result.message().split('\n');
