@@ -25,8 +25,7 @@ const toMatchImageSnapshotWithRealSignature = toMatchImageSnapshot as (received:
 // The path is related between the jest-html-reporters page and the folder storing the images
 function computeRelativePathFromReportToSnapshots(path: string): string {
   const searchedPart = 'build/test-report/e2e/';
-  const indexOf = path.indexOf(searchedPart);
-  return './' + path.substring(indexOf + searchedPart.length);
+  return './' + path.substring(path.indexOf(searchedPart) + searchedPart.length);
 }
 
 // Improve jest-image-snapshot outputs to facilitate debug
