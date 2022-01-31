@@ -133,8 +133,8 @@ export class BpmnRenderer {
 
     if (labelBounds) {
       // label coordinates are relative in the cell referential coordinates
-      const relativeLabelX = labelBounds.x - bounds.x;
-      const relativeLabelY = labelBounds.y - bounds.y;
+      const relativeLabelX = labelBounds.x - bounds.x + 4;
+      const relativeLabelY = labelBounds.y - bounds.y + 6;
       cell.geometry.offset = new mxgraph.mxPoint(relativeLabelX, relativeLabelY);
     }
     return cell;
