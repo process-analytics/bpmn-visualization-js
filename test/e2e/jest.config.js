@@ -58,7 +58,7 @@ module.exports = {
       'jest-html-reporters',
       {
         hideIcon: true,
-        pageTitle: 'NEW bpmn-visualization E2E Test Report',
+        pageTitle: 'bpmn-visualization E2E Test Report',
         publicPath: './build/test-report/e2e',
       },
     ],
