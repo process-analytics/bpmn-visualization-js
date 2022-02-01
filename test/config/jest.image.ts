@@ -58,35 +58,32 @@ function saveAndRegisterImages(received: Buffer, options: MatchImageSnapshotOpti
   const actualImagePath = `${baseImagePathWithName}-diff-02-actual.png`;
   writeFileSync(actualImagePath, received);
   // attach the images to jest-html-reports
-  addAttach({
-    attach: computeRelativePathFromReportToSnapshots(`${baseImagePathWithName}-diff.png`),
-    description: 'diff',
-    bufferFormat: 'png',
-    context: undefined,
-  })
-    .then(() =>
-      addAttach({
-        attach: computeRelativePathFromReportToSnapshots(expectedImagePath),
-        description: 'expected',
-        bufferFormat: 'png',
-        context: undefined,
-      }),
-    )
-    .then(() => {
-      addAttach({
-        attach: computeRelativePathFromReportToSnapshots(actualImagePath),
-        description: 'actual',
-        bufferFormat: 'png',
-        context: undefined,
-      });
-    })
-    .catch(e =>
-      console.error(
-        `Error while attaching images to test ${snapshotIdentifier}.` +
-          `The 'jest-html-reporters' reporter is probably not in use. For instance, this occurs when running tests with the IntelliJ/Webstorm Jest runner.`,
-        e,
-      ),
-    );
+  Promise.all([
+    addAttach({
+      attach: computeRelativePathFromReportToSnapshots(`${baseImagePathWithName}-diff.png`),
+      description: 'diff',
+      bufferFormat: 'png',
+      context: undefined,
+    }),
+    addAttach({
+      attach: computeRelativePathFromReportToSnapshots(expectedImagePath),
+      description: 'expected',
+      bufferFormat: 'png',
+      context: undefined,
+    }),
+    addAttach({
+      attach: computeRelativePathFromReportToSnapshots(actualImagePath),
+      description: 'actual',
+      bufferFormat: 'png',
+      context: undefined,
+    }),
+  ]).catch(e =>
+    console.error(
+      `Error while attaching images to test ${snapshotIdentifier}.` +
+        `The 'jest-html-reporters' reporter is probably not in use. For instance, this occurs when running tests with the IntelliJ/Webstorm Jest runner.`,
+      e,
+    ),
+  );
 }
 
 // Improve jest-image-snapshot outputs to facilitate debug
