@@ -37,7 +37,6 @@ class RetriesCounter {
   // @ts-ignore
   private readonly retryTimes = parseInt(global[Symbol.for('RETRY_TIMES')], 10) || 0;
 
-  // TODO rename
   hasReachMaxRetries(testId: unknown): boolean {
     return !this.retryTimes || this.timesCalled.get(testId) > this.retryTimes;
   }
