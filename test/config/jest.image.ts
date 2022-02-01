@@ -28,44 +28,80 @@ function computeRelativePathFromReportToSnapshots(path: string): string {
   return './' + path.substring(path.indexOf(searchedPart) + searchedPart.length);
 }
 
+// the processing is inspired from jest-image-snapshot, but the management using a class is specific to this implementation
+class RetriesCounter {
+  private readonly timesCalled = new Map<unknown, number>();
+  // https://github.com/facebook/jest/blob/v27.4.7/packages/jest-circus/src/types.ts
+  // https://github.com/facebook/jest/blob/v27.4.7/packages/jest-circus/src/run.ts#L46
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- code adapted from jest-circus
+  // @ts-ignore
+  private readonly retryTimes = parseInt(global[Symbol.for('RETRY_TIMES')], 10) || 0;
+
+  // TODO rename
+  hasReachMaxRetries(testId: unknown): boolean {
+    return !this.retryTimes || this.timesCalled.get(testId) > this.retryTimes;
+  }
+
+  incrementExecutionCount(testId: unknown): void {
+    this.timesCalled.set(testId, (this.timesCalled.get(testId) || 0) + 1);
+  }
+}
+
+const retriesCounter = new RetriesCounter();
+
+function saveAndRegisterImages(received: Buffer, options: MatchImageSnapshotOptions): void {
+  const snapshotIdentifier = <string>options.customSnapshotIdentifier;
+  // Generate expected and actual images
+  const baseImagePathWithName = `${options.customDiffDir}/${snapshotIdentifier}`; // TODO rename
+
+  const expectedImagePath = `${baseImagePathWithName}-diff-01-expected.png`;
+  copyFileSync(`${options.customSnapshotsDir}/${snapshotIdentifier}-snap.png`, expectedImagePath);
+  const actualImagePath = `${baseImagePathWithName}-diff-02-actual.png`;
+  writeFileSync(actualImagePath, received);
+  // attach the images to jest-html-reports
+  addAttach({
+    attach: computeRelativePathFromReportToSnapshots(`${baseImagePathWithName}-diff.png`),
+    description: 'diff',
+    bufferFormat: 'png',
+    context: undefined,
+  })
+    .then(() =>
+      addAttach({
+        attach: computeRelativePathFromReportToSnapshots(expectedImagePath),
+        description: 'expected',
+        bufferFormat: 'png',
+        context: undefined,
+      }),
+    )
+    .then(() => {
+      addAttach({
+        attach: computeRelativePathFromReportToSnapshots(actualImagePath),
+        description: 'actual',
+        bufferFormat: 'png',
+        context: undefined,
+      });
+    })
+    .catch(e =>
+      console.error(
+        `Error while attaching images to test ${snapshotIdentifier}.` +
+          `The 'jest-html-reporters' reporter is probably not in use. For instance, this occurs when running tests with the IntelliJ/Webstorm Jest runner.`,
+        e,
+      ),
+    );
+}
+
 // Improve jest-image-snapshot outputs to facilitate debug
 // The 'options' parameter is mandatory for us, and some properties must be set as well
 // If the following implementation would be done directly in jest-image-snapshot, this won't be required as it set default values we cannot access here
 function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer, options: MatchImageSnapshotOptions): CustomMatcherResult {
   const result = toMatchImageSnapshotWithRealSignature.call(this, received, options);
   if (!result.pass) {
-    // Generate expected and actual images
-    // the following options properties are always set in bpmn-visualization tests
-    const originalImagePath = `${options.customSnapshotsDir}/${options.customSnapshotIdentifier}-snap.png`;
-    const expectedImagePath = `${options.customDiffDir}/${options.customSnapshotIdentifier}-diff-01-expected.png`;
-    copyFileSync(originalImagePath, expectedImagePath);
-    const actualImagePath = `${options.customDiffDir}/${options.customSnapshotIdentifier}-diff-02-actual.png`;
-    writeFileSync(actualImagePath, received);
-    // register the images for jest-html-reports (jest-stare displays the jest snapshots out of the box, so the diff file)
-    // copy the images for a report without external dependencies
-    // TODO async call but we are doing sync code here
-    addAttach({
-      attach: computeRelativePathFromReportToSnapshots(`${options.customDiffDir}/${options.customSnapshotIdentifier}-diff.png`),
-      description: 'diff',
-      bufferFormat: 'png',
-      context: undefined,
-    })
-      .then(() =>
-        addAttach({
-          attach: computeRelativePathFromReportToSnapshots(expectedImagePath),
-          description: 'expected',
-          bufferFormat: 'png',
-          context: undefined,
-        }),
-      )
-      .then(() => {
-        addAttach({
-          attach: computeRelativePathFromReportToSnapshots(actualImagePath),
-          description: 'actual',
-          bufferFormat: 'png',
-          context: undefined,
-        });
-      });
+    // Note: the options properties used here are always set in bpmn-visualization tests
+    const snapshotIdentifier = options.customSnapshotIdentifier;
+    retriesCounter.incrementExecutionCount(snapshotIdentifier);
+    if (retriesCounter.hasReachMaxRetries(snapshotIdentifier)) {
+      saveAndRegisterImages(received, options);
+    }
 
     // Add configured failure threshold in the error message
     const messages = result.message().split('\n');
