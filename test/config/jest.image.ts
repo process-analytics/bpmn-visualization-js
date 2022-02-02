@@ -48,7 +48,7 @@ class RetriesCounter {
 
 const retriesCounter = new RetriesCounter();
 
-function saveAndRegisterImages(received: Buffer, options: MatchImageSnapshotOptions): void {
+function saveAndRegisterImages(matcherContext: MatcherContext, received: Buffer, options: MatchImageSnapshotOptions): void {
   const snapshotIdentifier = <string>options.customSnapshotIdentifier;
   // Generate expected and actual images
   const baseImagePathWithName = `${options.customDiffDir}/${snapshotIdentifier}`; // TODO rename
@@ -57,19 +57,32 @@ function saveAndRegisterImages(received: Buffer, options: MatchImageSnapshotOpti
   copyFileSync(`${options.customSnapshotsDir}/${snapshotIdentifier}-snap.png`, expectedImagePath);
   const actualImagePath = `${baseImagePathWithName}-diff-02-actual.png`;
   writeFileSync(actualImagePath, received);
-  // attach the images to jest-html-reports
+  // Attach the images to jest-html-reports
+  // Chain the calls to preserve the attachment order
+  // Create a custom context as the async call can be done whereas the global jest context has changed (another test is currently running).
+  // So the test name and path changed, and the images would be attached to the wrong test.
+  // For the context object structure, see https://github.com/Hazyzh/jest-html-reporters/blob/v3.0.5/helper.ts#L95
+  const context: { [key: symbol]: unknown } = {};
+  context[Symbol('bpmn-visualization')] = {
+    state: {
+      currentTestName: matcherContext.currentTestName,
+      testPath: matcherContext.testPath,
+    },
+    matchers: {}, // required by the jest-html-reporters getJestGlobalData function even if not used
+  };
+
   addAttach({
     attach: computeRelativePathFromReportToSnapshots(`${baseImagePathWithName}-diff.png`),
     description: 'diff',
     bufferFormat: 'png',
-    context: undefined,
+    context,
   })
     .then(() =>
       addAttach({
         attach: computeRelativePathFromReportToSnapshots(expectedImagePath),
         description: 'expected',
         bufferFormat: 'png',
-        context: undefined,
+        context,
       }),
     )
     .then(() => {
@@ -77,7 +90,7 @@ function saveAndRegisterImages(received: Buffer, options: MatchImageSnapshotOpti
         attach: computeRelativePathFromReportToSnapshots(actualImagePath),
         description: 'actual',
         bufferFormat: 'png',
-        context: undefined,
+        context,
       });
     })
     .catch(e =>
@@ -99,7 +112,7 @@ function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer, opti
     const snapshotIdentifier = options.customSnapshotIdentifier;
     retriesCounter.incrementExecutionCount(snapshotIdentifier);
     if (retriesCounter.hasReachMaxRetries(snapshotIdentifier)) {
-      saveAndRegisterImages(received, options);
+      saveAndRegisterImages(this, received, options);
     }
 
     // Add configured failure threshold in the error message
