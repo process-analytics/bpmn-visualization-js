@@ -22,7 +22,7 @@ import CustomMatcherResult = jest.CustomMatcherResult;
 
 const toMatchImageSnapshotWithRealSignature = toMatchImageSnapshot as (received: unknown, options?: MatchImageSnapshotOptions) => CustomMatcherResult;
 
-// The path is related between the jest-html-reporters page and the folder storing the images
+// The path is relative from the jest-html-reporters page to the folder storing the images
 function computeRelativePathFromReportToSnapshots(path: string): string {
   const searchedPart = 'build/test-report/e2e/'; // hard coded here, must be kept in sync with the e2e/jest.config.js
   return './' + path.substring(path.indexOf(searchedPart) + searchedPart.length);
@@ -104,11 +104,11 @@ function saveAndRegisterImages(matcherContext: MatcherContext, received: Buffer,
 
 // Improve jest-image-snapshot outputs to facilitate debug
 // The 'options' parameter is mandatory for us, and some properties must be set as well
+// All options properties used here are always set in bpmn-visualization tests
 // If the following implementation would be done directly in jest-image-snapshot, this won't be required as it set default values we cannot access here
 function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer, options: MatchImageSnapshotOptions): CustomMatcherResult {
   const result = toMatchImageSnapshotWithRealSignature.call(this, received, options);
   if (!result.pass) {
-    // Note: the options properties used here are always set in bpmn-visualization tests
     const snapshotIdentifier = options.customSnapshotIdentifier;
     retriesCounter.incrementExecutionCount(snapshotIdentifier);
     if (retriesCounter.hasReachMaxRetries(snapshotIdentifier)) {
