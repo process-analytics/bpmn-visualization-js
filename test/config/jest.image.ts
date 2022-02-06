@@ -109,9 +109,9 @@ function saveAndRegisterImages(matcherContext: MatcherContext, received: Buffer,
 function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer, options: MatchImageSnapshotOptions): CustomMatcherResult {
   const result = toMatchImageSnapshotWithRealSignature.call(this, received, options);
   if (!result.pass) {
-    const snapshotIdentifier = options.customSnapshotIdentifier;
-    retriesCounter.incrementExecutionCount(snapshotIdentifier);
-    if (retriesCounter.hasReachMaxRetries(snapshotIdentifier)) {
+    const testId = this.currentTestName;
+    retriesCounter.incrementExecutionCount(testId);
+    if (retriesCounter.hasReachMaxRetries(testId)) {
       saveAndRegisterImages(this, received, options);
     }
 
