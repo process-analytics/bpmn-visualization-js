@@ -49,9 +49,18 @@ module.exports = {
       'jest-html-reporter',
       {
         pageTitle: 'bpmn-visualization E2E Test Report',
-        outputPath: 'build/test-report/e2e/index.html',
+        outputPath: 'build/test-report/e2e/index-single-page.html',
         includeFailureMsg: true,
         includeSuiteFailure: true,
+      },
+    ],
+    [
+      'jest-html-reporters',
+      {
+        filename: 'index.html',
+        hideIcon: true,
+        pageTitle: 'bpmn-visualization E2E Test Report',
+        publicPath: './build/test-report/e2e',
       },
     ],
     [
