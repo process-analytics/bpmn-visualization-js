@@ -133,7 +133,7 @@
     "postcss-cli": "^9.0.2",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.66.1",
+    "rollup": "^2.67.0",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-copy": "^3.4.0",
