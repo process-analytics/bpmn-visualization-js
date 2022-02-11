@@ -12,7 +12,7 @@ updates:
       prefix: "[INFRA] prod -"
       prefix-development: "[INFRA] dev -"
     reviewers:
-      - process-analytics/js-lib-collaborators
+      - "process-analytics/PA Collaborators"
 
   - package-ecosystem: "github-actions"
     # Workflow files stored in the default location of `.github/workflows`
@@ -25,4 +25,4 @@ updates:
     commit-message:
       prefix: "[INFRA] gha -"
     reviewers:
-      - process-analytics/js-lib-collaborators
+      - "process-analytics/PA Collaborators"
