@@ -107,6 +107,36 @@ You can set the BPMN content using one of the following ways:
   * Load it from an url, like this [example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/display-bpmn-diagram/load-remote-bpmn-diagrams/index.html)
   * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-examples/tree/master/examples/display-bpmn-diagram/load-local-bpmn-diagrams/index.html)
 
+#### TypeScript Support
+
+`bpmn-visualization` provides type definitions, so the integration should work out of the box in TypeScript projects.
+
+Depending on the build system used by the TypeScript project, it may get the following type errors 
+- error TS2688: Cannot find type definition file for 'typed-mxgraph'
+- error TS7016: Could not find a declaration file for module 'mxgraph'
+
+In this case, 
+- Install `@typed-mxgraph/typed-mxgraph` as devDependencies, for instance by running `npm i --save-dev @typed-mxgraph/typed-mxgraph@1.0.4`
+- Declare the `typed-mxgraph` types in the `tsconfig.json` as in the following 👇
+
+```json
+{
+  "compilerOptions": {
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/@typed-mxgraph"
+    ]
+  }
+}
+```
+
+Alternatively, you can set `skipLibCheck` to `true` in the `tsconfig.json` file but this limits the definition checks .
+For more details, see the [skipLibCheck documentation](https://www.typescriptlang.org/tsconfig#skipLibCheck).
+
+Advanced users that want to extend the `mxGraph` integration must configure `typed-mxgraph`.
+
+For more details, see the TypeScript projects in the [bpmn-visualization-examples repository](https://github.com/process-analytics/bpmn-visualization-examples/).
+
 
 ### 💠 Browser usage
 

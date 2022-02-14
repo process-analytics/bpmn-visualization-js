@@ -25,6 +25,9 @@ import type { BpmnElement, Overlay } from './types';
 import type { BpmnModelRegistry } from './bpmn-model-registry';
 import type { BpmnElementKind } from '../../model/bpmn/internal';
 
+/**
+ * @internal
+ */
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnGraph): BpmnElementsRegistry {
   return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), newGraphCellUpdater(graph));
 }
