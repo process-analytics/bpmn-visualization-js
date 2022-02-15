@@ -130,7 +130,7 @@ In this case,
 }
 ```
 
-Alternatively, you can set `skipLibCheck` to `true` in the `tsconfig.json` file but this limits the definition checks .
+Alternatively, you can set `skipLibCheck` to `true` in the `tsconfig.json` file, but this limits the definition checks.
 For more details, see the [skipLibCheck documentation](https://www.typescriptlang.org/tsconfig#skipLibCheck).
 
 Advanced users that want to extend the `mxGraph` integration must configure `typed-mxgraph`.
