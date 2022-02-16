@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import type { GlobalTaskKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
+import type { GlobalTaskKind, MessageVisibleKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
-import type { MessageVisibleKind } from '../../../model/bpmn/internal/edge/kinds';
 import { mxgraph } from '../initializer';
 import { BpmnStyleIdentifier } from './identifiers';
 

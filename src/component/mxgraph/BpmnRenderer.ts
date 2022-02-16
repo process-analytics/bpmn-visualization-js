@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type { Edge, Waypoint } from '../../model/bpmn/internal/edge/edge';
+import { MessageFlow } from '../../model/bpmn/internal/edge/flows';
+import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type Bounds from '../../model/bpmn/internal/Bounds';
-import { ShapeUtil } from '../../model/bpmn/internal';
+import { MessageVisibleKind, ShapeUtil } from '../../model/bpmn/internal';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleComputer from './renderer/StyleComputer';
-import { MessageFlow } from '../../model/bpmn/internal/edge/flows';
-import { MessageVisibleKind } from '../../model/bpmn/internal/edge/kinds';
 import type { BpmnGraph } from './BpmnGraph';
 import type { LoadOptions } from '../options';
 import type { RenderedModel } from '../registry/bpmn-model-registry';
@@ -148,6 +147,9 @@ export function newBpmnRenderer(graph: BpmnGraph): BpmnRenderer {
   return new BpmnRenderer(graph, new CoordinatesTranslator(graph), new StyleComputer());
 }
 
+/**
+ * @internal
+ */
 export function messageFowIconId(messageFlowId: string): string {
   return `messageFlowIcon_of_${messageFlowId}`;
 }

@@ -22,6 +22,9 @@ import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFowIconId } from './BpmnRenderer';
 
+/**
+ * @internal
+ */
 export function newGraphCellUpdater(graph: BpmnGraph): GraphCellUpdater {
   return new GraphCellUpdater(graph, new OverlayConverter());
 }
