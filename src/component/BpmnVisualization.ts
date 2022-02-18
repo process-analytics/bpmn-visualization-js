@@ -23,6 +23,7 @@ import type { BpmnElementsRegistry } from './registry';
 import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { BpmnModelRegistry } from './registry/bpmn-model-registry';
 import { htmlElement } from './helpers/dom-utils';
+import { version, type Version } from './version';
 
 /**
  * Let initialize `bpmn-visualization`. It requires at minimum to pass the HTMLElement in the page where the BPMN diagram is rendered.
@@ -72,5 +73,9 @@ export class BpmnVisualization {
 
   fit(options?: FitOptions): void {
     this.graph.customFit(options);
+  }
+
+  getVersion(): Version {
+    return version();
   }
 }

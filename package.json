@@ -61,8 +61,8 @@
     "docs:api": "typedoc --tsconfig ./tsconfig.typedoc.json src/bpmn-visualization.ts",
     "start": "rollup -c --silent --environment devMode:true",
     "watch": "rollup -cw --environment devLiveReloadMode:true",
-    "lint": "eslint \"*/**/*.{js,ts}\" NOTICE --max-warnings 0 --quiet --fix",
-    "lint-check": "eslint \"*/**/*.{js,ts}\" NOTICE --max-warnings 0",
+    "lint": "eslint \"*/**/*.{js,mjs,ts}\" NOTICE --max-warnings 0 --quiet --fix",
+    "lint-check": "eslint \"*/**/*.{js,mjs,ts}\" NOTICE --max-warnings 0",
     "test": "run-s test:unit test:integration test:e2e",
     "test:unit": "jest --runInBand --config=./test/unit/jest.config.js",
     "test:unit:coverage": "npm run test:unit -- --coverage",
@@ -152,7 +152,7 @@
     "typescript": "^4.5.5"
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": [
+    "*.{js,mjs,ts}": [
       "eslint --fix"
     ],
     "NOTICE": [
