@@ -107,7 +107,7 @@ You can set the BPMN content using one of the following ways:
   * Load it from an url, like this [example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/display-bpmn-diagram/load-remote-bpmn-diagrams/index.html)
   * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-examples/tree/master/examples/display-bpmn-diagram/load-local-bpmn-diagrams/index.html)
 
-#### TypeScript Support
+#### 📜 TypeScript Support
 
 `bpmn-visualization` provides type definitions, so the integration should work out of the box in TypeScript projects.
 
@@ -133,7 +133,7 @@ In this case,
 Alternatively, you can set `skipLibCheck` to `true` in the `tsconfig.json` file, but this limits the definition checks.
 For more details, see the [skipLibCheck documentation](https://www.typescriptlang.org/tsconfig#skipLibCheck).
 
-Advanced users that want to extend the `mxGraph` integration must configure `typed-mxgraph`.
+Advanced users that want to extend the `mxGraph` integration must use `typed-mxgraph`.
 
 For more details, see the TypeScript projects in the [bpmn-visualization-examples repository](https://github.com/process-analytics/bpmn-visualization-examples/).
 
