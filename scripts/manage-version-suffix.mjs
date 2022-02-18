@@ -26,7 +26,7 @@ log('New version', newVersion);
 updateVersionInNpmFile('./package.json', newVersion);
 updateVersionInNpmFile('./package-lock.json', newVersion);
 updateVersionInSonarFile(newVersion);
-updateVersionInTypeScriptVersionFile(newVersion);
+updateVersionInSourceFile(newVersion);
 
 log('Configuration files have been updated');
 
@@ -64,7 +64,7 @@ function updateVersionInSonarFile(newVersion) {
   fs.writeFileSync(path, updatedContent);
 }
 
-function updateVersionInTypeScriptVersionFile(newVersion) {
+function updateVersionInSourceFile(newVersion) {
   const path = 'src/component/version.ts';
   const content = readFileContent(path);
   // replace the 1st occurrence, is ok as the constant appears only once in the file
