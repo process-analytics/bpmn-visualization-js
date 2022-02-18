@@ -18,7 +18,7 @@ import { mxgraph } from './mxgraph/initializer';
 
 // WARN: this constant is automatically updated at release time by the 'manage-version-suffix.mjs' script.
 // So, if you modify the name of this file or this constant, please update the script accordingly.
-const libVersion = '0.21.4-post';
+const libVersion = '0.21.5-post';
 
 /**
  * @internal
