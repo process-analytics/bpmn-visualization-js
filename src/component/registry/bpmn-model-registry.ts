@@ -21,6 +21,9 @@ import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import type { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 
+/**
+ * @internal
+ */
 export class BpmnModelRegistry {
   private searchableModel: SearchableModel;
   private onLoadCallback: () => void;
@@ -71,6 +74,9 @@ function toRenderedModel(bpmnModel: BpmnModel): RenderedModel {
   return { boundaryEvents: boundaryEvents, edges: bpmnModel.edges, lanes: bpmnModel.lanes, otherFlowNodes: otherFlowNodes, pools: bpmnModel.pools, subprocesses: subprocesses };
 }
 
+/**
+ * @internal
+ */
 export interface RenderedModel {
   edges: Edge[];
   boundaryEvents: Shape[];
