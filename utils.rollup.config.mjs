@@ -25,7 +25,9 @@ const plugins = [
     typescript: ts,
   }),
   // rollup-plugin-node-externals declares NodeJS built-in modules as external
-  externals(),
+  externals({
+    exclude: ['path', 'entities'],
+  }),
   resolve(),
   commonjs(),
   json(),
