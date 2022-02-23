@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { BpmnElement, BpmnElementKind, FitOptions, FitType, GlobalOptions, LoadOptions, Overlay } from '../../src/bpmn-visualization';
+import type { BpmnElement, BpmnElementKind, FitOptions, FitType, GlobalOptions, LoadOptions, Overlay, Version } from '../../src/bpmn-visualization';
 import { log, logDownload, logErrorAndOpenAlert, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';
@@ -214,4 +214,10 @@ export function downloadSvg(): void {
 export function downloadPng(): void {
   logDownload('Trigger PNG Download');
   downloadAsPng(new SvgExporter(bpmnVisualization.graph).exportSvgForPng());
+}
+
+export function getVersion(): Version {
+  const version = bpmnVisualization.getVersion();
+  log('Version:', version);
+  return version;
 }

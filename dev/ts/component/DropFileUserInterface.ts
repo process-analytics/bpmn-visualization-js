@@ -72,6 +72,7 @@ export class DropFileUserInterface {
     opacity: 0.1;
 }
 #${this.outerContainerId} {
+    display: none;
     overflow: hidden;
     position: absolute;
     top: 10px;
@@ -83,23 +84,26 @@ export class DropFileUserInterface {
     color: #555;
     padding: 10px;
 }
+#${this.outerContainerId}.dragging {
+    display: block;
+}
 #${this.outerContainerId} .drop-here-text {
-    display: none;
     border: 2px solid transparent;
     width: 100%;
     height: 100%;
     overflow: hidden;
 }
 #${this.outerContainerId} .drop-here-text p {
-    margin-top: 45%;
     font-style: normal;
     font-family: monospace;
     font-size: 40px;
     color: rgba(1,1,1,.2);
 }
-#${this.outerContainerId}.dragging  .drop-here-text {
+#${this.outerContainerId}.dragging .drop-here-text {
     cursor: default;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: 2px dashed rgba(0,0,0,.2);
     border-radius: 7px;
 }`;

@@ -11,11 +11,11 @@
     <link rel="icon" href="static/img/favicon.png">
 
     <!-- load demo -->
-    <script src="static/js/demo.js" type="module"></script>
+    <script src="static/js/index.js" type="module"></script>
 </head>
-<body class="overflow-hidden bg-gray-800 font-sans leading-normal tracking-normal mt-12">
+<body class="bg-gray-800 font-sans leading-normal tracking-normal flex flex-col h-screen">
     <!--Nav-->
-    <nav class="bg-gray-800 pt-2 md:pt-1 pb-1 px-1 mt-0 h-auto fixed w-full z-20 top-0">
+    <nav class="bg-gray-800 pt-2 md:pt-1 pb-1 px-1 mt-0 h-auto w-full">
       <div class="flex flex-wrap items-center">
         <div class="flex flex-shrink justify-center md:justify-start text-white">
           <a class="flex items-center" href="../../examples/index.html">
@@ -26,13 +26,13 @@
       </div>
     </nav>
     <!-- Page section -->
-    <div class="flex flex-col md:flex-row">
+    <div class="flex flex-col md:flex-row flex-grow">
       <!-- Left Navigation Panel -->
-      <div class="bg-gray-800 shadow-xl h-16 fixed bottom-0 mt-12 md:relative md:h-screen z-10 w-full md:w-48">
-        <div class="md:mt-12 md:w-48 md:fixed md:left-0 md:top-0 content-center md:content-start text-left justify-between">
-          <ul class="list-reset flex flex-row md:flex-col py-0 md:py-3 px-1 md:px-2 text-center md:text-left">
+      <div class="bg-gray-800 shadow-xl w-full md:w-48">
+        <div class="md:w-48 content-center md:content-start text-left justify-between">
+          <ul class="list-reset flex flex-row md:flex-col py-0 px-1 md:px-2 text-center md:text-left">
             <li class="mr-3 flex-1">
-              <div class="py-1 md:py-5 pl-1 align-middle border-b-2 border-gray-800">
+              <div class="py-1 md:pb-5 md:pt-3 pl-1 align-middle border-b-2 border-gray-800">
                 <div class="bg-gradient-to-b from-red-200 to-red-100 border-b-4 border-red-600 rounded-lg shadow-xl hover:border-red-900">
                   <div class="flex flex-row items-center cursor-pointer text-red-500 hover:text-red-900">
                     <div class="flex-1 text-right md:text-center">
@@ -87,26 +87,29 @@
       </div>
 
       <!-- Main section -->
-      <div class="main-content flex-1 bg-gray-100 mt-12 md:mt-2 pb-24 md:pb-5">
-        <div class="bg-gray-800 pt-3">
-          <div class="rounded-tl-3xl bg-gradient-to-r from-purple-900 to-gray-800 p-4 shadow text-2xl text-white">
+      <div class="flex-1 flex flex-col bg-gray-100 md:rounded-bl-2xl">
+        <div class="bg-gray-800">
+          <div class="md:rounded-tl-3xl bg-gradient-to-r from-purple-900 to-gray-800 p-4 shadow text-2xl text-white">
             <h3 class="font-bold pl-2">Diagram</h3>
           </div>
         </div>
 
-        <div class="flex flex-row flex-wrap flex-grow mt-2">
-          <div class="w-full p-6">
-            <!-- BPMN container space -->
-            <!-- TODO: check if possible to drop [style]-->
-            <div class="bg-white border-transparent rounded-lg shadow-xl overflow-hidden absolute" style="top: 158px; right: 20px; bottom: 20px; left: 215px;">
-              <div>
-                  <div id="bpmn-container"></div>
-              </div>
+        <div class="flex-grow mt-2 p-6 flex flex-col">
+          <!-- BPMN container space -->
+          <!-- relative position is required by bpmn-container and the generated drop-container element to make its absolute position work -->
+          <div class="flex-grow bg-white border-transparent rounded-lg shadow-xl relative">
+            <!-- set absolute and no inset, as mxGraph needs absolute dimension to make the fit work and to fit the whole parent container -->
+            <div id="bpmn-container" class="overflow-hidden absolute inset-0">
             </div>
-            <!-- /BPMN container Space -->
           </div>
+          <!-- /BPMN container Space -->
         </div>
+
       </div>
     </div>
+
+    <footer class="flex flex-col-reverse items-end">
+      <div id="footer-content" class="py-3 mr-3 text-white"></div>
+    </footer>
 </body>
 </html>
