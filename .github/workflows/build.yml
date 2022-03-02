@@ -48,10 +48,10 @@ jobs:
           - { name: windows-2019 }
     steps:
       - name: Checkout with shallow clone
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: ${{ !contains(matrix.os.coverage, 'coverage') }}
       - name: Checkout without shallow clone
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: ${{ contains(matrix.os.coverage, 'coverage') }}
         with:
           # Disabling shallow clone is recommended for improving relevancy of SonarCloud reporting
@@ -123,7 +123,7 @@ jobs:
             browser: msedge
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup node
         uses: actions/setup-node@v2
         with:

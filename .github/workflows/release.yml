@@ -22,7 +22,7 @@ jobs:
           branch: master
 
       - name: Setup checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_RELEASE_TOKEN }}
       - name: Setup node
