@@ -48,7 +48,7 @@ jobs:
     if: github.event_name == 'pull_request' && needs.check_secrets.outputs.is_SURGE_TOKEN_set == 'true'
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Publish preview
         id: publish_preview
         uses: afc163/surge-preview@v1
@@ -69,7 +69,7 @@ jobs:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&  github.event.ref == 'refs/heads/master'
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup node
         uses: actions/setup-node@v2
         with:
