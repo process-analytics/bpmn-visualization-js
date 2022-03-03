@@ -58,6 +58,28 @@ the BPMN elements are rendered with their final shapes.
 |icon:check-circle[]
 |
 
+|Business Rule Task
+|icon:check-circle-o[]
+|
+
+|Manual Task
+|icon:check-circle-o[]
+|Icon may be subject to change+
+*icon*: the task icon is derived from the https://thenounproject.com/term/hand/7660/[noun project 'hand' icon] by João Miranda, licensed as https://creativecommons.org/licenses/by/3.0/us/legalcode[Creative Commons CCBY 3.0]
+
+|Receive Task
+|icon:check-circle-o[]
+|Icon may be subject to change
+
+|Script Task
+|icon:check-circle-o[]
+|Icon may be subject to change +
+*icon*: the task icon is derived from the https://thenounproject.com/term/script/2331578/[noun project 'script' icon] by Sérgio Filipe Cardoso Pires, licensed as https://creativecommons.org/licenses/by/3.0/us/legalcode[Creative Commons CCBY 3.0]
+
+|Send Task
+|icon:check-circle-o[]
+|Icon may be subject to change
+
 |Service Task
 |icon:check-circle-o[]
 |Icon may be subject to change +
@@ -68,24 +90,6 @@ the BPMN elements are rendered with their final shapes.
 |Icon may be subject to change +
 *icon*: the task icon is derived from the https://www.flaticon.com/free-icon/employees_554768[flaticon 'employees' icon] "Icons made by https://www.flaticon.com/authors/freepik[freepik] from https://www.flaticon.com"
 
-|Receive Task
-|icon:check-circle-o[]
-|Icon may be subject to change
-
-|Send Task
-|icon:check-circle-o[]
-|Icon may be subject to change
-
-|Manual Task
-|icon:check-circle-o[]
-|Icon may be subject to change+
-*icon*: the task icon is derived from the https://thenounproject.com/term/hand/7660/[noun project 'hand' icon] by João Miranda, licensed as https://creativecommons.org/licenses/by/3.0/us/legalcode[Creative Commons CCBY 3.0]
-
-|Script Task
-|icon:check-circle-o[]
-|Icon may be subject to change +
-*icon*: the task icon is derived from the https://thenounproject.com/term/script/2331578/[noun project 'script' icon] by Sérgio Filipe Cardoso Pires, licensed as https://creativecommons.org/licenses/by/3.0/us/legalcode[Creative Commons CCBY 3.0]
-
 |Call Activity calling a Process
 |icon:check-circle-o[]
 |
@@ -94,7 +98,7 @@ the BPMN elements are rendered with their final shapes.
 |icon:check-circle-o[]
 |
 
-|Call Activity calling a Global User Task
+|Call Activity calling a Global Business Rule Task
 |icon:check-circle-o[]
 |
 
@@ -106,11 +110,7 @@ the BPMN elements are rendered with their final shapes.
 |icon:check-circle-o[]
 |
 
-|Call Activity calling a Global Business Rule Task
-|icon:check-circle-o[]
-|
-
-|Business Rule Task
+|Call Activity calling a Global User Task
 |icon:check-circle-o[]
 |
 
@@ -173,9 +173,9 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle[]
 |
 
-|Timer Start Event
+|Conditional Start Event
 |icon:check-circle-o[]
-|The icon width may be adjusted
+|The stroke & icon width may be adjusted
 
 |Message Start Event
 |icon:check-circle-o[]
@@ -185,9 +185,9 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
-|Conditional Start Event
+|Timer Start Event
 |icon:check-circle-o[]
-|The stroke & icon width may be adjusted
+|The icon width may be adjusted
 |===
 
 
@@ -198,22 +198,6 @@ The event definition can be defined on the event or on the definitions.
 |Rendering
 |Comments
 
-|Timer Interrupting Start Event
-|icon:check-circle-o[]
-|The icon width may be adjusted
-
-|Message Interrupting Start Event
-|icon:check-circle-o[]
-|The stroke & icon width may be adjusted
-
-|Error Interrupting Start Event
-|icon:check-circle-o[]
-|The stroke & icon width may be adjusted
-
-|Signal Interrupting Start Event
-|icon:check-circle-o[]
-|The stroke & icon width may be adjusted
-
 |Compensation Interrupting Start Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
@@ -222,9 +206,25 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
+|Error Interrupting Start Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+
 |Escalation Interrupting Start Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
+
+|Message Interrupting Start Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+
+|Signal Interrupting Start Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+
+|Timer Interrupting Start Event
+|icon:check-circle-o[]
+|The icon width may be adjusted
 |===
 
 
@@ -235,9 +235,13 @@ The event definition can be defined on the event or on the definitions.
 |Rendering
 |Comments
 
-|Timer Non-interrupting Start Event
+|Conditional Non-interrupting Start Event
 |icon:check-circle-o[]
-|The icon width may be adjusted
+|The stroke & icon width may be adjusted
+
+|Escalation Non-interrupting Start Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 
 |Message Non-interrupting Start Event
 |icon:check-circle-o[]
@@ -247,13 +251,9 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
-|Conditional Non-interrupting Start Event
+|Timer Non-interrupting Start Event
 |icon:check-circle-o[]
-|The stroke & icon width may be adjusted
-
-|Escalation Non-interrupting Start Event
-|icon:check-circle-o[]
-|The stroke & icon width may be adjusted
+|The icon width may be adjusted
 |===
 
 
@@ -264,9 +264,13 @@ The event definition can be defined on the event or on the definitions.
 |Rendering
 |Comments
 
-|Timer Intermediate Catch Event
+|Conditional Intermediate Catch Event
 |icon:check-circle-o[]
-|The icon width may be adjusted
+|The stroke & icon width may be adjusted
+
+|Link Intermediate Catch Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
 
 |Message Intermediate Catch Event
 |icon:check-circle-o[]
@@ -276,13 +280,9 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
-|Link Intermediate Catch Event
+|Timer Intermediate Catch Event
 |icon:check-circle-o[]
-|The stroke & icon width may be adjusted
-
-|Conditional Intermediate Catch Event
-|icon:check-circle-o[]
-|The stroke & icon width may be adjusted
+|The icon width may be adjusted
 |===
 
 
@@ -297,11 +297,11 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle-o[]
 |The stroke width may be adjusted
 
-|Message Intermediate Throw Event
+|Compensation Intermediate Throw Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
-|Signal Intermediate Throw Event
+|Escalation Intermediate Throw Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
@@ -309,11 +309,11 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
-|Compensation Intermediate Throw Event
+|Message Intermediate Throw Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
-|Escalation Intermediate Throw Event
+|Signal Intermediate Throw Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 |===
@@ -326,19 +326,7 @@ The event definition can be defined on the event or on the definitions.
 |Rendering
 |Comments
 
-|Timer Interrupting Boundary Event
-|icon:check-circle-o[]
-|The stroke & icon width may be adjusted
-
-|Message Interrupting Boundary Event
-|icon:check-circle-o[]
-|The stroke & icon width may be adjusted
-
-|Signal Interrupting Boundary Event
-|icon:check-circle-o[]
-|The stroke & icon width may be adjusted
-
-|Error Interrupting Boundary Event
+|Cancel Interrupting Boundary Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
@@ -350,11 +338,23 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
-|Cancel Interrupting Boundary Event
+|Error Interrupting Boundary Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
 |Escalation Interrupting Boundary Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+
+|Message Interrupting Boundary Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+
+|Signal Interrupting Boundary Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+
+|Timer Interrupting Boundary Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 |===
@@ -367,7 +367,11 @@ The event definition can be defined on the event or on the definitions.
 |Rendering
 |Comments
 
-|Timer Non-interrupting Boundary Event
+|Conditional Non-interrupting Boundary Event
+|icon:check-circle-o[]
+|The stroke & icon width may be adjusted
+
+|Escalation Non-interrupting Boundary Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
@@ -379,11 +383,7 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
-|Conditional Non-interrupting Boundary Event
-|icon:check-circle-o[]
-|The stroke & icon width may be adjusted
-
-|Escalation Non-interrupting Boundary Event
+|Timer Non-interrupting Boundary Event
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 |===
@@ -400,9 +400,21 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle-o[]
 |The stroke width may be adjusted
 
-|Terminate End Event
+|Cancel End Event
 |icon:check-circle-o[]
-|The stroke width may be adjusted
+|The icon width may be adjusted
+
+|Compensation End Event
+|icon:check-circle-o[]
+|The icon width may be adjusted
+
+|Error End Event
+|icon:check-circle-o[]
+|The icon width may be adjusted
+
+|Escalation End Event
+|icon:check-circle-o[]
+|The icon width may be adjusted
 
 |Message End Event
 |icon:check-circle-o[]
@@ -412,21 +424,9 @@ The event definition can be defined on the event or on the definitions.
 |icon:check-circle-o[]
 |The stroke & icon width may be adjusted
 
-|Error End Event
+|Terminate End Event
 |icon:check-circle-o[]
-|The icon width may be adjusted
-
-|Compensation End Event
-|icon:check-circle-o[]
-|The icon width may be adjusted
-
-|Cancel End Event
-|icon:check-circle-o[]
-|The icon width may be adjusted
-
-|Escalation End Event
-|icon:check-circle-o[]
-|The icon width may be adjusted
+|The stroke width may be adjusted
 |===
 
 
