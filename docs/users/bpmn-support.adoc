@@ -546,27 +546,32 @@ The event definition can be defined on the event or on the definitions.
 === Gateways
 
 
-[cols="1,1,4", options="header"]
+[cols="1,1,1,4", options="header"]
 .Gateways
 |===
 .^|Name
 ^.^|Rendering
+^.^|Icon
 .^|Comments
 
 .^|Exclusive
 ^.^|icon:check-circle-o[]
+^.^|image:images/icons/gateway_exclusive.svg[Exclusive icon,30]
 .^|Icon may be subject to change +
 
 .^|Inclusive
 ^.^|icon:check-circle-o[]
+^.^|image:images/icons/gateway_inclusive.svg[Inclusive icon,30]
 .^|Icon may be subject to change +
 
 .^|Parallel
 ^.^|icon:check-circle-o[]
+^.^|image:images/icons/gateway_parallel.svg[Parallel icon,30]
 .^|Icon may be subject to change +
 
 .^|Event-Based
 ^.^|icon:check-circle-o[]
+^.^|image:images/icons/gateway_event_based.svg[Event-Based icon,30]
 .^|Support the `event gateway type` (Exclusive and Parallel) and the `instantiate` status
 |===
 
