@@ -2,14 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- 768 is the break point from which current layout is nicely displayed, below that is not yet supported -->
-    <meta name="viewport" content="width=768, initial-scale=0.5, maximum-scale=0.5, user-scalable=no, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>BPMN Visualization Demo</title>
-
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
     <link href="static/css/tailwind.css" rel="stylesheet">
     <link rel="icon" href="static/img/favicon.png">
-
     <!-- load demo -->
     <script src="static/js/index.js" type="module"></script>
 </head>
@@ -18,9 +15,9 @@
     <nav class="bg-gray-800 pt-2 md:pt-1 pb-1 px-1 mt-0 h-auto w-full">
       <div class="flex flex-wrap items-center">
         <div class="flex flex-shrink justify-center md:justify-start text-white">
-          <a class="flex items-center" href="../../examples/index.html">
-            <img src="static/img/logo_64x64_white.png" alt="logo" class="logo h-11 m-2 ml-3">
-            <span class="h-11 m-2 py-1 text-3xl">BPMN Visualization</span>
+          <a class="flex items-center mb-1 md:mt-2 md:mb-2" href="../../examples/index.html">
+            <img src="static/img/logo_64x64_white.png" alt="logo" class="logo h-11 ml-3 mr-2">
+            <span class="h-11 ml-2 py-1 text-2xl md:text-3xl">BPMN Visualization</span>
           </a>
         </div>
       </div>
@@ -29,65 +26,62 @@
     <div class="flex flex-col md:flex-row flex-grow">
       <!-- Left Navigation Panel -->
       <div class="bg-gray-800 shadow-xl w-full md:w-48">
-        <div class="md:w-48 content-center md:content-start text-left justify-between">
-          <ul class="list-reset flex flex-row md:flex-col py-0 px-1 md:px-2 text-center md:text-left">
-            <li class="mr-3 flex-1">
-              <div class="py-1 md:pb-5 md:pt-3 pl-1 align-middle border-b-2 border-gray-800">
+        <ul class="flex flex-row md:flex-col py-0 px-1 md:px-2">
+            <li class="md:mr-3">
+              <div class="py-1 md:pb-5 md:pt-3 pl-1 border-b-2 border-gray-800">
                 <div class="bg-gradient-to-b from-red-200 to-red-100 border-b-4 border-red-600 rounded-lg shadow-xl hover:border-red-900">
-                  <div class="flex flex-row items-center cursor-pointer text-red-500 hover:text-red-900">
-                    <div class="flex-1 text-right md:text-center">
+                  <div class="cursor-pointer text-red-500 hover:text-red-900">
+                    <div class="text-center">
                       <input type="file" id="bpmn-file" name="file" class="hidden"/>
-                      <label for="bpmn-file" class="font-bold text-3xl cursor-pointer"><span><em class="fas fa-file"></em>BPMN<em class="fas fa-upload"></em></span></label>
+                      <label for="bpmn-file" class="font-bold text-1xl md:text-3xl cursor-pointer"><span><em class="fas fa-file"></em>BPMN<em class="fas fa-upload"></em></span></label>
                     </div>
                   </div>
                 </div>
               </div>
-            </li>
-            <li class="mr-3 flex-1">
-              <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline border-b-2 border-gray-800 border-purple-500">
+              <a href="#" class="block pb-1 md:py-3 pl-1 text-white no-underline md:border-b-2 md:border-purple-500">
                 <label for="fitOnLoad">Fit on load:
                   <input type="checkbox" id="fitOnLoad" name="fitOnLoad" checked>
                 </label>
               </a>
             </li>
-            <li class="mr-3 flex-1">
-              <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline border-b-2 border-blue-600">
-                <label>Fit type:
-                  <select name="fitTypes" id="fitType-selected" class="w-full text-blue-900">
-                    <option value="None">None</option>
-                    <option value="HorizontalVertical">Horizontal-Vertical</option>
-                    <option value="Horizontal">Horizontal</option>
-                    <option value="Vertical">Vertical</option>
-                    <option value="Center" selected>Center</option>
-                  </select>
-                </label>
-              </a>
+            <li class="flex-1 md:mr-3">
+              <div class="py-1 md:py-3 pl-1 text-white md:border-b-2 md:border-red-500">
+                <a href="#" class="block no-underline md:pb-3 md:border-b-2 md:border-blue-600">
+                  <label class="flex justify-evenly md:block">Fit type:
+                    <select name="fitTypes" id="fitType-selected" class="w-1/2 md:w-full pl-1 md:pl-0 text-blue-900">
+                      <option value="None">None</option>
+                      <option value="HorizontalVertical">Horizontal-Vertical</option>
+                      <option value="Horizontal">Horizontal</option>
+                      <option value="Vertical">Vertical</option>
+                      <option value="Center" selected>Center</option>
+                    </select>
+                  </label>
+                </a>
+                <a href="#" class="block no-underline mt-3">
+                  <label for="fit-margin" class="flex justify-around">Fit margin:
+                    <input type="number" id="fit-margin" class="w-1/3 pl-1 text-red-900 md:ml-auto" min="0" max="100" value="50" maxlength="3" oninput="validity.valid||(value='');">
+                  </label>
+                </a>
+              </div>
             </li>
-            <li class="mr-3 flex-1">
-              <a href="#" class="block py-1 md:py-3 pl-0 md:pl-1 align-middle text-white no-underline border-b-2 border-gray-800 border-red-500">
-                <label for="fit-margin">Fit margin:
-                  <input type="number" id="fit-margin" min="0" max="100" value="50" maxlength="3" oninput="validity.valid||(value='');" class="text-red-900 pl-1 float-right md:w-1/3">
-                </label>
-              </a>
-            </li>
-            <li class="mr-3 flex-1">
-              <div id="zoom-config-controls" class="py-1 md:py-3 pl-1 md:pl-1 align-middle text-white border-b-2 border-gray-800 border-yellow-500">
-                <label for="zoom-throttle" class="block w-full">Throttle:
-                  <input id="zoom-throttle" class="md:w-1/3 pl-1 float-right bg-gray-500 text-black" type="number" placeholder="throttle" value="30" min="0" max="100" disabled
+            <li class="flex-1 md:mr-3">
+              <div id="zoom-config-controls" class="py-1 md:py-3 pl-1 text-white md:border-b-2 md:border-yellow-500">
+                <label for="zoom-throttle" class="flex justify-center">
+                  Throttle:
+                  <input id="zoom-throttle" class="w-1/3 pl-1 ml-3 text-black md:ml-auto" placeholder="throttle" value="50" disabled
                          title="to play with throttle pass parameter in url like this: .../?zoomThrottle=40"/>
                 </label>
-                <label for="zoom-debounce" class="block w-full mt-3">Debounce:
-                  <input id="zoom-debounce" class="md:w-1/3 pl-1 float-right bg-gray-500 text-black" type="number" placeholder="debounce" value="30" min="0" max="100" disabled
+                <label for="zoom-debounce" class="flex justify-center mt-3">Debounce:
+                  <input id="zoom-debounce" class="w-1/3 pl-1 text-black md:ml-auto" placeholder="debounce" value="50" disabled
                          title="to play with debounce pass parameter in url like this: .../?zoomDebounce=30"/>
                 </label>
               </div>
             </li>
           </ul>
-        </div>
       </div>
 
       <!-- Main section -->
-      <div class="flex-1 flex flex-col bg-gray-100 md:rounded-bl-2xl">
+      <div class="flex flex-1 flex-col bg-gray-100 md:rounded-bl-2xl">
         <div class="bg-gray-800">
           <div class="md:rounded-tl-3xl bg-gradient-to-r from-purple-900 to-gray-800 p-4 shadow text-2xl text-white">
             <h3 class="font-bold pl-2">Diagram</h3>
