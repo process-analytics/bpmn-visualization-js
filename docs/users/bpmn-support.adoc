@@ -31,15 +31,15 @@ the BPMN elements are rendered with their final shapes.
 .Containers
 |===
 |Name
-|Rendering
+^.^|Rendering
 |Comments
 
 |Lane
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |Sub lanes are also supported
 
 |Pool
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |
 |===
 
@@ -51,91 +51,91 @@ the BPMN elements are rendered with their final shapes.
 .Activities
 |===
 |Name
-|Rendering
+^.^|Rendering
 ^.^|Icon
 |Comments
 
 |Abstract Task
-|icon:check-circle[]
+^.^|icon:check-circle[]
 ^.^|
 |
 
 |Business Rule Task
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/task_business_rule.svg[Business rule icon,30]
 |
 
 |Manual Task
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/task_manual.svg[Manual rule icon,30]
 |Icon may be subject to change+
 *icon*: the task icon is derived from the https://thenounproject.com/term/hand/7660/[noun project 'hand' icon] by João Miranda, licensed as https://creativecommons.org/licenses/by/3.0/us/legalcode[Creative Commons CCBY 3.0]
 
 |Receive Task
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/task_receive.svg[Receive rule icon,30]
 |Icon may be subject to change
 
 |Script Task
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/task_script.svg[Script rule icon,30]
 |Icon may be subject to change +
 *icon*: the task icon is derived from the https://thenounproject.com/term/script/2331578/[noun project 'script' icon] by Sérgio Filipe Cardoso Pires, licensed as https://creativecommons.org/licenses/by/3.0/us/legalcode[Creative Commons CCBY 3.0]
 
 |Send Task
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/task_send.svg[Send rule icon,30]
 |Icon may be subject to change
 
 |Service Task
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/task_service.svg[Service rule icon,30]
 |Icon may be subject to change +
 *icon*: the task icon is derived from the https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L898[draw.io bpmn mxgraph stencil]
 
 |User Task
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/task_user.svg[User rule icon,30]
 |Icon may be subject to change +
 *icon*: the task icon is derived from the https://www.flaticon.com/free-icon/employees_554768[flaticon 'employees' icon] "Icons made by https://www.flaticon.com/authors/freepik[freepik] from https://www.flaticon.com"
 
 |Call Activity calling a Process
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |
 |
 
 |Call Activity calling a Global Task
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |
 |
 
 |Call Activity calling a Global Business Rule Task
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |
 |
 
 |Call Activity calling a Global Manual Task
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |
 |
 
 |Call Activity calling a Global Script Task
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |
 |
 
 |Call Activity calling a Global User Task
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |
 |
 
 |Embedded Sub-Process
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |
 |
 
 |Event Sub-Process
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |
 |Collapsed sub-process : + 
 - Missing start event icon
@@ -145,22 +145,22 @@ the BPMN elements are rendered with their final shapes.
 .Markers
 |===
 |Name
-|Rendering
+^.^|Rendering
 ^.^|Icon
 |Comments
 
 |Loop Marker
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/marker_loop.svg[Loop icon,30]
 |The icon is derived from the https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L543[loop] of draw.io
 
 |Sequential Multi-Instance Marker
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/marker_multi_instance_sequential.svg[Sequential Multi Instance icon,30]
 |
 
 |Parallel Multi-Instance Marker
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/marker_multi_instance_parallel.svg[Parallel Multi Instance icon,30]
 |
 |===
@@ -187,32 +187,32 @@ The event definition can be defined on the event or on the definitions.
 .Start Events
 |===
 |Name
-|Rendering
+^.^|Rendering
 ^.^|Icon
 |Comments
 
 |None Start Event
-|icon:check-circle[]
+^.^|icon:check-circle[]
 ^.^|
 |
 
 |Conditional Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_conditional.svg[Conditional icon,30]
 |The stroke & icon width may be adjusted
 
 |Message Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_message.svg[Message icon,30]
 |The stroke & icon width may be adjusted
 
 |Signal Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_signal.svg[Signal icon,30]
 |The stroke & icon width may be adjusted
 
 |Timer Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_timer.svg[Timer icon,30]
 |The icon width may be adjusted
 |===
@@ -222,42 +222,42 @@ The event definition can be defined on the event or on the definitions.
 .Event Sub-Process Interrupting Start Events
 |===
 |Name
-|Rendering
+^.^|Rendering
 ^.^|Icon
 |Comments
 
 |Compensation Interrupting Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_start_boundary_compensation.svg[Compensation icon,30]
 |The stroke & icon width may be adjusted
 
 |Conditional Interrupting Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_conditional.svg[Conditional icon,30]
 |The stroke & icon width may be adjusted
 
 |Error Interrupting Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_start_boundary_error.svg[Error icon,30]
 |The stroke & icon width may be adjusted
 
 |Escalation Interrupting Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_start_boundary_escalation.svg[Escalation icon,30]
 |The stroke & icon width may be adjusted
 
 |Message Interrupting Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_message.svg[Message icon,30]
 |The stroke & icon width may be adjusted
 
 |Signal Interrupting Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_signal.svg[Signal icon,30]
 |The stroke & icon width may be adjusted
 
 |Timer Interrupting Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_timer.svg[Timer icon,30]
 |The icon width may be adjusted
 |===
@@ -267,32 +267,32 @@ The event definition can be defined on the event or on the definitions.
 .Event Sub-Process Non-Interrupting Start Events
 |===
 |Name
-|Rendering
+^.^|Rendering
 ^.^|Icon
 |Comments
 
 |Conditional Non-interrupting Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_conditional.svg[Conditional icon,30]
 |The stroke & icon width may be adjusted
 
 |Escalation Non-interrupting Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_start_boundary_escalation.svg[Escalation icon,30]
 |The stroke & icon width may be adjusted
 
 |Message Non-interrupting Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_message.svg[Message icon,30]
 |The stroke & icon width may be adjusted
 
 |Signal Non-interrupting Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_signal.svg[Signal icon,30]
 |The stroke & icon width may be adjusted
 
 |Timer Non-interrupting Start Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_timer.svg[Timer icon,30]
 |The icon width may be adjusted
 |===
@@ -302,32 +302,32 @@ The event definition can be defined on the event or on the definitions.
 .Intermediate Catch Events
 |===
 |Name
-|Rendering
+^.^|Rendering
 ^.^|Icon
 |Comments
 
 |Conditional Intermediate Catch Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_conditional.svg[Conditional icon,30]
 |The stroke & icon width may be adjusted
 
 |Link Intermediate Catch Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_link.svg[Link icon,30]
 |The stroke & icon width may be adjusted
 
 |Message Intermediate Catch Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_message.svg[Message icon,30]
 |The stroke & icon width may be adjusted
 
 |Signal Intermediate Catch Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_signal.svg[Signal icon,30]
 |The stroke & icon width may be adjusted
 
 |Timer Intermediate Catch Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_timer.svg[Timer icon,30]
 |The icon width may be adjusted
 |===
@@ -337,37 +337,37 @@ The event definition can be defined on the event or on the definitions.
 .Intermediate Throw Events
 |===
 |Name
-|Rendering
+^.^|Rendering
 ^.^|Icon
 |Comments
 
 |None Intermediate Throw Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|
 |The stroke width may be adjusted
 
 |Compensation Intermediate Throw Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_throw_end_compensation.svg[Compensation icon,30]
 |The stroke & icon width may be adjusted
 
 |Escalation Intermediate Throw Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_throw_end_escalation.svg[Escalation icon,30]
 |The stroke & icon width may be adjusted
 
 |Link Intermediate Throw Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_throw_link.svg[Link icon,30]
 |The stroke & icon width may be adjusted
 
 |Message Intermediate Throw Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_throw_end_message.svg[Message icon,30]
 |The stroke & icon width may be adjusted
 
 |Signal Intermediate Throw Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_throw_end_signal.svg[Signal icon,30]
 |The stroke & icon width may be adjusted
 |===
@@ -377,47 +377,47 @@ The event definition can be defined on the event or on the definitions.
 .Interrupting Boundary Events
 |===
 |Name
-|Rendering
+^.^|Rendering
 ^.^|Icon
 |Comments
 
 |Cancel Interrupting Boundary Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_boundary_cancel.svg[Cancel icon,30]
 |The stroke & icon width may be adjusted
 
 |Compensation Interrupting Boundary Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_start_boundary_compensation.svg[Compensation icon,30]
 |The stroke & icon width may be adjusted
 
 |Conditional Interrupting Boundary Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_conditional.svg[Conditional icon,30]
 |The stroke & icon width may be adjusted
 
 |Error Interrupting Boundary Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_start_boundary_error.svg[Error icon,30]
 |The stroke & icon width may be adjusted
 
 |Escalation Interrupting Boundary Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_start_boundary_escalation.svg[Escalation icon,30]
 |The stroke & icon width may be adjusted
 
 |Message Interrupting Boundary Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_message.svg[Message icon,30]
 |The stroke & icon width may be adjusted
 
 |Signal Interrupting Boundary Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_signal.svg[Signal icon,30]
 |The stroke & icon width may be adjusted
 
 |Timer Interrupting Boundary Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_timer.svg[Timer icon,30]
 |The stroke & icon width may be adjusted
 |===
@@ -427,32 +427,32 @@ The event definition can be defined on the event or on the definitions.
 .Non-interrupting Boundary Events
 |===
 |Name
-|Rendering
+^.^|Rendering
 ^.^|Icon
 |Comments
 
 |Conditional Non-interrupting Boundary Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_conditional.svg[Conditional icon,30]
 |The stroke & icon width may be adjusted
 
 |Escalation Non-interrupting Boundary Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_start_boundary_escalation.svg[Escalation icon,30]
 |The stroke & icon width may be adjusted
 
 |Message Non-interrupting Boundary Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_message.svg[Message icon,30]
 |The stroke & icon width may be adjusted
 
 |Signal Non-interrupting Boundary Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_signal.svg[Signal icon,30]
 |The stroke & icon width may be adjusted
 
 |Timer Non-interrupting Boundary Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_catch_start_boundary_timer.svg[Timer icon,30]
 |The stroke & icon width may be adjusted
 |===
@@ -462,47 +462,47 @@ The event definition can be defined on the event or on the definitions.
 .End Events
 |===
 |Name
-|Rendering
+^.^|Rendering
 ^.^|Icon
 |Comments
 
 |None End Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|
 |The stroke width may be adjusted
 
 |Cancel End Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_end_cancel.svg[Cancel icon,30]
 |The icon width may be adjusted
 
 |Compensation End Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_throw_end_compensation.svg[Compensation icon,30]
 |The icon width may be adjusted
 
 |Error End Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_end_error.svg[Error icon,30]
 |The icon width may be adjusted
 
 |Escalation End Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_throw_end_escalation.svg[Escalation icon,30]
 |The icon width may be adjusted
 
 |Message End Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_throw_end_message.svg[Message icon,30]
 |The stroke & icon width may be adjusted
 
 |Signal End Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_intermediate_throw_end_signal.svg[Signal icon,30]
 |The stroke & icon width may be adjusted
 
 |Terminate End Event
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 ^.^|image:../../images/event_end_terminate.svg[Terminate icon,30]
 |The stroke width may be adjusted
 |===
@@ -515,30 +515,30 @@ The event definition can be defined on the event or on the definitions.
 .Flows
 |===
 |Name
-|Rendering
+^.^|Rendering
 |Comments
 
 |sequence flow
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |Subject to change: arrow size/form and position endpoint
 
 |default sequence flow
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |Subject to change: arrow size/form and position endpoint +
 *marker* is derived from https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796[dash marker] of draw.io
 
 |conditional sequence flow
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |Subject to change: arrow size/form and position endpoint
 
 |message flow
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |- No message: Subject to change: arrow size/form and position endpoint +
 - Initiating message: To do
 - Non-initiating message: To do
 
 |way points
-|icon:flask[]
+^.^|icon:flask[]
 |Subject to change: paths may be rounded
 |===
 
@@ -550,23 +550,23 @@ The event definition can be defined on the event or on the definitions.
 .Gateways
 |===
 |Name
-|Rendering
+^.^|Rendering
 |Comments
 
 |Exclusive
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |Icon may be subject to change +
 
 |Inclusive
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |Icon may be subject to change +
 
 |Parallel
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |Icon may be subject to change +
 
 |Event-Based
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |Support the `event gateway type` (Exclusive and Parallel) and the `instantiate` status
 |===
 
@@ -578,15 +578,15 @@ The event definition can be defined on the event or on the definitions.
 .Labels
 |===
 |Name
-|Rendering
+^.^|Rendering
 |Comments
 
 |Shape Label
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |
 
 |Edge Label
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |
 |===
 
@@ -599,15 +599,15 @@ The event definition can be defined on the event or on the definitions.
 .Artifacts
 |===
 |Name
-|Rendering
+^.^|Rendering
 |Comments
 
 |Group
-|icon:check-circle[]
+^.^|icon:check-circle[]
 |
 
 |Text Annotation
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |
 |===
 
@@ -621,9 +621,9 @@ The event definition can be defined on the event or on the definitions.
 .Associations
 |===
 |Name
-|Rendering
+^.^|Rendering
 |Comments
 |Text Annotation Association
-|icon:check-circle-o[]
+^.^|icon:check-circle-o[]
 |All three directional associations are supported: None, One, Both
 |===
