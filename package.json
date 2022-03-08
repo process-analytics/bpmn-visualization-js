@@ -110,7 +110,7 @@
     "cssnano": "^5.1.0",
     "debug": "^4.3.3",
     "eslint": "^8.10.0",
-    "eslint-config-prettier": "^8.4.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jest": "^26.1.1",
     "eslint-plugin-notice": "^0.9.10",
     "eslint-plugin-playwright": "^0.8.0",
