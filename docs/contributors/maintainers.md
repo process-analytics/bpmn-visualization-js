@@ -22,6 +22,19 @@ are automated once the release is triggered but manual actions are required for:
 
 ![release process automation overview](./images/release_process_part-01_release_automation.png)
 
+
+#### Prepare the GitHub Release
+
+- Open [github releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
+- A draft release for the version to be released should already exist:
+  - [release-drafter](https://github.com/release-drafter/release-drafter) creates or updates draft release for the
+  next version each time a pull request is merged to the `master` branch.
+  - create a new draft release if it is missing or rename the existing one to `In Progress` (the name is not relevant and will be updated later).
+  The name will be used to identify the draft release to update later.
+- Create a new draft release and name it `Next` (the name is not relevant and will be replaced automatically later).
+  This ensures that development can continue without impacting the writing of the content of the `In Progress` release. That way,
+  if a PR is merged, `release-drafter` will update the `Next` draft release keeping the in-progress release untouched.
+
 #### Set the release version and create a git tag
 
 **Note:** This step triggers the release automation process.
@@ -59,17 +72,11 @@ A GitHub job is run at git tag creation, so the publishing should be done automa
   of the `Done` column related to the milestone
 
 
-### Prepare the GitHub Release
+### Continue filling the GitHub Release
 
 - Open [github releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
-- Create a new draft release and name it `Next` (the name is not relevant and will be replaced automatically later).
-This ensures that development can continue without impacting the writing of the content of the in progress release. That way,
-if a PR is merged, `release-drafter` will update the `Next` draft release keeping the in-progress release untouched.
-- The draft release for the newly tagged version should already exist:
-  - [release-drafter](https://github.com/release-drafter/release-drafter) creates or updates draft release for the
-  next version each time a pull request is merged to the `master` branch.
-  - create a new release if it is missing or rename the existing one to match .
-- Assign the new tag as release target and save the draft (this should have already been managed by `release-drafter`)
+- Rename the existing `In Progress` draft release (updated before starting the release) to match the version that has just been tagged
+- Assign the new tag as release target and save the draft (this may have been already managed by `release-drafter`)
 - Ensure that `This is a pre-release` is unchecked (except if we are releasing alpha, beta, rc, ...)
 - In the release description (check previous releases as a source of inspiration)
   - at least add/update a link to the related milestone
