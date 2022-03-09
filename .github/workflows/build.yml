@@ -59,7 +59,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version-file: '.nvmrc'
           cache: 'npm'
       # playwright browsers are needed for the bundle tests, so no special configuration as in other workflows
       - name: Install dependencies
@@ -127,7 +127,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version-file: '.nvmrc'
           cache: 'npm'
       - name: Install dependencies
         env:
