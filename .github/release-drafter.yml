@@ -56,7 +56,9 @@ exclude-labels:
 # Exclude specific usernames from the generated $CONTRIBUTORS variable.
 # https://github.com/release-drafter/release-drafter/tree/master#exclude-contributors
 exclude-contributors:
-  - 'dependabot[bot]'
+#  - 'dependabot[bot]'
+#  - '@dependabot'
+  - '@dependabot[bot]'
 template: |
   **TODO: add a short description about the release content - important for url preview**
   This new release focuses on .... **or something similar**
