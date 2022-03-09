@@ -44,6 +44,7 @@ categories:
       - chore
       - internal
   - title: 📦 Dependency updates
+    collapse-after: 5
     labels:
       - dependencies
 exclude-labels:
@@ -52,6 +53,10 @@ exclude-labels:
   - skip-changelog
   - reverted
   - wontfix
+# Exclude specific usernames from the generated $CONTRIBUTORS variable.
+# https://github.com/release-drafter/release-drafter/tree/master#exclude-contributors
+exclude-contributors:
+  - 'dependabot'
 template: |
   **TODO: add a short description about the release content - important for url preview**
   This new release focuses on .... **or something similar**
@@ -71,7 +76,7 @@ template: |
   $CHANGES
 
   **TODO: check previous and next tag in the link below**
-  
+
   **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$NEXT_PATCH_VERSION
 
 replacers:
