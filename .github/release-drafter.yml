@@ -60,7 +60,6 @@ exclude-contributors:
 #  - '@dependabot'
   - '@dependabot[bot]'
 template: |
-  WIP from PR
   **TODO: add a short description about the release content - important for url preview**
   This new release focuses on .... **or something similar**
 
