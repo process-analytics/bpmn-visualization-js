@@ -29,11 +29,10 @@ are automated once the release is triggered but manual actions are required for:
 - A draft release for the version to be released should already exist:
   - [release-drafter](https://github.com/release-drafter/release-drafter) creates or updates draft release for the
   next version each time a pull request is merged to the `master` branch.
-  - create a new draft release if it is missing or rename the existing one to `In Progress` (the name is not relevant and will be updated later).
-  The name will be used to identify the draft release to update later.
+  - create a new draft release if it is missing or rename the existing one to `In Progress`. The name is not relevant and will be later used to identify the draft release to update.
 - Create a new draft release and name it `Next` (the name is not relevant and will be replaced automatically later).
   This ensures that development can continue without impacting the writing of the content of the `In Progress` release. That way,
-  if a PR is merged, `release-drafter` will update the `Next` draft release keeping the in-progress release untouched.
+  if a PR is merged, `release-drafter` will update the `Next` draft release keeping the `In Progress` release untouched.
 
 #### Set the release version and create a git tag
 
