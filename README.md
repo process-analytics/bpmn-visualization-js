@@ -116,8 +116,7 @@ Depending on the build system used by the TypeScript project, it may get the fol
 - error TS7016: Could not find a declaration file for module 'mxgraph'
 
 In this case, 
-- Install `@typed-mxgraph/typed-mxgraph` as devDependencies, for instance by running `npm i --save-dev @typed-mxgraph/typed-mxgraph@1.0.4`
-- Declare the `typed-mxgraph` types in the `tsconfig.json` as in the following 👇
+- Declare the `typed-mxgraph` types in the `tsconfig.json` as in the following (see the [typeRoots](https://www.typescriptlang.org/tsconfig#typeRoots) documentation for more explanations) 👇
 
 ```json
 {
@@ -133,7 +132,7 @@ In this case,
 Alternatively, you can set `skipLibCheck` to `true` in the `tsconfig.json` file, but this limits the definition checks.
 For more details, see the [skipLibCheck documentation](https://www.typescriptlang.org/tsconfig#skipLibCheck).
 
-Advanced users that want to extend the `mxGraph` integration must use `typed-mxgraph`.
+Advanced users that want to extend the `mxGraph` integration must add `typed-mxgraph` to `typeRoots`.
 
 For more details, see the TypeScript projects in the [bpmn-visualization-examples repository](https://github.com/process-analytics/bpmn-visualization-examples/).
 
