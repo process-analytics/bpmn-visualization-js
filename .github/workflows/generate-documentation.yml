@@ -59,8 +59,7 @@ jobs:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           dist: build/docs
-          failOnError: true
-          teardown: 'true'
+          failOnError: ${{ github.event.action != 'closed' }} # Do not fail when closing PR (the PR may not create the deployment, in particular, when the PR has been created by dependabot)
           build: |
             npm ci
             npm run docs
