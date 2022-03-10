@@ -21,3 +21,43 @@ jobs:
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Send message to Slack channel
+        if: success()
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+          channel-id: 'CSF7TG6N5'
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": ":mega: BPMN Visualization Release ${{github.ref_name}}",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "- <https://github.com/${{github.repository}}/tree/${{github.ref_name}}|Tag> done :heavy_check_mark: \n - Package published on <https://www.npmjs.com/package/bpmn-visualization|NPM> :heavy_check_mark:"
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "See the next steps <https://github.com/${{github.repository}}/blob/master/docs/contributors/maintainers.md#github-issues-milestones-and-projects-update|here> :arrow_left:"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
