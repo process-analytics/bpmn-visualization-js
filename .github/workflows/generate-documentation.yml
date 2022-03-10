@@ -61,7 +61,7 @@ jobs:
           dist: build/docs
           failOnError: ${{ github.event.action != 'closed' }} # Do not fail when closing PR (the PR may not create the deployment, in particular, when the PR has been created by dependabot)
           build: |
-            do_not_exist
+            exit -1
 
   generate_doc:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&  github.event.ref == 'refs/heads/master'
