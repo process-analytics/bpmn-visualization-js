@@ -52,5 +52,4 @@ jobs:
           failOnError: ${{ github.event.action != 'closed' }} # Do not fail when closing PR (the PR may not create the deployment, in particular, when the PR has been created by dependabot)
           teardown: 'true'
           build: |
-            npm ci
-            npm run demo
+            do_not_exist
