@@ -16,19 +16,35 @@
 
 import * as fs from 'fs';
 
-log('Managing version suffix in configuration files');
-const currentVersion = getCurrentVersion();
-log('Current version', currentVersion);
+if (process.env.IS_RELEASING) {
+  updateVersionInFilesOnRelease();
+} else {
+  manageVersionSuffixInFiles();
+}
 
-const newVersion = addOrRemoveVersionSuffix(currentVersion);
-log('New version', newVersion);
+function updateVersionInFilesOnRelease() {
+  log('Updating version in files on release');
+  const currentVersion = getCurrentVersion();
+  log('Current version', currentVersion);
+  updateVersionInSourceFile(currentVersion);
+  log('Files have been updated');
+}
 
-updateVersionInNpmFile('./package.json', newVersion);
-updateVersionInNpmFile('./package-lock.json', newVersion);
-updateVersionInSonarFile(newVersion);
-updateVersionInSourceFile(newVersion);
+function manageVersionSuffixInFiles() {
+  log('Managing version suffix in files');
+  const currentVersion = getCurrentVersion();
+  log('Current version', currentVersion);
 
-log('Configuration files have been updated');
+  const newVersion = addOrRemoveVersionSuffix(currentVersion);
+  log('New version', newVersion);
+
+  updateVersionInNpmFile('./package.json', newVersion);
+  updateVersionInNpmFile('./package-lock.json', newVersion);
+  updateVersionInSonarFile(newVersion);
+  updateVersionInSourceFile(newVersion);
+
+  log('Files have been updated');
+}
 
 function log(...data) {
   // eslint-disable-next-line no-console
