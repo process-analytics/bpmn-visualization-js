@@ -57,6 +57,7 @@ exclude-labels:
 # https://github.com/release-drafter/release-drafter/tree/master#exclude-contributors
 exclude-contributors:
   - 'dependabot'
+  - 'dependabot[bot]'
 template: |
   **TODO: add a short description about the release content - important for url preview**
   This new release focuses on .... **or something similar**
@@ -78,9 +79,3 @@ template: |
   **TODO: check previous and next tag in the link below**
 
   **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$NEXT_PATCH_VERSION
-
-replacers:
-  - search: '@dependabot-preview'
-    replace: '@dependabot'
-  - search: '@dependabot[bot]'
-    replace: '@dependabot'
