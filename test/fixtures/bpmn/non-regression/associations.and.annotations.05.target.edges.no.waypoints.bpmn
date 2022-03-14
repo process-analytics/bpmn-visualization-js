@@ -46,16 +46,9 @@
         <dc:Bounds x="1000" y="290" width="100" height="30" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="association_1_di" bpmnElement="association_1">
-        <di:waypoint x="710" y="440" />
-        <di:waypoint x="710" y="488" />
-        <di:waypoint x="740" y="488" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="association_2_di" bpmnElement="association_2">
-        <di:waypoint x="910" y="380" />
-        <di:waypoint x="940" y="370" />
-        <di:waypoint x="960" y="305" />
-        <di:waypoint x="1000" y="305" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
