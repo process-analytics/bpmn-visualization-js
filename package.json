@@ -85,7 +85,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@typed-mxgraph/typed-mxgraph": "^1.0.4",
+    "@typed-mxgraph/typed-mxgraph": "^1.0.5",
     "entities": "^3.0.1",
     "fast-xml-parser": "4.0.6",
     "lodash.debounce": "^4.0.8",
