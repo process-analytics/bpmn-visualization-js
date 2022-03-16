@@ -62,20 +62,20 @@ const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    const defaultFailureThreshold = 0.00006; // all OS 0.005379276499073438%
+    const defaultFailureThreshold = 0.006 / 100; // all OS 0.005379276499073438%
     super({ chromium: defaultFailureThreshold, firefox: defaultFailureThreshold, webkit: defaultFailureThreshold });
   }
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'with.outside.labels',
-        {
-          macos: 0.0022, // max 0.2180969169471081%
-          windows: 0.0043, // max 0.4254571229063031%
-        },
-      ],
+      // [
+      //   'with.outside.labels',
+      //   {
+      //     macos: 0.0022, // max 0.2180969169471081%
+      //     windows: 0.0043, // max 0.4254571229063031%
+      //   },
+      // ],
     ]);
   }
 
@@ -97,15 +97,15 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.00042, // max 0.041092716803170504%
         },
       ],
-      [
-        'with.outside.labels',
-        {
-          linux: 0.0094, // max 0.931092653624066%
-          macos: 0.0109, // max 1.0826504942124782%
-          // TODO possible rendering issue so high threshold value
-          windows: 0.0375, // max 3.744378276494776%
-        },
-      ],
+      // [
+      //   'with.outside.labels',
+      //   {
+      //     linux: 0.0094, // max 0.931092653624066%
+      //     macos: 0.0109, // max 1.0826504942124782%
+      //     // TODO possible rendering issue so high threshold value
+      //     windows: 0.0375, // max 3.744378276494776%
+      //   },
+      // ],
     ]);
   }
 
@@ -123,18 +123,18 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           macos: 0.0006, // max is 0.05782432968098884%
         },
       ],
-      [
-        'with.outside.flows',
-        {
-          macos: 0.00062, // max is 0.06110704241570897%
-        },
-      ],
-      [
-        'with.outside.labels',
-        {
-          macos: 0.01, // max is 0.9821430167311629%
-        },
-      ],
+      // [
+      //   'with.outside.flows',
+      //   {
+      //     macos: 0.00062, // max is 0.06110704241570897%
+      //   },
+      // ],
+      // [
+      //   'with.outside.labels',
+      //   {
+      //     macos: 0.01, // max is 0.9821430167311629%
+      //   },
+      // ],
     ]);
   }
 }
