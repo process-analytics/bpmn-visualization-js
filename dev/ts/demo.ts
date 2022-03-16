@@ -25,6 +25,7 @@ export * from './helper';
 
 let bpmnVisualization: ThemedBpmnVisualization;
 let loadOptions: LoadOptions = {};
+let bpmnElementIdToCollapse: string;
 
 export function updateLoadOptions(fitOptions: FitOptions): void {
   log('Updating load options', fitOptions);
@@ -45,6 +46,7 @@ function loadBpmn(bpmn: string): void {
   try {
     bpmnVisualization.load(bpmn, loadOptions);
     log('BPMN loaded with configuration', stringify(loadOptions));
+    collapseBpmnElement(bpmnElementIdToCollapse);
     document.dispatchEvent(new CustomEvent('diagramLoaded'));
   } catch (e) {
     logErrorAndOpenAlert(e, `Cannot load the BPMN diagram: ${e.message}`);
@@ -79,6 +81,28 @@ export function addOverlays(bpmnElementId: string, overlay: Overlay): void {
 
 export function removeAllOverlays(bpmnElementId: string): void {
   return bpmnVisualization.bpmnElementsRegistry.removeAllOverlays(bpmnElementId);
+}
+
+// Not natively supported by bpmn-visualization for now but demonstrated in https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/v0.22.0/examples/custom-behavior/select-elements-by-bpmn-kind/index.html
+// Ensure this works with the custom terminal waypoints computation
+function collapseBpmnElement(bpmnElementId: string): void {
+  if (!bpmnElementIdToCollapse) {
+    return;
+  }
+  log('Updating model, bpmnElement to collapse:', bpmnElementId);
+  const model = bpmnVisualization.graph.getModel();
+  const cell = model.getCell(bpmnElementId);
+  if (!cell) {
+    log('Element not found in the model, do nothing');
+  } else {
+    model.beginUpdate();
+    try {
+      model.setCollapsed(cell, true);
+    } finally {
+      model.endUpdate();
+    }
+    log('Model updated');
+  }
 }
 
 // callback function for opening | dropping the file to be loaded
@@ -177,6 +201,10 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
   }
 }
 
+function configureBpmnElementIdToCollapseFromParameters(parameters: URLSearchParams): void {
+  bpmnElementIdToCollapse = parameters.get('bpmn.element.id.collapsed');
+}
+
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
   const container = config.globalOptions.container;
@@ -194,6 +222,7 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   loadOptions.fit = getFitOptionsFromParameters(config, parameters);
 
   configureStyleFromParameters(parameters);
+  configureBpmnElementIdToCollapseFromParameters(parameters);
 
   log("Checking if an 'url to fetch BPMN content' is provided as query parameter");
   const urlParameterValue = parameters.get('url');

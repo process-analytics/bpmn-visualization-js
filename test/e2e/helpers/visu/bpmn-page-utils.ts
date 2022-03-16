@@ -81,6 +81,7 @@ export interface StyleOptions {
 export interface PageOptions {
   loadOptions?: LoadOptions;
   styleOptions?: StyleOptions;
+  bpmnElementIdToCollapse?: string;
 }
 
 export interface Point {
@@ -111,7 +112,12 @@ export class PageTester {
   }
 
   async gotoPageAndLoadBpmnDiagram(bpmnDiagramName: string, pageOptions?: PageOptions): Promise<void> {
-    const url = this.computePageUrl(bpmnDiagramName, pageOptions?.loadOptions ?? { fit: { type: FitType.HorizontalVertical } }, pageOptions?.styleOptions);
+    const url = this.computePageUrl(
+      bpmnDiagramName,
+      pageOptions?.loadOptions ?? { fit: { type: FitType.HorizontalVertical } },
+      pageOptions?.styleOptions,
+      pageOptions?.bpmnElementIdToCollapse,
+    );
     await this.doGotoPageAndLoadBpmnDiagram(url);
   }
 
@@ -131,9 +137,9 @@ export class PageTester {
   /**
    * @param bpmnDiagramName the name of the BPMN file without extension
    * @param loadOptions optional fit options
-   * @param styleOptions optional style options
+   * @param styleOptions? optional style options
    */
-  private computePageUrl(bpmnDiagramName: string, loadOptions: LoadOptions, styleOptions?: StyleOptions): string {
+  private computePageUrl(bpmnDiagramName: string, loadOptions: LoadOptions, styleOptions?: StyleOptions, bpmndElementIdToCollapse?: string | undefined): string {
     let url = this.baseUrl;
     url += `&url=./static/bpmn/${this.diagramSubfolder}/${bpmnDiagramName}.bpmn`;
 
@@ -146,6 +152,9 @@ export class PageTester {
     styleOptions?.bpmnContainer?.useAlternativeBackgroundColor &&
       (url += `&style.container.alternative.background.color=${styleOptions.bpmnContainer.useAlternativeBackgroundColor}`);
     styleOptions?.theme && (url += `&style.theme=${styleOptions.theme}`);
+
+    // elements to collapse
+    bpmndElementIdToCollapse && (url += `&bpmn.element.id.collapsed=${bpmndElementIdToCollapse}`);
 
     return url;
   }
