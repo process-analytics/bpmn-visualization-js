@@ -35,16 +35,20 @@
 </div>  
 <br>
 
-`bpmn-visualization` is a TypeScript library for visualizing process execution data on [BPMN](https://www.omg.org/spec/BPMN/2.0.2/) diagrams with:
-- additional display options for execution data (highlight some transitions, counters, and more)
-- interactive capacities (mouse hover, click)
+`bpmn-visualization` is a TypeScript library for visualizing processes, in the [BPMN diagram](https://www.omg.org/spec/BPMN/2.0.2/) format, with simplicity.
+
+Based on the customization capability, it provides a set of diagram visualization features, and helps developers to create applications for process visualization and analysis. \
+It also focuses on execution data:
+- highlighting of some edges
+- adding customizable overlays
+- personalized interactions
 
 <br>
 
-
 ## 🎮 Demo and examples 
 
-Please check the [__⏩ live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html). \
+Please check the [__⏩ live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
+
 You will find there basic usage as well as detailed examples showing possible rendering customizations.
 
 ## 🎨 Features
@@ -111,12 +115,11 @@ You can set the BPMN content using one of the following ways:
 
 `bpmn-visualization` provides type definitions, so the integration should work out of the box in TypeScript projects.
 
-Depending on the build system used by the TypeScript project, it may get the following type errors 
+Depending on the build system used by the TypeScript project, it may get the following type errors :
 - error TS2688: Cannot find type definition file for 'typed-mxgraph'
 - error TS7016: Could not find a declaration file for module 'mxgraph'
 
-In this case, 
-- Declare the `typed-mxgraph` types in the `tsconfig.json` as in the following (see the [typeRoots](https://www.typescriptlang.org/tsconfig#typeRoots) documentation for more explanations) 👇
+In this case, declare the `typed-mxgraph` types in the `tsconfig.json` as in the following (see the [typeRoots](https://www.typescriptlang.org/tsconfig#typeRoots) documentation for more explanations) 👇
 
 ```json
 {
@@ -129,10 +132,15 @@ In this case,
 }
 ```
 
+---
+**NOTE**
+
+This is also mandatory for users who want to extend the `mxGraph` integration.
+
+---
+
 Alternatively, you can set `skipLibCheck` to `true` in the `tsconfig.json` file, but this limits the definition checks.
 For more details, see the [skipLibCheck documentation](https://www.typescriptlang.org/tsconfig#skipLibCheck).
-
-Advanced users that want to extend the `mxGraph` integration must add `typed-mxgraph` to `typeRoots`.
 
 For more details, see the TypeScript projects in the [bpmn-visualization-examples repository](https://github.com/process-analytics/bpmn-visualization-examples/).
 
