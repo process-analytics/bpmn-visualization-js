@@ -242,19 +242,19 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
   protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
-      // [
-      //   'flows.message.02.labels.and.complex.paths',
-      //   {
-      //     macos: 0.5 / 100, // 0.4997496353783548%
-      //   },
-      // ],
-      // [
-      //   'labels.01.general',
-      //   {
-      //     // TODO possible rendering issue so high threshold value
-      //     macos: 0.0225, // 2.2494371693738913%
-      //   },
-      // ],
+      [
+        'flows.message.02.labels.and.complex.paths',
+        {
+          macos: 0.41 / 100, // 0.40016434760490327%
+        },
+      ],
+      [
+        'labels.01.general',
+        {
+          // TODO possible rendering issue so high threshold value
+          macos: 2.61 / 100, // 2.606652827219813%
+        },
+      ],
       [
         'labels.02.position.and.line.breaks',
         {
@@ -262,24 +262,24 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           macos: 0.059, // 5.875189976297179%
         },
       ],
-      // [
-      //   'labels.03.default.position',
-      //   {
-      //     macos: 0.006, // 0.5967754875071174%
-      //   },
-      // ],
-      // [
-      //   'labels.04.fonts',
-      //   {
-      //     macos: 0.00625, // 0.6237033609582054%
-      //   },
-      // ],
-      // [
-      //   'pools.01.labels.and.lanes',
-      //   {
-      //     macos: 0.0025, // 0.24229404068003557%
-      //   },
-      // ],
+      [
+        'labels.03.default.position',
+        {
+          macos: 0.85 / 100, // 0.843063100064223%
+        },
+      ],
+      [
+        'labels.04.fonts',
+        {
+          macos: 0.63 / 100, // 0.6255817109336315%
+        },
+      ],
+      [
+        'pools.01.labels.and.lanes',
+        {
+          macos: 0.25 / 100, // 0.2428126684001386%
+        },
+      ],
       [
         'pools.02.vertical.with.lanes',
         {
