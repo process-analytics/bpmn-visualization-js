@@ -31,13 +31,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
-      // [
-      //   'flows.message.02.labels.and.complex.paths',
-      //   {
-      //     macos: 0.09 / 100, // 0.08112849466592742%
-      //     windows: 0.16 / 100, // 0.15541729138528473%
-      //   },
-      // ],
+      [
+        'flows.message.02.labels.and.complex.paths',
+        {
+          macos: 0.05 / 100, // 0.042940114894829406%
+          // windows: 0.16 / 100, // 0.15541729138528473%
+        },
+      ],
       [
         'group.01.in.process.with.label',
         {
@@ -57,6 +57,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.0005 / 100, // 0.0004690507665716659%
           // windows: 0.0095, // 0.9454259810923071%
+          macos: 0.63 / 100, // 0.6225356945699145%
         },
       ],
       [
@@ -70,24 +71,24 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         'labels.03.default.position',
         {
           linux: 0.0009 / 100, // 0.0008448953993434039%
-          // macos: 0.0073, // 0.7297300805459317%
+          macos: 0.47 / 100, // 0.46761316449689394%
           // windows: 0.0064, // 0.6332698717012919%
         },
       ],
-      // [
-      //   'labels.04.fonts',
-      //   {
-      //     macos: 0.0019, // 0.18334725431882193%
-      //     windows: 0.0022, // 0.21203992685594475%
-      //   },
-      // ],
-      // [
-      //   'pools.01.labels.and.lanes',
-      //   {
-      //     macos: 0.0013, // 0.1232401834606045%
-      //     windows: 0.0025, // 0.2049348246286553%
-      //   },
-      // ],
+      [
+        'labels.04.fonts',
+        {
+          macos: 0.19 / 100, // 0.18334725431882193%
+          // windows: 0.0022, // 0.21203992685594475%
+        },
+      ],
+      [
+        'pools.01.labels.and.lanes',
+        {
+          macos: 0.13 / 100, // 0.1232401834606045%
+          // windows: 0.0025, // 0.2049348246286553%
+        },
+      ],
       [
         'pools.02.vertical.with.lanes',
         {
