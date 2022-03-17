@@ -20,7 +20,7 @@ import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/va
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 import { mxgraph } from './initializer';
-import type { mxCellState, mxPoint, mxGraphView } from 'mxgraph';
+import type { mxCellState, mxGraphView, mxPoint } from 'mxgraph';
 
 export class BpmnGraph extends mxgraph.mxGraph {
   private cumulativeZoomFactor = 1;
@@ -190,44 +190,16 @@ export class BpmnGraph extends mxgraph.mxGraph {
   }
 }
 
-// enable for debugging
-const isLogEnabled = false;
-const log = (msg: string, ...optionalParams: unknown[]): void => {
-  if (isLogEnabled) {
-    // eslint-disable-next-line no-console
-    console.debug('[BpmnGraphView] ' + msg, optionalParams);
-  }
-};
-
 class BpmnGraphView extends mxgraph.mxGraphView {
-  // overridden only to be able to log the edge.absolutePoints array before and after floating terminal point computation
-  // in the final implementation, it should be removed
-  override updateFloatingTerminalPoint(edge: mxCellState, start: mxCellState, end: mxCellState, source: boolean): void {
-    log('custom updateFloatingTerminalPoint, source:? %b', source);
-    log('edge.absolutePoints before change', [...edge.absolutePoints]);
-    super.updateFloatingTerminalPoint(edge, start, end, source);
-    log('edge.absolutePoints after change', [...edge.absolutePoints]);
-  }
-
   override getFloatingTerminalPoint(edge: mxCellState, start: mxCellState, end: mxCellState, source: boolean): mxPoint {
-    log('computing custom getFloatingTerminalPoint, source: ', source);
     // some values may be null: the first and the last values are null prior computing floating terminal points
-    const edgePoints = edge.absolutePoints?.filter(Boolean);
-    log('edgePoints', edgePoints);
+    const edgePoints = edge.absolutePoints.filter(Boolean);
     // when there is no BPMN waypoint, all values are null
     const needsFloatingTerminalPoint = edgePoints.length < 2;
-    log('needsFloatingTerminalPoint', needsFloatingTerminalPoint);
-
-    // TODO simplify, as there are 2 returns, no need for else
     if (needsFloatingTerminalPoint) {
-      const floatingTerminalPoint = super.getFloatingTerminalPoint(edge, start, end, source);
-      log('computed floatingTerminalPoint', floatingTerminalPoint);
-      return floatingTerminalPoint;
-    } else {
-      const pts = edge.absolutePoints;
-      const point = source ? pts[1] : pts[pts.length - 2];
-      log('computed point', point);
-      return point;
+      return super.getFloatingTerminalPoint(edge, start, end, source);
     }
+    const pts = edge.absolutePoints;
+    return source ? pts[1] : pts[pts.length - 2];
   }
 }
