@@ -283,38 +283,38 @@ describe('Overlay navigation', () => {
 
     protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
-        [
-          'overlays.start.flow.task.gateway',
-          {
-            linux: 0.16, // max 0.1564279230663268%
-            macos: 0.0024, // max 0.23276321559646546%
-            windows: 0.0027, // max 0.26345999990737834%
-          },
-        ],
+        // [
+        //   'overlays.start.flow.task.gateway',
+        //   {
+        //     linux: 0.16, // max 0.1564279230663268%
+        //     macos: 0.0024, // max 0.23276321559646546%
+        //     windows: 0.0027, // max 0.26345999990737834%
+        //   },
+        // ],
       ]);
     }
 
     protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
-        [
-          'overlays.start.flow.task.gateway',
-          {
-            linux: 0.0044, // max 0.43536497668036356%
-            macos: 0.0071, // max 0.7027949859673144%
-            windows: 0.0027, // max 0.26051371171855736%
-          },
-        ],
+        // [
+        //   'overlays.start.flow.task.gateway',
+        //   {
+        //     linux: 0.0044, // max 0.43536497668036356%
+        //     macos: 0.0071, // max 0.7027949859673144%
+        //     windows: 0.0027, // max 0.26051371171855736%
+        //   },
+        // ],
       ]);
     }
 
     protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
-        [
-          'overlays.start.flow.task.gateway',
-          {
-            macos: 0.0059, // max 0.5852809894618671%
-          },
-        ],
+        // [
+        //   'overlays.start.flow.task.gateway',
+        //   {
+        //     macos: 0.0059, // max 0.5852809894618671%
+        //   },
+        // ],
       ]);
     }
   }
@@ -369,83 +369,83 @@ describe('Overlay style', () => {
       // if no dedicated information, set minimal threshold to make test pass on Github Workflow
       // linux threshold are set for Ubuntu
       return new Map<string, ImageSnapshotThresholdConfig>([
-        [
-          'fill',
-          {
-            linux: 0.000008, // 0.0007321333538534702%
-            macos: 0.0002, // 0.015144311713777281%
-            windows: 0.0003, // 0.021176489211183203%
-          },
-        ],
-        [
-          'font',
-          {
-            linux: 0.0056, // 0.5527510139290981%
-            macos: 0.0004, // 0.5500536579274629%
-            windows: 0.0086, // 0.8581313833777582%
-          },
-        ],
-        [
-          'stroke',
-          {
-            linux: 0.000008, // 0.0007579143449953918%
-            macos: 0.0018, // 0.1787779478926499%
-            windows: 0.0022, // 0.21848079010937665%
-          },
-        ],
+        // [
+        //   'fill',
+        //   {
+        //     linux: 0.000008, // 0.0007321333538534702%
+        //     macos: 0.0002, // 0.015144311713777281%
+        //     windows: 0.0003, // 0.021176489211183203%
+        //   },
+        // ],
+        // [
+        //   'font',
+        //   {
+        //     linux: 0.0056, // 0.5527510139290981%
+        //     macos: 0.0004, // 0.5500536579274629%
+        //     windows: 0.0086, // 0.8581313833777582%
+        //   },
+        // ],
+        // [
+        //   'stroke',
+        //   {
+        //     linux: 0.000008, // 0.0007579143449953918%
+        //     macos: 0.0018, // 0.1787779478926499%
+        //     windows: 0.0022, // 0.21848079010937665%
+        //   },
+        // ],
       ]);
     }
 
     protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
-        [
-          'fill',
-          {
-            linux: 0.0016, // 0.15729572870969433
-            macos: 0.0038, // 0.3723534417182983%
-            windows: 0.0036, // 0.03575426016920735%
-          },
-        ],
-        [
-          // TODO very large thresholds on Firefox linux/macOS for font overlay styles
-          'font',
-          {
-            linux: 0.013, // 1.233008755632492%
-            macos: 0.014, // 1.3766390291200084%
-            windows: 0.002, // 0.1956705895781785%
-          },
-        ],
-        [
-          'stroke',
-          {
-            linux: 0.0013, // 0.1259742349527526%
-            macos: 0.0036, // 0.35056620525392157%
-            windows: 0.0024, // 0.23796610634385656%
-          },
-        ],
+        // [
+        //   'fill',
+        //   {
+        //     linux: 0.0016, // 0.15729572870969433
+        //     macos: 0.0038, // 0.3723534417182983%
+        //     windows: 0.0036, // 0.03575426016920735%
+        //   },
+        // ],
+        // [
+        //   // TODO very large thresholds on Firefox linux/macOS for font overlay styles
+        //   'font',
+        //   {
+        //     linux: 0.013, // 1.233008755632492%
+        //     macos: 0.014, // 1.3766390291200084%
+        //     windows: 0.002, // 0.1956705895781785%
+        //   },
+        // ],
+        // [
+        //   'stroke',
+        //   {
+        //     linux: 0.0013, // 0.1259742349527526%
+        //     macos: 0.0036, // 0.35056620525392157%
+        //     windows: 0.0024, // 0.23796610634385656%
+        //   },
+        // ],
       ]);
     }
 
     protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
-        [
-          'fill',
-          {
-            macos: 0.0017, // 0.16625642718750555%
-          },
-        ],
-        [
-          'font',
-          {
-            macos: 0.0064, // 0.6363172807824835%
-          },
-        ],
-        [
-          'stroke',
-          {
-            macos: 0.0033, // 0.3243565433802331%
-          },
-        ],
+        // [
+        //   'fill',
+        //   {
+        //     macos: 0.0017, // 0.16625642718750555%
+        //   },
+        // ],
+        // [
+        //   'font',
+        //   {
+        //     macos: 0.0064, // 0.6363172807824835%
+        //   },
+        // ],
+        // [
+        //   'stroke',
+        //   {
+        //     macos: 0.0033, // 0.3243565433802331%
+        //   },
+        // ],
       ]);
     }
   }
