@@ -123,18 +123,18 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           macos: 0.0006, // max is 0.05782432968098884%
         },
       ],
-      // [
-      //   'with.outside.flows',
-      //   {
-      //     macos: 0.00062, // max is 0.06110704241570897%
-      //   },
-      // ],
-      // [
-      //   'with.outside.labels',
-      //   {
-      //     macos: 0.01, // max is 0.9821430167311629%
-      //   },
-      // ],
+      [
+        'with.outside.flows',
+        {
+          macos: 0.03 / 100, // max is 0.029136454748612817%
+        },
+      ],
+      [
+        'with.outside.labels',
+        {
+          macos: 1.04 / 100, // max is 1.0389324185017814%
+        },
+      ],
     ]);
   }
 }
