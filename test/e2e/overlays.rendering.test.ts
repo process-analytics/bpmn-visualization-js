@@ -107,30 +107,30 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
   protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
-      // [
-      //     'overlays.start.flow.task.gateway',
-      //     {
-      //       macos: 0.0059, // max 0.5852809894618671%
-      //     },
-      //   ],
-      //   [
-      //     'overlays.edges.associations.complex.paths',
-      //     {
-      //       macos: 0.0035, // max 0.3442305874630902%
-      //     },
-      //   ],
-      //   [
-      //     'overlays.edges.message.flows.complex.paths',
-      //     {
-      //       macos: 0.0028, // max 0.2624477963090066%
-      //     },
-      //   ],
-      //   [
-      //     'overlays.edges.sequence.flows.complex.paths',
-      //     {
-      //       macos: 0.0011, // max 0.10016873792552117%
-      //     },
-      //   ],
+      [
+        'overlays.start.flow.task.gateway',
+        {
+          macos: 0.59 / 100, // max 0.5856189551567081%
+        },
+      ],
+      [
+        'overlays.edges.associations.complex.paths',
+        {
+          macos: 0.48 / 100, // max 0.4771582239915584%
+        },
+      ],
+      [
+        'overlays.edges.message.flows.complex.paths',
+        {
+          macos: 0.35 / 100, // max 0.3492043109226462%
+        },
+      ],
+      [
+        'overlays.edges.sequence.flows.complex.paths',
+        {
+          macos: 0.39 / 100, // max 0.3876107955861241%
+        },
+      ],
     ]);
   }
 }
