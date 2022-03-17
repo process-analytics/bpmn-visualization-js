@@ -26,111 +26,111 @@ import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from '
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    super({ chromium: 0.000005, firefox: 0.0004, webkit: 0 });
+    super({ chromium: 0.0005 / 100, firefox: 0.04 / 100, webkit: 0 });
   }
 
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'overlays.start.flow.task.gateway',
-        {
-          linux: 0.000006, // 0.0005352733299934798%
-          macos: 0.001, // max 0.09371109158465839%
-          windows: 0.0015, // max 0.11569306287013695%
-        },
-      ],
-      [
-        'overlays.edges.associations.complex.paths',
-        {
-          linux: 0.0026, // max 0.2541247067242236%
-          macos: 0.0025, // max 0.2456999041707375%
-          windows: 0.0024, // max 0.2350932032529674%
-        },
-      ],
-      [
-        'overlays.edges.message.flows.complex.paths',
-        {
-          linux: 0.0013, // 0.12872847155422917%
-          macos: 0.0031, // 0.3000623172666472%
-          windows: 0.0013, // 0.12965038147577657%
-        },
-      ],
-      [
-        'overlays.edges.sequence.flows.complex.paths',
-        {
-          linux: 0.0021, // max 0.20566996103513757%
-          macos: 0.0019, // max 0.18540603435701633%
-          windows: 0.0018, // max 0.17718145021319295%
-        },
-      ],
+      // [
+      //   'overlays.start.flow.task.gateway',
+      //   {
+      //     linux: 0.000006, // 0.0005352733299934798%
+      //     macos: 0.001, // max 0.09371109158465839%
+      //     windows: 0.0015, // max 0.11569306287013695%
+      //   },
+      // ],
+      // [
+      //   'overlays.edges.associations.complex.paths',
+      //   {
+      //     linux: 0.0026, // max 0.2541247067242236%
+      //     macos: 0.0025, // max 0.2456999041707375%
+      //     windows: 0.0024, // max 0.2350932032529674%
+      //   },
+      // ],
+      // [
+      //   'overlays.edges.message.flows.complex.paths',
+      //   {
+      //     linux: 0.0013, // 0.12872847155422917%
+      //     macos: 0.0031, // 0.3000623172666472%
+      //     windows: 0.0013, // 0.12965038147577657%
+      //   },
+      // ],
+      // [
+      //   'overlays.edges.sequence.flows.complex.paths',
+      //   {
+      //     linux: 0.0021, // max 0.20566996103513757%
+      //     macos: 0.0019, // max 0.18540603435701633%
+      //     windows: 0.0018, // max 0.17718145021319295%
+      //   },
+      // ],
     ]);
   }
 
   protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'overlays.start.flow.task.gateway',
-        {
-          linux: 0.0044, // max 0.43536497668036356%
-          macos: 0.0071, // max 0.7027949859673144%
-          windows: 0.0027, // max 0.26051371171855736%
-        },
-      ],
-      [
-        'overlays.edges.associations.complex.paths',
-        {
-          linux: 0.0012, // max 0.11544442258832888%
-          macos: 0.0029, // max 0.2883299813273288%
-          windows: 0.0038, // max 0.37867717015809266%
-        },
-      ],
-      [
-        'overlays.edges.message.flows.complex.paths',
-        {
-          linux: 0.0032, // 0.29508961424412616%
-          macos: 0.004, // 0.36434716534193834%
-          windows: 0.004, // 0.37268987984115926%
-        },
-      ],
-      [
-        'overlays.edges.sequence.flows.complex.paths',
-        {
-          linux: 0.0014, // max 0.13950493094400107%
-          macos: 0.0027, // max 0.26624249108074816%
-          windows: 0.0026, // max 0.25710970853788373%
-        },
-      ],
+      // [
+      //   'overlays.start.flow.task.gateway',
+      //   {
+      //     linux: 0.0044, // max 0.43536497668036356%
+      //     macos: 0.0071, // max 0.7027949859673144%
+      //     windows: 0.0027, // max 0.26051371171855736%
+      //   },
+      // ],
+      // [
+      //   'overlays.edges.associations.complex.paths',
+      //   {
+      //     linux: 0.0012, // max 0.11544442258832888%
+      //     macos: 0.0029, // max 0.2883299813273288%
+      //     windows: 0.0038, // max 0.37867717015809266%
+      //   },
+      // ],
+      // [
+      //   'overlays.edges.message.flows.complex.paths',
+      //   {
+      //     linux: 0.0032, // 0.29508961424412616%
+      //     macos: 0.004, // 0.36434716534193834%
+      //     windows: 0.004, // 0.37268987984115926%
+      //   },
+      // ],
+      // [
+      //   'overlays.edges.sequence.flows.complex.paths',
+      //   {
+      //     linux: 0.0014, // max 0.13950493094400107%
+      //     macos: 0.0027, // max 0.26624249108074816%
+      //     windows: 0.0026, // max 0.25710970853788373%
+      //   },
+      // ],
     ]);
   }
 
   protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'overlays.start.flow.task.gateway',
-        {
-          macos: 0.0059, // max 0.5852809894618671%
-        },
-      ],
-      [
-        'overlays.edges.associations.complex.paths',
-        {
-          macos: 0.0035, // max 0.3442305874630902%
-        },
-      ],
-      [
-        'overlays.edges.message.flows.complex.paths',
-        {
-          macos: 0.0028, // max 0.2624477963090066%
-        },
-      ],
-      [
-        'overlays.edges.sequence.flows.complex.paths',
-        {
-          macos: 0.0011, // max 0.10016873792552117%
-        },
-      ],
+      // [
+      //     'overlays.start.flow.task.gateway',
+      //     {
+      //       macos: 0.0059, // max 0.5852809894618671%
+      //     },
+      //   ],
+      //   [
+      //     'overlays.edges.associations.complex.paths',
+      //     {
+      //       macos: 0.0035, // max 0.3442305874630902%
+      //     },
+      //   ],
+      //   [
+      //     'overlays.edges.message.flows.complex.paths',
+      //     {
+      //       macos: 0.0028, // max 0.2624477963090066%
+      //     },
+      //   ],
+      //   [
+      //     'overlays.edges.sequence.flows.complex.paths',
+      //     {
+      //       macos: 0.0011, // max 0.10016873792552117%
+      //     },
+      //   ],
     ]);
   }
 }
