@@ -69,13 +69,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
-      // [
-      //   'with.outside.labels',
-      //   {
-      //     macos: 0.0022, // max 0.2180969169471081%
-      //     windows: 0.0043, // max 0.4254571229063031%
-      //   },
-      // ],
+      [
+        'with.outside.labels',
+        {
+          macos: 0.22 / 100, // max 0.2180969169471081%
+          // windows: 0.0043, // max 0.4254571229063031%
+        },
+      ],
     ]);
   }
 
