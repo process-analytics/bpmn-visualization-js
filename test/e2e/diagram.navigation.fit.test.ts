@@ -101,7 +101,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         'with.outside.flows',
         {
           linux: 0.014 / 100, // max 0.013336184209755686%
-          // macos: 0.0, // max %
+          macos: 0.014 / 100, // max 0.013336184209755686%
           // windows: 0.0, // max %
         },
       ],
@@ -109,7 +109,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         'with.outside.labels',
         {
           linux: 0.93 / 100, // max 0.9255094914218498%
-          // macos: 0.0109, // max 1.0826504942124782%
+          macos: 1.08 / 100, // max 1.077067332010262%
           // // TODO possible rendering issue so high threshold value
           // windows: 0.0375, // max 3.744378276494776%
         },
