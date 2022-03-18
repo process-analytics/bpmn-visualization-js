@@ -398,7 +398,7 @@ describe('Overlay style', () => {
           'fill',
           {
             linux: 0.16 / 100, // 0.15701274621052752
-            // macos: 0.0038, // 0.3723534417182983% // not available in last run - Error: expect(received).toMatchAttribute("style", expected)
+            macos: 0.38 / 100, // 0.37208408401212534%
             windows: 0.036 / 100, // 0.03540156823378382%
           },
         ],
