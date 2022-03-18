@@ -66,38 +66,38 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 
   protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
-      // [
-      //   'overlays.start.flow.task.gateway',
-      //   {
-      //     linux: 0.0044, // max 0.43536497668036356%
-      //     macos: 0.0071, // max 0.7027949859673144%
-      //     windows: 0.0027, // max 0.26051371171855736%
-      //   },
-      // ],
-      // [
-      //   'overlays.edges.associations.complex.paths',
-      //   {
-      //     linux: 0.0012, // max 0.11544442258832888%
-      //     macos: 0.0029, // max 0.2883299813273288%
-      //     windows: 0.0038, // max 0.37867717015809266%
-      //   },
-      // ],
-      // [
-      //   'overlays.edges.message.flows.complex.paths',
-      //   {
-      //     linux: 0.0032, // 0.29508961424412616%
-      //     macos: 0.004, // 0.36434716534193834%
-      //     windows: 0.004, // 0.37268987984115926%
-      //   },
-      // ],
-      // [
-      //   'overlays.edges.sequence.flows.complex.paths',
-      //   {
-      //     linux: 0.0014, // max 0.13950493094400107%
-      //     macos: 0.0027, // max 0.26624249108074816%
-      //     windows: 0.0026, // max 0.25710970853788373%
-      //   },
-      // ],
+      [
+        'overlays.start.flow.task.gateway',
+        {
+          linux: 0.44 / 100, // max 0.435363088442553%
+          // macos: 0.0071, // max 0.7027949859673144%
+          // windows: 0.0027, // max 0.26051371171855736%
+        },
+      ],
+      [
+        'overlays.edges.associations.complex.paths',
+        {
+          linux: 0.4 / 100, // max 0.3964089055703668%
+          // macos: 0.0029, // max 0.2883299813273288%
+          // windows: 0.0038, // max 0.37867717015809266%
+        },
+      ],
+      [
+        'overlays.edges.message.flows.complex.paths',
+        {
+          linux: 0.58 / 100, // 0.5794594395932884%
+          // macos: 0.004, // 0.36434716534193834%
+          // windows: 0.004, // 0.37268987984115926%
+        },
+      ],
+      [
+        'overlays.edges.sequence.flows.complex.paths',
+        {
+          linux: 0.36 / 100, // max 0.35664699175183%
+          // macos: 0.0027, // max 0.26624249108074816%
+          // windows: 0.0026, // max 0.25710970853788373%
+        },
+      ],
     ]);
   }
 
@@ -292,14 +292,14 @@ describe('Overlay navigation', () => {
 
     protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
-        // [
-        //   'overlays.start.flow.task.gateway',
-        //   {
-        //     linux: 0.0044, // max 0.43536497668036356%
-        //     macos: 0.0071, // max 0.7027949859673144%
-        //     windows: 0.0027, // max 0.26051371171855736%
-        //   },
-        // ],
+        [
+          'overlays.start.flow.task.gateway',
+          {
+            linux: 0.23 / 100, // max 0.22238155947217342%
+            // macos: 0.0071, // max 0.7027949859673144%
+            // windows: 0.0027, // max 0.26051371171855736%
+          },
+        ],
       ]);
     }
 
@@ -394,31 +394,31 @@ describe('Overlay style', () => {
 
     protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
-        // [
-        //   'fill',
-        //   {
-        //     linux: 0.0016, // 0.15729572870969433
-        //     macos: 0.0038, // 0.3723534417182983%
-        //     windows: 0.0036, // 0.03575426016920735%
-        //   },
-        // ],
-        // [
-        //   // TODO very large thresholds on Firefox linux/macOS for font overlay styles
-        //   'font',
-        //   {
-        //     linux: 0.013, // 1.233008755632492%
-        //     macos: 0.014, // 1.3766390291200084%
-        //     windows: 0.002, // 0.1956705895781785%
-        //   },
-        // ],
-        // [
-        //   'stroke',
-        //   {
-        //     linux: 0.0013, // 0.1259742349527526%
-        //     macos: 0.0036, // 0.35056620525392157%
-        //     windows: 0.0024, // 0.23796610634385656%
-        //   },
-        // ],
+        [
+          'fill',
+          {
+            linux: 0.16 / 100, // 0.15701274621052752
+            // macos: 0.0038, // 0.3723534417182983%
+            // windows: 0.0036, // 0.03575426016920735%
+          },
+        ],
+        [
+          // TODO very large thresholds on Firefox linux/macOS for font overlay styles
+          'font',
+          {
+            linux: 0.7 / 100, // 0.6957363425958542%
+            // macos: 0.014, // 1.3766390291200084%
+            // windows: 0.002, // 0.1956705895781785%
+          },
+        ],
+        [
+          'stroke',
+          {
+            linux: 0.13 / 100, // 0.12558613624870096%
+            // macos: 0.0036, // 0.35056620525392157%
+            // windows: 0.0024, // 0.23796610634385656%
+          },
+        ],
       ]);
     }
 
