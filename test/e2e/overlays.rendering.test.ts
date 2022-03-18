@@ -309,12 +309,12 @@ describe('Overlay navigation', () => {
 
     protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
-        // [
-        //   'overlays.start.flow.task.gateway',
-        //   {
-        //     macos: 0.0059, // max 0.5852809894618671%
-        //   },
-        // ],
+        [
+          'overlays.start.flow.task.gateway',
+          {
+            macos: 0.36 / 100, // max 0.35907994310595553%
+          },
+        ],
       ]);
     }
   }
@@ -428,24 +428,24 @@ describe('Overlay style', () => {
 
     protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
-        // [
-        //   'fill',
-        //   {
-        //     macos: 0.0017, // 0.16625642718750555%
-        //   },
-        // ],
-        // [
-        //   'font',
-        //   {
-        //     macos: 0.0064, // 0.6363172807824835%
-        //   },
-        // ],
-        // [
-        //   'stroke',
-        //   {
-        //     macos: 0.0033, // 0.3243565433802331%
-        //   },
-        // ],
+        [
+          'fill',
+          {
+            macos: 0.17 / 100, // 0.1664526237549535%
+          },
+        ],
+        [
+          'font',
+          {
+            macos: 1.24 / 100, // 1.2343878983440026%
+          },
+        ],
+        [
+          'stroke',
+          {
+            macos: 0.33 / 100, // 0.325165957934348%
+          },
+        ],
       ]);
     }
   }
