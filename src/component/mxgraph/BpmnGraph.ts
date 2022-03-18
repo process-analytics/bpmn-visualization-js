@@ -36,6 +36,9 @@ export class BpmnGraph extends mxgraph.mxGraph {
     }
   }
 
+  /**
+   * @internal
+   */
   override createGraphView(): mxGraphView {
     return new BpmnGraphView(this);
   }
