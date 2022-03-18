@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI">
   <bpmn:process id="process" isExecutable="false">
-    <bpmn:task id="task_1"/>
-    <bpmn:task id="task_2"/>
+    <bpmn:task id="task_1" />
+    <bpmn:task id="task_2" />
     <bpmn:sequenceFlow id="flow_1" sourceRef="task_2" targetRef="task_3" />
-    <bpmn:task id="task_3"/>
+    <bpmn:task id="task_3" />
     <bpmn:sequenceFlow id="flow_2" sourceRef="task_1" targetRef="task_2" />
     <bpmn:sequenceFlow id="flow_3" sourceRef="task_2" targetRef="task_1" />
     <bpmn:sequenceFlow id="flow_4" sourceRef="task_3" targetRef="task_1" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process">
+      <bpmndi:BPMNEdge id="edge_flow_4" bpmnElement="flow_4">
+        <di:waypoint x="640" y="205" />
+        <di:waypoint x="640" y="380" />
+        <di:waypoint x="505" y="380" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="edge_flow_3" bpmnElement="flow_3">
         <di:waypoint x="225" y="210" />
         <di:waypoint x="160" y="210" />
@@ -33,20 +38,16 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="edge_flow_1" bpmnElement="flow_1">
-        <di:waypoint x="255" y="190" />
+        <di:waypoint x="250" y="195" />
         <di:waypoint x="270" y="130" />
         <di:waypoint x="340" y="80" />
-        <di:waypoint x="750" y="80" />
-        <di:waypoint x="750" y="180" />
-        <di:waypoint x="665" y="180" />
+        <di:waypoint x="690" y="80" />
+        <di:waypoint x="730" y="110" />
+        <di:waypoint x="730" y="160" />
+        <di:waypoint x="675" y="188" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="167" y="126" width="86" height="27" />
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="edge_flow_4" bpmnElement="flow_4">
-        <di:waypoint x="640" y="205" />
-        <di:waypoint x="640" y="380" />
-        <di:waypoint x="505" y="380" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="shape_task_1" bpmnElement="task_1" isMarkerVisible="true">
         <dc:Bounds x="455" y="355" width="50" height="50" />

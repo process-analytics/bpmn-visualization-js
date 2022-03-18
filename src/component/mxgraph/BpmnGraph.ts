@@ -20,6 +20,7 @@ import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/va
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 import { mxgraph } from './initializer';
+import type { mxCellState, mxGraphView, mxPoint } from 'mxgraph';
 
 export class BpmnGraph extends mxgraph.mxGraph {
   private cumulativeZoomFactor = 1;
@@ -33,6 +34,13 @@ export class BpmnGraph extends mxgraph.mxGraph {
       // ensure we don't have a select text cursor on label hover, see #294
       this.container.style.cursor = 'default';
     }
+  }
+
+  /**
+   * @internal
+   */
+  override createGraphView(): mxGraphView {
+    return new BpmnGraphView(this);
   }
 
   /**
@@ -182,5 +190,19 @@ export class BpmnGraph extends mxgraph.mxGraph {
     const scale = Math.round(this.view.scale * factor * 100) / 100;
     factor = scale / this.view.scale;
     return [factor, scale];
+  }
+}
+
+class BpmnGraphView extends mxgraph.mxGraphView {
+  override getFloatingTerminalPoint(edge: mxCellState, start: mxCellState, end: mxCellState, source: boolean): mxPoint {
+    // some values may be null: the first and the last values are null prior computing floating terminal points
+    const edgePoints = edge.absolutePoints.filter(Boolean);
+    // when there is no BPMN waypoint, all values are null
+    const needsFloatingTerminalPoint = edgePoints.length < 2;
+    if (needsFloatingTerminalPoint) {
+      return super.getFloatingTerminalPoint(edge, start, end, source);
+    }
+    const pts = edge.absolutePoints;
+    return source ? pts[1] : pts[pts.length - 2];
   }
 }
