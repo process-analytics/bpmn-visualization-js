@@ -89,6 +89,13 @@ export class StyleConfigurator {
         style[mxgraph.mxConstants.STYLE_STARTARROW] = undefined;
       },
     ],
+    [
+      AssociationDirectionKind.BOTH,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      (style: StyleMap) => {
+        // the style is fully managed by the FlowKind.ASSOCIATION_FLOW style
+      },
+    ],
   ]);
 
   constructor(private graph: BpmnGraph) {}
