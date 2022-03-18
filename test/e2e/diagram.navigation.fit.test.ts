@@ -62,7 +62,7 @@ const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    const defaultFailureThreshold = 0.00006; // all OS 0.005379276499073438%
+    const defaultFailureThreshold = 0.006 / 100; // all OS 0.005379276499073438%
     super({ chromium: defaultFailureThreshold, firefox: defaultFailureThreshold, webkit: defaultFailureThreshold });
   }
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -72,8 +72,8 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'with.outside.labels',
         {
-          macos: 0.0022, // max 0.2180969169471081%
-          windows: 0.0043, // max 0.4254571229063031%
+          macos: 0.22 / 100, // max 0.2180969169471081%
+          windows: 0.43 / 100, // max 0.4256540822626942%
         },
       ],
     ]);
@@ -98,12 +98,20 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
+        'with.outside.flows',
+        {
+          linux: 0.014 / 100, // max 0.013336184209755686%
+          macos: 0.014 / 100, // max 0.013336184209755686%
+          windows: 0.014 / 100, // max 0.013336184209755686%
+        },
+      ],
+      [
         'with.outside.labels',
         {
-          linux: 0.0094, // max 0.931092653624066%
-          macos: 0.0109, // max 1.0826504942124782%
-          // TODO possible rendering issue so high threshold value
-          windows: 0.0375, // max 3.744378276494776%
+          linux: 0.93 / 100, // max 0.9255094914218498%
+          macos: 1.08 / 100, // max 1.077067332010262%
+          // // TODO possible rendering issue so high threshold value
+          windows: 3.75 / 100, // max 3.742055324464577%
         },
       ],
     ]);
@@ -126,13 +134,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'with.outside.flows',
         {
-          macos: 0.00062, // max is 0.06110704241570897%
+          macos: 0.03 / 100, // max is 0.029136454748612817%
         },
       ],
       [
         'with.outside.labels',
         {
-          macos: 0.01, // max is 0.9821430167311629%
+          macos: 1.04 / 100, // max is 1.0389324185017814%
         },
       ],
     ]);
