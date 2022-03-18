@@ -71,7 +71,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.44 / 100, // max 0.435363088442553%
           macos: 0.71 / 100, // max 0.7027880077090211%
-          // windows: 0.0027, // max 0.26051371171855736%
+          windows: 0.14 / 100, // max 0.13629575601151744%
         },
       ],
       [
@@ -79,7 +79,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.4 / 100, // max 0.3964089055703668%
           macos: 0.53 / 100, // max 0.5254958628580608%
-          // windows: 0.0038, // max 0.37867717015809266%
+          windows: 0.43 / 100, // max 0.42268320684041294%
         },
       ],
       [
@@ -87,7 +87,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.58 / 100, // 0.5794594395932884%
           macos: 0.67 / 100, // 0.6654738557991036%
-          // windows: 0.004, // 0.37268987984115926%
+          windows: 0.66 / 100, // 0.6524091603189786%
         },
       ],
       [
@@ -95,7 +95,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.36 / 100, // max 0.35664699175183%
           macos: 0.44 / 100, // max 0.43144267510022427%
-          // windows: 0.0026, // max 0.25710970853788373%
+          windows: 0.3 / 100, // max 0.2931831722714717%
         },
       ],
     ]);
@@ -297,7 +297,7 @@ describe('Overlay navigation', () => {
           {
             linux: 0.23 / 100, // max 0.22238155947217342%
             macos: 0.58 / 100, // max 0.5781644435027378%
-            // windows: 0.0027, // max 0.26051371171855736%
+            windows: 0.12 / 100, // max 0.11775550254274902%
           },
         ],
       ]);
@@ -399,16 +399,16 @@ describe('Overlay style', () => {
           {
             linux: 0.16 / 100, // 0.15701274621052752
             // macos: 0.0038, // 0.3723534417182983% // not available in last run - Error: expect(received).toMatchAttribute("style", expected)
-            // windows: 0.0036, // 0.03575426016920735%
+            windows: 0.036 / 100, // 0.03540156823378382%
           },
         ],
         [
-          // TODO very large thresholds on Firefox linux/macOS for font overlay styles
           'font',
           {
             linux: 0.7 / 100, // 0.6957363425958542%
+            // TODO very large threshold on Firefox macOS for font overlay styles
             macos: 2.01 / 100, // 2.0033547194979073%
-            // windows: 0.002, // 0.1956705895781785%
+            windows: 0.34 / 100, // 0.33890377031536856%
           },
         ],
         [
@@ -416,7 +416,7 @@ describe('Overlay style', () => {
           {
             linux: 0.13 / 100, // 0.12558613624870096%
             macos: 0.36 / 100, // 0.35018722925578283%
-            // windows: 0.0024, // 0.23796610634385656%
+            windows: 0.24 / 100, // 0.23760788536359984%
           },
         ],
       ]);
