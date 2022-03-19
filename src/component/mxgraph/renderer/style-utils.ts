@@ -15,9 +15,8 @@
  */
 
 import type { mxCell } from 'mxgraph';
-import { FlowKind, ShapeUtil } from '../../../model/bpmn/internal';
-import { MessageVisibleKind } from '../../../model/bpmn/internal/edge/kinds';
-import { BpmnStyleIdentifier } from '../style/identifiers';
+import { FlowKind, MessageVisibleKind, ShapeUtil } from '../../../model/bpmn/internal';
+import { BpmnStyleIdentifier } from '../style';
 
 /**
  * Compute the all class names associated to a cell in a hyphen case form.
