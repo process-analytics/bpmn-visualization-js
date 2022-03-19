@@ -17,7 +17,7 @@
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import { StyleUtils } from '../style';
-import { MessageVisibleKind } from '../../../model/bpmn/internal/edge/kinds';
+import { MessageVisibleKind } from '../../../model/bpmn/internal';
 import { mxgraph } from '../initializer';
 import type { mxAbstractCanvas2D, mxRectangle } from 'mxgraph';
 
