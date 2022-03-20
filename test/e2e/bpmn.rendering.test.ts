@@ -245,51 +245,51 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'flows.message.02.labels.and.complex.paths',
         {
-          // macos: 0.41 / 100, // 0.40016434760490327%
+          macos: 0.41 / 100, // 0.40487233108913445%
         },
       ],
       [
         'labels.01.general',
         {
           // TODO possible rendering issue so high threshold value
-          // macos: 2.61 / 100, // 2.606652827219813%
+          macos: 2.51 / 100, // 2.5042273857533215%
         },
       ],
       [
         'labels.02.position.and.line.breaks',
         {
           // TODO possible rendering issue so high threshold value
-          // macos: 0.059, // 5.875189976297179%
+          macos: 6.11 / 100, // 6.105183205727094%
         },
       ],
       [
         'labels.03.default.position',
         {
-          // macos: 0.85 / 100, // 0.843063100064223%
+          macos: 0.64 / 100, // 0.6346061558805904%
         },
       ],
       [
         'labels.04.fonts',
         {
-          // macos: 0.63 / 100, // 0.6255817109336315%
+          macos: 0.61 / 100, // 0.6044319789370367%
         },
       ],
       [
         'pools.01.labels.and.lanes',
         {
-          // macos: 0.25 / 100, // 0.2428126684001386%
+          macos: 0.21 / 100, // 0.20749068678074245%
         },
       ],
       [
         'pools.02.vertical.with.lanes',
         {
-          // macos: 0.0026, // 0.24229404068003557%
+          macos: 0.24 / 100, // 0.23336351480325318%
         },
       ],
       [
         'pools.03.black.box',
         {
-          // macos: 0.0023, // 0.2242640286478026%
+          macos: 0.36 / 100, // 0.3576987596416892%
         },
       ],
       // tests without labels
