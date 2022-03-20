@@ -35,21 +35,21 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         'flows.message.02.labels.and.complex.paths',
         {
           macos: 0.05 / 100, // 0.04335117590119619%
-          // windows: 0.13 / 100, // 0.12414788622622241%
+          windows: 0.13 / 100, // 0.12203782032372823%
         },
       ],
       [
         'group.01.in.process.with.label',
         {
           macos: 0.02 / 100, // 0.01749142091445055%
-          // windows: 0.0003, // 0.026260389475118995%
+          windows: 0.03 / 100, // 0.028794961672506947%
         },
       ],
       [
         'group.02.in.collaboration.with.label',
         {
           macos: 0.02 / 100, // 0.01128137033959975%
-          // windows: 0.0004, // 0.030760508478666626%
+          windows: 0.04 / 100, // 0.03137680045437463%
         },
       ],
       [
@@ -57,7 +57,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.0005 / 100, // 0.00046159344679885805%
           macos: 0.55 / 100, // 0.5443537069607207%
-          // windows: 0.48 / 100, // 0.4794467924774448%
+          windows: 0.43 / 100, // 0.4279840696306825%
         },
       ],
       [
@@ -65,7 +65,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.009 / 100, // 0.008114783064627762%
           macos: 0.92 / 100, // 0.9143424811214107%%
-          // windows: 0.082, // 0.8197899179969159%
+          windows: 0.59 / 100, // 0.5844660139573077%
         },
       ],
       [
@@ -73,35 +73,35 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.002 / 100, // 0.0013799735258945844%
           macos: 0.36 / 100, // 0.35527645122680473%
-          // windows: 0.32 / 100, // 0.31624569609181025%
+          windows: 0.32 / 100, // 0.3125578154609565%
         },
       ],
       [
         'labels.04.fonts',
         {
           macos: 0.18 / 100, // 0.17224316335068268%
-          // windows: 0.22 / 100, // 0.21293572507528058%
+          windows: 0.21 / 100, // 0.2083830906789208%
         },
       ],
       [
         'pools.01.labels.and.lanes',
         {
           macos: 0.09 / 100, // 0.08291308761130267%
-          // windows: 0.25 / 100, // 0.20513086293463267%
+          windows: 0.23 / 100, // 0.21990738071808735%
         },
       ],
       [
         'pools.02.vertical.with.lanes',
         {
           macos: 0.13 / 100, // 0.12482014769641389%
-          // windows: 0.002, // 0.1182792778311903%
+          windows: 0.14 / 100, // 0.13308164928160784%
         },
       ],
       [
         'pools.03.black.box',
         {
           macos: 0.095 / 100, // 0.0935782032063015%
-          // windows: 0.0026, // 0.25283466417285183%
+          windows: 0.12 / 100, // 0.1184446265753869%
         },
       ],
       // tests without labels
