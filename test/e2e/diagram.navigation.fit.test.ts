@@ -72,7 +72,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'with.outside.labels',
         {
-          // macos: 0.22 / 100, // max 0.2180969169471081%
+          macos: 0.22 / 100, // max 0.21306736217683309%
           windows: 0.39 / 100, // max 0.38276450047973753%
         },
       ],
