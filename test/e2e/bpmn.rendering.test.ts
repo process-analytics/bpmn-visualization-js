@@ -55,7 +55,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.01.general',
         {
-          // linux: 0.0005 / 100, // 0.0004690507665716659%
+          linux: 0.0005 / 100, // 0.00046159344679885805%
           // macos: 0.63 / 100, // 0.6225356945699145%
           // windows: 0.48 / 100, // 0.4794467924774448%
         },
@@ -63,14 +63,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.02.position.and.line.breaks',
         {
-          // linux: 0.0089, // 0.8846259528850542%
+          linux: 0.009 / 100, // 0.008114783064627762%
           // windows: 0.082, // 0.8197899179969159%
         },
       ],
       [
         'labels.03.default.position',
         {
-          // linux: 0.0009 / 100, // 0.0008448953993434039%
+          linux: 0.002 / 100, // 0.0013799735258945844%
           // macos: 0.47 / 100, // 0.46761316449689394%
           // windows: 0.32 / 100, // 0.31624569609181025%
         },
