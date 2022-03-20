@@ -138,7 +138,7 @@ describe('Bpmn Elements registry - CSS class management', () => {
       htmlElementLookup.expectMessageFlow('MessageFlow_2_msgVisibilityKind_initiating', { hasIcon: true, isInitiatingIcon: true });
       htmlElementLookup.expectMessageFlow('MessageFlow_3_msgVisibilityKind_non_initiating', { hasIcon: true, isInitiatingIcon: false });
 
-      // // add several classes to several message flows
+      // add several classes to several message flows
       const additionalClasses = ['class1', 'class2'];
       bpmnVisualization.bpmnElementsRegistry.addCssClasses(
         ['MessageFlow_1', 'MessageFlow_2_msgVisibilityKind_initiating', 'MessageFlow_3_msgVisibilityKind_non_initiating'],
