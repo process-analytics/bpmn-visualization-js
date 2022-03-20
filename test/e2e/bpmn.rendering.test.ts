@@ -133,19 +133,19 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.09 / 100, // 0.08377044926310973%
           macos: 0.13 / 100, // 0.12624011437493143%
-          // windows: 0.71 / 100, // 0.7024096538645774%
+          windows: 0.73 / 100, // 0.7275118149390969%
         },
       ],
       [
         'group.01.in.process.with.label',
         {
-          // windows: 0.0022, // 0.21161062086058058%
+          windows: 0.2 / 100, // 0.19944779635067134%
         },
       ],
       [
         'group.02.in.collaboration.with.label',
         {
-          // windows: 0.0019, // 0.18223382519321207%
+          windows: 0.24 / 100, // 0.23009823201961543%
         },
       ],
       [
@@ -155,7 +155,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           linux: 2.06 / 100, // 2.0563192299700384%
           macos: 2.35 / 100, // 2.34547842662729%
           // very high threshold
-          // windows: 13.53, // 13.521318196938303%
+          windows: 13.42 / 10, // 13.418682820755645%
         },
       ],
       [
@@ -165,7 +165,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           linux: 2.54 / 100, // 2.5316594800931735%
           macos: 2.22 / 100, // 2.213605890318172%
           // very high threshold
-          // windows: 0.156, // 15.594367802739583%
+          windows: 15.75 / 100, // 15.741601399131824%
         },
       ],
       [
@@ -174,7 +174,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           linux: 0.64 / 100, // 0.6356854597329709%
           macos: 0.9 / 100, // 0.8910384426042195%
           // // TODO possible rendering issue so high threshold value
-          // windows: 2.73, // 2.722838502156999%
+          windows: 2.35 / 100, // 2.3456231064214905%
         },
       ],
       [
@@ -183,21 +183,21 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           // high values due to font rendering discrepancies with chromium rendering
           linux: 1.43 / 100, // 1.4296226221777508%
           macos: 0.88 / 100, // 0.8747774724672697%
-          // windows: 1.73, // 1.7261364524240324%
+          windows: 1.68 / 100, // 1.6735128438225666%
         },
       ],
       [
         'pools.01.labels.and.lanes',
         {
           macos: 0.09 / 100, // 0.08552532456441721%
-          // windows: 0.59 / 100, // 0.5809316243215457%
+          windows: 0.56 / 100, // 0.5571042176931162%
         },
       ],
       [
         'pools.02.vertical.with.lanes',
         {
           macos: 0.13 / 100, // 0.1257657147324509%
-          // windows: 0.0072, // 0.7100461008680559%
+          windows: 0.75 / 100, // 0.7432204108300144%
         },
       ],
       [
@@ -205,7 +205,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.08 / 100, // 0.07283646777227482%
           macos: 0.14 / 100, // 0.13474247576623632%
-          // windows: 0.0059, // 0.5856398049701173%
+          windows: 0.66 / 100, // 0.6566433292574891%
         },
       ],
       // tests without labels
