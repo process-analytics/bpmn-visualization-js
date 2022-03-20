@@ -93,7 +93,6 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'pools.02.vertical.with.lanes',
         {
-          // linux: 0.0014, // 0.13132100299135807%
           macos: 0.13 / 100, // 0.12482014769641389%
           // windows: 0.002, // 0.1182792778311903%
         },
@@ -101,7 +100,6 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'pools.03.black.box',
         {
-          // linux: 0.0017, // 0.16083207782319198%
           macos: 0.095 / 100, // 0.0935782032063015%
           // windows: 0.0026, // 0.25283466417285183%
         },
