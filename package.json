@@ -78,7 +78,7 @@
     "test:bundles": "jest --runInBand --detectOpenHandles --config=./test/bundles/jest.config.js",
     "test:bundles:verbose": "cross-env DEBUG=bv:*,pw:browser* npm run test:bundles",
     "version-prepare": "node scripts/manage-version-in-files.mjs && git commit --no-verify -a -m \"[RELEASE] Prepare version for release\"",
-    "version": "cross-env IS_RELEASING=true node scripts/manage-version-in-files.mjs && git add .",
+    "version": "IS_RELEASING=true node scripts/manage-version-in-files.mjs && git add .",
     "postversion": "node scripts/manage-version-in-files.mjs && git commit --no-verify -a -m \"[RELEASE] Prepare version for new developments\"",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable",

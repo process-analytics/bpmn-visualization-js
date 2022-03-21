@@ -23,7 +23,7 @@ if (process.env.IS_RELEASING) {
 }
 
 function updateVersionInFilesOnRelease() {
-  log('Updating version in files on release');
+  log('Updating version in files for release');
   const currentVersion = getCurrentVersion();
   log('Current version', currentVersion);
   updateVersionInSourceFile(currentVersion);
