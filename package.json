@@ -103,7 +103,7 @@
     "@types/lodash.throttle": "^4.1.6",
     "@types/minimist": "^1.2.2",
     "@typescript-eslint/eslint-plugin": "^5.14.0",
-    "@typescript-eslint/parser": "^5.14.0",
+    "@typescript-eslint/parser": "^5.15.0",
     "asciidoctor": "^2.2.6",
     "autoprefixer": "^10.4.4",
     "clipboardy": "^3.0.0",
