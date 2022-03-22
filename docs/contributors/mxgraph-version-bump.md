@@ -2,7 +2,7 @@
 
 ## Minimal check list
 
-- check the mxGraph changelog to see what could impact the lib: https://github.com/jgraph/mxgraph/blob/master/ChangeLog
+- check the [mxGraph changelog](https://github.com/jgraph/mxgraph/blob/master/ChangeLog) to see what could impact the lib
 - review issues list, in particular in the [BPMN Rendering Improvements milestone](https://github.com/process-analytics/bpmn-visualization-js/milestone/14) which could be impacted or fixed by the version bump
 - apply the version bump
 - review the overridden mxgraph code, generally, we redefine prototype, so search for the `prototype` string   
