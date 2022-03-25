@@ -59,6 +59,15 @@ Already available features:
 Planned features:
 - Library extension points
 
+## 🤩 Why using bpmn-visualization?
+
+in progress
+
+- battle tested: coverage, thousands of test, including tests on all supported browers --> not sure this is worth mentionning it
+
+- female icon
+
+
 ## 🌏 Browsers Support
 
 **We do our best to support recent versions of major browsers**
