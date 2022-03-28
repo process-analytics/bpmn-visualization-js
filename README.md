@@ -63,9 +63,10 @@ Planned features:
 
 in progress
 
-- battle tested: coverage, thousands of test, including tests on all supported browers --> not sure this is worth mentionning it
-
-- female icon
+- True opensource license (no watermark/trademark display is required)
+- native TypeScript support
+- strong identity - the only viewer displaying a woman/female icon as User Task icon
+- battle tested: coverage, thousands of test, including tests on all supported browsers (not sure this is worth mentionning it)
 
 
 ## 🌏 Browsers Support
