@@ -66,7 +66,10 @@ in progress
 - True opensource license (no watermark/trademark display is required)
 - native TypeScript support
 - strong identity - the only viewer displaying a woman/female icon as User Task icon
-- battle tested: coverage, thousands of test, including tests on all supported browsers (not sure this is worth mentionning it)
+
+Decide if integrate in list
+- battle tested: coverage, thousands of test, including tests on all supported browsers
+- simple usage, provide base for more opinionated lib --> not available for now
 
 
 ## 🌏 Browsers Support
