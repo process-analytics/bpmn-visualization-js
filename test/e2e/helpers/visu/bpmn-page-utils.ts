@@ -24,8 +24,6 @@ import { delay } from '../test-utils';
 // @ts-ignore js file with commonjs export
 import envUtils = require('../../../helpers/environment-utils.js');
 
-/* eslint-disable jest/no-standalone-expect */
-
 class BpmnPage {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
@@ -34,17 +32,20 @@ class BpmnPage {
   }
 
   async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<void> {
+    // eslint-disable-next-line jest/no-standalone-expect
     await expect(this.page).toMatchAttribute(`#${this.bpmnContainerId}`, 'style', /cursor: default/, options);
   }
 
   async expectPageTitle(title: string): Promise<void> {
+    // eslint-disable-next-line jest/no-standalone-expect
     await expect(this.page.title()).resolves.toEqual(title);
   }
 
   /**
-   * This checks that a least one BPMN element is available in the DOM as a SVG element. This ensure that the mxGraph rendering has been done.
+   * This checks that a least one BPMN element is available in the DOM as a SVG element. This ensures that the mxGraph rendering has been done.
    */
   async expectExistingBpmnElement(options?: PageWaitForSelectorOptions): Promise<void> {
+    // eslint-disable-next-line jest/no-standalone-expect
     await expect(this.page).toHaveSelector(this.bpmnQuerySelectors.existingElement(), options);
   }
 }
@@ -124,6 +125,7 @@ export class PageTester {
   protected async doGotoPageAndLoadBpmnDiagram(url: string, checkResponseStatus = true): Promise<void> {
     const response = await this.page.goto(url);
     if (checkResponseStatus) {
+      // eslint-disable-next-line jest/no-standalone-expect
       expect(response.status()).toBe(200);
     }
 
@@ -136,8 +138,9 @@ export class PageTester {
 
   /**
    * @param bpmnDiagramName the name of the BPMN file without extension
-   * @param loadOptions optional fit options
-   * @param styleOptions? optional style options
+   * @param loadOptions fit options
+   * @param styleOptions optional style options
+   * @param bpmndElementIdToCollapse optional bpmn element that will be collapsed
    */
   private computePageUrl(bpmnDiagramName: string, loadOptions: LoadOptions, styleOptions?: StyleOptions, bpmndElementIdToCollapse?: string | undefined): string {
     let url = this.baseUrl;
@@ -241,6 +244,7 @@ export class BpmnPageSvgTester extends PageTester {
     if (!expectedText) {
       return;
     }
+    // eslint-disable-next-line jest/no-standalone-expect
     await expect(this.page).toMatchText(this.bpmnQuerySelectors.labelLastDiv(bpmnId), expectedText);
   }
 }
@@ -256,4 +260,3 @@ async function expectFirstChildNodeName(page: Page, selector: string, nodeName: 
 async function expectFirstChildAttribute(page: Page, selector: string, attributeName: string, value: string): Promise<void> {
   await expect(page).toMatchAttribute(`${selector} > :first-child`, attributeName, value);
 }
-/* eslint-enable jest/no-standalone-expect */
