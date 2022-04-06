@@ -159,6 +159,15 @@ https://github.com/process-analytics/bpmn-visualization-js/issues/295#issuecomme
 style config perimeter: par defaut, toutes les shapes ont un rectangle perimeter
 cf création du style par défaut par mxgraph (trouver la classe)
 
+mxConstant.STYLE_ENTRY_PERIMETER: 'entryPerimeter'
+Defines if the perimeter should be used to find the exact entry point along the perimeter of the target
+Possible values are 0 (false) and 1 (true).
+Default is 1 (true). Value is “entryPerimeter”.--> checker ou dans le code s'est utilisé
+voir aussi https://stackoverflow.com/a/62127707/14299521 pour des options
+il ya aussi les options pour décaler comme essayer par Céline dnas issue sur end event https://github.com/process-analytics/bpmn-visualization-js/issues/188
+parler aussi de STYLE_PERIMETER_SPACING (et de source/target spacing) dans le calcul du floating point
+
+
 
 next to implement
 - "Ensure that the terminal waypoints are on the shape perimeter" https://github.com/process-analytics/bpmn-visualization-js/issues/1870
@@ -174,9 +183,27 @@ par défaut, pas une projection mais une prolongation vers l'intersection.
 Si pas d'intersection, faire la projection
 
 
+voir aussi https://jgraph.github.io/mxgraph/javascript/examples/orthogonal.html
+début d'explications sur le fonctionnement dans PR "[TEST] Add more visual tests for edges #1399"
+j'ai maj l'issue des segment Connector:
+est-ce qu'avec mxgraph 4.2.2 ce n'est pas mieux --> non c'est pire, voir issue 994 et pr de poc
+
+orthogonal edges et issues liées : issue 994: voir suivi du 11/06/2021
+
+
+Alternative
+
+décrire aussi les positionnements en foreground shape/edge: cf https://github.com/process-analytics/bpmn-visualization-js/pull/1863
+comme bpmn-js + transparency (impact on custom colors that would required to be transperent)
+only work for inner terminal waypoints
+--> don't want to implement this
+cf aussi issue 1870
+
+
 issues without info
 - 349
 - PR 351
+- PR 388
 - 1236
 
 
