@@ -139,15 +139,80 @@ to see various positioning methods in action.
 
 #### Terminal points and perimeter
 
+QUESTION: dans un fichier dédié car il commence à etre très gros
 
-TODO schema of various projection on perimeter
+
+intro mxgraph support of perimeter
+ensure that the terminal waypoints of the edge are on the shape border, never inside or outside the shape.
+TODO put screenshots directly here for illustration?
+
+floating point
+concept of port: another shape can be used to determine where the terminal point are put. Use case: inner elements, 
+fine for editor, not always accurate for visualization when the terminal point coordinates are provided
+perimeter: function defining how ... Several flavor available out of the box: rectangle, ellipse, diamond. Everything we need for BPMN shapes
+use next point: the last point defined in the array
 
 
+way mxgraph manage terminal points recomputation.
+If no perimeter set (not what we use): terminal are always at the center of the bounds defined by the perimeter
+If perimeter is set, use the latest point and project it to the perimeter when STYLE_ORTHOGONAL set to true (default to false) 
+or use Segment Connector for instance otherwise, compute the intersection of the segment between the shape center and the
+point with the perimeter and add the resulting points to the waypoints list.
+
+The following screenshots are done without STYLE_EDGE and STYLE_ORTHOGONAL set to false
+
+Orthogonal projection activation: style[mxgraph.mxConstants.STYLE_ORTHOGONAL] = 1;
+TODO store screenshots with projection from https://github.com/process-analytics/bpmn-visualization-js/pull/1765 (2 screenshots at the end)
+in the repo for offline browsing + rename visual test screenshot
+
+Screenshots done using visualization test diagram `flows.sequence.04.waypoints.03.terminal.outside.shapes.02.segments.no.intersection.with.shapes.bpmn`
+
+| without projection                                                                                                                    | Default (Projection to center)                                                                                                                                                  | orthogonal projection                                                                                                                                                    |
+|---------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ![](images/mxgraph-perimeter/flows.sequence.04.waypoints.03.terminal.outside.shapes.02.segments.no.intersection.with.shapes-snap.png) | ![seq_flow_outside_no_segment_connector_01_default_projection_to_center](https://user-images.githubusercontent.com/27200110/150537056-68d7410b-9675-4bcc-9d01-ce2562965ffc.png) | ![seq_flow_outside_no_segment_connector_02_orthogonal_projection](https://user-images.githubusercontent.com/27200110/150537058-65e645c1-fb80-4f54-8da9-b0c819bbbc7a.png) |
+
+We have a lot of non regression visual tests on associations, message and sequence flows for
+- terminal waypoints inside and outside shapes
+- outside without intersection of the flow segment with the shape
+
+
+
+voir aussi https://jgraph.github.io/mxgraph/javascript/examples/orthogonal.html
+début d'explications sur le fonctionnement dans PR "[TEST] Add more visual tests for edges #1399"
+j'ai maj l'issue des segment Connector:
+est-ce qu'avec mxgraph 4.2.2 ce n'est pas mieux --> non c'est pire, voir issue 994 et pr de poc
+
+orthogonal edges et issues liées : issue 994: voir suivi du 11/06/2021
+
+TODO schema of various projection on perimeter for explanation (principles of the computation)
 
 
 TODO link to code in mxgraph 4.2.2 and even js code extract
 
-check if there is technical information about this topic in the txt file in mxgraph src/ 
+TODO check if there is technical information about this topic in the txt file in mxgraph src/ 
+
+code explanation about mxgraph terminal waypoints
+
+points definition from the model copied into the `abspoints` array property of the edge `state` instance
+and also add to `null` values at the beginning and the end of the array: they will later be replaced by the computed terminal points.
+**TODO ref to mxgraph code** computed by mxGraphView.getFloatingPoint
+
+special case: no waypoints, then the array contains 2 `null` values.
+computation: 1st computation: use the center of the other shape? find what is used as next point in this case
+result intersection on the 2 shapes with the segments from the 2 shape centers
+
+
+calcul des points terminaux
+cf https://github.com/process-analytics/bpmn-visualization-js/pull/1863 POC custom qui les change
+
+mettre des schémas et expliquer comment ca se passe les périmètres, et les projections vers centre (defaut) ou orthogonal
+(ce qui est activé avec SEGMENT_CONNECTOR et autre option)et ce qu'on voudrait nous:
+par défaut, pas une projection mais une prolongation vers l'intersection.
+Si pas d'intersection, faire la projection
+decrire ce qui a été fait dans en 0.23.0 en attendant + lien vers issue next
+
+
+
 
 
 référencer les issues concernées (orthogonal) info dans 
@@ -174,21 +239,6 @@ next to implement
 - "Restore the experimental pools/subprocess live collapsing" https://github.com/process-analytics/bpmn-visualization-js/issues/1871
 
 
-calcul des points terminaux
-cf https://github.com/process-analytics/bpmn-visualization-js/pull/1863 POC custom qui les change
-
-mettre des schémas et expliquer comment ca se passe les périmètres, et les projections vers centre (defaut) ou orthogonal
-(ce qui est activé avec SEGMENT_CONNECTOR et autre option)et ce qu'on voudrait nous: 
-par défaut, pas une projection mais une prolongation vers l'intersection.
-Si pas d'intersection, faire la projection
-
-
-voir aussi https://jgraph.github.io/mxgraph/javascript/examples/orthogonal.html
-début d'explications sur le fonctionnement dans PR "[TEST] Add more visual tests for edges #1399"
-j'ai maj l'issue des segment Connector:
-est-ce qu'avec mxgraph 4.2.2 ce n'est pas mieux --> non c'est pire, voir issue 994 et pr de poc
-
-orthogonal edges et issues liées : issue 994: voir suivi du 11/06/2021
 
 
 Alternative
@@ -199,6 +249,10 @@ only work for inner terminal waypoints
 --> don't want to implement this
 cf aussi issue 1870
 
+
+
+already considered
+- PR 1765
 
 issues without info
 - 349
