@@ -171,6 +171,7 @@ Screenshots done using visualization test diagram `flows.sequence.04.waypoints.0
 |---------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ![](images/mxgraph-perimeter/flows.sequence.04.waypoints.03.terminal.outside.shapes.02.segments.no.intersection.with.shapes-snap.png) | ![seq_flow_outside_no_segment_connector_01_default_projection_to_center](https://user-images.githubusercontent.com/27200110/150537056-68d7410b-9675-4bcc-9d01-ce2562965ffc.png) | ![seq_flow_outside_no_segment_connector_02_orthogonal_projection](https://user-images.githubusercontent.com/27200110/150537058-65e645c1-fb80-4f54-8da9-b0c819bbbc7a.png) |
 
+TODO au début? 
 We have a lot of non regression visual tests on associations, message and sequence flows for
 - terminal waypoints inside and outside shapes
 - outside without intersection of the flow segment with the shape
@@ -250,6 +251,19 @@ only work for inner terminal waypoints
 cf aussi issue 1870
 
 
+### Impact on marker
+
+issue PR sur pb conditional not always filled? 
+TODO lien 1er PR suppr orthogonal segment + test showing we always fill the marker and the msg flow start marker as well 
+
+arrow when extra terminal segment added
+- inside arrow: issue association https://github.com/process-analytics/bpmn-visualization-js/issues/715
+- arrow glitch when original terminal point is outside
+
+proposal to use intersection instead to extend or reduce the existing the segment and avoid this effect
+
+
+### INFOS a supprimer quand fini
 
 already considered
 - PR 1765
