@@ -139,6 +139,9 @@ to see various positioning methods in action.
 
 #### Terminal points and perimeter
 
+**Note**: all SVG files from this paragraph are generated from this [draw.io file](resources/mxGraph-perimeter.drawio)
+
+
 QUESTION: dans un fichier dédié car il commence à etre très gros
 
 
