@@ -165,6 +165,9 @@ point with the perimeter and add the resulting points to the waypoints list.
 The following screenshots are done without STYLE_EDGE and STYLE_ORTHOGONAL set to false
 
 Orthogonal projection activation: style[mxgraph.mxConstants.STYLE_ORTHOGONAL] = 1;
+
+
+
 TODO store screenshots with projection from https://github.com/process-analytics/bpmn-visualization-js/pull/1765 (2 screenshots at the end)
 in the repo for offline browsing + rename visual test screenshot
 
@@ -189,7 +192,7 @@ est-ce qu'avec mxgraph 4.2.2 ce n'est pas mieux --> non c'est pire, voir issue 9
 orthogonal edges et issues liées : issue 994: voir suivi du 11/06/2021
 
 TODO schema of various projection on perimeter for explanation (principles of the computation)
-
+also add schema of the intersection solution
 
 TODO link to code in mxgraph 4.2.2 and even js code extract
 
@@ -205,6 +208,9 @@ special case: no waypoints, then the array contains 2 `null` values.
 computation: 1st computation: use the center of the other shape? find what is used as next point in this case
 result intersection on the 2 shapes with the segments from the 2 shape centers
 
+si pas de perimeter, point terminal est le centre de la shape
+retrouver le code
+explique pourquoi on avait issue sur les edges: pas de perimeter --> centre du edge pour les associations des text annotation (mettre l'issue)
 
 calcul des points terminaux
 cf https://github.com/process-analytics/bpmn-visualization-js/pull/1863 POC custom qui les change
@@ -216,7 +222,7 @@ Si pas d'intersection, faire la projection
 decrire ce qui a été fait dans en 0.23.0 en attendant + lien vers issue next
 
 
-
+le style orthogonal est passé à getPerimeterPoint dans mxGraphView et c'est la fonction de perimeter qui l'utilise
 
 
 référencer les issues concernées (orthogonal) info dans 
@@ -234,24 +240,13 @@ Possible values are 0 (false) and 1 (true).
 Default is 1 (true). Value is “entryPerimeter”.--> checker ou dans le code s'est utilisé
 voir aussi https://stackoverflow.com/a/62127707/14299521 pour des options
 il ya aussi les options pour décaler comme essayer par Céline dnas issue sur end event https://github.com/process-analytics/bpmn-visualization-js/issues/188
+
 parler aussi de STYLE_PERIMETER_SPACING (et de source/target spacing) dans le calcul du floating point
+permet d'avoir un border (possibiltié d'avoir des valeurs source/target qui s'ajoute a la valeur global)
+pourrait etre interessant pour le pb des end events: TODO mettre l'info dans l'issue mais dire attention code custom chez nous pour gérer les perimeters
 
-
-
-next to implement
-- "Ensure that the terminal waypoints are on the shape perimeter" https://github.com/process-analytics/bpmn-visualization-js/issues/1870
-- "Restore the experimental pools/subprocess live collapsing" https://github.com/process-analytics/bpmn-visualization-js/issues/1871
-
-
-
-
-Alternative
-
-décrire aussi les positionnements en foreground shape/edge: cf https://github.com/process-analytics/bpmn-visualization-js/pull/1863
-comme bpmn-js + transparency (impact on custom colors that would required to be transperent)
-only work for inner terminal waypoints
---> don't want to implement this
-cf aussi issue 1870
+see also exit and enter style setting
+this is used by the perimeter function? if true, replicate the behaviour everywhere
 
 
 ### Impact on marker
@@ -263,7 +258,57 @@ arrow when extra terminal segment added
 - inside arrow: issue association https://github.com/process-analytics/bpmn-visualization-js/issues/715
 - arrow glitch when original terminal point is outside
 
+REASON: marker built by using the latest segment of points (TODO link code to confirm this)
+mxConnector.createMarker calcule la norme et son inverse
+c'est lui qui calcule le point dans le prolongement de celui avant/après qui correspond à la longueur du marker
+se base sur les points calculés avant pour finaliser les points du edge
+
+
+
+TODO add schema of current pb (glitch + inner original terminal point)
+
+
+
+
+### Current implementation to fix the problem
+
+explication du fix actuel
+dedicated mxGraphView injected in the BpmnGraph (extend mxGraph object)
+override the getFloatingPoint implementation
+
+si pas de waypoint, fallback perimeter qui fonctionne très bien
+si waypoints, on ne fait pas de calcul, on prend les derniers points non null du tableau (les originaux) et on les utilise
+directement comme points terminaux
+
+
+### Wish
+
 proposal to use intersection instead to extend or reduce the existing the segment and avoid this effect
+
+TODO schema of the intersection solution
+
+management when no intersection: fallback to mxgraph perimeter (see screenshots at the begining of the paragraph)
+
+### Others (TODO order)
+
+
+next to implement
+- "Ensure that the terminal waypoints are on the shape perimeter" https://github.com/process-analytics/bpmn-visualization-js/issues/1870
+- "Restore the experimental pools/subprocess live collapsing" https://github.com/process-analytics/bpmn-visualization-js/issues/1871
+
+
+Alternative
+
+décrire aussi les positionnements en foreground shape/edge: cf https://github.com/process-analytics/bpmn-visualization-js/pull/1863
+comme bpmn-js + transparency (impact on custom colors that would required to be transperent)
+only work for inner terminal waypoints
+--> don't want to implement this
+cf aussi issue 1870
+
+Info about SVG Q (quadratic): see PR 1207 (pb position overlay on edge center)
+a priori, created by mxPolyline.paintLine when rounded is true in the edge style, see mxShape.addPoints
+
+mxGraphView peut calculer des relative and absolute  coordinate as mxPoint with the edge mxState
 
 
 ### INFOS a supprimer quand fini
