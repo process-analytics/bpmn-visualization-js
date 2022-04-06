@@ -142,9 +142,43 @@ to see various positioning methods in action.
 
 TODO schema of various projection on perimeter
 
+
+
+
 TODO link to code in mxgraph 4.2.2 and even js code extract
 
 check if there is technical information about this topic in the txt file in mxgraph src/ 
+
+
+référencer les issues concernées (orthogonal) info dans 
+https://github.com/process-analytics/bpmn-visualization-js/issues/349
+https://github.com/process-analytics/bpmn-visualization-js/issues/295
+https://github.com/process-analytics/bpmn-visualization-js/issues/295#issuecomment-904336449
+
+
+style config perimeter: par defaut, toutes les shapes ont un rectangle perimeter
+cf création du style par défaut par mxgraph (trouver la classe)
+
+
+next to implement
+- "Ensure that the terminal waypoints are on the shape perimeter" https://github.com/process-analytics/bpmn-visualization-js/issues/1870
+- "Restore the experimental pools/subprocess live collapsing" https://github.com/process-analytics/bpmn-visualization-js/issues/1871
+
+
+calcul des points terminaux
+cf https://github.com/process-analytics/bpmn-visualization-js/pull/1863 POC custom qui les change
+
+mettre des schémas et expliquer comment ca se passe les périmètres, et les projections vers centre (defaut) ou orthogonal
+(ce qui est activé avec SEGMENT_CONNECTOR et autre option)et ce qu'on voudrait nous: 
+par défaut, pas une projection mais une prolongation vers l'intersection.
+Si pas d'intersection, faire la projection
+
+
+issues without info
+- 349
+- PR 351
+- 1236
+
 
 
 ## Overlays
