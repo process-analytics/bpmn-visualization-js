@@ -39,7 +39,7 @@
 
 Based on the customization capability, it provides a set of diagram visualization features, and helps developers to create applications for process visualization and analysis. \
 It also focuses on execution data:
-- highlighting of some edges
+- highlighting of some elements
 - adding customizable overlays
 - personalized interactions
 
