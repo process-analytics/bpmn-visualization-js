@@ -21,7 +21,7 @@ jobs:
       - name: Build Demo
         run: npm run demo
       - name: Upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: demo-${{github.sha}}
           path: build/demo
