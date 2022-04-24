@@ -7,11 +7,12 @@ updates:
       interval: "weekly"
     open-pull-requests-limit: 2
     versioning-strategy: increase
+    rebase-strategy: "disabled"    
     commit-message:
       prefix: "[INFRA] prod -"
       prefix-development: "[INFRA] dev -"
     reviewers:
-      - process-analytics/js-lib-collaborators
+      - process-analytics/pa-collaborators
 
   - package-ecosystem: "github-actions"
     # Workflow files stored in the default location of `.github/workflows`
@@ -20,7 +21,8 @@ updates:
       interval: "weekly"
       day: wednesday
     open-pull-requests-limit: 2
+    rebase-strategy: "disabled"    
     commit-message:
       prefix: "[INFRA] gha -"
     reviewers:
-      - process-analytics/js-lib-collaborators
+      - process-analytics/pa-collaborators

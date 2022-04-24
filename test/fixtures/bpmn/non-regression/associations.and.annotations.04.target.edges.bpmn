@@ -5,24 +5,24 @@
       <semantic:outgoing>sequence_flow_4</semantic:outgoing>
     </semantic:startEvent>
     <semantic:task id="task_3">
-      <semantic:outgoing>Flow_1g6tpu3</semantic:outgoing>
+      <semantic:outgoing>sequence_flow_5</semantic:outgoing>
     </semantic:task>
     <semantic:sequenceFlow id="sequence_flow_4" sourceRef="Event_0rs26gn" targetRef="task_3" />
-    <semantic:sequenceFlow id="Flow_1g6tpu3" sourceRef="task_3" targetRef="Activity_10owq19" />
+    <semantic:sequenceFlow id="sequence_flow_5" sourceRef="task_3" targetRef="Activity_10owq19" />
     <semantic:task id="Activity_10owq19">
-      <semantic:incoming>Flow_1g6tpu3</semantic:incoming>
+      <semantic:incoming>sequence_flow_5</semantic:incoming>
     </semantic:task>
     <semantic:textAnnotation id="text_annotation" />
-    <semantic:association id="association" associationDirection="None" sourceRef="sequence_flow_4" targetRef="text_annotation" />
+    <semantic:association id="association_1" associationDirection="None" sourceRef="sequence_flow_4" targetRef="text_annotation" />
     <semantic:textAnnotation id="TextAnnotation_0d4kz31" />
-    <semantic:association id="Association_0lbxt0x" sourceRef="task_3" targetRef="TextAnnotation_0d4kz31" />
+    <semantic:association id="association_2" sourceRef="sequence_flow_5" targetRef="TextAnnotation_0d4kz31" />
   </semantic:process>
   <semantic:collaboration id="collaboration">
     <semantic:participant id="participant_1" processRef="process_1" />
   </semantic:collaboration>
   <bpmndi:BPMNDiagram name="Untitled Diagram" documentation="" resolution="96.00000267028808">
     <bpmndi:BPMNPlane bpmnElement="collaboration">
-      <bpmndi:BPMNEdge id="Flow_1g6tpu3_di" bpmnElement="Flow_1g6tpu3">
+      <bpmndi:BPMNEdge id="sequence_flow_5_di" bpmnElement="sequence_flow_5">
         <di:waypoint x="910" y="406" />
         <di:waypoint x="910" y="260" />
       </bpmndi:BPMNEdge>
@@ -45,13 +45,13 @@
       <bpmndi:BPMNShape id="TextAnnotation_0d4kz31_di" bpmnElement="TextAnnotation_0d4kz31">
         <dc:Bounds x="1000" y="290" width="100" height="30" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="edge_association" bpmnElement="association">
+      <bpmndi:BPMNEdge id="association_1_di" bpmnElement="association_1">
         <di:waypoint x="710" y="440" />
         <di:waypoint x="710" y="488" />
         <di:waypoint x="740" y="488" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_0lbxt0x_di" bpmnElement="Association_0lbxt0x">
+      <bpmndi:BPMNEdge id="association_2_di" bpmnElement="association_2">
         <di:waypoint x="910" y="380" />
         <di:waypoint x="940" y="370" />
         <di:waypoint x="960" y="305" />

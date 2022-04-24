@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions, getVersion } from '../../index.es.js';
 
 let fitOnLoad = true;
 let fitOptions = {};
@@ -70,13 +70,12 @@ function configureFitMarginInput() {
   }
 }
 
-function configureControlPanel() {
-  const parameters = new URLSearchParams(window.location.search);
-  if (parameters.get('hideControls') === 'true') {
-    const classList = document.getElementById('controls').classList;
-    classList.remove('controls');
-    classList.add('hidden');
-  }
+function configureDisplayedFooterContent() {
+  const version = getVersion();
+  const versionAsString = `bpmn-visualization@${version.lib}`;
+  const dependenciesAsString = [...version.dependencies].map(([name, version]) => `${name}@${version}`).join('/');
+  const versionElt = document.getElementById('footer-content');
+  versionElt.innerText = `${versionAsString} with ${dependenciesAsString}`;
 }
 
 // The following function `preventZoomingPage` serves to block the page content zoom.
@@ -92,17 +91,9 @@ function preventZoomingPage() {
   );
 }
 
-function setupFixedDiagramContainerSize(containerId) {
-  const containerElt = document.getElementById(containerId);
-  const height = containerElt.parentNode.parentNode.getBoundingClientRect().height;
-  // parent height minus 2 x padding
-  containerElt.style = `overflow: hidden; height:${height - 2 * 20}px`;
-}
-
 function startDemo() {
   preventZoomingPage();
   const bpmnContainerId = 'bpmn-container';
-  setupFixedDiagramContainerSize(bpmnContainerId);
 
   const parameters = new URLSearchParams(window.location.search);
   const zoomThrottleElt = document.getElementById('zoom-throttle'),
@@ -136,7 +127,7 @@ function startDemo() {
   configureFitTypeSelect();
   configureFitMarginInput();
   configureFitOnLoadCheckBox();
-  configureControlPanel();
+  configureDisplayedFooterContent();
 }
 
 // Start

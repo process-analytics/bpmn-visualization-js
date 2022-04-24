@@ -120,16 +120,16 @@ The mxGraph integration uses the `edge mxCell` geometry to set the label bounds
   - if the waypoints are not available, no position is set and the label is placed on the edge center
 - width and height: for word wrapping.
 
-see [mxGeometry](https://github.com/jgraph/mxgraph/blob/v4.1.1/javascript/src/js/model/mxGeometry.js#L60)
+see [mxGeometry](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/model/mxGeometry.js#L60)
 
 #### mxGraph Details
 
-The label position is related to the 'center' of the edge, see [mxGeometry](https://github.com/jgraph/mxgraph/blob/v4.1.1/javascript/src/js/model/mxGeometry.js#L35)
+The label position is related to the 'center' of the edge, see [mxGeometry](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/model/mxGeometry.js#L35)
 for more details. The definition of 'center' differs whether the `mxGeometry` is `relative` or not:
 - if relative, it is the center along the line
 - if absolute, it is derived from the terminal points
 
-This is explained in [mxGraphView.updateEdgeLabelOffset](https://github.com/jgraph/mxgraph/blob/v4.1.1/javascript/src/js/view/mxGraphView.js#L2187)
+This is explained in [mxGraphView.updateEdgeLabelOffset](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L2187)
 - center between the two endpoints if the geometry is absolute
 - the relative distance between the center along the line, and the absolute orthogonal distance if the geometry is relative.
 

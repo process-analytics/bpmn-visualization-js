@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<semantic:definitions xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL">
+  <semantic:process id="process_1" isExecutable="false">
+    <semantic:startEvent id="Event_0rs26gn">
+      <semantic:outgoing>sequence_flow_4</semantic:outgoing>
+    </semantic:startEvent>
+    <semantic:task id="task_3">
+      <semantic:outgoing>sequence_flow_5</semantic:outgoing>
+    </semantic:task>
+    <semantic:sequenceFlow id="sequence_flow_4" sourceRef="Event_0rs26gn" targetRef="task_3" />
+    <semantic:sequenceFlow id="sequence_flow_5" sourceRef="task_3" targetRef="Activity_10owq19" />
+    <semantic:task id="Activity_10owq19">
+      <semantic:incoming>sequence_flow_5</semantic:incoming>
+    </semantic:task>
+    <semantic:textAnnotation id="text_annotation" />
+    <semantic:association id="association_1" associationDirection="None" sourceRef="sequence_flow_4" targetRef="text_annotation" />
+    <semantic:textAnnotation id="TextAnnotation_0d4kz31" />
+    <semantic:association id="association_2" sourceRef="sequence_flow_5" targetRef="TextAnnotation_0d4kz31" />
+  </semantic:process>
+  <semantic:collaboration id="collaboration">
+    <semantic:participant id="participant_1" processRef="process_1" />
+  </semantic:collaboration>
+  <bpmndi:BPMNDiagram name="Untitled Diagram" documentation="" resolution="96.00000267028808">
+    <bpmndi:BPMNPlane bpmnElement="collaboration">
+      <bpmndi:BPMNEdge id="sequence_flow_5_di" bpmnElement="sequence_flow_5">
+        <di:waypoint x="910" y="406" />
+        <di:waypoint x="910" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_sequence_flow_4" bpmnElement="sequence_flow_4">
+        <di:waypoint x="661" y="440" />
+        <di:waypoint x="868" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0rs26gn_di" bpmnElement="Event_0rs26gn">
+        <dc:Bounds x="619" y="419" width="42" height="42" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_task_3" bpmnElement="task_3">
+        <dc:Bounds x="868" y="406" width="83" height="68" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_10owq19_di" bpmnElement="Activity_10owq19">
+        <dc:Bounds x="860" y="180" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_text_annotation" bpmnElement="text_annotation">
+        <dc:Bounds x="740" y="460" width="108" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0d4kz31_di" bpmnElement="TextAnnotation_0d4kz31">
+        <dc:Bounds x="1000" y="290" width="100" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="association_1_di" bpmnElement="association_1">
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="association_2_di" bpmnElement="association_2">
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</semantic:definitions>

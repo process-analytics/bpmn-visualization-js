@@ -1,0 +1,7 @@
+<svg viewBox="0 0 158.485 158.485" width="96" height="96" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(-624.257 -540.757)" stroke="#000" pointer-events="all">
+    <path d="M703.5 545l75 75-75 75-75-75z" fill="#fff" stroke-width="6" stroke-miterlimit="10"/>
+    <circle cx="703.5" cy="620" fill="none" stroke-width="3" r="41.25"/>
+    <path d="M698.1 597.5h10.8v17.1H726v10.8h-17.1v17.1h-10.8v-17.1H681v-10.8h17.1z" fill="#fff" stroke-width="3" stroke-miterlimit="10"/>
+  </g>
+</svg>

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { FitType } from '../../src/bpmn-visualization';
+import { FitType } from '../../src/component/options';
 import { readFileSync } from '../helpers/file-helper';
 import { initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visualization-initialization';
 
@@ -43,8 +43,32 @@ describe('BpmnVisualization', () => {
       ${FitType.Vertical}
     `('Fit with $fitType', ({ fitType }: { fitType: FitType }) => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
-      // ensure not error
+      // ensure no error
       bpmnVisualization.fit({ type: fitType });
     });
   });
+
+  describe('Version', () => {
+    it('lib version', () => {
+      expect(bpmnVisualization.getVersion().lib).toBe(getLibVersionFromPackageJson());
+    });
+    it('mxGraph version', () => {
+      expect(bpmnVisualization.getVersion().dependencies.get('mxGraph')).toBeDefined();
+    });
+    it('not modifiable version', () => {
+      const initialVersion = bpmnVisualization.getVersion();
+      initialVersion.lib = 'set by test';
+      initialVersion.dependencies.set('extra', 'added in test');
+
+      const newVersion = bpmnVisualization.getVersion();
+      expect(newVersion.lib).not.toBe(initialVersion.lib);
+      expect(newVersion.dependencies).not.toBe(initialVersion.dependencies);
+    });
+  });
 });
+
+function getLibVersionFromPackageJson(): string {
+  const json = readFileSync('../../package.json');
+  const pkg = JSON.parse(json);
+  return pkg.version;
+}

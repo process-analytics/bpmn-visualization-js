@@ -15,7 +15,7 @@
  */
 import type { MessageDetails } from '../parsing-messages';
 import { JsonParsingWarning } from '../parsing-messages';
-import type { ShapeBpmnElementKind } from '../../../model/bpmn/internal/shape';
+import type { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 
 export class GroupUnknownCategoryValueWarning extends JsonParsingWarning {
   constructor(readonly groupBpmnElementId: string, readonly categoryValueRef: string) {

@@ -139,6 +139,6 @@ export class ConvertedElements {
   }
 }
 
-export interface CategoryValueData {
+interface CategoryValueData {
   value?: string;
 }

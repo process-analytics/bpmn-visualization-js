@@ -38,7 +38,7 @@ jobs:
     if: needs.check_secrets.outputs.is_SURGE_TOKEN_set == 'true'
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Publish Demo preview
         id: publish_demo_preview
         uses: afc163/surge-preview@v1

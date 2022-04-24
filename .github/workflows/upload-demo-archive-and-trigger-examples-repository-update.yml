@@ -9,11 +9,11 @@ jobs:
   upload_demo_archive:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version-file: '.nvmrc'
           cache: 'npm'
       - name: Install dependencies
         # https://playwright.dev/docs/browsers#installing-browsers

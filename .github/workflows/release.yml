@@ -22,13 +22,13 @@ jobs:
           branch: master
 
       - name: Setup checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_RELEASE_TOKEN }}
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version-file: '.nvmrc'
           cache: 'npm'
       - name: Config git
         run: |
@@ -38,7 +38,7 @@ jobs:
       - name: Checkout master
         run: git checkout master && git pull --tags
       - name: Bump Version
-        run: npm run version-prepare && npm version ${{ github.event.inputs.type }} --message "[RELEASE] %s"
+        run: npm run version-prepare && npm version ${{ github.event.inputs.type }} --no-commit-hooks --message "[RELEASE] %s"
       - name: Push Version
         run: git push && git push --tags
 

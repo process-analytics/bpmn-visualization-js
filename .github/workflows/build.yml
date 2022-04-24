@@ -48,18 +48,18 @@ jobs:
           - { name: windows-2019 }
     steps:
       - name: Checkout with shallow clone
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: ${{ !contains(matrix.os.coverage, 'coverage') }}
       - name: Checkout without shallow clone
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: ${{ contains(matrix.os.coverage, 'coverage') }}
         with:
           # Disabling shallow clone is recommended for improving relevancy of SonarCloud reporting
           fetch-depth: 0
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version-file: '.nvmrc'
           cache: 'npm'
       # playwright browsers are needed for the bundle tests, so no special configuration as in other workflows
       - name: Install dependencies
@@ -123,11 +123,11 @@ jobs:
             browser: msedge
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version-file: '.nvmrc'
           cache: 'npm'
       - name: Install dependencies
         env:
