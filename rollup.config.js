@@ -99,7 +99,7 @@ if (!buildBundles) {
       },
     ],
     // except these 'custom specified' dependencies, rest of them is treated by the plugin: autoExternal
-    external: ['entities/lib/decode', 'fast-xml-parser/src/parser'],
+    external: ['fast-xml-parser/src/parser'],
     plugins: withMinification(pluginsBundles),
   };
   const configBundles = {
