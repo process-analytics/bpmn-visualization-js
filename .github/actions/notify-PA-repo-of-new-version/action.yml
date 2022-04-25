@@ -1,0 +1,33 @@
+name: 'Notify PA repository of new BPMN visualization version'
+description: 'You can customize the parameters to link to the event and the repository to notify.
+To use on tag branch.'
+inputs:
+  PA_REPOSITORY:
+    description: 'The name of the repository on the process-analytics organization to notify'
+    required: true
+    default: ''
+  CUSTOM_PARAMETERS:
+    description: 'The custom parameters to link to the event to notify, with format:
+    <, "parameter1": "value1">'
+    default: ''
+  TOKEN:
+    description: 'Token to dispatch on the repository'
+    required: true
+    default: ''
+
+runs:
+  using: "composite"
+  steps:
+    - id: get_version
+      name: Get the version
+      shell: bash
+      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v*}
+    - name: Send Repository Dispatch event
+      uses: peter-evans/repository-dispatch@v2
+      with:
+        token: ${{ inputs.TOKEN }}
+        repository: process-analytics/${{ inputs.PA_REPOSITORY }}
+        event-type: update_bpmn_visualization_version
+        client-payload: '{
+          "version": "${{ steps.get_version.outputs.VERSION }}"${{ inputs.CUSTOM_PARAMETERS }}
+        }'
