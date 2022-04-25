@@ -65,7 +65,7 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v*}
       - name: Send Repository Dispatch event to bpmn-visualization-R repository
-        uses: peter-evans/repository-dispatch@v1
+        uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.GH_RELEASE_TOKEN }}
           repository: process-analytics/bpmn-visualization-R
