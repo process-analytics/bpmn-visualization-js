@@ -110,7 +110,7 @@
     "cross-env": "^7.0.3",
     "cssnano": "^5.1.7",
     "debug": "^4.3.4",
-    "eslint": "^8.13.0",
+    "eslint": "^8.14.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jest": "^26.1.4",
     "eslint-plugin-notice": "^0.9.10",
