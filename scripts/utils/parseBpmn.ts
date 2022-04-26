@@ -47,6 +47,14 @@ if (outputType === 'json') {
 }
 
 // copy to clipboard
-clipboardy.writeSync(result);
+// disabling the copy is not officially supported, it currently fails on GitHub actions when running on Ubuntu 20.04. So disabling it only in this case.
+// file:///home/runner/work/bpmn-visualization-js/bpmn-visualization-js/node_modules/clipboardy/lib/linux.js:16
+// 		error = new Error('Couldn\'t find the `xsel` binary and fallback didn\'t work. On Debian/Ubuntu you can install xsel with: sudo apt install xsel');
+// Error: Couldn't find the `xsel` binary and fallback didn't work. On Debian/Ubuntu you can install xsel with: sudo apt install xsel
+// CI env variable when running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
+const isRunningOnCIWithLinuxOS = process.env.CI === 'true' && process.platform.startsWith('linux');
+if (!isRunningOnCIWithLinuxOS) {
+  clipboardy.writeSync(result);
+}
 // eslint-disable-next-line no-console
 console.log(result);
