@@ -26,7 +26,6 @@ import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import pkg from './package.json';
-import json from '@rollup/plugin-json';
 
 import parseArgs from 'minimist';
 
@@ -67,7 +66,6 @@ if (!buildBundles) {
     // the 'resolve' and 'commonjs' plugins ensure we can bundle commonjs dependencies
     resolve(),
     commonjs(),
-    json(),
     // to have sizes of dependencies listed at the end of build log
     sizes(),
   ];
@@ -93,7 +91,6 @@ if (!buildBundles) {
 
   const pluginsBundles = [
     typescriptPlugin(),
-    json(),
     // ensure we do not bundle dependencies
     autoExternal(),
     // to have sizes of dependencies listed at the end of build log
@@ -161,7 +158,7 @@ function withMinification(plugins) {
 }
 
 function pluginsForDevelopment() {
-  const plugins = [typescriptPlugin(), resolve(), commonjs(), json()];
+  const plugins = [typescriptPlugin(), resolve(), commonjs()];
 
   // Copy static resources
   if (devMode || demoMode) {
