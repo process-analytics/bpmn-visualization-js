@@ -42,7 +42,7 @@ jobs:
         # syntax inspired from https://github.community/t5/GitHub-Actions/Using-a-matrix-defined-input-for-a-custom-action/m-p/32032/highlight/true#M988
         os:
           - { name: ubuntu-20.04, coverage: '-- --coverage' }
-          - { name: macos-11 }
+          - { name: macos-12 }
           - { name: windows-2019 }
     steps:
       - name: Checkout with shallow clone
@@ -110,11 +110,11 @@ jobs:
       # don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        os: [macos-11, ubuntu-20.04, windows-2019]
+        os: [macos-12, ubuntu-20.04, windows-2019]
         browser: [chromium, firefox, chrome]
         include:
           # only test WebKit on macOS
-          - os: macos-11
+          - os: macos-12
             browser: webkit
           # only test Edge on Windows
           - os: windows-2019

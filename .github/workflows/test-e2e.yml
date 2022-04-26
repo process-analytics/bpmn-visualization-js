@@ -35,12 +35,12 @@ jobs:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        os: [macos-11, ubuntu-20.04, windows-2019]
+        os: [macos-12, ubuntu-20.04, windows-2019]
         # TODO activate chrome, see https://github.com/process-analytics/bpmn-visualization-js/issues/1933
         browser: [chromium, firefox]
         include:
           # only test WebKit on macOS
-          - os: macos-11
+          - os: macos-12
             browser: webkit
           # TODO activate edge, see https://github.com/process-analytics/bpmn-visualization-js/issues/1933
           # only test Edge on Windows
