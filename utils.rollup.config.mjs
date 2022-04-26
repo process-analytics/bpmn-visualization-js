@@ -16,7 +16,6 @@
 import typescript from 'rollup-plugin-typescript2';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
-import json from '@rollup/plugin-json';
 import externals from 'rollup-plugin-node-externals';
 import ts from 'typescript';
 
@@ -30,7 +29,6 @@ const plugins = [
   }),
   resolve(),
   commonjs(),
-  json(),
 ];
 export default {
   input: 'scripts/utils/parseBpmn.ts',

@@ -21,7 +21,7 @@ jobs:
       - name: Build Demo
         run: npm run demo
       - name: Upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: demo-${{github.sha}}
           path: build/demo
@@ -29,7 +29,7 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v*}
       - name: Send Repository Dispatch event
-        uses: peter-evans/repository-dispatch@v1
+        uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.GH_RELEASE_TOKEN }}
           repository: process-analytics/bpmn-visualization-examples

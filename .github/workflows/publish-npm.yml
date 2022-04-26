@@ -61,3 +61,15 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v*}
+      - name: Send Repository Dispatch event to bpmn-visualization-R repository
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.GH_RELEASE_TOKEN }}
+          repository: process-analytics/bpmn-visualization-R
+          event-type: update_bpmn_visualization_version
+          client-payload: '{
+              "version": "${{ steps.get_version.outputs.VERSION }}"
+            }'
