@@ -62,7 +62,15 @@ if (!buildBundles) {
   ];
 } else {
   const libInput = 'src/bpmn-visualization.ts';
-  const pluginsBundleIIFE = [typescriptPlugin(), resolve(), commonjs(), json()];
+  const pluginsBundleIIFE = [
+    typescriptPlugin(),
+    // the 'resolve' and 'commonjs' plugins ensure we can bundle commonjs dependencies
+    resolve(),
+    commonjs(),
+    json(),
+    // to have sizes of dependencies listed at the end of build log
+    sizes(),
+  ];
   const outputIIFE = {
     file: pkg.browser.replace('.min.js', '.js'),
     name: 'bpmnvisu',
@@ -83,8 +91,14 @@ if (!buildBundles) {
     plugins: withMinification(pluginsBundleIIFE),
   };
 
-  // ensure we do not bundle dependencies
-  const pluginsBundles = [typescriptPlugin(), json(), autoExternal()];
+  const pluginsBundles = [
+    typescriptPlugin(),
+    json(),
+    // ensure we do not bundle dependencies
+    autoExternal(),
+    // to have sizes of dependencies listed at the end of build log
+    sizes(),
+  ];
 
   const configBundlesMinified = {
     input: libInput,
@@ -99,7 +113,7 @@ if (!buildBundles) {
       },
     ],
     // except these 'custom specified' dependencies, rest of them is treated by the plugin: autoExternal
-    external: ['entities/lib/decode', 'fast-xml-parser/src/parser'],
+    external: ['fast-xml-parser/src/parser'],
     plugins: withMinification(pluginsBundles),
   };
   const configBundles = {
