@@ -94,7 +94,6 @@
     "strnum": "1.0.5"
   },
   "devDependencies": {
-    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.2.1",
     "@types/debug": "^4.1.7",
     "@types/jest": "^27.4.1",
