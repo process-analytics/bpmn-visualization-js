@@ -49,6 +49,7 @@ are automated once the release is triggered but manual actions are required for:
 
 A GitHub job is run at git tag creation, so the publishing should be done automatically.
 
+___
 ##### Manual procedure
 
 ⚠️⚠️⚠️ _**Only if the GitHub job that publish the npm package fails after manual re-run!**_  ⚠️⚠️⚠️
@@ -56,7 +57,7 @@ A GitHub job is run at git tag creation, so the publishing should be done automa
 - Pull the new version created by the release workflow: `git pull origin`
 - Ensure you are on the last tag locally: `git checkout vX.Y.Z`
 - Run `npm publish` to make the new version available to the community (you can pass --dry-run to validate the command prior publishing)
-
+___
 
 ### GitHub issues, milestones and projects update
 
@@ -100,6 +101,7 @@ If it is still not created, you can follow the manual procedure described below.
 
 #### Manual procedure
 
+___
 ⚠️⚠️⚠️ _**Only if the job to create the Pull Request and update the demo & the examples does NOT work!**_  ⚠️⚠️⚠️
 
 ##### Demo environment update
@@ -120,6 +122,7 @@ Make the new version available for demo.
 - If temporary version of the lib has been commited (generally in the demo folder) to make examples use it prior availability on npmjs, delete the corresponding file and update the examples.
 
 ⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
+___
 
 #### Mark `bpmn-visualization-examples` as released
 When all updates have been completed, merge the Pull Request created above.
@@ -139,6 +142,16 @@ Create a new GitHub release by following the [GitHub help](https://help.github.c
 You should have something like in release [v0.21.2](https://github.com/process-analytics/bpmn-visualization-examples/releases/tag/v0.21.2)
 
 ![release process automation overview](./images/release_process_part-10_examples_release-notes.png)
+
+___
+⚠️⚠️⚠️ _**Only if the [notification](https://github.com/process-analytics/bpmn-visualization-js/actions/runs/2191000065) does NOT work!**_  ⚠️⚠️⚠️
+
+##### Notify [BPMN Visualization - R package](https://github.com/process-analytics/bpmn-visualization-R) repository of the new release
+
+Follow the documentation of the [BPMN Visualization - R package](https://github.com/process-analytics/bpmn-visualization-R/blob/main/CONTRIBUTING.md#bpmn-visualization-js-update) to update the BPMN Visualization dependency with the new release.
+
+⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
+___
 
 ## Communicate about the release
 
