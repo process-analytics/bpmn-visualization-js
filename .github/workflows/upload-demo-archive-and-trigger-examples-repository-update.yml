@@ -20,23 +20,17 @@ jobs:
         run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm ci
       - name: Build Demo
         run: npm run demo
+      - name: Set ARTIFACT_NAME
+        run: echo "ARTIFACT_NAME='demo-${{github.sha}}'" >> $GITHUB_ENV
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: demo-${{github.sha}}
+          name: ${{ env.ARTIFACT_NAME }}
           path: build/demo
-      - name: Get the version
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v*}
-      - name: Send Repository Dispatch event
-        uses: peter-evans/repository-dispatch@v2
+      - name: Notify bpmn-visualization-examples repository of new BPMN visualization version
+        uses: ./.github/actions/notify-PA-repo-of-new-version
         with:
-          token: ${{ secrets.GH_RELEASE_TOKEN }}
-          repository: process-analytics/bpmn-visualization-examples
-          event-type: update_bpmn_visualization_version
-          client-payload: '{
-              "build_demo_repo": "${{ github.repository }}",
-              "build_demo_workflow_id": "upload-demo-archive-and-trigger-examples-repository-update.yml",
-              "artifact_name": "demo-${{ github.sha }}",
-              "version": "${{ steps.get_version.outputs.VERSION }}"
-            }'
+          PA_REPOSITORY: 'bpmn-visualization-examples'
+          BUILD_DEMO_WORKFLOW_ID: "upload-demo-archive-and-trigger-examples-repository-update.yml"
+          ARTIFACT_NAME: ${{ env.ARTIFACT_NAME }}
+          TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
