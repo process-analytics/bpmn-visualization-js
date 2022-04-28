@@ -91,8 +91,8 @@ export class StyleConfigurator {
     ],
     [
       AssociationDirectionKind.BOTH,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (style: StyleMap) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
+      (_style: StyleMap) => {
         // the style is fully managed by the FlowKind.ASSOCIATION_FLOW style
       },
     ],
