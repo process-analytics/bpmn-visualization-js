@@ -36,14 +36,16 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-11, ubuntu-20.04, windows-2019]
-        browser: [chromium, firefox, chrome]
+        # TODO activate chrome, see https://github.com/process-analytics/bpmn-visualization-js/issues/1933
+        browser: [chromium, firefox]
         include:
           # only test WebKit on macOS
           - os: macos-11
             browser: webkit
+          # TODO activate edge, see https://github.com/process-analytics/bpmn-visualization-js/issues/1933
           # only test Edge on Windows
-          - os: windows-2019
-            browser: msedge
+          #- os: windows-2019
+          #  browser: msedge
     steps:
       - name: Checkout
         uses: actions/checkout@v3
