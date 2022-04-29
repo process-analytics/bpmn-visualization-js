@@ -23,7 +23,7 @@ import autoExternal from 'rollup-plugin-auto-external';
 import execute from 'rollup-plugin-execute';
 
 import typescript from 'rollup-plugin-typescript2';
-import commonjs from 'rollup-plugin-commonjs';
+import commonjs from 'rollup-plugin-commonjs'; // at least, needed to bundle mxGraph which is only available as a CommonJS module
 import resolve from '@rollup/plugin-node-resolve';
 import pkg from './package.json';
 
@@ -109,8 +109,6 @@ if (!buildBundles) {
         format: 'cjs',
       },
     ],
-    // except these 'custom specified' dependencies, rest of them is treated by the plugin: autoExternal
-    external: ['fast-xml-parser/src/parser'],
     plugins: withMinification(pluginsBundles),
   };
   const configBundles = {
