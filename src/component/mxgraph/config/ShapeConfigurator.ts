@@ -224,7 +224,8 @@ export default class ShapeConfigurator {
 
       // Removes unused
       if (state.overlays != null) {
-        state.overlays.visit(function (id: string, shape: mxShape) {
+        // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
+        state.overlays.visit(function (_id: string, shape: mxShape) {
           shape.destroy();
         });
       }
