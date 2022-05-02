@@ -30,15 +30,16 @@ export default class MarkerConfigurator {
     // This implementation is adapted from the draw.io BPMN 'dash' marker
     // https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796
 
+    // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
     const createMarker = (
       c: mxAbstractCanvas2D,
-      shape: mxShape,
-      type: string,
+      _shape: mxShape,
+      _type: string,
       pe: mxPoint,
       unitX: number,
       unitY: number,
       size: number,
-      source: mxCell,
+      _source: mxCell,
       strokewidth: number,
     ): (() => void) => {
       const nx = unitX * (size + strokewidth + 4);
