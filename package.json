@@ -1,6 +1,6 @@
 {
   "name": "bpmn-visualization",
-  "version": "0.23.1-post",
+  "version": "0.23.2-post",
   "description": "A TypeScript library for visualizing process execution data on BPMN diagrams",
   "keywords": [
     "bpmn2",
@@ -51,7 +51,6 @@
     "build": "rollup -c",
     "build-bundles": "rollup -c --config-build-bundles true",
     "prepack": "run-s clean build-bundles",
-    "build-utils": "rollup --config utils.rollup.config.mjs",
     "demo": "run-s demo:*",
     "demo:clean": "rimraf build/demo",
     "demo:css": "postcss dev/public/static/css/styles.css -o dev/public/static/css/tailwind.css",
@@ -82,7 +81,11 @@
     "postversion": "node scripts/manage-version-in-files.mjs && git commit --no-verify -a -m \"[RELEASE] Prepare version for new developments\"",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "utils-all": "run-s utils:build utils:test:*",
+    "utils:build": "rollup --config scripts/utils/rollup.config.mjs",
+    "utils:test:json": "node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/simple-start-task-end.bpmn --output json",
+    "utils:test:model": "node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/simple-start-task-end.bpmn --output model"
   },
   "dependencies": {
     "@typed-mxgraph/typed-mxgraph": "^1.0.5",
@@ -134,7 +137,7 @@
     "postcss-cli": "^9.0.2",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
-    "rollup": "^2.70.2",
+    "rollup": "^2.71.1",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-copy": "^3.4.0",

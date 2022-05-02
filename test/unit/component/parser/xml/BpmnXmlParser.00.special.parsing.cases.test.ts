@@ -67,4 +67,20 @@ describe('Special parsing cases', () => {
     // @ts-ignore x and y are parsed as string as defined in the BPMN diagram
     expect(getShape('BPMNShape_Activity_1').Bounds).toEqual(new Bounds('not_a_number', 'not a number too', -100, -80));
   });
+
+  it('Parse a diagram with entities in the name attributes', () => {
+    const json = new BpmnXmlParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/start-tasks-end_entities_in_attributes.bpmn'));
+
+    expect(json).toMatchObject({
+      definitions: {
+        process: {
+          startEvent: { name: '®Start Event 1 &reg;\nbuilt with ♠' },
+          task: { name: 'Task 1&nbsp;or task 2∕3⧵4' },
+          endEvent: { name: '&unknown; End Event & 1/2\\3 Ø \n &yen; / ¥' },
+          sequenceFlow: [{ name: '<Sequence> Flow 1&2' }, { name: 'Sequence \'Flow" 2' }],
+        },
+        BPMNDiagram: expect.anything(),
+      },
+    });
+  });
 });

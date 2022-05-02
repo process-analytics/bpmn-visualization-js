@@ -28,6 +28,8 @@ export default class BpmnXmlParser {
     removeNSPrefix: true,
     ignoreAttributes: false,
     parseAttributeValue: true, // ensure numbers are parsed as number, not as string
+    // entities management
+    processEntities: false, // If you don't have entities in your XML document then it is recommended to disable it for better performance.
     attributeValueProcessor: (name: string, val: string) => {
       return decodeXML(val);
     },
