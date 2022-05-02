@@ -28,7 +28,7 @@ runs:
     - name: Set CLIENT_PAYLOAD
       shell: bash
       run: |
-        if [[ ${{ inputs.BUILD_DEMO_WORKFLOW_ID }} == '' && ${{ inputs.ARTIFACT_NAME }} == '' ]]; then
+        if [[ "${{ inputs.BUILD_DEMO_WORKFLOW_ID }}" == '' && "${{ inputs.ARTIFACT_NAME }}" == '' ]]; then
           echo "CLIENT_PAYLOAD=$( jq -n -c \
                   --arg v "${{ env.VERSION }}" \
                   '{ version: $v }' )" >> $GITHUB_ENV
