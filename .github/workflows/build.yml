@@ -16,7 +16,6 @@ on:
       - 'rollup.config.js'
       - 'tailwind.config.js'
       - 'tsconfig.json'
-      - 'utils.rollup.config.mjs'
   pull_request:
     branches:
       - master
@@ -32,7 +31,6 @@ on:
       - 'rollup.config.js'
       - 'tailwind.config.js'
       - 'tsconfig.json'
-      - 'utils.rollup.config.mjs'
 
 jobs:
   build:
@@ -90,8 +88,8 @@ jobs:
           name: integration-test-results-${{matrix.os.name}}-${{github.sha}}
           path: build/test-report/integration
       # Ensure we don't break scripts
-      - name: Build utils
-        run: npm run build-utils
+      - name: Build and test utils
+        run: npm run utils-all
       # Ensure we don't break performance tests code
       - name: Check performance tests compilation
         run: npm run test:perf:compile

@@ -110,8 +110,8 @@ abstract class BaseTaskShape extends BaseActivityShape {
  * @internal
  */
 export class TaskShape extends BaseTaskShape {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected paintTaskIcon(paintParameter: PaintParameter): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
+  protected paintTaskIcon(_paintParameter: PaintParameter): void {
     // No symbol for the BPMN Task
     this.iconPainter.paintEmptyIcon();
   }

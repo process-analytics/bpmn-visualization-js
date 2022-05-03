@@ -14,27 +14,16 @@
  * limitations under the License.
  */
 import typescript from 'rollup-plugin-typescript2';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
 import externals from 'rollup-plugin-node-externals';
-import ts from 'typescript';
 
-const plugins = [
-  typescript({
-    typescript: ts,
-  }),
-  // rollup-plugin-node-externals declares NodeJS built-in modules as external
-  externals({
-    exclude: ['path', 'entities'],
-  }),
-  resolve(),
-  commonjs(),
-];
 export default {
   input: 'scripts/utils/parseBpmn.ts',
   output: {
     file: 'scripts/utils/dist/utils.mjs',
     format: 'es',
   },
-  plugins: plugins,
+  plugins: [
+    typescript(),
+    externals(), // Make all Node builtins, deps, devDeps, peerDeps and optDeps external
+  ],
 };
