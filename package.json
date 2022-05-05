@@ -55,6 +55,7 @@
     "prepack": "run-s clean build-bundles",
     "demo": "run-s demo:*",
     "demo:build": "tsc --noEmit && vite build",
+    "demo:prepare": "node scripts/prepare-demo-for-publish.mjs",
     "demo-preview": "vite preview",
     "docs": "run-s docs:*",
     "docs:user": "node scripts/docs.js",
