@@ -63,15 +63,16 @@ Planned features:
 
 in progress
 
-- True opensource license (no watermark/trademark display is required)
-- native TypeScript support
-- strong identity - the only viewer displaying a woman/female icon as User Task icon
+- ✨ True opensource license (no watermark/trademark display is required)
+- 🔥 Strongly typed codebase (TypeScript Typings readily available) - native TypeScript support
+- 🎃 strong identity - the only viewer displaying a woman/female icon as User Task icon
+- 🎸 documentation and a lot of integration examples
+- 👓 rendering fully customizable in a simple way
+- 🎯 battle tested: coverage, thousands of test, including tests on all supported browsers for Linux, macOS and Windows
 
-Decide if integrate in list
-- documentation and a lot of integration examples
-- rendering fully customizable in a simple way
-- battle tested: coverage, thousands of test, including tests on all supported browsers for Linux, macOS and Windows
-- simple usage, provide base for more opinionated lib --> not available for now
+not sure to keep the following
+- ⚡️ several types of bundles exposed: for project (ES6, CommonJS) and IIFE (for vanilla, framework-free usage)
+
 
 
 ## 🌏 Browsers Support
