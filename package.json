@@ -43,7 +43,8 @@
   "module": "dist/bpmn-visualization.esm.js",
   "types": "dist/bpmn-visualization.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "NOTICE"
   ],
   "scripts": {
     "all": "run-s clean lint lint-check build test",
