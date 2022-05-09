@@ -13,17 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const defaultPlugins = {
-  tailwindcss: {},
-  autoprefixer: {},
-};
 
-const plugins = process.env.devLiveReloadMode
-  ? defaultPlugins
-  : {
-      ...defaultPlugins,
-      cssnano: {
-        preset: 'default',
-      },
-    };
-module.exports = { plugins };
+// const defaultPlugins = {
+//   tailwindcss: {},
+//   autoprefixer: {},
+// };
+//
+// // TODO manage development/production
+// const isDevelopment = true;
+// const plugins = isDevelopment
+//   ? defaultPlugins
+//   : {
+//       ...defaultPlugins,
+//       cssnano: {
+//         preset: 'default',
+//       },
+//     };
+// module.exports = { plugins };
+
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+    // TODO restore the cssnano dependency and active the following only when building the demo
+    cssnano: {
+      preset: 'default',
+    },
+  },
+};

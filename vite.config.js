@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Bonitasoft S.A.
+ * Copyright 2022 Bonitasoft S.A.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { copySync } from 'fs-extra';
 
-copySync(`${__dirname}/../fixtures/bpmn`, `${__dirname}/../../build/public/static/bpmn/`, { overwrite: true, recursive: true });
+import { resolve } from 'path';
+
+/**
+ * @type {import('vite').UserConfig}
+ */
+const config = {
+  server: {
+    port: 10001,
+  },
+
+  // Configuration to build the demo
+  build: {
+    outDir: 'build/demo',
+    rollupOptions: {
+      input: {
+        index: resolve(__dirname, 'dev/public/index.html'),
+        'elements-identification': resolve(__dirname, 'dev/public/elements-identification.html'),
+      },
+    },
+  },
+  preview: {
+    port: 10002,
+  },
+};
+
+export default config;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { documentReady, startBpmnVisualization, fit, FitType } from '../../index.es.js';
+import { documentReady, startBpmnVisualization, fit, FitType } from '/dev/ts/internal-dev-bundle-index.ts';
 import { configureControlsPanel, configureMousePointer } from './helpers/controls.js';
 
 function fitOnClick(fitType) {

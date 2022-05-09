@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// in the future, we should find a solution to avoid using the reference everywhere in tests
+// see https://github.com/jest-community/jest-extended/issues/367
+/// <reference types="jest-extended" />
+
 import 'expect-playwright';
 import type { PageWaitForSelectorOptions } from 'expect-playwright';
 import type { ElementHandle, Page } from 'playwright';
@@ -106,7 +111,7 @@ export class PageTester {
    */
   constructor(protected targetedPageConfiguration: TargetedPageConfiguration, protected page: Page) {
     const showMousePointer = targetedPageConfiguration.showMousePointer ?? false;
-    this.baseUrl = `http://localhost:10002/${targetedPageConfiguration.pageFileName}.html?showMousePointer=${showMousePointer}`;
+    this.baseUrl = `http://localhost:10001/dev/public/${targetedPageConfiguration.pageFileName}.html?showMousePointer=${showMousePointer}`;
     this.bpmnContainerId = targetedPageConfiguration.bpmnContainerId ?? 'bpmn-container';
     this.diagramSubfolder = targetedPageConfiguration.diagramSubfolder;
     this.bpmnPage = new BpmnPage(this.bpmnContainerId, this.page);
@@ -125,8 +130,9 @@ export class PageTester {
   protected async doGotoPageAndLoadBpmnDiagram(url: string, checkResponseStatus = true): Promise<void> {
     const response = await this.page.goto(url);
     if (checkResponseStatus) {
+      // the Vite server can return http 304 for optimization
       // eslint-disable-next-line jest/no-standalone-expect
-      expect(response.status()).toBe(200);
+      expect(response.status()).toBeOneOf([200, 304]);
     }
 
     await this.bpmnPage.expectPageTitle(this.targetedPageConfiguration.expectedPageTitle);
@@ -144,7 +150,7 @@ export class PageTester {
    */
   private computePageUrl(bpmnDiagramName: string, loadOptions: LoadOptions, styleOptions?: StyleOptions, bpmndElementIdToCollapse?: string | undefined): string {
     let url = this.baseUrl;
-    url += `&url=./static/bpmn/${this.diagramSubfolder}/${bpmnDiagramName}.bpmn`;
+    url += `&url=/test/fixtures/bpmn/${this.diagramSubfolder}/${bpmnDiagramName}.bpmn`;
 
     // load query parameters
     loadOptions.fit?.type && (url += `&fitTypeOnLoad=${loadOptions.fit.type}`);

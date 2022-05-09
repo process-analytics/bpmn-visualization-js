@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const { isRunningOnCISlowOS } = require('../helpers/environment-utils');
+const { isRunningOnCISlowOS, isRunningOnCi } = require('../helpers/environment-utils');
 
 const log = require('debug')('bv:test:config:pw');
 
@@ -86,14 +86,19 @@ const computeConfigurationForDevServerUsage = defaultBrowsers => {
   log('Computing configuration for dev server usage');
   /** @type {import('jest-playwright-preset/types/global').ServerOptions} */
   const serverOptions = {
-    command: `npm run start -- --config-server-port 10002`,
-    port: 10002,
+    command: `npm start`,
+    port: 10001,
+    basePath: '/dev/public/index.html',
     // if default or tcp, the test starts right await whereas the dev server is not available on http
     // for more details, see https://github.com/process-analytics/bpmn-visualization-js/pull/1056
     protocol: 'http',
-    launchTimeout: 60_000, // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
+    // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
+    launchTimeout: isRunningOnCi() ? 60_000 : 10_000,
     debug: true,
     usedPortAction: 'ignore', // your tests are executed, we assume that the server is already started
+    waitOnScheme: {
+      verbose: true,
+    },
   };
   return {
     ...computeBaseConfiguration(defaultBrowsers),

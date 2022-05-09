@@ -34,8 +34,8 @@ module.exports = {
   coveragePathIgnorePatterns: ['/src/model'],
   coverageReporters: ['lcov', 'text-summary'],
   coverageDirectory: 'build/test-report/e2e',
-  setupFiles: ['./test/config/copy.bpmn.diagram.ts'],
   setupFilesAfterEnv: [
+    'jest-extended/all',
     'expect-playwright',
     './test/config/jest.retries.ts',
     // jest-image-snapshot configuration doesn't work with setupFiles, fix with setupFilesAfterEnv: see https://github.com/testing-library/jest-dom/issues/122#issuecomment-650520461
