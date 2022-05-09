@@ -120,7 +120,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "expect-playwright": "^0.8.0",
     "fs-extra": "^10.1.0",
-    "husky": "^7.0.4",
+    "husky": "^8.0.0",
     "jest": "^27.5.1",
     "jest-extended": "^2.0.0",
     "jest-html-reporter": "^3.5.0",
