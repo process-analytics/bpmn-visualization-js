@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-// in the future, we should find a solution to avoid using the reference everywhere in tests
-// see https://github.com/jest-community/jest-extended/issues/367
-/// <reference types="jest-extended" />
-
 import { readFileSync } from '../../../../helpers/file-helper';
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 import type { BPMNDiagram, BPMNLabel, BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
