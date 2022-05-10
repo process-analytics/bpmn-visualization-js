@@ -34,8 +34,8 @@ const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
   failureThresholdType: 'percent',
 };
 
-/** Default threshold value is to make tests pass on macOS using Chromium (the GitHub workflow diff was 0.00031509446166699817%). */
-export const defaultChromiumFailureThreshold = 0.000004;
+/** Default threshold value is to make tests pass on macOS using Chromium (the local diff was 0.00516920660650344%). */
+export const defaultChromiumFailureThreshold = 0.006 / 100;
 
 export class ImageSnapshotConfigurator {
   private readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>;

@@ -32,42 +32,6 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
-        'flows.sequence.02.events.from.to',
-        {
-          macos: 0.0009 / 100, // 0.0008028063969600652%
-        },
-      ],
-      [
-        'flows.sequence.03.gateways.from.to',
-        {
-          macos: 0.0009 / 100, // 0.0008775486152190481%
-        },
-      ],
-      [
-        'flows.sequence.04.waypoints.01.none',
-        {
-          macos: 0.0007 / 100, // 0.0006589770300657882%
-        },
-      ],
-      [
-        'flows.sequence.04.waypoints.02.terminal.inside.shapes',
-        {
-          macos: 0.0006 / 100, // 0.0005239981825444495%
-        },
-      ],
-      [
-        'flows.sequence.04.waypoints.03.terminal.outside.shapes.01.general',
-        {
-          macos: 0.003 / 100, // 0.002985037063374385%
-        },
-      ],
-      [
-        'flows.sequence.04.waypoints.03.terminal.outside.shapes.02.segments.no.intersection.with.shapes',
-        {
-          macos: 0.006 / 100, // 0.00516920660650344%
-        },
-      ],
-      [
         'flows.message.02.labels.and.complex.paths',
         {
           macos: 0.05 / 100, // 0.04335117590119619%
