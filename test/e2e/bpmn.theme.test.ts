@@ -40,9 +40,13 @@ const styleOptionsPerUseCase = new Map<string, StyleOptions>([
 ]);
 
 describe('BPMN theme', () => {
+  // chromium max: 0.000039994806566578944%
   // firefox max for all OS: 0.05276323813941941%
   // webkit max: 0.08257897420939077%
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new MultiBrowserImageSnapshotThresholds({ chromium: 0, firefox: 0.053 / 100, webkit: 0.083 / 100 }), 'theme');
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
+    new MultiBrowserImageSnapshotThresholds({ chromium: 0.00004 / 100, firefox: 0.053 / 100, webkit: 0.083 / 100 }),
+    'theme',
+  );
 
   const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression', diagramSubfolder: 'theme' }, <Page>page);
   const useCases = Array.from(styleOptionsPerUseCase.keys());
