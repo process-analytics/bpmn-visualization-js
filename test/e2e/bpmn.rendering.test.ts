@@ -53,14 +53,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.04 / 100, // 0.03137680045437463%
         },
       ],
-      [
-        'labels.01.general',
-        {
-          linux: 0.0005 / 100, // 0.00046159344679885805%
-          macos: 0.55 / 100, // 0.5443537069607207%
-          windows: 0.43 / 100, // 0.4279840696306825%
-        },
-      ],
+      // [
+      //   'labels.01.general',
+      //   {
+      //     linux: 0.0005 / 100, // 0.00046159344679885805%
+      //     macos: 0.55 / 100, // 0.5443537069607207%
+      //     windows: 0.43 / 100, // 0.4279840696306825%
+      //   },
+      // ],
       [
         'labels.02.position.and.line.breaks',
         {
@@ -149,16 +149,16 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.24 / 100, // 0.23009823201961543%
         },
       ],
-      [
-        'labels.01.general',
-        {
-          // high values due to font rendering discrepancies with chromium rendering
-          linux: 2.06 / 100, // 2.0563192299700384%
-          macos: 2.35 / 100, // 2.34547842662729%
-          // very high threshold
-          windows: 13.42 / 10, // 13.418682820755645%
-        },
-      ],
+      // [
+      //   'labels.01.general',
+      //   {
+      //     // high values due to font rendering discrepancies with chromium rendering
+      //     linux: 2.06 / 100, // 2.0563192299700384%
+      //     macos: 2.35 / 100, // 2.34547842662729%
+      //     // very high threshold
+      //     windows: 13.42 / 10, // 13.418682820755645%
+      //   },
+      // ],
       [
         'labels.02.position.and.line.breaks',
         {
@@ -245,13 +245,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           macos: 0.41 / 100, // 0.40487233108913445%
         },
       ],
-      [
-        'labels.01.general',
-        {
-          // TODO possible rendering issue so high threshold value
-          macos: 2.51 / 100, // 2.5042273857533215%
-        },
-      ],
+      // [
+      //   'labels.01.general',
+      //   {
+      //     // TODO possible rendering issue so high threshold value
+      //     macos: 2.51 / 100, // 2.5042273857533215%
+      //   },
+      // ],
       [
         'labels.02.position.and.line.breaks',
         {
