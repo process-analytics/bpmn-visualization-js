@@ -69,13 +69,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'with.outside.labels',
-        {
-          macos: 0.22 / 100, // max 0.21306736217683309%
-          windows: 0.39 / 100, // max 0.38276450047973753%
-        },
-      ],
+      // [
+      //   'with.outside.labels',
+      //   {
+      //     macos: 0.22 / 100, // max 0.21306736217683309%
+      //     windows: 0.39 / 100, // max 0.38276450047973753%
+      //   },
+      // ],
     ]);
   }
 
@@ -105,15 +105,15 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.014 / 100, // max 0.013336184209755686%
         },
       ],
-      [
-        'with.outside.labels',
-        {
-          linux: 0.92 / 100, // max 0.915127526507431%
-          macos: 1.09 / 100, // max 1.0850265173179108%
-          // TODO possible rendering issue so high threshold value
-          windows: 3.75 / 100, // max 3.748766658101066%
-        },
-      ],
+      // [
+      //   'with.outside.labels',
+      //   {
+      //     linux: 0.92 / 100, // max 0.915127526507431%
+      //     macos: 1.09 / 100, // max 1.0850265173179108%
+      //     // TODO possible rendering issue so high threshold value
+      //     windows: 3.75 / 100, // max 3.748766658101066%
+      //   },
+      // ],
     ]);
   }
 
@@ -137,12 +137,12 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           macos: 0.03 / 100, // max is 0.029136454748612817%
         },
       ],
-      [
-        'with.outside.labels',
-        {
-          macos: 1.07 / 100, // max is 1.0614921567171032%
-        },
-      ],
+      // [
+      //   'with.outside.labels',
+      //   {
+      //     macos: 1.07 / 100, // max is 1.0614921567171032%
+      //   },
+      // ],
     ]);
   }
 }
