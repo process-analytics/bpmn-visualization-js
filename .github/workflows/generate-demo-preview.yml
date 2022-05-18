@@ -21,7 +21,7 @@ on:
 jobs:
   # inspired from https://github.com/process-analytics/github-actions-playground/pull/23
   check_secrets:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     outputs:
       is_SURGE_TOKEN_set: ${{ steps.secret_availability.outputs.is_SURGE_TOKEN_set }}
     steps:
@@ -36,7 +36,7 @@ jobs:
   demo_preview:
     needs: [check_secrets]
     if: needs.check_secrets.outputs.is_SURGE_TOKEN_set == 'true'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
         if: github.event.action != 'closed'

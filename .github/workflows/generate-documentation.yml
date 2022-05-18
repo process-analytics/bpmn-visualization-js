@@ -31,7 +31,7 @@ jobs:
   # inspired from https://github.com/process-analytics/github-actions-playground/pull/23
   check_secrets:
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     outputs:
       is_SURGE_TOKEN_set: ${{ steps.secret_availability.outputs.is_SURGE_TOKEN_set }}
     steps:
@@ -46,7 +46,7 @@ jobs:
   doc_preview:
     needs: [check_secrets]
     if: github.event_name == 'pull_request' && needs.check_secrets.outputs.is_SURGE_TOKEN_set == 'true'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
         if: github.event.action != 'closed'
@@ -68,7 +68,7 @@ jobs:
 
   generate_doc:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&  github.event.ref == 'refs/heads/master'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: Setup node
@@ -89,7 +89,7 @@ jobs:
 
   push_to_gh_pages:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&  github.event.ref == 'refs/heads/master'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: generate_doc
     steps:
       - name: Download
