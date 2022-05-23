@@ -21,7 +21,7 @@ jobs:
       - name: Build Demo
         run: npm run demo
       - name: Set ARTIFACT_NAME
-        run: echo "ARTIFACT_NAME='demo-${{github.sha}}'" >> $GITHUB_ENV
+        run: echo "ARTIFACT_NAME=demo-${{github.sha}}" >> $GITHUB_ENV
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
@@ -32,5 +32,5 @@ jobs:
         with:
           PA_REPOSITORY: 'bpmn-visualization-examples'
           BUILD_DEMO_WORKFLOW_ID: "upload-demo-archive-and-trigger-examples-repository-update.yml"
-          ARTIFACT_NAME: ${{ env.ARTIFACT_NAME }}
+          ARTIFACT_NAME: '${{ env.ARTIFACT_NAME }}'
           TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
