@@ -16,8 +16,7 @@
 import 'expect-playwright';
 import type { PageWaitForSelectorOptions } from 'expect-playwright';
 import type { ElementHandle, Page } from 'playwright';
-import type { LoadOptions } from '../../../../src/component/options';
-import { FitType } from '../../../../src/component/options';
+import { type LoadOptions, FitType, ZoomType } from '../../../../src/component/options';
 import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
 import { delay } from '../test-utils';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -180,16 +179,17 @@ export class PageTester {
     await this.page.mouse.up();
   }
 
-  async mouseZoomNoDelay(point: Point, deltaX: number): Promise<void> {
+  async mouseZoomNoDelay(point: Point, zoomType: ZoomType): Promise<void> {
+    const deltaX = zoomType == ZoomType.In ? -100 : 100;
     await this.page.mouse.move(point.x, point.y);
     await this.page.keyboard.down('Control');
     await this.page.mouse.wheel(deltaX, 0);
     await this.page.keyboard.up('Control');
   }
 
-  async mouseZoom(xTimes: number, point: Point, deltaX: number): Promise<void> {
+  async mouseZoom(point: Point, zoomType: ZoomType, xTimes = 1): Promise<void> {
     for (let i = 0; i < xTimes; i++) {
-      await this.mouseZoomNoDelay(point, deltaX);
+      await this.mouseZoomNoDelay(point, zoomType);
       // delay here is needed to make the tests pass on macOS, delay must be greater than debounce timing, so it surely gets triggered
       await delay(envUtils.isRunningOnCISlowOS() ? 300 : 150);
     }

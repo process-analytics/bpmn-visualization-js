@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { BpmnElement, BpmnElementKind, FitOptions, FitType, GlobalOptions, LoadOptions, Overlay, Version } from '../../src/bpmn-visualization';
+import type { BpmnElement, BpmnElementKind, FitOptions, FitType, GlobalOptions, LoadOptions, Overlay, Version, ZoomType } from '../../src/bpmn-visualization';
 import { log, logDownload, logErrorAndOpenAlert, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';
@@ -42,7 +42,7 @@ function stringify(value: unknown): string {
 }
 
 function loadBpmn(bpmn: string): void {
-  log('Loading bpmn....');
+  log('Loading bpmn...');
   try {
     bpmnVisualization.load(bpmn, loadOptions);
     log('BPMN loaded with configuration', stringify(loadOptions));
@@ -54,9 +54,15 @@ function loadBpmn(bpmn: string): void {
 }
 
 export function fit(fitOptions: FitOptions): void {
-  log('Fitting....');
-  bpmnVisualization.fit(fitOptions);
+  log('Fitting...');
+  bpmnVisualization.navigation.fit(fitOptions);
   log('Fit done with configuration', stringify(fitOptions));
+}
+
+export function zoom(zoomType: ZoomType): void {
+  log(`Zooming '${zoomType}'...`);
+  bpmnVisualization.navigation.zoom(zoomType);
+  log('Zoom done');
 }
 
 export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
