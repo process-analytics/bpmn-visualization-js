@@ -86,7 +86,7 @@ const computeConfigurationForDevServerUsage = defaultBrowsers => {
   log('Computing configuration for dev server usage');
   /** @type {import('jest-playwright-preset/types/global').ServerOptions} */
   const serverOptions = {
-    command: `npm start`,
+    command: `npm run dev`,
     port: 10001,
     basePath: '/dev/public/index.html',
     // if default or tcp, the test starts right await whereas the dev server is not available on http
