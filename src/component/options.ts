@@ -72,10 +72,10 @@ export interface ZoomConfiguration {
  * @category Initialization
  */
 export interface ModelFilter {
-  includes: {
-    pools: {
-      ids: string | string[];
-      names: string | string[];
+  includes?: {
+    pools?: {
+      ids?: string | string[];
+      names?: string | string[];
     };
     // for the future
     // diagrams: {
