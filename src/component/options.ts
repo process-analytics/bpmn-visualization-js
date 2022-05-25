@@ -59,6 +59,18 @@ export interface ZoomConfiguration {
   debounceDelay?: number;
 }
 
+/**
+ * ```typescript
+ * bpmnVisualization.load({ filters: {
+ *      includes: {
+ *        ids: 'Participant_1257_x151';
+ *        names: ['Customer', 'Supplier'];
+ *      }
+ *    }
+ * });
+ * ```
+ * @category Initialization
+ */
 interface ModelFilter {
   includes: {
     pools: {
