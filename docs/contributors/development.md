@@ -13,7 +13,7 @@
 ## Build
 
 - `npm install`           *Install the dependencies in the local node_modules folder*
-- `npm start`             *Start the development server and rebuild on changes* <br>
+- `npm run dev`           *Start the development server and rebuild on changes* <br>
                           You can now access the project on http://localhost:10001/dev/public/index.html
 
 ## Tests

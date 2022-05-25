@@ -47,7 +47,7 @@
     "NOTICE"
   ],
   "scripts": {
-    "start": "vite",
+    "dev": "vite",
     "all": "run-s clean lint lint-check build test",
     "clean": "rimraf build dist",
     "build": "tsc --noEmit",
