@@ -98,6 +98,7 @@
     "strnum": "1.0.5"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "~22.0.0",
     "@rollup/plugin-node-resolve": "~13.3.0",
     "@types/debug": "~4.1.7",
     "@types/jest": "~27.5.0",
@@ -140,7 +141,6 @@
     "rimraf": "~3.0.2",
     "rollup": "~2.74.1",
     "rollup-plugin-auto-external": "~2.0.0",
-    "rollup-plugin-commonjs": "~10.1.0",
     "rollup-plugin-copy": "~3.4.0",
     "rollup-plugin-copy-watch": "0.0.1",
     "rollup-plugin-execute": "~1.1.1",
