@@ -20,6 +20,7 @@ import { resolve } from 'path';
  * @type {import('vite').UserConfig}
  */
 const config = {
+  base: './', // Base public path when served in development or production. https://vitejs.dev/config/#base
   server: {
     port: 10001,
   },

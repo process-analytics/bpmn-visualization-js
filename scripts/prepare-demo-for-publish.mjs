@@ -19,14 +19,6 @@ import { join } from 'path';
 
 const demoRootDirectory = './build/demo';
 
-const updateAssetsLoadingFile = path => {
-  let content = fs.readFileSync(path, 'utf8').toString();
-  content = content.replaceAll('"/assets/', '"assets/');
-  fs.writeFileSync(path, content);
-  // eslint-disable-next-line no-console
-  console.info('Content of page updated', path);
-};
-
 // TODO for seamless maintenance, find the html files in the directory
 const pages = ['index.html', 'elements-identification.html'];
 pages.forEach(page => {
@@ -34,7 +26,6 @@ pages.forEach(page => {
   console.info('Managing', page);
   // move page out of the public/dev directory
   fs.renameSync(join(demoRootDirectory, 'dev/public', page), join(demoRootDirectory, page));
-  updateAssetsLoadingFile(join(demoRootDirectory, page));
 });
 
 // TODO remove the whole dev folder
