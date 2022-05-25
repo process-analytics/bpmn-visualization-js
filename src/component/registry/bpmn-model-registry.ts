@@ -20,6 +20,7 @@ import type { BpmnSemantic } from './types';
 import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import type { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import type { ModelFilter } from '../options';
 
 /**
  * @internal
@@ -28,7 +29,7 @@ export class BpmnModelRegistry {
   private searchableModel: SearchableModel;
   private onLoadCallback: () => void;
 
-  load(bpmnModel: BpmnModel): RenderedModel {
+  load(bpmnModel: BpmnModel, modelFilter?: ModelFilter): RenderedModel {
     this.searchableModel = new SearchableModel(bpmnModel);
     this.onLoadCallback?.();
     return toRenderedModel(bpmnModel);

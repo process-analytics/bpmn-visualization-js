@@ -61,7 +61,7 @@ export interface ZoomConfiguration {
 
 /**
  * ```typescript
- * bpmnVisualization.load({ filters: {
+ * bpmnVisualization.load({ modelFilter: {
  *      includes: {
  *        ids: 'Participant_1257_x151';
  *        names: ['Customer', 'Supplier'];
@@ -71,7 +71,7 @@ export interface ZoomConfiguration {
  * ```
  * @category Initialization
  */
-interface ModelFilter {
+export interface ModelFilter {
   includes: {
     pools: {
       ids: string | string[];
@@ -90,7 +90,7 @@ interface ModelFilter {
  */
 export interface LoadOptions {
   fit?: FitOptions;
-  filters?: ModelFilter;
+  modelFilter?: ModelFilter;
 }
 
 /**
