@@ -59,12 +59,20 @@ export interface ZoomConfiguration {
   debounceDelay?: number;
 }
 
+interface FilteredModel {
+  pools: {
+    ids: string | string[];
+    names: string | string[];
+  };
+}
+
 /**
  * Options when loading a BPMN Diagram.
  * @category Initialization
  */
 export interface LoadOptions {
   fit?: FitOptions;
+  filters?: FilteredModel;
 }
 
 /**
