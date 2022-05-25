@@ -59,7 +59,7 @@ export interface ZoomConfiguration {
   debounceDelay?: number;
 }
 
-interface FilteredModel {
+interface ModelFilter {
   includes: {
     pools: {
       ids: string | string[];
@@ -78,7 +78,7 @@ interface FilteredModel {
  */
 export interface LoadOptions {
   fit?: FitOptions;
-  filters?: FilteredModel;
+  filters?: ModelFilter;
 }
 
 /**
