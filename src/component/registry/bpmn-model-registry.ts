@@ -101,3 +101,29 @@ class SearchableModel {
     return this.elements.get(id);
   }
 }
+
+// for pool
+class ModelFiltering {
+  filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
+    // TODO filter not defined (empty string, empty array, ....)
+    const poolIdsFilter = modelFilter?.includes?.pools?.ids;
+    // const poolNamesFilter = modelFilter?.includes?.pools?.names;
+    if (!poolIdsFilter) {
+      return bpmnModel;
+    }
+
+    // TODO no pool in model
+
+    // lookup pools
+    const pools = bpmnModel.pools;
+    // TODO ensure it is an array
+    const filter = <Array<string>>poolIdsFilter;
+    const filteredPools = pools.filter(pool => filter.includes(pool.id));
+
+    const flowNodes: Shape[] = [];
+    const lanes: Shape[] = [];
+    // const filteredPools: Shape[] = [];
+    const edges: Edge[] = [];
+    return { flowNodes, lanes, pools: filteredPools, edges };
+  }
+}
