@@ -159,12 +159,12 @@ All configurations described here can be done in `bpmn.rendering.test.ts`.
 <a name="image-diff-threshold"></a>
 ##### Image diff threshold
 
-The ideal scenario generates SVG that does not involve font: SVG is supposed to be rendered in the same way on all OS, so
-in that case, the actual rendering exactly matches the reference image.
+The ideal scenario generates SVG that does not involve font: SVG is supposed to be rendered in the same way on all OS and
+web browsers, so in that case, the actual rendering exactly matches the reference image.
 
-As font rendering differs depending on the OS, BPMN diagram containing label won't be rendered exactly as the reference
-image on all OS. In that case, a diff threshold image must be configured: the test will fail if the diff is above the
-threshold.
+As font rendering differs depending on the OS and the web browsers, BPMN diagram containing label won't be rendered exactly
+as the reference image on all OS. In that case, a diff threshold image must be configured: the test will fail if the diff
+is above the threshold.
 
 To be able to detect most of the unwanted changes, this threshold must be set as small as possible but large enough to
 manage small variations and not produce false positive errors.
@@ -180,8 +180,13 @@ The diagrams used by tests are located in the `test/fixtures/bpmn` folder and su
 by tests are in charge of loading the BPMN diagrams.
 
 To load a diagram, just pass a relative path to the diagram as query parameter. The page is able to fetch the diagram content
-as the diagrams are served by the dev server.
-Convenient methods exist to only pass the name of the diagram without having to manage the folder tree to the file.
+as the diagrams are served by the dev server. The parameter name is `url` and the value is the path from the project root like
+`/test/fixtures/bpmn/simple-start-task-end.bpmn`. This works with all test pages of the project.
+
+Example: 
+> http://localhost:10001/dev/public/index.html?url=/test/fixtures/bpmn/non-regression/associations.and.annotations.01.general.bpmn
+
+In tests, convenient methods exist to only pass the name of the diagram without having to manage the folder tree to the file.
 
 
 ### Performance tests
