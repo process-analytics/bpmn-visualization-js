@@ -97,7 +97,7 @@ const computeConfigurationForDevServerUsage = defaultBrowsers => {
     debug: true,
     usedPortAction: 'ignore', // your tests are executed, we assume that the server is already started
     waitOnScheme: {
-      verbose: true,
+      verbose: false,
     },
   };
   return {
