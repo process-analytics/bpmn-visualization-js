@@ -19,13 +19,13 @@ const defaultPlugins = {
   autoprefixer: {},
 };
 
-const isDevelopment = process.env.NODE_ENV === 'development';
-const plugins = isDevelopment
-  ? defaultPlugins
-  : {
-      ...defaultPlugins,
-      cssnano: {
-        preset: 'default',
-      },
-    };
+const plugins =
+  process.env.NODE_ENV === 'development'
+    ? defaultPlugins
+    : {
+        ...defaultPlugins,
+        cssnano: {
+          preset: 'default',
+        },
+      };
 module.exports = { plugins };
