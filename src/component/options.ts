@@ -60,9 +60,15 @@ export interface ZoomConfiguration {
 }
 
 interface FilteredModel {
-  pools: {
-    ids: string | string[];
-    names: string | string[];
+  includes: {
+    pools: {
+      ids: string | string[];
+      names: string | string[];
+    };
+    // for the future
+    // diagrams: {
+    //   id: string;
+    // };
   };
 }
 
