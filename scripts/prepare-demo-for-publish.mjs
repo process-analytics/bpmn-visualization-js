@@ -19,14 +19,13 @@ import { join } from 'path';
 
 const demoRootDirectory = './build/demo';
 
-// TODO for seamless maintenance, find the html files in the directory
-const pages = ['index.html', 'elements-identification.html'];
+const relPathToHtmlPages = 'dev/public';
+const pages = fs.readdirSync(join(demoRootDirectory, relPathToHtmlPages));
 pages.forEach(page => {
   // eslint-disable-next-line no-console
   console.info('Managing', page);
   // move page out of the public/dev directory
-  fs.renameSync(join(demoRootDirectory, 'dev/public', page), join(demoRootDirectory, page));
+  fs.renameSync(join(demoRootDirectory, relPathToHtmlPages, page), join(demoRootDirectory, page));
 });
 
-// TODO remove the whole dev folder
-fs.rmdirSync(join(demoRootDirectory, 'dev/public'));
+fs.rmSync(join(demoRootDirectory, 'dev'), { recursive: true });
