@@ -147,23 +147,22 @@ describe('diagram navigation - zoom with buttons', () => {
   });
 });
 
-// eslint-disable-next-line jest/no-disabled-tests
-describe.skip('diagram navigation - zoom with buttons and mouse', () => {
-  // the suite is disabled because the diff is too large
-  // This may be caused a difference in the container center computation
-  // zoom api: mxgraph uses 'this.container.offsetWidth' (https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetWidth)
-  // https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraph.js#L8071
-  // zoom mouse: use 'this.container.getBoundingClientRect()'
+describe('diagram navigation - zoom with buttons and mouse', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
     new MultiBrowserImageSnapshotThresholds({
-      chromium: 0 / 100, // max 0.%
+      chromium: 0.03 / 100, // max 0.029310570733620533%
       firefox: 0 / 100, // max 0.%
       webkit: 0 / 100, // max 0.%
     }),
     'navigation',
   );
 
-  const xTimes = 4;
+  // only test with one Zoom call, otherwise the diff is too large
+  // This may be caused by a difference in the container center computation
+  // zoom api: mxgraph uses 'this.container.offsetWidth' (https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetWidth)
+  // https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraph.js#L8071
+  // zoom mouse: use 'this.container.getBoundingClientRect()'
+  const xTimes = 1;
   // the API zooms at the center of the container, so for identity zoom with mouse, do mouse zoom at the container center
   let containerCenter: Point;
 
@@ -172,33 +171,37 @@ describe.skip('diagram navigation - zoom with buttons and mouse', () => {
     containerCenter = await pageTester.getContainerCenter();
   });
 
-  it('buttons then mouse', async () => {
-    // in first: 1.2850529432182012%
-    // out first: 1.0804795345659812%
-    await doZoomWithButton(ZoomType.Out, xTimes);
-    await pageTester.mouseZoom(containerCenter, ZoomType.In, xTimes);
+  it.each`
+    firstZoom       | secondZoom
+    ${ZoomType.Out} | ${ZoomType.In}
+    ${ZoomType.In}  | ${ZoomType.Out}
+  `('buttons zoom $firstZoom then mouse zoom $secondZoom', async ({ firstZoom, secondZoom }: { firstZoom: ZoomType; secondZoom: ZoomType }) => {
+    await doZoomWithButton(firstZoom, xTimes);
+    await pageTester.mouseZoom(containerCenter, secondZoom, xTimes);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: join(config.customDiffDir, `zoom-button-then-mouse`),
+      customDiffDir: join(config.customDiffDir, `zoom-button-then-mouse-${firstZoom}-then-${secondZoom}`),
     });
   });
 
-  it('mouse then buttons', async () => {
-    // in first: 0.029310570733620533%
-    // out first: 0.029310570733620533%
-    await pageTester.mouseZoom(containerCenter, ZoomType.Out, xTimes);
-    await doZoomWithButton(ZoomType.In, xTimes);
+  it.each`
+    firstZoom       | secondZoom
+    ${ZoomType.Out} | ${ZoomType.In}
+    ${ZoomType.In}  | ${ZoomType.Out}
+  `('mouse zoom $firstZoom then buttons zoom $secondZoom', async ({ firstZoom, secondZoom }: { firstZoom: ZoomType; secondZoom: ZoomType }) => {
+    await pageTester.mouseZoom(containerCenter, firstZoom, xTimes);
+    await doZoomWithButton(secondZoom, xTimes);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: join(config.customDiffDir, `zoom-mouse-then-button`),
+      customDiffDir: join(config.customDiffDir, `zoom-mouse-then-button-${firstZoom}-then-${secondZoom}`),
     });
   });
 });
