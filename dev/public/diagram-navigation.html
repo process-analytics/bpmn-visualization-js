@@ -40,6 +40,20 @@
     <!-- Zoom -->
     <h5>Zoom</h5>
     <div class="flex-column-container">
+      <button id="zoom-in" title="Zoom In">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7,7 L5,7 L5,9 L7,9 L7,11 L9,11 L9,9 L11,9 L11,7 L9,7 L9,5 L7,5 L7,7 Z M12.9056439,14.3198574 C11.5509601,15.3729184 9.84871145,16 8,16 C3.581722,16 0,12.418278 0,8 C0,3.581722 3.581722,0 8,0 C12.418278,0 16,3.581722 16,8 C16,9.84871145 15.3729184,11.5509601 14.3198574,12.9056439 L19.6568542,18.2426407 L18.2426407,19.6568542 L12.9056439,14.3198574 Z M8,14 C11.3137085,14 14,11.3137085 14,8 C14,4.6862915 11.3137085,2 8,2 C4.6862915,2 2,4.6862915 2,8 C2,11.3137085 4.6862915,14 8,14 Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+    <div class="flex-column-container">
+      <button id="zoom-out" title="Zoom Out">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.9056439,14.3198574 C11.5509601,15.3729184 9.84871145,16 8,16 C3.581722,16 0,12.418278 0,8 C0,3.581722 3.581722,0 8,0 C12.418278,0 16,3.581722 16,8 C16,9.84871145 15.3729184,11.5509601 14.3198574,12.9056439 L19.6568542,18.2426407 L18.2426407,19.6568542 L12.9056439,14.3198574 Z M8,14 C11.3137085,14 14,11.3137085 14,8 C14,4.6862915 11.3137085,2 8,2 C4.6862915,2 2,4.6862915 2,8 C2,11.3137085 4.6862915,14 8,14 Z M5,7 L11,7 L11,9 L5,9 L5,7 Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+    <div class="flex-column-container">
       <label for="zoom-throttle">throttle</label>
       <input id="zoom-throttle" class="zoom-config" type="number" placeholder="thr" value="40" disabled
              title="to play with throttle pass parameter in url like this: .../diagram-navigation.html?zoomThrottle=40"/>

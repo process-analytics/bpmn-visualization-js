@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { FitType } from '../../src/component/options';
+
 import { readFileSync } from '../helpers/file-helper';
 import { initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visualization-initialization';
 
@@ -24,28 +24,6 @@ describe('BpmnVisualization', () => {
     expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(
       `XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`,
     );
-  });
-
-  describe('Fit', () => {
-    it('Fit no options', async () => {
-      bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
-      bpmnVisualization.fit();
-    });
-
-    it.each`
-      fitType
-      ${undefined}
-      ${null}
-      ${FitType.Center}
-      ${FitType.Horizontal}
-      ${FitType.HorizontalVertical}
-      ${FitType.None}
-      ${FitType.Vertical}
-    `('Fit with $fitType', ({ fitType }: { fitType: FitType }) => {
-      bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
-      // ensure no error
-      bpmnVisualization.fit({ type: fitType });
-    });
   });
 
   describe('Version', () => {

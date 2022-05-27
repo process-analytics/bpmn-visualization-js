@@ -19,6 +19,7 @@ export * from './component/options';
 export { BpmnVisualization } from './component/BpmnVisualization';
 export * from './component/registry';
 export type { Version } from './component/version';
+export type { Navigation } from './component/navigation';
 export * from './model/bpmn/internal';
 
 // not part of the public API but needed for the custom theme examples
