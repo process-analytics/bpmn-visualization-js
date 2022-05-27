@@ -65,15 +65,8 @@ export class StyleConfigurator {
         style[mxgraph.mxConstants.STYLE_STARTARROW] = MarkerIdentifier.ARROW_DASH;
       },
     ],
-    [
-      SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
-      (style: StyleMap) => {
-        style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_DIAMOND_THIN;
-        style[mxgraph.mxConstants.STYLE_STARTSIZE] = 18;
-        style[mxgraph.mxConstants.STYLE_STARTFILL] = true;
-        style[BpmnStyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
-      },
-    ],
+    [SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY, conditionalMarkerStyle],
+    [SequenceFlowKind.CONDITIONAL_FROM_GATEWAY, conditionalMarkerStyle],
   ]);
   private specificAssociationFlowStyles = new MapWithDefault<AssociationDirectionKind>([
     [
@@ -273,3 +266,10 @@ class MapWithDefault<T> extends Map<T, (style: StyleMap) => void> {
     );
   }
 }
+
+const conditionalMarkerStyle = (style: StyleMap): void => {
+  style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_DIAMOND_THIN;
+  style[mxgraph.mxConstants.STYLE_STARTSIZE] = 18;
+  style[mxgraph.mxConstants.STYLE_STARTFILL] = true;
+  style[BpmnStyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_MARKER_FILL_COLOR;
+};
