@@ -151,8 +151,8 @@ describe('diagram navigation - zoom with buttons and mouse', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
     new MultiBrowserImageSnapshotThresholds({
       chromium: 0.03 / 100, // max 0.029310570733620533%
-      firefox: 0 / 100, // max 0.%
-      webkit: 0 / 100, // max 0.%
+      firefox: 0.03 / 100, // max 0.029286409410644865%
+      webkit: 0.035 / 100, // max 0.03302199927066596%
     }),
     'navigation',
   );
