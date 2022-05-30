@@ -24,7 +24,7 @@ The best way to learn is to read the official [Gitpod documentation](https://www
 Once you logged to Gitpod, don't forget to give Gitpod write access to public repositories if you want to contribute by using Gitpod:
 
 1. Visit the : [Integrations settings](https://gitpod.io/integrations)
-2. Check the box titled: **public_erpo**
+2. Check the box titled: **public_repo**
 3. Click on **Update Permissions** button
 
 More details are available in the [github-integration documentation](https://www.gitpod.io/docs/github-integration).
