@@ -96,7 +96,7 @@ By default, the rendering uses the following settings:
 
 The default colors are deliberately neutral. They make it easy to highlight process data with specific colors.
 
-If the defaults don't fit your need, please read <<custom-bpmn-theme, how to customize the BPMN Theme>>.
+If the defaults don't fit your needs, please read <<custom-bpmn-theme, how to customize the BPMN Theme>>.
 
 image::images/bpmn-theme-default.png[Default BPMN Theme]
 
