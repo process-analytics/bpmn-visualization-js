@@ -33,6 +33,8 @@ After that quick setup, you are able to contribute and create Pull Requests dire
 
 When Gitpod IDE is started, the `npm install` command is launched automatically. The workspace is ready to build and run dev server and tests.
 
+In particular, if you start the dev server, you can access it directly in your browser, see the [Gitpod ports documentation](https://www.gitpod.io/docs/config-ports) for more details.
+
 
 ## Visual Studio Code
 
