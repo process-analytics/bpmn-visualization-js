@@ -46,6 +46,7 @@ export class BpmnVisualization {
   /**
    * Perform BPMN diagram navigation.
    * @experimental subject to change, feedback welcome.
+   * @since 0.24.0
    */
   readonly navigation: Navigation;
 

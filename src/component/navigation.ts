@@ -21,6 +21,7 @@ import type { FitOptions, ZoomType } from './options';
  * Perform BPMN diagram navigation.
  * @category Navigation
  * @experimental subject to change, feedback welcome.
+ * @since 0.24.0
  */
 export class Navigation {
   constructor(private readonly graph: BpmnGraph) {}
