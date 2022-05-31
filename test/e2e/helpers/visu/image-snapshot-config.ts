@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { dirname, join } from 'path';
-import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
+import type { MatchImageSnapshotOptions as MatchImageSnapshotOptionsOrig } from 'jest-image-snapshot';
 import { configLog, getSimplePlatformName, getTestedBrowserFamily } from '../test-utils';
 
 export interface ImageSnapshotThresholdConfig {
@@ -22,6 +22,12 @@ export interface ImageSnapshotThresholdConfig {
   macos?: number;
   windows?: number;
   [key: string]: number;
+}
+
+// TEMP missing new properties in @types/jest-image-snapshot that were introduced in jest-image-snapshot@5.1.0
+interface MatchImageSnapshotOptions extends MatchImageSnapshotOptionsOrig {
+  storeReceivedOnFailure?: boolean;
+  customReceivedDir?: string;
 }
 
 const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
@@ -32,6 +38,7 @@ const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
   // https://github.com/americanexpress/jest-image-snapshot#recommendations-when-using-ssim-comparison
   comparisonMethod: 'ssim',
   failureThresholdType: 'percent',
+  storeReceivedOnFailure: true,
 };
 
 export class ImageSnapshotConfigurator {
@@ -57,6 +64,7 @@ export class ImageSnapshotConfigurator {
       customSnapshotIdentifier: fileName,
       customSnapshotsDir: this.defaultCustomSnapshotsDir,
       customDiffDir: this.defaultCustomDiffDir,
+      customReceivedDir: this.defaultCustomDiffDir,
     };
   }
 
