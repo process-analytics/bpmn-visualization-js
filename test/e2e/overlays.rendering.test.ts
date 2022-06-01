@@ -18,6 +18,7 @@ import { join } from 'path';
 import type { Page } from 'playwright';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
 import type { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';
+import { ZoomType } from '../../src/component/options';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import type { Point } from './helpers/visu/bpmn-page-utils';
 import { PageTester } from './helpers/visu/bpmn-page-utils';
@@ -339,7 +340,7 @@ describe('Overlay navigation', () => {
   });
 
   it(`zoom out`, async () => {
-    await pageTester.mouseZoom(1, { x: containerCenter.x + 200, y: containerCenter.y }, 100);
+    await pageTester.mouseZoom({ x: containerCenter.x + 200, y: containerCenter.y }, ZoomType.Out);
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);

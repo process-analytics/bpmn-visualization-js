@@ -21,6 +21,7 @@ import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
 import type { ChartData, PerformanceMetric } from './helpers/perf-utils';
 import { calculateMetrics } from './helpers/perf-utils';
+import { ZoomType } from '../../src/component/options';
 
 const platform = getSimplePlatformName();
 const performanceDataFilePath = './test/performance/data/' + platform + '/data.js';
@@ -46,18 +47,17 @@ describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
 
   it(`ctrl + mouse: check performance while performing zoom in and zoom out [30 times]`, async () => {
     const xTimes = 30;
-    const deltaX = -100;
     const metricsStart = await metricsCollector.metrics();
 
     for (let i = 0; i < xTimes; i++) {
-      await pageTester.mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
+      await pageTester.mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, ZoomType.In);
       if (i % 5 === 0) {
         await delay(30);
       }
     }
     await delay(100);
     for (let i = 0; i < xTimes; i++) {
-      await pageTester.mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
+      await pageTester.mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, ZoomType.Out);
       if (i % 5 === 0) {
         await delay(30);
       }
