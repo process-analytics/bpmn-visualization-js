@@ -22,14 +22,18 @@ import throttle from 'lodash.throttle';
 import { mxgraph } from './initializer';
 import type { mxCellState, mxGraphView, mxPoint } from 'mxgraph';
 
+const zoomFactorIn = 1.25;
+const zoomFactorOut = 1 / zoomFactorIn;
+
 export class BpmnGraph extends mxgraph.mxGraph {
-  private cumulativeZoomFactor = 1;
+  private currentZoomLevel = 1;
 
   /**
    * @internal
    */
   constructor(container: HTMLElement) {
     super(container);
+    this.zoomFactor = zoomFactorIn;
     if (this.container) {
       // ensure we don't have a select text cursor on label hover, see #294
       this.container.style.cursor = 'default';
@@ -44,22 +48,44 @@ export class BpmnGraph extends mxgraph.mxGraph {
   }
 
   /**
-   * Overridden to set initial cumulativeZoomFactor
+   * Overridden to manage `currentZoomLevel`
    * @internal
    */
   override fit(border: number, keepOrigin?: boolean, margin?: number, enabled?: boolean, ignoreWidth?: boolean, ignoreHeight?: boolean, maxHeight?: number): number {
     const scale = super.fit(border, keepOrigin, margin, enabled, ignoreWidth, ignoreHeight, maxHeight);
-    this.cumulativeZoomFactor = scale;
+    this.setCurrentZoomLevel(scale);
     return scale;
   }
 
+  private setCurrentZoomLevel(scale?: number): void {
+    this.currentZoomLevel = scale ?? this.view.scale;
+  }
+
   /**
-   * Overridden to set initial cumulativeZoomFactor
+   * Overridden to manage `currentZoomLevel`
    * @internal
    */
   override zoomActual(): void {
     super.zoomActual();
-    this.cumulativeZoomFactor = this.view.scale;
+    this.setCurrentZoomLevel();
+  }
+
+  /**
+   * Overridden to manage `currentZoomLevel`
+   * @internal
+   */
+  override zoomIn(): void {
+    super.zoomIn();
+    this.setCurrentZoomLevel();
+  }
+
+  /**
+   * Overridden to manage `currentZoomLevel`
+   * @internal
+   */
+  override zoomOut(): void {
+    super.zoomOut();
+    this.setCurrentZoomLevel();
   }
 
   /**
@@ -99,7 +125,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
       const width = bounds.width / this.view.scale;
       const height = bounds.height / this.view.scale;
       const scale = Math.min(maxScale, Math.min(clientWidth / width, clientHeight / height));
-      this.cumulativeZoomFactor = scale;
+      this.setCurrentZoomLevel(scale);
 
       this.view.scaleAndTranslate(
         scale,
@@ -185,8 +211,8 @@ export class BpmnGraph extends mxgraph.mxGraph {
 
   private calculateFactorAndScale(up: boolean): [number, number] {
     // as with new zoom scaling is invoked 2x the factor's square root is taken
-    this.cumulativeZoomFactor *= up ? Math.sqrt(1.25) : Math.sqrt(0.8);
-    let factor = this.cumulativeZoomFactor / this.view.scale;
+    this.currentZoomLevel *= Math.sqrt(up ? zoomFactorIn : zoomFactorOut);
+    let factor = this.currentZoomLevel / this.view.scale;
     const scale = Math.round(this.view.scale * factor * 100) / 100;
     factor = scale / this.view.scale;
     return [factor, scale];

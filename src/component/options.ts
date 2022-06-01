@@ -30,7 +30,10 @@ export interface GlobalOptions {
  * @category Initialization
  */
 export interface NavigationConfiguration {
-  /** @default false */
+  /**
+   * Enable the navigation with the mouse wheel or with gesture/pinch on touch devices.
+   * @default false
+   */
   enabled: boolean;
   /** Tune how the zoom behaves when using the mouse wheel or with gesture/pinch on touch devices. */
   zoom?: ZoomConfiguration;
@@ -78,7 +81,7 @@ export interface FitOptions {
 }
 
 /**
- * @category Initialization
+ * @category Navigation
  */
 export enum FitType {
   /** No fit, use dimensions and coordinates from the BPMN diagram. */
@@ -91,4 +94,12 @@ export enum FitType {
   Vertical = 'Vertical',
   /** Fit and center the BPMN Diagram. */
   Center = 'Center',
+}
+
+/**
+ * @category Navigation
+ */
+export enum ZoomType {
+  In = 'in',
+  Out = 'out',
 }
