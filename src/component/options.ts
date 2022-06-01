@@ -98,6 +98,7 @@ export enum FitType {
 
 /**
  * @category Navigation
+ * @since 0.24.0
  */
 export enum ZoomType {
   In = 'in',
