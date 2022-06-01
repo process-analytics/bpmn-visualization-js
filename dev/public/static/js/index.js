@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions, getVersion, zoom } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions, getVersion, zoom, ZoomType } from '../../index.es.js';
 
 let fitOnLoad = true;
 let fitOptions = {};
@@ -71,9 +71,10 @@ function configureFitMarginInput() {
 }
 
 function configureZoomButtons() {
-  ['in', 'out'].forEach(zoomType => {
+  Object.values(ZoomType).forEach(zoomType => {
     document.getElementById(`zoom-${zoomType}`).onclick = () => zoom(zoomType);
   });
+  document.getElementById(`zoom-reset`).onclick = () => fit(fitOptions);
 }
 
 function configureDisplayedFooterContent() {
@@ -91,7 +92,7 @@ function preventZoomingPage() {
   document.addEventListener(
     'wheel',
     e => {
-      if (e.ctrlKey) event.preventDefault(); //prevent zoom
+      if (e.ctrlKey) e.preventDefault(); // prevent whole page zoom
     },
     { passive: false, capture: 'bubble' },
   );

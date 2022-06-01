@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { documentReady, startBpmnVisualization, fit, FitType, zoom } from '../../index.es.js';
+import { documentReady, startBpmnVisualization, fit, FitType, zoom, ZoomType } from '../../index.es.js';
 import { configureControlsPanel, configureMousePointer } from './helpers/controls.js';
 
 function configureFitAndZoomButtons() {
   Object.values(FitType).forEach(fitType => {
     document.getElementById(fitType).onclick = () => fit({ type: fitType });
   });
-  ['in', 'out'].forEach(zoomType => {
+  Object.values(ZoomType).forEach(zoomType => {
     document.getElementById(`zoom-${zoomType}`).onclick = () => zoom(zoomType);
   });
 }
