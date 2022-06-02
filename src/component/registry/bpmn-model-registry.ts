@@ -104,16 +104,20 @@ class SearchableModel {
   }
 }
 
-function logModelFiltering(msg: unknown): void {
+function logModelFiltering(msg: unknown, ...optionalParams: unknown[]): void {
   // eslint-disable-next-line no-console
-  console.info('model filtering - ', msg);
+  _log('model filtering', msg, ...optionalParams);
 }
 
-// for pool
+function _log(header: string, message: unknown, ...optionalParams: unknown[]): void {
+  // eslint-disable-next-line no-console
+  console.info(header + ' - ' + message, ...optionalParams);
+}
+
 class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
     logModelFiltering('START');
-    // TODO filter not defined (empty string, empty array, ....)
+    // TODO validate that filter is correctly defined = NOT (empty string, empty array, ....)
     const poolIdsFilter = modelFilter?.includes?.pools?.ids;
     // const poolNamesFilter = modelFilter?.includes?.pools?.names;
     if (!poolIdsFilter) {
@@ -121,13 +125,15 @@ class ModelFiltering {
       return bpmnModel;
     }
 
-    // TODO no pool in model
+    // TODO no pool in model --> error?
 
     // lookup pools
     const pools = bpmnModel.pools;
+    logModelFiltering('pools: ' + pools);
     // TODO ensure it is an array
     const filter = <Array<string>>poolIdsFilter;
-    const filteredPools = pools.filter(pool => filter.includes(pool.id));
+    // TODO choose filter by id if defined, otherwise filter by name
+    const filteredPools = pools.filter(pool => filter.includes(pool.bpmnElement.id));
     logModelFiltering('filtered pools: ' + filteredPools);
     if (filteredPools.length == 0) {
       throw new Error('no existing pool with ids ' + filter);

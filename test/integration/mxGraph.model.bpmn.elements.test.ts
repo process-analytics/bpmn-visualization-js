@@ -1463,6 +1463,7 @@ describe('mxGraph model - BPMN elements', () => {
     });
   });
 
+  // TODO we should have a single test here, the detailed tests should be done directly on the Filtering class instead
   // eslint-disable-next-line jest/no-focused-tests
   describe.only('Filter pools in the mxGraph model', () => {
     it('Filter one pool by id - non existing pool id', () => {
@@ -1477,6 +1478,22 @@ describe('mxGraph model - BPMN elements', () => {
         },
       });
     });
+
+    // TODO manage participant and process ref
+    // eslint-disable-next-line jest/no-focused-tests
+    it.only('Filter one pool by id - existing pool id', () => {
+      // load BPMN
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'), {
+        modelFilter: {
+          includes: {
+            pools: {
+              ids: 'participant_1_id',
+            },
+          },
+        },
+      });
+    });
+
     it('Filter several pool by id - non existing pool id', () => {
       // load BPMN
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'), {
