@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions, getVersion } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions, getVersion, zoom, ZoomType } from '../../index.es.js';
 
 let fitOnLoad = true;
 let fitOptions = {};
@@ -70,6 +70,13 @@ function configureFitMarginInput() {
   }
 }
 
+function configureZoomButtons() {
+  Object.values(ZoomType).forEach(zoomType => {
+    document.getElementById(`zoom-${zoomType}`).onclick = () => zoom(zoomType);
+  });
+  document.getElementById(`zoom-reset`).onclick = () => fit(fitOptions);
+}
+
 function configureDisplayedFooterContent() {
   const version = getVersion();
   const versionAsString = `bpmn-visualization@${version.lib}`;
@@ -85,7 +92,7 @@ function preventZoomingPage() {
   document.addEventListener(
     'wheel',
     e => {
-      if (e.ctrlKey) event.preventDefault(); //prevent zoom
+      if (e.ctrlKey) e.preventDefault(); // prevent whole page zoom
     },
     { passive: false, capture: 'bubble' },
   );
@@ -95,27 +102,11 @@ function startDemo() {
   preventZoomingPage();
   const bpmnContainerId = 'bpmn-container';
 
-  const parameters = new URLSearchParams(window.location.search);
-  const zoomThrottleElt = document.getElementById('zoom-throttle'),
-    zoomDebounceElt = document.getElementById('zoom-debounce'),
-    zoomControlsElt = document.getElementById('zoom-config-controls');
-  if (parameters.get('zoomThrottle')) {
-    zoomControlsElt.style = 'visibility: visible';
-    zoomThrottleElt.value = parameters.get('zoomThrottle');
-  }
-  if (parameters.get('zoomDebounce')) {
-    zoomControlsElt.style = 'visibility: visible';
-    zoomDebounceElt.value = parameters.get('zoomDebounce');
-  }
   startBpmnVisualization({
     globalOptions: {
       container: bpmnContainerId,
       navigation: {
         enabled: true,
-        zoom: {
-          throttleDelay: zoomThrottleElt.value,
-          debounceDelay: zoomDebounceElt.value,
-        },
       },
     },
   });
@@ -127,6 +118,7 @@ function startDemo() {
   configureFitTypeSelect();
   configureFitMarginInput();
   configureFitOnLoadCheckBox();
+  configureZoomButtons();
   configureDisplayedFooterContent();
 }
 

@@ -23,7 +23,7 @@ import autoExternal from 'rollup-plugin-auto-external';
 import execute from 'rollup-plugin-execute';
 
 import typescript from 'rollup-plugin-typescript2';
-import commonjs from 'rollup-plugin-commonjs'; // at least, needed to bundle mxGraph which is only available as a CommonJS module
+import commonjs from '@rollup/plugin-commonjs'; // at least, needed to bundle mxGraph which is only available as a CommonJS module
 import resolve from '@rollup/plugin-node-resolve';
 import pkg from './package.json';
 

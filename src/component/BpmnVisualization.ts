@@ -23,6 +23,7 @@ import type { BpmnElementsRegistry } from './registry';
 import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { BpmnModelRegistry } from './registry/bpmn-model-registry';
 import { htmlElement } from './helpers/dom-utils';
+import { Navigation } from './navigation';
 import { version, type Version } from './version';
 
 /**
@@ -43,6 +44,13 @@ export class BpmnVisualization {
   readonly graph: BpmnGraph;
 
   /**
+   * Perform BPMN diagram navigation.
+   * @experimental subject to change, feedback welcome.
+   * @since 0.24.0
+   */
+  readonly navigation: Navigation;
+
+  /**
    * Interact with BPMN diagram elements rendered in the page.
    * @experimental subject to change, feedback welcome.
    */
@@ -55,6 +63,7 @@ export class BpmnVisualization {
     const configurator = new GraphConfigurator(htmlElement(options?.container));
     this.graph = configurator.configure(options);
     // other configurations
+    this.navigation = new Navigation(this.graph);
     this.bpmnModelRegistry = new BpmnModelRegistry();
     this.bpmnElementsRegistry = newBpmnElementsRegistry(this.bpmnModelRegistry, this.graph);
   }
@@ -71,8 +80,11 @@ export class BpmnVisualization {
     newBpmnRenderer(this.graph).render(renderedModel, options);
   }
 
+  /**
+   * @deprecated Starting from version `0.24.0`, use `navigation.fit` instead. This method may be removed in version `0.27.0`.
+   */
   fit(options?: FitOptions): void {
-    this.graph.customFit(options);
+    this.navigation.fit(options);
   }
 
   getVersion(): Version {
