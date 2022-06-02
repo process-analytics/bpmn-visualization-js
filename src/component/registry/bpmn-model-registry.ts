@@ -30,9 +30,11 @@ export class BpmnModelRegistry {
   private onLoadCallback: () => void;
 
   load(bpmnModel: BpmnModel, modelFilter?: ModelFilter): RenderedModel {
-    this.searchableModel = new SearchableModel(bpmnModel);
+    const filteredModel = new ModelFiltering().filter(bpmnModel, modelFilter);
+
+    this.searchableModel = new SearchableModel(filteredModel);
     this.onLoadCallback?.();
-    return toRenderedModel(bpmnModel);
+    return toRenderedModel(filteredModel);
   }
 
   registerOnLoadCallback(callback: () => void): void {
@@ -102,13 +104,20 @@ class SearchableModel {
   }
 }
 
+function logModelFiltering(msg: unknown): void {
+  // eslint-disable-next-line no-console
+  console.info('model filtering - ', msg);
+}
+
 // for pool
 class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
+    logModelFiltering('START');
     // TODO filter not defined (empty string, empty array, ....)
     const poolIdsFilter = modelFilter?.includes?.pools?.ids;
     // const poolNamesFilter = modelFilter?.includes?.pools?.names;
     if (!poolIdsFilter) {
+      logModelFiltering('nothing to filter');
       return bpmnModel;
     }
 
@@ -119,6 +128,10 @@ class ModelFiltering {
     // TODO ensure it is an array
     const filter = <Array<string>>poolIdsFilter;
     const filteredPools = pools.filter(pool => filter.includes(pool.id));
+    logModelFiltering('filtered pools: ' + filteredPools);
+    if (filteredPools.length == 0) {
+      throw new Error('no existing pool with ids ' + filter);
+    }
 
     const flowNodes: Shape[] = [];
     const lanes: Shape[] = [];

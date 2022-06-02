@@ -1462,4 +1462,32 @@ describe('mxGraph model - BPMN elements', () => {
       });
     });
   });
+
+  // eslint-disable-next-line jest/no-focused-tests
+  describe.only('Filter pools in the mxGraph model', () => {
+    it('Filter one pool by id - non existing pool id', () => {
+      // load BPMN
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'), {
+        modelFilter: {
+          includes: {
+            pools: {
+              ids: 'i_do_not_exist',
+            },
+          },
+        },
+      });
+    });
+    it('Filter several pool by id - non existing pool id', () => {
+      // load BPMN
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'), {
+        modelFilter: {
+          includes: {
+            pools: {
+              ids: ['i_do_not_exist-1', 'i_do_not_exist-2'],
+            },
+          },
+        },
+      });
+    });
+  });
 });
