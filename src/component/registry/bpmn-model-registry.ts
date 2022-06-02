@@ -21,6 +21,7 @@ import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import type { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { ModelFilter } from '../options';
+import { ensureIsArray } from '../helpers/array-utils';
 
 /**
  * @internal
@@ -117,11 +118,11 @@ function _log(header: string, message: unknown, ...optionalParams: unknown[]): v
 class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
     logModelFiltering('START');
-    // TODO validate that filter is correctly defined = NOT (empty string, empty array, ....)
+    // TODO validate that filterPoolBpmnIds is correctly defined = NOT (empty string, empty array, ....)
     const poolIdsFilter = modelFilter?.includes?.pools?.ids;
     // const poolNamesFilter = modelFilter?.includes?.pools?.names;
     if (!poolIdsFilter) {
-      logModelFiltering('nothing to filter');
+      logModelFiltering('nothing to filterPoolBpmnIds');
       return bpmnModel;
     }
 
@@ -131,18 +132,35 @@ class ModelFiltering {
     const pools = bpmnModel.pools;
     logModelFiltering('pools: ' + pools);
     // TODO ensure it is an array
-    const filter = <Array<string>>poolIdsFilter;
-    // TODO choose filter by id if defined, otherwise filter by name
-    const filteredPools = pools.filter(pool => filter.includes(pool.bpmnElement.id));
+    // const filterPoolBpmnIds = <Array<string>>poolIdsFilter;
+    const filterPoolBpmnIds = ensureIsArray(poolIdsFilter);
+    // TODO choose filterPoolBpmnIds by id if defined, otherwise filterPoolBpmnIds by name
+    const filteredPools = pools.filter(pool => filterPoolBpmnIds.includes(pool.bpmnElement.id));
     logModelFiltering('filtered pools: ' + filteredPools);
     if (filteredPools.length == 0) {
-      throw new Error('no existing pool with ids ' + filter);
+      throw new Error('no existing pool with ids ' + filterPoolBpmnIds);
     }
 
-    const flowNodes: Shape[] = [];
-    const lanes: Shape[] = [];
-    // const filteredPools: Shape[] = [];
-    const edges: Edge[] = [];
+    // prepare parent
+    // lanes
+    const filteredLanes = bpmnModel.lanes.filter(flowNode => filterPoolBpmnIds.includes(flowNode.bpmnElement.parentId));
+    const filteredLaneBpmnElementIds = filteredLanes.map(lane => lane.bpmnElement.id);
+    logModelFiltering('filtered lanes: ' + filteredLaneBpmnElementIds);
+
+    // TODO subprocesses / call activity
+
+    // TODO group - they are currently not associated to participant. How do we handle it?
+
+    filterPoolBpmnIds.push(...filteredLaneBpmnElementIds);
+    const filteredFlowNodes = bpmnModel.flowNodes.filter(flowNode => filterPoolBpmnIds.includes(flowNode.bpmnElement.parentId));
+
+    const flowNodes: Shape[] = filteredFlowNodes; //[];
+    // const flowNodes: Shape[] = bpmnModel.flowNodes; //[];
+    const lanes: Shape[] = filteredLanes; //[];
+    // filterPoolBpmnIds message flow: a single pool, remove all but we should remove refs to outgoing msg flows on related shapes
+    const edges: Edge[] = bpmnModel.edges; //[];
+
+    logModelFiltering('END');
     return { flowNodes, lanes, pools: filteredPools, edges };
   }
 }
