@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { BpmnElement, BpmnElementKind, FitOptions, FitType, GlobalOptions, LoadOptions, Overlay, Version, ZoomType } from '../../src/bpmn-visualization';
+import type { BpmnElement, BpmnElementKind, FitOptions, FitType, GlobalOptions, LoadOptions, ModelFilter, Overlay, Version, ZoomType } from '../../src/bpmn-visualization';
 import { log, logDownload, logErrorAndOpenAlert, logStartup } from './helper';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';
@@ -211,6 +211,15 @@ function configureBpmnElementIdToCollapseFromParameters(parameters: URLSearchPar
   bpmnElementIdToCollapse = parameters.get('bpmn.element.id.collapsed');
 }
 
+function configurePoolsFilteringFromParameters(parameters: URLSearchParams): ModelFilter | undefined {
+  const poolIdToFilter = parameters.get('bpmn.pool.id.filtered');
+  if (!poolIdToFilter) {
+    return;
+  }
+  log('Configuring load options to only include pool id: ', poolIdToFilter);
+  return { includes: { pools: { ids: poolIdToFilter } } };
+}
+
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
   const container = config.globalOptions.container;
@@ -226,6 +235,7 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   log('Configuring Load Options');
   loadOptions = config.loadOptions || {};
   loadOptions.fit = getFitOptionsFromParameters(config, parameters);
+  loadOptions.modelFilter = configurePoolsFilteringFromParameters(parameters);
 
   configureStyleFromParameters(parameters);
   configureBpmnElementIdToCollapseFromParameters(parameters);
