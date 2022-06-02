@@ -131,13 +131,11 @@ export class BpmnElementsRegistry {
    *
    * **Notes**:
    *
-   * This method is intended to set CSS classes to specific elements, for instance to hide or highlight them. During BPMN diagram rendering, `bpmn-visualization` set specific CSS classes to all elements regarding their types.
+   * - This method is intended to set CSS classes to specific elements, for instance to hide or highlight them. During BPMN diagram rendering, `bpmn-visualization` set specific CSS classes to all elements regarding their types.
    * So, if you want to style all elements of a given type, use these default classes instead of adding new ones. The classes allow identifying elements of the same 'family' and of the same specific type.
-   *
-   * For instance, a BPMN Service Task is an `Activity` and a `Task`, so it has the `bpmn-type-activity` and the `bpmn-type-task` classes. It shares these classes with all types of `Tasks`.
+   * - For instance, a BPMN Service Task is an `Activity` and a `Task`, so it has the `bpmn-type-activity` and the `bpmn-type-task` classes. It shares these classes with all types of `Tasks`.
    * It also has the specific `bpmn-service-task` to differentiate it from a BPMN User Task that has a `bpmn-user-task`.
-   *
-   * In addition, labels also have the `bpmn-label` classes.
+   * - In addition, labels also have the `bpmn-label` classes.
    *
    * Check the examples for more details.
    *
