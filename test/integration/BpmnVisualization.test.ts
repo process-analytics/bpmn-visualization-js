@@ -13,38 +13,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { FitType } from '../../src/component/options';
+
+import { initializeBpmnVisualization, initializeBpmnVisualizationWithHtmlElement, type GlobalOptionsWithoutContainer } from './helpers/bpmn-visualization-initialization';
 import { readFileSync } from '../helpers/file-helper';
-import { initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visualization-initialization';
+import { allTestedFitTypes } from './helpers/fit-utils';
+import type { FitType } from '../../src/component/options';
 
-const bpmnVisualization = initializeBpmnVisualizationWithHtmlElement('bpmn-container', true);
-
-describe('BpmnVisualization', () => {
-  it('Load invalid diagram (text file)', async () => {
-    expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(
-      `XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`,
-    );
+describe('BpmnVisualization initialization', () => {
+  it.each`
+    configName                          | config
+    ${'undefined'}                      | ${undefined}
+    ${'navigation disabled'}            | ${{ navigation: { enabled: false } }}
+    ${'navigation without zoom config'} | ${{ navigation: { enabled: true } }}
+    ${'navigation with zoom config'}    | ${{ navigation: { enabled: true, zoom: { throttleDelay: 20 } } }}
+  `(`Verify correct initialization with '$configName' configuration`, ({ configName, config }: { configName: string; config: GlobalOptionsWithoutContainer }) => {
+    initializeBpmnVisualization(`bpmn-visualization-init-check-with-config-${configName}`, config);
   });
+});
 
-  describe('Fit', () => {
-    it('Fit no options', async () => {
-      bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
-      bpmnVisualization.fit();
+describe('BpmnVisualization API', () => {
+  const bpmnVisualization = initializeBpmnVisualizationWithHtmlElement('bpmn-container', true);
+
+  describe('Load', () => {
+    it.each(allTestedFitTypes)('Fit type: %s', (fitType: string) => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'), { fit: { type: <FitType>fitType } });
     });
 
-    it.each`
-      fitType
-      ${undefined}
-      ${null}
-      ${FitType.Center}
-      ${FitType.Horizontal}
-      ${FitType.HorizontalVertical}
-      ${FitType.None}
-      ${FitType.Vertical}
-    `('Fit with $fitType', ({ fitType }: { fitType: FitType }) => {
-      bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
-      // ensure no error
-      bpmnVisualization.fit({ type: fitType });
+    it('Load invalid diagram (text file)', async () => {
+      expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(
+        `XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`,
+      );
+    });
+
+    it('Load and filter pools by id - non existing pool id', () => {
+      expect(() =>
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/filter/pools.bpmn'), {
+          modelFilter: {
+            pools: {
+              id: 'i_do_not_exist',
+            },
+          },
+        }),
+      ).toThrow('No matching pools for ids [i_do_not_exist]');
     });
   });
 

@@ -20,8 +20,11 @@ import { filter } from '../../../../component/helpers/array-utils';
 
 /**
  * Utils to simplify the management of {@link ShapeBpmnElementKind}.
+ *
+ * This class is mainly used for internal purpose. You may use it to customize the BPMN theme as proposed in the examples but be aware it is subject to change.
+ *
  * @category BPMN
- * @experimental This class is mainly used for internal purpose. You may use it to customize the BPMN theme as proposed in the examples but be aware it is subject to change.
+ * @experimental
  */
 export class ShapeUtil {
   static isEvent(kind: ShapeBpmnElementKind | string): boolean {

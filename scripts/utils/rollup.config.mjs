@@ -13,6 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { copySync } from 'fs-extra';
+import typescript from 'rollup-plugin-typescript2';
+import externals from 'rollup-plugin-node-externals';
 
-copySync(`${__dirname}/../fixtures/bpmn`, `${__dirname}/../../build/public/static/bpmn/`, { overwrite: true, recursive: true });
+export default {
+  input: 'scripts/utils/parseBpmn.ts',
+  output: {
+    file: 'scripts/utils/dist/utils.mjs',
+    format: 'es',
+  },
+  plugins: [
+    typescript(),
+    externals(), // Make all Node builtins, deps, devDeps, peerDeps and optDeps external
+  ],
+};

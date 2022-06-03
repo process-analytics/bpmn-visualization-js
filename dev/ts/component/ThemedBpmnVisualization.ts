@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../src/bpmn-visualization';
-import { logStartup } from '../helper';
+import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleConfigurator } from '../../../src/bpmn-visualization';
+import { logStartup } from '../utils/internal-helpers';
 import { mxgraph } from '../../../src/component/mxgraph/initializer';
 
 interface Theme {
@@ -71,16 +71,18 @@ const themes = new Map<string, Theme>([
 ]);
 
 export class ThemedBpmnVisualization extends BpmnVisualization {
-  configureTheme(name: string): void {
-    // we are not using mxgraph constants here to show another way to configure the style
-    logStartup(`Configuring the '${name}' BPMN theme`);
+  configureTheme(name: string): boolean {
+    if (name == 'default') {
+      new StyleConfigurator(this.graph).configureStyles();
+      return true;
+    }
 
     const theme = themes.get(name);
     if (!theme) {
-      logStartup(`Unknown '${name}' BPMN theme, skipping configuration`);
-      return;
+      return false;
     }
 
+    // we are not using mxgraph constants here to show another way to configure the style
     const styleSheet = this.graph.getStylesheet();
 
     // EVENTS
@@ -143,6 +145,9 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
     defaultEdgeStyle['fontColor'] = theme.defaultFontColor;
     defaultEdgeStyle['fillColor'] = theme.defaultFillColor;
     defaultEdgeStyle['strokeColor'] = theme.flowColor ?? theme.defaultStrokeColor;
+
+    // theme configuration completed
+    return true;
   }
 
   configureSequenceFlowColor(color: string): void {

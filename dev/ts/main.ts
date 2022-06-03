@@ -14,18 +14,30 @@
  * limitations under the License.
  */
 
-import type { BpmnElement, BpmnElementKind, FitOptions, FitType, GlobalOptions, LoadOptions, Overlay, Version } from '../../src/bpmn-visualization';
-import { log, logDownload, logErrorAndOpenAlert, logStartup } from './helper';
+import type {
+  BpmnElement,
+  BpmnElementKind,
+  FitOptions,
+  FitType,
+  GlobalOptions,
+  LoadOptions,
+  ModelFilter,
+  Overlay,
+  PoolFilter,
+  Version,
+  ZoomType,
+} from '../../src/bpmn-visualization';
+import { fetchBpmnContent, logDownload, logErrorAndOpenAlert, logStartup, stringify } from './utils/internal-helpers';
+import { log } from './utils/shared-helpers';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';
 import { downloadAsPng, downloadAsSvg } from './component/download';
 import { ThemedBpmnVisualization } from './component/ThemedBpmnVisualization';
 
-export * from './helper';
-
 let bpmnVisualization: ThemedBpmnVisualization;
 let loadOptions: LoadOptions = {};
 let bpmnElementIdToCollapse: string;
+let currentTheme: string;
 
 export function updateLoadOptions(fitOptions: FitOptions): void {
   log('Updating load options', fitOptions);
@@ -37,12 +49,21 @@ export function getCurrentLoadOptions(): LoadOptions {
   return { ...loadOptions };
 }
 
-function stringify(value: unknown): string {
-  return JSON.stringify(value, undefined, 2);
+export function getCurrentTheme(): string | undefined {
+  return currentTheme;
+}
+
+export function switchTheme(theme: string): void {
+  log('Switching theme from %s to %s', currentTheme, theme);
+  const knownTheme = bpmnVisualization.configureTheme(theme);
+  if (knownTheme) {
+    bpmnVisualization.graph.refresh();
+    log('Theme switch done');
+  }
 }
 
 function loadBpmn(bpmn: string): void {
-  log('Loading bpmn....');
+  log('Loading bpmn...');
   try {
     bpmnVisualization.load(bpmn, loadOptions);
     log('BPMN loaded with configuration', stringify(loadOptions));
@@ -54,9 +75,15 @@ function loadBpmn(bpmn: string): void {
 }
 
 export function fit(fitOptions: FitOptions): void {
-  log('Fitting....');
-  bpmnVisualization.fit(fitOptions);
+  log('Fitting...');
+  bpmnVisualization.navigation.fit(fitOptions);
   log('Fit done with configuration', stringify(fitOptions));
+}
+
+export function zoom(zoomType: ZoomType): void {
+  log(`Zooming '${zoomType}'...`);
+  bpmnVisualization.navigation.zoom(zoomType);
+  log('Zoom done');
 }
 
 export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
@@ -124,16 +151,6 @@ export function handleFileSelect(evt: any): void {
   readAndLoadFile(f);
 }
 
-function fetchBpmnContent(url: string): Promise<string> {
-  log(`Fetching BPMN content from url ${url}`);
-  return fetch(url).then(response => {
-    if (!response.ok) {
-      throw Error(String(response.status));
-    }
-    return response.text();
-  });
-}
-
 function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) => void): void {
   fetchBpmnContent(url)
     .catch(error => {
@@ -191,8 +208,13 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
   }
 
   const theme = parameters.get('style.theme');
-  if (theme) {
-    bpmnVisualization.configureTheme(theme);
+  logStartup(`Configuring the '${theme}' BPMN theme`);
+  const updatedTheme = bpmnVisualization.configureTheme(theme);
+  if (!updatedTheme) {
+    logStartup(`Unknown '${theme}' BPMN theme, skipping configuration`);
+  } else {
+    currentTheme = theme;
+    logStartup(`'${theme}' BPMN theme configured`);
   }
 
   const useSequenceFlowColorsLight = parameters.get('style.seqFlow.light.colors');
@@ -203,6 +225,16 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
 
 function configureBpmnElementIdToCollapseFromParameters(parameters: URLSearchParams): void {
   bpmnElementIdToCollapse = parameters.get('bpmn.element.id.collapsed');
+}
+
+function configurePoolsFilteringFromParameters(parameters: URLSearchParams): ModelFilter | undefined {
+  const poolIdsToFilterParameter = parameters.get('bpmn.filter.pool.ids');
+  if (!poolIdsToFilterParameter) {
+    return;
+  }
+  const poolIdsToFilter = poolIdsToFilterParameter.split(',');
+  log('Configuring load options to only include pool id: ', poolIdsToFilter);
+  return { pools: poolIdsToFilter.map<PoolFilter>(id => ({ id })) };
 }
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
@@ -220,6 +252,7 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   log('Configuring Load Options');
   loadOptions = config.loadOptions || {};
   loadOptions.fit = getFitOptionsFromParameters(config, parameters);
+  loadOptions.modelFilter = configurePoolsFilteringFromParameters(parameters);
 
   configureStyleFromParameters(parameters);
   configureBpmnElementIdToCollapseFromParameters(parameters);

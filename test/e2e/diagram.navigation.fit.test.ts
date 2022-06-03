@@ -15,11 +15,11 @@
  */
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import 'jest-playwright-preset';
-import { join } from 'path';
+import { join } from 'node:path';
 import type { Page } from 'playwright';
 import { FitType } from '../../src/component/options';
 import { getBpmnDiagramNames } from './helpers/test-utils';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
@@ -57,7 +57,7 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   }
 }
 
-const diagramSubfolder = 'diagram';
+const diagramSubfolder = 'fit';
 const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
@@ -72,7 +72,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'with.outside.labels',
         {
-          macos: 0.22 / 100, // max 0.21306736217683309%
+          macos: 0.25 / 100, // max 0.24369443621680142%
           windows: 0.39 / 100, // max 0.38276450047973753%
         },
       ],
@@ -108,10 +108,10 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'with.outside.labels',
         {
-          linux: 0.92 / 100, // max 0.915127526507431%
-          macos: 1.09 / 100, // max 1.0850265173179108%
+          linux: 0.01 / 100, // max 0.009366366103591428%
+          macos: 0.25 / 100, // max 0.24536808515324138%
           // TODO possible rendering issue so high threshold value
-          windows: 3.75 / 100, // max 3.748766658101066%
+          windows: 4.4 / 100, // max 4.039381490979144%
         },
       ],
     ]);
@@ -140,7 +140,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'with.outside.labels',
         {
-          macos: 1.07 / 100, // max is 1.0614921567171032%
+          macos: 0.39 / 100, // max is 0.3810397001432486%
         },
       ],
     ]);
@@ -150,7 +150,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 describe('diagram navigation - fit', () => {
   const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'fit');
 
-  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation', diagramSubfolder }, <Page>page);
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder }, <Page>page);
 
   const fitTypes: FitType[] = [FitType.None, FitType.HorizontalVertical, FitType.Horizontal, FitType.Vertical, FitType.Center];
   describe.each(fitTypes)('load options - fit %s', (onLoadFitType: FitType) => {

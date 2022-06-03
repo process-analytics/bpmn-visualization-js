@@ -5,6 +5,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/actions/build-setup/**/*'
       - '.github/workflows/build.yml'
       - 'config/**/*'
       - 'scripts/**/*'
@@ -16,11 +17,11 @@ on:
       - 'rollup.config.js'
       - 'tailwind.config.js'
       - 'tsconfig.json'
-      - 'utils.rollup.config.mjs'
   pull_request:
     branches:
       - master
     paths:
+      - '.github/actions/build-setup/**/*'
       - '.github/workflows/build.yml'
       - 'config/**/*'
       - 'scripts/**/*'
@@ -32,7 +33,6 @@ on:
       - 'rollup.config.js'
       - 'tailwind.config.js'
       - 'tsconfig.json'
-      - 'utils.rollup.config.mjs'
 
 jobs:
   build:
@@ -44,8 +44,12 @@ jobs:
         # syntax inspired from https://github.community/t5/GitHub-Actions/Using-a-matrix-defined-input-for-a-custom-action/m-p/32032/highlight/true#M988
         os:
           - { name: ubuntu-20.04, coverage: '-- --coverage' }
-          - { name: macos-11 }
+          - { name: macos-12 }
           - { name: windows-2019 }
+    permissions:
+      # SonarCloud: checks and pull-requests
+      checks: write
+      pull-requests: write
     steps:
       - name: Checkout with shallow clone
         uses: actions/checkout@v3
@@ -56,17 +60,8 @@ jobs:
         with:
           # Disabling shallow clone is recommended for improving relevancy of SonarCloud reporting
           fetch-depth: 0
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-      # playwright browsers are needed for the bundle tests, so no special configuration as in other workflows
-      - name: Install dependencies
-        env:
-          # https://playwright.dev/docs/browsers#installing-browsers
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-        run: npm ci
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
       - name: Lint check
         run: npm run lint-check
       - name: Build Application
@@ -90,8 +85,8 @@ jobs:
           name: integration-test-results-${{matrix.os.name}}-${{github.sha}}
           path: build/test-report/integration
       # Ensure we don't break scripts
-      - name: Build utils
-        run: npm run build-utils
+      - name: Build and test utils
+        run: npm run utils-all
       # Ensure we don't break performance tests code
       - name: Check performance tests compilation
         run: npm run test:perf:compile
@@ -112,11 +107,11 @@ jobs:
       # don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        os: [macos-11, ubuntu-20.04, windows-2019]
+        os: [macos-12, ubuntu-20.04, windows-2019]
         browser: [chromium, firefox, chrome]
         include:
           # only test WebKit on macOS
-          - os: macos-11
+          - os: macos-12
             browser: webkit
           # only test Edge on Windows
           - os: windows-2019
@@ -124,16 +119,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-      - name: Install dependencies
-        env:
-          # https://playwright.dev/docs/browsers#installing-browsers
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-        run: npm ci
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
       # Ensure we can build working bundles
       - name: Build bundles
         run: npm run build-bundles

@@ -22,8 +22,11 @@ import type { mxStylesheet, StyleMap } from 'mxgraph';
 
 /**
  * Configure the styles used for BPMN rendering.
+ *
+ * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
+ *
  * @category BPMN Theme
- * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
+ * @experimental
  */
 export class StyleConfigurator {
   private specificFlowStyles = new MapWithDefault<FlowKind>([
@@ -91,8 +94,8 @@ export class StyleConfigurator {
     ],
     [
       AssociationDirectionKind.BOTH,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (style: StyleMap) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
+      (_style: StyleMap) => {
         // the style is fully managed by the FlowKind.ASSOCIATION_FLOW style
       },
     ],

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { dirname, join } from 'path';
+import { dirname, join } from 'node:path';
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { configLog, getSimplePlatformName, getTestedBrowserFamily } from '../test-utils';
 
@@ -32,10 +32,8 @@ const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
   // https://github.com/americanexpress/jest-image-snapshot#recommendations-when-using-ssim-comparison
   comparisonMethod: 'ssim',
   failureThresholdType: 'percent',
+  storeReceivedOnFailure: true,
 };
-
-/** Default threshold value is to make tests pass on macOS using Chromium (the GitHub workflow diff was 0.00031509446166699817%). */
-export const defaultChromiumFailureThreshold = 0.000004;
 
 export class ImageSnapshotConfigurator {
   private readonly thresholdConfig: Map<string, ImageSnapshotThresholdConfig>;
@@ -60,6 +58,7 @@ export class ImageSnapshotConfigurator {
       customSnapshotIdentifier: fileName,
       customSnapshotsDir: this.defaultCustomSnapshotsDir,
       customDiffDir: this.defaultCustomDiffDir,
+      customReceivedDir: this.defaultCustomDiffDir,
     };
   }
 

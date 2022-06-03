@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-// in the future, we should find a solution to avoid using the reference everywhere in tests
-// see https://github.com/jest-community/jest-extended/issues/367
-/// <reference types="jest-extended" />
-
 import { readFileSync } from '../../../../helpers/file-helper';
 import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
 import type { BPMNDiagram, BPMNLabel, BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
@@ -66,5 +62,21 @@ describe('Special parsing cases', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore x and y are parsed as string as defined in the BPMN diagram
     expect(getShape('BPMNShape_Activity_1').Bounds).toEqual(new Bounds('not_a_number', 'not a number too', -100, -80));
+  });
+
+  it('Parse a diagram with entities in the name attributes', () => {
+    const json = new BpmnXmlParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/start-tasks-end_entities_in_attributes.bpmn'));
+
+    expect(json).toMatchObject({
+      definitions: {
+        process: {
+          startEvent: { name: '®Start Event 1 &reg;\nbuilt with ♠' },
+          task: { name: 'Task 1&nbsp;or task 2∕3⧵4' },
+          endEvent: { name: '&unknown; End Event & 1/2\\3 Ø \n &yen; / ¥' },
+          sequenceFlow: [{ name: '<Sequence> Flow 1&2' }, { name: 'Sequence \'Flow" 2' }],
+        },
+        BPMNDiagram: expect.anything(),
+      },
+    });
   });
 });

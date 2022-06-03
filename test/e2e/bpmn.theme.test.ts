@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import type { StyleOptions } from './helpers/visu/bpmn-page-utils';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import type { Page } from 'playwright';
 
@@ -40,11 +40,15 @@ const styleOptionsPerUseCase = new Map<string, StyleOptions>([
 ]);
 
 describe('BPMN theme', () => {
+  // chromium max: 0.000039994806566578944%
   // firefox max for all OS: 0.05276323813941941%
   // webkit max: 0.08257897420939077%
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new MultiBrowserImageSnapshotThresholds({ chromium: 0, firefox: 0.053 / 100, webkit: 0.083 / 100 }), 'theme');
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
+    new MultiBrowserImageSnapshotThresholds({ chromium: 0.00004 / 100, firefox: 0.053 / 100, webkit: 0.083 / 100 }),
+    'theme',
+  );
 
-  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression', diagramSubfolder: 'theme' }, <Page>page);
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'theme' }, <Page>page);
   const useCases = Array.from(styleOptionsPerUseCase.keys());
 
   it.each(useCases)(`Use case %s`, async (useCase: string) => {

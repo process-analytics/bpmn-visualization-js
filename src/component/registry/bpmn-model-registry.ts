@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../model/bpmn/internal/edge/edge';
@@ -20,6 +21,8 @@ import type { BpmnSemantic } from './types';
 import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import type { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import type { ModelFilter } from '../options';
+import { ModelFiltering } from './bpmn-model-filters';
 
 /**
  * @internal
@@ -28,10 +31,12 @@ export class BpmnModelRegistry {
   private searchableModel: SearchableModel;
   private onLoadCallback: () => void;
 
-  load(bpmnModel: BpmnModel): RenderedModel {
-    this.searchableModel = new SearchableModel(bpmnModel);
+  load(bpmnModel: BpmnModel, modelFilter?: ModelFilter): RenderedModel {
+    const filteredModel = new ModelFiltering().filter(bpmnModel, modelFilter);
+
+    this.searchableModel = new SearchableModel(filteredModel);
     this.onLoadCallback?.();
-    return toRenderedModel(bpmnModel);
+    return toRenderedModel(filteredModel);
   }
 
   registerOnLoadCallback(callback: () => void): void {

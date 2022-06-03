@@ -23,6 +23,7 @@ import type { BpmnElementsRegistry } from './registry';
 import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { BpmnModelRegistry } from './registry/bpmn-model-registry';
 import { htmlElement } from './helpers/dom-utils';
+import { Navigation } from './navigation';
 import { version, type Version } from './version';
 
 /**
@@ -38,13 +39,29 @@ export class BpmnVisualization {
   /**
    * Direct access to the `mxGraph` instance that powers `bpmn-visualization`.
    * It is for **advanced users**, so please use the lib API first and access to the `mxGraph` instance only when there is no alternative.
-   * @experimental subject to change, could be removed or made available in another way.
+   *
+   * **WARN**: subject to change, could be removed or made available in another way.
+   *
+   * @experimental
    */
   readonly graph: BpmnGraph;
 
   /**
+   * Perform BPMN diagram navigation.
+   *
+   * **WARN**: subject to change, feedback welcome.
+   *
+   * @experimental
+   * @since 0.24.0
+   */
+  readonly navigation: Navigation;
+
+  /**
    * Interact with BPMN diagram elements rendered in the page.
-   * @experimental subject to change, feedback welcome.
+   *
+   * **WARN**: subject to change, feedback welcome.
+   *
+   * @experimental
    */
   readonly bpmnElementsRegistry: BpmnElementsRegistry;
 
@@ -55,6 +72,7 @@ export class BpmnVisualization {
     const configurator = new GraphConfigurator(htmlElement(options?.container));
     this.graph = configurator.configure(options);
     // other configurations
+    this.navigation = new Navigation(this.graph);
     this.bpmnModelRegistry = new BpmnModelRegistry();
     this.bpmnElementsRegistry = newBpmnElementsRegistry(this.bpmnModelRegistry, this.graph);
   }
@@ -62,17 +80,20 @@ export class BpmnVisualization {
   /**
    * Load and render the BPMN diagram.
    * @param xml The BPMN content as xml string
-   * @param options Let decide how to render the diagram
+   * @param options Let decide how to load the model and render the diagram
    * @throws `Error` when loading fails. This is generally due to a parsing error caused by a malformed BPMN content
    */
   load(xml: string, options?: LoadOptions): void {
     const bpmnModel = newBpmnParser().parse(xml);
-    const renderedModel = this.bpmnModelRegistry.load(bpmnModel);
-    newBpmnRenderer(this.graph).render(renderedModel, options);
+    const renderedModel = this.bpmnModelRegistry.load(bpmnModel, options?.modelFilter);
+    newBpmnRenderer(this.graph).render(renderedModel, options?.fit);
   }
 
+  /**
+   * @deprecated Starting from version `0.24.0`, use `navigation.fit` instead. This method may be removed in version `0.27.0`.
+   */
   fit(options?: FitOptions): void {
-    this.graph.customFit(options);
+    this.navigation.fit(options);
   }
 
   getVersion(): Version {

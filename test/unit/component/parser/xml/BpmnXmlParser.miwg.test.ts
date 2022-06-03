@@ -133,8 +133,8 @@ describe('parse bpmn as xml for MIWG', () => {
     });
   });
 
-  it('bpmn with attribute with french special characters, ensure special characters are present', () => {
-    const a10Process = readFileSync('../fixtures/bpmn/xml-parsing/miwg-A.1.0_french_special_characters.bpmn');
+  it('bpmn with attribute containing french characters', () => {
+    const a10Process = readFileSync('../fixtures/bpmn/xml-parsing/miwg-A.1.0_modified_01_french_characters.bpmn');
 
     const json = new BpmnXmlParser().parse(a10Process);
 
@@ -149,8 +149,8 @@ describe('parse bpmn as xml for MIWG', () => {
     });
   });
 
-  it('bpmn with attribute with japanese special characters, ensure special characters are present', () => {
-    const a10Process = readFileSync('../fixtures/bpmn/xml-parsing/miwg-A.1.0_japanese_special_characters.bpmn');
+  it('bpmn with attribute containing japanese characters', () => {
+    const a10Process = readFileSync('../fixtures/bpmn/xml-parsing/miwg-A.1.0_modified_02_japanese_characters.bpmn');
 
     const json = new BpmnXmlParser().parse(a10Process);
 
@@ -165,8 +165,8 @@ describe('parse bpmn as xml for MIWG', () => {
     });
   });
 
-  it('bpmn with attribute with html special characters, ensure special characters are present', () => {
-    const a10Process = readFileSync('../fixtures/bpmn/xml-parsing/miwg-A.1.0_html_special_characters.bpmn');
+  it('bpmn with attribute containing entities (known and unknown)', () => {
+    const a10Process = readFileSync('../fixtures/bpmn/xml-parsing/miwg-A.1.0_modified_10_entities.bpmn');
 
     const json = new BpmnXmlParser().parse(a10Process);
 

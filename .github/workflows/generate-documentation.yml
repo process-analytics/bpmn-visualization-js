@@ -6,6 +6,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/actions/build-setup/**/*'
       - '.github/workflows/generate-documentation.yml'
       - 'docs/users/**'
       - 'scripts/docs.js'
@@ -19,6 +20,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/actions/build-setup/**/*'
       - '.github/workflows/generate-documentation.yml'
       - 'docs/users/**'
       - 'scripts/docs.js'
@@ -28,56 +30,28 @@ on:
       - 'typedoc.json'
 
 jobs:
-  # inspired from https://github.com/process-analytics/github-actions-playground/pull/23
-  check_secrets:
+  doc_preview: # keep unique across jobs using surge preview (preview url and PR comment id)
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-20.04
-    outputs:
-      is_SURGE_TOKEN_set: ${{ steps.secret_availability.outputs.is_SURGE_TOKEN_set }}
+    permissions:
+      pull-requests: write # surge-preview: PR comments
     steps:
-      - name: Compute secrets availability
-        id: secret_availability
-        env:
-          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-        run: |
-          echo "is_SURGE_TOKEN_set: ${{ env.SURGE_TOKEN != '' }}"
-          echo "::set-output name=is_SURGE_TOKEN_set::${{ env.SURGE_TOKEN != '' }}"
-
-  doc_preview:
-    needs: [check_secrets]
-    if: github.event_name == 'pull_request' && needs.check_secrets.outputs.is_SURGE_TOKEN_set == 'true'
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v3
-      - name: Publish preview
-        id: publish_preview
-        uses: afc163/surge-preview@v1
-        env:
-          # https://playwright.dev/docs/browsers#installing-browsers
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+      - uses: actions/checkout@v3 # access to the local action
+      - name: surge preview
+        uses: ./.github/actions/custom-surge-preview
         with:
-          surge_token: ${{ secrets.SURGE_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          dist: build/docs
-          failOnError: true
-          teardown: 'true'
-          build: |
-            npm ci
-            npm run docs
+          build-preview-command: npm run docs
+          build-preview-dist: build/docs
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          surge-token: ${{ secrets.SURGE_TOKEN }}
 
   generate_doc:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&  github.event.ref == 'refs/heads/master'
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-      - name: Install dependencies
-        # https://playwright.dev/docs/browsers#installing-browsers
-        run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm ci
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
       - name: Build docs
         run: npm run docs
       - name: Upload
@@ -90,6 +64,8 @@ jobs:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&  github.event.ref == 'refs/heads/master'
     runs-on: ubuntu-20.04
     needs: generate_doc
+    permissions:
+      contents: write # Push to gh-pages
     steps:
       - name: Download
         uses: actions/download-artifact@v3

@@ -70,30 +70,26 @@ export default class GraphConfigurator {
       panningHandler.addListener(mxgraph.mxEvent.PAN_END, this.getPanningHandler('default'));
 
       this.graph.panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
-      // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left click
-      // The mxGraph standard implementation doesn't ignore right click in this case, so do it by ourself
+      // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
+      // The mxGraph standard implementation doesn't ignore right click in this case, so do it by ourselves
       panningHandler.isForcePanningEvent = (me): boolean => mxgraph.mxEvent.isLeftMouseButton(me.getEvent()) || mxgraph.mxEvent.isMultiTouchEvent(me.getEvent());
       this.graph.setPanning(true);
 
       // Zoom configuration
-      this.graph.createMouseWheelZoomExperience(options?.navigation?.zoom);
+      this.graph.registerMouseWheelZoomListeners(options.navigation.zoom);
     } else {
       this.graph.setPanning(false);
       // Disable gesture support for zoom
       panningHandler.setPinchEnabled(false);
       // Disable panning on touch device
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      panningHandler.isForcePanningEvent = (me: mxMouseEvent): boolean => false;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
+      panningHandler.isForcePanningEvent = (_me: mxMouseEvent): boolean => false;
     }
   }
 
-  private getPanningHandler(cursor: 'grab' | 'default'): OmitThisParameter<(this: BpmnGraph) => void> {
-    return this.getPanningHandlerCallback(cursor).bind(this.graph);
-  }
-
-  private getPanningHandlerCallback(cursor: 'grab' | 'default'): () => void {
-    return function (this: BpmnGraph): void {
-      this.isEnabled() && (this.container.style.cursor = cursor);
+  private getPanningHandler(cursor: 'grab' | 'default'): () => void {
+    return (): void => {
+      this.graph.isEnabled() && (this.container.style.cursor = cursor);
     };
   }
 }

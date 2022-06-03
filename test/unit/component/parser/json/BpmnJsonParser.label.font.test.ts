@@ -16,9 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { expectAsWarning, parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector, verifyLabelFont } from './JsonTestUtils';
+
+import { expectAsWarning, parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector, verifyLabelFont } from '../../../helpers/JsonTestUtils';
+import { shapeBpmnElementKindForLabelTests } from '../../../helpers/TestUtils';
+
 import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import { shapeBpmnElementKindForLabelTests } from './TestUtils';
 import { LabelStyleMissingFontWarning } from '../../../../../src/component/parser/json/warnings';
 
 function expectMissingFontWarning(shapeOrEdgeId: string, labelStyleId: string): void {
@@ -438,7 +440,6 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it("should convert as Shape without Font, when a BPMNShape (who references a non-existing BPMNLabelStyle) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
-    jest.spyOn(console, 'warn').mockImplementation();
     const json = {
       definitions: {
         targetNamespace: '',
@@ -473,7 +474,6 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it("should convert as Edge without Font, when a BPMNEdge (which references a non-existing BPMNLabelStyle) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
-    jest.spyOn(console, 'warn').mockImplementation();
     const json = {
       definitions: {
         targetNamespace: '',

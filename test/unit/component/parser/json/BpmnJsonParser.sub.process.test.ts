@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { ExpectedShape } from './JsonTestUtils';
-import { parseJson, parseJsonAndExpectOnlySubProcess, verifyEdge, verifyShape, verifySubProcess } from './JsonTestUtils';
+
+import { parseJson, parseJsonAndExpectOnlySubProcess, verifySubProcess } from '../../../helpers/JsonTestUtils';
+import { getEventShapes } from '../../../helpers/TestUtils';
+import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
+import { verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
+
 import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal';
 import type { ShapeBpmnEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
-import { getEventShapes } from './TestUtils';
 
 function expectNoPoolLane(model: BpmnModel): void {
   expect(model.lanes).toHaveLength(0);

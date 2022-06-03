@@ -13,74 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type {
-  ShapeBpmnElementKind,
-  ShapeBpmnCallActivityKind,
-  ShapeBpmnMarkerKind,
-  ShapeBpmnSubProcessKind,
-  ShapeBpmnEventDefinitionKind,
-  GlobalTaskKind,
-} from '../../../../../src/model/bpmn/internal';
-import { FlowKind, MessageVisibleKind, SequenceFlowKind } from '../../../../../src/model/bpmn/internal';
-import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
-import { newBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
-import type { Edge, Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
-import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
-import { ShapeBpmnActivity, ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import type Label from '../../../../../src/model/bpmn/internal/Label';
-import { SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/flows';
-import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
-import type { JsonParsingWarning } from '../../../../../src/component/parser/parsing-messages';
-import { ParsingMessageCollector } from '../../../../../src/component/parser/parsing-messages';
 
-export interface ExpectedShape {
-  shapeId: string;
-  bpmnElementId: string;
-  bpmnElementName: string;
-  bpmnElementKind: ShapeBpmnElementKind;
-  parentId?: string;
-  bounds?: ExpectedBounds;
-  isHorizontal?: boolean;
-}
-
-export interface ExpectedActivityShape extends ExpectedShape {
-  bpmnElementMarkers?: ShapeBpmnMarkerKind[];
-}
-
-export interface ExpectedCallActivityShape extends ExpectedActivityShape {
-  bpmnElementGlobalTaskKind?: GlobalTaskKind;
-  bpmnElementCallActivityKind?: ShapeBpmnCallActivityKind;
-}
-
-interface ExpectedEdge {
-  edgeId: string;
-  bpmnElementId: string;
-  bpmnElementName?: string;
-  bpmnElementSourceRefId: string;
-  bpmnElementTargetRefId: string;
-  waypoints: Waypoint[];
-  messageVisibleKind?: MessageVisibleKind;
-}
-
-export interface ExpectedSequenceEdge extends ExpectedEdge {
-  bpmnElementSequenceFlowKind?: SequenceFlowKind;
-}
-
-export interface ExpectedFont {
-  name?: string;
-  size?: number;
-  isBold?: boolean;
-  isItalic?: boolean;
-  isUnderline?: boolean;
-  isStrikeThrough?: boolean;
-}
-
-export interface ExpectedBounds {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
+import type { ShapeBpmnSubProcessKind, ShapeBpmnEventDefinitionKind } from '../../../src/model/bpmn/internal';
+import { newBpmnJsonParser } from '../../../src/component/parser/json/BpmnJsonParser';
+import type BpmnModel from '../../../src/model/bpmn/internal/BpmnModel';
+import { ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
+import type Label from '../../../src/model/bpmn/internal/Label';
+import type { BpmnJsonModel } from '../../../src/model/bpmn/json/BPMN20';
+import type { JsonParsingWarning } from '../../../src/component/parser/parsing-messages';
+import { ParsingMessageCollector } from '../../../src/component/parser/parsing-messages';
+import type { ExpectedBounds, ExpectedFont } from './bpmn-model-expect';
 
 class ParsingMessageCollectorTester extends ParsingMessageCollector {
   private warnings: Array<JsonParsingWarning> = [];
@@ -109,6 +51,23 @@ export function parseJson(json: BpmnJsonModel): BpmnModel {
   return newBpmnJsonParser(parsingMessageCollector).parse(json);
 }
 
+function expectPoolLaneEdge(model: BpmnModel, numberOfExpectedPools: number, numberOfExpectedLanes: number, numberOfExpectedEdges: number): void {
+  expect(model.lanes).toHaveLength(numberOfExpectedLanes);
+  expect(model.pools).toHaveLength(numberOfExpectedPools);
+  expect(model.edges).toHaveLength(numberOfExpectedEdges);
+}
+
+export function expectPoolLaneEdgeFlowNode(
+  model: BpmnModel,
+  numberOfExpectedPools: number,
+  numberOfExpectedLanes: number,
+  numberOfExpectedEdges: number,
+  numberOfExpectedFlowNodes: number,
+): void {
+  expectPoolLaneEdge(model, numberOfExpectedPools, numberOfExpectedLanes, numberOfExpectedEdges);
+  expect(model.flowNodes).toHaveLength(numberOfExpectedFlowNodes);
+}
+
 export function parseJsonAndExpect(
   json: BpmnJsonModel,
   numberOfExpectedPools: number,
@@ -118,10 +77,7 @@ export function parseJsonAndExpect(
   numberOfWarnings = 0,
 ): BpmnModel {
   const model = parseJson(json);
-  expect(model.lanes).toHaveLength(numberOfExpectedLanes);
-  expect(model.pools).toHaveLength(numberOfExpectedPools);
-  expect(model.flowNodes).toHaveLength(numberOfExpectedFlowNodes);
-  expect(model.edges).toHaveLength(numberOfExpectedEdges);
+  expectPoolLaneEdgeFlowNode(model, numberOfExpectedPools, numberOfExpectedLanes, numberOfExpectedEdges, numberOfExpectedFlowNodes);
   checkParsingWarnings(numberOfWarnings);
   return model;
 }
@@ -156,65 +112,6 @@ export function parseJsonAndExpectOnlyEdges(json: BpmnJsonModel, numberOfExpecte
 
 export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: BpmnJsonModel, numberOfExpectedEdges: number, numberOfExpectedFlowNodes: number): BpmnModel {
   return parseJsonAndExpect(json, 0, 0, numberOfExpectedFlowNodes, numberOfExpectedEdges);
-}
-
-export function verifyShape(shape: Shape, expectedShape: ExpectedShape | ExpectedActivityShape | ExpectedCallActivityShape): void {
-  expect(shape.id).toEqual(expectedShape.shapeId);
-  expect(shape.isHorizontal).toEqual(expectedShape.isHorizontal);
-
-  const bpmnElement = shape.bpmnElement;
-  expect(bpmnElement.id).toEqual(expectedShape.bpmnElementId);
-  expect(bpmnElement.name).toEqual(expectedShape.bpmnElementName);
-  expect(bpmnElement.kind).toEqual(expectedShape.bpmnElementKind);
-  expect(bpmnElement.parentId).toEqual(expectedShape.parentId);
-
-  if (bpmnElement instanceof ShapeBpmnActivity) {
-    const expectedActivityShape = expectedShape as ExpectedActivityShape;
-    if (expectedActivityShape.bpmnElementMarkers) {
-      expect(bpmnElement.markers).toEqual(expectedActivityShape.bpmnElementMarkers);
-    } else {
-      expect(bpmnElement.markers).toHaveLength(0);
-    }
-
-    if (bpmnElement instanceof ShapeBpmnCallActivity) {
-      expect(bpmnElement.callActivityKind).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementCallActivityKind);
-      expect(bpmnElement.globalTaskKind).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementGlobalTaskKind);
-    }
-  }
-
-  const bounds = shape.bounds;
-  const expectedBounds = expectedShape.bounds;
-  expect(bounds.x).toEqual(expectedBounds.x);
-  expect(bounds.y).toEqual(expectedBounds.y);
-  expect(bounds.width).toEqual(expectedBounds.width);
-  expect(bounds.height).toEqual(expectedBounds.height);
-}
-
-export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge | ExpectedSequenceEdge): void {
-  expect(edge.id).toEqual(expectedValue.edgeId);
-  expect(edge.waypoints).toEqual(expectedValue.waypoints);
-
-  if (expectedValue.messageVisibleKind) {
-    expect(edge.messageVisibleKind).toEqual(expectedValue.messageVisibleKind);
-  } else {
-    expect(edge.messageVisibleKind).toEqual(MessageVisibleKind.NONE);
-  }
-
-  const bpmnElement = edge.bpmnElement;
-  expect(bpmnElement.id).toEqual(expectedValue.bpmnElementId);
-  expect(bpmnElement.name).toEqual(expectedValue.bpmnElementName);
-  expect(bpmnElement.sourceRefId).toEqual(expectedValue.bpmnElementSourceRefId);
-  expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
-
-  if (bpmnElement instanceof SequenceFlow) {
-    expect(edge.bpmnElement.kind).toEqual(FlowKind.SEQUENCE_FLOW);
-    const sequenceEdge = expectedValue as ExpectedSequenceEdge;
-    if (sequenceEdge.bpmnElementSequenceFlowKind) {
-      expect(bpmnElement.sequenceFlowKind).toEqual(sequenceEdge.bpmnElementSequenceFlowKind);
-    } else {
-      expect(bpmnElement.sequenceFlowKind).toEqual(SequenceFlowKind.NORMAL);
-    }
-  }
 }
 
 export function verifySubProcess(model: BpmnModel, kind: ShapeBpmnSubProcessKind, expectedNumber: number): void {
@@ -258,9 +155,7 @@ export function verifyLabelBounds(label: Label, expectedBounds?: ExpectedBounds)
 export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventDefinitionKind: ShapeBpmnEventDefinitionKind, expectedNumber: number): BpmnModel {
   const model = parseJson(json);
 
-  expect(model.lanes).toHaveLength(0);
-  expect(model.pools).toHaveLength(0);
-  expect(model.edges).toHaveLength(0);
+  expectPoolLaneEdge(model, 0, 0, 0);
 
   const events = model.flowNodes.filter(shape => {
     const bpmnElement = shape.bpmnElement;
@@ -274,10 +169,7 @@ export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventDefinitionKind
 export function parseJsonAndExpectOnlySubProcess(json: BpmnJsonModel, kind: ShapeBpmnSubProcessKind, expectedNumber: number): BpmnModel {
   const model = parseJson(json);
 
-  expect(model.lanes).toHaveLength(0);
-  expect(model.pools).toHaveLength(0);
-  expect(model.edges).toHaveLength(0);
-
+  expectPoolLaneEdge(model, 0, 0, 0);
   verifySubProcess(model, kind, expectedNumber);
 
   return model;

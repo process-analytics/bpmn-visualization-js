@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { newBpmnParser } from '../../../../src/component/parser/BpmnParser';
+
 import { readFileSync } from '../../../helpers/file-helper';
+import { expectPoolLaneEdgeFlowNode } from '../../helpers/JsonTestUtils';
 
 describe('parse xml to model', () => {
   it('Single process with no participant', () => {
     const model = newBpmnParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/miwg-A.1.0.bpmn'));
 
-    expect(model.flowNodes).toHaveLength(5);
-    expect(model.edges).toHaveLength(4);
-    expect(model.lanes).toHaveLength(0);
-    expect(model.pools).toHaveLength(0);
+    expectPoolLaneEdgeFlowNode(model, 0, 0, 4, 5);
   });
 
   describe('error management', () => {

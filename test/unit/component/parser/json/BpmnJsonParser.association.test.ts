@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
+
+import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
+import { verifyEdge } from '../../../helpers/bpmn-model-expect';
+
 import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
 import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 

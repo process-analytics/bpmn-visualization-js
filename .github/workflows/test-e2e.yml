@@ -5,6 +5,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/actions/build-setup/**/*'
       - '.github/workflows/test-e2e.yml'
       - 'src/**/*'
       - 'test/**/*'
@@ -18,6 +19,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/actions/build-setup/**/*'
       - '.github/workflows/test-e2e.yml'
       - 'src/**/*'
       - 'test/**/*'
@@ -35,11 +37,11 @@ jobs:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        os: [macos-11, ubuntu-20.04, windows-2019]
+        os: [macos-12, ubuntu-20.04, windows-2019]
         browser: [chromium, firefox, chrome]
         include:
           # only test WebKit on macOS
-          - os: macos-11
+          - os: macos-12
             browser: webkit
           # only test Edge on Windows
           - os: windows-2019
@@ -47,16 +49,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-      - name: Install dependencies
-        env:
-          # https://playwright.dev/docs/browsers#installing-browsers
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-        run: npm ci
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
       # install OS dependencies required by browsers on the GitHub runner
       # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
       - name: Install ${{matrix.browser}} and its dependencies only

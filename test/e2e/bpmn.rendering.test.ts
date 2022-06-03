@@ -17,14 +17,15 @@ import 'jest-playwright-preset';
 import type { Page } from 'playwright';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 import type { StyleOptions } from './helpers/visu/bpmn-page-utils';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
-import { defaultChromiumFailureThreshold, ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
-  // threshold for webkit is taken from macOS only
   constructor() {
-    super({ chromium: defaultChromiumFailureThreshold, firefox: 0.02 / 100, webkit: 0.12 / 100 });
+    // chromium: max on macOS - the local diff was 0.00516920660650344%
+    // threshold for webkit is taken from macOS only
+    super({ chromium: 0.006 / 100, firefox: 0.02 / 100, webkit: 0.12 / 100 });
   }
 
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -55,9 +56,8 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.01.general',
         {
-          linux: 0.0005 / 100, // 0.00046159344679885805%
-          macos: 0.55 / 100, // 0.5443537069607207%
-          windows: 0.43 / 100, // 0.4279840696306825%
+          macos: 0.59 / 100, // 0.58878433419145%
+          windows: 0.423 / 100, // 0.41473463002763555%
         },
       ],
       [
@@ -151,11 +151,10 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.01.general',
         {
-          // high values due to font rendering discrepancies with chromium rendering
-          linux: 2.06 / 100, // 2.0563192299700384%
-          macos: 2.35 / 100, // 2.34547842662729%
-          // very high threshold
-          windows: 13.42 / 10, // 13.418682820755645%
+          linux: 0.23 / 100, // 0.22239085167347072%
+          macos: 0.82 / 100, // 0.818150021840347%
+          // very high value due to font rendering discrepancies with chromium rendering
+          windows: 11.55 / 10, // 11.549215850525563%
         },
       ],
       [
@@ -248,7 +247,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         'labels.01.general',
         {
           // TODO possible rendering issue so high threshold value
-          macos: 2.51 / 100, // 2.5042273857533215%
+          macos: 1.25 / 100, // 1.2428419116196077%
         },
       ],
       [
@@ -309,14 +308,17 @@ const styleOptionsPerDiagram = new Map<string, StyleOptions>([
 ]);
 
 describe('BPMN rendering', () => {
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'bpmn');
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'bpmn-rendering');
 
-  const diagramSubfolder = 'non-regression';
-  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression', diagramSubfolder }, <Page>page);
+  const diagramSubfolder = 'bpmn-rendering';
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
   const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
-  it('check bpmn non-regression files availability', () => {
-    expect(bpmnDiagramNames).toContain('gateways');
+  describe('BPMN diagram files are present', () => {
+    // non exhaustive list
+    it.each(['gateways', 'events'])('%s', (bpmnDiagramName: string) => {
+      expect(bpmnDiagramNames).toContain(bpmnDiagramName);
+    });
   });
 
   it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {

@@ -190,7 +190,7 @@ export function toBeBusinessRuleTask(this: MatcherContext, received: string, exp
 }
 
 function buildEventMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedStartEventModelElement): CustomMatcherResult {
-  return buildShapeMatcher(matcherName, matcherContext, received, { ...expected, verticalAlign: 'top' });
+  return buildShapeMatcher(matcherName, matcherContext, received, { ...expected, verticalAlign: expected.label ? 'top' : 'middle' });
 }
 
 export function toBeStartEvent(this: MatcherContext, received: string, expected: ExpectedStartEventModelElement): CustomMatcherResult {

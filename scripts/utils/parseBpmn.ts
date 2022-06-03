@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as path from 'path';
+import { resolve as resolvePath } from 'node:path';
 import clipboardy from 'clipboardy';
 import parseArgs from 'minimist';
 import type BpmnModel from '../../src/model/bpmn/internal/BpmnModel';
@@ -23,17 +23,21 @@ import { newBpmnJsonParser } from '../../src/component/parser/json/BpmnJsonParse
 import { ParsingMessageCollector } from '../../src/component/parser/parsing-messages';
 import { readFileSync } from '../../test/helpers/file-helper';
 
-const __dirname = path.resolve();
+const __dirname = resolvePath();
 const argv = parseArgs(process.argv.slice(2));
 const bpmnFilePath = argv._[0];
 const outputType = argv['output'] || 'json';
 
+// eslint-disable-next-line no-console
+console.info('Generating BPMN in the "%s" output type', outputType);
 if (!bpmnFilePath) {
-  throw new Error('you must provide file path as 1st parameter for example: test/fixtures/bpmn/parser-test.bpmn');
+  throw new Error('You must provide file path as 1st parameter for example: test/fixtures/bpmn/simple-start-task-end.bpmn ');
 }
 if (['json', 'model'].indexOf(outputType) == -1) {
   throw new Error('--output parameter must be one of: json | model');
 }
+// eslint-disable-next-line no-console
+console.info('Use BPMN diagram located at "%s"', bpmnFilePath);
 
 const xmlParser = new BpmnXmlParser();
 const json = xmlParser.parse(readFileSync(bpmnFilePath, 'utf-8', __dirname));
@@ -47,6 +51,18 @@ if (outputType === 'json') {
 }
 
 // copy to clipboard
-clipboardy.writeSync(result);
-// eslint-disable-next-line no-console
-console.log(result);
+// disabling the copy is not officially supported, it currently fails on GitHub actions when running on Ubuntu 20.04. So disabling it only in this case.
+// file:///home/runner/work/bpmn-visualization-js/bpmn-visualization-js/node_modules/clipboardy/lib/linux.js:16
+// 		error = new Error('Couldn\'t find the `xsel` binary and fallback didn\'t work. On Debian/Ubuntu you can install xsel with: sudo apt install xsel');
+// Error: Couldn't find the `xsel` binary and fallback didn't work. On Debian/Ubuntu you can install xsel with: sudo apt install xsel
+// CI env variable when running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
+const isRunningOnCIWithLinuxOS = process.env.CI === 'true' && process.platform.startsWith('linux');
+if (!isRunningOnCIWithLinuxOS) {
+  clipboardy.writeSync(result);
+} else {
+  console.warn('No clipboard copy, as it is not supported in this environment');
+}
+
+/* eslint-disable no-console */
+console.info('Output generated');
+console.info(result);

@@ -13,28 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 import type { Page } from 'playwright';
-import { delay, getSimplePlatformName } from '../e2e/helpers/test-utils';
+import { delay } from '../e2e/helpers/test-utils';
 import type { Point } from '../e2e/helpers/visu/bpmn-page-utils';
-import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
 import type { ChartData, PerformanceMetric } from './helpers/perf-utils';
 import { calculateMetrics } from './helpers/perf-utils';
+import { ZoomType } from '../../src/component/options';
+import { performanceDataFilePath } from './helpers/file-utils';
 
-const platform = getSimplePlatformName();
-const performanceDataFilePath = './test/performance/data/' + platform + '/data.js';
 const metricsArray: Array<PerformanceMetric> = [];
 
 let metricsCollector: ChromiumMetricsCollector;
 beforeAll(async () => {
   metricsCollector = await ChromiumMetricsCollector.create(<Page>page);
 });
-describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
-  const pageTester = new PageTester(
-    { pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation', diagramSubfolder: 'performance' },
-    <Page>page,
-  );
+describe('Mouse wheel zoom performance', () => {
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder: 'performance' }, <Page>page);
 
   const bpmnDiagramName = 'B.2.0';
   let containerCenter: Point;
@@ -44,20 +41,19 @@ describe.each([1, 2, 3, 4, 5])('zoom performance', run => {
     containerCenter = await pageTester.getContainerCenter();
   });
 
-  it(`ctrl + mouse: check performance while performing zoom in and zoom out [30 times]`, async () => {
-    const xTimes = 30;
-    const deltaX = -100;
+  const xTimes = 30;
+  it.each([1, 2, 3, 4, 5])(`run %s - zoom in and zoom out [${xTimes} times]`, async run => {
     const metricsStart = await metricsCollector.metrics();
 
     for (let i = 0; i < xTimes; i++) {
-      await pageTester.mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, deltaX);
+      await pageTester.mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, ZoomType.In);
       if (i % 5 === 0) {
         await delay(30);
       }
     }
     await delay(100);
     for (let i = 0; i < xTimes; i++) {
-      await pageTester.mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, -deltaX);
+      await pageTester.mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, ZoomType.Out);
       if (i % 5 === 0) {
         await delay(30);
       }

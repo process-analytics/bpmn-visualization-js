@@ -7,6 +7,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/actions/build-setup/**/*'
       - '.github/workflows/generate-demo-preview.yml'
       - 'config/**/*'
       - 'dev/**/*'
@@ -19,38 +20,16 @@ on:
       - 'tsconfig.json'
 
 jobs:
-  # inspired from https://github.com/process-analytics/github-actions-playground/pull/23
-  check_secrets:
+  demo_preview: # keep unique across jobs using surge preview (preview url and PR comment id)
     runs-on: ubuntu-20.04
-    outputs:
-      is_SURGE_TOKEN_set: ${{ steps.secret_availability.outputs.is_SURGE_TOKEN_set }}
+    permissions:
+      pull-requests: write # surge-preview: PR comments
     steps:
-      - name: Compute secrets availability
-        id: secret_availability
-        env:
-          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-        run: |
-          echo "is_SURGE_TOKEN_set: ${{ env.SURGE_TOKEN != '' }}"
-          echo "::set-output name=is_SURGE_TOKEN_set::${{ env.SURGE_TOKEN != '' }}"
-
-  demo_preview:
-    needs: [check_secrets]
-    if: needs.check_secrets.outputs.is_SURGE_TOKEN_set == 'true'
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v3
-      - name: Publish Demo preview
-        id: publish_demo_preview
-        uses: afc163/surge-preview@v1
-        env:
-          # https://playwright.dev/docs/browsers#installing-browsers
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+      - uses: actions/checkout@v3 # access to the local action
+      - name: surge preview
+        uses: ./.github/actions/custom-surge-preview
         with:
-          surge_token: ${{ secrets.SURGE_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          dist: build/demo
-          failOnError: true
-          teardown: 'true'
-          build: |
-            npm ci
-            npm run demo
+          build-preview-command: npm run demo
+          build-preview-dist: build/demo
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          surge-token: ${{ secrets.SURGE_TOKEN }}

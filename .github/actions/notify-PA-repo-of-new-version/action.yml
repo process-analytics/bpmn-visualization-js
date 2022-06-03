@@ -1,0 +1,49 @@
+name: 'Notify PA repository of new BPMN visualization version'
+description: 'You can customize the parameters to link to the event and the repository to notify.
+To use on tag branch.'
+inputs:
+  TOKEN:
+    description: 'Token to dispatch on the repository'
+    required: true
+    default: ''
+  PA_REPOSITORY:
+    description: 'The name of the repository on the process-analytics organization to notify'
+    required: true
+    default: ''
+  BUILD_DEMO_WORKFLOW_ID:
+    description: 'The identifier of the workflow which is used to build the demo'
+    required: false
+    default: ''
+  ARTIFACT_NAME:
+    description: 'The name of the demo artifact'
+    required: false
+    default: ''
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set VERSION
+      shell: bash
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v*}" >> $GITHUB_ENV
+    - name: Set CLIENT_PAYLOAD
+      shell: bash
+      run: |
+        if [[ "${{ inputs.BUILD_DEMO_WORKFLOW_ID }}" == '' && "${{ inputs.ARTIFACT_NAME }}" == '' ]]; then
+          echo "CLIENT_PAYLOAD=$( jq -n -c \
+                  --arg v "${{ env.VERSION }}" \
+                  '{ version: $v }' )" >> $GITHUB_ENV
+        else
+          echo "CLIENT_PAYLOAD=$( jq -n -c \
+                  --arg v "${{ env.VERSION }}" \
+                  --arg dr "${{ github.repository }}" \
+                  --arg dwid "${{ inputs.BUILD_DEMO_WORKFLOW_ID }}" \
+                  --arg an "${{ inputs.ARTIFACT_NAME }}" \
+                  '{ version: $v, build_demo_repo: $dr, build_demo_workflow_id: $dwid, artifact_name: $an }' )" >> $GITHUB_ENV
+        fi
+    - name: Send Repository Dispatch event
+      uses: peter-evans/repository-dispatch@v2
+      with:
+        token: ${{ inputs.TOKEN }}
+        repository: process-analytics/${{ inputs.PA_REPOSITORY }}
+        event-type: update_bpmn_visualization_version
+        client-payload: "${{ env.CLIENT_PAYLOAD }}"

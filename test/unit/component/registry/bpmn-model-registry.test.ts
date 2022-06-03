@@ -15,48 +15,10 @@
  */
 
 import { BpmnModelRegistry } from '../../../../src/component/registry/bpmn-model-registry';
-import type BpmnModel from '../../../../src/model/bpmn/internal/BpmnModel';
-import { Edge } from '../../../../src/model/bpmn/internal/edge/edge';
-import { SequenceFlow } from '../../../../src/model/bpmn/internal/edge/flows';
-import Shape from '../../../../src/model/bpmn/internal/shape/Shape';
-import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../../src/model/bpmn/internal';
-import ShapeBpmnElement, { ShapeBpmnStartEvent } from '../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import { expectLane, expectPool, expectSequenceFlow, expectStartEvent } from '../../helpers/bpmn-semantic-utils';
+import { laneInModel, poolInModel, sequenceFlowInModel, startEventInModel } from '../../helpers/bpmn-model-utils';
 
 const bpmnModelRegistry = new BpmnModelRegistry();
-
-function newBpmnModel(): BpmnModel {
-  return {
-    edges: [],
-    flowNodes: [],
-    lanes: [],
-    pools: [],
-  };
-}
-
-function sequenceFlowInModel(id: string, name: string): BpmnModel {
-  const bpmnModel = newBpmnModel();
-  bpmnModel.edges.push(new Edge(`Edge_${id}`, new SequenceFlow(id, name)));
-  return bpmnModel;
-}
-
-function startEventInModel(id: string, name: string): BpmnModel {
-  const bpmnModel = newBpmnModel();
-  bpmnModel.flowNodes.push(new Shape(`Shape_${id}`, new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, 'parentId')));
-  return bpmnModel;
-}
-
-function laneInModel(id: string, name: string): BpmnModel {
-  const bpmnModel = newBpmnModel();
-  bpmnModel.lanes.push(new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.LANE)));
-  return bpmnModel;
-}
-
-function poolInModel(id: string, name: string): BpmnModel {
-  const bpmnModel = newBpmnModel();
-  bpmnModel.pools.push(new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.POOL)));
-  return bpmnModel;
-}
 
 describe('Bpmn Model registry', () => {
   it('callback is called on model load', () => {

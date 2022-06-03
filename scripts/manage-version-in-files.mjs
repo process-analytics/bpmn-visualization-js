@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-import * as fs from 'fs';
+// IMPORTANT: this script is run by npm when calling 'npm version'
+// We are not installing node dependencies when running the GitHub workflow '.github/workflows/release.yml'
+// So please do not import code that is not provided by the node runtime. Otherwise, update the GitHub workflow definition
+import { readFileSync, writeFileSync } from 'node:fs';
 
 if (process.env.IS_RELEASING) {
   updateVersionInFilesOnRelease();
@@ -52,7 +55,7 @@ function log(...data) {
 }
 
 function readFileContent(path) {
-  return fs.readFileSync(path, 'utf8').toString();
+  return readFileSync(path, 'utf8').toString();
 }
 
 function getCurrentVersion() {
@@ -69,7 +72,7 @@ function updateVersionInNpmFile(path, newVersion) {
   const json = readFileContent(path);
   const pkg = JSON.parse(json);
   pkg.version = newVersion;
-  fs.writeFileSync(path, JSON.stringify(pkg, null, 2) + '\n');
+  writeFileSync(path, JSON.stringify(pkg, null, 2) + '\n');
 }
 
 function updateVersionInSonarFile(newVersion) {
@@ -77,7 +80,7 @@ function updateVersionInSonarFile(newVersion) {
   const content = readFileContent(path);
   // replace the 1st occurrence, is ok as a key appears only once in the file
   const updatedContent = content.replace(/sonar\.projectVersion=.*/, `sonar.projectVersion=${newVersion}`);
-  fs.writeFileSync(path, updatedContent);
+  writeFileSync(path, updatedContent);
 }
 
 function updateVersionInSourceFile(newVersion) {
@@ -85,5 +88,5 @@ function updateVersionInSourceFile(newVersion) {
   const content = readFileContent(path);
   // replace the 1st occurrence, is ok as the constant appears only once in the file
   const updatedContent = content.replace(/const libVersion =.*/, `const libVersion = '${newVersion}';`);
-  fs.writeFileSync(path, updatedContent);
+  writeFileSync(path, updatedContent);
 }

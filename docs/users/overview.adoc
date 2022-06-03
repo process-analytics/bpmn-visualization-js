@@ -1,30 +1,30 @@
-== Overview
+= Overview
 :icons: font
 
-=== Live Examples
+== Live Examples
 
 To see `bpmn-visualization` in action, give a try to the https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html[**icon:forward[] examples live environment**]. +
 You will quickly have an overview of the `bpmn-visualization` capabilities.
 
 
-=== Usage
+== Usage
 
-==== Bundles
+=== Bundles
 `bpmn-visualization` can be directly used in HTML pages or integrated in Javascript and TypeScript applications. It is distributed as a https://npmjs.org/package/bpmn-visualization[npm package]
 in various bundle formats.
 
-==== API
+=== API
 The API documentation is provided directly in the package thanks to the TypeScript declaration files that can be used in IDE for code assist. +
 
 [sidebar]
 There is also an HTML version which is available in link:./api/index.html[the API HTML documentation, window="_blank"].
 
-==== More technical details
+=== More technical details
 For more technical details and how-to, go to the https://github.com/process-analytics/bpmn-visualization-examples/[bpmn-visualization-examples]
 repository.
 
 
-=== Glossary
+== Glossary
 
 Here are a list of terms and concepts we are using in the `bpmn-visualization` documentation, issues, examples...
 
@@ -67,13 +67,13 @@ Here are a list of terms and concepts we are using in the `bpmn-visualization` d
 |===
 
 
-=== BPMN Diagrams
+== BPMN Diagrams
 
 https://www.omg.org/spec/BPMN/2.0.2/[BPMN diagrams] are at the foundation of the `bpmn-visualization` capabilities.
 
 Go to <<supported-bpmn-elements, Supported BPMN Elements>> section to better now what is the current BPMN support.
 
-==== BPMN rendering
+=== BPMN rendering
 
 The first goal of `bpmn-visualization` is to render BPMN diagrams but this is up to the integration (i.e. the application that uses it) to provide the BPMN diagram
 content.  +
@@ -82,7 +82,7 @@ For instance, it can be retrieved from a local file, by pulling a REST API, made
 Once the integration gets the BPMN diagram input source, it just has to pass it to `bpmn-visualization` which is then in charge of rendering the diagram.
 
 
-===== Default BPMN Theme
+==== Default BPMN Theme
 
 By default, the rendering uses the following settings:
 
@@ -94,12 +94,17 @@ By default, the rendering uses the following settings:
 ** size: `11`
 
 
+The default colors are deliberately neutral. They make it easy to highlight process data with specific colors.
+
+If the defaults don't fit your needs, please read <<custom-bpmn-theme, how to customize the BPMN Theme>>.
+
 image::images/bpmn-theme-default.png[Default BPMN Theme]
 
 _Default BPMN Theme_
 
 
-===== Customizing the BPMN Theme
+[[custom-bpmn-theme]]
+==== Customizing the BPMN Theme
 
 It is possible to change the default theme by extending `bpmn-visualization` or by using CSS in the page displaying the diagram.
 
@@ -116,7 +121,7 @@ _Custom BPMN Theme_
 
 
 [[diagram-navigation]]
-==== Diagram Navigation
+=== Diagram Navigation
 
 In addition to BPMN rendering, `bpmn-visualization` provides several ways to explore and navigate through the BPMN diagrams.
 This is made available at load time or at runtime, through user interactions or API calls.
@@ -133,7 +138,7 @@ You can zoom to highlight specific parts, then pan to view different diagram por
 After navigating around, you may want to reset the zoom level and go back to a full diagram overview.
 
 
-==== BPMN rendering and Diagram Navigation in Action
+=== BPMN rendering and Diagram Navigation in Action
 
 image::images/bpmn-diagram_navigation_C.2.0.gif[BPMN Diagram Navigation]
 
@@ -141,7 +146,7 @@ _Navigation with the https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/cc75
 
 
 [#process_data]
-=== Process data
+== Process data
 
 `bpmn-visualization` gives you the opportunity to visualize the Process Data on top of the BPMN diagrams.
 The purpose of the library is to gain the visibility on what happens in your processes.
@@ -151,7 +156,7 @@ Process Data consists of two main data sets:
 * Execution Data - data that accompanies the process instance (case) through the execution flow. All the events occurring along this workflow, contractual data and every other bits of information related to this particular instance from start to the end.
 * Derived Data - data that derives from the execution data: predictions, analysis, statistics. The other data that can be associated with the process instance can also be a part of this set.
 
-==== Process data examples
+=== Process data examples
 
 The example of Process Data for different tasks can be as follows.
 
@@ -174,13 +179,13 @@ The example of Process Data for different tasks can be as follows.
 ** ...
 
 
-=== Custom behavior
+== Custom behavior
 
 `bpmn-visualization` provides API to interact with the BPMN elements and their representation as DOM Element.
 
 Fore more examples about `Custom Behavior`, see the https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html[**icon:forward[] examples live environment**]
 
-==== BPMN semantic and DOM Element
+=== BPMN semantic and DOM Element
 
 A BPMN element contains BPMN semantic information that can be matched with <<process_data>>. The DOM Element let you manipulate the representation and allow enriching its behavior
 by adding https://developer.mozilla.org/en-US/docs/Web/API/EventListener[event listeners] for instance.
@@ -193,7 +198,7 @@ of an activity, current error at this stage of the process, and more.
 image::images/custom-behavior-popovers.gif[Display popovers on over or click]
 _Display popovers on over or click_
 
-==== Style
+=== Style
 
 The style of BPMN elements can be modified at runtime allowing to mark, hide, change appearance of one or several specific elements. For instance, this feature can be used to mark
 a task as in error, warn that an activity has been started for a while and seems stuck, ... 
@@ -204,15 +209,15 @@ This example shows how to see which path in a process is the current running act
 image::images/custom-behavior-path-highlighting.gif[]
 _Path highlighting with the https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/cc75e467fd2b3009e67d4b24943591c66ce91a23/Reference/C.1.1.bpmn[miwg-test-suite C.1.1] BPMN diagram_
 
-=== Overlays
+== Overlays
 
 `bpmn-visualization` provides link:./api/classes/bpmnelementsregistry.html#addoverlays[API to add overlays, window="_blank"] on top of BPMN elements. This additional overlays layer permits you to show whatever data you want and enrich your diagrams.
 
-==== Use case
+=== Use case
 
 There are various use cases concerning overlays. For example the aforementioned <<process_data>> can be easily displayed in rectangular shapes on top of the edges and tasks. Whether you would like to show a path frequency or probability for the next step, the overlays are here to help you achieve this.
 
-==== Overlays examples
+=== Overlays examples
 To see overlays simple examples, go to the https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#overlays[**icon:forward[] Simple examples - live demo**] You will find out how to add overlays to BPMN elements and how to apply style to them.
 
 [.thumb]

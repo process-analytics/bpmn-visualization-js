@@ -14,8 +14,7 @@
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "disableOptimisticBPs": true
+            "internalConsoleOptions": "neverOpen"
         },
         {
             "type": "node",
@@ -27,8 +26,19 @@
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "disableOptimisticBPs": true
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "type": "node",
+            "name": "test:integration",
+            "request": "launch",
+            "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            "args": [
+                "--runInBand", "--config=./test/integration/jest.config.js"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
         }
     ]
 }

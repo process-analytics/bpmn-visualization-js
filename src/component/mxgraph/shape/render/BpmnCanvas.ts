@@ -19,8 +19,10 @@ import type { IconConfiguration, IconStyleConfiguration, ShapeConfiguration, Siz
 import type { mxAbstractCanvas2D } from 'mxgraph';
 
 /**
+ * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
+ *
  * @category BPMN Theme
- * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
+ * @experimental
  */
 export interface BpmnCanvasConfiguration {
   canvas: mxAbstractCanvas2D;
@@ -50,23 +52,31 @@ export function computeScaledIconSize(initialIconSize: Size, iconStyleConfigurat
 }
 
 /**
- * Wrapper of {@link mxAbstractCanvas2D} to simplify method calls when painting icons/markers of BPMN shapes.
+ * Wrapper of `mxAbstractCanvas2D` to simplify method calls when painting icons/markers of BPMN shapes.
  *
- * It can scale dimensions passed to the method of the original {@link mxAbstractCanvas2D}
+ * It can scale dimensions passed to the method of the original `mxAbstractCanvas2D`.
  *
- * @example vanilla canvas calls when a scale factor must be applied to positions
+ * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
+ *
+ * @example
+ * The vanilla canvas calls when a scale factor must be applied to position
+ * ```javascript
  * const scaleX = 0.26;
  * const scaleY = 0.35;
  * c.moveTo(8 * scaleX, 39 * scaleY);
  * c.lineTo(12 * scaleX, 25 * scaleY);
+ * ```
  *
- * @example with `BpmnCanvas`
+ * @example
+ * With `BpmnCanvas`
+ * ```javascript
  * const canvas = new BpmnCanvas(c, 0.26, 0.35);
  * canvas.moveTo(8, 39);
  * canvas.lineTo(12, 25);
+ * ```
  *
  * @category BPMN Theme
- * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
+ * @experimental
  */
 export class BpmnCanvas {
   private canvas: mxAbstractCanvas2D;

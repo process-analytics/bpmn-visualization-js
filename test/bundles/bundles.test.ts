@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { existsSync } from 'fs';
+import { existsSync } from 'node:fs';
 import 'jest-playwright-preset';
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 import type { Page } from 'playwright';
 import type { TargetedPageConfiguration } from '../e2e/helpers/visu/bpmn-page-utils';
 import { BpmnPageSvgTester } from '../e2e/helpers/visu/bpmn-page-utils';
@@ -40,7 +40,13 @@ describe('bundles', () => {
 
   it('IIFE bundle - should generate BPMN Diagram SVG', async () => {
     const pageTester = new BpmnStaticPageSvgTester(
-      { pageFileName: 'lib-integration-iife', expectedPageTitle: 'BPMN Visualization IIFE bundle', bpmnContainerId: 'bpmn-container-for-iife-bundle' },
+      {
+        targetedPage: {
+          pageFileName: 'lib-integration-iife',
+          expectedPageTitle: 'BPMN Visualization IIFE bundle',
+        },
+        bpmnContainerId: 'bpmn-container-for-iife-bundle',
+      },
       <Page>page,
     );
     await pageTester.gotoPageAndLoadBpmnDiagram();
@@ -62,7 +68,7 @@ class BpmnStaticPageSvgTester extends BpmnPageSvgTester {
     super({ ...targetedPageConfiguration, diagramSubfolder: 'none' }, page);
   }
   override async gotoPageAndLoadBpmnDiagram(): Promise<void> {
-    const url = `file://${resolve(__dirname, `static/${this.targetedPageConfiguration.pageFileName}.html`)}`;
+    const url = `file://${resolve(__dirname, `static/${this.targetedPageConfiguration.targetedPage.pageFileName}.html`)}`;
     await super.doGotoPageAndLoadBpmnDiagram(url, false);
   }
 }

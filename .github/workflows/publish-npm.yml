@@ -8,22 +8,16 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      # Setup .npmrc file to publish to npm
-      - name: Setup node
-        uses: actions/setup-node@v3
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
         with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
-      - name: Install dependencies
-        # https://playwright.dev/docs/browsers#installing-browsers
-        run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm ci
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Send message to Slack channel
         if: success()
-        uses: slackapi/slack-github-action@v1.18.0
+        uses: slackapi/slack-github-action@v1.19.0
         with:
           channel-id: 'CSF7TG6N5'
           payload: |
@@ -61,15 +55,8 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      - name: Get the version
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v*}
-      - name: Send Repository Dispatch event to bpmn-visualization-R repository
-        uses: peter-evans/repository-dispatch@v2
+      - name: Notify bpmn-visualization-R repository of new BPMN visualization version
+        uses: ./.github/actions/notify-PA-repo-of-new-version
         with:
-          token: ${{ secrets.GH_RELEASE_TOKEN }}
-          repository: process-analytics/bpmn-visualization-R
-          event-type: update_bpmn_visualization_version
-          client-payload: '{
-              "version": "${{ steps.get_version.outputs.VERSION }}"
-            }'
+          PA_REPOSITORY: 'bpmn-visualization-R'
+          TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}

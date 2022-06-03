@@ -23,7 +23,7 @@ import { MessageVisibleKind, ShapeUtil } from '../../model/bpmn/internal';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleComputer from './renderer/StyleComputer';
 import type { BpmnGraph } from './BpmnGraph';
-import type { LoadOptions } from '../options';
+import type { FitOptions } from '../options';
 import type { RenderedModel } from '../registry/bpmn-model-registry';
 import { mxgraph } from './initializer';
 import type { mxCell } from 'mxgraph';
@@ -34,9 +34,9 @@ import type { mxCell } from 'mxgraph';
 export class BpmnRenderer {
   constructor(readonly graph: BpmnGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleComputer: StyleComputer) {}
 
-  render(renderedModel: RenderedModel, loadOptions?: LoadOptions): void {
+  render(renderedModel: RenderedModel, fitOptions?: FitOptions): void {
     this.insertShapesAndEdges(renderedModel);
-    this.graph.customFit(loadOptions?.fit);
+    this.graph.customFit(fitOptions);
   }
 
   private insertShapesAndEdges({ pools, lanes, subprocesses, otherFlowNodes, boundaryEvents, edges }: RenderedModel): void {

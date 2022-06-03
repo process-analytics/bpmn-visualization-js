@@ -1,0 +1,38 @@
+name: 'Custom surge preview'
+description: 'Simplify usage of surge-preview'
+inputs:
+  build-preview-command:
+    description: 'The command to build the preview'
+    required: true
+  build-preview-dist:
+    description: 'The dist folder deployed to surge.sh'
+    required: true
+  github-token:
+    description: 'A token with `pull-requests: write` to let the surge-preview action create comments on pull requests'
+    required: true
+  surge-token:
+    description: 'A surge token to manage the deployment'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: bonitasoft/actions/packages/surge-preview-tools@v1.2.0
+      id: surge-preview-tools
+      with:
+        surge-token: ${{ inputs.surge-token }}
+    - uses: actions/checkout@v3
+      if: github.event.action != 'closed'
+    - name: Build Setup
+      uses: ./.github/actions/build-setup
+      if: github.event.action != 'closed'
+    - name: Manage surge preview
+      if: steps.surge-preview-tools.outputs.can-run-surge-command == 'true'
+      uses: afc163/surge-preview@v1
+      with:
+        surge_token: ${{ inputs.surge-token }}
+        github_token: ${{ inputs.github-token }}
+        dist: ${{ inputs.build-preview-dist }}
+        failOnError: true
+        teardown: 'true'
+        build: ${{ inputs.build-preview-command }}

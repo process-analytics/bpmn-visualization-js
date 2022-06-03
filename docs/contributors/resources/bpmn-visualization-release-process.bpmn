@@ -128,16 +128,21 @@
       <bpmn2:incoming>Flow_09tjoqa</bpmn2:incoming>
       <bpmn2:outgoing>Flow_171uk5l</bpmn2:outgoing>
     </bpmn2:task>
-    <bpmn2:sequenceFlow id="Flow_171uk5l" sourceRef="Activity_1f9ixy1" targetRef="Event_10749b4" />
+    <bpmn2:sequenceFlow id="Flow_171uk5l" sourceRef="Activity_1f9ixy1" targetRef="Activity_0eet9u8" />
     <bpmn2:sequenceFlow id="Flow_09tjoqa" sourceRef="Activity_008msrg" targetRef="Activity_1f9ixy1" />
     <bpmn2:sequenceFlow id="Flow_01h8lsc" sourceRef="Event_1fli1ah" targetRef="Activity_008msrg" />
     <bpmn2:startEvent id="Event_1fli1ah" name="git tag creation">
       <bpmn2:outgoing>Flow_01h8lsc</bpmn2:outgoing>
       <bpmn2:signalEventDefinition id="SignalEventDefinition_10bnhfa" />
     </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="Flow_1noo56k" sourceRef="Activity_0eet9u8" targetRef="Event_10749b4" />
     <bpmn2:endEvent id="Event_10749b4">
-      <bpmn2:incoming>Flow_171uk5l</bpmn2:incoming>
+      <bpmn2:incoming>Flow_1noo56k</bpmn2:incoming>
     </bpmn2:endEvent>
+    <bpmn2:task id="Activity_0eet9u8" name="Notify R repository of new release">
+      <bpmn2:incoming>Flow_171uk5l</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_1noo56k</bpmn2:outgoing>
+    </bpmn2:task>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="_qPSfBlBYEeu9ts3EO9yYXg">
     <bpmndi:BPMNPlane id="_qPSfB1BYEeu9ts3EO9yYXg" bpmnElement="Collaboration_0uor9lj">
@@ -319,7 +324,11 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_171uk5l_di" bpmnElement="Flow_171uk5l">
         <di:waypoint x="601" y="1000" />
-        <di:waypoint x="672" y="1000" />
+        <di:waypoint x="680" y="1000" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1noo56k_di" bpmnElement="Flow_1noo56k">
+        <di:waypoint x="780" y="1000" />
+        <di:waypoint x="852" y="1000" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Activity_0b19er2_di" bpmnElement="Activity_008msrg">
         <dc:Bounds x="330" y="960" width="100" height="80" />
@@ -334,7 +343,11 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1y5w44h_di" bpmnElement="Event_10749b4">
-        <dc:Bounds x="672" y="982" width="36" height="36" />
+        <dc:Bounds x="852" y="982" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0eet9u8_di" bpmnElement="Activity_0eet9u8">
+        <dc:Bounds x="680" y="960" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_00dbj0b_di" bpmnElement="Flow_00dbj0b">
         <di:waypoint x="678" y="760" />

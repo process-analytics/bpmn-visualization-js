@@ -13,30 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 import type { Page } from 'playwright';
-import { getSimplePlatformName } from '../e2e/helpers/test-utils';
-import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
 import type { ChartData, PerformanceMetric } from './helpers/perf-utils';
 import { calculateMetrics } from './helpers/perf-utils';
+import { performanceDataFilePath } from './helpers/file-utils';
 
-const platform = getSimplePlatformName();
-const performanceDataFilePath = './test/performance/data/' + platform + '/data.js';
 const metricsArray: Array<PerformanceMetric> = [];
 
 let metricsCollector: ChromiumMetricsCollector;
 beforeAll(async () => {
   metricsCollector = await ChromiumMetricsCollector.create(<Page>page);
 });
-describe.each([1, 2, 3, 4, 5])('load performance', run => {
-  const pageTester = new PageTester(
-    { pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation', diagramSubfolder: 'performance' },
-    <Page>page,
-  );
+describe('load performance', () => {
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder: 'performance' }, <Page>page);
   const bpmnDiagramName = 'B.2.0';
 
-  it('check performance for file loading and displaying diagram with FitType.HorizontalVertical', async () => {
+  it.each([1, 2, 3, 4, 5])('run %s - file loading and displaying diagram with FitType.HorizontalVertical', async run => {
     const metricsStart = await metricsCollector.metrics();
     await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
     const metricsEnd = await metricsCollector.metrics();

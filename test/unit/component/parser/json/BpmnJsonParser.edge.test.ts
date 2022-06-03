@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { expectAsWarning, parseJsonAndExpectOnlyWarnings, parsingMessageCollector } from './JsonTestUtils';
+
+import { expectAsWarning, parseJsonAndExpectOnlyWarnings, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import { EdgeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
 
 describe('parse bpmn as json for edges', () => {
   // this also covers unsupported bpmn element types that are then not retrieved during the parsing
   it('should not convert as Edge without related BPMN element', () => {
-    jest.spyOn(console, 'warn').mockImplementation();
     const json = {
       definitions: {
         targetNamespace: '',
