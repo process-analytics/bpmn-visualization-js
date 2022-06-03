@@ -66,7 +66,7 @@ function toRenderedModel(bpmnModel: BpmnModel): RenderedModel {
       subprocesses.push(shape);
     } else if (ShapeUtil.isBoundaryEvent(kind)) {
       boundaryEvents.push(shape);
-    } else if (!collapsedSubProcessIds.includes(shape.bpmnElement.parent)) {
+    } else if (!collapsedSubProcessIds.includes(shape.bpmnElement.parent?.id)) {
       otherFlowNodes.push(shape);
     }
   });

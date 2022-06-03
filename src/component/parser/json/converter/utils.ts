@@ -129,7 +129,7 @@ export class ConvertedElements {
   }
 
   // Special case: create the ShapeBpmnElement instance here to avoid duplication in CollaborationConverter and ProcessConverter
-  buildShapeBpmnGroup(groupBpmnElement: TGroup, processId?: string): ShapeBpmnElement | undefined {
+  buildShapeBpmnGroup(groupBpmnElement: TGroup, processId?: ShapeBpmnElement): ShapeBpmnElement | undefined {
     const categoryValueData = this.categoryValues.get(groupBpmnElement.categoryValueRef);
     if (categoryValueData) {
       return new ShapeBpmnElement(groupBpmnElement.id, categoryValueData.value, ShapeBpmnElementKind.GROUP, processId);

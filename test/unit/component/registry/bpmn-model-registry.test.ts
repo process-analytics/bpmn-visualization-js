@@ -41,8 +41,10 @@ function sequenceFlowInModel(id: string, name: string): BpmnModel {
 }
 
 function startEventInModel(id: string, name: string): BpmnModel {
+  const parent = new ShapeBpmnElement('parentId', 'parentName', ShapeBpmnElementKind.POOL);
+
   const bpmnModel = newBpmnModel();
-  bpmnModel.flowNodes.push(new Shape(`Shape_${id}`, new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, 'parentId')));
+  bpmnModel.flowNodes.push(new Shape(`Shape_${id}`, new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parent)));
   return bpmnModel;
 }
 

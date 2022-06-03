@@ -71,53 +71,52 @@ export default class ProcessConverter {
   }
 
   private parseProcess(process: TProcess): void {
-    this.convertedElements.registerProcess(new ShapeBpmnElement(process.id, process.name, ShapeBpmnElementKind.POOL));
-    this.buildProcessInnerElements(process);
+    const convertedProcess = new ShapeBpmnElement(process.id, process.name, ShapeBpmnElementKind.POOL);
+    this.convertedElements.registerProcess(convertedProcess);
+    this.buildProcessInnerElements(process, convertedProcess);
   }
 
-  private buildProcessInnerElements(process: TProcess | TSubProcess): void {
-    const processId = process.id;
-
+  private buildProcessInnerElements(process: TProcess | TSubProcess, convertedProcess: ShapeBpmnElement): void {
     // flow nodes
     ShapeUtil.flowNodeKinds()
       .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
-      .forEach(kind => this.buildFlowNodeBpmnElements(processId, process[kind], kind));
+      .forEach(kind => this.buildFlowNodeBpmnElements(process[kind], kind, convertedProcess));
     // process boundary events afterwards as we need its parent activity to be available when building it
-    this.buildFlowNodeBpmnElements(processId, process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY);
+    this.buildFlowNodeBpmnElements(process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY, convertedProcess);
 
     // containers
-    this.buildLaneBpmnElements(processId, process[ShapeBpmnElementKind.LANE]);
-    this.buildLaneSetBpmnElements(processId, process['laneSet']);
+    this.buildLaneBpmnElements(process[ShapeBpmnElementKind.LANE], convertedProcess);
+    this.buildLaneSetBpmnElements(process['laneSet'], convertedProcess);
 
     // flows
-    this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW]);
-    this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW]);
+    this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW], convertedProcess);
+    this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW], convertedProcess);
   }
 
-  private buildFlowNodeBpmnElements(processId: string, bpmnElements: Array<FlowNode> | FlowNode, kind: ShapeBpmnElementKind): void {
+  private buildFlowNodeBpmnElements(bpmnElements: Array<FlowNode> | FlowNode, kind: ShapeBpmnElementKind, convertedProcess: ShapeBpmnElement): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
       let shapeBpmnElement;
 
       if (ShapeUtil.isEvent(kind)) {
-        shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, processId);
+        shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, convertedProcess);
       } else if (ShapeUtil.isActivity(kind)) {
-        shapeBpmnElement = this.buildShapeBpmnActivity(bpmnElement, kind, processId);
+        shapeBpmnElement = this.buildShapeBpmnActivity(bpmnElement, kind, convertedProcess);
       } else if (kind == ShapeBpmnElementKind.GATEWAY_EVENT_BASED) {
         const eventBasedGatewayBpmnElement = bpmnElement as TEventBasedGateway;
         shapeBpmnElement = new ShapeBpmnEventBasedGateway(
           bpmnElement.id,
           eventBasedGatewayBpmnElement.name,
-          processId,
+          convertedProcess,
           eventBasedGatewayBpmnElement.instantiate,
           ShapeBpmnEventBasedGatewayKind[eventBasedGatewayBpmnElement.eventGatewayType],
         );
       } else if (kind == ShapeBpmnElementKind.GROUP) {
-        shapeBpmnElement = this.convertedElements.buildShapeBpmnGroup(bpmnElement as TGroup, processId);
+        shapeBpmnElement = this.convertedElements.buildShapeBpmnGroup(bpmnElement as TGroup, convertedProcess);
       } else {
         // @ts-ignore We know that the text & name fields are not on all types, but it's already tested
         const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
         // @ts-ignore We know that the instantiate field is not on all types, but it's already tested
-        shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, processId, bpmnElement.instantiate);
+        shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, convertedProcess, bpmnElement.instantiate);
       }
 
       // @ts-ignore We know that the default field is not on all types, but it's already tested
@@ -132,26 +131,26 @@ export default class ProcessConverter {
     });
   }
 
-  private buildShapeBpmnActivity(bpmnElement: TActivity, kind: ShapeBpmnElementKind, processId: string): ShapeBpmnActivity {
+  private buildShapeBpmnActivity(bpmnElement: TActivity, kind: ShapeBpmnElementKind, convertedProcess: ShapeBpmnElement): ShapeBpmnActivity {
     const markers = ProcessConverter.buildMarkers(bpmnElement);
 
     if (ShapeUtil.isSubProcess(kind)) {
-      return this.buildShapeBpmnSubProcess(bpmnElement, processId, markers);
+      return this.buildShapeBpmnSubProcess(bpmnElement, markers, convertedProcess);
     }
 
     if (!ShapeUtil.isCallActivity(kind)) {
       // @ts-ignore
-      return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, processId, bpmnElement.instantiate, markers);
+      return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, convertedProcess, bpmnElement.instantiate, markers);
     }
-    return this.buildShapeBpmnCallActivity(bpmnElement, processId, markers);
+    return this.buildShapeBpmnCallActivity(bpmnElement, markers, convertedProcess);
   }
 
-  private buildShapeBpmnCallActivity(bpmnElement: TActivity, processId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnCallActivity {
+  private buildShapeBpmnCallActivity(bpmnElement: TActivity, markers: ShapeBpmnMarkerKind[], convertedProcess: ShapeBpmnElement): ShapeBpmnCallActivity {
     const globalTaskKind = this.convertedElements.findGlobalTask((bpmnElement as TCallActivity).calledElement);
     if (!globalTaskKind) {
-      return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, processId, markers);
+      return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, convertedProcess, markers);
     }
-    return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK, processId, markers, globalTaskKind);
+    return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK, convertedProcess, markers, globalTaskKind);
   }
 
   private static buildMarkers(bpmnElement: TActivity): ShapeBpmnMarkerKind[] {
@@ -170,13 +169,13 @@ export default class ProcessConverter {
     return markers;
   }
 
-  private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventKind, processId: string): ShapeBpmnEvent {
+  private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventKind, convertedProcess: ShapeBpmnElement): ShapeBpmnEvent {
     const eventDefinitions = this.getEventDefinitions(bpmnElement);
     const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
 
     // do we have a None Event?
     if (numberOfEventDefinitions == 0 && ShapeUtil.canHaveNoneEvent(elementKind)) {
-      return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, ShapeBpmnEventDefinitionKind.NONE, processId);
+      return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, ShapeBpmnEventDefinitionKind.NONE, convertedProcess);
     }
 
     if (numberOfEventDefinitions == 1) {
@@ -185,9 +184,9 @@ export default class ProcessConverter {
         return this.buildShapeBpmnBoundaryEvent(bpmnElement as TBoundaryEvent, eventDefinitionKind);
       }
       if (ShapeUtil.isStartEvent(elementKind)) {
-        return new ShapeBpmnStartEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, processId, bpmnElement.isInterrupting);
+        return new ShapeBpmnStartEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, convertedProcess, bpmnElement.isInterrupting);
       }
-      return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinitionKind, processId);
+      return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinitionKind, convertedProcess);
     }
   }
 
@@ -195,7 +194,7 @@ export default class ProcessConverter {
     const parent = this.convertedElements.findFlowNode(bpmnElement.attachedToRef);
 
     if (ShapeUtil.isActivity(parent?.kind)) {
-      return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity);
+      return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, parent, bpmnElement.cancelActivity);
     } else {
       this.parsingMessageCollector.warning(new BoundaryEventNotAttachedToActivityWarning(bpmnElement.id, bpmnElement.attachedToRef, parent?.kind));
     }
@@ -226,54 +225,53 @@ export default class ProcessConverter {
       .filter(eventDefinition => eventDefinition.counter > 0);
   }
 
-  private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
-    this.buildSubProcessInnerElements(bpmnElement);
-    if (!bpmnElement.triggeredByEvent) {
-      return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, processId, markers);
-    }
-    return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EVENT, processId, markers);
+  private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, markers: ShapeBpmnMarkerKind[], convertedProcess: ShapeBpmnElement): ShapeBpmnSubProcess {
+    const convertedSubProcess = !bpmnElement.triggeredByEvent
+      ? new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, convertedProcess, markers)
+      : new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EVENT, convertedProcess, markers);
+
+    this.buildProcessInnerElements(bpmnElement, convertedSubProcess);
+    return convertedSubProcess;
   }
 
-  private buildSubProcessInnerElements(subProcess: TSubProcess): void {
-    this.buildProcessInnerElements(subProcess);
+  private buildLaneSetBpmnElements(laneSets: Array<TLaneSet> | TLaneSet, convertedProcess: ShapeBpmnElement): void {
+    ensureIsArray(laneSets).forEach(laneSet => this.buildLaneBpmnElements(laneSet.lane, convertedProcess));
   }
 
-  private buildLaneSetBpmnElements(processId: string, laneSets: Array<TLaneSet> | TLaneSet): void {
-    ensureIsArray(laneSets).forEach(laneSet => this.buildLaneBpmnElements(processId, laneSet.lane));
-  }
-
-  private buildLaneBpmnElements(processId: string, lanes: Array<TLane> | TLane): void {
+  private buildLaneBpmnElements(lanes: Array<TLane> | TLane, convertedProcess: ShapeBpmnElement): void {
     ensureIsArray(lanes).forEach(lane => {
-      this.convertedElements.registerLane(new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, processId));
-      this.assignParentOfLaneFlowNodes(lane);
+      const convertedLane = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, convertedProcess);
+      this.convertedElements.registerLane(convertedLane);
+      this.assignParentOfLaneFlowNodes(lane.flowNodeRef, convertedLane);
       if (lane.childLaneSet?.lane) {
-        this.buildLaneBpmnElements(lane.id, lane.childLaneSet.lane);
+        this.buildLaneBpmnElements(lane.childLaneSet.lane, convertedLane);
       }
     });
   }
 
-  private assignParentOfLaneFlowNodes(lane: TLane): void {
-    ensureIsArray<string>(lane.flowNodeRef).forEach(flowNodeRef => {
+  private assignParentOfLaneFlowNodes(flowNodeRef: string | string[], convertedLane: ShapeBpmnElement): void {
+    ensureIsArray<string>(flowNodeRef).forEach(flowNodeRef => {
       const shapeBpmnElement = this.convertedElements.findFlowNode(flowNodeRef);
-      const laneId = lane.id;
       if (shapeBpmnElement) {
         if (!ShapeUtil.isBoundaryEvent(shapeBpmnElement.kind)) {
-          shapeBpmnElement.parent = laneId;
+          shapeBpmnElement.parent = convertedLane;
         }
       } else {
-        this.parsingMessageCollector.warning(new LaneUnknownFlowNodeRefWarning(laneId, flowNodeRef));
+        this.parsingMessageCollector.warning(new LaneUnknownFlowNodeRefWarning(convertedLane.id, flowNodeRef));
       }
     });
   }
 
-  private buildSequenceFlows(bpmnElements: Array<TSequenceFlow> | TSequenceFlow): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private buildSequenceFlows(bpmnElements: Array<TSequenceFlow> | TSequenceFlow, convertedProcess: ShapeBpmnElement): void {
     ensureIsArray(bpmnElements).forEach(sequenceFlow => {
       const kind = this.getSequenceFlowKind(sequenceFlow);
       this.convertedElements.registerSequenceFlow(new SequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.sourceRef, sequenceFlow.targetRef, kind));
     });
   }
 
-  private buildAssociationFlows(bpmnElements: Array<TAssociation> | TAssociation): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private buildAssociationFlows(bpmnElements: Array<TAssociation> | TAssociation, convertedProcess: ShapeBpmnElement): void {
     ensureIsArray(bpmnElements).forEach(association => {
       const direction = association.associationDirection as unknown as AssociationDirectionKind;
       this.convertedElements.registerAssociationFlow(new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction));
