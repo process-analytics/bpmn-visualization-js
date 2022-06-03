@@ -42,10 +42,11 @@ export default class BpmnJsonParser {
     const definitions: TDefinitions = json.definitions;
 
     this.categoryConverter.deserialize(definitions);
-    this.collaborationConverter.deserialize(definitions.collaboration);
+    this.collaborationConverter.deserializeElementsOnWhichProcessDepends(definitions.collaboration);
     this.eventDefinitionConverter.deserialize(definitions);
     this.globalTaskConverter.deserialize(definitions);
     this.processConverter.deserialize(definitions.process);
+    this.collaborationConverter.deserializeElementsDependentOnProcess(definitions.collaboration);
     return this.diagramConverter.deserialize(definitions.BPMNDiagram);
   }
 }

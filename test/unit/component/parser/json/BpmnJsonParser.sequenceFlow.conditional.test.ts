@@ -71,7 +71,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
         },
       };
       const process = json.definitions.process as TProcess;
-      process[`${sourceKind}`] = { id: 'source_id_0' };
+      process[`${sourceKind}`] = [{ id: 'source_id_0' }, { id: 'targetRef_RLk' }];
       (process.sequenceFlow as TSequenceFlow).conditionExpression['#text'] = '&quot;Contract to be written&quot;.equals(loanRequested.status)';
 
       const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
@@ -95,6 +95,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
         process: {
           id: 'Process_1',
           parallelGateway: { id: 'gateway_id_0' },
+          task: [{ id: 'targetRef_RLk' }],
           sequenceFlow: {
             id: 'sequenceFlow_id_0',
             sourceRef: 'gateway_id_0',

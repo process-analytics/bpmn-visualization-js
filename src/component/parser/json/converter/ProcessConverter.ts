@@ -86,11 +86,11 @@ export default class ProcessConverter {
 
     // containers
     this.buildLaneBpmnElements(process[ShapeBpmnElementKind.LANE], convertedProcess);
-    this.buildLaneSetBpmnElements(process['laneSet'], convertedProcess);
+    this.buildLaneSetBpmnElements(process.laneSet, convertedProcess);
 
     // flows
-    this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW], convertedProcess);
-    this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW], convertedProcess);
+    this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW]);
+    this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW]);
   }
 
   private buildFlowNodeBpmnElements(bpmnElements: Array<FlowNode> | FlowNode, kind: ShapeBpmnElementKind, convertedProcess: ShapeBpmnElement): void {
@@ -115,7 +115,7 @@ export default class ProcessConverter {
       } else {
         // @ts-ignore We know that the text & name fields are not on all types, but it's already tested
         const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
-        // @ts-ignore We know that the instantiate field is not on all types, but it's already tested
+        // @ts-ignore We know that the instantiated field is not on all types, but it's already tested
         shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, convertedProcess, bpmnElement.instantiate);
       }
 
@@ -262,19 +262,21 @@ export default class ProcessConverter {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private buildSequenceFlows(bpmnElements: Array<TSequenceFlow> | TSequenceFlow, convertedProcess: ShapeBpmnElement): void {
+  private buildSequenceFlows(bpmnElements: Array<TSequenceFlow> | TSequenceFlow): void {
     ensureIsArray(bpmnElements).forEach(sequenceFlow => {
       const kind = this.getSequenceFlowKind(sequenceFlow);
-      this.convertedElements.registerSequenceFlow(new SequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.sourceRef, sequenceFlow.targetRef, kind));
+      const convertedSource = this.convertedElements.findFlowNode(sequenceFlow.sourceRef);
+      const convertedTarget = this.convertedElements.findFlowNode(sequenceFlow.targetRef);
+      this.convertedElements.registerSequenceFlow(new SequenceFlow(sequenceFlow.id, sequenceFlow.name, convertedSource, convertedTarget, kind));
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private buildAssociationFlows(bpmnElements: Array<TAssociation> | TAssociation, convertedProcess: ShapeBpmnElement): void {
+  private buildAssociationFlows(bpmnElements: Array<TAssociation> | TAssociation): void {
     ensureIsArray(bpmnElements).forEach(association => {
       const direction = association.associationDirection as unknown as AssociationDirectionKind;
-      this.convertedElements.registerAssociationFlow(new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction));
+      const convertedSource = this.convertedElements.findFlowNode(association.sourceRef);
+      const convertedTarget = this.convertedElements.findFlowNode(association.targetRef);
+      this.convertedElements.registerAssociationFlow(new AssociationFlow(association.id, undefined, convertedSource, convertedTarget, direction));
     });
   }
 

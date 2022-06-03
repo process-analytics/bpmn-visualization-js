@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
+import type ShapeBpmnElement from '../shape/ShapeBpmnElement';
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind } from './kinds';
 
 /**
  * @internal
  */
 export abstract class Flow {
-  protected constructor(readonly id: string, readonly name: string, readonly kind: FlowKind, readonly sourceRefId?: string, readonly targetRefId?: string) {}
+  protected constructor(readonly id: string, readonly name: string, readonly kind: FlowKind, readonly source?: ShapeBpmnElement, readonly target?: ShapeBpmnElement) {}
 }
 
 /**
  * @internal
  */
 export class SequenceFlow extends Flow {
-  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly sequenceFlowKind = SequenceFlowKind.NORMAL) {
-    super(id, name, FlowKind.SEQUENCE_FLOW, sourceRefId, targetRefId);
+  constructor(id: string, name: string, source?: ShapeBpmnElement, target?: ShapeBpmnElement, readonly sequenceFlowKind = SequenceFlowKind.NORMAL) {
+    super(id, name, FlowKind.SEQUENCE_FLOW, source, target);
   }
 }
 
@@ -36,8 +37,8 @@ export class SequenceFlow extends Flow {
  * @internal
  */
 export class MessageFlow extends Flow {
-  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string) {
-    super(id, name, FlowKind.MESSAGE_FLOW, sourceRefId, targetRefId);
+  constructor(id: string, name: string, source?: ShapeBpmnElement, target?: ShapeBpmnElement) {
+    super(id, name, FlowKind.MESSAGE_FLOW, source, target);
   }
 }
 
@@ -45,7 +46,7 @@ export class MessageFlow extends Flow {
  * @internal
  */
 export class AssociationFlow extends Flow {
-  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly associationDirectionKind = AssociationDirectionKind.NONE) {
-    super(id, name, FlowKind.ASSOCIATION_FLOW, sourceRefId, targetRefId);
+  constructor(id: string, name: string, source?: ShapeBpmnElement, target?: ShapeBpmnElement, readonly associationDirectionKind = AssociationDirectionKind.NONE) {
+    super(id, name, FlowKind.ASSOCIATION_FLOW, source, target);
   }
 }

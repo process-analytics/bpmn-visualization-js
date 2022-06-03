@@ -64,7 +64,7 @@ describe('parse bpmn as json for default sequence flow', () => {
         },
       },
     };
-    (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', default: 'sequenceFlow_id_0' };
+    (json.definitions.process as TProcess)[`${sourceKind}`] = [{ id: 'source_id_0', default: 'sequenceFlow_id_0' }, { id: 'targetRef_RLk' }];
 
     const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
 
@@ -86,6 +86,7 @@ describe('parse bpmn as json for default sequence flow', () => {
         process: {
           id: 'Process_1',
           parallelGateway: { id: 'gateway_id_0', default: 'sequenceFlow_id_0' },
+          task: { id: 'targetRef_RLk' },
           sequenceFlow: {
             id: 'sequenceFlow_id_0',
             sourceRef: 'gateway_id_0',

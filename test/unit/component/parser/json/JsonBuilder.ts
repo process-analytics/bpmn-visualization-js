@@ -31,6 +31,7 @@ export enum EventDefinitionOn {
 }
 
 export interface BuildEventParameter {
+  id?: string;
   index?: number;
   name?: string;
   isInterrupting?: boolean;
@@ -46,9 +47,9 @@ export interface BuildEventDefinitionParameter {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getFirstElementOfArray(object: any | any[]): any {
+export function getElementOfArray(object: any | any[], processIndex = 0): any {
   if (Array.isArray(object)) {
-    return object[0];
+    return object[processIndex];
   } else {
     return object;
   }
@@ -66,29 +67,29 @@ export function updateBpmnElement<T>(parentElement: T | T[], childElement: T, se
   }
 }
 
-export function addFlownode(jsonModel: BpmnJsonModel, bpmnKind: string, flowNode: TFlowNode): void {
-  const process: TProcess = getFirstElementOfArray(jsonModel.definitions.process);
+export function addFlownode(jsonModel: BpmnJsonModel, bpmnKind: string, flowNode: TFlowNode, processIndex?: number): void {
+  const process: TProcess = getElementOfArray(jsonModel.definitions.process, processIndex);
   updateBpmnElement(process[bpmnKind], flowNode, (value: TFlowNode | TFlowNode[]) => (process[bpmnKind] = value));
 }
 
-export function addShape(jsonModel: BpmnJsonModel, taskShape: BPMNShape): void {
-  const bpmnPlane: BPMNPlane = getFirstElementOfArray(jsonModel.definitions.BPMNDiagram).BPMNPlane;
+export function addShape(jsonModel: BpmnJsonModel, taskShape: BPMNShape, processIndex?: number): void {
+  const bpmnPlane: BPMNPlane = getElementOfArray(jsonModel.definitions.BPMNDiagram, processIndex).BPMNPlane;
   updateBpmnElement(bpmnPlane.BPMNShape, taskShape, (value: BPMNShape | BPMNShape[]) => (bpmnPlane.BPMNShape = value));
 }
 
-export function addTask(jsonModel: BpmnJsonModel): void {
+export function addTask(jsonModel: BpmnJsonModel, processIndex?: number): void {
   const task = {
     id: 'task_id_0',
     name: 'task name',
   };
-  addFlownode(jsonModel, 'task', task);
+  addFlownode(jsonModel, 'task', task, processIndex);
 
   const taskShape = {
     id: 'shape_task_id_0',
     bpmnElement: 'task_id_0',
     Bounds: { x: 362, y: 232, width: 36, height: 45 },
   };
-  addShape(jsonModel, taskShape);
+  addShape(jsonModel, taskShape, processIndex);
 }
 
 export function buildDefinitionsAndProcessWithTask(process: TProcess | TProcess[] = {}): BpmnJsonModel {
@@ -162,9 +163,10 @@ function addEventDefinitionsOnEvent(event: TCatchEvent | TThrowEvent | TBoundary
   }
 }
 
-export function buildEvent({ index = 0, name, isInterrupting, attachedToRef }: BuildEventParameter = {}): BPMNTEvent {
+export function buildEvent({ id, index = 0, name, isInterrupting, attachedToRef }: BuildEventParameter = {}): BPMNTEvent {
+  const bpmnElementId = id ? id : `event_id_${index}`;
   const event: BPMNTEvent = {
-    id: `event_id_${index}`,
+    id: bpmnElementId,
     name: name,
   };
 
@@ -177,7 +179,13 @@ export function buildEvent({ index = 0, name, isInterrupting, attachedToRef }: B
   return event;
 }
 
-export function addEvent(jsonModel: BpmnJsonModel, bpmnKind: string, eventDefinitionParameter: BuildEventDefinitionParameter, eventParameter: BuildEventParameter): void {
+export function addEvent(
+  jsonModel: BpmnJsonModel,
+  bpmnKind: string,
+  eventDefinitionParameter: BuildEventDefinitionParameter,
+  eventParameter: BuildEventParameter,
+  processIndex?: number,
+): void {
   const event = buildEvent(eventParameter);
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH:
@@ -193,13 +201,12 @@ export function addEvent(jsonModel: BpmnJsonModel, bpmnKind: string, eventDefini
     case EventDefinitionOn.NONE:
       break;
   }
-  addFlownode(jsonModel, bpmnKind, event);
+  addFlownode(jsonModel, bpmnKind, event, processIndex);
 
-  const index = eventParameter.index ? eventParameter.index : 0;
   const eventShape = {
-    id: `shape_event_id_${index}`,
-    bpmnElement: `event_id_${index}`,
+    id: `shape_${event.id}`,
+    bpmnElement: event.id,
     Bounds: { x: 362, y: 232, width: 36, height: 45 },
   };
-  addShape(jsonModel, eventShape);
+  addShape(jsonModel, eventShape, processIndex);
 }

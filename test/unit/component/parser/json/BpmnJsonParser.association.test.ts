@@ -24,6 +24,7 @@ describe('parse bpmn as json for association', () => {
       sourceRef: 'Activity_01',
       targetRef: 'Annotation_01',
     },
+    task: [{ id: 'Activity_01' }, { id: 'Annotation_01' }],
   };
 
   it.each([
@@ -63,6 +64,7 @@ describe('parse bpmn as json for association', () => {
       definitions: {
         targetNamespace: '',
         process: {
+          task: [{ id: 'Activity_01' }, { id: 'Annotation_01' }, { id: 'Activity_02' }, { id: 'Annotation_02' }],
           association: [
             {
               id: 'association_id_0',

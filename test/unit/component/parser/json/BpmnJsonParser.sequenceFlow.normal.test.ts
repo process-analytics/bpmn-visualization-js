@@ -25,6 +25,7 @@ describe('parse bpmn as json for sequence flow', () => {
       sourceRef: 'sourceRef_id_xsdas',
       targetRef: 'targetRef_RLk',
     },
+    task: [{ id: 'sourceRef_id_xsdas' }, { id: 'targetRef_RLk' }],
   } as TProcess;
 
   it.each([
@@ -79,6 +80,7 @@ describe('parse bpmn as json for sequence flow', () => {
               targetRef: 'targetRef_1',
             },
           ],
+          task: [{ id: 'sourceRef_id_xsdas' }, { id: 'targetRef_RLk' }, { id: 'sequenceFlow_id_1' }, { id: 'targetRef_1' }],
         },
         BPMNDiagram: {
           id: 'BpmnDiagram_1',
@@ -139,6 +141,7 @@ describe('parse bpmn as json for sequence flow', () => {
               targetRef: 'targetRef_1',
             },
           ],
+          task: [{ id: 'sourceRef_id_xsdas' }, { id: 'targetRef_RLk' }, { id: 'sequenceFlow_id_1' }, { id: 'targetRef_1' }],
         },
         BPMNDiagram: {
           id: 'BpmnDiagram_1',

@@ -29,14 +29,15 @@ import type { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
 export default class CollaborationConverter {
   constructor(private convertedElements: ConvertedElements) {}
 
-  deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): void {
-    ensureIsArray(collaborations).forEach(collaboration => this.parseCollaboration(collaboration));
+  deserializeElementsOnWhichProcessDepends(collaborations: string | TCollaboration | (string | TCollaboration)[]): void {
+    ensureIsArray(collaborations).forEach(collaboration => {
+      this.buildParticipant(collaboration.participant);
+      this.buildGroups(collaboration.group);
+    });
   }
 
-  private parseCollaboration(collaboration: TCollaboration): void {
-    this.buildParticipant(collaboration.participant);
-    this.buildMessageFlows(collaboration.messageFlow);
-    this.buildGroups(collaboration.group);
+  deserializeElementsDependentOnProcess(collaborations: string | TCollaboration | (string | TCollaboration)[]): void {
+    ensureIsArray(collaborations).forEach(collaboration => this.buildMessageFlows(collaboration.messageFlow));
   }
 
   private buildParticipant(bpmnElements: Array<TParticipant> | TParticipant): void {
@@ -44,9 +45,11 @@ export default class CollaborationConverter {
   }
 
   private buildMessageFlows(bpmnElements: Array<TMessageFlow> | TMessageFlow): void {
-    ensureIsArray(bpmnElements).forEach(messageFlow =>
-      this.convertedElements.registerMessageFlow(new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef)),
-    );
+    ensureIsArray(bpmnElements).forEach(messageFlow => {
+      const convertedSource = this.convertedElements.findFlowNode(messageFlow.sourceRef) || this.convertedElements.findProcess(messageFlow.sourceRef);
+      const convertedTarget = this.convertedElements.findFlowNode(messageFlow.targetRef) || this.convertedElements.findProcess(messageFlow.targetRef);
+      this.convertedElements.registerMessageFlow(new MessageFlow(messageFlow.id, messageFlow.name, convertedSource, convertedTarget));
+    });
   }
 
   private buildGroups(bpmnElements: Array<TGroup> | TGroup): void {

@@ -100,7 +100,7 @@ class ParsingMessageCollectorTester extends ParsingMessageCollector {
 
 export const parsingMessageCollector = new ParsingMessageCollectorTester();
 
-function checkParsingWarnings(numberOfWarnings: number): void {
+export function checkParsingWarnings(numberOfWarnings: number): void {
   expect(parsingMessageCollector.getWarnings()).toHaveLength(numberOfWarnings);
 }
 
@@ -203,8 +203,8 @@ export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge | ExpectedSeq
   const bpmnElement = edge.bpmnElement;
   expect(bpmnElement.id).toEqual(expectedValue.bpmnElementId);
   expect(bpmnElement.name).toEqual(expectedValue.bpmnElementName);
-  expect(bpmnElement.sourceRefId).toEqual(expectedValue.bpmnElementSourceRefId);
-  expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
+  expect(bpmnElement.source?.id).toEqual(expectedValue.bpmnElementSourceRefId);
+  expect(bpmnElement.target?.id).toEqual(expectedValue.bpmnElementTargetRefId);
 
   if (bpmnElement instanceof SequenceFlow) {
     expect(edge.bpmnElement.kind).toEqual(FlowKind.SEQUENCE_FLOW);
