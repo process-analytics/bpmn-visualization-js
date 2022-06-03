@@ -166,7 +166,7 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape | Expecte
   expect(bpmnElement.id).toEqual(expectedShape.bpmnElementId);
   expect(bpmnElement.name).toEqual(expectedShape.bpmnElementName);
   expect(bpmnElement.kind).toEqual(expectedShape.bpmnElementKind);
-  expect(bpmnElement.parentId).toEqual(expectedShape.parentId);
+  expect(bpmnElement.parent).toEqual(expectedShape.parentId);
 
   if (bpmnElement instanceof ShapeBpmnActivity) {
     const expectedActivityShape = expectedShape as ExpectedActivityShape;

@@ -60,7 +60,7 @@ export class ConvertedElements {
       const process = this._findProcess(participant.processRef);
       if (process) {
         const name = participant.name || process.name;
-        return new ShapeBpmnElement(participant.id, name, process.kind, process.parentId);
+        return new ShapeBpmnElement(participant.id, name, process.kind, process.parent);
       }
       // black box pool
       return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);

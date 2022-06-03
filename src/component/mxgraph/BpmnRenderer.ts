@@ -62,7 +62,7 @@ export class BpmnRenderer {
   }
 
   private getParent(bpmnElement: ShapeBpmnElement): mxCell {
-    const bpmnElementParent = this.getCell(bpmnElement.parentId);
+    const bpmnElementParent = this.getCell(bpmnElement.parent);
     return bpmnElementParent ?? this.graph.getDefaultParent();
   }
 

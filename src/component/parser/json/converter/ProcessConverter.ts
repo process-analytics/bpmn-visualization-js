@@ -258,7 +258,7 @@ export default class ProcessConverter {
       const laneId = lane.id;
       if (shapeBpmnElement) {
         if (!ShapeUtil.isBoundaryEvent(shapeBpmnElement.kind)) {
-          shapeBpmnElement.parentId = laneId;
+          shapeBpmnElement.parent = laneId;
         }
       } else {
         this.parsingMessageCollector.warning(new LaneUnknownFlowNodeRefWarning(laneId, flowNodeRef));
