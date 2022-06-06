@@ -89,7 +89,7 @@
     "utils:test:model": "node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/simple-start-task-end.bpmn --output model"
   },
   "dependencies": {
-    "@typed-mxgraph/typed-mxgraph": "~1.0.5",
+    "@typed-mxgraph/typed-mxgraph": "~1.0.6",
     "entities": "~4.3.0",
     "fast-xml-parser": "4.0.8",
     "lodash.debounce": "~4.0.8",
@@ -114,7 +114,7 @@
     "cross-env": "~7.0.3",
     "cssnano": "~5.1.10",
     "debug": "~4.3.4",
-    "eslint": "~8.16.0",
+    "eslint": "~8.17.0",
     "eslint-config-prettier": "~8.5.0",
     "eslint-plugin-jest": "~26.4.6",
     "eslint-plugin-notice": "~0.9.10",
