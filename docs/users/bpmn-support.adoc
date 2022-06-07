@@ -1,5 +1,5 @@
 [[supported-bpmn-elements]]
-== Supported BPMN Elements
+= Supported BPMN Elements
 :icons: font
 ifdef::env-github[]
 :tip-caption: :bulb:
@@ -25,7 +25,7 @@ the BPMN elements are rendered with their final shapes.
 ====
 
 
-=== Containers
+== Containers
 
 [cols="1,1,4a", options="header"]
 .Containers
@@ -45,7 +45,7 @@ the BPMN elements are rendered with their final shapes.
 
 
 
-=== Activities
+== Activities
 
 [cols="1,1,1,4", options="header"]
 .Activities
@@ -171,7 +171,7 @@ the BPMN elements are rendered with their final shapes.
 - The marker icon of the collapsed activities may be subject to change
 
 
-=== Events
+== Events
 
 The event definition can be defined on the event or on the definitions.
 
@@ -509,7 +509,7 @@ The event definition can be defined on the event or on the definitions.
 
 
 
-=== Flows
+== Flows
 
 [cols="1,1,4a", options="header"]
 .Flows
@@ -543,7 +543,7 @@ The event definition can be defined on the event or on the definitions.
 |===
 
 
-=== Gateways
+== Gateways
 
 
 [cols="1,1,1,4", options="header"]
@@ -576,7 +576,7 @@ The event definition can be defined on the event or on the definitions.
 |===
 
 
-=== Labels
+== Labels
 
 
 [cols="1,1,4", options="header"]
@@ -597,7 +597,7 @@ The event definition can be defined on the event or on the definitions.
 
 
 
-=== Artifacts
+== Artifacts
 
 
 [cols="1,1,4", options="header"]
@@ -619,7 +619,7 @@ The event definition can be defined on the event or on the definitions.
 
 
 
-=== Associations
+== Associations
 
 
 [cols="1,1,4", options="header"]

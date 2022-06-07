@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>BPMN Visualization Demo</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.1.1/css/all.css">
     <link href="static/css/tailwind.css" rel="stylesheet">
     <link rel="icon" href="static/img/favicon.png">
     <!-- load demo -->
@@ -16,7 +16,7 @@
       <div class="flex flex-wrap items-center">
         <div class="flex flex-shrink justify-center md:justify-start text-white">
           <a class="flex items-center mb-1 md:mt-2 md:mb-2" href="../../examples/index.html">
-            <img src="static/img/logo_64x64_white.png" alt="logo" class="logo h-11 ml-3 mr-2">
+            <img src="static/img/logo_white.svg" alt="logo" class="h-11 ml-3 mr-2">
             <span class="h-11 ml-2 py-1 text-2xl md:text-3xl">BPMN Visualization</span>
           </a>
         </div>
@@ -28,7 +28,7 @@
       <div class="bg-gray-800 shadow-xl w-full md:w-48">
         <ul class="flex flex-row md:flex-col py-0 px-1 md:px-2">
             <li class="md:mr-3">
-              <div class="py-1 md:pb-5 md:pt-3 pl-1 border-b-2 border-gray-800">
+              <div class="select-none py-1 md:pb-5 md:pt-3 pl-1 border-b-2 border-gray-800">
                 <div class="bg-gradient-to-b from-red-200 to-red-100 border-b-4 border-red-600 rounded-lg shadow-xl hover:border-red-900">
                   <div class="cursor-pointer text-red-500 hover:text-red-900">
                     <div class="text-center">
@@ -38,15 +38,15 @@
                   </div>
                 </div>
               </div>
-              <a href="#" class="block pb-1 md:py-3 pl-1 text-white no-underline md:border-b-2 md:border-purple-500">
+              <div class="block pb-1 md:py-3 pl-1 text-white no-underline md:border-b-2 md:border-purple-500">
                 <label for="fitOnLoad">Fit on load:
                   <input type="checkbox" id="fitOnLoad" name="fitOnLoad" checked>
                 </label>
-              </a>
+              </div>
             </li>
             <li class="flex-1 md:mr-3">
               <div class="py-1 md:py-3 pl-1 text-white md:border-b-2 md:border-red-500">
-                <a href="#" class="block no-underline md:pb-3 md:border-b-2 md:border-blue-600">
+                <div class="block no-underline md:pb-3 md:border-b-2 md:border-blue-600">
                   <label class="flex justify-evenly md:block">Fit type:
                     <select name="fitTypes" id="fitType-selected" class="w-1/2 md:w-full pl-1 md:pl-0 text-blue-900">
                       <option value="None">None</option>
@@ -56,25 +56,24 @@
                       <option value="Center" selected>Center</option>
                     </select>
                   </label>
-                </a>
-                <a href="#" class="block no-underline mt-3">
+                </div>
+                <div class="block no-underline mt-3">
                   <label for="fit-margin" class="flex justify-around">Fit margin:
                     <input type="number" id="fit-margin" class="w-1/3 pl-1 text-red-900 md:ml-auto" min="0" max="100" value="50" maxlength="3" oninput="validity.valid||(value='');">
                   </label>
-                </a>
+                </div>
               </div>
             </li>
             <li class="flex-1 md:mr-3">
               <div id="zoom-config-controls" class="py-1 md:py-3 pl-1 text-white md:border-b-2 md:border-yellow-500">
-                <label for="zoom-throttle" class="flex justify-center">
-                  Throttle:
-                  <input id="zoom-throttle" class="w-1/3 pl-1 ml-3 text-black md:ml-auto" placeholder="throttle" value="50" disabled
-                         title="to play with throttle pass parameter in url like this: .../?zoomThrottle=40"/>
-                </label>
-                <label for="zoom-debounce" class="flex justify-center mt-3">Debounce:
-                  <input id="zoom-debounce" class="w-1/3 pl-1 text-black md:ml-auto" placeholder="debounce" value="50" disabled
-                         title="to play with debounce pass parameter in url like this: .../?zoomDebounce=30"/>
-                </label>
+                <div id="zoom" class="flex md:justify-between">
+                  <span>Zoom:</span>
+                  <span class="ml-4 md:ml-0">
+                    <button id="zoom-in" title="Zoom In"><em class="fa-solid fa-magnifying-glass-plus"></em></button>
+                    <button id="zoom-out" title="Zoom Out"><em class="ml-2 fa-solid fa-magnifying-glass-minus"></em></button>
+                    <button id="zoom-reset" title="Zoom Reset"><em class="ml-4 fa-solid fa-magnifying-glass"></em></button>
+                  </span>
+                </div>
               </div>
             </li>
           </ul>

@@ -21,6 +21,8 @@
 :icons: font
 // enable link attributes
 :linkattrs:
+// see https://docs.asciidoctor.org/asciidoc/latest/directives/include-with-leveloffset/
+:leveloffset: +1
 
 include::intro.adoc[]
 

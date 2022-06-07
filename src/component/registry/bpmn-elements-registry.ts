@@ -75,6 +75,9 @@ export class BpmnElementsRegistry {
    * // now you can do whatever you want with the elements
    * ...
    * ```
+   *
+   * **WARNING**: this method is not designed to accept a large amount of ids. It does DOM lookup to retrieve the HTML elements relative to the BPMN elements.
+   * Attempts to retrieve too many elements, especially on large BPMN diagram, may lead to performance issues.
    */
   getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[] {
     return ensureIsArray<string>(bpmnElementIds)
@@ -94,6 +97,9 @@ export class BpmnElementsRegistry {
    * // now you can do whatever you want with the elements
    * ...
    * ```
+   *
+   * **WARNING**: this method is not designed to accept a large amount of types. It does DOM lookup to retrieve the HTML elements relative to the BPMN elements.
+   * Attempts to retrieve too many elements, especially on large BPMN diagrams, may lead to performance issues.
    */
   getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
     return ensureIsArray<BpmnElementKind>(bpmnKinds)
@@ -123,6 +129,16 @@ export class BpmnElementsRegistry {
    * bpmnVisualization.bpmnElementsRegistry.addCssClasses('task_3', ['suspicious-path', 'additional-info']);
    * ```
    *
+   * **Notes**:
+   *
+   * - This method is intended to set CSS classes to specific elements, for instance to hide or highlight them. During BPMN diagram rendering, `bpmn-visualization` set specific CSS classes to all elements regarding their types.
+   * So, if you want to style all elements of a given type, use these default classes instead of adding new ones. The classes allow identifying elements of the same 'family' and of the same specific type.
+   * - For instance, a BPMN Service Task is an `Activity` and a `Task`, so it has the `bpmn-type-activity` and the `bpmn-type-task` classes. It shares these classes with all types of `Tasks`.
+   * It also has the specific `bpmn-service-task` to differentiate it from a BPMN User Task that has a `bpmn-user-task`.
+   * - In addition, labels also have the `bpmn-label` classes.
+   *
+   * Check the examples for more details.
+   *
    * @param bpmnElementIds The BPMN id of the element(s) where to add the CSS classes
    * @param classNames The name of the class(es) to add to the BPMN element(s)
    */
@@ -131,7 +147,7 @@ export class BpmnElementsRegistry {
   }
 
   /**
-   * Remove one/several CSS class(es) from one/several BPMN element(s).
+   * Remove one/several CSS class(es) previously added with the `addCssClasses` or the `toggleCssClasses` methods from one/several BPMN element(s).
    *
    * @example
    * ```javascript

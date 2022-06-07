@@ -13,3 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import type { BpmnGraph } from './mxgraph/BpmnGraph';
+import type { FitOptions, ZoomType } from './options';
+
+/**
+ * Perform BPMN diagram navigation.
+ * @category Navigation
+ * @experimental subject to change, feedback welcome.
+ * @since 0.24.0
+ */
+export class Navigation {
+  constructor(private readonly graph: BpmnGraph) {}
+
+  fit(options?: FitOptions): void {
+    this.graph.customFit(options);
+  }
+
+  zoom(type: ZoomType): void {
+    type == 'in' ? this.graph.zoomIn() : this.graph.zoomOut();
+  }
+}
