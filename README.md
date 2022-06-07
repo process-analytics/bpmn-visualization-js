@@ -65,7 +65,7 @@ Planned features:
 - ⚡️ Strong identity: the only BPMN viewer with a woman icon in the User Tasks
 - 🎸 Fully documented and with a lot of integration examples
 - 👓 Highly customizable rendering in a simple way
-- 🔥 Strongly typed codebase with native TypeScript support
+- 🔥 TypeScript support
 - 🎯 Battle tested: high test coverage, thousands of tests, including tests on all supported browsers for Linux, macOS and Windows
 
 
