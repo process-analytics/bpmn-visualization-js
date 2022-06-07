@@ -61,7 +61,7 @@ Planned features:
 
 ## 🤩 Why using bpmn-visualization?
 
-- ✨ True opensource license and no watermark display is required
+- ✨ True opensource license without watermark display 
 - ⚡️ Strong identity: the only BPMN viewer with a woman icon in the User Tasks
 - 🎸 Fully documented and with a lot of integration examples
 - 👓 Highly customizable rendering in a simple way
