@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Bonitasoft S.A.
+ * Copyright 2022 Bonitasoft S.A.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { copySync } from 'fs-extra';
 
-copySync(`${__dirname}/../fixtures/bpmn`, `${__dirname}/../../build/public/static/bpmn/`, { overwrite: true, recursive: true });
+import * as fs from 'fs';
+import { join } from 'path';
+
+const demoRootDirectory = './build/demo';
+
+const relPathToHtmlPages = 'dev/public';
+const pages = fs.readdirSync(join(demoRootDirectory, relPathToHtmlPages));
+pages.forEach(page => {
+  // eslint-disable-next-line no-console
+  console.info('Managing', page);
+  // move page out of the public/dev directory
+  fs.renameSync(join(demoRootDirectory, relPathToHtmlPages, page), join(demoRootDirectory, page));
+});
+
+fs.rmSync(join(demoRootDirectory, 'dev'), { recursive: true });

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BpmnVisualization } from '../../index.es.js';
+import { BpmnVisualization } from '/src/bpmn-visualization.ts';
 
 const bpmnVisualizationIntegration = new BpmnVisualization({ container: 'bpmn-container-custom' });
 bpmnVisualizationIntegration.load(bpmnDefaultContent());
