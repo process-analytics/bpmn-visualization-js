@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions, getVersion, zoom, ZoomType } from '../../index.es.js';
+import { documentReady, handleFileSelect, startBpmnVisualization, fit, log, updateLoadOptions, getCurrentLoadOptions, getVersion, zoom, ZoomType } from '/dev/ts/internal-dev-bundle-index.ts';
 
 let fitOnLoad = true;
 let fitOptions = {};
