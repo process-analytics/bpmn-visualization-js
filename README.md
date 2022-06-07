@@ -61,15 +61,12 @@ Planned features:
 
 ## 🤩 Why using bpmn-visualization?
 
-**in progress**
-
-- ✨ True opensource license (no watermark/trademark display is required)
-- ⚡️ strong identity - the only viewer displaying a woman/female icon as User Task icon
-- 🎸 documentation and a lot of integration examples
-- 👓 rendering fully customizable in a simple way
-- 🔥 Strongly typed codebase (TypeScript Typings readily available) - native TypeScript support
-- 🎯 battle tested: high test coverage, thousands of tests, including tests on all supported browsers for Linux, macOS and Windows
-
+- ✨ True opensource license and no watermark display is required
+- ⚡️ Strong identity: the only BPMN viewer with a woman icon in the User Tasks
+- 🎸 Fully documented and with a lot of integration examples
+- 👓 Highly customizable rendering in a simple way
+- 🔥 Strongly typed codebase with native TypeScript support
+- 🎯 Battle tested: high test coverage, thousands of tests, including tests on all supported browsers for Linux, macOS and Windows
 
 
 ## 🌏 Browsers Support
