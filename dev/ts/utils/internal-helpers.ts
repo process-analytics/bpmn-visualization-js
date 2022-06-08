@@ -14,27 +14,19 @@
  * limitations under the License.
  */
 
-export function documentReady(callbackFunction: () => void): void {
-  // see if DOM is already available
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    // call on next available tick
-    setTimeout(callbackFunction, 1);
-  } else {
-    document.addEventListener('DOMContentLoaded', callbackFunction);
-  }
+import { log } from './shared-helpers';
+
+export function stringify(value: unknown): string {
+  return JSON.stringify(value, undefined, 2);
 }
 
-function _log(header: string, message: unknown, ...optionalParams: unknown[]): void {
+export function _log(header: string, message: unknown, ...optionalParams: unknown[]): void {
   // eslint-disable-next-line no-console
   console.info(header + ' ' + message, ...optionalParams);
 }
 
 export function logStartup(message?: string, ...optionalParams: unknown[]): void {
   _log('[DEMO STARTUP]', message, ...optionalParams);
-}
-
-export function log(message?: string, ...optionalParams: unknown[]): void {
-  _log('[DEMO]', message, ...optionalParams);
 }
 
 export function logErrorAndOpenAlert(error: unknown, alertMsg?: string): void {
@@ -44,4 +36,14 @@ export function logErrorAndOpenAlert(error: unknown, alertMsg?: string): void {
 
 export function logDownload(message?: unknown, ...optionalParams: unknown[]): void {
   _log('[DEMO DOWNLOAD]', message, ...optionalParams);
+}
+
+export function fetchBpmnContent(url: string): Promise<string> {
+  log(`Fetching BPMN content from url ${url}`);
+  return fetch(url).then(response => {
+    if (!response.ok) {
+      throw Error(String(response.status));
+    }
+    return response.text();
+  });
 }

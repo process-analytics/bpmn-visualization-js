@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Bonitasoft S.A.
+ * Copyright 2022 Bonitasoft S.A.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,5 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export * from './demo';
-export * from '../../src/bpmn-visualization';
+
+import { _log } from './internal-helpers';
+
+export function documentReady(callbackFunction: () => void): void {
+  // see if DOM is already available
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    // call on next available tick
+    setTimeout(callbackFunction, 1);
+  } else {
+    document.addEventListener('DOMContentLoaded', callbackFunction);
+  }
+}
+
+export function log(message?: string, ...optionalParams: unknown[]): void {
+  _log('[DEMO]', message, ...optionalParams);
+}

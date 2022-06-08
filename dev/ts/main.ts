@@ -15,13 +15,12 @@
  */
 
 import type { BpmnElement, BpmnElementKind, FitOptions, FitType, GlobalOptions, LoadOptions, Overlay, Version, ZoomType } from '../../src/bpmn-visualization';
-import { log, logDownload, logErrorAndOpenAlert, logStartup } from './helper';
+import { fetchBpmnContent, logDownload, logErrorAndOpenAlert, logStartup, stringify } from './utils/internal-helpers';
+import { log } from './utils/shared-helpers';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';
 import { downloadAsPng, downloadAsSvg } from './component/download';
 import { ThemedBpmnVisualization } from './component/ThemedBpmnVisualization';
-
-export * from './helper';
 
 let bpmnVisualization: ThemedBpmnVisualization;
 let loadOptions: LoadOptions = {};
@@ -35,10 +34,6 @@ export function updateLoadOptions(fitOptions: FitOptions): void {
 
 export function getCurrentLoadOptions(): LoadOptions {
   return { ...loadOptions };
-}
-
-function stringify(value: unknown): string {
-  return JSON.stringify(value, undefined, 2);
 }
 
 function loadBpmn(bpmn: string): void {
@@ -128,16 +123,6 @@ function readAndLoadFile(f: File): void {
 export function handleFileSelect(evt: any): void {
   const f = evt.target.files[0];
   readAndLoadFile(f);
-}
-
-function fetchBpmnContent(url: string): Promise<string> {
-  log(`Fetching BPMN content from url ${url}`);
-  return fetch(url).then(response => {
-    if (!response.ok) {
-      throw Error(String(response.status));
-    }
-    return response.text();
-  });
 }
 
 function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) => void): void {

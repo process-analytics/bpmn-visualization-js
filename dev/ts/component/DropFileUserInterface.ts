@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { logErrorAndOpenAlert } from '../helper';
+import { logErrorAndOpenAlert } from '../utils/internal-helpers';
 
 export class DropFileUserInterface {
   private document: Document;

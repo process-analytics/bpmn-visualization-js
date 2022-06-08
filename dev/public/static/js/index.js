@@ -24,7 +24,7 @@ import {
   getVersion,
   zoom,
   ZoomType,
-} from '/dev/ts/internal-dev-bundle-index.ts';
+} from '../../../ts/dev-bundle-index';
 
 let fitOnLoad = true;
 let fitOptions = {};
