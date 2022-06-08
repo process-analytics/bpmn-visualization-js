@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
+import type { Flow } from '../edge/flows';
 import type { BpmnEventKind, GlobalTaskKind, ShapeBpmnCallActivityKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from './kinds';
 import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind } from './kinds';
+
+type ShapeBpmnElementChildren = ShapeBpmnElement | Flow;
 
 /**
  * @internal
@@ -27,15 +30,30 @@ export default class ShapeBpmnElement {
     readonly kind: ShapeBpmnElementKind,
     public parent?: ShapeBpmnElement | Participant,
     readonly instantiate: boolean = false,
-  ) {}
+    readonly children: ShapeBpmnElementChildren[] = [],
+  ) {
+    parent?.addChild(this);
+  }
+
+  addChild(child: ShapeBpmnElementChildren): void {
+    this.children.push(child);
+  }
 }
 
 /**
  * @internal
  */
 export class ShapeBpmnActivity extends ShapeBpmnElement {
-  constructor(id: string, name: string, kind: ShapeBpmnElementKind, parent: ShapeBpmnElement, instantiate?: boolean, readonly markers: ShapeBpmnMarkerKind[] = []) {
-    super(id, name, kind, parent, instantiate);
+  constructor(
+    id: string,
+    name: string,
+    kind: ShapeBpmnElementKind,
+    parent: ShapeBpmnElement,
+    instantiate?: boolean,
+    readonly markers: ShapeBpmnMarkerKind[] = [],
+    children?: ShapeBpmnElement[],
+  ) {
+    super(id, name, kind, parent, instantiate, children);
   }
 }
 
@@ -50,8 +68,9 @@ export class ShapeBpmnCallActivity extends ShapeBpmnActivity {
     parent: ShapeBpmnElement,
     markers?: ShapeBpmnMarkerKind[],
     readonly globalTaskKind?: GlobalTaskKind,
+    children?: ShapeBpmnElement[],
   ) {
-    super(id, name, ShapeBpmnElementKind.CALL_ACTIVITY, parent, undefined, markers);
+    super(id, name, ShapeBpmnElementKind.CALL_ACTIVITY, parent, undefined, markers, children);
   }
 }
 
@@ -59,8 +78,15 @@ export class ShapeBpmnCallActivity extends ShapeBpmnActivity {
  * @internal
  */
 export class ShapeBpmnSubProcess extends ShapeBpmnActivity {
-  constructor(id: string, name: string, readonly subProcessKind: ShapeBpmnSubProcessKind, parent: ShapeBpmnElement, markers?: ShapeBpmnMarkerKind[]) {
-    super(id, name, ShapeBpmnElementKind.SUB_PROCESS, parent, undefined, markers);
+  constructor(
+    id: string,
+    name: string,
+    readonly subProcessKind: ShapeBpmnSubProcessKind,
+    parent: ShapeBpmnElement,
+    markers?: ShapeBpmnMarkerKind[],
+    children?: ShapeBpmnElement[],
+  ) {
+    super(id, name, ShapeBpmnElementKind.SUB_PROCESS, parent, undefined, markers, children);
   }
 }
 
@@ -104,5 +130,9 @@ export class ShapeBpmnEventBasedGateway extends ShapeBpmnElement {
  * @internal
  */
 export class Participant {
-  constructor(readonly id: string, readonly name?: string, public processRef?: string) {}
+  constructor(readonly id: string, readonly name?: string, public processRef?: string, readonly children: ShapeBpmnElementChildren[] = []) {}
+
+  addChild(child: ShapeBpmnElementChildren): void {
+    this.children.push(child);
+  }
 }

@@ -21,15 +21,24 @@ import { AssociationDirectionKind, FlowKind, SequenceFlowKind } from './kinds';
  * @internal
  */
 export abstract class Flow {
-  protected constructor(readonly id: string, readonly name: string, readonly kind: FlowKind, readonly source?: ShapeBpmnElement, readonly target?: ShapeBpmnElement) {}
+  protected constructor(
+    readonly id: string,
+    readonly name: string,
+    readonly kind: FlowKind,
+    readonly source?: ShapeBpmnElement,
+    readonly target?: ShapeBpmnElement,
+    public parent?: ShapeBpmnElement,
+  ) {
+    parent?.addChild(this);
+  }
 }
 
 /**
  * @internal
  */
 export class SequenceFlow extends Flow {
-  constructor(id: string, name: string, source?: ShapeBpmnElement, target?: ShapeBpmnElement, readonly sequenceFlowKind = SequenceFlowKind.NORMAL) {
-    super(id, name, FlowKind.SEQUENCE_FLOW, source, target);
+  constructor(id: string, name: string, source?: ShapeBpmnElement, target?: ShapeBpmnElement, readonly sequenceFlowKind = SequenceFlowKind.NORMAL, parent?: ShapeBpmnElement) {
+    super(id, name, FlowKind.SEQUENCE_FLOW, source, target, parent);
   }
 }
 
@@ -46,7 +55,14 @@ export class MessageFlow extends Flow {
  * @internal
  */
 export class AssociationFlow extends Flow {
-  constructor(id: string, name: string, source?: ShapeBpmnElement, target?: ShapeBpmnElement, readonly associationDirectionKind = AssociationDirectionKind.NONE) {
-    super(id, name, FlowKind.ASSOCIATION_FLOW, source, target);
+  constructor(
+    id: string,
+    name: string,
+    source?: ShapeBpmnElement,
+    target?: ShapeBpmnElement,
+    readonly associationDirectionKind = AssociationDirectionKind.NONE,
+    parent?: ShapeBpmnElement,
+  ) {
+    super(id, name, FlowKind.ASSOCIATION_FLOW, source, target, parent);
   }
 }

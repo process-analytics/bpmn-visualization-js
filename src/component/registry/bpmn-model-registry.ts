@@ -18,7 +18,7 @@ import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../model/bpmn/internal/edge/edge';
 import type { BpmnSemantic } from './types';
-import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
+import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import type { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { ModelFilter } from '../options';
@@ -142,30 +142,33 @@ class ModelFiltering {
     }
 
     // prepare parent
-    const filteredPoolBpmnElements = filteredPools.map(pool => pool.bpmnElement);
 
     // lanes
     logModelFiltering('lanes: ', bpmnModel.lanes);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const filteredLanes = bpmnModel.lanes.filter(lane => filteredPoolBpmnElements.includes(lane.bpmnElement.parent));
-    logModelFiltering('filtered lanes: ', filteredLanes);
+    const filteredLaneBpmnElement: ShapeBpmnElement[] = filteredPools
+      .map(pool => pool.bpmnElement.children.filter(child => child.kind === ShapeBpmnElementKind.LANE))
+      .flat() as ShapeBpmnElement[];
+    const lanes: Shape[] = bpmnModel.lanes.filter(lane => filteredLaneBpmnElement.includes(lane.bpmnElement));
+    logModelFiltering('filtered lanes: ', lanes);
 
     // TODO subprocesses / call activity
 
     // TODO group - they are currently not associated to participant. How do we handle it?
 
-    const filteredFlowNodes = bpmnModel.flowNodes.filter(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      flowNode => filteredPools.map(pool => pool.bpmnElement).includes(flowNode.bpmnElement.parent) || filteredLanes.includes(flowNode.bpmnElement.parent),
-    );
+    logModelFiltering('flowNodes: ', bpmnModel.flowNodes);
+    const filteredFlowNodeBpmnElement =
+      filteredPools.map(pool => pool.bpmnElement.children.filter(child => child.kind !== ShapeBpmnElementKind.LANE)).flat() ||
+      filteredLaneBpmnElement.map(lane => lane.children.filter(child => child.kind !== ShapeBpmnElementKind.LANE)).flat();
+    const flowNodes: Shape[] = bpmnModel.flowNodes.filter(lane => filteredFlowNodeBpmnElement.includes(lane.bpmnElement));
+    logModelFiltering('filtered flowNodes: ', flowNodes);
 
-    const flowNodes: Shape[] = filteredFlowNodes; //[];
-    // const flowNodes: Shape[] = bpmnModel.flowNodes; //[];
-    const lanes: Shape[] = filteredLanes; //[];
     // filterPoolBpmnIds message flow: a single pool, remove all but we should remove refs to outgoing msg flows on related shapes
-    const edges: Edge[] = bpmnModel.edges; //[];
+    logModelFiltering('edges: ', bpmnModel.edges);
+    const filteredEdgeBpmnElement =
+      filteredPools.map(pool => pool.bpmnElement.children.filter(child => child.kind !== ShapeBpmnElementKind.LANE)).flat() ||
+      filteredLaneBpmnElement.map(lane => lane.children.filter(child => child.kind !== ShapeBpmnElementKind.LANE)).flat();
+    const edges: Edge[] = bpmnModel.edges.filter(lane => filteredEdgeBpmnElement.includes(lane.bpmnElement));
+    logModelFiltering('filtered edges: ', edges);
 
     logModelFiltering('END');
     return { flowNodes, lanes, pools: filteredPools, edges };
