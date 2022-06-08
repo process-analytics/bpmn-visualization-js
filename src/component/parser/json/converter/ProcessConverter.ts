@@ -132,7 +132,7 @@ export default class ProcessConverter {
   }
 
   private buildShapeBpmnActivity(bpmnElement: TActivity, kind: ShapeBpmnElementKind, convertedProcess: ShapeBpmnElement): ShapeBpmnActivity {
-    const markers = ProcessConverter.buildMarkers(bpmnElement);
+    const markers = buildMarkers(bpmnElement);
 
     if (ShapeUtil.isSubProcess(kind)) {
       return this.buildShapeBpmnSubProcess(bpmnElement, markers, convertedProcess);
@@ -151,22 +151,6 @@ export default class ProcessConverter {
       return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, convertedProcess, markers);
     }
     return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK, convertedProcess, markers, globalTaskKind);
-  }
-
-  private static buildMarkers(bpmnElement: TActivity): ShapeBpmnMarkerKind[] {
-    const markers: ShapeBpmnMarkerKind[] = [];
-    // @ts-ignore We know that the standardLoopCharacteristics field is not on all types, but it's already tested
-    const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
-    // @ts-ignore We know that the multiInstanceLoopCharacteristics field is not on all types, but it's already tested
-    const multiInstanceLoopCharacteristics = ensureIsArray(bpmnElement.multiInstanceLoopCharacteristics, true)[0];
-    if (standardLoopCharacteristics || standardLoopCharacteristics === '') {
-      markers.push(ShapeBpmnMarkerKind.LOOP);
-    } else if (multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.isSequential) {
-      markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL);
-    } else if ((multiInstanceLoopCharacteristics && !multiInstanceLoopCharacteristics.isSequential) || multiInstanceLoopCharacteristics === '') {
-      markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL);
-    }
-    return markers;
   }
 
   private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventKind, convertedProcess: ShapeBpmnElement): ShapeBpmnEvent {
@@ -296,3 +280,19 @@ export default class ProcessConverter {
     return SequenceFlowKind.NORMAL;
   }
 }
+
+const buildMarkers = (bpmnElement: TActivity): ShapeBpmnMarkerKind[] => {
+  const markers: ShapeBpmnMarkerKind[] = [];
+  // @ts-ignore We know that the standardLoopCharacteristics field is not on all types, but it's already tested
+  const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
+  // @ts-ignore We know that the multiInstanceLoopCharacteristics field is not on all types, but it's already tested
+  const multiInstanceLoopCharacteristics = ensureIsArray(bpmnElement.multiInstanceLoopCharacteristics, true)[0];
+  if (standardLoopCharacteristics || standardLoopCharacteristics === '') {
+    markers.push(ShapeBpmnMarkerKind.LOOP);
+  } else if (multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.isSequential) {
+    markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL);
+  } else if ((multiInstanceLoopCharacteristics && !multiInstanceLoopCharacteristics.isSequential) || multiInstanceLoopCharacteristics === '') {
+    markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL);
+  }
+  return markers;
+};
