@@ -60,11 +60,37 @@ export interface ZoomConfiguration {
 }
 
 /**
+ * ```typescript
+ * bpmnVisualization.load({ modelFilter: {
+ *      includes: {
+ *        ids: 'Participant_1257_x151';
+ *        names: ['Customer', 'Supplier'];
+ *      }
+ *    }
+ * });
+ * ```
+ * @category Initialization
+ */
+export interface ModelFilter {
+  includes?: {
+    pools?: {
+      ids?: string | string[];
+      names?: string | string[];
+    };
+    // for the future
+    // diagrams: {
+    //   id: string;
+    // };
+  };
+}
+
+/**
  * Options when loading a BPMN Diagram.
  * @category Initialization
  */
 export interface LoadOptions {
   fit?: FitOptions;
+  modelFilter?: ModelFilter;
 }
 
 /**

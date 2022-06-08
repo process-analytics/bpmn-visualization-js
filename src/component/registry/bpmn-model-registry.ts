@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { ensureIsArray } from '../helpers/array-utils';
 import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../model/bpmn/internal/edge/edge';
@@ -20,6 +21,7 @@ import type { BpmnSemantic } from './types';
 import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import type { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import type { ModelFilter } from '../options';
 
 /**
  * @internal
@@ -28,10 +30,12 @@ export class BpmnModelRegistry {
   private searchableModel: SearchableModel;
   private onLoadCallback: () => void;
 
-  load(bpmnModel: BpmnModel): RenderedModel {
-    this.searchableModel = new SearchableModel(bpmnModel);
+  load(bpmnModel: BpmnModel, modelFilter?: ModelFilter): RenderedModel {
+    const filteredModel = new ModelFiltering().filter(bpmnModel, modelFilter);
+
+    this.searchableModel = new SearchableModel(filteredModel);
     this.onLoadCallback?.();
-    return toRenderedModel(bpmnModel);
+    return toRenderedModel(filteredModel);
   }
 
   registerOnLoadCallback(callback: () => void): void {
@@ -98,5 +102,65 @@ class SearchableModel {
 
   elementById(id: string): Shape | Edge | undefined {
     return this.elements.get(id);
+  }
+}
+
+function logModelFiltering(msg: unknown, ...optionalParams: unknown[]): void {
+  // eslint-disable-next-line no-console
+  _log('model filtering', msg, ...optionalParams);
+}
+
+function _log(header: string, message: unknown, ...optionalParams: unknown[]): void {
+  // eslint-disable-next-line no-console
+  console.info(header + ' - ' + message, ...optionalParams);
+}
+
+class ModelFiltering {
+  filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
+    logModelFiltering('START');
+    // TODO validate that filterPoolBpmnIds is correctly defined = NOT (empty string, empty array, ....)
+    const poolIdsFilter = modelFilter?.includes?.pools?.ids;
+    // const poolNamesFilter = modelFilter?.includes?.pools?.names;
+    if (!poolIdsFilter) {
+      logModelFiltering('nothing to filterPoolBpmnIds');
+      return bpmnModel;
+    }
+
+    // TODO no pool in model --> error?
+
+    // lookup pools
+    const pools = bpmnModel.pools;
+    logModelFiltering('pools: ' + pools);
+    // TODO ensure it is an array
+    // const filterPoolBpmnIds = <Array<string>>poolIdsFilter;
+    const filterPoolBpmnIds = ensureIsArray(poolIdsFilter);
+    // TODO choose filterPoolBpmnIds by id if defined, otherwise filterPoolBpmnIds by name
+    const filteredPools = pools.filter(pool => filterPoolBpmnIds.includes(pool.bpmnElement.id));
+    logModelFiltering('filtered pools: ' + filteredPools);
+    if (filteredPools.length == 0) {
+      throw new Error('no existing pool with ids ' + filterPoolBpmnIds);
+    }
+
+    // prepare parent
+    // lanes
+    const filteredLanes = bpmnModel.lanes.filter(flowNode => filterPoolBpmnIds.includes(flowNode.bpmnElement.parent.id));
+    const filteredLaneBpmnElementIds = filteredLanes.map(lane => lane.bpmnElement.id);
+    logModelFiltering('filtered lanes: ' + filteredLaneBpmnElementIds);
+
+    // TODO subprocesses / call activity
+
+    // TODO group - they are currently not associated to participant. How do we handle it?
+
+    filterPoolBpmnIds.push(...filteredLaneBpmnElementIds);
+    const filteredFlowNodes = bpmnModel.flowNodes.filter(flowNode => filterPoolBpmnIds.includes(flowNode.bpmnElement.parent.id));
+
+    const flowNodes: Shape[] = filteredFlowNodes; //[];
+    // const flowNodes: Shape[] = bpmnModel.flowNodes; //[];
+    const lanes: Shape[] = filteredLanes; //[];
+    // filterPoolBpmnIds message flow: a single pool, remove all but we should remove refs to outgoing msg flows on related shapes
+    const edges: Edge[] = bpmnModel.edges; //[];
+
+    logModelFiltering('END');
+    return { flowNodes, lanes, pools: filteredPools, edges };
   }
 }
