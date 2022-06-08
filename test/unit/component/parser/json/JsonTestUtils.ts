@@ -26,6 +26,7 @@ import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { newBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import type { Edge, Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
 import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
+import type ShapeBpmnElement from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import { ShapeBpmnActivity, ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import type Label from '../../../../../src/model/bpmn/internal/Label';
 import { SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/flows';
@@ -38,6 +39,8 @@ export interface ExpectedShape {
   bpmnElementId: string;
   bpmnElementName: string;
   bpmnElementKind: ShapeBpmnElementKind;
+  parent?: ShapeBpmnElement;
+  /** Not used if the `parent` property is set. */
   parentId?: string;
   bounds?: ExpectedBounds;
   isHorizontal?: boolean;
@@ -166,7 +169,14 @@ export function verifyShape(shape: Shape, expectedShape: ExpectedShape | Expecte
   expect(bpmnElement.id).toEqual(expectedShape.bpmnElementId);
   expect(bpmnElement.name).toEqual(expectedShape.bpmnElementName);
   expect(bpmnElement.kind).toEqual(expectedShape.bpmnElementKind);
-  expect(bpmnElement.parent?.id).toEqual(expectedShape.parentId);
+  if (expectedShape.parent) {
+    // do strict equality on purpose, check the instance of the parent is the right one, generally by passing an instance retrieved from the model
+    expect(bpmnElement.parent).toBe(expectedShape.parent);
+  }
+  // only check parent id
+  else {
+    expect(bpmnElement.parent?.id).toEqual(expectedShape.parentId);
+  }
 
   if (bpmnElement instanceof ShapeBpmnActivity) {
     const expectedActivityShape = expectedShape as ExpectedActivityShape;

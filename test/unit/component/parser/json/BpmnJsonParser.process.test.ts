@@ -514,7 +514,7 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'event_id_0',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
-      parentId: 'Participant_1',
+      parent: pool.bpmnElement,
       bounds: {
         x: 362,
         y: 232,
@@ -792,6 +792,11 @@ describe('parse bpmn as json for process/pool', () => {
 
     const model = parseJsonAndExpect(json, 0, 0, 5, 4);
 
-    model.flowNodes.map(flowNode => flowNode.bpmnElement).forEach(bpmnElement => expect(bpmnElement.parent.id).toBe('WFP-6-'));
+    model.flowNodes
+      .map(flowNode => flowNode.bpmnElement)
+      .forEach(bpmnElement => {
+        // TODO here we have a pool bpmn element without shape!
+        expect(bpmnElement.parent.id).toBe('WFP-6-');
+      });
   });
 });
