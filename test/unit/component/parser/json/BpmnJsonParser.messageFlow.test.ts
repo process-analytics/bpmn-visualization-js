@@ -16,16 +16,22 @@
 import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { addEvent, addFlownode, addTask, EventDefinitionOn } from './JsonBuilder';
 import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
+import { MessageVisibleKind, ShapeBpmnElementKind, ShapeUtil } from '../../../../../src/model/bpmn/internal';
 import { parseJson, parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
 import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
-import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/kinds';
 import * as bpmndi from '../../../../../src/model/bpmn/json/BPMNDI';
+import type { TCollaboration } from '../../../../../src/model/bpmn/json/baseElement/rootElement/collaboration';
+import type { TParticipant } from '../../../../../src/model/bpmn/json/baseElement/participant';
 
 function updateDefinition(json: BpmnJsonModel, processIndex: number, id: string, kind: ShapeBpmnElementKind): void {
   if (kind === ShapeBpmnElementKind.POOL) {
-    (json.definitions.process as TProcess[])[processIndex].id = id;
-  } else if (kind.endsWith('Event')) {
+    const processId = `processRef_${id}`;
+    (<TProcess[]>json.definitions.process)[processIndex].id = processId;
+    const collaboration = <TCollaboration>json.definitions.collaboration;
+    const participant = (<TParticipant[]>collaboration.participant)[processIndex];
+    participant.id = id;
+    participant.processRef = processId;
+  } else if (ShapeUtil.isEvent(kind)) {
     const isBoundaryEvent = kind === ShapeBpmnElementKind.EVENT_BOUNDARY;
     addEvent(
       json,
@@ -38,7 +44,7 @@ function updateDefinition(json: BpmnJsonModel, processIndex: number, id: string,
       addTask(json);
     }
   } else {
-    addFlownode(json, 'task', { id }, processIndex);
+    addFlownode(json, ShapeBpmnElementKind.TASK, { id }, processIndex);
   }
 }
 
@@ -316,79 +322,80 @@ describe('parse bpmn as json for message flow', () => {
     });
   });
 
-  it.each([
-    [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.EVENT_START],
-    [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.POOL],
-    [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TASK],
-    [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.CALL_ACTIVITY],
-    [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
-    [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.EVENT_START],
-    [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.POOL],
-    [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.TASK],
-    [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.CALL_ACTIVITY],
-    [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
-    [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.EVENT_START],
-    [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.POOL],
-    [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.TASK],
-    [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.CALL_ACTIVITY],
-    [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
-    [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.EVENT_START],
-    [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.POOL],
-    [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.TASK],
-    [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.CALL_ACTIVITY],
-    [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
-    [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.EVENT_START],
-    [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.POOL],
-    [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.TASK],
-    [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.CALL_ACTIVITY],
-    [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
-    [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.EVENT_START],
-    [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.POOL],
-    [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.TASK],
-    [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.CALL_ACTIVITY],
-    [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
-  ])(`should convert as Edge, when an message flow has %s as source and %s as target`, (sourceKind, targetKind) => {
-    const json: BpmnJsonModel = {
-      definitions: {
-        targetNamespace: '',
-        collaboration: {
-          id: 'collaboration_id_0',
-          messageFlow: {
-            id: 'messageFlow_id_0',
-            name: 'Message Flow 0',
-            sourceRef: 'sourceRef_id',
-            targetRef: 'targetRef_id',
+  describe('Various combinations of source and target', () => {
+    it.each([
+      [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.EVENT_START],
+      [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.POOL],
+      [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TASK],
+      [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.CALL_ACTIVITY],
+      [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
+      [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.EVENT_START],
+      [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.POOL],
+      [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.TASK],
+      [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.CALL_ACTIVITY],
+      [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
+      [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.EVENT_START],
+      [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.POOL],
+      [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.TASK],
+      [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.CALL_ACTIVITY],
+      [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
+      [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.EVENT_START],
+      [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.POOL],
+      [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.TASK],
+      [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.CALL_ACTIVITY],
+      [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
+      [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.EVENT_START],
+      [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.POOL],
+      [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.TASK],
+      [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.CALL_ACTIVITY],
+      [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
+      [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.EVENT_START],
+      [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.POOL],
+      [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.TASK],
+      [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.CALL_ACTIVITY],
+      [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
+    ])(`should convert as Edge, when an message flow has %s as source and %s as target`, (sourceKind, targetKind) => {
+      const json: BpmnJsonModel = {
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+            messageFlow: {
+              id: 'messageFlow_id_0',
+              name: 'Message Flow 0',
+              sourceRef: 'sourceRef_id',
+              targetRef: 'targetRef_id',
+            },
+            participant: [{}, {}],
           },
-        },
-        process: [{}, {}],
-        BPMNDiagram: {
-          id: 'BpmnDiagram_1',
-          BPMNPlane: {
-            id: 'BpmnPlane_1',
-            BPMNEdge: {
-              id: 'edge_messageFlow_id_0',
-              bpmnElement: 'messageFlow_id_0',
-              waypoint: [{ x: 10, y: 10 }],
+          process: [{}, {}],
+          BPMNDiagram: {
+            id: 'BpmnDiagram_1',
+            BPMNPlane: {
+              id: 'BpmnPlane_1',
+              BPMNEdge: {
+                id: 'edge_messageFlow_id_0',
+                bpmnElement: 'messageFlow_id_0',
+                waypoint: [{ x: 10, y: 10 }],
+              },
             },
           },
         },
-      },
-    };
-    updateDefinition(json, 0, 'sourceRef_id', sourceKind);
-    updateDefinition(json, 1, 'targetRef_id', targetKind);
+      };
+      updateDefinition(json, 0, 'sourceRef_id', sourceKind);
+      updateDefinition(json, 1, 'targetRef_id', targetKind);
 
-    const model = parseJson(json);
-    expect(model.edges).toHaveLength(1);
+      const model = parseJson(json);
+      expect(model.edges).toHaveLength(1);
 
-    //  const model = parseJsonAndExpectOnlyEdges(json, 1);
-
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_messageFlow_id_0',
-      bpmnElementId: 'messageFlow_id_0',
-      bpmnElementName: 'Message Flow 0',
-      bpmnElementSourceRefId: 'sourceRef_id',
-      bpmnElementTargetRefId: 'targetRef_id',
-      waypoints: [new Waypoint(10, 10)],
+      verifyEdge(model.edges[0], {
+        edgeId: 'edge_messageFlow_id_0',
+        bpmnElementId: 'messageFlow_id_0',
+        bpmnElementName: 'Message Flow 0',
+        bpmnElementSourceRefId: 'sourceRef_id',
+        bpmnElementTargetRefId: 'targetRef_id',
+        waypoints: [new Waypoint(10, 10)],
+      });
     });
   });
 });
