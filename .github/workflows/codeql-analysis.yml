@@ -41,6 +41,7 @@ jobs:
       uses: actions/checkout@v3
 
     # Initializes the CodeQL tools for scanning.
+    # TODO configure GH_token permissions
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
       with:
