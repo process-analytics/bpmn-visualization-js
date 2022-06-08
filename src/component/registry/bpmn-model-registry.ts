@@ -130,29 +130,36 @@ class ModelFiltering {
 
     // lookup pools
     const pools = bpmnModel.pools;
-    logModelFiltering('pools: ' + pools);
+    logModelFiltering('pools: ', pools);
     // TODO ensure it is an array
     // const filterPoolBpmnIds = <Array<string>>poolIdsFilter;
     const filterPoolBpmnIds = ensureIsArray(poolIdsFilter);
     // TODO choose filterPoolBpmnIds by id if defined, otherwise filterPoolBpmnIds by name
     const filteredPools = pools.filter(pool => filterPoolBpmnIds.includes(pool.bpmnElement.id));
-    logModelFiltering('filtered pools: ' + filteredPools);
+    logModelFiltering('filtered pools: ', filteredPools);
     if (filteredPools.length == 0) {
       throw new Error('no existing pool with ids ' + filterPoolBpmnIds);
     }
 
     // prepare parent
+    const filteredPoolBpmnElements = filteredPools.map(pool => pool.bpmnElement);
+
     // lanes
-    const filteredLanes = bpmnModel.lanes.filter(flowNode => filterPoolBpmnIds.includes(flowNode.bpmnElement.parent.id));
-    const filteredLaneBpmnElementIds = filteredLanes.map(lane => lane.bpmnElement.id);
-    logModelFiltering('filtered lanes: ' + filteredLaneBpmnElementIds);
+    logModelFiltering('lanes: ', bpmnModel.lanes);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const filteredLanes = bpmnModel.lanes.filter(lane => filteredPoolBpmnElements.includes(lane.bpmnElement.parent));
+    logModelFiltering('filtered lanes: ', filteredLanes);
 
     // TODO subprocesses / call activity
 
     // TODO group - they are currently not associated to participant. How do we handle it?
 
-    filterPoolBpmnIds.push(...filteredLaneBpmnElementIds);
-    const filteredFlowNodes = bpmnModel.flowNodes.filter(flowNode => filterPoolBpmnIds.includes(flowNode.bpmnElement.parent.id));
+    const filteredFlowNodes = bpmnModel.flowNodes.filter(
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      flowNode => filteredPools.map(pool => pool.bpmnElement).includes(flowNode.bpmnElement.parent) || filteredLanes.includes(flowNode.bpmnElement.parent),
+    );
 
     const flowNodes: Shape[] = filteredFlowNodes; //[];
     // const flowNodes: Shape[] = bpmnModel.flowNodes; //[];
