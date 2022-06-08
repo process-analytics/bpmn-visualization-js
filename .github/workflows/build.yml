@@ -44,6 +44,10 @@ jobs:
           - { name: ubuntu-20.04, coverage: '-- --coverage' }
           - { name: macos-11 }
           - { name: windows-2019 }
+    permissions:
+      # SonarCloud: checks and pull-requests
+      checks: write
+      pull-requests: write
     steps:
       - name: Checkout with shallow clone
         uses: actions/checkout@v3
