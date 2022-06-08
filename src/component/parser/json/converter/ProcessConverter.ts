@@ -115,7 +115,7 @@ export default class ProcessConverter {
       } else {
         // @ts-ignore We know that the text & name fields are not on all types, but it's already tested
         const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
-        // @ts-ignore We know that the instantiated field is not on all types, but it's already tested
+        // @ts-ignore We know that the 'instantiate' property is not on all types, but it's already tested
         shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, convertedProcess, bpmnElement.instantiate);
       }
 
