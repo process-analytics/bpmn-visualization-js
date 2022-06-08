@@ -109,13 +109,6 @@ export default class DiagramConverter {
     if (bpmnElement) {
       const bounds = DiagramConverter.deserializeBounds(shape);
 
-      if (bpmnElement.parent) {
-        const participant = this.convertedElements.findParticipantByProcessRef(bpmnElement.parent.id);
-        if (participant) {
-          bpmnElement.parent = participant;
-        }
-      }
-
       if (
         (bpmnElement instanceof ShapeBpmnSubProcess ||
           (bpmnElement instanceof ShapeBpmnCallActivity && bpmnElement.callActivityKind === ShapeBpmnCallActivityKind.CALLING_PROCESS)) &&

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import type { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import type { GlobalTaskKind, ShapeBpmnEventDefinitionKind } from '../../../../model/bpmn/internal';
@@ -46,22 +45,43 @@ export class ConvertedElements {
     }
   }
 
-  private processes: Map<string, ShapeBpmnElement> = new Map();
-  private _findProcess(id: string): ShapeBpmnElement {
-    return this.processes.get(id);
-  }
-  registerProcess(process: ShapeBpmnElement): void {
-    this.processes.set(process.id, process);
+  private processesByProcessId: Map<string, ShapeBpmnElement> = new Map();
+
+  // TODO rename into buildAndRegisterProcessIfConform
+  registerProcess(process: ProcessInfo): ShapeBpmnElement | undefined {
+    const shapeBpmnElement = this.buildPool(process);
+    if (shapeBpmnElement) {
+      this.processesByProcessId.set(process.id, shapeBpmnElement);
+    } else {
+      // TODO this seems dead code - add test if we want to keep this
+      throw new Error('@@undefined shapeBpmnElement');
+    }
+    return shapeBpmnElement;
   }
 
+  // TODO move elsewhere when we will know how to manage 'black box' pool
+  private buildPool(process: ProcessInfo): ShapeBpmnElement {
+    const participant = this.findParticipantByProcessRef(process.id);
+    if (participant) {
+      const name = participant.name ?? process.name;
+      return new ShapeBpmnElement(participant.id, name, ShapeBpmnElementKind.POOL);
+    }
+    return new ShapeBpmnElement(process.id, process.name, ShapeBpmnElementKind.POOL);
+  }
+
+  // TODO rename findProcessByParticipant or findPoolByxxxx
   findProcess(participantId: string): ShapeBpmnElement | undefined {
     const participant = this.findParticipantById(participantId);
     if (participant) {
-      const process = this._findProcess(participant.processRef);
+      const process = this.processesByProcessId.get(participant.processRef);
       if (process) {
-        const name = participant.name || process.name;
-        return new ShapeBpmnElement(participant.id, name, process.kind, process.parent);
+        return process;
       }
+      // TODO find a way to not create instance of black box pool here
+      // we have an issue because the findProcess is called in CollaborationConverter to get source/target of msg flow
+      // at that time the json process element has not been deserialized, so this method always returns a new instance of black box pool
+      // Then, after the ProcessConverter has been executed, the method may return another instance!!!
+      // WARN: we have no test that show this!!!!
       // black box pool
       return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
     }
@@ -129,10 +149,10 @@ export class ConvertedElements {
   }
 
   // Special case: create the ShapeBpmnElement instance here to avoid duplication in CollaborationConverter and ProcessConverter
-  buildShapeBpmnGroup(groupBpmnElement: TGroup, processId?: ShapeBpmnElement): ShapeBpmnElement | undefined {
+  buildShapeBpmnGroup(groupBpmnElement: TGroup, process?: ShapeBpmnElement): ShapeBpmnElement | undefined {
     const categoryValueData = this.categoryValues.get(groupBpmnElement.categoryValueRef);
     if (categoryValueData) {
-      return new ShapeBpmnElement(groupBpmnElement.id, categoryValueData.value, ShapeBpmnElementKind.GROUP, processId);
+      return new ShapeBpmnElement(groupBpmnElement.id, categoryValueData.value, ShapeBpmnElementKind.GROUP, process);
     }
     this.parsingMessageCollector.warning(new GroupUnknownCategoryValueWarning(groupBpmnElement.id, groupBpmnElement.categoryValueRef));
     return undefined;
@@ -141,4 +161,16 @@ export class ConvertedElements {
 
 interface CategoryValueData {
   value?: string;
+}
+
+interface ProcessInfo {
+  id: string;
+  name: string;
+}
+
+/**
+ * @internal
+ */
+export class Participant {
+  constructor(readonly id: string, readonly name?: string, public processRef?: string) {}
 }

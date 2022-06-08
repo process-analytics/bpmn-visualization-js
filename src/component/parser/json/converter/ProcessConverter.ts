@@ -71,11 +71,11 @@ export default class ProcessConverter {
   }
 
   private parseProcess(process: TProcess): void {
-    const convertedProcess = new ShapeBpmnElement(process.id, process.name, ShapeBpmnElementKind.POOL);
-    this.convertedElements.registerProcess(convertedProcess);
+    const convertedProcess = this.convertedElements.registerProcess({ id: process.id, name: process.name });
     this.buildProcessInnerElements(process, convertedProcess);
   }
 
+  // TODO [Thomas] I would prefer we remove the 'converted' prefix in all variable/parameter names for simplicity
   private buildProcessInnerElements(process: TProcess | TSubProcess, convertedProcess: ShapeBpmnElement): void {
     // flow nodes
     ShapeUtil.flowNodeKinds()

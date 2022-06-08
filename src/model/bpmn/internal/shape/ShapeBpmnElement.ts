@@ -28,7 +28,7 @@ export default class ShapeBpmnElement {
     readonly id: string,
     readonly name: string,
     readonly kind: ShapeBpmnElementKind,
-    public parent?: ShapeBpmnElement | Participant,
+    public parent?: ShapeBpmnElement,
     readonly instantiate: boolean = false,
     readonly children: ShapeBpmnElementChildren[] = [],
   ) {
@@ -123,16 +123,5 @@ export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
 export class ShapeBpmnEventBasedGateway extends ShapeBpmnElement {
   constructor(id: string, name: string, parent: ShapeBpmnElement, instantiate?: boolean, readonly gatewayKind = ShapeBpmnEventBasedGatewayKind.None) {
     super(id, name, ShapeBpmnElementKind.GATEWAY_EVENT_BASED, parent, instantiate);
-  }
-}
-
-/**
- * @internal
- */
-export class Participant {
-  constructor(readonly id: string, readonly name?: string, public processRef?: string, readonly children: ShapeBpmnElementChildren[] = []) {}
-
-  addChild(child: ShapeBpmnElementChildren): void {
-    this.children.push(child);
   }
 }
