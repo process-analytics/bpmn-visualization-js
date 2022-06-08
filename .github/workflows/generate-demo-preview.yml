@@ -37,6 +37,9 @@ jobs:
     needs: [check_secrets]
     if: needs.check_secrets.outputs.is_SURGE_TOKEN_set == 'true'
     runs-on: ubuntu-20.04
+    permissions:
+      # surge-preview: PR comments
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
         if: github.event.action != 'closed'
