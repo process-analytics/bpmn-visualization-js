@@ -25,6 +25,7 @@ import { ThemedBpmnVisualization } from './component/ThemedBpmnVisualization';
 let bpmnVisualization: ThemedBpmnVisualization;
 let loadOptions: LoadOptions = {};
 let bpmnElementIdToCollapse: string;
+let currentTheme: string;
 
 export function updateLoadOptions(fitOptions: FitOptions): void {
   log('Updating load options', fitOptions);
@@ -34,6 +35,19 @@ export function updateLoadOptions(fitOptions: FitOptions): void {
 
 export function getCurrentLoadOptions(): LoadOptions {
   return { ...loadOptions };
+}
+
+export function getCurrentTheme(): string | undefined {
+  return currentTheme;
+}
+
+export function switchTheme(theme: string): void {
+  log('Switching theme from %s to %s', currentTheme, theme);
+  const knownTheme = bpmnVisualization.configureTheme(theme);
+  if (knownTheme) {
+    bpmnVisualization.graph.refresh();
+    log('Theme switch done');
+  }
 }
 
 function loadBpmn(bpmn: string): void {
@@ -182,8 +196,13 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
   }
 
   const theme = parameters.get('style.theme');
-  if (theme) {
-    bpmnVisualization.configureTheme(theme);
+  logStartup(`Configuring the '${theme}' BPMN theme`);
+  const updatedTheme = bpmnVisualization.configureTheme(theme);
+  if (!updatedTheme) {
+    logStartup(`Unknown '${theme}' BPMN theme, skipping configuration`);
+  } else {
+    currentTheme = theme;
+    logStartup(`'${theme}' BPMN theme configured`);
   }
 
   const useSequenceFlowColorsLight = parameters.get('style.seqFlow.light.colors');
