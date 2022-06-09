@@ -40,7 +40,13 @@ describe('bundles', () => {
 
   it('IIFE bundle - should generate BPMN Diagram SVG', async () => {
     const pageTester = new BpmnStaticPageSvgTester(
-      { pageFileName: 'lib-integration-iife', expectedPageTitle: 'BPMN Visualization IIFE bundle', bpmnContainerId: 'bpmn-container-for-iife-bundle' },
+      {
+        targetedPage: {
+          pageFileName: 'lib-integration-iife',
+          expectedPageTitle: 'BPMN Visualization IIFE bundle',
+        },
+        bpmnContainerId: 'bpmn-container-for-iife-bundle',
+      },
       <Page>page,
     );
     await pageTester.gotoPageAndLoadBpmnDiagram();
@@ -62,7 +68,7 @@ class BpmnStaticPageSvgTester extends BpmnPageSvgTester {
     super({ ...targetedPageConfiguration, diagramSubfolder: 'none' }, page);
   }
   override async gotoPageAndLoadBpmnDiagram(): Promise<void> {
-    const url = `file://${resolve(__dirname, `static/${this.targetedPageConfiguration.pageFileName}.html`)}`;
+    const url = `file://${resolve(__dirname, `static/${this.targetedPageConfiguration.targetedPage.pageFileName}.html`)}`;
     await super.doGotoPageAndLoadBpmnDiagram(url, false);
   }
 }

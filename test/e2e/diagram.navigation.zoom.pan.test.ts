@@ -18,7 +18,7 @@ import 'jest-playwright-preset';
 import { join } from 'path';
 import type { Page } from 'playwright';
 import type { Point } from './helpers/visu/bpmn-page-utils';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { ZoomType } from '../../src/component/options';
@@ -53,7 +53,7 @@ class MouseNavigationImageSnapshotThresholds extends MultiBrowserImageSnapshotTh
   }
 }
 
-const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation', diagramSubfolder: 'navigation' }, <Page>page);
+const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder: 'navigation' }, <Page>page);
 const bpmnDiagramName = 'simple.2.start.events.1.task';
 
 describe('diagram navigation - zoom and pan with mouse', () => {

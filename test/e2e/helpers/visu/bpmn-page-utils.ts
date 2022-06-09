@@ -46,7 +46,7 @@ class BpmnPage {
   }
 
   /**
-   * This checks that a least one BPMN element is available in the DOM as a SVG element. This ensures that the mxGraph rendering has been done.
+   * This checks that at least one BPMN element is available in the DOM as a SVG element. This ensures that the mxGraph rendering has been done.
    */
   async expectExistingBpmnElement(options?: PageWaitForSelectorOptions): Promise<void> {
     // eslint-disable-next-line jest/no-standalone-expect
@@ -54,11 +54,43 @@ class BpmnPage {
   }
 }
 
-export interface TargetedPageConfiguration {
+export class AvailableTestPages {
+  static readonly BPMN_RENDERING: AvailableTestPage = {
+    pageFileName: 'bpmn-rendering',
+    expectedPageTitle: 'BPMN Visualization - BPMN rendering',
+  };
+
+  static readonly DIAGRAM_NAVIGATION: AvailableTestPage = {
+    pageFileName: 'diagram-navigation',
+    expectedPageTitle: 'BPMN Visualization - Diagram Navigation',
+  };
+
+  static readonly INDEX: AvailableTestPage = {
+    pageFileName: 'index',
+    expectedPageTitle: 'BPMN Visualization Demo',
+  };
+
+  static readonly LIB_INTEGRATION: AvailableTestPage = {
+    pageFileName: 'lib-integration',
+    expectedPageTitle: 'BPMN Visualization Lib Integration',
+  };
+
+  static readonly OVERLAYS: AvailableTestPage = {
+    pageFileName: 'overlays',
+    expectedPageTitle: 'BPMN Visualization - Overlays',
+  };
+}
+
+interface AvailableTestPage {
   /** the name of the page file without extension */
   pageFileName: string;
   /** the expected page title, checked after page loading */
   expectedPageTitle: string;
+}
+
+export interface TargetedPageConfiguration {
+  /** The HTML page used during the tests. */
+  targetedPage: AvailableTestPage;
   /**
    * Id of the container in the page attached to bpmn-visualization
    * @default bpmn-container
@@ -110,7 +142,7 @@ export class PageTester {
    */
   constructor(protected targetedPageConfiguration: TargetedPageConfiguration, protected page: Page) {
     const showMousePointer = targetedPageConfiguration.showMousePointer ?? false;
-    this.baseUrl = `http://localhost:10001/dev/public/${targetedPageConfiguration.pageFileName}.html?showMousePointer=${showMousePointer}`;
+    this.baseUrl = `http://localhost:10001/dev/public/${targetedPageConfiguration.targetedPage.pageFileName}.html?showMousePointer=${showMousePointer}`;
     this.bpmnContainerId = targetedPageConfiguration.bpmnContainerId ?? 'bpmn-container';
     this.diagramSubfolder = targetedPageConfiguration.diagramSubfolder;
     this.bpmnPage = new BpmnPage(this.bpmnContainerId, this.page);
@@ -134,7 +166,7 @@ export class PageTester {
       expect(response.status()).toBeOneOf([200, 304]);
     }
 
-    await this.bpmnPage.expectPageTitle(this.targetedPageConfiguration.expectedPageTitle);
+    await this.bpmnPage.expectPageTitle(this.targetedPageConfiguration.targetedPage.expectedPageTitle);
 
     const waitForSelectorOptions = { timeout: 5_000 };
     await this.bpmnPage.expectAvailableBpmnContainer(waitForSelectorOptions);
