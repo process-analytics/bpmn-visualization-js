@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import type Shape from '../shape/Shape';
 import type Label from '../Label';
 import type { Flow } from './flows';
 import { MessageVisibleKind } from './kinds';
@@ -28,7 +29,15 @@ export class Edge {
     readonly waypoints?: Waypoint[],
     readonly label?: Label,
     readonly messageVisibleKind: MessageVisibleKind = MessageVisibleKind.NONE,
-  ) {}
+    public parent?: Shape,
+  ) {
+    parent?.addChild(this);
+  }
+
+  addParent(parent: Shape): void {
+    this.parent = parent;
+    parent?.addChild(this);
+  }
 }
 
 /**

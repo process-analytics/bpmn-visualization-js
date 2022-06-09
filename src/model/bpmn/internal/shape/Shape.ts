@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import type { Edge } from '../edge/edge';
 import type ShapeBpmnElement from './ShapeBpmnElement';
 import type Bounds from '../Bounds';
 import type Label from '../Label';
@@ -22,5 +23,24 @@ import type Label from '../Label';
  * @internal
  */
 export default class Shape {
-  constructor(readonly id: string, readonly bpmnElement: ShapeBpmnElement, readonly bounds?: Bounds, readonly label?: Label, readonly isHorizontal?: boolean) {}
+  constructor(
+    readonly id: string,
+    readonly bpmnElement: ShapeBpmnElement,
+    readonly bounds?: Bounds,
+    readonly label?: Label,
+    readonly isHorizontal?: boolean,
+    public parent?: Shape,
+    readonly children: Array<Shape | Edge> = [],
+  ) {
+    parent?.addChild(this);
+  }
+
+  addChild(child: Shape | Edge): void {
+    this.children.push(child);
+  }
+
+  addParent(parent: Shape): void {
+    this.parent = parent;
+    parent?.addChild(this);
+  }
 }

@@ -19,8 +19,7 @@ import Bounds from '../../../../model/bpmn/internal/Bounds';
 import type ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { Edge, Waypoint } from '../../../../model/bpmn/internal/edge/edge';
-import type { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
-import type BpmnModel from '../../../../model/bpmn/internal/BpmnModel';
+import type { BpmnModel } from '../../../../model/bpmn/internal/BpmnModel';
 import Label, { Font } from '../../../../model/bpmn/internal/Label';
 import { MessageVisibleKind } from '../../../../model/bpmn/internal/edge/kinds';
 import type { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
@@ -40,11 +39,6 @@ export default class DiagramConverter {
   private convertedFonts: Map<string, Font> = new Map();
 
   deserialize(bpmnDiagrams: Array<BPMNDiagram> | BPMNDiagram): BpmnModel {
-    const flowNodes: Shape[] = [];
-    const lanes: Shape[] = [];
-    const pools: Shape[] = [];
-    const edges: Edge[] = [];
-
     const bpmnDiagram = ensureIsArray(bpmnDiagrams)[0];
     if (bpmnDiagram) {
       // Need to be done before deserialization of Shape and Edge, to link the converted fonts to them
@@ -54,12 +48,10 @@ export default class DiagramConverter {
       const convertedEdges = this.deserializeEdges(plane.BPMNEdge);
       const convertedShapes = this.deserializeShapes(plane.BPMNShape);
 
-      flowNodes.push(...convertedShapes.flowNodes);
-      lanes.push(...convertedShapes.lanes);
-      pools.push(...convertedShapes.pools);
-      edges.push(...convertedEdges);
+      const convertedElements = [...convertedEdges, ...convertedShapes];
+      convertedElements.forEach(element => element.addParent(convertedShapes.find(shapeParent => shapeParent.bpmnElement === element.bpmnElement.parent)));
+      return convertedElements.filter(shape => !shape.parent);
     }
-    return { flowNodes, lanes, pools, edges };
   }
 
   private deserializeFonts(bpmnLabelStyle: Array<BPMNLabelStyle> | BPMNLabelStyle): void {
@@ -72,20 +64,20 @@ export default class DiagramConverter {
     );
   }
 
-  private deserializeShapes(shapes: Array<BPMNShape> | BPMNShape): Shapes {
-    const convertedShapes: Shapes = { flowNodes: [], lanes: [], pools: [] };
+  private deserializeShapes(shapes: Array<BPMNShape> | BPMNShape): Shape[] {
+    const convertedShapes: Shape[] = [];
 
     ensureIsArray(shapes).forEach(shape => {
       // flow nodes
-      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.flowNodes, (bpmnElement: string) => this.convertedElements.findFlowNode(bpmnElement))) {
+      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes, (bpmnElement: string) => this.convertedElements.findFlowNode(bpmnElement))) {
         return;
       }
       // lane
-      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.lanes, (bpmnElement: string) => this.convertedElements.findLane(bpmnElement))) {
+      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes, (bpmnElement: string) => this.convertedElements.findLane(bpmnElement))) {
         return;
       }
       // pool
-      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.pools, (bpmnElement: string) => this.convertedElements.findProcess(bpmnElement))) {
+      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes, (bpmnElement: string) => this.convertedElements.findProcess(bpmnElement))) {
         return;
       }
       // not found

@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import type { SplitedParseResult } from './JsonTestUtils';
 import { ShapeBpmnElementKind, ShapeUtil } from '../../../../../src/model/bpmn/internal';
-import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 
 export const shapeBpmnElementKindForLabelTests = Object.values(ShapeBpmnElementKind)
@@ -25,6 +25,6 @@ export const shapeBpmnElementKindForLabelTests = Object.values(ShapeBpmnElementK
   .filter(kind => ![ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH].includes(kind))
   .map(kind => [kind]);
 
-export function getEventShapes(model: BpmnModel): Shape[] {
-  return model.flowNodes.filter(shape => ShapeUtil.isEvent(shape.bpmnElement.kind));
+export function getEventShapes(parseResult: SplitedParseResult): Shape[] {
+  return parseResult.flowNodes.filter(shape => ShapeUtil.isEvent(shape.bpmnElement.kind));
 }

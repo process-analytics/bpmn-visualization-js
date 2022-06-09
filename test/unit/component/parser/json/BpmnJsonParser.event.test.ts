@@ -74,9 +74,8 @@ function testMustConvertOneShape({
   const json = buildDefinitionsAndProcessWithTask(process);
   addEvent(json, bpmnKind, buildEventDefinitionParameter, buildEventParameter);
 
-  const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 1);
-
-  const shapes = getEventShapes(model);
+  const splitedParseResult = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 1);
+  const shapes = getEventShapes(splitedParseResult);
   verifyEventShape(shapes[0], buildEventParameter, expectedShapeBpmnElementKind);
 }
 

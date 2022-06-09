@@ -13,22 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import type Shape from './shape/Shape';
+import Shape from './shape/Shape';
 import type { Edge } from './edge/edge';
 
 /**
  * @internal
  */
-export default interface BpmnModel extends Shapes {
-  edges: Edge[];
-}
+export type BpmnModel = Array<Shape | Edge>;
+export type FlatBpmnModel = Array<Shape | Edge>;
 
-/**
- * @internal
- */
-export interface Shapes {
-  flowNodes: Shape[];
-  lanes: Shape[];
-  pools: Shape[];
-}
+export const flat = (bpmnModel: BpmnModel): FlatBpmnModel => {
+  if (!bpmnModel || bpmnModel.length === 0) {
+    return [];
+  }
+
+  const flatChildren = flat(
+    bpmnModel
+      .filter(element => element instanceof Shape)
+      .map(element => (element as Shape).children)
+      .flat(),
+  );
+  return [...bpmnModel, ...flatChildren];
+};

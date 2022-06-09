@@ -15,7 +15,7 @@
  */
 
 import { BpmnModelRegistry } from '../../../../src/component/registry/bpmn-model-registry';
-import type BpmnModel from '../../../../src/model/bpmn/internal/BpmnModel';
+import type { BpmnModel } from '../../../../src/model/bpmn/internal/BpmnModel';
 import { Edge } from '../../../../src/model/bpmn/internal/edge/edge';
 import { SequenceFlow } from '../../../../src/model/bpmn/internal/edge/flows';
 import Shape from '../../../../src/model/bpmn/internal/shape/Shape';
@@ -26,17 +26,12 @@ import { expectLane, expectPool, expectSequenceFlow, expectStartEvent } from '..
 const bpmnModelRegistry = new BpmnModelRegistry();
 
 function newBpmnModel(): BpmnModel {
-  return {
-    edges: [],
-    flowNodes: [],
-    lanes: [],
-    pools: [],
-  };
+  return [];
 }
 
 function sequenceFlowInModel(id: string, name: string): BpmnModel {
   const bpmnModel = newBpmnModel();
-  bpmnModel.edges.push(new Edge(`Edge_${id}`, new SequenceFlow(id, name)));
+  bpmnModel.push(new Edge(`Edge_${id}`, new SequenceFlow(id, name)));
   return bpmnModel;
 }
 
@@ -44,19 +39,19 @@ function startEventInModel(id: string, name: string): BpmnModel {
   const parent = new ShapeBpmnElement('parentId', 'parentName', ShapeBpmnElementKind.POOL);
 
   const bpmnModel = newBpmnModel();
-  bpmnModel.flowNodes.push(new Shape(`Shape_${id}`, new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parent)));
+  bpmnModel.push(new Shape(`Shape_${id}`, new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parent)));
   return bpmnModel;
 }
 
 function laneInModel(id: string, name: string): BpmnModel {
   const bpmnModel = newBpmnModel();
-  bpmnModel.lanes.push(new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.LANE)));
+  bpmnModel.push(new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.LANE)));
   return bpmnModel;
 }
 
 function poolInModel(id: string, name: string): BpmnModel {
   const bpmnModel = newBpmnModel();
-  bpmnModel.pools.push(new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.POOL)));
+  bpmnModel.push(new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.POOL)));
   return bpmnModel;
 }
 

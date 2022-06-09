@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { flat } from '../../model/bpmn/internal/BpmnModel';
 import { ensureIsArray } from '../helpers/array-utils';
-import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
-import type Shape from '../../model/bpmn/internal/shape/Shape';
-import type { Edge } from '../../model/bpmn/internal/edge/edge';
+import type { BpmnModel } from '../../model/bpmn/internal/BpmnModel';
+import Shape from '../../model/bpmn/internal/shape/Shape';
+import { Edge } from '../../model/bpmn/internal/edge/edge';
 import type { BpmnSemantic } from './types';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import type { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
@@ -54,28 +55,51 @@ export class BpmnModelRegistry {
 }
 
 function toRenderedModel(bpmnModel: BpmnModel): RenderedModel {
-  const collapsedSubProcessIds: string[] = bpmnModel.flowNodes
-    .filter(shape => {
-      const bpmnElement = shape.bpmnElement;
-      return ShapeUtil.isSubProcess(bpmnElement.kind) && (bpmnElement as ShapeBpmnSubProcess).markers.includes(ShapeBpmnMarkerKind.EXPAND);
+  const flatBpmnModel = flat(bpmnModel);
+  const collapsedSubProcessIds: string[] = flatBpmnModel
+    .filter(element => {
+      if (element instanceof Shape) {
+        const bpmnElement = element.bpmnElement;
+        return ShapeUtil.isSubProcess(bpmnElement.kind) && (bpmnElement as ShapeBpmnSubProcess).markers.includes(ShapeBpmnMarkerKind.EXPAND);
+      }
     })
     .map(shape => shape.bpmnElement.id);
 
+  const edges: Edge[] = [];
+  const pools: Shape[] = [];
+  const lanes: Shape[] = [];
   const subprocesses: Shape[] = [];
   const boundaryEvents: Shape[] = [];
   const otherFlowNodes: Shape[] = [];
-  bpmnModel.flowNodes.forEach(shape => {
-    const kind = shape.bpmnElement.kind;
-    if (ShapeUtil.isSubProcess(kind)) {
-      subprocesses.push(shape);
+
+  flatBpmnModel.forEach(element => {
+    if (element instanceof Edge) {
+      edges.push(element);
+      return;
+    }
+
+    const kind = element.bpmnElement.kind;
+    if (kind === ShapeBpmnElementKind.POOL) {
+      pools.push(element);
+    } else if (kind === ShapeBpmnElementKind.LANE) {
+      lanes.push(element);
+    } else if (ShapeUtil.isSubProcess(kind)) {
+      subprocesses.push(element);
     } else if (ShapeUtil.isBoundaryEvent(kind)) {
-      boundaryEvents.push(shape);
-    } else if (!collapsedSubProcessIds.includes(shape.bpmnElement.parent?.id)) {
-      otherFlowNodes.push(shape);
+      boundaryEvents.push(element);
+    } else if (!collapsedSubProcessIds.includes(element.bpmnElement.parent?.id)) {
+      otherFlowNodes.push(element);
     }
   });
 
-  return { boundaryEvents: boundaryEvents, edges: bpmnModel.edges, lanes: bpmnModel.lanes, otherFlowNodes: otherFlowNodes, pools: bpmnModel.pools, subprocesses: subprocesses };
+  return {
+    boundaryEvents,
+    edges,
+    lanes,
+    otherFlowNodes,
+    pools,
+    subprocesses,
+  };
 }
 
 /**
@@ -94,10 +118,8 @@ class SearchableModel {
   private elements: Map<string, Shape | Edge> = new Map();
 
   constructor(bpmnModel: BpmnModel) {
-    ([] as Array<Edge | Shape>)
-      .concat(bpmnModel.pools, bpmnModel.lanes, bpmnModel.flowNodes, bpmnModel.edges)
-      // use the bpmn element id and not the bpmn shape id
-      .forEach(e => this.elements.set(e.bpmnElement.id, e));
+    // use the bpmn element id and not the bpmn shape id
+    bpmnModel.forEach(e => this.elements.set(e.bpmnElement.id, e));
   }
 
   elementById(id: string): Shape | Edge | undefined {
@@ -129,11 +151,13 @@ class ModelFiltering {
     // TODO no pool in model --> error?
 
     // lookup pools
-    const pools = bpmnModel.pools;
-    logModelFiltering('pools: ', pools);
+
     // TODO ensure it is an array
     // const filterPoolBpmnIds = <Array<string>>poolIdsFilter;
     const filterPoolBpmnIds = ensureIsArray(poolIdsFilter);
+
+    const pools = bpmnModel.filter(element => element instanceof Shape && element.bpmnElement.kind === ShapeBpmnElementKind.POOL);
+    logModelFiltering('pools: ', pools);
     // TODO choose filterPoolBpmnIds by id if defined, otherwise filterPoolBpmnIds by name
     const filteredPools = pools.filter(pool => filterPoolBpmnIds.includes(pool.bpmnElement.id));
     logModelFiltering('filtered pools: ', filteredPools);
@@ -141,36 +165,7 @@ class ModelFiltering {
       throw new Error('no existing pool with ids ' + filterPoolBpmnIds);
     }
 
-    // prepare parent
-
-    // lanes
-    logModelFiltering('lanes: ', bpmnModel.lanes);
-    const filteredLaneBpmnElement: ShapeBpmnElement[] = filteredPools
-      .map(pool => pool.bpmnElement.children.filter(child => child.kind === ShapeBpmnElementKind.LANE))
-      .flat() as ShapeBpmnElement[];
-    const lanes: Shape[] = bpmnModel.lanes.filter(lane => filteredLaneBpmnElement.includes(lane.bpmnElement));
-    logModelFiltering('filtered lanes: ', lanes);
-
-    // TODO subprocesses / call activity
-
-    // TODO group - they are currently not associated to participant. How do we handle it?
-
-    logModelFiltering('flowNodes: ', bpmnModel.flowNodes);
-    const filteredFlowNodeBpmnElement =
-      filteredPools.map(pool => pool.bpmnElement.children.filter(child => child.kind !== ShapeBpmnElementKind.LANE)).flat() ||
-      filteredLaneBpmnElement.map(lane => lane.children.filter(child => child.kind !== ShapeBpmnElementKind.LANE)).flat();
-    const flowNodes: Shape[] = bpmnModel.flowNodes.filter(lane => filteredFlowNodeBpmnElement.includes(lane.bpmnElement));
-    logModelFiltering('filtered flowNodes: ', flowNodes);
-
-    // filterPoolBpmnIds message flow: a single pool, remove all but we should remove refs to outgoing msg flows on related shapes
-    logModelFiltering('edges: ', bpmnModel.edges);
-    const filteredEdgeBpmnElement =
-      filteredPools.map(pool => pool.bpmnElement.children.filter(child => child.kind !== ShapeBpmnElementKind.LANE)).flat() ||
-      filteredLaneBpmnElement.map(lane => lane.children.filter(child => child.kind !== ShapeBpmnElementKind.LANE)).flat();
-    const edges: Edge[] = bpmnModel.edges.filter(lane => filteredEdgeBpmnElement.includes(lane.bpmnElement));
-    logModelFiltering('filtered edges: ', edges);
-
     logModelFiltering('END');
-    return { flowNodes, lanes, pools: filteredPools, edges };
+    return filteredPools;
   }
 }
