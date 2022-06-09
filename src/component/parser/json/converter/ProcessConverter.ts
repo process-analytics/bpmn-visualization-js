@@ -89,8 +89,8 @@ export default class ProcessConverter {
     this.buildLaneSetBpmnElements(process.laneSet, convertedProcess);
 
     // flows
-    this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW]);
-    this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW]);
+    this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW], convertedProcess);
+    this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW], convertedProcess);
   }
 
   private buildFlowNodeBpmnElements(bpmnElements: Array<FlowNode> | FlowNode, kind: ShapeBpmnElementKind, convertedProcess: ShapeBpmnElement): void {
@@ -246,21 +246,21 @@ export default class ProcessConverter {
     });
   }
 
-  private buildSequenceFlows(bpmnElements: Array<TSequenceFlow> | TSequenceFlow): void {
+  private buildSequenceFlows(bpmnElements: Array<TSequenceFlow> | TSequenceFlow, convertedProcess: ShapeBpmnElement): void {
     ensureIsArray(bpmnElements).forEach(sequenceFlow => {
       const kind = this.getSequenceFlowKind(sequenceFlow);
       const convertedSource = this.convertedElements.findFlowNode(sequenceFlow.sourceRef);
       const convertedTarget = this.convertedElements.findFlowNode(sequenceFlow.targetRef);
-      this.convertedElements.registerSequenceFlow(new SequenceFlow(sequenceFlow.id, sequenceFlow.name, convertedSource, convertedTarget, kind));
+      this.convertedElements.registerSequenceFlow(new SequenceFlow(sequenceFlow.id, sequenceFlow.name, convertedSource, convertedTarget, kind, convertedProcess));
     });
   }
 
-  private buildAssociationFlows(bpmnElements: Array<TAssociation> | TAssociation): void {
+  private buildAssociationFlows(bpmnElements: Array<TAssociation> | TAssociation, convertedProcess: ShapeBpmnElement): void {
     ensureIsArray(bpmnElements).forEach(association => {
       const direction = association.associationDirection as unknown as AssociationDirectionKind;
       const convertedSource = this.convertedElements.findFlowNode(association.sourceRef);
       const convertedTarget = this.convertedElements.findFlowNode(association.targetRef);
-      this.convertedElements.registerAssociationFlow(new AssociationFlow(association.id, undefined, convertedSource, convertedTarget, direction));
+      this.convertedElements.registerAssociationFlow(new AssociationFlow(association.id, undefined, convertedSource, convertedTarget, direction, convertedProcess));
     });
   }
 
