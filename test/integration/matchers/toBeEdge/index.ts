@@ -17,10 +17,9 @@ import type { ExpectedStateStyle, ExpectedCell } from '../matcher-utils';
 import { buildCommonExpectedStateStyle, buildCellMatcher, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
-import { FlowKind } from '../../../../src/model/bpmn/internal';
+import { FlowKind, MessageVisibleKind } from '../../../../src/model/bpmn/internal';
 import type { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
-import { MessageVisibleKind } from '../../../../src/model/bpmn/internal/edge/kinds';
 import { BpmnStyleIdentifier } from '../../../../src/component/mxgraph/style';
 import { mxgraph } from '../../../../src/component/mxgraph/initializer';
 
