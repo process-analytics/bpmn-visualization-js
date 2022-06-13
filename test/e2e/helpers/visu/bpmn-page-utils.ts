@@ -119,6 +119,7 @@ export interface PageOptions {
   loadOptions?: LoadOptions;
   styleOptions?: StyleOptions;
   bpmnElementIdToCollapse?: string;
+  poolIdsToFilter?: string | string[];
 }
 
 export interface Point {
@@ -149,12 +150,7 @@ export class PageTester {
   }
 
   async gotoPageAndLoadBpmnDiagram(bpmnDiagramName: string, pageOptions?: PageOptions): Promise<void> {
-    const url = this.computePageUrl(
-      bpmnDiagramName,
-      pageOptions?.loadOptions ?? { fit: { type: FitType.HorizontalVertical } },
-      pageOptions?.styleOptions,
-      pageOptions?.bpmnElementIdToCollapse,
-    );
+    const url = this.computePageUrl(bpmnDiagramName, pageOptions?.loadOptions ?? { fit: { type: FitType.HorizontalVertical } }, pageOptions?.styleOptions, pageOptions);
     await this.doGotoPageAndLoadBpmnDiagram(url);
   }
 
@@ -177,9 +173,9 @@ export class PageTester {
    * @param bpmnDiagramName the name of the BPMN file without extension
    * @param loadOptions fit options
    * @param styleOptions optional style options
-   * @param bpmndElementIdToCollapse optional bpmn element that will be collapsed
+   * @param otherPageOptions other page options
    */
-  private computePageUrl(bpmnDiagramName: string, loadOptions: LoadOptions, styleOptions?: StyleOptions, bpmndElementIdToCollapse?: string | undefined): string {
+  private computePageUrl(bpmnDiagramName: string, loadOptions: LoadOptions, styleOptions?: StyleOptions, otherPageOptions?: PageOptions): string {
     let url = this.baseUrl;
     url += `&url=/test/fixtures/bpmn/${this.diagramSubfolder}/${bpmnDiagramName}.bpmn`;
 
@@ -193,8 +189,12 @@ export class PageTester {
       (url += `&style.container.alternative.background.color=${styleOptions.bpmnContainer.useAlternativeBackgroundColor}`);
     styleOptions?.theme && (url += `&style.theme=${styleOptions.theme}`);
 
-    // elements to collapse
-    bpmndElementIdToCollapse && (url += `&bpmn.element.id.collapsed=${bpmndElementIdToCollapse}`);
+    // other options
+    const bpmnElementIdToCollapse = otherPageOptions?.bpmnElementIdToCollapse;
+    bpmnElementIdToCollapse && (url += `&bpmn.element.id.collapsed=${bpmnElementIdToCollapse}`);
+    const poolIdsToFilter = otherPageOptions?.poolIdsToFilter;
+    // the array is transformed into string with the 'comma' separator, as expected by the page
+    poolIdsToFilter && (url += `&bpmn.filter.pool.ids=${poolIdsToFilter}`);
 
     return url;
   }
