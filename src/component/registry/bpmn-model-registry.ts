@@ -140,6 +140,7 @@ class ModelFiltering {
     if (filteredPools.length == 0) {
       throw new Error('no existing pool with ids ' + filterPoolBpmnIds);
     }
+    // TODO also fail if one of the ids is not retrieved? or filter at best?
 
     // prepare parent
     // lanes
@@ -149,7 +150,7 @@ class ModelFiltering {
 
     // TODO subprocesses / call activity
 
-    // TODO group - they are currently not associated to participant. How do we handle it?
+    // TODO group - they may not be associated to participant. How do we handle it?
 
     filterPoolBpmnIds.push(...filteredLaneBpmnElementIds);
     const filteredFlowNodes = bpmnModel.flowNodes.filter(flowNode => filterPoolBpmnIds.includes(flowNode.bpmnElement.parentId));
