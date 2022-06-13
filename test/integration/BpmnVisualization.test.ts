@@ -20,10 +20,41 @@ import { initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visua
 const bpmnVisualization = initializeBpmnVisualizationWithHtmlElement('bpmn-container', true);
 
 describe('BpmnVisualization', () => {
-  it('Load invalid diagram (text file)', async () => {
-    expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(
-      `XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`,
-    );
+  describe('Load', () => {
+    it('Load invalid diagram (text file)', async () => {
+      expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(
+        `XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`,
+      );
+    });
+    const simpleBpmnDiagram = readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn');
+    // TODO add test by names and use for each if possible to simplify
+    it('Filter one pool by id - non existing pool id', () => {
+      expect(() =>
+        bpmnVisualization.load(simpleBpmnDiagram, {
+          modelFilter: {
+            includes: {
+              pools: {
+                ids: 'i_do_not_exist',
+              },
+            },
+          },
+        }),
+      ).toThrow(`no existing pool with ids i_do_not_exist`);
+    });
+
+    it('Filter several pool by id - non existing pool id', () => {
+      expect(() =>
+        bpmnVisualization.load(simpleBpmnDiagram, {
+          modelFilter: {
+            includes: {
+              pools: {
+                ids: ['i_do_not_exist-1', 'i_do_not_exist-2'],
+              },
+            },
+          },
+        }),
+      ).toThrow(`no existing pool with ids i_do_not_exist-1,i_do_not_exist-2`);
+    });
   });
 
   describe('Version', () => {
