@@ -126,34 +126,49 @@ class ModelFiltering {
       return bpmnModel;
     }
 
-    // TODO no pool in model --> error?
+    // TODO no pool in model but filteredPools --> error with dedicated message? add a test for this use case
 
     // lookup pools
     const pools = bpmnModel.pools;
-    logModelFiltering('pools: ' + pools);
-    // TODO ensure it is an array
-    // const filterPoolBpmnIds = <Array<string>>poolIdsFilter;
-    const filterPoolBpmnIds = ensureIsArray(poolIdsFilter);
-    // TODO choose filterPoolBpmnIds by id if defined, otherwise filterPoolBpmnIds by name
+    logModelFiltering('total pools: ' + pools?.length);
+    // TODO we shouldn't need to cast - type signature issue?
+    const filterPoolBpmnIds = <Array<string>>ensureIsArray(poolIdsFilter);
+    // TODO choose filter by id if defined, otherwise filter by name
     const filteredPools = pools.filter(pool => filterPoolBpmnIds.includes(pool.bpmnElement.id));
-    logModelFiltering('filtered pools: ' + filteredPools);
     if (filteredPools.length == 0) {
       throw new Error('no existing pool with ids ' + filterPoolBpmnIds);
     }
     // TODO also fail if one of the ids is not retrieved? or filter at best?
 
     // prepare parent
-    // lanes
-    const filteredLanes = bpmnModel.lanes.filter(flowNode => filterPoolBpmnIds.includes(flowNode.bpmnElement.parentId));
-    const filteredLaneBpmnElementIds = filteredLanes.map(lane => lane.bpmnElement.id);
-    logModelFiltering('filtered lanes: ' + filteredLaneBpmnElementIds);
+    const effectiveFilteredPoolIds = filteredPools.map(shape => shape.bpmnElement.id);
+    logModelFiltering('filtered pools: ' + effectiveFilteredPoolIds);
+    const keptElementIds = <string[]>[];
+    logModelFiltering('kept pools number: ' + filterPoolBpmnIds.length);
+    keptElementIds.push(...filterPoolBpmnIds);
 
-    // TODO subprocesses / call activity
+    // lanes
+    const filteredLanes = bpmnModel.lanes.filter(shape => filterPoolBpmnIds.includes(shape.bpmnElement.parentId));
+    const filteredLaneBpmnElementIds = filteredLanes.map(shape => shape.bpmnElement.id);
+    logModelFiltering('filtered lanes: ' + filteredLaneBpmnElementIds);
+    logModelFiltering('kept lanes number: ' + filteredLaneBpmnElementIds.length);
+    keptElementIds.push(...filteredLaneBpmnElementIds);
 
     // TODO group - they may not be associated to participant. How do we handle it?
 
-    filterPoolBpmnIds.push(...filteredLaneBpmnElementIds);
-    const filteredFlowNodes = bpmnModel.flowNodes.filter(flowNode => filterPoolBpmnIds.includes(flowNode.bpmnElement.parentId));
+    let filteredFlowNodes = bpmnModel.flowNodes.filter(flowNode => keptElementIds.includes(flowNode.bpmnElement.parentId));
+
+    // children of subprocesses / call activity
+    // boundary events attached to tasks
+    // TODO manage in a better way, this doesn't work with boundary elements of a task within a subprocess, nor subprocess of subprocess....
+    const keptFlowNodeIds = filteredFlowNodes.map(shape => shape.bpmnElement.id);
+    logModelFiltering('kept flow nodes number: ' + keptFlowNodeIds.length);
+    keptElementIds.push(...keptFlowNodeIds);
+
+    // TODO continue, does not work for boundary events and inner elements of a subprocess
+    // const additionalFilteredFlowNodes;
+    filteredFlowNodes = filteredFlowNodes.filter(flowNode => keptElementIds.includes(flowNode.bpmnElement.parentId));
+    logModelFiltering('kept flow nodes number after checking parent again: ', filteredFlowNodes.length);
 
     const flowNodes: Shape[] = filteredFlowNodes; //[];
     // const flowNodes: Shape[] = bpmnModel.flowNodes; //[];
