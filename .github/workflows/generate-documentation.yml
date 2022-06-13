@@ -47,6 +47,9 @@ jobs:
     needs: [check_secrets]
     if: github.event_name == 'pull_request' && needs.check_secrets.outputs.is_SURGE_TOKEN_set == 'true'
     runs-on: ubuntu-20.04
+    permissions:
+      # surge-preview: PR comments
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
         if: github.event.action != 'closed'
@@ -91,6 +94,9 @@ jobs:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&  github.event.ref == 'refs/heads/master'
     runs-on: ubuntu-20.04
     needs: generate_doc
+    permissions:
+      # Push to gh-pages
+      contents: write
     steps:
       - name: Download
         uses: actions/download-artifact@v3

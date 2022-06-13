@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Bonitasoft S.A.
+ * Copyright 2021 Bonitasoft S.A.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { documentReady, startBpmnVisualization } from '../../../ts/dev-bundle-index';
-
-function statusFetchKO(errorMsg) {
-  const statusElt = document.getElementById('fetch-status');
-  statusElt.innerText = errorMsg;
-  statusElt.className = 'status-ko';
-}
-
-documentReady(() => startBpmnVisualization({ globalOptions: { container: 'bpmn-container' }, statusFetchKoNotifier: statusFetchKO }));
+export * from './main';
+export * from './utils/shared-helpers';
+export * from '../../src/bpmn-visualization';

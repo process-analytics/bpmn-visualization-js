@@ -27,6 +27,9 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-20.04
+    permissions:
+      # required for all workflows by github/codeql-action
+      security-events: write
 
     strategy:
       fail-fast: false

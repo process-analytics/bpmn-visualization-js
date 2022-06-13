@@ -21,10 +21,12 @@ import {
   log,
   updateLoadOptions,
   getCurrentLoadOptions,
+  getCurrentTheme,
   getVersion,
+  switchTheme,
   zoom,
   ZoomType,
-} from '/dev/ts/internal-dev-bundle-index.ts';
+} from '../../../ts/dev-bundle-index';
 
 let fitOnLoad = true;
 let fitOptions = {};
@@ -88,6 +90,18 @@ function configureZoomButtons() {
   document.getElementById(`zoom-reset`).onclick = () => fit(fitOptions);
 }
 
+function configureThemeSelect() {
+  const themeSelectedElt = document.getElementById('theme-selected');
+  themeSelectedElt.onchange = event => {
+    switchTheme(event.target.value);
+  };
+
+  const currentTheme = getCurrentTheme();
+  if (currentTheme) {
+    themeSelectedElt.value = currentTheme;
+  }
+}
+
 function configureDisplayedFooterContent() {
   const version = getVersion();
   const versionAsString = `bpmn-visualization@${version.lib}`;
@@ -130,6 +144,7 @@ function startDemo() {
   configureFitMarginInput();
   configureFitOnLoadCheckBox();
   configureZoomButtons();
+  configureThemeSelect();
   configureDisplayedFooterContent();
 }
 

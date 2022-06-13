@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { documentReady, startBpmnVisualization, fit, FitType, zoom, ZoomType } from '/dev/ts/internal-dev-bundle-index.ts';
+import { documentReady, startBpmnVisualization, fit, FitType, zoom, ZoomType } from '../../../ts/dev-bundle-index';
 import { configureControlsPanel, configureMousePointer } from './helpers/controls.js';
 
 function configureFitAndZoomButtons() {
