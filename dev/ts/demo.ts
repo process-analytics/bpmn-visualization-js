@@ -212,12 +212,13 @@ function configureBpmnElementIdToCollapseFromParameters(parameters: URLSearchPar
 }
 
 function configurePoolsFilteringFromParameters(parameters: URLSearchParams): ModelFilter | undefined {
-  const poolIdToFilter = parameters.get('bpmn.pool.id.filtered');
-  if (!poolIdToFilter) {
+  const poolIdsToFilterParameter = parameters.get('bpmn.filter.pool.ids');
+  if (!poolIdsToFilterParameter) {
     return;
   }
-  log('Configuring load options to only include pool id: ', poolIdToFilter);
-  return { includes: { pools: { ids: poolIdToFilter } } };
+  const poolIdsToFilter = poolIdsToFilterParameter.split(',');
+  log('Configuring load options to only include pool id: ', poolIdsToFilter);
+  return { includes: { pools: { ids: poolIdsToFilter } } };
 }
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
