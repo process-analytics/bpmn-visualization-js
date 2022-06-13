@@ -9,20 +9,20 @@
     <bpmn:messageFlow id="Flow_10w9tdb" sourceRef="Activity_1jfetn9" targetRef="Activity_0ltcxpv" />
     <bpmn:messageFlow id="Flow_1buph5v" sourceRef="Participant_1" targetRef="Participant_2" />
     <bpmn:messageFlow id="Flow_1etaoho" sourceRef="Participant_2" targetRef="Participant_1" />
-    <bpmn:messageFlow id="Flow_1na7nd0" sourceRef="Event_0r61dg1" targetRef="Participant_4" />
+    <bpmn:messageFlow id="Flow_1na7nd0" sourceRef="Participant_1_end_event" targetRef="Participant_4" />
   </bpmn:collaboration>
   <bpmn:process id="Process_1" isExecutable="false">
-    <bpmn:sequenceFlow id="Flow_0jsdvpk" sourceRef="StartEvent_17g4nu8" targetRef="Activity_0puqzjv" />
-    <bpmn:sequenceFlow id="Flow_17ljr6c" sourceRef="Activity_0puqzjv" targetRef="Event_0r61dg1" />
-    <bpmn:startEvent id="StartEvent_17g4nu8">
-      <bpmn:outgoing>Flow_0jsdvpk</bpmn:outgoing>
+    <bpmn:sequenceFlow id="Participant_1_sequence_flow_startMsg_activity" sourceRef="Participant_1_start_event" targetRef="Activity_0puqzjv" />
+    <bpmn:sequenceFlow id="Flow_17ljr6c" sourceRef="Activity_0puqzjv" targetRef="Participant_1_end_event" />
+    <bpmn:startEvent id="Participant_1_start_event">
+      <bpmn:outgoing>Participant_1_sequence_flow_startMsg_activity</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0jn3ex4" />
     </bpmn:startEvent>
     <bpmn:task id="Activity_0puqzjv">
-      <bpmn:incoming>Flow_0jsdvpk</bpmn:incoming>
+      <bpmn:incoming>Participant_1_sequence_flow_startMsg_activity</bpmn:incoming>
       <bpmn:outgoing>Flow_17ljr6c</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:endEvent id="Event_0r61dg1">
+    <bpmn:endEvent id="Participant_1_end_event">
       <bpmn:incoming>Flow_17ljr6c</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0exqd0a" />
     </bpmn:endEvent>
@@ -93,17 +93,17 @@
         <di:waypoint x="260" y="-140" />
         <di:waypoint x="322" y="-140" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0jsdvpk_di" bpmnElement="Flow_0jsdvpk">
+      <bpmndi:BPMNEdge id="Participant_1_sequence_flow_startMsg_activity_di" bpmnElement="Participant_1_sequence_flow_startMsg_activity">
         <di:waypoint x="68" y="-140" />
         <di:waypoint x="160" y="-140" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Event_0dr110a_di" bpmnElement="StartEvent_17g4nu8">
+      <bpmndi:BPMNShape id="Participant_1_start_event_di" bpmnElement="Participant_1_start_event">
         <dc:Bounds x="32" y="-158" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0puqzjv_di" bpmnElement="Activity_0puqzjv">
         <dc:Bounds x="160" y="-180" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0ewtrd7_di" bpmnElement="Event_0r61dg1">
+      <bpmndi:BPMNShape id="Participant_1_end_event_di" bpmnElement="Participant_1_end_event">
         <dc:Bounds x="322" y="-158" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Participant_3_di" bpmnElement="Participant_3" isHorizontal="true">

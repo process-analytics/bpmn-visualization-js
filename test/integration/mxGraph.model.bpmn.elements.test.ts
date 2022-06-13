@@ -1463,24 +1463,46 @@ describe('mxGraph model - BPMN elements', () => {
     });
   });
 
-  // TODO we should have a single test here, the detailed tests should be done directly on the Filtering class instead
+  // TODO we should have few tests here, the detailed tests should be done directly on the Filtering class instead
   // TODO create the diagram
-  // eslint-disable-next-line jest/no-focused-tests
-  describe.only('Filter pools in the mxGraph model', () => {
-    // TODO by names?
-    // TODO manage participant and process ref
-    // eslint-disable-next-line jest/no-focused-tests
-    it.only('Filter one pool by id - existing pool id', () => {
+  describe('Filtered pools in the mxGraph model', () => {
+    const bpmnDiagramToFilter = readFileSync('../fixtures/bpmn/filter/pools.bpmn');
+
+    // TODO do we add a test filter by names? a single one with limited assertions?
+    it('Filter a single pool by id', () => {
       // load BPMN
-      bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'), {
+      bpmnVisualization.load(bpmnDiagramToFilter, {
         modelFilter: {
           includes: {
             pools: {
-              ids: 'participant_1_id',
+              ids: 'Participant_1',
             },
           },
         },
       });
+      // TODO check that we don't have other pool
+      // It needs more tooling to be able to count elements for instance like we do in json parsing tests
+      // start, end message + tasks
+      expect('Participant_1').toBePool({});
+
+      // TODO update buildEventMatcher() as it currently hard code verticalAlign: 'top' even if we pass 'middle'
+      // should be set automatically to 'middle' when there is no label
+      // expect('Participant_1_start_event').toBeStartEvent({
+      //   eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+      //   parentId: 'Participant_1',
+      //   verticalAlign: 'middle',
+      // });
+      // expect('Participant_1_end_event').toBeEndEvent({
+      //   eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+      //   parentId: 'Participant_1',
+      //   verticalAlign: 'middle',
+      // });
+      // only check one sequence flow, assume other are in the model too
+      expect('Participant_1_sequence_flow_startMsg_activity').toBeSequenceFlow({
+        parentId: 'Participant_1',
+        verticalAlign: 'bottom',
+      });
     });
+    // TODO test 2 pools + msg flows
   });
 });
