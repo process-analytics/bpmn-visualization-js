@@ -132,7 +132,7 @@ class ModelFiltering {
     const pools = bpmnModel.pools;
     logModelFiltering('total pools: ' + pools?.length);
     // TODO we shouldn't need to cast - type signature issue?
-    const filterPoolBpmnIds = <Array<string>>ensureIsArray(poolIdsFilter);
+    const filterPoolBpmnIds = ensureIsArray<string>(poolIdsFilter);
     // TODO choose filter by id if defined, otherwise filter by name
     const filteredPools = pools.filter(pool => filterPoolBpmnIds.includes(pool.bpmnElement.id));
     if (filteredPools.length == 0) {
