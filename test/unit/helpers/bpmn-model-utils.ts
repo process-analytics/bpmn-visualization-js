@@ -55,6 +55,7 @@ export const toBpmnModel = (model: ModelRepresentationForTestOnly): BpmnModel =>
   return null;
 };
 
+// TODO rename into BpmnModelTestRepresentation? TestBpmnModel?
 export interface ModelRepresentationForTestOnly {
   pools?: PoolForTestOnly | PoolForTestOnly[];
 }
