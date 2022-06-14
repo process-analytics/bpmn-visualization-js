@@ -21,7 +21,7 @@ import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import type { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { ModelFilter } from '../options';
-import { ensureIsArray } from '../helpers/array-utils';
+import { ModelFiltering } from './bpmn-model-filters';
 
 /**
  * @internal
@@ -102,90 +102,5 @@ class SearchableModel {
 
   elementById(id: string): Shape | Edge | undefined {
     return this.elements.get(id);
-  }
-}
-
-function logModelFiltering(msg: unknown, ...optionalParams: unknown[]): void {
-  // eslint-disable-next-line no-console
-  _log('model filtering', msg, ...optionalParams);
-}
-
-function _log(header: string, message: unknown, ...optionalParams: unknown[]): void {
-  // eslint-disable-next-line no-console
-  console.info(header + ' - ' + message, ...optionalParams);
-}
-
-class ModelFiltering {
-  filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
-    logModelFiltering('START');
-    // TODO validate that filterPoolBpmnIds is correctly defined = NOT (empty string, empty array, ....)
-    const poolIdsFilter = modelFilter?.includes?.pools?.ids;
-    // const poolNamesFilter = modelFilter?.includes?.pools?.names;
-    if (!poolIdsFilter) {
-      logModelFiltering('nothing to filterPoolBpmnIds');
-      return bpmnModel;
-    }
-
-    // TODO no pool in model but filteredPools --> error with dedicated message? add a test for this use case
-
-    // lookup pools
-    const pools = bpmnModel.pools;
-    logModelFiltering('total pools: ' + pools?.length);
-    // TODO we shouldn't need to cast - type signature issue?
-    const filterPoolBpmnIds = ensureIsArray<string>(poolIdsFilter);
-    // TODO choose filter by id if defined, otherwise filter by name
-    const filteredPools = pools.filter(pool => filterPoolBpmnIds.includes(pool.bpmnElement.id));
-    if (filteredPools.length == 0) {
-      throw new Error('no existing pool with ids ' + filterPoolBpmnIds);
-    }
-    // TODO also fail if one of the ids is not retrieved? or filter at best?
-
-    // TODO use consistent names: 'kept' or 'filtered' but not both
-    // prepare parent
-    const keptElementIds = filteredPools.map(shape => shape.bpmnElement.id);
-    logModelFiltering('kept pools number: ' + keptElementIds.length);
-    logModelFiltering('kept pools: ' + keptElementIds);
-
-    // lanes
-    const filteredLanes = bpmnModel.lanes.filter(shape => keptElementIds.includes(shape.bpmnElement.parentId));
-    const filteredLaneBpmnElementIds = filteredLanes.map(shape => shape.bpmnElement.id);
-    logModelFiltering('filtered lanes: ' + filteredLaneBpmnElementIds);
-    logModelFiltering('kept lanes number: ' + filteredLaneBpmnElementIds.length);
-    keptElementIds.push(...filteredLaneBpmnElementIds);
-
-    // children of subprocesses / call activity
-    // boundary events attached to tasks
-    const flowNodes = bpmnModel.flowNodes;
-    const accumulatedFilteredFlowNodes: Shape[] = []; // TODO rename into filteredFlowNodes
-    let keptParentIdsOfFlowNodes = keptElementIds;
-
-    logModelFiltering('keptElementIds before lookup: ', keptElementIds.length);
-
-    let cpt = 0;
-    while (keptParentIdsOfFlowNodes.length > 0) {
-      const filteredFlowNodes = flowNodes.filter(flowNode => keptParentIdsOfFlowNodes.includes(flowNode.bpmnElement.parentId));
-      const keptFlowNodeIds = filteredFlowNodes.map(shape => shape.bpmnElement.id);
-      logModelFiltering('kept flow nodes number: ' + keptFlowNodeIds.length);
-      accumulatedFilteredFlowNodes.push(...filteredFlowNodes);
-      logModelFiltering('accumulated flow nodes number: ' + accumulatedFilteredFlowNodes.length);
-      keptParentIdsOfFlowNodes = keptFlowNodeIds;
-      cpt++;
-      if (cpt > 10) {
-        throw Error('too much iteration');
-      }
-    }
-
-    logModelFiltering('keptElementIds after lookup: ', keptElementIds.length);
-    keptElementIds.push(...accumulatedFilteredFlowNodes.map(shape => shape.bpmnElement.id));
-
-    // filterPoolBpmnIds message flow: a single pool, remove all but we should remove refs to outgoing msg flows on related shapes
-    // keep only edge whose source and target have been kept
-    const edges = bpmnModel.edges;
-    logModelFiltering('edges number: ', edges.length);
-    const filteredEdges = edges.filter(edge => keptElementIds.includes(edge.bpmnElement.sourceRefId) && keptElementIds.includes(edge.bpmnElement.targetRefId));
-    logModelFiltering('filteredEdges number: ', filteredEdges.length);
-
-    logModelFiltering('END');
-    return { flowNodes: accumulatedFilteredFlowNodes, lanes: filteredLanes, pools: filteredPools, edges: filteredEdges };
   }
 }
