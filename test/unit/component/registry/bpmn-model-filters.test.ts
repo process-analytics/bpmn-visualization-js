@@ -30,14 +30,18 @@ describe('Bpmn Model filters', () => {
     expect(modelFiltering.filter(toBpmnModel(null))).toBeNull();
   });
 
+  // TODO model with a pool filtering another one
+  // TODO model with a pool filtering several others - test currently in BpmnVisualization integration test, should be moved here?
+  // TODO model without pool and doing pool filtering
+
   it('Filter a model with a single pool', () => {
     const model: ModelRepresentationForTestOnly = {
       pools: {
-        id: 'xx',
-        name: 'yyy',
+        id: 'participant_id_1',
+        name: 'Participant 1',
         startEvent: {
-          id: 'x',
-          name: 'y',
+          id: 'startEvent_1',
+          name: 'Start Event 1',
         },
       },
     };

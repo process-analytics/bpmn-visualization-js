@@ -19,6 +19,7 @@ import { SequenceFlow } from '../../../src/model/bpmn/internal/edge/flows';
 import Shape from '../../../src/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, { ShapeBpmnStartEvent } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../src/model/bpmn/internal';
+import { ensureIsArray } from '../../../src/component/helpers/array-utils';
 
 const newBpmnModel = (): BpmnModel => ({
   edges: [],
@@ -35,7 +36,7 @@ export const sequenceFlowInModel = (id: string, name: string): BpmnModel => {
 
 export const startEventInModel = (id: string, name: string): BpmnModel => {
   const bpmnModel = newBpmnModel();
-  bpmnModel.flowNodes.push(new Shape(`Shape_${id}`, new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, 'parentId')));
+  bpmnModel.flowNodes.push(newStartEvent('parentId', id, name));
   return bpmnModel;
 };
 
@@ -47,17 +48,37 @@ export const laneInModel = (id: string, name: string): BpmnModel => {
 
 export const poolInModel = (id: string, name: string): BpmnModel => {
   const bpmnModel = newBpmnModel();
-  bpmnModel.pools.push(new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.POOL)));
+  addNewPool(bpmnModel, id, name);
   return bpmnModel;
 };
 
+const newStartEvent = (parentId: string, id: string, name: string): Shape =>
+  new Shape(`Shape_${id}`, new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, 'parentId'));
+
+const newPool = (id: string, name: string): Shape => new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.POOL));
+const addNewPool = (bpmnModel: BpmnModel, id: string, name: string): void => {
+  bpmnModel.pools.push(newPool(id, name));
+};
+
 export const toBpmnModel = (model: ModelRepresentationForTestOnly): BpmnModel => {
-  return null;
+  const bpmnModel = newBpmnModel();
+  const pools = ensureIsArray(model.pools);
+
+  pools.forEach(pool => {
+    addNewPool(bpmnModel, pool.id, pool.name);
+    if (pool.startEvent) {
+      bpmnModel.flowNodes.push(newStartEvent(pool.id, pool.startEvent.id, pool.startEvent.name));
+    }
+  });
+
+  return bpmnModel;
 };
 
 // TODO rename into BpmnModelTestRepresentation? TestBpmnModel?
 export interface ModelRepresentationForTestOnly {
   pools?: PoolForTestOnly | PoolForTestOnly[];
+  // TODO add elements out of participant lanes, or elements out of lanes
+  // the need is minimal for filtering participants, in this case, the filtering fails
 }
 
 export interface BaseElementForTestOnly {
