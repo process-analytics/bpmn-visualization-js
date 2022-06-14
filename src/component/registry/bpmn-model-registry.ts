@@ -156,7 +156,8 @@ class ModelFiltering {
 
     // TODO group - they may not be associated to participant. How do we handle it?
 
-    let filteredFlowNodes = bpmnModel.flowNodes.filter(flowNode => keptElementIds.includes(flowNode.bpmnElement.parentId));
+    const flowNodes = bpmnModel.flowNodes;
+    const filteredFlowNodes = flowNodes.filter(flowNode => keptElementIds.includes(flowNode.bpmnElement.parentId));
 
     // children of subprocesses / call activity
     // boundary events attached to tasks
@@ -166,17 +167,22 @@ class ModelFiltering {
     keptElementIds.push(...keptFlowNodeIds);
 
     // TODO continue, does not work for boundary events and inner elements of a subprocess
-    // const additionalFilteredFlowNodes;
-    filteredFlowNodes = filteredFlowNodes.filter(flowNode => keptElementIds.includes(flowNode.bpmnElement.parentId));
-    logModelFiltering('kept flow nodes number after checking parent again: ', filteredFlowNodes.length);
+    const additionalFilteredFlowNodes = flowNodes.filter(flowNode => keptFlowNodeIds.includes(flowNode.bpmnElement.parentId));
+    logModelFiltering('Additional kept flow nodes number after checking parent again: ', additionalFilteredFlowNodes.length);
+    logModelFiltering(
+      'Additional kept flow nodes: ',
+      additionalFilteredFlowNodes.map(node => node.bpmnElement.id),
+    );
+    const newFilteredFlowNodesNumber = filteredFlowNodes.push(...additionalFilteredFlowNodes);
+    logModelFiltering('Total kept flow nodes number after checking parent again: ', newFilteredFlowNodesNumber);
 
-    const flowNodes: Shape[] = filteredFlowNodes; //[];
+    // const flowNodes: Shape[] = filteredFlowNodes; //[];
     // const flowNodes: Shape[] = bpmnModel.flowNodes; //[];
-    const lanes: Shape[] = filteredLanes; //[];
+    // const lanes: Shape[] = filteredLanes; //[];
     // filterPoolBpmnIds message flow: a single pool, remove all but we should remove refs to outgoing msg flows on related shapes
     const edges: Edge[] = bpmnModel.edges; //[];
 
     logModelFiltering('END');
-    return { flowNodes, lanes, pools: filteredPools, edges };
+    return { flowNodes: filteredFlowNodes, lanes: filteredLanes, pools: filteredPools, edges };
   }
 }
