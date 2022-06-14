@@ -50,3 +50,20 @@ export const poolInModel = (id: string, name: string): BpmnModel => {
   bpmnModel.pools.push(new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.POOL)));
   return bpmnModel;
 };
+
+export const toBpmnModel = (model: ModelRepresentationForTestOnly): BpmnModel => {
+  return null;
+};
+
+export interface ModelRepresentationForTestOnly {
+  pools?: PoolForTestOnly | PoolForTestOnly[];
+}
+
+export interface BaseElementForTestOnly {
+  id: string;
+  name?: string;
+}
+
+export interface PoolForTestOnly extends BaseElementForTestOnly {
+  startEvent: BaseElementForTestOnly;
+}
