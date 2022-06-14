@@ -140,16 +140,14 @@ class ModelFiltering {
     }
     // TODO also fail if one of the ids is not retrieved? or filter at best?
 
+    // TODO use consistent names: 'kept' or 'filtered' but not both
     // prepare parent
-    const effectiveFilteredPoolIds = filteredPools.map(shape => shape.bpmnElement.id);
-    logModelFiltering('filtered pools: ' + effectiveFilteredPoolIds);
-    const keptElementIds = <string[]>[];
-    // TODO simplify variables, only use keptElementIds starting from here
-    logModelFiltering('kept pools number: ' + filterPoolBpmnIds.length);
-    keptElementIds.push(...filterPoolBpmnIds);
+    const keptElementIds = filteredPools.map(shape => shape.bpmnElement.id);
+    logModelFiltering('kept pools number: ' + keptElementIds.length);
+    logModelFiltering('kept pools: ' + keptElementIds);
 
     // lanes
-    const filteredLanes = bpmnModel.lanes.filter(shape => filterPoolBpmnIds.includes(shape.bpmnElement.parentId));
+    const filteredLanes = bpmnModel.lanes.filter(shape => keptElementIds.includes(shape.bpmnElement.parentId));
     const filteredLaneBpmnElementIds = filteredLanes.map(shape => shape.bpmnElement.id);
     logModelFiltering('filtered lanes: ' + filteredLaneBpmnElementIds);
     logModelFiltering('kept lanes number: ' + filteredLaneBpmnElementIds.length);
@@ -160,6 +158,8 @@ class ModelFiltering {
     const flowNodes = bpmnModel.flowNodes;
     const accumulatedFilteredFlowNodes: Shape[] = []; // TODO rename into filteredFlowNodes
     let keptParentIdsOfFlowNodes = keptElementIds;
+
+    logModelFiltering('keptElementIds before lookup: ', keptElementIds.length);
 
     let cpt = 0;
     while (keptParentIdsOfFlowNodes.length > 0) {
@@ -175,30 +175,17 @@ class ModelFiltering {
       }
     }
 
-    // const filteredFlowNodes = flowNodes.filter(flowNode => keptElementIds.includes(flowNode.bpmnElement.parentId));
-    //
-    // // children of subprocesses / call activity
-    // // boundary events attached to tasks
-    // // TODO manage in a better way, this doesn't work with boundary elements of a task within a subprocess, nor subprocess of subprocess....
-    // const keptFlowNodeIds = filteredFlowNodes.map(shape => shape.bpmnElement.id);
-    // logModelFiltering('kept flow nodes number: ' + keptFlowNodeIds.length);
-    // keptElementIds.push(...keptFlowNodeIds);
-    //
-    // // TODO continue, does not work for boundary events and inner elements of a subprocess
-    // const additionalFilteredFlowNodes = flowNodes.filter(flowNode => keptFlowNodeIds.includes(flowNode.bpmnElement.parentId));
-    // logModelFiltering('Additional kept flow nodes number after checking parent again: ', additionalFilteredFlowNodes.length);
-    // logModelFiltering(
-    //   'Additional kept flow nodes: ',
-    //   additionalFilteredFlowNodes.map(node => node.bpmnElement.id),
-    // );
-    // const newFilteredFlowNodesNumber = filteredFlowNodes.push(...additionalFilteredFlowNodes);
-    // logModelFiltering('Total kept flow nodes number after checking parent again: ', newFilteredFlowNodesNumber);
+    logModelFiltering('keptElementIds after lookup: ', keptElementIds.length);
+    keptElementIds.push(...accumulatedFilteredFlowNodes.map(shape => shape.bpmnElement.id));
 
-    // TODO filter edges
     // filterPoolBpmnIds message flow: a single pool, remove all but we should remove refs to outgoing msg flows on related shapes
-    const edges: Edge[] = bpmnModel.edges; //[];
+    // keep only edge whose source and target have been kept
+    const edges = bpmnModel.edges;
+    logModelFiltering('edges number: ', edges.length);
+    const filteredEdges = edges.filter(edge => keptElementIds.includes(edge.bpmnElement.sourceRefId) && keptElementIds.includes(edge.bpmnElement.targetRefId));
+    logModelFiltering('filteredEdges number: ', filteredEdges.length);
 
     logModelFiltering('END');
-    return { flowNodes: accumulatedFilteredFlowNodes, lanes: filteredLanes, pools: filteredPools, edges };
+    return { flowNodes: accumulatedFilteredFlowNodes, lanes: filteredLanes, pools: filteredPools, edges: filteredEdges };
   }
 }
