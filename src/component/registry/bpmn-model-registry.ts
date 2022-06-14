@@ -144,6 +144,7 @@ class ModelFiltering {
     const effectiveFilteredPoolIds = filteredPools.map(shape => shape.bpmnElement.id);
     logModelFiltering('filtered pools: ' + effectiveFilteredPoolIds);
     const keptElementIds = <string[]>[];
+    // TODO simplify variables, only use keptElementIds starting from here
     logModelFiltering('kept pools number: ' + filterPoolBpmnIds.length);
     keptElementIds.push(...filterPoolBpmnIds);
 
@@ -154,35 +155,50 @@ class ModelFiltering {
     logModelFiltering('kept lanes number: ' + filteredLaneBpmnElementIds.length);
     keptElementIds.push(...filteredLaneBpmnElementIds);
 
-    // TODO group - they may not be associated to participant. How do we handle it?
-
-    const flowNodes = bpmnModel.flowNodes;
-    const filteredFlowNodes = flowNodes.filter(flowNode => keptElementIds.includes(flowNode.bpmnElement.parentId));
-
     // children of subprocesses / call activity
     // boundary events attached to tasks
-    // TODO manage in a better way, this doesn't work with boundary elements of a task within a subprocess, nor subprocess of subprocess....
-    const keptFlowNodeIds = filteredFlowNodes.map(shape => shape.bpmnElement.id);
-    logModelFiltering('kept flow nodes number: ' + keptFlowNodeIds.length);
-    keptElementIds.push(...keptFlowNodeIds);
+    const flowNodes = bpmnModel.flowNodes;
+    const accumulatedFilteredFlowNodes: Shape[] = []; // TODO rename into filteredFlowNodes
+    let keptParentIdsOfFlowNodes = keptElementIds;
 
-    // TODO continue, does not work for boundary events and inner elements of a subprocess
-    const additionalFilteredFlowNodes = flowNodes.filter(flowNode => keptFlowNodeIds.includes(flowNode.bpmnElement.parentId));
-    logModelFiltering('Additional kept flow nodes number after checking parent again: ', additionalFilteredFlowNodes.length);
-    logModelFiltering(
-      'Additional kept flow nodes: ',
-      additionalFilteredFlowNodes.map(node => node.bpmnElement.id),
-    );
-    const newFilteredFlowNodesNumber = filteredFlowNodes.push(...additionalFilteredFlowNodes);
-    logModelFiltering('Total kept flow nodes number after checking parent again: ', newFilteredFlowNodesNumber);
+    let cpt = 0;
+    while (keptParentIdsOfFlowNodes.length > 0) {
+      const filteredFlowNodes = flowNodes.filter(flowNode => keptParentIdsOfFlowNodes.includes(flowNode.bpmnElement.parentId));
+      const keptFlowNodeIds = filteredFlowNodes.map(shape => shape.bpmnElement.id);
+      logModelFiltering('kept flow nodes number: ' + keptFlowNodeIds.length);
+      accumulatedFilteredFlowNodes.push(...filteredFlowNodes);
+      logModelFiltering('accumulated flow nodes number: ' + accumulatedFilteredFlowNodes.length);
+      keptParentIdsOfFlowNodes = keptFlowNodeIds;
+      cpt++;
+      if (cpt > 10) {
+        throw Error('too much iteration');
+      }
+    }
 
-    // const flowNodes: Shape[] = filteredFlowNodes; //[];
-    // const flowNodes: Shape[] = bpmnModel.flowNodes; //[];
-    // const lanes: Shape[] = filteredLanes; //[];
+    // const filteredFlowNodes = flowNodes.filter(flowNode => keptElementIds.includes(flowNode.bpmnElement.parentId));
+    //
+    // // children of subprocesses / call activity
+    // // boundary events attached to tasks
+    // // TODO manage in a better way, this doesn't work with boundary elements of a task within a subprocess, nor subprocess of subprocess....
+    // const keptFlowNodeIds = filteredFlowNodes.map(shape => shape.bpmnElement.id);
+    // logModelFiltering('kept flow nodes number: ' + keptFlowNodeIds.length);
+    // keptElementIds.push(...keptFlowNodeIds);
+    //
+    // // TODO continue, does not work for boundary events and inner elements of a subprocess
+    // const additionalFilteredFlowNodes = flowNodes.filter(flowNode => keptFlowNodeIds.includes(flowNode.bpmnElement.parentId));
+    // logModelFiltering('Additional kept flow nodes number after checking parent again: ', additionalFilteredFlowNodes.length);
+    // logModelFiltering(
+    //   'Additional kept flow nodes: ',
+    //   additionalFilteredFlowNodes.map(node => node.bpmnElement.id),
+    // );
+    // const newFilteredFlowNodesNumber = filteredFlowNodes.push(...additionalFilteredFlowNodes);
+    // logModelFiltering('Total kept flow nodes number after checking parent again: ', newFilteredFlowNodesNumber);
+
+    // TODO filter edges
     // filterPoolBpmnIds message flow: a single pool, remove all but we should remove refs to outgoing msg flows on related shapes
     const edges: Edge[] = bpmnModel.edges; //[];
 
     logModelFiltering('END');
-    return { flowNodes: filteredFlowNodes, lanes: filteredLanes, pools: filteredPools, edges };
+    return { flowNodes: accumulatedFilteredFlowNodes, lanes: filteredLanes, pools: filteredPools, edges };
   }
 }
