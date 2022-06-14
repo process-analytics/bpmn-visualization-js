@@ -19,9 +19,18 @@
 // test cross usage of ids and names
 
 import type { ModelRepresentationForTestOnly } from '../../helpers/bpmn-model-utils';
+import { ModelFiltering } from '../../../../src/component/registry/bpmn-model-filters';
+import { toBpmnModel } from '../../helpers/bpmn-model-utils';
+
+const modelFiltering = new ModelFiltering();
 
 describe('Bpmn Model filters', () => {
-  it('callback is called on model load', () => {
+  // TODO undefined as well? notice that we are not passing such values, so these tests have limited interest
+  it('Passing a null BpmnModel does not generate error', () => {
+    expect(modelFiltering.filter(toBpmnModel(null))).toBeNull();
+  });
+
+  it('Filter a model with a single pool', () => {
     const model: ModelRepresentationForTestOnly = {
       pools: {
         id: 'xx',
@@ -32,5 +41,9 @@ describe('Bpmn Model filters', () => {
         },
       },
     };
+    const originalBpmnModel = toBpmnModel(model);
+    modelFiltering.filter(originalBpmnModel);
+    // const bpmnModel = modelFiltering.filter(originalBpmnModel);
+    // TODO extract the util code from JsonTestUtils related to the BpmnModel - it will reuse this extracted code
   });
 });
