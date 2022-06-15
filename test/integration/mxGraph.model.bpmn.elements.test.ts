@@ -1464,8 +1464,7 @@ describe('mxGraph model - BPMN elements', () => {
   });
 
   // TODO we should have few tests here, the detailed tests should be done directly on the Filtering class instead
-  // TODO create the diagram
-  describe('Filtered pools in the mxGraph model', () => {
+  describe('Filtered pools at load time', () => {
     const bpmnDiagramToFilter = readFileSync('../fixtures/bpmn/filter/pools.bpmn');
 
     // TODO do we add a test filter by names? a single one with limited assertions?
@@ -1485,24 +1484,23 @@ describe('mxGraph model - BPMN elements', () => {
       // start, end message + tasks
       expect('Participant_1').toBePool({});
 
-      // TODO update buildEventMatcher() as it currently hard code verticalAlign: 'top' even if we pass 'middle'
-      // should be set automatically to 'middle' when there is no label
-      // expect('Participant_1_start_event').toBeStartEvent({
-      //   eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
-      //   parentId: 'Participant_1',
-      //   verticalAlign: 'middle',
-      // });
-      // expect('Participant_1_end_event').toBeEndEvent({
-      //   eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
-      //   parentId: 'Participant_1',
-      //   verticalAlign: 'middle',
-      // });
+      // TODO how do we check we don't have other elements? counting cells in the mxgraph model?
+      expect('Participant_1_start_event').toBeStartEvent({
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+        parentId: 'Participant_1',
+        verticalAlign: 'middle',
+      });
+      expect('Participant_1_end_event').toBeEndEvent({
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+        parentId: 'Participant_1',
+        verticalAlign: 'middle',
+      });
+      // TODO how do we check we don't have other elements? counting sequence flows by getting edge from the mxgraph model?
       // only check one sequence flow, assume other are in the model too
       expect('Participant_1_sequence_flow_startMsg_activity').toBeSequenceFlow({
         parentId: 'Participant_1',
         verticalAlign: 'bottom',
       });
     });
-    // TODO test 2 pools + msg flows
   });
 });
