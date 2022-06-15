@@ -17,7 +17,7 @@ import type BpmnModel from '../../../src/model/bpmn/internal/BpmnModel';
 import { Edge } from '../../../src/model/bpmn/internal/edge/edge';
 import { SequenceFlow } from '../../../src/model/bpmn/internal/edge/flows';
 import Shape from '../../../src/model/bpmn/internal/shape/Shape';
-import ShapeBpmnElement, { ShapeBpmnStartEvent } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnActivity, ShapeBpmnStartEvent } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../src/model/bpmn/internal';
 import { ensureIsArray } from '../../../src/component/helpers/array-utils';
 
@@ -60,6 +60,8 @@ const addNewPool = (bpmnModel: BpmnModel, id: string, name: string): void => {
   bpmnModel.pools.push(newPool(id, name));
 };
 
+const newTask = (parentId: string, id: string, name: string): Shape => new Shape(`Shape_${id}`, new ShapeBpmnActivity(id, name, ShapeBpmnElementKind.TASK, parentId));
+
 export const toBpmnModel = (model: ModelRepresentationForTestOnly): BpmnModel => {
   const bpmnModel = newBpmnModel();
   const pools = ensureIsArray(model.pools);
@@ -68,6 +70,9 @@ export const toBpmnModel = (model: ModelRepresentationForTestOnly): BpmnModel =>
     addNewPool(bpmnModel, pool.id, pool.name);
     if (pool.startEvent) {
       bpmnModel.flowNodes.push(newStartEvent(pool.id, pool.startEvent.id, pool.startEvent.name));
+    }
+    if (pool.task) {
+      bpmnModel.flowNodes.push(newTask(pool.id, pool.task.id, pool.task.name));
     }
   });
 
@@ -88,6 +93,6 @@ export interface BaseElementForTestOnly {
 
 export interface PoolForTestOnly extends BaseElementForTestOnly {
   startEvent: BaseElementForTestOnly;
-  tasks?: BaseElementForTestOnly | BaseElementForTestOnly[];
+  task?: BaseElementForTestOnly; // BaseElementForTestOnly[] |
   // sequenceFlows?: XXX;
 }
