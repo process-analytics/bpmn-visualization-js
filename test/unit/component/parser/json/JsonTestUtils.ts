@@ -13,18 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type {
-  ShapeBpmnElementKind,
-  ShapeBpmnCallActivityKind,
-  ShapeBpmnMarkerKind,
-  ShapeBpmnSubProcessKind,
-  ShapeBpmnEventDefinitionKind,
-  GlobalTaskKind,
-} from '../../../../../src/model/bpmn/internal';
+import type { ShapeBpmnSubProcessKind, ShapeBpmnEventDefinitionKind } from '../../../../../src/model/bpmn/internal';
 import { FlowKind, MessageVisibleKind, SequenceFlowKind } from '../../../../../src/model/bpmn/internal';
 import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { newBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
-import type { Edge, Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
+import type { Edge } from '../../../../../src/model/bpmn/internal/edge/edge';
 import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import { ShapeBpmnActivity, ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import type Label from '../../../../../src/model/bpmn/internal/Label';
@@ -32,55 +25,18 @@ import { SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/flows'
 import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import type { JsonParsingWarning } from '../../../../../src/component/parser/parsing-messages';
 import { ParsingMessageCollector } from '../../../../../src/component/parser/parsing-messages';
+import type {
+  ExpectedActivityShape,
+  ExpectedBounds,
+  ExpectedCallActivityShape,
+  ExpectedEdge,
+  ExpectedFont,
+  ExpectedSequenceEdge,
+  ExpectedShape,
+} from '../../../helpers/bpmn-model-expect';
 
-export interface ExpectedShape {
-  shapeId: string;
-  bpmnElementId: string;
-  bpmnElementName: string;
-  bpmnElementKind: ShapeBpmnElementKind;
-  parentId?: string;
-  bounds?: ExpectedBounds;
-  isHorizontal?: boolean;
-}
-
-export interface ExpectedActivityShape extends ExpectedShape {
-  bpmnElementMarkers?: ShapeBpmnMarkerKind[];
-}
-
-export interface ExpectedCallActivityShape extends ExpectedActivityShape {
-  bpmnElementGlobalTaskKind?: GlobalTaskKind;
-  bpmnElementCallActivityKind?: ShapeBpmnCallActivityKind;
-}
-
-interface ExpectedEdge {
-  edgeId: string;
-  bpmnElementId: string;
-  bpmnElementName?: string;
-  bpmnElementSourceRefId: string;
-  bpmnElementTargetRefId: string;
-  waypoints: Waypoint[];
-  messageVisibleKind?: MessageVisibleKind;
-}
-
-export interface ExpectedSequenceEdge extends ExpectedEdge {
-  bpmnElementSequenceFlowKind?: SequenceFlowKind;
-}
-
-export interface ExpectedFont {
-  name?: string;
-  size?: number;
-  isBold?: boolean;
-  isItalic?: boolean;
-  isUnderline?: boolean;
-  isStrikeThrough?: boolean;
-}
-
-export interface ExpectedBounds {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
+// TODO temp to avoid changing all imports in json parser tests
+export * from '../../../helpers/bpmn-model-expect';
 
 class ParsingMessageCollectorTester extends ParsingMessageCollector {
   private warnings: Array<JsonParsingWarning> = [];
