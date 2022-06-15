@@ -88,6 +88,6 @@ export interface BaseElementForTestOnly {
 
 export interface PoolForTestOnly extends BaseElementForTestOnly {
   startEvent: BaseElementForTestOnly;
-  // tasks?: BaseElementForTestOnly | BaseElementForTestOnly[];
+  tasks?: BaseElementForTestOnly | BaseElementForTestOnly[];
   // sequenceFlows?: XXX;
 }
