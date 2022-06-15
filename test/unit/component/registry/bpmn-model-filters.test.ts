@@ -28,6 +28,7 @@ const modelFiltering = new ModelFiltering();
 
 describe('Bpmn Model filters', () => {
   // TODO undefined as well? notice that we are not passing such values, so these tests have limited interest
+  // we should remove it
   // eslint-disable-next-line jest/no-disabled-tests
   it.skip('Passing a null BpmnModel does not generate error', () => {
     expect(modelFiltering.filter(toBpmnModel(null))).toBeNull();
@@ -50,9 +51,7 @@ describe('Bpmn Model filters', () => {
 
   // TODO error management model without pool and doing pool filtering
 
-  // TODO model with a pool filtering another one
   // TODO model with a pool filtering several including the existing one
-  // TODO test 2 pools + msg flows
 
   it('No filter', () => {
     const originalBpmnModel = toBpmnModel({
