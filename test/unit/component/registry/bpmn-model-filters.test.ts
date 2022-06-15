@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
+import { ModelFiltering } from '../../../../src/component/registry/bpmn-model-filters';
+import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal';
+import { poolInModel, toBpmnModel } from '../../helpers/bpmn-model-utils';
+import { verifyShape } from '../../helpers/bpmn-model-expect';
+
+// use a single instance to detect any side effects
+const modelFiltering = new ModelFiltering();
+
 // TODO filter by name in final implementation
 // no need to test all combinations with names. Only pools and a very small subset
 // test cross usage of ids and names
-
-import { poolInModel, toBpmnModel } from '../../helpers/bpmn-model-utils';
-import { ModelFiltering } from '../../../../src/component/registry/bpmn-model-filters';
-import { verifyShape } from '../../helpers/bpmn-model-expect';
-import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal';
-
-const modelFiltering = new ModelFiltering();
 
 describe('Bpmn Model filters', () => {
   // TODO undefined as well? notice that we are not passing such values, so these tests have limited interest
@@ -58,7 +59,7 @@ describe('Bpmn Model filters', () => {
       pools: {
         id: 'participant_id_1',
         name: 'Participant 1',
-        startEvent: {
+        startEvents: {
           id: 'startEvent_1',
           name: 'Start Event 1',
         },
@@ -73,7 +74,7 @@ describe('Bpmn Model filters', () => {
       pools: {
         id: 'participant_id_1',
         name: 'Participant 1',
-        startEvent: {
+        startEvents: {
           id: 'startEvent_1',
           name: 'Start Event 1',
         },
@@ -89,7 +90,7 @@ describe('Bpmn Model filters', () => {
         {
           id: 'participant_id_1',
           name: 'Participant 1',
-          startEvent: {
+          startEvents: {
             id: 'startEvent_1',
             name: 'Start Event 1',
           },
@@ -97,11 +98,11 @@ describe('Bpmn Model filters', () => {
         {
           id: 'participant_id_2',
           name: 'Participant 2',
-          startEvent: {
+          startEvents: {
             id: 'startEvent_2',
             name: 'Start Event 2',
           },
-          task: {
+          tasks: {
             id: 'task_1',
           },
         },
