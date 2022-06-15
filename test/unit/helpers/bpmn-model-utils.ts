@@ -62,37 +62,50 @@ const addNewPool = (bpmnModel: BpmnModel, id: string, name: string): void => {
 
 const newTask = (parentId: string, id: string, name: string): Shape => new Shape(`Shape_${id}`, new ShapeBpmnActivity(id, name, ShapeBpmnElementKind.TASK, parentId));
 
-export const toBpmnModel = (model: ModelRepresentationForTestOnly): BpmnModel => {
+export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
   const bpmnModel = newBpmnModel();
   const pools = ensureIsArray(model.pools);
 
   pools.forEach(pool => {
     addNewPool(bpmnModel, pool.id, pool.name);
-    if (pool.startEvent) {
-      bpmnModel.flowNodes.push(newStartEvent(pool.id, pool.startEvent.id, pool.startEvent.name));
+    if (pool.startEvents) {
+      bpmnModel.flowNodes.push(newStartEvent(pool.id, pool.startEvents.id, pool.startEvents.name));
     }
-    if (pool.task) {
-      bpmnModel.flowNodes.push(newTask(pool.id, pool.task.id, pool.task.name));
+    if (pool.tasks) {
+      bpmnModel.flowNodes.push(newTask(pool.id, pool.tasks.id, pool.tasks.name));
     }
   });
 
   return bpmnModel;
 };
 
-// TODO rename into BpmnModelTestRepresentation? TestBpmnModel?
-export interface ModelRepresentationForTestOnly {
-  pools?: PoolForTestOnly | PoolForTestOnly[];
+export interface BpmnModelTestRepresentation extends ContainerWithLanes {
+  pools?: Pool | Pool[];
+  messageFlows?: BaseElement;
   // TODO add elements out of participant lanes, or elements out of lanes
   // the need is minimal for filtering participants, in this case, the filtering fails
+  // only considered when there is no defined pools
+  process?: ContainerWithLanes;
 }
 
-export interface BaseElementForTestOnly {
+interface BaseElement {
   id: string;
   name?: string;
 }
 
-export interface PoolForTestOnly extends BaseElementForTestOnly {
-  startEvent: BaseElementForTestOnly;
-  task?: BaseElementForTestOnly; // BaseElementForTestOnly[] |
-  // sequenceFlows?: XXX;
+interface Pool extends ContainerWithLanes, BaseElement {}
+
+interface ContainerElement extends BaseElement, Container {}
+
+interface ContainerWithLanes extends Container {
+  lanes?: ContainerElement;
+}
+
+// TODO allow array in all properties
+interface Container {
+  startEvents?: BaseElement;
+  tasks?: BaseElement;
+  subProcesses?: ContainerElement;
+  callActivities?: ContainerElement;
+  sequenceFlows?: BaseElement;
 }
