@@ -93,8 +93,12 @@ export const verifyShape = (shape: Shape, expectedShape: ExpectedShape | Expecte
 
   const bounds = shape.bounds;
   const expectedBounds = expectedShape.bounds;
-  expect(bounds.x).toEqual(expectedBounds.x);
-  expect(bounds.y).toEqual(expectedBounds.y);
-  expect(bounds.width).toEqual(expectedBounds.width);
-  expect(bounds.height).toEqual(expectedBounds.height);
+  if (!bounds) {
+    expect(bounds).toBe(expectedBounds);
+  } else {
+    expect(bounds.x).toEqual(expectedBounds.x);
+    expect(bounds.y).toEqual(expectedBounds.y);
+    expect(bounds.width).toEqual(expectedBounds.width);
+    expect(bounds.height).toEqual(expectedBounds.height);
+  }
 };
