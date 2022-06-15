@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 import type { ShapeBpmnSubProcessKind, ShapeBpmnEventDefinitionKind } from '../../../../../src/model/bpmn/internal';
-import { FlowKind, MessageVisibleKind, SequenceFlowKind } from '../../../../../src/model/bpmn/internal';
 import { newBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
-import type { Edge } from '../../../../../src/model/bpmn/internal/edge/edge';
 import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import { ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import type Label from '../../../../../src/model/bpmn/internal/Label';
-import { SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/flows';
 import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import type { JsonParsingWarning } from '../../../../../src/component/parser/parsing-messages';
 import { ParsingMessageCollector } from '../../../../../src/component/parser/parsing-messages';
-import type { ExpectedBounds, ExpectedEdge, ExpectedFont, ExpectedSequenceEdge } from '../../../helpers/bpmn-model-expect';
+import type { ExpectedBounds, ExpectedFont } from '../../../helpers/bpmn-model-expect';
 
 // TODO temp to avoid changing all imports in json parser tests
 export * from '../../../helpers/bpmn-model-expect';
@@ -117,33 +114,6 @@ export function parseJsonAndExpectOnlyEdges(json: BpmnJsonModel, numberOfExpecte
 
 export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: BpmnJsonModel, numberOfExpectedEdges: number, numberOfExpectedFlowNodes: number): BpmnModel {
   return parseJsonAndExpect(json, 0, 0, numberOfExpectedFlowNodes, numberOfExpectedEdges);
-}
-
-export function verifyEdge(edge: Edge, expectedValue: ExpectedEdge | ExpectedSequenceEdge): void {
-  expect(edge.id).toEqual(expectedValue.edgeId);
-  expect(edge.waypoints).toEqual(expectedValue.waypoints);
-
-  if (expectedValue.messageVisibleKind) {
-    expect(edge.messageVisibleKind).toEqual(expectedValue.messageVisibleKind);
-  } else {
-    expect(edge.messageVisibleKind).toEqual(MessageVisibleKind.NONE);
-  }
-
-  const bpmnElement = edge.bpmnElement;
-  expect(bpmnElement.id).toEqual(expectedValue.bpmnElementId);
-  expect(bpmnElement.name).toEqual(expectedValue.bpmnElementName);
-  expect(bpmnElement.sourceRefId).toEqual(expectedValue.bpmnElementSourceRefId);
-  expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
-
-  if (bpmnElement instanceof SequenceFlow) {
-    expect(edge.bpmnElement.kind).toEqual(FlowKind.SEQUENCE_FLOW);
-    const sequenceEdge = expectedValue as ExpectedSequenceEdge;
-    if (sequenceEdge.bpmnElementSequenceFlowKind) {
-      expect(bpmnElement.sequenceFlowKind).toEqual(sequenceEdge.bpmnElementSequenceFlowKind);
-    } else {
-      expect(bpmnElement.sequenceFlowKind).toEqual(SequenceFlowKind.NORMAL);
-    }
-  }
 }
 
 export function verifySubProcess(model: BpmnModel, kind: ShapeBpmnSubProcessKind, expectedNumber: number): void {

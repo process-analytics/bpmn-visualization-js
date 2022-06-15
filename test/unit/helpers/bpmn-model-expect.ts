@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { GlobalTaskKind, MessageVisibleKind, SequenceFlowKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../src/model/bpmn/internal';
-import type { Waypoint } from '../../../src/model/bpmn/internal/edge/edge';
+import type { GlobalTaskKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../src/model/bpmn/internal';
+import type { Edge, Waypoint } from '../../../src/model/bpmn/internal/edge/edge';
 import type Shape from '../../../src/model/bpmn/internal/shape/Shape';
 import { ShapeBpmnActivity, ShapeBpmnCallActivity } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
+import { SequenceFlow } from '../../../src/model/bpmn/internal/edge/flows';
+import { FlowKind, MessageVisibleKind, SequenceFlowKind } from '../../../src/model/bpmn/internal';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -100,5 +102,32 @@ export const verifyShape = (shape: Shape, expectedShape: ExpectedShape | Expecte
     expect(bounds.y).toEqual(expectedBounds.y);
     expect(bounds.width).toEqual(expectedBounds.width);
     expect(bounds.height).toEqual(expectedBounds.height);
+  }
+};
+
+export const verifyEdge = (edge: Edge, expectedValue: ExpectedEdge | ExpectedSequenceEdge): void => {
+  expect(edge.id).toEqual(expectedValue.edgeId);
+  expect(edge.waypoints).toEqual(expectedValue.waypoints);
+
+  if (expectedValue.messageVisibleKind) {
+    expect(edge.messageVisibleKind).toEqual(expectedValue.messageVisibleKind);
+  } else {
+    expect(edge.messageVisibleKind).toEqual(MessageVisibleKind.NONE);
+  }
+
+  const bpmnElement = edge.bpmnElement;
+  expect(bpmnElement.id).toEqual(expectedValue.bpmnElementId);
+  expect(bpmnElement.name).toEqual(expectedValue.bpmnElementName);
+  expect(bpmnElement.sourceRefId).toEqual(expectedValue.bpmnElementSourceRefId);
+  expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
+
+  if (bpmnElement instanceof SequenceFlow) {
+    expect(edge.bpmnElement.kind).toEqual(FlowKind.SEQUENCE_FLOW);
+    const sequenceEdge = expectedValue as ExpectedSequenceEdge;
+    if (sequenceEdge.bpmnElementSequenceFlowKind) {
+      expect(bpmnElement.sequenceFlowKind).toEqual(sequenceEdge.bpmnElementSequenceFlowKind);
+    } else {
+      expect(bpmnElement.sequenceFlowKind).toEqual(SequenceFlowKind.NORMAL);
+    }
   }
 };
