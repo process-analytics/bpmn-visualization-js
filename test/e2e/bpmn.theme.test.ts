@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import type { StyleOptions } from './helpers/visu/bpmn-page-utils';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import type { Page } from 'playwright';
 
@@ -48,7 +48,7 @@ describe('BPMN theme', () => {
     'theme',
   );
 
-  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression', diagramSubfolder: 'theme' }, <Page>page);
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'theme' }, <Page>page);
   const useCases = Array.from(styleOptionsPerUseCase.keys());
 
   it.each(useCases)(`Use case %s`, async (useCase: string) => {

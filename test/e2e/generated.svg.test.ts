@@ -15,13 +15,13 @@
  */
 import 'jest-playwright-preset';
 import type { Page } from 'playwright';
-import { BpmnPageSvgTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, BpmnPageSvgTester } from './helpers/visu/bpmn-page-utils';
 
 const diagramSubfolder = 'svg';
 
 describe('Check generated SVG in demo page', () => {
   it('should display diagram in page', async () => {
-    const pageTester = new BpmnPageSvgTester({ pageFileName: 'index', expectedPageTitle: 'BPMN Visualization Demo', diagramSubfolder }, <Page>page);
+    const pageTester = new BpmnPageSvgTester({ targetedPage: AvailableTestPages.INDEX, diagramSubfolder }, <Page>page);
     await pageTester.gotoPageAndLoadBpmnDiagram('simple-start-task-end');
 
     await pageTester.expectEvent('StartEvent_1', 'Start Event 1');
@@ -36,8 +36,7 @@ describe('Check generated SVG in lib-integration page', () => {
   it('should display diagram in page', async () => {
     const pageTester = new BpmnPageSvgTester(
       {
-        pageFileName: 'lib-integration',
-        expectedPageTitle: 'BPMN Visualization Lib Integration',
+        targetedPage: AvailableTestPages.LIB_INTEGRATION,
         bpmnContainerId: 'bpmn-container-custom',
         diagramSubfolder,
       },

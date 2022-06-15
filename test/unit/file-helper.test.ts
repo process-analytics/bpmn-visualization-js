@@ -16,8 +16,8 @@
 import { findFiles } from '../helpers/file-helper';
 
 describe('files lookup', () => {
-  it('bpmn non-regression files', () => {
-    const files = findFiles('../fixtures/bpmn/non-regression/');
+  it('BPMN fixtures files', () => {
+    const files = findFiles('../fixtures/bpmn/bpmn-rendering/');
     expect(files).toContain('events.bpmn');
   });
 });

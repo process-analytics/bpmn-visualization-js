@@ -16,7 +16,7 @@
 import * as fs from 'fs';
 import type { Page } from 'playwright';
 import { getSimplePlatformName } from '../e2e/helpers/test-utils';
-import { PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
 import type { ChartData, PerformanceMetric } from './helpers/perf-utils';
 import { calculateMetrics } from './helpers/perf-utils';
@@ -30,10 +30,7 @@ beforeAll(async () => {
   metricsCollector = await ChromiumMetricsCollector.create(<Page>page);
 });
 describe.each([1, 2, 3, 4, 5])('load performance', run => {
-  const pageTester = new PageTester(
-    { pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation', diagramSubfolder: 'performance' },
-    <Page>page,
-  );
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder: 'performance' }, <Page>page);
   const bpmnDiagramName = 'B.2.0';
 
   it('check performance for file loading and displaying diagram with FitType.HorizontalVertical', async () => {

@@ -19,7 +19,7 @@ import { join } from 'path';
 import type { Page } from 'playwright';
 import { FitType } from '../../src/component/options';
 import { getBpmnDiagramNames } from './helpers/test-utils';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
@@ -57,7 +57,7 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   }
 }
 
-const diagramSubfolder = 'diagram';
+const diagramSubfolder = 'fit';
 const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
@@ -150,7 +150,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 describe('diagram navigation - fit', () => {
   const imageSnapshotConfigurator = new FitImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'fit');
 
-  const pageTester = new PageTester({ pageFileName: 'diagram-navigation', expectedPageTitle: 'BPMN Visualization - Diagram Navigation', diagramSubfolder }, <Page>page);
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder }, <Page>page);
 
   const fitTypes: FitType[] = [FitType.None, FitType.HorizontalVertical, FitType.Horizontal, FitType.Vertical, FitType.Center];
   describe.each(fitTypes)('load options - fit %s', (onLoadFitType: FitType) => {
