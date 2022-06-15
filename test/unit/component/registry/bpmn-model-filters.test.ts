@@ -46,9 +46,10 @@ describe('Bpmn Model filters', () => {
     ).toThrow(`no existing pool with ids i_do_not_exist-1,i_do_not_exist-2`);
   });
 
+  // TODO error management model without pool and doing pool filtering
+
   // TODO model with a pool filtering another one
-  // TODO model with a pool filtering several others - test currently in BpmnVisualization integration test, should be moved here?
-  // TODO model without pool and doing pool filtering
+  // TODO model with a pool filtering several including the existing one
   // TODO test 2 pools + msg flows
 
   it('Filter a model with a single pool', () => {
@@ -63,7 +64,8 @@ describe('Bpmn Model filters', () => {
       },
     };
     const originalBpmnModel = toBpmnModel(model);
-    modelFiltering.filter(originalBpmnModel);
+    const bpmnModel = modelFiltering.filter(originalBpmnModel, { includes: { pools: { ids: 'participant_id_1' } } });
+    expect(bpmnModel).toStrictEqual(originalBpmnModel);
     // const bpmnModel = modelFiltering.filter(originalBpmnModel);
     // TODO extract the util code from JsonTestUtils related to the BpmnModel - it will reuse this extracted code
   });
