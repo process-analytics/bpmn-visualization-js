@@ -20,19 +20,36 @@
 
 import type { ModelRepresentationForTestOnly } from '../../helpers/bpmn-model-utils';
 import { ModelFiltering } from '../../../../src/component/registry/bpmn-model-filters';
-import { toBpmnModel } from '../../helpers/bpmn-model-utils';
+import { poolInModel, toBpmnModel } from '../../helpers/bpmn-model-utils';
 
 const modelFiltering = new ModelFiltering();
 
 describe('Bpmn Model filters', () => {
   // TODO undefined as well? notice that we are not passing such values, so these tests have limited interest
-  it('Passing a null BpmnModel does not generate error', () => {
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip('Passing a null BpmnModel does not generate error', () => {
     expect(modelFiltering.filter(toBpmnModel(null))).toBeNull();
+  });
+
+  // here we check the error message - use it.each if necessary
+  // TODO test with a single pool id
+  // TODO test with names
+  it('Filter several pool by id - non existing pool id', () => {
+    expect(() =>
+      modelFiltering.filter(poolInModel('1', 'Pool 1'), {
+        includes: {
+          pools: {
+            ids: ['i_do_not_exist-1', 'i_do_not_exist-2'],
+          },
+        },
+      }),
+    ).toThrow(`no existing pool with ids i_do_not_exist-1,i_do_not_exist-2`);
   });
 
   // TODO model with a pool filtering another one
   // TODO model with a pool filtering several others - test currently in BpmnVisualization integration test, should be moved here?
   // TODO model without pool and doing pool filtering
+  // TODO test 2 pools + msg flows
 
   it('Filter a model with a single pool', () => {
     const model: ModelRepresentationForTestOnly = {
