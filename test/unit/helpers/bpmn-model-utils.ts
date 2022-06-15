@@ -15,7 +15,7 @@
  */
 import type BpmnModel from '../../../src/model/bpmn/internal/BpmnModel';
 import { Edge } from '../../../src/model/bpmn/internal/edge/edge';
-import { SequenceFlow } from '../../../src/model/bpmn/internal/edge/flows';
+import { MessageFlow, SequenceFlow } from '../../../src/model/bpmn/internal/edge/flows';
 import Shape from '../../../src/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, { ShapeBpmnActivity, ShapeBpmnStartEvent } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../src/model/bpmn/internal';
@@ -30,6 +30,8 @@ const newBpmnModel = (): BpmnModel => ({
 
 // TODO missing parentId in SequenceFlow constructor
 const newSequenceFlow = (parentId: string, id: string, name: string, source: string, target: string): Edge => new Edge(`Edge_${id}`, new SequenceFlow(id, name, source, target));
+
+const newMessageFlow = (id: string, name: string, source: string, target: string): Edge => new Edge(`Edge_${id}`, new MessageFlow(id, name, source, target));
 
 export const sequenceFlowInModel = (id: string, name: string): BpmnModel => {
   const bpmnModel = newBpmnModel();
@@ -82,6 +84,11 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
       bpmnModel.edges.push(newSequenceFlow(pool.id, sequenceFlow.id, sequenceFlow.name, sequenceFlow.source, sequenceFlow.target));
     }
   });
+
+  if (model.messageFlows) {
+    const messageFlow = model.messageFlows;
+    bpmnModel.edges.push(newMessageFlow(messageFlow.id, messageFlow.name, messageFlow.source, messageFlow.target));
+  }
 
   return bpmnModel;
 };
