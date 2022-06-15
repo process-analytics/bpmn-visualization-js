@@ -21,7 +21,7 @@ import type { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from 
 import { ZoomType } from '../../src/component/options';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
 import type { Point } from './helpers/visu/bpmn-page-utils';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
@@ -162,7 +162,7 @@ class OverlaysPageTester extends PageTester {
   }
 }
 
-const pageTester = new OverlaysPageTester({ pageFileName: 'overlays', expectedPageTitle: 'BPMN Visualization - Overlays', diagramSubfolder: 'overlays' }, <Page>page);
+const pageTester = new OverlaysPageTester({ targetedPage: AvailableTestPages.OVERLAYS, diagramSubfolder: 'overlays' }, <Page>page);
 
 describe('BPMN Shapes with overlays', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';

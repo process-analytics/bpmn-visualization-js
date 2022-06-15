@@ -17,7 +17,7 @@ import 'jest-playwright-preset';
 import type { Page } from 'playwright';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 import type { StyleOptions } from './helpers/visu/bpmn-page-utils';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
@@ -308,14 +308,17 @@ const styleOptionsPerDiagram = new Map<string, StyleOptions>([
 ]);
 
 describe('BPMN rendering', () => {
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'bpmn');
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'bpmn-rendering');
 
-  const diagramSubfolder = 'non-regression';
-  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression', diagramSubfolder }, <Page>page);
+  const diagramSubfolder = 'bpmn-rendering';
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
   const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
-  it('check bpmn non-regression files availability', () => {
-    expect(bpmnDiagramNames).toContain('gateways');
+  describe('BPMN diagram files are present', () => {
+    // non exhaustive list
+    it.each(['gateways', 'events'])('%s', (bpmnDiagramName: string) => {
+      expect(bpmnDiagramNames).toContain(bpmnDiagramName);
+    });
   });
 
   it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {

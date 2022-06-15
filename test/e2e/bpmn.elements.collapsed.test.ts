@@ -16,7 +16,7 @@
 
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import type { Page } from 'playwright';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 
@@ -50,7 +50,7 @@ describe('Collapse BPMN elements', () => {
     new MultiBrowserImageSnapshotThresholds({ chromium: 0.0002 / 100, firefox: 0.11 / 100, webkit: 0.15 / 100 }),
     diagramSubfolder,
   );
-  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression', diagramSubfolder }, <Page>page);
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
   const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
   describe.each(bpmnDiagramNames)(`%s`, (bpmnDiagramName: string) => {
