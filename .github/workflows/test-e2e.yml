@@ -47,16 +47,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-      - name: Install dependencies
-        env:
-          # https://playwright.dev/docs/browsers#installing-browsers
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-        run: npm ci
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
       # install OS dependencies required by browsers on the GitHub runner
       # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
       - name: Install ${{matrix.browser}} and its dependencies only

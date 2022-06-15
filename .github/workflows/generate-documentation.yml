@@ -53,12 +53,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         if: github.event.action != 'closed'
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
+        if: github.event.action != 'closed'
       - name: Publish preview
         id: publish_preview
         uses: afc163/surge-preview@v1
-        env:
-          # https://playwright.dev/docs/browsers#installing-browsers
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -66,7 +66,6 @@ jobs:
           failOnError: true
           teardown: 'true'
           build: |
-            npm ci
             npm run docs
 
   generate_doc:
@@ -74,14 +73,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-      - name: Install dependencies
-        # https://playwright.dev/docs/browsers#installing-browsers
-        run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm ci
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
       - name: Build docs
         run: npm run docs
       - name: Upload

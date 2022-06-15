@@ -43,12 +43,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         if: github.event.action != 'closed'
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
+        if: github.event.action != 'closed'
       - name: Publish Demo preview
         id: publish_demo_preview
         uses: afc163/surge-preview@v1
-        env:
-          # https://playwright.dev/docs/browsers#installing-browsers
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -56,5 +56,4 @@ jobs:
           failOnError: true
           teardown: 'true'
           build: |
-            npm ci
             npm run demo

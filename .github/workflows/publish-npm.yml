@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
+# TODO check if we can use 'actions/build-setup' here
       # Setup .npmrc file to publish to npm
       - name: Setup node
         uses: actions/setup-node@v3
