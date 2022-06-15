@@ -15,6 +15,8 @@
  */
 import type { GlobalTaskKind, MessageVisibleKind, SequenceFlowKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../src/model/bpmn/internal';
 import type { Waypoint } from '../../../src/model/bpmn/internal/edge/edge';
+import type Shape from '../../../src/model/bpmn/internal/shape/Shape';
+import { ShapeBpmnActivity, ShapeBpmnCallActivity } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -64,3 +66,35 @@ export interface ExpectedBounds {
   width: number;
   height: number;
 }
+
+export const verifyShape = (shape: Shape, expectedShape: ExpectedShape | ExpectedActivityShape | ExpectedCallActivityShape): void => {
+  expect(shape.id).toEqual(expectedShape.shapeId);
+  expect(shape.isHorizontal).toEqual(expectedShape.isHorizontal);
+
+  const bpmnElement = shape.bpmnElement;
+  expect(bpmnElement.id).toEqual(expectedShape.bpmnElementId);
+  expect(bpmnElement.name).toEqual(expectedShape.bpmnElementName);
+  expect(bpmnElement.kind).toEqual(expectedShape.bpmnElementKind);
+  expect(bpmnElement.parentId).toEqual(expectedShape.parentId);
+
+  if (bpmnElement instanceof ShapeBpmnActivity) {
+    const expectedActivityShape = expectedShape as ExpectedActivityShape;
+    if (expectedActivityShape.bpmnElementMarkers) {
+      expect(bpmnElement.markers).toEqual(expectedActivityShape.bpmnElementMarkers);
+    } else {
+      expect(bpmnElement.markers).toHaveLength(0);
+    }
+
+    if (bpmnElement instanceof ShapeBpmnCallActivity) {
+      expect(bpmnElement.callActivityKind).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementCallActivityKind);
+      expect(bpmnElement.globalTaskKind).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementGlobalTaskKind);
+    }
+  }
+
+  const bounds = shape.bounds;
+  const expectedBounds = expectedShape.bounds;
+  expect(bounds.x).toEqual(expectedBounds.x);
+  expect(bounds.y).toEqual(expectedBounds.y);
+  expect(bounds.width).toEqual(expectedBounds.width);
+  expect(bounds.height).toEqual(expectedBounds.height);
+};
