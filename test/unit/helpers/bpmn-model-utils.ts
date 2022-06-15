@@ -28,8 +28,12 @@ const newBpmnModel = (): BpmnModel => ({
   pools: [],
 });
 
+// TODO missing parentId in SequenceFlow constructor
+const newSequenceFlow = (parentId: string, id: string, name: string, source: string, target: string): Edge => new Edge(`Edge_${id}`, new SequenceFlow(id, name, source, target));
+
 export const sequenceFlowInModel = (id: string, name: string): BpmnModel => {
   const bpmnModel = newBpmnModel();
+  // TODO duplication with newSequenceFlow
   bpmnModel.edges.push(new Edge(`Edge_${id}`, new SequenceFlow(id, name)));
   return bpmnModel;
 };
@@ -52,15 +56,14 @@ export const poolInModel = (id: string, name: string): BpmnModel => {
   return bpmnModel;
 };
 
-const newStartEvent = (parentId: string, id: string, name: string): Shape =>
-  new Shape(`Shape_${id}`, new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parentId));
+const newStartEvent = (parent: string, id: string, name: string): Shape => new Shape(`Shape_${id}`, new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parent));
 
 const newPool = (id: string, name: string): Shape => new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.POOL));
 const addNewPool = (bpmnModel: BpmnModel, id: string, name: string): void => {
   bpmnModel.pools.push(newPool(id, name));
 };
 
-const newTask = (parentId: string, id: string, name: string): Shape => new Shape(`Shape_${id}`, new ShapeBpmnActivity(id, name, ShapeBpmnElementKind.TASK, parentId));
+const newTask = (parent: string, id: string, name: string): Shape => new Shape(`Shape_${id}`, new ShapeBpmnActivity(id, name, ShapeBpmnElementKind.TASK, parent));
 
 export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
   const bpmnModel = newBpmnModel();
@@ -74,6 +77,10 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
     if (pool.tasks) {
       bpmnModel.flowNodes.push(newTask(pool.id, pool.tasks.id, pool.tasks.name));
     }
+    if (pool.sequenceFlows) {
+      const sequenceFlow = pool.sequenceFlows;
+      bpmnModel.edges.push(newSequenceFlow(pool.id, sequenceFlow.id, sequenceFlow.name, sequenceFlow.source, sequenceFlow.target));
+    }
   });
 
   return bpmnModel;
@@ -81,7 +88,7 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
 
 export interface BpmnModelTestRepresentation extends ContainerWithLanes {
   pools?: Pool | Pool[];
-  messageFlows?: BaseElement;
+  messageFlows?: Flow;
   // TODO add elements out of participant lanes, or elements out of lanes
   // the need is minimal for filtering participants, in this case, the filtering fails
   // only considered when there is no defined pools
@@ -105,7 +112,12 @@ interface ContainerWithLanes extends Container {
 interface Container {
   startEvents?: BaseElement;
   tasks?: BaseElement;
-  subProcesses?: ContainerElement;
-  callActivities?: ContainerElement;
-  sequenceFlows?: BaseElement;
+  // subProcesses?: ContainerElement; // WARN subprocess can have lanes!!!!
+  // callActivities?: ContainerElement;
+  sequenceFlows?: Flow;
+}
+
+interface Flow extends BaseElement {
+  source: string;
+  target: string;
 }
