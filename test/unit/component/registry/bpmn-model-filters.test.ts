@@ -18,9 +18,8 @@
 // no need to test all combinations with names. Only pools and a very small subset
 // test cross usage of ids and names
 
-import type { ModelRepresentationForTestOnly } from '../../helpers/bpmn-model-utils';
-import { ModelFiltering } from '../../../../src/component/registry/bpmn-model-filters';
 import { poolInModel, toBpmnModel } from '../../helpers/bpmn-model-utils';
+import { ModelFiltering } from '../../../../src/component/registry/bpmn-model-filters';
 
 const modelFiltering = new ModelFiltering();
 
@@ -52,8 +51,8 @@ describe('Bpmn Model filters', () => {
   // TODO model with a pool filtering several including the existing one
   // TODO test 2 pools + msg flows
 
-  it('Filter a model with a single pool', () => {
-    const model: ModelRepresentationForTestOnly = {
+  it('No filter', () => {
+    const originalBpmnModel = toBpmnModel({
       pools: {
         id: 'participant_id_1',
         name: 'Participant 1',
@@ -62,11 +61,57 @@ describe('Bpmn Model filters', () => {
           name: 'Start Event 1',
         },
       },
-    };
-    const originalBpmnModel = toBpmnModel(model);
+    });
+    const bpmnModel = modelFiltering.filter(originalBpmnModel);
+    expect(bpmnModel).toStrictEqual(originalBpmnModel);
+  });
+
+  it('Filter a model containing a single pool', () => {
+    const originalBpmnModel = toBpmnModel({
+      pools: {
+        id: 'participant_id_1',
+        name: 'Participant 1',
+        startEvent: {
+          id: 'startEvent_1',
+          name: 'Start Event 1',
+        },
+      },
+    });
     const bpmnModel = modelFiltering.filter(originalBpmnModel, { includes: { pools: { ids: 'participant_id_1' } } });
     expect(bpmnModel).toStrictEqual(originalBpmnModel);
-    // const bpmnModel = modelFiltering.filter(originalBpmnModel);
+  });
+
+  it('Filter a model containing several pool', () => {
+    const originalBpmnModel = toBpmnModel({
+      pools: [
+        {
+          id: 'participant_id_1',
+          name: 'Participant 1',
+          startEvent: {
+            id: 'startEvent_1',
+            name: 'Start Event 1',
+          },
+        },
+        {
+          id: 'participant_id_2',
+          name: 'Participant 2',
+          startEvent: {
+            id: 'startEvent_2',
+            name: 'Start Event 2',
+          },
+          tasks: [
+            {
+              id: 'task_1',
+            },
+            {
+              id: 'task_2',
+            },
+          ],
+        },
+      ],
+    });
+    const bpmnModel = modelFiltering.filter(originalBpmnModel, { includes: { pools: { ids: 'participant_id_2' } } });
+    expect(bpmnModel).toStrictEqual(originalBpmnModel);
     // TODO extract the util code from JsonTestUtils related to the BpmnModel - it will reuse this extracted code
   });
 });
