@@ -53,7 +53,7 @@ export const poolInModel = (id: string, name: string): BpmnModel => {
 };
 
 const newStartEvent = (parentId: string, id: string, name: string): Shape =>
-  new Shape(`Shape_${id}`, new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, 'parentId'));
+  new Shape(`Shape_${id}`, new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parentId));
 
 const newPool = (id: string, name: string): Shape => new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.POOL));
 const addNewPool = (bpmnModel: BpmnModel, id: string, name: string): void => {
@@ -88,4 +88,6 @@ export interface BaseElementForTestOnly {
 
 export interface PoolForTestOnly extends BaseElementForTestOnly {
   startEvent: BaseElementForTestOnly;
+  // tasks?: BaseElementForTestOnly | BaseElementForTestOnly[];
+  // sequenceFlows?: XXX;
 }

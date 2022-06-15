@@ -36,7 +36,7 @@ export class ModelFiltering {
     const poolIdsFilter = modelFilter?.includes?.pools?.ids;
     // const poolNamesFilter = modelFilter?.includes?.pools?.names;
     if (!poolIdsFilter) {
-      logModelFiltering('nothing to filterPoolBpmnIds');
+      logModelFiltering('No pool filtering set, so skip filtering');
       return bpmnModel;
     }
 
@@ -44,7 +44,7 @@ export class ModelFiltering {
 
     // lookup pools
     const pools = bpmnModel.pools;
-    logModelFiltering('total pools: ' + pools?.length);
+    logModelFiltering('total pools in the model: ' + pools?.length);
     // TODO we shouldn't need to cast - type signature issue?
     const filterPoolBpmnIds = ensureIsArray<string>(poolIdsFilter);
     // TODO choose filter by id if defined, otherwise filter by name
