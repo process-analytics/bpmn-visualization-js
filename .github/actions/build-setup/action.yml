@@ -2,9 +2,12 @@ name: 'Build Setup'
 description: 'Setup node and install dependencies'
 inputs:
   install-dependencies:
-    description: 'Install dependencies with npm'
+    description: 'Install dependencies with npm.'
     required: false
     default: true
+  registry-url:
+    description: 'Optional registry to set up for auth.'
+    required: false
 runs:
   using: 'composite'
   steps:
@@ -12,6 +15,7 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version-file: '.nvmrc'
+        registry-url: ${{ inputs.registry-url }}
     - name: Install dependencies
       uses: bahmutov/npm-install@v1
       if: inputs.install-dependencies == 'true'
