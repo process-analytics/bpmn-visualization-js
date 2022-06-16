@@ -13,4 +13,4 @@ runs:
         # Do not install browsers https://playwright.dev/docs/browsers#installing-browsers
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
       with:
-        install-command: npm ci --ignore-scripts --prefer-offline --no-audit
+        install-command: npm ci --ignore-scripts --prefer-offline --audit false
