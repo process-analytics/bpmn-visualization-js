@@ -1,7 +1,12 @@
 name: 'Build Setup'
-description: 'Setup node'
+description: 'Setup node and install dependencies'
+inputs:
+  install-dependencies:
+    description: 'Install dependencies with npm'
+    required: false
+    default: true
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Setup node
       uses: actions/setup-node@v3
@@ -9,6 +14,7 @@ runs:
         node-version-file: '.nvmrc'
     - name: Install dependencies
       uses: bahmutov/npm-install@v1
+      if: inputs.install-dependencies == 'true'
       env:
         # Do not install browsers https://playwright.dev/docs/browsers#installing-browsers
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
