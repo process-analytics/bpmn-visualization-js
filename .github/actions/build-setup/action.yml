@@ -7,9 +7,16 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version-file: '.nvmrc'
-        cache: 'npm'
+        # cache: 'npm'
+    - name: Cache dependencies
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: ./node_modules
+        key: modules-${{ hashFiles('package-lock.json') }}
     - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
       env:
-        # https://playwright.dev/docs/browsers#installing-browsers
+        # Do not install browsers https://playwright.dev/docs/browsers#installing-browsers
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-      run: npm ci
+      run: npm ci --ignore-scripts
