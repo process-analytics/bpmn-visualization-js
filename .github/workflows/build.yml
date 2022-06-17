@@ -5,6 +5,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/actions/build-setup/**/*'
       - '.github/workflows/build.yml'
       - 'config/**/*'
       - 'scripts/**/*'
@@ -20,6 +21,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/actions/build-setup/**/*'
       - '.github/workflows/build.yml'
       - 'config/**/*'
       - 'scripts/**/*'

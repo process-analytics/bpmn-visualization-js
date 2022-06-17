@@ -6,6 +6,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/actions/build-setup/**/*'
       - '.github/workflows/generate-documentation.yml'
       - 'docs/users/**'
       - 'scripts/docs.js'
@@ -19,6 +20,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/actions/build-setup/**/*'
       - '.github/workflows/generate-documentation.yml'
       - 'docs/users/**'
       - 'scripts/docs.js'
