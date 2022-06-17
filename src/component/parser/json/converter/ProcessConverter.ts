@@ -44,6 +44,7 @@ import type { TActivity, TCallActivity, TSubProcess } from '../../../../model/bp
 import type { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseElement';
 import type { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
 import type { TAssociation, TGroup, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
+import { buildShapeBpmnGroup } from './utils';
 import type { ConvertedElements } from './utils';
 import type { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
 import type { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
@@ -112,7 +113,7 @@ export default class ProcessConverter {
           ShapeBpmnEventBasedGatewayKind[eventBasedGatewayBpmnElement.eventGatewayType],
         );
       } else if (kind == ShapeBpmnElementKind.GROUP) {
-        shapeBpmnElement = this.convertedElements.buildShapeBpmnGroup(bpmnElement as TGroup, processId);
+        shapeBpmnElement = buildShapeBpmnGroup(this.convertedElements, this.parsingMessageCollector, bpmnElement as TGroup, processId);
       } else {
         // @ts-ignore We know that the text & name fields are not on all types, but it's already tested
         const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
