@@ -26,12 +26,10 @@ jobs:
         with:
           # Use a PAT to ensure workflow run are triggered after git push
           token: ${{ secrets.GH_RELEASE_TOKEN }}
-      # TODO here we don't need npm ci, so probably we won't use 'actions/build-setup'
-      - name: Setup node
-        uses: actions/setup-node@v3
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
         with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
+          install-dependencies: false
       - name: Config git
         run: |
           git config --local user.email "62586190+process-analytics-bot@users.noreply.github.com"
