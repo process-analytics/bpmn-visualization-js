@@ -133,7 +133,7 @@ export default class ProcessConverter {
   }
 
   private buildShapeBpmnActivity(bpmnElement: TActivity, kind: ShapeBpmnElementKind, processId: string): ShapeBpmnActivity {
-    const markers = ProcessConverter.buildMarkers(bpmnElement);
+    const markers = buildMarkers(bpmnElement);
 
     if (ShapeUtil.isSubProcess(kind)) {
       return this.buildShapeBpmnSubProcess(bpmnElement, processId, markers);
@@ -152,22 +152,6 @@ export default class ProcessConverter {
       return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, processId, markers);
     }
     return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK, processId, markers, globalTaskKind);
-  }
-
-  private static buildMarkers(bpmnElement: TActivity): ShapeBpmnMarkerKind[] {
-    const markers: ShapeBpmnMarkerKind[] = [];
-    // @ts-ignore We know that the standardLoopCharacteristics field is not on all types, but it's already tested
-    const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
-    // @ts-ignore We know that the multiInstanceLoopCharacteristics field is not on all types, but it's already tested
-    const multiInstanceLoopCharacteristics = ensureIsArray(bpmnElement.multiInstanceLoopCharacteristics, true)[0];
-    if (standardLoopCharacteristics || standardLoopCharacteristics === '') {
-      markers.push(ShapeBpmnMarkerKind.LOOP);
-    } else if (multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.isSequential) {
-      markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL);
-    } else if ((multiInstanceLoopCharacteristics && !multiInstanceLoopCharacteristics.isSequential) || multiInstanceLoopCharacteristics === '') {
-      markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL);
-    }
-    return markers;
   }
 
   private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventKind, processId: string): ShapeBpmnEvent {
@@ -227,15 +211,10 @@ export default class ProcessConverter {
   }
 
   private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, processId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
-    this.buildSubProcessInnerElements(bpmnElement);
-    if (!bpmnElement.triggeredByEvent) {
-      return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EMBEDDED, processId, markers);
-    }
-    return new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, ShapeBpmnSubProcessKind.EVENT, processId, markers);
-  }
-
-  private buildSubProcessInnerElements(subProcess: TSubProcess): void {
-    this.buildProcessInnerElements(subProcess);
+    const subProcessKind = !bpmnElement.triggeredByEvent ? ShapeBpmnSubProcessKind.EMBEDDED : ShapeBpmnSubProcessKind.EVENT;
+    const convertedSubProcess = new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, subProcessKind, processId, markers);
+    this.buildProcessInnerElements(bpmnElement);
+    return convertedSubProcess;
   }
 
   private buildLaneSetBpmnElements(processId: string, laneSets: Array<TLaneSet> | TLaneSet): void {
@@ -296,3 +275,19 @@ export default class ProcessConverter {
     return SequenceFlowKind.NORMAL;
   }
 }
+
+const buildMarkers = (bpmnElement: TActivity): ShapeBpmnMarkerKind[] => {
+  const markers: ShapeBpmnMarkerKind[] = [];
+  // @ts-ignore We know that the standardLoopCharacteristics field is not on all types, but it's already tested
+  const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
+  // @ts-ignore We know that the multiInstanceLoopCharacteristics field is not on all types, but it's already tested
+  const multiInstanceLoopCharacteristics = ensureIsArray(bpmnElement.multiInstanceLoopCharacteristics, true)[0];
+  if (standardLoopCharacteristics || standardLoopCharacteristics === '') {
+    markers.push(ShapeBpmnMarkerKind.LOOP);
+  } else if (multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.isSequential) {
+    markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL);
+  } else if ((multiInstanceLoopCharacteristics && !multiInstanceLoopCharacteristics.isSequential) || multiInstanceLoopCharacteristics === '') {
+    markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL);
+  }
+  return markers;
+};
