@@ -10,14 +10,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-      - name: Install dependencies
-        # https://playwright.dev/docs/browsers#installing-browsers
-        run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm ci
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
       - name: Build Demo
         run: npm run demo
       - name: Set ARTIFACT_NAME

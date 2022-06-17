@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// IMPORTANT: this script is run by npm when calling 'npm version'
+// We are not installing node dependencies when running the GitHub workflow '.github/workflows/release.yml'
+// So please do not import code that is not provided by the node runtime. Otherwise, update the GitHub workflow definition
 import * as fs from 'fs';
 
 if (process.env.IS_RELEASING) {

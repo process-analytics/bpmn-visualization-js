@@ -5,6 +5,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/actions/build-setup/**/*'
       - '.github/workflows/build.yml'
       - 'config/**/*'
       - 'scripts/**/*'
@@ -20,6 +21,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/actions/build-setup/**/*'
       - '.github/workflows/build.yml'
       - 'config/**/*'
       - 'scripts/**/*'
@@ -58,17 +60,8 @@ jobs:
         with:
           # Disabling shallow clone is recommended for improving relevancy of SonarCloud reporting
           fetch-depth: 0
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-      # playwright browsers are needed for the bundle tests, so no special configuration as in other workflows
-      - name: Install dependencies
-        env:
-          # https://playwright.dev/docs/browsers#installing-browsers
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-        run: npm ci
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
       - name: Lint check
         run: npm run lint-check
       - name: Build Application
@@ -126,16 +119,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-      - name: Install dependencies
-        env:
-          # https://playwright.dev/docs/browsers#installing-browsers
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-        run: npm ci
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
       # Ensure we can build working bundles
       - name: Build bundles
         run: npm run build-bundles

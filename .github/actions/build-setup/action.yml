@@ -1,0 +1,26 @@
+name: 'Build Setup'
+description: 'Setup node and install dependencies'
+inputs:
+  install-dependencies:
+    description: 'Install dependencies with npm.'
+    required: false
+    default: 'true'
+  registry-url:
+    description: 'Optional registry to set up for auth.'
+    required: false
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup node
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: '.nvmrc'
+        registry-url: ${{ inputs.registry-url }}
+    - name: Install dependencies
+      uses: bahmutov/npm-install@v1
+      if: inputs.install-dependencies == 'true'
+      env:
+        # Do not install browsers https://playwright.dev/docs/browsers#installing-browsers
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+      with:
+        install-command: npm ci --ignore-scripts --prefer-offline --audit false
