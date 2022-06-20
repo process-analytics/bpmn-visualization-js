@@ -15,7 +15,7 @@
  */
 import debugLogger from 'debug';
 import 'jest-playwright-preset';
-import { join } from 'path';
+import { join } from 'node:path';
 import { findFiles } from '../../helpers/file-helper';
 
 export const configLog = debugLogger('bv:test:config');

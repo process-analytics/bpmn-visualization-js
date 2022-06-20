@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 import type { Page } from 'playwright';
 import { delay, getSimplePlatformName } from '../e2e/helpers/test-utils';
 import type { Point } from '../e2e/helpers/visu/bpmn-page-utils';

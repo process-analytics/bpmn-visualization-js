@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import * as fs from 'fs';
-import { join } from 'path';
+import { readdirSync, renameSync, rmSync } from 'node:fs';
+import { join } from 'node:path';
 
 const demoRootDirectory = './build/demo';
 
 const relPathToHtmlPages = 'dev/public';
-const pages = fs.readdirSync(join(demoRootDirectory, relPathToHtmlPages));
+const pages = readdirSync(join(demoRootDirectory, relPathToHtmlPages));
 pages.forEach(page => {
   // eslint-disable-next-line no-console
   console.info('Managing', page);
   // move page out of the public/dev directory
-  fs.renameSync(join(demoRootDirectory, relPathToHtmlPages, page), join(demoRootDirectory, page));
+  renameSync(join(demoRootDirectory, relPathToHtmlPages, page), join(demoRootDirectory, page));
 });
 
-fs.rmSync(join(demoRootDirectory, 'dev'), { recursive: true });
+rmSync(join(demoRootDirectory, 'dev'), { recursive: true });

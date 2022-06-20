@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import 'jest-playwright-preset';
-import { join } from 'path';
+import { join } from 'node:path';
 import type { Page } from 'playwright';
 import { ensureIsArray } from '../../src/component/helpers/array-utils';
 import type { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '../../src/component/registry';

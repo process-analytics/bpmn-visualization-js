@@ -15,7 +15,7 @@
  */
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import 'jest-playwright-preset';
-import { join } from 'path';
+import { join } from 'node:path';
 import type { Page } from 'playwright';
 import { FitType } from '../../src/component/options';
 import { getBpmnDiagramNames } from './helpers/test-utils';
