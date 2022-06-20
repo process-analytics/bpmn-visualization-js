@@ -130,7 +130,6 @@ export class ConvertedElements {
   }
 }
 
-// Special case: create the ShapeBpmnElement instance here to avoid duplication in CollaborationConverter and ProcessConverter
 export const buildShapeBpmnGroup = (
   convertedElements: ConvertedElements,
   parsingMessageCollector: ParsingMessageCollector,
