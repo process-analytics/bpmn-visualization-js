@@ -15,11 +15,8 @@
  */
 
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { PageTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import type { Page } from 'playwright';
-// import { getBpmnDiagramNames } from './helpers/test-utils';
-// import type { OverlayPosition } from '../../src/component/registry';
-// import type { MxGraphCustomOverlayPosition } from '../../src/component/mxgraph/overlay/custom-overlay';
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 
 class FilterPoolsImageSnapshotConfigurator extends ImageSnapshotConfigurator {
@@ -39,23 +36,22 @@ describe('Filter pools', () => {
     new MultiBrowserImageSnapshotThresholds({ chromium: 0 / 100, firefox: 0 / 100, webkit: 0 / 100 }),
     diagramSubfolder,
   );
-  const pageTester = new PageTester({ pageFileName: 'non-regression', expectedPageTitle: 'BPMN Visualization Non Regression', diagramSubfolder }, <Page>page);
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
   // const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
   const bpmnDiagramName = 'pools';
 
-  const filterPoolsParameters = [
-    ['no-filter', undefined],
-    ['one-with-lane', 'Participant_4'],
-    ['one-with-subprocess', 'Participant_3'],
-    // Participant_1 start/task/end
-    // Participant_2 black box pool
-    ['all', ['Participant_1', 'Participant_2', 'Participant_3', 'Participant_4']],
-  ];
-
-  // TODO improve types in signature
-  it.each(filterPoolsParameters as [[string, string | string[]]])('Filter %s', async (name: string, poolIdsToFilter: string | string[]) => {
+  // Participant_1 start/task/end
+  // Participant_2 black box pool
+  it.each`
+    name                                 | pools
+    ${'none'}                            | ${undefined}
+    ${'one-with-lane'}                   | ${'Participant_4'}
+    ${'one-with-subprocess'}             | ${'Participant_3'}
+    ${'one-with-expanded-call-activity'} | ${'Participant_5'}
+    ${'all'}                             | ${['Participant_1', 'Participant_2', 'Participant_3', 'Participant_4', 'Participant_5']}
+  `('Filter $name', async ({ name, pools }: { name: string; pools: string | string[] }) => {
     await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName, {
-      poolIdsToFilter: poolIdsToFilter,
+      poolIdsToFilter: pools,
     });
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(name);
