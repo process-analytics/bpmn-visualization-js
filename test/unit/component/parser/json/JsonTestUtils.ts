@@ -109,6 +109,23 @@ export function parseJson(json: BpmnJsonModel): BpmnModel {
   return newBpmnJsonParser(parsingMessageCollector).parse(json);
 }
 
+function expectPoolLaneEdge(model: BpmnModel, numberOfExpectedPools: number, numberOfExpectedLanes: number, numberOfExpectedEdges: number): void {
+  expect(model.lanes).toHaveLength(numberOfExpectedLanes);
+  expect(model.pools).toHaveLength(numberOfExpectedPools);
+  expect(model.edges).toHaveLength(numberOfExpectedEdges);
+}
+
+export function expectPoolLaneEdgeFlowNode(
+  model: BpmnModel,
+  numberOfExpectedPools: number,
+  numberOfExpectedLanes: number,
+  numberOfExpectedEdges: number,
+  numberOfExpectedFlowNodes: number,
+): void {
+  expectPoolLaneEdge(model, numberOfExpectedPools, numberOfExpectedLanes, numberOfExpectedEdges);
+  expect(model.flowNodes).toHaveLength(numberOfExpectedFlowNodes);
+}
+
 export function parseJsonAndExpect(
   json: BpmnJsonModel,
   numberOfExpectedPools: number,
@@ -118,10 +135,7 @@ export function parseJsonAndExpect(
   numberOfWarnings = 0,
 ): BpmnModel {
   const model = parseJson(json);
-  expect(model.lanes).toHaveLength(numberOfExpectedLanes);
-  expect(model.pools).toHaveLength(numberOfExpectedPools);
-  expect(model.flowNodes).toHaveLength(numberOfExpectedFlowNodes);
-  expect(model.edges).toHaveLength(numberOfExpectedEdges);
+  expectPoolLaneEdgeFlowNode(model, numberOfExpectedPools, numberOfExpectedLanes, numberOfExpectedEdges, numberOfExpectedFlowNodes);
   checkParsingWarnings(numberOfWarnings);
   return model;
 }
@@ -258,9 +272,7 @@ export function verifyLabelBounds(label: Label, expectedBounds?: ExpectedBounds)
 export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventDefinitionKind: ShapeBpmnEventDefinitionKind, expectedNumber: number): BpmnModel {
   const model = parseJson(json);
 
-  expect(model.lanes).toHaveLength(0);
-  expect(model.pools).toHaveLength(0);
-  expect(model.edges).toHaveLength(0);
+  expectPoolLaneEdge(model, 0, 0, 0);
 
   const events = model.flowNodes.filter(shape => {
     const bpmnElement = shape.bpmnElement;
@@ -274,10 +286,7 @@ export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventDefinitionKind
 export function parseJsonAndExpectOnlySubProcess(json: BpmnJsonModel, kind: ShapeBpmnSubProcessKind, expectedNumber: number): BpmnModel {
   const model = parseJson(json);
 
-  expect(model.lanes).toHaveLength(0);
-  expect(model.pools).toHaveLength(0);
-  expect(model.edges).toHaveLength(0);
-
+  expectPoolLaneEdge(model, 0, 0, 0);
   verifySubProcess(model, kind, expectedNumber);
 
   return model;
