@@ -15,7 +15,7 @@
  */
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { toMatchImageSnapshot } from 'jest-image-snapshot';
-import { copyFileSync } from 'fs';
+import { copyFileSync } from 'node:fs';
 import { addAttach } from 'jest-html-reporters/helper';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;

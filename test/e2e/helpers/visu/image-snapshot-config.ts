@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { dirname, join } from 'path';
+import { dirname, join } from 'node:path';
 import type { MatchImageSnapshotOptions as MatchImageSnapshotOptionsOrig } from 'jest-image-snapshot';
 import { configLog, getSimplePlatformName, getTestedBrowserFamily } from '../test-utils';
 

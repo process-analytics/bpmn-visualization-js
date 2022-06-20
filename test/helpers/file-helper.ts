@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { readdirSync, readFileSync as fsReadFileSync } from 'fs';
-import { join } from 'path';
+import { readdirSync, readFileSync as fsReadFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 export function readFileSync(relPathToSourceFile: string, encoding: BufferEncoding = 'utf-8', dirName = __dirname): string {
   return fsReadFileSync(join(dirName, relPathToSourceFile), { encoding });

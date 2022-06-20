@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as path from 'path';
+import { resolve as resolvePath } from 'node:path';
 import clipboardy from 'clipboardy';
 import parseArgs from 'minimist';
 import type BpmnModel from '../../src/model/bpmn/internal/BpmnModel';
@@ -23,7 +23,7 @@ import { newBpmnJsonParser } from '../../src/component/parser/json/BpmnJsonParse
 import { ParsingMessageCollector } from '../../src/component/parser/parsing-messages';
 import { readFileSync } from '../../test/helpers/file-helper';
 
-const __dirname = path.resolve();
+const __dirname = resolvePath();
 const argv = parseArgs(process.argv.slice(2));
 const bpmnFilePath = argv._[0];
 const outputType = argv['output'] || 'json';

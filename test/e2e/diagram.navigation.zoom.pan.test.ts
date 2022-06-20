@@ -15,7 +15,7 @@
  */
 
 import 'jest-playwright-preset';
-import { join } from 'path';
+import { join } from 'node:path';
 import type { Page } from 'playwright';
 import type { Point } from './helpers/visu/bpmn-page-utils';
 import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
