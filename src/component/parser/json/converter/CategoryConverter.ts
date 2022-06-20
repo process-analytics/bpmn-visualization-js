@@ -27,7 +27,7 @@ export default class CategoryConverter {
 
   deserialize(definitions: TDefinitions): void {
     ensureIsArray<TCategory>(definitions.category).forEach(category =>
-      ensureIsArray(category.categoryValue).forEach(categoryValue => this.convertedElements.registerCategoryValues(categoryValue.id, categoryValue.value)),
+      ensureIsArray(category.categoryValue).forEach(categoryValue => this.convertedElements.registerCategoryValue(categoryValue.id, categoryValue.value)),
     );
   }
 }

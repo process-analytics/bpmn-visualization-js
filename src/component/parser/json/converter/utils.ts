@@ -27,8 +27,6 @@ import { GroupUnknownCategoryValueWarning } from '../warnings';
  * @internal
  */
 export class ConvertedElements {
-  constructor(private parsingMessageCollector: ParsingMessageCollector) {}
-
   private participantsById: Map<string, Participant> = new Map();
   private findParticipantById(id: string): Participant {
     return this.participantsById.get(id);
@@ -124,20 +122,27 @@ export class ConvertedElements {
   }
 
   private categoryValues: Map<string, CategoryValueData> = new Map();
-  registerCategoryValues(id: string, value: string): void {
+  findCategoryValue(categoryValue: string): CategoryValueData {
+    return this.categoryValues.get(categoryValue);
+  }
+  registerCategoryValue(id: string, value: string): void {
     this.categoryValues.set(id, { value });
   }
-
-  // Special case: create the ShapeBpmnElement instance here to avoid duplication in CollaborationConverter and ProcessConverter
-  buildShapeBpmnGroup(groupBpmnElement: TGroup, processId?: string): ShapeBpmnElement | undefined {
-    const categoryValueData = this.categoryValues.get(groupBpmnElement.categoryValueRef);
-    if (categoryValueData) {
-      return new ShapeBpmnElement(groupBpmnElement.id, categoryValueData.value, ShapeBpmnElementKind.GROUP, processId);
-    }
-    this.parsingMessageCollector.warning(new GroupUnknownCategoryValueWarning(groupBpmnElement.id, groupBpmnElement.categoryValueRef));
-    return undefined;
-  }
 }
+
+export const buildShapeBpmnGroup = (
+  convertedElements: ConvertedElements,
+  parsingMessageCollector: ParsingMessageCollector,
+  groupBpmnElement: TGroup,
+  processId?: string,
+): ShapeBpmnElement | undefined => {
+  const categoryValueData = convertedElements.findCategoryValue(groupBpmnElement.categoryValueRef);
+  if (categoryValueData) {
+    return new ShapeBpmnElement(groupBpmnElement.id, categoryValueData.value, ShapeBpmnElementKind.GROUP, processId);
+  }
+  parsingMessageCollector.warning(new GroupUnknownCategoryValueWarning(groupBpmnElement.id, groupBpmnElement.categoryValueRef));
+  return undefined;
+};
 
 interface CategoryValueData {
   value?: string;
