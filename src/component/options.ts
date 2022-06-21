@@ -60,28 +60,43 @@ export interface ZoomConfiguration {
 }
 
 /**
+ * Model filtering configuration.
  * ```typescript
- * bpmnVisualization.load({ modelFilter: {
- *      includes: {
- *        ids: 'Participant_1257_x151';
- *        names: ['Customer', 'Supplier'];
- *      }
- *    }
+ * bpmnVisualization.load(diagram, {
+ *   modelFilter: {
+ *     // A Pool is the graphical representation of a Participant in a Collaboration.
+ *     pools: [
+ *       {
+ *         // id of the Participant related to the Pool to display
+ *         id: 'id1'
+ *       },
+ *       {
+ *         // Name of the Participant, or name of the Process referenced by the Participant
+ *         // when the Participant doesn't have a name.
+ *         // This is how bpmn-visualization built the name in its internal model.
+ *         name: 'name2'
+ *       },
+ *       {
+ *       id: 'id3',
+ *       // in this case, we use the id, not the name
+ *       name: 'name3'
+ *       }
+ *     ]},
  * });
  * ```
  * @category Initialization
  */
 export interface ModelFilter {
-  includes?: {
-    pools?: {
-      ids?: string | string[];
-      names?: string | string[];
-    };
-    // for the future
-    // diagrams: {
-    //   id: string;
-    // };
-  };
+  pools?: PoolFilter | PoolFilter[];
+}
+
+/**
+ * Poll filtering configuration.
+ * @category Initialization
+ */
+export interface PoolFilter {
+  id?: string;
+  name?: string;
 }
 
 /**

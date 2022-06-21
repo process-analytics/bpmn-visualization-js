@@ -40,11 +40,7 @@ describe('Bpmn Model filters', () => {
   it('Filter several pool by id - non existing pool id', () => {
     expect(() =>
       modelFiltering.filter(poolInModel('1', 'Pool 1'), {
-        includes: {
-          pools: {
-            ids: ['i_do_not_exist-1', 'i_do_not_exist-2'],
-          },
-        },
+        pools: [{ id: 'i_do_not_exist-1' }, { id: 'i_do_not_exist-2' }],
       }),
     ).toThrow(`no existing pool with ids i_do_not_exist-1,i_do_not_exist-2`);
   });
@@ -81,7 +77,7 @@ describe('Bpmn Model filters', () => {
         },
       },
     });
-    const bpmnModel = modelFiltering.filter(originalBpmnModel, { includes: { pools: { ids: 'participant_id_1' } } });
+    const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } });
     expect(bpmnModel).toStrictEqual(originalBpmnModel);
   });
 
@@ -114,7 +110,7 @@ describe('Bpmn Model filters', () => {
         },
       ],
     });
-    const bpmnModel = modelFiltering.filter(originalBpmnModel, { includes: { pools: { ids: 'participant_id_2' } } });
+    const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_2' } });
 
     // TODO here we want to ensure the elements are in the model, I am not sure we want to test the elements order
     expect(bpmnModel.pools).toHaveLength(1);
@@ -178,7 +174,7 @@ describe('Bpmn Model filters', () => {
         target: 'participant_id_1',
       },
     });
-    const bpmnModel = modelFiltering.filter(originalBpmnModel, { includes: { pools: { ids: ['participant_id_1', 'participant_id_2'] } } });
+    const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: [{ id: 'participant_id_1' }, { id: 'participant_id_2' }] });
     expect(bpmnModel).toStrictEqual(originalBpmnModel);
     expect(bpmnModel.edges).toHaveLength(1);
     verifyEdge(bpmnModel.edges[0], {

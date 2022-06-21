@@ -14,7 +14,19 @@
  * limitations under the License.
  */
 
-import type { BpmnElement, BpmnElementKind, FitOptions, FitType, GlobalOptions, LoadOptions, ModelFilter, Overlay, Version, ZoomType } from '../../src/bpmn-visualization';
+import type {
+  BpmnElement,
+  BpmnElementKind,
+  FitOptions,
+  FitType,
+  GlobalOptions,
+  LoadOptions,
+  ModelFilter,
+  Overlay,
+  PoolFilter,
+  Version,
+  ZoomType,
+} from '../../src/bpmn-visualization';
 import { fetchBpmnContent, logDownload, logErrorAndOpenAlert, logStartup, stringify } from './utils/internal-helpers';
 import { log } from './utils/shared-helpers';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
@@ -222,7 +234,7 @@ function configurePoolsFilteringFromParameters(parameters: URLSearchParams): Mod
   }
   const poolIdsToFilter = poolIdsToFilterParameter.split(',');
   log('Configuring load options to only include pool id: ', poolIdsToFilter);
-  return { includes: { pools: { ids: poolIdsToFilter } } };
+  return { pools: poolIdsToFilter.map<PoolFilter>(id => ({ id })) };
 }
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {

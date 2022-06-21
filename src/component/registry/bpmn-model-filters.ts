@@ -33,9 +33,9 @@ export class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
     logModelFiltering('START');
     // TODO validate that filterPoolBpmnIds is correctly defined = NOT (empty string, empty array, ....)
-    const poolIdsFilter = modelFilter?.includes?.pools?.ids;
+    const poolIdsFilter = ensureIsArray(modelFilter?.pools).map(filter => filter.id);
     // const poolNamesFilter = modelFilter?.includes?.pools?.names;
-    if (!poolIdsFilter) {
+    if (poolIdsFilter.length == 0) {
       logModelFiltering('No pool filtering set, so skip filtering');
       return bpmnModel;
     }

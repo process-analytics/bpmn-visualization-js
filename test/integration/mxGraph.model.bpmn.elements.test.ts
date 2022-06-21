@@ -1472,10 +1472,8 @@ describe('mxGraph model - BPMN elements', () => {
       // load BPMN
       bpmnVisualization.load(bpmnDiagramToFilter, {
         modelFilter: {
-          includes: {
-            pools: {
-              ids: 'Participant_1',
-            },
+          pools: {
+            id: 'Participant_1',
           },
         },
       });

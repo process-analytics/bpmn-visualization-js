@@ -30,10 +30,8 @@ describe('BpmnVisualization', () => {
       expect(() =>
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'), {
           modelFilter: {
-            includes: {
-              pools: {
-                ids: 'i_do_not_exist',
-              },
+            pools: {
+              id: 'i_do_not_exist',
             },
           },
         }),
