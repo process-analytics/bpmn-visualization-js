@@ -53,6 +53,8 @@ describe('Bpmn Model filters', () => {
 
   // TODO model with a pool filtering several including the existing one
 
+  // TODO model with a black box pool and a participant refs a process but without displayed pool (see email voting from BPMN spec)
+
   it('No filter', () => {
     const originalBpmnModel = toBpmnModel({
       pools: {
