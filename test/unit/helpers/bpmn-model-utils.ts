@@ -66,6 +66,7 @@ const addNewPool = (bpmnModel: BpmnModel, id: string, name: string): void => {
 };
 
 const newTask = (parent: string, id: string, name: string): Shape => new Shape(`Shape_${id}`, new ShapeBpmnActivity(id, name, ShapeBpmnElementKind.TASK, parent));
+const newGroup = (parent: string, id: string, name: string): Shape => new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.GROUP, parent));
 
 export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
   const bpmnModel = newBpmnModel();
@@ -78,6 +79,9 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
     }
     if (pool.tasks) {
       bpmnModel.flowNodes.push(newTask(pool.id, pool.tasks.id, pool.tasks.name));
+    }
+    if (pool.groups) {
+      bpmnModel.flowNodes.push(newGroup(pool.id, pool.groups.id, pool.groups.name));
     }
     if (pool.sequenceFlows) {
       const sequenceFlow = pool.sequenceFlows;
@@ -119,6 +123,7 @@ interface ContainerWithLanes extends Container {
 interface Container {
   startEvents?: BaseElement;
   tasks?: BaseElement;
+  groups?: BaseElement;
   // subProcesses?: ContainerElement; // WARN subprocess can have lanes!!!!
   // callActivities?: ContainerElement;
   sequenceFlows?: Flow;
