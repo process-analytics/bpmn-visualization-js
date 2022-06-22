@@ -37,6 +37,7 @@ In particular, if you start the dev server, you can access it directly in your b
 ### Extensions
 
 Installed extensions (see VSCode extensions below)
+- `editorConfig`
 - `eslint`
 - `prettier`
 - `vscode-jest-runner`
@@ -49,28 +50,7 @@ Install the EditorConfig extension. A configuration file already exists in the r
 
 ### [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
-After the installation, you need to explicitly tell to the ESLint extension to watch typscript files for linting errors.
-
-- Open the Command Palette (_`View -> Command Palette`_ or _`Ctrl+Shift+P`_ or _`Shift+Cmd+P`_)
-- Type `Open Settings (JSON)` and select the option `Preferences: Open Settings (JSON)`
-- Paste this code inside the opened JSON file
-
-```JSON
-  {
-    "eslint.validate": ["typescript"]
-  }
-```
-
-- Open the extensions panel (Button `Extensions` on the left toolbar or `Ctrl+Shift+X` or `Shift+Cmd+X`)
-- Open the extensions settings of the ESLint extension (using the wheel on the bottom right corner of the extension)
-- Ensure that the following properties are checked:
-  - `ESLint: Enable`
-  - `ESLint > Format: Enable`
-  - `ESLint > Lint Task: Enable`
-
-Visual Studio Code is now configured correctly to use ESLint on typescript files.
-
-**Note**: make sure that ESLint is installed and [configured correctly to work with typescript](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/README.md) on your machine.
+The project settings stored the configuration to make ESLint work with the project.
 
 ### Jest
 
@@ -80,9 +60,7 @@ Suggested extensions
 
 `vscode-jest-runner` is focused on running or debugging a specific test or test-suite, while `vscode-jest` is running your current test-suite everytime you change it.
 
-
 The project settings stored the configuration to make the `vscode-jest` extension run unit tests.
-
 
 ### [Debugging TypeScript code](https://code.visualstudio.com/docs/typescript/typescript-debugging)
 
