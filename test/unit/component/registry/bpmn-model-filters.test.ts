@@ -380,7 +380,7 @@ describe('Bpmn Model filters', () => {
       expect(bpmnModel).toStrictEqual(originalBpmnModel);
     });
 
-    it('Filter pool containing sub-process containing lane, task and sequenceFlow', () => {
+    it('Filter pool containing expanded sub-process containing lane, task and sequenceFlow', () => {
       const originalBpmnModel = toBpmnModel({
         pools: {
           id: 'participant_id_1',
@@ -388,6 +388,7 @@ describe('Bpmn Model filters', () => {
           subProcesses: {
             id: 'sub_process_1',
             name: 'Sub Process 1',
+            isExpanded: true,
             lanes: {
               id: 'lane_2',
               name: 'Lane 2',
