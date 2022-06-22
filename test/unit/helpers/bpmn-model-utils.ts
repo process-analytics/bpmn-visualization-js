@@ -28,6 +28,10 @@ const newBpmnModel = (): BpmnModel => ({
   pools: [],
 });
 
+export const buildShapeId = (bpmnElementId: string): string => {
+  return `Shape_${bpmnElementId}`;
+};
+
 // TODO missing parentId in SequenceFlow constructor
 const newSequenceFlow = (parentId: string, id: string, name: string, source: string, target: string): Edge => new Edge(`Edge_${id}`, new SequenceFlow(id, name, source, target));
 
@@ -48,7 +52,7 @@ export const startEventInModel = (id: string, name: string): BpmnModel => {
 
 export const laneInModel = (id: string, name: string): BpmnModel => {
   const bpmnModel = newBpmnModel();
-  bpmnModel.lanes.push(new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.LANE)));
+  bpmnModel.lanes.push(new Shape(buildShapeId(id), new ShapeBpmnElement(id, name, ShapeBpmnElementKind.LANE)));
   return bpmnModel;
 };
 
@@ -58,15 +62,16 @@ export const poolInModel = (id: string, name: string): BpmnModel => {
   return bpmnModel;
 };
 
-const newStartEvent = (parent: string, id: string, name: string): Shape => new Shape(`Shape_${id}`, new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parent));
+const newStartEvent = (parent: string, id: string, name: string): Shape =>
+  new Shape(buildShapeId(id), new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parent));
 
-const newPool = (id: string, name: string): Shape => new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.POOL));
+const newPool = (id: string, name: string): Shape => new Shape(buildShapeId(id), new ShapeBpmnElement(id, name, ShapeBpmnElementKind.POOL));
 const addNewPool = (bpmnModel: BpmnModel, id: string, name: string): void => {
   bpmnModel.pools.push(newPool(id, name));
 };
 
-const newTask = (parent: string, id: string, name: string): Shape => new Shape(`Shape_${id}`, new ShapeBpmnActivity(id, name, ShapeBpmnElementKind.TASK, parent));
-const newGroup = (parent: string, id: string, name: string): Shape => new Shape(`Shape_${id}`, new ShapeBpmnElement(id, name, ShapeBpmnElementKind.GROUP, parent));
+const newTask = (parent: string, id: string, name: string): Shape => new Shape(buildShapeId(id), new ShapeBpmnActivity(id, name, ShapeBpmnElementKind.TASK, parent));
+const newGroup = (parent: string, id: string, name: string): Shape => new Shape(buildShapeId(id), new ShapeBpmnElement(id, name, ShapeBpmnElementKind.GROUP, parent));
 
 export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
   const bpmnModel = newBpmnModel();
