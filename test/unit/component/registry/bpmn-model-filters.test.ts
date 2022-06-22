@@ -82,7 +82,7 @@ describe('Bpmn Model filters', () => {
     expect(bpmnModel).toStrictEqual(originalBpmnModel);
   });
 
-  it('Filter a model containing several pool', () => {
+  it('Filter a model containing several pools', () => {
     const originalBpmnModel = toBpmnModel({
       pools: [
         {
@@ -109,11 +109,14 @@ describe('Bpmn Model filters', () => {
             target: 'task_1',
           },
         },
+        {
+          id: 'participant_id_3',
+          name: 'Participant 3 (black box)',
+        },
       ],
     });
     const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_2' } });
 
-    // TODO here we want to ensure the elements are in the model, I am not sure we want to test the elements order
     expect(bpmnModel.pools).toHaveLength(1);
     verifyShape(bpmnModel.pools[0], {
       bpmnElementId: 'participant_id_2',
@@ -131,7 +134,7 @@ describe('Bpmn Model filters', () => {
     verifyShape(bpmnModel.flowNodes[1], {
       parentId: 'participant_id_2',
       bpmnElementId: 'task_1',
-      bpmnElementName: undefined, // TODO this shouldn't be mandatory here
+      bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.TASK,
     });
 
