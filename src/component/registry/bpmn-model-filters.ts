@@ -45,7 +45,6 @@ export class ModelFiltering {
     // lookup pools
     const pools = bpmnModel.pools;
     logModelFiltering('total pools in the model: ' + pools?.length);
-    // TODO choose filter by id if defined, otherwise filter by name
     const filteredPools = pools.filter(pool => poolIdsFilter.includes(pool.bpmnElement.id) || poolNamesFilter.includes(pool.bpmnElement.name));
     if (filteredPools.length == 0) {
       let errorMsgSuffix = poolIdsFilter.length > 0 ? ' with ids ' + poolIdsFilter : '';
