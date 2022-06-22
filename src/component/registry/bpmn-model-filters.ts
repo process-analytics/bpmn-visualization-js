@@ -33,25 +33,24 @@ export class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
     logModelFiltering('START');
     const poolFilters = ensureIsArray(modelFilter?.pools).filter(p => p && Object.keys(p).length);
-    const poolIdsFilter = poolFilters.map(filter => filter.id);
-    // const poolNamesFilter = modelFilter?.includes?.pools?.names;
-    if (poolIdsFilter.length == 0) {
+    if (poolFilters.length == 0) {
       logModelFiltering('No pool filtering set, so skip filtering');
+      // TODO no pool in model but filteredPools --> error with dedicated message? add a test for this use case
       return bpmnModel;
     }
-    // TODO we shouldn't need to cast - type signature issue?
-    // Céline : poolIdsFilter is already an array. No need to do that ??
-    const filterPoolBpmnIds = ensureIsArray<string>(poolIdsFilter);
 
-    // TODO no pool in model but filteredPools --> error with dedicated message? add a test for this use case
+    const poolIdsFilter = poolFilters.filter(filter => filter.id).map(filter => filter.id);
+    const poolNamesFilter = poolFilters.filter(filter => !filter.id && filter.name).map(filter => filter.name);
 
     // lookup pools
     const pools = bpmnModel.pools;
     logModelFiltering('total pools in the model: ' + pools?.length);
     // TODO choose filter by id if defined, otherwise filter by name
-    const filteredPools = pools.filter(pool => poolIdsFilter.includes(pool.bpmnElement.id));
+    const filteredPools = pools.filter(pool => poolIdsFilter.includes(pool.bpmnElement.id) || poolNamesFilter.includes(pool.bpmnElement.name));
     if (filteredPools.length == 0) {
-      throw new Error('no existing pool with ids ' + poolIdsFilter);
+      let errorMsgSuffix = poolIdsFilter.length > 0 ? ' with ids ' + poolIdsFilter : '';
+      errorMsgSuffix += poolNamesFilter.length > 0 ? ' with names ' + poolNamesFilter : '';
+      throw new Error('no existing pool' + errorMsgSuffix);
     }
     // TODO also fail if one of the ids is not retrieved? or filter at best?
 

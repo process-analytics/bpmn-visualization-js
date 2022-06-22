@@ -220,7 +220,7 @@ describe('Bpmn Model filters', () => {
         modelFiltering.filter(poolInModel('1', 'Pool 1'), {
           pools: [{ [propertyName]: 'do_not_exist-1' }, { [propertyName]: 'do_not_exist-2' }],
         }),
-      ).toThrow(`no existing pool with ids do_not_exist-1,do_not_exist-2`);
+      ).toThrow(`no existing pool with ${propertyName}s do_not_exist-1,do_not_exist-2`);
     });
 
     it(`Filter by ${propertyName} all pools of a model, with message flows`, () => {
