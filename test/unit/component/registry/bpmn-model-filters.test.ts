@@ -309,6 +309,29 @@ describe('Bpmn Model filters', () => {
 
     expect(bpmnModel).toStrictEqual(originalBpmnModel);
   });
+
+  describe('Filter pool containing BPMN elements', () => {
+    it('Filter pool containing boundary events', () => {
+      const originalBpmnModel = toBpmnModel({
+        pools: {
+          id: 'participant_id_1',
+          name: 'Participant 1',
+          tasks: {
+            id: 'task_1',
+            name: 'Task 1',
+            boundaryEvents: {
+              id: 'boundary_event_1',
+              name: 'Boundary Event 1',
+            },
+          },
+        },
+      });
+
+      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } });
+
+      expect(bpmnModel).toStrictEqual(originalBpmnModel);
+    });
+  });
 });
 
 it('Filter by name or id', () => {

@@ -17,7 +17,7 @@ import type BpmnModel from '../../../src/model/bpmn/internal/BpmnModel';
 import { Edge } from '../../../src/model/bpmn/internal/edge/edge';
 import { MessageFlow, SequenceFlow } from '../../../src/model/bpmn/internal/edge/flows';
 import Shape from '../../../src/model/bpmn/internal/shape/Shape';
-import ShapeBpmnElement, { ShapeBpmnActivity, ShapeBpmnStartEvent } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnStartEvent } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../src/model/bpmn/internal';
 import { ensureIsArray } from '../../../src/component/helpers/array-utils';
 
@@ -67,6 +67,8 @@ export const poolInModel = (id: string, name: string): BpmnModel => {
 
 const newStartEvent = (parent: string, id: string, name: string): Shape =>
   new Shape(buildShapeId(id), new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parent));
+const newBoundaryEvent = (parent: string, id: string, name: string): Shape =>
+  new Shape(buildShapeId(id), new ShapeBpmnBoundaryEvent(id, name, ShapeBpmnEventDefinitionKind.CANCEL, parent));
 
 const newPool = (id: string, name: string): Shape => new Shape(buildShapeId(id), new ShapeBpmnElement(id, name, ShapeBpmnElementKind.POOL));
 const addNewPool = (bpmnModel: BpmnModel, id: string, name: string): void => {
@@ -85,8 +87,13 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
     if (pool.startEvents) {
       bpmnModel.flowNodes.push(newStartEvent(pool.id, pool.startEvents.id, pool.startEvents.name));
     }
-    if (pool.tasks) {
-      bpmnModel.flowNodes.push(newTask(pool.id, pool.tasks.id, pool.tasks.name));
+    const tasks = pool.tasks;
+    if (tasks) {
+      bpmnModel.flowNodes.push(newTask(pool.id, tasks.id, tasks.name));
+
+      if (tasks.boundaryEvents) {
+        bpmnModel.flowNodes.push(newBoundaryEvent(tasks.id, tasks.boundaryEvents.id, tasks.boundaryEvents.name));
+      }
     }
     if (pool.groups) {
       bpmnModel.flowNodes.push(newGroup(pool.id, pool.groups.id, pool.groups.name));
@@ -130,7 +137,7 @@ interface ContainerWithLanes extends Container {
 // TODO allow array in all properties
 interface Container {
   startEvents?: BaseElement;
-  tasks?: BaseElement;
+  tasks?: BaseElement & { boundaryEvents?: BaseElement };
   groups?: BaseElement;
   // subProcesses?: ContainerElement; // WARN subprocess can have lanes!!!!
   // callActivities?: ContainerElement;
