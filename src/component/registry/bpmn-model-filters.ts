@@ -32,8 +32,8 @@ function _log(header: string, message: unknown, ...optionalParams: unknown[]): v
 export class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
     logModelFiltering('START');
-    // TODO validate that filterPoolBpmnIds is correctly defined = NOT (empty string, empty array, ....)
-    const poolIdsFilter = ensureIsArray(modelFilter?.pools).map(filter => filter.id);
+    const poolFilters = ensureIsArray(modelFilter?.pools).filter(p => p && Object.keys(p).length);
+    const poolIdsFilter = poolFilters.map(filter => filter.id);
     // const poolNamesFilter = modelFilter?.includes?.pools?.names;
     if (poolIdsFilter.length == 0) {
       logModelFiltering('No pool filtering set, so skip filtering');
@@ -45,12 +45,10 @@ export class ModelFiltering {
     // lookup pools
     const pools = bpmnModel.pools;
     logModelFiltering('total pools in the model: ' + pools?.length);
-    // TODO we shouldn't need to cast - type signature issue?
-    const filterPoolBpmnIds = ensureIsArray<string>(poolIdsFilter);
     // TODO choose filter by id if defined, otherwise filter by name
-    const filteredPools = pools.filter(pool => filterPoolBpmnIds.includes(pool.bpmnElement.id));
+    const filteredPools = pools.filter(pool => poolIdsFilter.includes(pool.bpmnElement.id));
     if (filteredPools.length == 0) {
-      throw new Error('no existing pool with ids ' + filterPoolBpmnIds);
+      throw new Error('no existing pool with ids ' + poolIdsFilter);
     }
     // TODO also fail if one of the ids is not retrieved? or filter at best?
 

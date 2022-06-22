@@ -21,6 +21,7 @@ import type { ExpectedEdge, ExpectedShape } from '../../helpers/bpmn-model-expec
 import { verifyEdge as baseVerifyEdge, verifyShape as baseVerifyShape } from '../../helpers/bpmn-model-expect';
 import type Shape from '../../../../src/model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../../../src/model/bpmn/internal/edge/edge';
+import type { ModelFilter } from '../../../../src/component/options';
 
 // use a single instance to detect any side effects
 const modelFiltering = new ModelFiltering();
@@ -36,19 +37,29 @@ const verifyEdge = (shape: Edge, expectedEdge: CustomExpectedEdge): void => {
 };
 
 describe('Bpmn Model filters', () => {
-  it('No filter', () => {
-    const originalBpmnModel = toBpmnModel({
-      pools: {
-        id: 'participant_id_1',
-        name: 'Participant 1',
-        startEvents: {
-          id: 'startEvent_1',
-          name: 'Start Event 1',
+  describe('No filter', () => {
+    it.each`
+      name                                                            | modelFilter
+      ${'No filter object'}                                           | ${undefined}
+      ${'Empty filter object'}                                        | ${{}}
+      ${'Undefined pools filter object'}                              | ${{ pools: undefined }}
+      ${'Empty pools object in filter'}                               | ${{ pools: {} }}
+      ${'Empty pools array in filter'}                                | ${{ pools: [] }}
+      ${'Pools array with only empty or undefined objects in filter'} | ${{ pools: [{}, undefined, {}] }}
+    `('$name', ({ modelFilter }: { modelFilter: ModelFilter }) => {
+      const originalBpmnModel = toBpmnModel({
+        pools: {
+          id: 'participant_id_1',
+          name: 'Participant 1',
+          startEvents: {
+            id: 'startEvent_1',
+            name: 'Start Event 1',
+          },
         },
-      },
+      });
+      const bpmnModel = modelFiltering.filter(originalBpmnModel, modelFilter);
+      expect(bpmnModel).toStrictEqual(originalBpmnModel);
     });
-    const bpmnModel = modelFiltering.filter(originalBpmnModel);
-    expect(bpmnModel).toStrictEqual(originalBpmnModel);
   });
 
   describe('Error management', () => {
@@ -66,6 +77,14 @@ describe('Bpmn Model filters', () => {
           pools: [{ id: 'i_do_not_exist-1' }, { id: 'i_do_not_exist-2' }],
         }),
       ).toThrow(`no existing pool with ids i_do_not_exist-1,i_do_not_exist-2`);
+    });
+
+    it('Filter several pool by name - non existing pool name', () => {
+      expect(() =>
+        modelFiltering.filter(poolInModel('1', 'Pool 1'), {
+          pools: [{ name: 'i_do_not_exist-1' }, { name: 'i_do_not_exist-2' }],
+        }),
+      ).toThrow(`no existing pool with names i_do_not_exist-1,i_do_not_exist-2`);
     });
   });
 
