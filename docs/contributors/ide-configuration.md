@@ -36,8 +36,10 @@ In particular, if you start the dev server, you can access it directly in your b
 
 ### Extensions
 
-Installed extensions
-- `vscode-jest-runner` (see VSCode extensions below)
+Installed extensions (see VSCode extensions below)
+- `eslint`
+- `prettier`
+- `jest-runner`
 
 ## Visual Studio Code
 

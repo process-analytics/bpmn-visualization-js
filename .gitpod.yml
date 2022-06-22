@@ -8,3 +8,5 @@ tasks:
 vscode:
   extensions:
     - firsttris.vscode-jest-runner
+    - dbaeumer.vscode-eslint
+    - esbenp.prettier-vscode
