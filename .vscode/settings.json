@@ -1,0 +1,6 @@
+{
+    // Jest Extension (https://github.com/jest-community/vscode-jest)
+    // The following is to run unit tests
+    // Change the configuration file if you want to run other kind of tests (integration, e2e)
+    "jest.jestCommandLine": "node_modules/.bin/jest --runInBand --config=./test/unit/jest.config.js"
+}
