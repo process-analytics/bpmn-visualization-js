@@ -310,3 +310,35 @@ describe('Bpmn Model filters', () => {
     expect(bpmnModel).toStrictEqual(originalBpmnModel);
   });
 });
+
+it('Filter by name and id', () => {
+  const originalBpmnModel = toBpmnModel({
+    pools: [
+      {
+        id: 'participant_id_1',
+        name: 'Participant 1',
+      },
+      {
+        id: 'participant_id_2',
+        name: 'Participant 2',
+      },
+      {
+        id: 'participant_id_3',
+        name: 'Participant 3',
+      },
+    ],
+  });
+
+  const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: [{ id: 'participant_id_1' }, { name: 'Participant 2' }] });
+  expect(bpmnModel.pools).toHaveLength(2);
+  verifyShape(bpmnModel.pools[0], {
+    bpmnElementId: 'participant_id_1',
+    bpmnElementName: 'Participant 1',
+    bpmnElementKind: ShapeBpmnElementKind.POOL,
+  });
+  verifyShape(bpmnModel.pools[1], {
+    bpmnElementId: 'participant_id_2',
+    bpmnElementName: 'Participant 2',
+    bpmnElementKind: ShapeBpmnElementKind.POOL,
+  });
+});
