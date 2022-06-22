@@ -36,22 +36,6 @@ const verifyEdge = (shape: Edge, expectedEdge: CustomExpectedEdge): void => {
 };
 
 describe('Bpmn Model filters', () => {
-  // TODO undefined as well? notice that we are not passing such values, so these tests have limited interest
-  // we should remove it
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip('Passing a null BpmnModel does not generate error', () => {
-    expect(modelFiltering.filter(toBpmnModel(null))).toBeNull();
-  });
-
-  // here we check the error message - use it.each if necessary
-  it('Filter several pool by id - non existing pool id', () => {
-    expect(() =>
-      modelFiltering.filter(poolInModel('1', 'Pool 1'), {
-        pools: [{ id: 'i_do_not_exist-1' }, { id: 'i_do_not_exist-2' }],
-      }),
-    ).toThrow(`no existing pool with ids i_do_not_exist-1,i_do_not_exist-2`);
-  });
-
   it('No filter', () => {
     const originalBpmnModel = toBpmnModel({
       pools: {
@@ -65,6 +49,24 @@ describe('Bpmn Model filters', () => {
     });
     const bpmnModel = modelFiltering.filter(originalBpmnModel);
     expect(bpmnModel).toStrictEqual(originalBpmnModel);
+  });
+
+  describe('Error management', () => {
+    // TODO undefined as well? notice that we are not passing such values, so these tests have limited interest
+    // we should remove it
+    // eslint-disable-next-line jest/no-disabled-tests
+    it.skip('Passing a null BpmnModel does not generate error', () => {
+      expect(modelFiltering.filter(toBpmnModel(null))).toBeNull();
+    });
+
+    // here we check the error message - use it.each if necessary
+    it('Filter several pool by id - non existing pool id', () => {
+      expect(() =>
+        modelFiltering.filter(poolInModel('1', 'Pool 1'), {
+          pools: [{ id: 'i_do_not_exist-1' }, { id: 'i_do_not_exist-2' }],
+        }),
+      ).toThrow(`no existing pool with ids i_do_not_exist-1,i_do_not_exist-2`);
+    });
   });
 
   it('Filter a model containing a single pool', () => {
