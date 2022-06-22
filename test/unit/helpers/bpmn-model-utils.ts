@@ -140,16 +140,18 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
     bpmnModel.edges.push(newMessageFlow(messageFlow.id, messageFlow.name, messageFlow.source, messageFlow.target));
   }
 
+  if (model.process) {
+    addContainerElements(bpmnModel, model.process);
+  }
+
   return bpmnModel;
 };
 
-export interface BpmnModelTestRepresentation extends ContainerWithLanes {
+export interface BpmnModelTestRepresentation {
   pools?: Pool | Pool[];
   messageFlows?: Flow;
-  // TODO add elements out of participant lanes, or elements out of lanes
-  // the need is minimal for filtering participants, in this case, the filtering fails
-  // only considered when there is no defined pools
-  process?: ContainerWithLanes;
+  // to define a process without participant
+  process?: ContainerWithLanes & BaseElement;
 }
 
 interface BaseElement {

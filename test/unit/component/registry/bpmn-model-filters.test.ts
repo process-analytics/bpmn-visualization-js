@@ -91,6 +91,37 @@ describe('Bpmn Model filters', () => {
       ).toThrow(`no existing pool with ids id_do_not_exist,id_do_not_exist_other with names name_do_not_exist`);
     });
 
+    it('Filter model that does not have participant', () => {
+      // generated from node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/simple-start-task-end.bpmn --output model
+      const originalBpmnModel = toBpmnModel({
+        process: {
+          id: 'process_id',
+          startEvents: {
+            id: 'startEvent_1',
+            name: 'Start Event 1',
+          },
+          tasks: {
+            id: 'task_1',
+            name: 'Task 1',
+          },
+          sequenceFlows: {
+            id: 'sequence_flow_1',
+            source: 'startEvent_1',
+            target: 'task_1',
+          },
+        },
+      });
+      expect(originalBpmnModel.flowNodes).toHaveLength(2);
+      expect(originalBpmnModel.edges).toHaveLength(1);
+      expect(originalBpmnModel.pools).toHaveLength(0);
+      expect(originalBpmnModel.lanes).toHaveLength(0);
+      expect(() =>
+        modelFiltering.filter(originalBpmnModel, {
+          pools: { id: 'process_id' },
+        }),
+      ).toThrow(`no existing pool with ids process_id`);
+    });
+
     // it.each`
     //   propertyName     | type  | poolFilters
     //   ${'id'}          | ${''} | ${''}
