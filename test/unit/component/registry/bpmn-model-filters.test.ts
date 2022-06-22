@@ -292,4 +292,21 @@ describe('Bpmn Model filters', () => {
       });
     });
   });
+
+  it('Filter by existing id and different name a model containing a single pool', () => {
+    const originalBpmnModel = toBpmnModel({
+      pools: {
+        id: 'participant_id_1',
+        name: 'Participant 1',
+        startEvents: {
+          id: 'startEvent_1',
+          name: 'Start Event 1',
+        },
+      },
+    });
+
+    const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1', name: 'not exist_1' } });
+
+    expect(bpmnModel).toStrictEqual(originalBpmnModel);
+  });
 });
