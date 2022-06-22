@@ -47,6 +47,8 @@ describe('Bpmn Model filters', () => {
       ${'Empty pools object in filter'}                               | ${{ pools: {} }}
       ${'Empty pools array in filter'}                                | ${{ pools: [] }}
       ${'Pools array with only empty or undefined objects in filter'} | ${{ pools: [{}, undefined, {}] }}
+      ${'Pool filter with id and name undefined'}                     | ${{ pools: { id: undefined, name: undefined } }}
+      ${'Pools array with id undefined and name undefined'}           | ${{ pools: [{ id: undefined }, { name: undefined }] }}
     `('$name', ({ modelFilter }: { modelFilter: ModelFilter }) => {
       const originalBpmnModel = toBpmnModel({
         pools: {

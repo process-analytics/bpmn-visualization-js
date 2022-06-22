@@ -33,14 +33,14 @@ export class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
     logModelFiltering('START');
     const poolFilters = ensureIsArray(modelFilter?.pools).filter(p => p && Object.keys(p).length);
-    if (poolFilters.length == 0) {
+    const poolIdsFilter = poolFilters.filter(filter => filter.id).map(filter => filter.id);
+    const poolNamesFilter = poolFilters.filter(filter => !filter.id && filter.name).map(filter => filter.name);
+
+    if (poolIdsFilter.length == 0 && poolNamesFilter.length == 0) {
       logModelFiltering('No pool filtering set, so skip filtering');
       // TODO no pool in model but filteredPools --> error with dedicated message? add a test for this use case
       return bpmnModel;
     }
-
-    const poolIdsFilter = poolFilters.filter(filter => filter.id).map(filter => filter.id);
-    const poolNamesFilter = poolFilters.filter(filter => !filter.id && filter.name).map(filter => filter.name);
 
     // lookup pools
     const pools = bpmnModel.pools;
