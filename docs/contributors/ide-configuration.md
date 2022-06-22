@@ -39,7 +39,7 @@ In particular, if you start the dev server, you can access it directly in your b
 Installed extensions (see VSCode extensions below)
 - `eslint`
 - `prettier`
-- `jest-runner`
+- `vscode-jest-runner`
 
 ## Visual Studio Code
 
@@ -90,7 +90,7 @@ The `launch.json` file is already configured to execute tests:
 
 - unit tests: `test:unit`
 - integration tests: `test:integration`
-- end to end tests: `test:e2e`
+- end-to-end tests: `test:e2e`
 
 You can duplicate these configurations or create another, if you want/need.
 
