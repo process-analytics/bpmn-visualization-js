@@ -305,7 +305,7 @@ describe('Bpmn Model filters', () => {
   });
 
   describe('Filter pool containing BPMN elements', () => {
-    it('Filter pool containing boundary events', () => {
+    it('Filter pool containing boundary event', () => {
       const originalBpmnModel = toBpmnModel({
         pools: {
           id: 'participant_id_1',
@@ -326,7 +326,7 @@ describe('Bpmn Model filters', () => {
       expect(bpmnModel).toStrictEqual(originalBpmnModel);
     });
 
-    it('Filter pool containing lanes with lanes', () => {
+    it('Filter pool containing lane with lane', () => {
       const originalBpmnModel = toBpmnModel({
         pools: {
           id: 'participant_id_1',
@@ -337,6 +337,39 @@ describe('Bpmn Model filters', () => {
             lanes: {
               id: 'lane_2',
               name: 'Lane 2',
+            },
+          },
+        },
+      });
+
+      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } });
+
+      expect(bpmnModel).toStrictEqual(originalBpmnModel);
+    });
+
+    it('Filter pool containing lane with sub-process containing lane and task', () => {
+      const originalBpmnModel = toBpmnModel({
+        pools: {
+          id: 'participant_id_1',
+          name: 'Participant 1',
+          lanes: {
+            id: 'lane_1',
+            name: 'Lane 1',
+            subProcesses: {
+              id: 'sub_process_1',
+              name: 'Sub Process 1',
+              lanes: {
+                id: 'lane_2',
+                name: 'Lane 2',
+                startEvents: {
+                  id: 'start_event_1',
+                  name: 'Start Event 1',
+                },
+              },
+              tasks: {
+                id: 'task_1',
+                name: 'Task 1',
+              },
             },
           },
         },

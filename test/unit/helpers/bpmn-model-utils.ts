@@ -78,11 +78,16 @@ const newLane = (parent: string, id: string, name: string): Shape => new Shape(b
 
 const newTask = (parent: string, id: string, name: string): Shape => new Shape(buildShapeId(id), new ShapeBpmnActivity(id, name, ShapeBpmnElementKind.TASK, parent));
 const newGroup = (parent: string, id: string, name: string): Shape => new Shape(buildShapeId(id), new ShapeBpmnElement(id, name, ShapeBpmnElementKind.GROUP, parent));
+const newSubProcess = (parent: string, id: string, name: string): Shape => new Shape(buildShapeId(id), new ShapeBpmnElement(id, name, ShapeBpmnElementKind.SUB_PROCESS, parent));
 
 const addContainerElements = (bpmnModel: BpmnModel, containerWithLanes: ContainerWithLanes & BaseElement): void => {
   if (containerWithLanes.lanes) {
     bpmnModel.lanes.push(newLane(containerWithLanes.id, containerWithLanes.lanes.id, containerWithLanes.lanes.name));
     addContainerElements(bpmnModel, containerWithLanes.lanes);
+  }
+  if (containerWithLanes.subProcesses) {
+    bpmnModel.flowNodes.push(newSubProcess(containerWithLanes.id, containerWithLanes.subProcesses.id, containerWithLanes.subProcesses.name));
+    addContainerElements(bpmnModel, containerWithLanes.subProcesses);
   }
   if (containerWithLanes.startEvents) {
     bpmnModel.flowNodes.push(newStartEvent(containerWithLanes.id, containerWithLanes.startEvents.id, containerWithLanes.startEvents.name));
@@ -148,7 +153,7 @@ interface Container {
   startEvents?: BaseElement;
   tasks?: BaseElement & { boundaryEvents?: BaseElement };
   groups?: BaseElement;
-  // subProcesses?: ContainerElement; // WARN subprocess can have lanes!!!!
+  subProcesses?: ContainerWithLanes & BaseElement; // WARN subprocess can have lanes!!!!
   // callActivities?: ContainerElement;
   sequenceFlows?: Flow;
 }

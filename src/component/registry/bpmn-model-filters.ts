@@ -56,66 +56,88 @@ export class ModelFiltering {
 
     // TODO use consistent names: 'kept' or 'filtered' but not both
     // prepare parent
-    const keptElementIds = filteredPools.map(shape => shape.bpmnElement.id);
-    logModelFiltering('kept pools number: ' + keptElementIds.length);
-    logModelFiltering('kept pools: ' + keptElementIds);
+    const poolIdsToFilter = filteredPools.map(shape => shape.bpmnElement.id);
+    logModelFiltering('kept pools number: ' + poolIdsToFilter.length);
+    logModelFiltering('kept pools: ' + poolIdsToFilter);
 
-    const { lanes, flowNodes, edges } = this.filterElementsOfPool(bpmnModel, keptElementIds);
-
-    logModelFiltering('END');
-    return { flowNodes, lanes, pools: filteredPools, edges };
-  }
-
-  private filterElementsOfPool({ flowNodes, lanes, edges }: BpmnModel, poolIdsToFilter: string[]): { lanes: Shape[]; flowNodes: Shape[]; edges: Edge[] } {
-    // lanes
-    const filteredLanes = this.filterLanes(lanes, poolIdsToFilter);
-    const filteredLaneBpmnElementIds = filteredLanes.map(shape => shape.bpmnElement.id);
-    logModelFiltering('filtered lanes: ' + filteredLaneBpmnElementIds);
-    logModelFiltering('kept lanes number: ' + filteredLaneBpmnElementIds.length);
-    const keptElementIds = [...poolIdsToFilter, ...filteredLaneBpmnElementIds];
-
-    // children of subprocesses / call activity
-    // boundary events attached to tasks
-    const accumulatedFilteredFlowNodes: Shape[] = []; // TODO rename into filteredFlowNodes
-    let keptParentIdsOfFlowNodes = keptElementIds;
-
-    logModelFiltering('keptElementIds before lookup: ', keptElementIds.length);
-
-    let cpt = 0;
-    while (keptParentIdsOfFlowNodes.length > 0) {
-      const filteredFlowNodes = flowNodes.filter(flowNode => keptParentIdsOfFlowNodes.includes(flowNode.bpmnElement.parentId));
-      const keptFlowNodeIds = filteredFlowNodes.map(shape => shape.bpmnElement.id);
-      logModelFiltering('kept flow nodes number: ' + keptFlowNodeIds.length);
-      accumulatedFilteredFlowNodes.push(...filteredFlowNodes);
-      logModelFiltering('accumulated flow nodes number: ' + accumulatedFilteredFlowNodes.length);
-      keptParentIdsOfFlowNodes = keptFlowNodeIds;
-      cpt++;
-      if (cpt > 10) {
-        throw Error('too much iteration');
-      }
-    }
-
-    logModelFiltering('keptElementIds after lookup: ', keptElementIds.length);
-    keptElementIds.push(...accumulatedFilteredFlowNodes.map(shape => shape.bpmnElement.id));
+    const { filteredLanes, filteredLanesIds, filteredFlowNodes, filteredFlowNodeIds } = this.filterLanesAndFlowNodes(bpmnModel.lanes, bpmnModel.flowNodes, poolIdsToFilter);
 
     // filterPoolBpmnIds message flow: a single pool, remove all but we should remove refs to outgoing msg flows on related shapes
     // keep only edge whose source and target have been kept
-    logModelFiltering('edges number: ', edges.length);
-    const filteredEdges = edges.filter(edge => keptElementIds.includes(edge.bpmnElement.sourceRefId) && keptElementIds.includes(edge.bpmnElement.targetRefId));
+    logModelFiltering('edges number: ', bpmnModel.edges.length);
+    const keptElementIds = [...poolIdsToFilter, ...filteredLanesIds, ...filteredFlowNodeIds];
+    const filteredEdges = bpmnModel.edges.filter(edge => keptElementIds.includes(edge.bpmnElement.sourceRefId) && keptElementIds.includes(edge.bpmnElement.targetRefId));
     logModelFiltering('filteredEdges number: ', filteredEdges.length);
-    return { lanes: filteredLanes, flowNodes: accumulatedFilteredFlowNodes, edges: filteredEdges };
+
+    logModelFiltering('END');
+    return { lanes: filteredLanes, flowNodes: filteredFlowNodes, pools: filteredPools, edges: filteredEdges };
   }
 
-  private filterLanes(lanes: Shape[], parentIdsToFilter: string[]): Shape[] {
+  private filterLanesAndFlowNodes(
+    lanes: Shape[],
+    flowNodes: Shape[],
+    parentIdsToFilter: string[],
+  ): { filteredLanes: Shape[]; filteredLanesIds: string[]; filteredFlowNodes: Shape[]; filteredFlowNodeIds: string[] } {
+    // lanes
+    const { filteredLanes, filteredLanesIds } = this.filterLanes(lanes, parentIdsToFilter);
+    logModelFiltering('filtered lanes: ' + filteredLanesIds);
+    logModelFiltering('kept lanes number: ' + filteredLanesIds.length);
+    const keptElementIds = [...parentIdsToFilter, ...filteredLanesIds];
+
+    // flow nodes
+    logModelFiltering('keptElementIds before lookup: ', keptElementIds.length);
+    const {
+      filteredLanes: filteredSubLanes,
+      filteredLanesIds: filteredSubLanesIds,
+      filteredFlowNodes,
+      filteredFlowNodeIds,
+    } = this.filterFlowNodes(flowNodes, keptElementIds, lanes);
+    logModelFiltering('filtered sub lanes: ' + filteredSubLanes);
+    logModelFiltering('kept sub lanes number: ' + filteredSubLanesIds.length);
+    filteredLanes.push(...filteredSubLanes);
+    filteredLanesIds.push(...filteredSubLanesIds);
+    logModelFiltering('filtered flowNodes: ' + filteredFlowNodes);
+    logModelFiltering('kept flowNodes number: ' + filteredFlowNodeIds.length);
+    keptElementIds.push(...filteredSubLanesIds, ...filteredFlowNodeIds);
+    logModelFiltering('keptElementIds after lookup: ', keptElementIds.length);
+    return { filteredLanes, filteredLanesIds, filteredFlowNodes, filteredFlowNodeIds };
+  }
+
+  private filterLanes(lanes: Shape[], parentIdsToFilter: string[]): { filteredLanes: Shape[]; filteredLanesIds: string[] } {
     const filteredLanes = lanes.filter(shape => parentIdsToFilter.includes(shape.bpmnElement.parentId));
+    const filteredLaneIds = filteredLanes.map(shape => shape.bpmnElement.id);
     if (filteredLanes.length > 0) {
-      filteredLanes.push(
-        ...this.filterLanes(
-          lanes,
-          filteredLanes.map(shape => shape.bpmnElement.id),
-        ),
-      );
+      const { filteredLanes: filteredSubLanes, filteredLanesIds: filteredSubLaneIds } = this.filterLanes(lanes, filteredLaneIds);
+      filteredLanes.push(...filteredSubLanes);
+      filteredLaneIds.push(...filteredSubLaneIds);
     }
-    return filteredLanes;
+    return { filteredLanes: filteredLanes, filteredLanesIds: filteredLaneIds };
+  }
+
+  private filterFlowNodes(
+    flowNodes: Shape[],
+    parentIdsToFilter: string[],
+    lanes: Shape[],
+  ): { filteredLanes: Shape[]; filteredLanesIds: string[]; filteredFlowNodes: Shape[]; filteredFlowNodeIds: string[] } {
+    const filteredFlowNodes = flowNodes.filter(shape => parentIdsToFilter.includes(shape.bpmnElement.parentId));
+    const filteredFlowNodeIds = filteredFlowNodes.map(shape => shape.bpmnElement.id);
+    const filteredLanes = [],
+      filteredLanesIds = [];
+
+    if (filteredFlowNodes.length > 0) {
+      // children of subprocesses / call activity
+      // boundary events attached to tasks
+      const {
+        filteredLanes: filteredSubLanes,
+        filteredLanesIds: filteredSubLanesIds,
+        filteredFlowNodes: filteredChildFlowNodes,
+        filteredFlowNodeIds: filteredChildFlowNodeIds,
+      } = this.filterLanesAndFlowNodes(lanes, flowNodes, filteredFlowNodeIds);
+      filteredLanes.push(...filteredSubLanes);
+      filteredLanesIds.push(...filteredSubLanesIds);
+      filteredFlowNodes.push(...filteredChildFlowNodes);
+      filteredFlowNodeIds.push(...filteredChildFlowNodeIds);
+    }
+    return { filteredLanes, filteredLanesIds, filteredFlowNodes, filteredFlowNodeIds };
   }
 }
