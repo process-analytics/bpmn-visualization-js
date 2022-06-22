@@ -66,14 +66,7 @@ describe('Bpmn Model filters', () => {
   });
 
   describe('Error management', () => {
-    // TODO undefined as well? notice that we are not passing such values, so these tests have limited interest
-    // we should remove it
-    // eslint-disable-next-line jest/no-disabled-tests
-    it.skip('Passing a null BpmnModel does not generate error', () => {
-      expect(modelFiltering.filter(toBpmnModel(null))).toBeNull();
-    });
-
-    // here we check the error message - use it.each if necessary
+    // TODO rework error message in implementation first, and if relevant use it.each
     it('Filter several pool by id - non existing pool id', () => {
       expect(() =>
         modelFiltering.filter(poolInModel('1', 'Pool 1'), {
@@ -82,25 +75,34 @@ describe('Bpmn Model filters', () => {
       ).toThrow(`no existing pool with ids i_do_not_exist-1,i_do_not_exist-2`);
     });
 
-    // TODO implement error management involving names
-    // eslint-disable-next-line jest/no-disabled-tests
-    it.skip('Filter several pool by name - no existing pool', () => {
+    it('Filter several pool by name - no existing pool', () => {
       expect(() =>
         modelFiltering.filter(poolInModel('1', 'Pool 1'), {
           pools: [{ name: 'name_do_not_exist-1' }, { name: 'name_do_not_exist-2' }],
         }),
-      ).toThrow(`no existing pool with names i_do_not_exist-1,i_do_not_exist-2`);
+      ).toThrow(`no existing pool with names name_do_not_exist-1,name_do_not_exist-2`);
     });
 
-    // TODO implement error management involving names
-    // eslint-disable-next-line jest/no-disabled-tests
-    it.skip('Filter several pool by id and name - no existing pool', () => {
+    it('Filter several pool by id and name - no existing pool', () => {
       expect(() =>
         modelFiltering.filter(poolInModel('1', 'Pool 1'), {
-          pools: [{ id: 'id_do_not_exist' }, { name: 'name_do_not_exist' }],
+          pools: [{ id: 'id_do_not_exist' }, { name: 'name_do_not_exist' }, { id: 'id_do_not_exist_other' }],
         }),
-      ).toThrow(`no existing pool with names i_do_not_exist-1,i_do_not_exist-2`);
+      ).toThrow(`no existing pool with ids id_do_not_exist,id_do_not_exist_other with names name_do_not_exist`);
     });
+
+    // it.each`
+    //   propertyName     | type  | poolFilters
+    //   ${'id'}          | ${''} | ${''}
+    //   ${'name'}        | ${''} | ${''}
+    //   ${'id and name'} | ${''} | ${''}
+    // `(`Filter by $propertyName - no matching pool`, (poolFilters: PoolFilter[]) => {
+    //   expect(() =>
+    //     modelFiltering.filter(poolInModel('1', 'Pool 1'), {
+    //       pools: poolFilters,
+    //     }),
+    //   ).toThrow(`no existing pool with ${propertyName}s do_not_exist-1,do_not_exist-2`);
+    // });
   });
 
   describe.each([['id'], ['name']])(`Filter by %s`, (propertyName: string) => {
@@ -215,14 +217,6 @@ describe('Bpmn Model filters', () => {
         bpmnElementSourceRefId: 'startEvent_2',
         bpmnElementTargetRefId: 'task_1',
       });
-    });
-
-    it(`Filter by ${propertyName} a model containing several pools - non existing pool ${propertyName}`, () => {
-      expect(() =>
-        modelFiltering.filter(poolInModel('1', 'Pool 1'), {
-          pools: [{ [propertyName]: 'do_not_exist-1' }, { [propertyName]: 'do_not_exist-2' }],
-        }),
-      ).toThrow(`no existing pool with ${propertyName}s do_not_exist-1,do_not_exist-2`);
     });
 
     it(`Filter by ${propertyName} all pools of a model, with message flows`, () => {
