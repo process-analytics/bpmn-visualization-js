@@ -17,8 +17,14 @@ import type BpmnModel from '../../../src/model/bpmn/internal/BpmnModel';
 import { Edge } from '../../../src/model/bpmn/internal/edge/edge';
 import { MessageFlow, SequenceFlow } from '../../../src/model/bpmn/internal/edge/flows';
 import Shape from '../../../src/model/bpmn/internal/shape/Shape';
-import ShapeBpmnElement, { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnStartEvent, ShapeBpmnSubProcess } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../src/model/bpmn/internal';
+import ShapeBpmnElement, {
+  ShapeBpmnActivity,
+  ShapeBpmnBoundaryEvent,
+  ShapeBpmnCallActivity,
+  ShapeBpmnStartEvent,
+  ShapeBpmnSubProcess,
+} from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
+import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../src/model/bpmn/internal';
 import { ensureIsArray } from '../../../src/component/helpers/array-utils';
 
 const newBpmnModel = (): BpmnModel => ({
@@ -77,6 +83,8 @@ const addNewPool = (bpmnModel: BpmnModel, id: string, name: string): void => {
 const newLane = (parent: string, id: string, name: string): Shape => new Shape(buildShapeId(id), new ShapeBpmnElement(id, name, ShapeBpmnElementKind.LANE, parent));
 
 const newTask = (parent: string, id: string, name: string): Shape => new Shape(buildShapeId(id), new ShapeBpmnActivity(id, name, ShapeBpmnElementKind.TASK, parent));
+const newCallActivity = (parent: string, id: string, name: string, isExpanded: boolean): Shape =>
+  new Shape(buildShapeId(id), new ShapeBpmnCallActivity(id, name, ShapeBpmnCallActivityKind.CALLING_PROCESS, parent, isExpanded ? undefined : [ShapeBpmnMarkerKind.EXPAND]));
 const newGroup = (parent: string, id: string, name: string): Shape => new Shape(buildShapeId(id), new ShapeBpmnElement(id, name, ShapeBpmnElementKind.GROUP, parent));
 const newSubProcess = (parent: string, id: string, name: string, isExpanded: boolean): Shape =>
   new Shape(buildShapeId(id), new ShapeBpmnSubProcess(id, name, ShapeBpmnSubProcessKind.EMBEDDED, parent, isExpanded ? undefined : [ShapeBpmnMarkerKind.EXPAND]));
@@ -91,6 +99,12 @@ const addContainerElements = (bpmnModel: BpmnModel, containerWithLanes: Containe
       newSubProcess(containerWithLanes.id, containerWithLanes.subProcesses.id, containerWithLanes.subProcesses.name, containerWithLanes.subProcesses.isExpanded),
     );
     addContainerElements(bpmnModel, containerWithLanes.subProcesses);
+  }
+  if (containerWithLanes.callActivities) {
+    bpmnModel.flowNodes.push(
+      newCallActivity(containerWithLanes.id, containerWithLanes.callActivities.id, containerWithLanes.callActivities.name, containerWithLanes.callActivities.isExpanded),
+    );
+    addContainerElements(bpmnModel, containerWithLanes.callActivities);
   }
   if (containerWithLanes.startEvents) {
     bpmnModel.flowNodes.push(newStartEvent(containerWithLanes.id, containerWithLanes.startEvents.id, containerWithLanes.startEvents.name));
@@ -160,8 +174,8 @@ interface Container {
   startEvents?: BaseElement;
   tasks?: BaseElement & { boundaryEvents?: BaseElement };
   groups?: BaseElement;
-  subProcesses?: ContainerWithLanes & BaseElement & ExpendableElement; // WARN subprocess can have lanes!!!!
-  // callActivities?: ContainerElement;
+  subProcesses?: ContainerWithLanes & BaseElement & ExpendableElement;
+  callActivities?: ContainerElement & ExpendableElement;
   sequenceFlows?: Flow;
 }
 

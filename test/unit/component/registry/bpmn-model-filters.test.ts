@@ -414,6 +414,36 @@ describe('Bpmn Model filters', () => {
 
       expect(bpmnModel).toStrictEqual(originalBpmnModel);
     });
+
+    it('Filter pool containing expanded callActivity containing task, event and sequenceFlow', () => {
+      const originalBpmnModel = toBpmnModel({
+        pools: {
+          id: 'participant_id_1',
+          name: 'Participant 1',
+          callActivities: {
+            id: 'call_activity_1',
+            name: 'Call Activity 1',
+            isExpanded: true,
+            tasks: {
+              id: 'task_1',
+              name: 'Task 1',
+            },
+            startEvents: {
+              id: 'start_event_1',
+            },
+            sequenceFlows: {
+              id: 'sequence_flow_1',
+              source: 'start_event_1',
+              target: 'task_1',
+            },
+          },
+        },
+      });
+
+      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } });
+
+      expect(bpmnModel).toStrictEqual(originalBpmnModel);
+    });
   });
 });
 
