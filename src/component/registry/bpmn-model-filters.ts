@@ -39,6 +39,9 @@ export class ModelFiltering {
       logModelFiltering('No pool filtering set, so skip filtering');
       return bpmnModel;
     }
+    // TODO we shouldn't need to cast - type signature issue?
+    // Céline : poolIdsFilter is already an array. No need to do that ??
+    const filterPoolBpmnIds = ensureIsArray<string>(poolIdsFilter);
 
     // TODO no pool in model but filteredPools --> error with dedicated message? add a test for this use case
 

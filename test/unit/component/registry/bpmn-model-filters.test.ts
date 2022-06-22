@@ -16,12 +16,13 @@
 
 import { ModelFiltering } from '../../../../src/component/registry/bpmn-model-filters';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal';
-import { buildEdgeId, buildShapeId, poolInModel, toBpmnModel } from '../../helpers/bpmn-model-utils';
-import type { ExpectedEdge, ExpectedShape } from '../../helpers/bpmn-model-expect';
-import { verifyEdge as baseVerifyEdge, verifyShape as baseVerifyShape } from '../../helpers/bpmn-model-expect';
 import type Shape from '../../../../src/model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../../../src/model/bpmn/internal/edge/edge';
 import type { ModelFilter } from '../../../../src/component/options';
+
+import { buildEdgeId, buildShapeId, poolInModel, toBpmnModel } from '../../helpers/bpmn-model-utils';
+import type { ExpectedEdge, ExpectedShape } from '../../helpers/bpmn-model-expect';
+import { verifyEdge as baseVerifyEdge, verifyShape as baseVerifyShape } from '../../helpers/bpmn-model-expect';
 
 // use a single instance to detect any side effects
 const modelFiltering = new ModelFiltering();
@@ -100,25 +101,10 @@ describe('Bpmn Model filters', () => {
     });
   });
 
-  it('Filter a model containing a single pool', () => {
-    const originalBpmnModel = toBpmnModel({
-      pools: {
-        id: 'participant_id_1',
-        name: 'Participant 1',
-        startEvents: {
-          id: 'startEvent_1',
-          name: 'Start Event 1',
-        },
-      },
-    });
-    const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } });
-    expect(bpmnModel).toStrictEqual(originalBpmnModel);
-  });
-
-  it('Filter a model containing several pools', () => {
-    const originalBpmnModel = toBpmnModel({
-      pools: [
-        {
+  describe.each([['id'], ['name']])(`Filter by %s`, (propertyName: string) => {
+    it(`Filter by ${propertyName} a model containing a single pool`, () => {
+      const originalBpmnModel = toBpmnModel({
+        pools: {
           id: 'participant_id_1',
           name: 'Participant 1',
           startEvents: {
@@ -126,121 +112,154 @@ describe('Bpmn Model filters', () => {
             name: 'Start Event 1',
           },
         },
-        {
-          id: 'participant_id_2',
-          name: 'Participant 2',
-          startEvents: {
-            id: 'startEvent_2',
-            name: 'Start Event 2',
-          },
-          tasks: {
-            id: 'task_1',
-          },
-          sequenceFlows: {
-            id: 'sequence_flow_1',
-            source: 'startEvent_2',
-            target: 'task_1',
-          },
-        },
-        {
-          id: 'participant_id_3',
-          name: 'Participant 3 (black box)',
-        },
-      ],
-    });
-    const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_2' } });
+      });
 
-    expect(bpmnModel.pools).toHaveLength(1);
-    verifyShape(bpmnModel.pools[0], {
-      bpmnElementId: 'participant_id_2',
-      bpmnElementName: 'Participant 2',
-      bpmnElementKind: ShapeBpmnElementKind.POOL,
+      const poolFilter = propertyName === 'id' ? { id: 'participant_id_1' } : { name: 'Participant 1' };
+      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: poolFilter });
+
+      expect(bpmnModel).toStrictEqual(originalBpmnModel);
     });
 
-    expect(bpmnModel.flowNodes).toHaveLength(2);
-    verifyShape(bpmnModel.flowNodes[0], {
-      parentId: 'participant_id_2',
-      bpmnElementId: 'startEvent_2',
-      bpmnElementName: 'Start Event 2',
-      bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
-    });
-    verifyShape(bpmnModel.flowNodes[1], {
-      parentId: 'participant_id_2',
-      bpmnElementId: 'task_1',
-      bpmnElementName: undefined,
-      bpmnElementKind: ShapeBpmnElementKind.TASK,
-    });
-
-    expect(bpmnModel.edges).toHaveLength(1);
-    verifyEdge(bpmnModel.edges[0], {
-      bpmnElementId: 'sequence_flow_1',
-      bpmnElementSourceRefId: 'startEvent_2',
-      bpmnElementTargetRefId: 'task_1',
-    });
-  });
-
-  it('Filter all pools of a model, with message flows', () => {
-    const originalBpmnModel = toBpmnModel({
-      pools: [
-        {
+    it(`Filter by ${propertyName} a model containing a single pool with a group`, () => {
+      const originalBpmnModel = toBpmnModel({
+        pools: {
           id: 'participant_id_1',
           name: 'Participant 1',
           startEvents: {
             id: 'startEvent_1',
             name: 'Start Event 1',
           },
-        },
-        {
-          id: 'participant_id_2',
-          name: 'Participant 2',
-          startEvents: {
-            id: 'startEvent_2',
-            name: 'Start Event 2',
+          groups: {
+            id: 'group_1',
+            name: 'Group 1',
           },
         },
-      ],
-      messageFlows: {
-        id: 'message_flow_1',
-        source: 'startEvent_2',
-        target: 'participant_id_1',
-      },
-    });
-    const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: [{ id: 'participant_id_1' }, { id: 'participant_id_2' }] });
-    expect(bpmnModel).toStrictEqual(originalBpmnModel);
-    expect(bpmnModel.edges).toHaveLength(1);
-    verifyEdge(bpmnModel.edges[0], {
-      bpmnElementId: 'message_flow_1',
-      bpmnElementSourceRefId: 'startEvent_2',
-      bpmnElementTargetRefId: 'participant_id_1',
-    });
-  });
+      });
+      expect(originalBpmnModel.flowNodes).toHaveLength(2);
 
-  it('Filter a model containing a single pool with a group', () => {
-    const originalBpmnModel = toBpmnModel({
-      pools: {
-        id: 'participant_id_1',
-        name: 'Participant 1',
-        startEvents: {
-          id: 'startEvent_1',
-          name: 'Start Event 1',
+      const poolFilter = propertyName === 'id' ? { id: 'participant_id_1' } : { name: 'Participant 1' };
+      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: poolFilter });
+
+      expect(bpmnModel).toStrictEqual(originalBpmnModel);
+
+      expect(bpmnModel.flowNodes).toHaveLength(2);
+      verifyShape(bpmnModel.flowNodes[1], {
+        parentId: 'participant_id_1',
+        bpmnElementId: 'group_1',
+        bpmnElementName: 'Group 1',
+        bpmnElementKind: ShapeBpmnElementKind.GROUP,
+      });
+    });
+
+    it(`Filter by ${propertyName} a model containing several pools`, () => {
+      const originalBpmnModel = toBpmnModel({
+        pools: [
+          {
+            id: 'participant_id_1',
+            name: 'Participant 1',
+            startEvents: {
+              id: 'startEvent_1',
+              name: 'Start Event 1',
+            },
+          },
+          {
+            id: 'participant_id_2',
+            name: 'Participant 2',
+            startEvents: {
+              id: 'startEvent_2',
+              name: 'Start Event 2',
+            },
+            tasks: {
+              id: 'task_1',
+            },
+            sequenceFlows: {
+              id: 'sequence_flow_1',
+              source: 'startEvent_2',
+              target: 'task_1',
+            },
+          },
+          {
+            id: 'participant_id_3',
+            name: 'Participant 3 (black box)',
+          },
+        ],
+      });
+      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_2' } });
+
+      expect(bpmnModel.pools).toHaveLength(1);
+      verifyShape(bpmnModel.pools[0], {
+        bpmnElementId: 'participant_id_2',
+        bpmnElementName: 'Participant 2',
+        bpmnElementKind: ShapeBpmnElementKind.POOL,
+      });
+
+      expect(bpmnModel.flowNodes).toHaveLength(2);
+      verifyShape(bpmnModel.flowNodes[0], {
+        parentId: 'participant_id_2',
+        bpmnElementId: 'startEvent_2',
+        bpmnElementName: 'Start Event 2',
+        bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+      });
+      verifyShape(bpmnModel.flowNodes[1], {
+        parentId: 'participant_id_2',
+        bpmnElementId: 'task_1',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.TASK,
+      });
+
+      expect(bpmnModel.edges).toHaveLength(1);
+      verifyEdge(bpmnModel.edges[0], {
+        bpmnElementId: 'sequence_flow_1',
+        bpmnElementSourceRefId: 'startEvent_2',
+        bpmnElementTargetRefId: 'task_1',
+      });
+    });
+
+    it(`Filter by ${propertyName} a model containing several pools - non existing pool ${propertyName}`, () => {
+      expect(() =>
+        modelFiltering.filter(poolInModel('1', 'Pool 1'), {
+          pools: [{ [propertyName]: 'do_not_exist-1' }, { [propertyName]: 'do_not_exist-2' }],
+        }),
+      ).toThrow(`no existing pool with ids do_not_exist-1,do_not_exist-2`);
+    });
+
+    it(`Filter by ${propertyName} all pools of a model, with message flows`, () => {
+      const originalBpmnModel = toBpmnModel({
+        pools: [
+          {
+            id: 'participant_id_1',
+            name: 'Participant 1',
+            startEvents: {
+              id: 'startEvent_1',
+              name: 'Start Event 1',
+            },
+          },
+          {
+            id: 'participant_id_2',
+            name: 'Participant 2',
+            startEvents: {
+              id: 'startEvent_2',
+              name: 'Start Event 2',
+            },
+          },
+        ],
+        messageFlows: {
+          id: 'message_flow_1',
+          source: 'startEvent_2',
+          target: 'participant_id_1',
         },
-        groups: {
-          id: 'group_1',
-          name: 'Group 1',
-        },
-      },
-    });
-    expect(originalBpmnModel.flowNodes).toHaveLength(2);
+      });
 
-    const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } });
-    expect(bpmnModel).toStrictEqual(originalBpmnModel);
+      const poolFilter = propertyName === 'id' ? [{ id: 'participant_id_1' }, { id: 'participant_id_2' }] : [{ name: 'Participant 1' }, { name: 'Participant 2' }];
+      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: poolFilter });
 
-    expect(bpmnModel.flowNodes).toHaveLength(2);
-    verifyShape(bpmnModel.flowNodes[1], {
-      parentId: 'participant_id_1',
-      bpmnElementId: 'group_1',
-      bpmnElementName: 'Group 1',
-      bpmnElementKind: ShapeBpmnElementKind.GROUP,
+      expect(bpmnModel).toStrictEqual(originalBpmnModel);
+      expect(bpmnModel.edges).toHaveLength(1);
+      verifyEdge(bpmnModel.edges[0], {
+        bpmnElementId: 'message_flow_1',
+        bpmnElementSourceRefId: 'startEvent_2',
+        bpmnElementTargetRefId: 'participant_id_1',
+      });
     });
   });
 });
