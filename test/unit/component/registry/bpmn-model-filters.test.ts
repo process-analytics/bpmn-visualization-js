@@ -379,6 +379,40 @@ describe('Bpmn Model filters', () => {
 
       expect(bpmnModel).toStrictEqual(originalBpmnModel);
     });
+
+    it('Filter pool containing sub-process containing lane, task and sequenceFlow', () => {
+      const originalBpmnModel = toBpmnModel({
+        pools: {
+          id: 'participant_id_1',
+          name: 'Participant 1',
+          subProcesses: {
+            id: 'sub_process_1',
+            name: 'Sub Process 1',
+            lanes: {
+              id: 'lane_2',
+              name: 'Lane 2',
+              startEvents: {
+                id: 'start_event_1',
+                name: 'Start Event 1',
+              },
+            },
+            tasks: {
+              id: 'task_1',
+              name: 'Task 1',
+            },
+            sequenceFlows: {
+              id: 'sequence_flow_1',
+              source: 'start_event_1',
+              target: 'task_1',
+            },
+          },
+        },
+      });
+
+      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } });
+
+      expect(bpmnModel).toStrictEqual(originalBpmnModel);
+    });
   });
 });
 
