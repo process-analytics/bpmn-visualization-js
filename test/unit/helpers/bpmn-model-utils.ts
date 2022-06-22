@@ -31,16 +31,19 @@ const newBpmnModel = (): BpmnModel => ({
 export const buildShapeId = (bpmnElementId: string): string => {
   return `Shape_${bpmnElementId}`;
 };
+export const buildEdgeId = (bpmnElementId: string): string => {
+  return `Edge_${bpmnElementId}`;
+};
 
 // TODO missing parentId in SequenceFlow constructor
-const newSequenceFlow = (parentId: string, id: string, name: string, source: string, target: string): Edge => new Edge(`Edge_${id}`, new SequenceFlow(id, name, source, target));
+const newSequenceFlow = (parentId: string, id: string, name: string, source: string, target: string): Edge => new Edge(buildEdgeId(id), new SequenceFlow(id, name, source, target));
 
-const newMessageFlow = (id: string, name: string, source: string, target: string): Edge => new Edge(`Edge_${id}`, new MessageFlow(id, name, source, target));
+const newMessageFlow = (id: string, name: string, source: string, target: string): Edge => new Edge(buildEdgeId(id), new MessageFlow(id, name, source, target));
 
 export const sequenceFlowInModel = (id: string, name: string): BpmnModel => {
   const bpmnModel = newBpmnModel();
   // TODO duplication with newSequenceFlow
-  bpmnModel.edges.push(new Edge(`Edge_${id}`, new SequenceFlow(id, name)));
+  bpmnModel.edges.push(new Edge(buildEdgeId(id), new SequenceFlow(id, name)));
   return bpmnModel;
 };
 
