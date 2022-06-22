@@ -8,6 +8,7 @@
     "editorconfig.generateAuto": false,
     // eslint extension
     "eslint.enable": true,
+    "eslint.run": "onSave",
     "eslint.validate": ["typescript"],
     "eslint.format.enable": true,
     "eslint.lintTask.enable": true,
