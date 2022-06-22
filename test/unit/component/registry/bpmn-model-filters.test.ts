@@ -22,10 +22,6 @@ import { verifyEdge, verifyShape } from '../../helpers/bpmn-model-expect';
 // use a single instance to detect any side effects
 const modelFiltering = new ModelFiltering();
 
-// TODO filter by name in final implementation
-// no need to test all combinations with names. Only pools and a very small subset
-// test cross usage of ids and names
-
 describe('Bpmn Model filters', () => {
   // TODO undefined as well? notice that we are not passing such values, so these tests have limited interest
   // we should remove it
@@ -35,8 +31,6 @@ describe('Bpmn Model filters', () => {
   });
 
   // here we check the error message - use it.each if necessary
-  // TODO test with a single pool id
-  // TODO test with names
   it('Filter several pool by id - non existing pool id', () => {
     expect(() =>
       modelFiltering.filter(poolInModel('1', 'Pool 1'), {
@@ -44,12 +38,6 @@ describe('Bpmn Model filters', () => {
       }),
     ).toThrow(`no existing pool with ids i_do_not_exist-1,i_do_not_exist-2`);
   });
-
-  // TODO error management model without pool and doing pool filtering
-
-  // TODO model with a pool filtering several including the existing one
-
-  // TODO model with a black box pool and a participant refs a process but without displayed pool (see email voting from BPMN spec)
 
   it('No filter', () => {
     const originalBpmnModel = toBpmnModel({
