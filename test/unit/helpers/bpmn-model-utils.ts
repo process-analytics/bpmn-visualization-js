@@ -159,7 +159,7 @@ interface BaseElement {
 
 type Pool = ContainerWithLanes & BaseElement;
 
-interface ContainerElement extends BaseElement, Container {}
+type ContainerElement = BaseElement & Container;
 
 interface ContainerWithLanes extends Container {
   lanes?: ContainerElement & { lanes?: ContainerElement };
