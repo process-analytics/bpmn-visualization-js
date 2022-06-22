@@ -74,9 +74,35 @@ const newPool = (id: string, name: string): Shape => new Shape(buildShapeId(id),
 const addNewPool = (bpmnModel: BpmnModel, id: string, name: string): void => {
   bpmnModel.pools.push(newPool(id, name));
 };
+const newLane = (parent: string, id: string, name: string): Shape => new Shape(buildShapeId(id), new ShapeBpmnElement(id, name, ShapeBpmnElementKind.LANE, parent));
 
 const newTask = (parent: string, id: string, name: string): Shape => new Shape(buildShapeId(id), new ShapeBpmnActivity(id, name, ShapeBpmnElementKind.TASK, parent));
 const newGroup = (parent: string, id: string, name: string): Shape => new Shape(buildShapeId(id), new ShapeBpmnElement(id, name, ShapeBpmnElementKind.GROUP, parent));
+
+const addContainerElements = (bpmnModel: BpmnModel, containerWithLanes: ContainerWithLanes & BaseElement): void => {
+  if (containerWithLanes.lanes) {
+    bpmnModel.lanes.push(newLane(containerWithLanes.id, containerWithLanes.lanes.id, containerWithLanes.lanes.name));
+    addContainerElements(bpmnModel, containerWithLanes.lanes);
+  }
+  if (containerWithLanes.startEvents) {
+    bpmnModel.flowNodes.push(newStartEvent(containerWithLanes.id, containerWithLanes.startEvents.id, containerWithLanes.startEvents.name));
+  }
+  const tasks = containerWithLanes.tasks;
+  if (tasks) {
+    bpmnModel.flowNodes.push(newTask(containerWithLanes.id, tasks.id, tasks.name));
+
+    if (tasks.boundaryEvents) {
+      bpmnModel.flowNodes.push(newBoundaryEvent(tasks.id, tasks.boundaryEvents.id, tasks.boundaryEvents.name));
+    }
+  }
+  if (containerWithLanes.groups) {
+    bpmnModel.flowNodes.push(newGroup(containerWithLanes.id, containerWithLanes.groups.id, containerWithLanes.groups.name));
+  }
+  if (containerWithLanes.sequenceFlows) {
+    const sequenceFlow = containerWithLanes.sequenceFlows;
+    bpmnModel.edges.push(newSequenceFlow(containerWithLanes.id, sequenceFlow.id, sequenceFlow.name, sequenceFlow.source, sequenceFlow.target));
+  }
+};
 
 export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
   const bpmnModel = newBpmnModel();
@@ -84,24 +110,7 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
 
   pools.forEach(pool => {
     addNewPool(bpmnModel, pool.id, pool.name);
-    if (pool.startEvents) {
-      bpmnModel.flowNodes.push(newStartEvent(pool.id, pool.startEvents.id, pool.startEvents.name));
-    }
-    const tasks = pool.tasks;
-    if (tasks) {
-      bpmnModel.flowNodes.push(newTask(pool.id, tasks.id, tasks.name));
-
-      if (tasks.boundaryEvents) {
-        bpmnModel.flowNodes.push(newBoundaryEvent(tasks.id, tasks.boundaryEvents.id, tasks.boundaryEvents.name));
-      }
-    }
-    if (pool.groups) {
-      bpmnModel.flowNodes.push(newGroup(pool.id, pool.groups.id, pool.groups.name));
-    }
-    if (pool.sequenceFlows) {
-      const sequenceFlow = pool.sequenceFlows;
-      bpmnModel.edges.push(newSequenceFlow(pool.id, sequenceFlow.id, sequenceFlow.name, sequenceFlow.source, sequenceFlow.target));
-    }
+    addContainerElements(bpmnModel, pool);
   });
 
   if (model.messageFlows) {
@@ -126,12 +135,12 @@ interface BaseElement {
   name?: string;
 }
 
-interface Pool extends ContainerWithLanes, BaseElement {}
+type Pool = ContainerWithLanes & BaseElement;
 
 interface ContainerElement extends BaseElement, Container {}
 
 interface ContainerWithLanes extends Container {
-  lanes?: ContainerElement;
+  lanes?: ContainerElement & { lanes?: ContainerElement };
 }
 
 // TODO allow array in all properties

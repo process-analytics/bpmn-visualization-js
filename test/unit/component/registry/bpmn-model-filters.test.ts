@@ -325,6 +325,27 @@ describe('Bpmn Model filters', () => {
 
       expect(bpmnModel).toStrictEqual(originalBpmnModel);
     });
+
+    it('Filter pool containing lanes with lanes', () => {
+      const originalBpmnModel = toBpmnModel({
+        pools: {
+          id: 'participant_id_1',
+          name: 'Participant 1',
+          lanes: {
+            id: 'lane_1',
+            name: 'Lane 1',
+            lanes: {
+              id: 'lane_2',
+              name: 'Lane 2',
+            },
+          },
+        },
+      });
+
+      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } });
+
+      expect(bpmnModel).toStrictEqual(originalBpmnModel);
+    });
   });
 });
 

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import type { Edge } from '../../model/bpmn/internal/edge/edge';
 import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import type { ModelFilter } from '../options';
 import { ensureIsArray } from '../helpers/array-utils';
@@ -59,16 +60,22 @@ export class ModelFiltering {
     logModelFiltering('kept pools number: ' + keptElementIds.length);
     logModelFiltering('kept pools: ' + keptElementIds);
 
+    const { lanes, flowNodes, edges } = this.filterElementsOfPool(bpmnModel, keptElementIds);
+
+    logModelFiltering('END');
+    return { flowNodes, lanes, pools: filteredPools, edges };
+  }
+
+  private filterElementsOfPool({ flowNodes, lanes, edges }: BpmnModel, poolIdsToFilter: string[]): { lanes: Shape[]; flowNodes: Shape[]; edges: Edge[] } {
     // lanes
-    const filteredLanes = bpmnModel.lanes.filter(shape => keptElementIds.includes(shape.bpmnElement.parentId));
+    const filteredLanes = this.filterLanes(lanes, poolIdsToFilter);
     const filteredLaneBpmnElementIds = filteredLanes.map(shape => shape.bpmnElement.id);
     logModelFiltering('filtered lanes: ' + filteredLaneBpmnElementIds);
     logModelFiltering('kept lanes number: ' + filteredLaneBpmnElementIds.length);
-    keptElementIds.push(...filteredLaneBpmnElementIds);
+    const keptElementIds = [...poolIdsToFilter, ...filteredLaneBpmnElementIds];
 
     // children of subprocesses / call activity
     // boundary events attached to tasks
-    const flowNodes = bpmnModel.flowNodes;
     const accumulatedFilteredFlowNodes: Shape[] = []; // TODO rename into filteredFlowNodes
     let keptParentIdsOfFlowNodes = keptElementIds;
 
@@ -93,12 +100,22 @@ export class ModelFiltering {
 
     // filterPoolBpmnIds message flow: a single pool, remove all but we should remove refs to outgoing msg flows on related shapes
     // keep only edge whose source and target have been kept
-    const edges = bpmnModel.edges;
     logModelFiltering('edges number: ', edges.length);
     const filteredEdges = edges.filter(edge => keptElementIds.includes(edge.bpmnElement.sourceRefId) && keptElementIds.includes(edge.bpmnElement.targetRefId));
     logModelFiltering('filteredEdges number: ', filteredEdges.length);
+    return { lanes: filteredLanes, flowNodes: accumulatedFilteredFlowNodes, edges: filteredEdges };
+  }
 
-    logModelFiltering('END');
-    return { flowNodes: accumulatedFilteredFlowNodes, lanes: filteredLanes, pools: filteredPools, edges: filteredEdges };
+  private filterLanes(lanes: Shape[], parentIdsToFilter: string[]): Shape[] {
+    const filteredLanes = lanes.filter(shape => parentIdsToFilter.includes(shape.bpmnElement.parentId));
+    if (filteredLanes.length > 0) {
+      filteredLanes.push(
+        ...this.filterLanes(
+          lanes,
+          filteredLanes.map(shape => shape.bpmnElement.id),
+        ),
+      );
+    }
+    return filteredLanes;
   }
 }
