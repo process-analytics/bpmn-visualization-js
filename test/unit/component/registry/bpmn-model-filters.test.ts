@@ -311,7 +311,7 @@ describe('Bpmn Model filters', () => {
   });
 });
 
-it('Filter by name and id', () => {
+it('Filter by name or id', () => {
   const originalBpmnModel = toBpmnModel({
     pools: [
       {
@@ -339,6 +339,29 @@ it('Filter by name and id', () => {
   verifyShape(bpmnModel.pools[1], {
     bpmnElementId: 'participant_id_2',
     bpmnElementName: 'Participant 2',
+    bpmnElementKind: ShapeBpmnElementKind.POOL,
+  });
+});
+
+it('Filter pool twice by name and id', () => {
+  const originalBpmnModel = toBpmnModel({
+    pools: [
+      {
+        id: 'participant_id_1',
+        name: 'Participant 1',
+      },
+      {
+        id: 'participant_id_2',
+        name: 'Participant 2',
+      },
+    ],
+  });
+
+  const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: [{ id: 'participant_id_1' }, { name: 'Participant 1' }] });
+  expect(bpmnModel.pools).toHaveLength(1);
+  verifyShape(bpmnModel.pools[0], {
+    bpmnElementId: 'participant_id_1',
+    bpmnElementName: 'Participant 1',
     bpmnElementKind: ShapeBpmnElementKind.POOL,
   });
 });
