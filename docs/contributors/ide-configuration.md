@@ -34,6 +34,11 @@ When Gitpod IDE is started, the `npm install` command is launched automatically.
 
 In particular, if you start the dev server, you can access it directly in your browser, see the [Gitpod ports documentation](https://www.gitpod.io/docs/config-ports) for more details.
 
+### Extensions
+
+Installed extensions
+- `vscode-jest-runner` (see VSCode extensions below)
+
 ## Visual Studio Code
 
 ### [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
@@ -65,9 +70,17 @@ Visual Studio Code is now configured correctly to use ESLint on typescript files
 
 _Note: make sure that ESLint is installed and [configured correctly to work with typescript](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/README.md) on your machine._
 
-### [Jest](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest)
+### Jest
 
-The project settings stored the configuration to make this extension run unit tests.
+Suggested extensions
+- https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest
+- https://marketplace.visualstudio.com/items?itemName=firsttris.vscode-jest-runner
+
+`vscode-jest-runner` is focused on running or debugging a specific test or test-suite, while `vscode-jest` is running your current test-suite everytime you change it.
+
+
+The project settings stored the configuration to make the `vscode-jest` extension run unit tests.
+
 
 ### [Debugging TypeScript code](https://code.visualstudio.com/docs/typescript/typescript-debugging)
 
