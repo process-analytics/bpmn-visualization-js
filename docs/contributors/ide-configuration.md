@@ -70,7 +70,7 @@ After the installation, you need to explicitly tell to the ESLint extension to w
 
 Visual Studio Code is now configured correctly to use ESLint on typescript files.
 
-_Note: make sure that ESLint is installed and [configured correctly to work with typescript](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/README.md) on your machine._
+**Note**: make sure that ESLint is installed and [configured correctly to work with typescript](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/README.md) on your machine.
 
 ### Jest
 
