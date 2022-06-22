@@ -40,13 +40,13 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
     return [];
   }
 
-  return (
-    (!Array.isArray(elements) ? [elements] : elements)
-      // convert empty elements
-      .map(element => convertEmptyStringAndObject(element, acceptEmptyString))
-      // remove empty elements
-      .filter(Boolean)
-  );
+  let returnedArray;
+  if (!Array.isArray(elements)) {
+    returnedArray = [convertEmptyStringAndObject(elements, acceptEmptyString)];
+  } else {
+    returnedArray = elements.map(element => convertEmptyStringAndObject(element, acceptEmptyString));
+  }
+  return returnedArray.filter(Boolean);
 }
 
 /**
