@@ -263,28 +263,33 @@ describe('Bpmn Model filters', () => {
         bpmnElementTargetRefId: 'participant_id_1',
       });
     });
-  });
-});
 
-it('Filter a model containing existing pool and skipped the others', () => {
-  const originalBpmnModel = toBpmnModel({
-    pools: [
-      {
-        id: 'participant_id_1',
-        name: 'Participant 1',
-      },
-      {
-        id: 'participant_id_2',
-        name: 'Participant 2',
-      },
-    ],
-  });
+    it(`Filter by ${propertyName} a model containing existing pool and skip the others`, () => {
+      const originalBpmnModel = toBpmnModel({
+        pools: [
+          {
+            id: 'participant_id_1',
+            name: 'Participant 1',
+          },
+          {
+            id: 'participant_id_2',
+            name: 'Participant 2',
+          },
+        ],
+      });
 
-  const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: [{ id: 'not exist_0' }, { id: 'participant_id_1' }, { id: 'not exist_1' }, { id: 'not exist_2' }] });
-  expect(bpmnModel.pools).toHaveLength(1);
-  verifyShape(bpmnModel.pools[0], {
-    bpmnElementId: 'participant_id_1',
-    bpmnElementName: 'Participant 1',
-    bpmnElementKind: ShapeBpmnElementKind.POOL,
+      const poolFilter =
+        propertyName === 'id'
+          ? [{ id: 'not exist_0' }, { id: 'participant_id_1' }, { id: 'not exist_1' }, { id: 'not exist_2' }]
+          : [{ name: 'not exist_0' }, { name: 'Participant 1' }, { name: 'not exist_1' }, { name: 'not exist_2' }];
+      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: poolFilter });
+
+      expect(bpmnModel.pools).toHaveLength(1);
+      verifyShape(bpmnModel.pools[0], {
+        bpmnElementId: 'participant_id_1',
+        bpmnElementName: 'Participant 1',
+        bpmnElementKind: ShapeBpmnElementKind.POOL,
+      });
+    });
   });
 });
