@@ -15,11 +15,24 @@
  */
 
 import { readFileSync } from '../helpers/file-helper';
-import { initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visualization-initialization';
+import type { GlobalOptionsWithoutContainer } from './helpers/bpmn-visualization-initialization';
+import { initializeBpmnVisualization, initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visualization-initialization';
 
-const bpmnVisualization = initializeBpmnVisualizationWithHtmlElement('bpmn-container', true);
+describe('BpmnVisualization initialization', () => {
+  it.each`
+    configName                          | config
+    ${'undefined'}                      | ${undefined}
+    ${'navigation disabled'}            | ${{ navigation: { enabled: false } }}
+    ${'navigation without zoom config'} | ${{ navigation: { enabled: true } }}
+    ${'navigation with zoom config'}    | ${{ navigation: { enabled: true, zoom: { throttleDelay: 20 } } }}
+  `(`Verify correct initialization with '$configName' configuration`, ({ configName, config }: { configName: string; config: GlobalOptionsWithoutContainer }) => {
+    initializeBpmnVisualization(`bpmn-visualization-init-check-with-config-${configName}`, config);
+  });
+});
 
-describe('BpmnVisualization', () => {
+describe('BpmnVisualization API', () => {
+  const bpmnVisualization = initializeBpmnVisualizationWithHtmlElement('bpmn-container', true);
+
   it('Load invalid diagram (text file)', async () => {
     expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(
       `XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`,

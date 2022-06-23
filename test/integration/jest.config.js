@@ -32,7 +32,11 @@ module.exports = {
   coveragePathIgnorePatterns: ['/src/model/'],
   coverageReporters: ['lcov', 'text-summary'],
   coverageDirectory: 'build/test-report/integration',
-  setupFilesAfterEnv: ['./test/integration/config/mxgraph-config.ts'],
+  setupFilesAfterEnv: [
+    './test/integration/config/mxgraph-config.ts',
+    // put at the latest place to see logs that could be displayed by setup files
+    './test/integration/config/hide-console-warnings.js',
+  ],
   reporters: [
     'default',
     [
