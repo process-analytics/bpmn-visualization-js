@@ -18,33 +18,20 @@ import type { ModelFilter } from '../options';
 import { ensureIsArray } from '../helpers/array-utils';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
 
-function logModelFiltering(msg: unknown, ...optionalParams: unknown[]): void {
-  // eslint-disable-next-line no-console
-  _log('model filtering', msg, ...optionalParams);
-}
-
-function _log(header: string, message: unknown, ...optionalParams: unknown[]): void {
-  // eslint-disable-next-line no-console
-  console.info(header + ' - ' + message, ...optionalParams);
-}
-
 // TODO find a convenient name in the final implementation
 export class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
-    logModelFiltering('START');
     const poolFilters = ensureIsArray(modelFilter?.pools).filter(p => p && Object.keys(p).length);
     const poolIdsFilter = poolFilters.filter(filter => filter.id).map(filter => filter.id);
     const poolNamesFilter = poolFilters.filter(filter => !filter.id && filter.name).map(filter => filter.name);
 
     if (poolIdsFilter.length == 0 && poolNamesFilter.length == 0) {
-      logModelFiltering('No pool filtering set, so skip filtering');
       // TODO no pool in model but filteredPools --> error with dedicated message? add a test for this use case
       return bpmnModel;
     }
 
     // lookup pools
     const pools = bpmnModel.pools;
-    logModelFiltering('total pools in the model: ' + pools?.length);
     const filteredPools = pools.filter(pool => poolIdsFilter.includes(pool.bpmnElement.id) || poolNamesFilter.includes(pool.bpmnElement.name));
     if (filteredPools.length == 0) {
       let errorMsgSuffix = poolIdsFilter.length > 0 ? ' with ids ' + poolIdsFilter : '';
@@ -56,19 +43,14 @@ export class ModelFiltering {
     // TODO use consistent names: 'kept' or 'filtered' but not both
     // prepare parent
     const poolIdsToFilter = filteredPools.map(shape => shape.bpmnElement.id);
-    logModelFiltering('kept pools number: ' + poolIdsToFilter.length);
-    logModelFiltering('kept pools: ' + poolIdsToFilter);
 
     const { filteredLanes, filteredLanesIds, filteredFlowNodes, filteredFlowNodeIds } = this.filterLanesAndFlowNodes(bpmnModel.lanes, bpmnModel.flowNodes, poolIdsToFilter);
 
     // filterPoolBpmnIds message flow: a single pool, remove all but we should remove refs to outgoing msg flows on related shapes
     // keep only edge whose source and target have been kept
-    logModelFiltering('edges number: ', bpmnModel.edges.length);
     const keptElementIds = [...poolIdsToFilter, ...filteredLanesIds, ...filteredFlowNodeIds];
     const filteredEdges = bpmnModel.edges.filter(edge => keptElementIds.includes(edge.bpmnElement.sourceRefId) && keptElementIds.includes(edge.bpmnElement.targetRefId));
-    logModelFiltering('filteredEdges number: ', filteredEdges.length);
 
-    logModelFiltering('END');
     return { lanes: filteredLanes, flowNodes: filteredFlowNodes, pools: filteredPools, edges: filteredEdges };
   }
 
@@ -79,26 +61,18 @@ export class ModelFiltering {
   ): { filteredLanes: Shape[]; filteredLanesIds: string[]; filteredFlowNodes: Shape[]; filteredFlowNodeIds: string[] } {
     // lanes
     const { filteredLanes, filteredLanesIds } = this.filterLanes(lanes, parentIdsToFilter);
-    logModelFiltering('filtered lanes: ' + filteredLanesIds);
-    logModelFiltering('kept lanes number: ' + filteredLanesIds.length);
     const keptElementIds = [...parentIdsToFilter, ...filteredLanesIds];
 
     // flow nodes
-    logModelFiltering('keptElementIds before lookup: ', keptElementIds.length);
     const {
       filteredLanes: filteredSubLanes,
       filteredLanesIds: filteredSubLanesIds,
       filteredFlowNodes,
       filteredFlowNodeIds,
     } = this.filterFlowNodes(flowNodes, keptElementIds, lanes);
-    logModelFiltering('filtered sub lanes: ' + filteredSubLanes);
-    logModelFiltering('kept sub lanes number: ' + filteredSubLanesIds.length);
     filteredLanes.push(...filteredSubLanes);
     filteredLanesIds.push(...filteredSubLanesIds);
-    logModelFiltering('filtered flowNodes: ' + filteredFlowNodes);
-    logModelFiltering('kept flowNodes number: ' + filteredFlowNodeIds.length);
     keptElementIds.push(...filteredSubLanesIds, ...filteredFlowNodeIds);
-    logModelFiltering('keptElementIds after lookup: ', keptElementIds.length);
     return { filteredLanes, filteredLanesIds, filteredFlowNodes, filteredFlowNodeIds };
   }
 
