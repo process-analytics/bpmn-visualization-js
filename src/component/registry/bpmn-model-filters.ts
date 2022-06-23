@@ -19,7 +19,6 @@ import type { ModelFilter } from '../options';
 import { ensureIsArray } from '../helpers/array-utils';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
 
-// TODO find a convenient name in the final implementation
 export class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
     const poolFilters = ensureIsArray(modelFilter?.pools).filter(p => p && Object.keys(p).length);
@@ -27,25 +26,24 @@ export class ModelFiltering {
     const poolNamesFilter = poolFilters.filter(filter => !filter.id && filter.name).map(filter => filter.name);
 
     if (poolIdsFilter.length == 0 && poolNamesFilter.length == 0) {
-      // TODO no pool in model but filteredPools --> error with dedicated message? add a test for this use case
       return bpmnModel;
     }
+    // TODO no pool in model but filteredPools exist --> error with dedicated message? add a test for this use case
+    // Impossible to filter because the existing model doesn't contain any pool
 
-    // lookup pools
     const pools = bpmnModel.pools;
     const filteredPools = pools.filter(pool => poolIdsFilter.includes(pool.bpmnElement.id) || poolNamesFilter.includes(pool.bpmnElement.name));
     if (filteredPools.length == 0) {
       let errorMsgSuffix = poolIdsFilter.length > 0 ? ' with ids ' + poolIdsFilter : '';
       errorMsgSuffix += poolNamesFilter.length > 0 ? ' with names ' + poolNamesFilter : '';
+      // TODO change - No matching pools for ids [xxxx,xxxxxxxx] or names [yyyyy,yyyyyy]
       throw new Error('no existing pool' + errorMsgSuffix);
     }
-    // TODO use consistent names: 'kept' or 'filtered' but not both
-    // prepare parent
+    // TODO use consistent names: 'kept' or 'filtered' but not both --> use 'filter' everywhere
     const poolIdsToFilter = filteredPools.map(shape => shape.bpmnElement.id);
 
     const { filteredLanes, filteredLanesIds, filteredFlowNodes, filteredFlowNodeIds } = this.filterLanesAndFlowNodes(bpmnModel.lanes, bpmnModel.flowNodes, poolIdsToFilter);
 
-    // keep only edge whose source and target have been kept
     const keptElementIds = [...poolIdsToFilter, ...filteredLanesIds, ...filteredFlowNodeIds];
     const filteredEdges = bpmnModel.edges.filter(edge => keptElementIds.includes(edge.bpmnElement.sourceRefId) && keptElementIds.includes(edge.bpmnElement.targetRefId));
 
@@ -57,11 +55,10 @@ export class ModelFiltering {
     flowNodes: Shape[],
     parentIdsToFilter: string[],
   ): { filteredLanes: Shape[]; filteredLanesIds: string[]; filteredFlowNodes: Shape[]; filteredFlowNodeIds: string[] } {
-    // lanes
+    // TODO rename --> filter, not kept
     const { filteredLanes, filteredLanesIds } = this.filterLanes(lanes, parentIdsToFilter);
     const keptElementIds = [...parentIdsToFilter, ...filteredLanesIds];
 
-    // flow nodes
     const {
       filteredLanes: filteredSubLanes,
       filteredLanesIds: filteredSubLanesIds,
@@ -96,8 +93,7 @@ export class ModelFiltering {
       filteredLanesIds = [];
 
     if (filteredFlowNodes.length > 0) {
-      // children of subprocesses / call activity
-      // boundary events attached to tasks
+      // manage children of subprocesses / call activity and boundary events attached to tasks
       const {
         filteredLanes: filteredSubLanes,
         filteredLanesIds: filteredSubLanesIds,
