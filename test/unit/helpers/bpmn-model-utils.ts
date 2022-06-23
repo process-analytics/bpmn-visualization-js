@@ -136,8 +136,7 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
   });
 
   if (model.messageFlows) {
-    const messageFlow = model.messageFlows;
-    bpmnModel.edges.push(newMessageFlow(messageFlow.id, messageFlow.name, messageFlow.source, messageFlow.target));
+    ensureIsArray(model.messageFlows).forEach(messageFlow => bpmnModel.edges.push(newMessageFlow(messageFlow.id, messageFlow.name, messageFlow.source, messageFlow.target)));
   }
 
   if (model.process) {
@@ -149,7 +148,7 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
 
 export interface BpmnModelTestRepresentation {
   pools?: Pool | Pool[];
-  messageFlows?: Flow;
+  messageFlows?: Flow | Flow[];
   // to define a process without participant
   process?: ContainerWithLanes & BaseElement;
 }

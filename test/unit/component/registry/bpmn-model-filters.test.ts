@@ -137,6 +137,7 @@ describe('Bpmn Model filters', () => {
   });
 
   describe.each([['id'], ['name']])(`Filter by %s`, (propertyName: string) => {
+    // TOOD rename test, no need to start with 'Filter by xxx' already in the 'describe'
     it(`Filter by ${propertyName} a model containing a single pool`, () => {
       const originalBpmnModel = toBpmnModel({
         pools: {
@@ -250,7 +251,7 @@ describe('Bpmn Model filters', () => {
       });
     });
 
-    it(`Filter by ${propertyName} all pools of a model, with message flows`, () => {
+    it(`Filter by ${propertyName} pools of a model, with message flows`, () => {
       const originalBpmnModel = toBpmnModel({
         pools: [
           {
@@ -269,18 +270,31 @@ describe('Bpmn Model filters', () => {
               name: 'Start Event 2',
             },
           },
+          {
+            id: 'participant_id_3',
+            name: 'Participant 3',
+          },
         ],
-        messageFlows: {
-          id: 'message_flow_1',
-          source: 'startEvent_2',
-          target: 'participant_id_1',
-        },
+        messageFlows: [
+          {
+            id: 'message_flow_1',
+            source: 'startEvent_2',
+            target: 'participant_id_1',
+          },
+          {
+            id: 'message_flow_2',
+            source: 'participant_id_1',
+            target: 'participant_id_3',
+          },
+        ],
       });
+      expect(originalBpmnModel.pools).toHaveLength(3);
+      expect(originalBpmnModel.edges).toHaveLength(2);
 
       const poolFilter = propertyName === 'id' ? [{ id: 'participant_id_1' }, { id: 'participant_id_2' }] : [{ name: 'Participant 1' }, { name: 'Participant 2' }];
       const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: poolFilter });
 
-      expect(bpmnModel).toStrictEqual(originalBpmnModel);
+      expect(bpmnModel.pools).toHaveLength(2);
       expect(bpmnModel.edges).toHaveLength(1);
       verifyEdge(bpmnModel.edges[0], {
         bpmnElementId: 'message_flow_1',
