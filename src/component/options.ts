@@ -63,7 +63,7 @@ export interface ZoomConfiguration {
  * Model filtering configuration.
  *
  * Here is an example of how to perform model filtering when loading a BPMN diagram:
- * ```typescript
+ * ```
  * bpmnVisualization.load(diagram, {
  *   modelFilter: {
  *     pools: [
