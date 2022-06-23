@@ -87,13 +87,12 @@ export class ModelFiltering {
     lanes: Shape[],
   ): { filteredLanes: Shape[]; filteredLaneIds: string[]; filteredFlowNodes: Shape[]; filteredFlowNodeIds: string[] } {
     const filteredFlowNodes = flowNodes.filter(shape => parentIdsToFilter.includes(shape.bpmnElement.parentId));
-    const filteredFlowNodeIds = filteredFlowNodes.map(shape => shape.bpmnElement.id);
-
     if (filteredFlowNodes.length === 0) {
-      return { filteredLanes: [], filteredLaneIds: [], filteredFlowNodes, filteredFlowNodeIds };
+      return { filteredLanes: [], filteredLaneIds: [], filteredFlowNodes: [], filteredFlowNodeIds: [] };
     }
 
     // manage children of subprocesses / call activity and boundary events attached to tasks
+    const filteredFlowNodeIds = filteredFlowNodes.map(shape => shape.bpmnElement.id);
     const {
       filteredLanes,
       filteredLaneIds,
