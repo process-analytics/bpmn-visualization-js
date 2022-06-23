@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import type BpmnModel from '../../../src/model/bpmn/internal/BpmnModel';
 import { Edge } from '../../../src/model/bpmn/internal/edge/edge';
 import { MessageFlow, SequenceFlow } from '../../../src/model/bpmn/internal/edge/flows';
@@ -41,15 +42,16 @@ export const buildEdgeId = (bpmnElementId: string): string => {
   return `Edge_${bpmnElementId}`;
 };
 
-// TODO missing parentId in SequenceFlow constructor
-const newSequenceFlow = (parentId: string, id: string, name: string, source: string, target: string): Edge => new Edge(buildEdgeId(id), new SequenceFlow(id, name, source, target));
+// TODO missing parentId in SequenceFlow constructor --> create an issue and remove the TODO
+// we may remove the _parentId parameter to exhibit it
+const newSequenceFlow = (_parentId: string, id: string, name: string, source: string, target: string): Edge =>
+  new Edge(buildEdgeId(id), new SequenceFlow(id, name, source, target));
 
 const newMessageFlow = (id: string, name: string, source: string, target: string): Edge => new Edge(buildEdgeId(id), new MessageFlow(id, name, source, target));
 
 export const sequenceFlowInModel = (id: string, name: string): BpmnModel => {
   const bpmnModel = newBpmnModel();
-  // TODO duplication with newSequenceFlow
-  bpmnModel.edges.push(new Edge(buildEdgeId(id), new SequenceFlow(id, name)));
+  bpmnModel.edges.push(newSequenceFlow(undefined, id, name, undefined, undefined));
   return bpmnModel;
 };
 
@@ -170,7 +172,8 @@ interface ExpendableElement {
   isExpanded?: boolean;
 }
 
-// TODO allow array in all properties
+// The name of all properties is using plural even if we currently use mono values and not arrays.
+// This is consistent with the other models we used in implementation and tests.
 interface Container {
   startEvents?: BaseElement;
   tasks?: BaseElement & { boundaryEvents?: BaseElement };
