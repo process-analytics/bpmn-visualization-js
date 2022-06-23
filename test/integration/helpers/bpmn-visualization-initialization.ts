@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-import { BpmnVisualization } from '../../../src/bpmn-visualization';
+import { BpmnVisualization, type GlobalOptions } from '../../../src/bpmn-visualization';
 import { insertBpmnContainer } from './dom-utils';
 
-export function initializeBpmnVisualization(containerId?: string): BpmnVisualization {
+export type GlobalOptionsWithoutContainer = Omit<GlobalOptions, 'container'>;
+
+export const initializeBpmnVisualization = (containerId?: string, options?: GlobalOptionsWithoutContainer): BpmnVisualization => {
   const bpmnContainerId = containerId ?? 'bpmn-visualization-container';
   insertBpmnContainer(bpmnContainerId);
-  return new BpmnVisualization({ container: bpmnContainerId });
-}
+  return new BpmnVisualization({ container: bpmnContainerId, ...options });
+};
 
-export function initializeBpmnVisualizationWithHtmlElement(containerId?: string, withNavigation = false): BpmnVisualization {
+export const initializeBpmnVisualizationWithHtmlElement = (containerId?: string, withNavigation = false): BpmnVisualization => {
   const bpmnContainerId = containerId ?? 'bpmn-visualization-container-alternative';
   const options = { container: insertBpmnContainer(bpmnContainerId), navigation: { enabled: withNavigation } };
   return new BpmnVisualization(options);
-}
+};
