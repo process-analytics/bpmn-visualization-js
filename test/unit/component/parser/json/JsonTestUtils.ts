@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import type { ShapeBpmnSubProcessKind, ShapeBpmnEventDefinitionKind } from '../../../../../src/model/bpmn/internal';
 import { newBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
 import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';

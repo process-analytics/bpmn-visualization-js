@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import type { ExpectedStateStyle, ExpectedCell } from '../matcher-utils';
 import { buildCommonExpectedStateStyle, buildCellMatcher, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 import MatcherContext = jest.MatcherContext;
