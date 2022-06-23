@@ -43,10 +43,9 @@ export class ModelFiltering {
   private filterPools(bpmnModel: BpmnModel, poolIdsFilter: string[], poolNamesFilter: string[]): { filteredPools: Shape[]; filteredPoolsIds: string[] } {
     const filteredPools = bpmnModel.pools.filter(pool => poolIdsFilter.includes(pool.bpmnElement.id) || poolNamesFilter.includes(pool.bpmnElement.name));
     if (filteredPools.length == 0) {
-      let errorMsgSuffix = poolIdsFilter.length > 0 ? ' with ids ' + poolIdsFilter : '';
-      errorMsgSuffix += poolNamesFilter.length > 0 ? ' with names ' + poolNamesFilter : '';
-      // TODO change - No matching pools for ids [xxxx,xxxxxxxx] or names [yyyyy,yyyyyy]
-      throw new Error('no existing pool' + errorMsgSuffix);
+      let errorMsgSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter}]` : '';
+      errorMsgSuffix += poolNamesFilter.length > 0 ? `${errorMsgSuffix ? ' and' : ''} for names [${poolNamesFilter}]` : '';
+      throw new Error('No matching pools' + errorMsgSuffix);
     }
     const filteredPoolsIds = filteredPools.map(shape => shape.bpmnElement.id);
     return { filteredPools, filteredPoolsIds };

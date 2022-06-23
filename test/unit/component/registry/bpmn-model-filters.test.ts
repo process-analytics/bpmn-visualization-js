@@ -66,13 +66,12 @@ describe('Bpmn Model filters', () => {
   });
 
   describe('Error management', () => {
-    // TODO rework error message in implementation first, and if relevant use it.each
     it('Filter several pool by id - non existing pool id', () => {
       expect(() =>
         modelFiltering.filter(poolInModel('1', 'Pool 1'), {
           pools: [{ id: 'i_do_not_exist-1' }, { id: 'i_do_not_exist-2' }],
         }),
-      ).toThrow(`no existing pool with ids i_do_not_exist-1,i_do_not_exist-2`);
+      ).toThrow(`No matching pools for ids [i_do_not_exist-1,i_do_not_exist-2]`);
     });
 
     it('Filter several pool by name - no existing pool', () => {
@@ -80,15 +79,15 @@ describe('Bpmn Model filters', () => {
         modelFiltering.filter(poolInModel('1', 'Pool 1'), {
           pools: [{ name: 'name_do_not_exist-1' }, { name: 'name_do_not_exist-2' }],
         }),
-      ).toThrow(`no existing pool with names name_do_not_exist-1,name_do_not_exist-2`);
+      ).toThrow(`No matching pools for names [name_do_not_exist-1,name_do_not_exist-2]`);
     });
 
     it('Filter several pool by id and name - no existing pool', () => {
       expect(() =>
         modelFiltering.filter(poolInModel('1', 'Pool 1'), {
-          pools: [{ id: 'id_do_not_exist' }, { name: 'name_do_not_exist' }, { id: 'id_do_not_exist_other' }],
+          pools: [{ id: 'id_do_not_exist' }, { name: 'name_do_not_exist' }, { id: 'id_do_not_exist_other', name: 'Pool 1' }],
         }),
-      ).toThrow(`no existing pool with ids id_do_not_exist,id_do_not_exist_other with names name_do_not_exist`);
+      ).toThrow(`No matching pools for ids [id_do_not_exist,id_do_not_exist_other] and for names [name_do_not_exist]`);
     });
 
     it('Filter model that does not have participant', () => {
@@ -119,7 +118,7 @@ describe('Bpmn Model filters', () => {
         modelFiltering.filter(originalBpmnModel, {
           pools: { id: 'process_id' },
         }),
-      ).toThrow(`no existing pool with ids process_id`);
+      ).toThrow(`No matching pools for ids [process_id]`);
     });
 
     // it.each`
