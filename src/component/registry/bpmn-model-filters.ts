@@ -38,15 +38,12 @@ export class ModelFiltering {
       errorMsgSuffix += poolNamesFilter.length > 0 ? ' with names ' + poolNamesFilter : '';
       throw new Error('no existing pool' + errorMsgSuffix);
     }
-    // TODO also fail if one of the ids is not retrieved? or filter at best?
-
     // TODO use consistent names: 'kept' or 'filtered' but not both
     // prepare parent
     const poolIdsToFilter = filteredPools.map(shape => shape.bpmnElement.id);
 
     const { filteredLanes, filteredLanesIds, filteredFlowNodes, filteredFlowNodeIds } = this.filterLanesAndFlowNodes(bpmnModel.lanes, bpmnModel.flowNodes, poolIdsToFilter);
 
-    // filterPoolBpmnIds message flow: a single pool, remove all but we should remove refs to outgoing msg flows on related shapes
     // keep only edge whose source and target have been kept
     const keptElementIds = [...poolIdsToFilter, ...filteredLanesIds, ...filteredFlowNodeIds];
     const filteredEdges = bpmnModel.edges.filter(edge => keptElementIds.includes(edge.bpmnElement.sourceRefId) && keptElementIds.includes(edge.bpmnElement.targetRefId));
