@@ -88,23 +88,21 @@ export class ModelFiltering {
   ): { filteredLanes: Shape[]; filteredLaneIds: string[]; filteredFlowNodes: Shape[]; filteredFlowNodeIds: string[] } {
     const filteredFlowNodes = flowNodes.filter(shape => parentIdsToFilter.includes(shape.bpmnElement.parentId));
     const filteredFlowNodeIds = filteredFlowNodes.map(shape => shape.bpmnElement.id);
-    const filteredLanes = [],
-      filteredLaneIds = [];
 
-    if (filteredFlowNodes.length > 0) {
-      // manage children of subprocesses / call activity and boundary events attached to tasks
-      const {
-        filteredLanes: filteredSubLanes,
-        filteredLaneIds: filteredSubLanesIds,
-        filteredFlowNodes: filteredChildFlowNodes,
-        filteredFlowNodeIds: filteredChildFlowNodeIds,
-      } = this.filterLanesAndFlowNodes(lanes, flowNodes, filteredFlowNodeIds);
-      filteredLanes.push(...filteredSubLanes);
-      filteredLaneIds.push(...filteredSubLanesIds);
-      filteredFlowNodes.push(...filteredChildFlowNodes);
-      filteredFlowNodeIds.push(...filteredChildFlowNodeIds);
+    if (filteredFlowNodes.length === 0) {
+      return { filteredLanes: [], filteredLaneIds: [], filteredFlowNodes, filteredFlowNodeIds };
     }
-    return { filteredLanes, filteredLaneIds: filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds };
+
+    // manage children of subprocesses / call activity and boundary events attached to tasks
+    const {
+      filteredLanes,
+      filteredLaneIds,
+      filteredFlowNodes: filteredChildFlowNodes,
+      filteredFlowNodeIds: filteredChildFlowNodeIds,
+    } = this.filterLanesAndFlowNodes(lanes, flowNodes, filteredFlowNodeIds);
+    filteredFlowNodes.push(...filteredChildFlowNodes);
+    filteredFlowNodeIds.push(...filteredChildFlowNodeIds);
+    return { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds };
   }
 
   private filterEdges(edges: Edge[], filteredElementIds: string[]): Edge[] {
