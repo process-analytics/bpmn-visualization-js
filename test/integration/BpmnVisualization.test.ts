@@ -35,7 +35,7 @@ describe('BpmnVisualization', () => {
             },
           },
         }),
-      ).toThrow(`no existing pool with ids i_do_not_exist`);
+      ).toThrow('No matching pools for ids [i_do_not_exist]');
     });
   });
 
