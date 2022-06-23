@@ -23,7 +23,8 @@ import type { JsonParsingWarning } from '../../../../../src/component/parser/par
 import { ParsingMessageCollector } from '../../../../../src/component/parser/parsing-messages';
 import type { ExpectedBounds, ExpectedFont } from '../../../helpers/bpmn-model-expect';
 
-// TODO temp to avoid changing all imports in json parser tests
+// This is a temporary solution after the verifyShape and verifyEdge functions moved to the 'bpmn-model-expect' file.
+// It left the json parser tests imports untouched. The imports will be changed later.
 export * from '../../../helpers/bpmn-model-expect';
 
 class ParsingMessageCollectorTester extends ParsingMessageCollector {
