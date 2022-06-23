@@ -33,77 +33,77 @@ export class ModelFiltering {
       throw new Error('It is not possible to filter pools of the BPMN model because it does not contain any pool');
     }
 
-    const { filteredPools, filteredPoolsIds } = this.filterPools(bpmnModel, poolIdsFilter, poolNamesFilter);
-    const { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds } = this.filterLanesAndFlowNodes(bpmnModel.lanes, bpmnModel.flowNodes, filteredPoolsIds);
-    const filteredEdges = this.filterEdges(bpmnModel.edges, [...filteredPoolsIds, ...filteredLaneIds, ...filteredFlowNodeIds]);
+    const { filteredPools, filteredPoolsIds } = filterPools(bpmnModel, poolIdsFilter, poolNamesFilter);
+    const { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds } = filterLanesAndFlowNodes(bpmnModel.lanes, bpmnModel.flowNodes, filteredPoolsIds);
+    const filteredEdges = filterEdges(bpmnModel.edges, [...filteredPoolsIds, ...filteredLaneIds, ...filteredFlowNodeIds]);
 
     return { lanes: filteredLanes, flowNodes: filteredFlowNodes, pools: filteredPools, edges: filteredEdges };
   }
+}
 
-  private filterPools(bpmnModel: BpmnModel, poolIdsFilter: string[], poolNamesFilter: string[]): { filteredPools: Shape[]; filteredPoolsIds: string[] } {
-    const filteredPools = bpmnModel.pools.filter(pool => poolIdsFilter.includes(pool.bpmnElement.id) || poolNamesFilter.includes(pool.bpmnElement.name));
-    if (filteredPools.length == 0) {
-      let errorMsgSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter}]` : '';
-      errorMsgSuffix += poolNamesFilter.length > 0 ? `${errorMsgSuffix ? ' and' : ''} for names [${poolNamesFilter}]` : '';
-      throw new Error('No matching pools' + errorMsgSuffix);
-    }
-    const filteredPoolsIds = filteredPools.map(shape => shape.bpmnElement.id);
-    return { filteredPools, filteredPoolsIds };
+function filterPools(bpmnModel: BpmnModel, poolIdsFilter: string[], poolNamesFilter: string[]): { filteredPools: Shape[]; filteredPoolsIds: string[] } {
+  const filteredPools = bpmnModel.pools.filter(pool => poolIdsFilter.includes(pool.bpmnElement.id) || poolNamesFilter.includes(pool.bpmnElement.name));
+  if (filteredPools.length == 0) {
+    let errorMsgSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter}]` : '';
+    errorMsgSuffix += poolNamesFilter.length > 0 ? `${errorMsgSuffix ? ' and' : ''} for names [${poolNamesFilter}]` : '';
+    throw new Error('No matching pools' + errorMsgSuffix);
   }
+  const filteredPoolsIds = filteredPools.map(shape => shape.bpmnElement.id);
+  return { filteredPools, filteredPoolsIds };
+}
 
-  private filterLanesAndFlowNodes(
-    lanes: Shape[],
-    flowNodes: Shape[],
-    parentIdsToFilter: string[],
-  ): { filteredLanes: Shape[]; filteredLaneIds: string[]; filteredFlowNodes: Shape[]; filteredFlowNodeIds: string[] } {
-    const { filteredLanes, filteredLaneIds } = this.filterLanes(lanes, parentIdsToFilter);
+function filterLanesAndFlowNodes(
+  lanes: Shape[],
+  flowNodes: Shape[],
+  parentIdsToFilter: string[],
+): { filteredLanes: Shape[]; filteredLaneIds: string[]; filteredFlowNodes: Shape[]; filteredFlowNodeIds: string[] } {
+  const { filteredLanes, filteredLaneIds } = filterLanes(lanes, parentIdsToFilter);
 
-    const {
-      filteredLanes: filteredSubLanes,
-      filteredLaneIds: filteredSubLanesIds,
-      filteredFlowNodes,
-      filteredFlowNodeIds,
-    } = this.filterFlowNodes(flowNodes, [...parentIdsToFilter, ...filteredLaneIds], lanes);
+  const {
+    filteredLanes: filteredSubLanes,
+    filteredLaneIds: filteredSubLanesIds,
+    filteredFlowNodes,
+    filteredFlowNodeIds,
+  } = filterFlowNodes(flowNodes, [...parentIdsToFilter, ...filteredLaneIds], lanes);
+  filteredLanes.push(...filteredSubLanes);
+  filteredLaneIds.push(...filteredSubLanesIds);
+  return { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds };
+}
+
+function filterLanes(lanes: Shape[], parentIdsToFilter: string[]): { filteredLanes: Shape[]; filteredLaneIds: string[] } {
+  const filteredLanes = lanes.filter(shape => parentIdsToFilter.includes(shape.bpmnElement.parentId));
+  const filteredLaneIds = filteredLanes.map(shape => shape.bpmnElement.id);
+  if (filteredLanes.length > 0) {
+    const { filteredLanes: filteredSubLanes, filteredLaneIds: filteredSubLaneIds } = filterLanes(lanes, filteredLaneIds);
     filteredLanes.push(...filteredSubLanes);
-    filteredLaneIds.push(...filteredSubLanesIds);
-    return { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds };
+    filteredLaneIds.push(...filteredSubLaneIds);
+  }
+  return { filteredLanes, filteredLaneIds };
+}
+
+function filterFlowNodes(
+  flowNodes: Shape[],
+  parentIdsToFilter: string[],
+  lanes: Shape[],
+): { filteredLanes: Shape[]; filteredLaneIds: string[]; filteredFlowNodes: Shape[]; filteredFlowNodeIds: string[] } {
+  const filteredFlowNodes = flowNodes.filter(shape => parentIdsToFilter.includes(shape.bpmnElement.parentId));
+  if (filteredFlowNodes.length === 0) {
+    return { filteredLanes: [], filteredLaneIds: [], filteredFlowNodes: [], filteredFlowNodeIds: [] };
   }
 
-  private filterLanes(lanes: Shape[], parentIdsToFilter: string[]): { filteredLanes: Shape[]; filteredLaneIds: string[] } {
-    const filteredLanes = lanes.filter(shape => parentIdsToFilter.includes(shape.bpmnElement.parentId));
-    const filteredLaneIds = filteredLanes.map(shape => shape.bpmnElement.id);
-    if (filteredLanes.length > 0) {
-      const { filteredLanes: filteredSubLanes, filteredLaneIds: filteredSubLaneIds } = this.filterLanes(lanes, filteredLaneIds);
-      filteredLanes.push(...filteredSubLanes);
-      filteredLaneIds.push(...filteredSubLaneIds);
-    }
-    return { filteredLanes, filteredLaneIds };
-  }
+  // manage children of subprocesses / call activity and boundary events attached to tasks
+  const filteredFlowNodeIds = filteredFlowNodes.map(shape => shape.bpmnElement.id);
+  const {
+    filteredLanes,
+    filteredLaneIds,
+    filteredFlowNodes: filteredChildFlowNodes,
+    filteredFlowNodeIds: filteredChildFlowNodeIds,
+  } = filterLanesAndFlowNodes(lanes, flowNodes, filteredFlowNodeIds);
+  filteredFlowNodes.push(...filteredChildFlowNodes);
+  filteredFlowNodeIds.push(...filteredChildFlowNodeIds);
+  return { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds };
+}
 
-  private filterFlowNodes(
-    flowNodes: Shape[],
-    parentIdsToFilter: string[],
-    lanes: Shape[],
-  ): { filteredLanes: Shape[]; filteredLaneIds: string[]; filteredFlowNodes: Shape[]; filteredFlowNodeIds: string[] } {
-    const filteredFlowNodes = flowNodes.filter(shape => parentIdsToFilter.includes(shape.bpmnElement.parentId));
-    if (filteredFlowNodes.length === 0) {
-      return { filteredLanes: [], filteredLaneIds: [], filteredFlowNodes: [], filteredFlowNodeIds: [] };
-    }
-
-    // manage children of subprocesses / call activity and boundary events attached to tasks
-    const filteredFlowNodeIds = filteredFlowNodes.map(shape => shape.bpmnElement.id);
-    const {
-      filteredLanes,
-      filteredLaneIds,
-      filteredFlowNodes: filteredChildFlowNodes,
-      filteredFlowNodeIds: filteredChildFlowNodeIds,
-    } = this.filterLanesAndFlowNodes(lanes, flowNodes, filteredFlowNodeIds);
-    filteredFlowNodes.push(...filteredChildFlowNodes);
-    filteredFlowNodeIds.push(...filteredChildFlowNodeIds);
-    return { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds };
-  }
-
-  private filterEdges(edges: Edge[], filteredElementIds: string[]): Edge[] {
-    return edges.filter(edge => filteredElementIds.includes(edge.bpmnElement.sourceRefId) && filteredElementIds.includes(edge.bpmnElement.targetRefId));
-  }
+function filterEdges(edges: Edge[], filteredElementIds: string[]): Edge[] {
+  return edges.filter(edge => filteredElementIds.includes(edge.bpmnElement.sourceRefId) && filteredElementIds.includes(edge.bpmnElement.targetRefId));
 }
