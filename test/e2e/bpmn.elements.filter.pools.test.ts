@@ -37,7 +37,6 @@ describe('Filter pools', () => {
     diagramSubfolder,
   );
   const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
-  // const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
   const bpmnDiagramName = 'pools';
 
   // Participant_1 start/task/end
