@@ -21,8 +21,8 @@ import {
   parseJsonAndExpectOnlyPoolsAndFlowNodes,
   parseJsonAndExpectOnlyWarnings,
   parsingMessageCollector,
-  verifyShape,
 } from './JsonTestUtils';
+import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
 import { GroupUnknownCategoryValueWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
 
