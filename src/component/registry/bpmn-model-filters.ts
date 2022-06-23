@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+import type { Edge } from '../../model/bpmn/internal/edge/edge';
+import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import type { ModelFilter } from '../options';
 import { ensureIsArray } from '../helpers/array-utils';
-import type Shape from '../../model/bpmn/internal/shape/Shape';
 
 export class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
@@ -28,83 +29,85 @@ export class ModelFiltering {
     if (poolIdsFilter.length == 0 && poolNamesFilter.length == 0) {
       return bpmnModel;
     }
+
     // TODO no pool in model but filteredPools exist --> error with dedicated message? add a test for this use case
     // Impossible to filter because the existing model doesn't contain any pool
 
-    const pools = bpmnModel.pools;
-    const filteredPools = pools.filter(pool => poolIdsFilter.includes(pool.bpmnElement.id) || poolNamesFilter.includes(pool.bpmnElement.name));
+    const { filteredPools, filteredPoolsIds } = this.filterPools(bpmnModel, poolIdsFilter, poolNamesFilter);
+    const { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds } = this.filterLanesAndFlowNodes(bpmnModel.lanes, bpmnModel.flowNodes, filteredPoolsIds);
+    const filteredEdges = this.filterEdges(bpmnModel.edges, [...filteredPoolsIds, ...filteredLaneIds, ...filteredFlowNodeIds]);
+
+    return { lanes: filteredLanes, flowNodes: filteredFlowNodes, pools: filteredPools, edges: filteredEdges };
+  }
+
+  private filterPools(bpmnModel: BpmnModel, poolIdsFilter: string[], poolNamesFilter: string[]): { filteredPools: Shape[]; filteredPoolsIds: string[] } {
+    const filteredPools = bpmnModel.pools.filter(pool => poolIdsFilter.includes(pool.bpmnElement.id) || poolNamesFilter.includes(pool.bpmnElement.name));
     if (filteredPools.length == 0) {
       let errorMsgSuffix = poolIdsFilter.length > 0 ? ' with ids ' + poolIdsFilter : '';
       errorMsgSuffix += poolNamesFilter.length > 0 ? ' with names ' + poolNamesFilter : '';
       // TODO change - No matching pools for ids [xxxx,xxxxxxxx] or names [yyyyy,yyyyyy]
       throw new Error('no existing pool' + errorMsgSuffix);
     }
-    // TODO use consistent names: 'kept' or 'filtered' but not both --> use 'filter' everywhere
-    const poolIdsToFilter = filteredPools.map(shape => shape.bpmnElement.id);
-
-    const { filteredLanes, filteredLanesIds, filteredFlowNodes, filteredFlowNodeIds } = this.filterLanesAndFlowNodes(bpmnModel.lanes, bpmnModel.flowNodes, poolIdsToFilter);
-
-    const keptElementIds = [...poolIdsToFilter, ...filteredLanesIds, ...filteredFlowNodeIds];
-    const filteredEdges = bpmnModel.edges.filter(edge => keptElementIds.includes(edge.bpmnElement.sourceRefId) && keptElementIds.includes(edge.bpmnElement.targetRefId));
-
-    return { lanes: filteredLanes, flowNodes: filteredFlowNodes, pools: filteredPools, edges: filteredEdges };
+    const filteredPoolsIds = filteredPools.map(shape => shape.bpmnElement.id);
+    return { filteredPools, filteredPoolsIds };
   }
 
   private filterLanesAndFlowNodes(
     lanes: Shape[],
     flowNodes: Shape[],
     parentIdsToFilter: string[],
-  ): { filteredLanes: Shape[]; filteredLanesIds: string[]; filteredFlowNodes: Shape[]; filteredFlowNodeIds: string[] } {
-    // TODO rename --> filter, not kept
-    const { filteredLanes, filteredLanesIds } = this.filterLanes(lanes, parentIdsToFilter);
-    const keptElementIds = [...parentIdsToFilter, ...filteredLanesIds];
+  ): { filteredLanes: Shape[]; filteredLaneIds: string[]; filteredFlowNodes: Shape[]; filteredFlowNodeIds: string[] } {
+    const { filteredLanes, filteredLaneIds } = this.filterLanes(lanes, parentIdsToFilter);
 
     const {
       filteredLanes: filteredSubLanes,
-      filteredLanesIds: filteredSubLanesIds,
+      filteredLaneIds: filteredSubLanesIds,
       filteredFlowNodes,
       filteredFlowNodeIds,
-    } = this.filterFlowNodes(flowNodes, keptElementIds, lanes);
+    } = this.filterFlowNodes(flowNodes, [...parentIdsToFilter, ...filteredLaneIds], lanes);
     filteredLanes.push(...filteredSubLanes);
-    filteredLanesIds.push(...filteredSubLanesIds);
-    keptElementIds.push(...filteredSubLanesIds, ...filteredFlowNodeIds);
-    return { filteredLanes, filteredLanesIds, filteredFlowNodes, filteredFlowNodeIds };
+    filteredLaneIds.push(...filteredSubLanesIds);
+    return { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds };
   }
 
-  private filterLanes(lanes: Shape[], parentIdsToFilter: string[]): { filteredLanes: Shape[]; filteredLanesIds: string[] } {
+  private filterLanes(lanes: Shape[], parentIdsToFilter: string[]): { filteredLanes: Shape[]; filteredLaneIds: string[] } {
     const filteredLanes = lanes.filter(shape => parentIdsToFilter.includes(shape.bpmnElement.parentId));
     const filteredLaneIds = filteredLanes.map(shape => shape.bpmnElement.id);
     if (filteredLanes.length > 0) {
-      const { filteredLanes: filteredSubLanes, filteredLanesIds: filteredSubLaneIds } = this.filterLanes(lanes, filteredLaneIds);
+      const { filteredLanes: filteredSubLanes, filteredLaneIds: filteredSubLaneIds } = this.filterLanes(lanes, filteredLaneIds);
       filteredLanes.push(...filteredSubLanes);
       filteredLaneIds.push(...filteredSubLaneIds);
     }
-    return { filteredLanes: filteredLanes, filteredLanesIds: filteredLaneIds };
+    return { filteredLanes, filteredLaneIds };
   }
 
   private filterFlowNodes(
     flowNodes: Shape[],
     parentIdsToFilter: string[],
     lanes: Shape[],
-  ): { filteredLanes: Shape[]; filteredLanesIds: string[]; filteredFlowNodes: Shape[]; filteredFlowNodeIds: string[] } {
+  ): { filteredLanes: Shape[]; filteredLaneIds: string[]; filteredFlowNodes: Shape[]; filteredFlowNodeIds: string[] } {
     const filteredFlowNodes = flowNodes.filter(shape => parentIdsToFilter.includes(shape.bpmnElement.parentId));
     const filteredFlowNodeIds = filteredFlowNodes.map(shape => shape.bpmnElement.id);
     const filteredLanes = [],
-      filteredLanesIds = [];
+      filteredLaneIds = [];
 
     if (filteredFlowNodes.length > 0) {
       // manage children of subprocesses / call activity and boundary events attached to tasks
       const {
         filteredLanes: filteredSubLanes,
-        filteredLanesIds: filteredSubLanesIds,
+        filteredLaneIds: filteredSubLanesIds,
         filteredFlowNodes: filteredChildFlowNodes,
         filteredFlowNodeIds: filteredChildFlowNodeIds,
       } = this.filterLanesAndFlowNodes(lanes, flowNodes, filteredFlowNodeIds);
       filteredLanes.push(...filteredSubLanes);
-      filteredLanesIds.push(...filteredSubLanesIds);
+      filteredLaneIds.push(...filteredSubLanesIds);
       filteredFlowNodes.push(...filteredChildFlowNodes);
       filteredFlowNodeIds.push(...filteredChildFlowNodeIds);
     }
-    return { filteredLanes, filteredLanesIds, filteredFlowNodes, filteredFlowNodeIds };
+    return { filteredLanes, filteredLaneIds: filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds };
+  }
+
+  private filterEdges(edges: Edge[], filteredElementIds: string[]): Edge[] {
+    return edges.filter(edge => filteredElementIds.includes(edge.bpmnElement.sourceRefId) && filteredElementIds.includes(edge.bpmnElement.targetRefId));
   }
 }
