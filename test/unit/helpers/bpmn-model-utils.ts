@@ -42,16 +42,13 @@ export const buildEdgeId = (bpmnElementId: string): string => {
   return `Edge_${bpmnElementId}`;
 };
 
-// TODO missing parentId in SequenceFlow constructor --> create an issue and remove the TODO
-// we may remove the _parentId parameter to exhibit it
-const newSequenceFlow = (_parentId: string, id: string, name: string, source: string, target: string): Edge =>
-  new Edge(buildEdgeId(id), new SequenceFlow(id, name, source, target));
+const newSequenceFlow = (id: string, name: string, source: string, target: string): Edge => new Edge(buildEdgeId(id), new SequenceFlow(id, name, source, target));
 
 const newMessageFlow = (id: string, name: string, source: string, target: string): Edge => new Edge(buildEdgeId(id), new MessageFlow(id, name, source, target));
 
 export const sequenceFlowInModel = (id: string, name: string): BpmnModel => {
   const bpmnModel = newBpmnModel();
-  bpmnModel.edges.push(newSequenceFlow(undefined, id, name, undefined, undefined));
+  bpmnModel.edges.push(newSequenceFlow(id, name, undefined, undefined));
   return bpmnModel;
 };
 
@@ -124,7 +121,7 @@ const addContainerElements = (bpmnModel: BpmnModel, containerWithLanes: Containe
   }
   if (containerWithLanes.sequenceFlows) {
     const sequenceFlow = containerWithLanes.sequenceFlows;
-    bpmnModel.edges.push(newSequenceFlow(containerWithLanes.id, sequenceFlow.id, sequenceFlow.name, sequenceFlow.source, sequenceFlow.target));
+    bpmnModel.edges.push(newSequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.source, sequenceFlow.target));
   }
 };
 
