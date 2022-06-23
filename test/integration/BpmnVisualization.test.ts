@@ -26,9 +26,9 @@ describe('BpmnVisualization', () => {
         `XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`,
       );
     });
-    it('Load and filter one pool by id - non existing pool id', () => {
+    it('Load and filter pools by id - non existing pool id', () => {
       expect(() =>
-        bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'), {
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/filter/pools.bpmn'), {
           modelFilter: {
             pools: {
               id: 'i_do_not_exist',

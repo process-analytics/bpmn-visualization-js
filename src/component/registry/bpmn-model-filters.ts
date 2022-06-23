@@ -29,9 +29,9 @@ export class ModelFiltering {
     if (poolIdsFilter.length == 0 && poolNamesFilter.length == 0) {
       return bpmnModel;
     }
-
-    // TODO no pool in model but filteredPools exist --> error with dedicated message? add a test for this use case
-    // Impossible to filter because the existing model doesn't contain any pool
+    if (bpmnModel.pools.length == 0) {
+      throw new Error('It is not possible to filter pools of the BPMN model because it does not contain any pool');
+    }
 
     const { filteredPools, filteredPoolsIds } = this.filterPools(bpmnModel, poolIdsFilter, poolNamesFilter);
     const { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds } = this.filterLanesAndFlowNodes(bpmnModel.lanes, bpmnModel.flowNodes, filteredPoolsIds);
