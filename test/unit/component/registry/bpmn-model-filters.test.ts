@@ -123,8 +123,7 @@ describe('Bpmn Model filters', () => {
   });
 
   describe.each([['id'], ['name']])(`Filter by %s`, (propertyName: string) => {
-    // TOOD rename test, no need to start with 'Filter by xxx' already in the 'describe'
-    it(`Filter by ${propertyName} a model containing a single pool`, () => {
+    it('A model containing a single pool', () => {
       const originalBpmnModel = toBpmnModel({
         pools: {
           id: 'participant_id_1',
@@ -142,7 +141,7 @@ describe('Bpmn Model filters', () => {
       expect(bpmnModel).toStrictEqual(originalBpmnModel);
     });
 
-    it(`Filter by ${propertyName} a model containing a single pool with a group`, () => {
+    it('A model containing a single pool with a group', () => {
       const originalBpmnModel = toBpmnModel({
         pools: {
           id: 'participant_id_1',
@@ -173,7 +172,7 @@ describe('Bpmn Model filters', () => {
       });
     });
 
-    it(`Filter by ${propertyName} a model containing several pools`, () => {
+    it('A model containing several pools', () => {
       const originalBpmnModel = toBpmnModel({
         pools: [
           {
@@ -237,7 +236,7 @@ describe('Bpmn Model filters', () => {
       });
     });
 
-    it(`Filter by ${propertyName} pools of a model, with message flows`, () => {
+    it(`A model containing several pools, with message flows`, () => {
       const originalBpmnModel = toBpmnModel({
         pools: [
           {
@@ -289,7 +288,7 @@ describe('Bpmn Model filters', () => {
       });
     });
 
-    it(`Filter by ${propertyName} a model containing existing pool and skip the others`, () => {
+    it('A model containing existing pool and skip the others', () => {
       const originalBpmnModel = toBpmnModel({
         pools: [
           {
@@ -330,13 +329,11 @@ describe('Bpmn Model filters', () => {
       },
     });
 
-    const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1', name: 'not exist_1' } });
-
-    expect(bpmnModel).toStrictEqual(originalBpmnModel);
+    expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1', name: 'not exist_1' } })).toStrictEqual(originalBpmnModel);
   });
 
   describe('Filter pool containing BPMN elements', () => {
-    it('Filter pool containing boundary event', () => {
+    it('A model with a pool containing boundary event', () => {
       const originalBpmnModel = toBpmnModel({
         pools: {
           id: 'participant_id_1',
@@ -352,12 +349,10 @@ describe('Bpmn Model filters', () => {
         },
       });
 
-      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } });
-
-      expect(bpmnModel).toStrictEqual(originalBpmnModel);
+      expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
     });
 
-    it('Filter pool containing lane with lane', () => {
+    it('A model with a pool containing lanes of lanes', () => {
       const originalBpmnModel = toBpmnModel({
         pools: {
           id: 'participant_id_1',
@@ -373,12 +368,10 @@ describe('Bpmn Model filters', () => {
         },
       });
 
-      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } });
-
-      expect(bpmnModel).toStrictEqual(originalBpmnModel);
+      expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
     });
 
-    it('Filter pool containing lane with sub-process containing lane and task', () => {
+    it('A model with a pool containing a lane with sub-process containing lanes and tasks', () => {
       const originalBpmnModel = toBpmnModel({
         pools: {
           id: 'participant_id_1',
@@ -406,12 +399,10 @@ describe('Bpmn Model filters', () => {
         },
       });
 
-      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } });
-
-      expect(bpmnModel).toStrictEqual(originalBpmnModel);
+      expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
     });
 
-    it('Filter pool containing expanded sub-process containing lane, task and sequenceFlow', () => {
+    it('A model with a pool containing expanded sub-process containing lane, task and sequenceFlow', () => {
       const originalBpmnModel = toBpmnModel({
         pools: {
           id: 'participant_id_1',
@@ -441,12 +432,10 @@ describe('Bpmn Model filters', () => {
         },
       });
 
-      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } });
-
-      expect(bpmnModel).toStrictEqual(originalBpmnModel);
+      expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
     });
 
-    it('Filter pool containing expanded callActivity containing task, event and sequenceFlow', () => {
+    it('A model with a pool containing expanded callActivity containing task, event and sequenceFlow', () => {
       const originalBpmnModel = toBpmnModel({
         pools: {
           id: 'participant_id_1',
@@ -471,64 +460,62 @@ describe('Bpmn Model filters', () => {
         },
       });
 
-      const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } });
-
-      expect(bpmnModel).toStrictEqual(originalBpmnModel);
+      expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
     });
   });
-});
 
-it('Filter by name or id', () => {
-  const originalBpmnModel = toBpmnModel({
-    pools: [
-      {
-        id: 'participant_id_1',
-        name: 'Participant 1',
-      },
-      {
-        id: 'participant_id_2',
-        name: 'Participant 2',
-      },
-      {
-        id: 'participant_id_3',
-        name: 'Participant 3',
-      },
-    ],
+  it('Filter by name or id', () => {
+    const originalBpmnModel = toBpmnModel({
+      pools: [
+        {
+          id: 'participant_id_1',
+          name: 'Participant 1',
+        },
+        {
+          id: 'participant_id_2',
+          name: 'Participant 2',
+        },
+        {
+          id: 'participant_id_3',
+          name: 'Participant 3',
+        },
+      ],
+    });
+
+    const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: [{ id: 'participant_id_1' }, { name: 'Participant 2' }] });
+    expect(bpmnModel.pools).toHaveLength(2);
+    verifyShape(bpmnModel.pools[0], {
+      bpmnElementId: 'participant_id_1',
+      bpmnElementName: 'Participant 1',
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+    });
+    verifyShape(bpmnModel.pools[1], {
+      bpmnElementId: 'participant_id_2',
+      bpmnElementName: 'Participant 2',
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+    });
   });
 
-  const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: [{ id: 'participant_id_1' }, { name: 'Participant 2' }] });
-  expect(bpmnModel.pools).toHaveLength(2);
-  verifyShape(bpmnModel.pools[0], {
-    bpmnElementId: 'participant_id_1',
-    bpmnElementName: 'Participant 1',
-    bpmnElementKind: ShapeBpmnElementKind.POOL,
-  });
-  verifyShape(bpmnModel.pools[1], {
-    bpmnElementId: 'participant_id_2',
-    bpmnElementName: 'Participant 2',
-    bpmnElementKind: ShapeBpmnElementKind.POOL,
-  });
-});
+  it('Filter a pool by providing filter matching both name and id', () => {
+    const originalBpmnModel = toBpmnModel({
+      pools: [
+        {
+          id: 'participant_id_1',
+          name: 'Participant 1',
+        },
+        {
+          id: 'participant_id_2',
+          name: 'Participant 2',
+        },
+      ],
+    });
 
-it('Filter pool twice by name and id', () => {
-  const originalBpmnModel = toBpmnModel({
-    pools: [
-      {
-        id: 'participant_id_1',
-        name: 'Participant 1',
-      },
-      {
-        id: 'participant_id_2',
-        name: 'Participant 2',
-      },
-    ],
-  });
-
-  const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: [{ id: 'participant_id_1' }, { name: 'Participant 1' }] });
-  expect(bpmnModel.pools).toHaveLength(1);
-  verifyShape(bpmnModel.pools[0], {
-    bpmnElementId: 'participant_id_1',
-    bpmnElementName: 'Participant 1',
-    bpmnElementKind: ShapeBpmnElementKind.POOL,
+    const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: [{ id: 'participant_id_1' }, { name: 'Participant 1' }] });
+    expect(bpmnModel.pools).toHaveLength(1);
+    verifyShape(bpmnModel.pools[0], {
+      bpmnElementId: 'participant_id_1',
+      bpmnElementName: 'Participant 1',
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+    });
   });
 });
