@@ -22,9 +22,11 @@ import { ensureIsArray } from '../helpers/array-utils';
 
 export class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
-    const poolFilters = ensureIsArray(modelFilter?.pools).filter(p => p && Object.keys(p).length);
-    const poolIdsFilter = poolFilters.filter(filter => filter.id).map(filter => filter.id);
-    const poolNamesFilter = poolFilters.filter(filter => !filter.id && filter.name).map(filter => filter.name);
+    const poolIdsFilter: string[] = [];
+    const poolNamesFilter: string[] = [];
+    ensureIsArray(modelFilter?.pools)
+      .filter(p => p && Object.keys(p).length)
+      .forEach(filter => (filter.id ? poolIdsFilter.push(filter.id) : filter.name && poolNamesFilter.push(filter.name)));
 
     if (poolIdsFilter.length == 0 && poolNamesFilter.length == 0) {
       return bpmnModel;
