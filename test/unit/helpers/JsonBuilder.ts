@@ -67,13 +67,9 @@ export function buildDefinitionsAndProcessWithTask(processParameters: BuildProce
     },
   };
 
-  if (Array.isArray(processParameters)) {
-    processParameters.forEach((processParameter, index) => {
-      addElementsOnProcess(processParameter, json, index);
-    });
-  } else {
-    addElementsOnProcess(processParameters, json, 0);
-  }
+  (Array.isArray(processParameters) ? processParameters : [processParameters]).forEach((processParameter, index) => {
+    addElementsOnProcess(processParameter, json, index);
+  });
   return json;
 }
 
