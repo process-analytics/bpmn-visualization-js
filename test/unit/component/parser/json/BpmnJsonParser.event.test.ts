@@ -27,7 +27,7 @@ import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarni
 import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import type { BuildEventDefinitionParameter, BuildEventParameter } from '../../../helpers/JsonBuilder';
-import { addEvent, buildDefinitionsAndProcessWithTask, EventDefinitionOn } from '../../../helpers/JsonBuilder';
+import { buildDefinitionsAndProcessWithTask, EventDefinitionOn } from '../../../helpers/JsonBuilder';
 import { getEventShapes } from '../../../helpers/TestUtils';
 
 interface TestParameter {
@@ -219,52 +219,31 @@ function executeEventCommonTests(
         }
 
         it(`should NOT convert, when 'boundaryEvent' is ${boundaryEventKind} & attached to anything than an 'activity', ${titleForEventDefinitionIsAttributeOf}`, () => {
-          const json = {
-            definitions: {
-              targetNamespace: '',
-              process: {
-                exclusiveGateway: {
-                  id: 'not_activity_id_0',
-                },
+          const json = buildDefinitionsAndProcessWithTask({
+            events: [
+              {
+                bpmnKind: 'boundaryEvent',
+                eventDefinitionParameter: buildEventDefinitionParameter,
+                eventParameter: { ...specificBuildEventParameter, attachedToRef: 'not_activity_id_0' },
               },
-              BPMNDiagram: {
-                name: 'process 0',
-                BPMNPlane: {
-                  BPMNShape: [
-                    {
-                      id: 'shape_not_activity_id_0',
-                      bpmnElement: 'not_activity_id_0',
-                      Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                    },
-                  ],
-                },
-              },
+            ],
+            exclusiveGateway: {
+              id: 'not_activity_id_0',
             },
-          };
-          addEvent(json, {
-            bpmnKind: 'boundaryEvent',
-            eventDefinitionParameter: buildEventDefinitionParameter,
-            eventParameter: { ...specificBuildEventParameter, attachedToRef: 'not_activity_id_0' },
           });
 
           parseAndExpectNoBoundaryEvents(json);
         });
 
         it(`should NOT convert, when 'boundaryEvent' is ${boundaryEventKind} & attached to unexisting activity, ${titleForEventDefinitionIsAttributeOf}`, () => {
-          const json = {
-            definitions: {
-              targetNamespace: '',
-              process: {},
-              BPMNDiagram: {
-                name: 'process 0',
-                BPMNPlane: {},
+          const json = buildDefinitionsAndProcessWithTask({
+            events: [
+              {
+                bpmnKind: 'boundaryEvent',
+                eventDefinitionParameter: buildEventDefinitionParameter,
+                eventParameter: { ...specificBuildEventParameter, attachedToRef: 'unexisting_activity_id_0' },
               },
-            },
-          };
-          addEvent(json, {
-            bpmnKind: 'boundaryEvent',
-            eventDefinitionParameter: buildEventDefinitionParameter,
-            eventParameter: { ...specificBuildEventParameter, attachedToRef: 'unexisting_activity_id_0' },
+            ],
           });
 
           parseAndExpectNoBoundaryEvents(json, 0);

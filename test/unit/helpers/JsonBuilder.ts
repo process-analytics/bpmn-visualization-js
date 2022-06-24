@@ -199,7 +199,7 @@ function addEventDefinitionsOnEvent(event: TCatchEvent | TThrowEvent | TBoundary
   }
 }
 
-export function buildEvent({ index = 0, name, isInterrupting, attachedToRef }: BuildEventParameter = {}): BPMNTEvent {
+function buildEvent({ index = 0, name, isInterrupting, attachedToRef }: BuildEventParameter = {}): BPMNTEvent {
   const event: BPMNTEvent = {
     id: `event_id_${index}`,
     name: name,
