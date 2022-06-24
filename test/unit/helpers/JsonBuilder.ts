@@ -62,7 +62,7 @@ export function buildDefinitions(processParameters: BuildProcessParameter | Buil
   const json: BpmnJsonModel = {
     definitions: {
       targetNamespace: '',
-      process: Array.isArray(processParameters) ? new Array(processParameters.length).fill({}) : {},
+      process: Array.isArray(processParameters) ? Array.from({ length: processParameters.length }, () => ({})) : {},
       BPMNDiagram: {
         name: 'process 0',
         BPMNPlane: {},

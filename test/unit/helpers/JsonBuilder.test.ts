@@ -676,6 +676,84 @@ describe('build json', () => {
         },
       });
     });
+
+    it('build json of definitions containing 2 process with start event', () => {
+      const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT };
+      const json = buildDefinitions([
+        {
+          events: [
+            {
+              bpmnKind: 'startEvent',
+              eventDefinitionParameter,
+              eventParameter: {
+                name: 'name',
+              },
+            },
+          ],
+        },
+        {
+          events: [
+            {
+              bpmnKind: 'startEvent',
+              eventDefinitionParameter,
+              eventParameter: {
+                name: 'name',
+                index: 1,
+              },
+            },
+          ],
+        },
+      ]);
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          process: [
+            {
+              startEvent: {
+                id: 'event_id_0',
+                messageEventDefinition: '',
+                name: 'name',
+              },
+            },
+            {
+              startEvent: {
+                id: 'event_id_1',
+                messageEventDefinition: '',
+                name: 'name',
+              },
+            },
+          ],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_event_id_0',
+                  bpmnElement: 'event_id_0',
+                  Bounds: {
+                    x: 362,
+                    y: 232,
+                    width: 36,
+                    height: 45,
+                  },
+                },
+                {
+                  id: 'shape_event_id_1',
+                  bpmnElement: 'event_id_1',
+                  Bounds: {
+                    x: 362,
+                    y: 232,
+                    width: 36,
+                    height: 45,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      });
+    });
   });
 
   describe('build json with intermediate catch event', () => {
@@ -1106,6 +1184,64 @@ describe('build json', () => {
         },
       });
     });
+
+    it('build json of definitions containing 2 processes with task', () => {
+      const json = buildDefinitions([
+        {
+          withTask: true,
+        },
+        {
+          withTask: true,
+        },
+      ]);
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          process: [
+            {
+              task: {
+                id: 'task_id_0',
+                name: 'task name',
+              },
+            },
+            {
+              task: {
+                id: 'task_id_0',
+                name: 'task name',
+              },
+            },
+          ],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_task_id_0',
+                  bpmnElement: 'task_id_0',
+                  Bounds: {
+                    x: 362,
+                    y: 232,
+                    width: 36,
+                    height: 45,
+                  },
+                },
+                {
+                  id: 'shape_task_id_0',
+                  bpmnElement: 'task_id_0',
+                  Bounds: {
+                    x: 362,
+                    y: 232,
+                    width: 36,
+                    height: 45,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      });
+    });
   });
 
   describe('build json with exclusive gateway', () => {
@@ -1128,6 +1264,48 @@ describe('build json', () => {
                 bpmnElement: 'exclusive_gateway_id_4',
                 Bounds: { x: 567, y: 345, width: 25, height: 25 },
               },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing 2 processes with exclusive gateway', () => {
+      const json = buildDefinitions([
+        {
+          exclusiveGateway: { id: 'exclusive_gateway_id_4' },
+        },
+        {
+          exclusiveGateway: { id: 'exclusive_gateway_id_67' },
+        },
+      ]);
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          process: [
+            {
+              exclusiveGateway: { id: 'exclusive_gateway_id_4' },
+            },
+            {
+              exclusiveGateway: { id: 'exclusive_gateway_id_67' },
+            },
+          ],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_exclusive_gateway_id_4',
+                  bpmnElement: 'exclusive_gateway_id_4',
+                  Bounds: { x: 567, y: 345, width: 25, height: 25 },
+                },
+                {
+                  id: 'shape_exclusive_gateway_id_67',
+                  bpmnElement: 'exclusive_gateway_id_67',
+                  Bounds: { x: 567, y: 345, width: 25, height: 25 },
+                },
+              ],
             },
           },
         },
