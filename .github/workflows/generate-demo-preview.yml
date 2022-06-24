@@ -35,7 +35,7 @@ jobs:
       - name: Build Setup
         uses: ./.github/actions/build-setup
         if: github.event.action != 'closed'
-      - name: Publish Demo preview
+      - name: Publish preview
         if: steps.surge-preview-tools.outputs.can-run-surge-command == 'true'
         uses: afc163/surge-preview@v1
         with:
