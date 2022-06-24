@@ -38,7 +38,7 @@ export interface BuildEventParameter {
 }
 
 export interface BuildEventDefinitionParameter {
-  eventDefinitionKind: string;
+  eventDefinitionKind?: string;
   eventDefinitionOn: EventDefinitionOn;
   eventDefinition?: BPMNEventDefinition;
   withDifferentDefinition?: boolean;
@@ -50,7 +50,7 @@ export interface BuildProcessParameter {
   eventDefinitionKind?: string;
   events?: {
     bpmnKind: string;
-    eventDefinitionParameter?: BuildEventDefinitionParameter;
+    eventDefinitionParameter: BuildEventDefinitionParameter;
     eventParameter?: BuildEventParameter;
   }[];
   exclusiveGateway?: {
@@ -170,18 +170,15 @@ function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildParamete
     addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition: { id: 'event_definition_id' } }, { id: 'other_event_definition_id' });
     (event.eventDefinitionRef as string[]) = ['event_definition_id', 'other_event_definition_id'];
   } else {
-    let eventDefinition = buildParameter.eventDefinition;
-    if (buildParameter.withMultipleDefinitions) {
-      eventDefinition = eventDefinition ? eventDefinition : [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }];
-    } else {
-      eventDefinition = eventDefinition ? eventDefinition : { id: 'event_definition_id' };
-    }
+    const eventDefinition = buildParameter.eventDefinition
+      ? buildParameter.eventDefinition
+      : buildParameter.withMultipleDefinitions
+      ? [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }]
+      : { id: 'event_definition_id' };
     addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition });
-    if (Array.isArray(eventDefinition)) {
-      event.eventDefinitionRef = eventDefinition.map(eventDefinition => (typeof eventDefinition === 'string' ? eventDefinition : eventDefinition.id));
-    } else {
-      event.eventDefinitionRef = (eventDefinition as TEventDefinition).id;
-    }
+    event.eventDefinitionRef = Array.isArray(eventDefinition)
+      ? eventDefinition.map(eventDefinition => (typeof eventDefinition === 'string' ? eventDefinition : eventDefinition.id))
+      : (event.eventDefinitionRef = (eventDefinition as TEventDefinition).id);
   }
 }
 

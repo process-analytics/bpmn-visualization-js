@@ -35,6 +35,193 @@ describe('build json', () => {
     });
   });
 
+  it('build json of definitions containing several processes with different elements', () => {
+    const json = buildDefinitions([
+      {
+        withTask: false,
+        events: [
+          {
+            bpmnKind: 'startEvent',
+            eventDefinitionParameter: {
+              eventDefinitionKind: 'message',
+              eventDefinitionOn: EventDefinitionOn.EVENT,
+            },
+            eventParameter: {
+              index: 0,
+              name: 'startEvent',
+              isInterrupting: false,
+            },
+          },
+          {
+            bpmnKind: 'endEvent',
+            eventDefinitionParameter: {
+              eventDefinitionKind: 'terminate',
+              eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
+            },
+            eventParameter: {
+              index: 1,
+              name: 'endEvent',
+              isInterrupting: true,
+            },
+          },
+        ],
+      },
+      {
+        withTask: true,
+        events: [
+          {
+            bpmnKind: 'startEvent',
+            eventDefinitionParameter: {
+              eventDefinitionOn: EventDefinitionOn.NONE,
+            },
+            eventParameter: {
+              name: 'startEvent',
+              isInterrupting: false,
+            },
+          },
+        ],
+        exclusiveGateway: {
+          id: 'exclusiveGateway',
+        },
+      },
+      {
+        withTask: false,
+        events: [
+          {
+            bpmnKind: 'intermediateCatchEvent',
+            eventDefinitionParameter: {
+              eventDefinitionKind: 'timer',
+              eventDefinitionOn: EventDefinitionOn.BOTH,
+            },
+            eventParameter: {
+              index: 2,
+              name: 'intermediateCatchEvent',
+              isInterrupting: false,
+            },
+          },
+        ],
+      },
+    ]);
+
+    expect(json).toEqual({
+      definitions: {
+        targetNamespace: '',
+        terminateEventDefinition: {
+          id: 'event_definition_id',
+        },
+        timerEventDefinition: {
+          id: 'event_definition_id',
+        },
+        process: [
+          {
+            endEvent: {
+              cancelActivity: true,
+              eventDefinitionRef: 'event_definition_id',
+              id: 'event_id_1',
+              name: 'endEvent',
+            },
+            startEvent: {
+              cancelActivity: false,
+              id: 'event_id_0',
+              messageEventDefinition: '',
+              name: 'startEvent',
+            },
+          },
+          {
+            exclusiveGateway: {
+              id: 'exclusiveGateway',
+            },
+            startEvent: {
+              cancelActivity: false,
+              id: 'event_id_0',
+              name: 'startEvent',
+            },
+            task: {
+              id: 'task_id_0',
+              name: 'task name',
+            },
+          },
+          {
+            intermediateCatchEvent: {
+              cancelActivity: false,
+              eventDefinitionRef: 'event_definition_id',
+              id: 'event_id_2',
+              name: 'intermediateCatchEvent',
+              timerEventDefinition: '',
+            },
+          },
+        ],
+        BPMNDiagram: {
+          name: 'process 0',
+          BPMNPlane: {
+            BPMNShape: [
+              {
+                Bounds: {
+                  height: 45,
+                  width: 36,
+                  x: 362,
+                  y: 232,
+                },
+                bpmnElement: 'event_id_0',
+                id: 'shape_event_id_0',
+              },
+              {
+                Bounds: {
+                  height: 45,
+                  width: 36,
+                  x: 362,
+                  y: 232,
+                },
+                bpmnElement: 'event_id_1',
+                id: 'shape_event_id_1',
+              },
+              {
+                Bounds: {
+                  height: 45,
+                  width: 36,
+                  x: 362,
+                  y: 232,
+                },
+                bpmnElement: 'task_id_0',
+                id: 'shape_task_id_0',
+              },
+              {
+                Bounds: {
+                  height: 25,
+                  width: 25,
+                  x: 567,
+                  y: 345,
+                },
+                bpmnElement: 'exclusiveGateway',
+                id: 'shape_exclusiveGateway',
+              },
+              {
+                Bounds: {
+                  height: 45,
+                  width: 36,
+                  x: 362,
+                  y: 232,
+                },
+                bpmnElement: 'event_id_0',
+                id: 'shape_event_id_0',
+              },
+              {
+                Bounds: {
+                  height: 45,
+                  width: 36,
+                  x: 362,
+                  y: 232,
+                },
+                bpmnElement: 'event_id_2',
+                id: 'shape_event_id_2',
+              },
+            ],
+          },
+        },
+      },
+    });
+  });
+
   describe('build json with boundary event', () => {
     describe('build json with interrupting boundary event', () => {
       it('build json of definitions containing one process with task and interrupting boundary event (with attachedToRef & empty messageEventDefinition)', () => {
