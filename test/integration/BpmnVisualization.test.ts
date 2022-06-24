@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+import { initializeBpmnVisualization, initializeBpmnVisualizationWithHtmlElement, type GlobalOptionsWithoutContainer } from './helpers/bpmn-visualization-initialization';
 import { readFileSync } from '../helpers/file-helper';
-import type { GlobalOptionsWithoutContainer } from './helpers/bpmn-visualization-initialization';
-import { initializeBpmnVisualization, initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visualization-initialization';
+import { allTestedFitTypes } from './helpers/fit-utils';
+import type { FitType } from '../../src/component/options';
 
 describe('BpmnVisualization initialization', () => {
   it.each`
@@ -34,11 +35,16 @@ describe('BpmnVisualization API', () => {
   const bpmnVisualization = initializeBpmnVisualizationWithHtmlElement('bpmn-container', true);
 
   describe('Load', () => {
+    it.each(allTestedFitTypes)('Fit type: %s', (fitType: string) => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'), { fit: { type: <FitType>fitType } });
+    });
+
     it('Load invalid diagram (text file)', async () => {
       expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(
         `XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`,
       );
     });
+
     it('Load and filter pools by id - non existing pool id', () => {
       expect(() =>
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/filter/pools.bpmn'), {
