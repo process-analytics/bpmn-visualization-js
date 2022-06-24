@@ -86,8 +86,7 @@ function addElementsOnProcess(processParameter: BuildProcessParameter, json: Bpm
   processParameter.events?.forEach(event => addEvent(json, event, index));
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getElementOfArray(object: any, index = 0): any {
+function getElementOfArray<T>(object: T | T[], index = 0): T {
   if (Array.isArray(object)) {
     return object[index];
   } else {
@@ -95,7 +94,7 @@ export function getElementOfArray(object: any, index = 0): any {
   }
 }
 
-export function updateBpmnElement<T>(parentElement: T | T[], childElement: T, setValue: (value: T | T[]) => void): void {
+function updateBpmnElement<T>(parentElement: T | T[], childElement: T, setValue: (value: T | T[]) => void): void {
   if (parentElement) {
     if (!Array.isArray(parentElement)) {
       setValue([parentElement, childElement]);
@@ -107,17 +106,17 @@ export function updateBpmnElement<T>(parentElement: T | T[], childElement: T, se
   }
 }
 
-export function addFlownode(jsonModel: BpmnJsonModel, bpmnKind: string, flowNode: TFlowNode, processIndex?: number): void {
-  const process: TProcess = getElementOfArray(jsonModel.definitions.process, processIndex);
+function addFlownode(jsonModel: BpmnJsonModel, bpmnKind: string, flowNode: TFlowNode, processIndex?: number): void {
+  const process: TProcess = getElementOfArray<TProcess>(jsonModel.definitions.process as TProcess | TProcess[], processIndex);
   updateBpmnElement(process[bpmnKind], flowNode, (value: TFlowNode | TFlowNode[]) => (process[bpmnKind] = value));
 }
 
-export function addShape(jsonModel: BpmnJsonModel, taskShape: BPMNShape, processIndex?: number): void {
+function addShape(jsonModel: BpmnJsonModel, taskShape: BPMNShape, processIndex?: number): void {
   const bpmnPlane: BPMNPlane = getElementOfArray(jsonModel.definitions.BPMNDiagram, processIndex).BPMNPlane;
   updateBpmnElement(bpmnPlane.BPMNShape, taskShape, (value: BPMNShape | BPMNShape[]) => (bpmnPlane.BPMNShape = value));
 }
 
-export function addTask(jsonModel: BpmnJsonModel, processIndex?: number): void {
+function addTask(jsonModel: BpmnJsonModel, processIndex?: number): void {
   const task = {
     id: 'task_id_0',
     name: 'task name',
@@ -143,23 +142,19 @@ function addExclusiveGateway(jsonModel: BpmnJsonModel, exclusiveGateway: { id: s
   addShape(jsonModel, shape, processIndex);
 }
 
-export function addEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, eventDefinition: BPMNEventDefinition = ''): TProcess | BPMNTEvent {
+function addEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, eventDefinition: BPMNEventDefinition = ''): TProcess | BPMNTEvent {
   if (eventDefinitionKind !== 'none') {
     bpmnElement[`${eventDefinitionKind}EventDefinition`] = eventDefinition;
   }
   return bpmnElement;
 }
 
-export function addDifferentEventDefinition(
-  bpmnElement: TDefinitions | BPMNTEvent,
-  eventDefinitionKind: string,
-  differentEventDefinition?: TEventDefinition,
-): TProcess | BPMNTEvent {
+function addDifferentEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, differentEventDefinition?: TEventDefinition): TProcess | BPMNTEvent {
   const otherEventDefinition = eventDefinitionKind === 'signal' ? 'message' : 'signal';
   return addEventDefinition(bpmnElement, otherEventDefinition, differentEventDefinition);
 }
 
-export function addEventDefinitions(
+function addEventDefinitions(
   event: BPMNTEvent,
   { eventDefinitionKind, eventDefinition, withDifferentDefinition = false }: BuildEventDefinitionParameter,
   differentEventDefinition?: TEventDefinition,
@@ -170,7 +165,7 @@ export function addEventDefinitions(
   }
 }
 
-export function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildParameter: BuildEventDefinitionParameter, event: BPMNTEvent): void {
+function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildParameter: BuildEventDefinitionParameter, event: BPMNTEvent): void {
   if (buildParameter.withDifferentDefinition) {
     addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition: { id: 'event_definition_id' } }, { id: 'other_event_definition_id' });
     (event.eventDefinitionRef as string[]) = ['event_definition_id', 'other_event_definition_id'];
