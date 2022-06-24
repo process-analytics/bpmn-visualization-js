@@ -34,8 +34,7 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-20.04
     permissions:
-      # surge-preview: PR comments
-      pull-requests: write
+      pull-requests: write # surge-preview: PR comments
     steps:
       - uses: actions/checkout@v3 # access to the local action
       - name: surge preview
@@ -66,8 +65,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: generate_doc
     permissions:
-      # Push to gh-pages
-      contents: write
+      contents: write # Push to gh-pages
     steps:
       - name: Download
         uses: actions/download-artifact@v3

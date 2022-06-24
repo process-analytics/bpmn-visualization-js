@@ -23,8 +23,7 @@ jobs:
   demo_preview: # keep unique across jobs using surge preview (preview url and PR comment id)
     runs-on: ubuntu-20.04
     permissions:
-      # surge-preview: PR comments
-      pull-requests: write
+      pull-requests: write # surge-preview: PR comments
     steps:
       - uses: actions/checkout@v3 # access to the local action
       - name: surge preview
