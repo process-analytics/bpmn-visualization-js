@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import {
   MarkerIdentifier,
   MessageVisibleKind,
@@ -25,7 +26,7 @@ import {
 } from '../../src/bpmn-visualization';
 import { readFileSync } from '../helpers/file-helper';
 import type { ExpectedShapeModelElement } from './helpers/model-expect';
-import { bpmnVisualization } from './helpers/model-expect';
+import { bpmnVisualization, expectEdgesInModel, expectPoolsInModel, expectTotalEdgesInModel, expectShapesInModel, expectTotalShapesInModel } from './helpers/model-expect';
 import { mxgraph } from '../../src/component/mxgraph/initializer';
 
 describe('mxGraph model - BPMN elements', () => {
@@ -1460,6 +1461,48 @@ describe('mxGraph model - BPMN elements', () => {
           -80,
         ),
       });
+    });
+  });
+
+  // We have few tests here, to only test the integration within the mxGraph model.
+  // The details are checked directly in the unit tests of the filtering.
+  describe('Filtered pools at load time', () => {
+    const bpmnDiagramToFilter = readFileSync('../fixtures/bpmn/filter/pools.bpmn');
+
+    it('Filter a single pool by id', () => {
+      // load BPMN
+      bpmnVisualization.load(bpmnDiagramToFilter, {
+        modelFilter: {
+          pools: {
+            id: 'Participant_1',
+          },
+        },
+      });
+
+      expect('Participant_1').toBePool({});
+      expectPoolsInModel(1);
+
+      expect('Participant_1_start_event').toBeStartEvent({
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+        parentId: 'Participant_1',
+        verticalAlign: 'middle',
+      });
+      expect('Participant_1_end_event').toBeEndEvent({
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+        parentId: 'Participant_1',
+        verticalAlign: 'middle',
+      });
+      expectShapesInModel('Participant_1', 3);
+      // pool and its children
+      expectTotalShapesInModel(4);
+
+      // only check one sequence flow in details
+      expect('Participant_1_sequence_flow_startMsg_activity').toBeSequenceFlow({
+        parentId: 'Participant_1',
+        verticalAlign: 'bottom',
+      });
+      expectEdgesInModel('Participant_1', 2);
+      expectTotalEdgesInModel(2);
     });
   });
 });

@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import type {
   FlowKind,
   MessageVisibleKind,
   SequenceFlowKind,
-  ShapeBpmnElementKind,
   ShapeBpmnEventBasedGatewayKind,
   ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
 } from '../../../src/bpmn-visualization';
-import { BpmnVisualization } from '../../../src/bpmn-visualization';
+import { BpmnVisualization, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
 import {
   toBeAssociationFlow,
   toBeBoundaryEvent,
@@ -50,8 +50,9 @@ import {
   toBeTask,
   toBeUserTask,
 } from '../matchers';
-import type { mxGeometry } from 'mxgraph';
+import type { mxCell, mxGeometry } from 'mxgraph';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
+import { getCell } from '../matchers/matcher-utils';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -181,7 +182,38 @@ export interface ExpectedEventBasedGatewayModelElement extends ExpectedShapeMode
 }
 
 export const bpmnVisualization = new BpmnVisualization(null);
+const defaultParent = bpmnVisualization.graph.getDefaultParent();
 
-export function getDefaultParentId(): string {
-  return bpmnVisualization.graph.getDefaultParent().id;
-}
+export const getDefaultParentId = (): string => defaultParent.id;
+
+const expectElementsInModel = (parentId: string, elementsNumber: number, filter: (cell: mxCell) => boolean): void => {
+  const model = bpmnVisualization.graph.model;
+  const descendants = model.filterDescendants(filter, getCell(parentId));
+  expect(descendants).toHaveLength(elementsNumber);
+};
+
+export const expectPoolsInModel = (pools: number): void => {
+  expectElementsInModel(undefined, pools, (cell: mxCell): boolean => {
+    return cell.style?.startsWith(ShapeBpmnElementKind.POOL);
+  });
+};
+
+export const expectShapesInModel = (parentId: string, shapesNumber: number): void => {
+  expectElementsInModel(parentId, shapesNumber, (cell: mxCell): boolean => {
+    return cell.getId() != parentId && cell.isVertex();
+  });
+};
+
+export const expectTotalShapesInModel = (shapesNumber: number): void => {
+  expectShapesInModel(undefined, shapesNumber);
+};
+
+export const expectEdgesInModel = (parentId: string, edgesNumber: number): void => {
+  expectElementsInModel(parentId, edgesNumber, (cell: mxCell): boolean => {
+    return cell.isEdge();
+  });
+};
+
+export const expectTotalEdgesInModel = (edgesNumber: number): void => {
+  expectEdgesInModel(undefined, edgesNumber);
+};

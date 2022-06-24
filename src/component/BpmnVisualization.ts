@@ -71,12 +71,12 @@ export class BpmnVisualization {
   /**
    * Load and render the BPMN diagram.
    * @param xml The BPMN content as xml string
-   * @param options Let decide how to render the diagram
+   * @param options Let decide how to load the model and render the diagram
    * @throws `Error` when loading fails. This is generally due to a parsing error caused by a malformed BPMN content
    */
   load(xml: string, options?: LoadOptions): void {
     const bpmnModel = newBpmnParser().parse(xml);
-    const renderedModel = this.bpmnModelRegistry.load(bpmnModel);
+    const renderedModel = this.bpmnModelRegistry.load(bpmnModel, options?.modelFilter);
     newBpmnRenderer(this.graph).render(renderedModel, options);
   }
 

@@ -60,11 +60,62 @@ export interface ZoomConfiguration {
 }
 
 /**
+ * Model filtering configuration.
+ *
+ * Here is an example of how to perform model filtering when loading a BPMN diagram:
+ * ```
+ * bpmnVisualization.load(diagram, {
+ *   modelFilter: {
+ *     pools: [
+ *       {
+ *         // id of the Participant related to the Pool to display
+ *         id: 'id1'
+ *       },
+ *       {
+ *         // Name of the Participant, or name of the Process referenced by the Participant
+ *         // when the Participant doesn't have a name.
+ *         // This is how `bpmn-visualization` builds the name into its internal model.
+ *         name: 'name2'
+ *       },
+ *       {
+ *       id: 'id3',
+ *       // in this case, we only use the id, and ignore the name
+ *       name: 'name3'
+ *       }
+ *     ]},
+ * });
+ * ```
+ *
+ * @category Initialization
+ */
+export interface ModelFilter {
+  pools?: PoolFilter | PoolFilter[];
+}
+
+/**
+ * Pool filtering configuration.
+ *
+ * A Pool is the graphical representation of a Participant in a Collaboration.
+ * @category Initialization
+ */
+export interface PoolFilter {
+  /** id of the Participant related to the Pool to display */
+  id?: string;
+  /**
+   * Name of the Participant, or name of the Process referenced by the Participant when the Participant doesn't have a name.
+   * This is how `bpmn-visualization` builds the name into its internal model.
+   * If `id` is set, this property is ignored.
+   */
+  name?: string;
+}
+
+/**
  * Options when loading a BPMN Diagram.
  * @category Initialization
  */
 export interface LoadOptions {
   fit?: FitOptions;
+  modelFilter?: ModelFilter;
 }
 
 /**

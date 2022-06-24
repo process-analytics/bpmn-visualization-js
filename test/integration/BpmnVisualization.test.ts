@@ -33,10 +33,23 @@ describe('BpmnVisualization initialization', () => {
 describe('BpmnVisualization API', () => {
   const bpmnVisualization = initializeBpmnVisualizationWithHtmlElement('bpmn-container', true);
 
-  it('Load invalid diagram (text file)', async () => {
-    expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(
-      `XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`,
-    );
+  describe('Load', () => {
+    it('Load invalid diagram (text file)', async () => {
+      expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(
+        `XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`,
+      );
+    });
+    it('Load and filter pools by id - non existing pool id', () => {
+      expect(() =>
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/filter/pools.bpmn'), {
+          modelFilter: {
+            pools: {
+              id: 'i_do_not_exist',
+            },
+          },
+        }),
+      ).toThrow('No matching pools for ids [i_do_not_exist]');
+    });
   });
 
   describe('Version', () => {
