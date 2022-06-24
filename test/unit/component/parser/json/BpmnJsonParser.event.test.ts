@@ -27,7 +27,7 @@ import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarni
 import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import type { BuildEventDefinitionParameter, BuildEventParameter } from '../../../helpers/JsonBuilder';
-import { buildDefinitionsAndProcessWithTask, EventDefinitionOn } from '../../../helpers/JsonBuilder';
+import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
 import { getEventShapes } from '../../../helpers/TestUtils';
 
 interface TestParameter {
@@ -67,7 +67,7 @@ function verifyEventShape(
 }
 
 function testMustConvertOneShape({ bpmnKind, buildEventDefinitionParameter, buildEventParameter, expectedEventDefinitionKind, expectedShapeBpmnElementKind }: TestParameter): void {
-  const json = buildDefinitionsAndProcessWithTask({
+  const json = buildDefinitions({
     events: [{ bpmnKind, eventDefinitionParameter: buildEventDefinitionParameter, eventParameter: buildEventParameter }],
     withTask: true,
   });
@@ -129,7 +129,7 @@ function executeEventCommonTests(
           ],
           withTask: true,
         };
-        const json = buildDefinitionsAndProcessWithTask(title === 'object' ? process : [process]);
+        const json = buildDefinitions(title === 'object' ? process : [process]);
 
         const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 2);
 
@@ -169,7 +169,7 @@ function executeEventCommonTests(
 
     if (expectedEventDefinitionKind !== ShapeBpmnEventDefinitionKind.NONE) {
       it(`should NOT convert, when there are '${eventDefinitionKind}EventDefinition' and another 'EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
-        const json = buildDefinitionsAndProcessWithTask({
+        const json = buildDefinitions({
           eventDefinitionKind,
           events: [{ bpmnKind, eventDefinitionParameter: { ...buildEventDefinitionParameter, withDifferentDefinition: true }, eventParameter: specificBuildEventParameter }],
           withTask: true,
@@ -179,7 +179,7 @@ function executeEventCommonTests(
       });
 
       it(`should NOT convert, when there are several '${eventDefinitionKind}EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
-        const json = buildDefinitionsAndProcessWithTask({
+        const json = buildDefinitions({
           events: [{ bpmnKind, eventDefinitionParameter: { ...buildEventDefinitionParameter, withMultipleDefinitions: true }, eventParameter: specificBuildEventParameter }],
           withTask: true,
         });
@@ -200,7 +200,7 @@ function executeEventCommonTests(
       } else {
         if (specificBuildEventParameter.isInterrupting) {
           it(`should convert as Shape, when 'boundaryEvent' has no 'cancelActivity' & is attached to an 'activity', ${titleForEventDefinitionIsAttributeOf}'`, () => {
-            const json = buildDefinitionsAndProcessWithTask({
+            const json = buildDefinitions({
               events: [
                 {
                   bpmnKind: 'boundaryEvent',
@@ -219,7 +219,7 @@ function executeEventCommonTests(
         }
 
         it(`should NOT convert, when 'boundaryEvent' is ${boundaryEventKind} & attached to anything than an 'activity', ${titleForEventDefinitionIsAttributeOf}`, () => {
-          const json = buildDefinitionsAndProcessWithTask({
+          const json = buildDefinitions({
             events: [
               {
                 bpmnKind: 'boundaryEvent',
@@ -236,7 +236,7 @@ function executeEventCommonTests(
         });
 
         it(`should NOT convert, when 'boundaryEvent' is ${boundaryEventKind} & attached to unexisting activity, ${titleForEventDefinitionIsAttributeOf}`, () => {
-          const json = buildDefinitionsAndProcessWithTask({
+          const json = buildDefinitions({
             events: [
               {
                 bpmnKind: 'boundaryEvent',
@@ -253,7 +253,7 @@ function executeEventCommonTests(
 
     if (expectedEventDefinitionKind !== ShapeBpmnEventDefinitionKind.NONE) {
       it(`should NOT convert, when 'definitions' has ${eventDefinitionKind}EventDefinition and '${bpmnKind}' has ${eventDefinitionKind}EventDefinition & eventDefinitionRef${specificTitle}`, () => {
-        const json = buildDefinitionsAndProcessWithTask({
+        const json = buildDefinitions({
           events: [{ bpmnKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.BOTH }, eventParameter: specificBuildEventParameter }],
           withTask: true,
         });

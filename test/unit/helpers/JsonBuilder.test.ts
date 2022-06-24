@@ -15,7 +15,7 @@
  */
 
 import type { BuildEventDefinitionParameter } from './JsonBuilder';
-import { buildDefinitionsAndProcessWithTask, EventDefinitionOn } from './JsonBuilder';
+import { buildDefinitions, EventDefinitionOn } from './JsonBuilder';
 
 describe('build json', () => {
   it(
@@ -23,7 +23,7 @@ describe('build json', () => {
       "when bpmnKind='boundaryEvent', eventDefinitionKind='message', eventDefinitionOn=EVENT, isInterrupting=true, attachedToRef is defined",
     () => {
       const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'boundaryEvent',
@@ -90,7 +90,7 @@ describe('build json', () => {
       "when bpmnKind='boundaryEvent', eventDefinitionKind='message', eventDefinitionOn=EVENT, isInterrupting is not defined, attachedToRef & name are defined",
     () => {
       const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'boundaryEvent',
@@ -156,7 +156,7 @@ describe('build json', () => {
       "when bpmnKind='boundaryEvent', eventDefinitionKind='message', eventDefinitionOn=DEFINITIONS, isInterrupting=true, attachedToRef is not defined",
     () => {
       const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.DEFINITIONS };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'boundaryEvent',
@@ -225,7 +225,7 @@ describe('build json', () => {
       "when bpmnKind='boundaryEvent', eventDefinitionKind='signal', eventDefinitionOn=EVENT, isInterrupting=false, attachedToRef is NOT defined",
     () => {
       const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.EVENT };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'boundaryEvent',
@@ -291,7 +291,7 @@ describe('build json', () => {
       "when bpmnKind='boundaryEvent', eventDefinitionKind='signal', eventDefinitionOn=EVENT, isInterrupting=false, attachedToRef is not defined, index=1",
     () => {
       const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.EVENT };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'boundaryEvent',
@@ -358,7 +358,7 @@ describe('build json', () => {
       "when bpmnKind='boundaryEvent', eventDefinitionKind='signal', eventDefinitionOn=DEFINITIONS, isInterrupting=false, attachedToRef is defined",
     () => {
       const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.DEFINITIONS };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'boundaryEvent',
@@ -428,7 +428,7 @@ describe('build json', () => {
       "when bpmnKind='startEvent', eventDefinitionKind='message', eventDefinitionOn=EVENT, name is defined, attachedToRef & isInterrupting is not defined",
     () => {
       const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'startEvent',
@@ -492,7 +492,7 @@ describe('build json', () => {
       "when bpmnKind='endEvent', eventDefinitionKind='message', eventDefinitionOn=DEFINITIONS, name is defined, attachedToRef & isInterrupting is not defined",
     () => {
       const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.DEFINITIONS };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'endEvent',
@@ -559,7 +559,7 @@ describe('build json', () => {
       "when bpmnKind='intermediateCatchEvent', eventDefinitionKind='message', eventDefinitionOn=BOTH, name is defined, attachedToRef & isInterrupting is not defined",
     () => {
       const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.BOTH };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'intermediateCatchEvent',
@@ -631,7 +631,7 @@ describe('build json', () => {
         eventDefinitionOn: EventDefinitionOn.EVENT,
         withMultipleDefinitions: true,
       };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'startEvent',
@@ -699,7 +699,7 @@ describe('build json', () => {
         eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
         withMultipleDefinitions: true,
       };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'endEvent',
@@ -775,7 +775,7 @@ describe('build json', () => {
         eventDefinitionOn: EventDefinitionOn.BOTH,
         withMultipleDefinitions: true,
       };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'intermediateCatchEvent',
@@ -852,7 +852,7 @@ describe('build json', () => {
         eventDefinitionOn: EventDefinitionOn.NONE,
         eventDefinition: { id: '9' },
       };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'intermediateThrowEvent',
@@ -917,7 +917,7 @@ describe('build json', () => {
         eventDefinitionOn: EventDefinitionOn.EVENT,
         eventDefinition: { id: '9' },
       };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'intermediateThrowEvent',
@@ -983,7 +983,7 @@ describe('build json', () => {
         eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
         eventDefinition: { id: '9' },
       };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'intermediateThrowEvent',
@@ -1050,7 +1050,7 @@ describe('build json', () => {
         eventDefinitionOn: EventDefinitionOn.EVENT,
         withDifferentDefinition: true,
       };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'intermediateThrowEvent',
@@ -1117,7 +1117,7 @@ describe('build json', () => {
         eventDefinitionOn: EventDefinitionOn.EVENT,
         withDifferentDefinition: true,
       };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'intermediateThrowEvent',
@@ -1184,7 +1184,7 @@ describe('build json', () => {
         eventDefinitionOn: EventDefinitionOn.BOTH,
         withDifferentDefinition: true,
       };
-      const json = buildDefinitionsAndProcessWithTask({
+      const json = buildDefinitions({
         events: [
           {
             bpmnKind: 'intermediateThrowEvent',

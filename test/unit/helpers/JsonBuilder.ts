@@ -58,7 +58,7 @@ export interface BuildProcessParameter {
   };
 }
 
-export function buildDefinitionsAndProcessWithTask(processParameters: BuildProcessParameter | BuildProcessParameter[]): BpmnJsonModel {
+export function buildDefinitions(processParameters: BuildProcessParameter | BuildProcessParameter[]): BpmnJsonModel {
   const json: BpmnJsonModel = {
     definitions: {
       targetNamespace: '',
