@@ -53,6 +53,9 @@ export interface BuildProcessParameter {
     eventDefinitionParameter?: BuildEventDefinitionParameter;
     eventParameter?: BuildEventParameter;
   }[];
+  exclusiveGateway?: {
+    id: string;
+  };
 }
 
 export function buildDefinitionsAndProcessWithTask(processParameters: BuildProcessParameter | BuildProcessParameter[]): BpmnJsonModel {
@@ -76,6 +79,9 @@ export function buildDefinitionsAndProcessWithTask(processParameters: BuildProce
 function addElementsOnProcess(processParameter: BuildProcessParameter, json: BpmnJsonModel, index: number): void {
   if (processParameter.withTask) {
     addTask(json, index);
+  }
+  if (processParameter.exclusiveGateway) {
+    addExclusiveGateway(json, processParameter.exclusiveGateway, index);
   }
   processParameter.events?.forEach(event => addEvent(json, event, index));
 }
@@ -124,6 +130,17 @@ export function addTask(jsonModel: BpmnJsonModel, processIndex?: number): void {
     Bounds: { x: 362, y: 232, width: 36, height: 45 },
   };
   addShape(jsonModel, taskShape, processIndex);
+}
+
+function addExclusiveGateway(jsonModel: BpmnJsonModel, exclusiveGateway: { id: string }, processIndex?: number): void {
+  addFlownode(jsonModel, 'exclusiveGateway', exclusiveGateway, processIndex);
+
+  const shape = {
+    id: `shape_${exclusiveGateway.id}`,
+    bpmnElement: exclusiveGateway.id,
+    Bounds: { x: 567, y: 345, width: 25, height: 25 },
+  };
+  addShape(jsonModel, shape, processIndex);
 }
 
 export function addEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, eventDefinition: BPMNEventDefinition = ''): TProcess | BPMNTEvent {
@@ -197,7 +214,7 @@ export function buildEvent({ index = 0, name, isInterrupting, attachedToRef }: B
   return event;
 }
 
-export function addEvent(
+function addEvent(
   jsonModel: BpmnJsonModel,
   { bpmnKind, eventDefinitionParameter, eventParameter }: { bpmnKind: string; eventDefinitionParameter?: BuildEventDefinitionParameter; eventParameter?: BuildEventParameter },
   processIndex?: number,
