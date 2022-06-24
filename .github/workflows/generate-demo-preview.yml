@@ -20,7 +20,7 @@ on:
       - 'tsconfig.json'
 
 jobs:
-  demo_preview: # the id is used by surge to generate the surge url
+  demo_preview: # keep unique across jobs using surge preview (preview url and PR comment id)
     runs-on: ubuntu-20.04
     permissions:
       # surge-preview: PR comments
@@ -37,7 +37,6 @@ jobs:
         if: github.event.action != 'closed'
       - name: Publish Demo preview
         if: steps.surge-preview-tools.outputs.can-run-surge-command == 'true'
-        id: publish_demo_preview
         uses: afc163/surge-preview@v1
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}

@@ -30,7 +30,7 @@ on:
       - 'typedoc.json'
 
 jobs:
-  doc_preview: # the id is used by surge to generate the surge url
+  doc_preview: # keep unique across jobs using surge preview (preview url and PR comment id)
     if: github.event_name == 'pull_request' && needs.check_secrets.outputs.is_SURGE_TOKEN_set == 'true'
     runs-on: ubuntu-20.04
     permissions:
@@ -48,7 +48,6 @@ jobs:
         if: github.event.action != 'closed'
       - name: Publish preview
         if: steps.surge-preview-tools.outputs.can-run-surge-command == 'true'
-        id: publish_preview
         uses: afc163/surge-preview@v1
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
