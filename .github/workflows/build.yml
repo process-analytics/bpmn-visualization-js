@@ -141,19 +141,3 @@ jobs:
         with:
           name: bundles-${{matrix.browser}}-test-results-${{matrix.os}}-${{github.sha}}
           path: build/test-report/bundles
-
-
-  upload-npm-package:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Build Setup
-        uses: ./.github/actions/build-setup
-      - name: Build npm package
-        run: npm pack
-      - name: Upload npm package
-        uses: actions/upload-artifact@v3
-        with:
-          name: bpmn-visualization-npm-package-${{github.sha}}
-          path: bpmn-visualization-*.tgz
