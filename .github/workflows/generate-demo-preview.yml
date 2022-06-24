@@ -26,23 +26,10 @@ jobs:
       # surge-preview: PR comments
       pull-requests: write
     steps:
-      - uses: bonitasoft/actions/packages/surge-preview-tools@v1.2.0
-        id: surge-preview-tools
+      - name: surge preview
+        uses: ./.github/actions/custom-surge-preview
         with:
+          build-preview-command: npm run demo
+          build-preview-dist: build/demo
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           surge-token: ${{ secrets.SURGE_TOKEN }}
-      - uses: actions/checkout@v3
-        if: github.event.action != 'closed'
-      - name: Build Setup
-        uses: ./.github/actions/build-setup
-        if: github.event.action != 'closed'
-      - name: Publish preview
-        if: steps.surge-preview-tools.outputs.can-run-surge-command == 'true'
-        uses: afc163/surge-preview@v1
-        with:
-          surge_token: ${{ secrets.SURGE_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          dist: build/demo
-          failOnError: true
-          teardown: 'true'
-          build: |
-            npm run demo
