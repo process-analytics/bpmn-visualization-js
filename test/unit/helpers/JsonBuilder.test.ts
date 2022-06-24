@@ -1107,4 +1107,31 @@ describe('build json', () => {
       });
     });
   });
+
+  describe('build json with exclusive gateway', () => {
+    it('build json of definitions containing one process with exclusive gateway', () => {
+      const json = buildDefinitions({
+        exclusiveGateway: { id: 'exclusive_gateway_id_4' },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          process: {
+            exclusiveGateway: { id: 'exclusive_gateway_id_4' },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_exclusive_gateway_id_4',
+                bpmnElement: 'exclusive_gateway_id_4',
+                Bounds: { x: 567, y: 345, width: 25, height: 25 },
+              },
+            },
+          },
+        },
+      });
+    });
+  });
 });
