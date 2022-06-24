@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal';
 import { ParsingMessageCollector } from '../../../../src/component/parser/parsing-messages';
-import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal/shape';
 import {
   EdgeUnknownBpmnElementWarning,
   GroupUnknownCategoryValueWarning,
