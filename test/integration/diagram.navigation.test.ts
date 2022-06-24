@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { FitType, ZoomType } from '../../src/component/options';
-import { readFileSync } from '../helpers/file-helper';
 import { initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visualization-initialization';
+import { readFileSync } from '../helpers/file-helper';
+import { allTestedFitTypes } from './helpers/fit-utils';
+import { type FitType, ZoomType } from '../../src/component/options';
 
 const bpmnVisualization = initializeBpmnVisualizationWithHtmlElement('bpmn-container', true);
 
@@ -25,25 +26,15 @@ describe('diagram navigation', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
   });
 
+  // The following tests ensure there is no error when calling the fit method
   describe('Fit', () => {
     it('Fit no options', async () => {
       // use the deprecated method on purpose, switch to `navigation.fit` when removing the deprecated one.
       bpmnVisualization.fit();
     });
 
-    it.each`
-      fitType
-      ${undefined}
-      ${null}
-      ${FitType.Center}
-      ${FitType.Horizontal}
-      ${FitType.HorizontalVertical}
-      ${FitType.None}
-      ${FitType.Vertical}
-      ${'invalid'}
-    `('Fit with $fitType', ({ fitType }: { fitType: FitType }) => {
-      // ensure no error
-      bpmnVisualization.navigation.fit({ type: fitType });
+    it.each(allTestedFitTypes)('Fit with %s', (fitType: string) => {
+      bpmnVisualization.navigation.fit({ type: <FitType>fitType });
     });
   });
 
