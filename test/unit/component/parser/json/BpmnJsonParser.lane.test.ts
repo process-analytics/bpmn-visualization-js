@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import { expectAsWarning, parseJson, parseJsonAndExpectOnlyLanes, parsingMessageCollector } from './JsonTestUtils';
+import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
-import { expectAsWarning, parseJson, parseJsonAndExpectOnlyLanes, parsingMessageCollector, verifyShape } from './JsonTestUtils';
 import { LaneUnknownFlowNodeRefWarning } from '../../../../../src/component/parser/json/warnings';
 
 describe('parse bpmn as json for lane', () => {

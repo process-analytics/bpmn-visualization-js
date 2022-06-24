@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { parseJsonAndExpectOnlyFlowNodes, verifyShape } from './JsonTestUtils';
+
+import { parseJsonAndExpectOnlyFlowNodes } from './JsonTestUtils';
+import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import type { TCallActivity } from '../../../../../src/model/bpmn/json/baseElement/flowNode/activity/activity';
 import type { GlobalTaskKind } from '../../../../../src/model/bpmn/internal';
 import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal';

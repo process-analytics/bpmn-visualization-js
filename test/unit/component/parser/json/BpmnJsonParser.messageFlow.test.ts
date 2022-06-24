@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { parseJsonAndExpectOnlyEdges, verifyEdge } from './JsonTestUtils';
+
+import { parseJsonAndExpectOnlyEdges } from './JsonTestUtils';
+import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
-import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/kinds';
+import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal';
 import * as bpmndi from '../../../../../src/model/bpmn/json/BPMNDI';
 
 describe('parse bpmn as json for message flow', () => {

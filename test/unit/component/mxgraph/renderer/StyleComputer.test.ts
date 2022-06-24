@@ -41,10 +41,10 @@ import {
   ShapeBpmnSubProcessKind,
 } from '../../../../../src/bpmn-visualization';
 import Label, { Font } from '../../../../../src/model/bpmn/internal/Label';
-import type { ExpectedFont } from '../../parser/json/JsonTestUtils';
 import { Edge } from '../../../../../src/model/bpmn/internal/edge/edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/flows';
 import Bounds from '../../../../../src/model/bpmn/internal/Bounds';
+import type { ExpectedFont } from '../../../helpers/bpmn-model-expect';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);
