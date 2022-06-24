@@ -30,35 +30,24 @@ on:
       - 'typedoc.json'
 
 jobs:
-  # inspired from https://github.com/process-analytics/github-actions-playground/pull/23
-  check_secrets:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-20.04
-    outputs:
-      is_SURGE_TOKEN_set: ${{ steps.secret_availability.outputs.is_SURGE_TOKEN_set }}
-    steps:
-      - name: Compute secrets availability
-        id: secret_availability
-        env:
-          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-        run: |
-          echo "is_SURGE_TOKEN_set: ${{ env.SURGE_TOKEN != '' }}"
-          echo "::set-output name=is_SURGE_TOKEN_set::${{ env.SURGE_TOKEN != '' }}"
-
-  doc_preview:
-    needs: [check_secrets]
+  doc_preview: # the id is used by surge to generate the surge url
     if: github.event_name == 'pull_request' && needs.check_secrets.outputs.is_SURGE_TOKEN_set == 'true'
     runs-on: ubuntu-20.04
     permissions:
       # surge-preview: PR comments
       pull-requests: write
     steps:
+      - uses: bonitasoft/actions/packages/surge-preview-tools@v1.2.0
+        id: surge-preview-tools
+        with:
+          surge-token: ${{ secrets.SURGE_TOKEN }}
       - uses: actions/checkout@v3
         if: github.event.action != 'closed'
       - name: Build Setup
         uses: ./.github/actions/build-setup
         if: github.event.action != 'closed'
       - name: Publish preview
+        if: steps.surge-preview-tools.outputs.can-run-surge-command == 'true'
         id: publish_preview
         uses: afc163/surge-preview@v1
         with:
