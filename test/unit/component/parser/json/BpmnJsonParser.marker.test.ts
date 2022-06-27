@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { parseJsonAndExpectOnlyFlowNodes } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import type { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../../../../src/model/bpmn/json/baseElement/loopCharacteristics';

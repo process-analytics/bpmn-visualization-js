@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { parseJson, parseJsonAndExpectOnlySubProcess, verifySubProcess } from './JsonTestUtils';
-import { getEventShapes } from './TestUtils';
+import { parseJson, parseJsonAndExpectOnlySubProcess, verifySubProcess } from '../../../helpers/JsonTestUtils';
+import { getEventShapes } from '../../../helpers/TestUtils';
 import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';

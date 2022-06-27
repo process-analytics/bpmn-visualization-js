@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
-import type { TEventDefinition } from '../../../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
-import type { BpmnJsonModel, TDefinitions } from '../../../../../src/model/bpmn/json/BPMN20';
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import type { TFlowNode } from '../../../../../src/model/bpmn/json/baseElement/flowElement';
-import type { BPMNPlane, BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
+import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../src/model/bpmn/json/baseElement/flowNode/event';
+import type { TEventDefinition } from '../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
+import type { BpmnJsonModel, TDefinitions } from '../../../src/model/bpmn/json/BPMN20';
+import type { TProcess } from '../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { TFlowNode } from '../../../src/model/bpmn/json/baseElement/flowElement';
+import type { BPMNPlane, BPMNShape } from '../../../src/model/bpmn/json/BPMNDI';
 
 type BPMNTEvent = TCatchEvent | TThrowEvent | TBoundaryEvent;
 type BPMNEventDefinition = string | TEventDefinition | (string | TEventDefinition)[];
