@@ -67,7 +67,10 @@ function verifyEventShape(
 }
 
 function testMustConvertOneShape({ bpmnKind, buildEventDefinitionParameter, buildEventParameter, expectedEventDefinitionKind, expectedShapeBpmnElementKind }: TestParameter): void {
-  const json = buildDefinitionsAndProcessWithTask({ events: [{ bpmnKind, eventDefinitionParameter: buildEventDefinitionParameter, eventParameter: buildEventParameter }] });
+  const json = buildDefinitionsAndProcessWithTask({
+    events: [{ bpmnKind, eventDefinitionParameter: buildEventDefinitionParameter, eventParameter: buildEventParameter }],
+    withTask: true,
+  });
 
   const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 1);
 
@@ -124,6 +127,7 @@ function executeEventCommonTests(
             { bpmnKind, eventDefinitionParameter: buildEventDefinitionParameter, eventParameter: specificBuildEventParameter },
             { bpmnKind, eventDefinitionParameter: buildEventDefinitionParameter, eventParameter: { ...specificBuildEventParameter, index: 1 } },
           ],
+          withTask: true,
         };
         const json = buildDefinitionsAndProcessWithTask(title === 'object' ? process : [process]);
 
@@ -168,6 +172,7 @@ function executeEventCommonTests(
         const json = buildDefinitionsAndProcessWithTask({
           eventDefinitionKind,
           events: [{ bpmnKind, eventDefinitionParameter: { ...buildEventDefinitionParameter, withDifferentDefinition: true }, eventParameter: specificBuildEventParameter }],
+          withTask: true,
         });
 
         parseAndExpectNoEvents(json);
@@ -176,6 +181,7 @@ function executeEventCommonTests(
       it(`should NOT convert, when there are several '${eventDefinitionKind}EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
         const json = buildDefinitionsAndProcessWithTask({
           events: [{ bpmnKind, eventDefinitionParameter: { ...buildEventDefinitionParameter, withMultipleDefinitions: true }, eventParameter: specificBuildEventParameter }],
+          withTask: true,
         });
 
         parseAndExpectNoEvents(json);
@@ -202,6 +208,7 @@ function executeEventCommonTests(
                   eventParameter: { ...specificBuildEventParameter, isInterrupting: undefined },
                 },
               ],
+              withTask: true,
             });
 
             const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 1);
@@ -269,6 +276,7 @@ function executeEventCommonTests(
       it(`should NOT convert, when 'definitions' has ${eventDefinitionKind}EventDefinition and '${bpmnKind}' has ${eventDefinitionKind}EventDefinition & eventDefinitionRef${specificTitle}`, () => {
         const json = buildDefinitionsAndProcessWithTask({
           events: [{ bpmnKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.BOTH }, eventParameter: specificBuildEventParameter }],
+          withTask: true,
         });
 
         parseAndExpectNoEvents(json);
