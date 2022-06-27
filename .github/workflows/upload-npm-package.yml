@@ -1,0 +1,43 @@
+name: Upload npm package
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/actions/build-setup/**/*'
+      - '.github/workflows/upload-npm-package.yml'
+      - 'scripts/**/*'
+      - 'src/**/*'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'rollup.config.js'
+      - 'tsconfig.json'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '.github/actions/build-setup/**/*'
+      - '.github/workflows/upload-npm-package.yml'
+      - 'scripts/**/*'
+      - 'src/**/*'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'rollup.config.js'
+      - 'tsconfig.json'
+
+jobs:
+  upload:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
+      - name: Build npm package
+        run: npm pack
+      - name: Upload npm package
+        uses: actions/upload-artifact@v3
+        with:
+          name: bpmn-visualization-npm-package-${{github.sha}}
+          path: bpmn-visualization-*.tgz
