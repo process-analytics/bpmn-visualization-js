@@ -16,6 +16,7 @@
 
 import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
+
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
 import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 

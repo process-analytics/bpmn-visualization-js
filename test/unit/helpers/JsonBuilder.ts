@@ -45,10 +45,49 @@ export interface BuildEventDefinitionParameter {
   withMultipleDefinitions?: boolean;
 }
 
+export interface BuildProcessParameter {
+  withTask?: boolean;
+  eventDefinitionKind?: string;
+  events?: {
+    bpmnKind: string;
+    eventDefinitionParameter?: BuildEventDefinitionParameter;
+    eventParameter?: BuildEventParameter;
+  }[];
+}
+
+export function buildDefinitionsAndProcessWithTask(processParameters: BuildProcessParameter | BuildProcessParameter[]): BpmnJsonModel {
+  const json: BpmnJsonModel = {
+    definitions: {
+      targetNamespace: '',
+      process: Array.isArray(processParameters) ? new Array(processParameters.length).fill({}) : {},
+      BPMNDiagram: {
+        name: 'process 0',
+        BPMNPlane: {},
+      },
+    },
+  };
+
+  if (Array.isArray(processParameters)) {
+    processParameters.forEach((processParameter, index) => {
+      addElementsOnProcess(processParameter, json, index);
+    });
+  } else {
+    addElementsOnProcess(processParameters, json, 0);
+  }
+  return json;
+}
+
+function addElementsOnProcess(processParameter: BuildProcessParameter, json: BpmnJsonModel, index: number): void {
+  if (processParameter.withTask) {
+    addTask(json, index);
+  }
+  processParameter.events?.forEach(event => addEvent(json, event, index));
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getElementOfArray(object: any, processIndex = 0): any {
+export function getElementOfArray(object: any, index = 0): any {
   if (Array.isArray(object)) {
-    return object[processIndex];
+    return object[index];
   } else {
     return object;
   }
@@ -89,21 +128,6 @@ export function addTask(jsonModel: BpmnJsonModel, processIndex?: number): void {
     Bounds: { x: 362, y: 232, width: 36, height: 45 },
   };
   addShape(jsonModel, taskShape, processIndex);
-}
-
-export function buildDefinitionsAndProcessWithTask(process: TProcess | TProcess[] = {}): BpmnJsonModel {
-  const json: BpmnJsonModel = {
-    definitions: {
-      targetNamespace: '',
-      process: process,
-      BPMNDiagram: {
-        name: 'process 0',
-        BPMNPlane: {},
-      },
-    },
-  };
-  addTask(json);
-  return json;
 }
 
 export function addEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, eventDefinition: BPMNEventDefinition = ''): TProcess | BPMNTEvent {
@@ -179,9 +203,7 @@ export function buildEvent({ index = 0, name, isInterrupting, attachedToRef }: B
 
 export function addEvent(
   jsonModel: BpmnJsonModel,
-  bpmnKind: string,
-  eventDefinitionParameter: BuildEventDefinitionParameter,
-  eventParameter: BuildEventParameter,
+  { bpmnKind, eventDefinitionParameter, eventParameter }: { bpmnKind: string; eventDefinitionParameter?: BuildEventDefinitionParameter; eventParameter?: BuildEventParameter },
   processIndex?: number,
 ): void {
   const event = buildEvent(eventParameter);

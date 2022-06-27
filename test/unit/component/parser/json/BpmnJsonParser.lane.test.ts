@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { expectAsWarning, parseJson, parseJsonAndExpectOnlyLanes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
-import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
 import { LaneUnknownFlowNodeRefWarning } from '../../../../../src/component/parser/json/warnings';
+
+import { expectAsWarning, parseJson, parseJsonAndExpectOnlyLanes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
+import { verifyShape } from '../../../helpers/bpmn-model-expect';
 
 describe('parse bpmn as json for lane', () => {
   it('json containing one process with a single lane without flowNodeRef', () => {

@@ -16,6 +16,7 @@
 
 import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
+
 import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
 import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal';
 import * as bpmndi from '../../../../../src/model/bpmn/json/BPMNDI';

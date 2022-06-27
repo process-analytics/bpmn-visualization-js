@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { expectPoolLaneEdgeFlowNode } from '../../helpers/JsonTestUtils';
+ 
 import { newBpmnParser } from '../../../../src/component/parser/BpmnParser';
+
 import { readFileSync } from '../../../helpers/file-helper';
+import { expectPoolLaneEdgeFlowNode } from '../../helpers/JsonTestUtils';
 
 describe('parse xml to model', () => {
   it('Single process with no participant', () => {

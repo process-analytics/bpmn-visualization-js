@@ -16,6 +16,7 @@
 
 import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
+
 import type { TCallActivity } from '../../../../../src/model/bpmn/json/baseElement/flowNode/activity/activity';
 import type { GlobalTaskKind } from '../../../../../src/model/bpmn/internal';
 import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal';
