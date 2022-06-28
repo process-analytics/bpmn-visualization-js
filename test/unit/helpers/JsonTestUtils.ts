@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import type { ShapeBpmnSubProcessKind, ShapeBpmnEventDefinitionKind } from '../../../../../src/model/bpmn/internal';
-import { newBpmnJsonParser } from '../../../../../src/component/parser/json/BpmnJsonParser';
-import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
-import { ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import type Label from '../../../../../src/model/bpmn/internal/Label';
-import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
-import type { JsonParsingWarning } from '../../../../../src/component/parser/parsing-messages';
-import { ParsingMessageCollector } from '../../../../../src/component/parser/parsing-messages';
-import type { ExpectedBounds, ExpectedFont } from '../../../helpers/bpmn-model-expect';
+import type { ShapeBpmnSubProcessKind, ShapeBpmnEventDefinitionKind } from '../../../src/model/bpmn/internal';
+import { newBpmnJsonParser } from '../../../src/component/parser/json/BpmnJsonParser';
+import type BpmnModel from '../../../src/model/bpmn/internal/BpmnModel';
+import { ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
+import type Label from '../../../src/model/bpmn/internal/Label';
+import type { BpmnJsonModel } from '../../../src/model/bpmn/json/BPMN20';
+import type { JsonParsingWarning } from '../../../src/component/parser/parsing-messages';
+import { ParsingMessageCollector } from '../../../src/component/parser/parsing-messages';
+import type { ExpectedBounds, ExpectedFont } from './bpmn-model-expect';
 
 class ParsingMessageCollectorTester extends ParsingMessageCollector {
   private warnings: Array<JsonParsingWarning> = [];

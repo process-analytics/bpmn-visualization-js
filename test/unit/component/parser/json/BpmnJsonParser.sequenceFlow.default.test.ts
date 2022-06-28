@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { parseJsonAndExpectOnlyEdgesAndFlowNodes } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyEdgesAndFlowNodes } from '../../../helpers/JsonTestUtils';
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
+
 import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal';
 import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
 import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';

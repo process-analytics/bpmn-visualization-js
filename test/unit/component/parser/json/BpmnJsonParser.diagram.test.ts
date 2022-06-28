@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { parseJsonAndExpectOnlyFlowNodes } from './JsonTestUtils';
+import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
+
 import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
 import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 
