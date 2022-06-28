@@ -30,45 +30,20 @@ on:
       - 'typedoc.json'
 
 jobs:
-  # inspired from https://github.com/process-analytics/github-actions-playground/pull/23
-  check_secrets:
+  doc_preview: # keep unique across jobs using surge preview (preview url and PR comment id)
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-20.04
-    outputs:
-      is_SURGE_TOKEN_set: ${{ steps.secret_availability.outputs.is_SURGE_TOKEN_set }}
-    steps:
-      - name: Compute secrets availability
-        id: secret_availability
-        env:
-          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-        run: |
-          echo "is_SURGE_TOKEN_set: ${{ env.SURGE_TOKEN != '' }}"
-          echo "::set-output name=is_SURGE_TOKEN_set::${{ env.SURGE_TOKEN != '' }}"
-
-  doc_preview:
-    needs: [check_secrets]
-    if: github.event_name == 'pull_request' && needs.check_secrets.outputs.is_SURGE_TOKEN_set == 'true'
-    runs-on: ubuntu-20.04
     permissions:
-      # surge-preview: PR comments
-      pull-requests: write
+      pull-requests: write # surge-preview: PR comments
     steps:
-      - uses: actions/checkout@v3
-        if: github.event.action != 'closed'
-      - name: Build Setup
-        uses: ./.github/actions/build-setup
-        if: github.event.action != 'closed'
-      - name: Publish preview
-        id: publish_preview
-        uses: afc163/surge-preview@v1
+      - uses: actions/checkout@v3 # access to the local action
+      - name: surge preview
+        uses: ./.github/actions/custom-surge-preview
         with:
-          surge_token: ${{ secrets.SURGE_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          dist: build/docs
-          failOnError: true
-          teardown: 'true'
-          build: |
-            npm run docs
+          build-preview-command: npm run docs
+          build-preview-dist: build/docs
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          surge-token: ${{ secrets.SURGE_TOKEN }}
 
   generate_doc:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&  github.event.ref == 'refs/heads/master'
@@ -90,8 +65,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: generate_doc
     permissions:
-      # Push to gh-pages
-      contents: write
+      contents: write # Push to gh-pages
     steps:
       - name: Download
         uses: actions/download-artifact@v3
