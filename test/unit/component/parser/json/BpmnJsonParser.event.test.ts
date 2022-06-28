@@ -68,8 +68,10 @@ function verifyEventShape(
 
 function testMustConvertOneShape({ bpmnKind, buildEventDefinitionParameter, buildEventParameter, expectedEventDefinitionKind, expectedShapeBpmnElementKind }: TestParameter): void {
   const json = buildDefinitions({
-    events: [{ bpmnKind, eventDefinitionParameter: buildEventDefinitionParameter, eventParameter: buildEventParameter }],
-    withTask: true,
+    process: {
+      events: [{ bpmnKind, eventDefinitionParameter: buildEventDefinitionParameter, eventParameter: buildEventParameter }],
+      withTask: true,
+    },
   });
 
   const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 1);
@@ -129,7 +131,7 @@ function executeEventCommonTests(
           ],
           withTask: true,
         };
-        const json = buildDefinitions(title === 'object' ? process : [process]);
+        const json = buildDefinitions(title === 'object' ? { process } : { process: [process] });
 
         const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 2);
 
@@ -170,9 +172,11 @@ function executeEventCommonTests(
     if (expectedEventDefinitionKind !== ShapeBpmnEventDefinitionKind.NONE) {
       it(`should NOT convert, when there are '${eventDefinitionKind}EventDefinition' and another 'EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
         const json = buildDefinitions({
-          eventDefinitionKind,
-          events: [{ bpmnKind, eventDefinitionParameter: { ...buildEventDefinitionParameter, withDifferentDefinition: true }, eventParameter: specificBuildEventParameter }],
-          withTask: true,
+          process: {
+            eventDefinitionKind,
+            events: [{ bpmnKind, eventDefinitionParameter: { ...buildEventDefinitionParameter, withDifferentDefinition: true }, eventParameter: specificBuildEventParameter }],
+            withTask: true,
+          },
         });
 
         parseAndExpectNoEvents(json);
@@ -180,8 +184,10 @@ function executeEventCommonTests(
 
       it(`should NOT convert, when there are several '${eventDefinitionKind}EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
         const json = buildDefinitions({
-          events: [{ bpmnKind, eventDefinitionParameter: { ...buildEventDefinitionParameter, withMultipleDefinitions: true }, eventParameter: specificBuildEventParameter }],
-          withTask: true,
+          process: {
+            events: [{ bpmnKind, eventDefinitionParameter: { ...buildEventDefinitionParameter, withMultipleDefinitions: true }, eventParameter: specificBuildEventParameter }],
+            withTask: true,
+          },
         });
 
         parseAndExpectNoEvents(json);
@@ -201,14 +207,16 @@ function executeEventCommonTests(
         if (specificBuildEventParameter.isInterrupting) {
           it(`should convert as Shape, when 'boundaryEvent' has no 'cancelActivity' & is attached to an 'activity', ${titleForEventDefinitionIsAttributeOf}'`, () => {
             const json = buildDefinitions({
-              events: [
-                {
-                  bpmnKind: 'boundaryEvent',
-                  eventDefinitionParameter: buildEventDefinitionParameter,
-                  eventParameter: { ...specificBuildEventParameter, isInterrupting: undefined },
-                },
-              ],
-              withTask: true,
+              process: {
+                events: [
+                  {
+                    bpmnKind: 'boundaryEvent',
+                    eventDefinitionParameter: buildEventDefinitionParameter,
+                    eventParameter: { ...specificBuildEventParameter, isInterrupting: undefined },
+                  },
+                ],
+                withTask: true,
+              },
             });
 
             const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 1);
@@ -220,15 +228,17 @@ function executeEventCommonTests(
 
         it(`should NOT convert, when 'boundaryEvent' is ${boundaryEventKind} & attached to anything than an 'activity', ${titleForEventDefinitionIsAttributeOf}`, () => {
           const json = buildDefinitions({
-            events: [
-              {
-                bpmnKind: 'boundaryEvent',
-                eventDefinitionParameter: buildEventDefinitionParameter,
-                eventParameter: { ...specificBuildEventParameter, attachedToRef: 'not_activity_id_0' },
+            process: {
+              events: [
+                {
+                  bpmnKind: 'boundaryEvent',
+                  eventDefinitionParameter: buildEventDefinitionParameter,
+                  eventParameter: { ...specificBuildEventParameter, attachedToRef: 'not_activity_id_0' },
+                },
+              ],
+              exclusiveGateway: {
+                id: 'not_activity_id_0',
               },
-            ],
-            exclusiveGateway: {
-              id: 'not_activity_id_0',
             },
           });
 
@@ -237,15 +247,16 @@ function executeEventCommonTests(
 
         it(`should NOT convert, when 'boundaryEvent' is ${boundaryEventKind} & attached to unexisting activity, ${titleForEventDefinitionIsAttributeOf}`, () => {
           const json = buildDefinitions({
-            events: [
-              {
-                bpmnKind: 'boundaryEvent',
-                eventDefinitionParameter: buildEventDefinitionParameter,
-                eventParameter: { ...specificBuildEventParameter, attachedToRef: 'unexisting_activity_id_0' },
-              },
-            ],
+            process: {
+              events: [
+                {
+                  bpmnKind: 'boundaryEvent',
+                  eventDefinitionParameter: buildEventDefinitionParameter,
+                  eventParameter: { ...specificBuildEventParameter, attachedToRef: 'unexisting_activity_id_0' },
+                },
+              ],
+            },
           });
-
           parseAndExpectNoBoundaryEvents(json, 0);
         });
       }
@@ -254,8 +265,10 @@ function executeEventCommonTests(
     if (expectedEventDefinitionKind !== ShapeBpmnEventDefinitionKind.NONE) {
       it(`should NOT convert, when 'definitions' has ${eventDefinitionKind}EventDefinition and '${bpmnKind}' has ${eventDefinitionKind}EventDefinition & eventDefinitionRef${specificTitle}`, () => {
         const json = buildDefinitions({
-          events: [{ bpmnKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.BOTH }, eventParameter: specificBuildEventParameter }],
-          withTask: true,
+          process: {
+            events: [{ bpmnKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.BOTH }, eventParameter: specificBuildEventParameter }],
+            withTask: true,
+          },
         });
 
         parseAndExpectNoEvents(json);
