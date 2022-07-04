@@ -35,10 +35,11 @@ export enum EventDefinitionOn {
 }
 
 export interface BuildEventParameter {
-  index?: number;
+  bpmnKind: string;
   name?: string;
   isInterrupting?: boolean;
   attachedToRef?: string;
+  eventDefinitionParameter: BuildEventDefinitionParameter;
 }
 
 export interface BuildEventDefinitionParameter {
@@ -63,12 +64,7 @@ export interface BuildExclusiveGatewayParameter {
 
 export interface BuildProcessParameter {
   task?: BuildTaskParameter | BuildTaskParameter[];
-  eventDefinitionKind?: string;
-  events?: {
-    bpmnKind: string;
-    eventDefinitionParameter: BuildEventDefinitionParameter;
-    eventParameter?: BuildEventParameter;
-  }[];
+  event?: BuildEventParameter | BuildEventParameter[];
   exclusiveGateway?: BuildExclusiveGatewayParameter | BuildExclusiveGatewayParameter[];
   callActivity?: BuildCallActivityParameter | BuildCallActivityParameter[];
   id?: string;
@@ -164,13 +160,16 @@ function addElementsOnProcess(processParameter: BuildProcessParameter, json: Bpm
       addExclusiveGateway(json, exclusiveGatewayParameter, index, processIndex),
     );
   }
-
   if (processParameter.callActivity) {
     (Array.isArray(processParameter.callActivity) ? processParameter.callActivity : [processParameter.callActivity]).forEach((callActivityParameter, index) =>
       addCallActivity(json, callActivityParameter, index, processIndex),
     );
   }
-  processParameter.events?.forEach(event => addEvent(json, event, processIndex));
+  if (processParameter.event) {
+    (Array.isArray(processParameter.event) ? processParameter.event : [processParameter.event]).forEach((eventParameter, index) =>
+      addEvent(json, eventParameter, index, processIndex),
+    );
+  }
 }
 
 function getElementOfArray<T>(object: T | T[], index = 0): T {
@@ -208,9 +207,9 @@ function addEdge(jsonModel: BpmnJsonModel, edge: BPMNEdge): void {
   updateBpmnElement(bpmnPlane.BPMNEdge, edge, (value: BPMNEdge | BPMNEdge[]) => (bpmnPlane.BPMNEdge = value));
 }
 
-function addTask(jsonModel: BpmnJsonModel, taskParameter: BuildTaskParameter, index: number, processIndex?: number): void {
+function addTask(jsonModel: BpmnJsonModel, taskParameter: BuildTaskParameter, index: number, processIndex: number): void {
   const task = {
-    id: taskParameter.id ? taskParameter.id : `task_id_${index}`,
+    id: taskParameter.id ? taskParameter.id : `task_id_${processIndex}_${index}`,
     name: 'task name',
   };
   addFlownode(jsonModel, 'task', task, processIndex);
@@ -225,7 +224,7 @@ function addTask(jsonModel: BpmnJsonModel, taskParameter: BuildTaskParameter, in
 
 function addExclusiveGateway(jsonModel: BpmnJsonModel, exclusiveGatewayParameter: BuildExclusiveGatewayParameter, index: number, processIndex?: number): void {
   const exclusiveGateway = {
-    id: exclusiveGatewayParameter.id ? exclusiveGatewayParameter.id : `exclusiveGateway_id_${index}`,
+    id: exclusiveGatewayParameter.id ? exclusiveGatewayParameter.id : `exclusiveGateway_id_${processIndex}_${index}`,
     name: 'exclusiveGateway name',
   };
   addFlownode(jsonModel, 'exclusiveGateway', exclusiveGateway, processIndex);
@@ -240,7 +239,7 @@ function addExclusiveGateway(jsonModel: BpmnJsonModel, exclusiveGatewayParameter
 
 function addCallActivity(jsonModel: BpmnJsonModel, callActivityParameter: BuildCallActivityParameter, index: number, processIndex: number): void {
   const callActivity = {
-    id: callActivityParameter.id ? callActivityParameter.id : `callActivity_id_${index}`,
+    id: callActivityParameter.id ? callActivityParameter.id : `callActivity_id_${processIndex}_${index}`,
     name: 'callActivity name',
   };
   addFlownode(jsonModel, 'callActivity', callActivity, processIndex);
@@ -302,9 +301,9 @@ function addEventDefinitionsOnEvent(event: TCatchEvent | TThrowEvent | TBoundary
   }
 }
 
-function buildEvent({ index = 0, name, isInterrupting, attachedToRef }: BuildEventParameter = {}): BPMNTEvent {
+function buildEvent(index: number, processIndex: number, name?: string, isInterrupting?: boolean, attachedToRef?: string): BPMNTEvent {
   const event: BPMNTEvent = {
-    id: `event_id_${index}`,
+    id: `event_id_${processIndex}_${index}`,
     name: name,
   };
 
@@ -319,10 +318,11 @@ function buildEvent({ index = 0, name, isInterrupting, attachedToRef }: BuildEve
 
 function addEvent(
   jsonModel: BpmnJsonModel,
-  { bpmnKind, eventDefinitionParameter, eventParameter }: { bpmnKind: string; eventDefinitionParameter?: BuildEventDefinitionParameter; eventParameter?: BuildEventParameter },
-  processIndex?: number,
+  { bpmnKind, eventDefinitionParameter, name, isInterrupting, attachedToRef }: BuildEventParameter,
+  index: number,
+  processIndex: number,
 ): void {
-  const event = buildEvent(eventParameter);
+  const event = buildEvent(index, processIndex, name, isInterrupting, attachedToRef);
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH:
       addEventDefinitionsOnEvent(event, eventDefinitionParameter);
@@ -339,10 +339,9 @@ function addEvent(
   }
   addFlownode(jsonModel, bpmnKind, event, processIndex);
 
-  const index = eventParameter.index ? eventParameter.index : 0;
   const eventShape = {
-    id: `shape_event_id_${index}`,
-    bpmnElement: `event_id_${index}`,
+    id: `shape_${event.id}`,
+    bpmnElement: event.id,
     Bounds: { x: 362, y: 232, width: 36, height: 45 },
   };
   addShape(jsonModel, eventShape);

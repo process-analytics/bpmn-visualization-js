@@ -14,37 +14,35 @@
  * limitations under the License.
  */
 
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import type { TEventDefinition } from '../../../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
+import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
+import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../../../src/model/bpmn/internal';
+import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
+import { ShapeBpmnBoundaryEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import type { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
+import type { TEventDefinition } from '../../../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
+import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import type { BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
-import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../../../src/model/bpmn/internal';
-import { ShapeBpmnBoundaryEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
-import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
-
-import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import type { BuildEventDefinitionParameter, BuildEventParameter } from '../../../helpers/JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
+
+import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import { getEventShapes } from '../../../helpers/TestUtils';
 
 interface TestParameter {
-  bpmnKind: string;
-  buildEventDefinitionParameter: BuildEventDefinitionParameter;
   buildEventParameter: BuildEventParameter;
   expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind;
   expectedShapeBpmnElementKind: ShapeBpmnElementKind;
-  process?: TProcess | TProcess[];
+  processIsArray?: boolean;
 }
 
 function verifyEventShape(
   shape: Shape,
   buildEventParameter: BuildEventParameter,
   expectedShapeBpmnElementKind: ShapeBpmnElementKind,
-  expectedShapeId = `shape_event_id_0`,
-  expectedBpmnElementId = 'event_id_0',
+  expectedShapeId = `shape_event_id_0_0`,
+  expectedBpmnElementId = 'event_id_0_0',
 ): void {
   verifyShape(shape, {
     shapeId: expectedShapeId,
@@ -66,12 +64,13 @@ function verifyEventShape(
   }
 }
 
-function testMustConvertOneShape({ bpmnKind, buildEventDefinitionParameter, buildEventParameter, expectedEventDefinitionKind, expectedShapeBpmnElementKind }: TestParameter): void {
+function testMustConvertOneShape({ buildEventParameter, expectedEventDefinitionKind, expectedShapeBpmnElementKind, processIsArray = false }: TestParameter): void {
+  const process = {
+    event: buildEventParameter,
+    task: { id: 'task_id_0_0' },
+  };
   const json = buildDefinitions({
-    process: {
-      events: [{ bpmnKind, eventDefinitionParameter: buildEventDefinitionParameter, eventParameter: buildEventParameter }],
-      withTask: true,
-    },
+    process: processIsArray ? [process] : process,
   });
 
   const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 1);
@@ -81,63 +80,61 @@ function testMustConvertOneShape({ bpmnKind, buildEventDefinitionParameter, buil
 }
 
 function executeEventCommonTests(
-  bpmnKind: string,
-  eventDefinitionKind: string,
+  buildEventParameter: BuildEventParameter,
   expectedShapeBpmnElementKind: ShapeBpmnElementKind,
   expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind,
   boundaryEventKind?: string,
-  specificBuildEventParameter: BuildEventParameter = {},
   specificTitle = '',
 ): void {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let titlesForEventDefinitionIsAttributeOf: any[][];
   if (expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.NONE) {
-    titlesForEventDefinitionIsAttributeOf = [[`'${bpmnKind}' has no 'eventDefinition' & no 'eventDefinitionRef'`, EventDefinitionOn.NONE]];
+    titlesForEventDefinitionIsAttributeOf = [[`'${buildEventParameter.bpmnKind}' has no 'eventDefinition' & no 'eventDefinitionRef'`, EventDefinitionOn.NONE]];
   } else {
     titlesForEventDefinitionIsAttributeOf = [
-      [`'${bpmnKind}' has '${eventDefinitionKind}EventDefinition' & no 'eventDefinitionRef'`, EventDefinitionOn.EVENT],
       [
-        `'definitions' has '${eventDefinitionKind}EventDefinition' and '${bpmnKind}' has no '${eventDefinitionKind}EventDefinition' & 'eventDefinitionRef'`,
+        `'${buildEventParameter.bpmnKind}' has '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' & no 'eventDefinitionRef'`,
+        EventDefinitionOn.EVENT,
+      ],
+      [
+        `'definitions' has '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' and '${buildEventParameter.bpmnKind}' has no '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' & 'eventDefinitionRef'`,
         EventDefinitionOn.DEFINITIONS,
       ],
     ];
   }
   describe.each(titlesForEventDefinitionIsAttributeOf)(`when %s`, (titleForEventDefinitionIsAttributeOf: string, eventDefinitionOn: EventDefinitionOn) => {
-    const buildEventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind, eventDefinitionOn };
+    const buildEventDefinitionParameter: BuildEventDefinitionParameter = {
+      ...buildEventParameter.eventDefinitionParameter,
+      eventDefinitionOn,
+    };
+    buildEventParameter.eventDefinitionParameter = buildEventDefinitionParameter;
+
     const testParameter: TestParameter = {
-      bpmnKind,
-      buildEventDefinitionParameter,
-      buildEventParameter: specificBuildEventParameter,
+      buildEventParameter: buildEventParameter,
       expectedEventDefinitionKind: expectedEventDefinitionKind,
       expectedShapeBpmnElementKind,
     };
-    it.each([
-      ['object', {}],
-      ['array', [{}]],
-    ])(
-      `should convert as Shape, when 'process' (as %s) has '${bpmnKind}' (as object)${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`,
-      (title: string, process: TProcess | TProcess[]) => {
-        testMustConvertOneShape({ ...testParameter, process });
+    it.each([['object'], ['array']])(
+      `should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as object)${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`,
+      (title: string) => {
+        testMustConvertOneShape({ ...testParameter, processIsArray: title === 'array' });
       },
     );
 
     it.each([['object'], ['array']])(
-      `should convert as Shape, when 'process' (as %s) has '${bpmnKind}' (as array)${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`,
+      `should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as array)${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`,
       (title: string) => {
         const process = {
-          events: [
-            { bpmnKind, eventDefinitionParameter: buildEventDefinitionParameter, eventParameter: specificBuildEventParameter },
-            { bpmnKind, eventDefinitionParameter: buildEventDefinitionParameter, eventParameter: { ...specificBuildEventParameter, index: 1 } },
-          ],
-          withTask: true,
+          event: [buildEventParameter, buildEventParameter],
+          task: { id: 'task_id_0_0' },
         };
         const json = buildDefinitions(title === 'object' ? { process } : { process: [process] });
 
         const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 2);
 
         const shapes = getEventShapes(model);
-        verifyEventShape(shapes[0], specificBuildEventParameter, expectedShapeBpmnElementKind);
-        verifyEventShape(shapes[1], { ...specificBuildEventParameter, index: 1 }, expectedShapeBpmnElementKind, `shape_event_id_1`, 'event_id_1');
+        verifyEventShape(shapes[0], buildEventParameter, expectedShapeBpmnElementKind);
+        verifyEventShape(shapes[1], buildEventParameter, expectedShapeBpmnElementKind, `shape_event_id_0_1`, 'event_id_0_1');
       },
     );
 
@@ -145,7 +142,7 @@ function executeEventCommonTests(
       const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, numberOfExpectedFlowNodes, 1);
       expect(getEventShapes(bpmnModel)).toHaveLength(0);
       const warning = expectAsWarning<ShapeUnknownBpmnElementWarning>(parsingMessageCollector.getWarnings()[0], ShapeUnknownBpmnElementWarning);
-      expect(warning.bpmnElementId).toBe('event_id_0');
+      expect(warning.bpmnElementId).toBe('event_id_0_0');
     }
 
     function parseAndExpectNoBoundaryEvents(json: BpmnJsonModel, numberOfExpectedFlowNodes = 1): void {
@@ -154,39 +151,41 @@ function executeEventCommonTests(
       const warnings = parsingMessageCollector.getWarnings();
 
       const warning0 = expectAsWarning<BoundaryEventNotAttachedToActivityWarning>(warnings[0], BoundaryEventNotAttachedToActivityWarning);
-      expect(warning0.bpmnElementId).toBe('event_id_0');
+      expect(warning0.bpmnElementId).toBe('event_id_0_0');
       expect(warning0.attachedToRef).toEqual(numberOfExpectedFlowNodes == 0 ? 'unexisting_activity_id_0' : 'not_activity_id_0');
       expect(warning0.attachedToKind).toEqual(numberOfExpectedFlowNodes == 0 ? undefined : ShapeBpmnElementKind.GATEWAY_EXCLUSIVE);
 
       const warning1 = expectAsWarning<ShapeUnknownBpmnElementWarning>(warnings[1], ShapeUnknownBpmnElementWarning);
-      expect(warning1.bpmnElementId).toBe('event_id_0');
+      expect(warning1.bpmnElementId).toBe('event_id_0_0');
     }
 
     it.each([
       ["'name'", 'event name'],
       ["no 'name'", undefined],
-    ])(`should convert as Shape, when '${bpmnKind}' has %s${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, (title: string, eventName: string) => {
-      testMustConvertOneShape({ ...testParameter, buildEventParameter: { ...specificBuildEventParameter, name: eventName } });
+    ])(`should convert as Shape, when '${buildEventParameter.bpmnKind}' has %s${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, (title: string, eventName: string) => {
+      testMustConvertOneShape({ ...testParameter, buildEventParameter: { ...buildEventParameter, name: eventName } });
     });
 
     if (expectedEventDefinitionKind !== ShapeBpmnEventDefinitionKind.NONE) {
-      it(`should NOT convert, when there are '${eventDefinitionKind}EventDefinition' and another 'EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
+      it(`should NOT convert, when there are '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' and another 'EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
         const json = buildDefinitions({
           process: {
-            eventDefinitionKind,
-            events: [{ bpmnKind, eventDefinitionParameter: { ...buildEventDefinitionParameter, withDifferentDefinition: true }, eventParameter: specificBuildEventParameter }],
-            withTask: true,
+            event: {
+              ...buildEventParameter,
+              eventDefinitionParameter: { ...buildEventDefinitionParameter, withDifferentDefinition: true },
+            },
+            task: { id: 'task_id_0_0' },
           },
         });
 
         parseAndExpectNoEvents(json);
       });
 
-      it(`should NOT convert, when there are several '${eventDefinitionKind}EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
+      it(`should NOT convert, when there are several '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
         const json = buildDefinitions({
           process: {
-            events: [{ bpmnKind, eventDefinitionParameter: { ...buildEventDefinitionParameter, withMultipleDefinitions: true }, eventParameter: specificBuildEventParameter }],
-            withTask: true,
+            event: [{ ...buildEventParameter, eventDefinitionParameter: { ...buildEventDefinitionParameter, withMultipleDefinitions: true } }],
+            task: { id: 'task_id_0_0' },
           },
         });
 
@@ -200,40 +199,45 @@ function executeEventCommonTests(
         ])(
           `should convert as Shape, when '${buildEventDefinitionParameter.eventDefinitionKind}EventDefinition' is %s, ${titleForEventDefinitionIsAttributeOf}`,
           (title: string, eventDefinition: string | TEventDefinition) => {
-            testMustConvertOneShape({ ...testParameter, buildEventDefinitionParameter: { ...buildEventDefinitionParameter, eventDefinition } });
+            testMustConvertOneShape({
+              ...testParameter,
+              buildEventParameter: { ...buildEventParameter, eventDefinitionParameter: { ...buildEventDefinitionParameter, eventDefinition } },
+            });
           },
         );
       } else {
-        if (specificBuildEventParameter.isInterrupting) {
+        if (buildEventParameter.isInterrupting) {
           it(`should convert as Shape, when 'boundaryEvent' has no 'cancelActivity' & is attached to an 'activity', ${titleForEventDefinitionIsAttributeOf}'`, () => {
             const json = buildDefinitions({
               process: {
-                events: [
+                event: [
                   {
                     bpmnKind: 'boundaryEvent',
+                    ...buildEventParameter,
+                    isInterrupting: undefined,
                     eventDefinitionParameter: buildEventDefinitionParameter,
-                    eventParameter: { ...specificBuildEventParameter, isInterrupting: undefined },
                   },
                 ],
-                withTask: true,
+                task: { id: 'task_id_0_0' },
               },
             });
 
             const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 1);
 
             const shapes = getEventShapes(model);
-            verifyEventShape(shapes[0], specificBuildEventParameter, expectedShapeBpmnElementKind);
+            verifyEventShape(shapes[0], buildEventParameter, expectedShapeBpmnElementKind);
           });
         }
 
         it(`should NOT convert, when 'boundaryEvent' is ${boundaryEventKind} & attached to anything than an 'activity', ${titleForEventDefinitionIsAttributeOf}`, () => {
           const json = buildDefinitions({
             process: {
-              events: [
+              event: [
                 {
                   bpmnKind: 'boundaryEvent',
+                  ...buildEventParameter,
+                  attachedToRef: 'not_activity_id_0',
                   eventDefinitionParameter: buildEventDefinitionParameter,
-                  eventParameter: { ...specificBuildEventParameter, attachedToRef: 'not_activity_id_0' },
                 },
               ],
               exclusiveGateway: {
@@ -248,11 +252,12 @@ function executeEventCommonTests(
         it(`should NOT convert, when 'boundaryEvent' is ${boundaryEventKind} & attached to unexisting activity, ${titleForEventDefinitionIsAttributeOf}`, () => {
           const json = buildDefinitions({
             process: {
-              events: [
+              event: [
                 {
                   bpmnKind: 'boundaryEvent',
+                  ...buildEventParameter,
+                  attachedToRef: 'unexisting_activity_id_0',
                   eventDefinitionParameter: buildEventDefinitionParameter,
-                  eventParameter: { ...specificBuildEventParameter, attachedToRef: 'unexisting_activity_id_0' },
                 },
               ],
             },
@@ -263,11 +268,11 @@ function executeEventCommonTests(
     }
 
     if (expectedEventDefinitionKind !== ShapeBpmnEventDefinitionKind.NONE) {
-      it(`should NOT convert, when 'definitions' has ${eventDefinitionKind}EventDefinition and '${bpmnKind}' has ${eventDefinitionKind}EventDefinition & eventDefinitionRef${specificTitle}`, () => {
+      it(`should NOT convert, when 'definitions' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition and '${buildEventParameter.bpmnKind}' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition & eventDefinitionRef${specificTitle}`, () => {
         const json = buildDefinitions({
           process: {
-            events: [{ bpmnKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.BOTH }, eventParameter: specificBuildEventParameter }],
-            withTask: true,
+            event: [{ ...buildEventParameter, eventDefinitionParameter: { ...buildEventParameter.eventDefinitionParameter, eventDefinitionOn: EventDefinitionOn.BOTH } }],
+            task: { id: 'task_id_0_0' },
           },
         });
 
@@ -329,7 +334,11 @@ describe('parse bpmn as json for all events', () => {
       }
 
       if (expectedShapeBpmnElementKind !== ShapeBpmnElementKind.EVENT_BOUNDARY) {
-        executeEventCommonTests(bpmnKind, eventDefinitionKind, expectedShapeBpmnElementKind, expectedEventDefinitionKind);
+        executeEventCommonTests(
+          { bpmnKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.NONE }, attachedToRef: '0' },
+          expectedShapeBpmnElementKind,
+          expectedEventDefinitionKind,
+        );
       } else {
         describe.each([
           ['interrupting', true],
@@ -352,15 +361,10 @@ describe('parse bpmn as json for all events', () => {
             return;
           }
           executeEventCommonTests(
-            bpmnKind,
-            eventDefinitionKind,
+            { bpmnKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.NONE }, isInterrupting, attachedToRef: 'task_id_0_0' },
             expectedShapeBpmnElementKind,
             expectedEventDefinitionKind,
             boundaryEventKind,
-            {
-              isInterrupting,
-              attachedToRef: 'task_id_0',
-            },
             `, 'boundaryEvent' is ${boundaryEventKind} & attached to an 'activity'`,
           );
         });
@@ -397,7 +401,12 @@ describe('parse bpmn as json for all events', () => {
         };
         (json.definitions.process as TProcess)[bpmnKind] = [
           { id: `none_${bpmnKind}_id`, name: `none ${bpmnKind}` },
-          { id: `multiple_${bpmnKind}_with_event_definitions_id`, name: `multiple ${bpmnKind} with event definitions`, messageEventDefinition: {}, timerEventDefinition: {} },
+          {
+            id: `multiple_${bpmnKind}_with_event_definitions_id`,
+            name: `multiple ${bpmnKind} with event definitions`,
+            messageEventDefinition: {},
+            timerEventDefinition: {},
+          },
           {
             id: `multiple_${bpmnKind}_with_eventDefinitionRefs_id`,
             name: `multiple ${bpmnKind} with eventDefinitionRefs`,
