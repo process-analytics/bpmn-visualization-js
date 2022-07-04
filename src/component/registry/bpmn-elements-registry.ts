@@ -33,11 +33,8 @@ export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, gr
 }
 
 /**
- * @category Custom Behavior
- * @experimental subject to change, feedback welcome.
- *
- * > BpmnElementRegistry is a public API that permits to find the BpmnElements present in the diagram.
- * > How to access it:
+ * `BpmnElementRegistry` is a public API that permits to find the BpmnElements present in the diagram.
+ * How to access it:
  *
  * ```javascript
  * // 1. Initialize the BpmnVisualization.
@@ -48,6 +45,11 @@ export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, gr
  * // 3. Access registry directly from bpmnVisualization.
  * bpmnVisualization.bpmnElementsRegistry
  * ```
+ *
+ * **WARN**: subject to change, feedback welcome.
+ *
+ *  @category Custom Behavior
+ *  @experimental
  */
 export class BpmnElementsRegistry {
   /**
