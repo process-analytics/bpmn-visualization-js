@@ -52,9 +52,9 @@ export function computeScaledIconSize(initialIconSize: Size, iconStyleConfigurat
 }
 
 /**
- * Wrapper of {@link mxAbstractCanvas2D} to simplify method calls when painting icons/markers of BPMN shapes.
+ * Wrapper of `mxAbstractCanvas2D` to simplify method calls when painting icons/markers of BPMN shapes.
  *
- * It can scale dimensions passed to the method of the original {@link mxAbstractCanvas2D}
+ * It can scale dimensions passed to the method of the original `mxAbstractCanvas2D`.
  *
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
  *
