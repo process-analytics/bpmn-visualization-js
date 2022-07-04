@@ -58,7 +58,8 @@ export function computeScaledIconSize(initialIconSize: Size, iconStyleConfigurat
  *
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
  *
- * @example vanilla canvas calls when a scale factor must be applied to position
+ * @example
+ * The vanilla canvas calls when a scale factor must be applied to position
  * ```javascript
  * const scaleX = 0.26;
  * const scaleY = 0.35;
@@ -66,7 +67,8 @@ export function computeScaledIconSize(initialIconSize: Size, iconStyleConfigurat
  * c.lineTo(12 * scaleX, 25 * scaleY);
  * ```
  *
- * @example with `BpmnCanvas`
+ * @example
+ * With `BpmnCanvas`
  * ```javascript
  * const canvas = new BpmnCanvas(c, 0.26, 0.35);
  * canvas.moveTo(8, 39);
