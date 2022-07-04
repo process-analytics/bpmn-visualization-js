@@ -54,7 +54,7 @@ export function computeScaledIconSize(initialIconSize: Size, iconStyleConfigurat
  *
  * It can scale dimensions passed to the method of the original {@link mxAbstractCanvas2D}
  *
- * @example vanilla canvas calls when a scale factor must be applied to positions
+ * @example vanilla canvas calls when a scale factor must be applied to position
  * const scaleX = 0.26;
  * const scaleY = 0.35;
  * c.moveTo(8 * scaleX, 39 * scaleY);
