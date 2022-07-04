@@ -16,8 +16,11 @@
 
 /**
  * Define BPMN specific keys used in mxGraph styles. Use constants defined in this class instead of hard coded string values.
+ *
+ * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
+ *
  * @category BPMN Theme
- * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
+ * @experimental
  */
 export class BpmnStyleIdentifier {
   // edge
@@ -43,8 +46,10 @@ export class BpmnStyleIdentifier {
 }
 
 /**
+ * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
+ *
  * @category BPMN Theme
- * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
+ * @experimental
  */
 export class MarkerIdentifier {
   static readonly ARROW_DASH = 'bpmn.dash';
