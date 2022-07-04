@@ -19,8 +19,11 @@ import type { FitOptions, ZoomType } from './options';
 
 /**
  * Perform BPMN diagram navigation.
+ *
+ * **WARN**: subject to change, feedback welcome.
+ *
  * @category Navigation
- * @experimental subject to change, feedback welcome.
+ * @experimental
  * @since 0.24.0
  */
 export class Navigation {

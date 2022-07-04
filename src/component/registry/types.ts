@@ -77,7 +77,7 @@ export interface OverlayFill {
   /**
    * A number between `0` (transparent) and `100` (opaque).
    *
-   * <b>IMPORTANT</b>: this is currently not considered by the default Badge Overlay. See {@link https://github.com/process-analytics/bpmn-visualization-js/issues/1234 issue 1234}
+   * **IMPORTANT**: this property is currently not taken into account by the default Overlay. See https://github.com/process-analytics/bpmn-visualization-js/issues/1234
    * @default {@link StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY}
    */
   opacity?: number;
@@ -96,7 +96,7 @@ export interface OverlayStroke {
    * */
   color?: string;
   /**
-   * <b>IMPORTANT</b>: this is currently not considered by the default Badge Overlay. See {@link https://github.com/process-analytics/bpmn-visualization-js/issues/1234 issue 1234}
+   * **IMPORTANT**: this property is currently not taken into account by the default Overlay. See https://github.com/process-analytics/bpmn-visualization-js/issues/1234
    * @default {@link StyleDefault.DEFAULT_OVERLAY_STROKE_WIDTH}
    */
   width?: number;

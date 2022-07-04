@@ -21,8 +21,11 @@ import { BpmnStyleIdentifier } from './identifiers';
 
 /**
  * Store all rendering defaults used by `bpmn-visualization`.
+ *
+ * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
+ *
  * @category BPMN Theme
- * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
+ * @experimental
  */
 export enum StyleDefault {
   STROKE_WIDTH_THIN = 2,
@@ -64,8 +67,10 @@ export enum StyleDefault {
 
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
 /**
+ * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
+ *
  * @category BPMN Theme
- * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
+ * @experimental
  */
 export class StyleUtils {
   static getFillColor(style: any): string {
