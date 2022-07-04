@@ -20,8 +20,10 @@ import type { IconStyleConfiguration, ShapeConfiguration, Size } from './render-
 import type { mxAbstractCanvas2D, mxShape } from 'mxgraph';
 
 /**
+ * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
+ *
  * @category BPMN Theme
- * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that the way we store and allow to change the defaults is subject to change.
+ * @experimental
  */
 export interface PaintParameter {
   canvas: mxAbstractCanvas2D;
@@ -74,8 +76,11 @@ export function buildPaintParameter({
 
 /**
  * Default implementation for the icons.
+ *
+ * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
+ *
  * @category BPMN Theme
- * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that it is subject to change.
+ * @experimental
  */
 export class IconPainter {
   paintEmptyIcon(): void {
@@ -907,8 +912,11 @@ export class IconPainter {
 
 /**
  * Hold the instance of {@link IconPainter} used by the BPMN Theme.
+ *
+ * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
+ *
  * @category BPMN Theme
- * @experimental You may use this to customize the BPMN theme as proposed in the examples. But be aware that it is subject to change.
+ * @experimental
  */
 export class IconPainterProvider {
   private static instance = new IconPainter();
