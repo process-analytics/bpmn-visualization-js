@@ -83,7 +83,6 @@ function executeEventCommonTests(
   buildEventParameter: BuildEventParameter,
   expectedShapeBpmnElementKind: ShapeBpmnElementKind,
   expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind,
-  boundaryEventKind?: string,
   specificTitle = '',
 ): void {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -240,7 +239,9 @@ function executeEventCommonTests(
           });
         }
 
-        it(`should NOT convert, when 'boundaryEvent' is ${boundaryEventKind} & attached to anything than an 'activity', ${titleForEventDefinitionIsAttributeOf}`, () => {
+        it(`should NOT convert, when 'boundaryEvent' is ${
+          buildEventParameter.isInterrupting ? 'interrupting' : 'non-interrupting'
+        } & attached to anything than an 'activity', ${titleForEventDefinitionIsAttributeOf}`, () => {
           const json = buildDefinitions({
             process: {
               event: [
@@ -260,7 +261,9 @@ function executeEventCommonTests(
           parseAndExpectNoBoundaryEvents(json);
         });
 
-        it(`should NOT convert, when 'boundaryEvent' is ${boundaryEventKind} & attached to unexisting activity, ${titleForEventDefinitionIsAttributeOf}`, () => {
+        it(`should NOT convert, when 'boundaryEvent' is ${
+          buildEventParameter.isInterrupting ? 'interrupting' : 'non-interrupting'
+        } & attached to unexisting activity, ${titleForEventDefinitionIsAttributeOf}`, () => {
           const json = buildDefinitions({
             process: {
               event: [
@@ -430,10 +433,7 @@ describe('parse bpmn as json for all events', () => {
         return;
       }
 
-      describe.each([
-        ['interrupting', true],
-        ['non-interrupting', false],
-      ])(`for %s ${eventDefinitionKind} intermediate boundary events`, (boundaryEventKind: string, isInterrupting: boolean) => {
+      describe.each([[true], [false]])(`for %s ${eventDefinitionKind} intermediate boundary events`, (isInterrupting: boolean) => {
         if (
           (!isInterrupting && expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.ERROR) ||
           expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.CANCEL ||
@@ -442,12 +442,12 @@ describe('parse bpmn as json for all events', () => {
           // Not supported in BPMN specification
           return;
         }
+
         executeEventCommonTests(
           { bpmnKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.NONE }, isInterrupting, attachedToRef: 'task_id_0_0' },
           expectedShapeBpmnElementKind,
           expectedEventDefinitionKind,
-          boundaryEventKind,
-          `, 'boundaryEvent' is ${boundaryEventKind} & attached to an 'activity'`,
+          `, 'boundaryEvent' is ${isInterrupting ? 'interrupting' : 'non-interrupting'} & attached to an 'activity'`,
         );
       });
     });
