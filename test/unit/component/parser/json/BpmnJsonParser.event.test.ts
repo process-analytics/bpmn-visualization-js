@@ -192,6 +192,17 @@ function executeEventCommonTests(
         parseAndExpectNoEvents(json);
       });
 
+      it(`should NOT convert, when 'definitions' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition and '${buildEventParameter.bpmnKind}' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition & eventDefinitionRef${specificTitle}`, () => {
+        const json = buildDefinitions({
+          process: {
+            event: [{ ...buildEventParameter, eventDefinitionParameter: { ...buildEventParameter.eventDefinitionParameter, eventDefinitionOn: EventDefinitionOn.BOTH } }],
+            task: { id: 'task_id_0_0' },
+          },
+        });
+
+        parseAndExpectNoEvents(json);
+      });
+
       if (expectedShapeBpmnElementKind !== ShapeBpmnElementKind.EVENT_BOUNDARY) {
         it.each([
           ['empty string', ''],
@@ -266,43 +277,31 @@ function executeEventCommonTests(
         });
       }
     }
-
-    if (expectedEventDefinitionKind !== ShapeBpmnEventDefinitionKind.NONE) {
-      it(`should NOT convert, when 'definitions' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition and '${buildEventParameter.bpmnKind}' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition & eventDefinitionRef${specificTitle}`, () => {
-        const json = buildDefinitions({
-          process: {
-            event: [{ ...buildEventParameter, eventDefinitionParameter: { ...buildEventParameter.eventDefinitionParameter, eventDefinitionOn: EventDefinitionOn.BOTH } }],
-            task: { id: 'task_id_0_0' },
-          },
-        });
-
-        parseAndExpectNoEvents(json);
-      });
-    }
   });
 }
 
 describe('parse bpmn as json for all events', () => {
+  const eventDefinitionsParameters: [string, ShapeBpmnEventDefinitionKind][] = [
+    ['none', ShapeBpmnEventDefinitionKind.NONE],
+    ['message', ShapeBpmnEventDefinitionKind.MESSAGE],
+    ['timer', ShapeBpmnEventDefinitionKind.TIMER],
+    ['terminate', ShapeBpmnEventDefinitionKind.TERMINATE],
+    ['signal', ShapeBpmnEventDefinitionKind.SIGNAL],
+    ['link', ShapeBpmnEventDefinitionKind.LINK],
+    ['error', ShapeBpmnEventDefinitionKind.ERROR],
+    ['compensate', ShapeBpmnEventDefinitionKind.COMPENSATION],
+    ['cancel', ShapeBpmnEventDefinitionKind.CANCEL],
+    ['conditional', ShapeBpmnEventDefinitionKind.CONDITIONAL],
+    ['escalation', ShapeBpmnEventDefinitionKind.ESCALATION],
+  ];
+
   describe.each([
     ['startEvent', ['message', 'timer', 'conditional', 'signal'], ShapeBpmnElementKind.EVENT_START],
     ['endEvent', ['message', 'error', 'escalation', 'cancel', 'compensate', 'signal', 'terminate'], ShapeBpmnElementKind.EVENT_END],
     ['intermediateCatchEvent', ['message', 'timer', 'conditional', 'link', 'signal'], ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
     ['intermediateThrowEvent', ['message', 'escalation', 'compensate', 'link', 'signal'], ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW],
-    ['boundaryEvent', undefined, ShapeBpmnElementKind.EVENT_BOUNDARY],
   ])('for %ss', (bpmnKind: string, allDefinitionKinds: string[], expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
-    describe.each([
-      ['none', ShapeBpmnEventDefinitionKind.NONE],
-      ['message', ShapeBpmnEventDefinitionKind.MESSAGE],
-      ['timer', ShapeBpmnEventDefinitionKind.TIMER],
-      ['terminate', ShapeBpmnEventDefinitionKind.TERMINATE],
-      ['signal', ShapeBpmnEventDefinitionKind.SIGNAL],
-      ['link', ShapeBpmnEventDefinitionKind.LINK],
-      ['error', ShapeBpmnEventDefinitionKind.ERROR],
-      ['compensate', ShapeBpmnEventDefinitionKind.COMPENSATION],
-      ['cancel', ShapeBpmnEventDefinitionKind.CANCEL],
-      ['conditional', ShapeBpmnEventDefinitionKind.CONDITIONAL],
-      ['escalation', ShapeBpmnEventDefinitionKind.ESCALATION],
-    ])(`for %s ${bpmnKind}`, (eventDefinitionKind: string, expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind) => {
+    describe.each(eventDefinitionsParameters)(`for %s ${bpmnKind}`, (eventDefinitionKind: string, expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind) => {
       if (
         (expectedShapeBpmnElementKind === ShapeBpmnElementKind.EVENT_START &&
           (expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.ERROR ||
@@ -333,46 +332,15 @@ describe('parse bpmn as json for all events', () => {
         return;
       }
 
-      if (expectedShapeBpmnElementKind !== ShapeBpmnElementKind.EVENT_BOUNDARY) {
-        executeEventCommonTests(
-          { bpmnKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.NONE }, attachedToRef: '0' },
-          expectedShapeBpmnElementKind,
-          expectedEventDefinitionKind,
-        );
-      } else {
-        describe.each([
-          ['interrupting', true],
-          ['non-interrupting', false],
-        ])(`for %s ${eventDefinitionKind} intermediate boundary events`, (boundaryEventKind: string, isInterrupting: boolean) => {
-          if (
-            (isInterrupting &&
-              (expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.NONE ||
-                expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK ||
-                expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.TERMINATE)) ||
-            (!isInterrupting &&
-              (expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.NONE ||
-                expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.ERROR ||
-                expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.CANCEL ||
-                expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.COMPENSATION ||
-                expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK ||
-                expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.TERMINATE))
-          ) {
-            // Not supported in BPMN specification
-            return;
-          }
-          executeEventCommonTests(
-            { bpmnKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.NONE }, isInterrupting, attachedToRef: 'task_id_0_0' },
-            expectedShapeBpmnElementKind,
-            expectedEventDefinitionKind,
-            boundaryEventKind,
-            `, 'boundaryEvent' is ${boundaryEventKind} & attached to an 'activity'`,
-          );
-        });
-      }
+      executeEventCommonTests(
+        { bpmnKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.NONE }, attachedToRef: '0' },
+        expectedShapeBpmnElementKind,
+        expectedEventDefinitionKind,
+      );
     });
 
     // Only for events that support the NONE event kind
-    if (expectedShapeBpmnElementKind !== ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH && expectedShapeBpmnElementKind !== ShapeBpmnElementKind.EVENT_BOUNDARY) {
+    if (expectedShapeBpmnElementKind !== ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH) {
       it(`should convert as NONE Shape only the '${bpmnKind}' without 'eventDefinition' & without 'eventDefinitionRef', when an array of '${bpmnKind}' (without/with one or several event definition) is an attribute of 'process'`, () => {
         const json = {
           definitions: {
@@ -449,5 +417,39 @@ describe('parse bpmn as json for all events', () => {
         });
       });
     }
+  });
+
+  describe.each([['boundaryEvent', ShapeBpmnElementKind.EVENT_BOUNDARY]])('for %ss', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
+    describe.each(eventDefinitionsParameters)(`for %s ${bpmnKind}`, (eventDefinitionKind: string, expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind) => {
+      if (
+        expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.NONE ||
+        expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK ||
+        expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.TERMINATE
+      ) {
+        // Not supported in BPMN specification
+        return;
+      }
+
+      describe.each([
+        ['interrupting', true],
+        ['non-interrupting', false],
+      ])(`for %s ${eventDefinitionKind} intermediate boundary events`, (boundaryEventKind: string, isInterrupting: boolean) => {
+        if (
+          (!isInterrupting && expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.ERROR) ||
+          expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.CANCEL ||
+          expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.COMPENSATION
+        ) {
+          // Not supported in BPMN specification
+          return;
+        }
+        executeEventCommonTests(
+          { bpmnKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.NONE }, isInterrupting, attachedToRef: 'task_id_0_0' },
+          expectedShapeBpmnElementKind,
+          expectedEventDefinitionKind,
+          boundaryEventKind,
+          `, 'boundaryEvent' is ${boundaryEventKind} & attached to an 'activity'`,
+        );
+      });
+    });
   });
 });
