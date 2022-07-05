@@ -14,12 +14,24 @@
  * limitations under the License.
  */
 
-import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
-import { verifyEdge } from '../../../helpers/bpmn-model-expect';
+import { ShapeBpmnElementKind, ShapeUtil } from '../../../../../src/model/bpmn/internal';
 
+/** Internal model */
 import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
-import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal';
+import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/kinds';
+
+/** Json model */
+import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import * as bpmndi from '../../../../../src/model/bpmn/json/BPMNDI';
+import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { TCollaboration } from '../../../../../src/model/bpmn/json/baseElement/rootElement/collaboration';
+import type { TParticipant } from '../../../../../src/model/bpmn/json/baseElement/participant';
+
+/** Test utils */
+import { parseJson, parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
+import type { BuildEventDefinitionParameter, BuildProcessParameter, BuildDefinitionParameter } from '../../../helpers/JsonBuilder';
+import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
+import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 
 describe('parse bpmn as json for message flow', () => {
   it(`should convert as Edge, when an message flow is an attribute (as object) of 'collaboration' (as object)`, () => {
@@ -282,4 +294,92 @@ describe('parse bpmn as json for message flow', () => {
       waypoints: [new Waypoint(10, 10)],
     });
   });
+
+  describe('Various combinations of source and target', () => {
+    it.each([
+      [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.EVENT_START],
+      [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.POOL],
+      [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TASK],
+      [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.CALL_ACTIVITY],
+      [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
+      [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.EVENT_START],
+      [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.POOL],
+      [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.TASK],
+      [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.CALL_ACTIVITY],
+      [ShapeBpmnElementKind.TASK, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
+      [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.EVENT_START],
+      [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.POOL],
+      [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.TASK],
+      [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.CALL_ACTIVITY],
+      [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
+      [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.EVENT_START],
+      [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.POOL],
+      [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.TASK],
+      [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.CALL_ACTIVITY],
+      [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
+      [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.EVENT_START],
+      [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.POOL],
+      [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.TASK],
+      [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.CALL_ACTIVITY],
+      [ShapeBpmnElementKind.EVENT_BOUNDARY, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
+      [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.EVENT_START],
+      [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.POOL],
+      [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.TASK],
+      [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.CALL_ACTIVITY],
+      [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
+    ])(`should convert as Edge, when an message flow has %s as source and %s as target`, (sourceKind, targetKind) => {
+      const json: BpmnJsonModel = buildDefinitions({
+        withParticipant: true,
+        messageFlows: {
+          id: 'messageFlow_id_0',
+          name: 'Message Flow 0',
+          sourceRef: 'sourceRef_id',
+          targetRef: 'targetRef_id',
+        },
+        process: [buildProcessParameter(sourceKind, 'sourceRef_id'), buildProcessParameter(targetKind, 'targetRef_id')],
+      });
+
+      const model = parseJson(json);
+      expect(model.edges).toHaveLength(1);
+
+      verifyEdge(model.edges[0], {
+        edgeId: 'edge_messageFlow_id_0',
+        bpmnElementId: 'messageFlow_id_0',
+        bpmnElementName: 'Message Flow 0',
+        bpmnElementSourceRefId: 'sourceRef_id',
+        bpmnElementTargetRefId: 'targetRef_id',
+        waypoints: [new Waypoint(567, 345), new Waypoint(587, 345)],
+      });
+    });
+  });
+
+  function buildProcessParameter(kind: ShapeBpmnElementKind, id: string): BuildProcessParameter {
+    if (kind === ShapeBpmnElementKind.POOL) {
+      return {
+        id,
+      };
+    } else if (ShapeUtil.isEvent(kind)) {
+      const isBoundaryEvent = kind === ShapeBpmnElementKind.EVENT_BOUNDARY;
+      const eventParameter = isBoundaryEvent
+        ? {
+            bpmnKind: kind,
+            isInterrupting: true,
+            attachedToRef: 'task_id_0',
+            eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
+          }
+        : {
+            bpmnKind: kind,
+            eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
+          };
+
+      return {
+        event: eventParameter,
+        task: isBoundaryEvent ? { id: 'task_id_0' } : undefined,
+      };
+    } else {
+      return {
+        task: { id },
+      };
+    }
+  }
 });
