@@ -76,7 +76,7 @@ export default class GraphConfigurator {
       this.graph.setPanning(true);
 
       // Zoom configuration
-      this.graph.createMouseWheelZoomExperience(options.navigation.zoom);
+      this.graph.registerMouseWheelZoomListeners(options.navigation.zoom);
     } else {
       this.graph.setPanning(false);
       // Disable gesture support for zoom
