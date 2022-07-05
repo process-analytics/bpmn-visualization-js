@@ -67,6 +67,68 @@ export interface BuildProcessParameter {
   event?: BuildEventParameter | BuildEventParameter[];
   exclusiveGateway?: BuildExclusiveGatewayParameter | BuildExclusiveGatewayParameter[];
   callActivity?: BuildCallActivityParameter | BuildCallActivityParameter[];
+
+  /**
+   * - If `withParticipant` of `BuildDefinitionParameter` is false, it's corresponding to the id of the process.
+   * - Otherwise, it's corresponding to the id of the participant.
+   *
+   * @example No participant
+   * const json = buildDefinitions({
+   *  withParticipant: false,
+   *  process: {
+   *    id: 'process_id_0',
+   *  },
+   * });
+   *
+   * Result:
+   * {
+   *  definitions: {
+   *    targetNamespace: '',
+   *    collaboration: {
+   *      id: 'collaboration_id_0',
+   *    },
+   *    process: {
+   *      id: 'process_id_0',
+   *    },
+   *    BPMNDiagram: {
+   *      name: 'process 0',
+   *      BPMNPlane: {},
+   *    },
+   *  },
+   * }
+   *
+   * @example With participant
+   * const json = buildDefinitions({
+   *  withParticipant: true,
+   *  process: {
+   *    id: 'process_id_0',
+   *  },
+   * });
+   *
+   * Result:
+   * {
+   *  definitions: {
+   *    targetNamespace: '',
+   *    collaboration: {
+   *      id: 'collaboration_id_0',
+   *      participant: { id: 'participant_id_0', processRef: 'process_participant_id_0' },
+   *    },
+   *    process: {
+   *      id: 'process_participant_id_0',
+   *    },
+   *    BPMNDiagram: {
+   *      name: 'process 0',
+   *      BPMNPlane: {
+   *        BPMNShape: {
+   *          id: 'shape_participant_id_0',
+   *          bpmnElement: 'participant_id_0',
+   *          Bounds: { x: 567, y: 345, width: 36, height: 45 },
+   *        },
+   *      },
+   *    },
+   *  },
+   * }
+   **/
   id?: string;
 }
 
