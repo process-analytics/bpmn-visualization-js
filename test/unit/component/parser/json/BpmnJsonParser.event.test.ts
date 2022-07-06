@@ -23,6 +23,7 @@ import type { TEventDefinition } from '../../../../../src/model/bpmn/json/baseEl
 import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import type { BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
+import type { ExpectedEventShape } from '../../../helpers/bpmn-model-expect';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import type { BuildEventDefinitionParameter, BuildEventParameter } from '../../../helpers/JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
@@ -72,7 +73,7 @@ function testMustConvertOneShape(
   const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 1);
 
   const shapes = getEventShapes(model);
-  verifyShape(shapes[0], {
+  const expectedShape: ExpectedEventShape = {
     shapeId: `shape_event_id_0_0`,
     parentId: buildEventParameter.attachedToRef,
     bpmnElementId: 'event_id_0_0',
@@ -84,8 +85,11 @@ function testMustConvertOneShape(
       width: 36,
       height: 45,
     },
-    isInterrupting: buildEventParameter.isInterrupting,
-  });
+  };
+  if ('isInterrupting' in buildEventParameter) {
+    expectedShape.isInterrupting = buildEventParameter.isInterrupting;
+  }
+  verifyShape(shapes[0], expectedShape);
 }
 
 function executeEventCommonTests(
@@ -104,7 +108,7 @@ function executeEventCommonTests(
     const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 2);
 
     const shapes = getEventShapes(model);
-    verifyShape(shapes[0], {
+    const expectedShape0: ExpectedEventShape = {
       shapeId: `shape_event_id_0_0`,
       parentId: buildEventParameter.attachedToRef,
       bpmnElementId: 'event_id_0_0',
@@ -116,9 +120,13 @@ function executeEventCommonTests(
         width: 36,
         height: 45,
       },
-      isInterrupting: buildEventParameter.isInterrupting,
-    });
-    verifyShape(shapes[1], {
+    };
+    if ('isInterrupting' in buildEventParameter) {
+      expectedShape0.isInterrupting = buildEventParameter.isInterrupting;
+    }
+    verifyShape(shapes[0], expectedShape0);
+
+    const expectedShape1: ExpectedEventShape = {
       shapeId: `shape_event_id_0_1`,
       parentId: buildEventParameter.attachedToRef,
       bpmnElementId: 'event_id_0_1',
@@ -130,8 +138,11 @@ function executeEventCommonTests(
         width: 36,
         height: 45,
       },
-      isInterrupting: buildEventParameter.isInterrupting,
-    });
+    };
+    if ('isInterrupting' in buildEventParameter) {
+      expectedShape1.isInterrupting = buildEventParameter.isInterrupting;
+    }
+    verifyShape(shapes[1], expectedShape1);
   });
 
   it.each([

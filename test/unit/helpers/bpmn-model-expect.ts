@@ -84,20 +84,22 @@ export const verifyShape = (shape: Shape, expectedShape: ExpectedShape | Expecte
   expect(bpmnElement.kind).toEqual(expectedShape.bpmnElementKind);
   expect(bpmnElement.parentId).toEqual(expectedShape.parentId);
 
-  if (bpmnElement instanceof ShapeBpmnActivity) {
-    const expectedActivityShape = expectedShape as ExpectedActivityShape;
-    if (expectedActivityShape.bpmnElementMarkers) {
-      expect(bpmnElement.markers).toEqual(expectedActivityShape.bpmnElementMarkers);
-    } else {
-      expect(bpmnElement.markers).toHaveLength(0);
-    }
+  if ('bpmnElementMarkers' in expectedShape) {
+    expect(bpmnElement instanceof ShapeBpmnActivity).toBeTruthy();
+    expect((bpmnElement as ShapeBpmnActivity).markers).toEqual((expectedShape as ExpectedActivityShape).bpmnElementMarkers);
+  } else if (bpmnElement instanceof ShapeBpmnActivity) {
+    expect(bpmnElement.markers).toHaveLength(0);
+  }
 
-    if (bpmnElement instanceof ShapeBpmnCallActivity) {
-      expect(bpmnElement.callActivityKind).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementCallActivityKind);
-      expect(bpmnElement.globalTaskKind).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementGlobalTaskKind);
-    }
-  } else if (bpmnElement instanceof ShapeBpmnBoundaryEvent) {
-    expect(bpmnElement.isInterrupting).toEqual((expectedShape as ExpectedEventShape).isInterrupting);
+  if ('callActivityKind' in expectedShape || 'globalTaskKind' in expectedShape) {
+    expect(bpmnElement instanceof ShapeBpmnCallActivity).toBeTruthy();
+    expect((bpmnElement as ShapeBpmnCallActivity).callActivityKind).toEqual((expectedShape as ExpectedCallActivityShape).bpmnElementCallActivityKind);
+    expect((bpmnElement as ShapeBpmnCallActivity).globalTaskKind).toEqual((expectedShape as ExpectedCallActivityShape).bpmnElementGlobalTaskKind);
+  }
+
+  if ('isInterrupting' in expectedShape) {
+    expect(bpmnElement instanceof ShapeBpmnBoundaryEvent).toBeTruthy();
+    expect((bpmnElement as ShapeBpmnBoundaryEvent).isInterrupting).toEqual((expectedShape as ExpectedEventShape).isInterrupting);
   }
 
   const bounds = shape.bounds;
