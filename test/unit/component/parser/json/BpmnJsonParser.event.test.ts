@@ -57,7 +57,7 @@ function verifyEventShape(
   }
 }
 
-function buildDefinitionsWithEventAndTask(event: BuildEventParameter, processIsArray = false): BpmnJsonModel {
+function buildDefinitionsWithEventAndTask(event: BuildEventParameter | BuildEventParameter[], processIsArray = false): BpmnJsonModel {
   const process = {
     event,
     task: {},
@@ -122,11 +122,7 @@ function executeEventCommonTests(
   });
 
   it.each([['object'], ['array']])(`should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as array)${titleSuffix}`, (title: string) => {
-    const process = {
-      event: [buildEventParameter, buildEventParameter],
-      task: { id: 'task_id_0_0' },
-    };
-    const json = buildDefinitions(title === 'object' ? { process } : { process: [process] });
+    const json = buildDefinitionsWithEventAndTask([buildEventParameter, buildEventParameter], title === 'array');
 
     const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 2);
 
