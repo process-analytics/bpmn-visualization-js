@@ -31,5 +31,5 @@ module.exports = {
     },
   },
   setupFiles: ['./test/config/jest.retries.ts'],
-  setupFilesAfterEnv: ['expect-playwright'],
+  setupFilesAfterEnv: ['jest-extended/all', 'expect-playwright'],
 };
