@@ -30,33 +30,6 @@ import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilde
 import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import { getEventShapes } from '../../../helpers/TestUtils';
 
-function verifyEventShape(
-  shape: Shape,
-  buildEventParameter: BuildEventParameter,
-  expectedShapeBpmnElementKind: ShapeBpmnElementKind,
-  expectedShapeId = `shape_event_id_0_0`,
-  expectedBpmnElementId = 'event_id_0_0',
-): void {
-  verifyShape(shape, {
-    shapeId: expectedShapeId,
-    parentId: buildEventParameter.attachedToRef,
-    bpmnElementId: expectedBpmnElementId,
-    bpmnElementName: buildEventParameter.name,
-    bpmnElementKind: expectedShapeBpmnElementKind,
-    bounds: {
-      x: 362,
-      y: 232,
-      width: 36,
-      height: 45,
-    },
-  });
-
-  if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.EVENT_BOUNDARY) {
-    expect(shape.bpmnElement instanceof ShapeBpmnBoundaryEvent).toBeTruthy();
-    expect((shape.bpmnElement as ShapeBpmnBoundaryEvent).isInterrupting).toEqual(buildEventParameter.isInterrupting);
-  }
-}
-
 function buildDefinitionsWithEventAndTask(event: BuildEventParameter | BuildEventParameter[], processIsArray = false): BpmnJsonModel {
   const process = {
     event,
@@ -76,7 +49,20 @@ function parseAndExpectEvent(
   const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 1);
 
   const shapes = getEventShapes(model);
-  verifyEventShape(shapes[0], buildEventParameter, expectedShapeBpmnElementKind);
+  verifyShape(shapes[0], {
+    shapeId: `shape_event_id_0_0`,
+    parentId: buildEventParameter.attachedToRef,
+    bpmnElementId: 'event_id_0_0',
+    bpmnElementName: buildEventParameter.name,
+    bpmnElementKind: expectedShapeBpmnElementKind,
+    bounds: {
+      x: 362,
+      y: 232,
+      width: 36,
+      height: 45,
+    },
+    isInterrupting: buildEventParameter.isInterrupting,
+  });
 }
 
 function parseAndExpectNoEvents(json: BpmnJsonModel, numberOfExpectedFlowNodes = 1): void {
@@ -127,8 +113,34 @@ function executeEventCommonTests(
     const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 2);
 
     const shapes = getEventShapes(model);
-    verifyEventShape(shapes[0], buildEventParameter, expectedShapeBpmnElementKind);
-    verifyEventShape(shapes[1], buildEventParameter, expectedShapeBpmnElementKind, `shape_event_id_0_1`, 'event_id_0_1');
+    verifyShape(shapes[0], {
+      shapeId: `shape_event_id_0_0`,
+      parentId: buildEventParameter.attachedToRef,
+      bpmnElementId: 'event_id_0_0',
+      bpmnElementName: buildEventParameter.name,
+      bpmnElementKind: expectedShapeBpmnElementKind,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+      isInterrupting: buildEventParameter.isInterrupting,
+    });
+    verifyShape(shapes[1], {
+      shapeId: `shape_event_id_0_1`,
+      parentId: buildEventParameter.attachedToRef,
+      bpmnElementId: 'event_id_0_1',
+      bpmnElementName: buildEventParameter.name,
+      bpmnElementKind: expectedShapeBpmnElementKind,
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+      isInterrupting: buildEventParameter.isInterrupting,
+    });
   });
 
   it.each([
