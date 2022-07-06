@@ -30,13 +30,6 @@ import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilde
 import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import { getEventShapes } from '../../../helpers/TestUtils';
 
-interface TestParameter {
-  buildEventParameter: BuildEventParameter;
-  expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind;
-  expectedShapeBpmnElementKind: ShapeBpmnElementKind;
-  processIsArray?: boolean;
-}
-
 function verifyEventShape(
   shape: Shape,
   buildEventParameter: BuildEventParameter,
@@ -74,11 +67,6 @@ function buildDefinitionsWithEventAndTask(event: BuildEventParameter, processIsA
   });
 }
 
-function testMustConvertOneShape({ buildEventParameter, expectedEventDefinitionKind, expectedShapeBpmnElementKind, processIsArray = false }: TestParameter): void {
-  const json = buildDefinitionsWithEventAndTask(buildEventParameter, processIsArray);
-  parseAndExpectEvent(json, expectedEventDefinitionKind, buildEventParameter, expectedShapeBpmnElementKind);
-}
-
 function parseAndExpectEvent(
   json: BpmnJsonModel,
   expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind,
@@ -112,19 +100,25 @@ function parseAndExpectNoBoundaryEvents(json: BpmnJsonModel, numberOfExpectedFlo
   expect(warning1.bpmnElementId).toBe('event_id_0_0');
 }
 
+function testMustConvertOneShape(
+  buildEventParameter: BuildEventParameter,
+  expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind,
+  expectedShapeBpmnElementKind: ShapeBpmnElementKind,
+  processIsArray = false,
+): void {
+  const json = buildDefinitionsWithEventAndTask(buildEventParameter, processIsArray);
+
+  parseAndExpectEvent(json, expectedEventDefinitionKind, buildEventParameter, expectedShapeBpmnElementKind);
+}
+
 function executeEventCommonTests(
   buildEventParameter: BuildEventParameter,
   expectedShapeBpmnElementKind: ShapeBpmnElementKind,
   expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind,
   titleSuffix = '',
 ): void {
-  const testParameter: TestParameter = {
-    buildEventParameter: buildEventParameter,
-    expectedEventDefinitionKind: expectedEventDefinitionKind,
-    expectedShapeBpmnElementKind,
-  };
   it.each([['object'], ['array']])(`should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as object)${titleSuffix}`, (title: string) => {
-    testMustConvertOneShape({ ...testParameter, processIsArray: title === 'array' });
+    testMustConvertOneShape(buildEventParameter, expectedEventDefinitionKind, expectedShapeBpmnElementKind, title === 'array');
   });
 
   it.each([['object'], ['array']])(`should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as array)${titleSuffix}`, (title: string) => {
@@ -145,7 +139,7 @@ function executeEventCommonTests(
     ["'name'", 'event name'],
     ["no 'name'", undefined],
   ])(`should convert as Shape, when '${buildEventParameter.bpmnKind}' has %s${titleSuffix}`, (title: string, eventName: string) => {
-    testMustConvertOneShape({ ...testParameter, buildEventParameter: { ...buildEventParameter, name: eventName } });
+    testMustConvertOneShape({ ...buildEventParameter, name: eventName }, expectedEventDefinitionKind, expectedShapeBpmnElementKind);
   });
 
   if (expectedEventDefinitionKind !== ShapeBpmnEventDefinitionKind.NONE) {
@@ -250,15 +244,15 @@ describe('parse bpmn as json for all events', () => {
         ])(
           `should convert as Shape, when '${eventDefinitionKind}EventDefinition' is %s, ${titleForEventDefinitionIsAttributeOf}`,
           (title: string, eventDefinition: string | TEventDefinition) => {
-            testMustConvertOneShape({
-              buildEventParameter: {
+            testMustConvertOneShape(
+              {
                 bpmnKind,
                 eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn, eventDefinition },
                 attachedToRef: '0',
               },
-              expectedShapeBpmnElementKind,
               expectedEventDefinitionKind,
-            });
+              expectedShapeBpmnElementKind,
+            );
           },
         );
       });
