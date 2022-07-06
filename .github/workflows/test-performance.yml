@@ -1,0 +1,39 @@
+# This ensures that the tests can run
+name: Run Performance Tests
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '* 3 * * 0'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '.github/actions/build-setup/**/*'
+      - '.github/workflows/test-performance.yml'
+      - 'test/performance/**/*'
+
+jobs:
+  test_performance:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # we want to run the full build on all os: don't cancel running jobs even if one fails
+      fail-fast: false
+      matrix:
+        os: [macos-12, ubuntu-20.04, windows-2019]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
+      - name: Run performance tests
+        id: 'run_perf_tests'
+        run: npm run test:perf
+      - name: Upload test results
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: perf-test-results-${{matrix.os}}-${{github.sha}}
+          path: |
+            test/performance/index.html
+            test/performance/data/
