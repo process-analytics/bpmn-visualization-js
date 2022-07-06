@@ -20,7 +20,12 @@ jobs:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        os: [macos-12, ubuntu-20.04, windows-2019]
+        # disable windows-2019 in a first implementation as it always fails. Require more investigations.
+        # node:internal/process/promises:279
+        #            triggerUncaughtException(err, true /* fromPromise */);
+        #            ^
+        # cdpSession.detach: Browser closed.
+        os: [macos-12, ubuntu-20.04]
     env:
       # Performance tests rely on chromium API
       browser: chromium
