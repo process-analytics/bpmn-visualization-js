@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import type { GlobalTaskKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../src/model/bpmn/internal';
+import type { GlobalTaskKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind } from '../../../src/model/bpmn/internal';
 import type { Edge, Waypoint } from '../../../src/model/bpmn/internal/edge/edge';
 import type Shape from '../../../src/model/bpmn/internal/shape/Shape';
-import { ShapeBpmnActivity, ShapeBpmnCallActivity } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
+import { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnCallActivity, ShapeBpmnEvent } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import { SequenceFlow } from '../../../src/model/bpmn/internal/edge/flows';
 import { FlowKind, MessageVisibleKind, SequenceFlowKind } from '../../../src/model/bpmn/internal';
 
@@ -38,6 +38,14 @@ export interface ExpectedActivityShape extends ExpectedShape {
 export interface ExpectedCallActivityShape extends ExpectedActivityShape {
   bpmnElementGlobalTaskKind?: GlobalTaskKind;
   bpmnElementCallActivityKind?: ShapeBpmnCallActivityKind;
+}
+
+export interface ExpectedEventShape extends ExpectedShape {
+  eventDefinitionKind: ShapeBpmnEventDefinitionKind;
+}
+
+export interface ExpectedBoundaryEventShape extends ExpectedEventShape {
+  isInterrupting?: boolean;
 }
 
 export interface ExpectedEdge {
@@ -70,7 +78,10 @@ export interface ExpectedBounds {
   height: number;
 }
 
-export const verifyShape = (shape: Shape, expectedShape: ExpectedShape | ExpectedActivityShape | ExpectedCallActivityShape): void => {
+export const verifyShape = (
+  shape: Shape,
+  expectedShape: ExpectedShape | ExpectedActivityShape | ExpectedCallActivityShape | ExpectedEventShape | ExpectedBoundaryEventShape,
+): void => {
   expect(shape.id).toEqual(expectedShape.shapeId);
   expect(shape.isHorizontal).toEqual(expectedShape.isHorizontal);
 
@@ -80,18 +91,27 @@ export const verifyShape = (shape: Shape, expectedShape: ExpectedShape | Expecte
   expect(bpmnElement.kind).toEqual(expectedShape.bpmnElementKind);
   expect(bpmnElement.parentId).toEqual(expectedShape.parentId);
 
-  if (bpmnElement instanceof ShapeBpmnActivity) {
-    const expectedActivityShape = expectedShape as ExpectedActivityShape;
-    if (expectedActivityShape.bpmnElementMarkers) {
-      expect(bpmnElement.markers).toEqual(expectedActivityShape.bpmnElementMarkers);
-    } else {
-      expect(bpmnElement.markers).toHaveLength(0);
-    }
+  if ('bpmnElementMarkers' in expectedShape) {
+    expect(bpmnElement instanceof ShapeBpmnActivity).toBeTruthy();
+    expect((bpmnElement as ShapeBpmnActivity).markers).toEqual((expectedShape as ExpectedActivityShape).bpmnElementMarkers);
+  } else if (bpmnElement instanceof ShapeBpmnActivity) {
+    expect(bpmnElement.markers).toHaveLength(0);
+  }
 
-    if (bpmnElement instanceof ShapeBpmnCallActivity) {
-      expect(bpmnElement.callActivityKind).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementCallActivityKind);
-      expect(bpmnElement.globalTaskKind).toEqual((expectedActivityShape as ExpectedCallActivityShape).bpmnElementGlobalTaskKind);
-    }
+  if ('callActivityKind' in expectedShape || 'globalTaskKind' in expectedShape) {
+    expect(bpmnElement instanceof ShapeBpmnCallActivity).toBeTruthy();
+    expect((bpmnElement as ShapeBpmnCallActivity).callActivityKind).toEqual((expectedShape as ExpectedCallActivityShape).bpmnElementCallActivityKind);
+    expect((bpmnElement as ShapeBpmnCallActivity).globalTaskKind).toEqual((expectedShape as ExpectedCallActivityShape).bpmnElementGlobalTaskKind);
+  }
+
+  if ('eventDefinitionKind' in expectedShape) {
+    expect(bpmnElement instanceof ShapeBpmnEvent).toBeTruthy();
+    expect((bpmnElement as ShapeBpmnEvent).eventDefinitionKind).toEqual((expectedShape as ExpectedEventShape).eventDefinitionKind);
+  }
+
+  if ('isInterrupting' in expectedShape) {
+    expect(bpmnElement instanceof ShapeBpmnBoundaryEvent).toBeTruthy();
+    expect((bpmnElement as ShapeBpmnBoundaryEvent).isInterrupting).toEqual((expectedShape as ExpectedBoundaryEventShape).isInterrupting);
   }
 
   const bounds = shape.bounds;
