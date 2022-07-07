@@ -41,33 +41,6 @@ interface TestParameter {
   process?: TProcess | TProcess[];
 }
 
-function verifyEventShape(
-  shape: Shape,
-  buildEventParameter: BuildEventParameter,
-  expectedShapeBpmnElementKind: ShapeBpmnElementKind,
-  expectedShapeId = `shape_event_id_0`,
-  expectedBpmnElementId = 'event_id_0',
-): void {
-  verifyShape(shape, {
-    shapeId: expectedShapeId,
-    parentId: buildEventParameter.attachedToRef,
-    bpmnElementId: expectedBpmnElementId,
-    bpmnElementName: buildEventParameter.name,
-    bpmnElementKind: expectedShapeBpmnElementKind,
-    bounds: {
-      x: 362,
-      y: 232,
-      width: 36,
-      height: 45,
-    },
-  });
-
-  if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.EVENT_BOUNDARY) {
-    expect(shape.bpmnElement instanceof ShapeBpmnBoundaryEvent).toBeTruthy();
-    expect((shape.bpmnElement as ShapeBpmnBoundaryEvent).isInterrupting).toEqual(buildEventParameter.isInterrupting);
-  }
-}
-
 function testMustConvertOneShape({ bpmnKind, buildEventDefinitionParameter, buildEventParameter, omitExpectedShape }: TestParameter): void {
   const json = buildDefinitions({
     events: [{ bpmnKind, eventDefinitionParameter: buildEventDefinitionParameter, eventParameter: buildEventParameter }],
@@ -139,8 +112,28 @@ function executeEventCommonTests(
         const model = parseJsonAndExpectEvent(json, omitExpectedShape.eventDefinitionKind, 2);
 
         const shapes = getEventShapes(model);
-        verifyEventShape(shapes[0], specificBuildEventParameter, omitExpectedShape.bpmnElementKind);
-        verifyEventShape(shapes[1], { ...specificBuildEventParameter, index: 1 }, omitExpectedShape.bpmnElementKind, `shape_event_id_1`, 'event_id_1');
+        verifyShape(shapes[0], {
+          ...omitExpectedShape,
+          shapeId: `shape_event_id_0`,
+          bpmnElementId: 'event_id_0',
+          bounds: {
+            x: 362,
+            y: 232,
+            width: 36,
+            height: 45,
+          },
+        });
+        verifyShape(shapes[1], {
+          ...omitExpectedShape,
+          shapeId: `shape_event_id_1`,
+          bpmnElementId: 'event_id_1',
+          bounds: {
+            x: 362,
+            y: 232,
+            width: 36,
+            height: 45,
+          },
+        });
       },
     );
 
@@ -232,7 +225,17 @@ function executeEventCommonTests(
             const model = parseJsonAndExpectEvent(json, omitExpectedShape.eventDefinitionKind, 1);
 
             const shapes = getEventShapes(model);
-            verifyEventShape(shapes[0], specificBuildEventParameter, omitExpectedShape.bpmnElementKind);
+            verifyShape(shapes[0], {
+              ...omitExpectedShape,
+              shapeId: `shape_event_id_0`,
+              bpmnElementId: 'event_id_0',
+              bounds: {
+                x: 362,
+                y: 232,
+                width: 36,
+                height: 45,
+              },
+            });
           });
         }
 
