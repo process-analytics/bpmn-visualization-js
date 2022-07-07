@@ -23,13 +23,10 @@ import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/
 /** Json model */
 import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import * as bpmndi from '../../../../../src/model/bpmn/json/BPMNDI';
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import type { TCollaboration } from '../../../../../src/model/bpmn/json/baseElement/rootElement/collaboration';
-import type { TParticipant } from '../../../../../src/model/bpmn/json/baseElement/participant';
 
 /** Test utils */
 import { parseJson, parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
-import type { BuildEventDefinitionParameter, BuildProcessParameter, BuildDefinitionParameter } from '../../../helpers/JsonBuilder';
+import type { BuildProcessParameter } from '../../../helpers/JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 

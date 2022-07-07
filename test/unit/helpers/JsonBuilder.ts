@@ -174,7 +174,7 @@ export function buildDefinitions({ process, withParticipant, messageFlows }: Bui
 function addParticipantProcessAndElements(processParameter: BuildProcessParameter, withParticipant = false, jsonModel: BpmnJsonModel, index: number): void {
   const id = processParameter.id ? processParameter.id : String(index);
   if (withParticipant) {
-    addParticipant(id, jsonModel, index);
+    addParticipant(id, jsonModel);
   }
   updateBpmnElement(
     jsonModel.definitions.process as TProcess | TProcess[],
@@ -184,7 +184,7 @@ function addParticipantProcessAndElements(processParameter: BuildProcessParamete
   addElementsOnProcess(processParameter, jsonModel, index);
 }
 
-function addParticipant(id: string, jsonModel: BpmnJsonModel, index: number): void {
+function addParticipant(id: string, jsonModel: BpmnJsonModel): void {
   const collaboration: TCollaboration = getElementOfArray<TProcess>(jsonModel.definitions.collaboration as TCollaboration);
 
   updateBpmnElement(collaboration.participant, { id: id, processRef: `process_${id}` }, (value: TParticipant | TParticipant[]) => (collaboration.participant = value));
