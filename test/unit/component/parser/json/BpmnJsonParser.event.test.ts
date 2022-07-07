@@ -20,8 +20,6 @@ import type { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/jso
 import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 import type { BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../../../src/model/bpmn/internal';
-import { ShapeBpmnBoundaryEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
 
 import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
