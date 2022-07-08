@@ -288,7 +288,6 @@ function executeEventCommonTests(buildEventParameter: BuildEventParameter, omitE
 
 describe('parse bpmn as json for all events', () => {
   const eventDefinitionsParameters: [string, ShapeBpmnEventDefinitionKind][] = [
-    ['none', ShapeBpmnEventDefinitionKind.NONE],
     ['message', ShapeBpmnEventDefinitionKind.MESSAGE],
     ['timer', ShapeBpmnEventDefinitionKind.TIMER],
     ['terminate', ShapeBpmnEventDefinitionKind.TERMINATE],
@@ -349,8 +348,23 @@ describe('parse bpmn as json for all events', () => {
       );
     });
 
-    // Only for events that support the NONE event kind
-    if (expectedShapeBpmnElementKind !== ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH) {
+    describe(`for none ${bpmnKind}`, () => {
+      // Only for events that support the NONE event kind
+      if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH) {
+        // Not supported in BPMN specification
+        return;
+      }
+
+      executeEventCommonTests(
+        { bpmnKind, eventDefinitionParameter: { eventDefinitionKind: 'none', eventDefinitionOn: EventDefinitionOn.NONE }, attachedToRef: '0' },
+        {
+          parentId: '0',
+          bpmnElementKind: expectedShapeBpmnElementKind,
+          bpmnElementName: undefined,
+          eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+        },
+      );
+
       it(`should convert as NONE Shape only the '${bpmnKind}' without 'eventDefinition' & without 'eventDefinitionRef', when an array of '${bpmnKind}' (without/with one or several event definition) is an attribute of 'process'`, () => {
         const json = {
           definitions: {
@@ -426,16 +440,12 @@ describe('parse bpmn as json for all events', () => {
           },
         });
       });
-    }
+    });
   });
 
   describe.each([['boundaryEvent', ShapeBpmnElementKind.EVENT_BOUNDARY]])('for %ss', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
     describe.each(eventDefinitionsParameters)(`for %s ${bpmnKind}`, (eventDefinitionKind: string, expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind) => {
-      if (
-        expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.NONE ||
-        expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK ||
-        expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.TERMINATE
-      ) {
+      if (expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK || expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.TERMINATE) {
         // Not supported in BPMN specification
         return;
       }
