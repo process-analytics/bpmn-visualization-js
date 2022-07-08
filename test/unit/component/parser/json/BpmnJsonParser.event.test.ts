@@ -78,7 +78,7 @@ function parseAndExpectNoBoundaryEvents(json: BpmnJsonModel, numberOfExpectedFlo
   expect(warning1.bpmnElementId).toBe('event_id_0_0');
 }
 
-function executeEventCommonTests(buildEventParameter: BuildEventParameter, omitExpectedShape: OmitExpectedEventShape, specificTitle = ''): void {
+function executeEventCommonTests(buildEventParameter: BuildEventParameter, omitExpectedShape: OmitExpectedEventShape, titleSuffix = ''): void {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let titlesForEventDefinitionIsAttributeOf: any[][];
   if (omitExpectedShape.eventDefinitionKind === ShapeBpmnEventDefinitionKind.NONE) {
@@ -102,55 +102,51 @@ function executeEventCommonTests(buildEventParameter: BuildEventParameter, omitE
     };
     buildEventParameter.eventDefinitionParameter = buildEventDefinitionParameter;
 
+    titleSuffix += `, (${titleForEventDefinitionIsAttributeOf})`;
+
     const testParameter: TestParameter = { buildEventParameter, omitExpectedShape };
-    it.each([['object'], ['array']])(
-      `should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as object)${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`,
-      (title: string) => {
-        testMustConvertOneShape({ ...testParameter, processIsArray: title === 'array' });
-      },
-    );
+    it.each([['object'], ['array']])(`should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as object)${titleSuffix}`, (title: string) => {
+      testMustConvertOneShape({ ...testParameter, processIsArray: title === 'array' });
+    });
 
-    it.each([['object'], ['array']])(
-      `should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as array)${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`,
-      (title: string) => {
-        const process = {
-          event: [buildEventParameter, buildEventParameter],
-          task: {},
-        };
-        const json = buildDefinitions(title === 'object' ? { process } : { process: [process] });
+    it.each([['object'], ['array']])(`should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as array)${titleSuffix}`, (title: string) => {
+      const process = {
+        event: [buildEventParameter, buildEventParameter],
+        task: {},
+      };
+      const json = buildDefinitions(title === 'object' ? { process } : { process: [process] });
 
-        const model = parseJsonAndExpectEvent(json, omitExpectedShape.eventDefinitionKind, 2);
+      const model = parseJsonAndExpectEvent(json, omitExpectedShape.eventDefinitionKind, 2);
 
-        const shapes = getEventShapes(model);
-        verifyShape(shapes[0], {
-          ...omitExpectedShape,
-          shapeId: `shape_event_id_0_0`,
-          bpmnElementId: 'event_id_0_0',
-          bounds: {
-            x: 362,
-            y: 232,
-            width: 36,
-            height: 45,
-          },
-        });
-        verifyShape(shapes[1], {
-          ...omitExpectedShape,
-          shapeId: `shape_event_id_0_1`,
-          bpmnElementId: 'event_id_0_1',
-          bounds: {
-            x: 362,
-            y: 232,
-            width: 36,
-            height: 45,
-          },
-        });
-      },
-    );
+      const shapes = getEventShapes(model);
+      verifyShape(shapes[0], {
+        ...omitExpectedShape,
+        shapeId: `shape_event_id_0_0`,
+        bpmnElementId: 'event_id_0_0',
+        bounds: {
+          x: 362,
+          y: 232,
+          width: 36,
+          height: 45,
+        },
+      });
+      verifyShape(shapes[1], {
+        ...omitExpectedShape,
+        shapeId: `shape_event_id_0_1`,
+        bpmnElementId: 'event_id_0_1',
+        bounds: {
+          x: 362,
+          y: 232,
+          width: 36,
+          height: 45,
+        },
+      });
+    });
 
     it.each([
       ["'name'", 'event name'],
       ["no 'name'", undefined],
-    ])(`should convert as Shape, when '${buildEventParameter.bpmnKind}' has %s${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, (title: string, eventName: string) => {
+    ])(`should convert as Shape, when '${buildEventParameter.bpmnKind}' has %s${titleSuffix}`, (title: string, eventName: string) => {
       testMustConvertOneShape({
         ...testParameter,
         buildEventParameter: { ...buildEventParameter, name: eventName },
@@ -159,7 +155,7 @@ function executeEventCommonTests(buildEventParameter: BuildEventParameter, omitE
     });
 
     if (omitExpectedShape.eventDefinitionKind !== ShapeBpmnEventDefinitionKind.NONE) {
-      it(`should NOT convert, when there are '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' and another 'EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
+      it(`should NOT convert, when there are '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' and another 'EventDefinition' in the same element${titleSuffix}`, () => {
         const json = buildDefinitions({
           process: {
             event: {
@@ -173,7 +169,7 @@ function executeEventCommonTests(buildEventParameter: BuildEventParameter, omitE
         parseAndExpectNoEvents(json);
       });
 
-      it(`should NOT convert, when there are several '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' in the same element${specificTitle}, ${titleForEventDefinitionIsAttributeOf}`, () => {
+      it(`should NOT convert, when there are several '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' in the same element${titleSuffix}`, () => {
         const json = buildDefinitions({
           process: {
             event: [{ ...buildEventParameter, eventDefinitionParameter: { ...buildEventParameter.eventDefinitionParameter, withMultipleDefinitions: true } }],
@@ -184,7 +180,7 @@ function executeEventCommonTests(buildEventParameter: BuildEventParameter, omitE
         parseAndExpectNoEvents(json);
       });
 
-      it(`should NOT convert, when 'definitions' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition and '${buildEventParameter.bpmnKind}' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition & eventDefinitionRef${specificTitle}`, () => {
+      it(`should NOT convert, when 'definitions' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition and '${buildEventParameter.bpmnKind}' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition & eventDefinitionRef${titleSuffix}`, () => {
         const json = buildDefinitions({
           process: {
             event: [{ ...buildEventParameter, eventDefinitionParameter: { ...buildEventParameter.eventDefinitionParameter, eventDefinitionOn: EventDefinitionOn.BOTH } }],
