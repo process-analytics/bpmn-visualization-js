@@ -39,20 +39,29 @@ export class BpmnVisualization {
   /**
    * Direct access to the `mxGraph` instance that powers `bpmn-visualization`.
    * It is for **advanced users**, so please use the lib API first and access to the `mxGraph` instance only when there is no alternative.
-   * @experimental subject to change, could be removed or made available in another way.
+   *
+   * **WARN**: subject to change, could be removed or made available in another way.
+   *
+   * @experimental
    */
   readonly graph: BpmnGraph;
 
   /**
    * Perform BPMN diagram navigation.
-   * @experimental subject to change, feedback welcome.
+   *
+   * **WARN**: subject to change, feedback welcome.
+   *
+   * @experimental
    * @since 0.24.0
    */
   readonly navigation: Navigation;
 
   /**
    * Interact with BPMN diagram elements rendered in the page.
-   * @experimental subject to change, feedback welcome.
+   *
+   * **WARN**: subject to change, feedback welcome.
+   *
+   * @experimental
    */
   readonly bpmnElementsRegistry: BpmnElementsRegistry;
 

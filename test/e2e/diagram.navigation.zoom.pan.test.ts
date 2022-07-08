@@ -77,14 +77,16 @@ describe('diagram navigation - zoom and pan with mouse', () => {
     });
   });
 
-  it.each([ZoomType.In, ZoomType.Out])(`ctrl + mouse: zoom %s`, async (zoomType: ZoomType) => {
-    await pageTester.mouseZoom({ x: containerCenter.x + 200, y: containerCenter.y }, zoomType);
+  describe.each([ZoomType.In, ZoomType.Out])(`ctrl + mouse: zoom %s`, (zoomType: ZoomType) => {
+    it.each([1, 3])('zoom %s times', async (xTimes: number) => {
+      await pageTester.mouseZoom({ x: containerCenter.x + 200, y: containerCenter.y }, zoomType, xTimes);
 
-    const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: `mouse.zoom.${zoomType}`,
+      const image = await page.screenshot({ fullPage: true });
+      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+      expect(image).toMatchImageSnapshot({
+        ...config,
+        customSnapshotIdentifier: `mouse.zoom.${zoomType}.${xTimes}.times`,
+      });
     });
   });
 
