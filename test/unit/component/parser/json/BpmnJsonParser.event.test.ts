@@ -43,7 +43,7 @@ function testMustConvertOneShape({ bpmnKind, buildEventDefinitionParameter, buil
   const json = buildDefinitions({
     process: {
       events: [{ bpmnKind, eventDefinitionParameter: buildEventDefinitionParameter, eventParameter: buildEventParameter }],
-      withTask: true,
+      task: {},
     },
   });
 
@@ -105,7 +105,7 @@ function executeEventCommonTests(
             { bpmnKind, eventDefinitionParameter: buildEventDefinitionParameter, eventParameter: specificBuildEventParameter },
             { bpmnKind, eventDefinitionParameter: buildEventDefinitionParameter, eventParameter: { ...specificBuildEventParameter, index: 1 } },
           ],
-          withTask: true,
+          task: {},
         };
         const json = buildDefinitions(title === 'object' ? { process } : { process: [process] });
 
@@ -175,7 +175,7 @@ function executeEventCommonTests(
           process: {
             eventDefinitionKind,
             events: [{ bpmnKind, eventDefinitionParameter: { ...buildEventDefinitionParameter, withDifferentDefinition: true }, eventParameter: specificBuildEventParameter }],
-            withTask: true,
+            task: {},
           },
         });
 
@@ -186,7 +186,7 @@ function executeEventCommonTests(
         const json = buildDefinitions({
           process: {
             events: [{ bpmnKind, eventDefinitionParameter: { ...buildEventDefinitionParameter, withMultipleDefinitions: true }, eventParameter: specificBuildEventParameter }],
-            withTask: true,
+            task: {},
           },
         });
 
@@ -197,7 +197,7 @@ function executeEventCommonTests(
         const json = buildDefinitions({
           process: {
             events: [{ bpmnKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn: EventDefinitionOn.BOTH }, eventParameter: specificBuildEventParameter }],
-            withTask: true,
+            task: {},
           },
         });
 
@@ -226,7 +226,7 @@ function executeEventCommonTests(
                     eventParameter: { ...specificBuildEventParameter, isInterrupting: undefined },
                   },
                 ],
-                withTask: true,
+                task: {},
               },
             });
 
@@ -278,7 +278,6 @@ function executeEventCommonTests(
               ],
             },
           });
-
           parseAndExpectNoBoundaryEvents(json, 0);
         });
       }

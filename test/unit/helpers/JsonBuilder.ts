@@ -48,12 +48,16 @@ export interface BuildEventDefinitionParameter {
   withMultipleDefinitions?: boolean;
 }
 
+export interface BuildTaskParameter {
+  id?: string;
+}
+
 export interface BuildExclusiveGatewayParameter {
   id?: string;
 }
 
 export interface BuildProcessParameter {
-  withTask?: boolean;
+  task?: BuildTaskParameter | BuildTaskParameter[];
   eventDefinitionKind?: string;
   events?: {
     bpmnKind: string;
@@ -180,8 +184,8 @@ function addParticipant(id: string, jsonModel: BpmnJsonModel): void {
 }
 
 function addElementsOnProcess(processParameter: BuildProcessParameter, json: BpmnJsonModel, processIndex: number): void {
-  if (processParameter.withTask) {
-    addTask(json, processIndex);
+  if (processParameter.task) {
+    (Array.isArray(processParameter.task) ? processParameter.task : [processParameter.task]).forEach((taskParameter, index) => addTask(json, taskParameter, index, processIndex));
   }
   if (processParameter.exclusiveGateway) {
     addExclusiveGateway(json, processParameter.exclusiveGateway, processIndex);
@@ -219,9 +223,9 @@ function addShape(jsonModel: BpmnJsonModel, taskShape: BPMNShape): void {
   updateBpmnElement(bpmnPlane.BPMNShape, taskShape, (value: BPMNShape | BPMNShape[]) => (bpmnPlane.BPMNShape = value));
 }
 
-function addTask(jsonModel: BpmnJsonModel, processIndex: number): void {
+function addTask(jsonModel: BpmnJsonModel, taskParameter: BuildTaskParameter, index: number, processIndex: number): void {
   const task = {
-    id: `task_id_${processIndex}_0`,
+    id: taskParameter.id ? taskParameter.id : `task_id_${processIndex}_${index}`,
     name: 'task name',
   };
   addFlownode(jsonModel, 'task', task, processIndex);
