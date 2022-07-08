@@ -44,7 +44,7 @@ describe('build json', () => {
       process: [
         {
           id: 'participant_0',
-          withTask: false,
+          task: {},
           events: [
             {
               bpmnKind: 'startEvent',
@@ -74,7 +74,7 @@ describe('build json', () => {
         },
         {
           id: 'participant_1',
-          withTask: true,
+          task: { id: 'task_id_1' },
           events: [
             {
               bpmnKind: 'startEvent',
@@ -93,7 +93,6 @@ describe('build json', () => {
         },
         {
           id: 'participant_2',
-          withTask: false,
           events: [
             {
               bpmnKind: 'intermediateCatchEvent',
@@ -132,6 +131,10 @@ describe('build json', () => {
         process: [
           {
             id: 'process_participant_0',
+            task: {
+              id: 'task_id_0_0',
+              name: 'task name',
+            },
             endEvent: {
               cancelActivity: true,
               eventDefinitionRef: 'event_definition_id',
@@ -157,7 +160,7 @@ describe('build json', () => {
               name: 'startEvent',
             },
             task: {
-              id: 'task_id_1_0',
+              id: 'task_id_1',
               name: 'task name',
             },
           },
@@ -182,6 +185,11 @@ describe('build json', () => {
                 Bounds: { x: 567, y: 345, width: 36, height: 45 },
               },
               {
+                bpmnElement: 'task_id_0_0',
+                id: 'shape_task_id_0_0',
+                Bounds: { x: 362, y: 232, height: 45, width: 36 },
+              },
+              {
                 bpmnElement: 'event_id_0_0',
                 id: 'shape_event_id_0_0',
                 Bounds: { x: 362, y: 232, height: 45, width: 36 },
@@ -197,8 +205,8 @@ describe('build json', () => {
                 Bounds: { x: 567, y: 345, width: 36, height: 45 },
               },
               {
-                bpmnElement: 'task_id_1_0',
-                id: 'shape_task_id_1_0',
+                bpmnElement: 'task_id_1',
+                id: 'shape_task_id_1',
                 Bounds: { x: 362, y: 232, height: 45, width: 36 },
               },
               {
@@ -355,7 +363,7 @@ describe('build json', () => {
                 },
               },
             ],
-            withTask: true,
+            task: {},
           },
         });
 
@@ -424,7 +432,7 @@ describe('build json', () => {
                 },
               },
             ],
-            withTask: true,
+            task: {},
           },
         });
 
@@ -492,7 +500,7 @@ describe('build json', () => {
                 },
               },
             ],
-            withTask: true,
+            task: {},
           },
         });
 
@@ -566,7 +574,7 @@ describe('build json', () => {
                 },
               },
             ],
-            withTask: true,
+            task: {},
           },
         });
 
@@ -633,7 +641,7 @@ describe('build json', () => {
                 },
               },
             ],
-            withTask: true,
+            task: {},
           },
         });
 
@@ -702,7 +710,7 @@ describe('build json', () => {
                 },
               },
             ],
-            withTask: true,
+            task: {},
           },
         });
 
@@ -771,7 +779,7 @@ describe('build json', () => {
                 },
               },
             ],
-            withTask: true,
+            task: {},
           },
         });
 
@@ -1577,10 +1585,49 @@ describe('build json', () => {
   });
 
   describe('build json with task', () => {
-    it('build json of definitions containing one process with task', () => {
+    it('build json of definitions containing one process with task (with id)', () => {
       const json = buildDefinitions({
         process: {
-          withTask: true,
+          task: { id: '0' },
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
+          process: {
+            id: '0',
+            task: {
+              id: '0',
+              name: 'task name',
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_0',
+                bpmnElement: '0',
+                Bounds: {
+                  x: 362,
+                  y: 232,
+                  width: 36,
+                  height: 45,
+                },
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing one process with task (without id)', () => {
+      const json = buildDefinitions({
+        process: {
+          task: {},
         },
       });
 
@@ -1616,9 +1663,9 @@ describe('build json', () => {
       });
     });
 
-    it('build json of definitions containing 2 processes with task', () => {
+    it('build json of definitions containing 2 processes with task (without id)', () => {
       const json = buildDefinitions({
-        process: [{ withTask: true }, { withTask: true }],
+        process: [{ task: {} }, { task: {} }],
       });
 
       expect(json).toEqual({
