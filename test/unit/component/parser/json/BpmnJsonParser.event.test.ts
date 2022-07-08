@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import type { TEventDefinition } from '../../../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
-import type { TCatchEvent, TThrowEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
-import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
-import type { BPMNShape } from '../../../../../src/model/bpmn/json/BPMNDI';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../../../src/model/bpmn/internal';
 import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
 
 import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import type { ExpectedBoundaryEventShape, ExpectedEventShape } from '../../../helpers/bpmn-model-expect';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
-import type { BuildDefinitionParameter, BuildEventDefinitionParameter, BuildEventParameter } from '../../../helpers/JsonBuilder';
+import type { BuildDefinitionParameter, BuildEventParameter } from '../../../helpers/JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
 import { getEventShapes } from '../../../helpers/TestUtils';
 
@@ -264,7 +260,7 @@ describe('parse bpmn as json for all events', () => {
                 },
               },
 
-              ...allDefinitionKinds.map((definitionKind, index) => ({
+              ...allDefinitionKinds.map(definitionKind => ({
                 // id: `${definitionKind}_${bpmnKind}_id_${index}`
                 bpmnKind: bpmnKind,
                 eventDefinitionParameter: {
