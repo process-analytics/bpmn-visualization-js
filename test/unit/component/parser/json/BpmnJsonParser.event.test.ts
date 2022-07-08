@@ -25,7 +25,7 @@ import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarni
 import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import type { ExpectedBoundaryEventShape, ExpectedEventShape } from '../../../helpers/bpmn-model-expect';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
-import type { BuildEventDefinitionParameter, BuildEventParameter } from '../../../helpers/JsonBuilder';
+import type { BuildDefinitionParameter, BuildEventDefinitionParameter, BuildEventParameter } from '../../../helpers/JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
 import { getEventShapes } from '../../../helpers/TestUtils';
 
@@ -41,27 +41,6 @@ function buildDefinitionsWithEventAndTask(event: BuildEventParameter | BuildEven
   });
 }
 
-function parseAndExpectNoEvents(json: BpmnJsonModel, numberOfExpectedFlowNodes = 1): void {
-  const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, numberOfExpectedFlowNodes, 1);
-  expect(getEventShapes(bpmnModel)).toHaveLength(0);
-  const warning = expectAsWarning<ShapeUnknownBpmnElementWarning>(parsingMessageCollector.getWarnings()[0], ShapeUnknownBpmnElementWarning);
-  expect(warning.bpmnElementId).toBe('event_id_0_0');
-}
-
-function parseAndExpectNoBoundaryEvents(json: BpmnJsonModel, numberOfExpectedFlowNodes = 1): void {
-  const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, numberOfExpectedFlowNodes, 2);
-  expect(getEventShapes(bpmnModel)).toHaveLength(0);
-  const warnings = parsingMessageCollector.getWarnings();
-
-  const warning0 = expectAsWarning<BoundaryEventNotAttachedToActivityWarning>(warnings[0], BoundaryEventNotAttachedToActivityWarning);
-  expect(warning0.bpmnElementId).toBe('event_id_0_0');
-  expect(warning0.attachedToRef).toEqual(numberOfExpectedFlowNodes == 0 ? 'unexisting_activity_id_0' : 'not_activity_id_0');
-  expect(warning0.attachedToKind).toEqual(numberOfExpectedFlowNodes == 0 ? undefined : ShapeBpmnElementKind.GATEWAY_EXCLUSIVE);
-
-  const warning1 = expectAsWarning<ShapeUnknownBpmnElementWarning>(warnings[1], ShapeUnknownBpmnElementWarning);
-  expect(warning1.bpmnElementId).toBe('event_id_0_0');
-}
-
 function testMustConvertOneShape(buildEventParameter: BuildEventParameter, omitExpectedShape: OmitExpectedEventShape, processIsArray = false): void {
   const json = buildDefinitionsWithEventAndTask(buildEventParameter, processIsArray);
 
@@ -74,6 +53,34 @@ function testMustConvertOneShape(buildEventParameter: BuildEventParameter, omitE
     bpmnElementId: `event_id_0_0`,
     bounds: { x: 362, y: 232, width: 36, height: 45 },
   });
+}
+
+function testMustNotConvertEvent(buildEventParameter: BuildEventParameter): void {
+  const json = buildDefinitionsWithEventAndTask(buildEventParameter);
+
+  const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 1, 1);
+
+  expect(getEventShapes(bpmnModel)).toHaveLength(0);
+
+  const warning = expectAsWarning<ShapeUnknownBpmnElementWarning>(parsingMessageCollector.getWarnings()[0], ShapeUnknownBpmnElementWarning);
+  expect(warning.bpmnElementId).toBe('event_id_0_0');
+}
+
+function testMustNotConvertBoundaryEvent(definitionParameter: BuildDefinitionParameter, numberOfExpectedFlowNodes = 1): void {
+  const json = buildDefinitions(definitionParameter);
+
+  const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, numberOfExpectedFlowNodes, 2);
+
+  expect(getEventShapes(bpmnModel)).toHaveLength(0);
+  const warnings = parsingMessageCollector.getWarnings();
+
+  const warning0 = expectAsWarning<BoundaryEventNotAttachedToActivityWarning>(warnings[0], BoundaryEventNotAttachedToActivityWarning);
+  expect(warning0.bpmnElementId).toBe('event_id_0_0');
+  expect(warning0.attachedToRef).toEqual(numberOfExpectedFlowNodes == 0 ? 'unexisting_activity_id_0' : 'not_activity_id_0');
+  expect(warning0.attachedToKind).toEqual(numberOfExpectedFlowNodes == 0 ? undefined : ShapeBpmnElementKind.GATEWAY_EXCLUSIVE);
+
+  const warning1 = expectAsWarning<ShapeUnknownBpmnElementWarning>(warnings[1], ShapeUnknownBpmnElementWarning);
+  expect(warning1.bpmnElementId).toBe('event_id_0_0');
 }
 
 function executeEventCommonTests(buildEventParameter: BuildEventParameter, omitExpectedShape: OmitExpectedEventShape, titleSuffix = ''): void {
@@ -120,30 +127,24 @@ function executeEventCommonTests(buildEventParameter: BuildEventParameter, omitE
 
   if (omitExpectedShape.eventDefinitionKind !== ShapeBpmnEventDefinitionKind.NONE) {
     it(`should NOT convert, when there are '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' and another 'EventDefinition' in the same element${titleSuffix}`, () => {
-      const json = buildDefinitionsWithEventAndTask({
+      testMustNotConvertEvent({
         ...buildEventParameter,
         eventDefinitionParameter: { ...buildEventParameter.eventDefinitionParameter, withDifferentDefinition: true },
       });
-
-      parseAndExpectNoEvents(json);
     });
 
     it(`should NOT convert, when there are several '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' in the same element${titleSuffix}`, () => {
-      const json = buildDefinitionsWithEventAndTask({
+      testMustNotConvertEvent({
         ...buildEventParameter,
         eventDefinitionParameter: { ...buildEventParameter.eventDefinitionParameter, withMultipleDefinitions: true },
       });
-
-      parseAndExpectNoEvents(json);
     });
 
     it(`should NOT convert, when 'definitions' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition and '${buildEventParameter.bpmnKind}' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition & eventDefinitionRef${titleSuffix}`, () => {
-      const json = buildDefinitionsWithEventAndTask({
+      testMustNotConvertEvent({
         ...buildEventParameter,
         eventDefinitionParameter: { ...buildEventParameter.eventDefinitionParameter, eventDefinitionOn: EventDefinitionOn.BOTH },
       });
-
-      parseAndExpectNoEvents(json);
     });
   }
 }
@@ -362,7 +363,7 @@ describe('parse bpmn as json for all events', () => {
           ],
         ];
         describe.each(titlesForEventDefinitionIsAttributeOf)(`when %s`, (titleForEventDefinitionIsAttributeOf: string, eventDefinitionOn: EventDefinitionOn) => {
-          const buildEventParameter = {
+          const buildEventParameter: BuildEventParameter = {
             bpmnKind,
             eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn },
             isInterrupting,
@@ -385,28 +386,6 @@ describe('parse bpmn as json for all events', () => {
 
           if (isInterrupting) {
             it(`should convert as Shape, when 'boundaryEvent' has no 'cancelActivity' & is attached to an 'activity', ${titleForEventDefinitionIsAttributeOf}'`, () => {
-              /*    const json = buildDefinitionsWithEventAndTask({ ...buildEventParameter, isInterrupting: undefined });
-
-              const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 1);
-
-              const shapes = getEventShapes(model);
-              verifyShape(shapes[0], {
-                shapeId: `shape_event_id_0_0`,
-                bpmnElementId: 'event_id_0_0',
-                parentId: 'task_id_0_0',
-                bpmnElementKind: expectedShapeBpmnElementKind,
-                bpmnElementName: undefined,
-                eventDefinitionKind: expectedEventDefinitionKind,
-                isInterrupting,
-                bounds: {
-                  x: 362,
-                  y: 232,
-                  width: 36,
-                  height: 45,
-                },
-                isInterrupting: isInterrupting,
-              });*/
-
               testMustConvertOneShape(
                 { ...buildEventParameter, isInterrupting: undefined },
                 {
@@ -421,7 +400,7 @@ describe('parse bpmn as json for all events', () => {
           }
 
           it(`should NOT convert, when 'boundaryEvent' is ${isInterruptingTitle} & attached to anything than an 'activity', ${titleForEventDefinitionIsAttributeOf}`, () => {
-            const json = buildDefinitions({
+            testMustNotConvertBoundaryEvent({
               process: {
                 event: { ...buildEventParameter, attachedToRef: 'not_activity_id_0' },
                 exclusiveGateway: {
@@ -429,18 +408,17 @@ describe('parse bpmn as json for all events', () => {
                 },
               },
             });
-
-            parseAndExpectNoBoundaryEvents(json);
           });
 
           it(`should NOT convert, when 'boundaryEvent' is ${isInterruptingTitle} & attached to unexisting activity, ${titleForEventDefinitionIsAttributeOf}`, () => {
-            const json = buildDefinitions({
-              process: {
-                event: { ...buildEventParameter, attachedToRef: 'unexisting_activity_id_0' },
+            testMustNotConvertBoundaryEvent(
+              {
+                process: {
+                  event: { ...buildEventParameter, attachedToRef: 'unexisting_activity_id_0' },
+                },
               },
-            });
-
-            parseAndExpectNoBoundaryEvents(json, 0);
+              0,
+            );
           });
         });
       });
