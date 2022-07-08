@@ -385,7 +385,7 @@ describe('parse bpmn as json for all events', () => {
 
           if (isInterrupting) {
             it(`should convert as Shape, when 'boundaryEvent' has no 'cancelActivity' & is attached to an 'activity', ${titleForEventDefinitionIsAttributeOf}'`, () => {
-              const json = buildDefinitionsWithEventAndTask({ ...buildEventParameter, isInterrupting: undefined });
+              /*    const json = buildDefinitionsWithEventAndTask({ ...buildEventParameter, isInterrupting: undefined });
 
               const model = parseJsonAndExpectEvent(json, expectedEventDefinitionKind, 1);
 
@@ -404,7 +404,19 @@ describe('parse bpmn as json for all events', () => {
                   width: 36,
                   height: 45,
                 },
-              });
+                isInterrupting: isInterrupting,
+              });*/
+
+              testMustConvertOneShape(
+                { ...buildEventParameter, isInterrupting: undefined },
+                {
+                  parentId: 'task_id_0_0',
+                  bpmnElementKind: expectedShapeBpmnElementKind,
+                  bpmnElementName: undefined,
+                  eventDefinitionKind: expectedEventDefinitionKind,
+                  isInterrupting,
+                },
+              );
             });
           }
 
