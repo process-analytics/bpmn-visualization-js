@@ -35,9 +35,7 @@ function testMustConvertShapes(buildEventParameter: BuildEventParameter | BuildE
   const process = { event: buildEventParameter, task: {} };
   const json = buildDefinitions({ process: processIsArray ? [process] : process });
 
-  const expectedNumber = Array.isArray(buildEventParameter) ? buildEventParameter.length : 1;
-
-  const model = parseJsonAndExpectEvent(json, omitExpectedShape.eventDefinitionKind, expectedNumber);
+  const model = parseJsonAndExpectEvent(json, omitExpectedShape.eventDefinitionKind, Array.isArray(buildEventParameter) ? buildEventParameter.length : 1);
 
   const shapes = getEventShapes(model);
   shapes.forEach((shape, index) => {
@@ -232,72 +230,62 @@ describe('parse bpmn as json for all events', () => {
       );
 
       it(`should convert as NONE Shape only the '${bpmnKind}' without 'eventDefinition' & without 'eventDefinitionRef', when an array of '${bpmnKind}' (without/with one or several event definition) is an attribute of 'process'`, () => {
-        const json = {
-          definitions: {
-            targetNamespace: '',
-            messageEventDefinition: { id: 'message_event_definition_id' },
-            timerEventDefinition: { id: 'timer_event_definition_id' },
-            process: {},
-            BPMNDiagram: {
-              name: 'process 0',
-              BPMNPlane: {
-                BPMNShape: [
-                  {
-                    id: `shape_none_${bpmnKind}_id`,
-                    bpmnElement: `none_${bpmnKind}_id`,
-                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                  },
-                  {
-                    id: `shape_multiple_${bpmnKind}_id`,
-                    bpmnElement: `multiple_${bpmnKind}_id`,
-                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                  },
-                ],
+        const json = buildDefinitions({
+          process: {
+            event: [
+              {
+                // id: `none_${bpmnKind}_id`,
+                name: `none ${bpmnKind}`,
+                bpmnKind: bpmnKind,
+                eventDefinitionParameter: { eventDefinitionOn: EventDefinitionOn.NONE },
               },
-            },
-          },
-        };
-        (json.definitions.process as TProcess)[bpmnKind] = [
-          { id: `none_${bpmnKind}_id`, name: `none ${bpmnKind}` },
-          {
-            id: `multiple_${bpmnKind}_with_event_definitions_id`,
-            name: `multiple ${bpmnKind} with event definitions`,
-            messageEventDefinition: {},
-            timerEventDefinition: {},
-          },
-          {
-            id: `multiple_${bpmnKind}_with_eventDefinitionRefs_id`,
-            name: `multiple ${bpmnKind} with eventDefinitionRefs`,
-            eventDefinitionRef: ['message_event_definition_id', 'timer_event_definition_id'],
-          },
-          {
-            id: `multiple_${bpmnKind}_with_event_definition_and_eventDefinitionRef_id`,
-            name: `multiple ${bpmnKind} with event definition and eventDefinitionRef`,
-            messageEventDefinition: {},
-            eventDefinitionRef: 'timer_event_definition_id',
-          },
-        ];
+              {
+                bpmnKind: bpmnKind,
+                eventDefinitionParameter: {
+                  eventDefinitionKind: 'message',
+                  eventDefinitionOn: EventDefinitionOn.EVENT,
+                  withDifferentDefinition: true,
+                },
+              },
+              {
+                bpmnKind: bpmnKind,
+                eventDefinitionParameter: {
+                  eventDefinitionKind: 'message',
+                  eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
+                  withDifferentDefinition: true,
+                },
+              },
+              {
+                bpmnKind: bpmnKind,
+                eventDefinitionParameter: {
+                  eventDefinitionKind: 'message',
+                  eventDefinitionOn: EventDefinitionOn.BOTH,
+                  withDifferentDefinition: true,
+                },
+              },
 
-        allDefinitionKinds.forEach((definitionKind, index) => {
-          const event: TCatchEvent | TThrowEvent = { id: `${definitionKind}_${bpmnKind}_id_${index}` };
-          event[`${definitionKind}EventDefinition`] = {};
-          (json.definitions.process as TProcess)[bpmnKind].push(event);
-
-          const shape = {
-            id: `shape_${definitionKind}_${bpmnKind}_id_${index}`,
-            bpmnElement: `${definitionKind}_${bpmnKind}_id_${index}`,
-            Bounds: { x: 362, y: 232, width: 36, height: 45 },
-          };
-          (json.definitions.BPMNDiagram.BPMNPlane.BPMNShape as BPMNShape[]).push(shape);
+              ...allDefinitionKinds.map((definitionKind, index) => ({
+                // id: `${definitionKind}_${bpmnKind}_id_${index}`
+                bpmnKind: bpmnKind,
+                eventDefinitionParameter: {
+                  eventDefinitionKind: definitionKind,
+                  eventDefinitionOn: EventDefinitionOn.EVENT,
+                },
+              })),
+            ],
+          },
         });
 
         const model = parseJsonAndExpectEvent(json, ShapeBpmnEventDefinitionKind.NONE, 1);
 
         verifyShape(model.flowNodes[0], {
-          shapeId: `shape_none_${bpmnKind}_id`,
-          bpmnElementId: `none_${bpmnKind}_id`,
+          // shapeId: `shape_none_${bpmnKind}_id`,
+          //  bpmnElementId: `none_${bpmnKind}_id`,
+          shapeId: `shape_event_id_0_0`,
+          bpmnElementId: `event_id_0_0`,
           bpmnElementName: `none ${bpmnKind}`,
           bpmnElementKind: expectedShapeBpmnElementKind,
+          parentId: '0',
           bounds: {
             x: 362,
             y: 232,
