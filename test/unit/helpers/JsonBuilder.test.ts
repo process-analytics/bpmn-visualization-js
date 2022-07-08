@@ -51,29 +51,23 @@ describe('build json', () => {
         {
           id: 'participant_0',
           task: {},
-          events: [
+          event: [
             {
               bpmnKind: 'startEvent',
+              name: 'startEvent',
+              isInterrupting: false,
               eventDefinitionParameter: {
                 eventDefinitionKind: 'message',
                 eventDefinitionOn: EventDefinitionOn.EVENT,
               },
-              eventParameter: {
-                index: 0,
-                name: 'startEvent',
-                isInterrupting: false,
-              },
             },
             {
               bpmnKind: 'endEvent',
+              name: 'endEvent',
+              isInterrupting: true,
               eventDefinitionParameter: {
                 eventDefinitionKind: 'terminate',
                 eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
-              },
-              eventParameter: {
-                index: 1,
-                name: 'endEvent',
-                isInterrupting: true,
               },
             },
           ],
@@ -81,15 +75,13 @@ describe('build json', () => {
         {
           id: 'participant_1',
           task: { id: 'task_id_1' },
-          events: [
+          event: [
             {
               bpmnKind: 'startEvent',
+              name: 'startEvent',
+              isInterrupting: false,
               eventDefinitionParameter: {
                 eventDefinitionOn: EventDefinitionOn.NONE,
-              },
-              eventParameter: {
-                name: 'startEvent',
-                isInterrupting: false,
               },
             },
           ],
@@ -99,17 +91,14 @@ describe('build json', () => {
         },
         {
           id: 'participant_2',
-          events: [
+          event: [
             {
               bpmnKind: 'intermediateCatchEvent',
+              name: 'intermediateCatchEvent',
+              isInterrupting: false,
               eventDefinitionParameter: {
                 eventDefinitionKind: 'timer',
                 eventDefinitionOn: EventDefinitionOn.BOTH,
-              },
-              eventParameter: {
-                index: 2,
-                name: 'intermediateCatchEvent',
-                isInterrupting: false,
               },
             },
           ],
@@ -182,7 +171,7 @@ describe('build json', () => {
             intermediateCatchEvent: {
               cancelActivity: false,
               eventDefinitionRef: 'event_definition_id',
-              id: 'event_id_2_2',
+              id: 'event_id_2_0',
               name: 'intermediateCatchEvent',
               timerEventDefinition: '',
             },
@@ -247,8 +236,8 @@ describe('build json', () => {
                 Bounds: { x: 346, y: 856, height: 56, width: 45 },
               },
               {
-                bpmnElement: 'event_id_2_2',
-                id: 'shape_event_id_2_2',
+                bpmnElement: 'event_id_2_0',
+                id: 'shape_event_id_2_0',
                 Bounds: { x: 362, y: 232, height: 45, width: 36 },
               },
             ],
@@ -381,17 +370,14 @@ describe('build json', () => {
   describe('build json with boundary event', () => {
     describe('build json with interrupting boundary event', () => {
       it('build json of definitions containing one process with task and interrupting boundary event (with attachedToRef & empty messageEventDefinition)', () => {
-        const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT };
         const json = buildDefinitions({
           process: {
-            events: [
+            event: [
               {
                 bpmnKind: 'boundaryEvent',
-                eventDefinitionParameter,
-                eventParameter: {
-                  isInterrupting: true,
-                  attachedToRef: 'task_id_0_0',
-                },
+                isInterrupting: true,
+                attachedToRef: 'task_id_0_0',
+                eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
               },
             ],
             task: {},
@@ -449,18 +435,14 @@ describe('build json', () => {
         });
       });
 
-      it('build json of definitions containing one process with task and interrupting boundary event (with empty signalEventDefinition and id based on index)', () => {
-        const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.EVENT };
+      it('build json of definitions containing one process with task and interrupting boundary event (with empty signalEventDefinition)', () => {
         const json = buildDefinitions({
           process: {
-            events: [
+            event: [
               {
                 bpmnKind: 'boundaryEvent',
-                eventDefinitionParameter,
-                eventParameter: {
-                  isInterrupting: true,
-                  index: 1,
-                },
+                isInterrupting: true,
+                eventDefinitionParameter: { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.EVENT },
               },
             ],
             task: {},
@@ -480,7 +462,7 @@ describe('build json', () => {
                 name: 'task name',
               },
               boundaryEvent: {
-                id: 'event_id_0_1',
+                id: 'event_id_0_0',
                 cancelActivity: true,
                 attachedToRef: undefined,
                 signalEventDefinition: '',
@@ -502,8 +484,8 @@ describe('build json', () => {
                     },
                   },
                   {
-                    id: 'shape_event_id_0_1',
-                    bpmnElement: 'event_id_0_1',
+                    id: 'shape_event_id_0_0',
+                    bpmnElement: 'event_id_0_0',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -519,16 +501,13 @@ describe('build json', () => {
       });
 
       it('build json of definitions containing one messageEventDefinition (with id), one process with task and interrupting boundary event (with eventDefinitionRef)', () => {
-        const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.DEFINITIONS };
         const json = buildDefinitions({
           process: {
-            events: [
+            event: [
               {
                 bpmnKind: 'boundaryEvent',
-                eventDefinitionParameter,
-                eventParameter: {
-                  isInterrupting: true,
-                },
+                isInterrupting: true,
+                eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.DEFINITIONS },
               },
             ],
             task: {},
@@ -592,17 +571,14 @@ describe('build json', () => {
 
     describe('build json with non-interrupting boundary event', () => {
       it('build json of definitions containing one process with task and non-interrupting boundary event (with attachedToRef, empty messageEventDefinition and name, without cancelActivity)', () => {
-        const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT };
         const json = buildDefinitions({
           process: {
-            events: [
+            event: [
               {
                 bpmnKind: 'boundaryEvent',
-                eventDefinitionParameter,
-                eventParameter: {
-                  attachedToRef: 'task_id_0_0',
-                  name: 'name',
-                },
+                attachedToRef: 'task_id_0_0',
+                name: 'name',
+                eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
               },
             ],
             task: {},
@@ -660,16 +636,13 @@ describe('build json', () => {
       });
 
       it('build json of definitions containing one process with task and non-interrupting boundary event (with empty signalEventDefinition and cancelActivity)', () => {
-        const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.EVENT };
         const json = buildDefinitions({
           process: {
-            events: [
+            event: [
               {
                 bpmnKind: 'boundaryEvent',
-                eventDefinitionParameter,
-                eventParameter: {
-                  isInterrupting: false,
-                },
+                isInterrupting: false,
+                eventDefinitionParameter: { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.EVENT },
               },
             ],
             task: {},
@@ -727,18 +700,14 @@ describe('build json', () => {
         });
       });
 
-      it('build json of definitions containing one process with task and non-interrupting boundary event (with empty signalEventDefinition and id based on index)', () => {
-        const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.EVENT };
+      it('build json of definitions containing one process with task and non-interrupting boundary event (with empty signalEventDefinition)', () => {
         const json = buildDefinitions({
           process: {
-            events: [
+            event: [
               {
                 bpmnKind: 'boundaryEvent',
-                eventDefinitionParameter,
-                eventParameter: {
-                  isInterrupting: false,
-                  index: 1,
-                },
+                isInterrupting: false,
+                eventDefinitionParameter: { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.EVENT },
               },
             ],
             task: {},
@@ -758,7 +727,7 @@ describe('build json', () => {
                 name: 'task name',
               },
               boundaryEvent: {
-                id: 'event_id_0_1',
+                id: 'event_id_0_0',
                 cancelActivity: false,
                 attachedToRef: undefined,
                 signalEventDefinition: '',
@@ -780,8 +749,8 @@ describe('build json', () => {
                     },
                   },
                   {
-                    id: 'shape_event_id_0_1',
-                    bpmnElement: 'event_id_0_1',
+                    id: 'shape_event_id_0_0',
+                    bpmnElement: 'event_id_0_0',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -797,17 +766,14 @@ describe('build json', () => {
       });
 
       it('build json of definitions containing one signalEventDefinition (with id), one process with task and non-interrupting boundary event (with attachedToRef & eventDefinitionRef)', () => {
-        const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.DEFINITIONS };
         const json = buildDefinitions({
           process: {
-            events: [
+            event: [
               {
                 bpmnKind: 'boundaryEvent',
-                eventDefinitionParameter,
-                eventParameter: {
-                  isInterrupting: false,
-                  attachedToRef: 'task_id_0_0',
-                },
+                isInterrupting: false,
+                attachedToRef: 'task_id_0_0',
+                eventDefinitionParameter: { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.DEFINITIONS },
               },
             ],
             task: {},
@@ -872,16 +838,13 @@ describe('build json', () => {
 
   describe('build json with start event', () => {
     it('build json of definitions containing one process with start event (with one messageEventDefinition & name)', () => {
-      const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT };
       const json = buildDefinitions({
         process: {
-          events: [
+          event: [
             {
               bpmnKind: 'startEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                name: 'name',
-              },
+              name: 'name',
+              eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
             },
           ],
         },
@@ -921,19 +884,16 @@ describe('build json', () => {
     });
 
     it('build json of definitions containing one process with start event (with several messageEventDefinitions (empty string & empty object) & name)', () => {
-      const eventDefinitionParameter: BuildEventDefinitionParameter = {
-        eventDefinitionKind: 'message',
-        eventDefinitionOn: EventDefinitionOn.EVENT,
-        withMultipleDefinitions: true,
-      };
       const json = buildDefinitions({
         process: {
-          events: [
+          event: [
             {
               bpmnKind: 'startEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                name: 'name',
+              name: 'name',
+              eventDefinitionParameter: {
+                eventDefinitionKind: 'message',
+                eventDefinitionOn: EventDefinitionOn.EVENT,
+                withMultipleDefinitions: true,
               },
             },
           ],
@@ -974,16 +934,13 @@ describe('build json', () => {
     });
 
     it('build json of definitions containing one messageEventDefinition (with id), one process with start event (with name)', () => {
-      const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.DEFINITIONS };
       const json = buildDefinitions({
         process: {
-          events: [
+          event: [
             {
               bpmnKind: 'endEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                name: 'name',
-              },
+              name: 'name',
+              eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.DEFINITIONS },
             },
           ],
         },
@@ -1026,19 +983,16 @@ describe('build json', () => {
     });
 
     it('build json of definitions containing several messageEventDefinitions (with id), one process with start event (with name)', () => {
-      const eventDefinitionParameter: BuildEventDefinitionParameter = {
-        eventDefinitionKind: 'message',
-        eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
-        withMultipleDefinitions: true,
-      };
       const json = buildDefinitions({
         process: {
-          events: [
+          event: [
             {
               bpmnKind: 'endEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                name: 'name',
+              name: 'name',
+              eventDefinitionParameter: {
+                eventDefinitionKind: 'message',
+                eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
+                withMultipleDefinitions: true,
               },
             },
           ],
@@ -1091,25 +1045,20 @@ describe('build json', () => {
       const json = buildDefinitions({
         process: [
           {
-            events: [
+            event: [
               {
                 bpmnKind: 'startEvent',
+                name: 'name',
                 eventDefinitionParameter,
-                eventParameter: {
-                  name: 'name',
-                },
               },
             ],
           },
           {
-            events: [
+            event: [
               {
                 bpmnKind: 'startEvent',
+                name: 'name',
                 eventDefinitionParameter,
-                eventParameter: {
-                  name: 'name',
-                  index: 1,
-                },
               },
             ],
           },
@@ -1134,7 +1083,7 @@ describe('build json', () => {
             {
               id: '1',
               startEvent: {
-                id: 'event_id_1_1',
+                id: 'event_id_1_0',
                 messageEventDefinition: '',
                 name: 'name',
               },
@@ -1155,8 +1104,8 @@ describe('build json', () => {
                   },
                 },
                 {
-                  id: 'shape_event_id_1_1',
-                  bpmnElement: 'event_id_1_1',
+                  id: 'shape_event_id_1_0',
+                  bpmnElement: 'event_id_1_0',
                   Bounds: {
                     x: 362,
                     y: 232,
@@ -1174,16 +1123,13 @@ describe('build json', () => {
 
   describe('build json with intermediate catch event', () => {
     it('build json of definitions containing one messageEventDefinition (with id), one process with intermediate catch event (with one messageEventDefinition & eventDefinitionRef & name)', () => {
-      const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.BOTH };
       const json = buildDefinitions({
         process: {
-          events: [
+          event: [
             {
               bpmnKind: 'intermediateCatchEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                name: 'name',
-              },
+              name: 'name',
+              eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.BOTH },
             },
           ],
         },
@@ -1227,19 +1173,16 @@ describe('build json', () => {
     });
 
     it('build json of definitions containing several messageEventDefinitions (with id), one process with intermediate catch event (with several messageEventDefinitions (empty string & empty object) & eventDefinitionRef & name)', () => {
-      const eventDefinitionParameter: BuildEventDefinitionParameter = {
-        eventDefinitionKind: 'message',
-        eventDefinitionOn: EventDefinitionOn.BOTH,
-        withMultipleDefinitions: true,
-      };
       const json = buildDefinitions({
         process: {
-          events: [
+          event: [
             {
               bpmnKind: 'intermediateCatchEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                name: 'name',
+              name: 'name',
+              eventDefinitionParameter: {
+                eventDefinitionKind: 'message',
+                eventDefinitionOn: EventDefinitionOn.BOTH,
+                withMultipleDefinitions: true,
               },
             },
           ],
@@ -1291,18 +1234,16 @@ describe('build json', () => {
 
   describe('build json with intermediate throw event', () => {
     it('build json of definitions containing one process with intermediate throw event (without eventDefinition)', () => {
-      const eventDefinitionParameter: BuildEventDefinitionParameter = {
-        eventDefinitionKind: 'message',
-        eventDefinitionOn: EventDefinitionOn.NONE,
-        eventDefinition: { id: '9' },
-      };
       const json = buildDefinitions({
         process: {
-          events: [
+          event: [
             {
               bpmnKind: 'intermediateThrowEvent',
-              eventDefinitionParameter,
-              eventParameter: {},
+              eventDefinitionParameter: {
+                eventDefinitionKind: 'message',
+                eventDefinitionOn: EventDefinitionOn.NONE,
+                eventDefinition: { id: '9' },
+              },
             },
           ],
         },
@@ -1341,18 +1282,16 @@ describe('build json', () => {
     });
 
     it('build json of definitions containing one process with intermediate throw event (with messageEventDefinition)', () => {
-      const eventDefinitionParameter: BuildEventDefinitionParameter = {
-        eventDefinitionKind: 'message',
-        eventDefinitionOn: EventDefinitionOn.EVENT,
-        eventDefinition: { id: '9' },
-      };
       const json = buildDefinitions({
         process: {
-          events: [
+          event: [
             {
               bpmnKind: 'intermediateThrowEvent',
-              eventDefinitionParameter,
-              eventParameter: {},
+              eventDefinitionParameter: {
+                eventDefinitionKind: 'message',
+                eventDefinitionOn: EventDefinitionOn.EVENT,
+                eventDefinition: { id: '9' },
+              },
             },
           ],
         },
@@ -1392,18 +1331,16 @@ describe('build json', () => {
     });
 
     it('build json of definitions containing one messageEventDefinition and one process with intermediate throw event (with eventDefinitionRef)', () => {
-      const eventDefinitionParameter: BuildEventDefinitionParameter = {
-        eventDefinitionKind: 'message',
-        eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
-        eventDefinition: { id: '9' },
-      };
       const json = buildDefinitions({
         process: {
-          events: [
+          event: [
             {
               bpmnKind: 'intermediateThrowEvent',
-              eventDefinitionParameter,
-              eventParameter: {},
+              eventDefinitionParameter: {
+                eventDefinitionKind: 'message',
+                eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
+                eventDefinition: { id: '9' },
+              },
             },
           ],
         },
@@ -1447,18 +1384,16 @@ describe('build json', () => {
       'build json of definitions containing one process with intermediate throw event (with messageEventDefinition & signalEventDefinition) ' +
         "when eventDefinitionKind='message' and withDifferentDefinition=true",
       () => {
-        const eventDefinitionParameter: BuildEventDefinitionParameter = {
-          eventDefinitionKind: 'message',
-          eventDefinitionOn: EventDefinitionOn.EVENT,
-          withDifferentDefinition: true,
-        };
         const json = buildDefinitions({
           process: {
-            events: [
+            event: [
               {
                 bpmnKind: 'intermediateThrowEvent',
-                eventDefinitionParameter,
-                eventParameter: {},
+                eventDefinitionParameter: {
+                  eventDefinitionKind: 'message',
+                  eventDefinitionOn: EventDefinitionOn.EVENT,
+                  withDifferentDefinition: true,
+                },
               },
             ],
           },
@@ -1503,18 +1438,16 @@ describe('build json', () => {
       'build json of definitions containing one process with intermediate throw event (with messageEventDefinition & signalEventDefinition) ' +
         "when eventDefinitionKind='signal' and withDifferentDefinition=true",
       () => {
-        const eventDefinitionParameter: BuildEventDefinitionParameter = {
-          eventDefinitionKind: 'signal',
-          eventDefinitionOn: EventDefinitionOn.EVENT,
-          withDifferentDefinition: true,
-        };
         const json = buildDefinitions({
           process: {
-            events: [
+            event: [
               {
                 bpmnKind: 'intermediateThrowEvent',
-                eventDefinitionParameter,
-                eventParameter: {},
+                eventDefinitionParameter: {
+                  eventDefinitionKind: 'signal',
+                  eventDefinitionOn: EventDefinitionOn.EVENT,
+                  withDifferentDefinition: true,
+                },
               },
             ],
           },
@@ -1556,18 +1489,16 @@ describe('build json', () => {
     );
 
     it('build json of definitions containing messageEventDefinition & signalEventDefinition (with id), one process with intermediate throw event (with messageEventDefinition & signalEventDefinition & eventDefinitionRefs)', () => {
-      const eventDefinitionParameter: BuildEventDefinitionParameter = {
-        eventDefinitionKind: 'signal',
-        eventDefinitionOn: EventDefinitionOn.BOTH,
-        withDifferentDefinition: true,
-      };
       const json = buildDefinitions({
         process: {
-          events: [
+          event: [
             {
               bpmnKind: 'intermediateThrowEvent',
-              eventDefinitionParameter,
-              eventParameter: {},
+              eventDefinitionParameter: {
+                eventDefinitionKind: 'signal',
+                eventDefinitionOn: EventDefinitionOn.BOTH,
+                withDifferentDefinition: true,
+              },
             },
           ],
         },
