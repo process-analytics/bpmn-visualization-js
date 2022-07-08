@@ -41,6 +41,12 @@ describe('build json', () => {
   it('build json of definitions containing several processes and participants with different elements', () => {
     const json = buildDefinitions({
       withParticipant: true,
+      messageFlows: {
+        id: 'message_flow_id_0',
+        name: 'message flow name',
+        sourceRef: 'source_id_0',
+        targetRef: 'target_id_0',
+      },
       process: [
         {
           id: 'participant_0',
@@ -122,6 +128,12 @@ describe('build json', () => {
             { id: 'participant_1', processRef: 'process_participant_1' },
             { id: 'participant_2', processRef: 'process_participant_2' },
           ],
+          messageFlow: {
+            id: 'message_flow_id_0',
+            name: 'message flow name',
+            sourceRef: 'source_id_0',
+            targetRef: 'target_id_0',
+          },
         },
         terminateEventDefinition: {
           id: 'event_definition_id',
@@ -240,6 +252,15 @@ describe('build json', () => {
                 Bounds: { x: 362, y: 232, height: 45, width: 36 },
               },
             ],
+            BPMNEdge: {
+              id: 'edge_message_flow_id_0',
+              bpmnElement: 'message_flow_id_0',
+              Bounds: { x: 567, y: 345, width: 36, height: 45 },
+              waypoint: [
+                { x: 567, y: 345 },
+                { x: 587, y: 345 },
+              ],
+            },
           },
         },
       },
@@ -1937,6 +1958,286 @@ describe('build json', () => {
                   id: 'shape_callActivity_id_1_0',
                   bpmnElement: 'callActivity_id_1_0',
                   Bounds: { x: 346, y: 856, width: 45, height: 56 },
+                },
+              ],
+            },
+          },
+        },
+      });
+    });
+  });
+
+  describe('build json with message flow', () => {
+    it('build json of definitions containing 2 participants and one message flow between pools', () => {
+      const json = buildDefinitions({
+        withParticipant: true,
+        messageFlows: {
+          id: 'message_flow_id_0',
+          name: 'message flow name',
+          sourceRef: 'source_id_0',
+          targetRef: 'target_id_0',
+        },
+        process: [{ id: 'source_id_0' }, { id: 'target_id_0' }],
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+            participant: [
+              { id: 'source_id_0', processRef: 'process_source_id_0' },
+              { id: 'target_id_0', processRef: 'process_target_id_0' },
+            ],
+            messageFlow: {
+              id: 'message_flow_id_0',
+              name: 'message flow name',
+              sourceRef: 'source_id_0',
+              targetRef: 'target_id_0',
+            },
+          },
+          process: [{ id: 'process_source_id_0' }, { id: 'process_target_id_0' }],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: `shape_source_id_0`,
+                  bpmnElement: `source_id_0`,
+                  Bounds: { x: 567, y: 345, width: 36, height: 45 },
+                },
+                {
+                  id: `shape_target_id_0`,
+                  bpmnElement: `target_id_0`,
+                  Bounds: { x: 567, y: 345, width: 36, height: 45 },
+                },
+              ],
+              BPMNEdge: {
+                id: 'edge_message_flow_id_0',
+                bpmnElement: 'message_flow_id_0',
+                Bounds: { x: 567, y: 345, width: 36, height: 45 },
+                waypoint: [
+                  { x: 567, y: 345 },
+                  { x: 587, y: 345 },
+                ],
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing 2 participants and one message flow between element of pools', () => {
+      const json = buildDefinitions({
+        withParticipant: true,
+        messageFlows: {
+          id: 'message_flow_id_0',
+          name: 'message flow name',
+          sourceRef: 'source_id_0',
+          targetRef: 'target_id_0',
+        },
+        process: [
+          {
+            exclusiveGateway: {
+              id: 'source_id_0',
+            },
+          },
+          {
+            exclusiveGateway: {
+              id: 'target_id_0',
+            },
+          },
+        ],
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+            participant: [
+              { id: '0', processRef: 'process_0' },
+              { id: '1', processRef: 'process_1' },
+            ],
+            messageFlow: {
+              id: 'message_flow_id_0',
+              name: 'message flow name',
+              sourceRef: 'source_id_0',
+              targetRef: 'target_id_0',
+            },
+          },
+          process: [
+            {
+              id: 'process_0',
+              exclusiveGateway: {
+                id: 'source_id_0',
+                name: 'exclusiveGateway name',
+              },
+            },
+            {
+              id: 'process_1',
+              exclusiveGateway: {
+                id: 'target_id_0',
+                name: 'exclusiveGateway name',
+              },
+            },
+          ],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: `shape_0`,
+                  bpmnElement: `0`,
+                  Bounds: { x: 567, y: 345, width: 36, height: 45 },
+                },
+                {
+                  id: 'shape_source_id_0',
+                  bpmnElement: 'source_id_0',
+                  Bounds: { x: 567, y: 345, width: 25, height: 25 },
+                },
+                {
+                  id: `shape_1`,
+                  bpmnElement: `1`,
+                  Bounds: { x: 567, y: 345, width: 36, height: 45 },
+                },
+                {
+                  id: 'shape_target_id_0',
+                  bpmnElement: 'target_id_0',
+                  Bounds: { x: 567, y: 345, width: 25, height: 25 },
+                },
+              ],
+              BPMNEdge: {
+                id: 'edge_message_flow_id_0',
+                bpmnElement: 'message_flow_id_0',
+                Bounds: { x: 567, y: 345, width: 36, height: 45 },
+                waypoint: [
+                  { x: 567, y: 345 },
+                  { x: 587, y: 345 },
+                ],
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing 2 participants and 2 message flows', () => {
+      const json = buildDefinitions({
+        withParticipant: true,
+        messageFlows: [
+          {
+            id: 'message_flow_id_0',
+            name: 'message flow name',
+            sourceRef: 'source_id_0',
+            targetRef: 'target_id_0',
+          },
+          {
+            id: 'message_flow_id_1',
+            name: 'message flow name',
+            sourceRef: 'source_id_1',
+            targetRef: 'target_id_1',
+          },
+        ],
+        process: [
+          {
+            id: 'source_id_0',
+            exclusiveGateway: {
+              id: 'source_id_1',
+            },
+          },
+          {
+            id: 'target_id_0',
+            exclusiveGateway: {
+              id: 'target_id_1',
+            },
+          },
+        ],
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+            participant: [
+              { id: 'source_id_0', processRef: 'process_source_id_0' },
+              { id: 'target_id_0', processRef: 'process_target_id_0' },
+            ],
+            messageFlow: [
+              {
+                id: 'message_flow_id_0',
+                name: 'message flow name',
+                sourceRef: 'source_id_0',
+                targetRef: 'target_id_0',
+              },
+              {
+                id: 'message_flow_id_1',
+                name: 'message flow name',
+                sourceRef: 'source_id_1',
+                targetRef: 'target_id_1',
+              },
+            ],
+          },
+          process: [
+            {
+              id: 'process_source_id_0',
+              exclusiveGateway: {
+                id: 'source_id_1',
+                name: 'exclusiveGateway name',
+              },
+            },
+            {
+              id: 'process_target_id_0',
+              exclusiveGateway: {
+                id: 'target_id_1',
+                name: 'exclusiveGateway name',
+              },
+            },
+          ],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: `shape_source_id_0`,
+                  bpmnElement: `source_id_0`,
+                  Bounds: { x: 567, y: 345, width: 36, height: 45 },
+                },
+                {
+                  id: 'shape_source_id_1',
+                  bpmnElement: 'source_id_1',
+                  Bounds: { x: 567, y: 345, width: 25, height: 25 },
+                },
+                {
+                  id: `shape_target_id_0`,
+                  bpmnElement: `target_id_0`,
+                  Bounds: { x: 567, y: 345, width: 36, height: 45 },
+                },
+                {
+                  id: 'shape_target_id_1',
+                  bpmnElement: 'target_id_1',
+                  Bounds: { x: 567, y: 345, width: 25, height: 25 },
+                },
+              ],
+              BPMNEdge: [
+                {
+                  id: 'edge_message_flow_id_0',
+                  bpmnElement: 'message_flow_id_0',
+                  Bounds: { x: 567, y: 345, width: 36, height: 45 },
+                  waypoint: [
+                    { x: 567, y: 345 },
+                    { x: 587, y: 345 },
+                  ],
+                },
+                {
+                  id: 'edge_message_flow_id_1',
+                  bpmnElement: 'message_flow_id_1',
+                  Bounds: { x: 567, y: 345, width: 36, height: 45 },
+                  waypoint: [
+                    { x: 567, y: 345 },
+                    { x: 587, y: 345 },
+                  ],
                 },
               ],
             },
