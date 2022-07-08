@@ -20,13 +20,16 @@ import { buildDefinitions, EventDefinitionOn } from './JsonBuilder';
 describe('build json', () => {
   it('build json of definitions containing one empty process', () => {
     const json = buildDefinitions({
-      withTask: false,
+      process: {},
     });
 
     expect(json).toEqual({
       definitions: {
         targetNamespace: '',
-        process: {},
+        collaboration: {
+          id: 'collaboration_id_0',
+        },
+        process: { id: '0' },
         BPMNDiagram: {
           name: 'process 0',
           BPMNPlane: {},
@@ -35,77 +38,91 @@ describe('build json', () => {
     });
   });
 
-  it('build json of definitions containing several processes with different elements', () => {
-    const json = buildDefinitions([
-      {
-        withTask: false,
-        events: [
-          {
-            bpmnKind: 'startEvent',
-            eventDefinitionParameter: {
-              eventDefinitionKind: 'message',
-              eventDefinitionOn: EventDefinitionOn.EVENT,
+  it('build json of definitions containing several processes and participants with different elements', () => {
+    const json = buildDefinitions({
+      withParticipant: true,
+      process: [
+        {
+          id: 'participant_0',
+          withTask: false,
+          events: [
+            {
+              bpmnKind: 'startEvent',
+              eventDefinitionParameter: {
+                eventDefinitionKind: 'message',
+                eventDefinitionOn: EventDefinitionOn.EVENT,
+              },
+              eventParameter: {
+                index: 0,
+                name: 'startEvent',
+                isInterrupting: false,
+              },
             },
-            eventParameter: {
-              index: 0,
-              name: 'startEvent',
-              isInterrupting: false,
+            {
+              bpmnKind: 'endEvent',
+              eventDefinitionParameter: {
+                eventDefinitionKind: 'terminate',
+                eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
+              },
+              eventParameter: {
+                index: 1,
+                name: 'endEvent',
+                isInterrupting: true,
+              },
             },
-          },
-          {
-            bpmnKind: 'endEvent',
-            eventDefinitionParameter: {
-              eventDefinitionKind: 'terminate',
-              eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
-            },
-            eventParameter: {
-              index: 1,
-              name: 'endEvent',
-              isInterrupting: true,
-            },
-          },
-        ],
-      },
-      {
-        withTask: true,
-        events: [
-          {
-            bpmnKind: 'startEvent',
-            eventDefinitionParameter: {
-              eventDefinitionOn: EventDefinitionOn.NONE,
-            },
-            eventParameter: {
-              name: 'startEvent',
-              isInterrupting: false,
-            },
-          },
-        ],
-        exclusiveGateway: {
-          id: 'exclusiveGateway',
+          ],
         },
-      },
-      {
-        withTask: false,
-        events: [
-          {
-            bpmnKind: 'intermediateCatchEvent',
-            eventDefinitionParameter: {
-              eventDefinitionKind: 'timer',
-              eventDefinitionOn: EventDefinitionOn.BOTH,
+        {
+          id: 'participant_1',
+          withTask: true,
+          events: [
+            {
+              bpmnKind: 'startEvent',
+              eventDefinitionParameter: {
+                eventDefinitionOn: EventDefinitionOn.NONE,
+              },
+              eventParameter: {
+                name: 'startEvent',
+                isInterrupting: false,
+              },
             },
-            eventParameter: {
-              index: 2,
-              name: 'intermediateCatchEvent',
-              isInterrupting: false,
-            },
+          ],
+          exclusiveGateway: {
+            id: 'exclusiveGateway',
           },
-        ],
-      },
-    ]);
+        },
+        {
+          id: 'participant_2',
+          withTask: false,
+          events: [
+            {
+              bpmnKind: 'intermediateCatchEvent',
+              eventDefinitionParameter: {
+                eventDefinitionKind: 'timer',
+                eventDefinitionOn: EventDefinitionOn.BOTH,
+              },
+              eventParameter: {
+                index: 2,
+                name: 'intermediateCatchEvent',
+                isInterrupting: false,
+              },
+            },
+          ],
+        },
+      ],
+    });
 
     expect(json).toEqual({
       definitions: {
         targetNamespace: '',
+        collaboration: {
+          id: 'collaboration_id_0',
+          participant: [
+            { id: 'participant_0', processRef: 'process_participant_0' },
+            { id: 'participant_1', processRef: 'process_participant_1' },
+            { id: 'participant_2', processRef: 'process_participant_2' },
+          ],
+        },
         terminateEventDefinition: {
           id: 'event_definition_id',
         },
@@ -114,38 +131,42 @@ describe('build json', () => {
         },
         process: [
           {
+            id: 'process_participant_0',
             endEvent: {
               cancelActivity: true,
               eventDefinitionRef: 'event_definition_id',
-              id: 'event_id_1',
+              id: 'event_id_0_1',
               name: 'endEvent',
             },
             startEvent: {
               cancelActivity: false,
-              id: 'event_id_0',
+              id: 'event_id_0_0',
               messageEventDefinition: '',
               name: 'startEvent',
             },
           },
           {
+            id: 'process_participant_1',
             exclusiveGateway: {
               id: 'exclusiveGateway',
+              name: 'exclusiveGateway name',
             },
             startEvent: {
               cancelActivity: false,
-              id: 'event_id_0',
+              id: 'event_id_1_0',
               name: 'startEvent',
             },
             task: {
-              id: 'task_id_0',
+              id: 'task_id_1_0',
               name: 'task name',
             },
           },
           {
+            id: 'process_participant_2',
             intermediateCatchEvent: {
               cancelActivity: false,
               eventDefinitionRef: 'event_definition_id',
-              id: 'event_id_2',
+              id: 'event_id_2_2',
               name: 'intermediateCatchEvent',
               timerEventDefinition: '',
             },
@@ -156,64 +177,49 @@ describe('build json', () => {
           BPMNPlane: {
             BPMNShape: [
               {
-                Bounds: {
-                  height: 45,
-                  width: 36,
-                  x: 362,
-                  y: 232,
-                },
-                bpmnElement: 'event_id_0',
-                id: 'shape_event_id_0',
+                id: `shape_participant_0`,
+                bpmnElement: `participant_0`,
+                Bounds: { x: 567, y: 345, width: 36, height: 45 },
               },
               {
-                Bounds: {
-                  height: 45,
-                  width: 36,
-                  x: 362,
-                  y: 232,
-                },
-                bpmnElement: 'event_id_1',
-                id: 'shape_event_id_1',
+                bpmnElement: 'event_id_0_0',
+                id: 'shape_event_id_0_0',
+                Bounds: { x: 362, y: 232, height: 45, width: 36 },
               },
               {
-                Bounds: {
-                  height: 45,
-                  width: 36,
-                  x: 362,
-                  y: 232,
-                },
-                bpmnElement: 'task_id_0',
-                id: 'shape_task_id_0',
+                bpmnElement: 'event_id_0_1',
+                id: 'shape_event_id_0_1',
+                Bounds: { x: 362, y: 232, height: 45, width: 36 },
               },
               {
-                Bounds: {
-                  height: 25,
-                  width: 25,
-                  x: 567,
-                  y: 345,
-                },
+                id: `shape_participant_1`,
+                bpmnElement: `participant_1`,
+                Bounds: { x: 567, y: 345, width: 36, height: 45 },
+              },
+              {
+                bpmnElement: 'task_id_1_0',
+                id: 'shape_task_id_1_0',
+                Bounds: { x: 362, y: 232, height: 45, width: 36 },
+              },
+              {
                 bpmnElement: 'exclusiveGateway',
                 id: 'shape_exclusiveGateway',
+                Bounds: { x: 567, y: 345, height: 25, width: 25 },
               },
               {
-                Bounds: {
-                  height: 45,
-                  width: 36,
-                  x: 362,
-                  y: 232,
-                },
-                bpmnElement: 'event_id_0',
-                id: 'shape_event_id_0',
+                bpmnElement: 'event_id_1_0',
+                id: 'shape_event_id_1_0',
+                Bounds: { x: 362, y: 232, height: 45, width: 36 },
               },
               {
-                Bounds: {
-                  height: 45,
-                  width: 36,
-                  x: 362,
-                  y: 232,
-                },
-                bpmnElement: 'event_id_2',
-                id: 'shape_event_id_2',
+                id: `shape_participant_2`,
+                bpmnElement: `participant_2`,
+                Bounds: { x: 567, y: 345, width: 36, height: 45 },
+              },
+              {
+                bpmnElement: 'event_id_2_2',
+                id: 'shape_event_id_2_2',
+                Bounds: { x: 362, y: 232, height: 45, width: 36 },
               },
             ],
           },
@@ -222,36 +228,153 @@ describe('build json', () => {
     });
   });
 
+  describe('build json with participant', () => {
+    it('build json of definitions containing one participant', () => {
+      const json = buildDefinitions({
+        withParticipant: true,
+        process: {
+          id: 'participant_id_0',
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+            participant: { id: 'participant_id_0', processRef: 'process_participant_id_0' },
+          },
+          process: {
+            id: 'process_participant_id_0',
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_participant_id_0',
+                bpmnElement: 'participant_id_0',
+                Bounds: { x: 567, y: 345, width: 36, height: 45 },
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing 2 participants', () => {
+      const json = buildDefinitions({
+        withParticipant: true,
+        process: [
+          {
+            id: 'participant_id_0',
+          },
+          {
+            id: 'participant_id_1',
+          },
+        ],
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+            participant: [
+              { id: 'participant_id_0', processRef: 'process_participant_id_0' },
+              { id: 'participant_id_1', processRef: 'process_participant_id_1' },
+            ],
+          },
+          process: [
+            {
+              id: 'process_participant_id_0',
+            },
+            {
+              id: 'process_participant_id_1',
+            },
+          ],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_participant_id_0',
+                  bpmnElement: 'participant_id_0',
+                  Bounds: { x: 567, y: 345, width: 36, height: 45 },
+                },
+                {
+                  id: 'shape_participant_id_1',
+                  bpmnElement: 'participant_id_1',
+                  Bounds: { x: 567, y: 345, width: 36, height: 45 },
+                },
+              ],
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing no participant', () => {
+      const json = buildDefinitions({
+        withParticipant: false,
+        process: {
+          id: 'process_id_0',
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
+          process: {
+            id: 'process_id_0',
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {},
+          },
+        },
+      });
+    });
+  });
+
   describe('build json with boundary event', () => {
     describe('build json with interrupting boundary event', () => {
       it('build json of definitions containing one process with task and interrupting boundary event (with attachedToRef & empty messageEventDefinition)', () => {
         const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT };
         const json = buildDefinitions({
-          events: [
-            {
-              bpmnKind: 'boundaryEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                isInterrupting: true,
-                attachedToRef: 'task_id_0',
+          process: {
+            events: [
+              {
+                bpmnKind: 'boundaryEvent',
+                eventDefinitionParameter,
+                eventParameter: {
+                  isInterrupting: true,
+                  attachedToRef: 'task_id_0_0',
+                },
               },
-            },
-          ],
-          withTask: true,
+            ],
+            withTask: true,
+          },
         });
 
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
+            },
             process: {
+              id: '0',
               task: {
-                id: 'task_id_0',
+                id: 'task_id_0_0',
                 name: 'task name',
               },
               boundaryEvent: {
-                id: 'event_id_0',
+                id: 'event_id_0_0',
                 cancelActivity: true,
-                attachedToRef: 'task_id_0',
+                attachedToRef: 'task_id_0_0',
                 messageEventDefinition: '',
                 name: undefined,
               },
@@ -261,8 +384,8 @@ describe('build json', () => {
               BPMNPlane: {
                 BPMNShape: [
                   {
-                    id: 'shape_task_id_0',
-                    bpmnElement: 'task_id_0',
+                    id: 'shape_task_id_0_0',
+                    bpmnElement: 'task_id_0_0',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -271,8 +394,8 @@ describe('build json', () => {
                     },
                   },
                   {
-                    id: 'shape_event_id_0',
-                    bpmnElement: 'event_id_0',
+                    id: 'shape_event_id_0_0',
+                    bpmnElement: 'event_id_0_0',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -290,29 +413,35 @@ describe('build json', () => {
       it('build json of definitions containing one process with task and interrupting boundary event (with empty signalEventDefinition and id based on index)', () => {
         const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.EVENT };
         const json = buildDefinitions({
-          events: [
-            {
-              bpmnKind: 'boundaryEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                isInterrupting: true,
-                index: 1,
+          process: {
+            events: [
+              {
+                bpmnKind: 'boundaryEvent',
+                eventDefinitionParameter,
+                eventParameter: {
+                  isInterrupting: true,
+                  index: 1,
+                },
               },
-            },
-          ],
-          withTask: true,
+            ],
+            withTask: true,
+          },
         });
 
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
+            },
             process: {
+              id: '0',
               task: {
-                id: 'task_id_0',
+                id: 'task_id_0_0',
                 name: 'task name',
               },
               boundaryEvent: {
-                id: 'event_id_1',
+                id: 'event_id_0_1',
                 cancelActivity: true,
                 attachedToRef: undefined,
                 signalEventDefinition: '',
@@ -324,8 +453,8 @@ describe('build json', () => {
               BPMNPlane: {
                 BPMNShape: [
                   {
-                    id: 'shape_task_id_0',
-                    bpmnElement: 'task_id_0',
+                    id: 'shape_task_id_0_0',
+                    bpmnElement: 'task_id_0_0',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -334,8 +463,8 @@ describe('build json', () => {
                     },
                   },
                   {
-                    id: 'shape_event_id_1',
-                    bpmnElement: 'event_id_1',
+                    id: 'shape_event_id_0_1',
+                    bpmnElement: 'event_id_0_1',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -353,31 +482,37 @@ describe('build json', () => {
       it('build json of definitions containing one messageEventDefinition (with id), one process with task and interrupting boundary event (with eventDefinitionRef)', () => {
         const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.DEFINITIONS };
         const json = buildDefinitions({
-          events: [
-            {
-              bpmnKind: 'boundaryEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                isInterrupting: true,
+          process: {
+            events: [
+              {
+                bpmnKind: 'boundaryEvent',
+                eventDefinitionParameter,
+                eventParameter: {
+                  isInterrupting: true,
+                },
               },
-            },
-          ],
-          withTask: true,
+            ],
+            withTask: true,
+          },
         });
 
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
+            },
             messageEventDefinition: {
               id: 'event_definition_id',
             },
             process: {
+              id: '0',
               task: {
-                id: 'task_id_0',
+                id: 'task_id_0_0',
                 name: 'task name',
               },
               boundaryEvent: {
-                id: 'event_id_0',
+                id: 'event_id_0_0',
                 cancelActivity: true,
                 eventDefinitionRef: 'event_definition_id',
                 attachedToRef: undefined,
@@ -389,8 +524,8 @@ describe('build json', () => {
               BPMNPlane: {
                 BPMNShape: [
                   {
-                    id: 'shape_task_id_0',
-                    bpmnElement: 'task_id_0',
+                    id: 'shape_task_id_0_0',
+                    bpmnElement: 'task_id_0_0',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -399,8 +534,8 @@ describe('build json', () => {
                     },
                   },
                   {
-                    id: 'shape_event_id_0',
-                    bpmnElement: 'event_id_0',
+                    id: 'shape_event_id_0_0',
+                    bpmnElement: 'event_id_0_0',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -420,30 +555,36 @@ describe('build json', () => {
       it('build json of definitions containing one process with task and non-interrupting boundary event (with attachedToRef, empty messageEventDefinition and name, without cancelActivity)', () => {
         const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT };
         const json = buildDefinitions({
-          events: [
-            {
-              bpmnKind: 'boundaryEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                attachedToRef: 'task_id_0',
-                name: 'name',
+          process: {
+            events: [
+              {
+                bpmnKind: 'boundaryEvent',
+                eventDefinitionParameter,
+                eventParameter: {
+                  attachedToRef: 'task_id_0_0',
+                  name: 'name',
+                },
               },
-            },
-          ],
-          withTask: true,
+            ],
+            withTask: true,
+          },
         });
 
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
+            },
             process: {
+              id: '0',
               task: {
-                id: 'task_id_0',
+                id: 'task_id_0_0',
                 name: 'task name',
               },
               boundaryEvent: {
-                id: 'event_id_0',
-                attachedToRef: 'task_id_0',
+                id: 'event_id_0_0',
+                attachedToRef: 'task_id_0_0',
                 messageEventDefinition: '',
                 name: 'name',
               },
@@ -453,8 +594,8 @@ describe('build json', () => {
               BPMNPlane: {
                 BPMNShape: [
                   {
-                    id: 'shape_task_id_0',
-                    bpmnElement: 'task_id_0',
+                    id: 'shape_task_id_0_0',
+                    bpmnElement: 'task_id_0_0',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -463,8 +604,8 @@ describe('build json', () => {
                     },
                   },
                   {
-                    id: 'shape_event_id_0',
-                    bpmnElement: 'event_id_0',
+                    id: 'shape_event_id_0_0',
+                    bpmnElement: 'event_id_0_0',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -482,28 +623,34 @@ describe('build json', () => {
       it('build json of definitions containing one process with task and non-interrupting boundary event (with empty signalEventDefinition and cancelActivity)', () => {
         const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.EVENT };
         const json = buildDefinitions({
-          events: [
-            {
-              bpmnKind: 'boundaryEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                isInterrupting: false,
+          process: {
+            events: [
+              {
+                bpmnKind: 'boundaryEvent',
+                eventDefinitionParameter,
+                eventParameter: {
+                  isInterrupting: false,
+                },
               },
-            },
-          ],
-          withTask: true,
+            ],
+            withTask: true,
+          },
         });
 
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
+            },
             process: {
+              id: '0',
               task: {
-                id: 'task_id_0',
+                id: 'task_id_0_0',
                 name: 'task name',
               },
               boundaryEvent: {
-                id: 'event_id_0',
+                id: 'event_id_0_0',
                 cancelActivity: false,
                 attachedToRef: undefined,
                 signalEventDefinition: '',
@@ -515,8 +662,8 @@ describe('build json', () => {
               BPMNPlane: {
                 BPMNShape: [
                   {
-                    id: 'shape_task_id_0',
-                    bpmnElement: 'task_id_0',
+                    id: 'shape_task_id_0_0',
+                    bpmnElement: 'task_id_0_0',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -525,8 +672,8 @@ describe('build json', () => {
                     },
                   },
                   {
-                    id: 'shape_event_id_0',
-                    bpmnElement: 'event_id_0',
+                    id: 'shape_event_id_0_0',
+                    bpmnElement: 'event_id_0_0',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -544,29 +691,35 @@ describe('build json', () => {
       it('build json of definitions containing one process with task and non-interrupting boundary event (with empty signalEventDefinition and id based on index)', () => {
         const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.EVENT };
         const json = buildDefinitions({
-          events: [
-            {
-              bpmnKind: 'boundaryEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                isInterrupting: false,
-                index: 1,
+          process: {
+            events: [
+              {
+                bpmnKind: 'boundaryEvent',
+                eventDefinitionParameter,
+                eventParameter: {
+                  isInterrupting: false,
+                  index: 1,
+                },
               },
-            },
-          ],
-          withTask: true,
+            ],
+            withTask: true,
+          },
         });
 
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
+            },
             process: {
+              id: '0',
               task: {
-                id: 'task_id_0',
+                id: 'task_id_0_0',
                 name: 'task name',
               },
               boundaryEvent: {
-                id: 'event_id_1',
+                id: 'event_id_0_1',
                 cancelActivity: false,
                 attachedToRef: undefined,
                 signalEventDefinition: '',
@@ -578,8 +731,8 @@ describe('build json', () => {
               BPMNPlane: {
                 BPMNShape: [
                   {
-                    id: 'shape_task_id_0',
-                    bpmnElement: 'task_id_0',
+                    id: 'shape_task_id_0_0',
+                    bpmnElement: 'task_id_0_0',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -588,8 +741,8 @@ describe('build json', () => {
                     },
                   },
                   {
-                    id: 'shape_event_id_1',
-                    bpmnElement: 'event_id_1',
+                    id: 'shape_event_id_0_1',
+                    bpmnElement: 'event_id_0_1',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -607,35 +760,41 @@ describe('build json', () => {
       it('build json of definitions containing one signalEventDefinition (with id), one process with task and non-interrupting boundary event (with attachedToRef & eventDefinitionRef)', () => {
         const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'signal', eventDefinitionOn: EventDefinitionOn.DEFINITIONS };
         const json = buildDefinitions({
-          events: [
-            {
-              bpmnKind: 'boundaryEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                isInterrupting: false,
-                attachedToRef: 'task_id_0',
+          process: {
+            events: [
+              {
+                bpmnKind: 'boundaryEvent',
+                eventDefinitionParameter,
+                eventParameter: {
+                  isInterrupting: false,
+                  attachedToRef: 'task_id_0_0',
+                },
               },
-            },
-          ],
-          withTask: true,
+            ],
+            withTask: true,
+          },
         });
 
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
+            },
             signalEventDefinition: {
               id: 'event_definition_id',
             },
             process: {
+              id: '0',
               task: {
-                id: 'task_id_0',
+                id: 'task_id_0_0',
                 name: 'task name',
               },
               boundaryEvent: {
-                id: 'event_id_0',
+                id: 'event_id_0_0',
                 cancelActivity: false,
                 eventDefinitionRef: 'event_definition_id',
-                attachedToRef: 'task_id_0',
+                attachedToRef: 'task_id_0_0',
                 name: undefined,
               },
             },
@@ -644,8 +803,8 @@ describe('build json', () => {
               BPMNPlane: {
                 BPMNShape: [
                   {
-                    id: 'shape_task_id_0',
-                    bpmnElement: 'task_id_0',
+                    id: 'shape_task_id_0_0',
+                    bpmnElement: 'task_id_0_0',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -654,8 +813,8 @@ describe('build json', () => {
                     },
                   },
                   {
-                    id: 'shape_event_id_0',
-                    bpmnElement: 'event_id_0',
+                    id: 'shape_event_id_0_0',
+                    bpmnElement: 'event_id_0_0',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -676,23 +835,29 @@ describe('build json', () => {
     it('build json of definitions containing one process with start event (with one messageEventDefinition & name)', () => {
       const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT };
       const json = buildDefinitions({
-        events: [
-          {
-            bpmnKind: 'startEvent',
-            eventDefinitionParameter,
-            eventParameter: {
-              name: 'name',
+        process: {
+          events: [
+            {
+              bpmnKind: 'startEvent',
+              eventDefinitionParameter,
+              eventParameter: {
+                name: 'name',
+              },
             },
-          },
-        ],
+          ],
+        },
       });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
           process: {
+            id: '0',
             startEvent: {
-              id: 'event_id_0',
+              id: 'event_id_0_0',
               messageEventDefinition: '',
               name: 'name',
             },
@@ -701,8 +866,8 @@ describe('build json', () => {
             name: 'process 0',
             BPMNPlane: {
               BPMNShape: {
-                id: 'shape_event_id_0',
-                bpmnElement: 'event_id_0',
+                id: 'shape_event_id_0_0',
+                bpmnElement: 'event_id_0_0',
                 Bounds: {
                   x: 362,
                   y: 232,
@@ -723,23 +888,29 @@ describe('build json', () => {
         withMultipleDefinitions: true,
       };
       const json = buildDefinitions({
-        events: [
-          {
-            bpmnKind: 'startEvent',
-            eventDefinitionParameter,
-            eventParameter: {
-              name: 'name',
+        process: {
+          events: [
+            {
+              bpmnKind: 'startEvent',
+              eventDefinitionParameter,
+              eventParameter: {
+                name: 'name',
+              },
             },
-          },
-        ],
+          ],
+        },
       });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
           process: {
+            id: '0',
             startEvent: {
-              id: 'event_id_0',
+              id: 'event_id_0_0',
               messageEventDefinition: ['', {}],
               name: 'name',
             },
@@ -748,8 +919,8 @@ describe('build json', () => {
             name: 'process 0',
             BPMNPlane: {
               BPMNShape: {
-                id: 'shape_event_id_0',
-                bpmnElement: 'event_id_0',
+                id: 'shape_event_id_0_0',
+                bpmnElement: 'event_id_0_0',
                 Bounds: {
                   x: 362,
                   y: 232,
@@ -766,26 +937,32 @@ describe('build json', () => {
     it('build json of definitions containing one messageEventDefinition (with id), one process with start event (with name)', () => {
       const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.DEFINITIONS };
       const json = buildDefinitions({
-        events: [
-          {
-            bpmnKind: 'endEvent',
-            eventDefinitionParameter,
-            eventParameter: {
-              name: 'name',
+        process: {
+          events: [
+            {
+              bpmnKind: 'endEvent',
+              eventDefinitionParameter,
+              eventParameter: {
+                name: 'name',
+              },
             },
-          },
-        ],
+          ],
+        },
       });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
           messageEventDefinition: {
             id: 'event_definition_id',
           },
           process: {
+            id: '0',
             endEvent: {
-              id: 'event_id_0',
+              id: 'event_id_0_0',
               eventDefinitionRef: 'event_definition_id',
               name: 'name',
             },
@@ -794,8 +971,8 @@ describe('build json', () => {
             name: 'process 0',
             BPMNPlane: {
               BPMNShape: {
-                id: 'shape_event_id_0',
-                bpmnElement: 'event_id_0',
+                id: 'shape_event_id_0_0',
+                bpmnElement: 'event_id_0_0',
                 Bounds: {
                   x: 362,
                   y: 232,
@@ -816,20 +993,25 @@ describe('build json', () => {
         withMultipleDefinitions: true,
       };
       const json = buildDefinitions({
-        events: [
-          {
-            bpmnKind: 'endEvent',
-            eventDefinitionParameter,
-            eventParameter: {
-              name: 'name',
+        process: {
+          events: [
+            {
+              bpmnKind: 'endEvent',
+              eventDefinitionParameter,
+              eventParameter: {
+                name: 'name',
+              },
             },
-          },
-        ],
+          ],
+        },
       });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
           messageEventDefinition: [
             {
               id: 'event_definition_1_id',
@@ -839,8 +1021,9 @@ describe('build json', () => {
             },
           ],
           process: {
+            id: '0',
             endEvent: {
-              id: 'event_id_0',
+              id: 'event_id_0_0',
               eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
               name: 'name',
             },
@@ -849,8 +1032,8 @@ describe('build json', () => {
             name: 'process 0',
             BPMNPlane: {
               BPMNShape: {
-                id: 'shape_event_id_0',
-                bpmnElement: 'event_id_0',
+                id: 'shape_event_id_0_0',
+                bpmnElement: 'event_id_0_0',
                 Bounds: {
                   x: 362,
                   y: 232,
@@ -866,46 +1049,53 @@ describe('build json', () => {
 
     it('build json of definitions containing 2 process with start event', () => {
       const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT };
-      const json = buildDefinitions([
-        {
-          events: [
-            {
-              bpmnKind: 'startEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                name: 'name',
+      const json = buildDefinitions({
+        process: [
+          {
+            events: [
+              {
+                bpmnKind: 'startEvent',
+                eventDefinitionParameter,
+                eventParameter: {
+                  name: 'name',
+                },
               },
-            },
-          ],
-        },
-        {
-          events: [
-            {
-              bpmnKind: 'startEvent',
-              eventDefinitionParameter,
-              eventParameter: {
-                name: 'name',
-                index: 1,
+            ],
+          },
+          {
+            events: [
+              {
+                bpmnKind: 'startEvent',
+                eventDefinitionParameter,
+                eventParameter: {
+                  name: 'name',
+                  index: 1,
+                },
               },
-            },
-          ],
-        },
-      ]);
+            ],
+          },
+        ],
+      });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
           process: [
             {
+              id: '0',
               startEvent: {
-                id: 'event_id_0',
+                id: 'event_id_0_0',
                 messageEventDefinition: '',
                 name: 'name',
               },
             },
             {
+              id: '1',
               startEvent: {
-                id: 'event_id_1',
+                id: 'event_id_1_1',
                 messageEventDefinition: '',
                 name: 'name',
               },
@@ -916,8 +1106,8 @@ describe('build json', () => {
             BPMNPlane: {
               BPMNShape: [
                 {
-                  id: 'shape_event_id_0',
-                  bpmnElement: 'event_id_0',
+                  id: 'shape_event_id_0_0',
+                  bpmnElement: 'event_id_0_0',
                   Bounds: {
                     x: 362,
                     y: 232,
@@ -926,8 +1116,8 @@ describe('build json', () => {
                   },
                 },
                 {
-                  id: 'shape_event_id_1',
-                  bpmnElement: 'event_id_1',
+                  id: 'shape_event_id_1_1',
+                  bpmnElement: 'event_id_1_1',
                   Bounds: {
                     x: 362,
                     y: 232,
@@ -947,26 +1137,32 @@ describe('build json', () => {
     it('build json of definitions containing one messageEventDefinition (with id), one process with intermediate catch event (with one messageEventDefinition & eventDefinitionRef & name)', () => {
       const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.BOTH };
       const json = buildDefinitions({
-        events: [
-          {
-            bpmnKind: 'intermediateCatchEvent',
-            eventDefinitionParameter,
-            eventParameter: {
-              name: 'name',
+        process: {
+          events: [
+            {
+              bpmnKind: 'intermediateCatchEvent',
+              eventDefinitionParameter,
+              eventParameter: {
+                name: 'name',
+              },
             },
-          },
-        ],
+          ],
+        },
       });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
           messageEventDefinition: {
             id: 'event_definition_id',
           },
           process: {
+            id: '0',
             intermediateCatchEvent: {
-              id: 'event_id_0',
+              id: 'event_id_0_0',
               messageEventDefinition: '',
               eventDefinitionRef: 'event_definition_id',
               name: 'name',
@@ -976,8 +1172,8 @@ describe('build json', () => {
             name: 'process 0',
             BPMNPlane: {
               BPMNShape: {
-                id: 'shape_event_id_0',
-                bpmnElement: 'event_id_0',
+                id: 'shape_event_id_0_0',
+                bpmnElement: 'event_id_0_0',
                 Bounds: {
                   x: 362,
                   y: 232,
@@ -998,20 +1194,25 @@ describe('build json', () => {
         withMultipleDefinitions: true,
       };
       const json = buildDefinitions({
-        events: [
-          {
-            bpmnKind: 'intermediateCatchEvent',
-            eventDefinitionParameter,
-            eventParameter: {
-              name: 'name',
+        process: {
+          events: [
+            {
+              bpmnKind: 'intermediateCatchEvent',
+              eventDefinitionParameter,
+              eventParameter: {
+                name: 'name',
+              },
             },
-          },
-        ],
+          ],
+        },
       });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
           messageEventDefinition: [
             {
               id: 'event_definition_1_id',
@@ -1021,8 +1222,9 @@ describe('build json', () => {
             },
           ],
           process: {
+            id: '0',
             intermediateCatchEvent: {
-              id: 'event_id_0',
+              id: 'event_id_0_0',
               messageEventDefinition: ['', {}],
               eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
               name: 'name',
@@ -1032,8 +1234,8 @@ describe('build json', () => {
             name: 'process 0',
             BPMNPlane: {
               BPMNShape: {
-                id: 'shape_event_id_0',
-                bpmnElement: 'event_id_0',
+                id: 'shape_event_id_0_0',
+                bpmnElement: 'event_id_0_0',
                 Bounds: {
                   x: 362,
                   y: 232,
@@ -1056,21 +1258,27 @@ describe('build json', () => {
         eventDefinition: { id: '9' },
       };
       const json = buildDefinitions({
-        events: [
-          {
-            bpmnKind: 'intermediateThrowEvent',
-            eventDefinitionParameter,
-            eventParameter: {},
-          },
-        ],
+        process: {
+          events: [
+            {
+              bpmnKind: 'intermediateThrowEvent',
+              eventDefinitionParameter,
+              eventParameter: {},
+            },
+          ],
+        },
       });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
           process: {
+            id: '0',
             intermediateThrowEvent: {
-              id: 'event_id_0',
+              id: 'event_id_0_0',
               name: undefined,
             },
           },
@@ -1078,8 +1286,8 @@ describe('build json', () => {
             name: 'process 0',
             BPMNPlane: {
               BPMNShape: {
-                id: 'shape_event_id_0',
-                bpmnElement: 'event_id_0',
+                id: 'shape_event_id_0_0',
+                bpmnElement: 'event_id_0_0',
                 Bounds: {
                   x: 362,
                   y: 232,
@@ -1100,21 +1308,27 @@ describe('build json', () => {
         eventDefinition: { id: '9' },
       };
       const json = buildDefinitions({
-        events: [
-          {
-            bpmnKind: 'intermediateThrowEvent',
-            eventDefinitionParameter,
-            eventParameter: {},
-          },
-        ],
+        process: {
+          events: [
+            {
+              bpmnKind: 'intermediateThrowEvent',
+              eventDefinitionParameter,
+              eventParameter: {},
+            },
+          ],
+        },
       });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
           process: {
+            id: '0',
             intermediateThrowEvent: {
-              id: 'event_id_0',
+              id: 'event_id_0_0',
               messageEventDefinition: { id: '9' },
               name: undefined,
             },
@@ -1123,8 +1337,8 @@ describe('build json', () => {
             name: 'process 0',
             BPMNPlane: {
               BPMNShape: {
-                id: 'shape_event_id_0',
-                bpmnElement: 'event_id_0',
+                id: 'shape_event_id_0_0',
+                bpmnElement: 'event_id_0_0',
                 Bounds: {
                   x: 362,
                   y: 232,
@@ -1145,22 +1359,28 @@ describe('build json', () => {
         eventDefinition: { id: '9' },
       };
       const json = buildDefinitions({
-        events: [
-          {
-            bpmnKind: 'intermediateThrowEvent',
-            eventDefinitionParameter,
-            eventParameter: {},
-          },
-        ],
+        process: {
+          events: [
+            {
+              bpmnKind: 'intermediateThrowEvent',
+              eventDefinitionParameter,
+              eventParameter: {},
+            },
+          ],
+        },
       });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
           messageEventDefinition: { id: '9' },
           process: {
+            id: '0',
             intermediateThrowEvent: {
-              id: 'event_id_0',
+              id: 'event_id_0_0',
               eventDefinitionRef: '9',
               name: undefined,
             },
@@ -1169,8 +1389,8 @@ describe('build json', () => {
             name: 'process 0',
             BPMNPlane: {
               BPMNShape: {
-                id: 'shape_event_id_0',
-                bpmnElement: 'event_id_0',
+                id: 'shape_event_id_0_0',
+                bpmnElement: 'event_id_0_0',
                 Bounds: {
                   x: 362,
                   y: 232,
@@ -1194,21 +1414,27 @@ describe('build json', () => {
           withDifferentDefinition: true,
         };
         const json = buildDefinitions({
-          events: [
-            {
-              bpmnKind: 'intermediateThrowEvent',
-              eventDefinitionParameter,
-              eventParameter: {},
-            },
-          ],
+          process: {
+            events: [
+              {
+                bpmnKind: 'intermediateThrowEvent',
+                eventDefinitionParameter,
+                eventParameter: {},
+              },
+            ],
+          },
         });
 
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
+            },
             process: {
+              id: '0',
               intermediateThrowEvent: {
-                id: 'event_id_0',
+                id: 'event_id_0_0',
                 messageEventDefinition: '',
                 signalEventDefinition: '',
                 name: undefined,
@@ -1218,8 +1444,8 @@ describe('build json', () => {
               name: 'process 0',
               BPMNPlane: {
                 BPMNShape: {
-                  id: 'shape_event_id_0',
-                  bpmnElement: 'event_id_0',
+                  id: 'shape_event_id_0_0',
+                  bpmnElement: 'event_id_0_0',
                   Bounds: {
                     x: 362,
                     y: 232,
@@ -1244,21 +1470,27 @@ describe('build json', () => {
           withDifferentDefinition: true,
         };
         const json = buildDefinitions({
-          events: [
-            {
-              bpmnKind: 'intermediateThrowEvent',
-              eventDefinitionParameter,
-              eventParameter: {},
-            },
-          ],
+          process: {
+            events: [
+              {
+                bpmnKind: 'intermediateThrowEvent',
+                eventDefinitionParameter,
+                eventParameter: {},
+              },
+            ],
+          },
         });
 
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
+            },
             process: {
+              id: '0',
               intermediateThrowEvent: {
-                id: 'event_id_0',
+                id: 'event_id_0_0',
                 messageEventDefinition: '',
                 signalEventDefinition: '',
                 name: undefined,
@@ -1268,8 +1500,8 @@ describe('build json', () => {
               name: 'process 0',
               BPMNPlane: {
                 BPMNShape: {
-                  id: 'shape_event_id_0',
-                  bpmnElement: 'event_id_0',
+                  id: 'shape_event_id_0_0',
+                  bpmnElement: 'event_id_0_0',
                   Bounds: {
                     x: 362,
                     y: 232,
@@ -1291,18 +1523,23 @@ describe('build json', () => {
         withDifferentDefinition: true,
       };
       const json = buildDefinitions({
-        events: [
-          {
-            bpmnKind: 'intermediateThrowEvent',
-            eventDefinitionParameter,
-            eventParameter: {},
-          },
-        ],
+        process: {
+          events: [
+            {
+              bpmnKind: 'intermediateThrowEvent',
+              eventDefinitionParameter,
+              eventParameter: {},
+            },
+          ],
+        },
       });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
           messageEventDefinition: {
             id: 'other_event_definition_id',
           },
@@ -1310,8 +1547,9 @@ describe('build json', () => {
             id: 'event_definition_id',
           },
           process: {
+            id: '0',
             intermediateThrowEvent: {
-              id: 'event_id_0',
+              id: 'event_id_0_0',
               messageEventDefinition: '',
               signalEventDefinition: '',
               eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
@@ -1322,8 +1560,8 @@ describe('build json', () => {
             name: 'process 0',
             BPMNPlane: {
               BPMNShape: {
-                id: 'shape_event_id_0',
-                bpmnElement: 'event_id_0',
+                id: 'shape_event_id_0_0',
+                bpmnElement: 'event_id_0_0',
                 Bounds: {
                   x: 362,
                   y: 232,
@@ -1341,15 +1579,21 @@ describe('build json', () => {
   describe('build json with task', () => {
     it('build json of definitions containing one process with task', () => {
       const json = buildDefinitions({
-        withTask: true,
+        process: {
+          withTask: true,
+        },
       });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
           process: {
+            id: '0',
             task: {
-              id: 'task_id_0',
+              id: 'task_id_0_0',
               name: 'task name',
             },
           },
@@ -1357,8 +1601,8 @@ describe('build json', () => {
             name: 'process 0',
             BPMNPlane: {
               BPMNShape: {
-                id: 'shape_task_id_0',
-                bpmnElement: 'task_id_0',
+                id: 'shape_task_id_0_0',
+                bpmnElement: 'task_id_0_0',
                 Bounds: {
                   x: 362,
                   y: 232,
@@ -1373,28 +1617,28 @@ describe('build json', () => {
     });
 
     it('build json of definitions containing 2 processes with task', () => {
-      const json = buildDefinitions([
-        {
-          withTask: true,
-        },
-        {
-          withTask: true,
-        },
-      ]);
+      const json = buildDefinitions({
+        process: [{ withTask: true }, { withTask: true }],
+      });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
           process: [
             {
+              id: '0',
               task: {
-                id: 'task_id_0',
+                id: 'task_id_0_0',
                 name: 'task name',
               },
             },
             {
+              id: '1',
               task: {
-                id: 'task_id_0',
+                id: 'task_id_1_0',
                 name: 'task name',
               },
             },
@@ -1404,8 +1648,8 @@ describe('build json', () => {
             BPMNPlane: {
               BPMNShape: [
                 {
-                  id: 'shape_task_id_0',
-                  bpmnElement: 'task_id_0',
+                  id: 'shape_task_id_0_0',
+                  bpmnElement: 'task_id_0_0',
                   Bounds: {
                     x: 362,
                     y: 232,
@@ -1414,8 +1658,8 @@ describe('build json', () => {
                   },
                 },
                 {
-                  id: 'shape_task_id_0',
-                  bpmnElement: 'task_id_0',
+                  id: 'shape_task_id_1_0',
+                  bpmnElement: 'task_id_1_0',
                   Bounds: {
                     x: 362,
                     y: 232,
@@ -1432,17 +1676,22 @@ describe('build json', () => {
   });
 
   describe('build json with exclusive gateway', () => {
-    it('build json of definitions containing one process with exclusive gateway', () => {
+    it('build json of definitions containing one process with exclusive gateway (with id)', () => {
       const json = buildDefinitions({
-        exclusiveGateway: { id: 'exclusive_gateway_id_4' },
+        process: {
+          exclusiveGateway: {
+            id: 'exclusive_gateway_id_4',
+          },
+        },
       });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
-          process: {
-            exclusiveGateway: { id: 'exclusive_gateway_id_4' },
+          collaboration: {
+            id: 'collaboration_id_0',
           },
+          process: { id: '0', exclusiveGateway: { id: 'exclusive_gateway_id_4', name: 'exclusiveGateway name' } },
           BPMNDiagram: {
             name: 'process 0',
             BPMNPlane: {
@@ -1457,26 +1706,57 @@ describe('build json', () => {
       });
     });
 
-    it('build json of definitions containing 2 processes with exclusive gateway', () => {
-      const json = buildDefinitions([
-        {
-          exclusiveGateway: { id: 'exclusive_gateway_id_4' },
+    it('build json of definitions containing one process with exclusive gateway (without id)', () => {
+      const json = buildDefinitions({
+        process: {
+          exclusiveGateway: {},
         },
-        {
-          exclusiveGateway: { id: 'exclusive_gateway_id_67' },
-        },
-      ]);
+      });
 
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
+          process: { id: '0', exclusiveGateway: { id: 'exclusiveGateway_id_0_0', name: 'exclusiveGateway name' } },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_exclusiveGateway_id_0_0',
+                bpmnElement: 'exclusiveGateway_id_0_0',
+                Bounds: { x: 567, y: 345, width: 25, height: 25 },
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing 2 processes with exclusive gateway', () => {
+      const json = buildDefinitions({
+        process: [
+          {
+            exclusiveGateway: { id: 'exclusive_gateway_id_4' },
+          },
+          {
+            exclusiveGateway: {
+              id: 'exclusive_gateway_id_67',
+            },
+          },
+        ],
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
           process: [
-            {
-              exclusiveGateway: { id: 'exclusive_gateway_id_4' },
-            },
-            {
-              exclusiveGateway: { id: 'exclusive_gateway_id_67' },
-            },
+            { id: '0', exclusiveGateway: { id: 'exclusive_gateway_id_4', name: 'exclusiveGateway name' } },
+            { id: '1', exclusiveGateway: { id: 'exclusive_gateway_id_67', name: 'exclusiveGateway name' } },
           ],
           BPMNDiagram: {
             name: 'process 0',
