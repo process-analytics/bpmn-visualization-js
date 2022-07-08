@@ -52,6 +52,10 @@ export interface BuildTaskParameter {
   id?: string;
 }
 
+export interface BuildCallActivityParameter {
+  id?: string;
+}
+
 export interface BuildExclusiveGatewayParameter {
   id?: string;
 }
@@ -65,6 +69,7 @@ export interface BuildProcessParameter {
     eventParameter?: BuildEventParameter;
   }[];
   exclusiveGateway?: BuildExclusiveGatewayParameter | BuildExclusiveGatewayParameter[];
+  callActivity?: BuildCallActivityParameter | BuildCallActivityParameter[];
 
   /**
    * - If `withParticipant` of `BuildDefinitionParameter` is false, it's corresponding to the id of the process.
@@ -192,6 +197,11 @@ function addElementsOnProcess(processParameter: BuildProcessParameter, json: Bpm
       addExclusiveGateway(json, exclusiveGatewayParameter, index, processIndex),
     );
   }
+  if (processParameter.callActivity) {
+    (Array.isArray(processParameter.callActivity) ? processParameter.callActivity : [processParameter.callActivity]).forEach((callActivityParameter, index) =>
+      addCallActivity(json, callActivityParameter, index, processIndex),
+    );
+  }
   processParameter.events?.forEach(event => addEvent(json, event, processIndex));
 }
 
@@ -251,6 +261,21 @@ function addExclusiveGateway(jsonModel: BpmnJsonModel, exclusiveGatewayParameter
     id: `shape_${exclusiveGateway.id}`,
     bpmnElement: exclusiveGateway.id,
     Bounds: { x: 567, y: 345, width: 25, height: 25 },
+  };
+  addShape(jsonModel, shape);
+}
+
+function addCallActivity(jsonModel: BpmnJsonModel, callActivityParameter: BuildCallActivityParameter, index: number, processIndex: number): void {
+  const callActivity = {
+    id: callActivityParameter.id ? callActivityParameter.id : `callActivity_id_${processIndex}_${index}`,
+    name: 'callActivity name',
+  };
+  addFlownode(jsonModel, 'callActivity', callActivity, processIndex);
+
+  const shape = {
+    id: `shape_${callActivity.id}`,
+    bpmnElement: callActivity.id,
+    Bounds: { x: 346, y: 856, width: 45, height: 56 },
   };
   addShape(jsonModel, shape);
 }
