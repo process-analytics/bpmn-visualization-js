@@ -15,13 +15,14 @@
  */
 
 import type { TParticipant } from '../../../src/model/bpmn/json/baseElement/participant';
+import type { TMessageFlow } from '../../../src/model/bpmn/json/baseElement/baseElement';
 import type { TCollaboration } from '../../../src/model/bpmn/json/baseElement/rootElement/collaboration';
 import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../src/model/bpmn/json/baseElement/flowNode/event';
 import type { TEventDefinition } from '../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
 import type { BpmnJsonModel, TDefinitions } from '../../../src/model/bpmn/json/BPMN20';
 import type { TProcess } from '../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import type { TFlowNode } from '../../../src/model/bpmn/json/baseElement/flowElement';
-import type { BPMNPlane, BPMNShape } from '../../../src/model/bpmn/json/BPMNDI';
+import type { BPMNEdge, BPMNPlane, BPMNShape } from '../../../src/model/bpmn/json/BPMNDI';
 
 type BPMNTEvent = TCatchEvent | TThrowEvent | TBoundaryEvent;
 type BPMNEventDefinition = string | TEventDefinition | (string | TEventDefinition)[];
@@ -135,12 +136,20 @@ export interface BuildProcessParameter {
   id?: string;
 }
 
+export interface BuildMessageFlowParameter {
+  id: string;
+  name?: string;
+  sourceRef: string;
+  targetRef: string;
+}
+
 export interface BuildDefinitionParameter {
   process: BuildProcessParameter | BuildProcessParameter[];
   withParticipant?: boolean;
+  messageFlows?: BuildMessageFlowParameter | BuildMessageFlowParameter[];
 }
 
-export function buildDefinitions({ process, withParticipant }: BuildDefinitionParameter): BpmnJsonModel {
+export function buildDefinitions({ process, withParticipant, messageFlows }: BuildDefinitionParameter): BpmnJsonModel {
   const json: BpmnJsonModel = {
     definitions: {
       targetNamespace: '',
@@ -159,6 +168,10 @@ export function buildDefinitions({ process, withParticipant }: BuildDefinitionPa
     (json.definitions.collaboration as TCollaboration).participant = Array.isArray(process) ? [] : undefined;
   }
   (Array.isArray(process) ? process : [process]).forEach((processParameter, index) => addParticipantProcessAndElements(processParameter, withParticipant, json, index));
+
+  if (messageFlows) {
+    (Array.isArray(messageFlows) ? messageFlows : [messageFlows]).forEach(messageFlow => addMessageFlow(messageFlow, json));
+  }
   return json;
 }
 
@@ -186,6 +199,24 @@ function addParticipant(id: string, jsonModel: BpmnJsonModel): void {
     Bounds: { x: 567, y: 345, width: 36, height: 45 },
   };
   addShape(jsonModel, shape);
+}
+
+function addMessageFlow(messageFlowParameter: BuildMessageFlowParameter, jsonModel: BpmnJsonModel): void {
+  const messageFlow: TMessageFlow = messageFlowParameter;
+
+  const collaboration: TCollaboration = getElementOfArray<TProcess>(jsonModel.definitions.collaboration as TCollaboration);
+  updateBpmnElement(collaboration.messageFlow, messageFlow, (value: TMessageFlow | TMessageFlow[]) => (collaboration.messageFlow = value));
+
+  const edge = {
+    id: `edge_${messageFlow.id}`,
+    bpmnElement: messageFlow.id,
+    Bounds: { x: 567, y: 345, width: 36, height: 45 },
+    waypoint: [
+      { x: 567, y: 345 },
+      { x: 587, y: 345 },
+    ],
+  };
+  addEdge(jsonModel, edge);
 }
 
 function addElementsOnProcess(processParameter: BuildProcessParameter, json: BpmnJsonModel, processIndex: number): void {
@@ -235,7 +266,12 @@ function addShape(jsonModel: BpmnJsonModel, taskShape: BPMNShape): void {
   updateBpmnElement(bpmnPlane.BPMNShape, taskShape, (value: BPMNShape | BPMNShape[]) => (bpmnPlane.BPMNShape = value));
 }
 
-function addTask(jsonModel: BpmnJsonModel, taskParameter: BuildTaskParameter, index: number, processIndex: number): void {
+function addEdge(jsonModel: BpmnJsonModel, edge: BPMNEdge): void {
+  const bpmnPlane: BPMNPlane = getElementOfArray(jsonModel.definitions.BPMNDiagram).BPMNPlane;
+  updateBpmnElement(bpmnPlane.BPMNEdge, edge, (value: BPMNEdge | BPMNEdge[]) => (bpmnPlane.BPMNEdge = value));
+}
+
+function addTask(jsonModel: BpmnJsonModel, taskParameter: BuildTaskParameter, index: number, processIndex?: number): void {
   const task = {
     id: taskParameter.id ? taskParameter.id : `task_id_${processIndex}_${index}`,
     name: 'task name',
