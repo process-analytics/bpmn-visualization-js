@@ -64,7 +64,7 @@ export interface BuildProcessParameter {
     eventDefinitionParameter: BuildEventDefinitionParameter;
     eventParameter?: BuildEventParameter;
   }[];
-  exclusiveGateway?: BuildExclusiveGatewayParameter;
+  exclusiveGateway?: BuildExclusiveGatewayParameter | BuildExclusiveGatewayParameter[];
 
   /**
    * - If `withParticipant` of `BuildDefinitionParameter` is false, it's corresponding to the id of the process.
@@ -188,7 +188,9 @@ function addElementsOnProcess(processParameter: BuildProcessParameter, json: Bpm
     (Array.isArray(processParameter.task) ? processParameter.task : [processParameter.task]).forEach((taskParameter, index) => addTask(json, taskParameter, index, processIndex));
   }
   if (processParameter.exclusiveGateway) {
-    addExclusiveGateway(json, processParameter.exclusiveGateway, processIndex);
+    (Array.isArray(processParameter.exclusiveGateway) ? processParameter.exclusiveGateway : [processParameter.exclusiveGateway]).forEach((exclusiveGatewayParameter, index) =>
+      addExclusiveGateway(json, exclusiveGatewayParameter, index, processIndex),
+    );
   }
   processParameter.events?.forEach(event => addEvent(json, event, processIndex));
 }
@@ -238,9 +240,9 @@ function addTask(jsonModel: BpmnJsonModel, taskParameter: BuildTaskParameter, in
   addShape(jsonModel, taskShape);
 }
 
-function addExclusiveGateway(jsonModel: BpmnJsonModel, exclusiveGatewayParameter: BuildExclusiveGatewayParameter, processIndex: number): void {
+function addExclusiveGateway(jsonModel: BpmnJsonModel, exclusiveGatewayParameter: BuildExclusiveGatewayParameter, index: number, processIndex: number): void {
   const exclusiveGateway = {
-    id: exclusiveGatewayParameter.id ? exclusiveGatewayParameter.id : `exclusiveGateway_id_${processIndex}_0`,
+    id: exclusiveGatewayParameter.id ? exclusiveGatewayParameter.id : `exclusiveGateway_id_${processIndex}_${index}`,
     name: 'exclusiveGateway name',
   };
   addFlownode(jsonModel, 'exclusiveGateway', exclusiveGateway, processIndex);

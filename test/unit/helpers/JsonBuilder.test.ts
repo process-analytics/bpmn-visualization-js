@@ -1781,16 +1781,14 @@ describe('build json', () => {
       });
     });
 
-    it('build json of definitions containing 2 processes with exclusive gateway', () => {
+    it('build json of definitions containing 2 processes with exclusive gateway (without id)', () => {
       const json = buildDefinitions({
         process: [
           {
-            exclusiveGateway: { id: 'exclusive_gateway_id_4' },
+            exclusiveGateway: {},
           },
           {
-            exclusiveGateway: {
-              id: 'exclusive_gateway_id_67',
-            },
+            exclusiveGateway: {},
           },
         ],
       });
@@ -1802,21 +1800,21 @@ describe('build json', () => {
             id: 'collaboration_id_0',
           },
           process: [
-            { id: '0', exclusiveGateway: { id: 'exclusive_gateway_id_4', name: 'exclusiveGateway name' } },
-            { id: '1', exclusiveGateway: { id: 'exclusive_gateway_id_67', name: 'exclusiveGateway name' } },
+            { id: '0', exclusiveGateway: { id: 'exclusiveGateway_id_0_0', name: 'exclusiveGateway name' } },
+            { id: '1', exclusiveGateway: { id: 'exclusiveGateway_id_1_0', name: 'exclusiveGateway name' } },
           ],
           BPMNDiagram: {
             name: 'process 0',
             BPMNPlane: {
               BPMNShape: [
                 {
-                  id: 'shape_exclusive_gateway_id_4',
-                  bpmnElement: 'exclusive_gateway_id_4',
+                  id: 'shape_exclusiveGateway_id_0_0',
+                  bpmnElement: 'exclusiveGateway_id_0_0',
                   Bounds: { x: 567, y: 345, width: 25, height: 25 },
                 },
                 {
-                  id: 'shape_exclusive_gateway_id_67',
-                  bpmnElement: 'exclusive_gateway_id_67',
+                  id: 'shape_exclusiveGateway_id_1_0',
+                  bpmnElement: 'exclusiveGateway_id_1_0',
                   Bounds: { x: 567, y: 345, width: 25, height: 25 },
                 },
               ],
