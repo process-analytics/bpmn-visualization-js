@@ -107,6 +107,7 @@ describe('build json', () => {
               },
             },
           ],
+          callActivity: {},
         },
       ],
     });
@@ -173,6 +174,10 @@ describe('build json', () => {
               name: 'intermediateCatchEvent',
               timerEventDefinition: '',
             },
+            callActivity: {
+              id: 'callActivity_id_2_0',
+              name: 'callActivity name',
+            },
           },
         ],
         BPMNDiagram: {
@@ -223,6 +228,11 @@ describe('build json', () => {
                 id: `shape_participant_2`,
                 bpmnElement: `participant_2`,
                 Bounds: { x: 567, y: 345, width: 36, height: 45 },
+              },
+              {
+                bpmnElement: 'callActivity_id_2_0',
+                id: 'shape_callActivity_id_2_0',
+                Bounds: { x: 346, y: 856, height: 56, width: 45 },
               },
               {
                 bpmnElement: 'event_id_2_2',
@@ -1783,14 +1793,7 @@ describe('build json', () => {
 
     it('build json of definitions containing 2 processes with exclusive gateway (without id)', () => {
       const json = buildDefinitions({
-        process: [
-          {
-            exclusiveGateway: {},
-          },
-          {
-            exclusiveGateway: {},
-          },
-        ],
+        process: [{ exclusiveGateway: {} }, { exclusiveGateway: {} }],
       });
 
       expect(json).toEqual({
@@ -1816,6 +1819,124 @@ describe('build json', () => {
                   id: 'shape_exclusiveGateway_id_1_0',
                   bpmnElement: 'exclusiveGateway_id_1_0',
                   Bounds: { x: 567, y: 345, width: 25, height: 25 },
+                },
+              ],
+            },
+          },
+        },
+      });
+    });
+  });
+
+  describe('build json with call activity', () => {
+    it('build json of definitions containing one process with call activity (with id)', () => {
+      const json = buildDefinitions({
+        process: {
+          callActivity: { id: '0' },
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
+          process: {
+            id: '0',
+            callActivity: {
+              id: '0',
+              name: 'callActivity name',
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_0',
+                bpmnElement: '0',
+                Bounds: { x: 346, y: 856, width: 45, height: 56 },
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing one process with call activity (without id)', () => {
+      const json = buildDefinitions({
+        process: {
+          callActivity: {},
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
+          process: {
+            id: '0',
+            callActivity: {
+              id: 'callActivity_id_0_0',
+              name: 'callActivity name',
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_callActivity_id_0_0',
+                bpmnElement: 'callActivity_id_0_0',
+                Bounds: { x: 346, y: 856, width: 45, height: 56 },
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing 2 processes with call activity (without id)', () => {
+      const json = buildDefinitions({
+        process: [{ callActivity: {} }, { callActivity: {} }],
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
+          process: [
+            {
+              id: '0',
+              callActivity: {
+                id: 'callActivity_id_0_0',
+                name: 'callActivity name',
+              },
+            },
+            {
+              id: '1',
+              callActivity: {
+                id: 'callActivity_id_1_0',
+                name: 'callActivity name',
+              },
+            },
+          ],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_callActivity_id_0_0',
+                  bpmnElement: 'callActivity_id_0_0',
+                  Bounds: { x: 346, y: 856, width: 45, height: 56 },
+                },
+                {
+                  id: 'shape_callActivity_id_1_0',
+                  bpmnElement: 'callActivity_id_1_0',
+                  Bounds: { x: 346, y: 856, width: 45, height: 56 },
                 },
               ],
             },
