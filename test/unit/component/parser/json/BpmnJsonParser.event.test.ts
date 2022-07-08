@@ -31,7 +31,7 @@ import { getEventShapes } from '../../../helpers/TestUtils';
 
 type OmitExpectedEventShape = Omit<ExpectedEventShape, 'shapeId' | 'bpmnElementId' | 'bounds'> | Omit<ExpectedBoundaryEventShape, 'shapeId' | 'bpmnElementId' | 'bounds'>;
 
-function buildDefinitionsWithEventAndTask(event: BuildEventParameter, processIsArray = false): BpmnJsonModel {
+function buildDefinitionsWithEventAndTask(event: BuildEventParameter | BuildEventParameter[], processIsArray = false): BpmnJsonModel {
   const process = {
     event,
     task: {},
@@ -82,11 +82,7 @@ function executeEventCommonTests(buildEventParameter: BuildEventParameter, omitE
   });
 
   it.each([['object'], ['array']])(`should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as array)${titleSuffix}`, (title: string) => {
-    const process = {
-      event: [buildEventParameter, buildEventParameter],
-      task: {},
-    };
-    const json = buildDefinitions(title === 'object' ? { process } : { process: [process] });
+    const json = buildDefinitionsWithEventAndTask([buildEventParameter, buildEventParameter], title === 'array');
 
     const model = parseJsonAndExpectEvent(json, omitExpectedShape.eventDefinitionKind, 2);
 
