@@ -80,12 +80,13 @@ function testMustNotConvertBoundaryEvent(definitionParameter: BuildDefinitionPar
 }
 
 function executeEventCommonTests(buildEventParameter: BuildEventParameter, omitExpectedShape: OmitExpectedEventShape, titleSuffix = ''): void {
-  it.each([['object'], ['array']])(`should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as object)${titleSuffix}`, (title: string) => {
-    testMustConvertShapes(buildEventParameter, omitExpectedShape, title === 'array');
-  });
-
-  it.each([['object'], ['array']])(`should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as array)${titleSuffix}`, (title: string) => {
-    testMustConvertShapes([buildEventParameter, buildEventParameter], omitExpectedShape, title === 'array');
+  it.each([
+    ['object', 'object'],
+    ['object', 'array'],
+    ['array', 'object'],
+    ['array', 'array'],
+  ])(`should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as %s)${titleSuffix}`, (processParameterType: string, eventParameterType: string) => {
+    testMustConvertShapes(eventParameterType === 'array' ? [buildEventParameter, buildEventParameter] : buildEventParameter, omitExpectedShape, processParameterType === 'array');
   });
 
   it.each([
