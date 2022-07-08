@@ -31,12 +31,6 @@ import { getEventShapes } from '../../../helpers/TestUtils';
 
 type OmitExpectedEventShape = Omit<ExpectedEventShape, 'shapeId' | 'bpmnElementId' | 'bounds'> | Omit<ExpectedBoundaryEventShape, 'shapeId' | 'bpmnElementId' | 'bounds'>;
 
-interface TestParameter {
-  buildEventParameter: BuildEventParameter;
-  omitExpectedShape: OmitExpectedEventShape;
-  processIsArray?: boolean;
-}
-
 function buildDefinitionsWithEventAndTask(event: BuildEventParameter, processIsArray = false): BpmnJsonModel {
   const process = {
     event,
@@ -44,20 +38,6 @@ function buildDefinitionsWithEventAndTask(event: BuildEventParameter, processIsA
   };
   return buildDefinitions({
     process: processIsArray ? [process] : process,
-  });
-}
-
-function testMustConvertOneShape({ buildEventParameter, omitExpectedShape, processIsArray = false }: TestParameter): void {
-  const json = buildDefinitionsWithEventAndTask(buildEventParameter, processIsArray);
-
-  const model = parseJsonAndExpectEvent(json, omitExpectedShape.eventDefinitionKind, 1);
-
-  const shapes = getEventShapes(model);
-  verifyShape(shapes[0], {
-    ...omitExpectedShape,
-    shapeId: `shape_event_id_0_0`,
-    bpmnElementId: `event_id_0_0`,
-    bounds: { x: 362, y: 232, width: 36, height: 45 },
   });
 }
 
@@ -82,10 +62,23 @@ function parseAndExpectNoBoundaryEvents(json: BpmnJsonModel, numberOfExpectedFlo
   expect(warning1.bpmnElementId).toBe('event_id_0_0');
 }
 
+function testMustConvertOneShape(buildEventParameter: BuildEventParameter, omitExpectedShape: OmitExpectedEventShape, processIsArray = false): void {
+  const json = buildDefinitionsWithEventAndTask(buildEventParameter, processIsArray);
+
+  const model = parseJsonAndExpectEvent(json, omitExpectedShape.eventDefinitionKind, 1);
+
+  const shapes = getEventShapes(model);
+  verifyShape(shapes[0], {
+    ...omitExpectedShape,
+    shapeId: `shape_event_id_0_0`,
+    bpmnElementId: `event_id_0_0`,
+    bounds: { x: 362, y: 232, width: 36, height: 45 },
+  });
+}
+
 function executeEventCommonTests(buildEventParameter: BuildEventParameter, omitExpectedShape: OmitExpectedEventShape, titleSuffix = ''): void {
-  const testParameter: TestParameter = { buildEventParameter, omitExpectedShape };
   it.each([['object'], ['array']])(`should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as object)${titleSuffix}`, (title: string) => {
-    testMustConvertOneShape({ ...testParameter, processIsArray: title === 'array' });
+    testMustConvertOneShape(buildEventParameter, omitExpectedShape, title === 'array');
   });
 
   it.each([['object'], ['array']])(`should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as array)${titleSuffix}`, (title: string) => {
@@ -126,11 +119,7 @@ function executeEventCommonTests(buildEventParameter: BuildEventParameter, omitE
     ["'name'", 'event name'],
     ["no 'name'", undefined],
   ])(`should convert as Shape, when '${buildEventParameter.bpmnKind}' has %s${titleSuffix}`, (title: string, eventName: string) => {
-    testMustConvertOneShape({
-      ...testParameter,
-      buildEventParameter: { ...buildEventParameter, name: eventName },
-      omitExpectedShape: { ...omitExpectedShape, bpmnElementName: eventName },
-    });
+    testMustConvertOneShape({ ...buildEventParameter, name: eventName }, { ...omitExpectedShape, bpmnElementName: eventName });
   });
 
   if (omitExpectedShape.eventDefinitionKind !== ShapeBpmnEventDefinitionKind.NONE) {
@@ -239,18 +228,18 @@ describe('parse bpmn as json for all events', () => {
         ])(
           `should convert as Shape, when '${eventDefinitionKind}EventDefinition' is %s, ${titleForEventDefinitionIsAttributeOf}`,
           (title: string, eventDefinition: string | TEventDefinition) => {
-            testMustConvertOneShape({
-              buildEventParameter: {
+            testMustConvertOneShape(
+              {
                 bpmnKind,
                 eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn, eventDefinition },
               },
-              omitExpectedShape: {
+              {
                 parentId: '0',
                 bpmnElementKind: expectedShapeBpmnElementKind,
                 bpmnElementName: undefined,
                 eventDefinitionKind: expectedEventDefinitionKind,
               },
-            });
+            );
           },
         );
       });
