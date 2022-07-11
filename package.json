@@ -88,7 +88,7 @@
     "utils:test:model": "node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/simple-start-task-end.bpmn --output model"
   },
   "dependencies": {
-    "@typed-mxgraph/typed-mxgraph": "~1.0.6",
+    "@typed-mxgraph/typed-mxgraph": "~1.0.7",
     "entities": "~4.3.1",
     "fast-xml-parser": "4.0.9",
     "lodash.debounce": "~4.0.8",
