@@ -124,7 +124,7 @@
     "husky": "~8.0.1",
     "jest": "~27.5.1",
     "jest-extended": "~3.0.1",
-    "jest-html-reporter": "~3.5.0",
+    "jest-html-reporter": "~3.6.0",
     "jest-html-reporters": "~3.0.10",
     "jest-image-snapshot": "~5.1.0",
     "jest-playwright-preset": "~1.7.2",
