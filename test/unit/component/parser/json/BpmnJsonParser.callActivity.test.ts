@@ -65,7 +65,7 @@ describe('parse bpmn as json for callActivity', () => {
 
           verifyShape(model.flowNodes[0], {
             shapeId: 'shape_call_activity_id_0',
-            parentId: 'process 1',
+            parentId: undefined,
             bpmnElementId: 'call_activity_id_0',
             bpmnElementName: 'call activity name',
             bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
@@ -128,7 +128,7 @@ describe('parse bpmn as json for callActivity', () => {
 
         verifyShape(model.flowNodes[0], {
           shapeId: `shape_call_activity_id_0`,
-          parentId: 'process 1',
+          parentId: undefined,
           bpmnElementId: `call_activity_id_0`,
           bpmnElementName: `call activity name`,
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
@@ -142,7 +142,7 @@ describe('parse bpmn as json for callActivity', () => {
         });
         verifyShape(model.flowNodes[1], {
           shapeId: `shape_call_activity_id_1`,
-          parentId: 'process 1',
+          parentId: undefined,
           bpmnElementId: `call_activity_id_1`,
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
@@ -193,7 +193,7 @@ describe('parse bpmn as json for callActivity', () => {
 
         verifyShape(model.flowNodes[0], {
           shapeId: `shape_call_activity_id_0`,
-          parentId: 'process 1',
+          parentId: undefined,
           bpmnElementId: `call_activity_id_0`,
           bpmnElementName: `call activity name`,
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,

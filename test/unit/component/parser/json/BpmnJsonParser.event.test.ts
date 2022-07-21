@@ -176,7 +176,7 @@ describe('parse bpmn as json for all events', () => {
         executeEventCommonTests(
           { bpmnKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn } },
           {
-            parentId: '0',
+            parentId: undefined,
             bpmnElementKind: expectedShapeBpmnElementKind,
             bpmnElementName: undefined,
             eventDefinitionKind: expectedEventDefinitionKind,
@@ -196,7 +196,7 @@ describe('parse bpmn as json for all events', () => {
                 eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn, eventDefinition },
               },
               {
-                parentId: '0',
+                parentId: undefined,
                 bpmnElementKind: expectedShapeBpmnElementKind,
                 bpmnElementName: undefined,
                 eventDefinitionKind: expectedEventDefinitionKind,
@@ -215,9 +215,9 @@ describe('parse bpmn as json for all events', () => {
       }
 
       executeEventCommonTests(
-        { bpmnKind, eventDefinitionParameter: { eventDefinitionKind: 'none', eventDefinitionOn: EventDefinitionOn.NONE }, attachedToRef: '0' },
+        { bpmnKind, eventDefinitionParameter: { eventDefinitionKind: 'none', eventDefinitionOn: EventDefinitionOn.NONE } },
         {
-          parentId: '0',
+          parentId: undefined,
           bpmnElementKind: expectedShapeBpmnElementKind,
           bpmnElementName: undefined,
           eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
@@ -281,7 +281,7 @@ describe('parse bpmn as json for all events', () => {
           bpmnElementId: `event_id_0_0`,
           bpmnElementName: `none ${bpmnKind}`,
           bpmnElementKind: expectedShapeBpmnElementKind,
-          parentId: '0',
+          parentId: undefined,
           bounds: {
             x: 362,
             y: 232,
