@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import type { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import type { GlobalTaskKind, ShapeBpmnEventDefinitionKind } from '../../../../model/bpmn/internal';
@@ -27,51 +26,19 @@ import { GroupUnknownCategoryValueWarning } from '../warnings';
  * @internal
  */
 export class ConvertedElements {
-  private participantsById: Map<string, Participant> = new Map();
-  private findParticipantById(id: string): Participant {
+  private participantsById: Map<string, ShapeBpmnElement> = new Map();
+  findParticipantById(id: string): ShapeBpmnElement {
     return this.participantsById.get(id);
   }
-
-  private participantsByProcessRef: Map<string, Participant> = new Map();
-  findParticipantByProcessRef(processRef: string): Participant {
+  private participantsByProcessRef: Map<string, ShapeBpmnElement> = new Map();
+  findParticipantByProcessRef(processRef: string): ShapeBpmnElement {
     return this.participantsByProcessRef.get(processRef);
   }
-
-  registerParticipant(participant: Participant): void {
+  registerParticipant(participant: ShapeBpmnElement, processRef: string): void {
     this.participantsById.set(participant.id, participant);
-    if (participant.processRef) {
-      this.participantsByProcessRef.set(participant.processRef, participant);
+    if (processRef) {
+      this.participantsByProcessRef.set(processRef, participant);
     }
-  }
-
-  private processes: Map<string, ProcessInfo> = new Map();
-  private _findProcess(id: string): ProcessInfo {
-    return this.processes.get(id);
-  }
-  registerProcess(process: ProcessInfo): void {
-    this.processes.set(process.id, process);
-  }
-
-  findProcess(participantId: string): ShapeBpmnElement | undefined {
-    const participant = this.findParticipantById(participantId);
-    if (participant) {
-      const process = this._findProcess(participant.processRef);
-      if (process) {
-        const name = participant.name || process.name;
-        return new ShapeBpmnElement(participant.id, name, ShapeBpmnElementKind.POOL);
-      }
-      // black box pool
-      return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
-    }
-  }
-
-  private flownodesByParentId: Map<string, ShapeBpmnElement> = new Map();
-  private findFlownodeByParentId(parentId: string): ShapeBpmnElement {
-    return this.flownodesByParentId.get(parentId);
-  }
-
-  registerFlownodeByParentId(flownode: ShapeBpmnElement, parentId: string): void {
-    this.flownodesByParentId.set(parentId, flownode);
   }
 
   private messageFlows: Map<string, MessageFlow> = new Map();
@@ -156,15 +123,3 @@ export const buildShapeBpmnGroup = (
 interface CategoryValueData {
   value?: string;
 }
-
-interface ProcessInfo {
-  id: string;
-  name: string;
-}
-
-//if (bpmnElement.parentId) {
-//  const participant = this.convertedElements.findParticipantByProcessRef(bpmnElement.parentId);
-// if (participant) {
-//   bpmnElement.parentId = participant.id;
-//}
-//}

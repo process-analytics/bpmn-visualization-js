@@ -72,21 +72,28 @@ export default class ProcessConverter {
   }
 
   private parseProcess(process: TProcess): void {
-    this.convertedElements.registerProcess({ id: process.id, name: process.name });
-    this.buildProcessInnerElements(process);
+    const pool = this.convertedElements.findParticipantByProcessRef(process.id);
+    /*   TODO: Do we want to keep this old behavior (not in the BPMN spec)?
+    Corresponding test in BpmnJsonParser.process.test: 'json containing one participant without name and the related process has a name'
+
+    if (pool) {
+       pool.name = pool.name || process.name;
+    }
+    */
+    this.buildProcessInnerElements(process, pool?.id);
   }
 
-  private buildProcessInnerElements(process: TProcess | TSubProcess, processId?: string): void {
+  private buildProcessInnerElements(process: TProcess | TSubProcess, parentId: string): void {
     // flow nodes
     ShapeUtil.flowNodeKinds()
       .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
-      .forEach(kind => this.buildFlowNodeBpmnElements(process[kind], kind, processId));
+      .forEach(kind => this.buildFlowNodeBpmnElements(process[kind], kind, parentId));
     // process boundary events afterwards as we need its parent activity to be available when building it
-    this.buildFlowNodeBpmnElements(process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY, processId);
+    this.buildFlowNodeBpmnElements(process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY, parentId);
 
     // containers
-    this.buildLaneBpmnElements(process[ShapeBpmnElementKind.LANE], processId);
-    this.buildLaneSetBpmnElements(process['laneSet'], processId);
+    this.buildLaneBpmnElements(process[ShapeBpmnElementKind.LANE], parentId);
+    this.buildLaneSetBpmnElements(process['laneSet'], parentId);
 
     // flows
     this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW]);
@@ -115,7 +122,7 @@ export default class ProcessConverter {
       } else {
         // @ts-ignore We know that the text & name fields are not on all types, but it's already tested
         const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
-        // @ts-ignore We know that the instantiate field is not on all types, but it's already tested
+        // @ts-ignore We know that the instantiated field is not on all types, but it's already tested
         shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, parentId, bpmnElement.instantiate);
       }
 

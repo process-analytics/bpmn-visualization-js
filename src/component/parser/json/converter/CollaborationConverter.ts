@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import { ShapeBpmnElementKind } from '../../../../model/bpmn/internal';
+import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { MessageFlow } from '../../../../model/bpmn/internal/edge/flows';
 import type { TCollaboration } from '../../../../model/bpmn/json/baseElement/rootElement/collaboration';
 import type { TParticipant } from '../../../../model/bpmn/json/baseElement/participant';
@@ -42,7 +43,9 @@ export default class CollaborationConverter {
   }
 
   private buildParticipant(bpmnElements: Array<TParticipant> | TParticipant): void {
-    ensureIsArray(bpmnElements).forEach(participant => this.convertedElements.registerParticipant(new Participant(participant.id, participant.name, participant.processRef)));
+    ensureIsArray(bpmnElements).forEach(participant =>
+      this.convertedElements.registerParticipant(new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL), participant.processRef),
+    );
   }
 
   private buildMessageFlows(bpmnElements: Array<TMessageFlow> | TMessageFlow): void {
