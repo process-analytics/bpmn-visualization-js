@@ -85,7 +85,7 @@ export default class DiagramConverter {
         return;
       }
       // pool
-      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.pools, (bpmnElementId: string) => this.convertedElements.findProcess(bpmnElementId))) {
+      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.pools, (bpmnElementId: string) => this.convertedElements.findPoolById(bpmnElementId))) {
         return;
       }
       // not found

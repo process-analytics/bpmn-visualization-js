@@ -26,18 +26,18 @@ import { GroupUnknownCategoryValueWarning } from '../warnings';
  * @internal
  */
 export class ConvertedElements {
-  private participantsById: Map<string, ShapeBpmnElement> = new Map();
-  findParticipantById(id: string): ShapeBpmnElement {
-    return this.participantsById.get(id);
+  private poolsById: Map<string, ShapeBpmnElement> = new Map();
+  findPoolById(id: string): ShapeBpmnElement {
+    return this.poolsById.get(id);
   }
-  private participantsByProcessRef: Map<string, ShapeBpmnElement> = new Map();
-  findParticipantByProcessRef(processRef: string): ShapeBpmnElement {
-    return this.participantsByProcessRef.get(processRef);
+  private poolsByProcessRef: Map<string, ShapeBpmnElement> = new Map();
+  findPoolByProcessRef(processRef: string): ShapeBpmnElement {
+    return this.poolsByProcessRef.get(processRef);
   }
-  registerParticipant(participant: ShapeBpmnElement, processRef: string): void {
-    this.participantsById.set(participant.id, participant);
+  registerPool(pool: ShapeBpmnElement, processRef: string): void {
+    this.poolsById.set(pool.id, pool);
     if (processRef) {
-      this.participantsByProcessRef.set(processRef, participant);
+      this.poolsByProcessRef.set(processRef, pool);
     }
   }
 

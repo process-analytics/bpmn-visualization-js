@@ -72,7 +72,7 @@ export default class ProcessConverter {
   }
 
   private parseProcess(process: TProcess): void {
-    const pool = this.convertedElements.findParticipantByProcessRef(process.id);
+    const pool = this.convertedElements.findPoolByProcessRef(process.id);
     /*   TODO: Do we want to keep this old behavior (not in the BPMN spec)?
     Corresponding test in BpmnJsonParser.process.test: 'json containing one participant without name and the related process has a name'
 

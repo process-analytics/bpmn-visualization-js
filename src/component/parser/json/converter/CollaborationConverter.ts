@@ -44,7 +44,7 @@ export default class CollaborationConverter {
 
   private buildParticipant(bpmnElements: Array<TParticipant> | TParticipant): void {
     ensureIsArray(bpmnElements).forEach(participant =>
-      this.convertedElements.registerParticipant(new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL), participant.processRef),
+      this.convertedElements.registerPool(new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL), participant.processRef),
     );
   }
 
