@@ -72,13 +72,11 @@ export default class ProcessConverter {
   }
 
   private parseProcess(process: TProcess): void {
-    this.convertedElements.registerProcess(new ShapeBpmnElement(process.id, process.name, ShapeBpmnElementKind.POOL));
+    this.convertedElements.registerProcess({ id: process.id, name: process.name });
     this.buildProcessInnerElements(process);
   }
 
-  private buildProcessInnerElements(process: TProcess | TSubProcess): void {
-    const processId = process.id;
-
+  private buildProcessInnerElements(process: TProcess | TSubProcess, processId?: string): void {
     // flow nodes
     ShapeUtil.flowNodeKinds()
       .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
@@ -214,7 +212,7 @@ export default class ProcessConverter {
   private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, parentId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
     const subProcessKind = !bpmnElement.triggeredByEvent ? ShapeBpmnSubProcessKind.EMBEDDED : ShapeBpmnSubProcessKind.EVENT;
     const convertedSubProcess = new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, subProcessKind, parentId, markers);
-    this.buildProcessInnerElements(bpmnElement);
+    this.buildProcessInnerElements(bpmnElement, bpmnElement.id);
     return convertedSubProcess;
   }
 

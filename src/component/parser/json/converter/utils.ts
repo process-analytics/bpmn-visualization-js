@@ -44,11 +44,11 @@ export class ConvertedElements {
     }
   }
 
-  private processes: Map<string, ShapeBpmnElement> = new Map();
-  private _findProcess(id: string): ShapeBpmnElement {
+  private processes: Map<string, ProcessInfo> = new Map();
+  private _findProcess(id: string): ProcessInfo {
     return this.processes.get(id);
   }
-  registerProcess(process: ShapeBpmnElement): void {
+  registerProcess(process: ProcessInfo): void {
     this.processes.set(process.id, process);
   }
 
@@ -58,11 +58,20 @@ export class ConvertedElements {
       const process = this._findProcess(participant.processRef);
       if (process) {
         const name = participant.name || process.name;
-        return new ShapeBpmnElement(participant.id, name, process.kind, process.parentId);
+        return new ShapeBpmnElement(participant.id, name, ShapeBpmnElementKind.POOL);
       }
       // black box pool
       return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
     }
+  }
+
+  private flownodesByParentId: Map<string, ShapeBpmnElement> = new Map();
+  private findFlownodeByParentId(parentId: string): ShapeBpmnElement {
+    return this.flownodesByParentId.get(parentId);
+  }
+
+  registerFlownodeByParentId(flownode: ShapeBpmnElement, parentId: string): void {
+    this.flownodesByParentId.set(parentId, flownode);
   }
 
   private messageFlows: Map<string, MessageFlow> = new Map();
@@ -147,3 +156,15 @@ export const buildShapeBpmnGroup = (
 interface CategoryValueData {
   value?: string;
 }
+
+interface ProcessInfo {
+  id: string;
+  name: string;
+}
+
+//if (bpmnElement.parentId) {
+//  const participant = this.convertedElements.findParticipantByProcessRef(bpmnElement.parentId);
+// if (participant) {
+//   bpmnElement.parentId = participant.id;
+//}
+//}
