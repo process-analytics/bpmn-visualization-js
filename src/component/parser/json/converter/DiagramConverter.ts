@@ -77,15 +77,15 @@ export default class DiagramConverter {
 
     ensureIsArray(shapes).forEach(shape => {
       // flow nodes
-      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.flowNodes, (bpmnElement: string) => this.convertedElements.findFlowNode(bpmnElement))) {
+      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.flowNodes, (bpmnElementId: string) => this.convertedElements.findFlowNode(bpmnElementId))) {
         return;
       }
       // lane
-      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.lanes, (bpmnElement: string) => this.convertedElements.findLane(bpmnElement))) {
+      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.lanes, (bpmnElementId: string) => this.convertedElements.findLane(bpmnElementId))) {
         return;
       }
       // pool
-      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.pools, (bpmnElement: string) => this.convertedElements.findProcess(bpmnElement))) {
+      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.pools, (bpmnElementId: string) => this.convertedElements.findProcess(bpmnElementId))) {
         return;
       }
       // not found
