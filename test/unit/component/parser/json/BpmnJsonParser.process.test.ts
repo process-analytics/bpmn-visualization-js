@@ -391,14 +391,14 @@ describe('parse bpmn as json for process/pool', () => {
     });
   });
 
-  it('participant without processRef are not considered as pool', () => {
+  it('json containing participants with and without processRef', () => {
     const json = {
       definitions: {
         targetNamespace: '',
         collaboration: {
           participant: [
             { id: 'Participant_1', name: 'Pool 1', processRef: 'Process_1' },
-            { id: 'Participant_2', name: 'Not a process' },
+            { id: 'Participant_2', name: 'Pool 2 without processRef' },
           ],
         },
         process: {
@@ -415,16 +415,21 @@ describe('parse bpmn as json for process/pool', () => {
                 isHorizontal: true,
                 Bounds: { x: 158, y: 50, width: 1620, height: 430 },
               },
+              {
+                id: 'shape_Participant_2',
+                bpmnElement: 'Participant_2',
+                isHorizontal: true,
+                Bounds: { x: 10158, y: 50, width: 1620, height: 430 },
+              },
             ],
           },
         },
       },
     };
 
-    const model = parseJsonAndExpectOnlyPools(json, 1);
+    const model = parseJsonAndExpectOnlyPools(json, 2);
 
-    const pool = model.pools[0];
-    verifyShape(pool, {
+    verifyShape(model.pools[0], {
       shapeId: 'shape_Participant_1',
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
@@ -433,6 +438,20 @@ describe('parse bpmn as json for process/pool', () => {
       isHorizontal: true,
       bounds: {
         x: 158,
+        y: 50,
+        width: 1620,
+        height: 430,
+      },
+    });
+    verifyShape(model.pools[1], {
+      shapeId: 'shape_Participant_2',
+      bpmnElementId: 'Participant_2',
+      bpmnElementName: 'Pool 2 without processRef',
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+      parentId: undefined,
+      isHorizontal: true,
+      bounds: {
+        x: 10158,
         y: 50,
         width: 1620,
         height: 430,
@@ -447,7 +466,7 @@ describe('parse bpmn as json for process/pool', () => {
         collaboration: {
           participant: [
             { id: 'Participant_1', name: 'Pool 1', processRef: 'Process_1' },
-            { id: 'Participant_2', name: 'Not a process' },
+            { id: 'Participant_2', name: 'Missing shape so not in present in the BpmnModel' },
           ],
         },
         process: {
