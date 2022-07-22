@@ -36,7 +36,8 @@ export enum EventDefinitionOn {
 
 export interface BuildEventParameter {
   /**
-   * `event_id_${processIndex}_${index}`
+   * If it sets, the default id is override.
+   * Otherwise, the id has the format: `event_id_${processIndex}_${index}`
    */
   id?: string;
   bpmnKind: string;
@@ -56,21 +57,24 @@ export interface BuildEventDefinitionParameter {
 
 export interface BuildTaskParameter {
   /**
-   * `task_id_${processIndex}_${index}`
+   * If it sets, the default id is override.
+   * Otherwise, the id has the format: `task_id_${processIndex}_${index}`
    */
   id?: string;
 }
 
 export interface BuildCallActivityParameter {
   /**
-   * `callActivity_id_${processIndex}_${index}`
+   * If it sets, the default id is override.
+   * Otherwise, the id has the format: `callActivity_id_${processIndex}_${index}`
    */
   id?: string;
 }
 
 export interface BuildExclusiveGatewayParameter {
   /**
-   * `exclusiveGateway_id_${processIndex}_${index}`
+   * If it sets, the default id is override.
+   * Otherwise, the id has the format: `exclusiveGateway_id_${processIndex}_${index}`
    */
   id?: string;
 }
