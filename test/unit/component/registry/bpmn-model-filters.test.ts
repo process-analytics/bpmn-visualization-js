@@ -529,4 +529,27 @@ describe('Bpmn Model filters', () => {
 
     expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
   });
+
+  // TODO: Need to fix the filtering. We want to display the BPMN elements of a not displayed pool after filter
+  // BUG : https://github.com/process-analytics/bpmn-visualization-js/issues/2131
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip('Filter a NOT displayed pool containing BPMN elements', () => {
+    const originalBpmnModel = toBpmnModel({
+      pools: {
+        id: 'participant_id_1',
+        name: 'Participant 1',
+        hidden: true,
+        tasks: {
+          id: 'task_1',
+          name: 'Task 1',
+        },
+      },
+    });
+
+    expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual({
+      ...originalBpmnModel.edges,
+      ...originalBpmnModel.flowNodes,
+      ...originalBpmnModel.lanes,
+    });
+  });
 });
