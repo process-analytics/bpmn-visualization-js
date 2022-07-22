@@ -120,13 +120,13 @@ export default class ProcessConverter {
       } else if (kind == ShapeBpmnElementKind.GROUP) {
         shapeBpmnElement = buildShapeBpmnGroup(this.convertedElements, this.parsingMessageCollector, bpmnElement as TGroup, parentId);
       } else {
-        // @ts-ignore We know that the text & name fields are not on all types, but it's already tested
+        // @ts-ignore We know that the 'text' & 'name' fields are not on all types, but it's already tested
         const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
-        // @ts-ignore We know that the instantiated field is not on all types, but it's already tested
+        // @ts-ignore We know that the 'instantiate' field is not on all types, but it's already tested
         shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, parentId, bpmnElement.instantiate);
       }
 
-      // @ts-ignore We know that the default field is not on all types, but it's already tested
+      // @ts-ignore We know that the 'default' field is not on all types, but it's already tested
       const defaultFlow = bpmnElement.default;
       if (ShapeUtil.isWithDefaultSequenceFlow(kind) && defaultFlow) {
         this.defaultSequenceFlowIds.push(defaultFlow);
