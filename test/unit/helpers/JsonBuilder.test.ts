@@ -369,7 +369,7 @@ describe('build json', () => {
 
   describe('build json with boundary event', () => {
     describe('build json with interrupting boundary event', () => {
-      it('build json of definitions containing one process with task and interrupting boundary event (with attachedToRef & empty messageEventDefinition)', () => {
+      it('build json of definitions containing one process with task and interrupting boundary event (with attachedToRef, empty messageEventDefinition, name & id)', () => {
         const json = buildDefinitions({
           process: {
             event: [
@@ -377,6 +377,8 @@ describe('build json', () => {
                 bpmnKind: 'boundaryEvent',
                 isInterrupting: true,
                 attachedToRef: 'task_id_0_0',
+                name: 'name',
+                id: 'another_id',
                 eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
               },
             ],
@@ -397,11 +399,11 @@ describe('build json', () => {
                 name: 'task name',
               },
               boundaryEvent: {
-                id: 'event_id_0_0',
+                id: 'another_id',
                 cancelActivity: true,
                 attachedToRef: 'task_id_0_0',
                 messageEventDefinition: '',
-                name: undefined,
+                name: 'name',
               },
             },
             BPMNDiagram: {
@@ -419,8 +421,8 @@ describe('build json', () => {
                     },
                   },
                   {
-                    id: 'shape_event_id_0_0',
-                    bpmnElement: 'event_id_0_0',
+                    id: 'shape_another_id',
+                    bpmnElement: 'another_id',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -1187,7 +1189,7 @@ describe('build json', () => {
     });
 
     describe('build json with non-interrupting boundary event', () => {
-      it('build json of definitions containing one process with task and non-interrupting boundary event (with attachedToRef, empty messageEventDefinition and name, without cancelActivity)', () => {
+      it('build json of definitions containing one process with task and non-interrupting boundary event (with attachedToRef, empty messageEventDefinition, name & id, without cancelActivity)', () => {
         const json = buildDefinitions({
           process: {
             event: [
@@ -1195,6 +1197,7 @@ describe('build json', () => {
                 bpmnKind: 'boundaryEvent',
                 attachedToRef: 'task_id_0_0',
                 name: 'name',
+                id: 'another_id',
                 eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
               },
             ],
@@ -1215,7 +1218,7 @@ describe('build json', () => {
                 name: 'task name',
               },
               boundaryEvent: {
-                id: 'event_id_0_0',
+                id: 'another_id',
                 attachedToRef: 'task_id_0_0',
                 messageEventDefinition: '',
                 name: 'name',
@@ -1236,8 +1239,8 @@ describe('build json', () => {
                     },
                   },
                   {
-                    id: 'shape_event_id_0_0',
-                    bpmnElement: 'event_id_0_0',
+                    id: 'shape_another_id',
+                    bpmnElement: 'another_id',
                     Bounds: {
                       x: 362,
                       y: 232,
@@ -2070,7 +2073,7 @@ describe('build json', () => {
   });
 
   describe.each(['startEvent', 'endEvent', 'intermediateCatchEvent', 'intermediateThrowEvent'])('build json with %s event', (bpmnKind: string) => {
-    it('build json of definitions containing one process with ${bpmnKind} (without eventDefinition)', () => {
+    it('build json of definitions containing one process with ${bpmnKind} (without eventDefinition & id)', () => {
       const json = buildDefinitions({
         process: {
           event: [
@@ -2115,13 +2118,14 @@ describe('build json', () => {
       });
     });
 
-    it('build json of definitions containing one process with ${bpmnKind} (with one messageEventDefinition & name)', () => {
+    it('build json of definitions containing one process with ${bpmnKind} (with one messageEventDefinition & name & id)', () => {
       const json = buildDefinitions({
         process: {
           event: [
             {
               bpmnKind,
               name: 'name',
+              id: 'another_id',
               eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
             },
           ],
@@ -2137,7 +2141,7 @@ describe('build json', () => {
           process: {
             id: '0',
             [bpmnKind]: {
-              id: 'event_id_0_0',
+              id: 'another_id',
               messageEventDefinition: '',
               name: 'name',
             },
@@ -2146,8 +2150,8 @@ describe('build json', () => {
             name: 'process 0',
             BPMNPlane: {
               BPMNShape: {
-                id: 'shape_event_id_0_0',
-                bpmnElement: 'event_id_0_0',
+                id: 'shape_another_id',
+                bpmnElement: 'another_id',
                 Bounds: {
                   x: 362,
                   y: 232,

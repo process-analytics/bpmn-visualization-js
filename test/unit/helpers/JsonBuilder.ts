@@ -35,6 +35,10 @@ export enum EventDefinitionOn {
 }
 
 export interface BuildEventParameter {
+  /**
+   * `event_id_${processIndex}_${index}`
+   */
+  id?: string;
   bpmnKind: string;
   name?: string;
   isInterrupting?: boolean;
@@ -51,14 +55,23 @@ export interface BuildEventDefinitionParameter {
 }
 
 export interface BuildTaskParameter {
+  /**
+   * `task_id_${processIndex}_${index}`
+   */
   id?: string;
 }
 
 export interface BuildCallActivityParameter {
+  /**
+   * `callActivity_id_${processIndex}_${index}`
+   */
   id?: string;
 }
 
 export interface BuildExclusiveGatewayParameter {
+  /**
+   * `exclusiveGateway_id_${processIndex}_${index}`
+   */
   id?: string;
 }
 
@@ -365,9 +378,9 @@ function addEventDefinitionsOnEvent(event: TCatchEvent | TThrowEvent | TBoundary
   }
 }
 
-function buildEvent(index: number, processIndex: number, name?: string, isInterrupting?: boolean, attachedToRef?: string): BPMNTEvent {
+function buildEvent(index: number, processIndex: number, name: string, isInterrupting: boolean, attachedToRef: string, id: string): BPMNTEvent {
   const event: BPMNTEvent = {
-    id: `event_id_${processIndex}_${index}`,
+    id: id ? id : `event_id_${processIndex}_${index}`,
     name: name,
   };
 
@@ -382,11 +395,11 @@ function buildEvent(index: number, processIndex: number, name?: string, isInterr
 
 function addEvent(
   jsonModel: BpmnJsonModel,
-  { bpmnKind, eventDefinitionParameter, name, isInterrupting, attachedToRef }: BuildEventParameter,
+  { id, bpmnKind, eventDefinitionParameter, name, isInterrupting, attachedToRef }: BuildEventParameter,
   index: number,
   processIndex: number,
 ): void {
-  const event = buildEvent(index, processIndex, name, isInterrupting, attachedToRef);
+  const event = buildEvent(index, processIndex, name, isInterrupting, attachedToRef, id);
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH:
       addEventDefinitionsOnEvent(event, eventDefinitionParameter);

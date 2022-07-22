@@ -359,12 +359,14 @@ describe('parse bpmn as json for message flow', () => {
       const isBoundaryEvent = kind === ShapeBpmnElementKind.EVENT_BOUNDARY;
       const eventParameter: BuildEventParameter = isBoundaryEvent
         ? {
+            id,
             bpmnKind: kind,
             isInterrupting: true,
             attachedToRef: 'task_id_0',
             eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
           }
         : {
+            id,
             bpmnKind: kind,
             eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
           };
