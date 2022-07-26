@@ -31,26 +31,23 @@ export class ModelFiltering {
     if (poolIdsFilter.length == 0 && poolNamesFilter.length == 0) {
       return bpmnModel;
     }
-    if (bpmnModel.pools.length == 0) {
-      throw new Error('It is not possible to filter pools of the BPMN model because it does not contain any pool');
-    }
 
     const { filteredPools, filteredPoolsIds } = filterPools(bpmnModel, poolIdsFilter, poolNamesFilter);
-    const { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds } = filterLanesAndFlowNodes(bpmnModel.lanes, bpmnModel.flowNodes, filteredPoolsIds);
-    const filteredEdges = filterEdges(bpmnModel.edges, [...filteredPoolsIds, ...filteredLaneIds, ...filteredFlowNodeIds]);
-
+    const poolIds = [...poolIdsFilter, ...filteredPoolsIds];
+    const { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds } = filterLanesAndFlowNodes(bpmnModel.lanes, bpmnModel.flowNodes, poolIds);
+    const filteredEdges = filterEdges(bpmnModel.edges, [...poolIds, ...filteredLaneIds, ...filteredFlowNodeIds]);
+    if (filteredPools.length == 0) {
+      let errorMsgSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter}]` : '';
+      const msgSeparator = errorMsgSuffix ? ' and' : '';
+      errorMsgSuffix += poolNamesFilter.length > 0 ? `${msgSeparator} for names [${poolNamesFilter}]` : '';
+      throw new Error('No matching pools' + errorMsgSuffix);
+    }
     return { lanes: filteredLanes, flowNodes: filteredFlowNodes, pools: filteredPools, edges: filteredEdges };
   }
 }
 
 function filterPools(bpmnModel: BpmnModel, poolIdsFilter: string[], poolNamesFilter: string[]): { filteredPools: Shape[]; filteredPoolsIds: string[] } {
   const filteredPools = bpmnModel.pools.filter(pool => poolIdsFilter.includes(pool.bpmnElement.id) || poolNamesFilter.includes(pool.bpmnElement.name));
-  if (filteredPools.length == 0) {
-    let errorMsgSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter}]` : '';
-    const msgSeparator = errorMsgSuffix ? ' and' : '';
-    errorMsgSuffix += poolNamesFilter.length > 0 ? `${msgSeparator} for names [${poolNamesFilter}]` : '';
-    throw new Error('No matching pools' + errorMsgSuffix);
-  }
   const filteredPoolsIds = filteredPools.map(shape => shape.bpmnElement.id);
   return { filteredPools, filteredPoolsIds };
 }
