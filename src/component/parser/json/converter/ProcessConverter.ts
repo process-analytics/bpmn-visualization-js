@@ -69,6 +69,18 @@ export default class ProcessConverter {
 
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     ensureIsArray(processes).forEach(process => this.parseProcess(process));
+    // Need to call this after all processes have been parsed
+    ensureIsArray(processes).forEach(process => this.assignParentOfProcessElementsCalledByCallActivity(process));
+  }
+
+  private assignParentOfProcessElementsCalledByCallActivity(process: TProcess): void {
+    const callActivity = this.convertedElements.findCallActivityCallingProcessByProcess(process.id);
+    if (callActivity) {
+      const pool = this.convertedElements.findPoolByProcessRef(process.id);
+      if (pool) {
+        pool.parentId = callActivity.id;
+      }
+    }
   }
 
   private parseProcess(process: TProcess): void {
@@ -92,12 +104,14 @@ export default class ProcessConverter {
     this.buildFlowNodeBpmnElements(process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY, parentId);
 
     // containers
+    // TODO: There is no 'lane' property in a Process in the BPMN spec, but we parse it here. Why ?
     this.buildLaneBpmnElements(process[ShapeBpmnElementKind.LANE], parentId);
-    this.buildLaneSetBpmnElements(process['laneSet'], parentId);
+
+    this.buildLaneSetBpmnElements(process.laneSet, parentId);
 
     // flows
-    this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW]);
-    this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW]);
+    this.buildSequenceFlows(process.sequenceFlow);
+    this.buildAssociationFlows(process.association);
   }
 
   private buildFlowNodeBpmnElements(bpmnElements: Array<FlowNode> | FlowNode, kind: ShapeBpmnElementKind, parentId: string): void {
@@ -152,10 +166,12 @@ export default class ProcessConverter {
     return this.buildShapeBpmnCallActivity(bpmnElement, parentId, markers);
   }
 
-  private buildShapeBpmnCallActivity(bpmnElement: TActivity, parentId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnCallActivity {
-    const globalTaskKind = this.convertedElements.findGlobalTask((bpmnElement as TCallActivity).calledElement);
+  private buildShapeBpmnCallActivity(bpmnElement: TCallActivity, parentId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnCallActivity {
+    const globalTaskKind = this.convertedElements.findGlobalTask(bpmnElement.calledElement);
     if (!globalTaskKind) {
-      return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, parentId, markers);
+      const shapeBpmnCallActivity = new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, parentId, markers);
+      this.convertedElements.registerCallActivityCallingProcessByProcess(shapeBpmnCallActivity, bpmnElement.calledElement);
+      return shapeBpmnCallActivity;
     }
     return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK, parentId, markers, globalTaskKind);
   }

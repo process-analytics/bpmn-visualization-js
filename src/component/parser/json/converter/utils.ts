@@ -104,6 +104,14 @@ export class ConvertedElements {
   registerCategoryValue(id: string, value: string): void {
     this.categoryValues.set(id, { value });
   }
+
+  private callActivitiesCallingProcess: Map<string, ShapeBpmnElement> = new Map();
+  findCallActivityCallingProcessByProcess(id: string): ShapeBpmnElement {
+    return this.callActivitiesCallingProcess.get(id);
+  }
+  registerCallActivityCallingProcessByProcess(callActivity: ShapeBpmnElement, calledElement: string): void {
+    this.callActivitiesCallingProcess.set(calledElement, callActivity);
+  }
 }
 
 export const buildShapeBpmnGroup = (
