@@ -118,7 +118,7 @@ describe('Bpmn Model filters', () => {
         modelFiltering.filter(originalBpmnModel, {
           pools: { id: 'process_id' },
         }),
-      ).toThrow('It is not possible to filter pools of the BPMN model because it does not contain any pool');
+      ).toThrow('No matching pools for ids [process_id]');
     });
   });
 

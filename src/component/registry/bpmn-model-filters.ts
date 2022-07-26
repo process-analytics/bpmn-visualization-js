@@ -36,7 +36,7 @@ export class ModelFiltering {
     const poolIds = [...poolIdsFilter, ...filteredPoolsIds];
     const { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds } = filterLanesAndFlowNodes(bpmnModel.lanes, bpmnModel.flowNodes, poolIds);
     const filteredEdges = filterEdges(bpmnModel.edges, [...poolIds, ...filteredLaneIds, ...filteredFlowNodeIds]);
-    if (filteredPools.length == 0) {
+    if (filteredPools.length == 0 && filteredLanes.length == 0 && filteredFlowNodes.length == 0 && filteredEdges.length == 0) {
       let errorMsgSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter}]` : '';
       const msgSeparator = errorMsgSuffix ? ' and' : '';
       errorMsgSuffix += poolNamesFilter.length > 0 ? `${msgSeparator} for names [${poolNamesFilter}]` : '';
