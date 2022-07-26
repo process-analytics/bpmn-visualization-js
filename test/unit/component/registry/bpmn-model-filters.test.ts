@@ -543,6 +543,17 @@ describe('Bpmn Model filters', () => {
           id: 'task_1',
           name: 'Task 1',
         },
+        startEvents: {
+          id: 'start_event_1',
+        },
+        sequenceFlows: {
+          id: 'sequence_flow_1',
+          source: 'start_event_1',
+          target: 'task_1',
+        },
+        lanes: {
+          id: 'lane_1',
+        },
       },
     });
 
