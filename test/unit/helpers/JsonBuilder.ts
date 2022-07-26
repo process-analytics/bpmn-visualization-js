@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-import type { TParticipant } from '../../../src/model/bpmn/json/baseElement/participant';
-import type { TMessageFlow } from '../../../src/model/bpmn/json/baseElement/baseElement';
-import type { TCollaboration } from '../../../src/model/bpmn/json/baseElement/rootElement/collaboration';
-import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../src/model/bpmn/json/baseElement/flowNode/event';
-import type { TEventDefinition } from '../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
-import type { BpmnJsonModel, TDefinitions } from '../../../src/model/bpmn/json/BPMN20';
-import type { TProcess } from '../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { DiagramElement } from '../../../src/model/bpmn/json/DI';
+import type { TBaseElement, TLane, TLaneSet, TMessageFlow } from '../../../src/model/bpmn/json/baseElement/baseElement';
+import type { TFlowElement } from '../../../src/model/bpmn/json/baseElement/flowElement';
 import type { TFlowNode } from '../../../src/model/bpmn/json/baseElement/flowElement';
+import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../src/model/bpmn/json/baseElement/flowNode/event';
+import type { TParticipant } from '../../../src/model/bpmn/json/baseElement/participant';
+import type { TCollaboration } from '../../../src/model/bpmn/json/baseElement/rootElement/collaboration';
+import type { TEventDefinition } from '../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
+import type { TProcess } from '../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { BpmnJsonModel } from '../../../src/model/bpmn/json/BPMN20';
 import type { BPMNEdge, BPMNPlane, BPMNShape } from '../../../src/model/bpmn/json/BPMNDI';
+
+type BuildFlownodeParameter = TFlowNode & {
+  index: number;
+  processIndex: number;
+};
 
 type BPMNTEvent = TCatchEvent | TThrowEvent | TBoundaryEvent;
 type BPMNEventDefinition = string | TEventDefinition | (string | TEventDefinition)[];
@@ -34,17 +41,32 @@ export enum EventDefinitionOn {
   BOTH,
 }
 
-export interface BuildEventParameter {
-  /**
-   * If it sets, the default id is override.
-   * Otherwise, the id has the format: `event_id_${processIndex}_${index}`
-   */
-  id?: string;
-  bpmnKind: string;
-  name?: string;
-  isInterrupting?: boolean;
-  attachedToRef?: string;
+/**
+ * If the id field is set, the default id is override.
+ * Otherwise, the id has the format: `event_id_${processIndex}_${index}`
+ */
+interface BuildEventParameter extends TFlowElement {
   eventDefinitionParameter: BuildEventDefinitionParameter;
+}
+
+interface BuildInterruptingEventParameter extends BuildEventParameter {
+  isInterrupting?: boolean;
+}
+
+export type BuildEventsParameter = BuildOtherEventParameter | BuildStartEventParameter | BuildBoundaryEventParameter;
+
+export type OtherBuildEventKind = 'endEvent' | 'intermediateCatchEvent' | 'intermediateThrowEvent';
+interface BuildOtherEventParameter extends BuildEventParameter {
+  bpmnKind: OtherBuildEventKind;
+}
+
+interface BuildStartEventParameter extends BuildInterruptingEventParameter {
+  bpmnKind: 'startEvent';
+}
+
+interface BuildBoundaryEventParameter extends BuildInterruptingEventParameter {
+  bpmnKind: 'boundaryEvent';
+  attachedToRef: string;
 }
 
 export interface BuildEventDefinitionParameter {
@@ -55,35 +77,65 @@ export interface BuildEventDefinitionParameter {
   withMultipleDefinitions?: boolean;
 }
 
-export interface BuildTaskParameter {
-  /**
-   * If it sets, the default id is override.
-   * Otherwise, the id has the format: `task_id_${processIndex}_${index}`
-   */
-  id?: string;
+export type BuildTaskKind = 'task' | 'businessRuleTask' | 'manualTask' | 'receiveTask' | 'sendTask' | 'serviceTask' | 'scriptTask' | 'userTask';
+/**
+ * If the id field is set, the default id is override.
+ * Otherwise, the id has the format: `task_id_${processIndex}_${index}`
+ */
+export interface BuildTaskParameter extends TFlowElement {
+  /** @default 'task' */
+  bpmnKind?: BuildTaskKind;
 }
 
-export interface BuildCallActivityParameter {
-  /**
-   * If it sets, the default id is override.
-   * Otherwise, the id has the format: `callActivity_id_${processIndex}_${index}`
-   */
-  id?: string;
+/**
+ * If the id field is set, the default id is override.
+ * Otherwise, the id has the format: `callActivity_id_${processIndex}_${index}`
+ */
+export interface BuildCallActivityParameter extends TFlowElement {
+  calledElement: string;
+
+  /** @default false */
+  isExpanded?: boolean;
 }
 
-export interface BuildExclusiveGatewayParameter {
-  /**
-   * If it sets, the default id is override.
-   * Otherwise, the id has the format: `exclusiveGateway_id_${processIndex}_${index}`
-   */
-  id?: string;
+/**
+ * If the id field is set, the default id is override.
+ * Otherwise, the id has the format: `subProcess_id_${processIndex}_${index}`
+ */
+export type BuildSubProcessParameter = TFlowElement;
+
+export type BuildGatewayKind = 'complexGateway' | 'eventBasedGateway' | 'exclusiveGateway' | 'inclusiveGateway' | 'parallelGateway';
+/**
+ * If the id field is set, the default id is override.
+ * Otherwise, the id has the format: `exclusiveGateway_id_${processIndex}_${index}`
+ */
+export interface BuildGatewayParameter extends TFlowElement {
+  bpmnKind: BuildGatewayKind;
+}
+
+/**
+ * If the id field is set, the default id is override.
+ * Otherwise, the id has the format: `lane_id_${processIndex}_${index}`
+ */
+export type BuildLaneParameter = TFlowElement;
+
+/**
+ * If the id field is set, the default id is override.
+ * Otherwise, the id has the format: `sequence_flow_id_${processIndex}_${index}`
+ */
+export interface BuildSequenceFlowParameter extends TFlowElement {
+  sourceRef: string;
+  targetRef: string;
 }
 
 export interface BuildProcessParameter {
+  lane?: BuildLaneParameter | BuildLaneParameter[];
   task?: BuildTaskParameter | BuildTaskParameter[];
-  event?: BuildEventParameter | BuildEventParameter[];
-  exclusiveGateway?: BuildExclusiveGatewayParameter | BuildExclusiveGatewayParameter[];
+  event?: BuildEventsParameter | BuildEventsParameter[];
+  gateway?: BuildGatewayParameter | BuildGatewayParameter[];
   callActivity?: BuildCallActivityParameter | BuildCallActivityParameter[];
+  subProcess?: BuildSubProcessParameter | BuildSubProcessParameter[];
+  sequenceFlow?: BuildSequenceFlowParameter | BuildSequenceFlowParameter[];
 
   /**
    * - If `withParticipant` of `BuildDefinitionParameter` is false, it's corresponding to the id of the process.
@@ -147,6 +199,9 @@ export interface BuildProcessParameter {
    * }
    **/
   id?: string;
+
+  /** @default false */
+  withParticipant?: boolean;
 }
 
 export interface BuildMessageFlowParameter {
@@ -158,11 +213,10 @@ export interface BuildMessageFlowParameter {
 
 export interface BuildDefinitionParameter {
   process: BuildProcessParameter | BuildProcessParameter[];
-  withParticipant?: boolean;
   messageFlows?: BuildMessageFlowParameter | BuildMessageFlowParameter[];
 }
 
-export function buildDefinitions({ process, withParticipant, messageFlows }: BuildDefinitionParameter): BpmnJsonModel {
+export function buildDefinitions({ process, messageFlows }: BuildDefinitionParameter): BpmnJsonModel {
   const json: BpmnJsonModel = {
     definitions: {
       targetNamespace: '',
@@ -177,10 +231,10 @@ export function buildDefinitions({ process, withParticipant, messageFlows }: Bui
     },
   };
 
-  if (withParticipant) {
-    (json.definitions.collaboration as TCollaboration).participant = Array.isArray(process) ? [] : undefined;
+  if (Array.isArray(process) && process.filter(p => p.withParticipant).length > 0) {
+    (json.definitions.collaboration as TCollaboration).participant = [];
   }
-  (Array.isArray(process) ? process : [process]).forEach((processParameter, index) => addParticipantProcessAndElements(processParameter, withParticipant, json, index));
+  (Array.isArray(process) ? process : [process]).forEach((processParameter, index) => addParticipantProcessAndElements(processParameter, json, index));
 
   if (messageFlows) {
     (Array.isArray(messageFlows) ? messageFlows : [messageFlows]).forEach(messageFlow => addMessageFlow(messageFlow, json));
@@ -188,14 +242,14 @@ export function buildDefinitions({ process, withParticipant, messageFlows }: Bui
   return json;
 }
 
-function addParticipantProcessAndElements(processParameter: BuildProcessParameter, withParticipant = false, jsonModel: BpmnJsonModel, index: number): void {
+function addParticipantProcessAndElements(processParameter: BuildProcessParameter, jsonModel: BpmnJsonModel, index: number): void {
   const id = processParameter.id ? processParameter.id : String(index);
-  if (withParticipant) {
+  if (processParameter.withParticipant) {
     addParticipant(id, jsonModel);
   }
   updateBpmnElement(
     jsonModel.definitions.process as TProcess | TProcess[],
-    { id: withParticipant ? `process_${id}` : id },
+    { id: processParameter.withParticipant ? `process_${id}` : id },
     (value: TProcess | TProcess[]) => (jsonModel.definitions.process = value),
   );
   addElementsOnProcess(processParameter, jsonModel, index);
@@ -203,7 +257,6 @@ function addParticipantProcessAndElements(processParameter: BuildProcessParamete
 
 function addParticipant(id: string, jsonModel: BpmnJsonModel): void {
   const collaboration: TCollaboration = getElementOfArray<TProcess>(jsonModel.definitions.collaboration as TCollaboration);
-
   updateBpmnElement(collaboration.participant, { id: id, processRef: `process_${id}` }, (value: TParticipant | TParticipant[]) => (collaboration.participant = value));
 
   const shape = {
@@ -220,35 +273,61 @@ function addMessageFlow(messageFlowParameter: BuildMessageFlowParameter, jsonMod
   const collaboration: TCollaboration = getElementOfArray<TProcess>(jsonModel.definitions.collaboration as TCollaboration);
   updateBpmnElement(collaboration.messageFlow, messageFlow, (value: TMessageFlow | TMessageFlow[]) => (collaboration.messageFlow = value));
 
-  const edge = {
-    id: `edge_${messageFlow.id}`,
+  addEdge(jsonModel, {
     bpmnElement: messageFlow.id,
-    Bounds: { x: 567, y: 345, width: 36, height: 45 },
     waypoint: [
       { x: 567, y: 345 },
       { x: 587, y: 345 },
     ],
-  };
-  addEdge(jsonModel, edge);
+  });
 }
 
 function addElementsOnProcess(processParameter: BuildProcessParameter, json: BpmnJsonModel, processIndex: number): void {
-  if (processParameter.task) {
-    (Array.isArray(processParameter.task) ? processParameter.task : [processParameter.task]).forEach((taskParameter, index) => addTask(json, taskParameter, index, processIndex));
+  if (processParameter.lane) {
+    addFlownode(json, 'laneSet', { index: 0, processIndex });
+
+    (Array.isArray(processParameter.lane) ? processParameter.lane : [processParameter.lane]).forEach((laneParameter, index) => {
+      addLane(json, laneParameter, index, processIndex);
+    });
   }
-  if (processParameter.exclusiveGateway) {
-    (Array.isArray(processParameter.exclusiveGateway) ? processParameter.exclusiveGateway : [processParameter.exclusiveGateway]).forEach((exclusiveGatewayParameter, index) =>
-      addExclusiveGateway(json, exclusiveGatewayParameter, index, processIndex),
+  if (processParameter.task) {
+    (Array.isArray(processParameter.task) ? processParameter.task : [processParameter.task]).forEach(({ bpmnKind = 'task', ...rest }, index) =>
+      addFlownodeAndShape(json, bpmnKind, { ...rest, index, processIndex }, { Bounds: { x: 362, y: 232, width: 36, height: 45 } }),
+    );
+  }
+  if (processParameter.gateway) {
+    (Array.isArray(processParameter.gateway) ? processParameter.gateway : [processParameter.gateway]).forEach(({ bpmnKind, ...rest }, index) =>
+      addFlownodeAndShape(json, bpmnKind, { ...rest, index, processIndex }, { Bounds: { x: 567, y: 345, width: 25, height: 25 } }),
     );
   }
   if (processParameter.callActivity) {
-    (Array.isArray(processParameter.callActivity) ? processParameter.callActivity : [processParameter.callActivity]).forEach((callActivityParameter, index) =>
-      addCallActivity(json, callActivityParameter, index, processIndex),
+    (Array.isArray(processParameter.callActivity) ? processParameter.callActivity : [processParameter.callActivity]).forEach(({ id, isExpanded = false, ...rest }, index) =>
+      addFlownodeAndShape(json, 'callActivity', { id, ...rest, index, processIndex }, { Bounds: { x: 346, y: 856, width: 45, height: 56 }, isExpanded }),
+    );
+  }
+  if (processParameter.subProcess) {
+    (Array.isArray(processParameter.subProcess) ? processParameter.subProcess : [processParameter.subProcess]).forEach((subProcessParameter, index) =>
+      addFlownodeAndShape(json, 'subProcess', { ...subProcessParameter, index, processIndex }, { Bounds: { x: 67, y: 23, width: 456, height: 123 } }),
     );
   }
   if (processParameter.event) {
     (Array.isArray(processParameter.event) ? processParameter.event : [processParameter.event]).forEach((eventParameter, index) =>
       addEvent(json, eventParameter, index, processIndex),
+    );
+  }
+  if (processParameter.sequenceFlow) {
+    (Array.isArray(processParameter.sequenceFlow) ? processParameter.sequenceFlow : [processParameter.sequenceFlow]).forEach((sequenceFlowParameter, index) =>
+      addFlownodeAndEdge(
+        json,
+        'sequenceFlow',
+        { ...sequenceFlowParameter, index, processIndex },
+        {
+          waypoint: [
+            { x: 45, y: 78 },
+            { x: 51, y: 78 },
+          ],
+        },
+      ),
     );
   }
 }
@@ -261,7 +340,7 @@ function getElementOfArray<T>(object: T | T[], index = 0): T {
   }
 }
 
-function updateBpmnElement<T>(parentElement: T | T[], childElement: T, setValue: (value: T | T[]) => void): void {
+function updateBpmnElement<T extends TBaseElement | DiagramElement>(parentElement: T | T[], childElement: T, setValue: (value: T | T[]) => void): void {
   if (parentElement) {
     if (!Array.isArray(parentElement)) {
       setValue([parentElement, childElement]);
@@ -273,86 +352,90 @@ function updateBpmnElement<T>(parentElement: T | T[], childElement: T, setValue:
   }
 }
 
-function addFlownode(jsonModel: BpmnJsonModel, bpmnKind: string, flowNode: TFlowNode, processIndex: number): void {
-  const process: TProcess = getElementOfArray<TProcess>(jsonModel.definitions.process as TProcess | TProcess[], processIndex);
-  updateBpmnElement(process[bpmnKind], flowNode, (value: TFlowNode | TFlowNode[]) => (process[bpmnKind] = value));
+function addLane(jsonModel: BpmnJsonModel, { id, name, ...rest }: BuildLaneParameter, index: number, processIndex: number): void {
+  const lane: TLane = {
+    id: id ? id : `lane_id_${processIndex}_${index}`,
+    ...rest,
+  };
+  if (name) {
+    lane.name = name;
+  }
+  const laneSet = getElementOfArray<TProcess>(jsonModel.definitions.process as TProcess | TProcess[], processIndex).laneSet as TLaneSet;
+  updateBpmnElement(laneSet.lane, lane, (value: TLane | TLane[]) => (laneSet.lane = value));
+
+  const shape = {
+    id: `shape_${lane.id}`,
+    bpmnElement: lane.id,
+    Bounds: { x: 45, y: 6, width: 456, height: 234 },
+  };
+  addShape(jsonModel, shape);
 }
 
-function addShape(jsonModel: BpmnJsonModel, taskShape: BPMNShape): void {
+function addFlownodeAndShape(jsonModel: BpmnJsonModel, bpmnKind: keyof TProcess, flownodeParameter: BuildFlownodeParameter, bpmnShape: BPMNShape): void {
+  const flowNode = addFlownode(jsonModel, bpmnKind, flownodeParameter);
+  addShape(jsonModel, {
+    bpmnElement: flowNode.id,
+    ...bpmnShape,
+  });
+}
+
+function addFlownodeAndEdge(jsonModel: BpmnJsonModel, bpmnKind: keyof TProcess, flownodeParameter: BuildFlownodeParameter, bpmnEdge: BPMNEdge): void {
+  const flowNode = addFlownode(jsonModel, bpmnKind, flownodeParameter);
+  addEdge(jsonModel, {
+    bpmnElement: flowNode.id,
+    ...bpmnEdge,
+  });
+}
+
+function addFlownode(jsonModel: BpmnJsonModel, bpmnKind: keyof TProcess, { id, name, index, processIndex, ...rest }: BuildFlownodeParameter): TFlowNode {
+  const flowNode: TFlowNode = {
+    id: id ? id : `${bpmnKind}_id_${processIndex}_${index}`,
+    ...rest,
+  };
+  if (name) {
+    flowNode.name = name;
+  }
+
+  const process: TProcess = getElementOfArray<TProcess>(jsonModel.definitions.process as TProcess | TProcess[], processIndex);
+  updateBpmnElement(process[bpmnKind], flowNode, (value: TFlowNode | TFlowNode[]) => (process[bpmnKind] = value));
+  return flowNode;
+}
+
+function addShape(jsonModel: BpmnJsonModel, shape: BPMNShape): void {
   const bpmnPlane: BPMNPlane = getElementOfArray(jsonModel.definitions.BPMNDiagram).BPMNPlane;
-  updateBpmnElement(bpmnPlane.BPMNShape, taskShape, (value: BPMNShape | BPMNShape[]) => (bpmnPlane.BPMNShape = value));
+  updateBpmnElement(
+    bpmnPlane.BPMNShape,
+    {
+      id: `shape_${shape.bpmnElement}`,
+      ...shape,
+    },
+    (value: BPMNShape | BPMNShape[]) => (bpmnPlane.BPMNShape = value),
+  );
 }
 
 function addEdge(jsonModel: BpmnJsonModel, edge: BPMNEdge): void {
   const bpmnPlane: BPMNPlane = getElementOfArray(jsonModel.definitions.BPMNDiagram).BPMNPlane;
-  updateBpmnElement(bpmnPlane.BPMNEdge, edge, (value: BPMNEdge | BPMNEdge[]) => (bpmnPlane.BPMNEdge = value));
-}
-
-function addTask(jsonModel: BpmnJsonModel, taskParameter: BuildTaskParameter, index: number, processIndex: number): void {
-  const task = {
-    id: taskParameter.id ? taskParameter.id : `task_id_${processIndex}_${index}`,
-    name: 'task name',
-  };
-  addFlownode(jsonModel, 'task', task, processIndex);
-
-  const taskShape = {
-    id: `shape_${task.id}`,
-    bpmnElement: task.id,
-    Bounds: { x: 362, y: 232, width: 36, height: 45 },
-  };
-  addShape(jsonModel, taskShape);
-}
-
-function addExclusiveGateway(jsonModel: BpmnJsonModel, exclusiveGatewayParameter: BuildExclusiveGatewayParameter, index: number, processIndex: number): void {
-  const exclusiveGateway = {
-    id: exclusiveGatewayParameter.id ? exclusiveGatewayParameter.id : `exclusiveGateway_id_${processIndex}_${index}`,
-    name: 'exclusiveGateway name',
-  };
-  addFlownode(jsonModel, 'exclusiveGateway', exclusiveGateway, processIndex);
-
-  const shape = {
-    id: `shape_${exclusiveGateway.id}`,
-    bpmnElement: exclusiveGateway.id,
-    Bounds: { x: 567, y: 345, width: 25, height: 25 },
-  };
-  addShape(jsonModel, shape);
-}
-
-function addCallActivity(jsonModel: BpmnJsonModel, callActivityParameter: BuildCallActivityParameter, index: number, processIndex: number): void {
-  const callActivity = {
-    id: callActivityParameter.id ? callActivityParameter.id : `callActivity_id_${processIndex}_${index}`,
-    name: 'callActivity name',
-  };
-  addFlownode(jsonModel, 'callActivity', callActivity, processIndex);
-
-  const shape = {
-    id: `shape_${callActivity.id}`,
-    bpmnElement: callActivity.id,
-    Bounds: { x: 346, y: 856, width: 45, height: 56 },
-  };
-  addShape(jsonModel, shape);
-}
-
-function addEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, eventDefinition: BPMNEventDefinition = ''): TProcess | BPMNTEvent {
-  if (eventDefinitionKind !== 'none') {
-    bpmnElement[`${eventDefinitionKind}EventDefinition`] = eventDefinition;
-  }
-  return bpmnElement;
-}
-
-function addDifferentEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, differentEventDefinition?: TEventDefinition): TProcess | BPMNTEvent {
-  const otherEventDefinition = eventDefinitionKind === 'signal' ? 'message' : 'signal';
-  return addEventDefinition(bpmnElement, otherEventDefinition, differentEventDefinition);
+  updateBpmnElement(
+    bpmnPlane.BPMNEdge,
+    {
+      id: `edge_${edge.bpmnElement}`,
+      ...edge,
+    },
+    (value: BPMNEdge | BPMNEdge[]) => (bpmnPlane.BPMNEdge = value),
+  );
 }
 
 function addEventDefinitions(
   event: BPMNTEvent,
-  { eventDefinitionKind, eventDefinition, withDifferentDefinition = false }: BuildEventDefinitionParameter,
-  differentEventDefinition?: TEventDefinition,
+  { eventDefinitionKind, eventDefinition = '', withDifferentDefinition = false }: BuildEventDefinitionParameter,
+  differentEventDefinition: TEventDefinition | string = '',
 ): void {
-  addEventDefinition(event, eventDefinitionKind, eventDefinition);
+  if (eventDefinitionKind !== 'none') {
+    event[`${eventDefinitionKind}EventDefinition`] = eventDefinition;
+  }
   if (withDifferentDefinition) {
-    addDifferentEventDefinition(event, eventDefinitionKind, differentEventDefinition);
+    const otherEventDefinition = eventDefinitionKind === 'signal' ? 'message' : 'signal';
+    event[`${otherEventDefinition}EventDefinition`] = differentEventDefinition;
   }
 }
 
@@ -382,7 +465,21 @@ function addEventDefinitionsOnEvent(event: TCatchEvent | TThrowEvent | TBoundary
   }
 }
 
-function buildEvent(index: number, processIndex: number, name: string, isInterrupting: boolean, attachedToRef: string, id: string): BPMNTEvent {
+function buildEvent({
+  id,
+  name,
+  index,
+  processIndex,
+  isInterrupting,
+  attachedToRef,
+}: {
+  id: string;
+  name: string;
+  index: number;
+  processIndex: number;
+  isInterrupting?: boolean;
+  attachedToRef?: string;
+}): BPMNTEvent {
   const event: BPMNTEvent = {
     id: id ? id : `event_id_${processIndex}_${index}`,
     name: name,
@@ -399,11 +496,11 @@ function buildEvent(index: number, processIndex: number, name: string, isInterru
 
 function addEvent(
   jsonModel: BpmnJsonModel,
-  { id, bpmnKind, eventDefinitionParameter, name, isInterrupting, attachedToRef }: BuildEventParameter,
+  { id, bpmnKind, eventDefinitionParameter, name, ...rest }: BuildOtherEventParameter | BuildStartEventParameter | BuildBoundaryEventParameter,
   index: number,
   processIndex: number,
 ): void {
-  const event = buildEvent(index, processIndex, name, isInterrupting, attachedToRef, id);
+  const event = buildEvent({ id, name, index, processIndex, ...rest });
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH:
       addEventDefinitionsOnEvent(event, eventDefinitionParameter);
@@ -418,12 +515,6 @@ function addEvent(
     case EventDefinitionOn.NONE:
       break;
   }
-  addFlownode(jsonModel, bpmnKind, event, processIndex);
 
-  const eventShape = {
-    id: `shape_${event.id}`,
-    bpmnElement: event.id,
-    Bounds: { x: 362, y: 232, width: 36, height: 45 },
-  };
-  addShape(jsonModel, eventShape);
+  addFlownodeAndShape(jsonModel, bpmnKind, { ...event, index, processIndex }, { Bounds: { x: 362, y: 232, width: 36, height: 45 } });
 }
