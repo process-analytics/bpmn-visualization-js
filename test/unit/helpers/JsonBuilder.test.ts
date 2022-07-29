@@ -2778,6 +2778,127 @@ describe('build json', () => {
     });
   });
 
+  describe('build json with sequence flow', () => {
+    it('build json of definitions containing one process with sequence flow (with id & name)', () => {
+      const json = buildDefinitions({
+        process: {
+          sequenceFlow: { id: '0', name: 'sequenceFlow name', sourceRef: 'source_1', targetRef: 'target_1' },
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: {
+            id: '0',
+            sequenceFlow: {
+              id: '0',
+              name: 'sequenceFlow name',
+              sourceRef: 'source_1',
+              targetRef: 'target_1',
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNEdge: {
+                id: 'edge_0',
+                bpmnElement: '0',
+                waypoint: [
+                  { x: 45, y: 78 },
+                  { x: 51, y: 78 },
+                ],
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing one process with sequence flow (without id & name)', () => {
+      const json = buildDefinitions({
+        process: {
+          sequenceFlow: { sourceRef: 'source_1', targetRef: 'target_1' },
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: {
+            id: '0',
+            sequenceFlow: {
+              id: 'sequenceFlow_id_0_0',
+              sourceRef: 'source_1',
+              targetRef: 'target_1',
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNEdge: {
+                id: 'edge_sequenceFlow_id_0_0',
+                bpmnElement: 'sequenceFlow_id_0_0',
+                waypoint: [
+                  { x: 45, y: 78 },
+                  { x: 51, y: 78 },
+                ],
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing 2 processes with sequence flow (without id)', () => {
+      const json = buildDefinitions({
+        process: [{ sequenceFlow: { sourceRef: 'source_1', targetRef: 'target_1' } }, { sequenceFlow: { sourceRef: 'source_2', targetRef: 'target_2' } }],
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: [
+            {
+              id: '0',
+              sequenceFlow: { id: 'sequenceFlow_id_0_0', sourceRef: 'source_1', targetRef: 'target_1' },
+            },
+            {
+              id: '1',
+              sequenceFlow: { id: 'sequenceFlow_id_1_0', sourceRef: 'source_2', targetRef: 'target_2' },
+            },
+          ],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNEdge: [
+                {
+                  id: 'edge_sequenceFlow_id_0_0',
+                  bpmnElement: 'sequenceFlow_id_0_0',
+                  waypoint: [
+                    { x: 45, y: 78 },
+                    { x: 51, y: 78 },
+                  ],
+                },
+                {
+                  id: 'edge_sequenceFlow_id_1_0',
+                  bpmnElement: 'sequenceFlow_id_1_0',
+                  waypoint: [
+                    { x: 45, y: 78 },
+                    { x: 51, y: 78 },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      });
+    });
+  });
+
   describe('build json with message flow', () => {
     it('build json of definitions containing 2 participants and one message flow between pools', () => {
       const json = buildDefinitions({
