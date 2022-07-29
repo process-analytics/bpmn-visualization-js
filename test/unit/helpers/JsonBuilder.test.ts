@@ -402,6 +402,112 @@ describe('build json', () => {
     });
   });
 
+  describe('build json with lane', () => {
+    it('build json of definitions containing one process with lane (with id & name)', () => {
+      const json = buildDefinitions({
+        process: {
+          lane: { id: '0', name: 'lane name' },
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: {
+            id: '0',
+            laneSet: {
+              id: 'laneSet_id_0_0',
+              lane: { id: '0', name: 'lane name' },
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_0',
+                bpmnElement: '0',
+                Bounds: { x: 45, y: 6, width: 456, height: 234 },
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing one process with lane (without id & name)', () => {
+      const json = buildDefinitions({
+        process: {
+          lane: {},
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: {
+            id: '0',
+            laneSet: {
+              id: 'laneSet_id_0_0',
+              lane: { id: 'lane_id_0_0' },
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_lane_id_0_0',
+                bpmnElement: 'lane_id_0_0',
+                Bounds: { x: 45, y: 6, width: 456, height: 234 },
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing 2 processes with lane (without id)', () => {
+      const json = buildDefinitions({
+        process: [{ lane: {} }, { lane: {} }],
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: [
+            {
+              id: '0',
+              laneSet: { id: 'laneSet_id_0_0', lane: { id: 'lane_id_0_0' } },
+            },
+            {
+              id: '1',
+              laneSet: { id: 'laneSet_id_1_0', lane: { id: 'lane_id_1_0' } },
+            },
+          ],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_lane_id_0_0',
+                  bpmnElement: 'lane_id_0_0',
+                  Bounds: { x: 45, y: 6, width: 456, height: 234 },
+                },
+                {
+                  id: 'shape_lane_id_1_0',
+                  bpmnElement: 'lane_id_1_0',
+                  Bounds: { x: 45, y: 6, width: 456, height: 234 },
+                },
+              ],
+            },
+          },
+        },
+      });
+    });
+  });
+
   describe('build json with boundary event', () => {
     describe('build json with interrupting boundary event', () => {
       it('build json of definitions containing one process with task and interrupting boundary event (with empty messageEventDefinition, name & id)', () => {

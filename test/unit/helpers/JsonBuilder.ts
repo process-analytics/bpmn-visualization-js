@@ -15,7 +15,7 @@
  */
 
 import type { DiagramElement } from '../../../src/model/bpmn/json/DI';
-import type { TBaseElement, TMessageFlow } from '../../../src/model/bpmn/json/baseElement/baseElement';
+import type { TBaseElement, TLane, TLaneSet, TMessageFlow } from '../../../src/model/bpmn/json/baseElement/baseElement';
 import type { TFlowElement } from '../../../src/model/bpmn/json/baseElement/flowElement';
 import type { TFlowNode } from '../../../src/model/bpmn/json/baseElement/flowElement';
 import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../src/model/bpmn/json/baseElement/flowNode/event';
@@ -115,6 +115,12 @@ export interface BuildGatewayParameter extends TFlowElement {
 
 /**
  * If the id field is set, the default id is override.
+ * Otherwise, the id has the format: `lane_id_${processIndex}_${index}`
+ */
+export type BuildLaneParameter = TFlowElement;
+
+/**
+ * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `sequence_flow_id_${processIndex}_${index}`
  */
 export interface BuildSequenceFlowParameter extends TFlowElement {
@@ -123,6 +129,7 @@ export interface BuildSequenceFlowParameter extends TFlowElement {
 }
 
 export interface BuildProcessParameter {
+  lane?: BuildLaneParameter | BuildLaneParameter[];
   task?: BuildTaskParameter | BuildTaskParameter[];
   event?: BuildEventsParameter | BuildEventsParameter[];
   gateway?: BuildGatewayParameter | BuildGatewayParameter[];
@@ -276,6 +283,13 @@ function addMessageFlow(messageFlowParameter: BuildMessageFlowParameter, jsonMod
 }
 
 function addElementsOnProcess(processParameter: BuildProcessParameter, json: BpmnJsonModel, processIndex: number): void {
+  if (processParameter.lane) {
+    addFlownode(json, 'laneSet', { index: 0, processIndex });
+
+    (Array.isArray(processParameter.lane) ? processParameter.lane : [processParameter.lane]).forEach((laneParameter, index) => {
+      addLane(json, laneParameter, index, processIndex);
+    });
+  }
   if (processParameter.task) {
     (Array.isArray(processParameter.task) ? processParameter.task : [processParameter.task]).forEach(({ bpmnKind = 'task', ...rest }, index) =>
       addFlownodeAndShape(json, bpmnKind, { ...rest, index, processIndex }, { Bounds: { x: 362, y: 232, width: 36, height: 45 } }),
@@ -336,6 +350,25 @@ function updateBpmnElement<T extends TBaseElement | DiagramElement>(parentElemen
   } else {
     setValue(childElement);
   }
+}
+
+function addLane(jsonModel: BpmnJsonModel, { id, name, ...rest }: BuildLaneParameter, index: number, processIndex: number): void {
+  const lane: TLane = {
+    id: id ? id : `lane_id_${processIndex}_${index}`,
+    ...rest,
+  };
+  if (name) {
+    lane.name = name;
+  }
+  const laneSet = getElementOfArray<TProcess>(jsonModel.definitions.process as TProcess | TProcess[], processIndex).laneSet as TLaneSet;
+  updateBpmnElement(laneSet.lane, lane, (value: TLane | TLane[]) => (laneSet.lane = value));
+
+  const shape = {
+    id: `shape_${lane.id}`,
+    bpmnElement: lane.id,
+    Bounds: { x: 45, y: 6, width: 456, height: 234 },
+  };
+  addShape(jsonModel, shape);
 }
 
 function addFlownodeAndShape(jsonModel: BpmnJsonModel, bpmnKind: keyof TProcess, flownodeParameter: BuildFlownodeParameter, bpmnShape: BPMNShape): void {
