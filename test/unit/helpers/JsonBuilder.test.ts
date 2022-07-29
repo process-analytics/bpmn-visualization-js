@@ -136,7 +136,6 @@ describe('build json', () => {
             id: 'process_participant_0',
             task: {
               id: 'task_id_0_0',
-              name: 'task name',
             },
             endEvent: {
               eventDefinitionRef: 'event_definition_id',
@@ -154,7 +153,6 @@ describe('build json', () => {
             id: 'process_participant_1',
             exclusiveGateway: {
               id: 'exclusiveGateway',
-              name: 'exclusiveGateway name',
             },
             startEvent: {
               cancelActivity: false,
@@ -163,7 +161,6 @@ describe('build json', () => {
             },
             task: {
               id: 'task_id_1',
-              name: 'task name',
             },
           },
           {
@@ -176,7 +173,6 @@ describe('build json', () => {
             },
             callActivity: {
               id: 'callActivity_id_2_0',
-              name: 'callActivity name',
             },
           },
         ],
@@ -393,10 +389,7 @@ describe('build json', () => {
             },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-                name: 'task name',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'another_id',
                 cancelActivity: true,
@@ -461,14 +454,12 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
                 attachedToRef: 'task_id_0_0',
                 signalEventDefinition: '',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -527,14 +518,12 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
                 attachedToRef: 'task_id_0_0',
                 signalEventDefinition: ['', {}],
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -593,7 +582,6 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
@@ -601,7 +589,6 @@ describe('build json', () => {
                 attachedToRef: 'task_id_0_0',
                 signalEventDefinition: '',
                 messageEventDefinition: '',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -660,7 +647,6 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
@@ -668,7 +654,6 @@ describe('build json', () => {
                 attachedToRef: 'task_id_0_0',
                 signalEventDefinition: '',
                 messageEventDefinition: '',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -730,14 +715,12 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
                 eventDefinitionRef: 'event_definition_id',
                 attachedToRef: 'task_id_0_0',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -797,14 +780,12 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
                 eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
                 attachedToRef: 'task_id_0_0',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -865,14 +846,12 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
                 eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
                 attachedToRef: 'task_id_0_0',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -933,14 +912,12 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
                 eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
                 attachedToRef: 'task_id_0_0',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -1000,7 +977,6 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
@@ -1008,7 +984,6 @@ describe('build json', () => {
                 eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
                 messageEventDefinition: ['', {}],
                 attachedToRef: 'task_id_0_0',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -1069,7 +1044,6 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
@@ -1078,7 +1052,6 @@ describe('build json', () => {
                 signalEventDefinition: '',
                 terminateEventDefinition: '',
                 attachedToRef: 'task_id_0_0',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -1120,7 +1093,6 @@ describe('build json', () => {
               event: [
                 {
                   bpmnKind: 'boundaryEvent',
-                  name: 'name',
                   eventDefinitionParameter,
                   isInterrupting: true,
                   attachedToRef: 'task_id_0_0',
@@ -1131,7 +1103,6 @@ describe('build json', () => {
               event: [
                 {
                   bpmnKind: 'boundaryEvent',
-                  name: 'name',
                   eventDefinitionParameter,
                   isInterrupting: true,
                   attachedToRef: 'task_id_0_0',
@@ -1153,7 +1124,6 @@ describe('build json', () => {
                 boundaryEvent: {
                   id: 'event_id_0_0',
                   messageEventDefinition: '',
-                  name: 'name',
                   cancelActivity: true,
                   attachedToRef: 'task_id_0_0',
                 },
@@ -1163,7 +1133,6 @@ describe('build json', () => {
                 boundaryEvent: {
                   id: 'event_id_1_0',
                   messageEventDefinition: '',
-                  name: 'name',
                   cancelActivity: true,
                   attachedToRef: 'task_id_0_0',
                 },
@@ -1228,7 +1197,6 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'another_id',
@@ -1293,14 +1261,12 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
                 attachedToRef: 'task_id_0_0',
                 signalEventDefinition: '',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -1359,14 +1325,12 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
                 attachedToRef: 'task_id_0_0',
                 signalEventDefinition: '',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -1425,14 +1389,12 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
                 attachedToRef: 'task_id_0_0',
                 signalEventDefinition: ['', {}],
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -1491,7 +1453,6 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
@@ -1499,7 +1460,6 @@ describe('build json', () => {
                 attachedToRef: 'task_id_0_0',
                 signalEventDefinition: '',
                 messageEventDefinition: '',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -1558,7 +1518,6 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
@@ -1566,7 +1525,6 @@ describe('build json', () => {
                 attachedToRef: 'task_id_0_0',
                 signalEventDefinition: '',
                 messageEventDefinition: '',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -1628,14 +1586,12 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
                 eventDefinitionRef: 'event_definition_id',
                 attachedToRef: 'task_id_0_0',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -1695,14 +1651,12 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
                 eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
                 attachedToRef: 'task_id_0_0',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -1763,14 +1717,12 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
                 eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
                 attachedToRef: 'task_id_0_0',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -1831,14 +1783,12 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
                 eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
                 attachedToRef: 'task_id_0_0',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -1898,7 +1848,6 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
@@ -1906,7 +1855,6 @@ describe('build json', () => {
                 eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
                 messageEventDefinition: ['', {}],
                 attachedToRef: 'task_id_0_0',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -1967,7 +1915,6 @@ describe('build json', () => {
               id: '0',
               task: {
                 id: 'task_id_0_0',
-                name: 'task name',
               },
               boundaryEvent: {
                 id: 'event_id_0_0',
@@ -1976,7 +1923,6 @@ describe('build json', () => {
                 signalEventDefinition: '',
                 terminateEventDefinition: '',
                 attachedToRef: 'task_id_0_0',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -2018,7 +1964,6 @@ describe('build json', () => {
               event: [
                 {
                   bpmnKind: 'boundaryEvent',
-                  name: 'name',
                   isInterrupting: false,
                   eventDefinitionParameter,
                   attachedToRef: 'task_id_0_0',
@@ -2029,7 +1974,6 @@ describe('build json', () => {
               event: [
                 {
                   bpmnKind: 'boundaryEvent',
-                  name: 'name',
                   isInterrupting: false,
                   eventDefinitionParameter,
                   attachedToRef: 'task_id_0_0',
@@ -2051,7 +1995,6 @@ describe('build json', () => {
                 boundaryEvent: {
                   id: 'event_id_0_0',
                   messageEventDefinition: '',
-                  name: 'name',
                   cancelActivity: false,
                   attachedToRef: 'task_id_0_0',
                 },
@@ -2061,7 +2004,6 @@ describe('build json', () => {
                 boundaryEvent: {
                   id: 'event_id_1_0',
                   messageEventDefinition: '',
-                  name: 'name',
                   cancelActivity: false,
                   attachedToRef: 'task_id_0_0',
                 },
@@ -2109,7 +2051,6 @@ describe('build json', () => {
             event: [
               {
                 bpmnKind,
-                name: undefined,
                 eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.NONE, eventDefinition: { id: '9' } },
               },
             ],
@@ -2126,7 +2067,6 @@ describe('build json', () => {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                name: undefined,
               },
             },
             BPMNDiagram: {
@@ -2221,7 +2161,6 @@ describe('build json', () => {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                name: undefined,
                 messageEventDefinition: ['', {}],
               },
             },
@@ -2270,7 +2209,6 @@ describe('build json', () => {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                name: undefined,
                 messageEventDefinition: '',
                 signalEventDefinition: '',
               },
@@ -2320,7 +2258,6 @@ describe('build json', () => {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                name: undefined,
                 messageEventDefinition: '',
                 signalEventDefinition: '',
               },
@@ -2369,7 +2306,6 @@ describe('build json', () => {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                name: undefined,
                 eventDefinitionRef: 'event_definition_id',
               },
             },
@@ -2426,7 +2362,6 @@ describe('build json', () => {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                name: undefined,
                 eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
               },
             },
@@ -2481,7 +2416,6 @@ describe('build json', () => {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                name: undefined,
                 eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
               },
             },
@@ -2536,7 +2470,6 @@ describe('build json', () => {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                name: undefined,
                 eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
               },
             },
@@ -2586,7 +2519,6 @@ describe('build json', () => {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                name: undefined,
                 eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
                 messageEventDefinition: ['', {}],
               },
@@ -2642,7 +2574,6 @@ describe('build json', () => {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                name: undefined,
                 eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
                 messageEventDefinition: '',
                 signalEventDefinition: '',
@@ -2701,7 +2632,6 @@ describe('build json', () => {
                 id: '0',
                 [bpmnKind]: {
                   id: 'event_id_0_0',
-                  name: undefined,
                   messageEventDefinition: '',
                 },
               },
@@ -2709,7 +2639,6 @@ describe('build json', () => {
                 id: '1',
                 [bpmnKind]: {
                   id: 'event_id_1_0',
-                  name: undefined,
                   messageEventDefinition: '',
                 },
               },
@@ -2769,7 +2698,6 @@ describe('build json', () => {
                 id: '0',
                 startEvent: {
                   id: 'event_id_0_0',
-                  name: undefined,
                   cancelActivity: true,
                 },
               },
@@ -2815,7 +2743,6 @@ describe('build json', () => {
                 id: '0',
                 startEvent: {
                   id: 'event_id_0_0',
-                  name: undefined,
                   cancelActivity: false,
                 },
               },
@@ -2842,10 +2769,10 @@ describe('build json', () => {
   );
 
   describe('build json with task', () => {
-    it('build json of definitions containing one process with task (with id)', () => {
+    it('build json of definitions containing one process with task (with id & name)', () => {
       const json = buildDefinitions({
         process: {
-          task: { id: '0' },
+          task: { id: '0', name: 'name' },
         },
       });
 
@@ -2857,10 +2784,7 @@ describe('build json', () => {
           },
           process: {
             id: '0',
-            task: {
-              id: '0',
-              name: 'task name',
-            },
+            task: { id: '0', name: 'name' },
           },
           BPMNDiagram: {
             name: 'process 0',
@@ -2881,7 +2805,7 @@ describe('build json', () => {
       });
     });
 
-    it('build json of definitions containing one process with task (without id)', () => {
+    it('build json of definitions containing one process with task (without id & name)', () => {
       const json = buildDefinitions({
         process: {
           task: {},
@@ -2896,10 +2820,7 @@ describe('build json', () => {
           },
           process: {
             id: '0',
-            task: {
-              id: 'task_id_0_0',
-              name: 'task name',
-            },
+            task: { id: 'task_id_0_0' },
           },
           BPMNDiagram: {
             name: 'process 0',
@@ -2934,17 +2855,11 @@ describe('build json', () => {
           process: [
             {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-                name: 'task name',
-              },
+              task: { id: 'task_id_0_0' },
             },
             {
               id: '1',
-              task: {
-                id: 'task_id_1_0',
-                name: 'task name',
-              },
+              task: { id: 'task_id_1_0' },
             },
           ],
           BPMNDiagram: {
@@ -2986,7 +2901,7 @@ describe('build json', () => {
         const json = buildDefinitions({
           process: {
             gateway: {
-              id: 'exclusive_gateway_id_4',
+              id: 'gateway_id_4',
               bpmnKind,
               name: `${bpmnKind} name`,
             },
@@ -2999,13 +2914,13 @@ describe('build json', () => {
             collaboration: {
               id: 'collaboration_id_0',
             },
-            process: { id: '0', [bpmnKind]: { id: 'exclusive_gateway_id_4', name: `${bpmnKind} name` } },
+            process: { id: '0', [bpmnKind]: { id: 'gateway_id_4', name: `${bpmnKind} name` } },
             BPMNDiagram: {
               name: 'process 0',
               BPMNPlane: {
                 BPMNShape: {
-                  id: 'shape_exclusive_gateway_id_4',
-                  bpmnElement: 'exclusive_gateway_id_4',
+                  id: 'shape_gateway_id_4',
+                  bpmnElement: 'gateway_id_4',
                   Bounds: { x: 567, y: 345, width: 25, height: 25 },
                 },
               },
@@ -3027,7 +2942,7 @@ describe('build json', () => {
             collaboration: {
               id: 'collaboration_id_0',
             },
-            process: { id: '0', [bpmnKind]: { id: `${bpmnKind}_id_0_0`, name: `${bpmnKind} name` } },
+            process: { id: '0', [bpmnKind]: { id: `${bpmnKind}_id_0_0` } },
             BPMNDiagram: {
               name: 'process 0',
               BPMNPlane: {
@@ -3054,8 +2969,8 @@ describe('build json', () => {
               id: 'collaboration_id_0',
             },
             process: [
-              { id: '0', [bpmnKind]: { id: `${bpmnKind}_id_0_0`, name: `${bpmnKind} name` } },
-              { id: '1', [bpmnKind]: { id: `${bpmnKind}_id_1_0`, name: `${bpmnKind} name` } },
+              { id: '0', [bpmnKind]: { id: `${bpmnKind}_id_0_0` } },
+              { id: '1', [bpmnKind]: { id: `${bpmnKind}_id_1_0` } },
             ],
             BPMNDiagram: {
               name: 'process 0',
@@ -3081,10 +2996,10 @@ describe('build json', () => {
   );
 
   describe('build json with call activity', () => {
-    it('build json of definitions containing one process with call activity (with id)', () => {
+    it('build json of definitions containing one process with call activity (with id, name)', () => {
       const json = buildDefinitions({
         process: {
-          callActivity: { id: '0' },
+          callActivity: { id: '0', name: 'name' },
         },
       });
 
@@ -3098,7 +3013,7 @@ describe('build json', () => {
             id: '0',
             callActivity: {
               id: '0',
-              name: 'callActivity name',
+              name: 'name',
             },
           },
           BPMNDiagram: {
@@ -3115,7 +3030,7 @@ describe('build json', () => {
       });
     });
 
-    it('build json of definitions containing one process with call activity (without id)', () => {
+    it('build json of definitions containing one process with call activity (without id, name)', () => {
       const json = buildDefinitions({
         process: {
           callActivity: {},
@@ -3132,7 +3047,6 @@ describe('build json', () => {
             id: '0',
             callActivity: {
               id: 'callActivity_id_0_0',
-              name: 'callActivity name',
             },
           },
           BPMNDiagram: {
@@ -3165,14 +3079,12 @@ describe('build json', () => {
               id: '0',
               callActivity: {
                 id: 'callActivity_id_0_0',
-                name: 'callActivity name',
               },
             },
             {
               id: '1',
               callActivity: {
                 id: 'callActivity_id_1_0',
-                name: 'callActivity name',
               },
             },
           ],
@@ -3302,17 +3214,11 @@ describe('build json', () => {
           process: [
             {
               id: 'process_0',
-              exclusiveGateway: {
-                id: 'source_id_0',
-                name: 'exclusiveGateway name',
-              },
+              exclusiveGateway: { id: 'source_id_0' },
             },
             {
               id: 'process_1',
-              exclusiveGateway: {
-                id: 'target_id_0',
-                name: 'exclusiveGateway name',
-              },
+              exclusiveGateway: { id: 'target_id_0' },
             },
           ],
           BPMNDiagram: {
@@ -3417,17 +3323,11 @@ describe('build json', () => {
           process: [
             {
               id: 'process_source_id_0',
-              exclusiveGateway: {
-                id: 'source_id_1',
-                name: 'exclusiveGateway name',
-              },
+              exclusiveGateway: { id: 'source_id_1' },
             },
             {
               id: 'process_target_id_0',
-              exclusiveGateway: {
-                id: 'target_id_1',
-                name: 'exclusiveGateway name',
-              },
+              exclusiveGateway: { id: 'target_id_1' },
             },
           ],
           BPMNDiagram: {
