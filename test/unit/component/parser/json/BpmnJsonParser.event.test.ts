@@ -370,8 +370,9 @@ describe('parse bpmn as json for all events', () => {
                   isInterrupting,
                   attachedToRef: 'not_activity_id_0',
                 },
-                exclusiveGateway: {
+                gateway: {
                   id: 'not_activity_id_0',
+                  bpmnKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
                 },
               },
             });

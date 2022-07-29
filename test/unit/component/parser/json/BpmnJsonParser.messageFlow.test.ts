@@ -26,7 +26,7 @@ import * as bpmndi from '../../../../../src/model/bpmn/json/BPMNDI';
 
 /** Test utils */
 import { parseJson, parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
-import type { BuildEventsParameter, BuildProcessParameter, OtherBuildEventKind } from '../../../helpers/JsonBuilder';
+import type { BuildProcessParameter, BuildEventsParameter, OtherBuildEventKind } from '../../../helpers/JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 
