@@ -236,7 +236,6 @@ describe('build json', () => {
             BPMNEdge: {
               id: 'edge_message_flow_id_0',
               bpmnElement: 'message_flow_id_0',
-              Bounds: { x: 567, y: 345, width: 36, height: 45 },
               waypoint: [
                 { x: 567, y: 345 },
                 { x: 587, y: 345 },
@@ -425,9 +424,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
               task: { id: 'task_id_0_0' },
@@ -446,22 +443,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_another_id',
                     bpmnElement: 'another_id',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -488,14 +475,10 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
@@ -510,22 +493,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -552,14 +525,10 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
@@ -574,22 +543,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -616,14 +575,10 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
@@ -639,22 +594,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -681,14 +626,10 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
@@ -704,22 +645,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -746,17 +677,11 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
-            messageEventDefinition: {
-              id: 'event_definition_id',
-            },
+            collaboration: { id: 'collaboration_id_0' },
+            messageEventDefinition: { id: 'event_definition_id' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
@@ -771,22 +696,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -813,15 +728,11 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             messageEventDefinition: [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }],
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
@@ -836,22 +747,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -878,16 +779,12 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             messageEventDefinition: { id: 'event_definition_id' },
             signalEventDefinition: { id: 'other_event_definition_id' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
@@ -902,22 +799,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -944,16 +831,12 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             messageEventDefinition: { id: 'other_event_definition_id' },
             signalEventDefinition: { id: 'event_definition_id' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
@@ -968,22 +851,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1010,15 +883,11 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             messageEventDefinition: [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }],
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
@@ -1034,22 +903,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1076,16 +935,12 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             signalEventDefinition: { id: 'other_event_definition_id' },
             terminateEventDefinition: { id: 'event_definition_id' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
@@ -1102,22 +957,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1156,9 +1001,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: [
               {
                 id: '0',
@@ -1186,22 +1029,12 @@ describe('build json', () => {
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_1_0',
                     bpmnElement: 'event_id_1_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1231,14 +1064,10 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'another_id',
                 attachedToRef: 'task_id_0_0',
@@ -1253,22 +1082,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_another_id',
                     bpmnElement: 'another_id',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1295,14 +1114,10 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
@@ -1317,22 +1132,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1359,14 +1164,10 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
@@ -1381,22 +1182,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1423,14 +1214,10 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
@@ -1445,22 +1232,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1487,14 +1264,10 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
@@ -1510,22 +1283,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1552,14 +1315,10 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
@@ -1575,22 +1334,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1617,17 +1366,11 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
-            messageEventDefinition: {
-              id: 'event_definition_id',
-            },
+            collaboration: { id: 'collaboration_id_0' },
+            messageEventDefinition: { id: 'event_definition_id' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
@@ -1642,22 +1385,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1684,15 +1417,11 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             messageEventDefinition: [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }],
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
@@ -1707,22 +1436,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1749,16 +1468,12 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             messageEventDefinition: { id: 'event_definition_id' },
             signalEventDefinition: { id: 'other_event_definition_id' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
@@ -1773,22 +1488,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1815,16 +1520,12 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             messageEventDefinition: { id: 'other_event_definition_id' },
             signalEventDefinition: { id: 'event_definition_id' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
@@ -1839,22 +1540,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1881,15 +1572,11 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             messageEventDefinition: [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }],
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
@@ -1905,22 +1592,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -1947,16 +1624,12 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             signalEventDefinition: { id: 'other_event_definition_id' },
             terminateEventDefinition: { id: 'event_definition_id' },
             process: {
               id: '0',
-              task: {
-                id: 'task_id_0_0',
-              },
+              task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
@@ -1973,22 +1646,12 @@ describe('build json', () => {
                   {
                     id: 'shape_task_id_0_0',
                     bpmnElement: 'task_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -2027,9 +1690,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: [
               {
                 id: '0',
@@ -2057,22 +1718,12 @@ describe('build json', () => {
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_1_0',
                     bpmnElement: 'event_id_1_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -2101,9 +1752,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
               [bpmnKind]: { id: 'event_id_0_0' },
@@ -2139,9 +1788,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
               [bpmnKind]: {
@@ -2156,12 +1803,7 @@ describe('build json', () => {
                 BPMNShape: {
                   id: 'shape_another_id',
                   bpmnElement: 'another_id',
-                  Bounds: {
-                    x: 362,
-                    y: 232,
-                    width: 36,
-                    height: 45,
-                  },
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
               },
             },
@@ -2188,9 +1830,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
               [bpmnKind]: {
@@ -2204,12 +1844,7 @@ describe('build json', () => {
                 BPMNShape: {
                   id: 'shape_event_id_0_0',
                   bpmnElement: 'event_id_0_0',
-                  Bounds: {
-                    x: 362,
-                    y: 232,
-                    width: 36,
-                    height: 45,
-                  },
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
               },
             },
@@ -2236,9 +1871,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
               [bpmnKind]: {
@@ -2253,12 +1886,7 @@ describe('build json', () => {
                 BPMNShape: {
                   id: 'shape_event_id_0_0',
                   bpmnElement: 'event_id_0_0',
-                  Bounds: {
-                    x: 362,
-                    y: 232,
-                    width: 36,
-                    height: 45,
-                  },
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
               },
             },
@@ -2285,9 +1913,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
               [bpmnKind]: {
@@ -2302,12 +1928,7 @@ describe('build json', () => {
                 BPMNShape: {
                   id: 'shape_event_id_0_0',
                   bpmnElement: 'event_id_0_0',
-                  Bounds: {
-                    x: 362,
-                    y: 232,
-                    width: 36,
-                    height: 45,
-                  },
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
               },
             },
@@ -2330,12 +1951,8 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
-            messageEventDefinition: {
-              id: 'event_definition_id',
-            },
+            collaboration: { id: 'collaboration_id_0' },
+            messageEventDefinition: { id: 'event_definition_id' },
             process: {
               id: '0',
               [bpmnKind]: {
@@ -2349,12 +1966,7 @@ describe('build json', () => {
                 BPMNShape: {
                   id: 'shape_event_id_0_0',
                   bpmnElement: 'event_id_0_0',
-                  Bounds: {
-                    x: 362,
-                    y: 232,
-                    width: 36,
-                    height: 45,
-                  },
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
               },
             },
@@ -2581,24 +2193,7 @@ describe('build json', () => {
       it(`build json of definitions containing 2 process with ${bpmnKind}`, () => {
         const eventDefinitionParameter: BuildEventDefinitionParameter = { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT };
         const json = buildDefinitions({
-          process: [
-            {
-              event: [
-                {
-                  bpmnKind,
-                  eventDefinitionParameter,
-                },
-              ],
-            },
-            {
-              event: [
-                {
-                  bpmnKind,
-                  eventDefinitionParameter,
-                },
-              ],
-            },
-          ],
+          process: [{ event: [{ bpmnKind, eventDefinitionParameter }] }, { event: [{ bpmnKind, eventDefinitionParameter }] }],
         });
 
         expect(json).toEqual({
@@ -2729,9 +2324,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
               [bpmnKind]: { id: '0', name: 'name' },
@@ -2760,9 +2353,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: {
               id: '0',
               [bpmnKind]: { id: `${bpmnKind}_id_0_0` },
@@ -2789,9 +2380,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: [
               {
                 id: '0',
@@ -2834,9 +2423,7 @@ describe('build json', () => {
           expect(json).toEqual({
             definitions: {
               targetNamespace: '',
-              collaboration: {
-                id: 'collaboration_id_0',
-              },
+              collaboration: { id: 'collaboration_id_0' },
               process: {
                 id: '0',
                 task: { id: 'task_id_0_0' },
@@ -2875,9 +2462,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: { id: '0', [bpmnKind]: { id: 'gateway_id_4', name: `${bpmnKind} name` } },
             BPMNDiagram: {
               name: 'process 0',
@@ -2903,9 +2488,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: { id: '0', [bpmnKind]: { id: `${bpmnKind}_id_0_0` } },
             BPMNDiagram: {
               name: 'process 0',
@@ -2929,9 +2512,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: [
               { id: '0', [bpmnKind]: { id: `${bpmnKind}_id_0_0` } },
               { id: '1', [bpmnKind]: { id: `${bpmnKind}_id_1_0` } },
@@ -2970,9 +2551,7 @@ describe('build json', () => {
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
-          collaboration: {
-            id: 'collaboration_id_0',
-          },
+          collaboration: { id: 'collaboration_id_0' },
           process: {
             id: '0',
             callActivity: {
@@ -3006,15 +2585,10 @@ describe('build json', () => {
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
-          collaboration: {
-            id: 'collaboration_id_0',
-          },
+          collaboration: { id: 'collaboration_id_0' },
           process: {
             id: '0',
-            callActivity: {
-              id: '0',
-              calledElement: 'called_process',
-            },
+            callActivity: { id: '0', calledElement: 'called_process' },
           },
           BPMNDiagram: {
             name: 'process 0',
@@ -3041,15 +2615,10 @@ describe('build json', () => {
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
-          collaboration: {
-            id: 'collaboration_id_0',
-          },
+          collaboration: { id: 'collaboration_id_0' },
           process: {
             id: '0',
-            callActivity: {
-              id: 'callActivity_id_0_0',
-              calledElement: 'called_process',
-            },
+            callActivity: { id: 'callActivity_id_0_0', calledElement: 'called_process' },
           },
           BPMNDiagram: {
             name: 'process 0',
@@ -3074,23 +2643,15 @@ describe('build json', () => {
       expect(json).toEqual({
         definitions: {
           targetNamespace: '',
-          collaboration: {
-            id: 'collaboration_id_0',
-          },
+          collaboration: { id: 'collaboration_id_0' },
           process: [
             {
               id: '0',
-              callActivity: {
-                id: 'callActivity_id_0_0',
-                calledElement: 'called_process',
-              },
+              callActivity: { id: 'callActivity_id_0_0', calledElement: 'called_process' },
             },
             {
               id: '1',
-              callActivity: {
-                id: 'callActivity_id_1_0',
-                calledElement: 'called_process',
-              },
+              callActivity: { id: 'callActivity_id_1_0', calledElement: 'called_process' },
             },
           ],
           BPMNDiagram: {
@@ -3167,7 +2728,6 @@ describe('build json', () => {
               BPMNEdge: {
                 id: 'edge_message_flow_id_0',
                 bpmnElement: 'message_flow_id_0',
-                Bounds: { x: 567, y: 345, width: 36, height: 45 },
                 waypoint: [
                   { x: 567, y: 345 },
                   { x: 587, y: 345 },
@@ -3259,7 +2819,6 @@ describe('build json', () => {
               BPMNEdge: {
                 id: 'edge_message_flow_id_0',
                 bpmnElement: 'message_flow_id_0',
-                Bounds: { x: 567, y: 345, width: 36, height: 45 },
                 waypoint: [
                   { x: 567, y: 345 },
                   { x: 587, y: 345 },
@@ -3370,7 +2929,6 @@ describe('build json', () => {
                 {
                   id: 'edge_message_flow_id_0',
                   bpmnElement: 'message_flow_id_0',
-                  Bounds: { x: 567, y: 345, width: 36, height: 45 },
                   waypoint: [
                     { x: 567, y: 345 },
                     { x: 587, y: 345 },
@@ -3379,7 +2937,6 @@ describe('build json', () => {
                 {
                   id: 'edge_message_flow_id_1',
                   bpmnElement: 'message_flow_id_1',
-                  Bounds: { x: 567, y: 345, width: 36, height: 45 },
                   waypoint: [
                     { x: 567, y: 345 },
                     { x: 587, y: 345 },

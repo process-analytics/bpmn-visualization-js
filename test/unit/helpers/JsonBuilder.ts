@@ -249,16 +249,13 @@ function addMessageFlow(messageFlowParameter: BuildMessageFlowParameter, jsonMod
   const collaboration: TCollaboration = getElementOfArray<TProcess>(jsonModel.definitions.collaboration as TCollaboration);
   updateBpmnElement(collaboration.messageFlow, messageFlow, (value: TMessageFlow | TMessageFlow[]) => (collaboration.messageFlow = value));
 
-  const edge = {
-    id: `edge_${messageFlow.id}`,
+  addEdge(jsonModel, {
     bpmnElement: messageFlow.id,
-    Bounds: { x: 567, y: 345, width: 36, height: 45 },
     waypoint: [
       { x: 567, y: 345 },
       { x: 587, y: 345 },
     ],
-  };
-  addEdge(jsonModel, edge);
+  });
 }
 
 function addElementsOnProcess(processParameter: BuildProcessParameter, json: BpmnJsonModel, processIndex: number): void {
@@ -340,7 +337,14 @@ function addShape(jsonModel: BpmnJsonModel, shape: BPMNShape): void {
 
 function addEdge(jsonModel: BpmnJsonModel, edge: BPMNEdge): void {
   const bpmnPlane: BPMNPlane = getElementOfArray(jsonModel.definitions.BPMNDiagram).BPMNPlane;
-  updateBpmnElement(bpmnPlane.BPMNEdge, edge, (value: BPMNEdge | BPMNEdge[]) => (bpmnPlane.BPMNEdge = value));
+  updateBpmnElement(
+    bpmnPlane.BPMNEdge,
+    {
+      id: `edge_${edge.bpmnElement}`,
+      ...edge,
+    },
+    (value: BPMNEdge | BPMNEdge[]) => (bpmnPlane.BPMNEdge = value),
+  );
 }
 
 function addEventDefinitions(
