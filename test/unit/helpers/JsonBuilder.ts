@@ -113,12 +113,22 @@ export interface BuildGatewayParameter extends TFlowElement {
   bpmnKind: BuildGatewayKind;
 }
 
+/**
+ * If the id field is set, the default id is override.
+ * Otherwise, the id has the format: `sequence_flow_id_${processIndex}_${index}`
+ */
+export interface BuildSequenceFlowParameter extends TFlowElement {
+  sourceRef: string;
+  targetRef: string;
+}
+
 export interface BuildProcessParameter {
   task?: BuildTaskParameter | BuildTaskParameter[];
   event?: BuildEventsParameter | BuildEventsParameter[];
   gateway?: BuildGatewayParameter | BuildGatewayParameter[];
   callActivity?: BuildCallActivityParameter | BuildCallActivityParameter[];
   subProcess?: BuildSubProcessParameter | BuildSubProcessParameter[];
+  sequenceFlow?: BuildSequenceFlowParameter | BuildSequenceFlowParameter[];
 
   /**
    * - If `withParticipant` of `BuildDefinitionParameter` is false, it's corresponding to the id of the process.
@@ -291,6 +301,21 @@ function addElementsOnProcess(processParameter: BuildProcessParameter, json: Bpm
       addEvent(json, eventParameter, index, processIndex),
     );
   }
+  if (processParameter.sequenceFlow) {
+    (Array.isArray(processParameter.sequenceFlow) ? processParameter.sequenceFlow : [processParameter.sequenceFlow]).forEach((sequenceFlowParameter, index) =>
+      addFlownodeAndEdge(
+        json,
+        'sequenceFlow',
+        { ...sequenceFlowParameter, index, processIndex },
+        {
+          waypoint: [
+            { x: 45, y: 78 },
+            { x: 51, y: 78 },
+          ],
+        },
+      ),
+    );
+  }
 }
 
 function getElementOfArray<T>(object: T | T[], index = 0): T {
@@ -318,6 +343,14 @@ function addFlownodeAndShape(jsonModel: BpmnJsonModel, bpmnKind: keyof TProcess,
   addShape(jsonModel, {
     bpmnElement: flowNode.id,
     ...bpmnShape,
+  });
+}
+
+function addFlownodeAndEdge(jsonModel: BpmnJsonModel, bpmnKind: keyof TProcess, flownodeParameter: BuildFlownodeParameter, bpmnEdge: BPMNEdge): void {
+  const flowNode = addFlownode(jsonModel, bpmnKind, flownodeParameter);
+  addEdge(jsonModel, {
+    bpmnElement: flowNode.id,
+    ...bpmnEdge,
   });
 }
 
