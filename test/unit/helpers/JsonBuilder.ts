@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-import type { TParticipant } from '../../../src/model/bpmn/json/baseElement/participant';
 import type { TMessageFlow } from '../../../src/model/bpmn/json/baseElement/baseElement';
-import type { TCollaboration } from '../../../src/model/bpmn/json/baseElement/rootElement/collaboration';
-import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../src/model/bpmn/json/baseElement/flowNode/event';
-import type { TEventDefinition } from '../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
-import type { BpmnJsonModel, TDefinitions } from '../../../src/model/bpmn/json/BPMN20';
-import type { TProcess } from '../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { TFlowElement } from '../../../src/model/bpmn/json/baseElement/flowElement';
 import type { TFlowNode } from '../../../src/model/bpmn/json/baseElement/flowElement';
+import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../src/model/bpmn/json/baseElement/flowNode/event';
+import type { TParticipant } from '../../../src/model/bpmn/json/baseElement/participant';
+import type { TCollaboration } from '../../../src/model/bpmn/json/baseElement/rootElement/collaboration';
+import type { TEventDefinition } from '../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
+import type { TProcess } from '../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { BpmnJsonModel } from '../../../src/model/bpmn/json/BPMN20';
 import type { BPMNEdge, BPMNPlane, BPMNShape } from '../../../src/model/bpmn/json/BPMNDI';
 
 type BPMNTEvent = TCatchEvent | TThrowEvent | TBoundaryEvent;
@@ -34,17 +35,32 @@ export enum EventDefinitionOn {
   BOTH,
 }
 
-export interface BuildEventParameter {
-  /**
-   * If it sets, the default id is override.
-   * Otherwise, the id has the format: `event_id_${processIndex}_${index}`
-   */
-  id?: string;
-  bpmnKind: string;
-  name?: string;
-  isInterrupting?: boolean;
-  attachedToRef?: string;
+/**
+ * If the id field is set, the default id is override.
+ * Otherwise, the id has the format: `event_id_${processIndex}_${index}`
+ */
+interface BuildEventParameter extends TFlowElement {
   eventDefinitionParameter: BuildEventDefinitionParameter;
+}
+
+interface BuildInterruptingEventParameter extends BuildEventParameter {
+  isInterrupting?: boolean;
+}
+
+export type BuildEventsParameter = BuildOtherEventParameter | BuildStartEventParameter | BuildBoundaryEventParameter;
+
+export type OtherBuildEventKind = 'endEvent' | 'intermediateCatchEvent' | 'intermediateThrowEvent';
+interface BuildOtherEventParameter extends BuildEventParameter {
+  bpmnKind: OtherBuildEventKind;
+}
+
+interface BuildStartEventParameter extends BuildInterruptingEventParameter {
+  bpmnKind: 'startEvent';
+}
+
+interface BuildBoundaryEventParameter extends BuildInterruptingEventParameter {
+  bpmnKind: 'boundaryEvent';
+  attachedToRef: string;
 }
 
 export interface BuildEventDefinitionParameter {
@@ -81,7 +97,7 @@ export interface BuildExclusiveGatewayParameter {
 
 export interface BuildProcessParameter {
   task?: BuildTaskParameter | BuildTaskParameter[];
-  event?: BuildEventParameter | BuildEventParameter[];
+  event?: BuildEventsParameter | BuildEventsParameter[];
   exclusiveGateway?: BuildExclusiveGatewayParameter | BuildExclusiveGatewayParameter[];
   callActivity?: BuildCallActivityParameter | BuildCallActivityParameter[];
 
@@ -333,26 +349,17 @@ function addCallActivity(jsonModel: BpmnJsonModel, callActivityParameter: BuildC
   addShape(jsonModel, shape);
 }
 
-function addEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, eventDefinition: BPMNEventDefinition = ''): TProcess | BPMNTEvent {
-  if (eventDefinitionKind !== 'none') {
-    bpmnElement[`${eventDefinitionKind}EventDefinition`] = eventDefinition;
-  }
-  return bpmnElement;
-}
-
-function addDifferentEventDefinition(bpmnElement: TDefinitions | BPMNTEvent, eventDefinitionKind: string, differentEventDefinition?: TEventDefinition): TProcess | BPMNTEvent {
-  const otherEventDefinition = eventDefinitionKind === 'signal' ? 'message' : 'signal';
-  return addEventDefinition(bpmnElement, otherEventDefinition, differentEventDefinition);
-}
-
 function addEventDefinitions(
   event: BPMNTEvent,
-  { eventDefinitionKind, eventDefinition, withDifferentDefinition = false }: BuildEventDefinitionParameter,
-  differentEventDefinition?: TEventDefinition,
+  { eventDefinitionKind, eventDefinition = '', withDifferentDefinition = false }: BuildEventDefinitionParameter,
+  differentEventDefinition: TEventDefinition | string = '',
 ): void {
-  addEventDefinition(event, eventDefinitionKind, eventDefinition);
+  if (eventDefinitionKind !== 'none') {
+    event[`${eventDefinitionKind}EventDefinition`] = eventDefinition;
+  }
   if (withDifferentDefinition) {
-    addDifferentEventDefinition(event, eventDefinitionKind, differentEventDefinition);
+    const otherEventDefinition = eventDefinitionKind === 'signal' ? 'message' : 'signal';
+    event[`${otherEventDefinition}EventDefinition`] = differentEventDefinition;
   }
 }
 
@@ -382,7 +389,21 @@ function addEventDefinitionsOnEvent(event: TCatchEvent | TThrowEvent | TBoundary
   }
 }
 
-function buildEvent(index: number, processIndex: number, name: string, isInterrupting: boolean, attachedToRef: string, id: string): BPMNTEvent {
+function buildEvent({
+  id,
+  name,
+  index,
+  processIndex,
+  isInterrupting,
+  attachedToRef,
+}: {
+  id: string;
+  name: string;
+  index: number;
+  processIndex: number;
+  isInterrupting?: boolean;
+  attachedToRef?: string;
+}): BPMNTEvent {
   const event: BPMNTEvent = {
     id: id ? id : `event_id_${processIndex}_${index}`,
     name: name,
@@ -399,11 +420,11 @@ function buildEvent(index: number, processIndex: number, name: string, isInterru
 
 function addEvent(
   jsonModel: BpmnJsonModel,
-  { id, bpmnKind, eventDefinitionParameter, name, isInterrupting, attachedToRef }: BuildEventParameter,
+  { id, bpmnKind, eventDefinitionParameter, name, ...rest }: BuildOtherEventParameter | BuildStartEventParameter | BuildBoundaryEventParameter,
   index: number,
   processIndex: number,
 ): void {
-  const event = buildEvent(index, processIndex, name, isInterrupting, attachedToRef, id);
+  const event = buildEvent({ id, name, index, processIndex, ...rest });
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH:
       addEventDefinitionsOnEvent(event, eventDefinitionParameter);
