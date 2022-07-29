@@ -166,6 +166,9 @@ export interface BuildProcessParameter {
    * }
    **/
   id?: string;
+
+  /** @default false */
+  withParticipant?: boolean;
 }
 
 export interface BuildMessageFlowParameter {
@@ -177,11 +180,10 @@ export interface BuildMessageFlowParameter {
 
 export interface BuildDefinitionParameter {
   process: BuildProcessParameter | BuildProcessParameter[];
-  withParticipant?: boolean;
   messageFlows?: BuildMessageFlowParameter | BuildMessageFlowParameter[];
 }
 
-export function buildDefinitions({ process, withParticipant, messageFlows }: BuildDefinitionParameter): BpmnJsonModel {
+export function buildDefinitions({ process, messageFlows }: BuildDefinitionParameter): BpmnJsonModel {
   const json: BpmnJsonModel = {
     definitions: {
       targetNamespace: '',
@@ -196,10 +198,10 @@ export function buildDefinitions({ process, withParticipant, messageFlows }: Bui
     },
   };
 
-  if (withParticipant) {
-    (json.definitions.collaboration as TCollaboration).participant = Array.isArray(process) ? [] : undefined;
+  if (Array.isArray(process) && process.filter(p => p.withParticipant).length > 0) {
+    (json.definitions.collaboration as TCollaboration).participant = [];
   }
-  (Array.isArray(process) ? process : [process]).forEach((processParameter, index) => addParticipantProcessAndElements(processParameter, withParticipant, json, index));
+  (Array.isArray(process) ? process : [process]).forEach((processParameter, index) => addParticipantProcessAndElements(processParameter, json, index));
 
   if (messageFlows) {
     (Array.isArray(messageFlows) ? messageFlows : [messageFlows]).forEach(messageFlow => addMessageFlow(messageFlow, json));
@@ -207,14 +209,14 @@ export function buildDefinitions({ process, withParticipant, messageFlows }: Bui
   return json;
 }
 
-function addParticipantProcessAndElements(processParameter: BuildProcessParameter, withParticipant = false, jsonModel: BpmnJsonModel, index: number): void {
+function addParticipantProcessAndElements(processParameter: BuildProcessParameter, jsonModel: BpmnJsonModel, index: number): void {
   const id = processParameter.id ? processParameter.id : String(index);
-  if (withParticipant) {
+  if (processParameter.withParticipant) {
     addParticipant(id, jsonModel);
   }
   updateBpmnElement(
     jsonModel.definitions.process as TProcess | TProcess[],
-    { id: withParticipant ? `process_${id}` : id },
+    { id: processParameter.withParticipant ? `process_${id}` : id },
     (value: TProcess | TProcess[]) => (jsonModel.definitions.process = value),
   );
   addElementsOnProcess(processParameter, jsonModel, index);
