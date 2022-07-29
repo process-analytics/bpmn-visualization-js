@@ -42,7 +42,6 @@ describe('build json', () => {
 
   it('build json of definitions containing several processes and participants with different elements', () => {
     const json = buildDefinitions({
-      withParticipant: true,
       messageFlows: {
         id: 'message_flow_id_0',
         name: 'message flow name',
@@ -51,6 +50,7 @@ describe('build json', () => {
       },
       process: [
         {
+          withParticipant: true,
           id: 'participant_0',
           task: {},
           event: [
@@ -74,6 +74,7 @@ describe('build json', () => {
           ],
         },
         {
+          withParticipant: true,
           id: 'participant_1',
           task: { id: 'task_id_1' },
           event: [
@@ -92,7 +93,7 @@ describe('build json', () => {
           },
         },
         {
-          id: 'participant_2',
+          id: 'process_2',
           event: [
             {
               bpmnKind: 'intermediateCatchEvent',
@@ -116,7 +117,6 @@ describe('build json', () => {
           participant: [
             { id: 'participant_0', processRef: 'process_participant_0' },
             { id: 'participant_1', processRef: 'process_participant_1' },
-            { id: 'participant_2', processRef: 'process_participant_2' },
           ],
           messageFlow: {
             id: 'message_flow_id_0',
@@ -164,7 +164,7 @@ describe('build json', () => {
             },
           },
           {
-            id: 'process_participant_2',
+            id: 'process_2',
             intermediateCatchEvent: {
               eventDefinitionRef: 'event_definition_id',
               id: 'event_id_2_0',
@@ -221,11 +221,6 @@ describe('build json', () => {
                 Bounds: { x: 362, y: 232, height: 45, width: 36 },
               },
               {
-                id: `shape_participant_2`,
-                bpmnElement: `participant_2`,
-                Bounds: { x: 567, y: 345, width: 36, height: 45 },
-              },
-              {
                 bpmnElement: 'callActivity_id_2_0',
                 id: 'shape_callActivity_id_2_0',
                 Bounds: { x: 346, y: 856, height: 56, width: 45 },
@@ -254,9 +249,9 @@ describe('build json', () => {
   describe('build json with participant', () => {
     it('build json of definitions containing one participant', () => {
       const json = buildDefinitions({
-        withParticipant: true,
         process: {
           id: 'participant_id_0',
+          withParticipant: true,
         },
       });
 
@@ -286,13 +281,14 @@ describe('build json', () => {
 
     it('build json of definitions containing 2 participants', () => {
       const json = buildDefinitions({
-        withParticipant: true,
         process: [
           {
             id: 'participant_id_0',
+            withParticipant: true,
           },
           {
             id: 'participant_id_1',
+            withParticipant: true,
           },
         ],
       });
@@ -338,9 +334,9 @@ describe('build json', () => {
 
     it('build json of definitions containing no participant', () => {
       const json = buildDefinitions({
-        withParticipant: false,
         process: {
           id: 'process_id_0',
+          withParticipant: false,
         },
       });
 
@@ -356,6 +352,49 @@ describe('build json', () => {
           BPMNDiagram: {
             name: 'process 0',
             BPMNPlane: {},
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing one participant and one not participant', () => {
+      const json = buildDefinitions({
+        process: [
+          {
+            id: 'process_id_0',
+            withParticipant: false,
+          },
+          {
+            id: 'participant_id_1',
+            withParticipant: true,
+          },
+        ],
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+            participant: [{ id: 'participant_id_1', processRef: 'process_participant_id_1' }],
+          },
+          process: [
+            {
+              id: 'process_id_0',
+            },
+            {
+              id: 'process_participant_id_1',
+            },
+          ],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_participant_id_1',
+                bpmnElement: 'participant_id_1',
+                Bounds: { x: 567, y: 345, width: 36, height: 45 },
+              },
+            },
           },
         },
       });
@@ -2350,14 +2389,7 @@ describe('build json', () => {
             collaboration: {
               id: 'collaboration_id_0',
             },
-            messageEventDefinition: [
-              {
-                id: 'event_definition_1_id',
-              },
-              {
-                id: 'event_definition_2_id',
-              },
-            ],
+            messageEventDefinition: [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }],
             process: {
               id: '0',
               [bpmnKind]: {
@@ -3113,14 +3145,16 @@ describe('build json', () => {
   describe('build json with message flow', () => {
     it('build json of definitions containing 2 participants and one message flow between pools', () => {
       const json = buildDefinitions({
-        withParticipant: true,
         messageFlows: {
           id: 'message_flow_id_0',
           name: 'message flow name',
           sourceRef: 'source_id_0',
           targetRef: 'target_id_0',
         },
-        process: [{ id: 'source_id_0' }, { id: 'target_id_0' }],
+        process: [
+          { withParticipant: true, id: 'source_id_0' },
+          { withParticipant: true, id: 'target_id_0' },
+        ],
       });
 
       expect(json).toEqual({
@@ -3172,7 +3206,6 @@ describe('build json', () => {
 
     it('build json of definitions containing 2 participants and one message flow between element of pools', () => {
       const json = buildDefinitions({
-        withParticipant: true,
         messageFlows: {
           id: 'message_flow_id_0',
           name: 'message flow name',
@@ -3181,12 +3214,14 @@ describe('build json', () => {
         },
         process: [
           {
+            withParticipant: true,
             gateway: {
               id: 'source_id_0',
               bpmnKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
             },
           },
           {
+            withParticipant: true,
             gateway: {
               id: 'target_id_0',
               bpmnKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
@@ -3263,7 +3298,6 @@ describe('build json', () => {
 
     it('build json of definitions containing 2 participants and 2 message flows', () => {
       const json = buildDefinitions({
-        withParticipant: true,
         messageFlows: [
           {
             id: 'message_flow_id_0',
@@ -3280,6 +3314,7 @@ describe('build json', () => {
         ],
         process: [
           {
+            withParticipant: true,
             id: 'source_id_0',
             gateway: {
               id: 'source_id_1',
@@ -3287,6 +3322,7 @@ describe('build json', () => {
             },
           },
           {
+            withParticipant: true,
             id: 'target_id_0',
             gateway: {
               id: 'target_id_1',
