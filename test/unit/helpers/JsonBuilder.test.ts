@@ -16,7 +16,7 @@
 
 import { ShapeBpmnElementKind } from '../../../src/model/bpmn/internal';
 
-import type { BuildEventDefinitionParameter, OtherBuildEventKind, BuildGatewayKind } from './JsonBuilder';
+import type { BuildEventDefinitionParameter, OtherBuildEventKind, BuildTaskKind, BuildGatewayKind } from './JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from './JsonBuilder';
 
 describe('build json', () => {
@@ -2800,131 +2800,147 @@ describe('build json', () => {
     },
   );
 
-  describe('build json with task', () => {
-    it('build json of definitions containing one process with task (with id & name)', () => {
-      const json = buildDefinitions({
-        process: {
-          task: { id: '0', name: 'name' },
-        },
-      });
-
-      expect(json).toEqual({
-        definitions: {
-          targetNamespace: '',
-          collaboration: {
-            id: 'collaboration_id_0',
-          },
+  describe.each(['task', 'businessRuleTask', 'manualTask', 'receiveTask', 'sendTask', 'serviceTask', 'scriptTask', 'userTask'] as BuildTaskKind[])(
+    'build json with %s',
+    (bpmnKind: BuildTaskKind) => {
+      it(`build json of definitions containing one process with ${bpmnKind} (with id & name)`, () => {
+        const json = buildDefinitions({
           process: {
-            id: '0',
-            task: { id: '0', name: 'name' },
+            task: { id: '0', bpmnKind, name: 'name' },
           },
-          BPMNDiagram: {
-            name: 'process 0',
-            BPMNPlane: {
-              BPMNShape: {
-                id: 'shape_0',
-                bpmnElement: '0',
-                Bounds: {
-                  x: 362,
-                  y: 232,
-                  width: 36,
-                  height: 45,
-                },
-              },
+        });
+
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
             },
-          },
-        },
-      });
-    });
-
-    it('build json of definitions containing one process with task (without id & name)', () => {
-      const json = buildDefinitions({
-        process: {
-          task: {},
-        },
-      });
-
-      expect(json).toEqual({
-        definitions: {
-          targetNamespace: '',
-          collaboration: {
-            id: 'collaboration_id_0',
-          },
-          process: {
-            id: '0',
-            task: { id: 'task_id_0_0' },
-          },
-          BPMNDiagram: {
-            name: 'process 0',
-            BPMNPlane: {
-              BPMNShape: {
-                id: 'shape_task_id_0_0',
-                bpmnElement: 'task_id_0_0',
-                Bounds: {
-                  x: 362,
-                  y: 232,
-                  width: 36,
-                  height: 45,
-                },
-              },
-            },
-          },
-        },
-      });
-    });
-
-    it('build json of definitions containing 2 processes with task (without id)', () => {
-      const json = buildDefinitions({
-        process: [{ task: {} }, { task: {} }],
-      });
-
-      expect(json).toEqual({
-        definitions: {
-          targetNamespace: '',
-          collaboration: {
-            id: 'collaboration_id_0',
-          },
-          process: [
-            {
+            process: {
               id: '0',
-              task: { id: 'task_id_0_0' },
+              [bpmnKind]: { id: '0', name: 'name' },
             },
-            {
-              id: '1',
-              task: { id: 'task_id_1_0' },
-            },
-          ],
-          BPMNDiagram: {
-            name: 'process 0',
-            BPMNPlane: {
-              BPMNShape: [
-                {
-                  id: 'shape_task_id_0_0',
-                  bpmnElement: 'task_id_0_0',
-                  Bounds: {
-                    x: 362,
-                    y: 232,
-                    width: 36,
-                    height: 45,
-                  },
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: {
+                  id: 'shape_0',
+                  bpmnElement: '0',
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
-                {
-                  id: 'shape_task_id_1_0',
-                  bpmnElement: 'task_id_1_0',
-                  Bounds: {
-                    x: 362,
-                    y: 232,
-                    width: 36,
-                    height: 45,
-                  },
-                },
-              ],
+              },
             },
           },
-        },
+        });
       });
-    });
-  });
+
+      it(`build json of definitions containing one process with ${bpmnKind} (without id & name)`, () => {
+        const json = buildDefinitions({
+          process: {
+            task: { bpmnKind },
+          },
+        });
+
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
+            },
+            process: {
+              id: '0',
+              [bpmnKind]: { id: `${bpmnKind}_id_0_0` },
+            },
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: {
+                  id: `shape_${bpmnKind}_id_0_0`,
+                  bpmnElement: `${bpmnKind}_id_0_0`,
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                },
+              },
+            },
+          },
+        });
+      });
+
+      it(`build json of definitions containing 2 processes with ${bpmnKind} (without id)`, () => {
+        const json = buildDefinitions({
+          process: [{ task: { bpmnKind } }, { task: { bpmnKind } }],
+        });
+
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
+            },
+            process: [
+              {
+                id: '0',
+                [bpmnKind]: { id: `${bpmnKind}_id_0_0` },
+              },
+              {
+                id: '1',
+                [bpmnKind]: { id: `${bpmnKind}_id_1_0` },
+              },
+            ],
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: [
+                  {
+                    id: `shape_${bpmnKind}_id_0_0`,
+                    bpmnElement: `${bpmnKind}_id_0_0`,
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  },
+                  {
+                    id: `shape_${bpmnKind}_id_1_0`,
+                    bpmnElement: `${bpmnKind}_id_1_0`,
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  },
+                ],
+              },
+            },
+          },
+        });
+      });
+
+      if (bpmnKind === 'task') {
+        it(`build json of definitions containing one process with task (without bpmnKind)`, () => {
+          const json = buildDefinitions({
+            process: {
+              task: {},
+            },
+          });
+
+          expect(json).toEqual({
+            definitions: {
+              targetNamespace: '',
+              collaboration: {
+                id: 'collaboration_id_0',
+              },
+              process: {
+                id: '0',
+                task: { id: 'task_id_0_0' },
+              },
+              BPMNDiagram: {
+                name: 'process 0',
+                BPMNPlane: {
+                  BPMNShape: {
+                    id: 'shape_task_id_0_0',
+                    bpmnElement: 'task_id_0_0',
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  },
+                },
+              },
+            },
+          });
+        });
+      }
+    },
+  );
 
   describe.each(['complexGateway', 'eventBasedGateway', 'exclusiveGateway', 'inclusiveGateway', 'parallelGateway'] as BuildGatewayKind[])(
     'build json with %s',

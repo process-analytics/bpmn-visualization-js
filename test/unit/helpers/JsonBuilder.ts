@@ -77,11 +77,15 @@ export interface BuildEventDefinitionParameter {
   withMultipleDefinitions?: boolean;
 }
 
+export type BuildTaskKind = 'task' | 'businessRuleTask' | 'manualTask' | 'receiveTask' | 'sendTask' | 'serviceTask' | 'scriptTask' | 'userTask';
 /**
  * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `task_id_${processIndex}_${index}`
  */
-export type BuildTaskParameter = TFlowElement;
+export interface BuildTaskParameter extends TFlowElement {
+  /** @default 'task' */
+  bpmnKind?: BuildTaskKind;
+}
 
 /**
  * If the id field is set, the default id is override.
@@ -254,8 +258,8 @@ function addMessageFlow(messageFlowParameter: BuildMessageFlowParameter, jsonMod
 
 function addElementsOnProcess(processParameter: BuildProcessParameter, json: BpmnJsonModel, processIndex: number): void {
   if (processParameter.task) {
-    (Array.isArray(processParameter.task) ? processParameter.task : [processParameter.task]).forEach(({ ...rest }, index) =>
-      addFlownodeAndShape(json, 'task', { ...rest, index, processIndex }, { Bounds: { x: 362, y: 232, width: 36, height: 45 } }),
+    (Array.isArray(processParameter.task) ? processParameter.task : [processParameter.task]).forEach(({ bpmnKind = 'task', ...rest }, index) =>
+      addFlownodeAndShape(json, bpmnKind, { ...rest, index, processIndex }, { Bounds: { x: 362, y: 232, width: 36, height: 45 } }),
     );
   }
   if (processParameter.gateway) {
