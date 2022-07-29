@@ -91,7 +91,12 @@ export interface BuildTaskParameter extends TFlowElement {
  * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `callActivity_id_${processIndex}_${index}`
  */
-export type BuildCallActivityParameter = TFlowElement;
+export interface BuildCallActivityParameter extends TFlowElement {
+  calledElement: string;
+
+  /** @default false */
+  isExpanded?: boolean;
+}
 
 export type BuildGatewayKind = 'complexGateway' | 'eventBasedGateway' | 'exclusiveGateway' | 'inclusiveGateway' | 'parallelGateway';
 /**
@@ -268,8 +273,8 @@ function addElementsOnProcess(processParameter: BuildProcessParameter, json: Bpm
     );
   }
   if (processParameter.callActivity) {
-    (Array.isArray(processParameter.callActivity) ? processParameter.callActivity : [processParameter.callActivity]).forEach(({ id, ...rest }, index) =>
-      addFlownodeAndShape(json, 'callActivity', { id, ...rest, index, processIndex }, { Bounds: { x: 346, y: 856, width: 45, height: 56 } }),
+    (Array.isArray(processParameter.callActivity) ? processParameter.callActivity : [processParameter.callActivity]).forEach(({ id, isExpanded = false, ...rest }, index) =>
+      addFlownodeAndShape(json, 'callActivity', { id, ...rest, index, processIndex }, { Bounds: { x: 346, y: 856, width: 45, height: 56 }, isExpanded }),
     );
   }
   if (processParameter.event) {
