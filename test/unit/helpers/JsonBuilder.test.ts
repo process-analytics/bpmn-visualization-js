@@ -104,7 +104,7 @@ describe('build json', () => {
               },
             },
           ],
-          callActivity: {},
+          callActivity: { calledElement: 'process_participant_0' },
         },
       ],
     });
@@ -173,6 +173,7 @@ describe('build json', () => {
             },
             callActivity: {
               id: 'callActivity_id_2_0',
+              calledElement: 'process_participant_0',
             },
           },
         ],
@@ -224,6 +225,7 @@ describe('build json', () => {
                 bpmnElement: 'callActivity_id_2_0',
                 id: 'shape_callActivity_id_2_0',
                 Bounds: { x: 346, y: 856, height: 56, width: 45 },
+                isExpanded: false,
               },
               {
                 bpmnElement: 'event_id_2_0',
@@ -2104,9 +2106,7 @@ describe('build json', () => {
             },
             process: {
               id: '0',
-              [bpmnKind]: {
-                id: 'event_id_0_0',
-              },
+              [bpmnKind]: { id: 'event_id_0_0' },
             },
             BPMNDiagram: {
               name: 'process 0',
@@ -2114,12 +2114,7 @@ describe('build json', () => {
                 BPMNShape: {
                   id: 'shape_event_id_0_0',
                   bpmnElement: 'event_id_0_0',
-                  Bounds: {
-                    x: 362,
-                    y: 232,
-                    width: 36,
-                    height: 45,
-                  },
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
               },
             },
@@ -2386,9 +2381,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             messageEventDefinition: [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }],
             process: {
               id: '0',
@@ -2403,12 +2396,7 @@ describe('build json', () => {
                 BPMNShape: {
                   id: 'shape_event_id_0_0',
                   bpmnElement: 'event_id_0_0',
-                  Bounds: {
-                    x: 362,
-                    y: 232,
-                    width: 36,
-                    height: 45,
-                  },
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
               },
             },
@@ -2435,15 +2423,9 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
-            messageEventDefinition: {
-              id: 'event_definition_id',
-            },
-            signalEventDefinition: {
-              id: 'other_event_definition_id',
-            },
+            collaboration: { id: 'collaboration_id_0' },
+            messageEventDefinition: { id: 'event_definition_id' },
+            signalEventDefinition: { id: 'other_event_definition_id' },
             process: {
               id: '0',
               [bpmnKind]: {
@@ -2457,12 +2439,7 @@ describe('build json', () => {
                 BPMNShape: {
                   id: 'shape_event_id_0_0',
                   bpmnElement: 'event_id_0_0',
-                  Bounds: {
-                    x: 362,
-                    y: 232,
-                    width: 36,
-                    height: 45,
-                  },
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
               },
             },
@@ -2489,15 +2466,9 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
-            messageEventDefinition: {
-              id: 'other_event_definition_id',
-            },
-            signalEventDefinition: {
-              id: 'event_definition_id',
-            },
+            collaboration: { id: 'collaboration_id_0' },
+            messageEventDefinition: { id: 'other_event_definition_id' },
+            signalEventDefinition: { id: 'event_definition_id' },
             process: {
               id: '0',
               [bpmnKind]: {
@@ -2511,12 +2482,7 @@ describe('build json', () => {
                 BPMNShape: {
                   id: 'shape_event_id_0_0',
                   bpmnElement: 'event_id_0_0',
-                  Bounds: {
-                    x: 362,
-                    y: 232,
-                    width: 36,
-                    height: 45,
-                  },
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
               },
             },
@@ -2543,9 +2509,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             messageEventDefinition: [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }],
             process: {
               id: '0',
@@ -2561,12 +2525,7 @@ describe('build json', () => {
                 BPMNShape: {
                   id: 'shape_event_id_0_0',
                   bpmnElement: 'event_id_0_0',
-                  Bounds: {
-                    x: 362,
-                    y: 232,
-                    width: 36,
-                    height: 45,
-                  },
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
               },
             },
@@ -2593,15 +2552,9 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
-            messageEventDefinition: {
-              id: 'event_definition_id',
-            },
-            signalEventDefinition: {
-              id: 'other_event_definition_id',
-            },
+            collaboration: { id: 'collaboration_id_0' },
+            messageEventDefinition: { id: 'event_definition_id' },
+            signalEventDefinition: { id: 'other_event_definition_id' },
             process: {
               id: '0',
               [bpmnKind]: {
@@ -2617,12 +2570,7 @@ describe('build json', () => {
                 BPMNShape: {
                   id: 'shape_event_id_0_0',
                   bpmnElement: 'event_id_0_0',
-                  Bounds: {
-                    x: 362,
-                    y: 232,
-                    width: 36,
-                    height: 45,
-                  },
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
               },
             },
@@ -2656,9 +2604,7 @@ describe('build json', () => {
         expect(json).toEqual({
           definitions: {
             targetNamespace: '',
-            collaboration: {
-              id: 'collaboration_id_0',
-            },
+            collaboration: { id: 'collaboration_id_0' },
             process: [
               {
                 id: '0',
@@ -2682,22 +2628,12 @@ describe('build json', () => {
                   {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                   {
                     id: 'shape_event_id_1_0',
                     bpmnElement: 'event_id_1_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
               },
@@ -2723,15 +2659,10 @@ describe('build json', () => {
           expect(json).toEqual({
             definitions: {
               targetNamespace: '',
-              collaboration: {
-                id: 'collaboration_id_0',
-              },
+              collaboration: { id: 'collaboration_id_0' },
               process: {
                 id: '0',
-                startEvent: {
-                  id: 'event_id_0_0',
-                  cancelActivity: true,
-                },
+                startEvent: { id: 'event_id_0_0', cancelActivity: true },
               },
               BPMNDiagram: {
                 name: 'process 0',
@@ -2739,12 +2670,7 @@ describe('build json', () => {
                   BPMNShape: {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 },
               },
@@ -2768,15 +2694,10 @@ describe('build json', () => {
           expect(json).toEqual({
             definitions: {
               targetNamespace: '',
-              collaboration: {
-                id: 'collaboration_id_0',
-              },
+              collaboration: { id: 'collaboration_id_0' },
               process: {
                 id: '0',
-                startEvent: {
-                  id: 'event_id_0_0',
-                  cancelActivity: false,
-                },
+                startEvent: { id: 'event_id_0_0', cancelActivity: false },
               },
               BPMNDiagram: {
                 name: 'process 0',
@@ -2784,12 +2705,7 @@ describe('build json', () => {
                   BPMNShape: {
                     id: 'shape_event_id_0_0',
                     bpmnElement: 'event_id_0_0',
-                    Bounds: {
-                      x: 362,
-                      y: 232,
-                      width: 36,
-                      height: 45,
-                    },
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 },
               },
@@ -3044,10 +2960,10 @@ describe('build json', () => {
   );
 
   describe('build json with call activity', () => {
-    it('build json of definitions containing one process with call activity (with id, name)', () => {
+    it('build json of definitions containing one process with call activity (with id, name and expanded)', () => {
       const json = buildDefinitions({
         process: {
-          callActivity: { id: '0', name: 'name' },
+          callActivity: { id: '0', name: 'name', calledElement: 'called_process', isExpanded: true },
         },
       });
 
@@ -3062,6 +2978,7 @@ describe('build json', () => {
             callActivity: {
               id: '0',
               name: 'name',
+              calledElement: 'called_process',
             },
           },
           BPMNDiagram: {
@@ -3071,6 +2988,7 @@ describe('build json', () => {
                 id: 'shape_0',
                 bpmnElement: '0',
                 Bounds: { x: 346, y: 856, width: 45, height: 56 },
+                isExpanded: true,
               },
             },
           },
@@ -3078,10 +2996,45 @@ describe('build json', () => {
       });
     });
 
-    it('build json of definitions containing one process with call activity (without id, name)', () => {
+    it('build json of definitions containing one process with call activity (not expanded)', () => {
       const json = buildDefinitions({
         process: {
-          callActivity: {},
+          callActivity: { id: '0', calledElement: 'called_process', isExpanded: false },
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: {
+            id: 'collaboration_id_0',
+          },
+          process: {
+            id: '0',
+            callActivity: {
+              id: '0',
+              calledElement: 'called_process',
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_0',
+                bpmnElement: '0',
+                Bounds: { x: 346, y: 856, width: 45, height: 56 },
+                isExpanded: false,
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing one process with call activity (without id, name and isExpanded)', () => {
+      const json = buildDefinitions({
+        process: {
+          callActivity: { calledElement: 'called_process' },
         },
       });
 
@@ -3095,6 +3048,7 @@ describe('build json', () => {
             id: '0',
             callActivity: {
               id: 'callActivity_id_0_0',
+              calledElement: 'called_process',
             },
           },
           BPMNDiagram: {
@@ -3104,6 +3058,7 @@ describe('build json', () => {
                 id: 'shape_callActivity_id_0_0',
                 bpmnElement: 'callActivity_id_0_0',
                 Bounds: { x: 346, y: 856, width: 45, height: 56 },
+                isExpanded: false,
               },
             },
           },
@@ -3113,7 +3068,7 @@ describe('build json', () => {
 
     it('build json of definitions containing 2 processes with call activity (without id)', () => {
       const json = buildDefinitions({
-        process: [{ callActivity: {} }, { callActivity: {} }],
+        process: [{ callActivity: { calledElement: 'called_process' } }, { callActivity: { calledElement: 'called_process' } }],
       });
 
       expect(json).toEqual({
@@ -3127,12 +3082,14 @@ describe('build json', () => {
               id: '0',
               callActivity: {
                 id: 'callActivity_id_0_0',
+                calledElement: 'called_process',
               },
             },
             {
               id: '1',
               callActivity: {
                 id: 'callActivity_id_1_0',
+                calledElement: 'called_process',
               },
             },
           ],
@@ -3144,11 +3101,13 @@ describe('build json', () => {
                   id: 'shape_callActivity_id_0_0',
                   bpmnElement: 'callActivity_id_0_0',
                   Bounds: { x: 346, y: 856, width: 45, height: 56 },
+                  isExpanded: false,
                 },
                 {
                   id: 'shape_callActivity_id_1_0',
                   bpmnElement: 'callActivity_id_1_0',
                   Bounds: { x: 346, y: 856, width: 45, height: 56 },
+                  isExpanded: false,
                 },
               ],
             },
