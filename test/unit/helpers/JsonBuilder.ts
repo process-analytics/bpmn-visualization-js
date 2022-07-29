@@ -98,6 +98,12 @@ export interface BuildCallActivityParameter extends TFlowElement {
   isExpanded?: boolean;
 }
 
+/**
+ * If the id field is set, the default id is override.
+ * Otherwise, the id has the format: `subProcess_id_${processIndex}_${index}`
+ */
+export type BuildSubProcessParameter = TFlowElement;
+
 export type BuildGatewayKind = 'complexGateway' | 'eventBasedGateway' | 'exclusiveGateway' | 'inclusiveGateway' | 'parallelGateway';
 /**
  * If the id field is set, the default id is override.
@@ -112,6 +118,7 @@ export interface BuildProcessParameter {
   event?: BuildEventsParameter | BuildEventsParameter[];
   gateway?: BuildGatewayParameter | BuildGatewayParameter[];
   callActivity?: BuildCallActivityParameter | BuildCallActivityParameter[];
+  subProcess?: BuildSubProcessParameter | BuildSubProcessParameter[];
 
   /**
    * - If `withParticipant` of `BuildDefinitionParameter` is false, it's corresponding to the id of the process.
@@ -272,6 +279,11 @@ function addElementsOnProcess(processParameter: BuildProcessParameter, json: Bpm
   if (processParameter.callActivity) {
     (Array.isArray(processParameter.callActivity) ? processParameter.callActivity : [processParameter.callActivity]).forEach(({ id, isExpanded = false, ...rest }, index) =>
       addFlownodeAndShape(json, 'callActivity', { id, ...rest, index, processIndex }, { Bounds: { x: 346, y: 856, width: 45, height: 56 }, isExpanded }),
+    );
+  }
+  if (processParameter.subProcess) {
+    (Array.isArray(processParameter.subProcess) ? processParameter.subProcess : [processParameter.subProcess]).forEach((subProcessParameter, index) =>
+      addFlownodeAndShape(json, 'subProcess', { ...subProcessParameter, index, processIndex }, { Bounds: { x: 67, y: 23, width: 456, height: 123 } }),
     );
   }
   if (processParameter.event) {

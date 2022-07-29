@@ -2678,6 +2678,106 @@ describe('build json', () => {
     });
   });
 
+  describe('build json with subProcess', () => {
+    it('build json of definitions containing one process with subProcess (with id & name)', () => {
+      const json = buildDefinitions({
+        process: {
+          subProcess: { id: '0', name: 'subProcess name' },
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: {
+            id: '0',
+            subProcess: { id: '0', name: 'subProcess name' },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_0',
+                bpmnElement: '0',
+                Bounds: { x: 67, y: 23, width: 456, height: 123 },
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing one process with subProcess (without id & name)', () => {
+      const json = buildDefinitions({
+        process: {
+          subProcess: {},
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: {
+            id: '0',
+            subProcess: { id: 'subProcess_id_0_0' },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_subProcess_id_0_0',
+                bpmnElement: 'subProcess_id_0_0',
+                Bounds: { x: 67, y: 23, width: 456, height: 123 },
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing 2 processes with subProcess (without id)', () => {
+      const json = buildDefinitions({
+        process: [{ subProcess: {} }, { subProcess: {} }],
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: [
+            {
+              id: '0',
+              subProcess: { id: 'subProcess_id_0_0' },
+            },
+            {
+              id: '1',
+              subProcess: { id: 'subProcess_id_1_0' },
+            },
+          ],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_subProcess_id_0_0',
+                  bpmnElement: 'subProcess_id_0_0',
+                  Bounds: { x: 67, y: 23, width: 456, height: 123 },
+                },
+                {
+                  id: 'shape_subProcess_id_1_0',
+                  bpmnElement: 'subProcess_id_1_0',
+                  Bounds: { x: 67, y: 23, width: 456, height: 123 },
+                },
+              ],
+            },
+          },
+        },
+      });
+    });
+  });
+
   describe('build json with message flow', () => {
     it('build json of definitions containing 2 participants and one message flow between pools', () => {
       const json = buildDefinitions({
